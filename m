@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1DBB12765
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:26:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEF9B1276E
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93FFD5A3285
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 23:26:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BAE53AB8CC
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 23:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F9A26158B;
-	Fri, 25 Jul 2025 23:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103AC2620D2;
+	Fri, 25 Jul 2025 23:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiIDnCgi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qy5r1DjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435222609C5
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 23:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A2E2609C5
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 23:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753485979; cv=none; b=XBd/cXvT3JFmsox/5SdbEcnDvIM9J8qNcUTLA27xM3GNrTa7c+zj9SwHhA8pUyH2y7mFNkn2U8MpgE51rVfnbF0yxp9U5A3D4Q8W95pJfsl8bUOZSNql0tWeo8OhSa2xsQikTIkC2XpLd+vqXw4Hyf7ETgGq6pmcsM/zwf5uX8c=
+	t=1753485980; cv=none; b=Vp7XCalEIYhlexb1yhowlqR+MaUQjoWxYWay4pDrQ3521xO3TVkQwcDsV7q/e4lOyMHQ5sDNJtvGxsiGS//C8wbMrJbkA15ow7kbfTP3/WllargQf+aBaz98rWfOD663GRNyx5kNAftndRvbm6vawfpfy0CsjFC4lbcgpKGEEfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753485979; c=relaxed/simple;
-	bh=Eyae9C76BbCLQgGObDkVZK+ERgo4Mmqa4tP6hPArkt4=;
+	s=arc-20240116; t=1753485980; c=relaxed/simple;
+	bh=Qqib+9FCL8X5YNqn55PTjmSKQoIj/DUe5okZSrlFhX4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eV+X1MlJ/xR/5JXfFTGAveTssVCEfszegC0poudECINAgEdU4K2hGbHufR+Giw63uEERMP2ojjxROPai9R0pJesz+hC1benfQTF3JqYyUXRs/hG6JFLAflyoXzbcELbG5EEd6uQbSGXfXsCP81WFY/E4hOlAg2LGrz5N8MgPV+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiIDnCgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44884C4CEE7;
-	Fri, 25 Jul 2025 23:26:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bhdNao/pIUZdoF446Dr+KcI6pfD0AYMJFjwBe8B4MNXCHnMiIKn7k89DUyxNCpAeQFGUpmyN4ZdOpEZ9isYbzgu0dbEW19bv+00DaWrKs0BsLn/SMuVcWv1o3jvoSzfEiOlQhkFP+o443SK0ZkGd4PgCYJ/U5NZWJ93Mz4vYX5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qy5r1DjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1109C4CEF4;
+	Fri, 25 Jul 2025 23:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753485976;
-	bh=Eyae9C76BbCLQgGObDkVZK+ERgo4Mmqa4tP6hPArkt4=;
+	s=k20201202; t=1753485979;
+	bh=Qqib+9FCL8X5YNqn55PTjmSKQoIj/DUe5okZSrlFhX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiIDnCgiqggiYFE1yJtH0qQgcYidJE6pFcNl4DVtRvvwWv97WXiIxy+B+pRjE33vN
-	 S8PvKIBjANbghe+sPf2GBl7v8mQfgc4PR46v0xVkzSOjck/B4+A7pNM8zxxu3hb+ri
-	 dojN58Az2hQQhaP2UZtKGqs/DMDXJr0o28MtKhe9w+4VF4FlcYb8f3n6rTTDtH0anr
-	 n5RaG3h1+fmQEuoc1OFQaOljtvhwMXcNxjpvo1qxhUiAUcek/was9Qtyd7Of7kZMsK
-	 hREtHET2aSPZ159fLMRspjXA5Bl+np5tKeLNktXHYpEUU0HXtdR1UZ1xQadZk9z6ZM
-	 D/EhSUBgMVeWg==
+	b=qy5r1DjU+wULViIljBmqTDvakc1Cj/faKL6LZLktok0PXHG1rMMdO2lp/1PJyT1zn
+	 4ZBxLkbzoivkOqWkhcjl41+sFGJZMOfrTUpXz1j2tL//Hyu9Z7SpZU4OW+ybaWg2Pd
+	 c+m+bJewEkJGx11UUw63CdOfY4efmSQC4RCPzsab3n8f3Pm1fIMt/g4Kr3SSBypaDu
+	 9B1yVqSQ+6Prl5K1BqItBxSPGqj0Ww+4ZcEKyfsRW1IU3gY5yGTeUXFfA5S4MPbqJZ
+	 jjedrLwR9HJrBpCBA0vVGuY+BtoyrWDDbLz+dp+fi5LnZUHlwlPg+C/hCHTZyij8CF
+	 BIXIfDX2nnNrw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y 1/8] net: sched: extract common action counters update code into function
-Date: Fri, 25 Jul 2025 19:26:14 -0400
-Message-Id: <1753463533-0989ae30@stable.kernel.org>
+Subject: Re: [PATCH v2 6.1] net: add netdev_lockdep_set_classes() to virtual drivers
+Date: Fri, 25 Jul 2025 19:26:17 -0400
+Message-Id: <1753461306-3b9f6dd9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724192619.217203-2-skulkarni@mvista.com>
+In-Reply-To: <20250724200524.172820-1-sumanth.gavini@yahoo.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,41 +66,65 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: c8ecebd04cbb6badb46d42fe54282e7883ed63cc
+The upstream commit SHA1 provided is correct: 0bef512012b1cd8820f0c9ec80e5f8ceb43fdd59
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: <skulkarni@mvista.com>
-Commit author: Vlad Buslov <vladbu@mellanox.com>
+Backport author: Sumanth Gavini <sumanth.gavini@yahoo.com>
+Commit author: Eric Dumazet <edumazet@google.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (exact SHA1)
-5.10.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  c8ecebd04cbb ! 1:  0dd3ddfe6d2c net: sched: extract common action counters update code into function
-    @@ Metadata
+1:  0bef512012b1 ! 1:  9684eff65270 net: add netdev_lockdep_set_classes() to virtual drivers
+    @@
+      ## Metadata ##
+    -Author: Eric Dumazet <edumazet@google.com>
+    +Author: Sumanth Gavini <sumanth.gavini@yahoo.com>
+     
       ## Commit message ##
-         net: sched: extract common action counters update code into function
+         net: add netdev_lockdep_set_classes() to virtual drivers
      
-    +    [ Upstream commit c8ecebd04cbb6badb46d42fe54282e7883ed63cc ]
+    +    commit 0bef512012b1cd8820f0c9ec80e5f8ceb43fdd59 upstream.
     +
-         Currently, all implementations of tc_action_ops->stats_update() callback
-         have almost exactly the same implementation of counters update
-         code (besides gact which also updates drop counter). In order to simplify
+         Based on a syzbot report, it appears many virtual
+         drivers do not yet use netdev_lockdep_set_classes(),
+         triggerring lockdep false positives.
     @@ Commit message
-         Signed-off-by: Vlad Buslov <vladbu@mellanox.com>
-         Acked-by: Jiri Pirko <jiri@mellanox.com>
-         Signed-off-by: David S. Miller <davem@davemloft.net>
-    +    Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
-    +    Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+         Signed-off-by: Eric Dumazet <edumazet@google.com>
+         Link: https://lore.kernel.org/r/20240212140700.2795436-4-edumazet@google.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
      
-      ## include/net/act_api.h ##
-     @@ include/net/act_api.h: int tcf_action_dump(struct sk_buff *skb, struct tc_action *actions[], int bind,
+      ## drivers/net/dummy.c ##
+     @@ drivers/net/dummy.c: static int dummy_dev_init(struct net_device *dev)
+    @@ drivers/net/veth.c: static void veth_free_queues(struct net_device *dev)
+      ## drivers/net/vxlan/vxlan_core.c ##
+     @@ drivers/net/vxlan/vxlan_core.c: static int vxlan_init(struct net_device *dev)
+      	if (err)
+    - 		goto err_gro_cells_destroy;
+    + 		goto err_free_percpu;
+      
+     +	netdev_lockdep_set_classes(dev);
+      	return 0;
+      
+    - err_gro_cells_destroy:
+    + err_free_percpu:
+     
+      ## net/ipv4/ip_tunnel.c ##
+     @@ net/ipv4/ip_tunnel.c: int ip_tunnel_init(struct net_device *dev)
+    @@ net/ipv6/ip6_gre.c: static int ip6erspan_tap_init(struct net_device *dev)
+     
+      ## net/ipv6/ip6_tunnel.c ##
+     @@ net/ipv6/ip6_tunnel.c: ip6_tnl_dev_init_gen(struct net_device *dev)
+    - 	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
+    + 	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
+      
+      	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
+     +	netdev_lockdep_set_classes(dev);
 
 ---
 
@@ -108,5 +132,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| 5.4                       | Success     | Success    |
+| origin/linux-6.1.y        | Success     | Success    |
 
