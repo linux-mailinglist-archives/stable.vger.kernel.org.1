@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-164757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759D2B122C8
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EB9B122CE
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96ABE5678C9
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 17:14:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86F7E5808B5
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 17:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1812EF9BA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4052EFD88;
 	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZhoVzmj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIrc1znd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA9C7080D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE852EF9A9;
 	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753463655; cv=none; b=ZiahcCQnVDP1oKwEEgT/e+9nKmEaAAlAOTMpmlwOVYtOURfVVV3q/bXXHtMxSCESC8FbBCk3vpFmY0Gsr+ag2oeI/3QTRCRUFbAAnzDkSJWAMDq0vFoPpFg0jMB3Mdqe9USAL1HT2uA9bYcBVe43FmV/ROJXBsN3oSsVTuGEVHc=
+	t=1753463655; cv=none; b=I+kounJ2ruUlIxbQP0C+0yfR4AgSeB9eKfa2ngEUqSjjZuzL8HQoe6acGOyBM2nkjzL5Rrr08HHbF90NiMu/kun2uMWyvL1wrlkY2zxLiddfNpxce38b8WVdlx3LNZVuy9YG8ho4btOEQHL3OJf9FGXVmgkgIRFcz4dBYhFaELY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753463655; c=relaxed/simple;
-	bh=kqBmJJq9ufFHOESJhsjd3Onyd4cgOnDcJ4k/ti6hGV4=;
+	bh=cCDHT3cnmuazKqCtjc+IW2jQ2SASLoMsrlCNSn0tgww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHwdk6RdMCxncvy1FJtV7X5FDXotioJa9Xnx0XcEodVBNFsnpCxfmDwrhH0NPgQCbTh6xPltZV6H3tAJEbtv/UqjCT0F4YmOw2SvzdbmLxiATDvGbNq4w08t/SmMHYREiXE0Lw0hrX80WoIT43d16/geNkA/n9iVN2B3WYHRoGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZhoVzmj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2B4C4CEFB;
-	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
+	 MIME-Version; b=CFUf089swU8E9y/XADVzGdsehAWlFLvRTnddwVN4rvlwcppv27FNNGXG800j7LtC3BqA7/FETvL0NA5DT+xgTSY07CrBjR7Fy8z58FXO8mt61C9kTTJhIj6R7sCN3hyWUWXXmRIr2Rrap2Ls8R6ZzxFmGG7+qul3MYdoCpJpwBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIrc1znd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04235C19421;
+	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753463654;
-	bh=kqBmJJq9ufFHOESJhsjd3Onyd4cgOnDcJ4k/ti6hGV4=;
+	s=k20201202; t=1753463655;
+	bh=cCDHT3cnmuazKqCtjc+IW2jQ2SASLoMsrlCNSn0tgww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZhoVzmjTGSEG/8V6D2+TCofzITuvz4FXYSXvQpgd/INthke20gvu8WcB9wS2Njbq
-	 kYfrrq1G9XI+6f7vtzrfHumnzdCzR6pbNmZsiC5yr+hBKVb01QuqoLCjSwOEKkc5Id
-	 tLFFM9rWCj5WvNG0yELdSU2OLdHskwAYGeHssw2VRJZYum4kWIZgwKatgIhgw8zzqf
-	 /3ozk8CwEF7js2p2JtIaafdrBM9RXNkkMUsOETxXFEcKhfDYBss/1cORcvMfbh5Avj
-	 aGtgFCKJP5DTGGJnWgvmzDJuF+YKFQXZlIeL91qvZrd3GhK9u5w3/wDxpw8BuJm42H
-	 Ii4e3/GOR1u5g==
+	b=kIrc1zndoSUNRw7WQ5z4QlFcTrhfDr6rsT9Gla7l61iov06QI+H/BesipknkgOFmw
+	 3t6wvTmqzgfo2RdUvbKbJfIGXxq/DaCRJL+QAPjkSuHdVXChcY6AkvBIq5CJ2sxPmM
+	 J3qbDPMz8qwSp7NRxZ0gnFCUSZnB2KuJDTywUz9ZNSLmMeZfxL2niG/I5nPQI6pKsG
+	 lTBjMSmBtG20FhhX4/AiPUqD3+TO2BBA+xwBSCk7N+sszjAVlJudcjaobIaHsWvPVY
+	 kzZOD+fRde/w+P5zO7hdqeJSuMiqmDvb4Y06xBoVFZ6GM7xBYCc5bjn9z56AFpgXm8
+	 VpPSGSAmqYWfw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1ufLzn-000000000Gp-3CXB;
+	id 1ufLzn-000000000Gr-3csz;
 	Fri, 25 Jul 2025 19:14:11 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -68,9 +68,9 @@ Cc: Madalin Bucur <madalin.bucur@nxp.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 4/5] net: mtk_eth_soc: fix device leak at probe
-Date: Fri, 25 Jul 2025 19:12:12 +0200
-Message-ID: <20250725171213.880-5-johan@kernel.org>
+Subject: [PATCH 5/5] net: ti: icss-iep: fix device and OF node leaks at probe
+Date: Fri, 25 Jul 2025 19:12:13 +0200
+Message-ID: <20250725171213.880-6-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250725171213.880-1-johan@kernel.org>
 References: <20250725171213.880-1-johan@kernel.org>
@@ -82,30 +82,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The reference count to the WED devices has already been incremented when
-looking them up using of_find_device_by_node() so drop the bogus
-additional reference taken during probe.
+Make sure to drop the references to the IEP OF node and device taken by
+of_parse_phandle() and of_find_device_by_node() when looking up IEP
+devices during probe.
 
-Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
-Cc: stable@vger.kernel.org	# 5.19
-Cc: Felix Fietkau <nbd@nbd.name>
+Drop the bogus additional reference taken on successful lookup so that
+the device is released correctly by icss_iep_put().
+
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Cc: stable@vger.kernel.org	# 6.6
+Cc: Roger Quadros <rogerq@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-index 351dd152f4f3..4f3014fc389b 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -2794,7 +2794,6 @@ void mtk_wed_add_hw(struct device_node *np, struct mtk_eth *eth,
- 	if (!pdev)
- 		goto err_of_node_put;
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 2a1c43316f46..50bfbc2779e4 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -685,11 +685,17 @@ struct icss_iep *icss_iep_get_idx(struct device_node *np, int idx)
+ 	struct platform_device *pdev;
+ 	struct device_node *iep_np;
+ 	struct icss_iep *iep;
++	int ret;
  
--	get_device(&pdev->dev);
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		goto err_put_device;
+ 	iep_np = of_parse_phandle(np, "ti,iep", idx);
+-	if (!iep_np || !of_device_is_available(iep_np))
++	if (!iep_np)
+ 		return ERR_PTR(-ENODEV);
+ 
++	if (!of_device_is_available(iep_np)) {
++		of_node_put(iep_np);
++		return ERR_PTR(-ENODEV);
++	}
++
+ 	pdev = of_find_device_by_node(iep_np);
+ 	of_node_put(iep_np);
+ 
+@@ -698,21 +704,28 @@ struct icss_iep *icss_iep_get_idx(struct device_node *np, int idx)
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	iep = platform_get_drvdata(pdev);
+-	if (!iep)
+-		return ERR_PTR(-EPROBE_DEFER);
++	if (!iep) {
++		ret = -EPROBE_DEFER;
++		goto err_put_pdev;
++	}
+ 
+ 	device_lock(iep->dev);
+ 	if (iep->client_np) {
+ 		device_unlock(iep->dev);
+ 		dev_err(iep->dev, "IEP is already acquired by %s",
+ 			iep->client_np->name);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 	iep->client_np = np;
+ 	device_unlock(iep->dev);
+-	get_device(iep->dev);
+ 
+ 	return iep;
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(icss_iep_get_idx);
+ 
 -- 
 2.49.1
 
