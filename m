@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-164727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEFFB11CE1
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:53:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460D6B11CE4
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20C307AB660
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 10:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 961891C838F7
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 10:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827F62E54B4;
-	Fri, 25 Jul 2025 10:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92BF2E6103;
+	Fri, 25 Jul 2025 10:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RwlHJMns"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jb2l/6Y4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA822E5419;
-	Fri, 25 Jul 2025 10:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8A32E5B05;
+	Fri, 25 Jul 2025 10:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753440790; cv=none; b=LAyHxeExYUniLVHp9UKBtHYzGDNbM5ipgX99V7ZNc2PxkE4YUaABSsvF6GFItms0VpS4FO8DXAYiUSI+I5L51htajYVTm6iQAY5s2HjEQYbVeKznsYHMem15yt/7Ua0WdEJzaP0OlvxaTQnvHZWEWK40HwAV4fs2Ug+j/imf59Y=
+	t=1753440793; cv=none; b=b7dsG4yqllC54Ehva4m9Ws0JP/mR9rlTpyx0g5bNURLBLkP3IKRQZmXZs2pwGDz/9+TdjLfC+OOu9aa78flLF6Rbo7dV3HjBwQS5TPNz/aFXM7IrkfKesBeIWNRzkGuTh25w8fimLN37k9rIpytE1KgVhLjGRJt5pdpffobA8UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753440790; c=relaxed/simple;
-	bh=xkevpCQJxEilUkI9clyEbKo/Sm/eWm1V1vjHWrcoPdY=;
+	s=arc-20240116; t=1753440793; c=relaxed/simple;
+	bh=AkDPjTWw4oftIKLynwqKlLifD+pOI1GyGP+idxfShEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxj/1s2irFW1yCIZzD/FVi9u8LDZEtd9Ri/tlbWDDNSqORTooF+h+CoD0CxhRETo1S9nVFJyjeJdc8oOdkZ3eWTtl8sL55TK8rKs0gfakDhJw5nlF6gI/oV0OpmkVm4CHlgZubAj9yx0a9+/5q14+X0T8dbj4geqyDnCP35gqd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RwlHJMns; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=Gj8AoGtyQlR6Fj6+5SEZav5U49UzyQvFE2kD7wNx/XHwU1k16v04bUl1geMU7u1fEnHMwghHOC8skjGCqICTDZN0BrgJ0e2OggRRa/1YTCdK+DZ/l9JciJOWRaydCBLCcaF2glpidbr80wB5sYS2yai4mnR41UUHCw+MweT2uXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jb2l/6Y4; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23694cec0feso18841335ad.2;
-        Fri, 25 Jul 2025 03:53:08 -0700 (PDT)
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3137c2021a0so1664168a91.3;
+        Fri, 25 Jul 2025 03:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753440788; x=1754045588; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753440791; x=1754045591; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SIldpUpOzn6qByUx91ZbXkrzIhHP7VmFSx8Hu42BlZg=;
-        b=RwlHJMnsJ6j+QwqVEd/1ogOuZwXLCh867pbZ2l02oUR3VQ1cwIIWhuC/m4Hgl8yu7H
-         p7XNjjQh9GlJ2CfcSfS7peVSoIK5UUjwaso8Yk4UEcwfxxsnJpwm100zsqJ/8TbM6/D+
-         bgoOL2BAYwBlTu7ufxeeBx7RNNIksPNhH3Q5Y0/gPd1opYSQ9e5oBUL80ck+n94AAlMW
-         KJgYCNtGu+dYPWjk8+EwZG+xMudgIAPFhe9JJ0+So5J5RZls6vPavLPL80kA9xSi84/k
-         oeKWdP1CH/WnHc46zLbcKyIZkI/PRwflZOmlDl5Saf0TrQCQ9rgdPoUPlmPp7DVwiYna
-         Dneg==
+        bh=M7QYIPDtolCU+nVsXELbdk8ThwQMAKoMpVAkJRXKgso=;
+        b=jb2l/6Y456f8OmIKr/s3kIXP2J68K8vVbJ6Zut2VG0takVHiTOIPST+hLw7ka7GKBN
+         P9wcbIeJE9dM+NuAsYH8WbBKLZXOS3C5FPp2ZXlmWriIh43vOS19/nkDWMyGvAwa+g7O
+         bXVijq43gKRdPe8UWKg8ZJpFvzUmw/tCYnYEkn5ewoQ70fyl40E/2DfEQ6pvHAIcdUx2
+         TtqiBnr85K8fAHLzgsGZubIJFgjgYHKYLYx/OHxOMN21JjpLuT6YyYrLBg/Zl0r5e1ou
+         37M2yFcdQjmYzePsrtEmwPSK0z5xnnz1H9YTkl2uS2OqdXI1fpSobvK9i10QatWIIKWB
+         1uuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753440788; x=1754045588;
+        d=1e100.net; s=20230601; t=1753440791; x=1754045591;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SIldpUpOzn6qByUx91ZbXkrzIhHP7VmFSx8Hu42BlZg=;
-        b=gNLZ8dLFGV7s47tPhUW9+7KF7PLmCAulpYzGGWhJzbCHIXYrbsmkZAvdWFx1On2UPN
-         XFvEH+dsktWJD9SFhpkiDwmr+S2hJ+9ba1R2C4HsnKqb5EyAk1iKnVZMIAu1sTcF5fvS
-         EUzZjigSylTwdKvSHZtkhhUw3c+9bpOQTU68XlKhCbvUIMzqrqo266sz0eul1TiYzULG
-         ajdqg62n4esDletKR2rTJPC+EuvGp+KGA1At/LudNsK3ddqBltQwZi+dU6vXZMBZmGLy
-         bMLz66vY3J5cqTdwCe+6Bc85OQDM1l5l7MOgqW5BKqQZY6K9p4Zo9hOehtKMoCKaZFws
-         zQbw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/UOue2gid2veu/B6vNUgrMYbAziIvVwOeydTHYEa9IrZUw9Vpqe+ywWZLFz/njNgJ3tSMDebRr8IILpQ=@vger.kernel.org, AJvYcCXhEJTlGEa/6IO0pB0RDCjuBvBPf1j/RmSWdLylWbzlZnVu1VWXDmg4p3hdCPzzxB0esPFhtbXP@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoWNRZrQBq7ym/4Mi5E0G+BjOqXF/ZcLJXt0cslPo7B+0eXC1x
-	2frCSEjULWiJF+M0HBBqPKKpu6etuOfoK2i7/K4s3T3uSRUvKOxup5BNegxgPLuS
-X-Gm-Gg: ASbGncuBI5at+gqBMJHMjd2IQOQXb2Av44NC4c9nAE4vTFUad14ck4RkRUNmTxPXg86
-	yErXWYH5AXaeTdrCUyuamyCwTBnT1b40EcV01dCPjNbgpEu08+gy4Pb9AZ8bN50oG+O8NIS/QTc
-	y7TdvRUFLRAQRJCjkuTcanvDHW5sPT3ylwfJym9N6nqldDYZSbiIbJNAUXlqeuHqqZ5MQenNVym
-	J9dza6stvO7LQMMlW/kWWPuXNAE1McSNGa8Wry8WyUFJNxCMMeD+Hzb5ECia/zQ0DMuyVntE81O
-	kx5mOEC1AD0TA4l/J30c4iGDBYG5KRnAo9f+qlJG4qdhkbSiPmO44UhdWD/yJKOqvDX4sgcijau
-	est8mT+k8B5Sq1saee8ENyUmQBrABSg==
-X-Google-Smtp-Source: AGHT+IEkBvhOd4l5wgSJdjDOeumLuFHFzyGe78cVHzA4eXStQF0flBdPsmIAhhfPrjp0/r1dFM0obw==
-X-Received: by 2002:a17:902:cec9:b0:23f:6fc0:59b2 with SMTP id d9443c01a7336-23fb2fefdfbmr19391025ad.6.1753440787588;
-        Fri, 25 Jul 2025 03:53:07 -0700 (PDT)
+        bh=M7QYIPDtolCU+nVsXELbdk8ThwQMAKoMpVAkJRXKgso=;
+        b=rDXt8GJqaRtEnOjBDqhUQDeFaWEnf+DG8wNHeiWCbwOniUcjkxhwXcGspZjNHvK1mt
+         bmtYNPWCxEt+vIPMDmZo9V1fetcR5a/hVnpJiYIzt/gVfMfkhu/FFdAi5YQbkuJNvNzq
+         2LS/Zd7NSAOZtu7huwADsyUeLfA0iQT4q/iSxPBkx72eZ1b9fxBQWE9ht6sbCmHZaLvi
+         4vurmTnmUO8l/3lNrGzdNWrZFrFGn8pp+e6st1dR+AHRJSQEDvx1B6wcjgjU4oGE97bS
+         IVOAdwoFtt9jKRZzTlY1LGfkJJFaMcXY5msYSk2yE8jgBjf3AE8KgjzFu/3s0Rk4dYZu
+         frnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzt6tRq2HUBP0riWt5QJOwSWtV+F7EQeu8G588ygn7AZMnOSJ+jHfJMFbnDQ974dry8t+WmDXd@vger.kernel.org, AJvYcCXMCpQOCb23Fv0gGHMtxgu6doj4Xc4DkohYJS/WmoiC9NrwCe+X+BIfIKsunZaPNpFBaNMGoyZv81I2IT0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyLWPX0ejTyAcQ26Lmi+95+G9rVY4Vjs4Zudw4OF4lb/ruMkiS
+	Rel8bZ9HwEAIXF61v7scxppNFY2jvDBzYQQ8MxZeWGTxxkAY0mUsVGIe
+X-Gm-Gg: ASbGnctMOHoYIxEWj+bR9bmU15rcFFhJEW+16kPIwned3+9BCkW+z3ajcf2yXPUct8F
+	oVPcmv4W8yvnCFocqiFhq/5GGVHQZtUCFzBqAz2gD17P6xz1+YInPF4dUWnsi2j0UMtftNPI0RZ
+	sQYxqbAztOwvrqMZeRYM0cjdK/92qwKmZ1w6xznYNnXFmfS832ispOccBkdYnxyPS3qnzabmd9d
+	miL5zzDDwkgxWjYEpioXomDBuGxTWoNuXaIKUQuycz7aoLHHuibx6muPcg7NaVMxzNb3Bmvsk87
+	nTyHaaVGf8g676fe5jSG1FyLe7CjTx2I1TUka8aQ73ItIxWGi9CuBLJgAIoR/Fv88tffMTguhML
+	LmHaT94JLdycUTAISYIJSgncqZodpAQ==
+X-Google-Smtp-Source: AGHT+IEpHL1qE0xk/xatskc3co+V67EgykF7KXA0D3//QTbOZNlpUu0miMMgonp92WgGBSk8F5MEyA==
+X-Received: by 2002:a17:90b:5804:b0:311:f99e:7f4e with SMTP id 98e67ed59e1d1-31e779fa061mr2070051a91.16.1753440791087;
+        Fri, 25 Jul 2025 03:53:11 -0700 (PDT)
 Received: from victorshih.. ([2402:7500:469:65dd:ea7a:c5ba:93df:8ba4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e6628c603sm3307314a91.14.2025.07.25.03.53.04
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e6628c603sm3307314a91.14.2025.07.25.03.53.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 03:53:07 -0700 (PDT)
+        Fri, 25 Jul 2025 03:53:10 -0700 (PDT)
 From: Victor Shih <victorshihgli@gmail.com>
 To: ulf.hansson@linaro.org,
 	adrian.hunter@intel.com
@@ -84,9 +84,9 @@ Cc: linux-mmc@vger.kernel.org,
 	Victor Shih <victorshihgli@gmail.com>,
 	Victor Shih <victor.shih@genesyslogic.com.tw>,
 	stable@vger.kernel.org
-Subject: [PATCH V2 1/2] mmc: sdhci-pci-gli: Add a new function to simplify the code
-Date: Fri, 25 Jul 2025 18:52:55 +0800
-Message-ID: <20250725105257.59145-2-victorshihgli@gmail.com>
+Subject: [PATCH V2 2/2] mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of AER
+Date: Fri, 25 Jul 2025 18:52:56 +0800
+Message-ID: <20250725105257.59145-3-victorshihgli@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250725105257.59145-1-victorshihgli@gmail.com>
 References: <20250725105257.59145-1-victorshihgli@gmail.com>
@@ -100,84 +100,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-Add a sdhci_gli_mask_replay_timer_timeout() function
-to simplify some of the code, allowing it to be re-used.
+Due to a flaw in the hardware design, the GL9763e replay timer frequently
+times out when ASPM is enabled. As a result, the warning messages will
+often appear in the system log when the system accesses the GL9763e
+PCI config. Therefore, the replay timer timeout must be masked.
+
+Also rename the gli_set_gl9763e() to gl9763e_hw_setting() for consistency.
 
 Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
 Cc: stable@vger.kernel.org
 ---
- drivers/mmc/host/sdhci-pci-gli.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index 4c2ae71770f7..98ee3191b02f 100644
+index 98ee3191b02f..7165dde9b6b8 100644
 --- a/drivers/mmc/host/sdhci-pci-gli.c
 +++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -287,6 +287,20 @@
- #define GLI_MAX_TUNING_LOOP 40
- 
- /* Genesys Logic chipset */
-+static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *dev)
-+{
-+	int aer;
-+	u32 value;
-+
-+	/* mask the replay timer timeout of AER */
-+	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
-+	if (aer) {
-+		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
-+		value |= PCI_ERR_COR_REP_TIMER;
-+		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
-+	}
-+}
-+
- static inline void gl9750_wt_on(struct sdhci_host *host)
- {
- 	u32 wt_value;
-@@ -607,7 +621,6 @@ static void gl9750_hw_setting(struct sdhci_host *host)
- {
- 	struct sdhci_pci_slot *slot = sdhci_priv(host);
- 	struct pci_dev *pdev;
--	int aer;
- 	u32 value;
- 
- 	pdev = slot->chip->pdev;
-@@ -626,12 +639,7 @@ static void gl9750_hw_setting(struct sdhci_host *host)
- 	pci_set_power_state(pdev, PCI_D0);
- 
- 	/* mask the replay timer timeout of AER */
--	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
--	if (aer) {
--		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
--		value |= PCI_ERR_COR_REP_TIMER;
--		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
--	}
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9750_wt_off(host);
+@@ -1753,7 +1753,7 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
+ 	return ret;
  }
-@@ -806,7 +814,6 @@ static void sdhci_gl9755_set_clock(struct sdhci_host *host, unsigned int clock)
- static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
+ 
+-static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
++static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
  {
  	struct pci_dev *pdev = slot->chip->pdev;
--	int aer;
  	u32 value;
+@@ -1782,6 +1782,9 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
+ 	value |= FIELD_PREP(GLI_9763E_HS400_RXDLY, GLI_9763E_HS400_RXDLY_5);
+ 	pci_write_config_dword(pdev, PCIE_GLI_9763E_CLKRXDLY, value);
  
- 	gl9755_wt_on(pdev);
-@@ -841,12 +848,7 @@ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
- 	pci_set_power_state(pdev, PCI_D0);
- 
- 	/* mask the replay timer timeout of AER */
--	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
--	if (aer) {
--		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
--		value |= PCI_ERR_COR_REP_TIMER;
--		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
--	}
++	/* mask the replay timer timeout of AER */
 +	sdhci_gli_mask_replay_timer_timeout(pdev);
++
+ 	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+ 	value &= ~GLI_9763E_VHS_REV;
+ 	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
+@@ -1925,7 +1928,7 @@ static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
+ 	gli_pcie_enable_msi(slot);
+ 	host->mmc_host_ops.hs400_enhanced_strobe =
+ 					gl9763e_hs400_enhanced_strobe;
+-	gli_set_gl9763e(slot);
++	gl9763e_hw_setting(slot);
+ 	sdhci_enable_v4_mode(host);
  
- 	gl9755_wt_off(pdev);
- }
+ 	return 0;
 -- 
 2.43.0
 
