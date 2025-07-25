@@ -1,110 +1,161 @@
-Return-Path: <stable+bounces-164733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14992B11E18
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 14:04:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AD6B11E7E
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 14:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41F5F189C2C5
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:04:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133563BA47D
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45328242D8E;
-	Fri, 25 Jul 2025 12:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3462E9EC0;
+	Fri, 25 Jul 2025 12:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xawo2ZYa"
+	dkim=pass (2048-bit key) header.d=ideco.ru header.i=@ideco.ru header.b="SLpbuS1c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.ideco.ru (smtp.ideco.ru [51.250.56.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09BFBE65;
-	Fri, 25 Jul 2025 12:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4E72E7F34;
+	Fri, 25 Jul 2025 12:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.250.56.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753445046; cv=none; b=tQaq34zLmulEwNpRDIMQODU9FiWL5CbUPW4ohOwW/lB9JOfjH/q91YoVk1H7p2aqZmkPDADumSKOPvrEAa/mdaO47bxdEBTKyxD5hgGnbC8jadoeNOGUVLh8Vipjt3/EJetiMvMxVxy9iZ7Qf6peVqB3YL2AzE7yne/bSJtOLpo=
+	t=1753446539; cv=none; b=tkHqb/NoOeC/o+HA++yCmeiTyMPRxVCcmtnkOjX9jrJf2Bq0slKpzNA1yfnaG8zSYB2sAfjW8yFdv9sb/bS5xDlcFh9nJYmwJ2ATd9mcTmzwU6dg1YWQKBw64jiExFnIcdrUiVQPGvrySBuVjIIF6gGqSI/UKBc544X03wkEC40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753445046; c=relaxed/simple;
-	bh=jg0MiCs6Po5ZRx/w8FmPIFw4SEGPVSu2akZ6JIqO8HU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pUqt3xIcAf8Jr+uvHh2H1f37xIiT6mKcq6vg0b5WP9GOx+zD5vd3RpFXwKTSQBWGn/Fn5Hj6hXrM+q3Dxy/tcMbeQ5tZyyp86eoUbGiA9PO4sraZJF/HRAnYTwHn6eCONlYRmsCyUXguMgaHnhctqNxPDHCs8Sc+gjFJ/Ej37zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xawo2ZYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6A7C4CEE7;
-	Fri, 25 Jul 2025 12:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753445045;
-	bh=jg0MiCs6Po5ZRx/w8FmPIFw4SEGPVSu2akZ6JIqO8HU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xawo2ZYacbJ7O0jS9FlDOnvtcQqMASajSLi6ezYxe8pC7nllp1MWKrRg8xdCiGpOF
-	 /Lw9NuBdDawbVcOb8hn4hDycUMAkpPspGpqQeWkLZ2SOxyTdiLaEmlVzYc3yJBubBe
-	 luiTgtzLE1X2cGzrhWvmACTsp1jnOnBatTQgEbqY=
-Date: Fri, 25 Jul 2025 14:04:01 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hardeep Sharma <quic_hardshar@quicinc.com>
-Cc: Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 6.6.y v2 1/1] block: Fix bounce check logic in
- blk_queue_may_bounce()
-Message-ID: <2025072551-tingling-botany-f00d@gregkh>
-References: <20250725112710.219313-1-quic_hardshar@quicinc.com>
+	s=arc-20240116; t=1753446539; c=relaxed/simple;
+	bh=x+b3x2AvTB4xVeTuWWrwabGOIoHBfzemRqb2/v57SAY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GPuc+kNKdx+pGVUa4kEmt7/63oEm+Wpx3OrMtDGAXAWTCf4xp+FmdyTYu57mrkMe5aUuM2Wn2lEkHc6s+JRB96x9wV6mzsYBMC3VTAtUQRsUsjzMMqx1cnt9Z7Mr3T3y1SygfT6LiZoWNa2pfHxbg3X09Oo3r+fKkE8HvbnH1NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideco.ru; spf=pass smtp.mailfrom=ideco.ru; dkim=pass (2048-bit key) header.d=ideco.ru header.i=@ideco.ru header.b=SLpbuS1c; arc=none smtp.client-ip=51.250.56.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideco.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideco.ru
+Received: from [169.254.254.254] (localhost [127.0.0.1])
+	by smtp.ideco.ru (Postfix) with ESMTP id 14F8B102AA20;
+	Fri, 25 Jul 2025 17:23:10 +0500 (+05)
+Received: from fedora (unknown [94.159.101.170])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.ideco.ru (Postfix) with ESMTPSA id C0706102AA1D;
+	Fri, 25 Jul 2025 17:23:06 +0500 (+05)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.ideco.ru C0706102AA1D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ideco.ru; s=ics;
+	t=1753446189; bh=trP0XJpooGTDkJ3CKgo2EF7+uta1JC7E8Yz2rzhwif0=;
+	h=From:To:Cc:Subject:Date;
+	b=SLpbuS1cB/S+wAKgJURID3eIyiM4BwrTN3EsWju5g7oo6kRGIkFzZn51pyCjgNiyb
+	 5Ek/4WguWCEIDoL6KCMaOdZOtz2toNtFqMWHQXJWjBtX3OaPnS7szcv5b89aSc97A5
+	 NCcuSYK8fnWG9iaoStgvRJaMCXuq3H8svsimkUDJ0i1tBCrzcDhpLPSM4hycOlyPl2
+	 kxa+h6/UZOjsq4icZfhUrT+Fgi2UxuetxdOzUgvnR7CWE5npEzDBHBduCmkkzn5RAH
+	 Nnv0dlcUIBYJG+MHPxX8K/qypX4X7j325sCPfehG/tttUmph9O0rj6KhJvpVAkl8NO
+	 8U8fl5w6c0KPQ==
+From: Petr Vaganov <p.vaganov@ideco.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Petr Vaganov <p.vaganov@ideco.ru>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <htejun@gmail.com>,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Boris Tonofa <b.tonofa@ideco.ru>
+Subject: [PATCH] scsi: fill in DMA padding bytes in scsi_alloc_sgtables
+Date: Fri, 25 Jul 2025 17:21:59 +0500
+Message-ID: <20250725122202.77199-1-p.vaganov@ideco.ru>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250725112710.219313-1-quic_hardshar@quicinc.com>
 
-On Fri, Jul 25, 2025 at 04:57:10PM +0530, Hardeep Sharma wrote:
-> Buffer bouncing is needed only when memory exists above the lowmem region,
-> i.e., when max_low_pfn < max_pfn. The previous check (max_low_pfn >=
-> max_pfn) was inverted and prevented bouncing when it could actually be
-> required.
-> 
-> Note that bouncing depends on CONFIG_HIGHMEM, which is typically enabled
-> on 32-bit ARM where not all memory is permanently mapped into the kernel’s
-> lowmem region.
-> 
-> Fixes: 9bb33f24abbd0 ("block: refactor the bounce buffering code")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hardeep Sharma <quic_hardshar@quicinc.com>
-> ---
-> Changelog v1..v2:
-> 
-> * Updated subject line
-> 
->  block/blk.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/block/blk.h b/block/blk.h
-> index 67915b04b3c1..f8a1d64be5a2 100644
-> --- a/block/blk.h
-> +++ b/block/blk.h
-> @@ -383,7 +383,7 @@ static inline bool blk_queue_may_bounce(struct request_queue *q)
->  {
->  	return IS_ENABLED(CONFIG_BOUNCE) &&
->  		q->limits.bounce == BLK_BOUNCE_HIGH &&
-> -		max_low_pfn >= max_pfn;
-> +		max_low_pfn < max_pfn;
->  }
->  
->  static inline struct bio *blk_queue_bounce(struct bio *bio,
-> -- 
-> 2.25.1
-> 
-> 
+During fuzz testing, the following issue was discovered:
 
-<formletter>
+BUG: KMSAN: uninit-value in __dma_map_sg_attrs+0x217/0x310
+ __dma_map_sg_attrs+0x217/0x310
+ dma_map_sg_attrs+0x4a/0x70
+ ata_qc_issue+0x9f8/0x1420
+ __ata_scsi_queuecmd+0x1657/0x1740
+ ata_scsi_queuecmd+0x79a/0x920
+ scsi_queue_rq+0x4472/0x4f40
+ blk_mq_dispatch_rq_list+0x1cca/0x3ee0
+ __blk_mq_sched_dispatch_requests+0x458/0x630
+ blk_mq_sched_dispatch_requests+0x15b/0x340
+ __blk_mq_run_hw_queue+0xe5/0x250
+ __blk_mq_delay_run_hw_queue+0x138/0x780
+ blk_mq_run_hw_queue+0x4bb/0x7e0
+ blk_mq_sched_insert_request+0x2a7/0x4c0
+ blk_execute_rq+0x497/0x8a0
+ sg_io+0xbe0/0xe20
+ scsi_ioctl+0x2b36/0x3c60
+ sr_block_ioctl+0x319/0x440
+ blkdev_ioctl+0x80f/0xd70
+ __se_sys_ioctl+0x219/0x420
+ __x64_sys_ioctl+0x93/0xe0
+ x64_sys_call+0x1d6c/0x3ad0
+ do_syscall_64+0x4c/0xa0
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Uninit was created at:
+ __alloc_pages+0x5c0/0xc80
+ alloc_pages+0xe0e/0x1050
+ blk_rq_map_user_iov+0x2b77/0x6100
+ blk_rq_map_user_io+0x2fa/0x4d0
+ sg_io+0xad6/0xe20
+ scsi_ioctl+0x2b36/0x3c60
+ sr_block_ioctl+0x319/0x440
+ blkdev_ioctl+0x80f/0xd70
+ __se_sys_ioctl+0x219/0x420
+ __x64_sys_ioctl+0x93/0xe0
+ x64_sys_call+0x1d6c/0x3ad0
+ do_syscall_64+0x4c/0xa0
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-</formletter>
+Bytes 14-15 of 16 are uninitialized
+Memory access of size 16 starts at ffff88800cbdb000
+
+When processing the last unaligned element of the scatterlist,
+it is supplemented with missing bytes in the amount of pad_len.
+These bytes remain uninitialized, which leads to a problem.
+
+Add zeroing pad_len bytes of padding by pad_offset offset before
+increasing its length. This ensures that the DMA does not receive
+uninitialized data and eliminates the KMSAN warning.
+
+In this case, the pages are not located in highmem, but in the
+general case they might be, so kmap_local_page() is used for mapping.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 40b01b9bbdf5 ("block: update bio according to DMA alignment padding")
+Co-developed-by: Boris Tonofa <b.tonofa@ideco.ru>
+Signed-off-by: Boris Tonofa <b.tonofa@ideco.ru>
+Signed-off-by: Petr Vaganov <p.vaganov@ideco.ru>
+---
+ drivers/scsi/scsi_lib.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 144c72f0737a..d287e24b6013 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1153,6 +1153,11 @@ blk_status_t scsi_alloc_sgtables(struct scsi_cmnd *cmd)
+ 	if (blk_rq_bytes(rq) & rq->q->limits.dma_pad_mask) {
+ 		unsigned int pad_len =
+ 			(rq->q->limits.dma_pad_mask & ~blk_rq_bytes(rq)) + 1;
++		unsigned int pad_offset = last_sg->offset + last_sg->length;
++		void *vaddr = kmap_local_page(sg_page(last_sg));
++
++		memset(vaddr + pad_offset, 0, pad_len);
++		kunmap_local(vaddr);
+ 
+ 		last_sg->length += pad_len;
+ 		cmd->extra_len += pad_len;
+-- 
+2.50.1
+
 
