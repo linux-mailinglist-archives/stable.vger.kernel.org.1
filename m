@@ -1,158 +1,184 @@
-Return-Path: <stable+bounces-164726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11409B11C99
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:37:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEFFB11CE1
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389DE166830
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 10:37:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20C307AB660
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 10:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9AF2DCC17;
-	Fri, 25 Jul 2025 10:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827F62E54B4;
+	Fri, 25 Jul 2025 10:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nhwhZOAc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Azssg3zo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RwlHJMns"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854202DE71E;
-	Fri, 25 Jul 2025 10:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA822E5419;
+	Fri, 25 Jul 2025 10:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753439800; cv=none; b=IRsajDV3xCX32x8g53M07L5jTsUNDYD+02U8/Crx7VsHvGHfxRCIH/50WvFM2s0FYqNRlymrrt2ygbdqypdjt6cumc2gnP9fl77JRPkSPu8eHW6h5AewnFfIk7IDAtuCToPUEv5aGfgjLwKXkHajQD6jSuMieJpg/KXU8AtmH8A=
+	t=1753440790; cv=none; b=LAyHxeExYUniLVHp9UKBtHYzGDNbM5ipgX99V7ZNc2PxkE4YUaABSsvF6GFItms0VpS4FO8DXAYiUSI+I5L51htajYVTm6iQAY5s2HjEQYbVeKznsYHMem15yt/7Ua0WdEJzaP0OlvxaTQnvHZWEWK40HwAV4fs2Ug+j/imf59Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753439800; c=relaxed/simple;
-	bh=/Jd08J9EVwiLu3246KvZ8LuOKEUNrkCntG+atu5i7Kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tJLGQ+sMoDGbIwwa7jwxu51WrcH8PmaxBEIDL0uTF2WaDaYlUTf2yf5XXObrl1SB0n3AHCzQdvHwDY4vCfSSUinAIxwHh4veojFxqObvaetbfMvmIkn92T2yqSQQF5YD15JIM9xZVaPTc1wUMH3n7R3ZxPyaQldEqiQ5O2wJH78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nhwhZOAc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Azssg3zo; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 25 Jul 2025 12:36:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753439796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GWa6XDwZlrI75pGJEl2FOxaQVgtHaB/1blTqyZ0nVRI=;
-	b=nhwhZOAcJ+ZDcPLBedCjJyyS3BB4JP1IdK5mFlQWiOV46SuSAF7yeSKh9ldvnw46kIQ8ND
-	CTlKX2Xoq/VGfLdq07OAPvWIc9j649yJ8VSSkt2x9R/AO/rCOPo3MYi/AYw3b4duYU91RU
-	rzmhuJdlbvJyAGuvzCs/X6fqVCf6e5qcM2247hQj+sukc7Sj36pCt1bMA6UbXlqrHLsOti
-	FbpuO6GkJS6QmzGQV+9ZeV4CmgYclTY2Wd59eTg846NSgdR+n6P3mE7b24w+doctP6PmG5
-	yicel8XdJVnCbYsAukxuQKOVdyiO0+5GxW3J01a7SmjqLdgp/lesZAP0UrdXGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753439796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GWa6XDwZlrI75pGJEl2FOxaQVgtHaB/1blTqyZ0nVRI=;
-	b=Azssg3zoBERw+p0wPFhhTIjUk5B3/RwZjzSp3dyxeJSednSA8IzlQG3PZRk3OGazInQ4wH
-	b0F3v6qFcQm4UyDw==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	s=arc-20240116; t=1753440790; c=relaxed/simple;
+	bh=xkevpCQJxEilUkI9clyEbKo/Sm/eWm1V1vjHWrcoPdY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bxj/1s2irFW1yCIZzD/FVi9u8LDZEtd9Ri/tlbWDDNSqORTooF+h+CoD0CxhRETo1S9nVFJyjeJdc8oOdkZ3eWTtl8sL55TK8rKs0gfakDhJw5nlF6gI/oV0OpmkVm4CHlgZubAj9yx0a9+/5q14+X0T8dbj4geqyDnCP35gqd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RwlHJMns; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23694cec0feso18841335ad.2;
+        Fri, 25 Jul 2025 03:53:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753440788; x=1754045588; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SIldpUpOzn6qByUx91ZbXkrzIhHP7VmFSx8Hu42BlZg=;
+        b=RwlHJMnsJ6j+QwqVEd/1ogOuZwXLCh867pbZ2l02oUR3VQ1cwIIWhuC/m4Hgl8yu7H
+         p7XNjjQh9GlJ2CfcSfS7peVSoIK5UUjwaso8Yk4UEcwfxxsnJpwm100zsqJ/8TbM6/D+
+         bgoOL2BAYwBlTu7ufxeeBx7RNNIksPNhH3Q5Y0/gPd1opYSQ9e5oBUL80ck+n94AAlMW
+         KJgYCNtGu+dYPWjk8+EwZG+xMudgIAPFhe9JJ0+So5J5RZls6vPavLPL80kA9xSi84/k
+         oeKWdP1CH/WnHc46zLbcKyIZkI/PRwflZOmlDl5Saf0TrQCQ9rgdPoUPlmPp7DVwiYna
+         Dneg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753440788; x=1754045588;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SIldpUpOzn6qByUx91ZbXkrzIhHP7VmFSx8Hu42BlZg=;
+        b=gNLZ8dLFGV7s47tPhUW9+7KF7PLmCAulpYzGGWhJzbCHIXYrbsmkZAvdWFx1On2UPN
+         XFvEH+dsktWJD9SFhpkiDwmr+S2hJ+9ba1R2C4HsnKqb5EyAk1iKnVZMIAu1sTcF5fvS
+         EUzZjigSylTwdKvSHZtkhhUw3c+9bpOQTU68XlKhCbvUIMzqrqo266sz0eul1TiYzULG
+         ajdqg62n4esDletKR2rTJPC+EuvGp+KGA1At/LudNsK3ddqBltQwZi+dU6vXZMBZmGLy
+         bMLz66vY3J5cqTdwCe+6Bc85OQDM1l5l7MOgqW5BKqQZY6K9p4Zo9hOehtKMoCKaZFws
+         zQbw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/UOue2gid2veu/B6vNUgrMYbAziIvVwOeydTHYEa9IrZUw9Vpqe+ywWZLFz/njNgJ3tSMDebRr8IILpQ=@vger.kernel.org, AJvYcCXhEJTlGEa/6IO0pB0RDCjuBvBPf1j/RmSWdLylWbzlZnVu1VWXDmg4p3hdCPzzxB0esPFhtbXP@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoWNRZrQBq7ym/4Mi5E0G+BjOqXF/ZcLJXt0cslPo7B+0eXC1x
+	2frCSEjULWiJF+M0HBBqPKKpu6etuOfoK2i7/K4s3T3uSRUvKOxup5BNegxgPLuS
+X-Gm-Gg: ASbGncuBI5at+gqBMJHMjd2IQOQXb2Av44NC4c9nAE4vTFUad14ck4RkRUNmTxPXg86
+	yErXWYH5AXaeTdrCUyuamyCwTBnT1b40EcV01dCPjNbgpEu08+gy4Pb9AZ8bN50oG+O8NIS/QTc
+	y7TdvRUFLRAQRJCjkuTcanvDHW5sPT3ylwfJym9N6nqldDYZSbiIbJNAUXlqeuHqqZ5MQenNVym
+	J9dza6stvO7LQMMlW/kWWPuXNAE1McSNGa8Wry8WyUFJNxCMMeD+Hzb5ECia/zQ0DMuyVntE81O
+	kx5mOEC1AD0TA4l/J30c4iGDBYG5KRnAo9f+qlJG4qdhkbSiPmO44UhdWD/yJKOqvDX4sgcijau
+	est8mT+k8B5Sq1saee8ENyUmQBrABSg==
+X-Google-Smtp-Source: AGHT+IEkBvhOd4l5wgSJdjDOeumLuFHFzyGe78cVHzA4eXStQF0flBdPsmIAhhfPrjp0/r1dFM0obw==
+X-Received: by 2002:a17:902:cec9:b0:23f:6fc0:59b2 with SMTP id d9443c01a7336-23fb2fefdfbmr19391025ad.6.1753440787588;
+        Fri, 25 Jul 2025 03:53:07 -0700 (PDT)
+Received: from victorshih.. ([2402:7500:469:65dd:ea7a:c5ba:93df:8ba4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e6628c603sm3307314a91.14.2025.07.25.03.53.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 03:53:07 -0700 (PDT)
+From: Victor Shih <victorshihgli@gmail.com>
+To: ulf.hansson@linaro.org,
+	adrian.hunter@intel.com
+Cc: linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	benchuanggli@gmail.com,
+	ben.chuang@genesyslogic.com.tw,
+	HL.Liu@genesyslogic.com.tw,
+	Victor Shih <victorshihgli@gmail.com>,
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] kbuild: userprogs: use correct linker when mixing clang
- and GNU ld
-Message-ID: <20250725122604-44874f95-859c-4c0a-b3b0-14b30e00b796@linutronix.de>
-References: <20250724-userprogs-clang-gnu-ld-v1-1-3d3d071e53a7@linutronix.de>
- <20250724231025.GA3620641@ax162>
+Subject: [PATCH V2 1/2] mmc: sdhci-pci-gli: Add a new function to simplify the code
+Date: Fri, 25 Jul 2025 18:52:55 +0800
+Message-ID: <20250725105257.59145-2-victorshihgli@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250725105257.59145-1-victorshihgli@gmail.com>
+References: <20250725105257.59145-1-victorshihgli@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250724231025.GA3620641@ax162>
 
-On Thu, Jul 24, 2025 at 04:10:25PM -0700, Nathan Chancellor wrote:
-> On Thu, Jul 24, 2025 at 10:32:45AM +0200, Thomas Weiﬂschuh wrote:
-> > The userprogs infrastructure does not expect clang being used with GNU ld
-> > and in that case uses /usr/bin/ld for linking, not the configured $(LD).
-> > This fallback is problematic as it will break when cross-compiling.
-> > Mixing clang and GNU ld is used for example when building for SPARC64,
-> > as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
-> > 
-> > Relax the check around --ld-path so it gets used for all linkers.
-> > 
-> > Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > ---
-> > Nathan, you originally proposed the check for $(CONFIG_LD_IS_LLD) [0],
-> > could you take a look at this?
-> 
-> I would expect this to be okay but I have not explicitly tested it. I
-> had not considered the case of GNU ld being used since aside from
-> sparc64, there is not another architecture that supports clang but not
-> ld.lld.
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-FWIW some architectures use GNU ld implicitly with clang because they also link
-through $(CC) but do not use --ld-path. One example is UML, where the vDSO and
-vmlinux are linked this way. But linking vmlinux of UML with ld.lld will
-require changes to at least the linker script. Something for the ClangBuiltLinux
-TODO? There were more examples, but I don't remember them right now.
+Add a sdhci_gli_mask_replay_timer_timeout() function
+to simplify some of the code, allowing it to be re-used.
 
-Longterm --ld-path should probably be added to the global KBUILD_CFLAGS, too.
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Cc: stable@vger.kernel.org
+---
+ drivers/mmc/host/sdhci-pci-gli.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+index 4c2ae71770f7..98ee3191b02f 100644
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -287,6 +287,20 @@
+ #define GLI_MAX_TUNING_LOOP 40
+ 
+ /* Genesys Logic chipset */
++static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *dev)
++{
++	int aer;
++	u32 value;
++
++	/* mask the replay timer timeout of AER */
++	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (aer) {
++		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
++		value |= PCI_ERR_COR_REP_TIMER;
++		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
++	}
++}
++
+ static inline void gl9750_wt_on(struct sdhci_host *host)
+ {
+ 	u32 wt_value;
+@@ -607,7 +621,6 @@ static void gl9750_hw_setting(struct sdhci_host *host)
+ {
+ 	struct sdhci_pci_slot *slot = sdhci_priv(host);
+ 	struct pci_dev *pdev;
+-	int aer;
+ 	u32 value;
+ 
+ 	pdev = slot->chip->pdev;
+@@ -626,12 +639,7 @@ static void gl9750_hw_setting(struct sdhci_host *host)
+ 	pci_set_power_state(pdev, PCI_D0);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9750_wt_off(host);
+ }
+@@ -806,7 +814,6 @@ static void sdhci_gl9755_set_clock(struct sdhci_host *host, unsigned int clock)
+ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+-	int aer;
+ 	u32 value;
+ 
+ 	gl9755_wt_on(pdev);
+@@ -841,12 +848,7 @@ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
+ 	pci_set_power_state(pdev, PCI_D0);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9755_wt_off(pdev);
+ }
+-- 
+2.43.0
 
-Thanks!
-
-> > ---
-> >  Makefile | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/Makefile b/Makefile
-> > index c09766beb7eff4780574682b8ea44475fc0a5188..e300c6546c845c300edb5f0033719963c7da8f9b 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -1134,7 +1134,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD
-> >  KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
-> 
-> Does KBUILD_USERCFLAGS respect LLVM_IAS? sparc64 does not use the
-> integrated assembler yet (as far as I am aware) so I think we probably
-> need to filter '--prefix=' and '-fno-integrated-as' to avoid further
-> issues with assembling?
-
-No, it isn't respected. On the other hand I didn't yet run into any issues.
-Do we want to fix it proactively?
-
-> >  # userspace programs are linked via the compiler, use the correct linker
-> > -ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
-> > +ifneq ($(CONFIG_CC_IS_CLANG),)
-> 
-> At this point, I think this can just become
-> 
->   ifdef CONFIG_CC_IS_CLANG
-
-Absolutetly. The existing conditional above this hunk uses the ifneq
-pattern, so I tried to keep it consistent.
-But the one above uses plain ifdef again...
-Personally I don't care one way or another.
-
-> >  KBUILD_USERLDFLAGS += --ld-path=$(LD)
-> >  endif
-> >  
-> > 
-> > ---
-> > base-commit: 6832a9317eee280117cd695fa885b2b7a7a38daf
-> > change-id: 20250723-userprogs-clang-gnu-ld-7a1c16fc852d
-> > 
-> > Best regards,
-> > -- 
-> > Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > 
 
