@@ -1,131 +1,117 @@
-Return-Path: <stable+bounces-164754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA33B1226D
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 18:57:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35824B122B3
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B925B3BF678
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:56:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E38DAA2D44
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 17:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C892EF9D1;
-	Fri, 25 Jul 2025 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E452EF66B;
+	Fri, 25 Jul 2025 17:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="cfWfGWUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqns/GEB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CEC2EF655
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 16:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6CB2EE5F6;
+	Fri, 25 Jul 2025 17:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753462626; cv=none; b=lCMurvOJGGSE4cFMNmzgnugpXpIdzMy4g8kkExqg91kZlhR9L9kb5OWuIstCnvuBAo/2dLeLqlxAyZWgVN0TDmyUErhJL6APzi7M9QFr2UuDlRpFZl1c5j8Oti12zSUZnPwJUm8K83IF+S9FnuNlT8z1EzyoXUebY0Qa/p341OM=
+	t=1753463288; cv=none; b=ro55/MtgOx3S05jvoy5lGfbrKKy4L4qJEX24L0nRacIM30M195EDAFkHerdwHHFsDJ3tIkbO9WEHF37bwkJsWXARd3Lfux54FdgEeHZQyxA+RxW8O3mr6xYMyr1eQnUmOg8iJj3/n4HoPK5FUxB1qktTM+pxitteOhkpdkLRu6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753462626; c=relaxed/simple;
-	bh=WTVgwj0NqIM1mwrJwTCHrv0cVZbvjmz1jy2rjbVpIak=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BPVL4z7GC0CPODR8MtGh+bWHmvV/4BZilE5kuhdt5S4EYyMAPGVj00CqtswIutamPNGlhHCXKwkp2iVyReASrYpU31qwNhswsxRm9+HKmbBF0ZFcJykrL/mXAKQtbG6B1e3qwQ9paMrirnN5E7zERn65wMAnGKI3XjWufQ+Vyk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=cfWfGWUN; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a4e57d018cso107741f8f.1
-        for <stable@vger.kernel.org>; Fri, 25 Jul 2025 09:57:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1753462622; x=1754067422; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nu92pVnSGWyGOs+NZnSegiv1w6Yea+eMpYHDq7DsV5Y=;
-        b=cfWfGWUNSXG4PBgwbOlFxzs1mSVkaQcosATqwcCYkuRrDWGb802lZsQD+X1VukxNrU
-         BgP0Y3vnf40QbQa13mkwO4/NME+/KCvnqxPM4Z2ouC6OmYCYiO2JNbPJs0iRs0TZ6NtS
-         80Q/EjgT7lyZaQkiyz9CoMqj5dv5+VfnBb4EZA0asWyhjqadVM1WAvqHXdbpDZnPa8R7
-         WbzHwzNdTvO7zaQSSsWDTyl6vVTlLhdINO0+ad41mpESqyDruq0UyCRfA0vXfbNP2vP7
-         PUB5xP5MeSSao5QfzDJIV1Q5wbqqgX+FwqyTeZtP1eSpadeurl81q6Iu5Mygk9IkM2yT
-         FskA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753462622; x=1754067422;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nu92pVnSGWyGOs+NZnSegiv1w6Yea+eMpYHDq7DsV5Y=;
-        b=Yckeeq0ypSIgyjmHfrWjB+T15EuNhpFjdWD1ESiqBrqB9EEZ8zRKtZa3syMrOy9/LH
-         aJYmT3k4Ys6hrdmVbsz/OGih/i9O2vt1Ft3xDncoyLCROKuJf2Oeb8GMU3PX7mtmnqpY
-         XwcoN4F6wQvNkd1OFt3zAmNm9YTPDBYqVwnCE+d9ZRt8yMIVJF11DXXql23xKLizA0pn
-         h0WxGtP1KDFG8Slv3E63eVvC+d/Jw4TcR4fB7PlPwVAF4YyCCspeooCkaW/1eF0eHbec
-         fVC9g4SPeUZ98+kST0svI+Unua+E5WZasRqzq3bzoF8DSONMPB5dZOToIQWWpftTXL9i
-         jd7A==
-X-Forwarded-Encrypted: i=1; AJvYcCXXpMz+pLUe8uH0hXBtrDFwDzbgezYc4dNtu/f4j6pevg6CsGpMlm7Rq2zt1OxI7Sxh/BjRk/Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZb6jCDePvgwpbUG1FhQ9ejfpl2vmIgSbTkCoBjtp4x/T/nPbf
-	CB19I0mpSrQJx9xFuk9H6oXvVzqr14Y0jn9D990W9KpjBjNxIB3QMwGOD+rkP9CfEmg=
-X-Gm-Gg: ASbGncvWdUyb38kZrHhpvwGC/oBKmJy7ZbNlF78dvd6tENFOlhSXx3O4kTC10MGYlEn
-	4oq6XfEj8xCSNgbSLVUZYyhgwGICn7KUCnFCXF5JkTp+UnUit+7m74iqG1Kp0NrfLOgSpMMHn1p
-	CRrmUIFVeeR+3Psug3jOhQGmeVSBtoRmro5Johrac8vSzInBfTMLQc6z9yolAec6EFZFJvmux6a
-	uwbZFLBrRe4bl602dxkfxwWnJMwLtSpuuy5tELUagRmbySMo01PJMktwaxFkowJM4jEBn9slwwN
-	ZLHWm66DOdfC9vH6JcOOrvo6XfWmAVboI7vDmQuu+neol4jfRHVKmTXC5wNBiIZRlFk8OflH1U+
-	WHp6AVhbC37fRpwWMcQPyssepQ+Kdyg==
-X-Google-Smtp-Source: AGHT+IGLDnI7S2DxdD4vV12toUgj+4yMXj/sNb0KZhkdWDQvG5ZTMV5h/+RVkNNZKk1RId3rYnFmdQ==
-X-Received: by 2002:a05:600c:3507:b0:456:4bb5:c956 with SMTP id 5b1f17b1804b1-458766c1d21mr10060865e9.7.1753462622148;
-        Fri, 25 Jul 2025 09:57:02 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200:8c15:2281:5347:b367])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b778ec36bcsm380333f8f.37.2025.07.25.09.57.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 09:57:01 -0700 (PDT)
-From: =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-To: linux-riscv@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Deepak Gupta <debug@rivosinc.com>,
-	stable@vger.kernel.org,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v2 2/4] riscv: use lw when reading int cpu in asm_per_cpu
-Date: Fri, 25 Jul 2025 18:54:10 +0200
-Message-ID: <20250725165410.2896641-5-rkrcmar@ventanamicro.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250725165410.2896641-3-rkrcmar@ventanamicro.com>
-References: <20250725165410.2896641-3-rkrcmar@ventanamicro.com>
+	s=arc-20240116; t=1753463288; c=relaxed/simple;
+	bh=eEiIL0rv55Mb2Vf0/AmSi7VJDqvdOD9ADdquhg19Z44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c8kIN+/Y7k9o49XzpYBr36hhuFkXyvhjNPnQDHeqxJnCO0DNN4F2m9Y6JuvgxRzyD1JM6b096mUFzOKoOLjc8hmez4aGw4VISOekXZzJBVh+aVO3odW4nrpJ4QJukJdvJlEWAhdSOt+vjeG6hXO+gt4Vwxb6QMZhe2hPVrTuk2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqns/GEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3832BC4CEE7;
+	Fri, 25 Jul 2025 17:08:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753463287;
+	bh=eEiIL0rv55Mb2Vf0/AmSi7VJDqvdOD9ADdquhg19Z44=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zqns/GEB3bmWH+iIQWRad69gSqXISVZ56gvDEmAHEGZ+iO2A8kwbdAAR3JUSJ0Go6
+	 YBqyQFLrgTFdlcgFa21yjYMkzKEcJOXcZ2OgimQgjqA9jXUj5DTSMhEClqto1FqL0M
+	 b26HA8kAP3Y1At2Q4c6tVwgJufnh9R6TsVr//u8w=
+Date: Fri, 25 Jul 2025 19:08:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Justin Stitt <justinstitt@google.com>, Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Tom Rix <trix@redhat.com>,
+	Christopher Covington <cov@codeaurora.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] KVM: arm64: silence -Wuninitialized-const-pointer
+ warning
+Message-ID: <2025072504-easel-propose-0474@gregkh>
+References: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
+ <2025072553-chevy-starter-565e@gregkh>
+ <20250725163851.GB684490@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250725163851.GB684490@ax162>
 
-REG_L is wrong, because thread_info.cpu is 32-bit, not xlen-bit wide.
-The struct currently has a hole after cpu, so little endian accesses
-seemed fine.
+On Fri, Jul 25, 2025 at 09:38:51AM -0700, Nathan Chancellor wrote:
+> On Fri, Jul 25, 2025 at 10:58:05AM +0200, Greg KH wrote:
+> > On Thu, Jul 24, 2025 at 06:15:28PM -0700, Justin Stitt wrote:
+> > > A new warning in Clang 22 [1] complains that @clidr passed to
+> > > get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
+> > > doesn't really care since it casts away the const-ness anyways.
+> > 
+> > Is clang-22 somehow now a supported kernel for the 6.1.y tree?  Last I
+> > looked, Linus's tree doesn't even build properly for it, so why worry
+> > about this one just yet?
+> 
+> Our goal is to have tip of tree LLVM / clang be able to build any
+> supported branch of the kernel so that whenever it branches and
+> releases, the fixes for it are already present in released kernel
+> versions so users can just pick them up and go. We are going to have to
+> worry about this at some point since it is a stable-only issue so why
+> not tackle it now?
+> 
+> > > Silence the warning by initializing the struct.
+> > 
+> > Why not fix the compiler not to do this instead?  We hate doing foolish
+> > work-arounds for broken compilers.
+> 
+> While casting away the const from the pointer in this case is "fine"
+> because the object it pointed to was not const, I am fairly certain it
+> is undefined behavior to cast away the const from a pointer to a const
+> object, see commit 12051b318bc3 ("mips: avoid explicit UB in assignment
+> of mips_io_port_base") for an exampile, so I am not sure the warning is
+> entirely unreasonable.
 
-Fixes: be97d0db5f44 ("riscv: VMAP_STACK overflow detection thread-safe")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
----
-v2: split for stable [Alex]
----
- arch/riscv/include/asm/asm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hah, we've been doing that for _decades_ with container_of(), so if that
+is UB, and the compiler can't handle it, I'd declare that a broken
+compiler :)
 
-diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
-index a8a2af6dfe9d..2a16e88e13de 100644
---- a/arch/riscv/include/asm/asm.h
-+++ b/arch/riscv/include/asm/asm.h
-@@ -91,7 +91,7 @@
- #endif
- 
- .macro asm_per_cpu dst sym tmp
--	REG_L \tmp, TASK_TI_CPU_NUM(tp)
-+	lw    \tmp, TASK_TI_CPU_NUM(tp)
- 	slli  \tmp, \tmp, PER_CPU_OFFSET_SHIFT
- 	la    \dst, __per_cpu_offset
- 	add   \dst, \dst, \tmp
--- 
-2.50.0
+Look at e78f70bad29c ("time/timecounter: Fix the lie that struct
+cyclecounter is const") in linux-next as one example of me trying to fix
+that mess up.  It's going to take a bunch of work to get there, but
+eventually we will.  We will not be backporting all of those patches
+though, that would be way too much work.
 
+Anyway, as the maintainer doesn't seem to want this, I guess I'll just
+ignore it for now?
+
+thanks,
+
+greg k-h
 
