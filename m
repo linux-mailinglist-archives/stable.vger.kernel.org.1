@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-164710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D2FB11641
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 04:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD8DB11643
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 04:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D4F83BD46E
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 02:14:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D480AE281E
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 02:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A0021C188;
-	Fri, 25 Jul 2025 02:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16292E36EC;
+	Fri, 25 Jul 2025 02:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xIGXu9kl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YyxeUSer"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84211214232;
-	Fri, 25 Jul 2025 02:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCA02E36FA;
+	Fri, 25 Jul 2025 02:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753409695; cv=none; b=sPv+qX9LBpmp29xtN8BfyKapwO/pVbnQmeUPjzxAUPjnPERjVfjt8FkA3B/qRIYHfr5qKnebPKvTFjiOYkb41de6bUtGii/FZrd1qivQt4qOUuBnePMRhz41adpKYKsq6jurBnhv8V5kFMOEB5PpBXKPGLGOrrRk3ybHbljs1Xs=
+	t=1753409749; cv=none; b=GXkf6H5S+sIrCxtyBm2GIGNnow8U5OwmmGK/UK9/VseRcpaPibpIGGxGahLKbIjxOWLF5B4LoGmBRYDUhkFW4m7oFb4jT+BDmPh7ixRMEcbSt3Kt4q7gAoSS2TUQekdj1eCgUruse5S5N/loABVyYlA/mAOKL1PlmoBV2ceXimk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753409695; c=relaxed/simple;
-	bh=jwEI8goxCJRcQgy46WdDaV9JX30nfeTxysAOLwZQQaQ=;
-	h=Date:To:From:Subject:Message-Id; b=L4UylqBsf8J4eAJ8jTnGCRm9AmJwTVVVJlw4kWiZcyOADkMclcRUrPXZ5Q6WLZyv7LGzo1p1euyrWll8aZQaSsAnQRrQwlrrVXc9/L7jgzwEr775hTcm4h5utG5cPQuq6d1CXE80nXIx/6XYCc8zltCz+GBSLhJYfJUrHBO204g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xIGXu9kl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561ECC4CEEF;
-	Fri, 25 Jul 2025 02:14:55 +0000 (UTC)
+	s=arc-20240116; t=1753409749; c=relaxed/simple;
+	bh=LRzcVhGmtO9fSerVc3HgTOVBHk9O6k0wwi2UywaOkQQ=;
+	h=Date:To:From:Subject:Message-Id; b=JteiE/XtKsIykm7Yxj4Y/2MY6f8mRSn2ad++MDNbytJAiUQ5UYXANfkJ+AKxHq4OrpJN+0K9BS9rveCDXx8OVV3G3cAchiibvT5RAdyqtVTCdRTnrDu4/FtO6si7DPOTNglfWLQrL/i2Us0MveejuWlE2b14GBwx6+oKBcnj/sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YyxeUSer; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612C0C4CEED;
+	Fri, 25 Jul 2025 02:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1753409695;
-	bh=jwEI8goxCJRcQgy46WdDaV9JX30nfeTxysAOLwZQQaQ=;
+	s=korg; t=1753409749;
+	bh=LRzcVhGmtO9fSerVc3HgTOVBHk9O6k0wwi2UywaOkQQ=;
 	h=Date:To:From:Subject:From;
-	b=xIGXu9klJwP2IgqIdL509nGFndqxmD6sqfXERumZC89Gn+BgIA2iT+X/x9jIn7i1R
-	 izdReOULrxHWiuzZYlABIM0ls0hfeqZI41pWAnCq6whAPjZP4xKgftaMA9fEGh+X0U
-	 wzGdJQE19dGQIr/Z4B3fLB8FsnKIRHDaBwWBIdT0=
-Date: Thu, 24 Jul 2025 19:14:54 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kasong@tencent.com,hannes@cmpxchg.org,bhe@redhat.com,shikemeng@huaweicloud.com,akpm@linux-foundation.org
+	b=YyxeUSerdi0uQmZgp1FzQ28+/Dz5eBgo33ytWHMNHYPV6/utJnXgTv1n8lcBiUNS1
+	 CWiz73CRQiaXAr6YWiflNv6JnDTmnMLErmngv2Kj4Xo8SguELf3w/J/IWDdOVbV0U0
+	 7tWesLYFAPh+Nd9YBFWSGGZROFPZcPHsBqe1H518=
+Date: Thu, 24 Jul 2025 19:15:48 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,joshua.hahnjy@gmail.com,hyeongtak.ji@sk.com,honggyu.kim@sk.com,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-swap-fix-potensial-buffer-overflow-in-setup_clusters.patch removed from -mm tree
-Message-Id: <20250725021455.561ECC4CEEF@smtp.kernel.org>
+Subject: [merged mm-stable] mm-damon-ops-common-ignore-migration-request-to-invalid-nodes.patch removed from -mm tree
+Message-Id: <20250725021549.612C0C4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,60 +50,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: swap: fix potential buffer overflow in setup_clusters()
+     Subject: mm/damon/ops-common: ignore migration request to invalid nodes
 has been removed from the -mm tree.  Its filename was
-     mm-swap-fix-potensial-buffer-overflow-in-setup_clusters.patch
+     mm-damon-ops-common-ignore-migration-request-to-invalid-nodes.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Kemeng Shi <shikemeng@huaweicloud.com>
-Subject: mm: swap: fix potential buffer overflow in setup_clusters()
-Date: Thu, 22 May 2025 20:25:53 +0800
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/ops-common: ignore migration request to invalid nodes
+Date: Sun, 20 Jul 2025 11:58:22 -0700
 
-In setup_swap_map(), we only ensure badpages are in range (0, last_page]. 
-As maxpages might be < last_page, setup_clusters() will encounter a buffer
-overflow when a badpage is >= maxpages.
+damon_migrate_pages() tries migration even if the target node is invalid. 
+If users mistakenly make such invalid requests via
+DAMOS_MIGRATE_{HOT,COLD} action, the below kernel BUG can happen.
 
-Only call inc_cluster_info_page() for badpage which is < maxpages to fix
-the issue.
+    [ 7831.883495] BUG: unable to handle page fault for address: 0000000000001f48
+    [ 7831.884160] #PF: supervisor read access in kernel mode
+    [ 7831.884681] #PF: error_code(0x0000) - not-present page
+    [ 7831.885203] PGD 0 P4D 0
+    [ 7831.885468] Oops: Oops: 0000 [#1] SMP PTI
+    [ 7831.885852] CPU: 31 UID: 0 PID: 94202 Comm: kdamond.0 Not tainted 6.16.0-rc5-mm-new-damon+ #93 PREEMPT(voluntary)
+    [ 7831.886913] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.el9 04/01/2014
+    [ 7831.887777] RIP: 0010:__alloc_frozen_pages_noprof (include/linux/mmzone.h:1724 include/linux/mmzone.h:1750 mm/page_alloc.c:4936 mm/page_alloc.c:5137)
+    [...]
+    [ 7831.895953] Call Trace:
+    [ 7831.896195]  <TASK>
+    [ 7831.896397] __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
+    [ 7831.896787] migrate_pages_batch (mm/migrate.c:1189 mm/migrate.c:1851)
+    [ 7831.897228] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
+    [ 7831.897735] migrate_pages (mm/migrate.c:2078)
+    [ 7831.898141] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
+    [ 7831.898664] damon_migrate_folio_list (mm/damon/ops-common.c:321 mm/damon/ops-common.c:354)
+    [ 7831.899140] damon_migrate_pages (mm/damon/ops-common.c:405)
+    [...]
 
-Link: https://lkml.kernel.org/r/20250522122554.12209-4-shikemeng@huaweicloud.com
-Fixes: b843786b0bd0 ("mm: swapfile: fix SSD detection with swapfile on btrfs")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>
+Add a target node validity check in damon_migrate_pages().  The validity
+check is stolen from that of do_pages_move(), which is being used for the
+move_pages() system call.
+
+Link: https://lkml.kernel.org/r/20250720185822.1451-1-sj@kernel.org
+Fixes: b51820ebea65 ("mm/damon/paddr: introduce DAMOS_MIGRATE_COLD action for demotion")	[6.11.x]
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Honggyu Kim <honggyu.kim@sk.com>
+Cc: Hyeongtak Ji <hyeongtak.ji@sk.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/swapfile.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ mm/damon/ops-common.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/mm/swapfile.c~mm-swap-fix-potensial-buffer-overflow-in-setup_clusters
-+++ a/mm/swapfile.c
-@@ -3208,9 +3208,13 @@ static struct swap_cluster_info *setup_c
- 	 * and the EOF part of the last cluster.
- 	 */
- 	inc_cluster_info_page(si, cluster_info, 0);
--	for (i = 0; i < swap_header->info.nr_badpages; i++)
--		inc_cluster_info_page(si, cluster_info,
--				      swap_header->info.badpages[i]);
-+	for (i = 0; i < swap_header->info.nr_badpages; i++) {
-+		unsigned int page_nr = swap_header->info.badpages[i];
-+
-+		if (page_nr >= maxpages)
-+			continue;
-+		inc_cluster_info_page(si, cluster_info, page_nr);
-+	}
- 	for (i = maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i++)
- 		inc_cluster_info_page(si, cluster_info, i);
+--- a/mm/damon/ops-common.c~mm-damon-ops-common-ignore-migration-request-to-invalid-nodes
++++ a/mm/damon/ops-common.c
+@@ -383,6 +383,10 @@ unsigned long damon_migrate_pages(struct
+ 	if (list_empty(folio_list))
+ 		return nr_migrated;
  
++	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
++			!node_state(target_nid, N_MEMORY))
++		return nr_migrated;
++
+ 	noreclaim_flag = memalloc_noreclaim_save();
+ 
+ 	nid = folio_nid(lru_to_folio(folio_list));
 _
 
-Patches currently in -mm which might be from shikemeng@huaweicloud.com are
+Patches currently in -mm which might be from sj@kernel.org are
 
+selftests-damon-sysfspy-stop-damon-for-dumping-failures.patch
+selftests-damon-_damon_sysfs-support-damos-watermarks-setup.patch
+selftests-damon-_damon_sysfs-support-damos-filters-setup.patch
+selftests-damon-_damon_sysfs-support-monitoring-intervals-goal-setup.patch
+selftests-damon-_damon_sysfs-support-damos-quota-weights-setup.patch
+selftests-damon-_damon_sysfs-support-damos-quota-goal-nid-setup.patch
+selftests-damon-_damon_sysfs-support-damos-action-dests-setup.patch
+selftests-damon-_damon_sysfs-support-damos-target_nid-setup.patch
+selftests-damon-_damon_sysfs-use-232-1-as-max-nr_accesses-and-age.patch
+selftests-damon-drgn_dump_damon_status-dump-damos-migrate_dests.patch
+selftests-damon-drgn_dump_damon_status-dump-ctx-opsid.patch
+selftests-damon-drgn_dump_damon_status-dump-damos-filters.patch
+selftests-damon-sysfspy-generalize-damos-watermarks-commit-assertion.patch
+selftests-damon-sysfspy-generalize-damosquota-commit-assertion.patch
+selftests-damon-sysfspy-test-quota-goal-commitment.patch
+selftests-damon-sysfspy-test-damos-destinations-commitment.patch
+selftests-damon-sysfspy-generalize-damos-scheme-commit-assertion.patch
+selftests-damon-sysfspy-test-damos-filters-commitment.patch
+selftests-damon-sysfspy-generalize-damos-schemes-commit-assertion.patch
+selftests-damon-sysfspy-generalize-monitoring-attributes-commit-assertion.patch
+selftests-damon-sysfspy-generalize-damon-context-commit-assertion.patch
+selftests-damon-sysfspy-test-non-default-parameters-runtime-commit.patch
+selftests-damon-sysfspy-test-runtime-reduction-of-damon-parameters.patch
 
 
