@@ -1,119 +1,119 @@
-Return-Path: <stable+bounces-164756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57FCB122BC
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:11:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BEAB122CA
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 619607BD3AE
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 17:09:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DDE5AA7FA1
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 17:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78C22EF66B;
-	Fri, 25 Jul 2025 17:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA912EF9C9;
+	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="q6nsBbDk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIO8TXGe"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722C8226863;
-	Fri, 25 Jul 2025 17:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197CC2EF66B;
+	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753463462; cv=none; b=fCpZXEpyr0Eji2XQlVNMUhek4W1VkEh2b6HjHsrloQWVb1hfHWBe/LYbEJRQAbfNzXcuipebiVjqFhfgR3nJTs1F9Fhi4NWLePZeilIOarp2knyTZwPbrAPZQHZXGpSB5kV25VfwxeNCUxnW+PVu47vTUcATZKCHVEC6Lfh92w8=
+	t=1753463655; cv=none; b=npZuVUtejpZYPY4S4OE/l3O2qAOl1M5KgcENVSj+CJAlJnB/XzWgRVWy9fKcwYdWTJcD9X3qeYOZrWKv8lNWiq9LQqTyYNfgSuATCluCD8XqqiLVWQe4tzV8UqeobQhREshMOryiC9dVHKPG8VfSvitsOrtEYpFVWrg0OpTDrWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753463462; c=relaxed/simple;
-	bh=6h7nPOb3zXhqTcv4gANHQ2bvTVhFkIX8nsrG7OgiSdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sT00wUe0XtMQXjrF7AnU2EqFHB287xWu2//ntKD+xiabSSGbIAFZtq0ONHKOmqnw3R2owjUdpusyUUcUi8uxVz2nP+dzZEej1JafrR9XcD0EDP6HhBIyMQDWTCd37R2G63eReke1rUH+kHzlbyYpkkZArN08GeJCm0zOK5a1KG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=q6nsBbDk; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=IwEj7tW3R8uCNKLY055BKb1g0sfs5+82uKkf0EViQnk=; b=q6nsBbDkqlaOI6zpV6bJS9CTol
-	XAKlVZQqfBwnB2MxRuZJMraL1hXQhohrtGkyp2l9rnDBXoyYn3Sh+LnpRalA0q42B7GYI/SJAAjJw
-	PgiHY4WOGExeZoRYvl7Z41eF5QqDaiLl6thfX1Wuw+s3+QyeGBiCJkwUO1k1co1kpn6o0YrFw6Oow
-	c3r+5XonilGVfG8f9gAz8TZAPMWgh9EFXqdtpi6LaNBIZcFDZzzQ+mucxd7PwH98CWHZVJK3rZj7F
-	wH0HdcOTf10xE07W0zVjM8yCW3RGgOEGaxYy1fuprasrdIFzlT4mbdqQNkyTVnnbKKW5Ik5LLxXPH
-	1PmDyyjA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ufLwZ-0000000FAKW-3dJu;
-	Fri, 25 Jul 2025 17:10:51 +0000
-Date: Fri, 25 Jul 2025 18:10:51 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Li Qiong <liqiong@nfschina.com>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm: slub: avoid deref of free pointer in sanity
- checks if object is invalid
-Message-ID: <aIO6m2C8K4SrJ6mp@casper.infradead.org>
-References: <20250725064919.1785537-1-liqiong@nfschina.com>
- <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
+	s=arc-20240116; t=1753463655; c=relaxed/simple;
+	bh=96RWDqAwsQ+BNNMMv40laI84yj5UkISKimL0LLvCq9U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BXNr84fBEPaxvAVChoYjqMkW+apNHdxkcWeZ1fUYPkVMksYPvntDsW8WMvciq/g2y0sKP7x1HcnnC6+tZaUgDX8OF4qVI8nsThbR/2gHaMdBzrhSLM9DCU7cnJgpEbDJuI2OwwUn62G7+dHAsvmau3S+n5kwYij7T3ATR1EsG90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIO8TXGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B2AC4CEF9;
+	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753463654;
+	bh=96RWDqAwsQ+BNNMMv40laI84yj5UkISKimL0LLvCq9U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YIO8TXGe6al3/A2gMYESXZ67JW/eECXSwJ+fJR1BE6I8/xhxqbJaiwexsEKJvh2wb
+	 YOs4Laf2/rwRTcV8Prp6A24/J5KPrMwrOCH+elBTuwm0EcXrffvHZLZnDrRSgCy9rt
+	 clqLWgyn6Fe91EFC3uOf8p6ge5VbGmivvBqpXWQjJM8fr7wrb7u0lf6U2zvoF3nFjx
+	 B17R4ANRP6qqyrq1OJeua5hpqM8ShV+LtlI4zP8TKetqAf+y7FFgJVlzvCdxkPWDEe
+	 QltpyNhfiGF0gIpSeeWLoEL84HygEaUjwA2duTcc2/5mXmxtQDobdOI1zYFUZLUdo+
+	 jvRYqHKbZsIzg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1ufLzn-000000000Gj-2DbO;
+	Fri, 25 Jul 2025 19:14:11 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Madalin Bucur <madalin.bucur@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Yangbo Lu <yangbo.lu@nxp.com>
+Subject: [PATCH 1/5] net: dpaa: fix device leak when querying time stamp info
+Date: Fri, 25 Jul 2025 19:12:09 +0200
+Message-ID: <20250725171213.880-2-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250725171213.880-1-johan@kernel.org>
+References: <20250725171213.880-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 25, 2025 at 06:47:01PM +0200, Vlastimil Babka wrote:
-> On 7/25/25 08:49, Li Qiong wrote:
-> > For debugging, object_err() prints free pointer of the object.
-> > However, if check_valid_pointer() returns false for a object,
-> > dereferncing `object + s->offset` can lead to a crash. Therefore,
-> > print the object's address in such cases.
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-I don't know where this patch came from (was it cc'd to linux-mm? i
-don't see it)
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
 
-> >  
-> > +/*
-> > + * object - should be a valid object.
-> > + * check_valid_pointer(s, slab, object) should be true.
-> > + */
+Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-This comment is very confusing.  It tries to ape kernel-doc style,
-but if it were kernel-doc, the word before the hyphen should be the name
-of the function, and it isn't.  If we did use kernel-doc for this, we'd
-use @object to denote that we're documenting the argument.
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+index 9986f6e1f587..7fc01baef280 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -401,8 +401,10 @@ static int dpaa_get_ts_info(struct net_device *net_dev,
+ 		of_node_put(ptp_node);
+ 	}
+ 
+-	if (ptp_dev)
++	if (ptp_dev) {
+ 		ptp = platform_get_drvdata(ptp_dev);
++		put_device(&ptp_dev->dev);
++	}
+ 
+ 	if (ptp)
+ 		info->phc_index = ptp->phc_index;
+-- 
+2.49.1
 
-But I don't see the need to pretend this is related to kernel-doc.  This
-would be better:
-
-/*
- * 'object' must be a valid pointer into this slab.  ie
- * check_valid_pointer() would return true
- */
-
-I'm sure better wording for that is possible ...
-
-> >  	if (!check_valid_pointer(s, slab, object)) {
-> > -		object_err(s, slab, object, "Freelist Pointer check fails");
-> > +		slab_err(s, slab, "Invalid object pointer 0x%p", object);
-> >  		return 0;
-
-No, the error message is now wrong.  It's not an object, it's the
-freelist pointer.
-
-		slab_err(s, slab, "Invalid freelist pointer %p", object);
-
-(the 0x%p is wrong because it will print 0x twice)
-
-But I think there are even more things wrong here.  Like slab_err() is
-not nerely as severe as slab_bug(), which is what used to be called.
-And object_err() adds a taint, which this skips.
-
-Altogether, this is a poorly thought out patch and should be dropped.
 
