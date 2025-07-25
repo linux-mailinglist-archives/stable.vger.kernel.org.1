@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-164753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ABE8B1226A
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 18:57:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA33B1226D
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 18:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97EB33B33D5
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:56:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B925B3BF678
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B872EF66D;
-	Fri, 25 Jul 2025 16:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C892EF9D1;
+	Fri, 25 Jul 2025 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="HiWwRHBW"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="cfWfGWUN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B7D2EF644
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 16:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CEC2EF655
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 16:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753462624; cv=none; b=OlcEUrlK+L4Ws/GEjgZ8d0XStdjh56GCFRXOZ8/KQKzzyK1SXKE0A5U88XRm5eNNEdXkMnpWUZrr9zoIGFBKHOQW9Fh2Wd9KSo77SxK4eNg9HzPjq2SFWLPtUseSSDitLxYFnR7l2t10yH/c1K/vQdSnJTY6+IGkMkCRL7I9wWg=
+	t=1753462626; cv=none; b=lCMurvOJGGSE4cFMNmzgnugpXpIdzMy4g8kkExqg91kZlhR9L9kb5OWuIstCnvuBAo/2dLeLqlxAyZWgVN0TDmyUErhJL6APzi7M9QFr2UuDlRpFZl1c5j8Oti12zSUZnPwJUm8K83IF+S9FnuNlT8z1EzyoXUebY0Qa/p341OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753462624; c=relaxed/simple;
-	bh=o8PGWrA3RMhqLDmbTJpWQAnuM32YJpgK1W2keKuVRSc=;
+	s=arc-20240116; t=1753462626; c=relaxed/simple;
+	bh=WTVgwj0NqIM1mwrJwTCHrv0cVZbvjmz1jy2rjbVpIak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ga+BJ5u+MaR9SKRLhz560MvMFGZicsv6utZwy3qjmH0ChJ8zRdvvZIzTlO1OkUBXV9F9j03KzIX3aRmV5TPUly1KLdqFOvAHR+YnxVxuwjU4X33/xyUEC+uskzzrHGiftuhibAcNKKPXyVg2MKc/Oh7HLIvjetSXhePpdSZQry0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=HiWwRHBW; arc=none smtp.client-ip=209.85.221.47
+	 MIME-Version:Content-Type; b=BPVL4z7GC0CPODR8MtGh+bWHmvV/4BZilE5kuhdt5S4EYyMAPGVj00CqtswIutamPNGlhHCXKwkp2iVyReASrYpU31qwNhswsxRm9+HKmbBF0ZFcJykrL/mXAKQtbG6B1e3qwQ9paMrirnN5E7zERn65wMAnGKI3XjWufQ+Vyk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=cfWfGWUN; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3b39c46e1cfso225874f8f.3
-        for <stable@vger.kernel.org>; Fri, 25 Jul 2025 09:57:02 -0700 (PDT)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a4e57d018cso107741f8f.1
+        for <stable@vger.kernel.org>; Fri, 25 Jul 2025 09:57:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1753462621; x=1754067421; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1753462622; x=1754067422; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G5wCo50uCFgJpMI7LbHbH8s69mNDIY7eBkEPfxQyUMI=;
-        b=HiWwRHBW+hpdpA/pzahHHaAlEyphlkjc7DLvt+zVZTO15WuTTfhNln/U1W20mluXBI
-         ibWOs7vFhfADgNPAcKtkC/qTlyPE0Q2fOlT4tG/ExL+SHTH7oUko17EEgc8uFrenuaXB
-         pYEsPVSMUfGSYTEV6cPHu9XxzjvfdJNUB2WRe792P9v8RPD2jSFF9D/qQFjyaRl+2tPD
-         AvPndjozGOb7RozM+2XNvpkdV40EYHWO6m46ca2Fj5+3mTp6205e6XOoNesc7P9NrKtR
-         Jl/T1DnXhlkd1gcAn/MKWw82FyXyGC7dBfLUECNRnciGZZybBPHvl00Uu58mR5QLuQPI
-         igPw==
+        bh=nu92pVnSGWyGOs+NZnSegiv1w6Yea+eMpYHDq7DsV5Y=;
+        b=cfWfGWUNSXG4PBgwbOlFxzs1mSVkaQcosATqwcCYkuRrDWGb802lZsQD+X1VukxNrU
+         BgP0Y3vnf40QbQa13mkwO4/NME+/KCvnqxPM4Z2ouC6OmYCYiO2JNbPJs0iRs0TZ6NtS
+         80Q/EjgT7lyZaQkiyz9CoMqj5dv5+VfnBb4EZA0asWyhjqadVM1WAvqHXdbpDZnPa8R7
+         WbzHwzNdTvO7zaQSSsWDTyl6vVTlLhdINO0+ad41mpESqyDruq0UyCRfA0vXfbNP2vP7
+         PUB5xP5MeSSao5QfzDJIV1Q5wbqqgX+FwqyTeZtP1eSpadeurl81q6Iu5Mygk9IkM2yT
+         FskA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753462621; x=1754067421;
+        d=1e100.net; s=20230601; t=1753462622; x=1754067422;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G5wCo50uCFgJpMI7LbHbH8s69mNDIY7eBkEPfxQyUMI=;
-        b=afCs2D1L0eazdSCgHWCesqbGWPN40QjUdcby/qJgYVxz5uttnpNLtKYgBUQk5cy1jQ
-         8Jw4AKBqoG0q4eJslbIE2gWhYqJhdAYgZQsaUqICPBxb9XbO8HnB40cReeiO1SAnQEnn
-         wJrv/Vb1ABhC4WTjiYUYpnnI83Vc4trNbw5Od2L6cG/5sNYMj31q7nDmuichlRvsfHmT
-         X/QQN5QYzn3aWsUyZLmDxFbUzg6XCvCeMCbWlG5Fr42FkrZNDh+Q2VdIzfXBbNlvR9Fj
-         9L6Inu95IsLT6sN5JZkkpZ5P9sVzeyiW4yctVUSKA0yT2upmbKU8KgQZHRO0gx+V7yi4
-         xaVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQvoLTdWYflzfY2hmyPhGbspbdtYAoI7N7M/4TyEG9t7+uJpC4M9soJdpgS/MyLgud7SnOBP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrcVaIGJ9l01cUvN2LrKxKkhGAVou30gqpWRFs0cLFO8D1I09S
-	soyGZb7/Dq3NSWdOBXQGfTYWoZsdZpCJVHnu/bD+J/VztnGCMMdKo7EHRzZrfWN1S+g=
-X-Gm-Gg: ASbGnctCTMmSONw8vxLSO0K5DUhDEo9nVR4cYW5SNwEn2h9asGKe2g35E/DWGiLkwlP
-	WcU6f0gDisVXlEQMGPOWtYf/yylVplnkRQI5BmSeKB+4D9LTCwfnjXgcj0QiTnY8rg34wQCon3r
-	uFCzEqdOBIUARaLEIEJ24I6YfEeOlBFewtoQqANF0nmVChDbIp5swfdo8GyqAb4hNG9Tmm7d358
-	NqSfMLWyqO+moHjZjXDO0SjCF3Pu0hmbn1s6sNIQh8AJIRgMbZqttGky13zWVuhHi4g64VMwr7Z
-	F3XqGWVP6syBsTBM63achHviK22/32cXYK+vS0quLMjI74s3EiVuUpKWgUFv6+1NIZ6B/l8D+yC
-	2PmJqCrvHEL/0qaTwXGJN6zTXUtCJxQ==
-X-Google-Smtp-Source: AGHT+IFE0VwAz2zEeGx2Qzxk8E6WuBhcU7HaGl2wpgJlNEjaoTX1yD9xeYguw1eB6wx5XJ8Oij5/AQ==
-X-Received: by 2002:a5d:5f92:0:b0:3a5:3369:391c with SMTP id ffacd0b85a97d-3b7766d2d43mr701824f8f.1.1753462620875;
-        Fri, 25 Jul 2025 09:57:00 -0700 (PDT)
+        bh=nu92pVnSGWyGOs+NZnSegiv1w6Yea+eMpYHDq7DsV5Y=;
+        b=Yckeeq0ypSIgyjmHfrWjB+T15EuNhpFjdWD1ESiqBrqB9EEZ8zRKtZa3syMrOy9/LH
+         aJYmT3k4Ys6hrdmVbsz/OGih/i9O2vt1Ft3xDncoyLCROKuJf2Oeb8GMU3PX7mtmnqpY
+         XwcoN4F6wQvNkd1OFt3zAmNm9YTPDBYqVwnCE+d9ZRt8yMIVJF11DXXql23xKLizA0pn
+         h0WxGtP1KDFG8Slv3E63eVvC+d/Jw4TcR4fB7PlPwVAF4YyCCspeooCkaW/1eF0eHbec
+         fVC9g4SPeUZ98+kST0svI+Unua+E5WZasRqzq3bzoF8DSONMPB5dZOToIQWWpftTXL9i
+         jd7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXXpMz+pLUe8uH0hXBtrDFwDzbgezYc4dNtu/f4j6pevg6CsGpMlm7Rq2zt1OxI7Sxh/BjRk/Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZb6jCDePvgwpbUG1FhQ9ejfpl2vmIgSbTkCoBjtp4x/T/nPbf
+	CB19I0mpSrQJx9xFuk9H6oXvVzqr14Y0jn9D990W9KpjBjNxIB3QMwGOD+rkP9CfEmg=
+X-Gm-Gg: ASbGncvWdUyb38kZrHhpvwGC/oBKmJy7ZbNlF78dvd6tENFOlhSXx3O4kTC10MGYlEn
+	4oq6XfEj8xCSNgbSLVUZYyhgwGICn7KUCnFCXF5JkTp+UnUit+7m74iqG1Kp0NrfLOgSpMMHn1p
+	CRrmUIFVeeR+3Psug3jOhQGmeVSBtoRmro5Johrac8vSzInBfTMLQc6z9yolAec6EFZFJvmux6a
+	uwbZFLBrRe4bl602dxkfxwWnJMwLtSpuuy5tELUagRmbySMo01PJMktwaxFkowJM4jEBn9slwwN
+	ZLHWm66DOdfC9vH6JcOOrvo6XfWmAVboI7vDmQuu+neol4jfRHVKmTXC5wNBiIZRlFk8OflH1U+
+	WHp6AVhbC37fRpwWMcQPyssepQ+Kdyg==
+X-Google-Smtp-Source: AGHT+IGLDnI7S2DxdD4vV12toUgj+4yMXj/sNb0KZhkdWDQvG5ZTMV5h/+RVkNNZKk1RId3rYnFmdQ==
+X-Received: by 2002:a05:600c:3507:b0:456:4bb5:c956 with SMTP id 5b1f17b1804b1-458766c1d21mr10060865e9.7.1753462622148;
+        Fri, 25 Jul 2025 09:57:02 -0700 (PDT)
 Received: from localhost ([2a02:8308:a00c:e200:8c15:2281:5347:b367])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b778eb9eaasm401817f8f.24.2025.07.25.09.57.00
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b778ec36bcsm380333f8f.37.2025.07.25.09.57.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 09:57:00 -0700 (PDT)
+        Fri, 25 Jul 2025 09:57:01 -0700 (PDT)
 From: =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
 To: linux-riscv@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org,
@@ -83,9 +83,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Deepak Gupta <debug@rivosinc.com>,
 	stable@vger.kernel.org,
 	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v2 1/4] riscv: use lw when reading int cpu in new_vmalloc_check
-Date: Fri, 25 Jul 2025 18:54:09 +0200
-Message-ID: <20250725165410.2896641-4-rkrcmar@ventanamicro.com>
+Subject: [PATCH v2 2/4] riscv: use lw when reading int cpu in asm_per_cpu
+Date: Fri, 25 Jul 2025 18:54:10 +0200
+Message-ID: <20250725165410.2896641-5-rkrcmar@ventanamicro.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250725165410.2896641-3-rkrcmar@ventanamicro.com>
 References: <20250725165410.2896641-3-rkrcmar@ventanamicro.com>
@@ -102,29 +102,29 @@ REG_L is wrong, because thread_info.cpu is 32-bit, not xlen-bit wide.
 The struct currently has a hole after cpu, so little endian accesses
 seemed fine.
 
-Fixes: 503638e0babf ("riscv: Stop emitting preventive sfence.vma for new vmalloc mappings")
+Fixes: be97d0db5f44 ("riscv: VMAP_STACK overflow detection thread-safe")
 Cc: <stable@vger.kernel.org>
 Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
 ---
 v2: split for stable [Alex]
 ---
- arch/riscv/kernel/entry.S | 2 +-
+ arch/riscv/include/asm/asm.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 75656afa2d6b..4fdf187a62bf 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -46,7 +46,7 @@
- 	 * a0 = &new_vmalloc[BIT_WORD(cpu)]
- 	 * a1 = BIT_MASK(cpu)
- 	 */
--	REG_L 	a2, TASK_TI_CPU(tp)
-+	lw	a2, TASK_TI_CPU(tp)
- 	/*
- 	 * Compute the new_vmalloc element position:
- 	 * (cpu / 64) * 8 = (cpu >> 6) << 3
+diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
+index a8a2af6dfe9d..2a16e88e13de 100644
+--- a/arch/riscv/include/asm/asm.h
++++ b/arch/riscv/include/asm/asm.h
+@@ -91,7 +91,7 @@
+ #endif
+ 
+ .macro asm_per_cpu dst sym tmp
+-	REG_L \tmp, TASK_TI_CPU_NUM(tp)
++	lw    \tmp, TASK_TI_CPU_NUM(tp)
+ 	slli  \tmp, \tmp, PER_CPU_OFFSET_SHIFT
+ 	la    \dst, __per_cpu_offset
+ 	add   \dst, \dst, \tmp
 -- 
 2.50.0
 
