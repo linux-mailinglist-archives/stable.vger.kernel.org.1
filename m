@@ -1,139 +1,96 @@
-Return-Path: <stable+bounces-164764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F82B12492
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 21:03:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE55B124B3
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 21:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCEA5188634E
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:04:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FDC93B7579
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7362257427;
-	Fri, 25 Jul 2025 19:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A1F257AF0;
+	Fri, 25 Jul 2025 19:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="jg8zYEHL"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Lk5sxxlB"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6C1256C9C;
-	Fri, 25 Jul 2025 19:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753470227; cv=pass; b=nMjwCneDByMlZj8lvPZkdE20Ho+MP4//8GUGcDziOycpJuA2VxEkIX9e2s3RaIs/NY1TP4lKmmVG93/+V2g1Cl12i9Xv6C/v19paOBSUVAzdOseuUrZSArej1/osOUnK2QI6NPj0JiQMoSnjZmVoq2qr7TA33JYHmzUw3YI7kF4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753470227; c=relaxed/simple;
-	bh=aB9liRnEWbRaScDDjLWWeM+YCj0fmMh/RTBXyLpRoik=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pdcyTW3IDX3kgBOcYXI95Z+DCBX48UW/GK0rwUV7Bj/tpBNErexmd29niV99NITo9jfCyJtTeORGbZDApy4z0Flb/GSbDrs8h9VzhZFFyiboTTwF6g9Lootwc04/ufobDKbm5XT8JurntVsNZu0mDTAqi9zAJLheGZ6PkDaxaYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=jg8zYEHL; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1753470187; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=O4IFeTTOiaFqK2VNmNfeSU5crlAy2NzPYDdtzx3GX4/oaJN8/8HlEsMfEWE0RlgzU90aViXzbe87FIyXoOOvyydIIUtCf5kTi0qYZI3rHB3yI1T9Ev3jjxiIkaRC17RjUZlSPmvZ1rkk7SMer2M1eG5qe9eFTIs1FS4F20qk9S4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753470187; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0gUl65a8tci3xttZczxCT9K4PQpIDEGmqHk6r8P++JM=; 
-	b=IBGBaD8cMl7XyrKws0AbHtctNmTlNtzNIvXtAtVe4CGcU16iNITKiyddGEn75SUfEKt3fvVLScL7xunpcfQhPewnzCKJS9FUvqkQg25xY3U7bUJQYckKQI7rOMbm0E8sf/9k4eYEqr6bWt9FEj68MjQu4goFgnW9bK9MBxQVSU8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753470187;
-	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=0gUl65a8tci3xttZczxCT9K4PQpIDEGmqHk6r8P++JM=;
-	b=jg8zYEHLGb8ALcZ/DLz/ZMwogEENlaKG9A0/o3fCsXfRWMS+qG0FeziZ7ETa+3aB
-	GVumitXAt70xu7xW+bqFTTYErCNvnskvf3Ev+m4ZYVwiOiaMhOXBmWeayxS7jaTSMuv
-	HMvznPqHPzcK4lAomcyZ9zLvQyzH5nWHvVDwNlSA=
-Received: by mx.zohomail.com with SMTPS id 1753470186171650.5564365863407;
-	Fri, 25 Jul 2025 12:03:06 -0700 (PDT)
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
-Cc: kernel@collabora.com,
-	stable@vger.kernel.org,
-	Bard Liao <bard.liao@intel.com>,
-	sound-open-firmware@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] ASoC: SOF: amd: acp-loader: Use GFP_KERNEL for DMA allocations in resume context
-Date: Sat, 26 Jul 2025 00:02:54 +0500
-Message-Id: <20250725190254.1081184-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.39.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9512566D1;
+	Fri, 25 Jul 2025 19:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753471336; cv=none; b=nqgNuJY/8iuOmn1pfEek7RBSJukpd5x0gMqg9MQXuGAyPIHTkn1nSWY/mE3ougrChhs02qecCYssE9/EVmhOhwgF65G8w/GUBZt4s9+w06nyGwLA1PCxA13q4Gsqjk1tfS0Ijf4dgph/9XEe+XR4G60Y7rrJjTZwlaMgvA+dbBk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753471336; c=relaxed/simple;
+	bh=EN0memeWc8zsRmmqQaJN3tydRXI+hElA61INak88DaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z5bPvD6wEl24MdTMfpHNqQaLmC7MBpBGLY73kMjabooSRHMaFvm81LPaI94tlo9N+fUZBG9IJbnJxysy9QbwzvqVSTs5hf2acJrG8DLP/R8rcCnCrbx7jqe5dgS7FPBGqhQdNjwJ6v7z4SG9aHcPHAclR95D9FEf55sX4iomCVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Lk5sxxlB; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=I09JIX/VR8UzFPSTS0iYzzlehYa6ZqlWHEvSJTEox/k=; b=Lk5sxxlBaxLMJFagMCiKZqdsUR
+	yUUw4QhQdsiPB7vCP1L81pqF4ODFPMynDL2BMvbek+zu1WAZCDgMkoYCdkpsYqjS2kORRMU0FWwzN
+	9BhN5vNcygaJtEPokCcluYYZv2ezC6OYYWZH2/rRzK7vBa4FOaH/ro+OKi12v5Nusuu+up+AhEXX2
+	sNFjpduilWWjvgPbVBizS/CrXhLUNw43Ismd+KKZ+gzJRf9JQaNqKNFdufKY8TvrscDMj23hlJ9bU
+	3Kxc7Ms1EYRHq1RHCEcOA+1ldyQmfvjbyrZALPGXfQ2FrrLhy8V6JbCOCLPE/oD79UE4QhSdbIgYv
+	+NByrhzg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ufNzZ-0000000Gxp1-3gXc;
+	Fri, 25 Jul 2025 19:22:06 +0000
+Date: Fri, 25 Jul 2025 20:22:05 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Li Qiong <liqiong@nfschina.com>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm: slub: avoid deref of free pointer in sanity
+ checks if object is invalid
+Message-ID: <aIPZXSnkDF5r-PR5@casper.infradead.org>
+References: <20250725064919.1785537-1-liqiong@nfschina.com>
+ <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
+ <aIO6m2C8K4SrJ6mp@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aIO6m2C8K4SrJ6mp@casper.infradead.org>
 
-Replace GFP_ATOMIC with GFP_KERNEL for dma_alloc_coherent() calls. This
-change improves memory allocation reliability during firmware loading,
-particularly during system resume when memory pressure is high. Because
-of using GFP_KERNEL, reclaim can happen which can reduce the probability
-of failure.
+On Fri, Jul 25, 2025 at 06:10:51PM +0100, Matthew Wilcox wrote:
+> On Fri, Jul 25, 2025 at 06:47:01PM +0200, Vlastimil Babka wrote:
+> > On 7/25/25 08:49, Li Qiong wrote:
+> > > For debugging, object_err() prints free pointer of the object.
+> > > However, if check_valid_pointer() returns false for a object,
+> > > dereferncing `object + s->offset` can lead to a crash. Therefore,
+> > > print the object's address in such cases.
+> 
+> I don't know where this patch came from (was it cc'd to linux-mm? i
+> don't see it)
 
-Fixes memory allocation failures observed during system resume with
-fragmented memory conditions.
+I've spent some more time thinking about this and I now believe that
+there are several calls to object_err() that can be passed a bad
+pointer:
 
-	snd_sof_amd_vangogh 0000:04:00.5: error: failed to load DSP firmware after resume -12
+freelist_corrupted()
+check_object()
+on_freelist()
+alloc_consistency_checks()
+free_consistency_checks()
 
-Fixes: 145d7e5ae8f4e ("ASoC: SOF: amd: add option to use sram for data bin loading")
-Fixes: 7e51a9e38ab20 ("ASoC: SOF: amd: Add fw loader and renoir dsp ops to load firmware")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
- sound/soc/sof/amd/acp-loader.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/sound/soc/sof/amd/acp-loader.c b/sound/soc/sof/amd/acp-loader.c
-index 2d5e58846499..5b5d6db74c10 100644
---- a/sound/soc/sof/amd/acp-loader.c
-+++ b/sound/soc/sof/amd/acp-loader.c
-@@ -65,7 +65,7 @@ int acp_dsp_block_write(struct snd_sof_dev *sdev, enum snd_sof_fw_blk_type blk_t
- 			dma_size = page_count * ACP_PAGE_SIZE;
- 			adata->bin_buf = dma_alloc_coherent(&pci->dev, dma_size,
- 							    &adata->sha_dma_addr,
--							    GFP_ATOMIC);
-+							    GFP_KERNEL);
- 			if (!adata->bin_buf)
- 				return -ENOMEM;
- 		}
-@@ -77,7 +77,7 @@ int acp_dsp_block_write(struct snd_sof_dev *sdev, enum snd_sof_fw_blk_type blk_t
- 			adata->data_buf = dma_alloc_coherent(&pci->dev,
- 							     ACP_DEFAULT_DRAM_LENGTH,
- 							     &adata->dma_addr,
--							     GFP_ATOMIC);
-+							     GFP_KERNEL);
- 			if (!adata->data_buf)
- 				return -ENOMEM;
- 		}
-@@ -90,7 +90,7 @@ int acp_dsp_block_write(struct snd_sof_dev *sdev, enum snd_sof_fw_blk_type blk_t
- 			adata->sram_data_buf = dma_alloc_coherent(&pci->dev,
- 								  ACP_DEFAULT_SRAM_LENGTH,
- 								  &adata->sram_dma_addr,
--								  GFP_ATOMIC);
-+								  GFP_KERNEL);
- 			if (!adata->sram_data_buf)
- 				return -ENOMEM;
- 		}
--- 
-2.39.5
-
+so I think this line of attack is inappropriate.  Instead, I think we
+need to make object_err() resilient against wild pointers.  Specifically,
+avoid doing risky things in print_trailer() if object is not within slab.
 
