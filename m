@@ -1,126 +1,158 @@
-Return-Path: <stable+bounces-164725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D93B11C8F
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:36:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11409B11C99
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E1495A35A3
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 10:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389DE166830
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 10:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137B423C8AE;
-	Fri, 25 Jul 2025 10:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9AF2DCC17;
+	Fri, 25 Jul 2025 10:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FHNSmihA"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nhwhZOAc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Azssg3zo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605472E040C
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 10:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854202DE71E;
+	Fri, 25 Jul 2025 10:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753439584; cv=none; b=Vi1goF583ySoBYJ6iqOhNXLZyJROARMmAmmnyXaCh9AjB18TX2rHnZh40GIfdVZbUqBdW8rhaX/PdGqOxR/9STdHAGhdnbmT6UWYZSC/2HfnZFqhxRe1ZiDy09jR8Fqps0ZQekGJfxHSy7Da+4Mpk7obWCQEa9wz6JtJEVeIh/8=
+	t=1753439800; cv=none; b=IRsajDV3xCX32x8g53M07L5jTsUNDYD+02U8/Crx7VsHvGHfxRCIH/50WvFM2s0FYqNRlymrrt2ygbdqypdjt6cumc2gnP9fl77JRPkSPu8eHW6h5AewnFfIk7IDAtuCToPUEv5aGfgjLwKXkHajQD6jSuMieJpg/KXU8AtmH8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753439584; c=relaxed/simple;
-	bh=ttxDiVJgkpWxN32Y+FJXK+oPpnYlAPMt0sBlFVsk7pI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=MR5kq3l1FIMqdGTRAM1/kHsu4Y9850rw0eC6frRHs9LYcsq4tV+8g6LiK63yoHEE98EfzJun8uuJAiBX8z/DzKbKaa67BInxOyM2p/ca5WzYA1kH/ik61HKYSHlYcmn3X778ceKEuHZX9KyeABWuky8+JHuOt9z7py10hu6cmvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FHNSmihA; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4aaaf1a63c1so14787651cf.3
-        for <stable@vger.kernel.org>; Fri, 25 Jul 2025 03:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753439582; x=1754044382; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ttxDiVJgkpWxN32Y+FJXK+oPpnYlAPMt0sBlFVsk7pI=;
-        b=FHNSmihABhvLRrzULKl0vDUfOoRLGQJZRBl2T6LNgri+RXq2IZ2xzNq0GjnXix09bc
-         GyLCd36MXm8oLYKxIZDZoCffv0Ip6Bz+74394nDyOQpRez5cWP8+IWPTc8iOTAx2QUO+
-         Z09WyeOTN2OREzLX8XSVGIubLiDgg+HIeWAlvAAMjoSMdSo2zm3tK7/xbC/hw2ELe+QF
-         1Gh9arHRoGOXhpVtTwu/lYTizbVN2zejJWap29wR+qaUejoqAwI2WyXvt6BIfic01/da
-         x3eL7YXdkL7rc/lUVQGJCff8F/02gzrk9Ya3E9Jv8zmz4WOXqOWQj4YkXN9kDuBv95TJ
-         QKuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753439582; x=1754044382;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ttxDiVJgkpWxN32Y+FJXK+oPpnYlAPMt0sBlFVsk7pI=;
-        b=n0akqRMTpFiTAtaPHlyrQ1+zESGqY+R5flIzZOlc+H6X0gzXuoVExzGW0Qi9PxYZBb
-         Ng5kbOATpBDQk7mit7wyJH4Vbn3kuQN/9mYkyIXTbqWk6dtIUocYKgFiH84PXmrTFvHn
-         huHa9UGX7C2z1UiIMpKM1XQzAYDHdK7vmRUo5XMvNmLjczYMBX3kz4nX5jhab4Cxk5sd
-         I/Sbaq2ydxIHV0LvZKq7MTvrP+DRd6gNN42jTJPA9dyTVYxkaan4bNFMZ5nvW32ULnGy
-         221CpF/l0zRkMG4BjDncBR7i2iP/1ww8/So7Z9kHCcqY+ez9JUhX8y8PF8QImlVsZBEg
-         idhw==
-X-Gm-Message-State: AOJu0Yzt3elWGsepjw6WKphIg4omxuwCi4Rf0bGZKU+2CT3r9qBSCiEK
-	h/5HfOwqHiDhoBiiqHZMRzh+GomUiW6jw8yq0Icvel/vD1E8l/Vb6WYLMOeLuU188KDYy3/pBQ5
-	EGodSRKDGCPD3dg5Bp7hvVN10QKecp873PO/lqh7pWA==
-X-Gm-Gg: ASbGncun5E9elOga5j7OecyHhfIHBUH7lfoOyeRubS6AGYib8/vn7+qjso1+uEC7ZP3
-	qPFn+zJ+CUDNFFU68M3J0ncNjGmhd3qCs8LyE69iRA9Ai9Mk6D61wPGdnIgRQ77uAgos1hBXOPx
-	QyJ5KutGx8tRE4dRn6u2+LpcjfYWL9mD7PaS8Sz4FNqsaV76v3I2jrf+tJIep/XY2Pqnru1+EvR
-	CBBoYDw
-X-Google-Smtp-Source: AGHT+IEWqnY1Cy0B8jLR44yjyWvC/YZjDaGezT9lEGUivwq+ZmxSN8ijqiKTD0+yxTOeXJOuHnkUWHOF+EeWSXJ7PTY=
-X-Received: by 2002:a05:622a:43:b0:4a8:1841:42ff with SMTP id
- d75a77b69052e-4ae8ef1b8a3mr11724461cf.8.1753439582120; Fri, 25 Jul 2025
- 03:33:02 -0700 (PDT)
+	s=arc-20240116; t=1753439800; c=relaxed/simple;
+	bh=/Jd08J9EVwiLu3246KvZ8LuOKEUNrkCntG+atu5i7Kg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tJLGQ+sMoDGbIwwa7jwxu51WrcH8PmaxBEIDL0uTF2WaDaYlUTf2yf5XXObrl1SB0n3AHCzQdvHwDY4vCfSSUinAIxwHh4veojFxqObvaetbfMvmIkn92T2yqSQQF5YD15JIM9xZVaPTc1wUMH3n7R3ZxPyaQldEqiQ5O2wJH78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nhwhZOAc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Azssg3zo; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 25 Jul 2025 12:36:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1753439796;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GWa6XDwZlrI75pGJEl2FOxaQVgtHaB/1blTqyZ0nVRI=;
+	b=nhwhZOAcJ+ZDcPLBedCjJyyS3BB4JP1IdK5mFlQWiOV46SuSAF7yeSKh9ldvnw46kIQ8ND
+	CTlKX2Xoq/VGfLdq07OAPvWIc9j649yJ8VSSkt2x9R/AO/rCOPo3MYi/AYw3b4duYU91RU
+	rzmhuJdlbvJyAGuvzCs/X6fqVCf6e5qcM2247hQj+sukc7Sj36pCt1bMA6UbXlqrHLsOti
+	FbpuO6GkJS6QmzGQV+9ZeV4CmgYclTY2Wd59eTg846NSgdR+n6P3mE7b24w+doctP6PmG5
+	yicel8XdJVnCbYsAukxuQKOVdyiO0+5GxW3J01a7SmjqLdgp/lesZAP0UrdXGA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1753439796;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GWa6XDwZlrI75pGJEl2FOxaQVgtHaB/1blTqyZ0nVRI=;
+	b=Azssg3zoBERw+p0wPFhhTIjUk5B3/RwZjzSp3dyxeJSednSA8IzlQG3PZRk3OGazInQ4wH
+	b0F3v6qFcQm4UyDw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: userprogs: use correct linker when mixing clang
+ and GNU ld
+Message-ID: <20250725122604-44874f95-859c-4c0a-b3b0-14b30e00b796@linutronix.de>
+References: <20250724-userprogs-clang-gnu-ld-v1-1-3d3d071e53a7@linutronix.de>
+ <20250724231025.GA3620641@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Arin Sun <sunxploree@gmail.com>
-Date: Fri, 25 Jul 2025 18:32:50 +0800
-X-Gm-Features: Ac12FXyMoKPR9g7iPtZ9V9HhsD0czxDaDHHrQv4fOScHXcNAbXKrym6H6_hQnCA
-Message-ID: <CAGvw722wvDKxrmhm--3xu2Ck7fG0Z4PAOyeNaN27bwccbVLRGg@mail.gmail.com>
-Subject: [stable backport request] x86/ioremap: Use is_ioremap_addr() in
- iounmap() for 5.15.y
-To: stable@vger.kernel.org
-Cc: x86@kernel.org, tglx@linutronix.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250724231025.GA3620641@ax162>
 
-Dear Stable Kernel Team and Maintainers,
+On Thu, Jul 24, 2025 at 04:10:25PM -0700, Nathan Chancellor wrote:
+> On Thu, Jul 24, 2025 at 10:32:45AM +0200, Thomas Weiﬂschuh wrote:
+> > The userprogs infrastructure does not expect clang being used with GNU ld
+> > and in that case uses /usr/bin/ld for linking, not the configured $(LD).
+> > This fallback is problematic as it will break when cross-compiling.
+> > Mixing clang and GNU ld is used for example when building for SPARC64,
+> > as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
+> > 
+> > Relax the check around --ld-path so it gets used for all linkers.
+> > 
+> > Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> > ---
+> > Nathan, you originally proposed the check for $(CONFIG_LD_IS_LLD) [0],
+> > could you take a look at this?
+> 
+> I would expect this to be okay but I have not explicitly tested it. I
+> had not considered the case of GNU ld being used since aside from
+> sparc64, there is not another architecture that supports clang but not
+> ld.lld.
 
-I am writing to request a backport of the following commit from the
-mainline kernel to the 5.15.y stable branch:
+FWIW some architectures use GNU ld implicitly with clang because they also link
+through $(CC) but do not use --ld-path. One example is UML, where the vDSO and
+vmlinux are linked this way. But linking vmlinux of UML with ld.lld will
+require changes to at least the linker script. Something for the ClangBuiltLinux
+TODO? There were more examples, but I don't remember them right now.
 
-Commit: x86/ioremap: Use is_ioremap_addr() in iounmap()
-ID: 50c6dbdfd16e312382842198a7919341ad480e05
-Author: Max Ramanouski
-Merged in: Linux 6.11-rc1 (approximately August 2024)
+Longterm --ld-path should probably be added to the global KBUILD_CFLAGS, too.
 
-This commit fixes a bug in the iounmap() function for x86
-architectures in kernel versions 5.x. Specifically, the original code
-uses a check against high_memory:
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
+Thanks!
 
-if ((void __force *)addr <= high_memory)
-return;
+> > ---
+> >  Makefile | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/Makefile b/Makefile
+> > index c09766beb7eff4780574682b8ea44475fc0a5188..e300c6546c845c300edb5f0033719963c7da8f9b 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -1134,7 +1134,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD
+> >  KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+> 
+> Does KBUILD_USERCFLAGS respect LLVM_IAS? sparc64 does not use the
+> integrated assembler yet (as far as I am aware) so I think we probably
+> need to filter '--prefix=' and '-fno-integrated-as' to avoid further
+> issues with assembling?
 
-This can lead to memory leaks on certain x86 servers where ioremap()
-returns addresses that are not guaranteed to be greater than
-high_memory, causing the function to return early without properly
-unmapping the memory.
+No, it isn't respected. On the other hand I didn't yet run into any issues.
+Do we want to fix it proactively?
 
-The fix replaces this with is_ioremap_addr(), making the check more reliable:
+> >  # userspace programs are linked via the compiler, use the correct linker
+> > -ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
+> > +ifneq ($(CONFIG_CC_IS_CLANG),)
+> 
+> At this point, I think this can just become
+> 
+>   ifdef CONFIG_CC_IS_CLANG
 
-if (WARN_ON_ONCE(!is_ioremap_addr((void __force *)addr)))
-return;
+Absolutetly. The existing conditional above this hunk uses the ifneq
+pattern, so I tried to keep it consistent.
+But the one above uses plain ifdef again...
+Personally I don't care one way or another.
 
-I have checked the 5.15.y branch logs and did not find this backport.
-This issue affects production environments, particularly on customer
-machines where we cannot easily deploy custom kernels. Backporting
-this to 5.15.y (and possibly other LTS branches like 5.10.y if
-applicable) would help resolve the memory leak without requiring users
-to upgrade to 6.x series.
-
-Do you have plans to backport this commit? If not, could you please
-consider it for inclusion in the stable releases?
-
-Thank you for your time and efforts in maintaining the stable kernels.
-
-Best regards,
-xin.sun
+> >  KBUILD_USERLDFLAGS += --ld-path=$(LD)
+> >  endif
+> >  
+> > 
+> > ---
+> > base-commit: 6832a9317eee280117cd695fa885b2b7a7a38daf
+> > change-id: 20250723-userprogs-clang-gnu-ld-7a1c16fc852d
+> > 
+> > Best regards,
+> > -- 
+> > Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> > 
 
