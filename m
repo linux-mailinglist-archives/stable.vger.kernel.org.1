@@ -1,104 +1,134 @@
-Return-Path: <stable+bounces-164702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F97DB115A1
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 03:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA2FB115A4
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 03:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EFD94E0C71
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 01:14:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B158F3BE1FC
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 01:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5279A1C860B;
-	Fri, 25 Jul 2025 01:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52CCB676;
+	Fri, 25 Jul 2025 01:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="J5wVkoao"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="31+4+doQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f73.google.com (mail-io1-f73.google.com [209.85.166.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8531C549F;
-	Fri, 25 Jul 2025 01:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B057376F1
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 01:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753406112; cv=none; b=IiAwV3I4knGK7Xd1HKgX1QGRum6EHyXev5xBV+NBiM6axg1/wrf0XcZ4NvVk0iPsPfwNBUrOkHme29HJAQTmW+R3lxAhWRCfCAMPqddFDLE2iA5/t/yr/gfka4FF3q+6sYwhKbEMJe9CnxHwHa6ok0CxbL5WxX/UhlRP1xv4NPs=
+	t=1753406137; cv=none; b=WtdWeg9W57d07U2u0NvmiuGZmgS/ekS5I/iAgDLhxuaYm4h2Czvp3r68JLBr01cnhpkkxgEOnkF14ElTQmKAKNWpZ/mwhUrh1uqH1UUbK3NesKlmwG0Wu8+NFE/RN36wYKtPPzgXG4f/lX0Di51qvGnn4cwG+7P0LXd7LNP3tFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753406112; c=relaxed/simple;
-	bh=89Yza8Xv2Li3h+dr5UEgW+Lj7H39SWvzgfWawX74SGI=;
-	h=Date:To:From:Subject:Message-Id; b=hGYpibpXhfGDNvzn3dxum5a2Yd3huryu1LhUOfjEaMxkVDn1IYhMHW2+6qxnBIobFSZbdkrQnM1qUgAKzoasQ8fPUNGv0XoX8LutBwlHasUIi/JG9D9RBpKeMjqOpAN1DvOtzI+hI1x0CoZhIoVJ4R9KPvIF3sGuZYHDJQreEBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=J5wVkoao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E66C4CEED;
-	Fri, 25 Jul 2025 01:15:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1753406111;
-	bh=89Yza8Xv2Li3h+dr5UEgW+Lj7H39SWvzgfWawX74SGI=;
-	h=Date:To:From:Subject:From;
-	b=J5wVkoaoZ6l+0UR3AR6J+bmeRzpJW0gCvII3y4CHk3WlPGzrdhHBlcja25vIoZnyl
-	 1jM6vUgp744URl7F+gLw6XX7PDdOtoCghaOnsn/BBub720j/or6FWn4KrnD711wMpv
-	 EKS5Nrjm5MB+6bgE5xoEuiqQ2LgJNsMzrg/Wg8Zc=
-Date: Thu, 24 Jul 2025 18:15:11 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kasong@tencent.com,hannes@cmpxchg.org,bhe@redhat.com,shikemeng@huaweicloud.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [folded-merged] mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop-fix.patch removed from -mm tree
-Message-Id: <20250725011511.81E66C4CEED@smtp.kernel.org>
+	s=arc-20240116; t=1753406137; c=relaxed/simple;
+	bh=9d2LgkAsER9qXvaUPfEoLgpaLUIRkRofct2D4FWudKI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cSebGB91QecbrPYa9jeQVU1+SwVk31TuHY/fGIcMN+ObM45odDeVTs+0gOG4sd2eVOYIkATFy9lLsXYVRPHNI6bbHe5PZaqwpJemUPDBVoASsODS8cZJOImdlo9Fw54d2LwedPOQYS3Fcfhi+lq3bfUtQfmUKMN7qHuuzCSouFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--justinstitt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=31+4+doQ; arc=none smtp.client-ip=209.85.166.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--justinstitt.bounces.google.com
+Received: by mail-io1-f73.google.com with SMTP id ca18e2360f4ac-87c24b196cbso166983339f.2
+        for <stable@vger.kernel.org>; Thu, 24 Jul 2025 18:15:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753406135; x=1754010935; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tFITuuJDgutpEFJlerPyHHpSB0sfh/jbjTlG3FOcAgo=;
+        b=31+4+doQdWFBU5yROK0V0upG7crHTpa8z8IEXwsYndxUFcIhgUmvcPLpcwZ5hOgOfs
+         kpPFvUscoUJPSRpQoKYv/dhRrGFPyRRC4Q1hQUrL9674MntEALWfplzkjborBaBpPdyQ
+         GdIWkAPtRvfYn94VvRCdxNijWgThtLn3tE0WHeqPfKDVGgiytx+frwy7pSLSinAZzro2
+         hR+7Cg/6aA0e8vgWOAR59fiiU9vFdxraprIKPF7kMI5aZVKyp+IaNKN2vfeYeBHQDTa+
+         DVsiXQT6MInYRgRT40gdmoxh7nYGVhwOVwOCqvzZrcyeGtJDr13AJxfHKRPpgPI/fSIr
+         rHBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753406135; x=1754010935;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tFITuuJDgutpEFJlerPyHHpSB0sfh/jbjTlG3FOcAgo=;
+        b=KmX5fLoTASmw/BSu1RS0egPPFP9gE7B2SHgGvsXWcvKLWSsPk38DIHjzTEndKPuIZO
+         T9shClXvXLsTe+xaNnnBx6RCcbF1cn1ZdmBY8N39uKuiwbSrFiQNS38GzvFiY8+bIkSc
+         P/Nt8n+e93I+QwUnBlzvgKQEICgys+7QU1Wk9vpiOMLxzXyPs4mKypBWN7rRprJBLjve
+         1+/GJxlU3vAhFTRw2ZPfPyS4zLdwC4mzqSDOq47cyHwOJqqboXPdQc7j/DhPEcCYOTj7
+         CFSStAY7bTrhD+jWv6wG/UplnmmBxuBv0kIl40KrWTlaLvKASUJX6AXZrbmMHuHrE4Pn
+         xqyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCWUMg8LWOzfcgClMY5g0L35JrAcFPKAFygIL3Vcd7ZgENkN/gf0y6V+Oed5WLanXS/AOp1UY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyrFSpsdr5F9jqPNoS1iAYFuk1Vj5c99iRvdxquwIfkcfQWOVP
+	jLfGggNZCx33GMGtUp905H33M0yWbkKDQb1axx+nfLWbWolGWL84XjoKQvY9t1rR+KOiO/meJ/x
+	/h5XmFhqBJnB3KSShCCUkKFvHcw==
+X-Google-Smtp-Source: AGHT+IGOtyjrWZUt4IHge1YVAFkDgbRkTc1qBa9LhfCId/pQ3L7S/vw2KQQqW8B0agIZPE8gkRvP90/rdal04fwoGg==
+X-Received: from ior10.prod.google.com ([2002:a05:6602:a00a:b0:87c:359d:819])
+ (user=justinstitt job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6602:1689:b0:867:6680:cfd with SMTP id ca18e2360f4ac-87c64f87d98mr1663521139f.1.1753406135096;
+ Thu, 24 Jul 2025 18:15:35 -0700 (PDT)
+Date: Thu, 24 Jul 2025 18:15:28 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAK/agmgC/x3MTQqEMAxA4atI1gY69Q/nKjIL20YNSJS0DoJ4d
+ 4vLb/HeBZGUKcK3uEDpz5E3yfiUBfhllJmQQzZYYxvT2RpdjX7loHgIS0K/SUy4J8WOgutb43z lAuR8V5r4fNfD774fh1uFv2oAAAA=
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1753406133; l=1391;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=9d2LgkAsER9qXvaUPfEoLgpaLUIRkRofct2D4FWudKI=; b=Az97+z18RNg38lLclau+LqNY25wUxs7AH7etlMkLkQAjtx4UrkJ/fucCvYO1m1JtsrhW59gi2
+ O2QmudrpqmkA3awdm9rNP+my9CyxHVn9/w9CtSU5eSYTY9DSciiwM0N
+X-Mailer: b4 0.12.3
+Message-ID: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
+Subject: [PATCH 6.1.y] KVM: arm64: silence -Wuninitialized-const-pointer warning
+From: Justin Stitt <justinstitt@google.com>
+To: Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Tom Rix <trix@redhat.com>, 
+	Christopher Covington <cov@codeaurora.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, stable@vger.kernel.org, 
+	Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+A new warning in Clang 22 [1] complains that @clidr passed to
+get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
+doesn't really care since it casts away the const-ness anyways.
 
-The quilt patch titled
-     Subject: mm: swap: correctly use maxpages in swapon syscall to avoid potential deadloop
-has been removed from the -mm tree.  Its filename was
-     mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop-fix.patch
+Silence the warning by initializing the struct.
 
-This patch was dropped because it was folded into mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop.patch
+This patch won't apply to anything past v6.1 as this code section was
+reworked in Commit 7af0c2534f4c ("KVM: arm64: Normalize cache configuration").
 
-------------------------------------------------------
-From: Kemeng Shi <shikemeng@huaweicloud.com>
-Subject: mm: swap: correctly use maxpages in swapon syscall to avoid potential deadloop
-Date: Fri, 18 Jul 2025 14:51:39 +0800
-
-ensure si->pages == si->max - 1 after setup_swap_extents()
-
-Link: https://lkml.kernel.org/r/20250522122554.12209-3-shikemeng@huaweicloud.com
-Link: https://lkml.kernel.org/r/20250718065139.61989-1-shikemeng@huaweicloud.com
-Fixes: 661383c6111a ("mm: swap: relaim the cached parts that got scanned")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 7c8c5e6a9101e ("arm64: KVM: system register handling")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Signed-off-by: Justin Stitt <justinstitt@google.com>
 ---
+ arch/arm64/kvm/sys_regs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- mm/swapfile.c |    6 ++++++
- 1 file changed, 6 insertions(+)
-
---- a/mm/swapfile.c~mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop-fix
-+++ a/mm/swapfile.c
-@@ -3357,6 +3357,12 @@ SYSCALL_DEFINE2(swapon, const char __use
- 		error = nr_extents;
- 		goto bad_swap_unlock_inode;
- 	}
-+	if (si->pages != si->max - 1) {
-+		pr_err("swap:%u != (max:%u - 1)\n", si->pages, si->max);
-+		error = -EINVAL;
-+		goto bad_swap_unlock_inode;
-+	}
-+
- 	maxpages = si->max;
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index f4a7c5abcbca..d7ebd7387221 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2948,7 +2948,7 @@ int kvm_sys_reg_table_init(void)
+ {
+ 	bool valid = true;
+ 	unsigned int i;
+-	struct sys_reg_desc clidr;
++	struct sys_reg_desc clidr = {0};
  
- 	/* OK, set up the swap map and apply the bad block list */
-_
+ 	/* Make sure tables are unique and in order. */
+ 	valid &= check_sysreg_table(sys_reg_descs, ARRAY_SIZE(sys_reg_descs), false);
 
-Patches currently in -mm which might be from shikemeng@huaweicloud.com are
+---
+base-commit: 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
+change-id: 20250724-b4-clidr-unint-const-ptr-7edb960bc3bd
 
-mm-swap-move-nr_swap_pages-counter-decrement-from-folio_alloc_swap-to-swap_range_alloc.patch
-mm-swap-correctly-use-maxpages-in-swapon-syscall-to-avoid-potensial-deadloop.patch
-mm-swap-fix-potensial-buffer-overflow-in-setup_clusters.patch
-mm-swap-remove-stale-comment-stale-comment-in-cluster_alloc_swap_entry.patch
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
 
