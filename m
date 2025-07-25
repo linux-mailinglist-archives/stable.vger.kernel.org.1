@@ -1,142 +1,137 @@
-Return-Path: <stable+bounces-164729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646B2B11CE9
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:55:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3077B11D0E
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 13:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3429E4E6669
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 10:55:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B058C7A1422
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 11:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402C82E3378;
-	Fri, 25 Jul 2025 10:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03B923D2B5;
+	Fri, 25 Jul 2025 11:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mI958Yph"
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="DitFApnb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E77235BEE;
-	Fri, 25 Jul 2025 10:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8E11BD4F7
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 11:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753440935; cv=none; b=TqjN69dNeSkxQbFhucKX+fO9F2BF3osVh6MCevGm768fX3XDflSxjXMyBfYBs6+fk1r3eiPk9eRcKlgzK/HY45lZmKdp3JYfHBU6F+33XWJd8di6/VRnStU9i/arscR4zhkYZGEl7Y6Lzk88PAnjbEG13CK+nErfUXNV7Qi8rSo=
+	t=1753441398; cv=none; b=h9U7Co+z07RhLHsQYv6fABBT27/YnMtgpkOYt8nD4eSsxfvKVM/dZkX7SwchOiVLPO+/tyypl6DWnW2uoyqPkCy00mlvLWQzMphSCA9cGPA9+8uOxktXHuFTHmYvm/tDP1H5OeY+wptdfW+Fa6NJWqgfE7SxSV9/b9Y43FRPGzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753440935; c=relaxed/simple;
-	bh=FV3sPRKNK25JPb11cn1GZ9yXBPA9EbM4FunPnrMSFgo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=tl+jnXSA7/VHdY7aC1l/eHSuY5WA+hwptARIxyUJgYnz6SxqiaLkCC2LgBWA1eE5w9cvWbE8QA9i+tKQS2XDVJrW6uyR5B122EtcONJOTw2d3QgnkY/u7bF0mbPduoeG8/eNMk4NVuM0D3KrbJ/zwprUW0oF4zXOAyMdkuArY/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mI958Yph; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56P9eHjV025906;
-	Fri, 25 Jul 2025 10:55:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=7F4LxjlwdKshBjbFkXpssU
-	iEowkTd8VOY2k07fpuMOk=; b=mI958YphyKXACixTRRJImb2q0Zco68IN3ZnvJs
-	bDvWHgfYGT7vkKwZQ5zINwEl7m8GfSsXltZFyMpFslX+Wh8hH+yd6X3D56zWf1sq
-	AKzZ1dgFq8H9G4m8zNKdnfO/AbjyHACqdolSmOY/8t6lE9BQ/h5LR04hO0+Fa7Te
-	A7a+AnC5STdywyQvITDgP5dFoqePbgt32owV179njtuBO9kpSzWpor52oo9PVb/3
-	imZ6QTBS/8NC4WpZGpLj06AsPuT56YJHhw8h5Tt7Mrv/uV3Nty+82Fa5gcHVEQ/B
-	AW1bJi4Pcpb68+QIT+ZfX9u5EDVi+vhYlwrREf6SG7ShYtbw==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 483w30ss5f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 10:55:26 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56PAtLos014254;
-	Fri, 25 Jul 2025 10:55:21 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 483t7s3cw4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 10:55:21 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56PAtLHe014238;
-	Fri, 25 Jul 2025 10:55:21 GMT
-Received: from hu-devc-blr-u20-c-new.qualcomm.com (hu-hardshar-blr.qualcomm.com [10.190.104.221])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 56PAtLqP014235
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 10:55:21 +0000
-Received: by hu-devc-blr-u20-c-new.qualcomm.com (Postfix, from userid 3848816)
-	id 8E8C420A2A; Fri, 25 Jul 2025 16:25:20 +0530 (+0530)
-From: Hardeep Sharma <quic_hardshar@quicinc.com>
-To: Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Hardeep Sharma <quic_hardshar@quicinc.com>
-Subject: [PATCH] block: Fix bounce check logic in blk_queue_may_bounce()
-Date: Fri, 25 Jul 2025 16:25:13 +0530
-Message-Id: <20250725105513.213005-1-quic_hardshar@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1753441398; c=relaxed/simple;
+	bh=BDdE8vSbzR0oK3tm6OHLf/79TJIjeruYg6g8xcBnIO4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=B3ECyqn+d3llE+T/ZEux1chvDjej6dQWrfGFqvmfalaISXRSys1k/aEDIGJwd1xEvTUGcSU/E5I3ZGgwyk/f3TW1Db26Kza3D20bJ65ofVsdl9KTKuv35/qyIa8ZVCKklFT5EfEZQm3QTYIpn7vD6d7nDxNh7X9yMuhorF75sSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=DitFApnb; arc=none smtp.client-ip=207.171.188.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1753441396; x=1784977396;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=N8zaNTUsekB54AjaIYdR7MO8Ua47vRgfTSv7gDjgyt8=;
+  b=DitFApnbPevB23lKnt9sDD7bypOsua16SzYpLOrUkT5ikMoZcjK5W5QN
+   OQzAAmuQaPCpWTMIdKFfTfQVXwLx8HpcHwEH/XAnoNN1pWuWysLVNPYve
+   /AOXpnDmUw0vafYFsTBpkw8vDGJ7TAlYdRsifJiQqrkLU5c5yYUGxg2N9
+   D05pW0exY666IBC6jXlWQSA3BiUKNK/zIdaAr+a6bl6Npe6KiiepkquFW
+   Nd96eGxVrPZr49VZHNmhN5ozUwimvZKRkkLyFKJePZm+y/erB61dhVeec
+   KM/8O4OoFGbNc9MQY0Z/PNgPIi1OdlhGt6vAYxgjfKiFRxb/fhNMvrRTh
+   A==;
+X-IronPort-AV: E=Sophos;i="6.16,339,1744070400"; 
+   d="scan'208";a="39608532"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 11:03:11 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.10.100:24664]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.33.230:2525] with esmtp (Farcaster)
+ id 7a81bfce-0650-4503-a016-d4d93d525731; Fri, 25 Jul 2025 11:03:10 +0000 (UTC)
+X-Farcaster-Flow-ID: 7a81bfce-0650-4503-a016-d4d93d525731
+Received: from EX19D015EUB002.ant.amazon.com (10.252.51.123) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 25 Jul 2025 11:03:09 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB002.ant.amazon.com (10.252.51.123) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 25 Jul 2025 11:03:09 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.1544.014; Fri, 25 Jul 2025 11:03:09 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: Nianyao Tang <tangnianyao@huawei.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, "Roy, Patrick" <roypat@amazon.co.uk>
+Subject: [PATCH 6.6.y] arm64/cpufeatures/kvm: Add ARMv8.9 FEAT_ECBHB bits in
+ ID_AA64MMFR1 register
+Thread-Topic: [PATCH 6.6.y] arm64/cpufeatures/kvm: Add ARMv8.9 FEAT_ECBHB bits
+ in ID_AA64MMFR1 register
+Thread-Index: AQHb/VO0AzKSYf/tZUq7X/B4eU+c2Q==
+Date: Fri, 25 Jul 2025 11:03:09 +0000
+Message-ID: <20250725110227.13309-1-roypat@amazon.co.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=WtArMcfv c=1 sm=1 tr=0 ts=6883629e cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=6abORDSa23aJwOuxMHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: SLAgiKus8ruLiNwgZQld6zoHjaLtgpfu
-X-Proofpoint-ORIG-GUID: SLAgiKus8ruLiNwgZQld6zoHjaLtgpfu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI1MDA5MyBTYWx0ZWRfX78I0WPPXXBk1
- Su0tVs+HQ/jz896O5go9TUF9pYCaCcxpMvpXpfv2f8EmtRERjmL8id//UKatKnJGDUfKn5XKYJS
- QBnihWLydQ7Mp7PTV+9oqgsK/RB6scWabRf7/HP6ZyyW8PlbAULYSStfQ14TobkZRy53oECiFSD
- h/pNN01Wwl/rVRs5VDO+50P7X6tR9QjLsN5jeJEPCDyZdGThGS8wDhzapyzh2STqo/4lmcV2Jd6
- S200ebs9wP3VcMXs9t+Xt2CkSLaI7ZcDAlNGaIAnjgufQWSkUe7u0EbDsF2S3oC/ZbcV02sXkju
- qCc5cnoA85rSxBGrMY3vh4n6Lg9VQcanAPBD15mw+qk5AQA3UxfRjs93T+nV6n1YAx7vgaUsr6A
- kRiok15ne058XjZbTmZDtX7k77QB3LzaeDW2NBwe3g0gqi/3m9rnXVz3YoyO5XLFzbC1yZ8w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-25_03,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- mlxscore=0 clxscore=1011 mlxlogscore=659 suspectscore=0 malwarescore=0
- spamscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507250093
 
-Buffer bouncing is needed only when memory exists above the lowmem region,
-i.e., when max_low_pfn < max_pfn. The previous check (max_low_pfn >=
-max_pfn) was inverted and prevented bouncing when it could actually be
-required.
-
-Note that bouncing depends on CONFIG_HIGHMEM, which is typically enabled
-on 32-bit ARM where not all memory is permanently mapped into the kernel’s
-lowmem region.
-
-Fixes: 9bb33f24abbd0 ("block: refactor the bounce buffering code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hardeep Sharma <quic_hardshar@quicinc.com>
----
- block/blk.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/block/blk.h b/block/blk.h
-index 67915b04b3c1..f8a1d64be5a2 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -383,7 +383,7 @@ static inline bool blk_queue_may_bounce(struct request_queue *q)
- {
- 	return IS_ENABLED(CONFIG_BOUNCE) &&
- 		q->limits.bounce == BLK_BOUNCE_HIGH &&
--		max_low_pfn >= max_pfn;
-+		max_low_pfn < max_pfn;
- }
- 
- static inline struct bio *blk_queue_bounce(struct bio *bio,
--- 
-2.25.1
-
+From: Nianyao Tang <tangnianyao@huawei.com>=0A=
+=0A=
+[ upstream commit e8cde32f111f7f5681a7bad3ec747e9e697569a9 ]=0A=
+=0A=
+Enable ECBHB bits in ID_AA64MMFR1 register as per ARM DDI 0487K.a=0A=
+specification.=0A=
+=0A=
+When guest OS read ID_AA64MMFR1_EL1, kvm emulate this reg using=0A=
+ftr_id_aa64mmfr1 and always return ID_AA64MMFR1_EL1.ECBHB=3D0 to guest.=0A=
+It results in guest syscall jump to tramp ventry, which is not needed=0A=
+in implementation with ID_AA64MMFR1_EL1.ECBHB=3D1.=0A=
+Let's make the guest syscall process the same as the host.=0A=
+=0A=
+This fixes performance regressions introduced by commit 4117975672c4=0A=
+("arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected()=0A=
+lists") for guests running on neoverse v2 hardware, which supports=0A=
+ECBHB.=0A=
+=0A=
+Signed-off-by: Nianyao Tang <tangnianyao@huawei.com>=0A=
+Link: https://lore.kernel.org/r/20240611122049.2758600-1-tangnianyao@huawei=
+.com=0A=
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>=0A=
+Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
+---=0A=
+ arch/arm64/kernel/cpufeature.c | 1 +=0A=
+ 1 file changed, 1 insertion(+)=0A=
+=0A=
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.=
+c=0A=
+index b6d381f743f3..2ce9ef9d924a 100644=0A=
+--- a/arch/arm64/kernel/cpufeature.c=0A=
++++ b/arch/arm64/kernel/cpufeature.c=0A=
+@@ -364,6 +364,7 @@ static const struct arm64_ftr_bits ftr_id_aa64mmfr0[] =
+=3D {=0A=
+ };=0A=
+ =0A=
+ static const struct arm64_ftr_bits ftr_id_aa64mmfr1[] =3D {=0A=
++	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_E=
+CBHB_SHIFT, 4, 0),=0A=
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL=
+1_TIDCP1_SHIFT, 4, 0),=0A=
+ 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_=
+AFP_SHIFT, 4, 0),=0A=
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_H=
+CX_SHIFT, 4, 0),=0A=
+-- =0A=
+2.50.1=0A=
+=0A=
 
