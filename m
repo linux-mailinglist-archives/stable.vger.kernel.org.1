@@ -1,143 +1,110 @@
-Return-Path: <stable+bounces-164722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADCCB11931
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 09:30:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0DEB11950
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 09:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A373A585E74
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 07:30:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FE0E1C27A2D
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 07:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA0C289347;
-	Fri, 25 Jul 2025 07:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7E32BD595;
+	Fri, 25 Jul 2025 07:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PktTho9E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZuhFYXh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302D821C16E;
-	Fri, 25 Jul 2025 07:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43548262FED;
+	Fri, 25 Jul 2025 07:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753428626; cv=none; b=u76eaJSwrws7kqUUbbiCT8W1K9CIDnbIYL4ifF4FzQmZU5uACfmqf70DL7M5pYXZR/uwuCUtDVsShdKf29xfvCAVviOADhQdzS+N1U0+HmRMco7a/waJqtXuvd/5cZHPLzu8azGzqLgSjygkVGVLhzxOlXlWIXWSQ17qRUGBO2k=
+	t=1753429285; cv=none; b=sKOXXduTKbuYQOamX+JUwXXu7MvpWarH6Z2B+aRz+AJbrqOiEDBDSZ/tzkMOwyW/ly00uKR5w/Gf5yg17Dh5JX/OGjIxFTy/bW3tPH6sS8DeCIi183etqHGscADHUHBhBcx4Qg4yBvCXbTuwNBuyirRtnmOqFTXw7cM1TDoOxvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753428626; c=relaxed/simple;
-	bh=nua92x0daTGPAa9Lcxv8VEukL2BqG6YUkO/iJsGHqfA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KBc/sryH8pMjsxK2XUOPlkTgoVcXXsm8doMuafGRpx/v5a+H9c2s6a5zG5tvhUqLYn5a5tXmnSegc9TX7Q+fuNpNnig1cQhKXaJ7GvOwe9Q4gkSinYkHky98/DXrn4vfQLBrL99Dz6Jg9f/X+TOhb4+ZGFXchx1W1j74/M+HlVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PktTho9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BCCC4CEF7;
-	Fri, 25 Jul 2025 07:30:25 +0000 (UTC)
+	s=arc-20240116; t=1753429285; c=relaxed/simple;
+	bh=EJdajs8yNIrucCAJlRxnjIKqvHvgDMG64nsg+BaAj/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i/nADgfNe89tpMt8rWZjSewFrWZQvQ/ZCXnDhQz6JjVgNhgxPAfq2dXWEyks9OZSpQPCS7Y8r3hOmPkuPKV6cAvIoDmnh7+FPuPG5Wyr3GHG/SpFUTs3Q8GG6lDKW8K3jF/nM90BxuU8m/g+tJo/gYy1i3x9kCwHanjf1Xb71pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZuhFYXh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6ACC4CEE7;
+	Fri, 25 Jul 2025 07:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753428625;
-	bh=nua92x0daTGPAa9Lcxv8VEukL2BqG6YUkO/iJsGHqfA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PktTho9E1qwbQ/oaxMdmeQZJbUc0K+8IsdTr+SwJFzoGdb0F6AeGY5Vqj4wuy38lH
-	 V23AMLL1R3Vn6AmmcLnifTbF6b/hkCJco73Njoa9ggokJklTYud+ujwle460wD7KAX
-	 DjJ2gEFn6v5RyCa1QrR9oSmtTXwEQtkP3xuy7DpNJJZ00olhAuIU/anO3JAeKbLO9W
-	 FTc2c0xKTsd6RDULQyZSrAiSFGdD+5X9rw/QPtOlr+Qqd1+jg4AawKXpgpP6NDf1lx
-	 y5i6bwaAHzg+gxvZLvK4hCxqKwuPoE0GGyAd9K+CtqwmECNBrVrhyPp2IdnlnqPih+
-	 o9LZ/32NZtH0Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1ufCsp-001GT7-59;
-	Fri, 25 Jul 2025 08:30:23 +0100
-Date: Fri, 25 Jul 2025 08:30:21 +0100
-Message-ID: <86frek9182.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Justin Stitt <justinstitt@google.com>
-Cc: James Morse <james.morse@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tom Rix <trix@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
+	s=k20201202; t=1753429285;
+	bh=EJdajs8yNIrucCAJlRxnjIKqvHvgDMG64nsg+BaAj/o=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZuhFYXh9u89PfWUt/FxW+kI6wZEXz8rPquuUlHpcWz9Phdoza4n6mVb5ljTXe9BxZ
+	 mlulrhxPtBrhgbb3hOlA8Pi6QCMODh3cPZZa9/ZX26MWqwOP7QFGPvHXFqhXXBBA/J
+	 SIWtR7/ubH/Zl/sAZ/3BWIxrGGjYTsUUeaPt9VEvkgJ3+S9re8JhIgm1ncj/SCU9OG
+	 +2EfD8mDTo5ngDzmBtQyo3Vsx38afJ7wI7Bfv5EV6fatxDhLknz1QHcay4gJ4HyGC7
+	 3gld08H70iuLUSAJZdZMkW79B2Gv3ksN/33hhMgGb2ycOtBhfY5mUzTXe64rPhnd+8
+	 E19mv4spF2tcA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1ufD3Q-000000002Ig-3bqf;
+	Fri, 25 Jul 2025 09:41:20 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Carlo Caione <ccaione@baylibre.com>,
+	linux-amlogic@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
+	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] KVM: arm64: silence -Wuninitialized-const-pointer warning
-In-Reply-To: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
-References: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Subject: [PATCH] firmware: meson_sm: fix device leak at probe
+Date: Fri, 25 Jul 2025 09:40:19 +0200
+Message-ID: <20250725074019.8765-1-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: justinstitt@google.com, james.morse@arm.com, alexandru.elisei@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, catalin.marinas@arm.com, will@kernel.org, nathan@kernel.org, trix@redhat.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-[Dropping a few emails from the list, as they are very likely to
- simply bounce]
+Make sure to drop the reference to the secure monitor device taken by
+of_find_device_by_node() when looking up its driver data on behalf of
+other drivers (e.g. during probe).
 
-On Fri, 25 Jul 2025 02:15:28 +0100,
-Justin Stitt <justinstitt@google.com> wrote:
-> 
-> A new warning in Clang 22 [1] complains that @clidr passed to
-> get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
-> doesn't really care since it casts away the const-ness anyways.
-> 
-> Silence the warning by initializing the struct.
-> 
-> This patch won't apply to anything past v6.1 as this code section was
-> reworked in Commit 7af0c2534f4c ("KVM: arm64: Normalize cache configuration").
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 7c8c5e6a9101e ("arm64: KVM: system register handling")
+Note that holding a reference to the platform device does not prevent
+its driver data from going away so there is no point in keeping the
+reference after the helper returns.
 
-No, this really doesn't fix anything other than paper over an
-overzealous warning.
+Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platform driver")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Carlo Caione <ccaione@baylibre.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/firmware/meson/meson_sm.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-> Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> ---
->  arch/arm64/kvm/sys_regs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-> index f4a7c5abcbca..d7ebd7387221 100644
-> --- a/arch/arm64/kvm/sys_regs.c
-> +++ b/arch/arm64/kvm/sys_regs.c
-> @@ -2948,7 +2948,7 @@ int kvm_sys_reg_table_init(void)
->  {
->  	bool valid = true;
->  	unsigned int i;
-> -	struct sys_reg_desc clidr;
-> +	struct sys_reg_desc clidr = {0};
->  
->  	/* Make sure tables are unique and in order. */
->  	valid &= check_sysreg_table(sys_reg_descs, ARRAY_SIZE(sys_reg_descs), false);
-> 
-
-Frankly, this sort of things is the worse you can do, as
-
-- it perpetuates a bad design
-
-- it is completely pointless, as you pointed out
-
-- it is only going to make it harder to backport other patches
-
-The correct fix would be to backport the series described in
-e8789ab7047a8, which should be easy enough to apply. it would also
-make 6.1 less of a terrible kernel.
-
-	M.
-
+diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
+index f25a9746249b..3ab67aaa9e5d 100644
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -232,11 +232,16 @@ EXPORT_SYMBOL(meson_sm_call_write);
+ struct meson_sm_firmware *meson_sm_get(struct device_node *sm_node)
+ {
+ 	struct platform_device *pdev = of_find_device_by_node(sm_node);
++	struct meson_sm_firmware *fw;
+ 
+ 	if (!pdev)
+ 		return NULL;
+ 
+-	return platform_get_drvdata(pdev);
++	fw = platform_get_drvdata(pdev);
++
++	put_device(&pdev->dev);
++
++	return fw;
+ }
+ EXPORT_SYMBOL_GPL(meson_sm_get);
+ 
 -- 
-Without deviation from the norm, progress is not possible.
+2.49.1
+
 
