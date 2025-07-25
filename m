@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD42CB12754
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:24:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461DDB12755
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 136201CC3739
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 23:24:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9B8F7B8867
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 23:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CD425F963;
-	Fri, 25 Jul 2025 23:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B531C25B1EA;
+	Fri, 25 Jul 2025 23:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwQtxUDx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3HCdTad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6B7238D52
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 23:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7716B238D52
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 23:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753485875; cv=none; b=ZX1f6ehXghNpToJhpblfyikpqH4mUojjwsPelkle59QdDAzdU8XW7eeQaZTcUl0u07eWAxr9BqgDviaPMW3huwoWFpsgKmjyuxsLAn0CHbUu+HXvF8yFYL7rhQDMvENpqFMi+QrgEvXRgkXi1S1lYbQf2ILRMx8es7/A87yMxOY=
+	t=1753485877; cv=none; b=os7Nc8JCHC2NEzL13Fe2P7pkZFn+3YTdb/gilN8Vzb6nX3tprAMRnkYRLfqX3LBCXsMDMCoMW4TwyM6QW8ziZVS93A1PdWXx/nK69Vt1d6j5xs7jKexM4noO8krtihkpZIR6AsKFgBfGIvYctSqh12NSb+2wpJgeaOXsS93mb/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753485875; c=relaxed/simple;
-	bh=RYHTOU1Wu5kthmf2u/t3frwHOfwlUUsqL+tPrI1ozbo=;
+	s=arc-20240116; t=1753485877; c=relaxed/simple;
+	bh=1Raoq1IzetJBcjc5rmQ7PstKJKhCkw9+hAqM2KpZcWs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PatyGHAjWdJzayjhd2Itlb249jUFkZ8qKFBeog2qoAsREJ5LnKXiWTRabYt4nWQkOnCpOJzYchEN1AHJ1bndn6VuNAkY19nZ7GWDGzzPYakyY1HKUXfdYlP4+ZNpsf7t2lMs6jOBHkxxfSmAtotl0+PgZllb71HNwYdW3q2yhZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwQtxUDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EB2C4CEE7;
-	Fri, 25 Jul 2025 23:24:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Lz6mPibeCwlsVvnJUl8wXdn1Tr8JzydwsBke13KiQfMhF7HeNkweHdQ3WUjc0WHZV79tuoTdASNcJxUonVGtUi5d8VumcvqjUwwgDqoQ1pxeTPNy9V/nfcH3OZcNdbMUr9rmYCxLpdQQi062CQoXAedb1szy9CLnfC4uembaN7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3HCdTad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF58BC4CEE7;
+	Fri, 25 Jul 2025 23:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753485874;
-	bh=RYHTOU1Wu5kthmf2u/t3frwHOfwlUUsqL+tPrI1ozbo=;
+	s=k20201202; t=1753485877;
+	bh=1Raoq1IzetJBcjc5rmQ7PstKJKhCkw9+hAqM2KpZcWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwQtxUDxzvQkSoxiJXQSggmFRoT5kIx4hHVTXZP5aejf/zsrE1quoKHwQ3SRy8Jqn
-	 bpPkPg9e+pJ6znAwHymj9kfrZFREnlIEmTBLMd00xxRrN2su4b1llSylM2BSetVKlp
-	 Iy5NECkBXLII6eOVaW5yNcF5jlGMLlOhMoaKY7M3vxUZiRCwa0dMG8q8bt0hE1MkmY
-	 pxvKqBxb40N7NK5i3V+8P8d9EvqbV3cn0k1xUqk1LwWibUHMhx+3DVORxOYXX82e0Z
-	 X7IijP6WChNGuc9Hb+Gxtr0jZtSEOlman72Rvf971w71Bynq8UFOQteGAvxjLWHF2h
-	 WiPBFxWyUto/g==
+	b=p3HCdTadlQf9E4Dqa8KRrp99p8vacgX0UIZb+4XNsmVpwFFQG8QE9YGbgqBEU+K1Q
+	 ONFOn1/DGwpcdO8lJkO98s6T2HYl+OVIqcl82mTY7QlI2XJfx8x2XT3xYXAlbmrG+Y
+	 9X808+511A7mayXW42WKuzYWo7hy1lpuLTwhDRUEcACs1CKxwvvqQlEK0Sj7urg1+X
+	 JPlj03GLEH+5JeifSWBJPbXy638J/YMML0JevQKKiQM616ByXj2Q95JIW/RvoFttFI
+	 AyMW4OiET0WKuDk/DcbYfVkiM3FMU6sEexJpbOvxkBObj0RYuNxdL8l7xEkECuDCOX
+	 +NUNQyT60i8Zg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] comedi: Fail COMEDI_INSNLIST ioctl if n_insns is too large
-Date: Fri, 25 Jul 2025 19:24:32 -0400
-Message-Id: <1753464513-b037f6b7@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
+Date: Fri, 25 Jul 2025 19:24:35 -0400
+Message-Id: <1753471769-d9eed8d0@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724181646.291939-1-abbotti@mev.co.uk>
+In-Reply-To: <20250724181257.291722-7-abbotti@mev.co.uk>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 08ae4b20f5e82101d77326ecab9089e110f224cc
+The upstream commit SHA1 provided is correct: e9cb26291d009243a4478a7ffb37b3a9175bfce9
 
 Status in newer kernel trees:
 6.15.y | Not found
@@ -77,44 +77,26 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  08ae4b20f5e8 ! 1:  4a8bada4e031 comedi: Fail COMEDI_INSNLIST ioctl if n_insns is too large
+1:  e9cb26291d00 ! 1:  8bad4aa45706 comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
     @@ Metadata
       ## Commit message ##
-         comedi: Fail COMEDI_INSNLIST ioctl if n_insns is too large
+         comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
      
-    +    [ Upstream commit 08ae4b20f5e82101d77326ecab9089e110f224cc ]
+    +    [ Upstream commit e9cb26291d009243a4478a7ffb37b3a9175bfce9 ]
     +
-         The handling of the `COMEDI_INSNLIST` ioctl allocates a kernel buffer to
-         hold the array of `struct comedi_insn`, getting the length from the
-         `n_insns` member of the `struct comedi_insnlist` supplied by the user.
+         For Comedi `INSN_READ` and `INSN_WRITE` instructions on "digital"
+         subdevices (subdevice types `COMEDI_SUBD_DI`, `COMEDI_SUBD_DO`, and
+         `COMEDI_SUBD_DIO`), it is common for the subdevice driver not to have
     @@ Commit message
-         Link: https://lore.kernel.org/r/20250704120405.83028-1-abbotti@mev.co.uk
+         Link: https://lore.kernel.org/r/20250707153355.82474-1-abbotti@mev.co.uk
          Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
      
-    - ## drivers/comedi/comedi_fops.c ##
-    -@@ drivers/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device *dev,
-    + ## drivers/staging/comedi/comedi_fops.c ##
-    +@@ drivers/staging/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device *dev,
-      	return i;
-      }
-      
-    @@ drivers/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device
-      /*
-       * COMEDI_INSN ioctl
-       * synchronous instruction
-    -@@ drivers/comedi/comedi_fops.c: static long comedi_unlocked_ioctl(struct file *file, unsigned int cmd,
-    +@@ drivers/staging/comedi/comedi_fops.c: static long comedi_unlocked_ioctl(struct file *file, unsigned int cmd,
-      			rc = -EFAULT;
-      			break;
-      		}
-    @@ drivers/comedi/comedi_fops.c: static long comedi_unlocked_ioctl(struct file *fil
-      		insns = kcalloc(insnlist.n_insns, sizeof(*insns), GFP_KERNEL);
-      		if (!insns) {
-      			rc = -ENOMEM;
-    -@@ drivers/comedi/comedi_fops.c: static int compat_insnlist(struct file *file, unsigned long arg)
-    +@@ drivers/staging/comedi/comedi_fops.c: static int compat_insnlist(struct file *file, unsigned long arg)
-      	if (copy_from_user(&insnlist32, compat_ptr(arg), sizeof(insnlist32)))
-      		return -EFAULT;
+    - ## drivers/comedi/drivers.c ##
+    -@@ drivers/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
+    + ## drivers/staging/comedi/drivers.c ##
+    +@@ drivers/staging/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
+      	unsigned int _data[2];
+      	int ret;
       
 
 ---
