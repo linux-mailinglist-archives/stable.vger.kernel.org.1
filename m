@@ -1,133 +1,98 @@
-Return-Path: <stable+bounces-164770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13420B125FD
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 23:09:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C72BB1262C
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 23:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23EF6584DED
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 21:09:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0BE03BDA6C
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 21:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4A425D20D;
-	Fri, 25 Jul 2025 21:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A1F253951;
+	Fri, 25 Jul 2025 21:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Pb1/uN8e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDh04UAA"
 X-Original-To: stable@vger.kernel.org
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22818224225;
-	Fri, 25 Jul 2025 21:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C87820487E;
+	Fri, 25 Jul 2025 21:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753477738; cv=none; b=gm8BphntC+Ni8ELKurBGrtYo4U4OIpfoDr/5N1Y86vo/YJJiDeYpT2iHS1s0rZNCblQJ405dcWFOcEikaJuxljxZpUbhipe2sjPbhz5g8DuO/wvvOk/v2BOMiXgULnwKBUjPSnaNRAN5PpXN/OfZzGrkEriOWTZv+XGfBb3boJQ=
+	t=1753479739; cv=none; b=q07wq5Al+j/JPFRNW1bqwOU0i7rIPmXvIhBbrHF91xbBrjyoLtlpEBbkL9Ng1NJTla3gs0h0RJd6kCrjevDNmzJ3KZ5JJbZfmSJ9+FnTwBcUfCJ6Kzj38zEcr7M5qnPQO8PcG2WYPXtO/JH6vyjmNz0ERsQYjVLB6UXKTslE1PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753477738; c=relaxed/simple;
-	bh=15RyTr4RmZ9HnrJ3N7IHIqyT4wgzIOUmPBJRpd+Hzoc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GFngUNjJfq0M3gMX2QA0r2DxeVaK55Tq+V7oo2W3IvTtQohsjNfOYu0Omkn1WDhHYigtI68tBdTTBVAbL7L+JbVfAmjjTA/FFYd3XxDdluuSgkWtnpCqyOqQTUp3AjAZIAc3vk+OBTjpRb7WgJckia6aXcvUOao7pBta7vbAbpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Pb1/uN8e; arc=none smtp.client-ip=199.89.3.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4bpgTf6025zm174C;
-	Fri, 25 Jul 2025 21:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1753477731; x=1756069732; bh=bRiZPnDhWKDfdU+eRq8PCZeA
-	SI8wNiw7DOE1Rlr/5No=; b=Pb1/uN8epUgzcEivLUfApsnXyhMHKXDpnvyDke9Y
-	HHwLfr2d+HamUy0Y0ity/gc3+pPqFLm1GWkE1PBCyG2YLHZmC2keMtMGTZhKPnnb
-	e77Pd+B2Vvb1+mRseZNH3zKKtP4cS2qWjaSNVXuMw5KuzvZQjroHAxuTZlin2653
-	M5Fr6GtrQtjljqrMmkFfoAXSOhw4tkIJ3OvOsaI2KfVR0AkQHaIcEuqx+iVhdUrj
-	kddkr5de6Nnp1uKMNKJfQt9fZEPKG2uiLe4u+3fAHpKlNrnbUiwH2D/EUXRDytxP
-	xUYIKNUHFZ371ToUwhU2BGouxeCDpMOrUCsKvMCPVtI/Gg==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id Y5oojwscMG0B; Fri, 25 Jul 2025 21:08:51 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4bpgTN2xV8zm0yQP;
-	Fri, 25 Jul 2025 21:08:38 +0000 (UTC)
-Message-ID: <c57a2ca7-b0c9-4e52-9d9d-5c06c7f56f1a@acm.org>
-Date: Fri, 25 Jul 2025 14:08:37 -0700
+	s=arc-20240116; t=1753479739; c=relaxed/simple;
+	bh=WinxX6AYbHEm/FkEU/zisNIu3Co8WMWQ1pz0YSaP9OA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q3XaRWQQVz6B2dLfIcxssAtovO5RHWJwaP6hWa9l1FK+GoKl7z7NvWbq4CVL8j8nMXFToMnaXBmuFIxl1sOfAR1lYOoVLUoNQHbT6m/Y0Td7p8LTGWCU7rcSKy1RB3PD4uYZT3JrPIgBreoobBWyXQopGTrZgzeBs5atDfmfbqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDh04UAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A8DC4CEE7;
+	Fri, 25 Jul 2025 21:42:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753479739;
+	bh=WinxX6AYbHEm/FkEU/zisNIu3Co8WMWQ1pz0YSaP9OA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qDh04UAAl7Nw6S1W9yKm0UpWMvAjMiMCH/wEu6grNQ24heA8bBKOUb5vM3q3VkBHg
+	 E6qqRE5LsweDMV3MYFNUauNrQLDYeFecetNDlqh1y9pTGWFaalTBCCN6b/t0Jr5ibP
+	 rEY96S0VBu0cnYGxWtydXxkE7e/4h+6itUbYDf64YC2axSMbzOHHc0NV0AanraPDXO
+	 xK0+IYanHoS2xmo/J1ZosoRi6L1cUw/xhes5mQ8y/fUGLoWgWmqXWUdUjDqCiuwjX4
+	 ssk9NxCkEwtVEluFwZZr9CX16zpD2OB8JbXUdVnzQHScm1c43beg2CRzbng73mYZ2w
+	 ROU5uC01NJpYQ==
+Date: Fri, 25 Jul 2025 14:42:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Oscar Maes <oscmaes92@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: ipv4: allow directed broadcast routes to
+ use dst hint
+Message-ID: <20250725144217.2617f6bc@kernel.org>
+In-Reply-To: <20250724124942.6895-1-oscmaes92@gmail.com>
+References: <20250724124942.6895-1-oscmaes92@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] scsi: ufs: core: move some irq handling back to
- hardirq (with time limit)
-To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Peter Griffin <peter.griffin@linaro.org>,
- Tudor Ambarus <tudor.ambarus@linaro.org>,
- Will McVicker <willmcvicker@google.com>,
- Manivannan Sadhasivam <mani@kernel.org>, kernel-team@android.com,
- linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250725-ufshcd-hardirq-v2-0-884c11e0b0df@linaro.org>
- <20250725-ufshcd-hardirq-v2-2-884c11e0b0df@linaro.org>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250725-ufshcd-hardirq-v2-2-884c11e0b0df@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 7/25/25 7:16 AM, Andr=C3=A9 Draszik wrote:
-> -	for_each_set_bit(tag, &completed_reqs, hba->nutrs)
-> +	for_each_set_bit(tag, &completed_reqs, hba->nutrs) {
->   		ufshcd_compl_one_cqe(hba, tag, NULL);
-> +		__clear_bit(tag, &completed_reqs);
-> +		if (time_limit && time_after_eq(jiffies, time_limit))
-> +			break;
-> +	}
+On Thu, 24 Jul 2025 14:49:42 +0200 Oscar Maes wrote:
+> Currently, ip_extract_route_hint uses RTN_BROADCAST to decide
+> whether to use the route dst hint mechanism.
+> 
+> This check is too strict, as it prevents directed broadcast
+> routes from using the hint, resulting in poor performance
+> during bursts of directed broadcast traffic.
+> 
+> Fix this in ip_extract_route_hint and modify ip_route_use_hint
+> to preserve the intended behaviour.
 
-Has it been considered to use time_is_before_eq_jiffies(time_limit)
-instead of open-coding it?
+We are wrapping up our 6.17 material, I think this will need
+to wait for 6.18. In the meantime, would it make sense to add
+a selftest? Sounds like a relatively rare use case, easy to
+regress.
 
-> @@ -5636,15 +5670,34 @@ static int ufshcd_poll(struct Scsi_Host *shost,=
- unsigned int queue_num)
->   	WARN_ONCE(completed_reqs & ~hba->outstanding_reqs,
->   		  "completed: %#lx; outstanding: %#lx\n", completed_reqs,
->   		  hba->outstanding_reqs);
-> -	hba->outstanding_reqs &=3D ~completed_reqs;
+> diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+> index fc323994b..1581b98bc 100644
+> --- a/net/ipv4/ip_input.c
+> +++ b/net/ipv4/ip_input.c
+> @@ -589,8 +589,10 @@ static void ip_sublist_rcv_finish(struct list_head *head)
+>  static struct sk_buff *ip_extract_route_hint(const struct net *net,
+>  					     struct sk_buff *skb, int rt_type)
+>  {
+> -	if (fib4_has_custom_rules(net) || rt_type == RTN_BROADCAST ||
+> -	    IPCB(skb)->flags & IPSKB_MULTIPATH)
+> +	const struct iphdr *iph = ip_hdr(skb);
 > +
-> +	if (completed_reqs) {
-> +		pending =3D __ufshcd_transfer_req_compl(hba, completed_reqs,
-> +						      time_limit);
-> +		completed_reqs &=3D ~pending;
-> +		hba->outstanding_reqs &=3D ~completed_reqs;
-> +	}
-> +
->   	spin_unlock_irqrestore(&hba->outstanding_lock, flags);
->  =20
-> -	if (completed_reqs)
-> -		__ufshcd_transfer_req_compl(hba, completed_reqs);
+> +	if (fib4_has_custom_rules(net) || ipv4_is_lbcast(iph->daddr) ||
+> +	    (iph->daddr == 0 && iph->saddr == 0) || IPCB(skb)->flags & IPSKB_MULTIPATH)
 
-This change moves the __ufshcd_transfer_req_compl() call from outside to
-inside the critical section. I expect this to impact performance
-negatively because it makes it significantly more likely that the
-command submission code will have to wait while the completion code is
-holding hba->outstanding_lock. Can this be avoided, e.g. by limiting the
-number of commands that are completed instead of the time spent in
-interrupt context? usecs_to_jiffies(HARDIRQ_TIMELIMIT) will round up
-the time limit anyway from 20 microseconds to 1/HZ (one millisecond?).
-
-Thanks,
-
-Bart.
+nit: we still prefer to wrap lines at 80 chars in networking
+-- 
+pw-bot: cr
 
