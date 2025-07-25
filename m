@@ -1,78 +1,150 @@
-Return-Path: <stable+bounces-164698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB341B1145D
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 01:11:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F654B11577
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 02:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA6858849C
-	for <lists+stable@lfdr.de>; Thu, 24 Jul 2025 23:11:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF461CC83F4
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 00:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B860F23C8A3;
-	Thu, 24 Jul 2025 23:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D460165F1A;
+	Fri, 25 Jul 2025 00:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZ8su6R2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MluffViY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFA65D8F0;
-	Thu, 24 Jul 2025 23:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB72BA3D;
+	Fri, 25 Jul 2025 00:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753398703; cv=none; b=L2gPMDR2ovm2o+ElQdrSAvy5cqTx1jQV8Z1jDuP7YjiSGjQDPGU3SNBNf7+5DNA4XwKJf7QmGO8oeWZrhQPpLR6N6mF3VwRkpl+d2LgKTUTGrC0cvrU83S3BJgkSjNtKigmh1hUalZFDoI2CAGvjbDbGYZz+RJliKqR4BGXXbro=
+	t=1753405111; cv=none; b=V0Ub+ddkANm3maP7k1BaJAc5JjChjTcEjHNRd5VKbxNNk+R8tKWKC8aDQSfKWMhzQ3TzKELv8xtwtPq8utgFz/kshmQGBDTQwvxFrZ9GSbIEAG5OhEsyWtw7/o2tDJalOiSltArIqxMk5KIXZ2I3MgEslvqS8i7EuDugQv6epv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753398703; c=relaxed/simple;
-	bh=d8TxaSu4kxZ/sIHDsC99YRNlTS6fUD2FC+qEt1/EWbQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jbz8B7+myUdrZUFr8aR3OMNUO9a5tFPOXYPtdxMJolL+/h1JFold9olJcR/VnyuceaVZZgJCgDeX11EcfbPfrHr54hL67d6cJgDy1kx1HiFZzOwT7AXgA1RQpp7b6b0nZdFJbrSWh1YbNmOasvwC2HEGol3iMoGXzIlMw8CMXQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZ8su6R2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2B9C4CEED;
-	Thu, 24 Jul 2025 23:11:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753398703;
-	bh=d8TxaSu4kxZ/sIHDsC99YRNlTS6fUD2FC+qEt1/EWbQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KZ8su6R2yWEsZ7Ud+LAtyl8cvvgx8UeUWv4PZVdX0nRWLEJCD8A0AB1Mqc8nl/kYD
-	 An4GbMOIbvuuVFRaQ38unWjHkJX69/krkz35dnljn8A/j3xya210r2+mmOKV6lTb8m
-	 KDzCYo8TmsuhI0AF2JED17xaesP0UjhAhqXf7DW1v4+YSHKQZ7s2AwvlKJ+RmcNgzo
-	 TWE37wrV3cUg486AVe6Fjl8KUsMw9PfuzGEpMECYuWBfvi4VxfIjRPYWfULBZZPRoR
-	 rhkNVjUMwPSw4RUmj7uzoZtcwLb9XjoNTJM1qopX+lSCWO0xVWzmdmzhTn5sXcFykk
-	 M4k3fH09ig9Qw==
-Date: Thu, 24 Jul 2025 16:11:39 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: atm: cxacru: Merge cxacru_upload_firmware() into
- cxacru_heavy_init()
-Message-ID: <20250724231139.GB3620641@ax162>
-References: <20250722-usb-cxacru-fix-clang-21-uninit-warning-v2-1-6708a18decd2@kernel.org>
- <2025072433-professed-breeding-152a@gregkh>
+	s=arc-20240116; t=1753405111; c=relaxed/simple;
+	bh=/sWG7Hu8uNEY3A5D6seheMXhvyuh2famuFqzPqgiKPk=;
+	h=Date:To:From:Subject:Message-Id; b=K2bdNMeijLGEISRZx+4Mx6N9dmaBqMzCnnO9vgJO/WngjvzR/XCWoepH8HA+H8ZXbMNJFWxCKR09CGDVeKCwg01Nc21Hi0FfpEiU0TQYSpyprFvmDjS3XfPkLZuXM1Tj0QhYDDwam5pVUWCO8lWUymxvpZ6aWz3DK6OX8kOaw6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MluffViY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F76C4CEED;
+	Fri, 25 Jul 2025 00:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1753405111;
+	bh=/sWG7Hu8uNEY3A5D6seheMXhvyuh2famuFqzPqgiKPk=;
+	h=Date:To:From:Subject:From;
+	b=MluffViYyT2yr2O6YRvukwgEOWpmbTzt0ITcfv5BiY/RYJeO/8nmSM/NwiHzskcUj
+	 utSzgbCQqDM7KoDY7EILt9YCtNVPPXepLEvBv9+WQoWgDZoZbL12dipKh7B+xzvcy/
+	 U3H2gf0fwp5FsaNRQkrFJciiQSp4w+WbyFaSPavU=
+Date: Thu, 24 Jul 2025 17:58:30 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-core-commit-damos_quota_goal-nid.patch removed from -mm tree
+Message-Id: <20250725005831.37F76C4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025072433-professed-breeding-152a@gregkh>
 
-On Thu, Jul 24, 2025 at 11:33:51AM +0200, Greg Kroah-Hartman wrote:
-> On Tue, Jul 22, 2025 at 12:11:18PM -0700, Nathan Chancellor wrote:
-...
-> >  drivers/usb/atm/cxacru.c | 106 ++++++++++++++++++++++-------------------------
-> >  1 file changed, 49 insertions(+), 57 deletions(-)
-> 
-> Sorry for the churn, but hey, it's less code now!
-> 
-> Nice work :)
 
-Agreed, thanks for forcing me to address it in a more robust way :)
+The quilt patch titled
+     Subject: mm/damon/core: commit damos_quota_goal->nid
+has been removed from the -mm tree.  Its filename was
+     mm-damon-core-commit-damos_quota_goal-nid.patch
 
-Cheers,
-Nathan
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/core: commit damos_quota_goal->nid
+Date: Sat, 19 Jul 2025 11:19:32 -0700
+
+DAMOS quota goal uses 'nid' field when the metric is
+DAMOS_QUOTA_NODE_MEM_{USED,FREE}_BP.  But the goal commit function is not
+updating the goal's nid field.  Fix it.
+
+Link: https://lkml.kernel.org/r/20250719181932.72944-1-sj@kernel.org
+Fixes: 0e1c773b501f ("mm/damon/core: introduce damos quota goal metrics for memory node utilization")	[6.16.x]
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/core.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+--- a/mm/damon/core.c~mm-damon-core-commit-damos_quota_goal-nid
++++ a/mm/damon/core.c
+@@ -754,6 +754,19 @@ static struct damos_quota_goal *damos_nt
+ 	return NULL;
+ }
+ 
++static void damos_commit_quota_goal_union(
++		struct damos_quota_goal *dst, struct damos_quota_goal *src)
++{
++	switch (dst->metric) {
++	case DAMOS_QUOTA_NODE_MEM_USED_BP:
++	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
++		dst->nid = src->nid;
++		break;
++	default:
++		break;
++	}
++}
++
+ static void damos_commit_quota_goal(
+ 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
+ {
+@@ -762,6 +775,7 @@ static void damos_commit_quota_goal(
+ 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+ 		dst->current_value = src->current_value;
+ 	/* keep last_psi_total as is, since it will be updated in next cycle */
++	damos_commit_quota_goal_union(dst, src);
+ }
+ 
+ /**
+@@ -795,6 +809,7 @@ int damos_commit_quota_goals(struct damo
+ 				src_goal->metric, src_goal->target_value);
+ 		if (!new_goal)
+ 			return -ENOMEM;
++		damos_commit_quota_goal_union(new_goal, src_goal);
+ 		damos_add_quota_goal(dst, new_goal);
+ 	}
+ 	return 0;
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-sysfs-implement-refresh_ms-file-under-kdamond-directory.patch
+mm-damon-sysfs-implement-refresh_ms-file-internal-work.patch
+docs-admin-guide-mm-damon-usage-document-refresh_ms-file.patch
+docs-abi-damon-update-for-refresh_ms.patch
+mm-damon-ops-common-ignore-migration-request-to-invalid-nodes.patch
+selftests-damon-sysfspy-stop-damon-for-dumping-failures.patch
+selftests-damon-_damon_sysfs-support-damos-watermarks-setup.patch
+selftests-damon-_damon_sysfs-support-damos-filters-setup.patch
+selftests-damon-_damon_sysfs-support-monitoring-intervals-goal-setup.patch
+selftests-damon-_damon_sysfs-support-damos-quota-weights-setup.patch
+selftests-damon-_damon_sysfs-support-damos-quota-goal-nid-setup.patch
+selftests-damon-_damon_sysfs-support-damos-action-dests-setup.patch
+selftests-damon-_damon_sysfs-support-damos-target_nid-setup.patch
+selftests-damon-_damon_sysfs-use-232-1-as-max-nr_accesses-and-age.patch
+selftests-damon-drgn_dump_damon_status-dump-damos-migrate_dests.patch
+selftests-damon-drgn_dump_damon_status-dump-ctx-opsid.patch
+selftests-damon-drgn_dump_damon_status-dump-damos-filters.patch
+selftests-damon-sysfspy-generalize-damos-watermarks-commit-assertion.patch
+selftests-damon-sysfspy-generalize-damosquota-commit-assertion.patch
+selftests-damon-sysfspy-test-quota-goal-commitment.patch
+selftests-damon-sysfspy-test-damos-destinations-commitment.patch
+selftests-damon-sysfspy-generalize-damos-scheme-commit-assertion.patch
+selftests-damon-sysfspy-test-damos-filters-commitment.patch
+selftests-damon-sysfspy-generalize-damos-schemes-commit-assertion.patch
+selftests-damon-sysfspy-generalize-monitoring-attributes-commit-assertion.patch
+selftests-damon-sysfspy-generalize-damon-context-commit-assertion.patch
+selftests-damon-sysfspy-test-non-default-parameters-runtime-commit.patch
+selftests-damon-sysfspy-test-runtime-reduction-of-damon-parameters.patch
+
 
