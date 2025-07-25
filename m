@@ -1,255 +1,169 @@
-Return-Path: <stable+bounces-164747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66B8B12178
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 18:10:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C644B121BB
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 18:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B6FAAC3CC6
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:09:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33ADB7BABBF
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329722EF28F;
-	Fri, 25 Jul 2025 16:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2011B2EF9D2;
+	Fri, 25 Jul 2025 16:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XVcwjVWw";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="joLBJxms";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XVcwjVWw";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="joLBJxms"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClZJji21"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9742EE606
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 16:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E04E2EF9CD;
+	Fri, 25 Jul 2025 16:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753459804; cv=none; b=UjNrsN8kUuvYsm2xBxYPeG3h3ZkKhv2frj/MWhXsj1DWiAGnc51pH9GbWDDy9cTdHHZC/uYG083yMAddMgvCIjLITPMebeBUb6LSuLc9bNHZlVtAzgj47AFnWmnV+6UHGnUYHjYgMs1NbwVId7WwuF4/iHtJrDikPXdm5FlGG9A=
+	t=1753460121; cv=none; b=D1OShj+Wo23ZZR4gHiqC1xDpdoULl4kbnvC/pUkGl92QUQxUllxYAuVCYYcIc45uyHbHlOQ7+EeuMghC2SoUpfptwzykj1gLfvOzBER9BT1dmqnEYf+kXzA8qJHPJ2vgAbjHwefdVNnKDXMvYoUU6AwNoKbwceZCmc1+sd5ZkG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753459804; c=relaxed/simple;
-	bh=nA5PzzSn24HJ353yCbVh/NhjcA52KJF8UioOO2CRN2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mH6M5A6jJmpcEttBHhshCWBn7Aj8hak4tDEvkVyvROpu9akO2VNmfjXDOGj1YMA5dAikzPcyFCO/8fALoq8LXPGOT3GzlP+7fDrXFs5zJLFeQW//184qdhEe/LjGGhv2cghzL49eSN/3KycAS5yYqsUn0tm1YQLFTy7KTeoaAYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XVcwjVWw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=joLBJxms; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XVcwjVWw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=joLBJxms; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A23131F795;
-	Fri, 25 Jul 2025 16:09:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753459799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RzzmnXod3F0xmGwLsBojXwSu1vrDZ6qn6GXPgitsM9w=;
-	b=XVcwjVWwLOmuPeyvvzcKu6+bKkyqBF3SSTuwP6rxranRakJapb9n748pYq5hVlVpvF5qSM
-	ddOYqQbDH6zXWpwOaBzSN0eKKyhK1r1fPcZVJyaop+d5oKWaARJYMQHl+WIOVoUrT93k4t
-	33DvwIcRyZOmQ3qwB4vfh0LjV/FLLtc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753459799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RzzmnXod3F0xmGwLsBojXwSu1vrDZ6qn6GXPgitsM9w=;
-	b=joLBJxmseqJsd02nTj8ecCUWc37VgYFtYN97kNYGAS2ICUJuEIyy5BXLyEO7igU/iVR3Rt
-	3JCL5jlSRC5zL+Dw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XVcwjVWw;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=joLBJxms
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753459799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RzzmnXod3F0xmGwLsBojXwSu1vrDZ6qn6GXPgitsM9w=;
-	b=XVcwjVWwLOmuPeyvvzcKu6+bKkyqBF3SSTuwP6rxranRakJapb9n748pYq5hVlVpvF5qSM
-	ddOYqQbDH6zXWpwOaBzSN0eKKyhK1r1fPcZVJyaop+d5oKWaARJYMQHl+WIOVoUrT93k4t
-	33DvwIcRyZOmQ3qwB4vfh0LjV/FLLtc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753459799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RzzmnXod3F0xmGwLsBojXwSu1vrDZ6qn6GXPgitsM9w=;
-	b=joLBJxmseqJsd02nTj8ecCUWc37VgYFtYN97kNYGAS2ICUJuEIyy5BXLyEO7igU/iVR3Rt
-	3JCL5jlSRC5zL+Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C96561373A;
-	Fri, 25 Jul 2025 16:09:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VA5fLVasg2iecgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 25 Jul 2025 16:09:58 +0000
-Date: Fri, 25 Jul 2025 17:09:57 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Bernard Metzler <BMT@zurich.ibm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Jakub Kicinski <kuba@kernel.org>, 
-	David Howells <dhowells@redhat.com>, Tom Talpey <tom@talpey.com>, 
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	kernel test robot <oliver.sang@intel.com>
-Subject: Re: [PATCH] RDMA/siw: Fix the sendmsg byte count in siw_tcp_sendpages
-Message-ID: <l5cavrkmzvebjqz62ttdajqc24q3fksxogiibv4tiee7c3j2lk@skxdyrnsqgmm>
-References: <20250723104123.190518-1-pfalcato@suse.de>
- <DS0SPRMB00679C99808A4D85BAB6DADF995FA@DS0SPRMB0067.namprd15.prod.outlook.com>
- <nwtutmewgtziygnp7drmhdxpenrbxumrjprcz7ls2afwub5lwf@due2djp7llv5>
- <DS0SPRMB006759C349217E60D43F923B995FA@DS0SPRMB0067.namprd15.prod.outlook.com>
+	s=arc-20240116; t=1753460121; c=relaxed/simple;
+	bh=fh0CjKHTZvu0FuhvdnqoJwzPfDDNX+QCT7SyJ14PPQs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uwmDzzZNt4w/bZy4krBuZ+jK8TWoE59bWkoT3JKiDCgBDlT5p8RhIVxa/vGRnFnlV8A7x5RR6GrjyRdAMwdRibJOjP5IQSs8UNJQ9soqYARS4DUooKDWwPn7JV8rWHy4y3gDPQdwO+r2G4tmxJcREcBcXMhWIpSvzd/AzWaQM8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClZJji21; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-313f68bc519so1811684a91.0;
+        Fri, 25 Jul 2025 09:15:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753460117; x=1754064917; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3cFi0vD7YessLF2r15au7TPe/jon8lIosOISFCfh1VM=;
+        b=ClZJji21xibaWUctuamOxgpSpc2mWYLC7998HFSvr1waknytKwxETK8Js3VFTMQ3st
+         lxN422PYDdPWmCmxYPmGJ0irMB6Gg17Q+DdlenHEHDTfUfhU3Y0cMkLlLFm4UFU5gNUR
+         oETKHBBn5amByFsXcXmSEJZ+veccns0GrT9o90P5no93Iw/RbC/99DCFfMCbVrP6/8+P
+         374xghyt9uYjMrFAHJM08VWmSKmW6Ql5Ohy8qrjzqHKJIQHEqfnD6W+XVsfcfyFIRWB1
+         Ig4X7hyp2culaIF0aVN0Rw38hMdeNk6otrr1ctr22KHSFReZcKVlLPaBFfGfpnn/2Q3Y
+         fH3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753460117; x=1754064917;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3cFi0vD7YessLF2r15au7TPe/jon8lIosOISFCfh1VM=;
+        b=wQ1yysnnMZkcn7A0GnIxjSZwUQeFyGIcRjxf1dJsyGvUMbb4i3W3T14CFD/61VqIMz
+         LYUtFl3To5gdYQNHGA6kx+yDccz6vnwfcoQqAWuq6a+UAAtIbj+Bydd21W3wENsHnsJS
+         1HHBo7x3kvln/nEGdZk27XWkLXz7vMrMd0oplVmhtRHgzXNPfLs20tGXPLQBiWK7MZW0
+         whiX3GyQKFgW+u20uKOyvtFAtwRwnpFHkDfJN4/moK75h9xe1MERnn2IIWZbMHk7B1mD
+         ZtYayb8AVbi6MzkP2EIMA/g4XhTdRx5WTVLNuVnBZdeUvm4l5n9gvZCS43ZnccoyGQs8
+         +WRA==
+X-Forwarded-Encrypted: i=1; AJvYcCUi3m+v8hkx9HctBTWWskhwgEsD2PSCxatVbf9KKzDmOg74mjxFDmQg1whw5ztTe5aYXu7nT7zr@vger.kernel.org, AJvYcCVvAOTc6O/THNH1+pEYMqn/tu/RFCWzEz/5wmwhhPJIGw4/cPzoSTX01461covuPJy4I+v7DuaWInqGlTA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdzJhe5aTVF0Zwllkj6hkCoBUEN3urDpr3ElxOcYBGmRuC6186
+	o+MhLa6rkrsosPalcg8Dc7jIGqVkRFlmqR9/jYsjYrJ4LM5lKeQxlxYt89pJu5/6uQg=
+X-Gm-Gg: ASbGnct8SJRoLRAZRny46nkCGJKHDC8qOAmDer8kRKBv9GE7/JxN0xazyxaAffPxOvV
+	DGE9lsJxJbIVx2kzfAbo6ngARIG7NZdRmQIQElW6YASDoO/wj9MsbVbmqHEVap0F8N/9D2zH2xv
+	lryfWQZ8EsVW1LMeA4WfKEUiL4TQPY9mvGG5j30DlRmQ++VzOz1jPP1hqEEURnFS83hhgWfCrCm
+	JBepGoHYE9EYv+AXLrCvjV6oX6gpO2xWdocZwmaQkSMvYTIEr8qMGAQGsDxxvp9i+UiXbuwM/35
+	Ov7RF7WxotcxpQczeq9r+0RITlMg9ossGTp4VWw0/KNi9c1RQpI6m/UBxSbceACvW8ulUqgghed
+	IND1+6Fxy1xLAGF3hmWDlRMehJxn35O1AbYa2FezNjisx7RLR/wwY
+X-Google-Smtp-Source: AGHT+IEmBI+tcBrcxIwV7kA6wcfnWlRhgQZw2jycq881kY+fEq6W73LTONd/xlqvx9aFZrbYHRbH9Q==
+X-Received: by 2002:a17:90b:134e:b0:311:9c9a:58ca with SMTP id 98e67ed59e1d1-31e7788a6aemr3965185a91.8.1753460117304;
+        Fri, 25 Jul 2025 09:15:17 -0700 (PDT)
+Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-31e832fb879sm61604a91.6.2025.07.25.09.15.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 09:15:17 -0700 (PDT)
+From: Zenm Chen <zenmchen@gmail.com>
+To: linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com
+Cc: pkshih@realtek.com,
+	hildawu@realtek.com,
+	max.chou@realtek.com,
+	rtl8821cerfe2@gmail.com,
+	usbwifi2024@gmail.com,
+	Zenm Chen <zenmchen@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: btusb: Add USB ID 2001:332a for D-Link AX9U rev. A1
+Date: Sat, 26 Jul 2025 00:14:32 +0800
+Message-ID: <20250725161432.5401-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DS0SPRMB006759C349217E60D43F923B995FA@DS0SPRMB0067.namprd15.prod.outlook.com>
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.cz:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: A23131F795
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.01
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 23, 2025 at 04:49:30PM +0000, Bernard Metzler wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Pedro Falcato <pfalcato@suse.de>
-> > Sent: Wednesday, 23 July 2025 17:49
-> > To: Bernard Metzler <BMT@zurich.ibm.com>
-> > Cc: Jason Gunthorpe <jgg@ziepe.ca>; Leon Romanovsky <leon@kernel.org>;
-> > Vlastimil Babka <vbabka@suse.cz>; Jakub Kicinski <kuba@kernel.org>; David
-> > Howells <dhowells@redhat.com>; Tom Talpey <tom@talpey.com>; linux-
-> > rdma@vger.kernel.org; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > stable@vger.kernel.org; kernel test robot <oliver.sang@intel.com>
-> > Subject: [EXTERNAL] Re: [PATCH] RDMA/siw: Fix the sendmsg byte count in
-> > siw_tcp_sendpages
-> > 
-> > On Wed, Jul 23, 2025 at 02:52:12PM +0000, Bernard Metzler wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Pedro Falcato <pfalcato@suse.de>
-> > > > Sent: Wednesday, 23 July 2025 12:41
-> > > > To: Jason Gunthorpe <jgg@ziepe.ca>; Bernard Metzler
-> > <BMT@zurich.ibm.com>;
-> > > > Leon Romanovsky <leon@kernel.org>; Vlastimil Babka <vbabka@suse.cz>
-> > > > Cc: Jakub Kicinski <kuba@kernel.org>; David Howells
-> > <dhowells@redhat.com>;
-> > > > Tom Talpey <tom@talpey.com>; linux-rdma@vger.kernel.org; linux-
-> > > > kernel@vger.kernel.org; linux-mm@kvack.org; Pedro Falcato
-> > > > <pfalcato@suse.de>; stable@vger.kernel.org; kernel test robot
-> > > > <oliver.sang@intel.com>
-> > > [snip]
-> > > > ---
-> > > >  drivers/infiniband/sw/siw/siw_qp_tx.c | 4 ++--
-> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c
-> > > > b/drivers/infiniband/sw/siw/siw_qp_tx.c
-> > > > index 3a08f57d2211..9576a2b766c4 100644
-> > > > --- a/drivers/infiniband/sw/siw/siw_qp_tx.c
-> > > > +++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
-> > > > @@ -340,11 +340,11 @@ static int siw_tcp_sendpages(struct socket *s,
-> > struct
-> > > > page **page, int offset,
-> > > >  		if (!sendpage_ok(page[i]))
-> > > >  			msg.msg_flags &= ~MSG_SPLICE_PAGES;
-> > > >  		bvec_set_page(&bvec, page[i], bytes, offset);
-> > > > -		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-> > > > +		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
-> > > >
-> > > >  try_page_again:
-> > > >  		lock_sock(sk);
-> > > > -		rv = tcp_sendmsg_locked(sk, &msg, size);
-> > > > +		rv = tcp_sendmsg_locked(sk, &msg, bytes);
-> > > >  		release_sock(sk);
-> > > >
-> > >
-> > > Pedro, many thanks for catching this! I completely
-> > > missed it during my too sloppy review of that patch.
-> > > It's a serious bug which must be fixed asap.
-> > > BUT, looking closer, I do not see the offset being taken
-> > > into account when retrying a current segment. So,
-> > > resend attempts seem to send old data which are already
-> > > out. Shouldn't the try_page_again: label be above
-> > > bvec_set_page()??
-> > 
-> > This was raised off-list by Vlastimil - I think it's harmless to bump (but
-> > not use)
-> > the offset here, because by reusing the iov_iter we progressively consume
-> > the data
-> > (it keeps its own size and offset tracking internally). So the only thing
-> > we
-> > need to track is the size we pass to tcp_sendmsg_locked[1].
-> > 
+Add USB ID 2001:332a for D-Link AX9U rev. A1 which is based on a Realtek
+RTL8851BU chip.
 
-Hi,
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below:
 
-Sorry for the delay.
+T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2001 ProdID=332a Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=802.11ax WLAN Adapter
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-> Ah okay, I didn't know that. Are we sure? I am currently travelling and have
-> only limited possibilities to try out things. I just looked up other
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I'm not 100% sure, and if some more authoritative voice (David, or Jakub for
-the net side) could confirm my analysis, it would be great.
-
-> use cases and found one in net/tls/tls_main.c#L197. Here the loop looks
-> very similar, but it works as I was suggesting (taking offset into account
-> and re-initializing new bvec in case of partial send).
-> 
-> > If desired (and if my logic is correct!) I can send a v2 deleting that bit.
-> > 
-> 
-> So yes if that's all save, please. We shall not have dead code.
-
-Understood. I'll send a v2 resetting the bvec and iov_iter if we get no further
-feedback in the meanwhile.
-
-> 
-> Thanks!
-> Bernard.
-> > 
-> > [1] Assuming tcp_sendmsg_locked guarantees it will never consume something
-> > out
-> > of the iovec_iter without reporting it as bytes copied, which from a code
-> > reading
-> > it seems like it won't...
-> > 
-> > 
-> > --
-> > Pedro
-
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 8085fabad..3595a8bad 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -522,6 +522,8 @@ static const struct usb_device_id quirks_table[] = {
+ 	/* Realtek 8851BU Bluetooth devices */
+ 	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 
+ 	/* Realtek 8852AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
 -- 
-Pedro
+2.50.1
+
 
