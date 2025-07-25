@@ -1,73 +1,55 @@
-Return-Path: <stable+bounces-164738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33512B11F85
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 15:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF505B11FF5
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 693A95A0FFA
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 13:48:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD70956628B
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 14:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2856155A25;
-	Fri, 25 Jul 2025 13:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE3F1E5B70;
+	Fri, 25 Jul 2025 14:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ideco.ru header.i=@ideco.ru header.b="f9KH/TOg"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="XAo7NM2g"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.ideco.ru (smtp.ideco.ru [51.250.56.165])
+Received: from smtp126.iad3a.emailsrvr.com (smtp126.iad3a.emailsrvr.com [173.203.187.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4172E36EC;
-	Fri, 25 Jul 2025 13:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.250.56.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DAD1E86E;
+	Fri, 25 Jul 2025 14:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.126
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753451291; cv=none; b=QaYvR79i4TXYZhnKdrkDYvTS+n2r1er56GGY+eGeRsJxzZDp8om2LIi8Ra3pchogccmYX4pVS7XLXKfbRvStmYklxmstx+wJI9wMw19i9afdUw/l7NnGK3hv170ulpofaXjNb/GIe1Hwm5Hjr/BlOvaoN3/XzJH4D/7uywXCSq0=
+	t=1753453008; cv=none; b=s0oZdt1UDQVpJATMMIlZ8VZcaM0hKCwYQFVD7rXgeO22qFoIyyYk2ZMIgTrgq9AFcDw8yW3ixJCFLaJDdH9UWbCNrQLOLS2c2VEtK2IQ6vwS+ybmgRMWcdcJebH0O4xAW4FIqdw7Ajfxey5ayUtRkfveAMgOi5twasAf1FPB+1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753451291; c=relaxed/simple;
-	bh=vvmrtrfPtBmzTKUhKgCJJooQy2tH0DPXS/a5E4jOwLk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQePzmAiWjoJjwUbrqeUh6Z5NvPFGO+DMiRarGU0qkgDg1Ph3wksK60ukYKOY8TXO5P88pL/YUnWceNg74k1l+Hnmf/BBNLOR9AbXTNXkRKUIBMBuMvG507S30O30UIgsmeZdc+YJztr2ZrBwnIuBJn81+LLKiXqkROgW+fj2EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideco.ru; spf=pass smtp.mailfrom=ideco.ru; dkim=pass (2048-bit key) header.d=ideco.ru header.i=@ideco.ru header.b=f9KH/TOg; arc=none smtp.client-ip=51.250.56.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideco.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideco.ru
-Received: from [169.254.254.254] (localhost [127.0.0.1])
-	by smtp.ideco.ru (Postfix) with ESMTP id D083C102AA25;
-	Fri, 25 Jul 2025 18:48:01 +0500 (+05)
-Received: from fedora (unknown [94.159.101.170])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.ideco.ru (Postfix) with ESMTPSA id 5B846102AA22;
-	Fri, 25 Jul 2025 18:47:58 +0500 (+05)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.ideco.ru 5B846102AA22
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ideco.ru; s=ics;
-	t=1753451280; bh=Ri2roldixm+NLica0ywCM25fyV2yKL675O5a9OlTJJ0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f9KH/TOgJ9iVKA96XwGaVgpZK0JVYhUgY7XfA3uPCb1Qf4r31VObf3lIMcsQHTAgf
-	 GN14O9Z0ipN1JtAbia/1CIrnx6Hx0+ChAk7h4R6qtRAj9MHmg2mf9Y/N3D0y2bdkwL
-	 Gd2f5H//yQNUHomeZJlyiz0RbAFHFJbFS4Pn22lwd2eChDRE3I/M2wa3FaB+YKFu9m
-	 1SUuGdGnLgheQcs9UcS9DkPWeHO/mkzWGCoXOmqyqmaQGi/x+dvk177IeDqcsWEPCA
-	 zgX5AFakdNC7E+Mkf3/jDfJhrkh52pCWY3nSBbMdFf50l401Ku8YtPqXDEJoStCcEB
-	 ZZcCxB0KcgCnQ==
-From: Petr Vaganov <p.vaganov@ideco.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Petr Vaganov <p.vaganov@ideco.ru>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Tejun Heo <htejun@gmail.com>,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Boris Tonofa <b.tonofa@ideco.ru>
-Subject: [PATCH v2] scsi: fill in DMA padding bytes in scsi_alloc_sgtables
-Date: Fri, 25 Jul 2025 18:47:40 +0500
-Message-ID: <20250725134741.79887-1-p.vaganov@ideco.ru>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250725122202.77199-1-p.vaganov@ideco.ru>
-References: <20250725122202.77199-1-p.vaganov@ideco.ru>
+	s=arc-20240116; t=1753453008; c=relaxed/simple;
+	bh=ROLl58S+gJn/fUlsYyFBY1CY+gNDyUCGFs17XipEzP4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=plpHY723eLdPb/+nsd0zln/EjaHFOK9ctnC9dk1PWMfXIj6xWOhIQ3d0oJkBf/sKPhCWuO9hm4KUbtYOV1C6Ahqd3KNvnYfHELPiu/SkISiOt3Qt90ayaHvwVJsHm5UnB6IrgnaA2amOgESLfJqzt/YosMhCsEzVo0dMr2FpNig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=XAo7NM2g; arc=none smtp.client-ip=173.203.187.126
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1753452644;
+	bh=ROLl58S+gJn/fUlsYyFBY1CY+gNDyUCGFs17XipEzP4=;
+	h=From:To:Subject:Date:From;
+	b=XAo7NM2gg0RCt1UO0i718dYffzgkoMzIHTpa0Oy6ODLRKIiJEa5UWhi71VAYX6PqH
+	 RDPHp2IG9oFTMl9ZQG6yaIKIPT3F/U4fkYW9s2QBwyMAB/OoqKiRV1TaIVv8whgxqf
+	 Y4SqeGlZ3zddUguroZzFLWRM3jt5jK7Op2yKYw+0=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp8.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 24C2C50C5;
+	Fri, 25 Jul 2025 10:10:44 -0400 (EDT)
+From: Ian Abbott <abbotti@mev.co.uk>
+To: linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] comedi: Make insn_rw_emulate_bits() do insn->n samples
+Date: Fri, 25 Jul 2025 15:10:34 +0100
+Message-ID: <20250725141034.87297-1-abbotti@mev.co.uk>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,93 +57,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Classification-ID: 27552962-6841-452b-823c-acad1dc1325a-1-1
 
-During fuzz testing, the following issue was discovered:
+The `insn_rw_emulate_bits()` function is used as a default handler for
+`INSN_READ` instructions for subdevices that have a handler for
+`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
+handler for `INSN_WRITE` instructions for subdevices that have a handler
+for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
+`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
+`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
+instructions are supposed to be able read or write multiple samples,
+indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
+only handles a single sample.  For `INSN_READ`, the comedi core will
+copy `insn->n` samples back to user-space.  (That triggered KASAN
+kernel-infoleak errors when `insn->n` was greater than 1, but that is
+being fixed more generally elsewhere in the comedi core.)
 
-BUG: KMSAN: uninit-value in __dma_map_sg_attrs+0x217/0x310
- __dma_map_sg_attrs+0x217/0x310
- dma_map_sg_attrs+0x4a/0x70
- ata_qc_issue+0x9f8/0x1420
- __ata_scsi_queuecmd+0x1657/0x1740
- ata_scsi_queuecmd+0x79a/0x920
- scsi_queue_rq+0x4472/0x4f40
- blk_mq_dispatch_rq_list+0x1cca/0x3ee0
- __blk_mq_sched_dispatch_requests+0x458/0x630
- blk_mq_sched_dispatch_requests+0x15b/0x340
- __blk_mq_run_hw_queue+0xe5/0x250
- __blk_mq_delay_run_hw_queue+0x138/0x780
- blk_mq_run_hw_queue+0x4bb/0x7e0
- blk_mq_sched_insert_request+0x2a7/0x4c0
- blk_execute_rq+0x497/0x8a0
- sg_io+0xbe0/0xe20
- scsi_ioctl+0x2b36/0x3c60
- sr_block_ioctl+0x319/0x440
- blkdev_ioctl+0x80f/0xd70
- __se_sys_ioctl+0x219/0x420
- __x64_sys_ioctl+0x93/0xe0
- x64_sys_call+0x1d6c/0x3ad0
- do_syscall_64+0x4c/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
+an error, to conform to the general expectation for `INSN_READ` and
+`INSN_WRITE` handlers.
 
-Uninit was created at:
- __alloc_pages+0x5c0/0xc80
- alloc_pages+0xe0e/0x1050
- blk_rq_map_user_iov+0x2b77/0x6100
- blk_rq_map_user_io+0x2fa/0x4d0
- sg_io+0xad6/0xe20
- scsi_ioctl+0x2b36/0x3c60
- sr_block_ioctl+0x319/0x440
- blkdev_ioctl+0x80f/0xd70
- __se_sys_ioctl+0x219/0x420
- __x64_sys_ioctl+0x93/0xe0
- x64_sys_call+0x1d6c/0x3ad0
- do_syscall_64+0x4c/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Bytes 14-15 of 16 are uninitialized
-Memory access of size 16 starts at ffff88800cbdb000
-
-When processing the last unaligned element of the scatterlist,
-it is supplemented with missing bytes in the amount of pad_len.
-These bytes remain uninitialized, which leads to a problem.
-
-Add zeroing pad_len bytes of padding by pad_offset offset before
-increasing its length. This ensures that the DMA does not receive
-uninitialized data and eliminates the KMSAN warning.
-
-In this case, the pages are not located in highmem, but in the
-general case they might be, so kmap_local_page() is used for mapping.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 40b01b9bbdf5 ("block: update bio according to DMA alignment padding")
-Cc: stable@vger.kernel.org
-Co-developed-by: Boris Tonofa <b.tonofa@ideco.ru>
-Signed-off-by: Boris Tonofa <b.tonofa@ideco.ru>
-Signed-off-by: Petr Vaganov <p.vaganov@ideco.ru>
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: <stable@vger.kernel.org> # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 ---
-v2: Added tag "Cc: stable@vger.kernel.org".
+For 5.4.y and 5.10.y, this patch conflicts with submitted patches for
+upstream commit e9cb26291d00 ("comedi: Fix use of uninitialized data in
+insn_rw_emulate_bits()").
+---
+ drivers/comedi/drivers.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
- drivers/scsi/scsi_lib.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 144c72f0737a..d287e24b6013 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1153,6 +1153,11 @@ blk_status_t scsi_alloc_sgtables(struct scsi_cmnd *cmd)
- 	if (blk_rq_bytes(rq) & rq->q->limits.dma_pad_mask) {
- 		unsigned int pad_len =
- 			(rq->q->limits.dma_pad_mask & ~blk_rq_bytes(rq)) + 1;
-+		unsigned int pad_offset = last_sg->offset + last_sg->length;
-+		void *vaddr = kmap_local_page(sg_page(last_sg));
-+
-+		memset(vaddr + pad_offset, 0, pad_len);
-+		kunmap_local(vaddr);
+diff --git a/drivers/comedi/drivers.c b/drivers/comedi/drivers.c
+index f1dc854928c1..c9ebaadc5e82 100644
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -620,11 +620,9 @@ static int insn_rw_emulate_bits(struct comedi_device *dev,
+ 	unsigned int chan = CR_CHAN(insn->chanspec);
+ 	unsigned int base_chan = (chan < 32) ? 0 : chan;
+ 	unsigned int _data[2];
++	unsigned int i;
+ 	int ret;
  
- 		last_sg->length += pad_len;
- 		cmd->extra_len += pad_len;
+-	if (insn->n == 0)
+-		return 0;
+-
+ 	memset(_data, 0, sizeof(_data));
+ 	memset(&_insn, 0, sizeof(_insn));
+ 	_insn.insn = INSN_BITS;
+@@ -635,18 +633,21 @@ static int insn_rw_emulate_bits(struct comedi_device *dev,
+ 	if (insn->insn == INSN_WRITE) {
+ 		if (!(s->subdev_flags & SDF_WRITABLE))
+ 			return -EINVAL;
+-		_data[0] = 1U << (chan - base_chan);		     /* mask */
+-		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
++		_data[0] = 1U << (chan - base_chan);		/* mask */
+ 	}
++	for (i = 0; i < insn->n; i++) {
++		if (insn->insn == INSN_WRITE)
++			_data[1] = data[i] ? _data[0] : 0;	/* bits */
+ 
+-	ret = s->insn_bits(dev, s, &_insn, _data);
+-	if (ret < 0)
+-		return ret;
++		ret = s->insn_bits(dev, s, &_insn, _data);
++		if (ret < 0)
++			return ret;
+ 
+-	if (insn->insn == INSN_READ)
+-		data[0] = (_data[1] >> (chan - base_chan)) & 1;
++		if (insn->insn == INSN_READ)
++			data[i] = (_data[1] >> (chan - base_chan)) & 1;
++	}
+ 
+-	return 1;
++	return insn->n;
+ }
+ 
+ static int __comedi_device_postconfig_async(struct comedi_device *dev,
 -- 
-2.50.1
+2.47.2
 
 
