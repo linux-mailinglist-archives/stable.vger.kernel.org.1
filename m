@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-164755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35824B122B3
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:09:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57FCB122BC
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 19:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E38DAA2D44
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 17:07:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 619607BD3AE
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 17:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E452EF66B;
-	Fri, 25 Jul 2025 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78C22EF66B;
+	Fri, 25 Jul 2025 17:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqns/GEB"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="q6nsBbDk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6CB2EE5F6;
-	Fri, 25 Jul 2025 17:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722C8226863;
+	Fri, 25 Jul 2025 17:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753463288; cv=none; b=ro55/MtgOx3S05jvoy5lGfbrKKy4L4qJEX24L0nRacIM30M195EDAFkHerdwHHFsDJ3tIkbO9WEHF37bwkJsWXARd3Lfux54FdgEeHZQyxA+RxW8O3mr6xYMyr1eQnUmOg8iJj3/n4HoPK5FUxB1qktTM+pxitteOhkpdkLRu6c=
+	t=1753463462; cv=none; b=fCpZXEpyr0Eji2XQlVNMUhek4W1VkEh2b6HjHsrloQWVb1hfHWBe/LYbEJRQAbfNzXcuipebiVjqFhfgR3nJTs1F9Fhi4NWLePZeilIOarp2knyTZwPbrAPZQHZXGpSB5kV25VfwxeNCUxnW+PVu47vTUcATZKCHVEC6Lfh92w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753463288; c=relaxed/simple;
-	bh=eEiIL0rv55Mb2Vf0/AmSi7VJDqvdOD9ADdquhg19Z44=;
+	s=arc-20240116; t=1753463462; c=relaxed/simple;
+	bh=6h7nPOb3zXhqTcv4gANHQ2bvTVhFkIX8nsrG7OgiSdM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c8kIN+/Y7k9o49XzpYBr36hhuFkXyvhjNPnQDHeqxJnCO0DNN4F2m9Y6JuvgxRzyD1JM6b096mUFzOKoOLjc8hmez4aGw4VISOekXZzJBVh+aVO3odW4nrpJ4QJukJdvJlEWAhdSOt+vjeG6hXO+gt4Vwxb6QMZhe2hPVrTuk2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqns/GEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3832BC4CEE7;
-	Fri, 25 Jul 2025 17:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753463287;
-	bh=eEiIL0rv55Mb2Vf0/AmSi7VJDqvdOD9ADdquhg19Z44=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zqns/GEB3bmWH+iIQWRad69gSqXISVZ56gvDEmAHEGZ+iO2A8kwbdAAR3JUSJ0Go6
-	 YBqyQFLrgTFdlcgFa21yjYMkzKEcJOXcZ2OgimQgjqA9jXUj5DTSMhEClqto1FqL0M
-	 b26HA8kAP3Y1At2Q4c6tVwgJufnh9R6TsVr//u8w=
-Date: Fri, 25 Jul 2025 19:08:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Justin Stitt <justinstitt@google.com>, Marc Zyngier <maz@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Tom Rix <trix@redhat.com>,
-	Christopher Covington <cov@codeaurora.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] KVM: arm64: silence -Wuninitialized-const-pointer
- warning
-Message-ID: <2025072504-easel-propose-0474@gregkh>
-References: <20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com>
- <2025072553-chevy-starter-565e@gregkh>
- <20250725163851.GB684490@ax162>
+	 Content-Type:Content-Disposition:In-Reply-To; b=sT00wUe0XtMQXjrF7AnU2EqFHB287xWu2//ntKD+xiabSSGbIAFZtq0ONHKOmqnw3R2owjUdpusyUUcUi8uxVz2nP+dzZEej1JafrR9XcD0EDP6HhBIyMQDWTCd37R2G63eReke1rUH+kHzlbyYpkkZArN08GeJCm0zOK5a1KG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=q6nsBbDk; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=IwEj7tW3R8uCNKLY055BKb1g0sfs5+82uKkf0EViQnk=; b=q6nsBbDkqlaOI6zpV6bJS9CTol
+	XAKlVZQqfBwnB2MxRuZJMraL1hXQhohrtGkyp2l9rnDBXoyYn3Sh+LnpRalA0q42B7GYI/SJAAjJw
+	PgiHY4WOGExeZoRYvl7Z41eF5QqDaiLl6thfX1Wuw+s3+QyeGBiCJkwUO1k1co1kpn6o0YrFw6Oow
+	c3r+5XonilGVfG8f9gAz8TZAPMWgh9EFXqdtpi6LaNBIZcFDZzzQ+mucxd7PwH98CWHZVJK3rZj7F
+	wH0HdcOTf10xE07W0zVjM8yCW3RGgOEGaxYy1fuprasrdIFzlT4mbdqQNkyTVnnbKKW5Ik5LLxXPH
+	1PmDyyjA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ufLwZ-0000000FAKW-3dJu;
+	Fri, 25 Jul 2025 17:10:51 +0000
+Date: Fri, 25 Jul 2025 18:10:51 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Li Qiong <liqiong@nfschina.com>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm: slub: avoid deref of free pointer in sanity
+ checks if object is invalid
+Message-ID: <aIO6m2C8K4SrJ6mp@casper.infradead.org>
+References: <20250725064919.1785537-1-liqiong@nfschina.com>
+ <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,52 +66,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250725163851.GB684490@ax162>
+In-Reply-To: <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
 
-On Fri, Jul 25, 2025 at 09:38:51AM -0700, Nathan Chancellor wrote:
-> On Fri, Jul 25, 2025 at 10:58:05AM +0200, Greg KH wrote:
-> > On Thu, Jul 24, 2025 at 06:15:28PM -0700, Justin Stitt wrote:
-> > > A new warning in Clang 22 [1] complains that @clidr passed to
-> > > get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
-> > > doesn't really care since it casts away the const-ness anyways.
-> > 
-> > Is clang-22 somehow now a supported kernel for the 6.1.y tree?  Last I
-> > looked, Linus's tree doesn't even build properly for it, so why worry
-> > about this one just yet?
-> 
-> Our goal is to have tip of tree LLVM / clang be able to build any
-> supported branch of the kernel so that whenever it branches and
-> releases, the fixes for it are already present in released kernel
-> versions so users can just pick them up and go. We are going to have to
-> worry about this at some point since it is a stable-only issue so why
-> not tackle it now?
-> 
-> > > Silence the warning by initializing the struct.
-> > 
-> > Why not fix the compiler not to do this instead?  We hate doing foolish
-> > work-arounds for broken compilers.
-> 
-> While casting away the const from the pointer in this case is "fine"
-> because the object it pointed to was not const, I am fairly certain it
-> is undefined behavior to cast away the const from a pointer to a const
-> object, see commit 12051b318bc3 ("mips: avoid explicit UB in assignment
-> of mips_io_port_base") for an exampile, so I am not sure the warning is
-> entirely unreasonable.
+On Fri, Jul 25, 2025 at 06:47:01PM +0200, Vlastimil Babka wrote:
+> On 7/25/25 08:49, Li Qiong wrote:
+> > For debugging, object_err() prints free pointer of the object.
+> > However, if check_valid_pointer() returns false for a object,
+> > dereferncing `object + s->offset` can lead to a crash. Therefore,
+> > print the object's address in such cases.
 
-Hah, we've been doing that for _decades_ with container_of(), so if that
-is UB, and the compiler can't handle it, I'd declare that a broken
-compiler :)
+I don't know where this patch came from (was it cc'd to linux-mm? i
+don't see it)
 
-Look at e78f70bad29c ("time/timecounter: Fix the lie that struct
-cyclecounter is const") in linux-next as one example of me trying to fix
-that mess up.  It's going to take a bunch of work to get there, but
-eventually we will.  We will not be backporting all of those patches
-though, that would be way too much work.
+> >  
+> > +/*
+> > + * object - should be a valid object.
+> > + * check_valid_pointer(s, slab, object) should be true.
+> > + */
 
-Anyway, as the maintainer doesn't seem to want this, I guess I'll just
-ignore it for now?
+This comment is very confusing.  It tries to ape kernel-doc style,
+but if it were kernel-doc, the word before the hyphen should be the name
+of the function, and it isn't.  If we did use kernel-doc for this, we'd
+use @object to denote that we're documenting the argument.
 
-thanks,
+But I don't see the need to pretend this is related to kernel-doc.  This
+would be better:
 
-greg k-h
+/*
+ * 'object' must be a valid pointer into this slab.  ie
+ * check_valid_pointer() would return true
+ */
+
+I'm sure better wording for that is possible ...
+
+> >  	if (!check_valid_pointer(s, slab, object)) {
+> > -		object_err(s, slab, object, "Freelist Pointer check fails");
+> > +		slab_err(s, slab, "Invalid object pointer 0x%p", object);
+> >  		return 0;
+
+No, the error message is now wrong.  It's not an object, it's the
+freelist pointer.
+
+		slab_err(s, slab, "Invalid freelist pointer %p", object);
+
+(the 0x%p is wrong because it will print 0x twice)
+
+But I think there are even more things wrong here.  Like slab_err() is
+not nerely as severe as slab_bug(), which is what used to be called.
+And object_err() adds a taint, which this skips.
+
+Altogether, this is a poorly thought out patch and should be dropped.
 
