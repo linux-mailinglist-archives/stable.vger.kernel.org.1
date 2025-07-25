@@ -1,146 +1,114 @@
-Return-Path: <stable+bounces-164731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8552BB11D7B
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 13:27:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31278B11E12
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 14:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C0E5A4455
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 11:27:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EFF51C2772A
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336892E6137;
-	Fri, 25 Jul 2025 11:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DDD242936;
+	Fri, 25 Jul 2025 12:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lmsIkubR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L47/rdFP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEC12114;
-	Fri, 25 Jul 2025 11:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F2C241668
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 12:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753442846; cv=none; b=qJHjdOh2lxkOuwx6DuEqIDeEHRoEAhmvL+shD/Zc0ccNWWC6k0qIiPn/zPxlprVGllGP8VOHAGS9u3TveBxjDv2N1Y/iKzy6hnWwgvywUpQYnPzN4VEen/+K20fwvXv4V1A6Gc7EHbYoMM7m30u/XYE9PH8MKGKm5YtcjT6Hyx0=
+	t=1753445000; cv=none; b=gKUr8kng0EDCnfuFPFz6Npr1PbKVMV+jchOEgvgd3Y1aHBIB5+T+MHeWQ+vR4MADeXX7FhuHGdmAj0lBWY6IQHbe+Tw/zv93nkukgR2uTcfbczYkcWQjnVcmg1YczgPNCGZ/XxOLS8pSol70SU7tcanaxWOn+8zx2ZItk+m8gi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753442846; c=relaxed/simple;
-	bh=+wEueGMSq/GWSW913wV+r02q1yzQXRc5gpvONjMAkfk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hhO8/fwPxId3/CvZLNvuIuo8WNbahHAeDojU1YwMJhtSgNG0fR9PLV9iq0fvzkTRsMYbzjfhDu9EnvnblrNgkee5ukKs+3inuo3leYJLp3FayjRX6MqCB4zequk8SfRCNOQhENCvNTJXGDC8VK/7gXg+vSLmA81CNnseV/6xa0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lmsIkubR; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56P8s9IR015762;
-	Fri, 25 Jul 2025 11:27:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=dzjU7ttLJ/mNbzQTDtKPdy
-	iYr7bxF356Q7uC+lXe6Hw=; b=lmsIkubRD7bgOc7yjPlIKFFu99M+49UecYiu7m
-	EzcR5iqvUb4Btnj7RZutcKJ+raeJ8jbqcXEA5buWD8NNiiG3ut6lTL+P3kkd2MiP
-	4e0HKPVJH+ParGeW/YX+8RFAOKrv9nSp140W2lXfQiTHGALfGwluYRyLj3A+BqYV
-	AR2z5ziuj5YUh9fKmLjbxL83AIe6EZDgc4JVQR68WCxBFFjiIQksZdCAc6OKpXS7
-	k7OSO9yLSqjlFD3I7uzNgrh8iupVy1RRKxKBv8pC1Ss+UTqlZiu72/Fr3V5MkqqK
-	Vqym/Hm4meWowKD15/Vhtt9BpFNf4B+JjQJMfYtBGVSfDcig==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 483w501vea-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 11:27:19 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56PBRFfN031820;
-	Fri, 25 Jul 2025 11:27:15 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 483ef2s3qq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 11:27:15 +0000
-Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56PBREVh031815;
-	Fri, 25 Jul 2025 11:27:14 GMT
-Received: from hu-devc-blr-u20-c-new.qualcomm.com (hu-hardshar-blr.qualcomm.com [10.190.104.221])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 56PBRELT031814
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 11:27:14 +0000
-Received: by hu-devc-blr-u20-c-new.qualcomm.com (Postfix, from userid 3848816)
-	id E3C8620A5F; Fri, 25 Jul 2025 16:57:13 +0530 (+0530)
-From: Hardeep Sharma <quic_hardshar@quicinc.com>
-To: Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Hardeep Sharma <quic_hardshar@quicinc.com>
-Subject: [PATCH 6.6.y v2 1/1] block: Fix bounce check logic in blk_queue_may_bounce()
-Date: Fri, 25 Jul 2025 16:57:10 +0530
-Message-Id: <20250725112710.219313-1-quic_hardshar@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1753445000; c=relaxed/simple;
+	bh=CqWK6AkacP8H5wXTmziPUbXlgPcSs9pBqfR+AzjnTQs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DoHvotH+0k3yTD+Ab/Z2RbBfA/b8cCe73BKsPxV17TcW+12ZfQo/SFUeOgfWSHR+bZoylXVHqWlweHoixNwUORrvhejM9JVLtSPux+xJzwVecGNH4qoGyXTvrADYqW1Z4558hMeAUqk8TuckrTlDDPMiryFVrjcwXTCs4vrHSb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L47/rdFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F459C4CEF6;
+	Fri, 25 Jul 2025 12:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753444999;
+	bh=CqWK6AkacP8H5wXTmziPUbXlgPcSs9pBqfR+AzjnTQs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L47/rdFPbU/YIBdOKKhixMDMHYEP7P9gaXDXv/Sq503AjciFFVymoQD2wqYGMDAuo
+	 Xr8moJfaEgGfJyPZbFtbmigmFJTBe38IwhK/hC3UHMv75ID3yLlNi7ExeE/yhbhum6
+	 4hNoBD+fQ2qVT9WvueebXpBD7xmQjrzYh4eLJw8w=
+Date: Fri, 25 Jul 2025 14:03:15 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Arin Sun <sunxploree@gmail.com>
+Cc: stable@vger.kernel.org, x86@kernel.org, tglx@linutronix.de
+Subject: Re: [stable backport request] x86/ioremap: Use is_ioremap_addr() in
+ iounmap() for 5.15.y
+Message-ID: <2025072520-pedometer-abstract-f159@gregkh>
+References: <CAGvw722wvDKxrmhm--3xu2Ck7fG0Z4PAOyeNaN27bwccbVLRGg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: uDR2AzBEjnWe6eR8y_qZn4lC_Oebq-lx
-X-Proofpoint-ORIG-GUID: uDR2AzBEjnWe6eR8y_qZn4lC_Oebq-lx
-X-Authority-Analysis: v=2.4 cv=bKAWIO+Z c=1 sm=1 tr=0 ts=68836a17 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=6abORDSa23aJwOuxMHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI1MDA5NyBTYWx0ZWRfX2lxgPXhYh/AK
- oAlndLLqc7CF363FR8zfpgHs9nRYB2iMJHSfnumr/6IVkc6/64dw/LYGxocdhiayIq4NwYsKafA
- 3deo0JsP0/iJ8RLT34dLgPEyNIiQBdNIAmmSFft+Hk128UyMG7DDAA5lTT3UiQaFf0l/Kqd5c0e
- ygkxDzxyfqITq1GJz19l9SX2ofG0bjPg4ckeho6y6klbjtHdUDzM9OSf9P29+KDk7ng9BZad+dn
- l1syhrRDT6isvjWpggUgwslFDZ1J25sQzcmch63YxekHYTuX/fM6/F1wZEuCUZFVadbATtcSlWL
- dSFNHkzKl9pU1IpkM3YjBu8rCAtVFp/hzVs2CwfKPjIAqjjQfuHP66g7vauCcDimUkIwIs12ZyC
- ixC44rVjXWbc5JBdeXaUv7ZaWhKgwb/NspVOr1aRaov3BzPS1uqqYuaZvetKugOGeZ75vIBR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-25_03,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 spamscore=0 mlxlogscore=739 clxscore=1015
- phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 mlxscore=0
- suspectscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507250097
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGvw722wvDKxrmhm--3xu2Ck7fG0Z4PAOyeNaN27bwccbVLRGg@mail.gmail.com>
 
-Buffer bouncing is needed only when memory exists above the lowmem region,
-i.e., when max_low_pfn < max_pfn. The previous check (max_low_pfn >=
-max_pfn) was inverted and prevented bouncing when it could actually be
-required.
+On Fri, Jul 25, 2025 at 06:32:50PM +0800, Arin Sun wrote:
+> Dear Stable Kernel Team and Maintainers,
+> 
+> I am writing to request a backport of the following commit from the
+> mainline kernel to the 5.15.y stable branch:
+> 
+> Commit: x86/ioremap: Use is_ioremap_addr() in iounmap()
+> ID: 50c6dbdfd16e312382842198a7919341ad480e05
+> Author: Max Ramanouski
+> Merged in: Linux 6.11-rc1 (approximately August 2024)
 
-Note that bouncing depends on CONFIG_HIGHMEM, which is typically enabled
-on 32-bit ARM where not all memory is permanently mapped into the kernel’s
-lowmem region.
+It showed up in 6.12, not 6.11.
 
-Fixes: 9bb33f24abbd0 ("block: refactor the bounce buffering code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hardeep Sharma <quic_hardshar@quicinc.com>
----
-Changelog v1..v2:
+> This commit fixes a bug in the iounmap() function for x86
+> architectures in kernel versions 5.x. Specifically, the original code
+> uses a check against high_memory:
+> 
+> 
+> if ((void __force *)addr <= high_memory)
+> return;
+> 
+> This can lead to memory leaks on certain x86 servers where ioremap()
+> returns addresses that are not guaranteed to be greater than
+> high_memory, causing the function to return early without properly
+> unmapping the memory.
+> 
+> The fix replaces this with is_ioremap_addr(), making the check more reliable:
+> 
+> if (WARN_ON_ONCE(!is_ioremap_addr((void __force *)addr)))
+> return;
+> 
+> I have checked the 5.15.y branch logs and did not find this backport.
+> This issue affects production environments, particularly on customer
+> machines where we cannot easily deploy custom kernels. Backporting
+> this to 5.15.y (and possibly other LTS branches like 5.10.y if
+> applicable) would help resolve the memory leak without requiring users
+> to upgrade to 6.x series.
+> 
+> Do you have plans to backport this commit? If not, could you please
+> consider it for inclusion in the stable releases?
 
-* Updated subject line
+Note, this caused problems that later commits were required to fix up.
 
- block/blk.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Can you please provide a set of properly backported commits, that are
+tested, to all of the relevant kernel trees that you need/want this for?
+You can't just apply a patch to an older kernel tree and not a newer one
+as that would cause a regression when upgrading, right?
 
-diff --git a/block/blk.h b/block/blk.h
-index 67915b04b3c1..f8a1d64be5a2 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -383,7 +383,7 @@ static inline bool blk_queue_may_bounce(struct request_queue *q)
- {
- 	return IS_ENABLED(CONFIG_BOUNCE) &&
- 		q->limits.bounce == BLK_BOUNCE_HIGH &&
--		max_low_pfn >= max_pfn;
-+		max_low_pfn < max_pfn;
- }
- 
- static inline struct bio *blk_queue_bounce(struct bio *bio,
--- 
-2.25.1
+But I might ask, why not just move to the 6.12.y release?  What is
+forcing you to keep on 5.15.y and what are you plans for moving off of
+that in a few years?
 
+thanks,
+
+greg k-h
 
