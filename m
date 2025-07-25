@@ -1,99 +1,133 @@
-Return-Path: <stable+bounces-164735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DF3B11E8F
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 14:31:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141FDB11F2F
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 15:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F6251899879
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 12:31:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CE5716812B
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 13:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E19283FDD;
-	Fri, 25 Jul 2025 12:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADC62ECD25;
+	Fri, 25 Jul 2025 13:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ukk25p1V"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="s17j6S4M"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp73.iad3a.emailsrvr.com (smtp73.iad3a.emailsrvr.com [173.203.187.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4F923FC66
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 12:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1412ECD19
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 13:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753446692; cv=none; b=G3p35TcfyIM4QF9v9AwzvRGktQS+b9qDucNXY2Rl8YZEV9NRS2HRd2dJUqxj6YcMufCriaN9wehCRHAZrIOjXFFCvNAzLVuZWTrO2hZ2IXmCVQjpFqjS3vobktFpPsiGi1K42sDkKDH9iXcB7cG2G03uRIh8p5wLKa1+NYDvHdw=
+	t=1753449110; cv=none; b=K7fuqFq/S48Ykg2ysw7JxYg0XQeZaakSWMcdc6s5k9KugWamDP7jzuAO7C0Nn+cvNhaLjzAqMMtc2SW8mbU7fxbd3R7ki6oYzjuIM0aPKEC4rWgc4c1oz8xhSjI+hiJH8OejMatPOLmpreoGJeUp4eASwwRA7sOxdpprz16yqgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753446692; c=relaxed/simple;
-	bh=QuhtXEF558ISpH8qAP+o4qrzE6+/pt/sBl9bxWrr+fQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=fVNBDceZYnWlJGgHL0h79FpbIpJmSqoo9ltEEyw1AZ24qukWsqByNiA1dJbSS5iWPTvWbdx9jg9FV8f7m+MfJZ4Smc49JDbSvezXMDITmCUibCkH50zkt6IBo/1ddXn1z/a6WQfgaTl4fW16cZ0RS3pFt0yb23C/fGc7OoyQgE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ukk25p1V; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753446691; x=1784982691;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=QuhtXEF558ISpH8qAP+o4qrzE6+/pt/sBl9bxWrr+fQ=;
-  b=Ukk25p1VpaL7h7lGbVjblI4m0RbYoj3ocl9VuogNjW/ozPH5B0vURcBX
-   3EPVIN64x00P6ox7Wh0ReZBMeLsPGKhpIBB1VsoHdMvUyWJaYyQWDqapj
-   cKolfJ9LM8JIuOEkopMtgfC2aoqkxsb57AALVWrgE3Cge6oXOSQe0E1CR
-   NjP+o5BCWHurusGVwM4ni0nlSAWDUcrOORZaTCR/rTGRaSoVWxbmUdaKn
-   MoOvH2P0+cDjQeSqWzwvD/7/N7fOHHv8mXfbYZU13M49iVME30gPse7KX
-   u/hGXvAmhMPNpe4IHnZX9VeUSkKAwcONKRNRPUiwkBCrGkTo1qxQDWw+0
-   g==;
-X-CSE-ConnectionGUID: IBpjiZVLRfC+FiK+/rHjAA==
-X-CSE-MsgGUID: J1/YNOnXT42ItUG46CE0rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="78329819"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="78329819"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 05:31:27 -0700
-X-CSE-ConnectionGUID: 5gekBHuPS0eaAhaNPfp+qA==
-X-CSE-MsgGUID: uATsL25sQ9iS/IC6ZRVaKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="166310356"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 25 Jul 2025 05:31:25 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ufHa7-000LJf-1i;
-	Fri, 25 Jul 2025 12:31:23 +0000
-Date: Fri, 25 Jul 2025 20:30:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Petr Vaganov <p.vaganov@ideco.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] scsi: fill in DMA padding bytes in scsi_alloc_sgtables
-Message-ID: <aIN466I95rNVIhIj@eafdfd67401a>
+	s=arc-20240116; t=1753449110; c=relaxed/simple;
+	bh=lkIWUunyv3x/dZPZ/tcijNWfCqbJR26FnC55X/GlDi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CLvj1pz3ApDMYDNCaidNmC3TFRNto5vR21n/xl2srt2GapXDWnouSUk8MRjdMFb0nirm2oPVY4XfvQImUgk7YeQy3Bq57K8UptK9DOmShx4fAKcgk/MIQsRgfPncgKOXeYFISszBi1b+kqelWUr6zC71VtPiHQ6f6Cr+IrNusZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=s17j6S4M; arc=none smtp.client-ip=173.203.187.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1753448016;
+	bh=lkIWUunyv3x/dZPZ/tcijNWfCqbJR26FnC55X/GlDi0=;
+	h=From:To:Subject:Date:From;
+	b=s17j6S4M9YteohsTH9vchjxZvjniukgjiZJDiYMI+9hq/NXmD+bvwuHtDi/m2T8eO
+	 WFGGEgFOehxkzf3Zo55Sfas+EItgahBGKNqiVFxwhhXLn8lu9zGZV5bUItNRYSKwJv
+	 BFrye3Z0ykFpzj0FpOO+eHw+Y2VWTw/36or1aNcI=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp26.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 3CF454276;
+	Fri, 25 Jul 2025 08:53:35 -0400 (EDT)
+From: Ian Abbott <abbotti@mev.co.uk>
+To: linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com,
+	syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Arnaud Lecomte <contact@arnaud-lcm.com>
+Subject: [PATCH] comedi: Fix use of uninitialized memory in do_insn_ioctl() and do_insnlist_ioctl()
+Date: Fri, 25 Jul 2025 13:53:24 +0100
+Message-ID: <20250725125324.80276-1-abbotti@mev.co.uk>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250725122202.77199-1-p.vaganov@ideco.ru>
+Content-Transfer-Encoding: 8bit
+X-Classification-ID: 52ef133e-236b-42a9-97f2-65e8f65113a2-1-1
 
-Hi,
+syzbot reports a KMSAN kernel-infoleak in `do_insn_ioctl()`.  A kernel
+buffer is allocated to hold `insn->n` samples (each of which is an
+`unsigned int`).  For some instruction types, `insn->n` samples are
+copied back to user-space, unless an error code is being returned.  The
+problem is that not all the instruction handlers that need to return
+data to userspace fill in the whole `insn->n` samples, so that there is
+an information leak.  There is a similar syzbot report for
+`do_insnlist_ioctl()`, although it does not have a reproducer for it at
+the time of writing.
 
-Thanks for your patch.
+One culprit is `insn_rw_emulate_bits()` which is used as the handler for
+`INSN_READ` or `INSN_WRITE` instructions for subdevices that do not have
+a specific handler for that instruction, but do have an `INSN_BITS`
+handler.  For `INSN_READ` it only fills in at most 1 sample, so if
+`insn->n` is greater than 1, the remaining `insn->n - 1` samples copied
+to userspace will be uninitialized kernel data.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Another culprit is `vm80xx_ai_insn_read()` in the "vm80xx" driver.  It
+never returns an error, even if it fails to fill the buffer.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Fix it in `do_insn_ioctl()` and `do_insnlist_ioctl()` by making sure
+that uninitialized parts of the allocated buffer are zeroed before
+handling each instruction.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] scsi: fill in DMA padding bytes in scsi_alloc_sgtables
-Link: https://lore.kernel.org/stable/20250725122202.77199-1-p.vaganov%40ideco.ru
+Thanks to Arnaud Lecomte for their fix to `do_insn_ioctl()`.  That fix
+replaced the call to `kmalloc_array()` with `kcalloc()`, but it is not
+always necessary to clear the whole buffer.
 
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Reported-by: syzbot+a5e45f768aab5892da5d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a5e45f768aab5892da5d
+Reported-by: syzbot+fb4362a104d45ab09cf9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fb4362a104d45ab09cf9
+Cc: <stable@vger.kernel.org> #5.13+
+Cc: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+Cherry picks to fix this for 5.4.y and 5.10.y not yet available.
+---
+ drivers/comedi/comedi_fops.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
+index 23b7178522ae..7e2f2b1a1c36 100644
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -1587,6 +1587,9 @@ static int do_insnlist_ioctl(struct comedi_device *dev,
+ 				memset(&data[n], 0, (MIN_SAMPLES - n) *
+ 						    sizeof(unsigned int));
+ 			}
++		} else {
++			memset(data, 0, max_t(unsigned int, n, MIN_SAMPLES) *
++					sizeof(unsigned int));
+ 		}
+ 		ret = parse_insn(dev, insns + i, data, file);
+ 		if (ret < 0)
+@@ -1670,6 +1673,8 @@ static int do_insn_ioctl(struct comedi_device *dev,
+ 			memset(&data[insn->n], 0,
+ 			       (MIN_SAMPLES - insn->n) * sizeof(unsigned int));
+ 		}
++	} else {
++		memset(data, 0, n_data * sizeof(unsigned int));
+ 	}
+ 	ret = parse_insn(dev, insn, data, file);
+ 	if (ret < 0)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.47.2
 
 
