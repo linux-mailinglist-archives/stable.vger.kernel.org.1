@@ -1,141 +1,136 @@
-Return-Path: <stable+bounces-164741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF505B11FF5
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91516B11FE4
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 16:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD70956628B
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 14:17:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA45D564EC8
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 14:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE3F1E5B70;
-	Fri, 25 Jul 2025 14:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAE6224225;
+	Fri, 25 Jul 2025 14:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="XAo7NM2g"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pBebP9rA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp126.iad3a.emailsrvr.com (smtp126.iad3a.emailsrvr.com [173.203.187.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DAD1E86E;
-	Fri, 25 Jul 2025 14:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.126
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EE27494
+	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 14:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753453008; cv=none; b=s0oZdt1UDQVpJATMMIlZ8VZcaM0hKCwYQFVD7rXgeO22qFoIyyYk2ZMIgTrgq9AFcDw8yW3ixJCFLaJDdH9UWbCNrQLOLS2c2VEtK2IQ6vwS+ybmgRMWcdcJebH0O4xAW4FIqdw7Ajfxey5ayUtRkfveAMgOi5twasAf1FPB+1w=
+	t=1753452981; cv=none; b=qcDRt3/LBwYVgf/ZmlQ58w22GD3INAtJeHo2GdzrUQRxiLIriEYZC2fQ5ykRMnk06aVSLOjJao/K2hBrykYQcbCITBp0H0R4C4q1z7WSSGGicfxf4s4rgnKmoFlUzAW5m3T+8NZidk8BdHuF8iZtF6EQDKTSvqBOlncmZt7z1Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753453008; c=relaxed/simple;
-	bh=ROLl58S+gJn/fUlsYyFBY1CY+gNDyUCGFs17XipEzP4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=plpHY723eLdPb/+nsd0zln/EjaHFOK9ctnC9dk1PWMfXIj6xWOhIQ3d0oJkBf/sKPhCWuO9hm4KUbtYOV1C6Ahqd3KNvnYfHELPiu/SkISiOt3Qt90ayaHvwVJsHm5UnB6IrgnaA2amOgESLfJqzt/YosMhCsEzVo0dMr2FpNig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=XAo7NM2g; arc=none smtp.client-ip=173.203.187.126
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1753452644;
-	bh=ROLl58S+gJn/fUlsYyFBY1CY+gNDyUCGFs17XipEzP4=;
-	h=From:To:Subject:Date:From;
-	b=XAo7NM2gg0RCt1UO0i718dYffzgkoMzIHTpa0Oy6ODLRKIiJEa5UWhi71VAYX6PqH
-	 RDPHp2IG9oFTMl9ZQG6yaIKIPT3F/U4fkYW9s2QBwyMAB/OoqKiRV1TaIVv8whgxqf
-	 Y4SqeGlZ3zddUguroZzFLWRM3jt5jK7Op2yKYw+0=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp8.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 24C2C50C5;
-	Fri, 25 Jul 2025 10:10:44 -0400 (EDT)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] comedi: Make insn_rw_emulate_bits() do insn->n samples
-Date: Fri, 25 Jul 2025 15:10:34 +0100
-Message-ID: <20250725141034.87297-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1753452981; c=relaxed/simple;
+	bh=8AW0wZtIdMTOecI8zEy7or/xRHq/+HDNB4Msky+fi4A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F7YGUZjJkw3Nvt91P/gJikNBkpd6eT13dQmnSiftXErgkSmMk6zy1axbxzE86/88tj8LGMBupoDluQqN0XDF0CwM9FLB8bAEkJkiUM8s6oBD8TynzvVJqcHX2JIo0h6AR4+nR61vQyRNTnsLoyWlHWkGP5nIHZPvdQmp32YOKF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pBebP9rA; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-60700a745e5so4646741a12.3
+        for <stable@vger.kernel.org>; Fri, 25 Jul 2025 07:16:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1753452978; x=1754057778; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0GYrZkLXVXcOZgbWnPr9ONxYHIczwht5gJlvJdmNzQk=;
+        b=pBebP9rALtTAJKnpPJpllQiQY9VyHBqULO3QVOWmJ5tHTNwIFaXLluiQHWXyiL6Xy0
+         PhL6Ido0qCPelByNCaLUEzqA3kJel/6i8NBKeOVLVA6tfG6fWetUM75BBKojyvH3CemT
+         2aD6LpUKdXpATcx9W+fWh9va6Rdfrk+2QKO7HDcLplrwT+N4Eh6Ncv3b6qJyPOeKCoa+
+         3aXEpODFl5Y5Vt/SowT0DixTR1wlN/snGgxQ5cIYPuGCXYMlUqdnjTMObT//AVbIJjNa
+         ngCDvW/QKYOCyittTgnCCR7/Od/oT4wO9oTXE/PejAjzg7k/7gtTB8rV4kPMUUnkgjoj
+         /zEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753452978; x=1754057778;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0GYrZkLXVXcOZgbWnPr9ONxYHIczwht5gJlvJdmNzQk=;
+        b=JiR04sYM4YJ8y8AruEiadny4ZMvoe+O0fQYA4VUcuoOibpXGGxV667THQAwO/1NL1t
+         HW+cFZXa+H42GbcrtJOTfYtrFEyaq8iHmEeCoFi1ngai4ptfB4MtvLSImf04KQzkxVzp
+         RDfPdKyN102Yfjn482LvPeMqPJMYmVJgfQVQD+pfZxSk1d3Wxd5A9TP4viAjLPYCIhG9
+         E2GbFNpBYWZUWtljjy29Dvdofe8t7OJpVSzTnljymPjInhsf+LRgG1vB4OtASNLKVWlP
+         vlKY2/OeFhFnmJIzjFiWop+WzL9Pk6F92fBFygfpWy/2q0SFW5nS+yg/127oHeJhGY0G
+         gGDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVtQkTcqTUDaRgd1Blj2yHd56kMELwQU8ETE1FxE/uBwwqH9k1rU69XzO/MBlL8JJvxJ3bZPok=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5WIBjGHWH0XyaMyZ9gUpdJEPqDGhi10rM7TxyeOUOpBrVCAtJ
+	4il2eHmFO5hBNl3SrleNufxhKDZzR3nkOB0bwHrr7UwVjVHKETuVb000oEZZCwq6E2c=
+X-Gm-Gg: ASbGncvhtN6650FEMU0WOWI/XuyVhGiAFBJq+UPHr+v8UZ3c1Bst3wyLyssJkyc1mGA
+	3rD3ovY1Zt9vlDUovvWuxB7z7Rzh6o9uvdQd/J6gefA6QzwVYmAWJdDMDPyDzQq7lFQcEoiZ29u
+	UD5lSzG8cs5TcMJV7muABl6ERaVgOcuijQCJX8bE2/aqVv+wbzgl/dyECC6yMZ9lHV3nZOAbg09
+	kvfM2DHLXbfAR3w8v4k75bMQBrGirQ3UOMsPu7IqVlPs9c5Od4CPbnBazB8i3wGkSkAYS5P8wPs
+	NpBgz+u1dIe33tDY9LCHWqgoNpXxvxZwHsZy4kklKTzm1z2SePHfeskLxl6UJpKJquzLpN04qNU
+	gYLc5m+3VHNEytWBguzV5PRYkOXMUG7EWYZUJzn6J8tMvVUeRKFvh4rKG0J3kzsdInjgaR/Wcze
+	hOGXAQ8A==
+X-Google-Smtp-Source: AGHT+IESxxtSVuTR7JcpPvCin5sJRXnxskX5QKzVI4SQNZf89ZEV5qKL5Ev6pflyXfFUSgm5m/ZQVA==
+X-Received: by 2002:a17:907:7205:b0:ae3:bb4a:91fb with SMTP id a640c23a62f3a-af61ef2e6demr228089066b.59.1753452977655;
+        Fri, 25 Jul 2025 07:16:17 -0700 (PDT)
+Received: from puffmais.c.googlers.com (8.239.204.35.bc.googleusercontent.com. [35.204.239.8])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47f85e60bsm278398966b.96.2025.07.25.07.16.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 07:16:17 -0700 (PDT)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Subject: [PATCH v2 0/2] scsi: ufs: core: interrupt handling optimisations
+Date: Fri, 25 Jul 2025 15:16:14 +0100
+Message-Id: <20250725-ufshcd-hardirq-v2-0-884c11e0b0df@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Classification-ID: 27552962-6841-452b-823c-acad1dc1325a-1-1
+X-B4-Tracking: v=1; b=H4sIAK6Rg2gC/13MQQrCMBCF4auUWRtpJ01aXXkP6SI0STMgjZ1oU
+ Ervbiy4cfk/eN8KyTG5BOdqBXaZEsW5BB4qGIOZJyfIlgasUdUdSvH0KYxWBMOWeBFjJ1F73aJ
+ TGsrpzs7TawevQ+lA6RH5vfu5+a4/qv2nciMaoeWpNwp972u83Gg2HI+RJxi2bfsAJzI6Da0AA
+ AA=
+X-Change-ID: 20250723-ufshcd-hardirq-c7326f642e56
+To: Alim Akhtar <alim.akhtar@samsung.com>, 
+ Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Peter Griffin <peter.griffin@linaro.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Will McVicker <willmcvicker@google.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, kernel-team@android.com, 
+ linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-The `insn_rw_emulate_bits()` function is used as a default handler for
-`INSN_READ` instructions for subdevices that have a handler for
-`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
-handler for `INSN_WRITE` instructions for subdevices that have a handler
-for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
-`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
-`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
-instructions are supposed to be able read or write multiple samples,
-indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
-only handles a single sample.  For `INSN_READ`, the comedi core will
-copy `insn->n` samples back to user-space.  (That triggered KASAN
-kernel-infoleak errors when `insn->n` was greater than 1, but that is
-being fixed more generally elsewhere in the comedi core.)
+UFS performance for < v4 controllers has reduced quite a bit in 6.16.
+This series addresses this regression and brings numbers more or less
+back to the previous level.
 
-Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
-an error, to conform to the general expectation for `INSN_READ` and
-`INSN_WRITE` handlers.
+See patch 2 for some benchmark (fio) results.
 
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: <stable@vger.kernel.org> # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
 ---
-For 5.4.y and 5.10.y, this patch conflicts with submitted patches for
-upstream commit e9cb26291d00 ("comedi: Fix use of uninitialized data in
-insn_rw_emulate_bits()").
----
- drivers/comedi/drivers.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+Changes in v2:
+- patch 1: new patch as suggested by Bart during v1 review
+- patch 2: update commit message and some inline & kerneldoc comments
+- patch 2: add missing jiffies.h include
+- Link to v1: https://lore.kernel.org/r/20250724-ufshcd-hardirq-v1-1-6398a52f8f02@linaro.org
 
-diff --git a/drivers/comedi/drivers.c b/drivers/comedi/drivers.c
-index f1dc854928c1..c9ebaadc5e82 100644
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -620,11 +620,9 @@ static int insn_rw_emulate_bits(struct comedi_device *dev,
- 	unsigned int chan = CR_CHAN(insn->chanspec);
- 	unsigned int base_chan = (chan < 32) ? 0 : chan;
- 	unsigned int _data[2];
-+	unsigned int i;
- 	int ret;
- 
--	if (insn->n == 0)
--		return 0;
--
- 	memset(_data, 0, sizeof(_data));
- 	memset(&_insn, 0, sizeof(_insn));
- 	_insn.insn = INSN_BITS;
-@@ -635,18 +633,21 @@ static int insn_rw_emulate_bits(struct comedi_device *dev,
- 	if (insn->insn == INSN_WRITE) {
- 		if (!(s->subdev_flags & SDF_WRITABLE))
- 			return -EINVAL;
--		_data[0] = 1U << (chan - base_chan);		     /* mask */
--		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
-+		_data[0] = 1U << (chan - base_chan);		/* mask */
- 	}
-+	for (i = 0; i < insn->n; i++) {
-+		if (insn->insn == INSN_WRITE)
-+			_data[1] = data[i] ? _data[0] : 0;	/* bits */
- 
--	ret = s->insn_bits(dev, s, &_insn, _data);
--	if (ret < 0)
--		return ret;
-+		ret = s->insn_bits(dev, s, &_insn, _data);
-+		if (ret < 0)
-+			return ret;
- 
--	if (insn->insn == INSN_READ)
--		data[0] = (_data[1] >> (chan - base_chan)) & 1;
-+		if (insn->insn == INSN_READ)
-+			data[i] = (_data[1] >> (chan - base_chan)) & 1;
-+	}
- 
--	return 1;
-+	return insn->n;
- }
- 
- static int __comedi_device_postconfig_async(struct comedi_device *dev,
+---
+André Draszik (2):
+      scsi: ufs: core: complete polled requests also from interrupt context
+      scsi: ufs: core: move some irq handling back to hardirq (with time limit)
+
+ drivers/ufs/core/ufshcd.c | 211 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 152 insertions(+), 59 deletions(-)
+---
+base-commit: 58ba80c4740212c29a1cf9b48f588e60a7612209
+change-id: 20250723-ufshcd-hardirq-c7326f642e56
+
+Best regards,
 -- 
-2.47.2
+André Draszik <andre.draszik@linaro.org>
 
 
