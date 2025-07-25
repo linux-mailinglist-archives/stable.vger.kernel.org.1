@@ -1,137 +1,118 @@
-Return-Path: <stable+bounces-164718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB59DB11807
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 07:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3FEB1180C
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 07:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83D3E3BF931
-	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 05:38:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF40E3BD670
+	for <lists+stable@lfdr.de>; Fri, 25 Jul 2025 05:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62C9242D83;
-	Fri, 25 Jul 2025 05:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UJw7SO/E"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15A023BCFD;
+	Fri, 25 Jul 2025 05:47:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF09242D67
-	for <stable@vger.kernel.org>; Fri, 25 Jul 2025 05:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+Received: from mail.nfschina.com (unknown [42.101.60.213])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 33B061DE892;
+	Fri, 25 Jul 2025 05:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753421953; cv=none; b=EVLa3jL3UeTVSyChQrllT4MrsWE1xvhrsDhsWRDYA4ZSAnEutBpcRpiCDPcpC2B/JPob/sgZlP0e024ZtL5nE5A3oAMjCLT0UodmUeBB8lBIDZI5LhUGgwmmh3mOSeIQ1cM7dHj9k2rIlYjUPM1FDu5mQhBEz0EeOCdTxdP4cYM=
+	t=1753422436; cv=none; b=Ru3VqvRBpTaoOVJs0DqBQmW4Ht+c8hMvVlZi2FD7COb12e3MKM4iKytbbob9Smn+LcpgtKv6z/JwBUN6euPO6ZSUpFdrSvZpChbdYgegQ+ZXjIZM+S6XUpknk1WG+mlsOFejvuJzX4kUrR81ekZpomBYrxJlrBoYqpS9yS9Wp7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753421953; c=relaxed/simple;
-	bh=966m0GOxsGJ5j1rjf2yCyD9LYwLA3a2IkLlHrebXO20=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h3NYGA2DcWr51fNX6rkZClDQWrvPBWEiqsQYd6IqFuP9xoB6OBsjBQjW/27UA4Fau0sX5vHT2U5OkDUKKWJzuQastN4A4vNMgfmVZtzYRLOo6Mwllwp6olUb87NcY3iETDdrXuewIbebOd0NzZrY+cnN0EmuM/l2WhgSqHf59wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UJw7SO/E; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3122368d7cfso1391613a91.1
-        for <stable@vger.kernel.org>; Thu, 24 Jul 2025 22:39:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753421951; x=1754026751; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gPHXvAt3l53zXxlvilGeFtRkhY9gS5qitSJjpuzQX8U=;
-        b=UJw7SO/EMAaXuTpVLaiEeTeRpDjO8iFFTb/QhCDQ7D+tOr7pWzlIlFN6niwV+ICsog
-         ZrGI2jXURsUgS0P631mpoP0PHXCYmVWJtWCQUXBL6nHwWwZRRywNk5fQ2fCAXYi3JdQ2
-         CaK+TnWFTs39t8a4e9hSLYSddmvwjq510Y2QBXRSquw3lwlf62fBQjySbiiTsc6yxMCk
-         yWFuidKz5OhulVRWDY0TnPfN+mP7cKVRmzaxq/sHAsv1N7aR1gu4VfKGZXqRZ5cy9eO5
-         76/SfJojoJBYuaDU74RLHh3CrEnXA/cB1/gxY02oJmFDxvPoeNbhAKkgrYh7AYM0yIjd
-         lsHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753421951; x=1754026751;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gPHXvAt3l53zXxlvilGeFtRkhY9gS5qitSJjpuzQX8U=;
-        b=Qa1bveZq57jYEBJERhE71sOLlS+PK0UvzDMJHe7E7OpA0pF/mglOPUa74IHjT4aiN0
-         DtntbS5t90gk4pxjuIHguZaSd8EFUOiryNtF8yJsTyfkvlxFsHQoPxEea8SDewjbMAI5
-         kFJZWh7RSmJ2VFLrhN4Na5iauf935WGseUGrkn1GEB57o8jNgGHCD39uwpgEryVYXmwd
-         JF5wQGq0A8MQnQHYrlZOPZUaWT37KzvurPazBQmtGTXAnp9fnH5YidqZUhOvHrKiQy/8
-         2rsdNG/lEwepc+AAdZCaSHbxLZVuF4q3ljOS1Npt6QpLkQWMDOqMgOCpxEZdN0stL5eR
-         MlmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWM3eJT3pZUDK3B6Q05EVxrC4zl4MgIlhyrDQkRiNpwfOnfQjbaBc/fUwZisF6oGHB9Uk5YDf4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCa0MYdU/qQJG5gqr3vGjabywL+DVlFKLyC7TsDRikIBoCtsiL
-	bIt/3yCHcRaEEGFu5wrXbSSrFUkJZvGyEnzlmUyttGPcxRdGr8nP5Fl2
-X-Gm-Gg: ASbGncv3tdAjxT5e11v2+I04mnjFqvljl6LhYLPGC2LcXgvcHHjNC3pD2NzHOT7o5Oc
-	MIHOplcceMROLTp6v2d8BmcN2agJT+DeGy1wXd6cDLs1FsI9r4vDWQSSBmgXwfr56bxwWCBt3fj
-	ooCXCXvFUAaBqQBNDaY66AAlEN9cMpfuEJlcGjDaY3GFDQjZXggXCVXfXfbsCCT7jla3uuKH64q
-	CX2lJ/OsZD2yciMtCjR7aeIDBUoefmrhelBY3RiiHyPXTweuu020EZNJP/bVF5XtjMPs1xkrL+Z
-	8ecjOZYdWj+W0omNKLlvCONV/19ahurOVsG6161z9HjjUquZG2tF3WV9kqLTnUQQQULYeahyjDt
-	GQhjmt0yhdo9bXyfNzwufQEm0/fcH2wJJ0+ISPFOuoRTNlQ==
-X-Google-Smtp-Source: AGHT+IEfocSkBuFg0ctSah7zTyb7jqeh5RukwbMZprqXK0hKFEaFOTG3tScP+6sedm5tsIWAoh5l5Q==
-X-Received: by 2002:a17:90b:5408:b0:311:fde5:c4c2 with SMTP id 98e67ed59e1d1-31e77841a77mr730037a91.1.1753421950909;
-        Thu, 24 Jul 2025 22:39:10 -0700 (PDT)
-Received: from localhost.localdomain ([38.188.108.234])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e662685fesm2657265a91.6.2025.07.24.22.39.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 22:39:10 -0700 (PDT)
-From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-To: suchitk.211me155@nitk.edu.in
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
-	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Subject: [PATCH] sprintf.h requires stdarg.h
-Date: Fri, 25 Jul 2025 11:09:00 +0530
-Message-Id: <20250725053900.32262-1-suchitkarunakaran@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1753422436; c=relaxed/simple;
+	bh=XJfEVs3oguGmS/m4FpfN0MIFvfh2kHxQ1/rwU0KKeE0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type; b=bcPfp0dAFsZrml9sBfde2gZynrDNsUbqyB9DsSNfxUMnTJiXAou4xRk9thY4lhrtwTabY7QrsMBwvqjJAZ2ZRDQM/TeALsf+8tFFjoJyQUAMEMpKqrtmz0flGfX7eODpnhOZZgyotE1eTzI9P/W3K/rd6FkS/8P3sGq+tq0fwm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from [172.30.20.100] (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 6D7426018CCAA;
+	Fri, 25 Jul 2025 13:47:00 +0800 (CST)
+Message-ID: <ef73ea4c-c081-4c64-aab3-a60ec71f03bc@nfschina.com>
+Date: Fri, 25 Jul 2025 13:46:59 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: slub: fix dereference invalid pointer in
+ alloc_consistency_checks
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Language: en-US
+X-MD-Sfrom: liqiong@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: liqiong <liqiong@nfschina.com>
+In-Reply-To: <aIMBppTQ-ON7RM8y@harry>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-In file included from drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c:4:
-include/linux/sprintf.h:11:54: error: unknown type name 'va_list'
-   11 | __printf(2, 0) int vsprintf(char *buf, const char *, va_list);
-      |                                                      ^~~~~~~
-include/linux/sprintf.h:1:1: note: 'va_list' is defined in header '<stdarg.h>'; this is probably fixable by adding '#include <stdarg.h>'
 
-Link: https://lkml.kernel.org/r/20250721173754.42865913@canb.auug.org.au
-Fixes: 39ced19b9e60 ("lib/vsprintf: split out sprintf() and friends")
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
----
- include/linux/sprintf.h | 1 +
- 1 file changed, 1 insertion(+)
+在 2025/7/25 12:01, Harry Yoo 写道:
+> On Fri, Jul 25, 2025 at 10:48:54AM +0800, Li Qiong wrote:
+>> In object_err(), need dereference the 'object' pointer, it may cause
+>> a invalid pointer fault. Use slab_err() instead.
+> Hi Li Qiong, this patch makes sense to me.
+> But I'd suggest to rephrase it a little bit, like:
+>
+> mm/slab: avoid deref of free pointer in sanity checks if object is invalid
+>
+> For debugging purposes, object_err() prints free pointer of the object.
+> However, if check_valid_pointer() returns false for object,
+> `object + s->offset` is also invalid and dereferncing it can lead to a
+> crash. Therefore, avoid dereferencing it and only print the object's
+> address in such cases.
 
-diff --git a/include/linux/sprintf.h b/include/linux/sprintf.h
-index 51cab2def9ec..876130091384 100644
---- a/include/linux/sprintf.h
-+++ b/include/linux/sprintf.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/compiler_attributes.h>
- #include <linux/types.h>
-+#include <linux/stdarg.h>
- 
- int num_to_str(char *buf, int size, unsigned long long num, unsigned int width);
- 
--- 
-2.39.5
+Thanks, I will send a v2 patch.
+
+
+>
+>> Signed-off-by: Li Qiong <liqiong@nfschina.com>
+> Which commit introduced this problem?
+> A Fixes: tag is needed to determine which -stable versions it should be
+> backported to.
+>
+> And to backport MM patches to -stable, you need to explicitly add
+> 'Cc: stable@vger.kernel.org' to the patch.
+>
+>> ---
+>>  mm/slub.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 31e11ef256f9..3a2e57e2e2d7 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -1587,7 +1587,7 @@ static inline int alloc_consistency_checks(struct kmem_cache *s,
+>>  		return 0;
+>>  
+>>  	if (!check_valid_pointer(s, slab, object)) {
+>> -		object_err(s, slab, object, "Freelist Pointer check fails");
+>> +		slab_err(s, slab, "Freelist Pointer (0x%p) check fails", object);
+> Can this be
+> slab_err(s, slab, "Invalid object pointer 0x%p", object);
+> to align with free_consistency_checks()?
+
+
+
+
+>
+>>  		return 0;
+>>  	}
+>>  
+> It might be worth adding a comment in object_err() stating that it should
+> only be called when check_valid_pointer() returns true for object, and
+> a WARN_ON_ONCE(!check_valid_pointer(s, slab, object)) to catch incorrect
+> usages?
+
+
 
 
