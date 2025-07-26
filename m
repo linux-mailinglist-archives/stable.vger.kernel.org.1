@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1203B127F6
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:24:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC2BB127F7
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3E41CC32C5
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:25:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 720A2AC1617
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B5339FF3;
-	Sat, 26 Jul 2025 00:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABDC3BBC9;
+	Sat, 26 Jul 2025 00:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="spUu4uLI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r36ISD+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918D828FD
-	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 00:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C08228FD
+	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 00:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753489491; cv=none; b=inMIlfH348j3iGszwO1qvTzjt500mi9gQ7+XCmi0ihVDj+2GkGFHvVre64jdCYqwR5GquWSrvoQ3S+Bfc4FV49gSnV9uMakVXDNTOGXRcSMJWGSfXkFBoJuSfSKXS4bDQ2Tva/au1GEpAlxZ62wDd2sJ9JfWTY9YjYnsS0zbmEA=
+	t=1753489494; cv=none; b=eGSz80jNC+FQC6nO4zRJKvJ/cB5xqWptH9jP+peyWptOAJLDoLrhjtGP7HXF5a90P+KcSKKbqNHa0RPqqY4Yk9M5+oWPIonA58xmasqFeZEOpJutkdCt173e7N3kckh4WlwkiXfbZRX5PjzLt01vvKfwXnJCFIlgw6RfNMa3KU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753489491; c=relaxed/simple;
-	bh=JJ1mKZYW+3OLjgBJuuUwF0TmCmearVBjUkOJnWDD/Fg=;
+	s=arc-20240116; t=1753489494; c=relaxed/simple;
+	bh=uKOksxPXJm/tUnPGfk64RYEn+M/uWh6ahtTmhUk0Ur0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nZqNkn5kGVeICaMVeIxTGxJub2/AfDcbL2GnXO0fWieTGrZU1odb2xyQ2wYsvZP1pm2cjvvRVPzI3fkdMLhZTfEaMSemqDQs1ZJnR0z1EoJrXxIeln+dRca+QnNFP03M4AwIUZY97G/DXddQOJR5acQbkwmUP1FD2Un5g47Ig8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=spUu4uLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD53C4CEE7;
-	Sat, 26 Jul 2025 00:24:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hiS353cYFnBhkY86MFptRM0Pj4QvmqW+va1bs0+24n0+iS96jlQhPYTLCRYk/teHy7nmRrHfx6BlUN6VDuvEns4AMeC89/02O8WyVuySvhkai6HqX2ZAPWAJoyQmz1OnmCENED/s866fZCeoooCOW/ZCCGjgX2r/uBE7lA2e3Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r36ISD+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56530C4CEE7;
+	Sat, 26 Jul 2025 00:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753489491;
-	bh=JJ1mKZYW+3OLjgBJuuUwF0TmCmearVBjUkOJnWDD/Fg=;
+	s=k20201202; t=1753489493;
+	bh=uKOksxPXJm/tUnPGfk64RYEn+M/uWh6ahtTmhUk0Ur0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spUu4uLICCYsCZrsCpQRdVLZ/LmoIxGcIB6qAMG+tzALN7AvDTVHiBJqcgqVAX7/0
-	 8HlehR6cBU0yAa/Uwwe/NgmzlA3tajCeEU5PltnCyrG5khuuJMOpPOGPbuXpzST3+S
-	 mpK94w8eSQO8Og2M7fD3Rb8oJ/sQW4mMBIdlTzrrECGS+fzk8OydRRAhLdsHUTNR6w
-	 BJC2zN5SFX9pj7dv1km+omsPAD/eCgGIX77aEJTQvt1jIi7OcKTGbTSu2YU/5h8qd6
-	 KbhY2nkEgtoZ29RFBgGk2THz4lCDPQczP8ogEAQgDQ9m8kAZJolLMBJmWphn/+EwFm
-	 jCU+E8Vaf4naQ==
+	b=r36ISD+eX5JyLEGwDpgL3A2d7fUWywKfVbZXxuPevyZq/zbrqS8VrHLa7ucum7E4/
+	 JWWbal1Xt2MYYYWkPXOj9SHdQ4s7g/kSOOLH8hMeZNUavZwFTPo5Rzb+pnaucIXLqA
+	 olPPHod18gwpAX83EmVnPYwQnjvfeJTETLZumd0X99FMuwzGsGiWRHi7iSs0u8IuIg
+	 +j1zxMV/D+OFPFYUwssg3LMxKJF2/5I1NM8wdIpDG63evNuOQTU31RSF5EGs1MB4Jt
+	 VCILupx51Fk0qmGdi7o+822i1d5jWTVTWiZ0gICKBOKh6GtACIqZDQPWNUHL7XJg2e
+	 yuBBtFqgVyz3g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] comedi: Fix some signed shift left operations
-Date: Fri, 25 Jul 2025 20:24:48 -0400
-Message-Id: <1753467848-e48314ac@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] comedi: Fix initialization of data for instructions that write to subdevice
+Date: Fri, 25 Jul 2025 20:24:51 -0400
+Message-Id: <1753466530-e173890b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724181646.291939-2-abbotti@mev.co.uk>
+In-Reply-To: <20250724181257.291722-8-abbotti@mev.co.uk>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: ab705c8c35e18652abc6239c07cf3441f03e2cda
+The upstream commit SHA1 provided is correct: 46d8c744136ce2454aa4c35c138cc06817f92b8e
 
 Status in newer kernel trees:
 6.15.y | Not found
@@ -77,54 +77,36 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ab705c8c35e1 ! 1:  0d19deff7ec8 comedi: Fix some signed shift left operations
+1:  46d8c744136c ! 1:  b96c24925413 comedi: Fix initialization of data for instructions that write to subdevice
     @@ Metadata
       ## Commit message ##
-         comedi: Fix some signed shift left operations
+         comedi: Fix initialization of data for instructions that write to subdevice
      
-    +    [ Upstream commit ab705c8c35e18652abc6239c07cf3441f03e2cda ]
+    +    [ Upstream commit 46d8c744136ce2454aa4c35c138cc06817f92b8e ]
     +
-         Correct some left shifts of the signed integer constant 1 by some
-         unsigned number less than 32.  Change the constant to 1U to avoid
-         shifting a 1 into the sign bit.
+         Some Comedi subdevice instruction handlers are known to access
+         instruction data elements beyond the first `insn->n` elements in some
+         cases.  The `do_insn_ioctl()` and `do_insnlist_ioctl()` functions
     @@ Commit message
-         Link: https://lore.kernel.org/r/20250707121555.65424-1-abbotti@mev.co.uk
+         Link: https://lore.kernel.org/r/20250707161439.88385-1-abbotti@mev.co.uk
          Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
      
-    - ## drivers/comedi/drivers.c ##
-    -@@ drivers/comedi/drivers.c: int comedi_dio_insn_config(struct comedi_device *dev,
-    + ## drivers/staging/comedi/drivers.c ##
-    +@@ drivers/staging/comedi/drivers.c: int comedi_dio_insn_config(struct comedi_device *dev,
-      			   unsigned int *data,
-      			   unsigned int mask)
-      {
-    @@ drivers/comedi/drivers.c: int comedi_dio_insn_config(struct comedi_device *dev,
-      
-      	switch (data[0]) {
-      	case INSN_CONFIG_DIO_INPUT:
-    -@@ drivers/comedi/drivers.c: EXPORT_SYMBOL_GPL(comedi_dio_insn_config);
-    +@@ drivers/staging/comedi/drivers.c: EXPORT_SYMBOL_GPL(comedi_dio_insn_config);
-      unsigned int comedi_dio_update_state(struct comedi_subdevice *s,
-      				     unsigned int *data)
-      {
-    @@ drivers/comedi/drivers.c: EXPORT_SYMBOL_GPL(comedi_dio_insn_config);
-      						 : 0xffffffff;
-      	unsigned int mask = data[0] & chanmask;
-      	unsigned int bits = data[1];
-    -@@ drivers/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
-    +@@ drivers/staging/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
-      	if (insn->insn == INSN_WRITE) {
-      		if (!(s->subdev_flags & SDF_WRITABLE))
-      			return -EINVAL;
-    @@ drivers/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *
+    - ## drivers/comedi/comedi_fops.c ##
+    -@@ drivers/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device *dev,
+    + ## drivers/staging/comedi/comedi_fops.c ##
+    +@@ drivers/staging/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device *dev,
       	}
       
-      	ret = s->insn_bits(dev, s, &_insn, _data);
-    -@@ drivers/comedi/drivers.c: static int __comedi_device_postconfig(struct comedi_device *dev)
-    +@@ drivers/staging/comedi/drivers.c: static int __comedi_device_postconfig(struct comedi_device *dev)
-      
-      		if (s->type == COMEDI_SUBD_DO) {
-      			if (s->n_chan < 32)
+      	for (i = 0; i < n_insns; ++i) {
+    @@ drivers/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device
+      				dev_dbg(dev->class_dev,
+      					"copy_to_user failed\n");
+      				ret = -EFAULT;
+    -@@ drivers/comedi/comedi_fops.c: static int do_insn_ioctl(struct comedi_device *dev,
+    +@@ drivers/staging/comedi/comedi_fops.c: static int do_insn_ioctl(struct comedi_device *dev,
+      			ret = -EFAULT;
+      			goto error;
+      		}
 
 ---
 
