@@ -1,96 +1,136 @@
-Return-Path: <stable+bounces-164800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385FFB127E7
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:15:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1203B127F6
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CCD1AA3FE1
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:14:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3E41CC32C5
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8155A20EB;
-	Sat, 26 Jul 2025 00:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B5339FF3;
+	Sat, 26 Jul 2025 00:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNnNPd/s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="spUu4uLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA6214AA9;
-	Sat, 26 Jul 2025 00:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918D828FD
+	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 00:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753488888; cv=none; b=Cl/BV28C05QmuXNAp7n5KYjeoL8rmDuCVLJ5fmAigWhX3uM9DfYzaaeo66ZnkUoQ0zgKubgBzhYUhJmZQNWaqnvIQ5q23uoiGGqb6LW964OMErriDNeyE9o47pGPm8OkWgGfnosYi1yyQnv5bvga2Bm50nTt6bYMg1PnmAbrsEY=
+	t=1753489491; cv=none; b=inMIlfH348j3iGszwO1qvTzjt500mi9gQ7+XCmi0ihVDj+2GkGFHvVre64jdCYqwR5GquWSrvoQ3S+Bfc4FV49gSnV9uMakVXDNTOGXRcSMJWGSfXkFBoJuSfSKXS4bDQ2Tva/au1GEpAlxZ62wDd2sJ9JfWTY9YjYnsS0zbmEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753488888; c=relaxed/simple;
-	bh=iiMBm0oZXR5aBPd+EQuKP+D8dY9mYXzNqyAp/lI5xqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aA9PGamLPEsGZddPqtsdT00XowRRsTXT4DTVpR/tbgzwCwo260d3CmHfxP2gz8GGZZQe80zYGIUeaV9iq1oevLTceTxhyZYE01wJOhph5lohMXGybxCiD+BSTOK2LfpiVc11CfR+cKZGBXk6CSpz/QIDIe/oddNFUCjXXfqTRao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNnNPd/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B6FC4CEE7;
-	Sat, 26 Jul 2025 00:14:47 +0000 (UTC)
+	s=arc-20240116; t=1753489491; c=relaxed/simple;
+	bh=JJ1mKZYW+3OLjgBJuuUwF0TmCmearVBjUkOJnWDD/Fg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nZqNkn5kGVeICaMVeIxTGxJub2/AfDcbL2GnXO0fWieTGrZU1odb2xyQ2wYsvZP1pm2cjvvRVPzI3fkdMLhZTfEaMSemqDQs1ZJnR0z1EoJrXxIeln+dRca+QnNFP03M4AwIUZY97G/DXddQOJR5acQbkwmUP1FD2Un5g47Ig8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=spUu4uLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD53C4CEE7;
+	Sat, 26 Jul 2025 00:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753488887;
-	bh=iiMBm0oZXR5aBPd+EQuKP+D8dY9mYXzNqyAp/lI5xqc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eNnNPd/smVxDBRNmt5WJXp1S3tcmF3bqESezaKgUWjoDJaT62xH1JXdtuKMWhZvSK
-	 1xbz+27qyPPSQDgrt52FCpxjN8vEXY6Cldb85MrXUxkzEThLO6AFcawY/JnJj4vWZ9
-	 lh5u6H5jQBmCJyA87dfrkwKclJh/b7Qk5QGQZt/XXf5indIO6Htp+tGOMBT/P1jhMS
-	 guijxX3FR8wPNKWJySD+Tx9FRzlFVFbd4t6FKyfDinxyunO5mhLfdQss33MyUH1+s/
-	 DIia0CB9waOzk2z6vWhnThrYpUGHEUFvH1RwzZBUpLXpWgFWkG5emL4mLqlZo4V4Dc
-	 AqX4oktx6N9Qw==
-Date: Fri, 25 Jul 2025 17:14:46 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: chalianis1@gmail.com
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, edumazet@google.com,
- pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] phy: dp83869: fix interrupts issue when using with
- an optical fiber sfp. to correctly clear the interrupts both status
- registers must be read.
-Message-ID: <20250725171446.73bb3f8c@kernel.org>
-In-Reply-To: <20250726001034.28885-1-chalianis1@gmail.com>
-References: <20250726001034.28885-1-chalianis1@gmail.com>
+	s=k20201202; t=1753489491;
+	bh=JJ1mKZYW+3OLjgBJuuUwF0TmCmearVBjUkOJnWDD/Fg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=spUu4uLICCYsCZrsCpQRdVLZ/LmoIxGcIB6qAMG+tzALN7AvDTVHiBJqcgqVAX7/0
+	 8HlehR6cBU0yAa/Uwwe/NgmzlA3tajCeEU5PltnCyrG5khuuJMOpPOGPbuXpzST3+S
+	 mpK94w8eSQO8Og2M7fD3Rb8oJ/sQW4mMBIdlTzrrECGS+fzk8OydRRAhLdsHUTNR6w
+	 BJC2zN5SFX9pj7dv1km+omsPAD/eCgGIX77aEJTQvt1jIi7OcKTGbTSu2YU/5h8qd6
+	 KbhY2nkEgtoZ29RFBgGk2THz4lCDPQczP8ogEAQgDQ9m8kAZJolLMBJmWphn/+EwFm
+	 jCU+E8Vaf4naQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y] comedi: Fix some signed shift left operations
+Date: Fri, 25 Jul 2025 20:24:48 -0400
+Message-Id: <1753467848-e48314ac@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250724181646.291939-2-abbotti@mev.co.uk>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-First of all, please read:
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
+[ Sasha's backport helper bot ]
 
-> Subject: [PATCH net] phy: dp83869: fix interrupts issue when using with an optical fiber sfp. to correctly clear the interrupts both status registers must be read.
+Hi,
 
-The first line of the commit message becomes the subject, it should
-be a very short summary of the patch (100 chars max)
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-On Fri, 25 Jul 2025 20:10:34 -0400 chalianis1@gmail.com wrote:
-> From: Anis Chali <chalianis1@gmail.com>
-> 
-> from datasheet of dp83869hm
-> 7.3.6 Interrupt
-> The DP83869HM can be configured to generate an interrupt when changes of internal status occur. The interrupt
-> allows a MAC to act upon the status in the PHY without polling the PHY registers. The interrupt source can be
-> selected through the interrupt registers, MICR (12h) and FIBER_INT_EN (C18h). The interrupt status can be
-> read from ISR (13h) and FIBER_INT_STTS (C19h) registers. Some interrupts are enabled by default and can
-> be disabled through register access. Both the interrupt status registers must be read in order to clear pending
-> interrupts. Until the pending interrupts are cleared, new interrupts may not be routed to the interrupt pin.
+The upstream commit SHA1 provided is correct: ab705c8c35e18652abc6239c07cf3441f03e2cda
 
-This needs to be line wrapped at 70-ish characters.
+Status in newer kernel trees:
+6.15.y | Not found
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+5.15.y | Not found
 
-> Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
-> 
+Note: The patch differs from the upstream commit:
+---
+1:  ab705c8c35e1 ! 1:  0d19deff7ec8 comedi: Fix some signed shift left operations
+    @@ Metadata
+      ## Commit message ##
+         comedi: Fix some signed shift left operations
+     
+    +    [ Upstream commit ab705c8c35e18652abc6239c07cf3441f03e2cda ]
+    +
+         Correct some left shifts of the signed integer constant 1 by some
+         unsigned number less than 32.  Change the constant to 1U to avoid
+         shifting a 1 into the sign bit.
+    @@ Commit message
+         Link: https://lore.kernel.org/r/20250707121555.65424-1-abbotti@mev.co.uk
+         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+     
+    - ## drivers/comedi/drivers.c ##
+    -@@ drivers/comedi/drivers.c: int comedi_dio_insn_config(struct comedi_device *dev,
+    + ## drivers/staging/comedi/drivers.c ##
+    +@@ drivers/staging/comedi/drivers.c: int comedi_dio_insn_config(struct comedi_device *dev,
+      			   unsigned int *data,
+      			   unsigned int mask)
+      {
+    @@ drivers/comedi/drivers.c: int comedi_dio_insn_config(struct comedi_device *dev,
+      
+      	switch (data[0]) {
+      	case INSN_CONFIG_DIO_INPUT:
+    -@@ drivers/comedi/drivers.c: EXPORT_SYMBOL_GPL(comedi_dio_insn_config);
+    +@@ drivers/staging/comedi/drivers.c: EXPORT_SYMBOL_GPL(comedi_dio_insn_config);
+      unsigned int comedi_dio_update_state(struct comedi_subdevice *s,
+      				     unsigned int *data)
+      {
+    @@ drivers/comedi/drivers.c: EXPORT_SYMBOL_GPL(comedi_dio_insn_config);
+      						 : 0xffffffff;
+      	unsigned int mask = data[0] & chanmask;
+      	unsigned int bits = data[1];
+    -@@ drivers/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
+    +@@ drivers/staging/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
+      	if (insn->insn == INSN_WRITE) {
+      		if (!(s->subdev_flags & SDF_WRITABLE))
+      			return -EINVAL;
+    @@ drivers/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *
+      	}
+      
+      	ret = s->insn_bits(dev, s, &_insn, _data);
+    -@@ drivers/comedi/drivers.c: static int __comedi_device_postconfig(struct comedi_device *dev)
+    +@@ drivers/staging/comedi/drivers.c: static int __comedi_device_postconfig(struct comedi_device *dev)
+      
+      		if (s->type == COMEDI_SUBD_DO) {
+      			if (s->n_chan < 32)
 
-no empty lines between tags, please
+---
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Anis Chali <chalianis1@gmail.com>
--- 
-pw-bot: cr
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| origin/linux-5.10.y       | Success     | Success    |
 
