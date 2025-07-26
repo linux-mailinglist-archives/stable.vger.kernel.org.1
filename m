@@ -1,150 +1,175 @@
-Return-Path: <stable+bounces-164833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957F4B12B44
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 17:52:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875DCB12B55
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 18:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4DF31C22178
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 15:52:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B176116EC2A
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 16:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0A7241103;
-	Sat, 26 Jul 2025 15:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A429254846;
+	Sat, 26 Jul 2025 16:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwe1hVaZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nswe3jsq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787971EBA07
-	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 15:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28236229B28;
+	Sat, 26 Jul 2025 16:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753545142; cv=none; b=IVx+CFothWGJb2/fwj2FjGdIrJElAulg3klG9UOLKofi/gZ79K0DPpPD8EoOB9npFqI9CxtiUESAm43PSo7zbypZg9A3DrCE85NByMlOlFuDMBWMPG9cYvKtqnGp4i0AFsYv+CIQEM6FHkL2Be7UekwRyrgVELfxZnGz0pOjqQw=
+	t=1753545929; cv=none; b=L0m7x7kDzlVMJ6DYjsKrAQAz+83Ii+cm3LdwmGFd5wbdVjre6crBzoaBXvHGIfGdx5l8EUmjhukbcovU8cwIXkJri20f5cZlWL5RSZpcpHfDJmtRZog/rHCGKP7HycotOJcbSKEMw5oc8ofFHzY/TnNgqpH1YZSAd4uMfPDgtdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753545142; c=relaxed/simple;
-	bh=6h5ooq/hv/yDzATq+weSo8fo1Qw4MsPiDjJGtxxIRj4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k6XqomEYRftI+GLuf7IrXmWUIP0XD3eZV/UNWZ+YyzABCIG5lB2IBEo6M+TyI8I4krpkLHtvkNC6tJz+CSG2jjCvqcId8+HlLK7V5iPtehM1drZ8GFiIucmFL4p4kkvf5nv/gepWMCLD1x+BNEqWA4i1xrv/1P5mVnAxUnWTsz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwe1hVaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E71C4CEED;
-	Sat, 26 Jul 2025 15:52:21 +0000 (UTC)
+	s=arc-20240116; t=1753545929; c=relaxed/simple;
+	bh=6MpzxbPX27NadrsGk0zw216Oyyfxgmiy2Y1q0a0nRAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fNc4MSWjcjLZKx14+alle/hEB/fpdsS26S2Ug1NcPdKU28JH0PicelUlAKY3bZS5WYrwX+mceII8JOfqjyOvar77F9Sb6Ju//ow6Zq88nHWkXSTc2+u6xARV/h9yb+xQeGuUPUMdWbKFGnOkK4cT/mKdGCGdAb0YwaFK7WvMfmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nswe3jsq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30E6C4CEFB;
+	Sat, 26 Jul 2025 16:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753545142;
-	bh=6h5ooq/hv/yDzATq+weSo8fo1Qw4MsPiDjJGtxxIRj4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwe1hVaZvbXDTq7Ep7PqpqbX18mTRfcgoOAJ/j4C8vHtR0mrJOsfZ2t0ZjhM+UJD7
-	 BcyBKCAf0r2h5vzBHpeAtETJ7WU87n1RJmKgeEEqi8b0S9tTVg3wQDAvZDCxaZR1fn
-	 GzRjjtUB2ZBLlb4Dryxq408Ygop/QKxZSBxA+Jw+vw4hvpuRARzEy0Hd1TfhZiE/SM
-	 C0IIhWyZ7pJlIRsa6soyq5UlgGkqxqKB8QqLVX3J74px056pns3XYK+L8TB7y1oInG
-	 h1mZMOIgN9d+vnaMl0pQkp+YRWol4DId0ND3iuS3MBHDOt2DcECCOxsHzGxVZb0Sv/
-	 /v9cRYv5xNteg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Norbert Szetei <norbert@doyensec.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ksmbd: fix use-after-free in __smb2_lease_break_noti()
-Date: Sat, 26 Jul 2025 11:52:17 -0400
-Message-Id: <20250726155217.2083648-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025042109-embroider-consoling-20d9@gregkh>
-References: <2025042109-embroider-consoling-20d9@gregkh>
+	s=k20201202; t=1753545928;
+	bh=6MpzxbPX27NadrsGk0zw216Oyyfxgmiy2Y1q0a0nRAg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Nswe3jsqp6uE7J1q7VAwlweFK/2EEUj7/yxpjrJQyvWTj4EeJEZBv0JpsuCBwmk9j
+	 KQGbwwXZkDzP3Cv/CmuBqW5czzXH4Amoedtr7f+H5hLT3PHXN7KteirmjuUQiZOAQl
+	 klNA3B27wfo4lQDjcAPDelN6tRNDHFIX5fF86m2sx5GTcFLgwLLiXX/d6P7PkMYoCj
+	 8kmhXu/aREl7k1k6ju8PWjjtBJetXCVS6rBAYEiiFnlB0QmrzDwj6nZ6ZsREF+y7qo
+	 u/Kn73NsPR4Njr7h9iAxCY18/TebJ9DGgoU2vR+YIAqUCF0naKkBNT6CMpQ2EJRehI
+	 jsQfyRqmURChQ==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32f2947ab0cso26092041fa.2;
+        Sat, 26 Jul 2025 09:05:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUm4wZU5Kjo9lk8+VOpDhKzgcRUhbghpshkKkeTR8aUr9pV6U0GTxnihuCgQ80c+qjuAYbN7OxP@vger.kernel.org, AJvYcCW9Pokhay7emdGiqHt7+BJ/vNl5y5V6r+W40XyCeLLDK8bbFakxcS/UJtbTcvs7LNXm5c1SnPIjMf8vhZth@vger.kernel.org, AJvYcCWF91BvpCTpnv5kZOC3Y5dPL5/yb2isbZZvB0iLccT+TCeM0bmCwQi9PagtnGmd66DsrYlfTWv9T2JjD8s=@vger.kernel.org, AJvYcCWbf7DbCWiWXoB8jmrimMnSPXUFJRQDH1whVbEsbSe4mWAtQyzOKvfJUiJvGkD4bklxoH7xLmavrjKUGj2Y4Po=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxk8Mj2Kx5qEffcXyyzK8fzSpczPBUvKo+MAv5wzxYPvon4TN1V
+	vSLU75P9yLkFpPa4hUpKtM+JN5bZSVKy3Z5fBpmK1tHGnBYWBq0svO9yfgv/WuwJACrcTCY8jod
+	z9CEp0VI8oodwxBeVzXY6CS5nHbk1Zqs=
+X-Google-Smtp-Source: AGHT+IG3EDvduZsc53+xFnV4ZnOEuNccFoxXRBW2DEcupA+kF+Dd/tDVGJKqs9SWSByGCvtmwfD4iZl2Wi/hY9T3Dvo=
+X-Received: by 2002:a05:651c:154b:b0:32a:8916:55af with SMTP id
+ 38308e7fff4ca-331ee622688mr19317841fa.2.1753545927125; Sat, 26 Jul 2025
+ 09:05:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250726133435.2460085-1-ojeda@kernel.org>
+In-Reply-To: <20250726133435.2460085-1-ojeda@kernel.org>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Sat, 26 Jul 2025 12:04:50 -0400
+X-Gmail-Original-Message-ID: <CAJ-ks9kneAWVxMNYcmQzks6NaprRPJZPyFkRBtLmtseemyJgbg@mail.gmail.com>
+X-Gm-Features: Ac12FXxAFNw0PPG_mgb-afX1RFMqeDfPaH7GOci4UnEY3JifxOIfnYstVIjNq5A
+Message-ID: <CAJ-ks9kneAWVxMNYcmQzks6NaprRPJZPyFkRBtLmtseemyJgbg@mail.gmail.com>
+Subject: Re: [PATCH] rust: kbuild: clean output before running `rustdoc`
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+On Sat, Jul 26, 2025 at 9:35=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> `rustdoc` can get confused when generating documentation into a folder
+> that contains generated files from other `rustdoc` versions.
+>
+> For instance, running something like:
+>
+>     rustup default 1.78.0
+>     make LLVM=3D1 rustdoc
+>     rustup default 1.88.0
+>     make LLVM=3D1 rustdoc
+>
+> may generate errors like:
+>
+>     error: couldn't generate documentation: invalid template: last line e=
+xpected to start with a comment
+>       |
+>       =3D note: failed to create or modify "./Documentation/output/rust/r=
+ustdoc/src-files.js"
+>
+> Thus just always clean the output folder before generating the
+> documentation -- we are anyway regenerating it every time the `rustdoc`
+> target gets called, at least for the time being.
+>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Reported-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic=
+/x/near/527201113
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 21a4e47578d44c6b37c4fc4aba8ed7cc8dbb13de ]
+I've seen this as well.
 
-Move tcp_transport free to ksmbd_conn_free. If ksmbd connection is
-referenced when ksmbd server thread terminates, It will not be freed,
-but conn->tcp_transport is freed. __smb2_lease_break_noti can be performed
-asynchronously when the connection is disconnected. __smb2_lease_break_noti
-calls ksmbd_conn_write, which can cause use-after-free
-when conn->ksmbd_transport is already freed.
+Reviewed-by: Tamir Duberstein <tamird@kernel.org>
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Removed declaration of non-existent function ksmbd_find_netdev_name_iface_list() from transport_tcp.h. ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/server/connection.c    |  4 +++-
- fs/smb/server/transport_tcp.c | 14 +++++++++-----
- fs/smb/server/transport_tcp.h |  1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index e7bcc3830031..abbf756891a9 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -39,8 +39,10 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
- 	xa_destroy(&conn->sessions);
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
--	if (atomic_dec_and_test(&conn->refcnt))
-+	if (atomic_dec_and_test(&conn->refcnt)) {
-+		ksmbd_free_transport(conn->transport);
- 		kfree(conn);
-+	}
- }
- 
- /**
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 2ce7f75059cb..c27f0cef3b59 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -93,17 +93,21 @@ static struct tcp_transport *alloc_transport(struct socket *client_sk)
- 	return t;
- }
- 
--static void free_transport(struct tcp_transport *t)
-+void ksmbd_free_transport(struct ksmbd_transport *kt)
- {
--	kernel_sock_shutdown(t->sock, SHUT_RDWR);
--	sock_release(t->sock);
--	t->sock = NULL;
-+	struct tcp_transport *t = TCP_TRANS(kt);
- 
--	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
-+	sock_release(t->sock);
- 	kfree(t->iov);
- 	kfree(t);
- }
- 
-+static void free_transport(struct tcp_transport *t)
-+{
-+	kernel_sock_shutdown(t->sock, SHUT_RDWR);
-+	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
-+}
-+
- /**
-  * kvec_array_init() - initialize a IO vector segment
-  * @new:	IO vector to be initialized
-diff --git a/fs/smb/server/transport_tcp.h b/fs/smb/server/transport_tcp.h
-index e338bebe322f..5925ec5df475 100644
---- a/fs/smb/server/transport_tcp.h
-+++ b/fs/smb/server/transport_tcp.h
-@@ -7,6 +7,7 @@
- #define __KSMBD_TRANSPORT_TCP_H__
- 
- int ksmbd_tcp_set_interfaces(char *ifc_list, int ifc_list_sz);
-+void ksmbd_free_transport(struct ksmbd_transport *kt);
- int ksmbd_tcp_init(void);
- void ksmbd_tcp_destroy(void);
- 
--- 
-2.39.5
-
+> ---
+>  rust/Makefile | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 115b63b7d1e3..771246bc7ae6 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -103,14 +103,14 @@ rustdoc: rustdoc-core rustdoc-macros rustdoc-compil=
+er_builtins \
+>  rustdoc-macros: private rustdoc_host =3D yes
+>  rustdoc-macros: private rustc_target_flags =3D --crate-type proc-macro \
+>      --extern proc_macro
+> -rustdoc-macros: $(src)/macros/lib.rs FORCE
+> +rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean FORCE
+>         +$(call if_changed,rustdoc)
+>
+>  # Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` s=
+hould
+>  # not be needed -- see https://github.com/rust-lang/rust/pull/128307.
+>  rustdoc-core: private skip_flags =3D --edition=3D2021 -Wrustdoc::unescap=
+ed_backticks
+>  rustdoc-core: private rustc_target_flags =3D --edition=3D$(core-edition)=
+ $(core-cfgs)
+> -rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
+> +rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
+>         +$(call if_changed,rustdoc)
+>
+>  rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORC=
+E
+> @@ -122,7 +122,8 @@ rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
+>  rustdoc-pin_init_internal: private rustdoc_host =3D yes
+>  rustdoc-pin_init_internal: private rustc_target_flags =3D --cfg kernel \
+>      --extern proc_macro --crate-type proc-macro
+> -rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
+> +rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
+> +    rustdoc-clean FORCE
+>         +$(call if_changed,rustdoc)
+>
+>  rustdoc-pin_init: private rustdoc_host =3D yes
+> @@ -140,6 +141,9 @@ rustdoc-kernel: $(src)/kernel/lib.rs rustdoc-core rus=
+tdoc-ffi rustdoc-macros \
+>      $(obj)/bindings.o FORCE
+>         +$(call if_changed,rustdoc)
+>
+> +rustdoc-clean: FORCE
+> +       $(Q)rm -rf $(rustdoc_output)
+> +
+>  quiet_cmd_rustc_test_library =3D $(RUSTC_OR_CLIPPY_QUIET) TL $<
+>        cmd_rustc_test_library =3D \
+>         OBJTREE=3D$(abspath $(objtree)) \
+>
+> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+> --
+> 2.50.1
+>
+>
 
