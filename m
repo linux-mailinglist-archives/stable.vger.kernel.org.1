@@ -1,175 +1,167 @@
-Return-Path: <stable+bounces-164834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875DCB12B55
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 18:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EECB12B67
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 18:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B176116EC2A
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 16:05:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC03A172085
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 16:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A429254846;
-	Sat, 26 Jul 2025 16:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8F2285072;
+	Sat, 26 Jul 2025 16:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nswe3jsq"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="VU2D/5Rh";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ahz/cdtk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28236229B28;
-	Sat, 26 Jul 2025 16:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553F12309B0;
+	Sat, 26 Jul 2025 16:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753545929; cv=none; b=L0m7x7kDzlVMJ6DYjsKrAQAz+83Ii+cm3LdwmGFd5wbdVjre6crBzoaBXvHGIfGdx5l8EUmjhukbcovU8cwIXkJri20f5cZlWL5RSZpcpHfDJmtRZog/rHCGKP7HycotOJcbSKEMw5oc8ofFHzY/TnNgqpH1YZSAd4uMfPDgtdk=
+	t=1753546973; cv=none; b=S8fm7k+j6DhHqSQGpqKCyG2UoDLg8oAhZXif68minbj/jFkqtqy2ceZvI3QYlrfDUpmA0KM6lbAoLwAXPDbnBtkWu+Yz3hNeLA39IO4uNhVXkpTrcGqP2b4IfKFoteUH1/a4eZ93bz1kl2PPm2foCKF/GCog5/k6FoSI+++/mu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753545929; c=relaxed/simple;
-	bh=6MpzxbPX27NadrsGk0zw216Oyyfxgmiy2Y1q0a0nRAg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fNc4MSWjcjLZKx14+alle/hEB/fpdsS26S2Ug1NcPdKU28JH0PicelUlAKY3bZS5WYrwX+mceII8JOfqjyOvar77F9Sb6Ju//ow6Zq88nHWkXSTc2+u6xARV/h9yb+xQeGuUPUMdWbKFGnOkK4cT/mKdGCGdAb0YwaFK7WvMfmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nswe3jsq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30E6C4CEFB;
-	Sat, 26 Jul 2025 16:05:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753545928;
-	bh=6MpzxbPX27NadrsGk0zw216Oyyfxgmiy2Y1q0a0nRAg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Nswe3jsqp6uE7J1q7VAwlweFK/2EEUj7/yxpjrJQyvWTj4EeJEZBv0JpsuCBwmk9j
-	 KQGbwwXZkDzP3Cv/CmuBqW5czzXH4Amoedtr7f+H5hLT3PHXN7KteirmjuUQiZOAQl
-	 klNA3B27wfo4lQDjcAPDelN6tRNDHFIX5fF86m2sx5GTcFLgwLLiXX/d6P7PkMYoCj
-	 8kmhXu/aREl7k1k6ju8PWjjtBJetXCVS6rBAYEiiFnlB0QmrzDwj6nZ6ZsREF+y7qo
-	 u/Kn73NsPR4Njr7h9iAxCY18/TebJ9DGgoU2vR+YIAqUCF0naKkBNT6CMpQ2EJRehI
-	 jsQfyRqmURChQ==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32f2947ab0cso26092041fa.2;
-        Sat, 26 Jul 2025 09:05:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUm4wZU5Kjo9lk8+VOpDhKzgcRUhbghpshkKkeTR8aUr9pV6U0GTxnihuCgQ80c+qjuAYbN7OxP@vger.kernel.org, AJvYcCW9Pokhay7emdGiqHt7+BJ/vNl5y5V6r+W40XyCeLLDK8bbFakxcS/UJtbTcvs7LNXm5c1SnPIjMf8vhZth@vger.kernel.org, AJvYcCWF91BvpCTpnv5kZOC3Y5dPL5/yb2isbZZvB0iLccT+TCeM0bmCwQi9PagtnGmd66DsrYlfTWv9T2JjD8s=@vger.kernel.org, AJvYcCWbf7DbCWiWXoB8jmrimMnSPXUFJRQDH1whVbEsbSe4mWAtQyzOKvfJUiJvGkD4bklxoH7xLmavrjKUGj2Y4Po=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk8Mj2Kx5qEffcXyyzK8fzSpczPBUvKo+MAv5wzxYPvon4TN1V
-	vSLU75P9yLkFpPa4hUpKtM+JN5bZSVKy3Z5fBpmK1tHGnBYWBq0svO9yfgv/WuwJACrcTCY8jod
-	z9CEp0VI8oodwxBeVzXY6CS5nHbk1Zqs=
-X-Google-Smtp-Source: AGHT+IG3EDvduZsc53+xFnV4ZnOEuNccFoxXRBW2DEcupA+kF+Dd/tDVGJKqs9SWSByGCvtmwfD4iZl2Wi/hY9T3Dvo=
-X-Received: by 2002:a05:651c:154b:b0:32a:8916:55af with SMTP id
- 38308e7fff4ca-331ee622688mr19317841fa.2.1753545927125; Sat, 26 Jul 2025
- 09:05:27 -0700 (PDT)
+	s=arc-20240116; t=1753546973; c=relaxed/simple;
+	bh=4sCizot5SpBYAlWqEyK4rvqM6D+CGQd8XeXFI/ctnlE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=ZW+Zom8harwtbxqfZiDxjOaOlgZX/qQycw4CkBRHLhrrykdLTjn4FHRuMHMbvDfsgYH/FWePfUPwWfo7ZYUYtyeihyWlS+eHZY0xBAN5GBQnAEbLJf8CEkL8QokhRrTjPfMqG2MTZpCJXByEVRE1lLx2QZnANzSuMGb37FWRQTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=VU2D/5Rh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ahz/cdtk; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3C86E7A0460;
+	Sat, 26 Jul 2025 12:22:49 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Sat, 26 Jul 2025 12:22:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1753546969;
+	 x=1753633369; bh=cmAER4b+98v/6KB9uDhqP6D0jz83ezLrqrs4+cYx2R8=; b=
+	VU2D/5Rhkdtw1YJ/zsuZlIHfTemjvtOnsh866m1HrzVH1gQNBhICp8wxqv7h4tkL
+	WS98b4iJVqS78FNjEWHQAp7jfp8dI294rsJrrhy9T6+RwCOtsDbdCRy5kEKMlq+0
+	H9GC98SkreEnlYpVP4GEKzHHhv7TUtW4DmQBn4wM7OC0ZwklpcYfCO3Wg6DsqvRE
+	90l58kiLzK3gLw4JPiYjOHMod5G3Fy8b6XYUk5+8NYM1UsLxjhYgZDNF5U0GIuq0
+	vrVukxngGsefWL36Lx8I8ID9l2/4L/g/2y4VMwMSKYw7mV6kOQ+kDLp3/dHzCbeF
+	cT+vSddK84BwG3BVzH727Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1753546969; x=
+	1753633369; bh=cmAER4b+98v/6KB9uDhqP6D0jz83ezLrqrs4+cYx2R8=; b=a
+	hz/cdtkF3+1242uyZzW/0+ZbupjGQdutBJN3PotoC7MDppv7zKVS82Ysl4XJfQF/
+	d6ujW+sY+gXSFFgLJc6moXHF82OHrMsjUchRE4yhxRMGnglstzDGE1IK4RLWrfM7
+	H5zMVweslEc+DRsC9CsVD3IAdc2XPU+M7etfbHJVcJeNzi6ht5XQhrWwe6tem1NR
+	UNhz3qsyqAMt7Qe7aQGDnxX3OoO7bFSRdQgpnNd6H3sCaGJp4n9WR5k1vRoQdXKb
+	MR4bZ0QwLq6I+TYcx72m/6VzdpW0Am0cmSe21UnYRSC1crLby0vtEuutXiJD8BGd
+	JdnPiYHJ96RnMEQrRbEYQ==
+X-ME-Sender: <xms:2ACFaHkPM7P2lqKxbd0MnP0NR3rIqS2OUepz-gu5au8kbMbJmBTWYw>
+    <xme:2ACFaK1oJqYrXys1-4p8j0LD2JTouX5YSqOl2rcbQWTOzxGVsqFT3FSfTD_OCeJKm
+    az5rsO6q59pH2feAqY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdekieekkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdp
+    rhgtphhtthhopehvrghrrggughgruhhtrghmsehgohhoghhlvgdrtghomhdprhgtphhtth
+    hopehquhhitggpshgrihhprhgrkhgrsehquhhitghinhgtrdgtohhmpdhrtghpthhtohep
+    lhhinhhugidqrghrtghhsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:2ACFaECrV7P-BIuQ_mtpUniuRmz_9dXdTPWbty0fjp13KWGbv89vnQ>
+    <xmx:2ACFaO_E8sdb30tTn-HdJwCg7s6n_C7wpi-AajcdD75OMGHiT4eTgg>
+    <xmx:2ACFaIADjvG0W6En6ShYJ-6mKGgifrIJTPsjkkliBEURkKozGWDAbA>
+    <xmx:2ACFaLRMEhENVgDxMMn6JeGXm4Z32VmoIWLyBMXuACREYX-d0ZZeWQ>
+    <xmx:2QCFaAWBkI2Z9l-9juhE-dyMQLJRzac8CP1yDc7zeIqJ-nhn6p9jdY1N>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B7B08700065; Sat, 26 Jul 2025 12:22:48 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250726133435.2460085-1-ojeda@kernel.org>
-In-Reply-To: <20250726133435.2460085-1-ojeda@kernel.org>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Sat, 26 Jul 2025 12:04:50 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9kneAWVxMNYcmQzks6NaprRPJZPyFkRBtLmtseemyJgbg@mail.gmail.com>
-X-Gm-Features: Ac12FXxAFNw0PPG_mgb-afX1RFMqeDfPaH7GOci4UnEY3JifxOIfnYstVIjNq5A
-Message-ID: <CAJ-ks9kneAWVxMNYcmQzks6NaprRPJZPyFkRBtLmtseemyJgbg@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: clean output before running `rustdoc`
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
+X-ThreadId: Tb16c300fb1523219
+Date: Sat, 26 Jul 2025 18:22:27 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Varad Gautam" <varadgautam@google.com>,
+ Linux-Arch <linux-arch@vger.kernel.org>
+Cc: "Sai Prakash Ranjan" <quic_saipraka@quicinc.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Message-Id: <f74d9899-6aba-4c8e-87b1-cd6ecc7772e6@app.fastmail.com>
+In-Reply-To: 
+ <CAOLDJOJ98EccMJ4O3FyX4mSFtHnbQ4iwwXsHT2EbLL+KrXfvtw@mail.gmail.com>
+References: <20250330164229.2174672-1-varadgautam@google.com>
+ <CAOLDJO+=+hcz498KRc+95dF5y3hZdtm+3y35o2rBC9qAOF-vDg@mail.gmail.com>
+ <CAOLDJOKiEmde5Max0BnTBVpNmfpm-wwYLJ4Etv8D2KZKPHyFzw@mail.gmail.com>
+ <CAOLDJOJ=QcQ065UTAdGayO2kbpGMOwCtdEGVm8TvQO8Wf8CSMw@mail.gmail.com>
+ <CAOLDJOJ98EccMJ4O3FyX4mSFtHnbQ4iwwXsHT2EbLL+KrXfvtw@mail.gmail.com>
+Subject: Re: [PATCH] asm-generic/io.h: Skip trace helpers if rwmmio events are disabled
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 26, 2025 at 9:35=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Thu, Jul 24, 2025, at 13:49, Varad Gautam wrote:
+> On Wed, May 28, 2025 at 5:28=E2=80=AFPM Varad Gautam <varadgautam@goog=
+le.com> wrote:
+>>
+>> On Mon, Apr 28, 2025 at 9:41=E2=80=AFPM Varad Gautam <varadgautam@goo=
+gle.com> wrote:
+>> >
+>> > On Mon, Apr 7, 2025 at 6:13=E2=80=AFPM Varad Gautam <varadgautam@go=
+ogle.com> wrote:
+>> > >
+>> > > On Sun, Mar 30, 2025 at 6:42=E2=80=AFPM Varad Gautam <varadgautam=
+@google.com> wrote:
+>> > > >
+>> > > > With `CONFIG_TRACE_MMIO_ACCESS=3Dy`, the `{read,write}{b,w,l,q}=
+{_relaxed}()`
+>> > > > mmio accessors unconditionally call `log_{post_}{read,write}_mm=
+io()`
+>> > > > helpers, which in turn call the ftrace ops for `rwmmio` trace e=
+vents
+>> > > >
+>> > > > This adds a performance penalty per mmio accessor call, even wh=
+en
+>> > > > `rwmmio` events are disabled at runtime (~80% overhead on local
+>> > > > measurement).
+>> > > >
+>> > > > Guard these with `tracepoint_enabled()`.
+>> > > >
+>> > > > Signed-off-by: Varad Gautam <varadgautam@google.com>
+>> > > > Fixes: 210031971cdd ("asm-generic/io: Add logging support for M=
+MIO accessors")
+>> > > > Cc: <stable@vger.kernel.org>
+>> > >
+>> > > Ping.
+>> > >
+>> >
+>> > Ping.
+>> >
+>>
+>> Ping. Arnd, can this be picked up into the asm-generic tree?
+>>
 >
-> `rustdoc` can get confused when generating documentation into a folder
-> that contains generated files from other `rustdoc` versions.
->
-> For instance, running something like:
->
->     rustup default 1.78.0
->     make LLVM=3D1 rustdoc
->     rustup default 1.88.0
->     make LLVM=3D1 rustdoc
->
-> may generate errors like:
->
->     error: couldn't generate documentation: invalid template: last line e=
-xpected to start with a comment
->       |
->       =3D note: failed to create or modify "./Documentation/output/rust/r=
-ustdoc/src-files.js"
->
-> Thus just always clean the output folder before generating the
-> documentation -- we are anyway regenerating it every time the `rustdoc`
-> target gets called, at least for the time being.
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Reported-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic=
-/x/near/527201113
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Ping.
 
-I've seen this as well.
+I'm sorry I keep missing this one. It's really too late again for
+the merge window, so it won't be in 6.17 either, but I've applied
+it locally in my asm-generic branch that I'm planning for 6.18
+so I hope I won't miss it again.
 
-Reviewed-by: Tamir Duberstein <tamird@kernel.org>
+I currently have nothing queued up for 6.17 at all, but I already
+have some of my own patches that I plan to submit for review after
+the merge window and merge through the asm-generic tree.
 
-
-> ---
->  rust/Makefile | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 115b63b7d1e3..771246bc7ae6 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -103,14 +103,14 @@ rustdoc: rustdoc-core rustdoc-macros rustdoc-compil=
-er_builtins \
->  rustdoc-macros: private rustdoc_host =3D yes
->  rustdoc-macros: private rustc_target_flags =3D --crate-type proc-macro \
->      --extern proc_macro
-> -rustdoc-macros: $(src)/macros/lib.rs FORCE
-> +rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean FORCE
->         +$(call if_changed,rustdoc)
->
->  # Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` s=
-hould
->  # not be needed -- see https://github.com/rust-lang/rust/pull/128307.
->  rustdoc-core: private skip_flags =3D --edition=3D2021 -Wrustdoc::unescap=
-ed_backticks
->  rustdoc-core: private rustc_target_flags =3D --edition=3D$(core-edition)=
- $(core-cfgs)
-> -rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
-> +rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
->         +$(call if_changed,rustdoc)
->
->  rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORC=
-E
-> @@ -122,7 +122,8 @@ rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
->  rustdoc-pin_init_internal: private rustdoc_host =3D yes
->  rustdoc-pin_init_internal: private rustc_target_flags =3D --cfg kernel \
->      --extern proc_macro --crate-type proc-macro
-> -rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
-> +rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
-> +    rustdoc-clean FORCE
->         +$(call if_changed,rustdoc)
->
->  rustdoc-pin_init: private rustdoc_host =3D yes
-> @@ -140,6 +141,9 @@ rustdoc-kernel: $(src)/kernel/lib.rs rustdoc-core rus=
-tdoc-ffi rustdoc-macros \
->      $(obj)/bindings.o FORCE
->         +$(call if_changed,rustdoc)
->
-> +rustdoc-clean: FORCE
-> +       $(Q)rm -rf $(rustdoc_output)
-> +
->  quiet_cmd_rustc_test_library =3D $(RUSTC_OR_CLIPPY_QUIET) TL $<
->        cmd_rustc_test_library =3D \
->         OBJTREE=3D$(abspath $(objtree)) \
->
-> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
-> --
-> 2.50.1
->
->
+     Arnd
 
