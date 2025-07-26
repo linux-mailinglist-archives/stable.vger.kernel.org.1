@@ -1,86 +1,90 @@
-Return-Path: <stable+bounces-164797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D28B127CC
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EAFB127D2
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 213B81CC6D86
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0D5188B45C
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB58F23B0;
-	Sat, 26 Jul 2025 00:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15ADE53BE;
+	Sat, 26 Jul 2025 00:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mMX5UXVE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h8vP6KNz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CDE7E9;
-	Sat, 26 Jul 2025 00:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1E47E9;
+	Sat, 26 Jul 2025 00:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753488264; cv=none; b=Ai6e1D4F+MlqrmGhq5Nn/pRsLPe9bR5qaikWZyY9Z4YSTg445YiscuWOLaeTcggynwQ05MoFQQFQ8jwomavPU7gGq6+qkr2v+nATqh7G7f0OZc71lG+3tq/UhCqh911PSY+EQtY6gS1l2bAtZZuRT+7DUU9A2+VBKZEUFdcKJ3c=
+	t=1753488567; cv=none; b=aRLquMgRFvvgP7ZYCXwh9PQ7LvG89SbQZcs+t1Wb5B3AWc5giX4vXxbufLgdSnFBfpuirmLJPjQfIhdsbOC7TNkKxc4NpksKuJqU6DI5Nj3Rhv6tXyHGms3ms8PuutMaSJ3aJvDi3mNuCHnJSoCjUjoYGj/MR6Iwqy6Sr/iVIXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753488264; c=relaxed/simple;
-	bh=tijO90f5V2+dEbHPsrjzz6aV8S4k/7RL7YfLEFSvJ3o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B9ZC+q/IZMIQxdVbADcOiKrl0K7mxaCAZYstH6tWGpQNJtRu/XtilWyD2FpugerriY+N6CnQb29RV5mib9FmDhhxTEZLN0J/4HEjHxHF1Eb5lT7K7OpkaHD25w/DWbfbF6TlFHgT5Hb6dMVRHgnN5tUZCOlxALsgQ/TrGwWlxAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mMX5UXVE; arc=none smtp.client-ip=209.85.222.178
+	s=arc-20240116; t=1753488567; c=relaxed/simple;
+	bh=so3kqgULjw6YNvt3ch12QiLwl9ZIZtBEKksOcAon+gM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KQiQS1Od22980df+gzfTPXDmR3VisCuQF1CnaS1boOs+Crxb/7gT/FwkE0OJ6LNeGKbzNLP7hkOV0f6tFjC1CsiLBudVEGreFGyhmnKsfIPpbK24P2LwIAH10EnCtOR/WGPna9PdEZcrJiY6qRfASZn/7IiwVBSAtoRT92hylEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h8vP6KNz; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7e6399d0656so129266085a.3;
-        Fri, 25 Jul 2025 17:04:22 -0700 (PDT)
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7e62a1cbf81so374891585a.0;
+        Fri, 25 Jul 2025 17:09:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753488262; x=1754093062; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753488565; x=1754093365; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zLeoKD9pH6YTTrPLKVP4AiqhElR/HaLlmxJaymwaLxw=;
-        b=mMX5UXVEbaAxQooMKWO0/UDZCXL1B+84+YCLOnNtQ6ICZgADpwxniN0ufXWHrLXBOD
-         /6MmmSoVy12tjxNvxCIKmIm287g0eMqgr0dZO8baIKtCgiaXlVKwNNjz2gqsGIV+hqZp
-         o7sNjxAsitr+SsGZc4wKVoNdxzmAVmdVA+ujIDN7Uj4tXWtU89St98IiAP93vf+8M5VY
-         f/oH+Dz7zXRlcbKATFTBBRXexciCuzi48a/DQ+DkKyThJNa6GUCGLs625IA/757UQwE1
-         tOI5Y8EOZHAYzJ72oIkt8qqpJx5lcuC3J2zSUGKz3rRMZx9rp7IjcL9RNfrB1NxSLNaq
-         ujaA==
+        bh=vK5CC/F8c8c+Y3fFwdimtYsYY35RKGShh4bXfS9Y+ao=;
+        b=h8vP6KNz5Y1h8N/Vlg0v12bVP3MT2wbA5pN1RcCGDM7fXMqXKim3SOpi1sXIMGEX1S
+         Tz99SPfygTLkcNFURRPTahG+IiOnBbTNJ3GOijkJlaMrDUcl9y5PTK1Rtu1zge7oFMN3
+         +Qr1zslBe0pVD9U5XrZ0Tz4EmrEhtBszmyCOHJUXWvIxcrpYL3tlOGSCAgTbA2qx36JI
+         W3LZ45FMsd322StWJWaXeTkDy9qn9aaQdG89is/bRikt0IVYdFWc04IFf6rNXFkhn3V7
+         LlFksbkNpawthwMvsXV+Df/zfiNlTZcfdo7SCsd8I7lwQb+Pi12ToM6DRSwztG9XF4nJ
+         TMFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753488262; x=1754093062;
+        d=1e100.net; s=20230601; t=1753488565; x=1754093365;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zLeoKD9pH6YTTrPLKVP4AiqhElR/HaLlmxJaymwaLxw=;
-        b=EDlc/qAEleAMr1kRbabghjWHgaDgOs5sycGcgvUOs7HooCnoYodIrrpVwN39fl+Ora
-         JQN+NxKRHyY5dj2v32JrXb1Rl1cKAVPQcOPlDfsEYSXWfHRJFfiztyvmFpLcFexpjnUg
-         dIy5at6tA2T9IN12WsJx34ZeOSRn2uL4KUJJ129odFik0yZNLbntGLWmFFcBoi4oc1Kj
-         Ild/VRudAOvTIZo7MaRimBgTXNUPouBpvkrTO3RvGMHTrH7oj6iexygS7oz4iFAWZJEq
-         0dB947472mqheaJgZloik/+0PJ4iLUXExsWXIOy7kCdrtTRpQmYd0V1YER1tp1m76/RT
-         v7vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVKHOPkMJgm+9E82nVtA9fhdtWKdnfTTlOZCBUIYBpuHUxzuBry4xtej8xby2hlKLL16K5ht50L@vger.kernel.org, AJvYcCVQjNxGXcbE4IWGkz5VZCIYxdk/hV0wK6Z3jVzfsELVyjUgulvCz1NQD+bKhejoRKQRKJ4yE3Sq1TpYJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywrn7OO3g09lg7IUc4ebexYeDnnpkWRdf7qB1T+m38Da//jzIaS
-	629uPZT+C63nJgdPvqXUpUuFwkTWVm2CvKFnKATOu+1yudxJUid5tzS8WdTC1/kT
-X-Gm-Gg: ASbGncujyTZLSVkunzekOJ+dRO4hZjrbX9xLZfenBSQtVe4QmB4AktCvnrXzN8Ynhnz
-	qaTptUSUz3CUKk8dYCmKATnDT2nz9F9QYTlzA0ue6CfhIuPcKPwtzZJhW4Vbn+pl8mD2K2NvpR/
-	z+cU4dqwV8q4x6vgGCgNAPuV5bAqrEvZdGvGnuax7o5xQVEXsJ7h4NAsoVYLLC1zCwBBLZAKW75
-	U344dddfhmO322iAm1TM7V2yNaMrMEoQSgEcd81SHTBfZp1Bmhpra330inyDFmL1bmlUP/7Fhkv
-	z80y1bGsTZSe8NYJcX/8wdXT9pK9Soic65T2aO3nwnYfECwxFyPe+Gnbnml7BqSIdQZvIGaj942
-	sjf/FDRkQDwNaPvRB231z67IJsgNus51MOIdQJVpa
-X-Google-Smtp-Source: AGHT+IG6l3WQqMadpHdNJpC0zSJGr9aB1wMhpvY2ZooIl9NLW/T9j82ReuKVTuQm7JeZ8ae+D6R92Q==
-X-Received: by 2002:a05:620a:d94:b0:7c7:a602:66ee with SMTP id af79cd13be357-7e63bf69ba2mr563202185a.10.1753488261592;
-        Fri, 25 Jul 2025 17:04:21 -0700 (PDT)
+        bh=vK5CC/F8c8c+Y3fFwdimtYsYY35RKGShh4bXfS9Y+ao=;
+        b=hiyc2/qyvy+Iv2wAHT7QniioFzlqZFFz7aA+Oxxr8uUTOkLVvpbNrO2lqwaZQBNemL
+         Kxe8lN90XI/vgsgWIeTI+8SGfWaExYwaRyjWK+smXFWACxfSsRvhh/0ssU1TZVhvaImH
+         Lf4+qe1BOqjoEaU+L/ABm0tm6uNnmRd8zUZk3jZbF9Bz6ifxnusO1QJcgHfVmI4mb3sT
+         NTLXjz9z3rNJUQXyF4bylgPmIP06FEnn753aKAydad59l8bkSBrQF5OJ7BR804ogxg3+
+         aJzvN+LEWLFDfQn1GcbFCok+FcnStjIRNIG/nRTsN2eQNgvHV68pYHTeshzR1r2R7cpQ
+         FFdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEoWxY4U8+e69+CcKwzWCmNoh+qZ4IW8da2CoDmFKFQ5EborJqmpVBay8mUyCLT3EqVfMy4oon@vger.kernel.org, AJvYcCWhUKKysjNPqIwE5b5rKgMZhNOTugq+pLhPpcU0MIezNYPOStzPk7uHXHkW4tCqK7+eQL5zCutLGnttzPo=@vger.kernel.org, AJvYcCXDsG27BE+98nLKuwXUxtKr4GuwIPn7xCoDH5UMN0HLCAG8qgaUlvXVSj8Z4uXdRKAqR5XjDueA@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/V6uAscAAzv+XadFe6TnTB7A2cW8Sb14DIVC+slgGKQDRasDy
+	FBsp5Z2JEw4gedPw02bdqD5ErEHxnNYhuahZU8dqjM0Elfa6k3Z6exTg
+X-Gm-Gg: ASbGncv6ues2FOV+WLbOsvu8pzjHsCpAbIziIxwfX2rnNWttoDovKJzctkUNcfvR5Vh
+	qYoWc6QcWnnxagVf9UHkOlQExcrvq2RErvqZSYxI1whT3ETEEH12sogYu7Hq0PFj1+F8PCxLdIj
+	OFwj8LomVR1VrQDvqYY2AiAm7RY7RMxBBObf0/j59traxe6RcG+Cocem8MdubyS5hGE4Qz9Jrhm
+	kADzpgflCqIiUrViPgRx1P+Ia0E1s0UKcPdIKi0yvHGlhU4KOohlWqdebDkyoxSGHuDcbqEKyrs
+	yufokZEyoOYmwO05JpX7nhO6x5+Sj1f3td41YInqWyMJl/SCbnuxLubCVfa/PsfA5HFEmlqgrm/
+	T2ruwAIK/Y6k8SMHk/m3zIEkZGIzoxNP2+6VvVxb999rvt9/1GPE=
+X-Google-Smtp-Source: AGHT+IHPrWyECDnlzRG2GVTCcX4kqyujjTm5i7kuQFdb5jlO5KTC+R9ZOq/z7ocmTRhdSfSCqa7MTQ==
+X-Received: by 2002:a05:6214:f27:b0:700:bc3e:4499 with SMTP id 6a1803df08f44-707204a233bmr56174836d6.10.1753488565219;
+        Fri, 25 Jul 2025 17:09:25 -0700 (PDT)
 Received: from Latitude-7490.ht.home ([2607:fa49:8c41:2600:afb4:9d47:7cc2:f4e8])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e64327b331sm53652485a.10.2025.07.25.17.04.20
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70729a82d72sm5859516d6.29.2025.07.25.17.09.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 17:04:20 -0700 (PDT)
+        Fri, 25 Jul 2025 17:09:24 -0700 (PDT)
 From: chalianis1@gmail.com
-To: andy@kernel.org
-Cc: linux-staging@lists.linux.dev,
-	linux-fbdev@vger.kernel.org,
+To: andrew@lunn.ch
+Cc: hkallweit1@gmail.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	Chali Anis <chalianis1@gmail.com>
-Subject: [PATCH] staging: fbtft: add support for a device tree of backlight.
-Date: Fri, 25 Jul 2025 20:04:16 -0400
-Message-Id: <20250726000416.23960-1-chalianis1@gmail.com>
+	Anis Chali <chalianis1@gmail.com>
+Subject: [PATCH net] phy: dp83869: fix interrupts issue when using with an optical fiber sfp. to correctly clear the interrupts both status registers must be read.
+Date: Fri, 25 Jul 2025 20:09:19 -0400
+Message-Id: <20250726000919.27898-1-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -90,41 +94,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Chali Anis <chalianis1@gmail.com>
+From: Anis Chali <chalianis1@gmail.com>
 
-Support the of backlight from device tree and keep compatibility
-for the legacy gpio backlight.
+from datasheet of dp83869hm
+7.3.6 Interrupt
+The DP83869HM can be configured to generate an interrupt when changes of internal status occur. The interrupt
+allows a MAC to act upon the status in the PHY without polling the PHY registers. The interrupt source can be
+selected through the interrupt registers, MICR (12h) and FIBER_INT_EN (C18h). The interrupt status can be
+read from ISR (13h) and FIBER_INT_STTS (C19h) registers. Some interrupts are enabled by default and can
+be disabled through register access. Both the interrupt status registers must be read in order to clear pending
+interrupts. Until the pending interrupts are cleared, new interrupts may not be routed to the interrupt pin.
+
+Fixes: 0eaf8ccf2047 ("net: phy: dp83869: Set opmode from straps")
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Chali Anis <chalianis1@gmail.com>
+Signed-off-by: Anis Chali <chalianis1@gmail.com>
 ---
- drivers/staging/fbtft/fbtft-core.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/phy/dp83869.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index da9c64152a60..5f0220dbe397 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -170,6 +170,18 @@ void fbtft_register_backlight(struct fbtft_par *par)
- 	struct backlight_device *bd;
- 	struct backlight_properties bl_props = { 0, };
+diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
+index a62cd838a9ea..1e8c20f387b8 100644
+--- a/drivers/net/phy/dp83869.c
++++ b/drivers/net/phy/dp83869.c
+@@ -41,6 +41,7 @@
+ #define DP83869_IO_MUX_CFG	0x0170
+ #define DP83869_OP_MODE		0x01df
+ #define DP83869_FX_CTRL		0x0c00
++#define DP83869_FX_INT_STS		0x0c19
  
-+	bd = devm_of_find_backlight(par->info->device);
-+	if (IS_ERR(bd)) {
-+		dev_warn(par->info->device,
-+			"cannot find of backlight device (%ld), trying legacy\n",
-+			PTR_ERR(bd));
+ #define DP83869_SW_RESET	BIT(15)
+ #define DP83869_SW_RESTART	BIT(14)
+@@ -195,6 +196,12 @@ static int dp83869_ack_interrupt(struct phy_device *phydev)
+ 	if (err < 0)
+ 		return err;
+ 
++	if (linkmode_test_bit(ETHTOOL_LINK_MODE_FIBRE_BIT, phydev->supported)) {
++		err = phy_read_mmd(phydev, DP83869_DEVADDR, DP83869_FX_INT_STS);
++		if (err < 0)
++			return err;		
 +	}
 +
-+	if (bd) {
-+		par->info->bl_dev = bd;
-+		return;
-+	}
-+
- 	if (!par->gpio.led[0]) {
- 		fbtft_par_dbg(DEBUG_BACKLIGHT, par,
- 			      "%s(): led pin not set, exiting.\n", __func__);
+ 	return 0;
+ }
+ 
 -- 
-2.34.1
+2.49.0
 
 
