@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA5CB12853
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 03:01:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5937B12852
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 03:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE59F7A1E88
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:00:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8315D3BDB72
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789AA3595B;
-	Sat, 26 Jul 2025 01:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A87199FD0;
+	Sat, 26 Jul 2025 01:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDWpjcSZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXQDv/B5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393952E36E6
-	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 01:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379402E36E6
+	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 01:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753491686; cv=none; b=RskqkiVFdPa2moXF0503ONWhoWjJQ2WFmqjr9Zm9ZWFG5RcDe425p25TvEXr4TPq2Fj8DK3NsO5bzmv3/Hp7+207LdlHtiIgvU9MQi3w3rQDESfvLVPvAe/OEl6N1cD3YugeeQxnclEaLDaquRs7HrtN38m8sBD9xNXZKtr97RY=
+	t=1753491689; cv=none; b=qjcIMXRaGLUhFPG6HRuIR7Oml+FT5XBYsMdQMkavixlS3StfauANRWYW8keknrX0ghfee8DRDulOq4Xp0R5oYYuZWtUQ0O8WRuC6W175zRgmaaJLHjj4leIHyUARanVL0WdazLTSQvH9pKDJAZmxRd2XyG2M9PLu25M46oaDlKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753491686; c=relaxed/simple;
-	bh=jSLKb3+gD5WelD95nHsczw47AVNA9z18vBAkuV09izw=;
+	s=arc-20240116; t=1753491689; c=relaxed/simple;
+	bh=o3c0mftP2Ly3Blw2TtsKE2jv8cKFu0OeyAQzi5aUCZ0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jlh1llhwmTeiQcD0tj9p52Oleq1/oV9ZKkD6b33LCveaKHqGgpj5oPeyveaWaAmop+PEi1CjZkymIslCJoSCpburpy758f7XPjdCIMg6+Ke31PW3RvTfJoeyMwPnAUEIPzULZ19glTMRHLexgwqwNF8E2pgE+2c8zlFsY/p+z2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDWpjcSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325C1C4CEE7;
-	Sat, 26 Jul 2025 01:01:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PefWOPEf3FbuX53UYyZje6+hg65oWQFS02WbzJ8iCtd6R7aV1tFqgwNXSTFGE1oDzcgATO6KMFT+Hd3jbuHKsW+CuUj5j5tvXPH+vVhj/Gx1GH91vcCLbLPBAhCeDZt5eIcbCJatTXbpHR8WOm9axel7AUWs/vYQ6C+QmlABqNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXQDv/B5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E52C4CEE7;
+	Sat, 26 Jul 2025 01:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753491685;
-	bh=jSLKb3+gD5WelD95nHsczw47AVNA9z18vBAkuV09izw=;
+	s=k20201202; t=1753491689;
+	bh=o3c0mftP2Ly3Blw2TtsKE2jv8cKFu0OeyAQzi5aUCZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CDWpjcSZ7B/XO0cGz6f3QHgcq80Z/fXgSBf+mbY1PiRLxmMXzIxsjBy97Bn281AZX
-	 xDefXigtm+jca5u+/+7hPADOPLRWAhg07grQGrQp1cKA5ZymTPXZDBja78WUqu5cOG
-	 1/12sHNCAsbl762Y0LkmUOGryVy5C5IKtoyd40HTvp5AGfopo/a49i3s50XKXnC7cV
-	 XbYQz3vaL7A9OwIA9b3GYaGL8yGIA0xFszPyTSQ5/X9B+Pt7gxJjlkazxKPhkf9ZdV
-	 g2fqjKtBIVO5NhfX69zxVCmsQXEHTAjXc3nO1Wl4L4+sYuPqI1Vq+cKzrMG3g6LdGh
-	 Klb0y74Zxz8Kw==
+	b=CXQDv/B5HxmTaKB5tKOHp9NT5KM7L1vX0b87H6j7Crjoe85OESgbXG+JBCUiBKpuu
+	 Usnr+cj4fMNr95+gmdgxcUHLe/SewivvhfSTFHtbgavOkK1Kj2OyAtUD1owfmNcf5+
+	 Ys9RKqDcHc9eqGrj78XlD1BcJf9wfvx/pEcpjlEhbu684U3zOyZD2jj13dfArho9ys
+	 YNnfdCwOCwwCiKKeKpJSAvOst5U0knZrAoPGMv/FmAdTG0qFe/C7NbW51BDnQhbGIr
+	 S9vydnVspeLj5Xh4au7OVXoyf1nyJqhksfZBmiyegP+4kwqse6aLGEeYTQzznZfQRa
+	 TdZ3ri3STkNJQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] comedi: comedi_test: Fix possible deletion of uninitialized timers
-Date: Fri, 25 Jul 2025 21:01:23 -0400
-Message-Id: <1753471106-4189eaba@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y] comedi: comedi_test: Fix possible deletion of uninitialized timers
+Date: Fri, 25 Jul 2025 21:01:26 -0400
+Message-Id: <1753465523-11ca8c31@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724181257.291722-9-abbotti@mev.co.uk>
+In-Reply-To: <20250724182218.292203-9-abbotti@mev.co.uk>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,11 +74,12 @@ Status in newer kernel trees:
 6.6.y | Not found
 6.1.y | Not found
 5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
 1:  1b98304c09a0 < -:  ------------ comedi: comedi_test: Fix possible deletion of uninitialized timers
--:  ------------ > 1:  670acfccefbe comedi: comedi_test: Fix possible deletion of uninitialized timers
+-:  ------------ > 1:  99ae1f59c7ad comedi: comedi_test: Fix possible deletion of uninitialized timers
 
 ---
 
@@ -86,5 +87,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-5.10.y       | Success     | Success    |
+| origin/linux-5.4.y        | Success     | Success    |
 
