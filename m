@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-164807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283F4B127FC
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:25:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4980AB127FD
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 02:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAC05AC1F3A
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:24:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9ABFAC2ADA
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 00:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1923594C;
-	Sat, 26 Jul 2025 00:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2684D3B1AB;
+	Sat, 26 Jul 2025 00:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uDyKRhYc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NyNq/34M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D2C2AE6A
-	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 00:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC752AE6A
+	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 00:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753489510; cv=none; b=pMZc9H11d4UCVzvvZ8OwJVJvi99CmALhz3chz0WTIHQxiSowkGM0vTc71uQ69sWzdAz9wQfaOUajpGxfHtOdSe9RlBTAK+DBbNn1v0n+NSj8x/dZxSM8x/WJA9UmoB1OGMLCrzN9+vjc3nef8u21CGaz7/dT2maaAsG+5fDzLp4=
+	t=1753489512; cv=none; b=CA09Y8bHmcBqDw3VkIfhVb+5cD2MBrCZr63XJTNYCMYPKgbiUc/WwN95Mx07xcvsHoX8GffCMuYrcI0Ax1ZD0OjMZLl3dCqOBBZptHyyW3YslqQtc0eFTfEuKUXaSHw/7/nV6VHi1QTs8Na/manclS6P1QU35kuM+Fll8V2AdW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753489510; c=relaxed/simple;
-	bh=DAnmYY07UojJHlrKkZZg0bRIllvRwdq8BjUFh/wZr1o=;
+	s=arc-20240116; t=1753489512; c=relaxed/simple;
+	bh=k31CPHhsoMhK2qzSVODwQ+dDgM1DRNIvz04uS0U/aCQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IRS9LBV/p7za6ICjULfpPnSQG74hytTMgcZSaIOdnE3nDiG5S/UM1bQ6AuNfXES+L9GEy64b0rIWiyk5C+8zyX2BJfPLNjEkvD0zVdewwCWxlLdAifYo3Ifz6z5wxpAshv3CM4riUV1MOLQHd8VyoPmWc5gNbiWB4h4c8y9XILk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uDyKRhYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8162C4CEE7;
-	Sat, 26 Jul 2025 00:25:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oJT2ufMDr5BLgy85pqsnKZq1W3ufGdDhhaxP1iYBHzIxBuvFGWb/FTNWpNW3PNnn7POxkPqO8PXMfUWYK+amTWWs5giMJKku19HfP0/6Z5ew5QJMItSFE96FRocIxKPvnkMUgxxDPwl/voUi7L7IbeTNmyoEAJ4tjuSqQtSaeNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NyNq/34M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDB1C4CEE7;
+	Sat, 26 Jul 2025 00:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753489509;
-	bh=DAnmYY07UojJHlrKkZZg0bRIllvRwdq8BjUFh/wZr1o=;
+	s=k20201202; t=1753489512;
+	bh=k31CPHhsoMhK2qzSVODwQ+dDgM1DRNIvz04uS0U/aCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDyKRhYc+xfkuylnCy+u8bYlvXgZ0bMuzct5WeN+0zjogjUpF4T8qUXSUfj7D9vlr
-	 RWh2AhtNAmZMidToT6+A7mVUxwjxmvrgsmvNCiNeZUCK9pkB171aQLs7ROd7BToq25
-	 jylNPDs7vFRS7UI9WfL1mKFGLpXLOeGc2DqOnQoc61zvVNpqYBo0hfwaFaRWhU3nSc
-	 Svu0pHEP3zWYjgs0BIMboeQBPqGrY8zyKZ2JStZ6hCivaM70QFJlkwAZDY0smBAV5v
-	 hhLd2EuSmEa9YbPHaTV+YVUPGrRWjznax7nFK8bGJbfrXfd2cFW67fqZV1NUqU0uLE
-	 3/0K1jCzWepvA==
+	b=NyNq/34MVSGrLcj+Saf1u6dEs8p933hAd8TLKarL7ysVb38Y1/Ui6brB4r6nEtf+Z
+	 2Bg0FUSepAJDGp96n/Sy7Cb7BlpvPwpJdBBXpHC/p1/S3L4F+vS5VeQIs++c6CYGGn
+	 36evcU3CN4d1MSgpjrnRtmU9t/8g8F5txJy8se2EY7kWgAJ8Vwapg2JL6DwAhahjYe
+	 Jn+NHJmhDtwprB3h5JaknfIwbMN7+jeLSXp/83XFicqs1O2SeCDdQOJjhfx34LZlrw
+	 ZQ9+FekN4+8pZKGLofe3GC8nBwnrEYo5cEWz9s+fB8qDqdGJYOpmd03Dc2031Qsb++
+	 Xngf5pNAFGRBA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
-Date: Fri, 25 Jul 2025 20:25:06 -0400
-Message-Id: <1753473081-fad3f879@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y] comedi: aio_iiro_16: Fix bit shift out of bounds
+Date: Fri, 25 Jul 2025 20:25:10 -0400
+Message-Id: <1753468742-ed7cecd1@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724181646.291939-7-abbotti@mev.co.uk>
+In-Reply-To: <20250724182218.292203-5-abbotti@mev.co.uk>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: e9cb26291d009243a4478a7ffb37b3a9175bfce9
+Found matching upstream commit: 66acb1586737a22dd7b78abc63213b1bcaa100e4
 
 Status in newer kernel trees:
 6.15.y | Not found
@@ -74,30 +74,22 @@ Status in newer kernel trees:
 6.6.y | Not found
 6.1.y | Not found
 5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e9cb26291d00 ! 1:  e45bff8c0acd comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
-    @@ Metadata
-      ## Commit message ##
-         comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
-     
-    +    [ Upstream commit e9cb26291d009243a4478a7ffb37b3a9175bfce9 ]
-    +
-         For Comedi `INSN_READ` and `INSN_WRITE` instructions on "digital"
-         subdevices (subdevice types `COMEDI_SUBD_DI`, `COMEDI_SUBD_DO`, and
-         `COMEDI_SUBD_DIO`), it is common for the subdevice driver not to have
+1:  66acb1586737 ! 1:  186240031021 comedi: aio_iiro_16: Fix bit shift out of bounds
     @@ Commit message
-         Link: https://lore.kernel.org/r/20250707153355.82474-1-abbotti@mev.co.uk
+         Link: https://lore.kernel.org/r/20250707134622.75403-1-abbotti@mev.co.uk
          Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
      
-    - ## drivers/comedi/drivers.c ##
-    -@@ drivers/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
-    + ## drivers/staging/comedi/drivers.c ##
-    +@@ drivers/staging/comedi/drivers.c: static int insn_rw_emulate_bits(struct comedi_device *dev,
-      	unsigned int _data[2];
-      	int ret;
-      
+    - ## drivers/comedi/drivers/aio_iiro_16.c ##
+    -@@ drivers/comedi/drivers/aio_iiro_16.c: static int aio_iiro_16_attach(struct comedi_device *dev,
+    + ## drivers/staging/comedi/drivers/aio_iiro_16.c ##
+    +@@ drivers/staging/comedi/drivers/aio_iiro_16.c: static int aio_iiro_16_attach(struct comedi_device *dev,
+      	 * Digital input change of state interrupts are optionally supported
+      	 * using IRQ 2-7, 10-12, 14, or 15.
+      	 */
 
 ---
 
@@ -105,5 +97,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-5.10.y       | Success     | Success    |
+| origin/linux-5.4.y        | Success     | Success    |
 
