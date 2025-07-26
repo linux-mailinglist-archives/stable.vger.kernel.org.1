@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-164815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0F2B12857
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 03:01:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2EBB12858
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 03:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A636E3BE964
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:01:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832341CE19F9
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 01:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAEF2AF11;
-	Sat, 26 Jul 2025 01:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA44819B3EC;
+	Sat, 26 Jul 2025 01:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hcgBCluT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkyHTaTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBC012DDA1
-	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 01:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7BA12DDA1
+	for <stable@vger.kernel.org>; Sat, 26 Jul 2025 01:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753491700; cv=none; b=G1zC8BLXzLic+kwZfw1YrOfcSMNsgbU7/G0DQpRDNgMjBjBN7zSAHvS9GRm0qAvxoM9AQ0yGfL8UHWeraTLfO/V6X0XfFUpxa5y5RevyGml8In1aZJ7lSFP/mSAvB47JaszrspnvXOedeOUiQcxdPyEzmN+E15+F0d9e2xdnEv4=
+	t=1753491703; cv=none; b=rxycAmVdCU7nhd+mXyhzeq4Z5cSTOMdabZ7hrxCnWOXxSdsD+OiHKXvn4gBa/B+VwzQaaPyiL0b/vxBqn8JLyO26pD26tUVsbuE7jCR6Z0mLauqONTwdp27oyC1ARwweHCcZBu7r6x95H+W1+e0sBKPnoMWxxk3X3btEjN3A70U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753491700; c=relaxed/simple;
-	bh=LKvurYOBxQCg40nYzTIzKQ2N/2XochTKv7cbwW7j8ow=;
+	s=arc-20240116; t=1753491703; c=relaxed/simple;
+	bh=wvRqj5ZfHUwBHOQCW3hlO0/ubqosAfpjZQOwaIjb+Wg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bibK6UvYbmd5+UrSQkvUcpOyhVt8BpzlWm0cDRpJKo4riXbeYZfrtoHtaMAUgorY2p2D4UgAefklWcqt7G6pIRsuLd4yBFbrm+Dw7DEwVjvRQw8uaSSb2eQAkfZWGMAp1m2An5Y/vEaVMXz3prM3+vHX9kc40m09cs0fLwFNfq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hcgBCluT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCFBC4CEE7;
-	Sat, 26 Jul 2025 01:01:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t0ShixeNqf3PLxEiKnCEkmtOktDEyoJHN5vyVjnyT4sEsq2iwkg4oRur61jxnDfJQe/yjtz2tHK7a+uFyTfGY2Tn5HB16Q5WnUsVflbIMXvxXG6mrL5DYaqUNS2luYpio5RNThvPZ6/tGOok/vYwIq5i/axX1ml7It+CnLdHdJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkyHTaTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6872EC4CEE7;
+	Sat, 26 Jul 2025 01:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753491700;
-	bh=LKvurYOBxQCg40nYzTIzKQ2N/2XochTKv7cbwW7j8ow=;
+	s=k20201202; t=1753491702;
+	bh=wvRqj5ZfHUwBHOQCW3hlO0/ubqosAfpjZQOwaIjb+Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcgBCluTUTCDUoJsOP9D7voTejPTtoxOjMqUT1xOcAYD9lAbEZMgrjC9pjAjDwW0m
-	 PUK5OEp+F5xMmziybzIyzXiGzyFA4N2B0ZiLv0/Ypz74NpzSNGc/rUOMKC03s1n1pJ
-	 /L849r96GcOW6BwRJmoTU75FyQjM7xHRilh82MdSrF02kKVO6vJiJsVa02AuHX0GGX
-	 dHqNUmVGddUOZdMJCZYJ2X8wmULUma+SXYo6er/YtF/hQzkRwVa2vHZoqVw1lrC2bq
-	 8gx9+xKU++zDyN0bBin2JV+dmmi26Ag/XyJ451te1wYronFm7XZSZK1CTD4outjfUu
-	 42eBLatz91RGA==
+	b=IkyHTaTWI4mlB9C5+pPK7YaSEmv5fZWHB8e7Ob/YqoBXe2E/y1hvARc3zRn/5Pdyo
+	 9Vk2uT32Vb6/Sl35b93069RAO1wmZYCUHUmF3POvWJO7ssdFYgjRSpSS6fLrKPzru6
+	 mR5DUKeaVhONWcRi1vYfLVhGC0nohnWHWaE2v4zMNw8KV55ThOZRTS170nqEHvtQJR
+	 xxdNHM69i/xPgJCCy3DiW3Oxlq9/A/otSLJIMnCyhE9Z7RoMr+uNHO9p8QCsob4TTb
+	 IqENH5BPpExm4lke9AEQ43oB0nsGMmzqf0r/ZmaBLyaYYXx9On9GiA1je2BFPO4itu
+	 yg8kN0f/BsuaQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	skulkarni@mvista.com
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y 8/8] act_mirred: use the backlog for nested calls to mirred ingress
-Date: Fri, 25 Jul 2025 21:01:37 -0400
-Message-Id: <1753464140-e7196da4@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] comedi: pcl812: Fix bit shift out of bounds
+Date: Fri, 25 Jul 2025 21:01:40 -0400
+Message-Id: <1753466860-f663f02e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250724192619.217203-9-skulkarni@mvista.com>
+In-Reply-To: <20250724181646.291939-4-abbotti@mev.co.uk>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,38 +63,51 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 8/8 of a series
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: ca22da2fbd693b54dc8e3b7b54ccc9f7e9ba3640
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: <skulkarni@mvista.com>
-Commit author: Davide Caratti <dcaratti@redhat.com>
+The upstream commit SHA1 provided is correct: b14b076ce593f72585412fc7fd3747e03a5e3632
 
 Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (different SHA1: 4c8fc3fe28e4)
-5.15.y | Present (different SHA1: 169a41073993)
-5.10.y | Present (different SHA1: 532451037863)
+6.15.y | Not found
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+5.15.y | Not found
 
-Found fixes commits:
-5e8670610b93 selftests: forwarding: tc_actions: Use ncat instead of nc
-
-Note: Could not generate a diff with upstream commit:
+Note: The patch differs from the upstream commit:
 ---
-Note: Could not generate diff - patch failed to apply for comparison
----
+1:  b14b076ce593 ! 1:  08dbf07f845c comedi: pcl812: Fix bit shift out of bounds
+    @@ Metadata
+      ## Commit message ##
+         comedi: pcl812: Fix bit shift out of bounds
+     
+    +    [ Upstream commit b14b076ce593f72585412fc7fd3747e03a5e3632 ]
+    +
+         When checking for a supported IRQ number, the following test is used:
+     
+                 if ((1 << it->options[1]) & board->irq_bits) {
+    @@ Commit message
+         Link: https://lore.kernel.org/r/20250707133429.73202-1-abbotti@mev.co.uk
+         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+     
+    - ## drivers/comedi/drivers/pcl812.c ##
+    -@@ drivers/comedi/drivers/pcl812.c: static int pcl812_attach(struct comedi_device *dev, struct comedi_devconfig *it)
+    - 		if (IS_ERR(dev->pacer))
+    - 			return PTR_ERR(dev->pacer);
+    + ## drivers/staging/comedi/drivers/pcl812.c ##
+    +@@ drivers/staging/comedi/drivers/pcl812.c: static int pcl812_attach(struct comedi_device *dev, struct comedi_devconfig *it)
+    + 		if (!dev->pacer)
+    + 			return -ENOMEM;
+      
+     -		if ((1 << it->options[1]) & board->irq_bits) {
+     +		if (it->options[1] > 0 && it->options[1] < 16 &&
 
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
+---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| 5.4                       | Success     | Success    |
+| origin/linux-5.10.y       | Success     | Success    |
 
