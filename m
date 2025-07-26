@@ -1,63 +1,79 @@
-Return-Path: <stable+bounces-164827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655A1B129AF
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 09:59:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DABB12A07
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 12:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5A7189D872
-	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 08:00:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5603E3A4D0A
+	for <lists+stable@lfdr.de>; Sat, 26 Jul 2025 10:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D5621A424;
-	Sat, 26 Jul 2025 07:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DCB241679;
+	Sat, 26 Jul 2025 10:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVrDNwtE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UssYt3xG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29E120297B;
-	Sat, 26 Jul 2025 07:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC04A23ED6A;
+	Sat, 26 Jul 2025 10:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753516778; cv=none; b=VtcjY+cK0wWyIAN9dTyzrbXylX9bG5U+6a+QHeXYpjEOVuzgKPe3DMjQW8PLvqF6lLA31WqHvM4lN0PqREF61r5VnpwqyzjpNC/h+7qyFcCKV3iOiI/Zynqj71m4282ACrOYGkfHNo5SAuMucTervnKoSKHukyySppjKkRExNSw=
+	t=1753525591; cv=none; b=obQpH0UGIUvynWXYycaVDTTC4Optjsis6gM69tkbt2MdeyvvNoHVuZpWYSUAjohSQGpbeI+8aiUXBCd19QVg9eoDls9eK49XtRkAt5zmFZUwyrNC826XNuCLzyrwJ9AZ+M27vhVlNFPSUPURYpIemH/ADbIBzSaDEwPE6/0CQmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753516778; c=relaxed/simple;
-	bh=+7OwWL8HsXou9HcpeVyEaPMNSqLGr7byrMdBXyWRVmI=;
+	s=arc-20240116; t=1753525591; c=relaxed/simple;
+	bh=rdLbrjse36XtzLBFRtpD0P4XKQsz7lIV+X4u+ba+Dm8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g5S+CFg9cHLo6ORZhP5sN4ZCtnSj1NZiOcZOI7gaK3pmUD0lmt6MEeC2yjdzA1zkz9uhxEfTBeuI+IEH1B8eJhhbWLlzO/MxKocQNO0Y/X/dVrdhZA4tC2bSxp1WVB7vsQSMh+RNn2TTlNAVcyMl6edKukxJPjwf/JUUOEinq8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVrDNwtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950F5C4CEED;
-	Sat, 26 Jul 2025 07:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753516778;
-	bh=+7OwWL8HsXou9HcpeVyEaPMNSqLGr7byrMdBXyWRVmI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fVrDNwtEpWOUgHeNDV+Xg2hA5El/kRUrHYLdGGzc7I5nJofIA7pzN76Ck9iwADQCH
-	 l/4GGwF2wahiVWxevK+E87qJLNRhdSBbmAOBOpat2+QDHD/+aD5ibm8mvyRONVDNTB
-	 5U3v+XRi4fpKsuCDkY/IbHsF7RT41HkxjgzG/JOg=
-Date: Sat, 26 Jul 2025 09:59:35 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Yunseong Kim <ysk@kzalloc.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Byungchul Park <byungchul@sk.com>, max.byungchul.park@gmail.com,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Michelle Jin <shjy180909@gmail.com>, linux-kernel@vger.kernel.org,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	stable@vger.kernel.org, kasan-dev@googlegroups.com,
-	syzkaller@googlegroups.com, linux-usb@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH] kcov, usb: Fix invalid context sleep in softirq path on
- PREEMPT_RT
-Message-ID: <2025072614-molehill-sequel-3aff@gregkh>
-References: <20250725201400.1078395-2-ysk@kzalloc.com>
- <2025072615-espresso-grandson-d510@gregkh>
- <77c582ad-471e-49b1-98f8-0addf2ca2bbb@I-love.SAKURA.ne.jp>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cLoZOjGb/TGGfQRz8bsL7ATs2ot/3ioIQ7PeATqgUITuRm3Fvyw48TqTFa5pa+qFkQx799A0s4Ok+rfrXiXhpUZWeu9y7APxPWpwvhZKpI5b+xDgZbC1gm44aaSjkJorFn2IkkuA4ADyEmVEgEMg3pM7TPVi9nQsPHrYTWJMng4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UssYt3xG; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753525590; x=1785061590;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rdLbrjse36XtzLBFRtpD0P4XKQsz7lIV+X4u+ba+Dm8=;
+  b=UssYt3xGXiTV0WGlfxWikD0ZjnLfa/lklrIaklazaAdFQjImSbAPfqtJ
+   CL7j9UL/V07wf8Pqui4dNKR44pqFJ13pPJm+V6KKLVT0ooZxxcj64Ajl5
+   sbUgr3Hn2MRQ8x54O5QxZkzhh5gH7/NxXImSjmBBxRsfT8MKoNzgSjfJE
+   Mjs8AVjDbxrepF1DdThkYwzKpxzHP2QnF1SxxXR9ePLWWOVsmBY+vPd73
+   2Amx159uM0po7rWWFc+eJMebFmHTh7qLbtD/07tG1VdQ1WQFkgFoo4nfl
+   W4348nmsKigyycqvLjY78Ut/hbfcQ6j3XY7RS9s2Fhc+/6QjlCtry/3eU
+   A==;
+X-CSE-ConnectionGUID: 5sQAUelwQCafEds76BbvSA==
+X-CSE-MsgGUID: ffsd8rUsQR2qKQkMcSPYEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="59497447"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="59497447"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 03:26:29 -0700
+X-CSE-ConnectionGUID: /9KvRXspRjO1plGsRBv9Tw==
+X-CSE-MsgGUID: lo/mTwlERoGabMdfexlmsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="185142011"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 26 Jul 2025 03:26:26 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ufc6h-000Ls7-2K;
+	Sat, 26 Jul 2025 10:26:23 +0000
+Date: Sat, 26 Jul 2025 18:26:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Victor Shih <victorshihgli@gmail.com>, ulf.hansson@linaro.org,
+	adrian.hunter@intel.com
+Cc: oe-kbuild-all@lists.linux.dev, linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, benchuanggli@gmail.com,
+	ben.chuang@genesyslogic.com.tw, HL.Liu@genesyslogic.com.tw,
+	Victor Shih <victorshihgli@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH V2 1/2] mmc: sdhci-pci-gli: Add a new function to
+ simplify the code
+Message-ID: <202507261828.pgCE5fRD-lkp@intel.com>
+References: <20250725105257.59145-2-victorshihgli@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,82 +82,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <77c582ad-471e-49b1-98f8-0addf2ca2bbb@I-love.SAKURA.ne.jp>
+In-Reply-To: <20250725105257.59145-2-victorshihgli@gmail.com>
 
-On Sat, Jul 26, 2025 at 04:44:42PM +0900, Tetsuo Handa wrote:
-> On 2025/07/26 15:36, Greg Kroah-Hartman wrote:
-> > Why is this only a USB thing?  What is unique about it to trigger this
-> > issue?
-> 
-> I couldn't catch your question. But the answer could be that
-> 
->   __usb_hcd_giveback_urb() is a function which is a USB thing
-> 
-> and
-> 
->   kcov_remote_start_usb_softirq() is calling local_irq_save() despite CONFIG_PREEMPT_RT=y
-> 
-> as shown below.
-> 
-> 
-> 
-> static void __usb_hcd_giveback_urb(struct urb *urb)
-> {
->   (...snipped...)
->   kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum) {
->     if (in_serving_softirq()) {
->       local_irq_save(flags); // calling local_irq_save() is wrong if CONFIG_PREEMPT_RT=y
->       kcov_remote_start_usb(id) {
->         kcov_remote_start(id) {
->           kcov_remote_start(kcov_remote_handle(KCOV_SUBSYSTEM_USB, id)) {
->             (...snipped...)
->             local_lock_irqsave(&kcov_percpu_data.lock, flags) {
->               __local_lock_irqsave(lock, flags) {
->                 #ifndef CONFIG_PREEMPT_RT
->                   https://elixir.bootlin.com/linux/v6.16-rc7/source/include/linux/local_lock_internal.h#L125
->                 #else
->                   https://elixir.bootlin.com/linux/v6.16-rc7/source/include/linux/local_lock_internal.h#L235 // not calling local_irq_save(flags)
->                 #endif
->               }
->             }
->             (...snipped...)
->             spin_lock(&kcov_remote_lock) {
->               #ifndef CONFIG_PREEMPT_RT
->                 https://elixir.bootlin.com/linux/v6.16-rc7/source/include/linux/spinlock.h#L351
->               #else
->                 https://elixir.bootlin.com/linux/v6.16-rc7/source/include/linux/spinlock_rt.h#L42 // mapped to rt_mutex which might sleep
->               #endif
->             }
->             (...snipped...)
->           }
->         }
->       }
->     }
->   }
->   (...snipped...)
-> }
-> 
+Hi Victor,
 
-Ok, but then how does the big comment section for
-kcov_remote_start_usb_softirq() work, where it explicitly states:
+kernel test robot noticed the following build errors:
 
- * 2. Disables interrupts for the duration of the coverage collection section.
- *    This allows avoiding nested remote coverage collection sections in the
- *    softirq context (a softirq might occur during the execution of a work in
- *    the BH workqueue, which runs with in_serving_softirq() > 0).
- *    For example, usb_giveback_urb_bh() runs in the BH workqueue with
- *    interrupts enabled, so __usb_hcd_giveback_urb() might be interrupted in
- *    the middle of its remote coverage collection section, and the interrupt
- *    handler might invoke __usb_hcd_giveback_urb() again.
+[auto build test ERROR on linus/master]
+[also build test ERROR on ulf-hansson-mmc-mirror/next v6.16-rc7 next-20250725]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Victor-Shih/mmc-sdhci-pci-gli-Add-a-new-function-to-simplify-the-code/20250725-185611
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20250725105257.59145-2-victorshihgli%40gmail.com
+patch subject: [PATCH V2 1/2] mmc: sdhci-pci-gli: Add a new function to simplify the code
+config: i386-buildonly-randconfig-001-20250726 (https://download.01.org/0day-ci/archive/20250726/202507261828.pgCE5fRD-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250726/202507261828.pgCE5fRD-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507261828.pgCE5fRD-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/mmc/host/sdhci-pci-gli.c: In function 'sdhci_gli_mask_replay_timer_timeout':
+>> drivers/mmc/host/sdhci-pci-gli.c:296:39: error: 'pdev' undeclared (first use in this function); did you mean 'dev'?
+     296 |         aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+         |                                       ^~~~
+         |                                       dev
+   drivers/mmc/host/sdhci-pci-gli.c:296:39: note: each undeclared identifier is reported only once for each function it appears in
 
 
-You are removing half of this function entirely, which feels very wrong
-to me as any sort of solution, as you have just said that all of that
-documentation entry is now not needed.
+vim +296 drivers/mmc/host/sdhci-pci-gli.c
 
-Are you sure this is ok?
+   288	
+   289	/* Genesys Logic chipset */
+   290	static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *dev)
+   291	{
+   292		int aer;
+   293		u32 value;
+   294	
+   295		/* mask the replay timer timeout of AER */
+ > 296		aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+   297		if (aer) {
+   298			pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+   299			value |= PCI_ERR_COR_REP_TIMER;
+   300			pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+   301		}
+   302	}
+   303	
 
-thanks,
-
-greg k-h
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
