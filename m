@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-164854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049D8B12EE4
-	for <lists+stable@lfdr.de>; Sun, 27 Jul 2025 11:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41050B12EE9
+	for <lists+stable@lfdr.de>; Sun, 27 Jul 2025 11:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F06A17313D
-	for <lists+stable@lfdr.de>; Sun, 27 Jul 2025 09:52:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5809A175E7F
+	for <lists+stable@lfdr.de>; Sun, 27 Jul 2025 09:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2522171C9;
-	Sun, 27 Jul 2025 09:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF731FC0E2;
+	Sun, 27 Jul 2025 09:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hbBrsIae"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WG/JvH9A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6459202F70;
-	Sun, 27 Jul 2025 09:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B37F2B9BA;
+	Sun, 27 Jul 2025 09:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753609907; cv=none; b=XvEiuQfjIaddkfs2EW4RftyfO8jPm5bwziOiIKsxXUx5KT3FYgg37q8yPNgYBpm5lhpQ7/eUWTZk0Sutr5h4Qzsutcj6ar/fnF+rqvauZXrj8JcaF0TH3OVoqmIg6Qvj2ZAeK5iDKdp4HXYWTRvYTGNZFBWuFMVJ+Iy4U/46qgU=
+	t=1753610228; cv=none; b=NBUGuhpeUxp0UhaO9Y06SMmJ3JXUylJBs6RGNJPV/DvOsmA8tLpD9Tg1laXzXjGkX9QVgDpjl4+GumTjTLk6JeepVAZiBWvn+wVBCR/KSNcwG767dLDvZdp4Vuujidhrk07FetQv28GYZHxGxNE0lIKykj3lpH/LlXLT4/yRbAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753609907; c=relaxed/simple;
-	bh=D5ppVq3QqCe7Zf1Zc+MyTGFktyD9Tu0/kwUllmqLIxs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TV61aVnFcIff6lbUv4suBdCOdjOi4N8xykIZh5l2h3YwHWz1mzQHReo9t0EJisnUMDSrDlba8cwvyN6ndXXIx/rNHKd13yMiOD85Ej8kRUpbq8Vvz6UUXrHcw9RVnlavH/PvFtiYzPlos72t5+s48wpNnl0I5sH/MhKSY6oKIlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hbBrsIae; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1753610228; c=relaxed/simple;
+	bh=CD/l3tUdwzeZKZupi/sYgTC59oQJFaZAsMCYQNYsVRE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PooMoJFJ5j6KsyLOEO6fm8gtMh8tKirl0wKENAiYSDJElNtsuOzxGOawdEF2lJq1zVbzuRKSAAPI7xF/Ga/szZG4vTtaTL2foxWVd1ar5HykwmQdWAbrLOF5lAlxAyDPj2kQ76kjbUXMclFO7Glgd9YMexQqdsFDT77Kk8a1fxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WG/JvH9A; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-24009eeb2a7so1543415ad.0;
-        Sun, 27 Jul 2025 02:51:44 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2402774851fso15195ad.1;
+        Sun, 27 Jul 2025 02:57:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753609904; x=1754214704; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753610226; x=1754215026; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dskf1rATUBFmCQprzjusof8q2SMFT1316UEra5Cd0Z8=;
-        b=hbBrsIaeaPoyEdN3IeAM1kUSD2qfzXwQgTl1YxbfmCuERlKja802VA0EiqFhXuPr+h
-         kN+OSsDAgfEsiC2fKqP87RdoshViX8LZ9QOAKtUEL7qOwl4MYHBwDSQsEuRhO2FzWZIo
-         y3gU4rYQM3F6Mcbv1eu9B/scbaS7M9gZ1bfWLs2blIy3ZbSxh+oC1SvjN14zGXqZF3/A
-         y5RTMWFeK54L7nebTovm6RNCrJBJzhWbiA7zD8dRVZcS2/q/FujArzoLz3Fx/bmqRokW
-         arfwMxtYBXIo1eEsRhSmAZgrxphslKl/to6mnATh/KmyvAjTZlKF1wOeYPjuvN63yqSw
-         QcJg==
+        bh=muUtX0lSh6gtM3PBB5xVgiDhmrdOkyfI1XoOF1+/laI=;
+        b=WG/JvH9AfWbwGlYXrXzhTDMcGW184coSrEizoKJgPL6//YXFyNNXpRwCcfCr64Vdfg
+         CyeJ7j4PF1Loy/KJJkHZnrxCORZC5iBrfy6124YY03DKOUnpXFnxw7zFRrqXi3lsJCXq
+         xLvnkmULgglCoprYx3M/ERXyQE/nztyUswpmLGAMVamuqLY2qJlfC42LCdC3fSIZIjdM
+         d1xER3Nwkoe0qucGQam829YT7PCuLgYkIftwafidAHuUtnKX+csd2dHFS05jDrM4dzgx
+         XRW1EK0aMeOZpwScOaNPGlp/WcBs3rpYmwWGnye5wbEd4J2foVr0BpRrW6zJBQ1jk6OP
+         flew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753609904; x=1754214704;
+        d=1e100.net; s=20230601; t=1753610226; x=1754215026;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dskf1rATUBFmCQprzjusof8q2SMFT1316UEra5Cd0Z8=;
-        b=YjwL/Bp22t7EcPxXTauWpCjUZTB8PQFZp0p+hga8DojjlnvXNpjO1G4mti9g7yLMx8
-         Vfaixk87bA/4NtZzMsfq8trKX/+Tbj9raywE8Dt8AAAeXVf7XyyeoSMoqEan/8LtKSTF
-         vZFymJ+djWFe8TAFNDlrNOriEeud+bREEcyrJIQsbYBcUfYQ+Yja3laR2hYlNUBccPcv
-         4MldnU0p/g6B/aXUehppOx5R+g9uErQn4Od6515UTSAdXEixl+2K2K9ybi/pSHa53aAh
-         dhK0XBRkyxFxvmSRfOWTiyUtib23XeIX1kWHP3G/RZSekYKdzxBvMkHnMY5TVHl7qsRQ
-         18Kg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUSQ7WPtj/bfj+oW1Yt23fFxoM6WaOmuKY/Asfr8hSp2du090rlmCAoDiO4r0juECYHOHhXDxMPmsi9aU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzreqtWimA1G6cvpkdg5K8WkisZ7ugSE7spyxTrwxL93swByBV4
-	Nd4yUIfd++SHZBEwgj14UQOZqObkcxOZYwMladcSZrVvIKb8wi3eyL7LmFmHH/V7
-X-Gm-Gg: ASbGncvweZJl46VIv8kF3YMDleAeRtB4LrvlGjyh0cb8YbFD79jG/rLz/fmGitSduqN
-	7ykF6WfmHgEMDSs5tNGB344y9TCPamqRviS7a97Ci+Grbx8lPWG8Amihg43+MHz/U8bda0Mr1BO
-	csj6Avvz+fmBG7SF+aW5Jc2ULXqgYkt6bfsXebey22ljfZHYA143peGvmMXIQcWoWIZ5Ivp7XBw
-	7fFXoeAKigamCiYox5Ok3xcY6WweAyvKGazmh51C/8ALVXBk1PrRnYIvK8tfBXdIzNaSi71JbYL
-	w2fXxblTb4bxlWTKDS6t+0eW9BbSYxnl5yBt/ovM8SNLvtNZKifJl6d3UbeSVYl3J3tarydmlV5
-	O1oLfvQvEzVj/WFkUtdYA5A==
-X-Google-Smtp-Source: AGHT+IGpALJ699LdfAv3Y17ZVtcuGR1LM7zGC1tgkOCExgcr3JVyKpBWA7LQwWxspNNgwhzprbznWA==
-X-Received: by 2002:a17:902:cf03:b0:236:6f5f:caaf with SMTP id d9443c01a7336-23fb3031402mr119651315ad.15.1753609903645;
-        Sun, 27 Jul 2025 02:51:43 -0700 (PDT)
+        bh=muUtX0lSh6gtM3PBB5xVgiDhmrdOkyfI1XoOF1+/laI=;
+        b=KS0zQYnzzzsKV4P/ngGmJCCApwj86kaAm0/Cc4ql8ZYMxTs+0UuxvC411U10vDx0Xf
+         xU6SkFK4k0wMZV4TjeulmCyyCfE/vmS/cA3I/yiopZvV2U5C/ButeAtINTI8W1yRd0D3
+         1tpZ8I698oxjUPSukg2NTh/zYSs0PRxIQu8faKbcBXutl4Ib3/3VjDD0ci+9wZ/rRSeT
+         YJMLHTOciqiuBkL6ML0He4+8M1xc78ne7dH+POVFcXVMbAcgYrOTi/9UrVyx2wiyzF24
+         w+IpudvAI7UDhwzrIQ6YUJJ39951rSfLVMhEpc7sHoySmgpDqZ9eUPFfHRFANaodBSKD
+         3L/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVsL56cSwv+i4qDblRtJEqO9d9+5In092opp2RHtWo5ifFUyp/VBljnguydVwNsfDVLCXyLxIAUbss6+tE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxh3yKNmrHM4RCTNgpz6INrNjqXC7fjnj5EYqTrCCpV8gVigu/K
+	hgqvCKL57wmye6Kehm/YRJvKqYwGQxJfv56YVjt3P3KglCEqVXiMJEipVgipOFLX
+X-Gm-Gg: ASbGncthawiIJINIgJ66G1+QurgdTWFO+fZjeYPxYdqrdNAmVN/JtOMnS0Ee6zOOxjG
+	KfYQmQ9kPPjbcvDNbY8ekrrttCRK96lA3X8cyQ7Va9Bnzq2OcwTE81XOPcO18dy3gULZBp6XKOw
+	W7/pavHtJw2L2HKk+FRCMyrXOZ5U6HHprMhk9UR2DoIv7ka56+2Cgr+t6XX9zGG7rc0wZYXFsWp
+	69cQda3C9/p8r682t8N1+KHwWtsOxJTU07oFRiRXnBpfvHcL0QXgLI39ZS9j5X4QgDSKCjIsFZj
+	/j149/JS5HhmwiKDMzMrEE75fdBAkdBtNTV0ggnkPMja3MUkeEmKu7Z3fGrgiFaj/CuVHDUSnX9
+	LJBK1hTMVlfQvaUPK7VPrAA==
+X-Google-Smtp-Source: AGHT+IHQG3kLtkocztWO0RATICIWOPiyz9ICOWjSNS+zDpM7I3jFhyHHPhD6/+UKe1O9Fox824bOaw==
+X-Received: by 2002:a17:903:230c:b0:240:96a:b81d with SMTP id d9443c01a7336-240096abbc8mr20897525ad.5.1753610225956;
+        Sun, 27 Jul 2025 02:57:05 -0700 (PDT)
 Received: from pop-os.. ([49.207.200.229])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fc5a9d25bsm27910545ad.83.2025.07.27.02.51.40
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2400ac15a9fsm7292685ad.93.2025.07.27.02.57.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Jul 2025 02:51:43 -0700 (PDT)
+        Sun, 27 Jul 2025 02:57:05 -0700 (PDT)
 From: Aditya Dutt <duttaditya18@gmail.com>
 To: stable@vger.kernel.org
 Cc: Dmitry Antipov <dmantipov@yandex.ru>,
@@ -82,9 +82,9 @@ Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	jfs-discussion@lists.sourceforge.net,
 	syzbot+ac2116e48989e84a2893@syzkaller.appspotmail.com,
 	Aditya Dutt <duttaditya18@gmail.com>
-Subject: [PATCH 6.12.y] jfs: reject on-disk inodes of an unsupported type
-Date: Sun, 27 Jul 2025 15:21:11 +0530
-Message-Id: <20250727095111.527745-1-duttaditya18@gmail.com>
+Subject: [PATCH 6.6.y] jfs: reject on-disk inodes of an unsupported type
+Date: Sun, 27 Jul 2025 15:26:45 +0530
+Message-Id: <20250727095645.530309-1-duttaditya18@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -171,15 +171,15 @@ Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
 ---
 
 As per: https://lore.kernel.org/all/CAODzB9roW_ObEa8K8kowbfQ4bL3w4R78v2b_yBU4BQL4bpXrWw@mail.gmail.com/
-this commit is not backported to any of the stable kernels (other than
-6.15.y)
-I will be sending separate emails for 6.6.y, 6.1.y and 5.15.y
+this commit is not backported to any of the stable kernels (other than 6.15.y)
+I have already sent an email for 6.12.y: https://lore.kernel.org/stable/20250727095111.527745-1-duttaditya18@gmail.com/
+I will be sending separate emails for 6.1.y and 5.15.y
 
  fs/jfs/jfs_imap.c | 13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 8ddc14c56501..ecb8e05b8b84 100644
+index 9a6d504228e7..35f3144d703b 100644
 --- a/fs/jfs/jfs_imap.c
 +++ b/fs/jfs/jfs_imap.c
 @@ -3029,14 +3029,23 @@ static void duplicateIXtree(struct super_block *sb, s64 blkno,
