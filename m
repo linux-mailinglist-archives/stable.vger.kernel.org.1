@@ -1,236 +1,202 @@
-Return-Path: <stable+bounces-164982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F51EB13E1B
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 17:20:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE49B13EDE
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 17:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C553540422
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:19:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E2C9188B608
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DF925DCEC;
-	Mon, 28 Jul 2025 15:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7945B273D76;
+	Mon, 28 Jul 2025 15:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="FXlezz4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTfAvhuQ"
 X-Original-To: stable@vger.kernel.org
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C7B72621;
-	Mon, 28 Jul 2025 15:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C002737F9
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 15:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753715976; cv=none; b=OwShnHzHXiUR1h6PH/bcpftRBN4yQCYT58JR7Hlkpt8wLnvgI72rsqyGNJeal8293w72gQDFpQm0+OtqVBIsjIWa7x26wASzDuVz+cDRAgb0vs8CQ5tXmVJMOwFg4Hbn43NPG81ZMtugqjHc4j8pyA8OIs5cO0w/7wwxg2Ghpzs=
+	t=1753717100; cv=none; b=L9LDohPunbxO4EnywKSIii7Yt3xX7QzKMGrA06meNHbQ7vgr1WrW1chGC0F2gIN6hXfjdekBZsoqECpkk1iTzPO/vqvE+tMl6S5UAjnuNEnxx8QzbG8brkddH7JYGCOLe5kecR0Q5SWit6ltZ8f9Gap6lHxc8IebcTIbYbuwBM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753715976; c=relaxed/simple;
-	bh=wIxcjcNEkyPDjmdkRrJ3cR3fiA648H006TZTC+uVUHc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=trqR3C/Lht5RHb0Ww4KCFNP8WByahgVYuSvzRDDu3Nx5fBlHpqB49i457LIiBsPh92ppDHzdg+YOJISRa24PZqiL10dNMWVF0XVUftq2ooDfOoG1HIHRwUNZFhFYC5eEJLSYamvwOa+nqSddSbmxAmBLSsE8DnbEuYGIYJNYtNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=FXlezz4/; arc=none smtp.client-ip=199.89.3.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4brMb44BjHzm0yVN;
-	Mon, 28 Jul 2025 15:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1753715965; x=1756307966; bh=wyvxwcIBKz4/1qVBx/Glm6HG
-	EcWTzuLIGUB0WKeP3wA=; b=FXlezz4/MQUqElceeHYKDWHaX6UdUZFANqL4A8rM
-	d6nTLdhAci116llAi7+noO5nZp2pNaIuRS4uXjQ0bVcAJqJ8yigmkixAmcjTmd2T
-	2MqZRJYkoIBmvM4BlvB2VXpq/tCixZBnIK2jIIJQjLFgA5w2K9JybDHLkl7ZsZT4
-	xMqxWIrh04vLwcBiW3wW99UhAEozoAyQhZI8Nksa3UHdK+6NlHS7t2A9bY0fYWDW
-	xADjqEJ4pDFay50VBT5F4+BU412a3A19QwSMtl2BUURtFmopxBeg300i14kIql8a
-	RYPUaZujSxdpHZIVfriBS3LOOHRU4AcUtWp7hYv2hRX7Lg==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id zCbeK2nZy5RL; Mon, 28 Jul 2025 15:19:25 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4brMZp20Ktzm0ySj;
-	Mon, 28 Jul 2025 15:19:12 +0000 (UTC)
-Message-ID: <c385f1c4-f27b-4dc7-b4a2-d35a9fc77a91@acm.org>
-Date: Mon, 28 Jul 2025 08:19:11 -0700
+	s=arc-20240116; t=1753717100; c=relaxed/simple;
+	bh=Nf0k7Kyv6Xyk9dNfFK7chJw/C8S9ddhOxdFO3HESOQc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IJm8PV22TTOcn0ENYx85mhHdv2DTmj/eUo7fdhtDxxEo792uaxnQg+Q1hpdqoEAKGGC6oE+hNiGdrp9gGMwThF5xVBSlympKJnw6oCC+jDzklLjllLURQEqi2aTGD+8Jxf4Gnc3XNRe+4SEm+qSq3YPlfVDYPvsI1eswILeE4dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTfAvhuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00642C4CEE7;
+	Mon, 28 Jul 2025 15:38:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753717099;
+	bh=Nf0k7Kyv6Xyk9dNfFK7chJw/C8S9ddhOxdFO3HESOQc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xTfAvhuQ1tXtHMzxymlbe+c7INpXmdhR2g0wLb1mUeQB+OaVvyEiFRi3tNzkxEpUs
+	 BbIfAFbNQtu/t2A9pTzuQMkNcjKUVim66GK7bNn4h34kna8Zjd/xrhPso5FXovsZX+
+	 0wYA8pYySmYbwXa69nnHzwzi3IlIaZ3S5SwRLMAo=
+Subject: FAILED: patch "[PATCH] arm64/entry: Mask DAIF in cpu_switch_to()," failed to apply to 5.15-stable tree
+To: ada.coupriediaz@arm.com,cpru@amazon.com,stable@vger.kernel.org,will@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 28 Jul 2025 17:38:11 +0200
+Message-ID: <2025072811-pension-lyrics-6070@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] scsi: ufs: core: move some irq handling back to
- hardirq (with time limit)
-To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Peter Griffin <peter.griffin@linaro.org>,
- Tudor Ambarus <tudor.ambarus@linaro.org>,
- Will McVicker <willmcvicker@google.com>,
- Manivannan Sadhasivam <mani@kernel.org>, kernel-team@android.com,
- linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250725-ufshcd-hardirq-v2-0-884c11e0b0df@linaro.org>
- <20250725-ufshcd-hardirq-v2-2-884c11e0b0df@linaro.org>
- <a008c613-58d6-4368-ae2f-55db4ac82a02@linaro.org>
- <76af97e49cb7f36c8dc6edc62c84e72d6bb4669c.camel@linaro.org>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <76af97e49cb7f36c8dc6edc62c84e72d6bb4669c.camel@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-
-On 7/28/25 7:49 AM, Andr=C3=A9 Draszik wrote:
-> Btw, my complete command was (should probably have added that
-> to the commit message in the first place):
->=20
-> for rw in read write ; do
->      echo "rw: ${rw}"
->      for jobs in 1 8 ; do
->          echo "jobs: ${jobs}"
->          for it in $(seq 1 5) ; do
->              fio --name=3Drand${rw} --rw=3Drand${rw} \
->                  --ioengine=3Dlibaio --direct=3D1 \
->                  --bs=3D4k --numjobs=3D${jobs} --size=3D32m \
->                  --runtime=3D30 --time_based --end_fsync=3D1 \
->                  --group_reporting --filename=3D/foo \
->              | grep -E '(iops|sys=3D|READ:|WRITE:)'
->              sleep 5
->          done
->      done
-> done
-
-Please run performance tests in recovery mode against a block
-device (/dev/block/sd...) instead of running performance tests on
-top of a filesystem. One possible approach for retrieving the block
-device name is as follows:
-
-adb shell readlink /dev/block/by-name/userdata
-
-There may be other approaches for retrieving the name of the block
-device associated with /data. Additionally, tuning for maximum
-performance is useful because it eliminates impact from the process
-scheduler on block device performance measurement. An extract from a
-scrip that I use myself to measure block device performance on Pixel
-devices is available below.
-
-Best regards,
-
-Bart.
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-optimize() {
-     local clkgate_enable c d devfreq disable_cpuidle governor nomerges=20
-iostats
-     local target_freq ufs_irq_path
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-     if [ "$1" =3D performance ]; then
-	clkgate_enable=3D0
-	devfreq=3Dmax
-	disable_cpuidle=3D1
-	governor=3Dperformance
-	# Enable I/O statistics because the performance impact is low and
-	# because fio reports the I/O statistics.
-	iostats=3D1
-	# Disable merging to make tests follow the fio arguments.
-	nomerges=3D2
-	target_freq=3Dcpuinfo_max_freq
-	persist_logs=3Dfalse
-     else
-	clkgate_enable=3D1
-	devfreq=3Dmin
-	disable_cpuidle=3D0
-	governor=3Dsched_pixel
-	iostats=3D1
-	nomerges=3D0
-	target_freq=3Dcpuinfo_min_freq
-	persist_logs=3Dtrue
-     fi
+To reproduce the conflict and resubmit, you may use the following commands:
 
-     for c in $(adb shell "echo /sys/devices/system/cpu/cpu[0-9]*"); do
-	for d in $(adb shell "echo $c/cpuidle/state[1-9]*"); do
-	    adb shell "if [ -e $d ]; then echo $disable_cpuidle > $d/disable; fi=
-"
-	done
-	adb shell "cat $c/cpufreq/cpuinfo_max_freq > $c/cpufreq/scaling_max_freq=
-;
-                    cat $c/cpufreq/${target_freq} >=20
-$c/cpufreq/scaling_min_freq;
-                    echo ${governor} > $c/cpufreq/scaling_governor; true"=
- \
-             2>/dev/null
-     done
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072811-pension-lyrics-6070@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-     if [ "$(adb shell grep -c ufshcd /proc/interrupts)" =3D 1 ]; then
-	# No MCQ or MCQ disabled. Make the fastest CPU core process UFS
-	# interrupts.
-	# shellcheck disable=3DSC2016
-	ufs_irq_path=3D$(adb shell 'a=3D$(echo /proc/irq/*/ufshcd); echo ${a%/uf=
-shcd}')
-	adb shell "echo ${fastest_cpucore} > ${ufs_irq_path}/smp_affinity_list;=20
-true"
-     else
-	# MCQ is enabled. Distribute the completion interrupts over the
-	# available CPU cores.
-	local i=3D0
-	local irqs
-	irqs=3D$(adb shell "sed -n 's/:.*GIC.*ufshcd.*//p' /proc/interrupts")
-	for irq in $irqs; do
-	    adb shell "echo $i > /proc/irq/$irq/smp_affinity_list; true"
-	    i=3D$((i+1))
-	done
-     fi
+Possible dependencies:
 
-     for d in $(adb shell echo /sys/class/devfreq/*); do
-	case "$d" in
-	    *gpu0)
-		continue
-		;;
-	esac
-	local min_freq
-	min_freq=3D$(adb shell "cat $d/available_frequencies |
-		tr ' ' '\n' |
-		sort -n |
-		case $devfreq in
-			min) head -n1;;
-			max) tail -n1;;
-		esac")
-	adb shell "echo $min_freq > $d/min_freq"
-	# shellcheck disable=3DSC2086
-	if [ "$devfreq" =3D "max" ]; then
-	    echo "$(basename $d)/min_freq: $(adb shell cat $d/min_freq) <>=20
-$min_freq"
-	fi
-     done
 
-     for d in $(adb shell echo /sys/devices/platform/*.ufs); do
-	adb shell "echo $clkgate_enable > $d/clkgate_enable"
-     done
 
-     adb shell setprop logd.logpersistd.enable ${persist_logs}
+thanks,
 
-     adb shell "for b in /sys/class/block/{sd[a-z],dm*}; do
-		    if [ -e \$b ]; then
-			[ -e \$b/queue/iostats     ] && echo ${iostats}   >\$b/queue/iostats;
-			[ -e \$b/queue/nomerges    ] && echo ${nomerges}  >\$b/queue/nomerges;
-			[ -e \$b/queue/rq_affinity ] && echo 2            >\$b/queue/rq_affini=
-ty;
-			[ -e \$b/queue/scheduler   ] && echo ${iosched}   >\$b/queue/scheduler=
-;
-		    fi
-		done; true"
+greg k-h
 
-     adb shell "grep -q '^[^[:blank:]]* /sys/kernel/debug' /proc/mounts=20
-|| mount -t debugfs none /sys/kernel/debug"
-}
+------------------ original commit in Linus's tree ------------------
+
+From d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb Mon Sep 17 00:00:00 2001
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Date: Fri, 18 Jul 2025 15:28:14 +0100
+Subject: [PATCH] arm64/entry: Mask DAIF in cpu_switch_to(),
+ call_on_irq_stack()
+
+`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
+to different stacks along with the Shadow Call Stack if it is enabled.
+Those two stack changes cannot be done atomically and both functions
+can be interrupted by SErrors or Debug Exceptions which, though unlikely,
+is very much broken : if interrupted, we can end up with mismatched stacks
+and Shadow Call Stack leading to clobbered stacks.
+
+In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
+but x18 stills points to the old task's SCS. When the interrupt handler
+tries to save the task's SCS pointer, it will save the old task
+SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
+clobbering it.
+
+In `call_on_irq_stack()`, it can happen when switching from the task stack
+to the IRQ stack and when switching back. In both cases, we can be
+interrupted when the SCS pointer points to the IRQ SCS, but SP points to
+the task stack. The nested interrupt handler pushes its return addresses
+on the IRQ SCS. It then detects that SP points to the task stack,
+calls `call_on_irq_stack()` and clobbers the task SCS pointer with
+the IRQ SCS pointer, which it will also use !
+
+This leads to tasks returning to addresses on the wrong SCS,
+or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
+or FPAC if enabled.
+
+This is possible on a default config, but unlikely.
+However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
+instead the GIC is responsible for filtering what interrupts the CPU
+should receive based on priority.
+Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
+even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
+frequently depending on the system configuration and workload, leading
+to unpredictable kernel panics.
+
+Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
+Do the same in `call_on_irq_stack()`, but restore and mask around
+the branch.
+Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
+of behaviour between all configurations.
+
+Introduce and use an assembly macro for saving and masking DAIF,
+as the existing one saves but only masks IF.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Reported-by: Cristian Prundeanu <cpru@amazon.com>
+Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
+Tested-by: Cristian Prundeanu <cpru@amazon.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+
+diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
+index ad63457a05c5..c56c21bb1eec 100644
+--- a/arch/arm64/include/asm/assembler.h
++++ b/arch/arm64/include/asm/assembler.h
+@@ -41,6 +41,11 @@
+ /*
+  * Save/restore interrupts.
+  */
++	.macro save_and_disable_daif, flags
++	mrs	\flags, daif
++	msr	daifset, #0xf
++	.endm
++
+ 	.macro	save_and_disable_irq, flags
+ 	mrs	\flags, daif
+ 	msr	daifset, #3
+diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
+index 5ae2a34b50bd..30dcb719685b 100644
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -825,6 +825,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
+  *
+  */
+ SYM_FUNC_START(cpu_switch_to)
++	save_and_disable_daif x11
+ 	mov	x10, #THREAD_CPU_CONTEXT
+ 	add	x8, x0, x10
+ 	mov	x9, sp
+@@ -848,6 +849,7 @@ SYM_FUNC_START(cpu_switch_to)
+ 	ptrauth_keys_install_kernel x1, x8, x9, x10
+ 	scs_save x0
+ 	scs_load_current
++	restore_irq x11
+ 	ret
+ SYM_FUNC_END(cpu_switch_to)
+ NOKPROBE(cpu_switch_to)
+@@ -874,6 +876,7 @@ NOKPROBE(ret_from_fork)
+  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
+  */
+ SYM_FUNC_START(call_on_irq_stack)
++	save_and_disable_daif x9
+ #ifdef CONFIG_SHADOW_CALL_STACK
+ 	get_current_task x16
+ 	scs_save x16
+@@ -888,8 +891,10 @@ SYM_FUNC_START(call_on_irq_stack)
+ 
+ 	/* Move to the new stack and call the function there */
+ 	add	sp, x16, #IRQ_STACK_SIZE
++	restore_irq x9
+ 	blr	x1
+ 
++	save_and_disable_daif x9
+ 	/*
+ 	 * Restore the SP from the FP, and restore the FP and LR from the frame
+ 	 * record.
+@@ -897,6 +902,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
+ 	scs_load_current
++	restore_irq x9
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 
 
