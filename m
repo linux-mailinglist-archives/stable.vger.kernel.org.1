@@ -1,202 +1,138 @@
-Return-Path: <stable+bounces-164984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653A9B13EF4
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 17:42:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6470B13F10
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 17:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AEA2162688
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:40:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C53F3AF17F
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564522727F6;
-	Mon, 28 Jul 2025 15:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79F0273811;
+	Mon, 28 Jul 2025 15:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlVkpLU6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z4eP9emY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1753D24BD03
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 15:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE94270EAE;
+	Mon, 28 Jul 2025 15:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753717109; cv=none; b=pxEOqNjXws4396suYs0t5E5z9xBN6QQn3rbL/xC5v88V2yQRjFZeBZ7L0biiE1YBawKLKr2cRXQ6t0urY+y5zqpGX9OD1D3FAltLEMcYJPe9ei2MaNgQGkmkk9kTxN2F2+BJBqd+d+dQ8f9OBOqlVAx1mbqqITWYAS0H1poZLd4=
+	t=1753717367; cv=none; b=RJTFBZFpwoREZDRkhbAPapPNQKgAUBxyHz9ZfHXiBqjBLy5c9VKZjTcnUOZUNh5F5Zm7yXRLqN88ENFDPciOJ6gqd18yqOqa3L36MtCJ7BAR2UFqNK//T8+o0HlSuBqynbD+bTBEanWgXHQw53HTe0k2vyDfcosrZTWN+l6ri40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753717109; c=relaxed/simple;
-	bh=8A6BKU70NU3VIQhtrQfTBkkOPu6bqx6kPtO9guMyfp0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GX10ZIK9SWRMgEzBEP63lBs8SSgbha1cF/asNAHhraO3eMIPd4kIRobt5mGeV4f1NKQI58grgx+DhA7v27qXzvtZN+dgVdDvaD6TJBd1pufNJyLclTpZJGK9hqoVzdvt2h7vTtv6A4ovvhV3hOCP3FbVMsKp0Q8EfkdpnrieUq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlVkpLU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342DDC4CEE7;
-	Mon, 28 Jul 2025 15:38:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753717108;
-	bh=8A6BKU70NU3VIQhtrQfTBkkOPu6bqx6kPtO9guMyfp0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=jlVkpLU6i3SbXdKZLW/0tMI4Td8iDKiRQ5fxL9cLrzc1y0AeJOgfzn0X8jFsk/ZHx
-	 CtjNV2QYoj7PEUurlOLWBIVT5Zz/PiGudtEpidbezxyYuDGkNLdTAVq7rESGK2tqmI
-	 mBA93UT+9aBjhB45yMcvRFuPiikObEnhsKQco7Co=
-Subject: FAILED: patch "[PATCH] arm64/entry: Mask DAIF in cpu_switch_to()," failed to apply to 6.1-stable tree
-To: ada.coupriediaz@arm.com,cpru@amazon.com,stable@vger.kernel.org,will@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Jul 2025 17:38:17 +0200
-Message-ID: <2025072817-deeply-galleria-d758@gregkh>
+	s=arc-20240116; t=1753717367; c=relaxed/simple;
+	bh=w3T0G06ESTOQ1EHtto0LS3ZwEyHFZAzov8Mufn50fBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lKa8z7zcE6wfeqZMGdp6YL5vhXtXFOT1VcR6Jvs8D2yIOpc8sQrv7SP2NTEgcbNPGdk649Vx5Fo4IBh1zzGAib7WgQm8Lc8AG3Oj4leNSQFltZeT3eoV/OYMsbsbm5/zabzVbQDfelNeU8k66La/2whByNWl5g61Fb8b+fZ1hCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z4eP9emY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A397C4CEE7;
+	Mon, 28 Jul 2025 15:42:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753717367;
+	bh=w3T0G06ESTOQ1EHtto0LS3ZwEyHFZAzov8Mufn50fBc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z4eP9emYwGAp2iaGGtsqIIr3Idk+4EPUPnL8JUqix7WxrsW36kWPIOqscfuy+dglA
+	 sQdE7s0D5HSwDkg1PncqBwag/x1SMJHcKOr5LrVhcul1kF8/vdbri7gCN8NC2hALaU
+	 aV7brQFMihupQ/Pi9CMUphLMa1k4X2WZkSgh9tItNRN9mmv1BQBB2jdJNJdEqW2/8b
+	 llgmDI+h6+/qMd/fF6XXKyPokfvByFnLoz7dVk1E3+jfbHQE4Rr4a+hRlSeuVj45Jm
+	 H3AXrCfrrYG8BopAddawpOTXG7SareJGK8mKeVuAV2MDcgTZ51P1iTGDNtqrkQsj5I
+	 ioxR2VP6SSeSg==
+Date: Mon, 28 Jul 2025 08:42:44 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: "Alan J. Wylie" <alan@wylie.me.uk>
+Cc: linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>
+Subject: Re: "stack state/frame" and "jump dest instruction" errors (was Re:
+ Linux 6.16)
+Message-ID: <hla34nepia6wyi2fndx5ynud4dagxd7j75xnkevtxt365ihkjj@4p746zsu6s6z>
+References: <CAHk-=wh0kuQE+tWMEPJqCR48F4Tip2EeYQU-mi+2Fx_Oa1Ehbw@mail.gmail.com>
+ <871pq06728.fsf@wylie.me.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <871pq06728.fsf@wylie.me.uk>
 
+On Mon, Jul 28, 2025 at 09:41:35AM +0100, Alan J. Wylie wrote:
+> #regzbot introduced: 6.15.8..6.16
+> 
+> Linus Torvalds <torvalds@linux-foundation.org> writes:
+> 
+> > It's Sunday afternoon, and the release cycle has come to an end. Last
+> > week was nice and calm, and there were no big show-stopper surprises
+> > to keep us from the regular schedule, so I've tagged and pushed out
+> > 6.16 as planned.
+> 
+> Even after a "make mrproper" and "git clean -fxd" I'm seeing lots of
+> warnings and errors.
+> 
+> can't find jump dest instruction
+> stack state mismatch
+> return with modified stack frame
+> objtool: can't decode instruction
+> can't find starting instruction
+> 
+> gcc (Gentoo Hardened 14.3.0 p8) 14.3.0
+> 
+> I selected "Y" to the new config option "X86_NATIVE_CPU"
+> 
+> CPU is AMD FX-8350
+> 
+> .config attached
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The problem is likely that CONFIG_X86_NATIVE_CPU is using some
+AMD-specific instruction(s) which objtool doesn't know how to decode.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Building with KCFLAGS="-march=bdver2", I see the following:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072817-deeply-galleria-d758@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+0000000000000150 <amd_uncore_df_ctx_scan>:
+     150:	f3 0f 1e fa          	endbr64
+     154:	e8 00 00 00 00       	call   159 <amd_uncore_df_ctx_scan+0x9>	155: R_X86_64_PLT32	__fentry__-0x4
+     159:	48 8b 05 00 00 00 00 	mov    0x0(%rip),%rax        # 160 <amd_uncore_df_ctx_scan+0x10>	15c: R_X86_64_PC32	boot_cpu_data+0x2c
+     160:	a9 00 00 00 01       	test   $0x1000000,%eax
+     165:	74 64                	je     1cb <amd_uncore_df_ctx_scan+0x7b>
+     167:	48 c7 c0 00 00 00 00 	mov    $0x0,%rax	16a: R_X86_64_32S	cpu_info
+     16e:	89 f6                	mov    %esi,%esi
+     170:	53                   	push   %rbx
+     171:	83 3d 00 00 00 00 01 	cmpl   $0x1,0x0(%rip)        # 178 <amd_uncore_df_ctx_scan+0x28>	173: R_X86_64_PC32	.bss-0x5
+     178:	48 8b 0c f5 00 00 00 00 	mov    0x0(,%rsi,8),%rcx	17c: R_X86_64_32S	__per_cpu_offset
+     180:	49 89 f9             	mov    %rdi,%r9
+     183:	44 8b 84 01 ec 00 00 00 	mov    0xec(%rcx,%rax,1),%r8d
+     18b:	b8 04 00 00 00       	mov    $0x4,%eax
+     190:	7e 1a                	jle    1ac <amd_uncore_df_ctx_scan+0x5c>
+     192:	b8 22 00 00 80       	mov    $0x80000022,%eax
+     197:	31 c9                	xor    %ecx,%ecx
+     199:	0f a2                	cpuid
+     19b:	48 8b 0c f5 00 00 00 00 	mov    0x0(,%rsi,8),%rcx	19f: R_X86_64_32S	__per_cpu_offset
+     1a3:	8f ea 78 10 c3 0a 06 00 00 	bextr  $0x60a,%ebx,%eax
+     1ac:	0f b6 c0             	movzbl %al,%eax
+     1af:	45 0f b6 c0          	movzbl %r8b,%r8d
+     1b3:	49 8b 11             	mov    (%r9),%rdx
+     1b6:	49 c1 e0 30          	shl    $0x30,%r8
+     1ba:	48 c1 e0 20          	shl    $0x20,%rax
+     1be:	4c 09 c0             	or     %r8,%rax
+     1c1:	48 89 04 0a          	mov    %rax,(%rdx,%rcx,1)
+     1c5:	5b                   	pop    %rbx
+     1c6:	e9 00 00 00 00       	jmp    1cb <amd_uncore_df_ctx_scan+0x7b>	1c7: R_X86_64_PLT32	__x86_return_thunk-0x4
+     1cb:	e9 00 00 00 00       	jmp    1d0 <amd_uncore_l3_event_init>	1cc: R_X86_64_PLT32	__x86_return_thunk-0x4
 
-Possible dependencies:
+I don't have time to look at this for at least the next few days, but I
+suspect this one:
 
+     1a3:	8f ea 78 10 c3 0a 06 00 00 	bextr  $0x60a,%ebx,%eax
 
+in which case the kernel's x86 decoder (which objtool also uses) needs
+to be updated.
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb Mon Sep 17 00:00:00 2001
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Date: Fri, 18 Jul 2025 15:28:14 +0100
-Subject: [PATCH] arm64/entry: Mask DAIF in cpu_switch_to(),
- call_on_irq_stack()
-
-`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
-to different stacks along with the Shadow Call Stack if it is enabled.
-Those two stack changes cannot be done atomically and both functions
-can be interrupted by SErrors or Debug Exceptions which, though unlikely,
-is very much broken : if interrupted, we can end up with mismatched stacks
-and Shadow Call Stack leading to clobbered stacks.
-
-In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
-but x18 stills points to the old task's SCS. When the interrupt handler
-tries to save the task's SCS pointer, it will save the old task
-SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
-clobbering it.
-
-In `call_on_irq_stack()`, it can happen when switching from the task stack
-to the IRQ stack and when switching back. In both cases, we can be
-interrupted when the SCS pointer points to the IRQ SCS, but SP points to
-the task stack. The nested interrupt handler pushes its return addresses
-on the IRQ SCS. It then detects that SP points to the task stack,
-calls `call_on_irq_stack()` and clobbers the task SCS pointer with
-the IRQ SCS pointer, which it will also use !
-
-This leads to tasks returning to addresses on the wrong SCS,
-or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
-or FPAC if enabled.
-
-This is possible on a default config, but unlikely.
-However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
-instead the GIC is responsible for filtering what interrupts the CPU
-should receive based on priority.
-Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
-even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
-frequently depending on the system configuration and workload, leading
-to unpredictable kernel panics.
-
-Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
-Do the same in `call_on_irq_stack()`, but restore and mask around
-the branch.
-Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
-of behaviour between all configurations.
-
-Introduce and use an assembly macro for saving and masking DAIF,
-as the existing one saves but only masks IF.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Reported-by: Cristian Prundeanu <cpru@amazon.com>
-Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
-Tested-by: Cristian Prundeanu <cpru@amazon.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-
-diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-index ad63457a05c5..c56c21bb1eec 100644
---- a/arch/arm64/include/asm/assembler.h
-+++ b/arch/arm64/include/asm/assembler.h
-@@ -41,6 +41,11 @@
- /*
-  * Save/restore interrupts.
-  */
-+	.macro save_and_disable_daif, flags
-+	mrs	\flags, daif
-+	msr	daifset, #0xf
-+	.endm
-+
- 	.macro	save_and_disable_irq, flags
- 	mrs	\flags, daif
- 	msr	daifset, #3
-diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index 5ae2a34b50bd..30dcb719685b 100644
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -825,6 +825,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
-  *
-  */
- SYM_FUNC_START(cpu_switch_to)
-+	save_and_disable_daif x11
- 	mov	x10, #THREAD_CPU_CONTEXT
- 	add	x8, x0, x10
- 	mov	x9, sp
-@@ -848,6 +849,7 @@ SYM_FUNC_START(cpu_switch_to)
- 	ptrauth_keys_install_kernel x1, x8, x9, x10
- 	scs_save x0
- 	scs_load_current
-+	restore_irq x11
- 	ret
- SYM_FUNC_END(cpu_switch_to)
- NOKPROBE(cpu_switch_to)
-@@ -874,6 +876,7 @@ NOKPROBE(ret_from_fork)
-  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
-  */
- SYM_FUNC_START(call_on_irq_stack)
-+	save_and_disable_daif x9
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	get_current_task x16
- 	scs_save x16
-@@ -888,8 +891,10 @@ SYM_FUNC_START(call_on_irq_stack)
- 
- 	/* Move to the new stack and call the function there */
- 	add	sp, x16, #IRQ_STACK_SIZE
-+	restore_irq x9
- 	blr	x1
- 
-+	save_and_disable_daif x9
- 	/*
- 	 * Restore the SP from the FP, and restore the FP and LR from the frame
- 	 * record.
-@@ -897,6 +902,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	mov	sp, x29
- 	ldp	x29, x30, [sp], #16
- 	scs_load_current
-+	restore_irq x9
- 	ret
- SYM_FUNC_END(call_on_irq_stack)
- NOKPROBE(call_on_irq_stack)
-
+-- 
+Josh
 
