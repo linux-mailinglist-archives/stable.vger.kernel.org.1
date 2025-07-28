@@ -1,132 +1,105 @@
-Return-Path: <stable+bounces-164921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744C8B13A08
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3569B13A1B
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A398C169D90
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 11:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CD183A9576
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 11:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BC9145A05;
-	Mon, 28 Jul 2025 11:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heekcGii"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB1E251793;
+	Mon, 28 Jul 2025 11:56:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D57171C9
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 11:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A73218858;
+	Mon, 28 Jul 2025 11:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753703246; cv=none; b=m9ssybRnJ3HQktv2aZygjjMHgoS8F8v5h4Kc0+0U1Q0fFmfOZSNJ7Sr4J+2gabBkFD3bCTXCgT1Pu0dDqf9QxWNcjpktx5piry+U9cIIkrcNfAGGSL3gNGaFkkvhPNX5LdNlIL9hZxf3dMZjgr8IkZdj1Tek6pQLIMLTZK6VT9A=
+	t=1753703811; cv=none; b=jxNigmJliiHlgxnP+qF2INfX6xtZ0iz2JxhjV4g5ZKh//FJgNsCeUJbakvThm0FjOOQ/fFhbvNng9MCFD9FZpp9i6nmPWsYjN9t0GBBhXzrr4JR1ASl90BnZ5TsPSQ0MM3G8exVOoDfqbPvcMKXtMgRMaCZJaZiFI9vJBCxZy6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753703246; c=relaxed/simple;
-	bh=/2s6vgeEWIT2bNMGqEveqMBf/wH26BFLi85QWmvOSek=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lz9X4Nz0VOtkhAEckiLPoUezt46LbtgfvD4tpDdxfPeRYa71upEq/414t7Mrtlkiwd98bPwwAWUhpdrWY+XbSY6vOULzeCvFJUgatq1OUmgBcSqO+DNAtJhtnjwHKLq19hY83Je4Wac3DEOlj5UTZZGbpAtjpOK+JpyLGaF1si4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heekcGii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2AEC4CEE7;
-	Mon, 28 Jul 2025 11:47:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753703246;
-	bh=/2s6vgeEWIT2bNMGqEveqMBf/wH26BFLi85QWmvOSek=;
-	h=Subject:To:Cc:From:Date:From;
-	b=heekcGiiZk+ggUHDFUo4T6PL0B3PLm639ht1wPz8nNm976jO2cC0Az9oIMiyXs0mr
-	 BTCOslv/MLssFWkzuwu5UCBsp7XwXkdWGaKISeTrjjSxzhqnRi3qD9YiljWyq9XPjG
-	 WZ4tBtVOSLBOiLzU0lUju7ODX/NsyF68Loci/kkM=
-Subject: FAILED: patch "[PATCH] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x" failed to apply to 6.6-stable tree
-To: ville.syrjala@linux.intel.com,imre.deak@intel.com,rodrigo.vivi@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Jul 2025 13:47:22 +0200
-Message-ID: <2025072822-armrest-dominoes-7934@gregkh>
+	s=arc-20240116; t=1753703811; c=relaxed/simple;
+	bh=hD+7Qbb0wCO0WpIt+M1jPQrrUXraENzKaaAqhP95GaE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WRHjGsQl03izcHgzVgr/Pm3nSR689WxBoYgextwnpDCyqwntz7t0Ixt6s6aB6UHJNQ4YYqvKSne/daFb4/55MgyGOwNRZ41tIyt4CViQdT/M2MPmikd20DHj0qvuLpMYsQAxDOgzPqDEgmmE59hwyhzOayh4LIkOVYRoexQ2ovE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B57CD152B;
+	Mon, 28 Jul 2025 04:56:40 -0700 (PDT)
+Received: from [10.57.87.40] (unknown [10.57.87.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 543033F673;
+	Mon, 28 Jul 2025 04:56:46 -0700 (PDT)
+Message-ID: <ad29f800-34e3-45c4-afd6-3661b9cfaec3@arm.com>
+Date: Mon, 28 Jul 2025 12:56:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/mm: Fix use-after-free due to race between memory
+ hotunplug and ptdump
+Content-Language: en-GB
+To: Dev Jain <dev.jain@arm.com>, catalin.marinas@arm.com, will@kernel.org
+Cc: anshuman.khandual@arm.com, quic_zhenhuah@quicinc.com,
+ kevin.brodsky@arm.com, yangyicong@hisilicon.com, joey.gouly@arm.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ mark.rutland@arm.com, maz@kernel.org, stable@vger.kernel.org
+References: <20250728103137.94726-1-dev.jain@arm.com>
+ <f0e12d1e-110d-4a56-9f77-8fe2d664b0d1@arm.com>
+ <ebbd54a7-1d84-4a47-8a66-394bdcb53d65@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <ebbd54a7-1d84-4a47-8a66-394bdcb53d65@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+On 28/07/2025 12:31, Dev Jain wrote:
+> 
+> On 28/07/25 4:43 pm, Ryan Roberts wrote:
+>> On 28/07/2025 11:31, Dev Jain wrote:
+>>> Memory hotunplug is done under the hotplug lock and ptdump walk is done
+>>> under the init_mm.mmap_lock. Therefore, ptdump and hotunplug can run
+>>> simultaneously without any synchronization. During hotunplug,
+>>> free_empty_tables() is ultimately called to free up the pagetables.
+>>> The following race can happen, where x denotes the level of the pagetable:
+>>>
+>>> CPU1                    CPU2
+>>> free_empty_pxd_table
+>>>                     ptdump_walk_pgd()
+>>>                     Get p(x+1)d table from pxd entry
+>>> pxd_clear
+>>> free_hotplug_pgtable_page(p(x+1)dp)
+>>>                     Still using the p(x+1)d table
+>>>
+>>> which leads to a user-after-free.
+>> I'm not sure I understand this. ptdump_show() protects against this with
+>> get_online_mems()/put_online_mems(), doesn't it? There are 2 paths that call
+>> ptdump_walk_pgd(). This protects one of them. The other is ptdump_check_wx(); I
+>> thought you (or Anshuman?) had a patch in flight to fix that with
+>> [get|put]_online_mems() too?
+>>
+>> Sorry if my memory is failing me here...
+> 
+> Nope, I think I just had a use-after-free in my memory so I came up with this
+> patch :)
+> Because of the recent work with ptdump, I was so concentrated on
+> ptdump_walk_pgd() that I
+> didn't even bother looking up the call chain. And I even forgot we had these
+> [get|put]_online_mems()
+> patches recently.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I just checked; Anshuman's fix is in mm-stable, so I guess it'll be in v6.17-rc1.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+That's the patch:
+https://lore.kernel.org/linux-arm-kernel/20250620052427.2092093-1-anshuman.khandual@arm.com/
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9e0c433d0c05fde284025264b89eaa4ad59f0a3e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072822-armrest-dominoes-7934@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9e0c433d0c05fde284025264b89eaa4ad59f0a3e Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Date: Thu, 10 Jul 2025 23:17:12 +0300
-Subject: [PATCH] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-On g4x we currently use the 96MHz non-SSC refclk, which can't actually
-generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
-Gbps which seems to be close enough to actually work, but link training
-is currently failing due to miscalculating the DP_LINK_BW value (we
-calcualte it directly from port_clock which reflects the actual PLL
-outpout frequency).
-
-Ideas how to fix this:
-- nudge port_clock back up to 270000 during PLL computation/readout
-- track port_clock and the nominal link rate separately so they might
-  differ a bit
-- switch to the 100MHz refclk, but that one should be SSC so perhaps
-  not something we want
-
-While we ponder about a better solution apply some band aid to the
-immediate issue of miscalculated DP_LINK_BW value. With this
-I can again use 2.7 Gbps link rate on g4x.
-
-Cc: stable@vger.kernel.org
-Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250710201718.25310-2-ville.syrjala@linux.intel.com
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-(cherry picked from commit a8b874694db5cae7baaf522756f87acd956e6e66)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 640c43bf62d4..724de7ed3c04 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1604,6 +1604,12 @@ int intel_dp_rate_select(struct intel_dp *intel_dp, int rate)
- void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
- 			   u8 *link_bw, u8 *rate_select)
- {
-+	struct intel_display *display = to_intel_display(intel_dp);
-+
-+	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
-+	if (display->platform.g4x && port_clock == 268800)
-+		port_clock = 270000;
-+
- 	/* eDP 1.4 rate select method. */
- 	if (intel_dp->use_rate_select) {
- 		*link_bw = 0;
+> 
+> Sorry for the noise, it must have been incredibly confusing to see this patch :(
+> 
 
 
