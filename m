@@ -1,152 +1,267 @@
-Return-Path: <stable+bounces-164903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F97B138E2
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 12:25:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AACB13901
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 12:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD88F3B6485
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 10:24:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF08A1893C4C
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 10:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BA22472B5;
-	Mon, 28 Jul 2025 10:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DGh2E+Eb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TAstKcIW";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XHGQ63LX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9nqtOTCg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624A8248F4B;
+	Mon, 28 Jul 2025 10:31:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB5A9478
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 10:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F619213E89;
+	Mon, 28 Jul 2025 10:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753698298; cv=none; b=SWBqvBhMx9NFMdBTdMxrGEXRvX+midQ5NYlRhdcD8ohjcQLatH5bTcRAuzew/tArBtTJzPjDj3hBZJSFglxnv/vQTu6oeVMG/aBTR76GV1gkjAiWPQaAEL8xGfL+UNPAHEbEhwauxzls+W7GkZpGEm7pvbzsAJ2XXm13STYnmSw=
+	t=1753698710; cv=none; b=Ysci7fVF+S6tUgGpzk+jH84+7nAzdRKhBnpJn1h66mDqqB5AYngz0ItM9Retqh22E71y42j8rdZMon4H+tCZgTt4Wj++gy1k2CgEpqnfdK2kan4x2vxaMl6MXU0NjxDg1DFP2dXDNjjRDW++b5Bj4qDGiDrfUECKxGYw9cvP+Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753698298; c=relaxed/simple;
-	bh=7UpPgxs1I1TXCEGFmgdE4wxKMzot2oB6O/sQuVIrtiQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jC0ojrJu8TXSPQQAzfqbxn3X9iBH3ZJufBZuJmlzkMvj0HH1LdncyEwYdYB4Cv/CZXqsi1M/W11Fs5JSfr/Ty1yjzq5RUCv+trlXKyaKvhsU9MylwAGohK5edswbxJfHDIsPjmnh/3O6u2AGGAeGxFmWT3eAxk5f2kswSnJrRRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DGh2E+Eb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TAstKcIW; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XHGQ63LX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9nqtOTCg; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 981792126C;
-	Mon, 28 Jul 2025 10:24:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753698294; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zASefuuTTStfmBz1vDE4KcNGKpBsyQg0O+52IlyS5k=;
-	b=DGh2E+Ebxra7G9BlcKou2CHl5uiaIyAFesBYmHmuF9gfdwGpUKTZfRtp4P4uOKtoKW/L/A
-	BeDfVQNM0+8bAoSJn1O03kOcVwKiVjNXUna9JkVGfN84wrHmeEJFIBcXh5qG/OsIP6xLGt
-	BkUSY4VsTdW3weLbOZeE+vyc4NR0PWM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753698294;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zASefuuTTStfmBz1vDE4KcNGKpBsyQg0O+52IlyS5k=;
-	b=TAstKcIWGpOIQzPTzpFRPhwOxPU7hl6P/6X05mUkoP9SQqpIAYVfxO0EJhzZoUhI8uZ+KV
-	DrqHKEGqy5OGyLAQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753698293; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zASefuuTTStfmBz1vDE4KcNGKpBsyQg0O+52IlyS5k=;
-	b=XHGQ63LX8b8cPahsvyahbcjzDbLpb6DqzPnE/32hV9kUmZ05cOMorMarZ5C+IMDWbHUDG9
-	ZxZNTltBrV1UrevvYdS0iZDaWnk03qqQyAiQoOXx+sDuwU79iBNXVbQgJnCWHHF5PWdcOi
-	pC+x7HzyIwqdOfnWZjophz6QT8nRe98=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753698293;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zASefuuTTStfmBz1vDE4KcNGKpBsyQg0O+52IlyS5k=;
-	b=9nqtOTCgbs2V2z0A+mAmk94MhFpL77Pgc7EY8+REk3JejYwaFZmAm9qRKHf51sFPrnrwNq
-	jzReVFMI6k/X72CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 69949138A5;
-	Mon, 28 Jul 2025 10:24:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kDUWGPVPh2jCQAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 28 Jul 2025 10:24:53 +0000
-Date: Mon, 28 Jul 2025 12:24:52 +0200
-Message-ID: <87ecu0vci3.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: edip@medip.dev
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
+	s=arc-20240116; t=1753698710; c=relaxed/simple;
+	bh=1mIXaQLVma8tjoBewSPrGSnMUY8R39so72XipdZv+uM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EU5yzDKl5MJTGeHTG1dL6r0IrpJzMbMQtXUvLxlu95Gob86W+MZ+pIl4Qe6Aia7/xG+ORBT1mNZTWIV9SQyZ2fft6QVHSfrROrySXRYRMKZNNoZ9ltkjrcRiDODyroPnN276DI8pLW2YvBz68o6QKXYL+ub8RfNdsx0TkMI5L/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 88D50153B;
+	Mon, 28 Jul 2025 03:31:39 -0700 (PDT)
+Received: from MacBook-Pro.blr.arm.com (unknown [10.164.18.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 073EB3F673;
+	Mon, 28 Jul 2025 03:31:42 -0700 (PDT)
+From: Dev Jain <dev.jain@arm.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org
+Cc: anshuman.khandual@arm.com,
+	quic_zhenhuah@quicinc.com,
+	ryan.roberts@arm.com,
+	kevin.brodsky@arm.com,
+	yangyicong@hisilicon.com,
+	joey.gouly@arm.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	mark.rutland@arm.com,
+	maz@kernel.org,
+	Dev Jain <dev.jain@arm.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] ALSA: hda/realtek - Fix mute LED for HP Victus 16-r1xxx
-In-Reply-To: <20250725151436.51543-2-edip@medip.dev>
-References: <20250725151436.51543-2-edip@medip.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+Subject: [PATCH] arm64/mm: Fix use-after-free due to race between memory hotunplug and ptdump
+Date: Mon, 28 Jul 2025 16:01:37 +0530
+Message-Id: <20250728103137.94726-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[medip.dev:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -3.30
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 25 Jul 2025 17:14:37 +0200,
-edip@medip.dev wrote:
-> 
-> From: Edip Hazuri <edip@medip.dev>
-> 
-> The mute led on this laptop is using ALC245 but requires a quirk to work
-> This patch enables the existing quirk for the device.
-> 
-> Tested on Victus 16-r1xxx Laptop. The LED behaviour works
-> as intended.
-> 
-> v2:
-> - adapt the HD-audio code changes and rebase on for-next branch of tiwai/sound.git
-> - link to v1: https://lore.kernel.org/linux-sound/20250724210756.61453-2-edip@medip.dev/
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Edip Hazuri <edip@medip.dev>
+Memory hotunplug is done under the hotplug lock and ptdump walk is done
+under the init_mm.mmap_lock. Therefore, ptdump and hotunplug can run
+simultaneously without any synchronization. During hotunplug,
+free_empty_tables() is ultimately called to free up the pagetables.
+The following race can happen, where x denotes the level of the pagetable:
 
-Applied now.  Thanks.
+CPU1					CPU2
+free_empty_pxd_table
+					ptdump_walk_pgd()
+					Get p(x+1)d table from pxd entry
+pxd_clear
+free_hotplug_pgtable_page(p(x+1)dp)
+					Still using the p(x+1)d table
 
+which leads to a user-after-free.
 
-Takashi
+To solve this, we need to synchronize ptdump_walk_pgd() with
+free_hotplug_pgtable_page() in such a way that ptdump never takes a
+reference on a freed pagetable.
+
+Since this race is very unlikely to happen in practice, we do not want to
+penalize other code paths taking the init_mm mmap_lock. Therefore, we use
+static keys. ptdump will enable the static key - upon observing that,
+the free_empty_pxd_table() functions will get patched in with an
+mmap_read_lock/unlock sequence. A code comment explains in detail, how
+a combination of acquire semantics of static_branch_enable() and the
+barriers in __flush_tlb_kernel_pgtable() ensures that ptdump will never
+get a hold on the address of a freed pagetable - either ptdump will block
+the table freeing path due to write locking the mmap_lock, or, the nullity
+of the pxd entry will be observed by ptdump, therefore having no access to
+the isolated p(x+1)d pagetable.
+
+This bug was found by code inspection, as a result of working on [1].
+1. https://lore.kernel.org/all/20250723161827.15802-1-dev.jain@arm.com/
+
+Cc: <stable@vger.kernel.org>
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+Rebased on Linux 6.16.
+
+ arch/arm64/include/asm/ptdump.h |  2 ++
+ arch/arm64/mm/mmu.c             | 61 +++++++++++++++++++++++++++++++++
+ arch/arm64/mm/ptdump.c          | 11 ++++--
+ 3 files changed, 72 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
+index fded5358641f..4760168cbd6e 100644
+--- a/arch/arm64/include/asm/ptdump.h
++++ b/arch/arm64/include/asm/ptdump.h
+@@ -7,6 +7,8 @@
+ 
+ #include <linux/ptdump.h>
+ 
++DECLARE_STATIC_KEY_FALSE(arm64_ptdump_key);
++
+ #ifdef CONFIG_PTDUMP
+ 
+ #include <linux/mm_types.h>
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 00ab1d648db6..d2feef270880 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -46,6 +46,8 @@
+ #define NO_CONT_MAPPINGS	BIT(1)
+ #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+ 
++DEFINE_STATIC_KEY_FALSE(arm64_ptdump_key);
++
+ enum pgtable_type {
+ 	TABLE_PTE,
+ 	TABLE_PMD,
+@@ -1002,6 +1004,61 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+ 	} while (addr = next, addr < end);
+ }
+ 
++/*
++ * Our objective is to prevent ptdump from reading a pagetable which has
++ * been freed.  Assume that ptdump_walk_pgd() (call this thread T1)
++ * executes completely on CPU1 and free_hotplug_pgtable_page() (call this
++ * thread T2) executes completely on CPU2. Let the region sandwiched by the
++ * mmap_write_lock/unlock in T1 be called CS (the critical section).
++ *
++ * Claim: The CS of T1 will never operate on a freed pagetable.
++ *
++ * Proof:
++ *
++ * Case 1: The static branch is visible to T2.
++ *
++ * Case 1 (a): T1 acquires the lock before T2 can.
++ * T2 will block until T1 drops the lock, so free_hotplug_pgtable_page() will
++ * only be executed after T1 exits CS.
++ *
++ * Case 1 (b): T2 acquires the lock before T1 can.
++ * The acquire semantics of mmap_read_lock() ensure that an empty pagetable
++ * entry (via pxd_clear()) is visible to T1 before T1 can enter CS, therefore
++ * it is impossible for the CS to get hold of the isolated level + 1 pagetable.
++ *
++ * Case 2: The static branch is not visible to T2.
++ *
++ * Since static_branch_enable() and mmap_write_lock() (via smp_mb()) have
++ * acquire semantics, it implies that the static branch will be visible to
++ * all CPUs before T1 can enter CS. The static branch not being visible to
++ * T2 therefore implies that T1 has not yet entered CS .... (i)
++ *
++ * The sequence of barriers via __flush_tlb_kernel_pgtable() in T2
++ * implies that if the invisibility of the static branch has been
++ * observed by T2 (i.e static_branch_unlikely() is observed as false),
++ * then all CPUs will have observed an empty pagetable entry via
++ * pxd_clear() ... (ii)
++ *
++ * Combining (i) and (ii), we conclude that T1 observes an empty pagetable
++ * entry before entering CS => it is impossible for the CS to get hold of
++ * the isolated level + 1 pagetable. Q.E.D
++ *
++ * We have proven that the claim is true on the assumption that
++ * there is no context switch for T1 and T2. Note that the reasoning
++ * of the proof uses barriers operating on the inner shareable domain,
++ * which means that they will affect all CPUs, and also a context switch
++ * will insert extra barriers into the code paths => the claim will
++ * stand true even if we drop the assumption.
++ */
++static void synchronize_with_ptdump(void)
++{
++	if (!static_branch_unlikely(&arm64_ptdump_key))
++		return;
++
++	mmap_read_lock(&init_mm);
++	mmap_read_unlock(&init_mm);
++}
++
+ static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
+ 				 unsigned long end, unsigned long floor,
+ 				 unsigned long ceiling)
+@@ -1036,6 +1093,7 @@ static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
+ 
+ 	pmd_clear(pmdp);
+ 	__flush_tlb_kernel_pgtable(start);
++	synchronize_with_ptdump();
+ 	free_hotplug_pgtable_page(virt_to_page(ptep));
+ }
+ 
+@@ -1076,6 +1134,7 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
+ 
+ 	pud_clear(pudp);
+ 	__flush_tlb_kernel_pgtable(start);
++	synchronize_with_ptdump();
+ 	free_hotplug_pgtable_page(virt_to_page(pmdp));
+ }
+ 
+@@ -1116,6 +1175,7 @@ static void free_empty_pud_table(p4d_t *p4dp, unsigned long addr,
+ 
+ 	p4d_clear(p4dp);
+ 	__flush_tlb_kernel_pgtable(start);
++	synchronize_with_ptdump();
+ 	free_hotplug_pgtable_page(virt_to_page(pudp));
+ }
+ 
+@@ -1156,6 +1216,7 @@ static void free_empty_p4d_table(pgd_t *pgdp, unsigned long addr,
+ 
+ 	pgd_clear(pgdp);
+ 	__flush_tlb_kernel_pgtable(start);
++	synchronize_with_ptdump();
+ 	free_hotplug_pgtable_page(virt_to_page(p4dp));
+ }
+ 
+diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
+index 421a5de806c6..d543c9f8ffa8 100644
+--- a/arch/arm64/mm/ptdump.c
++++ b/arch/arm64/mm/ptdump.c
+@@ -283,6 +283,13 @@ void note_page_flush(struct ptdump_state *pt_st)
+ 	note_page(pt_st, 0, -1, pte_val(pte_zero));
+ }
+ 
++static void arm64_ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm)
++{
++	static_branch_enable(&arm64_ptdump_key);
++	ptdump_walk_pgd(st, mm, NULL);
++	static_branch_disable(&arm64_ptdump_key);
++}
++
+ void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
+ {
+ 	unsigned long end = ~0UL;
+@@ -311,7 +318,7 @@ void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
+ 		}
+ 	};
+ 
+-	ptdump_walk_pgd(&st.ptdump, info->mm, NULL);
++	arm64_ptdump_walk_pgd(&st.ptdump, info->mm);
+ }
+ 
+ static void __init ptdump_initialize(void)
+@@ -353,7 +360,7 @@ bool ptdump_check_wx(void)
+ 		}
+ 	};
+ 
+-	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
++	arm64_ptdump_walk_pgd(&st.ptdump, &init_mm);
+ 
+ 	if (st.wx_pages || st.uxn_pages) {
+ 		pr_warn("Checked W+X mappings: FAILED, %lu W+X pages found, %lu non-UXN pages found\n",
+-- 
+2.30.2
+
 
