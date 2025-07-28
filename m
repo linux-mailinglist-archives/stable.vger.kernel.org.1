@@ -1,97 +1,97 @@
-Return-Path: <stable+bounces-164939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAF0B13B89
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:31:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20506B13B99
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA9AF1884C58
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64AC63AE038
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C132022DFBA;
-	Mon, 28 Jul 2025 13:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84ACB266571;
+	Mon, 28 Jul 2025 13:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z6qtGCqh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Aw6nmZ1E"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579781BC5C
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 13:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2060F1E379B
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 13:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753709472; cv=fail; b=WauSV7cMZ+J/FRLr7Ksil73PLQZtCGGBqiBE9enelMtg35pUcEn/jnM4IXeWmflGgsRTzKn83GYkG+jODEFfIE2DDMRmm985gqq65WR9v57HIRQYYDZjGUnx4NY4b+yfblxQ7APn5MnUIPaKUosw9FjP971S5eL1AITR0sixXGs=
+	t=1753709863; cv=fail; b=ftKzKIBO6bXAP8KS2e6+tgnb+E35BHtDmgSuGInk6kibWMR7ZnpAoPMDRAa/s/oVJSYKaqgXM4s1b2jgE8HcDj+Kt1ipvtriA5FmWYLwVF8mmIFcFf7qoJ/9RJ18+5VbuSE7V+tvXwzjnQK6my8F17ougiLUiwAjsWZ0AZz14rM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753709472; c=relaxed/simple;
-	bh=HDzJnyk9suqUXEM5bU1AQIcyk/UEWQFRkUYKbe0ML+A=;
+	s=arc-20240116; t=1753709863; c=relaxed/simple;
+	bh=Ir45XLFQO+9yYIToIksYioz3Dj5DhAqCkVotqg+Oj7U=;
 	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dQR5acPeJcuxNOdVtrgq5Se7WL1Mw7l4cAdih6/co4F3I08n8yzLepAp7oY2b9+if1J9Zpze3A8sM+w1zu7iPue2FoZ0FF/AeMNxgFFXZEUILFa12Lcoh03CTqgyFXmWlJCLpP9dwr3jSIkV27k42mjFiOQnLepjPfF5IKYZ7aY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z6qtGCqh; arc=fail smtp.client-ip=192.198.163.8
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GUxDvWw1xi0yw81wPUglnJTm6ctwSwfUlZPUB6G8SQXDBUJx9/J1t+unyb5R3kIaUKN7WXFouIZeT6a7pGQW7Exts3Cm8Sia97uGss1uye101A/RQXUnjIyHYsOms2N5sd0i78YsF9aWW11s4JMI84Dm2oprruqFcSUOVae1HVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Aw6nmZ1E; arc=fail smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753709470; x=1785245470;
+  t=1753709861; x=1785245861;
   h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=HDzJnyk9suqUXEM5bU1AQIcyk/UEWQFRkUYKbe0ML+A=;
-  b=Z6qtGCqhRO51sU/5RbiuAxCs2D1UGNG0lwcv7uwGk3Kekq5hCCsblaH8
-   XoP2vMMTZ5Na3qLlii3TKgC0wjRrUeE/I/i4bp//f694ui171NpSTTaie
-   2arcSRR0Uf4XBaw9OKUL9Ag1GlvufyF2EP9k5taeFRSHaq0u/uk6dTpRa
-   7ZIzKKMP/Ew7TY5wpsBQLNqD9xPq3eMNFR9idCvdzQyzos3VNKDpskt+V
-   GpRKamCwq7A1wiCwSnHHnRnmVaiTEkKNCnSZ5DsIGvSQOoGA3v/DbGeM6
-   jbkxsVjz9yBP+DrTmFGnTbF1lBaptUKGTjTfkqoguMFIxn1FlXtsO2D5E
-   A==;
-X-CSE-ConnectionGUID: boRuxMvpQcC2mvNvRW2XvA==
-X-CSE-MsgGUID: I7lbcuNbRmOgzx9MYLcbnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="73541927"
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=Ir45XLFQO+9yYIToIksYioz3Dj5DhAqCkVotqg+Oj7U=;
+  b=Aw6nmZ1E39sAj80niSueUEbLzMwmH5+1yzxyipKazO8PXAptQgszl6W5
+   vnHgXn+z896WJFiMv1L6mNhdN6g5G+21hGBtyYECfBAEisJ5lUgiqYJk7
+   bbi48Cy886HgYoBkGPwe2qfwq0GcbbamIKKC/RkZIuWpbqUDD3e1bKPAc
+   xN00HWMM/0+sEbPgXmOLwtHsgl7RVN1kOQMk51yNA7uBYlXFOiBv9o8yp
+   S0pMjUjCRL9a3zWuYGmYfmDuPyTkTXuSVNRhoDZUIeFZpC6lW9VXIchsN
+   ierfyz1J1Rbc5PDlSkWbLutRPgKKwVnzFRPYg1B0QapTZvtPa0nYQgCN0
+   Q==;
+X-CSE-ConnectionGUID: I2TsHNRZSh+goHy8PcOEsg==
+X-CSE-MsgGUID: VsyPgUqZQKuc6RKdQ3BZig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55657680"
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="73541927"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 06:31:08 -0700
-X-CSE-ConnectionGUID: 10BnpqJRRROWw+kB0uoDYw==
-X-CSE-MsgGUID: OsqppJ3ESkell+h9QVM7MQ==
+   d="scan'208";a="55657680"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 06:37:35 -0700
+X-CSE-ConnectionGUID: snkeEq7bSmSDCzjDp72Tyw==
+X-CSE-MsgGUID: KnOFX3AcTz+Oza3AGrgVyA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="167827990"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 06:31:08 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Mon, 28 Jul 2025 06:31:07 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+   d="scan'208";a="199559913"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 06:37:34 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Mon, 28 Jul 2025 06:31:07 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.61) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.1748.26; Mon, 28 Jul 2025 06:37:34 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Mon, 28 Jul 2025 06:31:06 -0700
+ 15.2.1748.26 via Frontend Transport; Mon, 28 Jul 2025 06:37:34 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.47)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 28 Jul 2025 06:37:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cfQM/HdQDrDgPkyPj0RM07qC/6zmhALEbh2dd3QhsjwvR0EiVNRjBdBM33auAUwQ4eQcjuOwNvJ8hd3oMl45zpW4tAv64AfUidNcveDcH4FBiZSr1sFo3L1V8XDfbG9DelKEJz6gMeKBE5rzsrtqRsgIWYS6JwkCPm7RspgLnQyYT6yO2KyZ8IJXq2if8UnB+qzZNfjmyaOn+e9tL5H9GPGrCwr/EhyKby2c4MHHUI9Rj7je140+bz/aSvi57tXode1u4nbhwhrhU8EVx7lFXYXL9xw2ZRAG5N8wL0i2TFVlTk7dAS9WiT2feziLXrG/36y65GAMsUPtY9LjZfBj6g==
+ b=yMqjmQSBVTOdh32oxQDxDk6y2qJNOVYj4Y7Q/hlNckmPU0H2avJz/l/ADCV13J5QI+Py1mB5Pjc+jgkeK2e7BO4NQQdYzh7dPHkhKqHjl1A6M+TH5RRAZ/L6AC2wz2JSaJfOw/4BejwaYKy3DuVdgwW4scn4L1OKyoarfFCpnZ/qJwYNwcHBMaGh3Dl1EM4D2khSY0XYPLs/TUjpiktmcpPsf0dgfwj2njjKxg7yJNvhypiZRiYGUdoUKwaLTNzyz3unXDgklXeawYR8ai26uWiweEna1Ja9Gz+5MLvSeikYh+WYLQCr8r+LpXfWUWUhmpRFvhB9TH/REDlJeRA3JA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qh1de6xVZ2ki3rMClvIXdQJ9cVILsVKjN3jB4uoIo8s=;
- b=n0F97md9IT3gAARA2emJ65/w1phDvEC6QGddkZyMVUhozAuMXrZ1rSe6S4I2NQ3prGBJ4FWvRpD3JsHlG4BkQU1BWnnWq6M4Xey67x0DMsGP/0GqLTFXXiDXnSOckbl8hlxm3qBuFhpbrzBjf06htZyQVqtMotzzfyJBSjENiDRY9fyN1L/CmGYJJhRDfNu/1BPrhlBITYqq6fyAuFlHeS0n9VEu9pRk+JelB/PtAiT2o8hAivX3JAb+C26FA+LkMAMuMusXfN7epmWLtbv966KVkc8F4hKIFcMeaHUuQNpe+w5/qfIedqkkD/WfRE2YceAswXrHgyDoJzEoRPV5IA==
+ bh=84eVK64A+hlvEhE2yLmc2imnrkarAET9aJ0RiVuCGqo=;
+ b=SUSXbOebPmjUkEIFLfSJmqFv/+noLQV9MrgqLKOspyuJOMtm5QABvDFvI9Q3qtPxWl7r9zPVq8vdW6lg0ssRZOxInHjWw3vcYukRCiX8znRsGnF7LCNxyPG6ei6z6PWorhpbzcQ2T3cXNK7/lnH0jAe9XFhLo9ih3d9llq1TklEDDJRony35g9erqMOWvEzyuIAOU10qRLmqwq3Ezcyvmu8iI1Ew3J9T8i/gwhHLahPAj3+8gmMlWIvIkIv0Ry2R9aZA7lZM30kTgOls78djoYQLUkwkZEoM+ahYTFWqMI/V5wxMqWO1k39BWQKxQc7+2xR0Q2zVS/7Jc2xNOIVV2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CYYPR11MB8430.namprd11.prod.outlook.com (2603:10b6:930:c6::19)
- by CO1PR11MB4993.namprd11.prod.outlook.com (2603:10b6:303:6c::23) with
+ by BL1PR11MB6001.namprd11.prod.outlook.com (2603:10b6:208:385::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.26; Mon, 28 Jul
- 2025 13:30:51 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.25; Mon, 28 Jul
+ 2025 13:37:02 +0000
 Received: from CYYPR11MB8430.namprd11.prod.outlook.com
  ([fe80::76d2:8036:2c6b:7563]) by CYYPR11MB8430.namprd11.prod.outlook.com
  ([fe80::76d2:8036:2c6b:7563%5]) with mapi id 15.20.8964.025; Mon, 28 Jul 2025
- 13:30:51 +0000
-Date: Mon, 28 Jul 2025 09:30:45 -0400
+ 13:37:02 +0000
+Date: Mon, 28 Jul 2025 09:36:57 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Simon Richter <Simon.Richter@hogyros.de>
 CC: <intel-xe@lists.freedesktop.org>, <jeffbai@aosc.io>,
@@ -99,16 +99,16 @@ CC: <intel-xe@lists.freedesktop.org>, <jeffbai@aosc.io>,
 	<27873200@qq.com>, Jianfeng Liu <liujianfeng1994@gmail.com>, Shirong Liu
 	<lsr1024@qq.com>, Haofeng Wu <s2600cw2@126.com>, Shang Yatsen
 	<429839446@qq.com>
-Subject: Re: [PATCH v3 1/5] drm/xe/bo: fix alignment with non-4KiB kernel
- page sizes
-Message-ID: <aId7hYAfMxlBTV8x@intel.com>
+Subject: Re: [PATCH v3 2/5] drm/xe/guc: use GUC_SIZE (SZ_4K) for alignment
+Message-ID: <aId8-ZwntjDnyxJA@intel.com>
 References: <20250723074540.2660-1-Simon.Richter@hogyros.de>
- <20250723074540.2660-2-Simon.Richter@hogyros.de>
-Content-Type: text/plain; charset="us-ascii"
+ <20250723074540.2660-3-Simon.Richter@hogyros.de>
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20250723074540.2660-2-Simon.Richter@hogyros.de>
-X-ClientProxiedBy: BY3PR10CA0022.namprd10.prod.outlook.com
- (2603:10b6:a03:255::27) To CYYPR11MB8430.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250723074540.2660-3-Simon.Richter@hogyros.de>
+X-ClientProxiedBy: BYAPR05CA0012.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::25) To CYYPR11MB8430.namprd11.prod.outlook.com
  (2603:10b6:930:c6::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -117,159 +117,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CYYPR11MB8430:EE_|CO1PR11MB4993:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5543597c-820a-4f5c-0aef-08ddcddaf830
+X-MS-TrafficTypeDiagnostic: CYYPR11MB8430:EE_|BL1PR11MB6001:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25e75940-0218-4826-0ef4-08ddcddbd573
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?mvKdFQc5uo+MdThvCGW2qBeNlrpAVWb9iYMn9wKal+/WdSvJjiiz82fn+V4q?=
- =?us-ascii?Q?nRNeO8QIH60TPZYHB9N9cmcnRVR3SUaw1MRcKaonSqTQympmh8yWdy/5sF/a?=
- =?us-ascii?Q?e/M7zT3sx80rWaVqyoUJyTZQMq5cbm/4sUYedcsxmFuOzGuPaeH2YW8sMiNs?=
- =?us-ascii?Q?07KlQPKMq4aZLnFLdiIs4ybUcUppnWi+TCMOriVBbt3rZxMa3oPZjkHhdtPa?=
- =?us-ascii?Q?2HxvQQxTVUv0Gio/DoZPNzTWK5wngKza75S2P8vNOUm+LktfRoM0DyoRK/K5?=
- =?us-ascii?Q?avVOuQmAeVqMHByeLSku7e6zqnA8/gk3jYDZ/xeY/O5dpIE7OVO/YvLGbWW6?=
- =?us-ascii?Q?xNNu/MeLWJFGt/lPXstEn6rIQxREbntlZ1LUQ0w/GGVT70zzS0bBlgHRxDw6?=
- =?us-ascii?Q?yM+nGtGLB38LjWQaeEl1PU6ZGvDP/jqqibZws4H+gcPGyK2ye151Ld0apXVm?=
- =?us-ascii?Q?JMGS7fOo4WBeZIrhfo2+ql59qzAziUfR6Q8XfuaY1oFAT7TPEegOf1f42lCI?=
- =?us-ascii?Q?LVQd9DnwQ0MANbFVYENx+S4ELlx93bJ66Kh9upV+Ibpxh02TQTokdWtd77p/?=
- =?us-ascii?Q?spPVNQ9Vul7k1AJRVJKlX1cm16n/GnLqdXQTUT3q60cdVDWvLqzeMzInHyh+?=
- =?us-ascii?Q?KC6cgvlFhIvtIm0zDc7v2E9L+M32pTwv/h4OgXfeyRycXUDuKB9H1H4hQUID?=
- =?us-ascii?Q?GwA7wH2gUZjXv3HIigOM1tIgqXqDPpLKljMTFrcJL4+ftUgfLLtC9dKEn4fE?=
- =?us-ascii?Q?VSm+xhocjVx1/5E27PEtros7R2WsPIL57ubJFxaxkTXmONf9fH48+/ns91Iy?=
- =?us-ascii?Q?ABBocy6VirIo/h2zcNLyAPZD8lQCL43UXvvt9rpglvFVIxKmOWPzMIdTDqms?=
- =?us-ascii?Q?DoJFPghaZjxAc4SfPGcffuAHhNptiuOOMLSu+sRTeGmHQDrij0BltLFB8KaX?=
- =?us-ascii?Q?vXc/TV7RndKcX5yLVo+lD0NjqIacnwAiYc0uI8gvLZjzHHa7MuJgNI9wbm+4?=
- =?us-ascii?Q?0y2tMiMFi5Q4fbOTHIln6gDIGeDZ/Vgy/Yk/67ra+GC4SWvs85lDGLL84A0a?=
- =?us-ascii?Q?zKmzPfS3+Gg2aPx5SzodF3Y0090OXPM3CgTQbcODfXhxSdd8fhykWC6+MIar?=
- =?us-ascii?Q?0cxnozmrdJB0Rw1er1JUX+23dn94200PzDLUccFFEVDmi35Mr4UL4hxjd5At?=
- =?us-ascii?Q?uzahnI6YZvV7XR9MapW5rVO2iTTA6dNHH8k6iv9f65KdwiPB2M+qS+EwbJrl?=
- =?us-ascii?Q?dr739bYqPqBOXYuMSvTvjsZ7zedIG8ZdnA4dYxyF3Kx3JKwORtDHfjqPK0as?=
- =?us-ascii?Q?wJu9zMEzFCu3BNS7MDEke2DbHY9Td4VpAJE06hmYv2er6yI9T3dqL62/cyyp?=
- =?us-ascii?Q?cosu7yvj1OYOJaDMbL11FBGf+De/Lskox6o2fJUIekv5N+tvbz3cVFqDrrdE?=
- =?us-ascii?Q?nlcoJqO/8Mc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR11MB8430.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SzVtaE9aY3hNeG9yQTc3NTdhTVQ0VElPaElyQ2NYL0pDOTFNak5sdXN6M0ZW?=
+ =?utf-8?B?d3BjOHJDM25MbnlJeG8wRkJrWVVQWUpKQjU1OHpBOXZzelVEMENKYUovb0Z3?=
+ =?utf-8?B?VS9mdU5kM0ZvaTlETlk4MmFVMEMrdk1HekE1c2ROUGpLaHFHRzZzdXlJVzhh?=
+ =?utf-8?B?YmlrVjQ1dXBPWjhFZksrMURFUUpneHpXZEgxY01ua1VNUkRZVHllZkFSSUJh?=
+ =?utf-8?B?bktIRGlLWG5ZS1RSUDZUVFhmUUtLdkdQM1dzQnBpWTViWm5zdUtpRytiNmta?=
+ =?utf-8?B?VmRLUUFIRW5hRjd4WkY2YXk3SS9IL2t5ZXhSVVF4NHV6ZW0vY3RueWsvWnI1?=
+ =?utf-8?B?dCtCNGltWUJkeEN2Q05kUHBEeU11TEdTSkVLL1lVRXZoVGdRMlJwTHN0SUlU?=
+ =?utf-8?B?eE1zQUFlSkdmS00rWW5Fd3YvcGpRWWlibXlGRUZIK29zQnJDaWZrbDUreE50?=
+ =?utf-8?B?WGlrQ0hmQ09lQ3ZIVGlkczdaMnUyU1F6UEdDQktnMW9ZZjgzQVBDQVNGdGxI?=
+ =?utf-8?B?MndpbFd5UDBhbEtBZmMwMlhDNSt6UnJrSFpUZnpUdnpKT2JyT05YZ1RnZWtQ?=
+ =?utf-8?B?dG12Z1loOXozOXkxTEVoZWthZXRkRVBNbWxQakowTmNnNHpxUjMvQUw5eEtw?=
+ =?utf-8?B?Y2ZYakd3VFpEK05UenZwZTdvUjlYWU1lbkd2blo1T29xWUlNY3FHKzNreXpl?=
+ =?utf-8?B?OFZPN0N3dGZGbUp3ellUNUJuNXR5bTJuOHIxYnVIWE9iSkJkKzh6R1BYeWli?=
+ =?utf-8?B?VmthaThEa2J6VC9RWXNkZ1NHSTVCU0xBa0lHVjlkNWN1SzV6TG5OTnJFTlo2?=
+ =?utf-8?B?cENmTi93WlFpVUhLcXdUTnZoY3A4VzZ4d3JZZUNsTCtiWEZWam1tZnovSFBT?=
+ =?utf-8?B?bGlwVlNyVG9Va0MvaEV5QXkwY0VwUUR2NThjMXpuUncrUG43SWtkZ0laZGtE?=
+ =?utf-8?B?N243Q1NCejVKa1dKTmUxZ2ZwRzFKNFpuQVBqa3JSZFp3dG1WTGZFSzlJTlhq?=
+ =?utf-8?B?OUpIeU9wUzlpUDRTOGlWeCtHdHlhanRvNVlGSHVDVGlZMzVselpnK3VtWDcw?=
+ =?utf-8?B?NEN4R2I3ZnAxVWpPaEw2dUt4TFVKOWtJMi9oaW92eVRnMlBvb091ek10VWdR?=
+ =?utf-8?B?UjJyMG4vVms0OHFIWi9iTWFRTjhleTZEb0ZodThKSWtVejY2R1hNZG9Vd1Bu?=
+ =?utf-8?B?cUNOT2cxb29heHJPVXRXSDF6Qmh3TUhNTG9JaDNBbmt4WW1STkpQZDM1OUpQ?=
+ =?utf-8?B?TzRCeEhwSyszSC9PcExTbFUwbkJ0ZnJ5MDIrTExRZSt4Rmc3NlRLZjdBbEZ3?=
+ =?utf-8?B?WTBpUHh4UWNMclNPcFo0ejhZSG1ZazhPTmMyei9teTdQYVZSMlM3ZFpFSWc0?=
+ =?utf-8?B?UjVLK2QwTnVIUEh3MC9yQjM2VjB4S2p4NjF1TzdyeTdWU1hJdTh1Yi92SXZN?=
+ =?utf-8?B?RWRyWkhTQ1JQT0M5dmtOTFJ5NTNDazNxY01IOFV4VGFsdm0reTdBelNHbmdH?=
+ =?utf-8?B?VlJUTVJmMzNRYkRsUVdib0JmWFJwTXJUcjh1Q2x2dVRNQkxoUkxSMTc3aG1t?=
+ =?utf-8?B?Z0VNbE5ka2haRDhBRzJtaW9hMUVxTUZ4Mk8wQWNEWS9qQnVQbHJkcDBMOFpw?=
+ =?utf-8?B?aTVsLys5UnVJY1U0UndINlJoYkl6eDRnMXNpdk9Pamx1S2VCMXY2WkFVRkU0?=
+ =?utf-8?B?U3pyMklFd1dFelRyWHROcy95M095SmlvVDBPNjNHRGxJcCtYNU1sZWhSR2Uw?=
+ =?utf-8?B?UFdxakRJak1rSHRNazhmQ3EzZ1hWK3NqdWJtN3FFTk5Qay9hWWNxOHhnQmVm?=
+ =?utf-8?Q?XPfuMP0wm+J8BaGhlsgAoVsPliUIQKkYcgsnA=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR11MB8430.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jXf3qy2dtIlEyIv7mlIvI6pdvwPxRmVaT1b4t7fR6iCXA49E7Z234b8HXG/c?=
- =?us-ascii?Q?AdeffGs9Eqq/ZYhRFmcZ9JIAWOvaRwd+Z82TGYUhE9BU6nPlSo1rnItygAZ4?=
- =?us-ascii?Q?VWr5m4HdORERS62WKwtVO2kvM69xE/XRf1d0Li2lttGrj9yAkgILt/fIFfaM?=
- =?us-ascii?Q?sEvvaDG+x05XvCvP9LIH6tl98uBseuzgP6/ucIN6Bo27Ruyn6rD+UsgGko/P?=
- =?us-ascii?Q?2MdcNLg1n/qpXLyCRWV1/vyVlK+v0WwTmFMJ0HJn7EYEda8D+Vk69Hp2vaEb?=
- =?us-ascii?Q?C4rGpnKunoNMbfWrml9vnEbk7t8QLfA8Krqgli3dmEx56ttVMtDwgkeV7kb0?=
- =?us-ascii?Q?SlpS6Pyrf3UsMmCft7pmaeyZNTcyhCyTCH3FOz5LXEOCwSzym4NMVc6tOiM/?=
- =?us-ascii?Q?0xMVQul7V2OwZJ+TVfdMQ6Sc9jh/1xGuRiugcg7IALe3UGF9Iaj3IaTjiAV6?=
- =?us-ascii?Q?CZtswUP9CYBOZWlFdG7ljb+/8BhQWbG0GeBYIz0umbDPXXeXBaSzZPv6wdcx?=
- =?us-ascii?Q?AJ5TGbzy1aOtMZO9qaC8Vf8RQni2TdyxMsooHQMIcZjK1oy2x/cZfF7VO2wD?=
- =?us-ascii?Q?nIirMjRhpyLYIi4Ff4ZdAlaidKL/ZHkD3p6KWOh8WXthPFl6IH8PuCnkVcj1?=
- =?us-ascii?Q?n/B+4n5l8oIrzwoDnPdHn9wdlpoVARqkAzYFt51f+pv24Cc0oFs2k7w4BYTl?=
- =?us-ascii?Q?Y2qHaQGhiGH/L2JS6l/wPewq/RPO/B6EiZ0sWUbw40uExrApSQ9tRRlRqQpl?=
- =?us-ascii?Q?JBPaI/mp75Pbmx+Y4kVJ2YhUcHyUSOXmVEVoeP+NX1Dva7j35imf9qnQqRNW?=
- =?us-ascii?Q?oe+bWqjmHtg4wCdKtGR5M/ND9ad8zdOx7dMSgnx0PjwmR1QdKWpHPno8/2Jz?=
- =?us-ascii?Q?VeSnbWgHa16T0msoFd/bSaQJzerc5cMRY+1z9FxDJ3fePjxgK7qRN1PwZPP+?=
- =?us-ascii?Q?UbKeTEeiJTtqpo2p392q09ivc9HgALUWVONwIRJBrptTb4jgdPSBOehrbC0l?=
- =?us-ascii?Q?vLboq1XE4KU8JSefPzYKpC9DlAf8D48jUgdFOIwIni080UKXvvwz+DFmEoci?=
- =?us-ascii?Q?5VdxKs7kEMlCP4pxywyYrDfIe22zZsjqtzKGlQnb1d3MZ9vnuTvnkcmx4KNg?=
- =?us-ascii?Q?lPtGnm8S87O15veJT77ff4nxIh5Of9kiQ1QcduUcUX9N7Ur0CExuqHnxg4QV?=
- =?us-ascii?Q?XubwAhFhGiNf6haZdTWPXtYnM822cmgIIT2d+QKElCobR96JMV4ouQF7bloN?=
- =?us-ascii?Q?I6kp84E2OyS34mo4w9HfK3aY0F0eTi1OI8k9TfGK3r42q2ooe1DgrpGZnVry?=
- =?us-ascii?Q?z8nyKmR96HCHtqvo4d/nnK5eDZapzrf4DXqjRsGYCl/X4WgbKDtLnkMz+RQD?=
- =?us-ascii?Q?PSnmuLiZ2ycpxDCMe38nW85XTrlzqR92iOQubBTvft4iLw0HjtNT/pEIKaSy?=
- =?us-ascii?Q?IXAgKB5rw+Si565dRiSMMXWMFPt2pau3sGM/pHevy2HMRtukOBzHhbieKIln?=
- =?us-ascii?Q?Yh4CN5S0TfeX/JE07paQoV2dpJITokxQNoPLA3ewLa3l4zo4BfsdYsh2y0Zr?=
- =?us-ascii?Q?VxsGU4eVYNxpzX/ns2Rkn3a9QuubWQ3Qc2r64lhR?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5543597c-820a-4f5c-0aef-08ddcddaf830
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QkU3U3dLdnBXN0JvYS9jSFQ1UmwwNUtQU3ZObjlRUFgwUlpMaGVRSDNiMUhs?=
+ =?utf-8?B?RXhSMnVVZkRxOHJoK1F3bjJwQXFUZ0F1Q0lZSm1FVTlWOE9VOVVURzVZbFJv?=
+ =?utf-8?B?TVN2aW5jUkJBaFM1TFdUTDZXZm5KTVA3aHBVNkY2Zy9URE1qMzgyYTZJcnZ0?=
+ =?utf-8?B?eXhTU2J6U3J6OEt6MlBscUtMdU5TTUFRVHA5M3NwZUp5aTQrOFhVNE5vOUkx?=
+ =?utf-8?B?QU9MMUxkRmJRUi85T2g4dTlOZ2NXK3ZOUm9FbDFUZi9naEhWQ0h0UUJwdlhr?=
+ =?utf-8?B?bXF0T1VoWUlVUkdTZW9waWRVMG9uUzdrV2VDNFoyNFNVQXkxdkM4R2gzYXhH?=
+ =?utf-8?B?RG1wQzNXQ3JlbGp6NzVycVRXek9qNldIeWFCZVhZWHBMVkJHWUd3alh4enZy?=
+ =?utf-8?B?NGJidWJOSUZDb2lhaFF0NzZKQmdLelFrZEVTN1cyT3NzbjBCY3lDdmJNeWgw?=
+ =?utf-8?B?TEhmRG5QMnpvc3VyQ0xvK1hKMjh4eXlrbkVoaldCN253cXFVR0VFNFVPME80?=
+ =?utf-8?B?SU4xMSs5S1Iwc1R4N1NHckNUT3dac3NnTFBkVVloMXlJZDRRU3ljVExMMDdE?=
+ =?utf-8?B?bE5xREFZOXBXcGRNdUNPZWs4OUdOWFFybldtYVBBQmVJaEpWTDFNNnNkc1lP?=
+ =?utf-8?B?aytJWk5KRHQwaFh6dVIyOUFvQlpxY1cwd1Y3SzNxaU9SYXlMRFpLd0hPQnRF?=
+ =?utf-8?B?cXJ1MTVqZnBiakJhS3E5WU1YeGdFbEhZMVFSUEx4Y21hYlM2akcrVUhlQWpz?=
+ =?utf-8?B?QUpDWGlPM0xtN0VBVTJ0TjdlUkpFSGJDY3hJWU9GbjJMUzkzUnFUaG54RUdX?=
+ =?utf-8?B?dUQxV25aZWNDUTR5V1ZzMGhqSGxlWndYdDhrOXRneVdRMWFhelR4WUtzd3Fq?=
+ =?utf-8?B?VUd3VGpFVVJHM3puTVR0cDlHbDFpYmNDTWtqZDduUmdHdE9PZGU5WGRMVTlW?=
+ =?utf-8?B?ejB4RjhPZ0VRWjhXZE9DZVlTTmZMVkxmQndKUXVWSjhoZ2M4YjlLYVIvL3c0?=
+ =?utf-8?B?Y05tRStJYmt6U211TlVMS0hvUUpjMmNwOUNEMzEvODQzMG5mZWVUVDN6Z1ZE?=
+ =?utf-8?B?eVJKN1llekhFTnVOM0hVZVV2Skk2MXFSQUF1ZDhDSmdLWjRpeDZzRmRNbUsv?=
+ =?utf-8?B?eUxRZGhNZGJlYUxrL085N3BIdG4yTWI4RmdaTmRpV1VLOXBHQTdLbGIwdnhB?=
+ =?utf-8?B?SFlwYmdaaHFnOU9uTnJ5VzZrZStsaGtoekFic2NwVjhYMzd6ZUUwUFVtVDM4?=
+ =?utf-8?B?NHh1TkV4aWNsQjBzazFDTW5Ma3dmSitKdUFUd1BxSzFlb2VUM0xMN1FxR1Qy?=
+ =?utf-8?B?c2MzaXkwa1pieGYvVGMvVmxPc2o0Vm8wZGpqaVJ6bmE4M3duTHJ6RmpMeVc5?=
+ =?utf-8?B?OEhpMmVONi9mUUtvd0dBS3orNDVGT3I5NFcyUDBDa1NiOTBYZE14NDZRNXp1?=
+ =?utf-8?B?akdKdEY0YnV1dGU2alExYnNjTURPc0JZTjBOOTFCVU5xc1M2MEc4TjZHWm53?=
+ =?utf-8?B?T3lPeElJbUtUeHY4KzhybVRZc1hQN29JRVRmV1U1WlFUZjlKVWhOeVRCWlNK?=
+ =?utf-8?B?SzdZR1J5andUcWRrdnBmdUxwTytXdjA0ZjM3aFVvcFZvc2cxZVVXWVJlQzcx?=
+ =?utf-8?B?bDN4RlpRV3I2Q2RwanplVjFyVTBUcmlPSlk1OWZvTnZYNnAyVUtxOElyZFNF?=
+ =?utf-8?B?aDNDWjFTWEdTR1ZGKzF3Z2lsMi9WdWpoV2pBL21yRVAxTEkvWTdPMmQwWnUz?=
+ =?utf-8?B?V0svY251Y2Jick9DYWs1MStGdDgzSmpucFEvRlI2SWtKUjE0d1R4OXMzN2Z3?=
+ =?utf-8?B?OW83TWpDcU42UWJ5bjJvdGVzVitId2RhU2dxUDlsVDZBenpobG1mOHA0VUVU?=
+ =?utf-8?B?eWhqSkRFa0E3NUdlZzUwYnRBVVhzMHN4QldQNjlFdFNsZWpkeHNrS1cvTmJZ?=
+ =?utf-8?B?UHppb3c3V2F6YU1RUWhlSG1qYXh0YWJNL0NJaEljZktGdVhBZ1E3WUhiNS93?=
+ =?utf-8?B?eWMrbTJDYUZyYTRKdFAxR0ExaTJHV3hWT2hrUVcrVzN1eFltRm9EVWtlUnFJ?=
+ =?utf-8?B?d0FCT3h0bytmdHErTFhlTkFMOFV4ZjF1VStzWHU0Zk1zc1pHUHNyaEJ1ckJK?=
+ =?utf-8?Q?3z8GLCEVjBP2IcwSlrTEcag5h?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25e75940-0218-4826-0ef4-08ddcddbd573
 X-MS-Exchange-CrossTenant-AuthSource: CYYPR11MB8430.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2025 13:30:51.0357
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2025 13:37:02.1709
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QR/4kuzco+AqXDJUCYDCoNEmqLWXcndYL1azlpAnBslRaNV5/iCKK236UKq6iJk8bF7NTl0kXniwRX+UDN5gyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4993
+X-MS-Exchange-CrossTenant-UserPrincipalName: gt2woDiJSTUZEbbJwNSe4TcUpbFW7xdhE29aqSxmmm9ie37P9/qqy4eFhYaK48SDoF4uM1HoCBnHNB/biHUbWQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6001
 X-OriginatorOrg: intel.com
 
-On Wed, Jul 23, 2025 at 04:45:13PM +0900, Simon Richter wrote:
+On Wed, Jul 23, 2025 at 04:45:14PM +0900, Simon Richter wrote:
 > From: Mingcong Bai <jeffbai@aosc.io>
 > 
-> The bo/ttm interfaces with kernel memory mapping from dedicated GPU
-> memory. It is not correct to assume that SZ_4K would suffice for page
-> alignment as there are a few hardware platforms that commonly uses non-
-> 4KiB pages - for instance, 16KiB is the most commonly used kernel page
-> size used on Loongson devices (of the LoongArch architecture).
+> Per the "Firmware" chapter in "drm/xe Intel GFX Driver", as well as
+> "Volume 8: Command Stream Programming" in "Intel® Arc™ A-Series Graphics
+> and Intel Data Center GPU Flex Series Open-Source Programmer's Reference
+> Manual For the discrete GPUs code named "Alchemist" and "Arctic Sound-M""
+> and "Intel® Iris® Xe MAX Graphics Open Source Programmer's Reference
+> Manual For the 2020 Discrete GPU formerly named "DG1"":
 > 
-> Per our testing, Intel Xe/Alchemist/Battlemage families of GPUs works on
-> Loongson platforms so long as "Above 4G Decoding" was enabled and
-> "Resizable BAR" was set to auto in the UEFI firmware settings.
+>   "The RINGBUF register sets (defined in Memory Interface Registers) are
+>   used to specify the ring buffer memory areas. The ring buffer must start
+>   on a 4KB boundary and be allocated in linear memory. The length of any
+>   one ring buffer is limited to 2MB."
 > 
-> Without this fix, the kernel will hang at a kernel BUG():
+> The Graphics micro (μ) Controller (GuC) really expects command buffers
+> aligned to 4KiB boundaries.
 > 
-> [    7.425445] ------------[ cut here ]------------
-> [    7.430032] kernel BUG at drivers/gpu/drm/drm_gem.c:181!
-> [    7.435330] Oops - BUG[#1]:
-> [    7.438099] CPU: 0 UID: 0 PID: 102 Comm: kworker/0:4 Tainted: G            E      6.13.3-aosc-main-00336-g60829239b300-dirty #3
-> [    7.449511] Tainted: [E]=UNSIGNED_MODULE
-> [    7.453402] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
-> [    7.467144] Workqueue: events work_for_cpu_fn
-> [    7.471472] pc 9000000001045fa4 ra ffff8000025331dc tp 90000001010c8000 sp 90000001010cb960
-> [    7.479770] a0 900000012a3e8000 a1 900000010028c000 a2 000000000005d000 a3 0000000000000000
-> [    7.488069] a4 0000000000000000 a5 0000000000000000 a6 0000000000000000 a7 0000000000000001
-> [    7.496367] t0 0000000000001000 t1 9000000001045000 t2 0000000000000000 t3 0000000000000000
-> [    7.504665] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
-> [    7.504667] t8 0000000000000000 u0 90000000029ea7d8 s9 900000012a3e9360 s0 900000010028c000
-> [    7.504668] s1 ffff800002744000 s2 0000000000000000 s3 0000000000000000 s4 0000000000000001
-> [    7.504669] s5 900000012a3e8000 s6 0000000000000001 s7 0000000000022022 s8 0000000000000000
-> [    7.537855]    ra: ffff8000025331dc ___xe_bo_create_locked+0x158/0x3b0 [xe]
-> [    7.544893]   ERA: 9000000001045fa4 drm_gem_private_object_init+0xcc/0xd0
-> [    7.551639]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-> [    7.557785]  PRMD: 00000004 (PPLV0 +PIE -PWE)
-> [    7.562111]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-> [    7.566870]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
-> [    7.571628] ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
-> [    7.577163]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
-> [    7.583128] Modules linked in: xe(E+) drm_gpuvm(E) drm_exec(E) drm_buddy(E) gpu_sched(E) drm_suballoc_helper(E) drm_display_helper(E) loongson(E) r8169(E) cec(E) rc_core(E) realtek(E) i2c_algo_bit(E) tpm_tis_spi(E) led_class(E) hid_generic(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E) drm_kms_helper(E) sunrpc(E) la_ow_syscall(E) i2c_dev(E)
-> [    7.613049] Process kworker/0:4 (pid: 102, threadinfo=00000000bc26ebd1, task=0000000055480707)
-> [    7.621606] Stack : 0000000000000000 3030303a6963702b 000000000005d000 0000000000000000
-> [    7.629563]         0000000000000001 0000000000000000 0000000000000000 8e1bfae42b2f7877
-> [    7.637519]         000000000005d000 900000012a3e8000 900000012a3e9360 0000000000000000
-> [    7.645475]         ffffffffffffffff 0000000000000000 0000000000022022 0000000000000000
-> [    7.653431]         0000000000000001 ffff800002533660 0000000000022022 9000000000234470
-> [    7.661386]         90000001010cba28 0000000000001000 0000000000000000 000000000005c300
-> [    7.669342]         900000012a3e8000 0000000000000000 0000000000000001 900000012a3e8000
-> [    7.677298]         ffffffffffffffff 0000000000022022 900000012a3e9498 ffff800002533a14
-> [    7.685254]         0000000000022022 0000000000000000 900000000209c000 90000000010589e0
-> [    7.693209]         90000001010cbab8 ffff8000027c78c0 fffffffffffff000 900000012a3e8000
-> [    7.701165]         ...
-> [    7.703588] Call Trace:
-> [    7.703590] [<9000000001045fa4>] drm_gem_private_object_init+0xcc/0xd0
-> [    7.712496] [<ffff8000025331d8>] ___xe_bo_create_locked+0x154/0x3b0 [xe]
-> [    7.719268] [<ffff80000253365c>] __xe_bo_create_locked+0x228/0x304 [xe]
-> [    7.725951] [<ffff800002533a10>] xe_bo_create_pin_map_at_aligned+0x70/0x1b0 [xe]
-> [    7.733410] [<ffff800002533c7c>] xe_managed_bo_create_pin_map+0x34/0xcc [xe]
-> [    7.740522] [<ffff800002533d58>] xe_managed_bo_create_from_data+0x44/0xb0 [xe]
-> [    7.747807] [<ffff80000258d19c>] xe_uc_fw_init+0x3ec/0x904 [xe]
-> [    7.753814] [<ffff80000254a478>] xe_guc_init+0x30/0x3dc [xe]
-> [    7.759553] [<ffff80000258bc04>] xe_uc_init+0x20/0xf0 [xe]
-> [    7.765121] [<ffff800002542abc>] xe_gt_init_hwconfig+0x5c/0xd0 [xe]
-> [    7.771461] [<ffff800002537204>] xe_device_probe+0x240/0x588 [xe]
-> [    7.777627] [<ffff800002575448>] xe_pci_probe+0x6c0/0xa6c [xe]
-> [    7.783540] [<9000000000e9828c>] local_pci_probe+0x4c/0xb4
-> [    7.788989] [<90000000002aa578>] work_for_cpu_fn+0x20/0x40
-> [    7.794436] [<90000000002aeb50>] process_one_work+0x1a4/0x458
-> [    7.800143] [<90000000002af5a0>] worker_thread+0x304/0x3fc
-> [    7.805591] [<90000000002bacac>] kthread+0x114/0x138
-> [    7.810520] [<9000000000241f64>] ret_from_kernel_thread+0x8/0xa4
-> [    7.816489]
-> [    7.817961] Code: 4c000020  29c3e2f9  53ff93ff <002a0001> 0015002c  03400000  02ff8063  29c04077  001500f7
-> [    7.827651]
-> [    7.829140] ---[ end trace 0000000000000000 ]---
+> Current implementation uses `PAGE_SIZE' as an assumed alignment reference
+> but 4KiB kernel page sizes is by no means a guarantee. On 16KiB-paged
+> kernels, this causes driver failures after loading the GuC firmware:
 > 
-> Revise all instances of `SZ_4K' with `PAGE_SIZE' and revise the call to
-> `drm_gem_private_object_init()' in `*___xe_bo_create_locked()' (last call
-> before BUG()) to use `size_t aligned_size' calculated from `PAGE_SIZE' to
-> fix the above error.
+> [    7.398317] xe 0000:09:00.0: [drm] Found dg2/g10 (device ID 56a1) display version 13.00 stepping C0
+> [    7.410429] xe 0000:09:00.0: [drm] Using GuC firmware from i915/dg2_guc_70.bin version 70.36.0
+> [   10.719989] xe 0000:09:00.0: [drm] *ERROR* GT0: load failed: status = 0x800001EC, time = 3297ms, freq = 2400MHz (req 2400MHz), done = 0
+> [   10.732106] xe 0000:09:00.0: [drm] *ERROR* GT0: load failed: status: Reset = 0, BootROM = 0x76, UKernel = 0x01, MIA = 0x00, Auth = 0x02
+> [   10.744214] xe 0000:09:00.0: [drm] *ERROR* CRITICAL: Xe has declared device 0000:09:00.0 as wedged.
+>                Please file a _new_ bug report at https://gitlab.freedesktop.org/drm/xe/kernel/issues/new
+> [   10.828908] xe 0000:09:00.0: [drm] *ERROR* GT0: GuC mmio request 0x4100: no reply 0x4100
 > 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
+> Correct this by defining `GUC_ALIGN' as `SZ_4K' in accordance with the
+> references above, and revising all instances of `PAGE_SIZE' as
+> `GUC_ALIGN'. Then, revise `PAGE_ALIGN()' calls as `ALIGN()' with
+> `GUC_ALIGN' as their second argument (overriding `PAGE_SIZE').
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 84d15f426110 ("drm/xe/guc: Add capture size check in GuC log buffer")
+> Fixes: 9c8c7a7e6f1f ("drm/xe/guc: Prepare GuC register list and update ADS size for error capture")
 > Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 > Tested-by: Mingcong Bai <jeffbai@aosc.io>
 > Tested-by: Wenbin Fang <fangwenbin@vip.qq.com>
@@ -282,51 +253,280 @@ On Wed, Jul 23, 2025 at 04:45:13PM +0900, Simon Richter wrote:
 > Co-developed-by: Shang Yatsen <429839446@qq.com>
 > Signed-off-by: Shang Yatsen <429839446@qq.com>
 > Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-
-please remember to sign-off whenever you are sending or handling other's patches
-
 > ---
->  drivers/gpu/drm/xe/xe_bo.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/gpu/drm/xe/xe_guc.c         |  4 ++--
+>  drivers/gpu/drm/xe/xe_guc.h         |  3 +++
+>  drivers/gpu/drm/xe/xe_guc_ads.c     | 32 ++++++++++++++---------------
+>  drivers/gpu/drm/xe/xe_guc_capture.c |  8 ++++----
+>  drivers/gpu/drm/xe/xe_guc_ct.c      |  2 +-
+>  drivers/gpu/drm/xe/xe_guc_log.c     |  5 +++--
+>  drivers/gpu/drm/xe/xe_guc_pc.c      |  4 ++--
+>  7 files changed, 31 insertions(+), 27 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-> index 00ce067d5fd3..649e6d0e05a1 100644
-> --- a/drivers/gpu/drm/xe/xe_bo.c
-> +++ b/drivers/gpu/drm/xe/xe_bo.c
-> @@ -1861,9 +1861,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->  		flags |= XE_BO_FLAG_INTERNAL_64K;
->  		alignment = align >> PAGE_SHIFT;
->  	} else {
-> -		aligned_size = ALIGN(size, SZ_4K);
-> +		aligned_size = ALIGN(size, PAGE_SIZE);
->  		flags &= ~XE_BO_FLAG_INTERNAL_64K;
-> -		alignment = SZ_4K >> PAGE_SHIFT;
-> +		alignment = PAGE_SIZE >> PAGE_SHIFT;
+> diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+> index b1d1d6da3758..7ff8586f1942 100644
+> --- a/drivers/gpu/drm/xe/xe_guc.c
+> +++ b/drivers/gpu/drm/xe/xe_guc.c
+> @@ -91,7 +91,7 @@ static u32 guc_ctl_feature_flags(struct xe_guc *guc)
+>  
+>  static u32 guc_ctl_log_params_flags(struct xe_guc *guc)
+>  {
+> -	u32 offset = guc_bo_ggtt_addr(guc, guc->log.bo) >> PAGE_SHIFT;
+> +	u32 offset = guc_bo_ggtt_addr(guc, guc->log.bo) >> XE_PTE_SHIFT;
+>  	u32 flags;
+>  
+>  	#if (((CRASH_BUFFER_SIZE) % SZ_1M) == 0)
+> @@ -144,7 +144,7 @@ static u32 guc_ctl_log_params_flags(struct xe_guc *guc)
+>  
+>  static u32 guc_ctl_ads_flags(struct xe_guc *guc)
+>  {
+> -	u32 ads = guc_bo_ggtt_addr(guc, guc->ads.bo) >> PAGE_SHIFT;
+> +	u32 ads = guc_bo_ggtt_addr(guc, guc->ads.bo) >> XE_PTE_SHIFT;
+>  	u32 flags = ads << GUC_ADS_ADDR_SHIFT;
 
-okay, this is definitely right
+these probably deserves a separate patch? or at least an explanation in the
+commit message?
 
+>  
+>  	return flags;
+> diff --git a/drivers/gpu/drm/xe/xe_guc.h b/drivers/gpu/drm/xe/xe_guc.h
+> index 22cf019a11bf..b3d049bdc047 100644
+> --- a/drivers/gpu/drm/xe/xe_guc.h
+> +++ b/drivers/gpu/drm/xe/xe_guc.h
+> @@ -23,6 +23,9 @@
+>  #define GUC_FIRMWARE_VER(guc) \
+>  	MAKE_GUC_VER_STRUCT((guc)->fw.versions.found[XE_UC_FW_VER_RELEASE])
+>  
+> +/* GuC really expects command buffers aligned to 4K boundaries. */
+> +#define GUC_ALIGN SZ_4K
+> +
+>  struct drm_printer;
+>  
+>  void xe_guc_comm_init_early(struct xe_guc *guc);
+> diff --git a/drivers/gpu/drm/xe/xe_guc_ads.c b/drivers/gpu/drm/xe/xe_guc_ads.c
+> index 131cfc56be00..6b5862615fd7 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_ads.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_ads.c
+> @@ -144,17 +144,17 @@ static size_t guc_ads_regset_size(struct xe_guc_ads *ads)
+>  
+>  static size_t guc_ads_golden_lrc_size(struct xe_guc_ads *ads)
+>  {
+> -	return PAGE_ALIGN(ads->golden_lrc_size);
+> +	return ALIGN(ads->golden_lrc_size, GUC_ALIGN);
+>  }
+>  
+>  static u32 guc_ads_waklv_size(struct xe_guc_ads *ads)
+>  {
+> -	return PAGE_ALIGN(ads->ads_waklv_size);
+> +	return ALIGN(ads->ads_waklv_size, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_capture_size(struct xe_guc_ads *ads)
+>  {
+> -	return PAGE_ALIGN(ads->capture_size);
+> +	return ALIGN(ads->capture_size, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_um_queues_size(struct xe_guc_ads *ads)
+> @@ -169,7 +169,7 @@ static size_t guc_ads_um_queues_size(struct xe_guc_ads *ads)
+>  
+>  static size_t guc_ads_private_data_size(struct xe_guc_ads *ads)
+>  {
+> -	return PAGE_ALIGN(ads_to_guc(ads)->fw.private_data_size);
+> +	return ALIGN(ads_to_guc(ads)->fw.private_data_size, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_regset_offset(struct xe_guc_ads *ads)
+> @@ -184,7 +184,7 @@ static size_t guc_ads_golden_lrc_offset(struct xe_guc_ads *ads)
+>  	offset = guc_ads_regset_offset(ads) +
+>  		guc_ads_regset_size(ads);
+>  
+> -	return PAGE_ALIGN(offset);
+> +	return ALIGN(offset, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_waklv_offset(struct xe_guc_ads *ads)
+> @@ -194,7 +194,7 @@ static size_t guc_ads_waklv_offset(struct xe_guc_ads *ads)
+>  	offset = guc_ads_golden_lrc_offset(ads) +
+>  		 guc_ads_golden_lrc_size(ads);
+>  
+> -	return PAGE_ALIGN(offset);
+> +	return ALIGN(offset, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_capture_offset(struct xe_guc_ads *ads)
+> @@ -204,7 +204,7 @@ static size_t guc_ads_capture_offset(struct xe_guc_ads *ads)
+>  	offset = guc_ads_waklv_offset(ads) +
+>  		 guc_ads_waklv_size(ads);
+>  
+> -	return PAGE_ALIGN(offset);
+> +	return ALIGN(offset, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_um_queues_offset(struct xe_guc_ads *ads)
+> @@ -214,7 +214,7 @@ static size_t guc_ads_um_queues_offset(struct xe_guc_ads *ads)
+>  	offset = guc_ads_capture_offset(ads) +
+>  		 guc_ads_capture_size(ads);
+>  
+> -	return PAGE_ALIGN(offset);
+> +	return ALIGN(offset, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_private_data_offset(struct xe_guc_ads *ads)
+> @@ -224,7 +224,7 @@ static size_t guc_ads_private_data_offset(struct xe_guc_ads *ads)
+>  	offset = guc_ads_um_queues_offset(ads) +
+>  		guc_ads_um_queues_size(ads);
+>  
+> -	return PAGE_ALIGN(offset);
+> +	return ALIGN(offset, GUC_ALIGN);
+>  }
+>  
+>  static size_t guc_ads_size(struct xe_guc_ads *ads)
+> @@ -277,7 +277,7 @@ static size_t calculate_golden_lrc_size(struct xe_guc_ads *ads)
+>  			continue;
+>  
+>  		real_size = xe_gt_lrc_size(gt, class);
+> -		alloc_size = PAGE_ALIGN(real_size);
+> +		alloc_size = ALIGN(real_size, GUC_ALIGN);
+>  		total_size += alloc_size;
 >  	}
 >  
->  	if (type == ttm_bo_type_device && aligned_size != size)
-> @@ -1887,7 +1887,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->  #endif
->  	INIT_LIST_HEAD(&bo->vram_userfault_link);
+> @@ -647,12 +647,12 @@ static int guc_capture_prep_lists(struct xe_guc_ads *ads)
+>  					 offsetof(struct __guc_ads_blob, system_info));
 >  
-> -	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
-> +	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, aligned_size);
-
-but this is strange.
-think that we could get rid of the aligned_size variable and only go with
-size = ALIGN(size, PAGE_SIZE)
-
-but then there are some checks in between on the alignment
-and different handling in different if conditions.
-
-We need further clean-up there to make the change obviously right first.
-
+>  	/* first, set aside the first page for a capture_list with zero descriptors */
+> -	total_size = PAGE_SIZE;
+> +	total_size = GUC_ALIGN;
+>  	if (!xe_guc_capture_getnullheader(guc, &ptr, &size))
+>  		xe_map_memcpy_to(ads_to_xe(ads), ads_to_map(ads), capture_offset, ptr, size);
 >  
->  	if (resv) {
->  		ctx.allow_res_evict = !(flags & XE_BO_FLAG_NO_RESV_EVICT);
+>  	null_ggtt = ads_ggtt + capture_offset;
+> -	capture_offset += PAGE_SIZE;
+> +	capture_offset += GUC_ALIGN;
+>  
+>  	/*
+>  	 * Populate capture list : at this point adps is already allocated and
+> @@ -716,10 +716,10 @@ static int guc_capture_prep_lists(struct xe_guc_ads *ads)
+>  		}
+>  	}
+>  
+> -	if (ads->capture_size != PAGE_ALIGN(total_size))
+> +	if (ads->capture_size != ALIGN(total_size, GUC_ALIGN))
+>  		xe_gt_dbg(gt, "Updated ADS capture size %d (was %d)\n",
+> -			  PAGE_ALIGN(total_size), ads->capture_size);
+> -	return PAGE_ALIGN(total_size);
+> +			  ALIGN(total_size, GUC_ALIGN), ads->capture_size);
+> +	return ALIGN(total_size, GUC_ALIGN);
+>  }
+>  
+>  static void guc_mmio_regset_write_one(struct xe_guc_ads *ads,
+> @@ -967,7 +967,7 @@ static void guc_golden_lrc_populate(struct xe_guc_ads *ads)
+>  		xe_gt_assert(gt, gt->default_lrc[class]);
+>  
+>  		real_size = xe_gt_lrc_size(gt, class);
+> -		alloc_size = PAGE_ALIGN(real_size);
+> +		alloc_size = ALIGN(real_size, GUC_ALIGN);
+>  		total_size += alloc_size;
+>  
+>  		xe_map_memcpy_to(xe, ads_to_map(ads), offset,
+> diff --git a/drivers/gpu/drm/xe/xe_guc_capture.c b/drivers/gpu/drm/xe/xe_guc_capture.c
+> index 859a3ba91be5..34e9ea9b2935 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_capture.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_capture.c
+> @@ -591,8 +591,8 @@ guc_capture_getlistsize(struct xe_guc *guc, u32 owner, u32 type,
+>  		return -ENODATA;
+>  
+>  	if (size)
+> -		*size = PAGE_ALIGN((sizeof(struct guc_debug_capture_list)) +
+> -				   (num_regs * sizeof(struct guc_mmio_reg)));
+> +		*size = ALIGN((sizeof(struct guc_debug_capture_list)) +
+> +			      (num_regs * sizeof(struct guc_mmio_reg)), GUC_ALIGN);
+>  
+>  	return 0;
+>  }
+> @@ -739,7 +739,7 @@ size_t xe_guc_capture_ads_input_worst_size(struct xe_guc *guc)
+>  	 * sequence, that is, during the pre-hwconfig phase before we have
+>  	 * the exact engine fusing info.
+>  	 */
+> -	total_size = PAGE_SIZE;	/* Pad a page in front for empty lists */
+> +	total_size = GUC_ALIGN;	/* Pad a page in front for empty lists */
+>  	for (i = 0; i < GUC_CAPTURE_LIST_INDEX_MAX; i++) {
+>  		for (j = 0; j < GUC_CAPTURE_LIST_CLASS_MAX; j++) {
+>  			if (xe_guc_capture_getlistsize(guc, i,
+> @@ -759,7 +759,7 @@ size_t xe_guc_capture_ads_input_worst_size(struct xe_guc *guc)
+>  		total_size += global_size;
+>  	}
+>  
+> -	return PAGE_ALIGN(total_size);
+> +	return ALIGN(total_size, GUC_ALIGN);
+>  }
+>  
+>  static int guc_capture_output_size_est(struct xe_guc *guc)
+> diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+> index b6acccfcd351..557c14b386fd 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_ct.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+> @@ -223,7 +223,7 @@ int xe_guc_ct_init_noalloc(struct xe_guc_ct *ct)
+>  	struct xe_gt *gt = ct_to_gt(ct);
+>  	int err;
+>  
+> -	xe_gt_assert(gt, !(guc_ct_size() % PAGE_SIZE));
+> +	xe_gt_assert(gt, !(guc_ct_size() % GUC_ALIGN));
+>  
+>  	ct->g2h_wq = alloc_ordered_workqueue("xe-g2h-wq", WQ_MEM_RECLAIM);
+>  	if (!ct->g2h_wq)
+> diff --git a/drivers/gpu/drm/xe/xe_guc_log.c b/drivers/gpu/drm/xe/xe_guc_log.c
+> index c01ccb35dc75..becf74a28d90 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_log.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_log.c
+> @@ -15,6 +15,7 @@
+>  #include "xe_force_wake.h"
+>  #include "xe_gt.h"
+>  #include "xe_gt_printk.h"
+> +#include "xe_guc.h"
+>  #include "xe_map.h"
+>  #include "xe_mmio.h"
+>  #include "xe_module.h"
+> @@ -58,7 +59,7 @@ static size_t guc_log_size(void)
+>  	 *  |         Capture logs          |
+>  	 *  +===============================+ + CAPTURE_SIZE
+>  	 */
+> -	return PAGE_SIZE + CRASH_BUFFER_SIZE + DEBUG_BUFFER_SIZE +
+> +	return GUC_ALIGN + CRASH_BUFFER_SIZE + DEBUG_BUFFER_SIZE +
+>  		CAPTURE_BUFFER_SIZE;
+>  }
+>  
+> @@ -328,7 +329,7 @@ u32 xe_guc_get_log_buffer_size(struct xe_guc_log *log, enum guc_log_buffer_type
+>  u32 xe_guc_get_log_buffer_offset(struct xe_guc_log *log, enum guc_log_buffer_type type)
+>  {
+>  	enum guc_log_buffer_type i;
+> -	u32 offset = PAGE_SIZE;/* for the log_buffer_states */
+> +	u32 offset = GUC_ALIGN;	/* for the log_buffer_states */
+>  
+>  	for (i = GUC_LOG_BUFFER_CRASH_DUMP; i < GUC_LOG_BUFFER_TYPE_MAX; ++i) {
+>  		if (i == type)
+> diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
+> index 68b192fe3b32..5a69b5682fc8 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_pc.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+> @@ -1190,7 +1190,7 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
+>  {
+>  	struct xe_device *xe = pc_to_xe(pc);
+>  	struct xe_gt *gt = pc_to_gt(pc);
+> -	u32 size = PAGE_ALIGN(sizeof(struct slpc_shared_data));
+> +	u32 size = ALIGN(sizeof(struct slpc_shared_data), GUC_ALIGN);
+>  	unsigned int fw_ref;
+>  	ktime_t earlier;
+>  	int ret;
+> @@ -1318,7 +1318,7 @@ int xe_guc_pc_init(struct xe_guc_pc *pc)
+>  	struct xe_tile *tile = gt_to_tile(gt);
+>  	struct xe_device *xe = gt_to_xe(gt);
+>  	struct xe_bo *bo;
+> -	u32 size = PAGE_ALIGN(sizeof(struct slpc_shared_data));
+> +	u32 size = ALIGN(sizeof(struct slpc_shared_data), GUC_ALIGN);
+>  	int err;
+>  
+>  	if (xe->info.skip_guc_pc)
 > -- 
 > 2.47.2
 > 
