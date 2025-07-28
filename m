@@ -1,150 +1,167 @@
-Return-Path: <stable+bounces-165001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A822B1419F
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 20:01:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0924AB141A6
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 20:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 224D218C2F72
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 18:01:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C777E1671B6
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 18:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BB2275845;
-	Mon, 28 Jul 2025 17:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DDE1C1F0C;
+	Mon, 28 Jul 2025 17:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Abv2YMt2"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aQQXcRzN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF6B1F9F73
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 17:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDE721E08D
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 17:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753725325; cv=none; b=LZFoKZ0Y0qQDb/W438q5v+ryggse0CtqK7zyPVt+nqMBrU3e5/e29xnv3KFeWimCjMYz98mENU4d4W4BUwJ5QNILH6YRT/gwrKSsdAyLrYlhCE8RJvIX40mHYU4f7MInLBc+hhhnjaxHVH+EZUt9iC/AgonjCS7bDuiT6PCcIPY=
+	t=1753725433; cv=none; b=stpN+xTPYeKClaQEahyMCfzyfIrpqmm16ZKgS9Mvkl1TtO7QZ5TnI3J8tAxXpzwLMBIKeNkPRopw80KF+UoyosQhABJfJhqQSiIMgCGgZWUiXWesmJkD/VFyoLGUoJapitCm53owh0kzguYWO2CwJ17K8TOGXX+qC+85tlcqCPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753725325; c=relaxed/simple;
-	bh=zssRUKNEvHB32vwdHkWFVtfA9UN28Yn3UoP25gyDubA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Iq8S8eq8+yWSQv65j8pjpie4wJJvKkl36s6s9Bl9/vptrjcPfzy5T0ixDDdB3CvaF8utv7v2uMn09X93bpBOaNU+zsso4G281hVXdplJl0v1KyEc5vg4i+5vf2AzERjxLmNr6iVqEbqEUPBlSBifTMAex8oQ4hSbGuSiU7RXzKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Abv2YMt2; arc=none smtp.client-ip=209.85.160.172
+	s=arc-20240116; t=1753725433; c=relaxed/simple;
+	bh=0X8oXi1bYS8M0aCdqtyEbfocq0QfgitMBDkNrB7vH/4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nHEHFwOchT8qMPL11131afhHUIL5eC6CQZviAtMcuV0ap3Ia6rcg6ECoqcqzmY2fkRPw8VpFlmLmlhj9+u4cMISvE9S6pZdGu0y6h2ysLW5/6tyUnEsC7uZer5BflqiZ+vUX6sg8Ctm6Z7G54FddRf3HjfS508YPGSKL0BFAG70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aQQXcRzN; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4ab3855fca3so39361cf.1
-        for <stable@vger.kernel.org>; Mon, 28 Jul 2025 10:55:23 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-754f57d3259so7526224b3a.2
+        for <stable@vger.kernel.org>; Mon, 28 Jul 2025 10:57:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753725323; x=1754330123; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CQxxK6RbpQQjsAWFxkV8xT67PH0plChmN0vYEGz1peg=;
-        b=Abv2YMt2CkABlV3UdTppUgt/64hZHX6MihIQCuolMY1V1M7rjYxJxWzw8J6iclxrgW
-         ayGxQ+62pbdugM8DEfw8KUJ4rPVBir08BKXIYEmSjFaGEnFisOrLGImgsZ7FfnazMbGB
-         LlpXyrtJTsv0YmOnPR5huSixKAovUfCI4/xeejZNiiQr8KVUCtnqd+wca10z3TetgwZ+
-         LcFEFYv4L89PHoRZ7Ob/XHZFeE3HoPdLHCQ3CgkdVDf/E5TdyQZ37zD5WRnm3OVo+c6a
-         iJp8v2zGlJ5yrnFLjRDiaV+dKgqv8kIeurr8zX1mPcXAvBKglxFUA7QsOfNOPDB2G5Do
-         1gmw==
+        d=google.com; s=20230601; t=1753725431; x=1754330231; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VSSeMLLAMhKUAZza2WNjj1MvOAkl+J1OyOksFF7wA7s=;
+        b=aQQXcRzNFgyl2ggYPDYfJPViy79Z73KdNgR8WP2W4ehJkZF/rppJ9ezmY6TTXePJVY
+         mzESiiTNnlZORMe2bBNHKjxbOX1k4ls+Svm2bZtc4eg6SAcdfnxIinIJQkOJdTN2WbmY
+         VZlWtUmF5jSDC+8ZKQ5On1Y0SJgHoXqL8JsPDiVk8vWDnZc3HO6OaNh0MzmxBA5TB+xL
+         4ZMNLrRXvJaEB5bZzeZJZYK4KNhFIsQ22PgTol3yC5FGv0/TMY9r4jhKWz0XF3PF1FBV
+         lcVESAbv1XR5SEhh0297jnoRe3bINE2U7szzqExDzBx12ozakdboSvpDDJgJ7ihH+V8L
+         kh0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753725323; x=1754330123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CQxxK6RbpQQjsAWFxkV8xT67PH0plChmN0vYEGz1peg=;
-        b=PnvUcZWGMX9VlgHhv8rdF8VBua/FDk3iZcm8IxKTeiXtg7qKWhdKhQ+c7Vsw6K7elR
-         jgQb8jV22WnmjeEFsJvi5vDay6soOzAe9CYQnnPD8mQ+CYwUBF1RR3d3CU+gXSYVZNtT
-         GfxxdJKwkt/L/umKfSi+71a6a3bYT0Ww1Mb8qIkaCLO87nvaUXHzBHWyi6SqmeZoxeYM
-         lvZLLbT7Y4D+G9TF/YQ+cy0SrfWFKP1BopxJBFNVOPmnLPdKEzgS9ISuLRFRRySwHeaY
-         auDsdO90eboqmeZ/rmUZwGgpurwEanDQ5hm2/slrohP9+hqcKhi0Fow6LjmyoKgPlQWH
-         2oXA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlD2QCU1nqC+uZfJ6HyMlwR7hcWVO5YiN/QMYwqo7Mj+GGKDXevvsTanskoenGnLuZWvHzIM4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9jzcNDis8WZtJDeb2vu0ILt1VkJ8yb6UNsKf7XsJ0TjQwHrkp
-	QUmvnslWPrJCYYIExlsgp3yVcnEEgAUh2AotmxDbxDNAKekZu3r/dKVRY3TNqD9KhpqBbQFOgKN
-	/9NS709ALfzKJ7WWHZWav4w+Qi5mevHRoaFHXPXXu
-X-Gm-Gg: ASbGncuwdUuq6BAemxcPTqcEqLTL1mZt38SSMiV6yZImps3H6EcUIimRDGx/xbrBDEn
-	PeyRn53lo2/0cQr2S8U5DTbC7WapuriltF7yEe2KWsmJJdRtqXOkqOaxZyQtRt9I0ztnb01u0sz
-	GjRB3p4qNcKmKAbStnx5wagB+LQvA652OJyI+Y7T+fMpvnAipXX5yZuHhFjLd7PStK8fgs/D+4i
-	hrR2PjCmXuuOepqscHkKJy0SRNSaJrjUiz+fw==
-X-Google-Smtp-Source: AGHT+IFFnoxBnnNVScW/VpJt6pjdkyu/boiKhrUJzdPlXt0VAhjFqNpn6IGuDGg/1A36+VHGOxFhSv/p5MrjmKydpFI=
-X-Received: by 2002:ac8:5a43:0:b0:49d:88d0:145 with SMTP id
- d75a77b69052e-4aecdec4fdemr7141cf.23.1753725322548; Mon, 28 Jul 2025 10:55:22
- -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753725431; x=1754330231;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VSSeMLLAMhKUAZza2WNjj1MvOAkl+J1OyOksFF7wA7s=;
+        b=Z/7oV6ABsxbMLJZ4rd83/KJs3sy5ZuSPaVA8XGwWZLKzIwLoOsE91/eJXQK3gRQzTp
+         YhfTUPuUOhZ30MtlgHtj6RPw17yyoOw6RmckTUR41c6XLO9tw3LKjHmXW3Zb7TR/QGQs
+         bqlq1IYrmscB2I0XcG/metdyHC0mgv5ZkOYHxLYJWkLAGHB687IrXzUGOQOJ0Y/Ik7kj
+         /V5pWj1zJE43Qt/EgVSwsqRyvK+JXI+H2y9XonM+ksewk6/YRZWrbdF4BNlIr3P+HhjM
+         v0P5hSwjFC/ndqz8KuDFNhY+34GoG0tq7GMfMOXSNWNsAJre2mVwOVDr1846TP2OuyM/
+         +9jw==
+X-Gm-Message-State: AOJu0YzwZLYcdNnh1ZnA2zIZQ+Q0ASNKbwv2ZU7w2tMu+xLSzpq+svTp
+	yoBdnsiQY7ilawoAjWE6E9Pj+kcVXN2aKr/b5b3SPYSOSFalMlpyEhSvcHgh+/zDKPfGv9OlALY
+	+nnVyc0ruRNAN/BCz9BhyuHoFQpJiEiNul+TFw3N3L2sg0XSSlZuuWgKx3Yib4rrhH7Urn+wIyg
+	9ZfGhQPI3urXVnFEenNJy8Df3rjFPq4LWe5CCAWQNBKZF46H5dP2dV
+X-Google-Smtp-Source: AGHT+IEENuk65GyZmFqSaicWwAh16oQZIDKpoUcsUKguB7z7SuUaYsGhZM40o8uhso7bCG4e0QTrslzJGPJIYsA=
+X-Received: from pfbdf10.prod.google.com ([2002:a05:6a00:470a:b0:748:f030:4e6a])
+ (user=jtoantran job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:99a:b0:736:6043:69f9 with SMTP id d2e1a72fcca58-763349ba196mr18591277b3a.19.1753725430807;
+ Mon, 28 Jul 2025 10:57:10 -0700 (PDT)
+Date: Mon, 28 Jul 2025 17:56:53 +0000
+In-Reply-To: <20250723163209.1929303-1-jtoantran@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250728170950.2216966-1-surenb@google.com> <3f8c28f4-6935-4581-83ec-d3bc1e6c400e@suse.cz>
- <CAJuCfpGZXGF_k_QVQqHWZpnypB-sWB8hwZeOYMOD0xmAFOBxkA@mail.gmail.com>
- <97938dc6-5dfe-4591-ba53-3729934c1235@suse.cz> <CAJuCfpHgyzQxmAiriFM59KGi465ocxH6T5nBSBY1fcUazOj9Gw@mail.gmail.com>
-In-Reply-To: <CAJuCfpHgyzQxmAiriFM59KGi465ocxH6T5nBSBY1fcUazOj9Gw@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 28 Jul 2025 10:55:11 -0700
-X-Gm-Features: Ac12FXzlgFF7itYZWvvVBXrV-1oKF1zTqyNKqehylT5HcvvNfhoWPx9GYVarnJM
-Message-ID: <CAJuCfpF3543giq6vHuBbmLuxjUYVxNub6PgTzu0M3Zfe0H2xGA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm: fix a UAF when vma->mm is freed after
- vma->vm_refcnt got dropped
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: akpm@linux-foundation.org, jannh@google.com, Liam.Howlett@oracle.com, 
-	lorenzo.stoakes@oracle.com, pfalcato@suse.de, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Mime-Version: 1.0
+References: <20250723163209.1929303-1-jtoantran@google.com>
+X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
+Message-ID: <20250728175701.3286764-1-jtoantran@google.com>
+Subject: [PATCH v2 0/7] x86: fix user address masking non-canonical
+From: Jimmy Tran <jtoantran@google.com>
+To: stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Borislav Petkov <bp@alien8.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	David Laight <david.laight@aculab.com>, Andrei Vagin <avagin@gmail.com>, 
+	Jimmy Tran <jtoantran@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 28, 2025 at 10:43=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
-com> wrote:
->
-> On Mon, Jul 28, 2025 at 10:39=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz>=
- wrote:
-> >
-> > On 7/28/25 19:37, Suren Baghdasaryan wrote:
-> > > On Mon, Jul 28, 2025 at 10:19=E2=80=AFAM Vlastimil Babka <vbabka@suse=
-.cz> wrote:
-> > >> > +      */
-> > >> > +     if (unlikely(vma->vm_mm !=3D mm)) {
-> > >> > +             /*
-> > >> > +              * __mmdrop() is a heavy operation and we don't need=
- RCU
-> > >> > +              * protection here. Release RCU lock during these op=
-erations.
-> > >> > +              */
-> > >> > +             rcu_read_unlock();
-> > >> > +             mmgrab(vma->vm_mm);
-> > >> > +             vma_refcount_put(vma);
-> > >>
-> > >> The vma can go away here.
-> > >
-> > > No, the vma can't go away here because we are holding vm_refcnt. So,
-> > > the vma and its mm are stable up until vma_refcount_put() drops
-> > > vm_refcnt.
-> >
-> > But that's exactly what we're doing here?
->
-> Ah, you are right. At the time of mmdrop() call the vma is already
-> unstable. Let me fix it by copying the mm like we do in
-> vma_refcount_put().
+Hi everyone,
 
-Fixed in v2: https://lore.kernel.org/all/20250728175355.2282375-1-surenb@go=
-ogle.com/
-Thanks!
+This is v2 of my series to backport the critical security fix,
+identified as CVE-2020-12965 ("Transient Execution of Non-Canonical Accesses"),
+to the 6.6.y stable kernel tree.
 
->
-> >
-> > >>
-> > >> > +             mmdrop(vma->vm_mm);
-> >
-> > And here we reference the vma again?
-> >
-> > >> So we need to copy the vma->vm_mm first?
-> > >>
-> > >> > +             rcu_read_lock();
-> > >> > +             return NULL;
-> > >> > +     }
-> > >> > +
-> > >> >       /*
-> > >> >        * Overflow of vm_lock_seq/mm_lock_seq might produce false l=
-ocked result.
-> > >> >        * False unlocked result is impossible because we modify and=
- check
+Linus Torvalds's second proposed solution offers a more targeted and
+smaller backport for CVE-2020-12965 compared to backporting the entire
+patch series.
+
+ This alternative would focus solely on the user address masking
+ logic that addresses the AMD speculation issue with non-canonical
+ addresses.
+
+ Instead of introducing the extensive "runtime-constant"
+ infrastructure seen in the larger patch series, this solution would:
+
+  - Introduce a single new variable for the USER_PTR_MAX
+    value.
+  - Use an actual memory load to access this USER_PTR_MAX value, rather than
+    leveraging the runtime_const mechanism.
+
+ While this approach would result in a noticeably smaller and more
+ localized patch, it would differ from what's currently in the
+ mainline kernel. This divergence would necessitate significant
+ additional testing to ensure its stability.
+
+I am ready to implement the second proposed solution if the
+maintainers wish to move forward in that direction, understanding the
+testing implications. Please let me know your preference.
+
+Changes in v2:
+==============
+- Incorporated the commit 91309a708: x86: use cmov for user address
+  as suggested by David Laight. This commit is now included as the first patch
+  in the series.
+
+This series addresses the CVE-2020-12965 vulnerability by
+introducing the necessary x86 infrastructure and the specific fix for user
+address masking non-canonical speculation issues.
+
+v1:
+==============
+This patch series backports a critical security fix, identified as
+CVE-2020-12965 ("Transient Execution of Non-Canonical Accesses"), to the
+6.6.y stable kernel tree.
+
+David Laight (1):
+  x86: fix off-by-one in access_ok()
+
+Linus Torvalds (6):
+  vfs: dcache: move hashlen_hash() from callers into d_hash()
+  runtime constants: add default dummy infrastructure
+  runtime constants: add x86 architecture support
+  arm64: add 'runtime constant' support
+  x86: fix user address masking non-canonical speculation issue
+  x86: use cmov for user address masking
+
+ arch/arm64/include/asm/runtime-const.h | 92 ++++++++++++++++++++++++++
+ arch/arm64/kernel/vmlinux.lds.S        |  3 +
+ arch/x86/include/asm/runtime-const.h   | 61 +++++++++++++++++
+ arch/x86/include/asm/uaccess_64.h      | 44 +++++++-----
+ arch/x86/kernel/cpu/common.c           | 10 +++
+ arch/x86/kernel/vmlinux.lds.S          |  4 ++
+ arch/x86/lib/getuser.S                 | 10 ++-
+ fs/dcache.c                            | 17 +++--
+ include/asm-generic/Kbuild             |  1 +
+ include/asm-generic/runtime-const.h    | 15 +++++
+ include/asm-generic/vmlinux.lds.h      |  8 +++
+ 11 files changed, 242 insertions(+), 23 deletions(-)
+ create mode 100644 arch/arm64/include/asm/runtime-const.h
+ create mode 100644 arch/x86/include/asm/runtime-const.h
+ create mode 100644 include/asm-generic/runtime-const.h
+
+-- 
+2.50.1.470.g6ba607880d-goog
+
 
