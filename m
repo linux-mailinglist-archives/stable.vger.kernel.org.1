@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-164961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321B4B13CFC
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 16:23:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2716B13CE1
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 16:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 699103A3F11
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 14:19:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FBCA7A1921
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 14:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BB626B0BC;
-	Mon, 28 Jul 2025 14:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AAA26CE2E;
+	Mon, 28 Jul 2025 14:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dcrSTsJn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IspsWSMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED8928373
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 14:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BCA26D4F9
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 14:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753712423; cv=none; b=hdPuDxznC3VgPNwDefsVgVlfq53TvEyTyc3W3BVKJ1QKqvQGyt8/5u5K8d5aPRzTflUWvTqag1k9AYxzBbBQc5RjXYyzbvchWuCoAZNvwjEL1Emi984dGrOLBCd2oKU8nZfSIhst0s9hk64sJBWw9gpAobKCGgRMs/0culv/qgA=
+	t=1753712426; cv=none; b=FP8NhfUOHMKarYzGPBIfVhjier0l4va1pB+Cf7S1o1m/Eq+HqlQkzo6qub8T6B7RyGK0xxaOC6tGDsO4Fc238XybKbgOw66UDBHSBmFnzSMsfXyK26+ZsXw3vbvYDuvMoUwdnHEfo0v0YPmVM9wmTNAcE8U35slKhfttJEwYQvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753712423; c=relaxed/simple;
-	bh=N/LWLD6xvjAbny59sqotoBA/yL8J6KnHDMtOnkMmMgQ=;
+	s=arc-20240116; t=1753712426; c=relaxed/simple;
+	bh=pSw99ixVbKhE3MnhPREk/I4Eg9bPdmjaMugkyfQTn7U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f+ns7lGORsvoIV67dUYJpwKtTVHcsBwGoW4UwoYoRf99W6DWz1wgXo6EwdkjUTS0YT6+dingNFwg2rQi9ZAaQODSwjopj/nElm5QOnhsQE/BpIU0At9tK1z/BIIbZz3l8r198BGrOJzxKLSERZ64SXZKAr2a2CG2y7Bw6phcVAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dcrSTsJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A227BC4CEE7;
-	Mon, 28 Jul 2025 14:20:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RnxGxgqTqd3d9UD3ncozMJTq4beG0ehz8eKKX6fvrHViGHNLgUwRHmFJFuvjkzG14Q9cEV6//Ue3ch509jP5g7vPJVrxI5ZxNG32/K3XgQwTHIA7b58s2BtoUbQCXSMMshv2wzDkhWaQdSDj/jUeaDImEy0VyDNzVMNeCxtWUzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IspsWSMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9454AC4CEE7;
+	Mon, 28 Jul 2025 14:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753712423;
-	bh=N/LWLD6xvjAbny59sqotoBA/yL8J6KnHDMtOnkMmMgQ=;
+	s=k20201202; t=1753712426;
+	bh=pSw99ixVbKhE3MnhPREk/I4Eg9bPdmjaMugkyfQTn7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcrSTsJnBT+g/FoRvEWHLTP6FlFswcDJ1D6EXMZp30EMvIgr7VwOxbGPK4ba1AEpU
-	 ty6IG/Yr812j87c01NEX252o83X7hnVIKtFHkkWDqGyHpT6PfNqg27HClb30VGyrsW
-	 3BwBCWr92lqPriHhzj6Yfnk3qUB6vNWpFL2BWD0MYZhEy2rmrBMRfHUljRQP+zeh51
-	 3wsaDnNcJ5Vwocf8QH+dCoqYWuV29ZxgZ3QajXDTBV7/ABxYKereaH9Ky42osrYnVT
-	 ygd4FI36l3P+edp71SCyooPhvYUfXISzt3CHAPQuc5CQltrgGSS09XcsMqBLBGFCsp
-	 sL39qSG+ZFDoQ==
+	b=IspsWSMAYxdAXGvO0AuiD8pRRGSyq508We4MxGBVC2DVpz233/z/0JmI/3Fn/MKuT
+	 gpgClZXxawXun08CxtjN6FLfDXQAU4fZNzzfh6RfWLqJ0d5jCFa73edre+r55mosSP
+	 G3dAHJcq70xHhyMD66FK31TQ9E5qXetRKIMD5rejElvH+9TbHHFHP1M0yMHZOBxAls
+	 go2D5x9scassYzfQTJ95RoB6j2LTpFia1oV3Nk1gF6W/rLX5BsdJdagEs9unbGqdl2
+	 /YSkO4RyasrG2kh1kqmKoLSCOb1fAYWoedT7Av403cBf6LiC7Ps4CXXVRAw9F9Hcfr
+	 WnhutNM8GBhvg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	shivani.agarwal@broadcom.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y 3/3] mptcp: reset fallback status gracefully at disconnect() time
-Date: Mon, 28 Jul 2025 10:20:20 -0400
-Message-Id: <1753710465-a0ada053@stable.kernel.org>
+Subject: Re: [PATCH v5.10] ptp: Fix possible memory leak in ptp_clock_register()
+Date: Mon, 28 Jul 2025 10:20:23 -0400
+Message-Id: <1753710855-90354577@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250728091448.3494479-8-matttbe@kernel.org>
+In-Reply-To: <20250728081121.95098-1-shivani.agarwal@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,45 +64,65 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: da9b2fc7b73d147d88abe1922de5ab72d72d7756
+The upstream commit SHA1 provided is correct: 4225fea1cb28370086e17e82c0f69bec2779dca0
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Commit author: Paolo Abeni <pabeni@redhat.com>
+Backport author: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Commit author: Yang Yingliang <yangyingliang@huawei.com>
 
 Status in newer kernel trees:
-6.15.y | Not found
-6.12.y | Not found
+6.15.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (exact SHA1)
+
+Found fixes commits:
+11195bf5a355 ptp: fix code indentation issues
 
 Note: The patch differs from the upstream commit:
 ---
-1:  da9b2fc7b73d ! 1:  eaa8b9f461e1 mptcp: reset fallback status gracefully at disconnect() time
+1:  4225fea1cb28 ! 1:  ed4903766eee ptp: Fix possible memory leak in ptp_clock_register()
     @@ Metadata
       ## Commit message ##
-         mptcp: reset fallback status gracefully at disconnect() time
+         ptp: Fix possible memory leak in ptp_clock_register()
      
-    +    commit da9b2fc7b73d147d88abe1922de5ab72d72d7756 upstream.
+    +    [ Upstream commit 4225fea1cb28370086e17e82c0f69bec2779dca0 ]
     +
-         mptcp_disconnect() clears the fallback bit unconditionally, without
-         touching the associated flags.
+         I got memory leak as follows when doing fault injection test:
      
+         unreferenced object 0xffff88800906c618 (size 8):
     @@ Commit message
-         Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-         Link: https://patch.msgid.link/20250714-net-mptcp-fallback-races-v1-3-391aff963322@kernel.org
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+         Fixes: a33121e5487b ("ptp: fix the race between the release of ptp_clock and cdev")
+         Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+         Signed-off-by: David S. Miller <davem@davemloft.net>
+    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+    +    [Shivani: Modified to apply on 5.10.y, Removed
+    +    kfree(ptp->vclock_index) in the ptach, since vclock_index is
+    +    introduced in later versions]
+    +    Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
      
-      ## net/mptcp/protocol.c ##
-     @@ net/mptcp/protocol.c: static int mptcp_disconnect(struct sock *sk, int flags)
-    @@ net/mptcp/protocol.c: static int mptcp_disconnect(struct sock *sk, int flags)
+      ## drivers/ptp/ptp_clock.c ##
+     @@ drivers/ptp/ptp_clock.c: struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
+      	/* Create a posix clock and link it to the device. */
+      	err = posix_clock_register(&ptp->clock, &ptp->dev);
+      	if (err) {
+    -+	        if (ptp->pps_source)
+    -+	                pps_unregister_source(ptp->pps_source);
+    -+
+    -+		kfree(ptp->vclock_index);
+    ++		if (ptp->pps_source)
+    ++			pps_unregister_source(ptp->pps_source);
      +
-      	msk->cb_flags = 0;
-      	msk->recovery = false;
-    - 	WRITE_ONCE(msk->can_ack, false);
-    + 	msk->can_ack = false;
+     +		if (ptp->kworker)
+    -+	                kthread_destroy_worker(ptp->kworker);
+    ++			kthread_destroy_worker(ptp->kworker);
+     +
+     +		put_device(&ptp->dev);
+     +
 
 ---
 
@@ -109,5 +130,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| 6.6                       | Success     | Success    |
+| origin/linux-5.10.y       | Success     | Success    |
 
