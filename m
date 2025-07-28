@@ -1,103 +1,87 @@
-Return-Path: <stable+bounces-164894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2B4B13741
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 11:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91D5B13757
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 11:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F1B6188F1F5
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 09:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE74D1894C5E
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 09:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A83221FD8;
-	Mon, 28 Jul 2025 09:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EAB1B4153;
+	Mon, 28 Jul 2025 09:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7WDrxy4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 057272153D2;
-	Mon, 28 Jul 2025 09:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EDA186284;
+	Mon, 28 Jul 2025 09:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753693755; cv=none; b=Y42l4Uo/UYvxgWhx+dQrNGDA6gUPy0gf++PUtqcNdqnbBUqE+jBqO1LEfzEWLcQh0k6akn8l/gECObfWCBb5uO2ItO2IB5G3Qyde5LHdgh9WhsE/0K1vppAhwpJ6OCRNoPB1kzAjKEb6ojQAOoS8L6HwWsEPe8jJDTWBP+W5Js8=
+	t=1753694126; cv=none; b=h/MdtkTlz+cO0AeaHA/1HEu20Zhy468YxLF4cFg+qS3iFb2MvEXLQoKLeTQ9iJoDwkr3/hP28XoQ8YIzXhFzg0wMU8slMsaF+ApD/ZvSU8CqJVJPkWbKT6IjCiP9XAKBnT0k4iTaiCvGTZmphwzREPKdJ1oytCawsWK+72+BGds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753693755; c=relaxed/simple;
-	bh=zTwpBlCjv12NPLXvm+OhPgR26zsqq/JSgr70P60hQGM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type; b=XCC7SPIvun9yDtwTZkWB8KazNvYgB5msuuSs2WS3H2/t/3gPDzmyaNCGU9w1hu8qHjvYa9fmW0aqABAifC/llWoLzlD3wr0rudmK+wMLzLeHBWUWWUwfYq6bfma1RGvuiXkTJ6tlcvjkpmM4yD7BCs7w/NgFJgB84AHglUMlNXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from [172.30.20.100] (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id E6535602A11DF;
-	Mon, 28 Jul 2025 17:08:57 +0800 (CST)
-Message-ID: <ab080493-10cd-4f3b-8dd3-c67b4955a737@nfschina.com>
-Date: Mon, 28 Jul 2025 17:08:57 +0800
+	s=arc-20240116; t=1753694126; c=relaxed/simple;
+	bh=0+NQ1gPo3v4RHvbc1xnQW9ASSzDxej/xbJFkI6skPCU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TQpf5sJC874DSUmyvVZXcI/4EMnkItM71/yF5JUumYZCxLp/V28HuLHqvHy1fSS1COUoRW43bQ/aUpr032TGBbfv5KFgy4KqGjRxrI+FdGwua3qatg1GfBpNLJBoxF7v4EEF44THs1hY07YO8bfsrsJLSop88JZ2bGRTrfIn+TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7WDrxy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2145C4CEE7;
+	Mon, 28 Jul 2025 09:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753694125;
+	bh=0+NQ1gPo3v4RHvbc1xnQW9ASSzDxej/xbJFkI6skPCU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=P7WDrxy4G5/yiJWjqzC3/k/cisGs6niUuLGPAHoCAiLKsbpK2T6qRZgmz4MKXLLYX
+	 H/TPONd1iFVvF9QkanNI70C+4O1B8NQhjf3LIv5G7dkLEvjOZKRCf6lothvz13UAh+
+	 Y5cRpkWeGNV32mFC5gJSqtFwoQhwIn7b4qFR117fd1LhThxltFGyIrWph0CScAsCh5
+	 g10auSBb4hec23Fwg+CnuIKNh9ssgl/GVWufAhJsoZlxyFH8+YgGcy3AptqEr7XB/O
+	 lhugqWDN8N7mqJHA8RjZMvsCt0cI+siylDKq4y5KsRHnJegju+2L4hgnFb/mrgcmxP
+	 Lt44K7VJjvOnA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	sashal@kernel.org
+Subject: [PATCH 6.6.y 0/3] mptcp: fix recent failed backports (20250721)
+Date: Mon, 28 Jul 2025 11:14:48 +0200
+Message-ID: <20250728091448.3494479-5-matttbe@kernel.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: slub: avoid deref of free pointer in sanity checks
- if object is invalid
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Matthew Wilcox <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-MD-Sfrom: liqiong@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: liqiong <liqiong@nfschina.com>
-In-Reply-To: <aIcJdhoSTQlsdR5r@harry>
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=922; i=matttbe@kernel.org; h=from:subject; bh=0+NQ1gPo3v4RHvbc1xnQW9ASSzDxej/xbJFkI6skPCU=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLa7TuP9c2vPPFwk3K+0dt7F9bztfTtfMrr1vEjZIf5D Xn5YP85HaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABO5KMjIcNTIbmv5ZX6zxSZV s+Leqc3i0Xa5scF0RsO1QJPaBTJWrxn+qczac49ls8ybGGljvyurzno3KnKunX0rxXen40Pv6PB cBgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
+Greg recently reported 3 patches that could not be applied without
+conflicts in v6.6:
 
+ - f8a1d9b18c5e ("mptcp: make fallback action and fallback decision atomic")
+ - def5b7b2643e ("mptcp: plug races between subflow fail and subflow creation")
+ - da9b2fc7b73d ("mptcp: reset fallback status gracefully at disconnect() time")
 
-在 2025/7/28 13:24, Harry Yoo 写道:
-> On Mon, Jul 28, 2025 at 04:29:22AM +0100, Matthew Wilcox wrote:
->> On Mon, Jul 28, 2025 at 10:06:42AM +0800, liqiong wrote:
->>>>> In this case it's an object pointer, not a freelist pointer.
->>>>> Or am I misunderstanding something?
->>>> Actually, in alloc_debug_processing() the pointer came from slab->freelist,
->>>> so I think saying either "invalid freelist pointer" or
->>>> "invalid object pointer" make sense...
->>> free_consistency_checks()  has 
->>>  'slab_err(s, slab, "Invalid object pointer 0x%p", object);'
->>> Maybe  it is better, alloc_consisency_checks() has the same  message.
->> No.  Think about it.
-> Haha, since I suggested that change, I feel like I have to rethink it
-> and respond... Maybe I'm wrong again, but I love to be proven wrong :)
->
-> On second thought,
->
-> Unlike free_consistency_checks() where an arbitrary address can be
-> passed, alloc_consistency_check() is not passed arbitrary addresses
-> but only addresses from the freelist. So if a pointer is invalid
-> there, it means the freelist pointer is invalid. And in all other
-> parts of slub.c, such cases are described as "Free(list) pointer",
-> or "Freechain" being invalid or corrupted.
->
-> So to stay consistent "Invalid freelist pointer" would be the right choice :)
-> Sorry for the confusion.
->
-> Anyway, Li, to make progress on this I think it make sense to start by making
-> object_err() resiliant against invalid pointers (as suggested by Matthew)?
-> If you go down that path, this patch might no longer be required to fix
-> the bug anyway...
->
-> And the change would be quite small. Most part of print_trailer() is printing
-> metadata and raw content of the object, which is risky when the pointer is
-> invalid. In that case we'd only want to print the address of the invalid
-> pointer and the information about slab (print_slab_info()) and nothing more.
->
+Conflicts, if any, have been resolved, and documented in each patch.
 
-Got it, I will a v3 patch, changing the message, and keep it simple, dropping the comments of object_err(),
-just fix the issue.
+Paolo Abeni (3):
+  mptcp: make fallback action and fallback decision atomic
+  mptcp: plug races between subflow fail and subflow creation
+  mptcp: reset fallback status gracefully at disconnect() time
 
+ net/mptcp/options.c  |  3 ++-
+ net/mptcp/pm.c       |  8 +++++-
+ net/mptcp/protocol.c | 58 +++++++++++++++++++++++++++++++++++++-------
+ net/mptcp/protocol.h | 27 ++++++++++++++++-----
+ net/mptcp/subflow.c  | 30 ++++++++++++++---------
+ 5 files changed, 98 insertions(+), 28 deletions(-)
 
+-- 
+2.50.0
 
 
