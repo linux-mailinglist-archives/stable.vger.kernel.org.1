@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-164929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F6DB13AB3
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 14:45:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34709B13AB6
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 14:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091CE3B59A5
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 12:45:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F37B73B5C18
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 12:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0055526563F;
-	Mon, 28 Jul 2025 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5B1266581;
+	Mon, 28 Jul 2025 12:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8/ylEDq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNz/ChsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311A26561C
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 12:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B36B266562
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 12:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753706749; cv=none; b=BqQhaQpIRMpMf7AZZGLpI8PvhMZ/QuHctP+b7ffYfNd4CY1LTS6/Ia31BvsH007Y0v9GILbs3/nR9myXyAN3g+qbNGVDLrnnv3jq64+9z8j0NxCv9SAy8V3120mk+9TcFHUIfeOmwE1hE7RB8Lwzcl2mbNOlyEbxOVi6zUHq+4M=
+	t=1753706753; cv=none; b=BEp/i3bA//kZzu69qFDb9bIQs97Z7vUqEQja4QdziEIqVc2KdiE1fTkYTuWXhO5MMxAkiY7KXR1bXjIYNt8wWA9tEVzViscHxO0+dPrez9KKl8LrGGpiedmXjQRKjb3gBNpHoMrOkRqLpjWBDRQ9PvCEHN03QbWl1k2kSCrjAzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753706749; c=relaxed/simple;
-	bh=lebmbu5JX0Q2mKGpyt6DeCCCoymYCJUwfRNM6Gfub50=;
+	s=arc-20240116; t=1753706753; c=relaxed/simple;
+	bh=i42EqhQaRDYhHZEYn6W5HmOujbnDOqcp7yAHOaoxSnw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GTAGPaFndBVYZNfGhurq6HJq3Eq43sk0RWLM3Xp4/8czs5I3BmWdHmhMg3dFc+WZBNUJQo+mcgRCC5rKcHrcgzHEsRnQ3jGbO1Z9nkurUQB6lud1ESXERxZT3Hq3rep5ViARl6TQyu8ch6AZicQAD6/ImH7GwSTRXmhFKUU1T34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8/ylEDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB165C4CEE7;
-	Mon, 28 Jul 2025 12:45:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XUWFv8Eg/Uz45YhxMD2JT61AZkmj892o4fe254Z7DZwzUKv2lIwEv8saRLpfqxrLmRI2bprLYCmd5uktvdkqiQXWcfSenCZQaQFCgvgLX620IQx+RhMuB1KFzcfwoT8ACgRSJ+45j5uOqeW2nmuqwvx8wrJVzgJCsouvUlK4Yf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNz/ChsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54A0C4CEF7;
+	Mon, 28 Jul 2025 12:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753706749;
-	bh=lebmbu5JX0Q2mKGpyt6DeCCCoymYCJUwfRNM6Gfub50=;
+	s=k20201202; t=1753706752;
+	bh=i42EqhQaRDYhHZEYn6W5HmOujbnDOqcp7yAHOaoxSnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8/ylEDqPghSqaMWLF9DWIS9BTeVfyU7/NGGW7ZSMsiuV9zYlYTHYEctgOayCuqo1
-	 tuXI15GV7zJ3cKsGI+7gv0bGuKPvKURR3655E9NxLPfJcqFfmwIBVxIeitbGu5VzBs
-	 XdaAToZHK4rtBMRpwA42OBb5ie1WP6E+yDYgy3OIsivPWJtdOG3dTCvPtQsOhpBzOB
-	 1z6oEJKF/Y4d7mDJCV2qqslXuKr+Z48pt2br5M2DBIYYbXkegRl2KK58zWveOZK7/V
-	 irAmE1HUBDC93wYWXIdNVIGxcqaY8tKoi5OKJHQk8zgNFgT8e0eQmFjgs39xwehKrU
-	 2TvwN3O+aeVSA==
+	b=qNz/ChsAkm/oDIJBHnmLT7WLbK1nx5L4FNhOqcgZ/WBicMNYXlQM2Vg2RVncqZZcR
+	 XbmAS6L5LkmhaHkdVaHEpj72+L3+udPSpGfOuijdl/yRF8yOY81P5ZCt3EAcEeglZ6
+	 UJTDBzmTYGGub05qVa1Y2XPzbWnEmqkNovKPXonHhp0oKyeVP6rh1CruATfKb4iPnR
+	 eHQ13NwvlwMnmDAFKX7TcU2vdsHm27Sl1C3+qNupd0lQxys75lMHNc06z1H2iS/uwk
+	 BM31nxR5zEGwjAoXQKNfPPqjL7NcptSxfYhXjSQbADYGvKWmX78Ge+2dBhZhQmegFs
+	 hTMO72KEftJtA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	chenridong@huaweicloud.com
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 2/5] freezer,sched: Use saved_state to reduce some spurious wakeups
-Date: Mon, 28 Jul 2025 08:45:47 -0400
-Message-Id: <1753684448-d53f3b4f@stable.kernel.org>
+Subject: Re: [PATCH 6.6 5/5] sched,freezer: Remove unnecessary warning in __thaw_task
+Date: Mon, 28 Jul 2025 08:45:49 -0400
+Message-Id: <1753684648-09273728@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250728025444.34009-3-chenridong@huaweicloud.com>
+In-Reply-To: <20250728025444.34009-6-chenridong@huaweicloud.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,30 +63,23 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 2/5 of a series
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 8f0eed4a78a81668bc78923ea09f51a7a663c2b0
+The upstream commit SHA1 provided is correct: 9beb8c5e77dc10e3889ff5f967eeffba78617a88
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Chen Ridong <chenridong@huaweicloud.com>
-Commit author: Elliot Berman <quic_eberman@quicinc.com>
+Commit author: Chen Ridong <chenridong@huawei.com>
 
 Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-
-Found fixes commits:
-23ab79e8e469 freezer,sched: Do not restore saved_state of a thawed task
+6.15.y | Not found
+6.12.y | Not found
 
 Note: Could not generate a diff with upstream commit:
 ---
 Note: Could not generate diff - patch failed to apply for comparison
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
