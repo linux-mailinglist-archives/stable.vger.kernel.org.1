@@ -1,137 +1,121 @@
-Return-Path: <stable+bounces-164966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEC1B13CF4
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 16:23:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB4FB13D4A
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 16:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5631883479
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 14:21:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8844189A306
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 14:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A43D26D4CD;
-	Mon, 28 Jul 2025 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DA53C1F;
+	Mon, 28 Jul 2025 14:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eY1XzNZU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nt4g0cZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C05226E17A
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ECF846C
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 14:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753712438; cv=none; b=T3N52lbMC9GtguAYUKkBeJPiJn5WOCSLG3S+lMF+1CLRwl36N0N6Zsh7Y6UhrPS4TdwWzlVxjcd6ytFq7Ekmzg2JGo7/6hAvxrJFNpj7qrOEEuFo3SlbuavxCKofFJOal/PYGtYuyNXVpIp1tilvRDuWYojW7aWJUjsdYh+bieQ=
+	t=1753713357; cv=none; b=XvRFdvYYGV+EI27A6gT5Cul0s75E8vw4FFMygZ2a5rm6yP4AK9DZnoISOB9IMDDMJ27Jxnk9f8zSNFBaCnELogvGLBrJ/PI3o1Hn6qD7FI/9QDuehhu7qKqptWQgQV8LalOTdC7dHMbzece0Z+oTCIjgk0/auQ1T+W+4Dq2nBlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753712438; c=relaxed/simple;
-	bh=/p33v01QXS/z7h4rw7y9iciEqPtfLHi3Q8PB4Nh1Ekk=;
+	s=arc-20240116; t=1753713357; c=relaxed/simple;
+	bh=ncNsECm20uOiN6uWg/cYMtd4cbxdvq49C6+F11BtWjA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J3oOwszNWQzOpPNZU1E5bRLG5iOh11Tw5bWk/73kKWNqrtHpFnbJdS6jfLV6eL7SUy9xowK0+t4GJKdvUoMHdswCV8oOVu1wkZwPfcKqgD3+EDpgKLmJi9rGq/bNzq4tygI6wfxx8xTizB4P/0J9esje2aSk9SVQ52KDNBGekG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eY1XzNZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5756DC4CEE7;
-	Mon, 28 Jul 2025 14:20:37 +0000 (UTC)
+	 MIME-Version; b=FBOkthgdGpPQm06sYI3eXZl3vt6ITcsGo7EvKiKpwaCPj6VRRqViKqA2lPw1JQPLZvxeZnFtHFgpwu7CdKT3yk49mpqztpNyZ/zcdW1pxLNuac+2ppC6LbAoTFeody3YWoy8a3B5D9McauBXE88aA4EVqKuXpbtd5TJ8Fgz55P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nt4g0cZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F96CC4CEE7;
+	Mon, 28 Jul 2025 14:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753712437;
-	bh=/p33v01QXS/z7h4rw7y9iciEqPtfLHi3Q8PB4Nh1Ekk=;
+	s=k20201202; t=1753713356;
+	bh=ncNsECm20uOiN6uWg/cYMtd4cbxdvq49C6+F11BtWjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eY1XzNZUG7WtrdUkjgnm5dbRFBvs9b0MC5zCzf8EkFQcOzDKIoU7+qtz6/g3LM8tx
-	 c101MHIg5QQzWK5Z/cnY8swnnzUQJOAowoC11QBYPxdBgH9FO+G87AFVynuR+sjmYe
-	 tjneYkbxeXq5kPODK949/OgxiFR7841CJpaKt1BH4er3H5TWMklvwfDmOTMFH0Od1c
-	 LDEwem3ul5/4bPqUqVpuwtb3st4/0QztI6tt13ptiVY/Ly98ly1g7mZhtnrKDCKvfj
-	 HjVfrJpekdy2SCM+LbDxOE/hfWsNcQqB52S8xcUrJ3l4Qf/jTJ8GxQPeik0yaMFLCF
-	 ufRfdb9rgqB+Q==
+	b=Nt4g0cZTBF5JFjAbuQ7PusEDhiPjwX3VMuWnjCYqigOoaIzFwmiYKwIK8DNcJZnkr
+	 iK1tLGj/Z0SGGcR6h9vzfzvMf+VY9mVnYXOWVlZQ8mO6Dgb372t1CQM7jWuf8paXos
+	 sPDxH/GbIL3CuJqe9n8yR5RWBDRIF+A+HAhqP0vU4sD0KutYnsPljmjYGeSgSefFbk
+	 qYoRzXANk1lfzblDpsfZgTygOI80ylzOplxtQVdesVmbB+PplxEkKsuhs3BPbemSK9
+	 AxXdEKRmz40AcaCFOzyid5ZWy5KKTek0pGrzFScfFE8P/09e9wKo+QZY01fJ/OIqsF
+	 8HWEv264c7mdg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 5.4] comedi: Fix initialization of data for instructions that write to subdevice
-Date: Mon, 28 Jul 2025 10:20:35 -0400
-Message-Id: <1753708584-0ca67310@stable.kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	KernelCI bot <bot@kernelci.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] ARM: 9448/1: Use an absolute path to unified.h in KBUILD_AFLAGS
+Date: Mon, 28 Jul 2025 10:35:52 -0400
+Message-Id: <20250728143552.2337910-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250728122156.276222-1-abbotti@mev.co.uk>
-References: 
+In-Reply-To: <2025072854-unpledged-repaint-0eac@gregkh>
+References: <2025072854-unpledged-repaint-0eac@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Nathan Chancellor <nathan@kernel.org>
 
-Hi,
+[ Upstream commit 87c4e1459e80bf65066f864c762ef4dc932fad4b ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+After commit d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper
+flags and language target"), which updated as-instr to use the
+'assembler-with-cpp' language option, the Kbuild version of as-instr
+always fails internally for arch/arm with
 
-The upstream commit SHA1 provided is correct: 46d8c744136ce2454aa4c35c138cc06817f92b8e
+  <command-line>: fatal error: asm/unified.h: No such file or directory
+  compilation terminated.
 
-Status in newer kernel trees:
-6.15.y | Not found
-6.12.y | Not found
-6.6.y | Not found
-6.1.y | Not found
-5.15.y | Not found
-5.10.y | Not found
+because '-include' flags are now taken into account by the compiler
+driver and as-instr does not have '$(LINUXINCLUDE)', so unified.h is not
+found.
 
-Note: The patch differs from the upstream commit:
+This went unnoticed at the time of the Kbuild change because the last
+use of as-instr in Kbuild that arch/arm could reach was removed in 5.7
+by commit 541ad0150ca4 ("arm: Remove 32bit KVM host support") but a
+stable backport of the Kbuild change to before that point exposed this
+potential issue if one were to be reintroduced.
+
+Follow the general pattern of '-include' paths throughout the tree and
+make unified.h absolute using '$(srctree)' to ensure KBUILD_AFLAGS can
+be used independently.
+
+Closes: https://lore.kernel.org/CACo-S-1qbCX4WAVFA63dWfHtrRHZBTyyr2js8Lx=Az03XHTTHg@mail.gmail.com/
+
+Cc: stable@vger.kernel.org
+Fixes: d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper flags and language target")
+Reported-by: KernelCI bot <bot@kernelci.org>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+[ No KBUILD_RUSTFLAGS in <=6.12 ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  46d8c744136c ! 1:  8293aa18dbe9 comedi: Fix initialization of data for instructions that write to subdevice
-    @@ Metadata
-      ## Commit message ##
-         comedi: Fix initialization of data for instructions that write to subdevice
-     
-    +    [ Upstream commit 46d8c744136ce2454aa4c35c138cc06817f92b8e ]
-    +
-         Some Comedi subdevice instruction handlers are known to access
-         instruction data elements beyond the first `insn->n` elements in some
-         cases.  The `do_insn_ioctl()` and `do_insnlist_ioctl()` functions
-    @@ Commit message
-         Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-         Link: https://lore.kernel.org/r/20250707161439.88385-1-abbotti@mev.co.uk
-         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    [ Reworked for before commit bac42fb21259 ("comedi: get rid of compat_alloc_user_space() mess in COMEDI_CMD{,TEST} compat") ]
-    +    Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-     
-    - ## drivers/comedi/comedi_fops.c ##
-    -@@ drivers/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device *dev,
-    + ## drivers/staging/comedi/comedi_fops.c ##
-    +@@ drivers/staging/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device *dev,
-      	}
-      
-    - 	for (i = 0; i < n_insns; ++i) {
-    + 	for (i = 0; i < insnlist.n_insns; ++i) {
-     +		unsigned int n = insns[i].n;
-     +
-      		if (insns[i].insn & INSN_MASK_WRITE) {
-    @@ drivers/comedi/comedi_fops.c: static int do_insnlist_ioctl(struct comedi_device
-      				dev_dbg(dev->class_dev,
-      					"copy_to_user failed\n");
-      				ret = -EFAULT;
-    -@@ drivers/comedi/comedi_fops.c: static int do_insn_ioctl(struct comedi_device *dev,
-    +@@ drivers/staging/comedi/comedi_fops.c: static int do_insn_ioctl(struct comedi_device *dev,
-      			ret = -EFAULT;
-      			goto error;
-      		}
-    -+		if (insn->n < MIN_SAMPLES) {
-    -+			memset(&data[insn->n], 0,
-    -+			       (MIN_SAMPLES - insn->n) * sizeof(unsigned int));
-    ++		if (insn.n < MIN_SAMPLES) {
-    ++			memset(&data[insn.n], 0,
-    ++			       (MIN_SAMPLES - insn.n) * sizeof(unsigned int));
-     +		}
-      	}
-    - 	ret = parse_insn(dev, insn, data, file);
-    + 	ret = parse_insn(dev, &insn, data, file);
-      	if (ret < 0)
+ arch/arm/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 5ba42f69f8ce..351d0b039b5c 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -142,7 +142,7 @@ endif
+ # Need -Uarm for gcc < 3.x
+ KBUILD_CPPFLAGS	+=$(cpp-y)
+ KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
+-KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include asm/unified.h -msoft-float
++KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include $(srctree)/arch/arm/include/asm/unified.h -msoft-float
+ 
+ CHECKFLAGS	+= -D__arm__
+ 
+-- 
+2.39.5
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| origin/linux-5.4.y        | Success     | Success    |
 
