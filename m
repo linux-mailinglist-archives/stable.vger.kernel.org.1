@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-164947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D564B13BEA
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:49:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9CFCB13BFB
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7CC17C861
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:49:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E9283BF3EC
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3984F25E834;
-	Mon, 28 Jul 2025 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DC226CE28;
+	Mon, 28 Jul 2025 13:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkH74h8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10pYcAfa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB680263892
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 13:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710BE26CE21
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 13:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753710539; cv=none; b=CEMyfLzcmjAOaUfF+QwEuPw4E1hC/AQewkzJqhx2d7WqJe6U8gXIzguQMH5lsEvXpT1orJ0bH7O2rRoLjjcBgfQEPnZ8aCysxjCcDOHgz+i0CsckqxG+FKxLHT7F2/zRu9y+82YIiTKyClaMpPzticFyM5aYT8aw8CW/P/BZAMQ=
+	t=1753710616; cv=none; b=Y/lzV71PnFCa9+ZALUzyoGCM8nwQln0/FMVA+99RHdlkGhf/C8h7uxu7rjJlJECYoAmNvquVbfnnl6FKUXdMX1ruSnAt35toL832ZJsywWvHpOfLUJBVwvadvsF9cSpDL361IOBUftDmKwl+k+kPRxXYsHm3TMYYkAtBMrvqKsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753710539; c=relaxed/simple;
-	bh=R/UHfNdNw3SGYnyOXWdKdwoYJBcLtsKO4X8q3lDBm4k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mlVTyIVOId26pnETZyDd+WKNK+L9s8S/rnR/LdejR2WGbrpqH+Xlqrz+A0V1FlL2zGqGA25tfRBIacdNXoZ9cK6BlrtzDyzkuWWEhHl7ZANfxi4K3tP1lsmvYDRAUkcqDsYyVjdjcRk8RRPfpJrcIlFgno5NF6JsXSfouNeNJq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkH74h8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095B4C4CEEF;
-	Mon, 28 Jul 2025 13:48:57 +0000 (UTC)
+	s=arc-20240116; t=1753710616; c=relaxed/simple;
+	bh=Cix1uWH6YjI6yhiafrvqHu7zG0FHLKcLOU9Ce3KGrg4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AqIQM0LQ52gM9cUa3Nei9IOFD9kKD2/J2aA5KpQtbcI/7VOVxt+nuChajT/ddhU5Jd3H5LvYsh89ORNy3/2MVL5lixteUOvKjArV+AebefICAq3wX732L8ZSKQmXTs0Xvjufsot5uahxBFzs6EtGe7rD5be27TC+OFYmG04U088=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10pYcAfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B65AC4CEFC;
+	Mon, 28 Jul 2025 13:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753710538;
-	bh=R/UHfNdNw3SGYnyOXWdKdwoYJBcLtsKO4X8q3lDBm4k=;
+	s=korg; t=1753710614;
+	bh=Cix1uWH6YjI6yhiafrvqHu7zG0FHLKcLOU9Ce3KGrg4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dkH74h8+AW0wU6pE9qf3ugduTYUM4cQo14Bs+Oj9SZAcb0kj1BhevI2C2+hsfdWxE
-	 9Xh+sC1q2xLbVuhKxc8e8PhRTcbFdn/s0ykhO+CgB+yiKopt0yWZJYtPZ19vyYF+mD
-	 baf1SOi0MCuhv4XEPqQb7QDTSxhE7rT6rNOBMqFM=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: connect: also cover checksum" failed to apply to 5.15-stable tree
-To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org
+	b=10pYcAfaNc/ARAxaWHiuolo3P0hvHwGkp4hp1xn7vnHju/ZeiIjbNk1HX6fv4WnVp
+	 lMmD8/oVhUAcMIYlc8DSjZnNc6x8BCUBS40D/SksmnWGzDOtnUGSMHPxN1IRf3VJjH
+	 W8StFmeCa+H1xH7OqMVbZfRQNVfj9afOT1mE3B2E=
+Subject: FAILED: patch "[PATCH] mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n" failed to apply to 5.10-stable tree
+To: harry.yoo@oracle.com,akpm@linux-foundation.org,david@redhat.com,minchan@kernel.org,senozhatsky@chromium.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Jul 2025 15:48:55 +0200
-Message-ID: <2025072855-ligament-reliable-75fa@gregkh>
+Date: Mon, 28 Jul 2025 15:50:10 +0200
+Message-ID: <2025072810-footgear-grumpily-4fd5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x fdf0f60a2bb02ba581d9e71d583e69dd0714a521
+git cherry-pick -x 694d6b99923eb05a8fd188be44e26077d19f0e21
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072855-ligament-reliable-75fa@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072810-footgear-grumpily-4fd5@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,48 +77,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fdf0f60a2bb02ba581d9e71d583e69dd0714a521 Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 15 Jul 2025 20:43:29 +0200
-Subject: [PATCH] selftests: mptcp: connect: also cover checksum
+From 694d6b99923eb05a8fd188be44e26077d19f0e21 Mon Sep 17 00:00:00 2001
+From: Harry Yoo <harry.yoo@oracle.com>
+Date: Fri, 4 Jul 2025 19:30:53 +0900
+Subject: [PATCH] mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
 
-The checksum mode has been added a while ago, but it is only validated
-when manually launching mptcp_connect.sh with "-C".
+Commit 48b4800a1c6a ("zsmalloc: page migration support") added support for
+migrating zsmalloc pages using the movable_operations migration framework.
+However, the commit did not take into account that zsmalloc supports
+migration only when CONFIG_COMPACTION is enabled.  Tracing shows that
+zsmalloc was still passing the __GFP_MOVABLE flag even when compaction is
+not supported.
 
-The different CIs were then not validating these MPTCP Connect tests
-with checksum enabled. To make sure they do, add a new test program
-executing mptcp_connect.sh with the checksum mode.
+This can result in unmovable pages being allocated from movable page
+blocks (even without stealing page blocks), ZONE_MOVABLE and CMA area.
 
-Fixes: 94d66ba1d8e4 ("selftests: mptcp: enable checksum in mptcp_connect.sh")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-2-8230ddd82454@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Possible user visible effects:
+- Some ZONE_MOVABLE memory can be not actually movable
+- CMA allocation can fail because of this
+- Increased memory fragmentation due to ignoring the page mobility
+  grouping feature
+I'm not really sure who uses kernels without compaction support, though :(
 
-diff --git a/tools/testing/selftests/net/mptcp/Makefile b/tools/testing/selftests/net/mptcp/Makefile
-index c6b030babba8..4c7e51336ab2 100644
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -5,7 +5,7 @@ top_srcdir = ../../../../..
- CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
+
+To fix this, clear the __GFP_MOVABLE flag when
+!IS_ENABLED(CONFIG_COMPACTION).
+
+Link: https://lkml.kernel.org/r/20250704103053.6913-1-harry.yoo@oracle.com
+Fixes: 48b4800a1c6a ("zsmalloc: page migration support")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 999b513c7fdf..f3e2215f95eb 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1043,6 +1043,9 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
+ 	if (!zspage)
+ 		return NULL;
  
- TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
--	      pm_netlink.sh mptcp_join.sh diag.sh \
-+	      mptcp_connect_checksum.sh pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
- 
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq mptcp_diag
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
-new file mode 100755
-index 000000000000..ce93ec2f107f
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
++	if (!IS_ENABLED(CONFIG_COMPACTION))
++		gfp &= ~__GFP_MOVABLE;
 +
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -C "${@}"
+ 	zspage->magic = ZSPAGE_MAGIC;
+ 	zspage->pool = pool;
+ 	zspage->class = class->index;
 
 
