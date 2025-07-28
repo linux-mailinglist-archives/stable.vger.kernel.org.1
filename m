@@ -1,129 +1,117 @@
-Return-Path: <stable+bounces-165013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A60B14387
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 22:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471DCB143A6
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 22:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605583A67FE
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 20:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FC233AF3F3
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 20:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A822F74D;
-	Mon, 28 Jul 2025 20:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0F3233701;
+	Mon, 28 Jul 2025 20:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SwH5kxsQ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XB8Hyc0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D096F22A817;
-	Mon, 28 Jul 2025 20:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2042B215798;
+	Mon, 28 Jul 2025 20:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753735822; cv=none; b=gPdJN4nJTJOeDgNCoHo8QuRaLZ62FnJSaZ9qBWL/WHMDplllVuzJfmAyOaBQ78Xha3Uf+YoeQaQzVRnvHuJajoWCR9i6STT0gdtaTg/QloUcXFVwePnD+7kEAQrQeurG1Z37xmf7//TLHQAVDrPO6qRPE5mtJECUGZ+MhPsEuds=
+	t=1753736334; cv=none; b=ER1sUCqs/As3E68cZpM1rvBVNq1gju04TA4+14zAHIfQ2brToTlmOYmuGi/2Wf8qBFfivw4mHG/8fKtYOPuWteIJhkRcf+DFSryInAkY3viTo/UYnfmFOHvO0Ctir8NpXoQ2L4NASljlDauDiql/dWCNHphn09vcBJGfIuJyrUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753735822; c=relaxed/simple;
-	bh=CLJt5ntYMJAdQqB6UlaIzQFx6fzecooQr9En9jZM6ns=;
-	h=Date:To:From:Subject:Message-Id; b=tQluSsVrQfeli1V3sEDsgv/UmTZYhOcRyUTF13oV+qa2X1SYUwa4nlJmNRODipC9Ojm/TNTD2umzihYw01Xb8LSLo5pAwTME1q6L+jl+8Jxeu7mwkZHF5uKbIgnfxA12JQuzaylFdLLBzItUbg1iFQokbGammhDn/aPxyOJAFFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SwH5kxsQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BE3C4CEE7;
-	Mon, 28 Jul 2025 20:50:20 +0000 (UTC)
+	s=arc-20240116; t=1753736334; c=relaxed/simple;
+	bh=PLzM4UumP/OoUpTWArSfsoC66j4BCJQV+EkLiWusGss=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=FUghaRAmNmLAHBqn3y3OcXz/LskgON3gGPcBsxAeXE/YWiX6eZz0Tkx9ZpXkk4oMHMpkhMxhkUUwze2QgA+g95w+EHuMNLbCPxLm1Po4uBaaX+eYuST9DZX0X7N3m2D+ZzI93yYFTcagGLXGh+2fG5cm8fVmSeJNO77A8UNu40k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XB8Hyc0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F5EC4CEE7;
+	Mon, 28 Jul 2025 20:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1753735820;
-	bh=CLJt5ntYMJAdQqB6UlaIzQFx6fzecooQr9En9jZM6ns=;
-	h=Date:To:From:Subject:From;
-	b=SwH5kxsQpLfYVEKC5ogH2iWLi6wHv5pKA9z8rliYcNkTXnjmMgTYlUzNFnh7uyHcY
-	 ySwkxjKtbZV87QeypT4hUn0ISl3/bswwLH691o9npbS+mNLzB/xCe5+/cgq90Jz/6o
-	 L0CyGh462Yslx+32Vl17MWNZCvbsIM4n8EbUOyoM=
-Date: Mon, 28 Jul 2025 13:50:19 -0700
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,niharchaithanya@gmail.com,glider@google.com,dvyukov@google.com,andreyknvl@gmail.com,jannh@google.com,akpm@linux-foundation.org
+	s=korg; t=1753736333;
+	bh=PLzM4UumP/OoUpTWArSfsoC66j4BCJQV+EkLiWusGss=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XB8Hyc0josg3kRfBL/TAuWzvNjY4I1quwAvLgSXlghfiz0tZuhh551krkBpbBuI+s
+	 dQuM50o4a0+3LX4tHYGVjw3wdt8yw1BprjUVKWYIw8kf9+kHN7KunShyFnoFOwc5oP
+	 7ahl52fn6VDbtxAc+yE1YmQUP6NW1oORT1YDStek=
+Date: Mon, 28 Jul 2025 13:58:52 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kasan-test-fix-protection-against-compiler-elision.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250728205020.56BE3C4CEE7@smtp.kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ vbabka@suse.cz, pfalcato@suse.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] mm: fix a UAF when vma->mm is freed after
+ vma->vm_refcnt got dropped
+Message-Id: <20250728135852.1441a6fd58f7171ac2a3dedd@linux-foundation.org>
+In-Reply-To: <20250728175355.2282375-1-surenb@google.com>
+References: <20250728175355.2282375-1-surenb@google.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 28 Jul 2025 10:53:55 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
 
-The patch titled
-     Subject: kasan/test: fix protection against compiler elision
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kasan-test-fix-protection-against-compiler-elision.patch
+> By inducing delays in the right places, Jann Horn created a reproducer
+> for a hard to hit UAF issue that became possible after VMAs were allowed
+> to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
+> 
+> Race description is borrowed from Jann's discovery report:
+> lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
+> rcu_read_lock(). At that point, the VMA may be concurrently freed, and
+> it can be recycled by another process. vma_start_read() then
+> increments the vma->vm_refcnt (if it is in an acceptable range), and
+> if this succeeds, vma_start_read() can return a recycled VMA.
+> 
+> In this scenario where the VMA has been recycled, lock_vma_under_rcu()
+> will then detect the mismatching ->vm_mm pointer and drop the VMA
+> through vma_end_read(), which calls vma_refcount_put().
+> vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
+> using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
+> the caller is keeping the VMA's mm alive, but in this scenario the caller
+> has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
+> 
+> The diagram depicting the race:
+> T1         T2         T3
+> ==         ==         ==
+> lock_vma_under_rcu
+>   mas_walk
+>           <VMA gets removed from mm>
+>                       mmap
+>                         <the same VMA is reallocated>
+>   vma_start_read
+>     __refcount_inc_not_zero_limited_acquire
+>                       munmap
+>                         __vma_enter_locked
+>                           refcount_add_not_zero
+>   vma_end_read
+>     vma_refcount_put
+>       __refcount_dec_and_test
+>                           rcuwait_wait_event
+>                             <finish operation>
+>       rcuwait_wake_up [UAF]
+> 
+> Note that rcuwait_wait_event() in T3 does not block because refcount
+> was already dropped by T1. At this point T3 can exit and free the mm
+> causing UAF in T1.
+> To avoid this we move vma->vm_mm verification into vma_start_read() and
+> grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-test-fix-protection-against-compiler-elision.patch
+Thanks, I'll add this to mm-unstable with a plan to include it in the
+second batch of MM-updates->Linus next week.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> Cc: <stable@vger.kernel.org>
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jann Horn <jannh@google.com>
-Subject: kasan/test: fix protection against compiler elision
-Date: Mon, 28 Jul 2025 22:11:54 +0200
-
-The kunit test is using assignments to
-"static volatile void *kasan_ptr_result" to prevent elision of memory
-loads, but that's not working:
-In this variable definition, the "volatile" applies to the "void", not to
-the pointer.
-To make "volatile" apply to the pointer as intended, it must follow
-after the "*".
-
-This makes the kasan_memchr test pass again on my system.  The
-kasan_strings test is still failing because all the definitions of
-load_unaligned_zeropad() are lacking explicit instrumentation hooks and
-ASAN does not instrument asm() memory operands.
-
-Link: https://lkml.kernel.org/r/20250728-kasan-kunit-fix-volatile-v1-1-e7157c9af82d@google.com
-Fixes: 5f1c8108e7ad ("mm:kasan: fix sparse warnings: Should it be static?")
-Signed-off-by: Jann Horn <jannh@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Nihar Chaithanya <niharchaithanya@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/kasan_test_c.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/kasan/kasan_test_c.c~kasan-test-fix-protection-against-compiler-elision
-+++ a/mm/kasan/kasan_test_c.c
-@@ -47,7 +47,7 @@ static struct {
-  * Some tests use these global variables to store return values from function
-  * calls that could otherwise be eliminated by the compiler as dead code.
-  */
--static volatile void *kasan_ptr_result;
-+static void *volatile kasan_ptr_result;
- static volatile int kasan_int_result;
- 
- /* Probe for console output: obtains test_status lines of interest. */
-_
-
-Patches currently in -mm which might be from jannh@google.com are
-
-kasan-test-fix-protection-against-compiler-elision.patch
-kasan-skip-quarantine-if-object-is-still-accessible-under-rcu.patch
-mm-rmap-add-anon_vma-lifetime-debug-check.patch
+The patch won't apply to 6.15 so I expect the -stable maintainers will
+be asking you for a backportable version.
 
 
