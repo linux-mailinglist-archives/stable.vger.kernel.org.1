@@ -1,131 +1,141 @@
-Return-Path: <stable+bounces-164948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B510B13BF5
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:50:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5909B13BE7
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 15:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB3217E4C5
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:50:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003EF189DBD0
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 13:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB03266EFA;
-	Mon, 28 Jul 2025 13:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B58264A9E;
+	Mon, 28 Jul 2025 13:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Yscf9AB0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5fhWGAN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtLSxURy"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBBA26A091;
-	Mon, 28 Jul 2025 13:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EA326B2CE
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 13:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753710608; cv=none; b=l6XphEa5zbqYqyjupGnf3ccYB0vqxWZC0LIhpTAycyUayHVezRN2yBueXcJONiARHBJuzKDc31bwfEb5vVmTxC+BJZu78N0cpdvoQl+2Z38PGUrlUAUIQtCt8EC5hLhG4iH2xxQKA+DI4c/w1aDNvbfVb2dnxdHBKYyrkynBd68=
+	t=1753710523; cv=none; b=QN+mmZCHFS1fyyS2MuZ5+EZ+Bi74+FIFL1zhr229ZxtsMPX0JP0T3/EE/7lauZJ6uLqotNURIkDO16kmuXGKo0yvVBX5R0ofMi9wzNh3atAkhqm8YsqThTnieWxODMt+Q89zYj+1zBTrMiMK5PLrOE8coQnLh8uYnr9oNMbObjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753710608; c=relaxed/simple;
-	bh=LsHkGtgxHUQSyTRiyZSRZl/XbqaRVfaN2VI9Uo4QE8A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C5cqyxEL7zWRnfv4IiRFBh2h3ph+Iwu14isG5eCTq3lExdfhbSCEZyiCLlX4FxLb6yYF8pl6xn5YenKA8FN8+gdROjMr1JtG8TzqgWoS6Vw7jSUqaYFj16tvUVwiWlru2o6e5ghPtenOvLDSx/egJvK+f6j+PmikeNr2Sm8WODo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Yscf9AB0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5fhWGAN0; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753710600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6BBq5p1cXLMtI7Ayy8NN84orKUGzwumMAlIBivLG7ms=;
-	b=Yscf9AB04Be+kAJfhNDUwQoAJnCG6G2A+IaZNPQx2nv7aijiRJiSOgshuPfry5cVau3d3n
-	dToP3My+yLPHClg6P+3liBEzQMR36RVxwwSCYC+LhbiYY+MsG+F5kUpccGpI1A/i2YSsNY
-	WTsqLAw5J0CoKOinyVwcM2x+e51q9a9ha5K8ojXycT+BTTmVaxLMQfqZmz3egSMKN7Arz4
-	8+3YdFrrnSEWHjsXCCxgjuNOx0VN3GkP8/5ej//BftInxootLAtER04IsKJ52P9Q4X7zlE
-	l2x75P0CoxsbQ1nFcGNy4uFzbvZeo0wKxYlSK2/1EA3nOI6JuN4vKwLwnMSfVQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753710600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6BBq5p1cXLMtI7Ayy8NN84orKUGzwumMAlIBivLG7ms=;
-	b=5fhWGAN0KXldw7o9njnZOVtqAefF0nejeVpy8TOnYchi54rnSvQZZM4S4xSfI1Bw5Pbngo
-	+fuXB5nIZknbWPAg==
-Date: Mon, 28 Jul 2025 15:47:37 +0200
-Subject: [PATCH v2] kbuild: userprogs: use correct linker when mixing clang
- and GNU ld
+	s=arc-20240116; t=1753710523; c=relaxed/simple;
+	bh=ASAkE367mUT0NWAnuRGBVy4k2TD6z7do9b8xAoXPerU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AUaRn2aXSioxgbuE9n+jdGr45rEHhmSxGKbJOtQscO0/GyldUAA4ERZUEz1oVZvyJkYrY7dPNHhZj4CoMQabPsfY09bpEFT48MNjE/agd261O87gebkWSby/+xUn6Xesp3tnjWemUajGkEerAoYGABflFQpnUr1EG9mqQSRqSr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtLSxURy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA359C4CEE7;
+	Mon, 28 Jul 2025 13:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753710522;
+	bh=ASAkE367mUT0NWAnuRGBVy4k2TD6z7do9b8xAoXPerU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=gtLSxURy95MurMGxIikyAEMZOCfBz/YxmQYrzTgCaxFkmuWx8EBQjdeojRevHn2sH
+	 DX0gqiE0XiD6YUB0UOiWxlegCr5rxCrN2IHg4o6wL4TU1Qx5so5LlS1wnp6QIAtXdm
+	 UDpq58uzayK/mbqVtbNYh6PsQbKsZIY5QG7iGhNY=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: connect: also cover alt modes" failed to apply to 5.15-stable tree
+To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 28 Jul 2025 15:48:39 +0200
+Message-ID: <2025072839-wildly-gala-e85f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250728-userprogs-clang-gnu-ld-v2-1-58464d681407@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIAHh/h2gC/3WNzQqDMBCEX0X23C35qU3pyfcoHiRZ44IkkqhYx
- HdvKvTY4zfDfLNDpsSU4VntkGjlzDEUUJcK7NAFT8iuMCihamGUxqUMphR9RjuWHn1YcHRoOmn
- lvbePWjko4ylRz9spfrWFB85zTO/zZ5Xf9Ke8/VOuEiVqp50wkmrdmWbksMwpBt6ujqA9juMD+
- pP2mMAAAAA=
-X-Change-ID: 20250723-userprogs-clang-gnu-ld-7a1c16fc852d
-To: Masahiro Yamada <masahiroy@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Nicolas Schier <nicolas.schier@linux.dev>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1753710464; l=1713;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=LsHkGtgxHUQSyTRiyZSRZl/XbqaRVfaN2VI9Uo4QE8A=;
- b=0YziVHsqKPdinX0gQcLsPz+gLcof4pnE3j/vNNO/TBiwrg/+lx3O4AekEUwSwGaS4J+rXVK9M
- 1o7zlGP6+GSD3QRfQsS1CW8kxW1WR4g4FuDe960t9A9yfUxi9d3elfh
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-The userprogs infrastructure does not expect clang being used with GNU ld
-and in that case uses /usr/bin/ld for linking, not the configured $(LD).
-This fallback is problematic as it will break when cross-compiling.
-Mixing clang and GNU ld is used for example when building for SPARC64,
-as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
 
-Relax the check around --ld-path so it gets used for all linkers.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 37848a456fc38c191aedfe41f662cc24db8c23d9
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072839-wildly-gala-e85f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 37848a456fc38c191aedfe41f662cc24db8c23d9 Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 15 Jul 2025 20:43:28 +0200
+Subject: [PATCH] selftests: mptcp: connect: also cover alt modes
+
+The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
+available from the beginning, but only tested when mptcp_connect.sh is
+manually launched with "-m mmap" or "-m sendfile", not via the
+kselftests helpers.
+
+The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
+"-m sendfile". Plus other CIs, especially the ones validating the stable
+releases, were not validating these alternate modes.
+
+To make sure these modes are validated by these CIs, add two new test
+programs executing mptcp_connect.sh with the alternate modes.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
----
-Changes in v2:
-- Use plain ifdef instead of ifneq
-- Rebase onto v6.16
-- Pick up review tag from Nathan
-- Link to v1: https://lore.kernel.org/r/20250724-userprogs-clang-gnu-ld-v1-1-3d3d071e53a7@linutronix.de
----
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/Makefile b/Makefile
-index 478f2004602da03c9039044e3288f24a13833cc7..7d24245d118c0e903119263b871d2e5c2759f48a 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1134,7 +1134,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD
- KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+diff --git a/tools/testing/selftests/net/mptcp/Makefile b/tools/testing/selftests/net/mptcp/Makefile
+index e47788bfa671..c6b030babba8 100644
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -4,7 +4,8 @@ top_srcdir = ../../../../..
  
- # userspace programs are linked via the compiler, use the correct linker
--ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
-+ifdef CONFIG_CC_IS_CLANG
- KBUILD_USERLDFLAGS += --ld-path=$(LD)
- endif
+ CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
  
-
----
-base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
-change-id: 20250723-userprogs-clang-gnu-ld-7a1c16fc852d
-
-Best regards,
--- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+-TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
++TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
++	      pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+ 
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq mptcp_diag
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+new file mode 100755
+index 000000000000..5dd30f9394af
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+new file mode 100755
+index 000000000000..1d16fb1cc9bb
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
 
 
