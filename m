@@ -1,342 +1,300 @@
-Return-Path: <stable+bounces-165020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A20B1442E
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 00:04:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8060B14483
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 00:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BEE67A4459
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 22:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF9A8164E80
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 22:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EFC1A8F84;
-	Mon, 28 Jul 2025 22:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F6F238C2B;
+	Mon, 28 Jul 2025 22:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="aur0estc";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3Tiu0ZvI";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qyOrdqqo";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qWIj9I4Y"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PpwvguH5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E6219E975
-	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 22:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3887F2E3708
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 22:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753740245; cv=none; b=deY5pjBfmnSoeKn1H5l/4ZUe8nVGKRz13tCXhnu9frNWknLN2jrLG/mhFXjDMuAcBQdaOjkSiUxz4w//tLEazcYw+1pyfVkTGAgXm297M2jPwS1GhgA7vtW4vuyL/0ZErzAsegRinf8r/XW7ha0GXlYVX3MlCSiKiIbh2TVKQNs=
+	t=1753743237; cv=none; b=LYK4QiyNfFEW3HknvjPP6vLgaL2CUHj0VthA5/R+3bV3tUfy+xgPr9MWSlRqyXaprcpodx/vl33eubbNly5luaqdfgYywJTNT22IwmO7Y2Xm/qTJrOAMcDsbPVyvdWM7+XwU6Re4CGuOrQse/qG3kLqIZReUYZokifV70YY09sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753740245; c=relaxed/simple;
-	bh=xGIjyMFRxbhkUtgM6nSI6LZu0K+X7+sLcm+qXiup93k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DZ6vv5cPWrfdTJz93+aR5JngvMhJDp0HswUXno9pbt+3BAW2uRiYhWZD5AP0ooXhxcnWYcjBtq18ZU9iCKZfCeJ9UhHuiMtN0sTtURCK82ramTqNrtP5qJdPisubKgZfjfKObZni/rOfWC9wv0pNBhQ6cbh1l3BW1zdk3bPcYec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=aur0estc; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3Tiu0ZvI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qyOrdqqo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qWIj9I4Y; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D75711F822;
-	Mon, 28 Jul 2025 22:04:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753740242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
-	b=aur0estcgdnrBALgMxmxijj27iCZLwmJoSoGi2vd7G4xE/PdIfXVJOJNUXA/aFu1KAeGTa
-	NcZwTGUSrBCesVIzmhfcG6p6pCnXxhv6wPl+ijuMzTGv2UGGmXn6UMLIhPxnBipnXd/wwe
-	erJQiQBTmAPQuz9dZPkpi4ZraBaTZ7U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753740242;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
-	b=3Tiu0ZvIMQAzLwCy21XMLFBlg9ALEq/YNQxipeyHrhVzJBe6sLuG1faBvQPMhjNNj3TuOs
-	QA+gW2UDjswip/CA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753740241; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
-	b=qyOrdqqowJAThJX2NDdNFui2ptqkmDkFU4UrKt4e7FMwR7ubvOurmqSOvd3/mh0yULfig6
-	QiQpEOvWP9I1QgzvGg65mARvh8sIJb3T2I14IeZEktTRI6SWDrajFYPqJyJrOybnTJQXHf
-	CGrVbiUHYQReBaUa5LEwXs10VsKDaYo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753740241;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
-	b=qWIj9I4YE+su3SW1nHZk2iViWsrxlm9F8HhrS0Z/NZrn4dREb5zOBDjSwz7ysrky1kPLYa
-	Q+R/J6ForZjFWyDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDD951368A;
-	Mon, 28 Jul 2025 22:04:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5+ffLdHzh2h0FAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 28 Jul 2025 22:04:01 +0000
-Message-ID: <197389ce-9f42-4d6a-91c4-fce116e988b4@suse.cz>
-Date: Tue, 29 Jul 2025 00:04:01 +0200
+	s=arc-20240116; t=1753743237; c=relaxed/simple;
+	bh=YhCqEiOEnvrAEeYIVHZlET6clIv1cNi6eIqYJBi9dMM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kp0/XTo3xnHnOQqnef8/O/FONyZoSloYm79EHKqH4cDfr7vH92Xau8vUMASveWxDo75WmYF4Y2KOcNdDMp3S1RTO+93ctQ+tCGZWPZxOAKNRL7ktYBkhoNjOnrta82SrZaYCzaDEHtPuk+SYv0kic+uZ/JzF0ln7I1+HsqlgfC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PpwvguH5; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ab3855fca3so68751cf.1
+        for <stable@vger.kernel.org>; Mon, 28 Jul 2025 15:53:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753743234; x=1754348034; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z4Qt12vqG6j3Vgncu41uP3H99WwAJYr2jwWzpmpk2jg=;
+        b=PpwvguH5zfVpWeWJCh6/TE6xKp5LOYye00elYbUVInlq9ciQK8f56c0NYxIStgtbVE
+         PgDzOJS1kVbxpMuCSyauQpeNGeFobDzMhrnN1zrM4MttXDLspv/IWxHyZ98LQM0YG0xF
+         eXNVdGqS+iZWCvu8kQ6aDOTuVfNbIhankBYbjZP/E/CuqM1N10fZITwdYiVXwrwmzBNB
+         t/ZRpbE0PuL5rkEfpUIW2cG14s/7Re54soHTF2mR8rfSdp2+Df4uItw8pnCucRW3jOsm
+         bjEKTiLeQkq/JVSAG735iThx0c10kvfzkh1ywZKeHJ3KPWeDnh6tn2HsHfFTgsd7QP8W
+         4x8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753743234; x=1754348034;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z4Qt12vqG6j3Vgncu41uP3H99WwAJYr2jwWzpmpk2jg=;
+        b=EFNc3QxO1eKo1nJU9VyT/hTZrBTfyzsAXGJ5nAQ+lh6LV9xDoZ21CDN1QLJ2jwfB61
+         8DxCXgOLwbAj5RRFDdOo95AfqMIIgEgZLXRQxgVgHTGZIOL4FllHpIC0zJNndzVp1OXS
+         G9IGpQVD8n25afqI/N0MwwqEQ7Xq8UNYW17UUIuAki6ru6hd1ArTe5cFhKi0RO6ObDKR
+         3aowuOtHGN0ZZsozCHKLRi7TFtzvhRoRNkGAogLv74716SabvNe8IL1geGjOPwbwO64S
+         njGEMsa/O+Cq7mLyPQ9esEKmITJY0tNMpVccvviy6w8YZNp50ArJNzYGilUBy2v+v/cw
+         F/bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQsY+Z+0BuX7NBb+mx6tUvXkk7D2QiYnP4DG38vmHCxkd4OFbCnoPihmKccWfmaqByM0z8S6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3cbz0BvpdDrV7GyOKjTD3/sygD+dYJF+jBsIIlf1C9RpdzzF0
+	m74/xGHavbxEJKr6hXjwBjxysQESD1DRNL6ynE1WeD3EmuA6bO4EpzF2ZjL0XyP2B24k7iD5nu6
+	j+MQUnimE5Kp1cdF0a+YuPhWg9GYIBqMlxn0ddLHc
+X-Gm-Gg: ASbGncvAtTsH5eW4jK+k52j4M97OSAZE9DH3L3gTh9j7XGT0XkWvMuDdSWEE66nJoWx
+	4kvEtLu+9kio/VFTMhWLK1jhs+OKbTg8w29plwU+bnn096lftQMbbW5trKyVZGuhYmlUANkM9h0
+	dlgBJTMIBkEicOZU9glilg6V9SPebKoKCbDe+yYzh4hvPwM1TF60xHKr5WlGTrUUxCIWeTIvQ9e
+	SdgdtPthxS8QlzaSxvHgdh987tRq8rGzIbRu/8elQITmg==
+X-Google-Smtp-Source: AGHT+IGATSooD8GgEjASGSXd3OgOeRWrGHiPgkXjO2g/J75z5wCxzzWlwo3yh3PbhmnWOhAg0GHBVwvm9kJx3eRxq08=
+X-Received: by 2002:ac8:580b:0:b0:479:1958:d81a with SMTP id
+ d75a77b69052e-4aecda09537mr1715651cf.6.1753743232125; Mon, 28 Jul 2025
+ 15:53:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20250728175355.2282375-1-surenb@google.com> <197389ce-9f42-4d6a-91c4-fce116e988b4@suse.cz>
+In-Reply-To: <197389ce-9f42-4d6a-91c4-fce116e988b4@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 28 Jul 2025 22:53:41 +0000
+X-Gm-Features: Ac12FXzf7uyrUFgvW6_WolevPBj5eXWmthBTkEGcLn2Bxpz2kQtaKNbJdU9mnS4
+Message-ID: <CAJuCfpFzxCayf083d35dS7Py0AK-CSr3H=_mymP9yXcyWzOqPQ@mail.gmail.com>
 Subject: Re: [PATCH v2 1/1] mm: fix a UAF when vma->mm is freed after
  vma->vm_refcnt got dropped
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250728175355.2282375-1-surenb@google.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250728175355.2282375-1-surenb@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.998];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: akpm@linux-foundation.org, jannh@google.com, Liam.Howlett@oracle.com, 
+	lorenzo.stoakes@oracle.com, pfalcato@suse.de, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/28/25 19:53, Suren Baghdasaryan wrote:
-> By inducing delays in the right places, Jann Horn created a reproducer
-> for a hard to hit UAF issue that became possible after VMAs were allowed
-> to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
-> 
-> Race description is borrowed from Jann's discovery report:
-> lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
-> rcu_read_lock(). At that point, the VMA may be concurrently freed, and
-> it can be recycled by another process. vma_start_read() then
-> increments the vma->vm_refcnt (if it is in an acceptable range), and
-> if this succeeds, vma_start_read() can return a recycled VMA.
-> 
-> In this scenario where the VMA has been recycled, lock_vma_under_rcu()
-> will then detect the mismatching ->vm_mm pointer and drop the VMA
-> through vma_end_read(), which calls vma_refcount_put().
-> vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
-> using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
-> the caller is keeping the VMA's mm alive, but in this scenario the caller
-> has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
-> 
-> The diagram depicting the race:
-> T1         T2         T3
-> ==         ==         ==
-> lock_vma_under_rcu
->   mas_walk
->           <VMA gets removed from mm>
->                       mmap
->                         <the same VMA is reallocated>
->   vma_start_read
->     __refcount_inc_not_zero_limited_acquire
->                       munmap
->                         __vma_enter_locked
->                           refcount_add_not_zero
->   vma_end_read
->     vma_refcount_put
->       __refcount_dec_and_test
->                           rcuwait_wait_event
->                             <finish operation>
->       rcuwait_wake_up [UAF]
-> 
-> Note that rcuwait_wait_event() in T3 does not block because refcount
-> was already dropped by T1. At this point T3 can exit and free the mm
-> causing UAF in T1.
-> To avoid this we move vma->vm_mm verification into vma_start_read() and
-> grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
-> 
-> Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
-> Reported-by: Jann Horn <jannh@google.com>
-> Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Cc: <stable@vger.kernel.org>
+On Mon, Jul 28, 2025 at 10:04=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> w=
+rote:
+>
+> On 7/28/25 19:53, Suren Baghdasaryan wrote:
+> > By inducing delays in the right places, Jann Horn created a reproducer
+> > for a hard to hit UAF issue that became possible after VMAs were allowe=
+d
+> > to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
+> >
+> > Race description is borrowed from Jann's discovery report:
+> > lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
+> > rcu_read_lock(). At that point, the VMA may be concurrently freed, and
+> > it can be recycled by another process. vma_start_read() then
+> > increments the vma->vm_refcnt (if it is in an acceptable range), and
+> > if this succeeds, vma_start_read() can return a recycled VMA.
+> >
+> > In this scenario where the VMA has been recycled, lock_vma_under_rcu()
+> > will then detect the mismatching ->vm_mm pointer and drop the VMA
+> > through vma_end_read(), which calls vma_refcount_put().
+> > vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
+> > using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
+> > the caller is keeping the VMA's mm alive, but in this scenario the call=
+er
+> > has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF=
+.
+> >
+> > The diagram depicting the race:
+> > T1         T2         T3
+> > =3D=3D         =3D=3D         =3D=3D
+> > lock_vma_under_rcu
+> >   mas_walk
+> >           <VMA gets removed from mm>
+> >                       mmap
+> >                         <the same VMA is reallocated>
+> >   vma_start_read
+> >     __refcount_inc_not_zero_limited_acquire
+> >                       munmap
+> >                         __vma_enter_locked
+> >                           refcount_add_not_zero
+> >   vma_end_read
+> >     vma_refcount_put
+> >       __refcount_dec_and_test
+> >                           rcuwait_wait_event
+> >                             <finish operation>
+> >       rcuwait_wake_up [UAF]
+> >
+> > Note that rcuwait_wait_event() in T3 does not block because refcount
+> > was already dropped by T1. At this point T3 can exit and free the mm
+> > causing UAF in T1.
+> > To avoid this we move vma->vm_mm verification into vma_start_read() and
+> > grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
+> >
+> > Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
+> > Reported-by: Jann Horn <jannh@google.com>
+> > Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=3DE3jbkWx=3DX3uVbd8=
+nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Cc: <stable@vger.kernel.org>
+>
+> As for further steps, considered replying to [1] but maybe it's better he=
+re.
+>
+> As for a KISS fix including stable, great. Seems a nice improvement to
+> actually handle "vma->vm_mm !=3D mm" in vma_start_read() like this - good=
+ idea!
+>
+> Less great is that there's now a subtle assumption that some (but not all=
+!)
+> cases where vma_start_read() returns NULL imply that we dropped the rcu
+> lock. And it doesn't matter as the callers abort or fallback to mmap sem
+> anyway in that case. Hopefully we can improve that a bit.
+>
+> The idea of moving rcu lock and mas walk inside vma_start_read() is indee=
+d
+> busted with lock_next_vma(). The iterator difference could be perhaps sol=
+ved
+> by having lock_vma_under_rcu() set up its own one (instead of MA_STATE) i=
+n a
+> way that vma_next() would do the right thing for it. However there would
+> still be the difference that lock_next_vma() expects we are already under
+> rcu lock, and lock_vma_under_rcu() doesn't.
+>
+> So what we can perhaps do instead is move vma_start_read() to mm/mmap_loc=
+k.c
+> (no other users so why expose it in a header for potential misuse). And t=
+hen
+> indeed just make it drop rcu lock completely (and not reacquire) any time
+> it's returning NULL, document that and adjust callers to that. I think it=
+'s
+> less subtle than dropping and reacquring, and should simplify the error
+> handling in the callers a bit.
 
-As for further steps, considered replying to [1] but maybe it's better here.
+Thanks for the suggestion. That was actually exactly one of the
+options I was considering but I thought this dropping RCU schema would
+still be uglier than dropping and reacquiring the RCU lock. If you
+think otherwise I can make the change as you suggested for mm-unstable
+and keep this original change for stable only. Should I do that?
 
-As for a KISS fix including stable, great. Seems a nice improvement to
-actually handle "vma->vm_mm != mm" in vma_start_read() like this - good idea!
-
-Less great is that there's now a subtle assumption that some (but not all!)
-cases where vma_start_read() returns NULL imply that we dropped the rcu
-lock. And it doesn't matter as the callers abort or fallback to mmap sem
-anyway in that case. Hopefully we can improve that a bit.
-
-The idea of moving rcu lock and mas walk inside vma_start_read() is indeed
-busted with lock_next_vma(). The iterator difference could be perhaps solved
-by having lock_vma_under_rcu() set up its own one (instead of MA_STATE) in a
-way that vma_next() would do the right thing for it. However there would
-still be the difference that lock_next_vma() expects we are already under
-rcu lock, and lock_vma_under_rcu() doesn't.
-
-So what we can perhaps do instead is move vma_start_read() to mm/mmap_lock.c
-(no other users so why expose it in a header for potential misuse). And then
-indeed just make it drop rcu lock completely (and not reacquire) any time
-it's returning NULL, document that and adjust callers to that. I think it's
-less subtle than dropping and reacquring, and should simplify the error
-handling in the callers a bit.
-
-[1]
-https://lore.kernel.org/all/CAJuCfpEMhGe_eZuFm__4CDstM9%3DOG2kTUTziNL-f%3DM3BYQor2A@mail.gmail.com/
-
-> ---
-> Changes since v1 [1]
-> - Made a copy of vma->mm before using it in vma_start_read(),
-> per Vlastimil Babka
-> 
-> Notes:
-> - Applies cleanly over mm-unstable.
-> - Should be applied to 6.15 and 6.16 but these branches do not
-> have lock_next_vma() function, so the change in lock_next_vma() should be
-> skipped when applying to those branches.
-> 
-> [1] https://lore.kernel.org/all/20250728170950.2216966-1-surenb@google.com/
-> 
->  include/linux/mmap_lock.h | 23 +++++++++++++++++++++++
->  mm/mmap_lock.c            | 10 +++-------
->  2 files changed, 26 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index 1f4f44951abe..da34afa2f8ef 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-> @@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
->  #include <linux/tracepoint-defs.h>
->  #include <linux/types.h>
->  #include <linux/cleanup.h>
-> +#include <linux/sched/mm.h>
->  
->  #define MMAP_LOCK_INITIALIZER(name) \
->  	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
-> @@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
->  	}
->  
->  	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
-> +
-> +	/*
-> +	 * If vma got attached to another mm from under us, that mm is not
-> +	 * stable and can be freed in the narrow window after vma->vm_refcnt
-> +	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
-> +	 * releasing vma->vm_refcnt.
-> +	 */
-> +	if (unlikely(vma->vm_mm != mm)) {
-> +		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
-> +		struct mm_struct *other_mm = vma->vm_mm;
-> +		/*
-> +		 * __mmdrop() is a heavy operation and we don't need RCU
-> +		 * protection here. Release RCU lock during these operations.
-> +		 */
-> +		rcu_read_unlock();
-> +		mmgrab(other_mm);
-> +		vma_refcount_put(vma);
-> +		mmdrop(other_mm);
-> +		rcu_read_lock();
-> +		return NULL;
-> +	}
-> +
->  	/*
->  	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
->  	 * False unlocked result is impossible because we modify and check
-> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> index 729fb7d0dd59..aa3bc42ecde0 100644
-> --- a/mm/mmap_lock.c
-> +++ b/mm/mmap_lock.c
-> @@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->  	 */
->  
->  	/* Check if the vma we locked is the right one. */
-> -	if (unlikely(vma->vm_mm != mm ||
-> -		     address < vma->vm_start || address >= vma->vm_end))
-> +	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
->  		goto inval_end_read;
->  
->  	rcu_read_unlock();
-> @@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
->  		goto fallback;
->  	}
->  
-> -	/*
-> -	 * Verify the vma we locked belongs to the same address space and it's
-> -	 * not behind of the last search position.
-> -	 */
-> -	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
-> +	/* Verify the vma is not behind of the last search position. */
-> +	if (unlikely(from_addr >= vma->vm_end))
->  		goto fallback_unlock;
->  
->  	/*
-> 
-> base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
-
+>
+> [1]
+> https://lore.kernel.org/all/CAJuCfpEMhGe_eZuFm__4CDstM9%3DOG2kTUTziNL-f%3=
+DM3BYQor2A@mail.gmail.com/
+>
+> > ---
+> > Changes since v1 [1]
+> > - Made a copy of vma->mm before using it in vma_start_read(),
+> > per Vlastimil Babka
+> >
+> > Notes:
+> > - Applies cleanly over mm-unstable.
+> > - Should be applied to 6.15 and 6.16 but these branches do not
+> > have lock_next_vma() function, so the change in lock_next_vma() should =
+be
+> > skipped when applying to those branches.
+> >
+> > [1] https://lore.kernel.org/all/20250728170950.2216966-1-surenb@google.=
+com/
+> >
+> >  include/linux/mmap_lock.h | 23 +++++++++++++++++++++++
+> >  mm/mmap_lock.c            | 10 +++-------
+> >  2 files changed, 26 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > index 1f4f44951abe..da34afa2f8ef 100644
+> > --- a/include/linux/mmap_lock.h
+> > +++ b/include/linux/mmap_lock.h
+> > @@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+> >  #include <linux/tracepoint-defs.h>
+> >  #include <linux/types.h>
+> >  #include <linux/cleanup.h>
+> > +#include <linux/sched/mm.h>
+> >
+> >  #define MMAP_LOCK_INITIALIZER(name) \
+> >       .mmap_lock =3D __RWSEM_INITIALIZER((name).mmap_lock),
+> > @@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma_start_rea=
+d(struct mm_struct *mm,
+> >       }
+> >
+> >       rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
+> > +
+> > +     /*
+> > +      * If vma got attached to another mm from under us, that mm is no=
+t
+> > +      * stable and can be freed in the narrow window after vma->vm_ref=
+cnt
+> > +      * is dropped and before rcuwait_wake_up(mm) is called. Grab it b=
+efore
+> > +      * releasing vma->vm_refcnt.
+> > +      */
+> > +     if (unlikely(vma->vm_mm !=3D mm)) {
+> > +             /* Use a copy of vm_mm in case vma is freed after we drop=
+ vm_refcnt */
+> > +             struct mm_struct *other_mm =3D vma->vm_mm;
+> > +             /*
+> > +              * __mmdrop() is a heavy operation and we don't need RCU
+> > +              * protection here. Release RCU lock during these operati=
+ons.
+> > +              */
+> > +             rcu_read_unlock();
+> > +             mmgrab(other_mm);
+> > +             vma_refcount_put(vma);
+> > +             mmdrop(other_mm);
+> > +             rcu_read_lock();
+> > +             return NULL;
+> > +     }
+> > +
+> >       /*
+> >        * Overflow of vm_lock_seq/mm_lock_seq might produce false locked=
+ result.
+> >        * False unlocked result is impossible because we modify and chec=
+k
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index 729fb7d0dd59..aa3bc42ecde0 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm=
+_struct *mm,
+> >        */
+> >
+> >       /* Check if the vma we locked is the right one. */
+> > -     if (unlikely(vma->vm_mm !=3D mm ||
+> > -                  address < vma->vm_start || address >=3D vma->vm_end)=
+)
+> > +     if (unlikely(address < vma->vm_start || address >=3D vma->vm_end)=
+)
+> >               goto inval_end_read;
+> >
+> >       rcu_read_unlock();
+> > @@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_str=
+uct *mm,
+> >               goto fallback;
+> >       }
+> >
+> > -     /*
+> > -      * Verify the vma we locked belongs to the same address space and=
+ it's
+> > -      * not behind of the last search position.
+> > -      */
+> > -     if (unlikely(vma->vm_mm !=3D mm || from_addr >=3D vma->vm_end))
+> > +     /* Verify the vma is not behind of the last search position. */
+> > +     if (unlikely(from_addr >=3D vma->vm_end))
+> >               goto fallback_unlock;
+> >
+> >       /*
+> >
+> > base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
+>
 
