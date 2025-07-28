@@ -1,241 +1,342 @@
-Return-Path: <stable+bounces-165019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D526B1442D
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 00:04:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A20B1442E
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 00:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D91017CC55
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 22:04:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BEE67A4459
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 22:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1C61A316E;
-	Mon, 28 Jul 2025 22:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EFC1A8F84;
+	Mon, 28 Jul 2025 22:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="e559EDBV"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="aur0estc";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3Tiu0ZvI";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qyOrdqqo";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qWIj9I4Y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103608488;
-	Mon, 28 Jul 2025 22:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E6219E975
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 22:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753740237; cv=none; b=p/X2GacOsk7oKOO7AH21Tx/5br8q3MgQsKWyo/WWm+UWbobt39hRUQcet3ICDyOIfvwgQXDUE8DOH6zgvIgbiTf3UPreS9/D249D1JA9ofqD98w11BGE/sviA7I/1mZWBUY5H07xdBxtmc29W/SuLzeBRC01CMv1ipLWUeVLhO0=
+	t=1753740245; cv=none; b=deY5pjBfmnSoeKn1H5l/4ZUe8nVGKRz13tCXhnu9frNWknLN2jrLG/mhFXjDMuAcBQdaOjkSiUxz4w//tLEazcYw+1pyfVkTGAgXm297M2jPwS1GhgA7vtW4vuyL/0ZErzAsegRinf8r/XW7ha0GXlYVX3MlCSiKiIbh2TVKQNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753740237; c=relaxed/simple;
-	bh=LYMqeCNYoqdVhaUedebpRm5h8Uoscy3p/WxHOEoB4RY=;
-	h=Date:To:From:Subject:Message-Id; b=dM+kbRpij/7lNqxVZleMoQ0RYroTQnqvCm9GnzyfHb0A07S3zZjWcwrD+sVvQhP7Tv8kuQeojgjiL1ly+qPPitn0T03NF5ejzNTMu6eSo2m8XmF06qIk44J2iNAPViJenvXY/RPE7u6yUeCSkYhJ4m8MseWsQGSHXQAjG1dfjvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=e559EDBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64777C4CEE7;
-	Mon, 28 Jul 2025 22:03:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1753740236;
-	bh=LYMqeCNYoqdVhaUedebpRm5h8Uoscy3p/WxHOEoB4RY=;
-	h=Date:To:From:Subject:From;
-	b=e559EDBVF9B5FKKAz5Fu29o/haOtE0J2WG4QkWx7kNRqesqo1Oic3rfdNM3QvxCcF
-	 qFDdYqe+SUNcE/3hvxznf57+FlKEaopeTKrgFpmcFVPGikJ+E4OY0pw89/7wVyOMqf
-	 yoaSJQAtpsRDMAyRsCUXa/1g2bDtiEPkhxLCpQMQ=
-Date: Mon, 28 Jul 2025 15:03:55 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,hughd@google.com,dev.jain@arm.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250728220356.64777C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1753740245; c=relaxed/simple;
+	bh=xGIjyMFRxbhkUtgM6nSI6LZu0K+X7+sLcm+qXiup93k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DZ6vv5cPWrfdTJz93+aR5JngvMhJDp0HswUXno9pbt+3BAW2uRiYhWZD5AP0ooXhxcnWYcjBtq18ZU9iCKZfCeJ9UhHuiMtN0sTtURCK82ramTqNrtP5qJdPisubKgZfjfKObZni/rOfWC9wv0pNBhQ6cbh1l3BW1zdk3bPcYec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=aur0estc; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3Tiu0ZvI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qyOrdqqo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qWIj9I4Y; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D75711F822;
+	Mon, 28 Jul 2025 22:04:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753740242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
+	b=aur0estcgdnrBALgMxmxijj27iCZLwmJoSoGi2vd7G4xE/PdIfXVJOJNUXA/aFu1KAeGTa
+	NcZwTGUSrBCesVIzmhfcG6p6pCnXxhv6wPl+ijuMzTGv2UGGmXn6UMLIhPxnBipnXd/wwe
+	erJQiQBTmAPQuz9dZPkpi4ZraBaTZ7U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753740242;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
+	b=3Tiu0ZvIMQAzLwCy21XMLFBlg9ALEq/YNQxipeyHrhVzJBe6sLuG1faBvQPMhjNNj3TuOs
+	QA+gW2UDjswip/CA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753740241; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
+	b=qyOrdqqowJAThJX2NDdNFui2ptqkmDkFU4UrKt4e7FMwR7ubvOurmqSOvd3/mh0yULfig6
+	QiQpEOvWP9I1QgzvGg65mARvh8sIJb3T2I14IeZEktTRI6SWDrajFYPqJyJrOybnTJQXHf
+	CGrVbiUHYQReBaUa5LEwXs10VsKDaYo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753740241;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qYm0JPVCG7igVviYXogX2AnfcYTqQGXtreYnHNGaiYA=;
+	b=qWIj9I4YE+su3SW1nHZk2iViWsrxlm9F8HhrS0Z/NZrn4dREb5zOBDjSwz7ysrky1kPLYa
+	Q+R/J6ForZjFWyDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDD951368A;
+	Mon, 28 Jul 2025 22:04:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5+ffLdHzh2h0FAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 28 Jul 2025 22:04:01 +0000
+Message-ID: <197389ce-9f42-4d6a-91c4-fce116e988b4@suse.cz>
+Date: Tue, 29 Jul 2025 00:04:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm: fix a UAF when vma->mm is freed after
+ vma->vm_refcnt got dropped
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250728175355.2282375-1-surenb@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250728175355.2282375-1-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.998];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 
+On 7/28/25 19:53, Suren Baghdasaryan wrote:
+> By inducing delays in the right places, Jann Horn created a reproducer
+> for a hard to hit UAF issue that became possible after VMAs were allowed
+> to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
+> 
+> Race description is borrowed from Jann's discovery report:
+> lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
+> rcu_read_lock(). At that point, the VMA may be concurrently freed, and
+> it can be recycled by another process. vma_start_read() then
+> increments the vma->vm_refcnt (if it is in an acceptable range), and
+> if this succeeds, vma_start_read() can return a recycled VMA.
+> 
+> In this scenario where the VMA has been recycled, lock_vma_under_rcu()
+> will then detect the mismatching ->vm_mm pointer and drop the VMA
+> through vma_end_read(), which calls vma_refcount_put().
+> vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
+> using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
+> the caller is keeping the VMA's mm alive, but in this scenario the caller
+> has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
+> 
+> The diagram depicting the race:
+> T1         T2         T3
+> ==         ==         ==
+> lock_vma_under_rcu
+>   mas_walk
+>           <VMA gets removed from mm>
+>                       mmap
+>                         <the same VMA is reallocated>
+>   vma_start_read
+>     __refcount_inc_not_zero_limited_acquire
+>                       munmap
+>                         __vma_enter_locked
+>                           refcount_add_not_zero
+>   vma_end_read
+>     vma_refcount_put
+>       __refcount_dec_and_test
+>                           rcuwait_wait_event
+>                             <finish operation>
+>       rcuwait_wake_up [UAF]
+> 
+> Note that rcuwait_wait_event() in T3 does not block because refcount
+> was already dropped by T1. At this point T3 can exit and free the mm
+> causing UAF in T1.
+> To avoid this we move vma->vm_mm verification into vma_start_read() and
+> grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
+> 
+> Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
+> Reported-by: Jann Horn <jannh@google.com>
+> Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: <stable@vger.kernel.org>
 
-The patch titled
-     Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hang
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch
+As for further steps, considered replying to [1] but maybe it's better here.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch
+As for a KISS fix including stable, great. Seems a nice improvement to
+actually handle "vma->vm_mm != mm" in vma_start_read() like this - good idea!
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Less great is that there's now a subtle assumption that some (but not all!)
+cases where vma_start_read() returns NULL imply that we dropped the rcu
+lock. And it doesn't matter as the callers abort or fallback to mmap sem
+anyway in that case. Hopefully we can improve that a bit.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The idea of moving rcu lock and mas walk inside vma_start_read() is indeed
+busted with lock_next_vma(). The iterator difference could be perhaps solved
+by having lock_vma_under_rcu() set up its own one (instead of MA_STATE) in a
+way that vma_next() would do the right thing for it. However there would
+still be the difference that lock_next_vma() expects we are already under
+rcu lock, and lock_vma_under_rcu() doesn't.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+So what we can perhaps do instead is move vma_start_read() to mm/mmap_lock.c
+(no other users so why expose it in a header for potential misuse). And then
+indeed just make it drop rcu lock completely (and not reacquire) any time
+it's returning NULL, document that and adjust callers to that. I think it's
+less subtle than dropping and reacquring, and should simplify the error
+handling in the callers a bit.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+[1]
+https://lore.kernel.org/all/CAJuCfpEMhGe_eZuFm__4CDstM9%3DOG2kTUTziNL-f%3DM3BYQor2A@mail.gmail.com/
 
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hang
-Date: Mon, 28 Jul 2025 15:52:59 +0800
-
-The current swap-in code assumes that, when a swap entry in shmem mapping
-is order 0, its cached folios (if present) must be order 0 too, which
-turns out not always correct.
-
-The problem is shmem_split_large_entry is called before verifying the
-folio will eventually be swapped in, one possible race is:
-
-    CPU1                          CPU2
-shmem_swapin_folio
-/* swap in of order > 0 swap entry S1 */
-  folio = swap_cache_get_folio
-  /* folio = NULL */
-  order = xa_get_order
-  /* order > 0 */
-  folio = shmem_swap_alloc_folio
-  /* mTHP alloc failure, folio = NULL */
-  <... Interrupted ...>
-                                 shmem_swapin_folio
-                                 /* S1 is swapped in */
-                                 shmem_writeout
-                                 /* S1 is swapped out, folio cached */
-  shmem_split_large_entry(..., S1)
-  /* S1 is split, but the folio covering it has order > 0 now */
-
-Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
-folio lookup will return a folio with order > 0.  The
-`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
-return false causing swap-in to return -EEXIST.
-
-And this looks fragile.  So fix this up by allowing seeing a larger folio
-in swap cache, and check the whole shmem mapping range covered by the
-swapin have the right swap value upon inserting the folio.  And drop the
-redundant tree walks before the insertion.
-
-This will actually improve performance, as it avoids two redundant Xarray
-tree walks in the hot path, and the only side effect is that in the
-failure path, shmem may redundantly reallocate a few folios causing
-temporary slight memory pressure.
-
-And worth noting, it may seems the order and value check before inserting
-might help reducing the lock contention, which is not true.  The swap
-cache layer ensures raced swapin will either see a swap cache folio or
-failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
-bypassed), so holding the folio lock and checking the folio flag is
-already good enough for avoiding the lock contention.  The chance that a
-folio passes the swap entry value check but the shmem mapping slot has
-changed should be very low.
-
-Link: https://lkml.kernel.org/r/20250728075306.12704-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20250728075306.12704-2-ryncsn@gmail.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/shmem.c |   39 ++++++++++++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 9 deletions(-)
-
---- a/mm/shmem.c~mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang
-+++ a/mm/shmem.c
-@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struc
- 				   pgoff_t index, void *expected, gfp_t gfp)
- {
- 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
--	long nr = folio_nr_pages(folio);
-+	unsigned long nr = folio_nr_pages(folio);
-+	swp_entry_t iter, swap;
-+	void *entry;
- 
- 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -896,14 +898,25 @@ static int shmem_add_to_page_cache(struc
- 
- 	gfp &= GFP_RECLAIM_MASK;
- 	folio_throttle_swaprate(folio, gfp);
-+	swap = radix_to_swp_entry(expected);
- 
- 	do {
-+		iter = swap;
- 		xas_lock_irq(&xas);
--		if (expected != xas_find_conflict(&xas)) {
--			xas_set_err(&xas, -EEXIST);
--			goto unlock;
-+		xas_for_each_conflict(&xas, entry) {
-+			/*
-+			 * The range must either be empty, or filled with
-+			 * expected swap entries. Shmem swap entries are never
-+			 * partially freed without split of both entry and
-+			 * folio, so there shouldn't be any holes.
-+			 */
-+			if (!expected || entry != swp_to_radix_entry(iter)) {
-+				xas_set_err(&xas, -EEXIST);
-+				goto unlock;
-+			}
-+			iter.val += 1 << xas_get_order(&xas);
- 		}
--		if (expected && xas_find_conflict(&xas)) {
-+		if (expected && iter.val - nr != swap.val) {
- 			xas_set_err(&xas, -EEXIST);
- 			goto unlock;
- 		}
-@@ -2327,7 +2340,7 @@ static int shmem_swapin_folio(struct ino
- 			error = -ENOMEM;
- 			goto failed;
- 		}
--	} else if (order != folio_order(folio)) {
-+	} else if (order > folio_order(folio)) {
- 		/*
- 		 * Swap readahead may swap in order 0 folios into swapcache
- 		 * asynchronously, while the shmem mapping can still stores
-@@ -2352,15 +2365,23 @@ static int shmem_swapin_folio(struct ino
- 
- 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
- 		}
-+	} else if (order < folio_order(folio)) {
-+		swap.val = round_down(swap.val, 1 << folio_order(folio));
-+		index = round_down(index, 1 << folio_order(folio));
- 	}
- 
- alloced:
--	/* We have to do this with folio locked to prevent races */
-+	/*
-+	 * We have to do this with the folio locked to prevent races.
-+	 * The shmem_confirm_swap below only checks if the first swap
-+	 * entry matches the folio, that's enough to ensure the folio
-+	 * is not used outside of shmem, as shmem swap entries
-+	 * and swap cache folios are never partially freed.
-+	 */
- 	folio_lock(folio);
- 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
--	    folio->swap.val != swap.val ||
- 	    !shmem_confirm_swap(mapping, index, swap) ||
--	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
-+	    folio->swap.val != swap.val) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
-mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch
-mm-shmem-swap-avoid-redundant-xarray-lookup-during-swapin.patch
-mm-shmem-swap-tidy-up-thp-swapin-checks.patch
-mm-shmem-swap-tidy-up-swap-entry-splitting.patch
-mm-shmem-swap-never-use-swap-cache-and-readahead-for-swp_synchronous_io.patch
-mm-shmem-swap-simplify-swapin-path-and-result-handling.patch
-mm-shmem-swap-rework-swap-entry-and-index-calculation-for-large-swapin.patch
-mm-shmem-swap-fix-major-fault-counting.patch
+> ---
+> Changes since v1 [1]
+> - Made a copy of vma->mm before using it in vma_start_read(),
+> per Vlastimil Babka
+> 
+> Notes:
+> - Applies cleanly over mm-unstable.
+> - Should be applied to 6.15 and 6.16 but these branches do not
+> have lock_next_vma() function, so the change in lock_next_vma() should be
+> skipped when applying to those branches.
+> 
+> [1] https://lore.kernel.org/all/20250728170950.2216966-1-surenb@google.com/
+> 
+>  include/linux/mmap_lock.h | 23 +++++++++++++++++++++++
+>  mm/mmap_lock.c            | 10 +++-------
+>  2 files changed, 26 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index 1f4f44951abe..da34afa2f8ef 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+>  #include <linux/tracepoint-defs.h>
+>  #include <linux/types.h>
+>  #include <linux/cleanup.h>
+> +#include <linux/sched/mm.h>
+>  
+>  #define MMAP_LOCK_INITIALIZER(name) \
+>  	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
+> @@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+>  	}
+>  
+>  	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
+> +
+> +	/*
+> +	 * If vma got attached to another mm from under us, that mm is not
+> +	 * stable and can be freed in the narrow window after vma->vm_refcnt
+> +	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
+> +	 * releasing vma->vm_refcnt.
+> +	 */
+> +	if (unlikely(vma->vm_mm != mm)) {
+> +		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
+> +		struct mm_struct *other_mm = vma->vm_mm;
+> +		/*
+> +		 * __mmdrop() is a heavy operation and we don't need RCU
+> +		 * protection here. Release RCU lock during these operations.
+> +		 */
+> +		rcu_read_unlock();
+> +		mmgrab(other_mm);
+> +		vma_refcount_put(vma);
+> +		mmdrop(other_mm);
+> +		rcu_read_lock();
+> +		return NULL;
+> +	}
+> +
+>  	/*
+>  	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
+>  	 * False unlocked result is impossible because we modify and check
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 729fb7d0dd59..aa3bc42ecde0 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  	 */
+>  
+>  	/* Check if the vma we locked is the right one. */
+> -	if (unlikely(vma->vm_mm != mm ||
+> -		     address < vma->vm_start || address >= vma->vm_end))
+> +	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
+>  		goto inval_end_read;
+>  
+>  	rcu_read_unlock();
+> @@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+>  		goto fallback;
+>  	}
+>  
+> -	/*
+> -	 * Verify the vma we locked belongs to the same address space and it's
+> -	 * not behind of the last search position.
+> -	 */
+> -	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
+> +	/* Verify the vma is not behind of the last search position. */
+> +	if (unlikely(from_addr >= vma->vm_end))
+>  		goto fallback_unlock;
+>  
+>  	/*
+> 
+> base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
 
 
