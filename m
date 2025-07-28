@@ -1,100 +1,118 @@
-Return-Path: <stable+bounces-164870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FC3B132E2
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 04:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 923C9B13352
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 05:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CF91170726
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 02:06:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD13163E5C
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 03:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8F113C3F2;
-	Mon, 28 Jul 2025 02:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993351F1313;
+	Mon, 28 Jul 2025 03:08:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id ED9252E62C;
-	Mon, 28 Jul 2025 02:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB11F1E6DC5
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 03:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753668413; cv=none; b=fPoMBZ9jek5Ka6wVvZbGspgZm8FIoGC2rpWlBjT/CPgEHzOCZ62Zm17jWzsTdKBI6hT9/DUOc/fTeQ433OnJLL9Ktbcc8JFmLXNfW68a058jFsoHIGX83Jf3jz9f8Hl6qCDP5TTX22Bn6jfO2hXLflyJy5nVsNR14nvv3wHIEw8=
+	t=1753672132; cv=none; b=lGFusLCllHFy2boKk0wO3Yw7KW1i3BIsxeU1eL3wwvzVCIpsIa1TkttAzYbE+2fbGd62T57mgmohFmkwBxZWfCC5aI+B1f3RfISNk2ny9GDZia04EoGdQCCH2LLX/FMoNjszGF1QiarEbo14RvBuS7ItBvCpXi6SlwL4nlXhi+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753668413; c=relaxed/simple;
-	bh=KtcrmW5WCqvDoEaHTiCg7QZuxoNla7Wim1WhTTKLCBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type; b=B0WWgAlabWgHCUO3ZR6P9QhWBXzX/jWS9Z/HBYQOmT3/O1XgQZu2Kn6VF25dlyTAqWg+15U0rNRepMy3z+fEUgy4oc9bKnX5vU8oWmFxrPZez/P99UeAqG2WB3NBxv1xcweERnV8ITGXB1zOIcT38YauayYqIYZjE5K82peGQXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from [172.30.20.100] (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id C72CA60108C4C;
-	Mon, 28 Jul 2025 10:06:42 +0800 (CST)
-Message-ID: <e6f14d8a-5d32-473e-ba2d-1064ab8ef8fe@nfschina.com>
-Date: Mon, 28 Jul 2025 10:06:42 +0800
+	s=arc-20240116; t=1753672132; c=relaxed/simple;
+	bh=+oL54au+1m3Cp1wMvpFxeLnh9JqL0aaVe+vXbVFj9mE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FLcysWAflPNnIUAk0L3IOKO/luVBb/sTcUM/qfV5OtAhpEvR8AXrIgiwZ8H5F4tJjMtG1rrDE1YJNDAiQ2S07d0BZVLWtOr7AiISc3jJdaipQI+aGLvaQ7abYqHNthnMdoAtdZbv8fcYY2KRTYWSubp16jBqsBWLQEMgJgixAZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4br3N14vP4zKHMgK
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 11:08:49 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 81A521A142F
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 11:08:48 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP4 (Coremail) with SMTP id gCh0CgCXExS56YZokj7rBg--.58859S2;
+	Mon, 28 Jul 2025 11:08:48 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	bristot@redhat.com,
+	vschneid@redhat.com,
+	rafael@kernel.org,
+	pavel@ucw.cz
+Cc: stable@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huawei.com
+Subject: [PATCH 6.6 0/5] [Backport] sched,freezer: Remove unnecessary warning in __thaw_task
+Date: Mon, 28 Jul 2025 02:54:39 +0000
+Message-Id: <20250728025444.34009-1-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2025072421-deviate-skintight-bbd5@gregkh>
+References: <2025072421-deviate-skintight-bbd5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: slub: avoid deref of free pointer in sanity checks
- if object is invalid
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Matthew Wilcox <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-MD-Sfrom: liqiong@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: liqiong <liqiong@nfschina.com>
-In-Reply-To: <aIQMhSlOMREOTLyl@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgCXExS56YZokj7rBg--.58859S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtF1fGF1DCF48Gry7XrykGrg_yoWkJwb_Ka
+	4fGFyxtrykJF1UGFW7KF97XryDKayUJr18GF1qqr45Zry2vr95XF43GrWkur1rX3Z7Xr1D
+	Aryftan7Ar1DKjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbIkYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
+	j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
+	kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
+	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_
+	GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf
+	9x07j4eHgUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 
+From: Chen Ridong <chenridong@huawei.com>
 
+To fix the [1] issue, it needs to backport:
+9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...")
+14a67b42cb6f ("Revert 'cgroup_freezer: cgroup freezing: Check if not...'").
 
-在 2025/7/26 07:00, Harry Yoo 写道:
-> On Sat, Jul 26, 2025 at 04:55:06AM +0900, Harry Yoo wrote:
->> On Fri, Jul 25, 2025 at 06:10:51PM +0100, Matthew Wilcox wrote:
->>> On Fri, Jul 25, 2025 at 06:47:01PM +0200, Vlastimil Babka wrote:
->>>> On 7/25/25 08:49, Li Qiong wrote:
->>>>> For debugging, object_err() prints free pointer of the object.
->>>>> However, if check_valid_pointer() returns false for a object,
->>>>> dereferncing `object + s->offset` can lead to a crash. Therefore,
->>>>> print the object's address in such cases.
->>>>>  	if (!check_valid_pointer(s, slab, object)) {
->>>>> -		object_err(s, slab, object, "Freelist Pointer check fails");
->>>>> +		slab_err(s, slab, "Invalid object pointer 0x%p", object);
->>>>>  		return 0;
->>> No, the error message is now wrong.  It's not an object, it's the
->>> freelist pointer.
->> Because it's the object is about to be allocated, it will look like
->> this:
->>
->>   object pointer -> obj: [ garbage ][   freelist pointer   ][ garbage ]
->>
->> SLUB uses check_valid_pointer() to check either 1) freelist pointer of
->> an object is valid (e.g. in check_object()), or 2) an object pointer
->> points to a valid address (e.g. in free_debug_processing()).
->>
->> In this case it's an object pointer, not a freelist pointer.
->> Or am I misunderstanding something?
-> Actually, in alloc_debug_processing() the pointer came from slab->freelist,
-> so I think saying either "invalid freelist pointer" or
-> "invalid object pointer" make sense...
+This series aims to backport 9beb8c5e77dc. To avoid conflicts, backport the
+missing patches[2].
 
-free_consistency_checks()  has 
- 'slab_err(s, slab, "Invalid object pointer 0x%p", object);'
-Maybe  it is better, alloc_consisency_checks() has the same  message.
+[1] https://lore.kernel.org/lkml/20250717085550.3828781-1-chenridong@huaweicloud.com/
+[2] https://lore.kernel.org/stable/2025072421-deviate-skintight-bbd5@gregkh/
 
+Chen Ridong (1):
+  sched,freezer: Remove unnecessary warning in __thaw_task
 
+Elliot Berman (4):
+  sched/core: Remove ifdeffery for saved_state
+  freezer,sched: Use saved_state to reduce some spurious wakeups
+  freezer,sched: Do not restore saved_state of a thawed task
+  freezer,sched: Clean saved_state when restoring it during thaw
 
+ include/linux/sched.h |  2 --
+ kernel/freezer.c      | 51 +++++++++++++++++--------------------------
+ kernel/sched/core.c   | 31 +++++++++++++-------------
+ 3 files changed, 35 insertions(+), 49 deletions(-)
 
-
->
+-- 
+2.34.1
 
 
