@@ -1,213 +1,142 @@
-Return-Path: <stable+bounces-165015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A48B143A8
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 22:59:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA5AB143B2
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 23:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8871D17EBB4
-	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 20:59:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C2AA3BCFC9
+	for <lists+stable@lfdr.de>; Mon, 28 Jul 2025 21:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B348224BD04;
-	Mon, 28 Jul 2025 20:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4892E23535F;
+	Mon, 28 Jul 2025 21:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kcOSnW1E"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HUFimcyN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f201.google.com (mail-il1-f201.google.com [209.85.166.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF12233128;
-	Mon, 28 Jul 2025 20:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5C721A426
+	for <stable@vger.kernel.org>; Mon, 28 Jul 2025 21:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753736339; cv=none; b=UnEKsO4276UyHKlQLIiiORorNTzweZFCsr2foH8PzGwKFUviBiTxuLNExN/RGxMS1rAwjskueHWfuO0vKMh+UxzrFLpD7aO1HTNbVn5x/bHMOV/F/BmdHl4uuqonbkwodSOOThSYDByJ9ROs0hqFWpeAryo0vJt2lzTXcmEO2eI=
+	t=1753736676; cv=none; b=Py0S4dvSBW2JcTKQHXNnqj2E7ALg1izlyL+7oq80V6Z5Tv76RhGBk8igUAxchaEpfEQFwfq+juSKOBZjowQpItGdt7M/hEBGDl4aw8uHAkEJj4k+HEgm72Pom57aBkYxgvbDzijukrOpc+V6KpzHzPncm9Xsw/WlvMrx6qqnGqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753736339; c=relaxed/simple;
-	bh=20kt8ogzRmfIlLxilIdw1bcBgw+Ce0mU0iK2lR53poE=;
-	h=Date:To:From:Subject:Message-Id; b=PwwobupaqVtyBd1Pt02VmbJ7ad/epz80uZ50DOS8Ie11FNtI9WkReSOM5GTWNPZe91khn3DvK9C/I2TI5ET+W4hK1pzpARv+j9fKCkw0+yvN56RIgdK6q7tj69fHgvPfAvgZpLHhtcPdY7dZZJ/67ukl0ThZxqqG8R8Q99Lv67w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kcOSnW1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80A9C4CEE7;
-	Mon, 28 Jul 2025 20:58:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1753736339;
-	bh=20kt8ogzRmfIlLxilIdw1bcBgw+Ce0mU0iK2lR53poE=;
-	h=Date:To:From:Subject:From;
-	b=kcOSnW1EGiojNk5TOhgFzOvidOlF+KY81d54iB6Q35iMQMadqLFy4qLn1KGUdfsga
-	 t3f6N9/QTpQc9+KDc7EipCD0hQ9rY8YoBhD9cg0ZEAwvfkhQ6gE/i2DHCqbt4XcAzd
-	 I47aq5hIO3Ow+ycnjM5tV2Y4QS1jJnm+nCFXd8sA=
-Date: Mon, 28 Jul 2025 13:58:58 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jannh@google.com,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped.patch added to mm-unstable branch
-Message-Id: <20250728205858.E80A9C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1753736676; c=relaxed/simple;
+	bh=zFb2Oa6g6C1AFnPxXLdZtpXeNv9w6hxscbJigmNdpCg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=daWqn9X0lVrCb16OEZSmfxVdvHYUF/O5OQxS/PlEBW7qgmFViGT6t7+2iam1cdsOuUOFX1Ogtw+XT3y6y2ccEKjz0RKIUVmdaWKNihPPqGUp4XRLZPh3aZt5aGsOnr686oygsabW746BHmKGJERHinLQenCxckSW+pfiTBkxocA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--justinstitt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HUFimcyN; arc=none smtp.client-ip=209.85.166.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--justinstitt.bounces.google.com
+Received: by mail-il1-f201.google.com with SMTP id e9e14a558f8ab-3e3d462b81cso21875095ab.3
+        for <stable@vger.kernel.org>; Mon, 28 Jul 2025 14:04:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753736673; x=1754341473; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=g2HkGuPdjC+GNCrApZe3pzlcGnX64te3qygbh3oqdwo=;
+        b=HUFimcyNttiR97bMM+Bvvn59xVZ9vfwJ+RbkO/TIcdaXrTRdWXZQyMPUmyMCAQyasV
+         jM5cSBoK+4vvWaqbFYwJHAvbRl28IitbOUSrKYICBI+eQnJXCeMGqiduFCQWGqMrtLJB
+         lpffhEgs+k14qHNW/RVy6ZOAKUDN29iRiXKiaYyXV9T84RCauNbKUe9my5EypdMYaXgF
+         51frSdAm9LXE1B6OgCnuIf8TM1DHl07Lm0vrQipmLj3LWpRwdmvbxDgRiwDhb/Q9xArp
+         nMEIw1o2klW//oFTf9KCZUP9teZ6Av7vWQrX+qHI30uN3n/RF66i4sKNd7mdXVJqsaU+
+         qeyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753736673; x=1754341473;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=g2HkGuPdjC+GNCrApZe3pzlcGnX64te3qygbh3oqdwo=;
+        b=u3v6g5v4NCQp7BfvXWfM48v/oUrvsQYRFAtPNaeebCcvSi0nS8K7hJOAaUA+vUYmfr
+         T0XZMnIX2mL0F+3p1dABw6t9lqzk9SVQwJW9GEi92IZ0kNRAcVmbL8drsveXBR++65M3
+         faU8/C8wBWXcjGcv64s+v7NKPwbOhllxpAZFMihBVfcfHre2pcyypWxTxQ2okO47BX4S
+         GQJ2XOq2hxCtYlSg/0vcBs+bUfGkJjhZWEPhF6uJ5+JxhO5Eeu+g1qvmBiVnbmFWCPX3
+         J1zi+6tsZealrbgB/jYnRQhkJKwY51Ow7xqgV9kr03oDeU4O84PLgx3A38VODX6K4eq3
+         andg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/2Ibfai93mYjqZ3Nih7P7b9c15SR+KpPrWBY1DH4hozPZdigl3BiLKEhNknu63xBMJw5zaws=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLyvaAcII5U92fknsSIP//0+8YWINGGwnewfjq2S5q4ht3Ausc
+	n9yuGGzcGhvBjQiSxc1o3lKAu2FBj0qU1JT1LBPTEy+gl3MGuJ9nNCnwU9fn5Mr7YjHCuRT/JoH
+	OLB+CtDhqwiz9sNmZtuZVSoQddA==
+X-Google-Smtp-Source: AGHT+IF3ElRNmNEgLOiZ+XFI0ik5ZaJq9q7/NhwGFbXXUTCuR7C+nhEBtW4V6iPFUdR2A3KToowq+hl+CNEjc4UEBw==
+X-Received: from ilbbu29.prod.google.com ([2002:a05:6e02:351d:b0:3df:2bc3:4c40])
+ (user=justinstitt job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6e02:19ce:b0:3df:3bc5:bac1 with SMTP id e9e14a558f8ab-3e3c5250ebdmr229349785ab.5.1753736673097;
+ Mon, 28 Jul 2025 14:04:33 -0700 (PDT)
+Date: Mon, 28 Jul 2025 14:04:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANflh2gC/x2NSQ7CMAwAv1L5jKskELavoB6yuGAJmcoJFFT17
+ 0Q9jeYys0AhZSpw7RZQ+nDhlzSxuw7SI8idkHNzcMZ5c3JnjAcsNcQnYeay8S0sXHGqinNQQY/ WYzLpkuM+j84cocUmpZG/2+gGvre+/8Gwrn8ZZ8nEgAAAAA==
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1753736672; l=1896;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=zFb2Oa6g6C1AFnPxXLdZtpXeNv9w6hxscbJigmNdpCg=; b=HH73qpE/zdS+HCUqoI7QlwguMOVUWIcr2Ny2CgnzuAwg/gvWWMVd4GqIurLvfypFGt3lDRlob
+ 13Mch8agVrpDeZ9Y0oMMvccLNTHA6rhTzU/w5faraqws/Vx98Q7G6j3
+X-Mailer: b4 0.12.3
+Message-ID: <20250728-b4-stable-disable-uninit-ptr-warn-5-15-v1-1-e373a895b9c5@google.com>
+Subject: [PATCH 5.15.y] KVM: arm64: sys_regs: disable -Wuninitialized-const-pointer
+ warning
+From: Justin Stitt <justinstitt@google.com>
+To: Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Christopher Covington <cov@codeaurora.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org, 
+	Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+A new warning in Clang 22 [1] complains that @clidr passed to
+get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
+doesn't really care since it casts away the const-ness anyways -- it is
+a false positive.
 
-The patch titled
-     Subject: mm: fix a UAF when vma->mm is freed after vma->vm_refcnt got dropped
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped.patch
+|  ../arch/arm64/kvm/sys_regs.c:2838:23: warning: variable 'clidr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+|   2838 |         get_clidr_el1(NULL, &clidr); /* Ugly... */
+|        |                              ^~~~~
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped.patch
+Disable this warning for sys_regs.o with an iron fist as it doesn't make
+sense to waste maintainer's time or potentially break builds by
+backporting large changelists from 6.2+.
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This patch isn't needed for anything past 6.1 as this code section was
+reworked in Commit 7af0c2534f4c ("KVM: arm64: Normalize cache
+configuration").
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: mm: fix a UAF when vma->mm is freed after vma->vm_refcnt got dropped
-Date: Mon, 28 Jul 2025 10:53:55 -0700
-
-By inducing delays in the right places, Jann Horn created a reproducer for
-a hard to hit UAF issue that became possible after VMAs were allowed to be
-recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
-
-Race description is borrowed from Jann's discovery report:
-lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
-rcu_read_lock().  At that point, the VMA may be concurrently freed, and it
-can be recycled by another process.  vma_start_read() then increments the
-vma->vm_refcnt (if it is in an acceptable range), and if this succeeds,
-vma_start_read() can return a recycled VMA.
-
-In this scenario where the VMA has been recycled, lock_vma_under_rcu()
-will then detect the mismatching ->vm_mm pointer and drop the VMA through
-vma_end_read(), which calls vma_refcount_put().  vma_refcount_put() drops
-the refcount and then calls rcuwait_wake_up() using a copy of vma->vm_mm. 
-This is wrong: It implicitly assumes that the caller is keeping the VMA's
-mm alive, but in this scenario the caller has no relation to the VMA's mm,
-so the rcuwait_wake_up() can cause UAF.
-
-The diagram depicting the race:
-T1         T2         T3
-==         ==         ==
-lock_vma_under_rcu
-  mas_walk
-          <VMA gets removed from mm>
-                      mmap
-                        <the same VMA is reallocated>
-  vma_start_read
-    __refcount_inc_not_zero_limited_acquire
-                      munmap
-                        __vma_enter_locked
-                          refcount_add_not_zero
-  vma_end_read
-    vma_refcount_put
-      __refcount_dec_and_test
-                          rcuwait_wait_event
-                            <finish operation>
-      rcuwait_wake_up [UAF]
-
-Note that rcuwait_wait_event() in T3 does not block because refcount was
-already dropped by T1.  At this point T3 can exit and free the mm causing
-UAF in T1.  To avoid this we move vma->vm_mm verification into
-vma_start_read() and grab vma->vm_mm to stabilize it before
-vma_refcount_put() operation.
-
-Link: https://lkml.kernel.org/r/20250728175355.2282375-1-surenb@google.com
-Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: Jann Horn <jannh@google.com>
-Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 7c8c5e6a9101e ("arm64: KVM: system register handling")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Signed-off-by: Justin Stitt <justinstitt@google.com>
 ---
+I'm sending a similar patch for 6.1.
+---
+ arch/arm64/kvm/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
 
- include/linux/mmap_lock.h |   23 +++++++++++++++++++++++
- mm/mmap_lock.c            |   10 +++-------
- 2 files changed, 26 insertions(+), 7 deletions(-)
-
---- a/include/linux/mmap_lock.h~mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped
-+++ a/include/linux/mmap_lock.h
-@@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwai
- #include <linux/tracepoint-defs.h>
- #include <linux/types.h>
- #include <linux/cleanup.h>
-+#include <linux/sched/mm.h>
+diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+index 989bb5dad2c8..109cca425d3e 100644
+--- a/arch/arm64/kvm/Makefile
++++ b/arch/arm64/kvm/Makefile
+@@ -25,3 +25,6 @@ kvm-y := $(KVM)/kvm_main.o $(KVM)/coalesced_mmio.o $(KVM)/eventfd.o \
+ 	 vgic/vgic-its.o vgic/vgic-debug.o
  
- #define MMAP_LOCK_INITIALIZER(name) \
- 	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
-@@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma
- 	}
- 
- 	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
+ kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o
 +
-+	/*
-+	 * If vma got attached to another mm from under us, that mm is not
-+	 * stable and can be freed in the narrow window after vma->vm_refcnt
-+	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
-+	 * releasing vma->vm_refcnt.
-+	 */
-+	if (unlikely(vma->vm_mm != mm)) {
-+		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
-+		struct mm_struct *other_mm = vma->vm_mm;
-+		/*
-+		 * __mmdrop() is a heavy operation and we don't need RCU
-+		 * protection here. Release RCU lock during these operations.
-+		 */
-+		rcu_read_unlock();
-+		mmgrab(other_mm);
-+		vma_refcount_put(vma);
-+		mmdrop(other_mm);
-+		rcu_read_lock();
-+		return NULL;
-+	}
-+
- 	/*
- 	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
- 	 * False unlocked result is impossible because we modify and check
---- a/mm/mmap_lock.c~mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped
-+++ a/mm/mmap_lock.c
-@@ -164,8 +164,7 @@ retry:
- 	 */
- 
- 	/* Check if the vma we locked is the right one. */
--	if (unlikely(vma->vm_mm != mm ||
--		     address < vma->vm_start || address >= vma->vm_end))
-+	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
- 		goto inval_end_read;
- 
- 	rcu_read_unlock();
-@@ -236,11 +235,8 @@ retry:
- 		goto fallback;
- 	}
- 
--	/*
--	 * Verify the vma we locked belongs to the same address space and it's
--	 * not behind of the last search position.
--	 */
--	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
-+	/* Verify the vma is not behind of the last search position. */
-+	if (unlikely(from_addr >= vma->vm_end))
- 		goto fallback_unlock;
- 
- 	/*
-_
++# Work around a false positive Clang 22 -Wuninitialized-const-pointer warning
++CFLAGS_sys_regs.o := $(call cc-disable-warning, uninitialized-const-pointer)
 
-Patches currently in -mm which might be from surenb@google.com are
+---
+base-commit: 8bb7eca972ad531c9b149c0a51ab43a417385813
+change-id: 20250728-b4-stable-disable-uninit-ptr-warn-5-15-c0c9db3df206
 
-mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped.patch
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
 
