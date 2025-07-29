@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-165134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1A8B153DA
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:46:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EC8B153DB
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DE9E18C1F64
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:46:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C457A18C29DA
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151E428540F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1032951D9;
 	Tue, 29 Jul 2025 19:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejrtkJ6n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8X9eVA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA825275878
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A692951BA
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753818328; cv=none; b=FatVfzunQcO0xhdEf7XBnDuXVhb0ZM5nKhck4XWTYVqXfEdJN3i9OfR9patZNXIg/JDdgG8KaMPP4oChwt+eyh57+V5yqYa+5E2efW7Zboy9cvCE1afybWEnguYZGAJqACpZFVOkVBCYRlv5SQ+pp8MAVewD0JhqWJM2L5Ds2x4=
+	t=1753818329; cv=none; b=kXKfRbQvm9HVQFORjxqbSxHB1viiJsRIf5BCVd6nGPtqoKm2O7Ag4LBp9ZLU+GeW2U3e/BTj7jQgZM5n5i6EPGfd4aoRGhXI2Zrv1qNw2c3RKUjSiRwHat2IGjzMUnbrrIw7K3fg5/wJXGs30qxxApmQ2m7Nytz3umCUXNTdde0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753818328; c=relaxed/simple;
-	bh=RdYzvu7lDa51VuP9nlCLjrvBFSzka9k9xN7etOemJG4=;
+	s=arc-20240116; t=1753818329; c=relaxed/simple;
+	bh=/MC4I7bC0feWkeevsFgBS2avZFWE/Urjun1oV+HIZts=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aj/Ln2vu1UibqtKFjxbGFwwBRaUNl5Y7z9wAc6xsis/u1Z/qDlT3+WBjhr5tW/gYurhQSKU0LxWrUM1LbngE3ja3n5D8OfnQLWo0GrvGWI03ly/QK6ceSOiyx1iRIrLvdezkmWf7yBmbEmpaYxaJHoKy5ZVLZoRGE8PsbbMLak0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejrtkJ6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6260EC4CEF8;
-	Tue, 29 Jul 2025 19:45:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i1+th5Og+Hai7n1BKVWkhlE8OWcJwip5LYKMXQGz4BwoUYc5lVLhoFxSzFa+b561o3pdp4YOTHKOXgkRh2zEsnMbgXjy2k63LQhI2bIU8h6kLYKpdNbrPIB4P+JvD6J+1VTlsAxTm6SwxTg/NDsD1ZeGqA/KvBxPHQHcqqrwbwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8X9eVA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB07C4CEF6;
+	Tue, 29 Jul 2025 19:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753818326;
-	bh=RdYzvu7lDa51VuP9nlCLjrvBFSzka9k9xN7etOemJG4=;
+	s=k20201202; t=1753818329;
+	bh=/MC4I7bC0feWkeevsFgBS2avZFWE/Urjun1oV+HIZts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejrtkJ6nPQNolTzqRhDptwTz34jgFWtlW7FfSbjAyInql/SVmyYTAHWDdxwF+4zOT
-	 8IxTfFN9MgZXvKGVk5FxWKM+F1ZQhSXWRl85No8AT1M2mfY1/qyVVZQTw4zCpN6T/1
-	 U00z3YzYGcUoA9cJS/jSD13NPBrhrax95rE64JsX6oUdmMofWo+UxDCPuDTMZCzcXN
-	 BR0UVXsoFv4CMI32t18Y4aakbz5deFhm45LPYIzm3cklT3Y5xlKmAZDrXXBiNrFtWp
-	 34pFQoTINLkC6siPBZSqsS1rKCDpq1Jt0tcrZFaNYX5PwKbdznl+aw6BgMWT5+R6JX
-	 BN0I2akJ+RHnQ==
+	b=D8X9eVA1Jkflom1QunwFdf1PfOWJ4b1EOMd7hXH68mDggKtoOikNtCCvgA7p8i0yQ
+	 hQqQk5pPDilKhmpnKkidxWrZLaxRWUV1eORF+Fa+qIR3ih0eaCydZjzXc8V2+Na65y
+	 zoYrB3NIW8lApZPJ1yhTkzvi3kLIwQbK451nXEqaYtkN15IRaVNovENrGsgpezFwCG
+	 WN1NhDYtwDB3cdLB5uyMySVn6ewIFGCwprM+3kqjw0JWJ8peWg9oDXKVFPGPBIFxtk
+	 mZ7lgheh0oOZox5+/CdduG5dQ3HrbmdIZunrrgyk4/Y1BqdjEckm7cqltozycUr54Z
+	 9q7o4gaebQHhA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	tomitamoeko@gmail.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 3/4] Revert "drm/xe/devcoredump: Update handling of xe_force_wake_get return"
-Date: Tue, 29 Jul 2025 15:45:23 -0400
-Message-Id: <1753809157-4dc93d8b@stable.kernel.org>
+Subject: Re: [PATCH 6.12 2/4] Revert "drm/xe/tests/mocs: Update xe_force_wake_get() return handling"
+Date: Tue, 29 Jul 2025 15:45:26 -0400
+Message-Id: <1753809157-46894d56@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250729110525.49838-4-tomitamoeko@gmail.com>
+In-Reply-To: <20250729110525.49838-3-tomitamoeko@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,7 +65,7 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-ℹ️ This is part 3/4 of a series
+ℹ️ This is part 2/4 of a series
 ⚠️ Could not find matching upstream commit
 
 No upstream commit was identified. Using temporary commit for testing.
