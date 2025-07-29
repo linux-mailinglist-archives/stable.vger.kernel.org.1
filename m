@@ -1,196 +1,112 @@
-Return-Path: <stable+bounces-165078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A5CB14F48
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 16:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6FFB14F59
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 16:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2497D16FAD2
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 14:33:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36A9172BE4
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 14:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1C652F66;
-	Tue, 29 Jul 2025 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4931474B8;
+	Tue, 29 Jul 2025 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoJKcJ/x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8/ngNd4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBD63597E
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 14:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B40A482F2
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753799621; cv=none; b=FNZNt5slIc4jEH5iUSs6fTUjvh8TZLwRiYrYQiURzodkfjFVaQhDLXZVIfXE61bd7ScM+Tu+R4C52kY3Fsq4DQJVI49Po62ycKIjJLM5QgBJ1qhXbv2CVwIqjsX4/iTFtxnsMoFH9/+dk/PS6nDpJRPhy4VBl1lBSdOtRjsyWBQ=
+	t=1753799818; cv=none; b=mMR6KK6grEJ6fn7UlvHGt3sB/yPiaKil/udy31u72n2IKihD9wasAebXCrQK36VMzByrU9FJu98x1S+vZttcwo40J5w0wrP4NJJWcE7oqlO3JXwGeCxb5DMkQOqn/zE+EH9rZopKYUSJIRsLp8oKWgPysR93jKSCP4dbfcliMcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753799621; c=relaxed/simple;
-	bh=9UHzrNKYv1Pz4xHddHDnCcg02s8jUDCoWgpHGN/oeUE=;
+	s=arc-20240116; t=1753799818; c=relaxed/simple;
+	bh=L1QPu390gDZKrHJK/H4d8htqq3BzXKPLiS3xiYkMSHk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VyUAz2rW3LN6waZMndC8Ig/wKdBdOuIsd6RY/Ppv5ZN+/3hKLNx+JzO+e/GQx08a0iX6Ndei2i8HLqs/q5jEOEHc4GdG0dWIPNnj3HDuzjWoyNQMYCmUcm2S6Sn1MYqdNLCYyLraDm7SSjlq9txsde2HbJj7BoTzoIk4HCKPgp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoJKcJ/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1846EC4CEEF;
-	Tue, 29 Jul 2025 14:33:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753799620;
-	bh=9UHzrNKYv1Pz4xHddHDnCcg02s8jUDCoWgpHGN/oeUE=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=lcy3jdvDX+twGJS75ilbrFfbGhl3WfV1fvobyLBjjwbAgsHBdDqPFQV1sDq3drghE2pf23sN3KCkim6/iAngUZci6CbCzFdBWYSLkMYunyCNoS1E+IzrlC1xmD3z3xu5I+2JL3FD6I22l1PIyGwBipaAFuaaArEBa7+tNdbuuwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8/ngNd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D451C4CEEF;
+	Tue, 29 Jul 2025 14:36:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753799817;
+	bh=L1QPu390gDZKrHJK/H4d8htqq3BzXKPLiS3xiYkMSHk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QoJKcJ/xbAlGRNTceld4O2EdnqtCK+MLb6fLnMaqoLF5hPLb97x/ukur0Zm7ujrBS
-	 5z0ig1RJYJlHhmHc2oO5X4xgEoOd02m3PLQVbHC05PO8uyeX9c4te/xa1TW4EomZP+
-	 F2947jX2/V6fJphZa6xa7Z8dB44IINDScSo/0enU=
-Date: Tue, 29 Jul 2025 16:33:37 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	chenridong <chenridong@huawei.com>, stable@vger.kernel.org,
-	"stable-commits@vger.kernel.org Sasha Levin" <sashal@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
-Subject: Re: Patch "Revert "cgroup_freezer: cgroup_freezing: Check if not
- frozen"" has been added to the 6.15-stable tree
-Message-ID: <2025072950-tamale-rural-8332@gregkh>
-References: <1bafc8a024da4a95b28c02430f3d0c9d@huawei.com>
- <3f80facc-8bef-4fc7-ac7e-59279906a707@huaweicloud.com>
- <2025072222-effective-jumble-c817@gregkh>
- <ebec24b9-e65e-4050-a960-d127b7215543@huaweicloud.com>
- <2025072253-gravity-shown-3a37@gregkh>
- <5c09fe1c-cb0c-46bf-ab6d-fda063a0e812@huaweicloud.com>
- <2025072344-arrogance-shame-7114@gregkh>
- <9da3269a-9e50-48e9-a1de-6311942f6ea1@huaweicloud.com>
- <2025072421-deviate-skintight-bbd5@gregkh>
- <89465e3f-7c07-4354-ba41-36d5a5139261@huaweicloud.com>
+	b=E8/ngNd4bGaJg6c/xEP9ig5es8++oZ9K1mWNJjsmmCpEd199CFarrR+pe4dAB0AGJ
+	 0Zv+PZT3aFKzCXIZ32iFxhPuMW3NiFGLNg7eNWalD0aQPyH6izJvOd7xQSqBaQ6o2e
+	 o47bLuTf5HgO7a4Zuznws5WJrRm0beVgcu63o5R1/wmFq5wGqR6w3atRWTNKgNM0Jt
+	 Wpokt7RcP7tCjoRoqu09Pvw/Uh7X+uojM/sdPafzNf611kWjUlF5pmaV1hIY/KJW1N
+	 sOXHlRo0+MIHAQrS0xO1dmN3sf1B8wNh0qP79ZMe0I/vQZ0jlLz1KcQ8USdu9UZw68
+	 ykcUR5CxaSrWw==
+Date: Tue, 29 Jul 2025 10:36:55 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Geliang Tang <geliang@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 5.15.y] selftests: mptcp: connect: also cover alt modes
+Message-ID: <aIjch3KtJoQFwaF-@lappy>
+References: <2025072839-wildly-gala-e85f@gregkh>
+ <20250729142019.2718195-1-sashal@kernel.org>
+ <ce3d987f-047a-4b5d-a2e9-f924e0700b15@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <89465e3f-7c07-4354-ba41-36d5a5139261@huaweicloud.com>
+In-Reply-To: <ce3d987f-047a-4b5d-a2e9-f924e0700b15@kernel.org>
 
-On Tue, Jul 29, 2025 at 09:22:10PM +0800, Chen Ridong wrote:
-> 
-> 
-> On 2025/7/24 17:43, Greg KH wrote:
-> > On Thu, Jul 24, 2025 at 05:38:52PM +0800, Chen Ridong wrote:
-> >>
-> >>
-> >> On 2025/7/23 13:06, Greg KH wrote:
-> >>> On Wed, Jul 23, 2025 at 09:01:43AM +0800, Chen Ridong wrote:
-> >>>>
-> >>>>
-> >>>> On 2025/7/22 20:38, Greg KH wrote:
-> >>>>> On Tue, Jul 22, 2025 at 08:25:49PM +0800, Chen Ridong wrote:
-> >>>>>>
-> >>>>>>
-> >>>>>> On 2025/7/22 20:18, Greg KH wrote:
-> >>>>>>> On Tue, Jul 22, 2025 at 09:29:13AM +0800, Chen Ridong wrote:
-> >>>>>>>>
-> >>>>>>>>> This is a note to let you know that I've just added the patch titled
-> >>>>>>>>>
-> >>>>>>>>>     Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
-> >>>>>>>>>
-> >>>>>>>>> to the 6.15-stable tree which can be found at:
-> >>>>>>>>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> >>>>>>>>>
-> >>>>>>>>> The filename of the patch is:
-> >>>>>>>>>      revert-cgroup_freezer-cgroup_freezing-check-if-not-f.patch
-> >>>>>>>>> and it can be found in the queue-6.15 subdirectory.
-> >>>>>>>>>
-> >>>>>>>>> If you, or anyone else, feels it should not be added to the stable tree, please let <stable@vger.kernel.org> know about it.
-> >>>>>>>>>
-> >>>>>>>>
-> >>>>>>>> The patch ("sched,freezer: Remove unnecessary warning in __thaw_task") should also be merged to
-> >>>>>>>> prevent triggering another warning in __thaw_task().
-> >>>>>>>
-> >>>>>>> What is the git commit id of that change in Linus's tree?
-> >>>>>>>
-> >>>>>>> thanks,
-> >>>>>>>
-> >>>>>>> greg k-h
-> >>>>>>
-> >>>>>> 9beb8c5e77dc10e3889ff5f967eeffba78617a88 ("sched,freezer: Remove unnecessary warning in __thaw_task")
-> >>>>>
-> >>>>> Thanks, but that didn't apply to 6.1.y or 6.6.y.  Shouldn't it also go
-> >>>>> there as that's what this revert was applied back to.
-> >>>>>
-> >>>>> greg k-h
-> >>>>
-> >>>> Hi Greg,
-> >>>>
-> >>>> The commit 9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...") should be merged together
-> >>>> with 14a67b42cb6f ("Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"") to avoid the
-> >>>> warning for 6.1.y or 6.6.y.
-> >>>
-> >>> Ok, but 9beb8c5e77dc does not apply properly there.  Can you please
-> >>> provide a working backport?
-> >>>
-> >>> thanks,
-> >>>
-> >>> greg k-h
-> >>
-> >> IIUC, we need to backport these two commits together:
-> >> 1.commit 23ab79e8e469 ("freezer,sched: Do not restore saved_state of a thawed task")
-> >> 2.commit 9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...").
-> >>
-> >> After applying these prerequisites, the required change becomes minimal:
-> >>
-> >> diff --git a/kernel/freezer.c b/kernel/freezer.c
-> >> index 4fad0e6fca64..288d1cce1fc4 100644
-> >> --- a/kernel/freezer.c
-> >> +++ b/kernel/freezer.c
-> >> @@ -196,7 +196,7 @@ void __thaw_task(struct task_struct *p)
-> >>         unsigned long flags, flags2;
-> >>
-> >>         spin_lock_irqsave(&freezer_lock, flags);
-> >> -       if (WARN_ON_ONCE(freezing(p)))
-> >> +       if (!frozen(p))
-> >>                 goto unlock;
-> >>
-> >>         if (lock_task_sighand(p, &flags2)) {
-> >>
-> >> Would you like me to prepare and submit this patch for the stable branches (6.6.y and 6.1.y)?
-> > 
-> > Yes, please send me the missing patches as a series for each branch that
-> > needs them.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Hi Greg and maintainers,
-> 
-> I've sent the patch series for 6.6.y. Backporting commit 9beb8c5e77dc ("sched,freezer: Remove
-> unnecessary warning...") requires 4 patches for 6.6.y, and the backport to 6.1.y would be even more
-> complex.
-> 
-> As an alternative, I'm considering addressing the warning directly with the patch I mentioned
-> previously. What are your thoughts on this approach?
-> 
-> The new patch:
-> 
-> diff --git a/kernel/freezer.c b/kernel/freezer.c
-> index 4fad0e6fca64..288d1cce1fc4 100644
-> --- a/kernel/freezer.c
-> +++ b/kernel/freezer.c
-> @@ -196,7 +196,7 @@ void __thaw_task(struct task_struct *p)
->         unsigned long flags, flags2;
-> 
->         spin_lock_irqsave(&freezer_lock, flags);
-> -       if (WARN_ON_ONCE(freezing(p)))
-> +       if (!frozen(p))
->                 goto unlock;
-> 
->         if (lock_task_sighand(p, &flags2)) {
-> 
+On Tue, Jul 29, 2025 at 04:32:21PM +0200, Matthieu Baerts wrote:
+>Hi Sasha,
+>
+>On 29/07/2025 16:20, Sasha Levin wrote:
+>> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+>>
+>> [ Upstream commit 37848a456fc38c191aedfe41f662cc24db8c23d9 ]
+>>
+>> The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
+>> available from the beginning, but only tested when mptcp_connect.sh is
+>> manually launched with "-m mmap" or "-m sendfile", not via the
+>> kselftests helpers.
+>>
+>> The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
+>> "-m sendfile". Plus other CIs, especially the ones validating the stable
+>> releases, were not validating these alternate modes.
+>>
+>> To make sure these modes are validated by these CIs, add two new test
+>> programs executing mptcp_connect.sh with the alternate modes.
+>>
+>> Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+>> Cc: stable@vger.kernel.org
+>> Reviewed-by: Geliang Tang <geliang@kernel.org>
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> [ Drop userspace_pm.sh from TEST_PROGS ]
+>
+>Thank you for having fixed the conflicts.
+>
+>Is it possible to hold this one for the moment? Yesterday, I was looking
+>at this conflict, and when testing the same resolution as yours, I
+>noticed mptcp_connect_sendfile.sh was failing on v5.15.y. I will
+>investigate that.
+>
+>Please also note that this patch here will conflict with another you
+>sent a few hours ago:
+>
+>  https://lore.kernel.org/20250729034856.2353329-1-sashal@kernel.org
+>
+>When the issues are fixed, I can send both of them again if that's OK
+>for you.
 
-I have no idea, sorry, please work with the developers/maintainers of
-the original change and get their approval.  But normally, we do NOT
-want one-off changes being made to older kernel trees unless it has to
-be done, as that makes maintaining them much much much harder over time.
+Thats perfect, I'll skip backports for there. Thanks!
 
-thanks,
-
-greg k-h
+-- 
+Thanks,
+Sasha
 
