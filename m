@@ -1,140 +1,162 @@
-Return-Path: <stable+bounces-165119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C23B15319
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 20:48:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 614CFB1532B
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 20:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5223A61D8
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 18:46:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 770215615E5
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 18:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE992505AF;
-	Tue, 29 Jul 2025 18:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE0F24BC09;
+	Tue, 29 Jul 2025 18:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="H3Gzxvlo"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j57oc76U"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4A3237A4F;
-	Tue, 29 Jul 2025 18:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D685237180
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 18:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753814830; cv=none; b=RuO8zCIV92xrgVVxrTjdYG+OO15B8sHJPzt84xR2gvpPoZoxZHLGTuZRgAvHW2dJ6f2pjtT/5f0wXrfKq0FUZKj+yp8+ZGA7SE8jtJZyI3Hec8DVXdqeFG8v3DV40wpia+UNFXLbCEHgPUfB7UA2Ry7twiAksaHRrmaoTlsU1eQ=
+	t=1753815194; cv=none; b=tCS4qL3XKFvZUnwQB6CmO/JOZnIRc/GOhFwAt5GV28R4lf+IsHXJ3aB8wag+ldtH7rDR3YC9UzRVS41CMs1sFQh934VHRVT6zbkItXGFB/1RJ/6SqcZPrtz8hbfVQQK8sru9c4laT582GbmpF5iUguYs1ruH2AsuSb2389kDGhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753814830; c=relaxed/simple;
-	bh=7O/H029Cl3RLOyEaOQNONmS4jswG7FQ5V5E+u/QrPFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ca4snswpfZmusofpDWZYOJUNW2T8D9idx93dlUCcZW42cvHVEtI6U7EM4vKeWrrwb0N6vWhwpFPLipspPV6y0K4ugsA6h1bzJivSnZWl5TI/uTUWKUnVZM0oAldIz89yZApeCZE+7vfvj9DxdMG1wgV8mjoAX1R8bWOBuAcDMac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=H3Gzxvlo; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1753814820;
-	bh=7O/H029Cl3RLOyEaOQNONmS4jswG7FQ5V5E+u/QrPFg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H3Gzxvloz9iWnzt7k6F2L9gyWvW2094ohEsgrv5fYkUqyg/857a3QxwMV1AaYFC5k
-	 TsCyLLgrvdKCG21XgHM04sY2IqnpeEU0wRVRVrdJeypCacIKmPBHuymy2ag+anzl8m
-	 sBFYb+x27Xe6mCqSyO2jO/WR/mYE47PXR02WQpe0=
-Date: Tue, 29 Jul 2025 20:46:59 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Naman Jain <namjain@linux.microsoft.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Long Li <longli@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 6.12] Drivers: hv: Make the sysfs node size for the ring
- buffer dynamic
-Message-ID: <e1d394bd-93a6-4d8f-b7f9-fc01449df98a@t-8ch.de>
-References: <20250723070200.2775-1-namjain@linux.microsoft.com>
- <SN6PR02MB41579080792040E166B5EB69D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
+	s=arc-20240116; t=1753815194; c=relaxed/simple;
+	bh=vHiAZEJQ636SOevFTzB+2khGGZwRDs3zeAMpvxkeliQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V3gw+ctxs0yFLtZHEGbEbVUuRik+XliNd8pAGiwYIM3y6C3DCw+XtOMc9cgFfLmoIOko05q20zFXUujMCsvA6+ztP9zW9lGDA+sK/hTg1YgOLCnDEmQUgI2t1OatmGLOm0mN7hRR8kxAwxK+/8PyB6RYLcIauTpTw8b62Ms2/4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j57oc76U; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <8fad6c00-9c15-4315-a8c5-b8eac4281757@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753815189;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m8uizJieSyqW56uosfxUJeKEVQ0kVEbrA+dUYFoOGRs=;
+	b=j57oc76UIhZL5Xpcfh4U0tWr8C6enCpVQGbo2hG9G/0MM06fuiCJ8Y9RkLcRYz1x4orT97
+	JobdnhYCZ2iemZAIgxqDkCvYrqbLu0Qm1apgcZEDuQd2TzZ6hTyq50I2Vd3GHzTBw1Z8r+
+	6U+OU1uUSU0PwvKHE1NHrhjo/vcQR1Y=
+Date: Tue, 29 Jul 2025 20:53:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB41579080792040E166B5EB69D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
+Subject: Re: [PATCH v2] RDMA/siw: Fix the sendmsg byte count in
+ siw_tcp_sendpages
+To: Pedro Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Jakub Kicinski <kuba@kernel.org>, David Howells <dhowells@redhat.com>,
+ Tom Talpey <tom@talpey.com>, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ torvalds@linux-foundation.org, stable@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20250729120348.495568-1-pfalcato@suse.de>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Bernard Metzler <bernard.metzler@linux.dev>
+In-Reply-To: <20250729120348.495568-1-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 2025-07-29 18:39:45+0000, Michael Kelley wrote:
-> From: Naman Jain <namjain@linux.microsoft.com> Sent: Wednesday, July 23, 2025 12:02 AM
-> > 
-> > The ring buffer size varies across VMBus channels. The size of sysfs
-> > node for the ring buffer is currently hardcoded to 4 MB. Userspace
-> > clients either use fstat() or hardcode this size for doing mmap().
-> > To address this, make the sysfs node size dynamic to reflect the
-> > actual ring buffer size for each channel. This will ensure that
-> > fstat() on ring sysfs node always returns the correct size of
-> > ring buffer.
-> > 
-> > This is a backport of the upstream commit
-> > 65995e97a1ca ("Drivers: hv: Make the sysfs node size for the ring buffer dynamic")
-> > with modifications, as the original patch has missing dependencies on
-> > kernel v6.12.x. The structure "struct attribute_group" does not have
-> > bin_size field in v6.12.x kernel so the logic of configuring size of
-> > sysfs node for ring buffer has been moved to
-> > vmbus_chan_bin_attr_is_visible().
-> > 
-> > Original change was not a fix, but it needs to be backported to fix size
-> > related discrepancy caused by the commit mentioned in Fixes tag.
-> > 
-> > Fixes: bf1299797c3c ("uio_hv_generic: Align ring size to system page")
-> > Cc: <stable@vger.kernel.org> # 6.12.x
-> > Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-> > ---
-> > 
-> > This change won't apply on older kernels currently due to missing
-> > dependencies. I will take care of them after this goes in.
-> > 
-> > I did not retain any Reviewed-by or Tested-by tags, since the code has
-> > changed completely, while the functionality remains same.
-> > Requesting Michael, Dexuan, Wei to please review again.
-> > 
-> > ---
-> >  drivers/hv/vmbus_drv.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-> > index 1f519e925f06..616e63fb2f15 100644
-> > --- a/drivers/hv/vmbus_drv.c
-> > +++ b/drivers/hv/vmbus_drv.c
-> > @@ -1810,7 +1810,6 @@ static struct bin_attribute chan_attr_ring_buffer = {
-> >  		.name = "ring",
-> >  		.mode = 0600,
-> >  	},
-> > -	.size = 2 * SZ_2M,
-> >  	.mmap = hv_mmap_ring_buffer_wrapper,
-> >  };
-> >  static struct attribute *vmbus_chan_attrs[] = {
-> > @@ -1866,6 +1865,7 @@ static umode_t vmbus_chan_bin_attr_is_visible(struct kobject *kobj,
-> >  	/* Hide ring attribute if channel's ring_sysfs_visible is set to false */
-> >  	if (attr ==  &chan_attr_ring_buffer && !channel->ring_sysfs_visible)
-> >  		return 0;
-> > +	attr->size = channel->ringbuffer_pagecount << PAGE_SHIFT;
-> 
-> Suppose a VM has two devices using UIO, such as DPDK network device with
-> a 2MiB ring buffer, and an fcopy device with a 16KiB ring buffer. Both devices
-> will be referencing the same static instance of chan_attr_ring_buffer, and the
-> .size field it contains. The above statement will change that .size field
-> between 2MiB and 16KiB as the /sys entries are initially populated, and as
-> the visibility is changed if the devices are removed and re-instantiated (which
-> is much more likely for fcopy than for netvsc). That changing of the .size
-> value will probably work most of the time, but it's racy if two devices with
-> different ring buffer sizes get instantiated or re-instantiated at the same time.
+On 29.07.2025 14:03, Pedro Falcato wrote:
+> Ever since commit c2ff29e99a76 ("siw: Inline do_tcp_sendpages()"),
+> we have been doing this:
+>
+> static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+>                               size_t size)
+> [...]
+>          /* Calculate the number of bytes we need to push, for this page
+>           * specifically */
+>          size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
+>          /* If we can't splice it, then copy it in, as normal */
+>          if (!sendpage_ok(page[i]))
+>                  msg.msg_flags &= ~MSG_SPLICE_PAGES;
+>          /* Set the bvec pointing to the page, with len $bytes */
+>          bvec_set_page(&bvec, page[i], bytes, offset);
+>          /* Set the iter to $size, aka the size of the whole sendpages (!!!) */
+>          iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+> try_page_again:
+>          lock_sock(sk);
+>          /* Sendmsg with $size size (!!!) */
+>          rv = tcp_sendmsg_locked(sk, &msg, size);
+>
+> This means we've been sending oversized iov_iters and tcp_sendmsg calls
+> for a while. This has a been a benign bug because sendpage_ok() always
+> returned true. With the recent slab allocator changes being slowly
+> introduced into next (that disallow sendpage on large kmalloc
+> allocations), we have recently hit out-of-bounds crashes, due to slight
+> differences in iov_iter behavior between the MSG_SPLICE_PAGES and
+> "regular" copy paths:
+>
+> (MSG_SPLICE_PAGES)
+> skb_splice_from_iter
+>    iov_iter_extract_pages
+>      iov_iter_extract_bvec_pages
+>        uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
+>    skb_splice_from_iter gets a "short" read
+>
+> (!MSG_SPLICE_PAGES)
+> skb_copy_to_page_nocache copy=iov_iter_count
+>   [...]
+>     copy_from_iter
+>          /* this doesn't help */
+>          if (unlikely(iter->count < len))
+>                  len = iter->count;
+>            iterate_bvec
+>              ... and we run off the bvecs
+>
+> Fix this by properly setting the iov_iter's byte count, plus sending the
+> correct byte count to tcp_sendmsg_locked.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
+> Reviewed-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
+>
+> v2:
+>   - Add David Howells's Rb on the original patch
+>   - Remove the offset increment, since it's dead code
+>
+>   drivers/infiniband/sw/siw/siw_qp_tx.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
+> index 3a08f57d2211..f7dd32c6e5ba 100644
+> --- a/drivers/infiniband/sw/siw/siw_qp_tx.c
+> +++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+> @@ -340,18 +340,17 @@ static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+>   		if (!sendpage_ok(page[i]))
+>   			msg.msg_flags &= ~MSG_SPLICE_PAGES;
+>   		bvec_set_page(&bvec, page[i], bytes, offset);
+> -		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+> +		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
+>   
+>   try_page_again:
+>   		lock_sock(sk);
+> -		rv = tcp_sendmsg_locked(sk, &msg, size);
+> +		rv = tcp_sendmsg_locked(sk, &msg, bytes)
+>   		release_sock(sk);
+>   
+>   		if (rv > 0) {
+>   			size -= rv;
+>   			sent += rv;
+>   			if (rv != bytes) {
+> -				offset += rv;
+>   				bytes -= rv;
+>   				goto try_page_again;
+>   			}
 
-IIRC it works out in practice. While the global attribute instance is indeed
-modified back-and-forth the size from it will be *copied* into kernfs
-after each recalculation. So each attribute should get its own correct size.
+Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
 
-> Unfortunately, I don't see a fix, short of backporting support for the
-> .bin_size function, as this is exactly the problem that function solves.
-
-It should work out in practice. (I introduced the .bin_size function)
-
-Thomas
 
