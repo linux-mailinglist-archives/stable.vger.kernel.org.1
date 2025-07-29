@@ -1,156 +1,243 @@
-Return-Path: <stable+bounces-165071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646B3B14F3F
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 16:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F878B14F40
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 16:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871D818A2356
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 14:32:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0A3B18A245E
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 14:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FC13597E;
-	Tue, 29 Jul 2025 14:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931291C3BFC;
+	Tue, 29 Jul 2025 14:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ul9u3ge5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBkRBNO3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69BE881E
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 14:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41281746E
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 14:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753799546; cv=none; b=qwDCECrOjGxqQVYIWHjTt7/xeHVDUvOHHsGN9SuO61uOc072cxztDRaOldW13dvdlkQxpdqymENsNMolgZYJpFjNlIPRvxLCHh48DRoOc2Fx6JGhP6Fc9som09BopOwpAuLMKIkIMOYZPgEDHsMlKicHXjdlhoOYL5oes/y+BtU=
+	t=1753799548; cv=none; b=R3UiCX4C6RuWB/V+Lk9NArZmmNdagm8dajtzZyZbmD0IpD4hTMZQZJVCiQlf3a72ELlF1+mSZ5/NuIcNRzwstXUqVj7nGXZq+FS3JCJ3S4KyEPOEnh9/dP3VcsDCliaguuOsSYq/WpXBbLIty97m1k0hn+9ct8UMlBG30vBgBwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753799546; c=relaxed/simple;
-	bh=2D2R9wls75p1kRO+zYrHYcKwtF5J5vQ4ZEiv59hDLy0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BEP/vfi++AptvkG4gmEsWvs06cTEwjezUw5/mJKFaCERCq1Xs8rCQ3+F0kbw1PKXn2UP/6G6J6TiMMRYU7aXQOjNCF6OuAuDxzXfq9n7GBJQKRZUOVyoyBHGN2fM9fC1Q7+1zvDqo1xFyRtvthJo1IAFHZIwMBL+LVMlhhUEVQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ul9u3ge5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62679C4CEEF;
-	Tue, 29 Jul 2025 14:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753799545;
-	bh=2D2R9wls75p1kRO+zYrHYcKwtF5J5vQ4ZEiv59hDLy0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ul9u3ge58NVfVJ88oJcLqjVCNU5dZ39kXtQqZGtmQquleJsml4fzlTaJfLPLWs3Uw
-	 /4cPz5cz+d+EkzPhD60X9ZP696o9Lcio/9Q93YwYGE9/WK9cCXNoT7l0K4RGJqPfaC
-	 l7Cs0u7PN+QZ9tgS++vAMerhTgyEpllCp5vDdiN2nXZbHTgOhXMeKqZs6LBrYMZOdF
-	 C3aJAmmXYMpDIXvcMEX+MwKJK/YE40zXdUBLYBwMNPXhyXJIYmz27Bd0TAVFnICYPn
-	 xZHU3whrwEZXHBKR78Jv5gHzcbdKlIvyU2qHOByEMxzQd9DX1MoSnDsYBpXGyiDFCz
-	 aYzZlAW2UCz/Q==
-Message-ID: <ce3d987f-047a-4b5d-a2e9-f924e0700b15@kernel.org>
-Date: Tue, 29 Jul 2025 16:32:21 +0200
+	s=arc-20240116; t=1753799548; c=relaxed/simple;
+	bh=vthQ7N31jKVZOJQ5/ji/Z+MJty+oE852qBQS6hkSw1c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ERWSJzSH060H12Ydpbv72iA9cgRLwHNXmumXQvLuVLFfaV49DB7bgvOvmPAk+QXMLH4ZF4voQ9Q8fb+yh+pmFqiTjdeFIBz7T9uCZEWZGu1/A1OrfYXfq9o4N/qKyyxJxrZAdsUMBh4Ab2tCkE7EOsXkgHavcVzqXN55hvri7nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBkRBNO3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76727C4CEEF;
+	Tue, 29 Jul 2025 14:32:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753799547;
+	bh=vthQ7N31jKVZOJQ5/ji/Z+MJty+oE852qBQS6hkSw1c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=oBkRBNO3ntnNCCGbr1Xb26MFvUPXlRVbKJleKm0Hif6sLsr99uwKUbe3LrjDKoC/Y
+	 RY/2LugHjbhQDY3oJwhYvYnHPOBuMzL750wplV0CO8GXEjRHiALir1GHdzkgZJOMp0
+	 pCBieh86V9D5XVl69tw35FmSmau9HLql60Ld2Fsw=
+Subject: FAILED: patch "[PATCH] Revert "xfrm: destroy xfrm_state synchronously on net exit" failed to apply to 6.12-stable tree
+To: sd@queasysnail.net,steffen.klassert@secunet.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 29 Jul 2025 16:32:25 +0200
+Message-ID: <2025072924-postbox-exorcism-f636@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 5.15.y] selftests: mptcp: connect: also cover alt modes
-Content-Language: en-GB, fr-BE
-To: Sasha Levin <sashal@kernel.org>
-Cc: Geliang Tang <geliang@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-References: <2025072839-wildly-gala-e85f@gregkh>
- <20250729142019.2718195-1-sashal@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20250729142019.2718195-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
 
-On 29/07/2025 16:20, Sasha Levin wrote:
-> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> 
-> [ Upstream commit 37848a456fc38c191aedfe41f662cc24db8c23d9 ]
-> 
-> The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
-> available from the beginning, but only tested when mptcp_connect.sh is
-> manually launched with "-m mmap" or "-m sendfile", not via the
-> kselftests helpers.
-> 
-> The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
-> "-m sendfile". Plus other CIs, especially the ones validating the stable
-> releases, were not validating these alternate modes.
-> 
-> To make sure these modes are validated by these CIs, add two new test
-> programs executing mptcp_connect.sh with the alternate modes.
-> 
-> Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> [ Drop userspace_pm.sh from TEST_PROGS ]
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thank you for having fixed the conflicts.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Is it possible to hold this one for the moment? Yesterday, I was looking
-at this conflict, and when testing the same resolution as yours, I
-noticed mptcp_connect_sendfile.sh was failing on v5.15.y. I will
-investigate that.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2a198bbec6913ae1c90ec963750003c6213668c7
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025072924-postbox-exorcism-f636@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Please also note that this patch here will conflict with another you
-sent a few hours ago:
+Possible dependencies:
 
-  https://lore.kernel.org/20250729034856.2353329-1-sashal@kernel.org
 
-When the issues are fixed, I can send both of them again if that's OK
-for you.
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2a198bbec6913ae1c90ec963750003c6213668c7 Mon Sep 17 00:00:00 2001
+From: Sabrina Dubroca <sd@queasysnail.net>
+Date: Fri, 4 Jul 2025 16:54:34 +0200
+Subject: [PATCH] Revert "xfrm: destroy xfrm_state synchronously on net exit
+ path"
+
+This reverts commit f75a2804da391571563c4b6b29e7797787332673.
+
+With all states (whether user or kern) removed from the hashtables
+during deletion, there's no need for synchronous destruction of
+states. xfrm6_tunnel states still need to have been destroyed (which
+will be the case when its last user is deleted (not destroyed)) so
+that xfrm6_tunnel_free_spi removes it from the per-netns hashtable
+before the netns is destroyed.
+
+This has the benefit of skipping one synchronize_rcu per state (in
+__xfrm_state_destroy(sync=true)) when we exit a netns.
+
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 91d52a380e37..f3014e4f54fc 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -915,7 +915,7 @@ static inline void xfrm_pols_put(struct xfrm_policy **pols, int npols)
+ 		xfrm_pol_put(pols[i]);
+ }
+ 
+-void __xfrm_state_destroy(struct xfrm_state *, bool);
++void __xfrm_state_destroy(struct xfrm_state *);
+ 
+ static inline void __xfrm_state_put(struct xfrm_state *x)
+ {
+@@ -925,13 +925,7 @@ static inline void __xfrm_state_put(struct xfrm_state *x)
+ static inline void xfrm_state_put(struct xfrm_state *x)
+ {
+ 	if (refcount_dec_and_test(&x->refcnt))
+-		__xfrm_state_destroy(x, false);
+-}
+-
+-static inline void xfrm_state_put_sync(struct xfrm_state *x)
+-{
+-	if (refcount_dec_and_test(&x->refcnt))
+-		__xfrm_state_destroy(x, true);
++		__xfrm_state_destroy(x);
+ }
+ 
+ static inline void xfrm_state_hold(struct xfrm_state *x)
+@@ -1769,7 +1763,7 @@ struct xfrmk_spdinfo {
+ 
+ struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq, u32 pcpu_num);
+ int xfrm_state_delete(struct xfrm_state *x);
+-int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync);
++int xfrm_state_flush(struct net *net, u8 proto, bool task_valid);
+ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_valid);
+ int xfrm_dev_policy_flush(struct net *net, struct net_device *dev,
+ 			  bool task_valid);
+diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
+index 7fd8bc08e6eb..5120a763da0d 100644
+--- a/net/ipv6/xfrm6_tunnel.c
++++ b/net/ipv6/xfrm6_tunnel.c
+@@ -334,7 +334,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
+ 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
+ 	unsigned int i;
+ 
+-	xfrm_state_flush(net, 0, false, true);
++	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
+ 	xfrm_flush_gc();
+ 
+ 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index efc2a91f4c48..b5d761700776 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1766,7 +1766,7 @@ static int pfkey_flush(struct sock *sk, struct sk_buff *skb, const struct sadb_m
+ 	if (proto == 0)
+ 		return -EINVAL;
+ 
+-	err = xfrm_state_flush(net, proto, true, false);
++	err = xfrm_state_flush(net, proto, true);
+ 	err2 = unicast_flush_resp(sk, hdr);
+ 	if (err || err2) {
+ 		if (err == -ESRCH) /* empty table - go quietly */
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index f7110a658897..327a1a6f892c 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -592,7 +592,7 @@ void xfrm_state_free(struct xfrm_state *x)
+ }
+ EXPORT_SYMBOL(xfrm_state_free);
+ 
+-static void ___xfrm_state_destroy(struct xfrm_state *x)
++static void xfrm_state_gc_destroy(struct xfrm_state *x)
+ {
+ 	if (x->mode_cbs && x->mode_cbs->destroy_state)
+ 		x->mode_cbs->destroy_state(x);
+@@ -631,7 +631,7 @@ static void xfrm_state_gc_task(struct work_struct *work)
+ 	synchronize_rcu();
+ 
+ 	hlist_for_each_entry_safe(x, tmp, &gc_list, gclist)
+-		___xfrm_state_destroy(x);
++		xfrm_state_gc_destroy(x);
+ }
+ 
+ static enum hrtimer_restart xfrm_timer_handler(struct hrtimer *me)
+@@ -795,19 +795,14 @@ void xfrm_dev_state_free(struct xfrm_state *x)
+ }
+ #endif
+ 
+-void __xfrm_state_destroy(struct xfrm_state *x, bool sync)
++void __xfrm_state_destroy(struct xfrm_state *x)
+ {
+ 	WARN_ON(x->km.state != XFRM_STATE_DEAD);
+ 
+-	if (sync) {
+-		synchronize_rcu();
+-		___xfrm_state_destroy(x);
+-	} else {
+-		spin_lock_bh(&xfrm_state_gc_lock);
+-		hlist_add_head(&x->gclist, &xfrm_state_gc_list);
+-		spin_unlock_bh(&xfrm_state_gc_lock);
+-		schedule_work(&xfrm_state_gc_work);
+-	}
++	spin_lock_bh(&xfrm_state_gc_lock);
++	hlist_add_head(&x->gclist, &xfrm_state_gc_list);
++	spin_unlock_bh(&xfrm_state_gc_lock);
++	schedule_work(&xfrm_state_gc_work);
+ }
+ EXPORT_SYMBOL(__xfrm_state_destroy);
+ 
+@@ -922,7 +917,7 @@ xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool
+ }
+ #endif
+ 
+-int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync)
++int xfrm_state_flush(struct net *net, u8 proto, bool task_valid)
+ {
+ 	int i, err = 0, cnt = 0;
+ 
+@@ -3283,7 +3278,7 @@ void xfrm_state_fini(struct net *net)
+ 	unsigned int sz;
+ 
+ 	flush_work(&net->xfrm.state_hash_work);
+-	xfrm_state_flush(net, 0, false, true);
++	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
+ 	flush_work(&xfrm_state_gc_work);
+ 
+ 	WARN_ON(!list_empty(&net->xfrm.state_all));
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 1db18f470f42..684239018bec 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2635,7 +2635,7 @@ static int xfrm_flush_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct xfrm_usersa_flush *p = nlmsg_data(nlh);
+ 	int err;
+ 
+-	err = xfrm_state_flush(net, p->proto, true, false);
++	err = xfrm_state_flush(net, p->proto, true);
+ 	if (err) {
+ 		if (err == -ESRCH) /* empty table */
+ 			return 0;
 
 
