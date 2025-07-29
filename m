@@ -1,104 +1,58 @@
-Return-Path: <stable+bounces-165059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0C8B14D63
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 14:04:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B386CB14D9A
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 14:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87EDE3BF928
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 12:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD5718A2C11
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 12:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2646128D85C;
-	Tue, 29 Jul 2025 12:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE18F2A1CF;
+	Tue, 29 Jul 2025 12:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XtJCeYlB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2gTfL68T";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XtJCeYlB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2gTfL68T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvHrCoQj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71832291C36
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 12:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF63E262FF0
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 12:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753790636; cv=none; b=jiqTfnLNdR4O+A544NMQ9w/L0d9C5pRz9hOHZJ45hQhgIZLPPd9zqmi1l3xNz/HEc4kTHjoa/55PaMG3A8qoLydCJnP+MRJZbskEH8RlJFCTQ3hUDoMwip7UeTVuDijHji8OfLfn3EgQ0BokToYSWXxRZirJZqCTKNm8UsbCuzY=
+	t=1753791888; cv=none; b=mXBfCdDFdyEISjhOV2xBGvunKMUuA9VeNKKNVZsXjL2ulXNzdOo6C0T2LQukqcPvOROhYBlW8C86JUYn+9Ro16na4GVcnqn6IrKi6qeziBtMNzZAg9PFn2jfa861cWOhG7A/s2DLZ/rorT3B7PwsPVxaUwDUyQ7s2FrZ6mrgZ6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753790636; c=relaxed/simple;
-	bh=NHLC2E1wT8s9zqv+wU+mGxlEZqtQg8+G0zst3AXCLOk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Js9vZVcEECWx3CkbA8RY5qI/l0YknMJY9KtOWPjlp//CBL8HhEfi2VcrWsndVIC65M0c3pNJGeEIBnjo5h0jNTiia5JX5BTRcb/fk/Vm6II+bOU/xKAe+UwnM9lGPe4Kg9y+vuXou1KXM0bN+rk8FJFSg7LvrG/dt7ddYFfpfk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XtJCeYlB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2gTfL68T; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XtJCeYlB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2gTfL68T; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 69F9A1F385;
-	Tue, 29 Jul 2025 12:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753790632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=J0XRPjML4mLkSrnriwK6SqbV6JTvs/+OMjrGpcQkY60=;
-	b=XtJCeYlBOBMphfzBASk29AT60ZxONQrTpxdmyfAbTxnb/8JuDfgxqCqqw7xKrrJuFxIHTf
-	G6D3J71PFMuPHYax1syPLYD1d4tq27MUdZ30IMxCJKY0H5bed06reZnXB4+c3u4Um+cSKE
-	RY3EZ0dANLe6iGx5UVsey6oxM3meKgY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753790632;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=J0XRPjML4mLkSrnriwK6SqbV6JTvs/+OMjrGpcQkY60=;
-	b=2gTfL68TAlrWDeCcPnskaHrjv1hiZZJ28qVZramfsYwWXZYLjYF/R/ehHFa3j7XzcGdDSp
-	YM0PlqwLRNCIDyAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XtJCeYlB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2gTfL68T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753790632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=J0XRPjML4mLkSrnriwK6SqbV6JTvs/+OMjrGpcQkY60=;
-	b=XtJCeYlBOBMphfzBASk29AT60ZxONQrTpxdmyfAbTxnb/8JuDfgxqCqqw7xKrrJuFxIHTf
-	G6D3J71PFMuPHYax1syPLYD1d4tq27MUdZ30IMxCJKY0H5bed06reZnXB4+c3u4Um+cSKE
-	RY3EZ0dANLe6iGx5UVsey6oxM3meKgY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753790632;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=J0XRPjML4mLkSrnriwK6SqbV6JTvs/+OMjrGpcQkY60=;
-	b=2gTfL68TAlrWDeCcPnskaHrjv1hiZZJ28qVZramfsYwWXZYLjYF/R/ehHFa3j7XzcGdDSp
-	YM0PlqwLRNCIDyAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 789BC13A73;
-	Tue, 29 Jul 2025 12:03:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ucgnGqe4iGipAwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 29 Jul 2025 12:03:51 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	torvalds@linux-foundation.org,
-	Pedro Falcato <pfalcato@suse.de>,
-	stable@vger.kernel.org,
-	kernel test robot <oliver.sang@intel.com>
-Subject: [PATCH v2] RDMA/siw: Fix the sendmsg byte count in siw_tcp_sendpages
-Date: Tue, 29 Jul 2025 13:03:48 +0100
-Message-ID: <20250729120348.495568-1-pfalcato@suse.de>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1753791888; c=relaxed/simple;
+	bh=+N69QnbU8CGI4ZqRRCughCONKa9hWfxUBKaj2QQ5ZgE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Q9dIY+oS0sCiHmDLhkddvNU/WkDUOgfNjn9eFCeJSF1eGlxAvqhPgNqASV2EWXoy4x98UbIC0NsGjTpp7O4HqQrtbhJoUx/gFaimoGF060wgmx9RmOKlvsP4EywonY2blYXJF64QyO2WQ2aoRy8bFrDKdP3Q+CIIf3GShdDkg2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvHrCoQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A680C4CEEF;
+	Tue, 29 Jul 2025 12:24:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753791888;
+	bh=+N69QnbU8CGI4ZqRRCughCONKa9hWfxUBKaj2QQ5ZgE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LvHrCoQjWeTmRMwXM4ag+9iLsWdBSx2B/AhzZb4lU0QATkQ9vMozII2flkYyi60Du
+	 eWyKCHzopgeEEYSMNJFNTameFuNaWJvPURFWwQ7C5gpp68mr6hiwgSS+18jwkupUx0
+	 VgIspLjUz6KKxUXGZ8/TVaBkDExg+ElGFR4mgTW97NRTD2OaJQ8spbk/nNyO5qj0it
+	 aQxtO5u0TT7tOkYryyVAmmOxngJkmAai8pInnDbK8XZo4VNX2eSF4zeabg9xiyCc/b
+	 DJIphMv+5OmZ/MkPZJROwfjftkDtQiyRUe2rpQgverb6NhgESdL4gxZ0fgc0vlEW1T
+	 wNlKOjbfkzRMg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Cristian Prundeanu <cpru@amazon.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
+Date: Tue, 29 Jul 2025 08:24:21 -0400
+Message-Id: <20250729122421.2688525-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025072817-deeply-galleria-d758@gregkh>
+References: <2025072817-deeply-galleria-d758@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -106,126 +60,116 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 69F9A1F385
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
 
-Ever since commit c2ff29e99a76 ("siw: Inline do_tcp_sendpages()"),
-we have been doing this:
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
-                             size_t size)
-[...]
-        /* Calculate the number of bytes we need to push, for this page
-         * specifically */
-        size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
-        /* If we can't splice it, then copy it in, as normal */
-        if (!sendpage_ok(page[i]))
-                msg.msg_flags &= ~MSG_SPLICE_PAGES;
-        /* Set the bvec pointing to the page, with len $bytes */
-        bvec_set_page(&bvec, page[i], bytes, offset);
-        /* Set the iter to $size, aka the size of the whole sendpages (!!!) */
-        iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-try_page_again:
-        lock_sock(sk);
-        /* Sendmsg with $size size (!!!) */
-        rv = tcp_sendmsg_locked(sk, &msg, size);
+[ Upstream commit d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb ]
 
-This means we've been sending oversized iov_iters and tcp_sendmsg calls
-for a while. This has a been a benign bug because sendpage_ok() always
-returned true. With the recent slab allocator changes being slowly
-introduced into next (that disallow sendpage on large kmalloc
-allocations), we have recently hit out-of-bounds crashes, due to slight
-differences in iov_iter behavior between the MSG_SPLICE_PAGES and
-"regular" copy paths:
+`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
+to different stacks along with the Shadow Call Stack if it is enabled.
+Those two stack changes cannot be done atomically and both functions
+can be interrupted by SErrors or Debug Exceptions which, though unlikely,
+is very much broken : if interrupted, we can end up with mismatched stacks
+and Shadow Call Stack leading to clobbered stacks.
 
-(MSG_SPLICE_PAGES)
-skb_splice_from_iter
-  iov_iter_extract_pages
-    iov_iter_extract_bvec_pages
-      uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
-  skb_splice_from_iter gets a "short" read
+In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
+but x18 stills points to the old task's SCS. When the interrupt handler
+tries to save the task's SCS pointer, it will save the old task
+SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
+clobbering it.
 
-(!MSG_SPLICE_PAGES)
-skb_copy_to_page_nocache copy=iov_iter_count
- [...]
-   copy_from_iter
-        /* this doesn't help */
-        if (unlikely(iter->count < len))
-                len = iter->count;
-          iterate_bvec
-            ... and we run off the bvecs
+In `call_on_irq_stack()`, it can happen when switching from the task stack
+to the IRQ stack and when switching back. In both cases, we can be
+interrupted when the SCS pointer points to the IRQ SCS, but SP points to
+the task stack. The nested interrupt handler pushes its return addresses
+on the IRQ SCS. It then detects that SP points to the task stack,
+calls `call_on_irq_stack()` and clobbers the task SCS pointer with
+the IRQ SCS pointer, which it will also use !
 
-Fix this by properly setting the iov_iter's byte count, plus sending the
-correct byte count to tcp_sendmsg_locked.
+This leads to tasks returning to addresses on the wrong SCS,
+or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
+or FPAC if enabled.
 
-Cc: stable@vger.kernel.org
-Fixes: c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+This is possible on a default config, but unlikely.
+However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
+instead the GIC is responsible for filtering what interrupts the CPU
+should receive based on priority.
+Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
+even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
+frequently depending on the system configuration and workload, leading
+to unpredictable kernel panics.
+
+Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
+Do the same in `call_on_irq_stack()`, but restore and mask around
+the branch.
+Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
+of behaviour between all configurations.
+
+Introduce and use an assembly macro for saving and masking DAIF,
+as the existing one saves but only masks IF.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Reported-by: Cristian Prundeanu <cpru@amazon.com>
+Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
+Tested-by: Cristian Prundeanu <cpru@amazon.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ removed duplicate save_and_disable_daif macro ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ arch/arm64/kernel/entry.S | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-v2:
- - Add David Howells's Rb on the original patch
- - Remove the offset increment, since it's dead code
-
- drivers/infiniband/sw/siw/siw_qp_tx.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
-index 3a08f57d2211..f7dd32c6e5ba 100644
---- a/drivers/infiniband/sw/siw/siw_qp_tx.c
-+++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
-@@ -340,18 +340,17 @@ static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
- 		if (!sendpage_ok(page[i]))
- 			msg.msg_flags &= ~MSG_SPLICE_PAGES;
- 		bvec_set_page(&bvec, page[i], bytes, offset);
--		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-+		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
+diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
+index 62146d48dba7..4b4a9aa76e1a 100644
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -827,6 +827,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
+  *
+  */
+ SYM_FUNC_START(cpu_switch_to)
++	save_and_disable_daif x11
+ 	mov	x10, #THREAD_CPU_CONTEXT
+ 	add	x8, x0, x10
+ 	mov	x9, sp
+@@ -850,6 +851,7 @@ SYM_FUNC_START(cpu_switch_to)
+ 	ptrauth_keys_install_kernel x1, x8, x9, x10
+ 	scs_save x0
+ 	scs_load_current
++	restore_irq x11
+ 	ret
+ SYM_FUNC_END(cpu_switch_to)
+ NOKPROBE(cpu_switch_to)
+@@ -876,6 +878,7 @@ NOKPROBE(ret_from_fork)
+  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
+  */
+ SYM_FUNC_START(call_on_irq_stack)
++	save_and_disable_daif x9
+ #ifdef CONFIG_SHADOW_CALL_STACK
+ 	get_current_task x16
+ 	scs_save x16
+@@ -890,8 +893,10 @@ SYM_FUNC_START(call_on_irq_stack)
  
- try_page_again:
- 		lock_sock(sk);
--		rv = tcp_sendmsg_locked(sk, &msg, size);
-+		rv = tcp_sendmsg_locked(sk, &msg, bytes);
- 		release_sock(sk);
+ 	/* Move to the new stack and call the function there */
+ 	add	sp, x16, #IRQ_STACK_SIZE
++	restore_irq x9
+ 	blr	x1
  
- 		if (rv > 0) {
- 			size -= rv;
- 			sent += rv;
- 			if (rv != bytes) {
--				offset += rv;
- 				bytes -= rv;
- 				goto try_page_again;
- 			}
++	save_and_disable_daif x9
+ 	/*
+ 	 * Restore the SP from the FP, and restore the FP and LR from the frame
+ 	 * record.
+@@ -899,6 +904,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
+ 	scs_load_current
++	restore_irq x9
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 -- 
-2.50.1
+2.39.5
 
 
