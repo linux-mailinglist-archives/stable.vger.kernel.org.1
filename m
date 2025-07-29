@@ -1,160 +1,151 @@
-Return-Path: <stable+bounces-165022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D32B145E8
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 03:41:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA32BB1460F
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 04:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C7B65432E4
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 01:41:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25BB0541993
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 02:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8581F419A;
-	Tue, 29 Jul 2025 01:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BEB1FAC37;
+	Tue, 29 Jul 2025 02:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gh6UJOYi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="msgBhzu6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940001DE4CA;
-	Tue, 29 Jul 2025 01:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32881F7580;
+	Tue, 29 Jul 2025 02:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753753279; cv=none; b=rUDykNzrHzoAFVAbidYsJ1V1Ki+nEjgF+mFvHi9TiVOWOEZAzSh8Hqh2kP76MtvGMLnUm4JARk/Vy4DJy+OXTYWrv6j1taxp4Abn1NdRNRbKaBQbqL7iAeGIJqrvvTnB2B5OT7NGHduSVW0GjHYEgAWG+YXuFRQSoFGpm3eDKMM=
+	t=1753755074; cv=none; b=YCmtI5Ep/sMOTEn+daVf8oOszZulqg5GFOKpwFryAuJGTPII+0tHmdW8pruYyajHg8Xn7y8O11WEwR4aFZkCYZBvJWewO0hAcLl9d5/8JN424M70fM1a7COUmdE4UBJR/qJslMgjmdLT/UhkELk5WmLbHYRfl/llvhCIH94Tz1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753753279; c=relaxed/simple;
-	bh=ChRHoBucNmtnYuMLvWLunxMPAZIA7tWr59Od276cfto=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tOIOEmHd69yCh7Pt8ClUD6ApwEodbF0clgGd9om07bchXp3zyGabsKfk8hiN8mhhSmA14+Ap8wcEQGI0kMcoZOiV7VZCdx+NjsuAmI0+0p5km/FqNPuGDoCJpWiiorKTHr1gMsh4ZRt1rSufp24lLHeA0rHxREabwN1RHEEKwbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gh6UJOYi; arc=none smtp.client-ip=209.85.217.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4e7efae1bfdso1575648137.3;
-        Mon, 28 Jul 2025 18:41:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753753276; x=1754358076; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rTE78ChE+vquBrI5YrDGqyKJDHj33kW+vj6Lk06X/sU=;
-        b=Gh6UJOYiyeMuiAlbDmXPcwegvprxkYM/mpyDlMltm6WS9JoxhWrnAwhwrqglReIShY
-         sJZTem4S7ei0QWJukJMFwkpGjBv0dX3UCxUZkPfWLeG/D4UcAuORvnYaX45ji/W3sU2T
-         Cfadkv4PilbF3rVJl0tHEMpKQPwmjhp7eBGKvdvIwN6ik0+7nO2Ueke9lBLHQsflYnNU
-         4YeNI77+8d25uJtvbypM8DlzoKj+8TKDbvDJ/wy3SsZFqeNJuvHI6TkRyhSwK5opob+X
-         JFIi9swsAXNpCar/A+d+tMvkhz6W/z5zjEeSPBK3MQhvdGVEhAkqEAqGL5DW5HG9Mqxi
-         OBng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753753276; x=1754358076;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rTE78ChE+vquBrI5YrDGqyKJDHj33kW+vj6Lk06X/sU=;
-        b=tRsqRqhUP/G++AWYa1EVfhjlqF34R10/GgAKSIThNfbkO7ifUq0ruzW/yC0TG5ndNX
-         ruVHcRLamDpAYT9M2DA1GWzNF2robbAFsyQ+ODk68cWGWsYixyYBwZuszmRock+XQ6AX
-         kDksi34p6o94k1K7dnawEbSXQLDUUJGyzsaT8jXElmgp42xhcXlxWYJ/czdvyNK30Rmu
-         mel4JAPH0dTAULowy1+veq+aLbVdbLgqwQjMS+bQPyQQR3FIGfr2dHlUiHzVx6V+MOGu
-         /rd0jVcmXZ5FJb97hJW6I7272tcNrPhFmStb1BAqHv3qyGM07Qgp7lm6m1o84Q5pwtPK
-         kJPA==
-X-Forwarded-Encrypted: i=1; AJvYcCV86rPOD8GKnadevEPh/G4jw8ooNvuJ4tGUJrEW8VDDwXrsVxhrOdfJ/SVf0wHViAivZl8g0lVsrabXgin4RBnYjoE=@vger.kernel.org, AJvYcCVdITpbjxf5XgI1dK8atzS5CkztRamBLtd9qW4OpH7cvAZ2lSpKTNge+Ue9m6ZqKq+o5GA0SccBe3Yx@vger.kernel.org, AJvYcCX2oMMv02qRLpIej3KfSWmunjEsNye8Crc5Cr6KvfOT4MRFF4Boz1ej//qTI2pzVUkyfOTMSEUs@vger.kernel.org, AJvYcCXGBqMpoaj4Hh9/rTf7IMz4ASBLYWh9y3BNxZtoq/s4DLQGOH44zodtMBp2YdceBtz1akzttX8AtvE1Vj3E@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCmcE6XPwgefJRc973l9QoYVeokTmcPtj6HGQ5sV+1bSXn4LF7
-	HgNeKRbmeR6jQeM3IH4VumHgqcJQlP4nDBJb24BN0mdgfxnd3pAzKF7qE155RdHqpoQz9u0Ixih
-	O9JtfOB+/0Svfpes7y1C/Pjk+9BYKeiY=
-X-Gm-Gg: ASbGncsGO/g0YuPj2Td6+hHkZms5pgMdM4PLv5Hf+YLAM5hDNbruApbtJ/1zWe3CPD+
-	gjRw+JbQ42VeLCicT2j/RsTJ0UbtzotPVZBYzcRSeV/AodnlExXBpH+s0MwuRq1qQTfXWUJeZYm
-	5Fb2bCnrT7kP0dVv7u5uJfUsyESHsbSotCBOSokVXPJcMy90IAsiXADLYKT3i44CVnvEgww4ym1
-	QwByw==
-X-Google-Smtp-Source: AGHT+IH5sSaz4kLWBjYQ8xg5A6GoRN5L+Q3qFpxAbI0in2TfAspkDTFwyyOI/F2e9j59D50tjfOZG4mczSkStSE5wG4=
-X-Received: by 2002:a05:6102:8024:b0:4fa:d2c:4fe with SMTP id
- ada2fe7eead31-4fa3fef74c9mr6797567137.26.1753753276427; Mon, 28 Jul 2025
- 18:41:16 -0700 (PDT)
+	s=arc-20240116; t=1753755074; c=relaxed/simple;
+	bh=zC0nRcR6cty3AjQe02kjM9LHjo84K3+8o1Zpfqdf6SM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T2KVX5fY69nhXFrQ38SEXY4ajmOvN7hdp2uPONYRvwsEZnmwKwHB42Qeqw4PbYoVx68Mt2sndHMZmVXP3q0h7bM7Dxb9tAt6vcJPNkkwS8g+Ht2CJHuflBER5F7BxSSghjhZXH6d48WCsEVYsRYzk1GkIMqttn0htO5N4qTP+NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=msgBhzu6; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753755073; x=1785291073;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zC0nRcR6cty3AjQe02kjM9LHjo84K3+8o1Zpfqdf6SM=;
+  b=msgBhzu6JSo4ru3qONmzQlkkqYsxALBWGt6HPmAhP8yuiOOVURPIQj50
+   9EZ1H22t51rbzMMnU2Z0CsERoj1l7epidKb2dRindNRYX9Io0R6NXUHmE
+   AcerVyhNXOxBQIQcxTGJjkQ3YE6MX7zEh7bc4hfZL2U9fF5TvxOao2j+l
+   9dz6EmBqS+avbnPgUqxcvcdL/X3htfUU05Ds7wflSsbK1cl/cKePZZYGI
+   Wrt1WL5Q6Cad7A080y+L+OcahNUicYKBnLsnncpIHO0G7LGJkb4p8GnzN
+   OgaUX0xXGSoqAY0Moh88W0OQADtSGOlhyOojV7A/C1MFpDHqYtgW4fvxf
+   w==;
+X-CSE-ConnectionGUID: uZBxJ5CjRHK6YbhvVIyWXA==
+X-CSE-MsgGUID: u1I7EyXPQM+Klq/+BY+g3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="81453523"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="81453523"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 19:11:12 -0700
+X-CSE-ConnectionGUID: qp5D/NjOQaW+rJZ9uIvDKQ==
+X-CSE-MsgGUID: PM8nO3jzRBC7wsv6bJjHtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="162615706"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 19:11:08 -0700
+Message-ID: <d3cd4427-58a3-417b-a409-81d31110faeb@linux.intel.com>
+Date: Tue, 29 Jul 2025 10:08:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250706-exynosdrm-decon-v4-0-735fd215f4b3@disroot.org>
-In-Reply-To: <20250706-exynosdrm-decon-v4-0-735fd215f4b3@disroot.org>
-From: Inki Dae <daeinki@gmail.com>
-Date: Tue, 29 Jul 2025 10:40:34 +0900
-X-Gm-Features: Ac12FXy-Uc3aIGD_z-2Hmjo9PpVFm9Hawvq4wg2d1-g_c1M1SQ84nY0S7pRIJwA
-Message-ID: <CAAQKjZOLZw7e1G56i29b28L0NwOM=P4eZtcNAp2vFpe3ck958A@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] Samsung Exynos 7870 DECON driver support
-To: Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Conor Dooley <conor@kernel.org>, 
-	Ajay Kumar <ajaykumar.rs@samsung.com>, Akshu Agrawal <akshua@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Yu Zhang <zhangyu1@linux.microsoft.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Tested-by : Yi Lai" <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250709062800.651521-1-baolu.lu@linux.intel.com>
+ <ee7585bd-d87c-4f93-9c8e-b8c1d649cdfe@intel.com>
+ <228cd2c9-b781-4505-8b54-42dab03f3650@linux.intel.com>
+ <326c60aa-37f3-458d-a534-6e0106cc244b@intel.com>
+ <20250710132234.GL1599700@nvidia.com>
+ <62580eab-3e68-4132-981a-84167d130d9f@intel.com>
+ <6dn5n5cge7acmmfgb5zi7ctcbn5hiqyr2xhmgbdxohqydhgmtt@47nnr4tnzlnh>
+ <2a1ffe30-b0a6-45b3-8dcb-feaa285e1e5b@linux.intel.com>
+ <pk2b4xgxewxotp557osucliagmziv3erepsret4hbnxnvhff2n@p2gark4kdiqw>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <pk2b4xgxewxotp557osucliagmziv3erepsret4hbnxnvhff2n@p2gark4kdiqw>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi  Kaustabh Chakraborty,
+On 7/29/25 01:36, Yu Zhang wrote:
+> On Thu, Jul 24, 2025 at 11:01:12AM +0800, Baolu Lu wrote:
+>> On 7/11/25 16:17, Yu Zhang wrote:
+>>> On Thu, Jul 10, 2025 at 08:26:06AM -0700, Dave Hansen wrote:
+>>>> On 7/10/25 06:22, Jason Gunthorpe wrote:
+>>>>>> Why does this matter? We flush the CPU TLB in a bunch of different ways,
+>>>>>> _especially_ when it's being done for kernel mappings. For example,
+>>>>>> __flush_tlb_all() is a non-ranged kernel flush which has a completely
+>>>>>> parallel implementation with flush_tlb_kernel_range(). Call sites that
+>>>>>> use_it_ are unaffected by the patch here.
+>>>>>>
+>>>>>> Basically, if we're only worried about vmalloc/vfree freeing page
+>>>>>> tables, then this patch is OK. If the problem is bigger than that, then
+>>>>>> we need a more comprehensive patch.
+>>>>> I think we are worried about any place that frees page tables.
+>>>> The two places that come to mind are the remove_memory() code and
+>>>> __change_page_attr().
+>>>>
+>>>> The remove_memory() gunk is in arch/x86/mm/init_64.c. It has a few sites
+>>>> that do flush_tlb_all(). Now that I'm looking at it, there look to be
+>>>> some races between freeing page tables pages and flushing the TLB. But,
+>>>> basically, if you stick to the sites in there that do flush_tlb_all()
+>>>> after free_pagetable(), you should be good.
+>>>>
+>>>> As for the __change_page_attr() code, I think the only spot you need to
+>>>> hit is cpa_collapse_large_pages() and maybe the one in
+>>>> __split_large_page() as well.
+>>>>
+>>>> This is all disturbingly ad-hoc, though. The remove_memory() code needs
+>>>> fixing and I'll probably go try to bring some order to the chaos in the
+>>>> process of fixing it up. But that's a separate problem than this IOMMU fun.
+>>>>
+>>> Could we consider to split the flush_tlb_kernel_range() into 2 different
+>>> versions:
+>>> - the one which only flushes the CPU TLB
+>>> - the one which flushes the CPU paging structure cache and then notifies
+>>>     IOMMU to do the same(e.g., in pud_free_pmd_page()/pmd_free_pte_page())?
+>>  From the perspective of an IOMMU, there is no need to split. IOMMU SVA
+>> only allows the device to access user-space memory with user
+>> permission. Access to kernel address space with privileged permission
+>> is not allowed. Therefore, the IOMMU subsystem only needs a callback to
+>> invalidate the paging structure cache.
+> Thanks Baolu.
+> 
+> Indeed. That's why I was wondering if we could split flush_tlb_kernel_range()
+> into 2 versions - one used only after a kernal virtual address range is
+> unmapped, and another one used after a kernel paging structure is freed.
+> Only the 2nd one needs to notify the IOMMU subsystem.
 
-This patch series has been merged into the exynos-drm-next branch.
+Yeah! That sounds better.
 
 Thanks,
-Inki Dae
-
-2025=EB=85=84 7=EC=9B=94 7=EC=9D=BC (=EC=9B=94) =EC=98=A4=EC=A0=84 2:30, Ka=
-ustabh Chakraborty <kauschluss@disroot.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
-=84=B1:
->
-> This patch series aims at adding support for Exynos7870's DECON in the
-> Exynos7 DECON driver. It introduces a driver data struct so that support
-> for DECON on other SoCs can be added to it in the future.
->
-> It also fixes a few bugs in the driver, such as functions receiving bad
-> pointers.
->
-> Tested on Samsung Galaxy J7 Prime (samsung-on7xelte), Samsung Galaxy A2
-> Core (samsung-a2corelte), and Samsung Galaxy J6 (samsung-j6lte).
->
-> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-> ---
-> Changes in v4:
-> - Drop applied patch [v2 3/3].
-> - Correct documentation of port dt property.
-> - Add documentation of memory-region.
-> - Remove redundant ctx->suspended completely.
-> - Link to v3: https://lore.kernel.org/r/20250627-exynosdrm-decon-v3-0-5b4=
-56f88cfea@disroot.org
->
-> Changes in v3:
-> - Add a new commit documenting iommus and ports dt properties.
-> - Link to v2: https://lore.kernel.org/r/20250612-exynosdrm-decon-v2-0-d6c=
-1d21c8057@disroot.org
->
-> Changes in v2:
-> - Add a new commit to prevent an occasional panic under circumstances.
-> - Rewrite and redo [v1 2/6] to be a more sensible commit.
-> - Link to v1: https://lore.kernel.org/r/20240919-exynosdrm-decon-v1-0-6c5=
-861c1cb04@disroot.org
->
-> ---
-> Kaustabh Chakraborty (2):
->       dt-bindings: display: samsung,exynos7-decon: document iommus, memor=
-y-region, and ports
->       drm/exynos: exynos7_drm_decon: remove ctx->suspended
->
->  .../display/samsung/samsung,exynos7-decon.yaml     | 21 +++++++++++++
->  drivers/gpu/drm/exynos/exynos7_drm_decon.c         | 36 ----------------=
-------
->  2 files changed, 21 insertions(+), 36 deletions(-)
-> ---
-> base-commit: 26ffb3d6f02cd0935fb9fa3db897767beee1cb2a
-> change-id: 20240917-exynosdrm-decon-4c228dd1d2bf
->
-> Best regards,
-> --
-> Kaustabh Chakraborty <kauschluss@disroot.org>
->
->
+baolu
 
