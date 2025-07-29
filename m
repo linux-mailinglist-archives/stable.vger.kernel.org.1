@@ -1,136 +1,138 @@
-Return-Path: <stable+bounces-165038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550A1B148D1
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 08:59:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AA9B148F8
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 09:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B103BCDAC
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 06:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D08823AA7ED
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 07:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57BE25F994;
-	Tue, 29 Jul 2025 06:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="f/Wfvghx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6A725FA05;
+	Tue, 29 Jul 2025 07:12:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A46325C838
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 06:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00FD36124;
+	Tue, 29 Jul 2025 07:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753772340; cv=none; b=TeajlnGl4NbVxOVp3DQFsXQM833FSVYp4QraTZ5+znn9LJCv/QpaNB1Lj6FolfKGj/qg7S0YAx6+onMZGGXZpeQXSLjxwokEAmDIp9fcAJbsDefg+Z7dNlNqujWEFQGnKJskc5DiYVO5wvYdzw4dpPgWsWHfyqGVTCJghz/CGms=
+	t=1753773121; cv=none; b=sQmbeJNpyhImqtm2TxBg3KyoLKgrrdS1JE2BfFwXJPP0WDYeJtc5KDvgyh5TBgdy8bPaNslUEJt5cVQ9rRyesXS4l4x4iVOL5Ecwa0mzw/9kWWFsWlYzH3a1xGaB1PteTmgRLgT6IAR545plKul5eDFCIqff/K/QcTnkwjaTqog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753772340; c=relaxed/simple;
-	bh=HecQWwK2lk4Yt12acj8ntIBVFy8o7ykyEZNOkui4Hgg=;
+	s=arc-20240116; t=1753773121; c=relaxed/simple;
+	bh=XiaUxDcQsjkqrm62MA9BpXABVe05uEqGTNkD8cUJlKY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iP1pP9zBENUDetfPQBgmeBUk48Rd65PbgQ+Myvl+QfjmwK+V+r0BmNJoHpMlDzKQf0JbrSPV9WunpiQn+XxyxLv/bj2FKtfI3eCrgqWWfMsv/e8JEviuqBKofpUr0GyoLMEFH+cva+kN44fAvsxiqPqVqMr09F1718xMsXgyAnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=f/Wfvghx; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55b73f4ead1so700083e87.0
-        for <stable@vger.kernel.org>; Mon, 28 Jul 2025 23:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753772336; x=1754377136; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ahIXy3jx1Vd5imYAa/Lklqvxq/h0MS9MQimCSeG56MI=;
-        b=f/WfvghxP1MTHai4S+4N3rjaghjvRNU+wG9Y4MdRgbeSot4KMvulv30T/8FAFjGOSc
-         i5+t2aqcc1WZ71TUjp1pWhqp1K9MI18balng945XNR/9bmxQWuBmEySjU1zXeCNlQuCk
-         EQEkkIxoLkQ/MD6ozNfJjVQeN9K+OI2LH96rwtpc0LXsqUfZZJXxH/3wd2yBO6poNHzU
-         dCw5A1wwjV+jv9hwQKNBe+x17JxVj5TzEPWzRw8Xvc7ih1Nq0UB4JsNCdPueLc0kw+bc
-         i+jGKC3IQJTfINqWKC+mGZaT0kcFOPKxP4M3LjyM5M07TSVXfYbyoOgzM6pah6V+22Vp
-         Vk4A==
+	 To:Cc:Content-Type; b=V/7g3iuniAQxTGHW+XyueSNnvthka/HpweqTFMZ5hy3udQQUkQB2iXtInIJGWLe9XTRyN1LoaNizYZ1limYITE4F21CX/r3iJRlsqJnw+QKpJfSft38FbXQMktffas0IPQRLQhvjAcPcMVpRCtRZ+v1tG+BDxSeyFlabiVMxwVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4e7eefcbf08so1646638137.2;
+        Tue, 29 Jul 2025 00:11:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753772336; x=1754377136;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ahIXy3jx1Vd5imYAa/Lklqvxq/h0MS9MQimCSeG56MI=;
-        b=E/fCD7coyanqoEiHtgQd/DAYZAZ8L8XrzPrFvorllEC8g76wWQJ50ENUVEtmVgC9MB
-         uSi/kect0NKblAuUh4CRmcbvvOCYrkQsUxLrPQve7bc8XlRxSNr8KueZeAs6Ijj5fF5F
-         L/wSVhz6+ruClk7yXFNlxxaapXRd+754oLkWHOLXF2GLJEDy4ZrQdTnaedo9qVYwm1HT
-         jehNXFIFyjw8g3YGuprjhlcCYQDElTkpJTpJYUbLWcDCbKC3ZtpeJSyTRtDQQTF7A9v1
-         p2tZR8lQF1bgfrZwEki+K/akWKFXrQg28i+yDA8JbawLfNWi1iLtPr/EVFanIRtkx06n
-         ZfLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWcyPyOZhf3osIqACzeCSnTHAo0Z9xogGu0FkQjXtBoG2V2AMEvRR8tEPj2oBbMwsXp3byaJj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFy/QuvzvhwwW7LAn1CHtA/9fy8LjG7q/8rSaCL604Sff1+AOH
-	tcoxkx9UyxzpHxl18RTb3EvDlA876iEboYil+UYzOJ8FcHxYhjayTB58zRwifd1RDY88eJVnTK6
-	iSDTAtYqDMZIyC0yux3o7sz+xm+0Vu+HbxShtatCxZg==
-X-Gm-Gg: ASbGncusQH9CMB9D1qlsv4OJKoPk3GAUduezw872Tr/er41am7/IF/CYUcVtNLFaYe0
-	ibhbiWxYz60V/HHK7ybIQOMzMLAzvO2vCWHVKlE45rrQLd1930CrmVyoVMUC1ITuQyrpmejUQfb
-	kSjosrn8WMqyhw22MSDn9/+LWfAkyfehR/LrMkSevv1I8UTURCoUvuGgpF/jnMCKVRUixfp1QvA
-	frN6B4P5mdyqQ6FV5EGKl8413Y9HGwV0pld23LJzm3ckoG2MA==
-X-Google-Smtp-Source: AGHT+IENVZ731scRx/lLYmbmtQcdUo8605prxvqB7h/pEY85JwEbG2W5RCWyvPQoFrwxMXfKgXYDqs+v3ox0eCh2a4A=
-X-Received: by 2002:ac2:4e14:0:b0:55b:5c62:c7d2 with SMTP id
- 2adb3069b0e04-55b5f498ccbmr3209400e87.39.1753772336369; Mon, 28 Jul 2025
- 23:58:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753773118; x=1754377918;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jwtZ91dpf+B7MEEcMgVcJwBLL73NG/P9b1e65DE6H/4=;
+        b=LqtuPQ/qMWKdchpFyxg6dV7LKzhLP+6xss8g2nU7LewBSQuBEBbkf4+ESkmai23Dwe
+         oejjcxZgf6Ia8JGYy9jZAL87Ngkraai/XVACdK8VdwWeXUUF2V9uGcBlmF8HucQRU2EF
+         6T/qZH462k+nglKoNtNV0JkLIenli1QoW91YlUsoCU11+SL4B5Jhauq3M843zu0446qZ
+         glOksNUkVeJdWDw6nTaeRJi0TYlc7vuUNoHPnqdaVUllVDBjtlpw/b0nEAV15PXraAue
+         omnFPmTqFGx0sk+S4s9bp66K4nZRuPvWa98SVqpSwF1BOePoEX9Cny0Tmua290KsEbMq
+         K65g==
+X-Forwarded-Encrypted: i=1; AJvYcCUrEcWgc7hpO37bS8zVCdfE6+rqxI0qUWlyvcPD/m0o7M2w5Sfg0nndv52gmjNHe6LjgSqCPwWI@vger.kernel.org, AJvYcCWLaqV1Yxgf70E1aHx9OY+PSwNDvcOoAztY0bCC80OkmFZh+JUrAqgMV3d474wnyhaB14mSrHwwVhIo@vger.kernel.org, AJvYcCXrAKyxpq2q2amC5SnuWjnXwpb3uGI0G6ImwnNWsRq+Sqz6QhoEARyv2MtPa3FjwEPNMq3IgFqabNYAXS6kQszh/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/gOvHpXJ5R5eLQbjp8hBzAEVIbGD6vRbOhBW2p8gNZZLEDWUR
+	vjotbyl/+q1WAyAAFBuWeQqxEW4llq8g7WRgJapjCpiBNZoyZb7RhY91heHbmjk2
+X-Gm-Gg: ASbGncvS9DVO1tTjIvsCoR+eyw9p/FFU4Ch9ltatsjfbbVgqonDaOC0YQXQj/EEAg1I
+	QOhwIcckRmPraS4Fl0dYT5PTRoFgObDpWtK/XFhoFm+HTBBL+8H9ckIa1NdgOTg34NaVusLlnKk
+	pWT8Mi2fKp0SSRPjOWPBEd84j1l5T82m87FUJB/KwAFdf8rw7lGN3oSLluZzroRiRTFFpUWNQ8Y
+	QJi420O1WAfWG6u6L0qU3B+t6/v34N/nFJWtdD9QODAdCqWxqSjRqPGmjMJEr1QpUGs41248otL
+	uJYMLEQMFtlOFAeHblonabjxokWXvffjSk3OHi0cajfliUAQNgu+mp8iphsrnSEaLpIjpZtNEhn
+	uAckFESfgNaGkkK41+P86DnyMIUjcVsMXLoQNFtn3ZYm4vLEp16DOCKVyA5VY
+X-Google-Smtp-Source: AGHT+IGDA3pP6mGA49mNLxq9UAPmSfy57hmyRfEwFHYeSdMldLyHzjN+VJ9/WzJD/EjyiZIMkdMQjg==
+X-Received: by 2002:a05:6102:6c3:b0:4e6:d94f:c197 with SMTP id ada2fe7eead31-4fa3fed06bamr5302311137.23.1753773118543;
+        Tue, 29 Jul 2025 00:11:58 -0700 (PDT)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-88b8dcd50cesm1671590241.15.2025.07.29.00.11.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Jul 2025 00:11:58 -0700 (PDT)
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-886b2fdba07so1592017241.1;
+        Tue, 29 Jul 2025 00:11:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX4Fsy4sY04K4IWoUtTAyHS3kkoCAxecloHEPo5jhm3PqRUgddbLIDsZNzxNTCb8cMW9FcaTsu0Vd2zlVjhyLXU4g==@vger.kernel.org, AJvYcCXrEz1XJjOOyZHuxDcMo+CcyaZDfjdStovPyS/blCNfaOUvr/+UB8G7TRpaKFzTboHKQmyE63Lo@vger.kernel.org, AJvYcCXyFoZyGWHzlW4CbiVsrhP1IWuMyEAj9hYLAjwC3Rin4orxCs5B+iOklGrIMYBgEJyGS6/D5LMrnFv3@vger.kernel.org
+X-Received: by 2002:a05:6102:3f53:b0:4e9:d847:edb8 with SMTP id
+ ada2fe7eead31-4fa3fa68bd3mr6449966137.7.1753773117534; Tue, 29 Jul 2025
+ 00:11:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250728144619.29894-1-davthompson@nvidia.com>
-In-Reply-To: <20250728144619.29894-1-davthompson@nvidia.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 29 Jul 2025 08:58:44 +0200
-X-Gm-Features: Ac12FXxWS275bOEU-c1wViyF7-V1oyzkM7lyHBoN6z--DlyIBO3HrfLxY5YRGkk
-Message-ID: <CAMRc=Mc1cQL+fcFOPA1NBSHh+foVyT1mxFt+R7f73PEB=Pjuyw@mail.gmail.com>
-Subject: Re: [PATCH v4] gpio-mlxbf2: use platform_get_irq_optional()
-To: David Thompson <davthompson@nvidia.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: linus.walleij@linaro.org, davem@davemloft.net, asmaa@nvidia.com, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Shravan Kumar Ramani <shravankr@nvidia.com>
+References: <20250727154516.11599-1-marek.vasut+renesas@mailbox.org>
+ <2025072828-suspect-work-12ca@gregkh> <b9c9ba83-6da2-4295-b058-a0520c9df806@mailbox.org>
+ <2025072931-bagful-jelly-ffa7@gregkh>
+In-Reply-To: <2025072931-bagful-jelly-ffa7@gregkh>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 29 Jul 2025 09:11:46 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWJQ2iUwNvH+APo0tFtbWfvoBvtFeH7Njej9sANMKtzZw@mail.gmail.com>
+X-Gm-Features: Ac12FXyXvWCK7x2sjmWynrmYsSYSUy4D_IU-4-FR6o9hoO4E8HEeJAWFQw0ofck
+Message-ID: <CAMuHMdWJQ2iUwNvH+APo0tFtbWfvoBvtFeH7Njej9sANMKtzZw@mail.gmail.com>
+Subject: Re: [PATCH] usb: renesas-xhci: Fix External ROM access timeouts
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Marek Vasut <marek.vasut@mailbox.org>, linux-usb@vger.kernel.org, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Mathias Nyman <mathias.nyman@intel.com>, 
+	Vinod Koul <vkoul@kernel.org>, stable@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 28, 2025 at 4:46=E2=80=AFPM David Thompson <davthompson@nvidia.=
-com> wrote:
->
-> The gpio-mlxbf2 driver interfaces with four GPIO controllers,
-> device instances 0-3. There are two IRQ resources shared between
-> the four controllers, and they are found in the ACPI table for
-> instances 0 and 3. The driver should not use platform_get_irq(),
-> otherwise this error is logged when probing instances 1 and 2:
->   mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
->
-> Fixes: 2b725265cb08 ("gpio: mlxbf2: Introduce IRQ support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Thompson <davthompson@nvidia.com>
-> Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
-> ---
-> v4: updated logic to simply use platform_get_irq_optional()
-> v3: added version history
-> v2: added tag "Cc: stable@vger.kernel.org"
->
->  drivers/gpio/gpio-mlxbf2.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c
-> index 6f3dda6b635f..390f2e74a9d8 100644
-> --- a/drivers/gpio/gpio-mlxbf2.c
-> +++ b/drivers/gpio/gpio-mlxbf2.c
-> @@ -397,7 +397,7 @@ mlxbf2_gpio_probe(struct platform_device *pdev)
->         gc->ngpio =3D npins;
->         gc->owner =3D THIS_MODULE;
->
-> -       irq =3D platform_get_irq(pdev, 0);
-> +       irq =3D platform_get_irq_optional(pdev, 0);
->         if (irq >=3D 0) {
->                 girq =3D &gs->gc.irq;
->                 gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chip);
-> --
-> 2.43.2
->
+Hi Greg,
 
-Cc'ed Andy and Mika for review.
+On Tue, 29 Jul 2025 at 07:03, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> On Tue, Jul 29, 2025 at 05:09:55AM +0200, Marek Vasut wrote:
+> > On 7/28/25 6:18 AM, Greg Kroah-Hartman wrote:
+> >
+> > [...]
+> >
+> > > > Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
+> > > > Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+> > > > ---
+> > > > Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > Cc: Mathias Nyman <mathias.nyman@intel.com>
+> > > > Cc: Vinod Koul <vkoul@kernel.org>
+> > > > Cc: <stable@vger.kernel.org>
+> >
+> > [...]
+> >
+> > > - You have marked a patch with a "Fixes:" tag for a commit that is in an
+> > >    older released kernel, yet you do not have a cc: stable line in the
+> > >    signed-off-by area at all, which means that the patch will not be
+> > >    applied to any older kernel releases.  To properly fix this, please
+> > >    follow the documented rules in the
+> > >    Documentation/process/stable-kernel-rules.rst file for how to resolve
+> > >    this.
+> >
+> > Maybe the bot should take into consideration Cc: stable below the --- too ?
+> > Or is that considered invalid ?
+>
+> That is totally invalid, it gets cut off when the patch is applied and
+> then is lost :(
 
-Bartosz
+But the "Fix" keyword in the oneline-summary and the "Fixes" tag are
+not, so your stable minions will still take it ;-)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
