@@ -1,120 +1,110 @@
-Return-Path: <stable+bounces-165113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FD1B15285
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 20:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AECAB15290
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 20:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8838C3AAF7B
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 18:14:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA3C3BB418
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 18:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A2E298999;
-	Tue, 29 Jul 2025 18:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E87F237163;
+	Tue, 29 Jul 2025 18:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IyAR07q4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="Vt6bm1Jf";
+	dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b="EFNNKK+C"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e3i331.smtp2go.com (e3i331.smtp2go.com [158.120.85.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7AE2AE90
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 18:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7B422FDE8
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 18:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753812894; cv=none; b=ooqKFyrIG8KOfUZDtAg/WJGMQGAVPKAMhp2R7Ycc46YUkAQG3IVoqITrD9WspxSuXuXENgrzdg6yKQOY5B1E484Sj54BSYXRJ/jx/hi5OpYfZXrtKDVjLlAbXd/Vo/ZOyWvDC7ixb/4aHaPyT/Ggzec6jv752v7l5JXfZ4cLnpg=
+	t=1753813184; cv=none; b=Psx4zkDLKebCav2C2/zSa4tbwU9KIOjP6YCmTCQg0SFr2qw6IYp0hwQY9xUwsiBifmTcfWxJT8PDcaOk4LvOAAs2S/WxNV3UP25yNM993dVrxVMRZDdLXMJQnsNCLYoYoS3tgDskI8bWYc6VwlXHOj94CFVLuiBPIMDUGcCBSyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753812894; c=relaxed/simple;
-	bh=jcU5LWDiZFG93XPoWEktnrr/E0OrO3OMjhU9o+SzdjY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SMUKTso86P5xwMySwlLbq5wAB8UPVZ8BxVrtFug/22ahTCC1msQQ/5JhAUYwwRNtCVoo/l5WGeuWReNoth0vnOdLHAMeEwJn5MXWVOS82UsEzkOhi6RzJA4YYz5+R3fqmgg/Hs1Swbt3qCy6cH/eNh9u7978fZnAWtzgzxpgra8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IyAR07q4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD30C4CEF4;
-	Tue, 29 Jul 2025 18:14:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753812893;
-	bh=jcU5LWDiZFG93XPoWEktnrr/E0OrO3OMjhU9o+SzdjY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyAR07q4jRWEMwTzKrtJtwwVgmzoADkJ6K/yKhsFIldYDYstifX6uZf0SRCXhopNc
-	 TZJo2VWRiLHXYWwretbfajCIFbuY7nJEMA5zOCT5IK7DoLmFULkc0CQ9j1xvEjrNVv
-	 OoJ0ULPG5oxq5JrmYhd1AdQoueZAbNktJszsxLOifbmat4FJ38LG1VLpCWTjhMwpQ6
-	 udld7XvGuxDsBtB8Y7zWO9KqLY4jo57bp2y6u9P8rgmIqBQwPFpYNU3Dk0RNXQ2vsO
-	 el80B5U1O6j0q4nZghuyrWGWUrO322Ydi5Ab2GYkfAHLNoGFO9Zv325AOym/cu3qfp
-	 mzf+f6XBGmiEg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
-Date: Tue, 29 Jul 2025 14:14:48 -0400
-Message-Id: <20250729181448.2846093-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072822-armrest-dominoes-7934@gregkh>
-References: <2025072822-armrest-dominoes-7934@gregkh>
+	s=arc-20240116; t=1753813184; c=relaxed/simple;
+	bh=sA4RPjAxM05RQekn/x6/fjnGX99Zklg8NEEyvJ7D9tg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sGConz0LFEYFmPDqkiVwitFynaA0ef7+MjlHgPcIvsINbdjRHFSvAr7reR6iodmOQmxYa3xCnqNz7ZMOzJhvwqF9nKCOKoW9NkrYeohHH8PXxsqey9iyn7CnF07IGp9XpirsG/eapxqunqznbtAlRWhhf9GfrjNVHWHXjWlsZjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev; spf=pass smtp.mailfrom=em1255854.medip.dev; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=Vt6bm1Jf; dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b=EFNNKK+C; arc=none smtp.client-ip=158.120.85.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1255854.medip.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1753813174; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=Qjq7ANPEafKeVIOcRRoL6S8s3iv7vnOx3qEiXVCnF9A=;
+ b=Vt6bm1JfIaZlmxDA6X2we3Xfm8GwiAcK7CdrOQTccAO/mtpKA55VtUYv6Hm3lKKx2Nihq
+ oPhSExpTk3452fA6RFV0KwNtnuKqX9SWBTcdMlHdo/LAQFHNXgnw2ReEE3601H0UV7aq6ZH
+ wuLQ1w9jrLnhs6NOxCI5cM4lutKtMCrGLE5+h8Twl+/Kl9GgV1CupsY6OFr2nSX9G/6Z/up
+ qTtuPtbWxG3v+UfTPQjlLDhSPIveOngg67PKFlX9Oz9fhKq8rcFpr38Grm90MNOa7W6GZxq
+ WDdJilliBo8rOhkVzqDYyTWx6Zed6RjwWnxkcn/8DtfnQ5d61xX6LGDSybJw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medip.dev;
+ i=@medip.dev; q=dns/txt; s=s1255854; t=1753813174; h=from : subject :
+ to : message-id : date;
+ bh=Qjq7ANPEafKeVIOcRRoL6S8s3iv7vnOx3qEiXVCnF9A=;
+ b=EFNNKK+CG5UnvLGQ7UNwTlybQIhyQdAshriFycYwMKfqDFsIKvC2XxBXlHc3kFu3OsrPU
+ 29ijliuzyKJWprkj6UhRBQQixJqc5CM1QEpD1BvaFCRj8OT+HFBrWaDtwvHm+iEZ75QQL1r
+ 7k8nFe+/y5A8MXSWhpOsfs72bNu8JB72Evcto3zEs8y/OIdw0CUlODMYL2RS0V19CEd2YJK
+ J362MlqjPKfky7kl1DpB7MGrbYt5goBPSG7DMQUBNFFfHH1J/FzFvlpeYvo5LJp/JZuW1uq
+ QGQodBYxkQxUovAdZ3iD1se96nHAkVMZpzZkFX/Uc7QFYKtb65jKmuFQFqfg==
+Received: from [10.152.250.198] (helo=vilez)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1-S2G)
+	(envelope-from <edip@medip.dev>)
+	id 1ugov1-FnQW0hPr2KU-NS42;
+	Tue, 29 Jul 2025 18:19:22 +0000
+From: edip@medip.dev
+To: perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Edip Hazuri <edip@medip.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] ALSA: hda/realtek - Fix mute LED for HP Victus 16-s0xxx
+Date: Tue, 29 Jul 2025 21:18:48 +0300
+Message-ID: <20250729181848.24432-2-edip@medip.dev>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 1255854m:1255854ay30w_v:1255854s11F8cfyv-
+X-smtpcorp-track: F2pDJ3oSLYMr.lgjBK-aMDN6B.Lq0IUAIS2t_
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Edip Hazuri <edip@medip.dev>
 
-[ Upstream commit 9e0c433d0c05fde284025264b89eaa4ad59f0a3e ]
+The mute led on this laptop is using ALC245 but requires a quirk to work
+This patch enables the existing quirk for the device.
 
-On g4x we currently use the 96MHz non-SSC refclk, which can't actually
-generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
-Gbps which seems to be close enough to actually work, but link training
-is currently failing due to miscalculating the DP_LINK_BW value (we
-calcualte it directly from port_clock which reflects the actual PLL
-outpout frequency).
+Tested on Victus 16-S0063NT Laptop. The LED behaviour works
+as intended.
 
-Ideas how to fix this:
-- nudge port_clock back up to 270000 during PLL computation/readout
-- track port_clock and the nominal link rate separately so they might
-  differ a bit
-- switch to the 100MHz refclk, but that one should be SSC so perhaps
-  not something we want
-
-While we ponder about a better solution apply some band aid to the
-immediate issue of miscalculated DP_LINK_BW value. With this
-I can again use 2.7 Gbps link rate on g4x.
-
-Cc: stable@vger.kernel.org
-Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250710201718.25310-2-ville.syrjala@linux.intel.com
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-(cherry picked from commit a8b874694db5cae7baaf522756f87acd956e6e66)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[ changed display->platform.g4x to IS_G4X(i915) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Edip Hazuri <edip@medip.dev>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index c8b6d0f79c9b..9a894e234f62 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1293,6 +1293,12 @@ int intel_dp_rate_select(struct intel_dp *intel_dp, int rate)
- void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
- 			   u8 *link_bw, u8 *rate_select)
- {
-+	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-+
-+	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
-+	if (IS_G4X(i915) && port_clock == 268800)
-+		port_clock = 270000;
-+
- 	/* eDP 1.4 rate select method. */
- 	if (intel_dp->use_rate_select) {
- 		*link_bw = 0;
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 05019fa732..77322ff8a6 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6528,6 +6528,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8bbe, "HP Victus 16-r0xxx (MB 8BBE)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
++	SND_PCI_QUIRK(0x103c, 0x8bd4, "HP Victus 16-s0xxx (MB 8BD4)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdf, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
 -- 
-2.39.5
+2.50.1
 
 
