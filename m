@@ -1,139 +1,115 @@
-Return-Path: <stable+bounces-165065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C0BB14EBC
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 15:50:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C01B14EEB
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 15:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D21616CDA1
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 13:50:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 961A24E713E
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 13:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B388D199385;
-	Tue, 29 Jul 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71154C98;
+	Tue, 29 Jul 2025 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VBlMnCIW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSKgRMIq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF1D79C0;
-	Tue, 29 Jul 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC96433D9;
+	Tue, 29 Jul 2025 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753797006; cv=none; b=kbdY9kzKOfa6Z2O2hKC1//WRFlecZjHDIKkad8nQvDAtYytPbD1CkbYu+PEKZaiLDCkAeWka74PBjeZyIZ4MzGurvg+MJW5OZPOBCmyVRNayovJPtKzaaGIvKj9RK2PvVsdGZ2if28rwb142syhIqtfWPOx6by23XZg6w0yuJl0=
+	t=1753797506; cv=none; b=EGG90g/9zA6G+sISkGJa4kSNqk52jz6+sD+C2B3uZy9Jpto7P5Yy5gXwIwQsHyMIOawvyz9l/kPiIIjiBoyMsTfRwN8EexhfJnGtxsC8KwgK9wYsgvas1JERlMJuwxIKTQsRoZcdQlRIoPB07kf244L5+s8MM0CzzprexJyKr4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753797006; c=relaxed/simple;
-	bh=iPhIiVg9TwoB9JPWKjtvQ8Onj5JAyRBB6ONeNCdp8T0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z0t5an4ajlFl18ZtuTXCbJwOohxITowhR6MlmHIQeMh800eMnUgnzbuLMJMR8ApdiJQj25BOwX9PlN5oNng4Z5lmjR8Vsl9I7V+XbD3JLywHoXhzKuULv76O4nLrQNAIFXtL8iZXlJp7x0jaK6AFm++ir8o578ystMmcS4bD4N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VBlMnCIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED1BC4AF09;
-	Tue, 29 Jul 2025 13:50:06 +0000 (UTC)
+	s=arc-20240116; t=1753797506; c=relaxed/simple;
+	bh=vPvAtP/sZ8lnXkjd3m445006NQb0CN8eBY920jsV5KY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=FxcosvmnlFuoxfQ5pVOMDhxySPZZTbF+NNDyo4DC528fb2UrB5NMBCcV1p9nc08aiRdDFMRzL/g2p5DL3VTGvFq/JtqrWRs7rBI6+om17NnjLcOdGT2eIByMASg9QM0+lm4kZlrW5VUlaiMnogCNEoyvojuBf/QyUlPYfvUfXRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSKgRMIq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C175AC4CEF4;
+	Tue, 29 Jul 2025 13:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753797006;
-	bh=iPhIiVg9TwoB9JPWKjtvQ8Onj5JAyRBB6ONeNCdp8T0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VBlMnCIWzG4oyZMsxFuXDul5/UlDkFlPEPxUv6u18BRWK1GH3fhkvR5jv+AdGihAA
-	 KZyiIAErnkNbb1t4bDf45Z1QhSCyVf/rLlbJvPghyIpt84e2Xr7afrW3NaIcfbUxuD
-	 mXb8IOXK6vptPHAaXjUvQl7vsnjQPqpxOhuTsvzOav25pzA4reCuyPzJm8FZ7E5Yr3
-	 Lg3NMQN1CdxrwkPeauZyf9srMArUBqbZ+UD05uvYyAmCLGgQbkeNtKgnFqiQivzI5i
-	 /gYl7mU7iajlN10w4ISwxcBPnKDytJUf9IhWHIZ4PNi5qNIAIIWV9LUtAz2bOiedRe
-	 b3NOzSQC3ZGlw==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-32f1df5703aso45039071fa.3;
-        Tue, 29 Jul 2025 06:50:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUDvrfdQ1S7d/UtnzCJ6idE8ROTyZyswMR5L2ANHJc/S+MJZrvmNM5i49G4riwM/iIO0OIlkGDB@vger.kernel.org, AJvYcCVlMxI8v8dsEXkwbuSPF6jcfjpnmAriBLCat2Z3/fZ/BmfEJImJGTC30oAOZ/NplfAOhaMNI/h0wUDm+kY=@vger.kernel.org, AJvYcCXSpHWd+lTpVQwQWGvRtug4zw6PH1W228L8eiwAH58wQVRtHqqrIKvuPHHz9kCp1sCa8273YQauUQHOJ2bp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9wtSp+irKjt+9BpCWWpoEhbwwoSSywgngWudNpzj/vbtqc3Pc
-	bdxS2vyfZQmLhSil3ie+C7BSjfj69sbdGlZlCkQWldygLL+UGY1/cH+ldks5I5UGPHQzIfzRbfu
-	YHmsD7mFuP02MRTMaFNaHmuTdlHshUy4=
-X-Google-Smtp-Source: AGHT+IHjTXjlLubqpmiu3gm5ussQn49mEbKaEv9t5hEtggHscM2SjIL8pWTxka5L+Ekn5Hu6OgaSCp9uUWiv1iaFzDY=
-X-Received: by 2002:a05:6512:acc:b0:55a:3335:b5fd with SMTP id
- 2adb3069b0e04-55b5f429891mr3923787e87.18.1753797004777; Tue, 29 Jul 2025
- 06:50:04 -0700 (PDT)
+	s=k20201202; t=1753797506;
+	bh=vPvAtP/sZ8lnXkjd3m445006NQb0CN8eBY920jsV5KY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=bSKgRMIqPhZpMa+TAhyEKbmJdGD0Q13iQOyqMDLVyQjVkUqaUlJO6uYI41jHqmNr5
+	 x3j4Wl8r3ymygUJXzbbAIYz4JHcZusIey0IeyA6IA19eJzZREB6ov9cHySRSv1fjbM
+	 WocQF6C2ZlcTnHSvXyOTeA3DqMOh68IR9lSUUOKqck7+7CAjBPN5B2Oysn+LKr+lww
+	 H26qMroub8PwBjn5QHNKvLvRtqfPo/VNMqehD1wa5oSbnbgcis6EeHarZA6FoEXD3J
+	 bQ4GCYhMARlcYh/6+qas/FmHcZqoVKNjfuy4TY3IG7swiJdYYFfiXlNPADO1OcWovI
+	 PKmhCDOB9PEJw==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, 
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+ Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, 
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
+ Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>, 
+ Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: kernel@collabora.com, stable@vger.kernel.org, 
+ Bard Liao <bard.liao@intel.com>, sound-open-firmware@alsa-project.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250725190254.1081184-1-usama.anjum@collabora.com>
+References: <20250725190254.1081184-1-usama.anjum@collabora.com>
+Subject: Re: [PATCH v1] ASoC: SOF: amd: acp-loader: Use GFP_KERNEL for DMA
+ allocations in resume context
+Message-Id: <175379750250.39357.9621820715781114394.b4-ty@kernel.org>
+Date: Tue, 29 Jul 2025 14:58:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250728-userprogs-clang-gnu-ld-v2-1-58464d681407@linutronix.de>
-In-Reply-To: <20250728-userprogs-clang-gnu-ld-v2-1-58464d681407@linutronix.de>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 29 Jul 2025 22:49:28 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATXk1xKrCXmdV1jEgtgxGxPvTRr8V=pWczKD++da3N+3g@mail.gmail.com>
-X-Gm-Features: Ac12FXwn4YCixa6nQPNSdyepsEY-6I2sE5MwSNSasTN_EsyPsDUJnZulyfXkyec
-Message-ID: <CAK7LNATXk1xKrCXmdV1jEgtgxGxPvTRr8V=pWczKD++da3N+3g@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: userprogs: use correct linker when mixing
- clang and GNU ld
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-On Mon, Jul 28, 2025 at 10:50=E2=80=AFPM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
->
-> The userprogs infrastructure does not expect clang being used with GNU ld
-> and in that case uses /usr/bin/ld for linking, not the configured $(LD).
-> This fallback is problematic as it will break when cross-compiling.
-> Mixing clang and GNU ld is used for example when building for SPARC64,
-> as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
->
-> Relax the check around --ld-path so it gets used for all linkers.
->
-> Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking thr=
-ough clang")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-> ---
+On Sat, 26 Jul 2025 00:02:54 +0500, Muhammad Usama Anjum wrote:
+> Replace GFP_ATOMIC with GFP_KERNEL for dma_alloc_coherent() calls. This
+> change improves memory allocation reliability during firmware loading,
+> particularly during system resume when memory pressure is high. Because
+> of using GFP_KERNEL, reclaim can happen which can reduce the probability
+> of failure.
+> 
+> Fixes memory allocation failures observed during system resume with
+> fragmented memory conditions.
+> 
+> [...]
 
-Applied to linux-kbuild.
-Thanks.
+Applied to
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> Changes in v2:
-> - Use plain ifdef instead of ifneq
-> - Rebase onto v6.16
-> - Pick up review tag from Nathan
-> - Link to v1: https://lore.kernel.org/r/20250724-userprogs-clang-gnu-ld-v=
-1-1-3d3d071e53a7@linutronix.de
-> ---
->  Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Makefile b/Makefile
-> index 478f2004602da03c9039044e3288f24a13833cc7..7d24245d118c0e903119263b8=
-71d2e5c2759f48a 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1134,7 +1134,7 @@ KBUILD_USERCFLAGS  +=3D $(filter -m32 -m64 --target=
-=3D%, $(KBUILD_CPPFLAGS) $(KBUILD
->  KBUILD_USERLDFLAGS +=3D $(filter -m32 -m64 --target=3D%, $(KBUILD_CPPFLA=
-GS) $(KBUILD_CFLAGS))
->
->  # userspace programs are linked via the compiler, use the correct linker
-> -ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
-> +ifdef CONFIG_CC_IS_CLANG
->  KBUILD_USERLDFLAGS +=3D --ld-path=3D$(LD)
->  endif
->
->
-> ---
-> base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
-> change-id: 20250723-userprogs-clang-gnu-ld-7a1c16fc852d
->
-> Best regards,
-> --
-> Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
->
+Thanks!
 
+[1/1] ASoC: SOF: amd: acp-loader: Use GFP_KERNEL for DMA allocations in resume context
+      commit: eb3bb145280b6c857a748731a229698e4a7cf37b
 
---=20
-Best Regards
-Masahiro Yamada
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
