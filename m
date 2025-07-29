@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-165054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6722AB14CB6
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 13:05:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6843B14CB7
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 13:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1834F543FEE
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 11:05:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F9443A643A
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 11:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F329289E0B;
-	Tue, 29 Jul 2025 11:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1553C28C00D;
+	Tue, 29 Jul 2025 11:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsP5PvAW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dIxSjL31"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E9A28C00D
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 11:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5442728C013
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 11:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753787155; cv=none; b=NnD5SL/x3rTs9+CjfnCst6ymsLumYIF7E5QYPyxQeRCXn+TK39qGFSUvvUpVY5G9BJmutel3SUX9sI/JgIZHjEFHSQwASgfDIBgIYEI/dT12/OK3vzfpqK5JXGLs4DJOtxuS4hBmK1+9gsqmZ6jnJ3sUeZu/15Ezx0tIueM8O+A=
+	t=1753787159; cv=none; b=YhNjjL0YZuxhXH4alXZFS5LL3JjuorG4JkJD+3ihyPPXbUw+v5FP1976cBv2Jl5oEyiMPKfgLT4mVc6GikbV8U508Iti3gSKOS3YF7T6vKfgefsTLy135AqIWB9hTX6w3G9+4D/0LVRsV0IaxvkMwult0YRjiSdOH5zntbThsJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753787155; c=relaxed/simple;
-	bh=6Qwbh70YvCoeJ933nIk/MNE00C6dK8YWAshoBGija90=;
+	s=arc-20240116; t=1753787159; c=relaxed/simple;
+	bh=I9kLV2anI0MpCPn1nA9ysq56rcSc9+llBUXrV8n82oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=In7bGrVvLhwsFQyBm/DAjyDasgKEOJ1Br0QbQCmAOYvLQrNWU7L9kZ+HHqGcOlSUzX+1wdbwQ5BocsM+erF12OGM9hUcAYqRDxoWcWAcvPxi0kEHBQxzmTKW0EEIDjUpDzmTuZfU+YPUNCrIqmaoAKLLsgvxbdffAE9QSyZ4c1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsP5PvAW; arc=none smtp.client-ip=209.85.214.193
+	 MIME-Version; b=T6u/rxoe9RFaFUF35R/TGKI3Zwjf2tJeVkTmydoMF0U3EkQQ/Rq8VnuW9RTaVPettMmw34LFxDfT+dblPC28bN7Y4qsbm3zUbNqKHcJqVZGNkQfdaq9wm2gJdW6QIrD/IosJtbentEdvOEO1qI6XqG6pIFQqEuKUtCUc26KqS1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dIxSjL31; arc=none smtp.client-ip=209.85.214.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2405c0c431cso11827805ad.1
-        for <stable@vger.kernel.org>; Tue, 29 Jul 2025 04:05:53 -0700 (PDT)
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2406fe901fcso5531335ad.3
+        for <stable@vger.kernel.org>; Tue, 29 Jul 2025 04:05:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753787153; x=1754391953; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753787157; x=1754391957; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Abt8vstZAPNZDXKA1xlNOuo3fzYB7imYoFribfPOwfM=;
-        b=VsP5PvAW0JdeZvmVPc8045hwmmDHrYQZnuu7NEjWA8sITm51rAZLotQLodyisBMzDu
-         O1XEOBZHtnVlYIr1vtby11rnOnssdVt8/s2tGjjTxPWYHB/BxXSp+SyWJ4asohg39FIw
-         UV6KXB5sdLmApMBgu9xBkiXaDWcjzUtq0sglGSYvQgUnYMmI2sQY+8zqpO7Fc9f6J6A/
-         mtBORTw3FeTXZo1BnaZ5TyvaXb6K4p0NEvqJETG56uS6NTKTHE6kHhxL9AiZuFx09SBh
-         hbejQjKdNGHaBtDtTOhXOi/ZdFNNPHQp17pKkPPiCXt73aD7NgIohGUXrYm1GcbpMA0S
-         fZIw==
+        bh=WLHeYkFqqgcgLLa5E70HO7JnbGS55Dax9Okm1rFtTZg=;
+        b=dIxSjL31+/q+BSOxb+jOHygH0YZcg4/xO5+CqH2QA+ZLNRGdLXiW0/jHffKlHorbn7
+         2EicQmBxADf+UmiykcpzUXCQQqhZ7Zfs4cUFg8kCP8X1GvQb/qAUWcNy2qhJTd3goN3C
+         l/1Xmz339Im7VFD4lYdFEFRfqnYi1NVziu94yUJ0WDYisFGCPCWpiJPnmUeUa1jI9xnH
+         Vzw9/eT4z/1elS9G1bbiA86CxCVXzRGGZcldKF4cu4J3OYXEKCj8bxvzbDlv2lysWz9J
+         DRepy4/CbmDYidnYpnJU+H5w9UsX1eMwjQ/EOUA1aE774dVgWq1Gb3efF54dI/CgFzTF
+         HZSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753787153; x=1754391953;
+        d=1e100.net; s=20230601; t=1753787157; x=1754391957;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Abt8vstZAPNZDXKA1xlNOuo3fzYB7imYoFribfPOwfM=;
-        b=e3L+rFJbtATOMEqmaXbTJd5ncNeztMjCCEArEgpQUPwVCOy0elDMAYCFHm1S9NNKFi
-         +c8FOHUl6xOBaRHki/u7s48PWY3W7nXK4XwzVHaETSNURcMgITMLD7Idwx1drKNlJbKO
-         K0p1RrmA4jdnrYT4eEoTZn3xyv0EU4d0wJhVSzRFXDhjAka01uxIA5SO1iIuwfx/5I/G
-         w6n9WclYBOMK+caHkRhLPAwt+Asn1C/ax58tYZP55P5fXv+i+PwPoFng5FoepVBD5SGN
-         iwhHOzqoKuk6/J172cw2n9mhwzmjz2BhtXlMqfzIef429PlhlbkhWekMCvFMee+22aQL
-         nD9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUoHrgLh6JW9shYj7Iass034VPJjnizU9/U1AeTdNc43V3AHp6k9KNoouhEPevKSEB99ksv9tw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywdt89ystxLj6dHfMggtubdPeWtZfxMdTbGANIxqsJVvRHlgcXD
-	CFAtDu+cbLXxXygBQRIYL8BynoCGRbODcw8Hvf/8MBbCPyqj3PeFqc4=
-X-Gm-Gg: ASbGncv8m7Jl4D9uOpG6aNhjOS2qi/MF2JlNvwTdF0hPhy1LnI8Qth1oYfWNlNek59T
-	W5g7m8/lCwphCx1x0N21+7OLr0F5uozPFIAYcPCBr2McojiQiFkpZoVH1I/QSQceaLPXyPYmo05
-	G711Hgmp5f8sO7vhoDRsbbhXtBm7GNpvYx0oBfKBBQ6qlH7Jf3khHvZ5/NutVH5MvJSnPfkTuCF
-	k3EUfs8ILocrmkk/obeJXM8q6CbHHM5tkU9TlaBYMPiz3cumKGaI1D2sFaD7dtgFWCctQFbspDh
-	oBi6I0u0vQu3dDtNSLTFnJ9hWKVJgp9S31gOI1CBIuOPtJgNV+JOgXgZB9OdBomex/1X0I40caz
-	Z7V9RRUVhc6bvanJz0jnucl5TLqO4B5FNGOE6wis=
-X-Google-Smtp-Source: AGHT+IHAQn5G/9G5dVp6WunIHeCfG5Ftkh0IQEMUb3fjgxxrqRXsfHaPCtjrK9gLf0XgoJ/tEmN9YQ==
-X-Received: by 2002:a17:902:cec7:b0:235:6aa:1675 with SMTP id d9443c01a7336-23fb315611bmr180795215ad.52.1753787153068;
-        Tue, 29 Jul 2025 04:05:53 -0700 (PDT)
+        bh=WLHeYkFqqgcgLLa5E70HO7JnbGS55Dax9Okm1rFtTZg=;
+        b=HU0kK3TlaK/sCn/vx3f8dm/x1LMn8OpAKEycp0XXVX+7RvFI7zHM8+5806iRLquYDE
+         ntBB7QpC+rG2PPesqUrtXiCMdDxKmgsct4gOyIAFooucCTRFJFgt/1kX5QJFiC99E9n7
+         a5UXEz1csh2NtbeABqXV7753Oxy59rda3cbw7U/hN1Rpwl3RGQ2PUHvZAAZ0sbui5Dqi
+         1+os+SbXNNphAI50+ah24XD/pUemjmAV99m/qEMjJCQ3xnTPmF2i1y9QVCEdfJzUAwh8
+         5BVtaB3Udc7yeHmcZHmzuk+QY2dKe6KmGHXKuMBNHLfdr5jtebfNt9FIGgiy2eOLGtlE
+         aWqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVUzCaFykZ0LR3SVCxu+344Hi8SskeXqpKSWFJGOIFG7v+cATLgVIhpY33HIG+aARX54UOSaI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+lHwL2SqXOeZhskqSHP/Z8koJzCmN18UsxtcfYreJTwIWJHvI
+	7rVupvGfPjudGsw4l34+aDM6pmQoEMlzcHIF2Xt43MrnzLXAGNbFr9I=
+X-Gm-Gg: ASbGncvPBPLGmEJQC7tH5SAsn8Ia+hdkkmSklz8Y6XexsNFhJEek1313jIu+bIdV/bW
+	w4PYgjY8jkJRnaHwvmG+fEgTG7ByqcWbSOAJjKKEUUMNRJ91TDxyoydBgVmCsvyCj7EhorR6YWi
+	QzTQi9yhODcKviJUJkF9TZO8E6ZGwv2DULA7tq0ta3+9JXPt+w7XnTD8kJ3pKF4qaVpa02mpWjQ
+	av2z5RSVL2nMMFx2iMlw4lUBr0tnzwoaTgi/964jzSOm0vvWDgAMCuIfKZWLyCtAIlUtQynUGN7
+	suKcX0qDOIKD0b9z8bbKUz8Z2rQTqr/qtPORvXPQjrF8q23cfscZLesNFBsfOW1uxmgr70f7z1D
+	yIeWtl+Fz0JyY0h5VUNVN13WEcLbbdO6R6XC7D/E=
+X-Google-Smtp-Source: AGHT+IEaUlgjTCWhrh0w4mjTtnBsKLmW8QBUdOBpwR84OQmFTVKiyCPzd0imDRIAZjTJTlRy2xCB8Q==
+X-Received: by 2002:a17:903:94e:b0:240:7725:18de with SMTP id d9443c01a7336-24077252f3amr19060465ad.37.1753787157361;
+        Tue, 29 Jul 2025 04:05:57 -0700 (PDT)
 Received: from git-send-email.moeko.lan ([139.227.17.83])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fbe30bc1fsm75929025ad.5.2025.07.29.04.05.48
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fbe30bc1fsm75929025ad.5.2025.07.29.04.05.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 04:05:52 -0700 (PDT)
+        Tue, 29 Jul 2025 04:05:56 -0700 (PDT)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Lucas De Marchi <lucas.demarchi@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
@@ -80,12 +80,12 @@ To: Lucas De Marchi <lucas.demarchi@intel.com>,
 Cc: intel-xe@lists.freedesktop.org,
 	stable@vger.kernel.org,
 	Tomita Moeko <tomitamoeko@gmail.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>
-Subject: [PATCH 6.12 3/4] Revert "drm/xe/devcoredump: Update handling of xe_force_wake_get return"
-Date: Tue, 29 Jul 2025 19:05:24 +0800
-Message-ID: <20250729110525.49838-4-tomitamoeko@gmail.com>
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Subject: [PATCH 6.12 4/4] Revert "drm/xe/forcewake: Add a helper xe_force_wake_ref_has_domain()"
+Date: Tue, 29 Jul 2025 19:05:25 +0800
+Message-ID: <20250729110525.49838-5-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250729110525.49838-1-tomitamoeko@gmail.com>
 References: <20250729110525.49838-1-tomitamoeko@gmail.com>
@@ -97,84 +97,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This reverts commit 9ffd6ec2de08ef4ac5f17f6131d1db57613493f9.
+This reverts commit deb05f8431f31e08fd6ab99a56069fc98014dbec.
 
-The reverted commit updated the handling of xe_force_wake_get to match
-the new "return refcounted domain mask" semantics introduced in commit
-a7ddcea1f5ac ("drm/xe: Error handling in xe_force_wake_get()"). However,
-that API change only exists in 6.13 and later.
+The helper function introduced in the reverted commit is for handling
+the "refcounted domain mask" introduced in commit a7ddcea1f5ac
+("drm/xe: Error handling in xe_force_wake_get()"). Since that API change
+only exists in 6.13 and later, this helper is unnecessary in 6.12 stable
+kernel.
 
-In 6.12 stable kernel, xe_force_wake_get still returns a status code.
-The update incorrectly treats the return value as a mask, causing the
-return value of 0 to be misinterpreted as an error
-
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
 Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- drivers/gpu/drm/xe/xe_devcoredump.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_force_wake.h | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
-index 8050938389b6..e412a70323cc 100644
---- a/drivers/gpu/drm/xe/xe_devcoredump.c
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.c
-@@ -197,7 +197,6 @@ static void xe_devcoredump_deferred_snap_work(struct work_struct *work)
- 	struct xe_devcoredump_snapshot *ss = container_of(work, typeof(*ss), work);
- 	struct xe_devcoredump *coredump = container_of(ss, typeof(*coredump), snapshot);
- 	struct xe_device *xe = coredump_to_xe(coredump);
--	unsigned int fw_ref;
- 
- 	/*
- 	 * NB: Despite passing a GFP_ flags parameter here, more allocations are done
-@@ -211,12 +210,11 @@ static void xe_devcoredump_deferred_snap_work(struct work_struct *work)
- 	xe_pm_runtime_get(xe);
- 
- 	/* keep going if fw fails as we still want to save the memory and SW data */
--	fw_ref = xe_force_wake_get(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL);
--	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL))
-+	if (xe_force_wake_get(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL))
- 		xe_gt_info(ss->gt, "failed to get forcewake for coredump capture\n");
- 	xe_vm_snapshot_capture_delayed(ss->vm);
- 	xe_guc_exec_queue_snapshot_capture_delayed(ss->ge);
--	xe_force_wake_put(gt_to_fw(ss->gt), fw_ref);
-+	xe_force_wake_put(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL);
- 
- 	xe_pm_runtime_put(xe);
- 
-@@ -243,9 +241,8 @@ static void devcoredump_snapshot(struct xe_devcoredump *coredump,
- 	u32 width_mask = (0x1 << q->width) - 1;
- 	const char *process_name = "no process";
- 
--	unsigned int fw_ref;
--	bool cookie;
- 	int i;
-+	bool cookie;
- 
- 	ss->snapshot_time = ktime_get_real();
- 	ss->boot_time = ktime_get_boottime();
-@@ -268,7 +265,8 @@ static void devcoredump_snapshot(struct xe_devcoredump *coredump,
- 	}
- 
- 	/* keep going if fw fails as we still want to save the memory and SW data */
--	fw_ref = xe_force_wake_get(gt_to_fw(q->gt), XE_FORCEWAKE_ALL);
-+	if (xe_force_wake_get(gt_to_fw(q->gt), XE_FORCEWAKE_ALL))
-+		xe_gt_info(ss->gt, "failed to get forcewake for coredump capture\n");
- 
- 	ss->ct = xe_guc_ct_snapshot_capture(&guc->ct, true);
- 	ss->ge = xe_guc_exec_queue_snapshot_capture(q);
-@@ -286,7 +284,7 @@ static void devcoredump_snapshot(struct xe_devcoredump *coredump,
- 
- 	queue_work(system_unbound_wq, &ss->work);
- 
--	xe_force_wake_put(gt_to_fw(q->gt), fw_ref);
-+	xe_force_wake_put(gt_to_fw(q->gt), XE_FORCEWAKE_ALL);
- 	dma_fence_end_signalling(cookie);
+diff --git a/drivers/gpu/drm/xe/xe_force_wake.h b/drivers/gpu/drm/xe/xe_force_wake.h
+index 1608a55edc84..a2577672f4e3 100644
+--- a/drivers/gpu/drm/xe/xe_force_wake.h
++++ b/drivers/gpu/drm/xe/xe_force_wake.h
+@@ -46,20 +46,4 @@ xe_force_wake_assert_held(struct xe_force_wake *fw,
+ 	xe_gt_assert(fw->gt, fw->awake_domains & domain);
  }
  
+-/**
+- * xe_force_wake_ref_has_domain - verifies if the domains are in fw_ref
+- * @fw_ref : the force_wake reference
+- * @domain : forcewake domain to verify
+- *
+- * This function confirms whether the @fw_ref includes a reference to the
+- * specified @domain.
+- *
+- * Return: true if domain is refcounted.
+- */
+-static inline bool
+-xe_force_wake_ref_has_domain(unsigned int fw_ref, enum xe_force_wake_domains domain)
+-{
+-	return fw_ref & domain;
+-}
+-
+ #endif
 -- 
 2.47.2
 
