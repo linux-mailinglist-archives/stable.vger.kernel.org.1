@@ -1,149 +1,144 @@
-Return-Path: <stable+bounces-165140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A7EB153EA
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:50:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11248B153EF
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78E2560ECE
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46C84562912
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A1023C512;
-	Tue, 29 Jul 2025 19:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A4B25F79A;
+	Tue, 29 Jul 2025 19:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFX85jY9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wOHgRkbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8F723184F
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9682E2550C2;
+	Tue, 29 Jul 2025 19:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753818599; cv=none; b=e0vTXXnncHXJvfQYvyk4P4Lu4oXQacTQyuYdvggKa2fauT7z5FjHtWLFH0FadSc3mtSJMyfYvs88O5Gi9RWMih8edmOmFkh+Gi9kYOd+ju+FYckVDAKzDKflw6c+d2T6xL9H/lnt9zXQ4qppFj9jZG2NsWVbaFe4wzVReMA1Rmc=
+	t=1753818698; cv=none; b=oUUQUGb4VQrmIZamKs5W8U2ap+6zTpBt3E7BikB0fEBfPh8HdOq8F7ATui5BOn7vAqe9pMhdCoeRY1i17FhRrkAG5fHyXr+ZRAZnQK5XE3m1cw1nynuxNiQ//6nD+vDsclVc8SVrV7O6ihMfvgvuFyve20m7z98aN1/doJfAIwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753818599; c=relaxed/simple;
-	bh=4woA870kgWDYfDIvJpkfXEU8xEwfxRzvjfOv8fjtB0k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BMUqBKqNwdr8OX2/Dq0yE+p18krpIyy6wZKAW0fJaeSlLNXe3O/IPwCump4foqaeIItURdvqZb0Jd4VsErEsycClaqTk0k+Nx3cQ3FW15sx9KC1m2WUMzhVrQbniIuVgYOH0XM+CdktuRkZOw6eFYXzuSTENqWIeMP1jXl301cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFX85jY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D87AC4CEEF;
-	Tue, 29 Jul 2025 19:49:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753818599;
-	bh=4woA870kgWDYfDIvJpkfXEU8xEwfxRzvjfOv8fjtB0k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iFX85jY9hkdVlSqAJULQuZEr+2HAQT0pU3jyxhaY0TscHo9jFXo6Qmgeue4yx6Yds
-	 SMI6eq2TJ1jNbFHfGJmeFu576rVJ8BhASlSjgBnJBr6NrgcjiF9IKNeviWaKJc/upb
-	 ob+InXjXv7erh6I3p9uIUFtY3r5MJdan/5tZXwULWNaUXIbkYpnb8AVxo7VJZyLIiU
-	 fk9//pFLCnX9z5LwzntQ80hbmgx148sNl4IrTHbW8XKvsIk8m98VKvto3t8ViMcpaF
-	 d+cY1REZGagZXVcfDqZF88oz2SVyIra2ei0+JOAY7MWl0fNa1KLFhRmYAqBqMfJSj7
-	 7wIbhKjuDNdKA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v5.10] btrfs: fix deadlock when cloning inline extents and using qgroups
-Date: Tue, 29 Jul 2025 15:49:57 -0400
-Message-Id: <1753812619-d536d06d@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250729050753.98449-1-shivani.agarwal@broadcom.com>
-References: 
+	s=arc-20240116; t=1753818698; c=relaxed/simple;
+	bh=q2S8U1ciBfQTHyN+dfvvDmFzPPQgh+W3lJmwr8gcIHE=;
+	h=Date:To:From:Subject:Message-Id; b=BjS+CuvTtvM5MvXRm3kdu1j/TxFwllTjNZUDKlinEJq4FsLGuLzz8oBU4Nnz3QnWxqkRBcC+9pJT4ZprkjGYJtAFpZZDjbEXHI+4FbKMi+65QCllqizvVwJSSGtvv3O6dE9BJK6ZTnRD4Duf6J9/skye2UTfVKbh86GDLJRe+cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wOHgRkbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4293BC4CEF7;
+	Tue, 29 Jul 2025 19:51:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1753818698;
+	bh=q2S8U1ciBfQTHyN+dfvvDmFzPPQgh+W3lJmwr8gcIHE=;
+	h=Date:To:From:Subject:From;
+	b=wOHgRkbELklwxJkk/fCwvbd7HD4uH4gkCdEB6EXVTZNuUUuw2JPkb1Io7vfToh++3
+	 2rUyGmw0Hzm6ewWKEjd2VoXp4T87pWKHMM/Xk0ive0/V1Z0m6e6cPp7TXWLqYK2YiL
+	 bVZ89GHdFeIz6U5S+ETo++FEF1fA6aFzS2N23YGk=
+Date: Tue, 29 Jul 2025 12:51:37 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jannh@google.com,surenb@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3.patch added to mm-unstable branch
+Message-Id: <20250729195138.4293BC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
 
-Hi,
+The patch titled
+     Subject: mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3.patch
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3.patch
 
-The upstream commit SHA1 provided is correct: f9baa501b4fd6962257853d46ddffbc21f27e344
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Commit author: Filipe Manana <fdmanana@suse.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (exact SHA1)
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Note: The patch differs from the upstream commit:
----
-1:  f9baa501b4fd ! 1:  0c0156bba7e3 btrfs: fix deadlock when cloning inline extents and using qgroups
-    @@ Metadata
-      ## Commit message ##
-         btrfs: fix deadlock when cloning inline extents and using qgroups
-     
-    +    commit f9baa501b4fd6962257853d46ddffbc21f27e344 upstream.
-    +
-         There are a few exceptional cases where cloning an inline extent needs to
-         copy the inline extent data into a page of the destination inode.
-     
-    @@ Commit message
-         Signed-off-by: Filipe Manana <fdmanana@suse.com>
-         Reviewed-by: David Sterba <dsterba@suse.com>
-         Signed-off-by: David Sterba <dsterba@suse.com>
-    +    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    [Shivani: Modified to apply on 5.10.y, Passed false to
-    +    btrfs_start_delalloc_flush() in fs/btrfs/transaction.c file to
-    +    maintain the default behaviour]
-    +    Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-     
-      ## fs/btrfs/ctree.h ##
-     @@ fs/btrfs/ctree.h: int btrfs_truncate_inode_items(struct btrfs_trans_handle *trans,
-    - 			       struct btrfs_inode *inode, u64 new_size,
-    + 			       struct inode *inode, u64 new_size,
-      			       u32 min_type);
-      
-     -int btrfs_start_delalloc_snapshot(struct btrfs_root *root);
-     +int btrfs_start_delalloc_snapshot(struct btrfs_root *root, bool in_reclaim_context);
-    - int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
-    + int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, u64 nr,
-      			       bool in_reclaim_context);
-      int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
-     
-    @@ fs/btrfs/inode.c: int btrfs_start_delalloc_snapshot(struct btrfs_root *root)
-     +	return start_delalloc_inodes(root, &wbc, true, in_reclaim_context);
-      }
-      
-    - int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
-    + int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, u64 nr,
-     
-      ## fs/btrfs/ioctl.c ##
-     @@ fs/btrfs/ioctl.c: static noinline int btrfs_mksnapshot(const struct path *parent,
-    @@ fs/btrfs/send.c: static int flush_delalloc_roots(struct send_ctx *sctx)
-      		if (ret)
-      			return ret;
-      		btrfs_wait_ordered_extents(root, U64_MAX, 0, U64_MAX);
-    +
-    + ## fs/btrfs/transaction.c ##
-    +@@ fs/btrfs/transaction.c: static inline int btrfs_start_delalloc_flush(struct btrfs_trans_handle *trans)
-    + 		list_for_each_entry(pending, head, list) {
-    + 			int ret;
-    + 
-    +-			ret = btrfs_start_delalloc_snapshot(pending->root);
-    ++			ret = btrfs_start_delalloc_snapshot(pending->root, false);
-    + 			if (ret)
-    + 				return ret;
-    + 		}
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
+------------------------------------------------------
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
+Date: Tue, 29 Jul 2025 07:57:09 -0700
+
+- Addressed Lorenzo's nits, per Lorenzo Stoakes
+- Added a warning comment for vma_start_read()
+- Added Reviewed-by and Acked-by, per Vlastimil Babka and Lorenzo Stoakes
+
+Link: https://lkml.kernel.org/r/20250729145709.2731370-1-surenb@google.com
+Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
+Reported-by: Jann Horn <jannh@google.com>
+Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Results of testing on various branches:
+ include/linux/mmap_lock.h |    7 +++++++
+ mm/mmap_lock.c            |    2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| origin/linux-5.10.y       | Success     | Success    |
+--- a/include/linux/mmap_lock.h~mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
++++ a/include/linux/mmap_lock.h
+@@ -155,6 +155,10 @@ static inline void vma_refcount_put(stru
+  * reused and attached to a different mm before we lock it.
+  * Returns the vma on success, NULL on failure to lock and EAGAIN if vma got
+  * detached.
++ *
++ * WARNING! The vma passed to this function cannot be used if the function
++ * fails to lock it because in certain cases RCU lock is dropped and then
++ * reacquired. Once RCU lock is dropped the vma can be concurently freed.
+  */
+ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 						    struct vm_area_struct *vma)
+@@ -194,9 +198,12 @@ static inline struct vm_area_struct *vma
+ 	if (unlikely(vma->vm_mm != mm)) {
+ 		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
+ 		struct mm_struct *other_mm = vma->vm_mm;
++
+ 		/*
+ 		 * __mmdrop() is a heavy operation and we don't need RCU
+ 		 * protection here. Release RCU lock during these operations.
++		 * We reinstate the RCU read lock as the caller expects it to
++		 * be held when this function returns even on error.
+ 		 */
+ 		rcu_read_unlock();
+ 		mmgrab(other_mm);
+--- a/mm/mmap_lock.c~mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
++++ a/mm/mmap_lock.c
+@@ -235,7 +235,7 @@ retry:
+ 		goto fallback;
+ 	}
+ 
+-	/* Verify the vma is not behind of the last search position. */
++	/* Verify the vma is not behind the last search position. */
+ 	if (unlikely(from_addr >= vma->vm_end))
+ 		goto fallback_unlock;
+ 
+_
+
+Patches currently in -mm which might be from surenb@google.com are
+
+mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped.patch
+mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3.patch
+
 
