@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-165138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D746CB153D8
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:46:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E24EB153E9
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14AE95A2F1D
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:46:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3E2D5608D8
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB733287277;
-	Tue, 29 Jul 2025 19:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2441B3925;
+	Tue, 29 Jul 2025 19:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FsOuDkp8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bpIeB5cK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC66C275878
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B59D24676D
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753818337; cv=none; b=DUyJmyW4VRt7tQjnM8kX7fJEmOb4kyvQHZXnxrVQrPahA6ML9Q7VqoZ7cWfhNO53R6rY7/3paTZqoBnFDY5O+LgBc/+jOqurxYjmS0KVXfT9sn7IjkcXnN576bkScr1vmyNsqYVk2B2H5TGydFELZ7xC47NRdH+13yNE6+yE80o=
+	t=1753818597; cv=none; b=P9YHNdnvLFrxPkuAkaVhpdzR/CJja0Q/lKUY75MRz4Qw+kOWwi4urkGrYfaPAg6+dfUdX+KFamMYN+4BzRjoJJXHyESK1k9IwljXs21zt6p0PohgYUz3DmFqSrhGa8lO7DRXRqi7lauhlycg4Vgps40mbg7oCbgkDPtFM806jF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753818337; c=relaxed/simple;
-	bh=RwAo3qmQ3P12pJN66bknz5R3CtTtH8KEU+vEvvmrwY4=;
+	s=arc-20240116; t=1753818597; c=relaxed/simple;
+	bh=o1sWZEJ0Ci9VbbRAHYVKCVRUEbzlsz2wGWVrQ9bkiuU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m16yEs1hYxynIS70V1lpfO47/9RuPaKnUF3R7uQiBW3I8cFKyFY8ooIvUUT3dJQhe7ZXwRjnQJVNtYDafI6iHLaP5iSVIhATz+B7d16MNPX+hWLZRoz9urCkuT1RcxStb0NPLX2lWvlj4J8FNTTH7OSWkRVpVbwRSD6Ftu2GWRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FsOuDkp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B87DC4CEF6;
-	Tue, 29 Jul 2025 19:45:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ISWlDWO1fO6bbcmz7RIDGvz8XdarPXnSZPuaZT1gB8tgFOnoD4cO73UNZOEH+O0mTVqF0hJQXWgJbuCzVBMCJHaYNEDblIJynYeTSH+0yBUW0zwwQkJzSxaWQM48XxA9IEyITFFf8Ju4oz7NQjEJdjWPetfF6ChMV7K45jO+egA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bpIeB5cK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B25CC4CEEF;
+	Tue, 29 Jul 2025 19:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753818337;
-	bh=RwAo3qmQ3P12pJN66bknz5R3CtTtH8KEU+vEvvmrwY4=;
+	s=k20201202; t=1753818597;
+	bh=o1sWZEJ0Ci9VbbRAHYVKCVRUEbzlsz2wGWVrQ9bkiuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsOuDkp8/M0oGuXI2Qqse4TOlFUghCLjxMnRqd1HIYdDkX1TE+X9FgHWuQ7GE0eo7
-	 KGatBS1FFizBoX0MSHepE5KMlr7AqoLVwSQSvVoTwbGdJh9eDSCt6rVb3+ynlagujs
-	 9kkx2je4PSW3pAdO/f1T7RseE5s8k/iUwNDGumWLgQiBORW3NuK7N5ngB9W/ROQRvn
-	 CLzK4u1dfSO782b2D0o28oaELLXVj8eWnaecMiTA0pP6Aw225+mKbQZySGJFacWG6K
-	 RY5th5r2q8g3YHVgDaZl7833fVHvPZkQaeOrwg0pbuqCu7WebpE7X+ye160CTVCD7E
-	 i4R2d3PnD9Vvg==
+	b=bpIeB5cKcP6On31xff7JDSzE+ZjU8u+miUs3njWTEjeY+z9xo0Fjlk83WZMidMJuF
+	 By0ebdBm6mI8FcsHx9hQpLiWIw5BDYa93Jexxvcmgx7IqZYe9FvOBzoBtNElYcg1fX
+	 2+8SfGqV7OVLGzAc8aw/HVvUODANXGcguMYso1EdfDbFmRt96RdFvvLChImREbDPvR
+	 PO2PyRVDwG8HCl/Gm8e7NqpOgkzCTYFbZkrrZOkZF6FfLxoNgK2Y5Jv4ngd8O60gIH
+	 d7qpkrBIabEc0M1OCmsRFfrfGj/6T6nyuO1Y6Cdoyi/ni5GKh6L8g6c0J2Ry2zCXaW
+	 dYu3A1nWJ1D3g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
 Subject: Re: [PATCH 6.12.y v2] KVM: x86: Free vCPUs before freeing VM state
-Date: Tue, 29 Jul 2025 15:45:35 -0400
-Message-Id: <1753814485-e3198a9a@stable.kernel.org>
+Date: Tue, 29 Jul 2025 15:49:54 -0400
+Message-Id: <1753814888-f45b5f4d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250728175122.4021478-1-chengkev@google.com>
+In-Reply-To: <20250728175002.4021103-1-chengkev@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,7 +77,7 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  17bcd7144263 ! 1:  ee33d92e5a01 KVM: x86: Free vCPUs before freeing VM state
+1:  17bcd7144263 ! 1:  0bfb70711c37 KVM: x86: Free vCPUs before freeing VM state
     @@ Metadata
       ## Commit message ##
          KVM: x86: Free vCPUs before freeing VM state
