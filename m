@@ -1,162 +1,104 @@
-Return-Path: <stable+bounces-165120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614CFB1532B
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 20:53:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EA7B15356
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 770215615E5
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 18:53:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FA72544D47
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE0F24BC09;
-	Tue, 29 Jul 2025 18:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982DB234964;
+	Tue, 29 Jul 2025 19:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j57oc76U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FC5Luka9"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D685237180
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 18:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5532721CC4F
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753815194; cv=none; b=tCS4qL3XKFvZUnwQB6CmO/JOZnIRc/GOhFwAt5GV28R4lf+IsHXJ3aB8wag+ldtH7rDR3YC9UzRVS41CMs1sFQh934VHRVT6zbkItXGFB/1RJ/6SqcZPrtz8hbfVQQK8sru9c4laT582GbmpF5iUguYs1ruH2AsuSb2389kDGhE=
+	t=1753816609; cv=none; b=A1F8s1s9F7GxR/595c1OwlIWtkBtfY0jQtN6uUyxRpFEd4v/D0zD5V5FoDgJCmv5iEx/D6QwN4yiul5+PCkSg4/3fis4XSYJqAuwp1v/71tvsPupGg2apBo7aIYbypcXzxlGQQ9KGatfyZJKVwZae5ciy6uPfDtFgkUxuViTkuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753815194; c=relaxed/simple;
-	bh=vHiAZEJQ636SOevFTzB+2khGGZwRDs3zeAMpvxkeliQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V3gw+ctxs0yFLtZHEGbEbVUuRik+XliNd8pAGiwYIM3y6C3DCw+XtOMc9cgFfLmoIOko05q20zFXUujMCsvA6+ztP9zW9lGDA+sK/hTg1YgOLCnDEmQUgI2t1OatmGLOm0mN7hRR8kxAwxK+/8PyB6RYLcIauTpTw8b62Ms2/4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j57oc76U; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <8fad6c00-9c15-4315-a8c5-b8eac4281757@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753815189;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m8uizJieSyqW56uosfxUJeKEVQ0kVEbrA+dUYFoOGRs=;
-	b=j57oc76UIhZL5Xpcfh4U0tWr8C6enCpVQGbo2hG9G/0MM06fuiCJ8Y9RkLcRYz1x4orT97
-	JobdnhYCZ2iemZAIgxqDkCvYrqbLu0Qm1apgcZEDuQd2TzZ6hTyq50I2Vd3GHzTBw1Z8r+
-	6U+OU1uUSU0PwvKHE1NHrhjo/vcQR1Y=
-Date: Tue, 29 Jul 2025 20:53:02 +0200
+	s=arc-20240116; t=1753816609; c=relaxed/simple;
+	bh=hdnXpxfEqGCO5x9C2bF2JrX4CC5MYrWExS71y7c7fMs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HmKrlTCgL9i67aSEAhv7V0/uIIEccXm2J33HlXAjhDLeFD1nAbPlVY9k82rGtksuuiGDQ2UtFrRfPUCwZpiHAwS8QHj6NFuNNkN5X/fkeUaUG6Jn/5ZGkWd5ZWc9b6Gua2QF5l0vMJHIxw2ugfaTlxvfXiZ/+D9cX3hiWju+Q/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FC5Luka9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C68CC4CEF6;
+	Tue, 29 Jul 2025 19:16:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753816608;
+	bh=hdnXpxfEqGCO5x9C2bF2JrX4CC5MYrWExS71y7c7fMs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FC5Luka9pPyoVlAjMb06ORGMv6mE0QWDBaVkc6tZkvFllC4BmRoL4D4C7xRQvoFFL
+	 V3L8T98fxapvmIdw5JtgYI/iTbYdKirux5mUXjmvLefTjqr3X1oa9TQWHO/8EvGdzu
+	 Ljwi+oF+bHA62r0Ua/oaeIPqXAoSvRq3b3A9fv+Kw9+ifHhrY9tsYK7cVBcKsTnIAo
+	 oC6d9bEIpzgq5sEQ3Y4br4JOf8HvdG8SiYPvX+UxK6h5bZH70PqcmWf7j4HSM1R7yE
+	 OM9xKZiCPNdF5Yn46ot85/RJzjsPDatrzHOAbSACcRbQKHI+ZZF1H1rDJvIMQM+tCV
+	 knJO/HOtkOMwg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Haoxiang Li <haoxiang_li2024@163.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
+Date: Tue, 29 Jul 2025 15:16:44 -0400
+Message-Id: <20250729191644.2869910-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025072858-pentagon-gumball-b400@gregkh>
+References: <2025072858-pentagon-gumball-b400@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] RDMA/siw: Fix the sendmsg byte count in
- siw_tcp_sendpages
-To: Pedro Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Vlastimil Babka <vbabka@suse.cz>
-Cc: Jakub Kicinski <kuba@kernel.org>, David Howells <dhowells@redhat.com>,
- Tom Talpey <tom@talpey.com>, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- torvalds@linux-foundation.org, stable@vger.kernel.org,
- kernel test robot <oliver.sang@intel.com>
-References: <20250729120348.495568-1-pfalcato@suse.de>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Bernard Metzler <bernard.metzler@linux.dev>
-In-Reply-To: <20250729120348.495568-1-pfalcato@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On 29.07.2025 14:03, Pedro Falcato wrote:
-> Ever since commit c2ff29e99a76 ("siw: Inline do_tcp_sendpages()"),
-> we have been doing this:
->
-> static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
->                               size_t size)
-> [...]
->          /* Calculate the number of bytes we need to push, for this page
->           * specifically */
->          size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
->          /* If we can't splice it, then copy it in, as normal */
->          if (!sendpage_ok(page[i]))
->                  msg.msg_flags &= ~MSG_SPLICE_PAGES;
->          /* Set the bvec pointing to the page, with len $bytes */
->          bvec_set_page(&bvec, page[i], bytes, offset);
->          /* Set the iter to $size, aka the size of the whole sendpages (!!!) */
->          iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-> try_page_again:
->          lock_sock(sk);
->          /* Sendmsg with $size size (!!!) */
->          rv = tcp_sendmsg_locked(sk, &msg, size);
->
-> This means we've been sending oversized iov_iters and tcp_sendmsg calls
-> for a while. This has a been a benign bug because sendpage_ok() always
-> returned true. With the recent slab allocator changes being slowly
-> introduced into next (that disallow sendpage on large kmalloc
-> allocations), we have recently hit out-of-bounds crashes, due to slight
-> differences in iov_iter behavior between the MSG_SPLICE_PAGES and
-> "regular" copy paths:
->
-> (MSG_SPLICE_PAGES)
-> skb_splice_from_iter
->    iov_iter_extract_pages
->      iov_iter_extract_bvec_pages
->        uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
->    skb_splice_from_iter gets a "short" read
->
-> (!MSG_SPLICE_PAGES)
-> skb_copy_to_page_nocache copy=iov_iter_count
->   [...]
->     copy_from_iter
->          /* this doesn't help */
->          if (unlikely(iter->count < len))
->                  len = iter->count;
->            iterate_bvec
->              ... and we run off the bvecs
->
-> Fix this by properly setting the iov_iter's byte count, plus sending the
-> correct byte count to tcp_sendmsg_locked.
->
-> Cc: stable@vger.kernel.org
-> Fixes: c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
-> Reviewed-by: David Howells <dhowells@redhat.com>
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> ---
->
-> v2:
->   - Add David Howells's Rb on the original patch
->   - Remove the offset increment, since it's dead code
->
->   drivers/infiniband/sw/siw/siw_qp_tx.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
-> index 3a08f57d2211..f7dd32c6e5ba 100644
-> --- a/drivers/infiniband/sw/siw/siw_qp_tx.c
-> +++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
-> @@ -340,18 +340,17 @@ static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
->   		if (!sendpage_ok(page[i]))
->   			msg.msg_flags &= ~MSG_SPLICE_PAGES;
->   		bvec_set_page(&bvec, page[i], bytes, offset);
-> -		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-> +		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
->   
->   try_page_again:
->   		lock_sock(sk);
-> -		rv = tcp_sendmsg_locked(sk, &msg, size);
-> +		rv = tcp_sendmsg_locked(sk, &msg, bytes)
->   		release_sock(sk);
->   
->   		if (rv > 0) {
->   			size -= rv;
->   			sent += rv;
->   			if (rv != bytes) {
-> -				offset += rv;
->   				bytes -= rv;
->   				goto try_page_again;
->   			}
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
+[ Upstream commit 4ff12d82dac119b4b99b5a78b5af3bf2474c0a36 ]
+
+Add check for the return value of devm_kmemdup()
+to prevent potential null pointer dereference.
+
+Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ applied the patch to ice_flex_pipe.c instead of ice_ddp.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/intel/ice/ice_flex_pipe.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+index 1ac96dc66d0d..6b753fd5b335 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
++++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+@@ -1448,6 +1448,8 @@ enum ice_status ice_copy_and_init_pkg(struct ice_hw *hw, const u8 *buf, u32 len)
+ 		return ICE_ERR_PARAM;
+ 
+ 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
++	if (!buf_copy)
++		return ICE_ERR_NO_MEMORY;
+ 
+ 	status = ice_init_pkg(hw, buf_copy, len);
+ 	if (status) {
+-- 
+2.39.5
 
 
