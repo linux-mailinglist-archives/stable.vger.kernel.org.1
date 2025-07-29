@@ -1,121 +1,147 @@
-Return-Path: <stable+bounces-165090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3794CB1500D
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 17:13:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A12BB1501C
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 17:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8083318A1C0D
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 15:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 941513A41D2
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 15:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F14328643F;
-	Tue, 29 Jul 2025 15:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5029B1EF397;
+	Tue, 29 Jul 2025 15:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0uyKoES"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XmRM8d1s"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F3881E
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 15:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA864292B3D;
+	Tue, 29 Jul 2025 15:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753802015; cv=none; b=pfbC1qbWy/m3kRz3to+g8g+Bv0HxfArORrKkbNXriRHC3H49XsolMS/+DYp6rhhVMxQH1Jb3Ln6m9VotBhkPEoMGQRk6JISAeDOkjJ6gi5ko94lzkiZE12S9wfNRv1Fv4YvqSUiXz2ab3BfPTyAIZQbGzSPmkTSAmsm7HY/ZA/o=
+	t=1753802466; cv=none; b=iXHTUNzssjmAV5iu4DOSK4HAXs3CaaLXHoKDRxG6g7lhcR7gaAFEmjeUmKhGUh2LwWU/sx1K1+J+9BxzDqV8vgSrBQBiotWb4rxKqXmJ8WL9waV7QYWFby/s2geTYYxKr5Wmm2uyfT/yHC0jbxIa0/WiOEA11UgUltP7mytj5WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753802015; c=relaxed/simple;
-	bh=W3C5bt7cvUmJ7xoY2jZlrkv8OsLvUiWNz8pD6WheB4A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XjvS9juz0msKnqlyBzt9T4aXPfyZoM5uBsvDWytKlU7Og6eVi+gTbm2oC95YgoeYbLbU5OB/RpEU5XO3tNjK0TVv7wBXlEhrGGY/RJRbnVXyNWqHdZ+RRgs9uFMoPKVoTk4GagdpyEelZgChPFyrJLKWsHjkIj9llE8rgiv4ap8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0uyKoES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E8CC4CEF9;
-	Tue, 29 Jul 2025 15:13:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753802013;
-	bh=W3C5bt7cvUmJ7xoY2jZlrkv8OsLvUiWNz8pD6WheB4A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0uyKoESnI2V7VeAwDgq+EeynKz4uZNQd+orsvE8+EZvIUN6pAzmiW3H59dF1ChNE
-	 3KmucIkTkrMMq68VgL5ABjzKC/4mOhdEfkJ/zSqK/YXGxtQ/NGrUbXb8k5x2s3R+T7
-	 SQx0MWCMRTDCVlLnykJbpUqq5SfvTyJgLaeGJPpINHapsRkFFZOgmEIH4GzNaPRm6q
-	 Rp+NOM+V2SkwdZum+HuKcgwNGckmyF1Ftg0b5rbNgHo4+BtHGelKfwNT3RXwgPfR5C
-	 mWMz/rpaLX2y2eh+b+b16FyAHsAY5fv7PHalOBiEV8EdSuDf5ovyhzW03vUC7cR+sB
-	 rVWWHoywDw1SA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Harry Yoo <harry.yoo@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/2] mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
-Date: Tue, 29 Jul 2025 11:13:26 -0400
-Message-Id: <20250729151326.2730116-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250729151326.2730116-1-sashal@kernel.org>
-References: <2025072811-ethanol-arbitrary-a664@gregkh>
- <20250729151326.2730116-1-sashal@kernel.org>
+	s=arc-20240116; t=1753802466; c=relaxed/simple;
+	bh=PJ605ARQguDhCFZo50hkDMxiA0Q8GgGg9/9dBOXj6aA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IuRl9bjVvdRlv/Yyk+cgcEAPgnkKxo+iF29HtEsr226HxBhqRhwf6XvUoX10z+dRmXvwUt+SPgq77XxeFh4gGNNT2Bx9a2kD82oj51S9TPZ8dwPWBSbGMkHNkRDTK4SDGWqF5ZcdTb8yumKxDMM2OxYk59YH+ManialC+ivlCpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XmRM8d1s; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753802464; x=1785338464;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PJ605ARQguDhCFZo50hkDMxiA0Q8GgGg9/9dBOXj6aA=;
+  b=XmRM8d1sLZghxkedtGlKhzwnVDlX7nYc1ZuEWA31vePS+i88zLt83hMR
+   5RFMZ92N1+OKWy6c1veWIlwskzDwbtnX++SFGdN/ZvK2SVhV0A6SoPD1i
+   8vU9Z3f6CAK/3kvkrmPkYvIck3qi6/moWjk/3IsYM0zYZ/eYa6hTwfg3z
+   VAavgZm9vRkGOQhDW9hjPd7SPI83hcPsNrmwqzgkpIQK4butiwtcajdFD
+   vjqnsqlh2W4CLvaYXhU4HfDL5wAy4eh8mQJKHF6LniC2CsI2klws+4Tjx
+   BIAJw97efhuwa46TDITCgbLS7LUO1QtnPzBUnN2EiRJ49ClP39eR2hRtX
+   Q==;
+X-CSE-ConnectionGUID: SjvUHwU/SS2LVhRqzhExPA==
+X-CSE-MsgGUID: i2nGsHjBS96zqOonN4YzhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="59722810"
+X-IronPort-AV: E=Sophos;i="6.16,349,1744095600"; 
+   d="scan'208";a="59722810"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2025 08:21:04 -0700
+X-CSE-ConnectionGUID: qdbqXlTiRBKoHflU+LfHDg==
+X-CSE-MsgGUID: EVyiJOoQQsGLC5ddS2b97Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,349,1744095600"; 
+   d="scan'208";a="162308092"
+Received: from mnyman-desk.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2025 08:21:01 -0700
+Message-ID: <c47814bf-85f0-4bd1-bc33-63f06b44d9c9@linux.intel.com>
+Date: Tue, 29 Jul 2025 18:20:59 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: renesas-xhci: Fix External ROM access timeouts
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>, linux-usb@vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Mathias Nyman <mathias.nyman@intel.com>, Vinod Koul <vkoul@kernel.org>,
+ stable@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+References: <20250727154516.11599-1-marek.vasut+renesas@mailbox.org>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <20250727154516.11599-1-marek.vasut+renesas@mailbox.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Harry Yoo <harry.yoo@oracle.com>
+On 27.7.2025 18.44, Marek Vasut wrote:
+> Increase the External ROM access timeouts to prevent failures during
+> programming of External SPI EEPROM chips. The current timeouts are
+> too short for some SPI EEPROMs used with uPD720201 controllers.
+> 
+> The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
+> the current timeout for Sector Erase issued by the controller before
+> Page Program in renesas_fw_download_image() is also 100 ms. Neither
+> timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+> 
+> MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
+> PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
+> = 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
+> that the maximum time required for Chip Erase opcode to complete is 2 s,
+> and for Sector Erase it is 300 ms .
+> 
+> MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
+> PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
+> (Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
+> "tCE" indicate that the maximum time required for Chip Erase opcode to
+> complete is 3.2 s, and for Sector Erase it is 400 ms .
+> 
+> Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
+> and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
+> to be sufficient for majority of SPI EEPROM chips.
+> 
+> [1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
+> [2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
+> 
+> Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
+> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+> ---
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Mathias Nyman <mathias.nyman@intel.com>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> Cc: linux-renesas-soc@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> ---
+>   drivers/usb/host/xhci-pci-renesas.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/usb/host/xhci-pci-renesas.c b/drivers/usb/host/xhci-pci-renesas.c
+> index 620f8f0febb8..86df80399c9f 100644
+> --- a/drivers/usb/host/xhci-pci-renesas.c
+> +++ b/drivers/usb/host/xhci-pci-renesas.c
+> @@ -47,8 +47,9 @@
+>   #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
+>   #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
+>   
+> -#define RENESAS_RETRY	10000
+> -#define RENESAS_DELAY	10
+> +#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
+> +#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
+> +#define RENESAS_DELAY			10
 
-[ Upstream commit 694d6b99923eb05a8fd188be44e26077d19f0e21 ]
+No objection, just making sure author is aware that RENESAS_RETRY is used in
+_seven_ for loops, and this change will increase the timeout five-fold for
+all of them.
 
-Commit 48b4800a1c6a ("zsmalloc: page migration support") added support for
-migrating zsmalloc pages using the movable_operations migration framework.
-However, the commit did not take into account that zsmalloc supports
-migration only when CONFIG_COMPACTION is enabled.  Tracing shows that
-zsmalloc was still passing the __GFP_MOVABLE flag even when compaction is
-not supported.
-
-This can result in unmovable pages being allocated from movable page
-blocks (even without stealing page blocks), ZONE_MOVABLE and CMA area.
-
-Possible user visible effects:
-- Some ZONE_MOVABLE memory can be not actually movable
-- CMA allocation can fail because of this
-- Increased memory fragmentation due to ignoring the page mobility
-  grouping feature
-I'm not really sure who uses kernels without compaction support, though :(
-
-To fix this, clear the __GFP_MOVABLE flag when
-!IS_ENABLED(CONFIG_COMPACTION).
-
-Link: https://lkml.kernel.org/r/20250704103053.6913-1-harry.yoo@oracle.com
-Fixes: 48b4800a1c6a ("zsmalloc: page migration support")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/zsmalloc.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index eae16c6b6fc6..b379deb0a10c 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1067,6 +1067,9 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
- 	if (!zspage)
- 		return NULL;
- 
-+	if (!IS_ENABLED(CONFIG_COMPACTION))
-+		gfp &= ~__GFP_MOVABLE;
-+
- 	zspage->magic = ZSPAGE_MAGIC;
- 	migrate_lock_init(zspage);
- 
--- 
-2.39.5
+Thanks
+Mathias
 
 
