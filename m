@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-165124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29464B153A2
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:38:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6381CB153A5
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D830542D76
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:38:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 064727B3037
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2431325484D;
-	Tue, 29 Jul 2025 19:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DD4298994;
+	Tue, 29 Jul 2025 19:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zohgxlzt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRbdkXl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70CB294A1B
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CE425485F
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753817850; cv=none; b=Vt6I22jHBSHdKzFoquDad1iQcqKWt3tL0+UnngYjp5QDGTND2P5W7b/AhevN7duj89hC2yasHygXCWIV6Qdl/QxFuOOkWRddguGiIsjFqRG8FNno5Cx4sXNKlzw0/gS4OLSc60hvq6cl7d4tGsmdDZ5eSGxa+LY7DbJjyn8bA5U=
+	t=1753817852; cv=none; b=NqlyNF9OqLm5OB6yC+b/F+p4FpFeU1cRUokcGtJl7U+g9cTTLK1PuZeoVBeC/K2jiiNQbkqm+o2yMo2NovDX13YfbgLdrBzpD6oMtwavO35gK28h7ciljDkblVXFlGh/09STBXBsFE43MGm9EC4RtufR7iVsroibB79guU6XzVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753817850; c=relaxed/simple;
-	bh=gIVoc/Gh1WvSBk6tBwEL4EcdjtpeKvkbHitmNicllfw=;
+	s=arc-20240116; t=1753817852; c=relaxed/simple;
+	bh=2hY1qlNZGFquKJSpqKZ1VKGZyOcEYBz9wzJWevjkwlY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g+qQcryYFkoKD0sPIaN3oX/3SHQLqrL8iJNeI6ahHVY0o8yT8YuqeX7nyn8ovVtdOUr07ll087cu/75yQDIYnzaFl0TUAf9G+IA7tP2YMU6FVm7PMR2wiEgHztmomSy74SQ8N2xBJIlO+DZ0fnzQwEIkLKFhTOi7ExXHb8KoV+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zohgxlzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC14C4CEF6;
-	Tue, 29 Jul 2025 19:37:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bryuZ6LCrXXGdNtmg5umaJJp8eQJ1apCMmlTrmGGdxmFg/ZoLUwQaj9HFC1koOFHxXavJPgea7g9PmkqejLYOYsZ3dhsZHqL1IlUjMiaE+9kuOrKEQghgzpcUHU78Ma0Qxe5Be/vHER6TmsBe5EDlkSdCrHa+SNOwgBnhEfECek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRbdkXl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8439C4CEF7;
+	Tue, 29 Jul 2025 19:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753817848;
-	bh=gIVoc/Gh1WvSBk6tBwEL4EcdjtpeKvkbHitmNicllfw=;
+	s=k20201202; t=1753817851;
+	bh=2hY1qlNZGFquKJSpqKZ1VKGZyOcEYBz9wzJWevjkwlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zohgxlzt/TQVRC9aPkPOydp8LYh5O3qYrX2FiRP/FCxDfDPOEgijYCg6HLwF1b2CI
-	 t6QADBEQHqB8Q9rpAW01nuAg8V/iooJCiGybrcZlQ19uL3Y2qL608WrRz6HiinzNP2
-	 Aat7bi5lWFsOgj+oxTwyNv8T/n0MdfZQ3LPfK0X/UNGBqJ79J7N3pwPezCCakFD5I0
-	 //ll07OtEccf8vZk3HZgWD6lQiOiknLi1Foh8e/k4EyiaEZ2YoIw4kDV7UBr2cOjeF
-	 ShLJrMS2szLBfeVpKsxEmNoY5tXtr8crbZ1hQYUCKcJjndp8K5YbOsEaw09TqnpfIM
-	 AAtbOnd+xjOpg==
+	b=dRbdkXl+uZvbTVxOWakhhRj2LTEPndELzrrF+UmGNnXz2C74LYmr+TbIEuUXMSPqC
+	 J0IUPM+H3kdKPgpHsjl3sZrcsDl1hG/b61HLGdnMTCtx2KGNOg503UUM82nJnqKX0H
+	 07K9qiAUBeflWwIhC6BZNbiraNFpfrMS/AmXkVJVpWgYuyIGuOTbK399Ev95MEqxG4
+	 cEj8RgQavXbj7Q1fFsHGnffoHnOUJuTwbrXpBRBTtzNERjgcLjohWkiDf59SFsdoKn
+	 xqFoYwoOIYGn6B7yhYe5UB1cRG9TN85WHcw2I5Wkbdu9vXOjQCls9VrEQ5E+HS2SYF
+	 M/bWqLK6ihULQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	shung-hsi.yu@suse.com
+	tomitamoeko@gmail.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6 1/1] Revert "selftests/bpf: Add a cgroup prog bpf_get_ns_current_pid_tgid() test"
-Date: Tue, 29 Jul 2025 15:37:25 -0400
-Message-Id: <1753811514-0a6263d5@stable.kernel.org>
+Subject: Re: [PATCH 6.12 4/4] Revert "drm/xe/forcewake: Add a helper xe_force_wake_ref_has_domain()"
+Date: Tue, 29 Jul 2025 15:37:28 -0400
+Message-Id: <1753809157-918c167e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250729053652.73667-1-shung-hsi.yu@suse.com>
+In-Reply-To: <20250729110525.49838-5-tomitamoeko@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,13 +65,17 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
+ℹ️ This is part 4/4 of a series
 ⚠️ Could not find matching upstream commit
 
 No upstream commit was identified. Using temporary commit for testing.
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| 6.6                       | Success     | Success    |
+| 6.12                      | Success     | Success    |
 
