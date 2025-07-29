@@ -1,294 +1,120 @@
-Return-Path: <stable+bounces-165049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30EFB14C15
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 12:22:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 981DEB14C0A
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 12:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C368E189EB90
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 10:22:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D543BFBE0
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 10:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF9A288CB2;
-	Tue, 29 Jul 2025 10:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BA5288C39;
+	Tue, 29 Jul 2025 10:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="Xbwn3BWA";
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="TD3fE41v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdskB6UZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mailhub11-fb.kaspersky-labs.com (mailhub11-fb.kaspersky-labs.com [81.19.104.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821302882B8;
-	Tue, 29 Jul 2025 10:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.104.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5F02046B3;
+	Tue, 29 Jul 2025 10:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753784518; cv=none; b=BKpmTUy9J5P38c7kdyNjqLEMeaQ+uI7n1TRXAMMoRwNsjpFUm8zJ6nl3lhOkRi8OCeVruyT37El2sDGD/Ssp0IIA8vko25mANznHj6pYhCuvEZY7UrmVof4B3f1ZjNXI3RvS/Ez/VnHQqRVpttGE2iSdvufxkglSu/lXmXa2wAQ=
+	t=1753784287; cv=none; b=ky/SJE4ZBIp08nxLKGk/QeCuSC1OrNEIpFLZEEV5CTiqxSJvcHLd8y2dv9pCjNb7Ra/WPa+1WSPfm0MM47U8kRL0Bh4vgcJR/efbkSHMk8U6Z0uXhNvanc5I4L/MdQNs6JZtKKlOIBXZi4SjR7iaKc3KxrNwzdumrr/s1ZiI3zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753784518; c=relaxed/simple;
-	bh=RdwgkpJygYbVHv+DnDQgJ36uT2BMnCr2YQHud15WhqQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LVHwMnwQMt3+734M797NQO3gIUH5iLAfkr4BHoNkTTRAb8mSS+OHpEhZyIA+xACEG7eQRj2A+cgFCGk5g6nkHJ3pvPF8XGOuX5dg3m9SJOc++R9I9B6EkhE9EIK3CTYk1VSMXgGgrAFR1ZxpQk472wL2nu7O3JmeRAf0miFB1ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=Xbwn3BWA; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=TD3fE41v; arc=none smtp.client-ip=81.19.104.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1753784023;
-	bh=hq+m1yjCde1obhWdPENYPOgw5P3QzOy2HCU8y8pSSrM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=Xbwn3BWA9CW9EOCSpY1AOMks/vAhm35p2YhMJ4RIpg5BlHiJJTFVGOwosyu8cxfh8
-	 F3kqhQpdgzWcCUuYCzXAsoL45IJ0JFgnW8DaEvRwsLOI4oL8Ltof17pX4xWtNW74i0
-	 T5FckLgEUUYEaJo1XGy2L1kViJVcoWsHW8c0PNHKoXceOxiWLeKQAAOWyoomNcki3f
-	 kEkNAlI0mmrl4kDN/UA3rrnY25GEfen0rnLPY8dYhDHEs/WnQFqUa2ocJemat5jxu9
-	 Si3IGF/NC2n1FKGwsqA01cPzRPTGER+kbootwKbMsS19zaYn65oe8yRezmMlE/usrv
-	 Fzau7jHHwVNzw==
-Received: from mailhub11-fb.kaspersky-labs.com (localhost [127.0.0.1])
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTP id 7FD84E876C2;
-	Tue, 29 Jul 2025 13:13:43 +0300 (MSK)
-Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "mx13.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTPS id 47961E808C1;
-	Tue, 29 Jul 2025 13:13:43 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1753784014;
-	bh=hq+m1yjCde1obhWdPENYPOgw5P3QzOy2HCU8y8pSSrM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=TD3fE41vAUBFWEJwpbLkG8LJ2MOKaJH3COHWfDOsFEqTWrcfjX3FKly9Qvts5uB6y
-	 Ir10vZ9MtLghOExFY4ffZ0z237sz6qzDp/gSci2LwWzvgzx3bx4S6SO4fVNZb6BQlw
-	 y3k3S0aDhLKSIwqc5Uhkev7Lx43fG6EcSplwLUTMaas7a7dpMRcQr0mTiYYSwN4FSf
-	 rbg2YUpCA3oAGTwNgctwtUMrJnB+lW31N2Y9NTVyePYBZ6vj2gJOH7BxzX2c48DI4B
-	 XiWXwzqYNEFvNMdlMQHMlZwQcNZnz55lurwYZjDWZ6SPaDINCa/yHYJESL9xRKp7WB
-	 RAt+RXsu+x06w==
-Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay13.kaspersky-labs.com (Postfix) with ESMTP id AEFFC3E1C62;
-	Tue, 29 Jul 2025 13:13:34 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id E0FF73E151D;
-	Tue, 29 Jul 2025 13:13:33 +0300 (MSK)
-Received: from larshin.avp.ru (10.16.106.5) by HQMAILSRV2.avp.ru (10.64.57.52)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 29 Jul
- 2025 13:13:33 +0300
-From: Larshin Sergey <Sergey.Larshin@kaspersky.com>
-To: Sean Young <sean@mess.org>
-CC: Larshin Sergey <Sergey.Larshin@kaspersky.com>, Mauro Carvalho Chehab
-	<mchehab@kernel.org>, Jarod Wilson <jarod@redhat.com>,
-	<linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, <Oleg.Kazakov@kaspersky.com>,
-	<syzbot+f1a69784f6efe748c3bf@syzkaller.appspotmail.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] media: rc: fix races with imon_disconnect()
-Date: Tue, 29 Jul 2025 13:13:32 +0300
-Message-ID: <20250729101332.2435282-1-Sergey.Larshin@kaspersky.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1753784287; c=relaxed/simple;
+	bh=NuNw1ilHN10vwEgqOnWIiIJkLJgboyfff6Ebml3rcSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IB96Gw2xw8/vZrDMaU13oD0mtV2hS8BuSKmWomQboJpuL2G01VE19cIgK95GNMzlW5pt8ZkJtdyZ4alcPl6aDx+IePpXTgoqhgpVwYxobgafF6KkSjbhpoi/PshLHKu7DKAICsdy5VtZmz4OPcCDQwkGY+z9RW7glaJ00cERHuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdskB6UZ; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae3b336e936so1097102866b.3;
+        Tue, 29 Jul 2025 03:18:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753784284; x=1754389084; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hwEiTIpSN1SPBIddcumrWXcIt60tGMLxBjokT4wgL80=;
+        b=gdskB6UZRkYlhHlmxyMewA59BcId2W1BT82cq0OYUuwcOLiW8B2dp1QG6LlPsyWylv
+         sjE5rvUmZofr19orRQgOIU9LnVRbcGgqYTfI88mbb1Xa23ybTDJZbnQ32ffmTOrHX4Dr
+         N9SjvljeUtA+sDwVawI0PD7/Q9QkVpBOSAZz28qOt/cG7RrfALWCNYpD0O3gB575+Q+7
+         lxeMG3TIrk2T/xw0osMO2XSeCFI7/r3vyQGBeNDB2SCdG4mAXAW26rEiINkj++sbnCh4
+         rq4wOAPYyrKbXcrylaM9cLQtAu9RzZH6Qh3nNdLvjDBnWk78dIxDa4TPBEKSdmbNGCPj
+         lOAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753784284; x=1754389084;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hwEiTIpSN1SPBIddcumrWXcIt60tGMLxBjokT4wgL80=;
+        b=kYqmJMIxs/7vYYes4bAxOM/fzdFCsL5Z6QdMzfvgHfzHATXORdvsN7ScYExGbHPyt0
+         LzirPpy6LB8hNiUezN4BbPK0xCq0/WB7jF2DrYdSa9z4DNb0Y7JocQ2ty+ZbKf2/cvIw
+         Zh0+cclJjIl5Su8t89EGVRENfUfXdeoROaUx65GCdHmc045gWkU4S+8sfyLBd5wgpvs/
+         3naoDy887dBDyQGxoljnCZYCbigDctNCdtevkvYIGgLsB9uImsaflHDUhSXwFNzkJgVf
+         faKsmnwswyYQwlZeQaRdTXPnRyv9IuEpYeMqmJm+q8mvjn5o89IO12HUQQiaxhhd01e/
+         oNKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUY05B6Qe3oVSvMpNhrqNnWfaK7qQd+KAy5MijCpimWt3nkVUvE+4p9z/TurGWvPkTW1REnu4g7gNnyE204Wqr32g==@vger.kernel.org, AJvYcCWfdSblQJy+fLUJa3QR29VL5H+PZAhfReIJGt+w8Ogyl327cE8aT9iATDuaxtdiXtTsNLAibPKF@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuZLtgo5kM0QSnN8w5TFTSrYmFWkPOPsg2l7wg+SaWJzKEI3YU
+	Y8kJI7fJ7ltwjnFcnf0KwmZvqinz8G5gvOXYPcveGap5Bsiz9RcEWqtwAUTpuA==
+X-Gm-Gg: ASbGnculEP/P8GzSSZTMXf5312C0s4PoZtkaPeIXHo5ytzToez2LjKqqHNUSY6jfEch
+	ZeVT+USioCgHisKz5K+OV7hPDX/A/rjSm33iwA49NW0+VSbi9USn7wylWmahn2muktiPWpIdEdD
+	cznqw/9r9zdLlKfYNZjcATX8GNhQAw10CFq8gLBIJ1/fp5a480z6JZ4alfjTDXxeBzdb68PZbD/
+	VfhfotQ7k0kfWJkkl+Wtzd4sB2B1vCPKFPnNd5vaIeGUWleA8kmLREraRv39G8iffaIHmgu4qCo
+	b6A1pA3RdOVAiLdB/isGpMqih93FWEDtN66ZHmBvQrMOMrIl7DGSLxCyvGG9fWQlSALNeWTx+3H
+	GgEp8xmE36JcFMQv8O0r2oocubgq8Ff6ftY8=
+X-Google-Smtp-Source: AGHT+IECkzHllH8u1QlENWvmCk7cRc6JbBNQM7rQL24VWTbtIzjG4IxN4HS3DjEUH1QFe9hf1PeAiA==
+X-Received: by 2002:a17:906:ef0c:b0:ae6:f087:953 with SMTP id a640c23a62f3a-af61c2b411dmr1884064766b.12.1753784284276;
+        Tue, 29 Jul 2025 03:18:04 -0700 (PDT)
+Received: from foxbook (bfh133.neoplus.adsl.tpnet.pl. [83.28.45.133])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635ad7d95sm567005366b.122.2025.07.29.03.18.02
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Tue, 29 Jul 2025 03:18:03 -0700 (PDT)
+Date: Tue, 29 Jul 2025 12:17:59 +0200
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: linux-usb@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Mathias Nyman
+ <mathias.nyman@intel.com>, Vinod Koul <vkoul@kernel.org>,
+ stable@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH] usb: renesas-xhci: Fix External ROM access timeouts
+Message-ID: <20250729121759.0e9df735@foxbook>
+In-Reply-To: <20250727154516.11599-1-marek.vasut+renesas@mailbox.org>
+References: <20250727154516.11599-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV5.avp.ru (10.64.57.55) To HQMAILSRV2.avp.ru
- (10.64.57.52)
-X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 07/29/2025 09:55:44
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 195156 [Jul 29 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: Sergey.Larshin@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 63 0.3.63
- 9cc2b4b18bf16653fda093d2c494e542ac094a39
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_one_url}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: syzkaller.appspot.com:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;kaspersky.com:5.0.1,7.1.1;larshin.avp.ru:5.0.1,7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/29/2025 09:57:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 7/29/2025 9:06:00 AM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/07/29 09:04:00
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/07/29 08:29:00 #27646063
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/07/29 09:04:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Syzbot reports a KASAN issue as below:
-BUG: KASAN: use-after-free in __create_pipe include/linux/usb.h:1945 [inline]
-BUG: KASAN: use-after-free in send_packet+0xa2d/0xbc0 drivers/media/rc/imon.c:627
-Read of size 4 at addr ffff8880256fb000 by task syz-executor314/4465
+Hi,
 
-CPU: 2 PID: 4465 Comm: syz-executor314 Not tainted 6.0.0-rc1-syzkaller #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.14.0-2 04/01/2014
-Call Trace:
- <TASK>
-__dump_stack lib/dump_stack.c:88 [inline]
-dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
-print_address_description mm/kasan/report.c:317 [inline]
-print_report.cold+0x2ba/0x6e9 mm/kasan/report.c:433
-kasan_report+0xb1/0x1e0 mm/kasan/report.c:495
-__create_pipe include/linux/usb.h:1945 [inline]
-send_packet+0xa2d/0xbc0 drivers/media/rc/imon.c:627
-vfd_write+0x2d9/0x550 drivers/media/rc/imon.c:991
-vfs_write+0x2d7/0xdd0 fs/read_write.c:576
-ksys_write+0x127/0x250 fs/read_write.c:631
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+On Sun, 27 Jul 2025 17:44:16 +0200, Marek Vasut wrote:
+> Increase the External ROM access timeouts to prevent failures during
+> programming of External SPI EEPROM chips. The current timeouts are
+> too short for some SPI EEPROMs used with uPD720201 controllers.
+> 
+> The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
+> the current timeout for Sector Erase issued by the controller before
+> Page Program in renesas_fw_download_image() is also 100 ms. Neither
+> timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
 
-The iMON driver improperly releases the usb_device reference in
-imon_disconnect without coordinating with active users of the
-device.
+Out of curiosity, who uses this ROM update functionality and why?
 
-Specifically, the fields usbdev_intf0 and usbdev_intf1 are not
-protected by the users counter (ictx->users). During probe,
-imon_init_intf0 or imon_init_intf1 increments the usb_device
-reference count depending on the interface. However, during
-disconnect, usb_put_dev is called unconditionally, regardless of
-actual usage.
+It seems weird to write nonvolatile memories in a PCI probe routine.
+Boards or PCIe cards fitted with ROMs are programmed with working
+firmware at the factory and there ought to be no need to touch that.
 
-As a result, if vfd_write or other operations are still in
-progress after disconnect, this can lead to a use-after-free of
-the usb_device pointer.
+And if you want to update this FW, dropping a file in /lib/firmware/
+and loading a kernel module is not the usual (or convenient) UI...
 
-Thread 1 vfd_write                      Thread 2 imon_disconnect
-                                        ...
-                                        if
-                                          usb_put_dev(ictx->usbdev_intf0)
-                                        else
-                                          usb_put_dev(ictx->usbdev_intf1)
-...
-while
-  send_packet
-    if
-      pipe = usb_sndintpipe(
-        ictx->usbdev_intf0) UAF
-    else
-      pipe = usb_sndctrlpipe(
-        ictx->usbdev_intf0, 0) UAF
-
-Guard access to usbdev_intf0 and usbdev_intf1 after disconnect by
-checking ictx->disconnected in all writer paths. Add early return
-with -ENODEV in send_packet(), vfd_write(), lcd_write() and
-display_open() if the device is no longer present.
-
-Set and read ictx->disconnected under ictx->lock to ensure memory
-synchronization. Acquire the lock in imon_disconnect() before setting
-the flag to synchronize with any ongoing operations.
-
-Ensure writers exit early and safely after disconnect before the USB
-core proceeds with cleanup.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Reported-by: syzbot+f1a69784f6efe748c3bf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f1a69784f6efe748c3bf
-Fixes: 21677cfc562a ("V4L/DVB: ir-core: add imon driver")
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Larshin Sergey <Sergey.Larshin@kaspersky.com>
----
- drivers/media/rc/imon.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
-index f5221b018808..cf3e6e43c0c7 100644
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -536,7 +536,9 @@ static int display_open(struct inode *inode, struct file *file)
- 
- 	mutex_lock(&ictx->lock);
- 
--	if (!ictx->display_supported) {
-+	if (ictx->disconnected) {
-+		retval = -ENODEV;
-+	} else if (!ictx->display_supported) {
- 		pr_err("display not supported by device\n");
- 		retval = -ENODEV;
- 	} else if (ictx->display_isopen) {
-@@ -598,6 +600,9 @@ static int send_packet(struct imon_context *ictx)
- 	int retval = 0;
- 	struct usb_ctrlrequest *control_req = NULL;
- 
-+	if (ictx->disconnected)
-+		return -ENODEV;
-+
- 	/* Check if we need to use control or interrupt urb */
- 	if (!ictx->tx_control) {
- 		pipe = usb_sndintpipe(ictx->usbdev_intf0,
-@@ -949,12 +954,14 @@ static ssize_t vfd_write(struct file *file, const char __user *buf,
- 	static const unsigned char vfd_packet6[] = {
- 		0x01, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF };
- 
--	if (ictx->disconnected)
--		return -ENODEV;
--
- 	if (mutex_lock_interruptible(&ictx->lock))
- 		return -ERESTARTSYS;
- 
-+	if (ictx->disconnected) {
-+		retval = -ENODEV;
-+		goto exit;
-+	}
-+
- 	if (!ictx->dev_present_intf0) {
- 		pr_err_ratelimited("no iMON device present\n");
- 		retval = -ENODEV;
-@@ -1029,11 +1036,13 @@ static ssize_t lcd_write(struct file *file, const char __user *buf,
- 	int retval = 0;
- 	struct imon_context *ictx = file->private_data;
- 
--	if (ictx->disconnected)
--		return -ENODEV;
--
- 	mutex_lock(&ictx->lock);
- 
-+	if (ictx->disconnected) {
-+		retval = -ENODEV;
-+		goto exit;
-+	}
-+
- 	if (!ictx->display_supported) {
- 		pr_err_ratelimited("no iMON display present\n");
- 		retval = -ENODEV;
-@@ -2499,7 +2508,11 @@ static void imon_disconnect(struct usb_interface *interface)
- 	int ifnum;
- 
- 	ictx = usb_get_intfdata(interface);
-+
-+	mutex_lock(&ictx->lock);
- 	ictx->disconnected = true;
-+	mutex_unlock(&ictx->lock);
-+
- 	dev = ictx->dev;
- 	ifnum = interface->cur_altsetting->desc.bInterfaceNumber;
- 
--- 
-2.39.5
+Regards,
+Michal
 
 
