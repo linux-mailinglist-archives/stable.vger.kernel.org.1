@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-165089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790FEB1500C
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 17:13:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3794CB1500D
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 17:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADCCD3A2DF4
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 15:13:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8083318A1C0D
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 15:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77A527F005;
-	Tue, 29 Jul 2025 15:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F14328643F;
+	Tue, 29 Jul 2025 15:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1xz1eRe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0uyKoES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6755A881E
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 15:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F3881E
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 15:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753802012; cv=none; b=E163yJq5x9ILQyCnZz+BVAvQN/vYT1yJ0cE/ez7vlqJMyTPsAy48QvuW9Vl8miGnKF4ZciD+3FsGURUS5VvgbbyIIbtvBuqnrh9t02G2/YzIfezUPHblbfx0OfcC1qpiCvtpVPQkYkjkvRLgMEBoZPrm73eV/WHu44qMx1/HrIQ=
+	t=1753802015; cv=none; b=pfbC1qbWy/m3kRz3to+g8g+Bv0HxfArORrKkbNXriRHC3H49XsolMS/+DYp6rhhVMxQH1Jb3Ln6m9VotBhkPEoMGQRk6JISAeDOkjJ6gi5ko94lzkiZE12S9wfNRv1Fv4YvqSUiXz2ab3BfPTyAIZQbGzSPmkTSAmsm7HY/ZA/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753802012; c=relaxed/simple;
-	bh=AVUlBVI8SZOlQyDUSn8aRq8LQ4NgfWQyRUjfVAwiMHQ=;
+	s=arc-20240116; t=1753802015; c=relaxed/simple;
+	bh=W3C5bt7cvUmJ7xoY2jZlrkv8OsLvUiWNz8pD6WheB4A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s4PuWGLw3IEFag4ViPUy6Ls+7YB5aSVak9IZpnmL1udaLdkmQv/Rxu9H2uNtB9ruwhpplKrMp0s7dWnEPAwxPSChI1OIlX5VyEg6L1cNpKJrwRUdJ+L+3Ut92lrGlNwgU/n2jCFfr7fYS6MKIcaHARDxVyfTImc1/QwAqfyxmt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1xz1eRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF03C4CEF4;
-	Tue, 29 Jul 2025 15:13:30 +0000 (UTC)
+	 MIME-Version; b=XjvS9juz0msKnqlyBzt9T4aXPfyZoM5uBsvDWytKlU7Og6eVi+gTbm2oC95YgoeYbLbU5OB/RpEU5XO3tNjK0TVv7wBXlEhrGGY/RJRbnVXyNWqHdZ+RRgs9uFMoPKVoTk4GagdpyEelZgChPFyrJLKWsHjkIj9llE8rgiv4ap8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0uyKoES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E8CC4CEF9;
+	Tue, 29 Jul 2025 15:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753802011;
-	bh=AVUlBVI8SZOlQyDUSn8aRq8LQ4NgfWQyRUjfVAwiMHQ=;
+	s=k20201202; t=1753802013;
+	bh=W3C5bt7cvUmJ7xoY2jZlrkv8OsLvUiWNz8pD6WheB4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1xz1eReSm+uawIYd/KnVCpwpgQR1a6jFDNHM2LkVVEglKEnB9pm8GkHNBpgBWtaI
-	 heDDzBpcwRtjInjiw5ogWQDPdnkt/z6OxfZX1Ivgxk5SAPhMCw+zC+Cs+ITIdiUybH
-	 edw9GNQ8TzEEM8eLzWc+XLK7FudRpqoi95Om6zjuXxcBVDEVmWuD0c3EKOZXneJOmx
-	 jFilXCwnsadESaAbL78Du4iy8OssxPK33a51VZh2D7NaWixVEwIvjabTU0M2ji4Q4C
-	 kVYVPlz7IJ+eZsc16Ubpb+ojNxklsTTWP19JaiFmLV/000FF9rywGPJxRFZU8O5hzY
-	 rmHhQcYV7g5Xg==
+	b=C0uyKoESnI2V7VeAwDgq+EeynKz4uZNQd+orsvE8+EZvIUN6pAzmiW3H59dF1ChNE
+	 3KmucIkTkrMMq68VgL5ABjzKC/4mOhdEfkJ/zSqK/YXGxtQ/NGrUbXb8k5x2s3R+T7
+	 SQx0MWCMRTDCVlLnykJbpUqq5SfvTyJgLaeGJPpINHapsRkFFZOgmEIH4GzNaPRm6q
+	 Rp+NOM+V2SkwdZum+HuKcgwNGckmyF1Ftg0b5rbNgHo4+BtHGelKfwNT3RXwgPfR5C
+	 mWMz/rpaLX2y2eh+b+b16FyAHsAY5fv7PHalOBiEV8EdSuDf5ovyhzW03vUC7cR+sB
+	 rVWWHoywDw1SA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Minchan Kim <minchan@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 1/2] mm/zsmalloc.c: convert to use kmem_cache_zalloc in cache_alloc_zspage()
-Date: Tue, 29 Jul 2025 11:13:25 -0400
-Message-Id: <20250729151326.2730116-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y 2/2] mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
+Date: Tue, 29 Jul 2025 11:13:26 -0400
+Message-Id: <20250729151326.2730116-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072811-ethanol-arbitrary-a664@gregkh>
+In-Reply-To: <20250729151326.2730116-1-sashal@kernel.org>
 References: <2025072811-ethanol-arbitrary-a664@gregkh>
+ <20250729151326.2730116-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,44 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit f0231305acd53375c6cf736971bf5711105dd6bb ]
+[ Upstream commit 694d6b99923eb05a8fd188be44e26077d19f0e21 ]
 
-We always memset the zspage allocated via cache_alloc_zspage.  So it's
-more convenient to use kmem_cache_zalloc in cache_alloc_zspage than caller
-do it manually.
+Commit 48b4800a1c6a ("zsmalloc: page migration support") added support for
+migrating zsmalloc pages using the movable_operations migration framework.
+However, the commit did not take into account that zsmalloc supports
+migration only when CONFIG_COMPACTION is enabled.  Tracing shows that
+zsmalloc was still passing the __GFP_MOVABLE flag even when compaction is
+not supported.
 
-Link: https://lkml.kernel.org/r/20210114120032.25885-1-linmiaohe@huawei.com
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+This can result in unmovable pages being allocated from movable page
+blocks (even without stealing page blocks), ZONE_MOVABLE and CMA area.
+
+Possible user visible effects:
+- Some ZONE_MOVABLE memory can be not actually movable
+- CMA allocation can fail because of this
+- Increased memory fragmentation due to ignoring the page mobility
+  grouping feature
+I'm not really sure who uses kernels without compaction support, though :(
+
+To fix this, clear the __GFP_MOVABLE flag when
+!IS_ENABLED(CONFIG_COMPACTION).
+
+Link: https://lkml.kernel.org/r/20250704103053.6913-1-harry.yoo@oracle.com
+Fixes: 48b4800a1c6a ("zsmalloc: page migration support")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 694d6b99923e ("mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/zsmalloc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/zsmalloc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 6b100f02ee43..eae16c6b6fc6 100644
+index eae16c6b6fc6..b379deb0a10c 100644
 --- a/mm/zsmalloc.c
 +++ b/mm/zsmalloc.c
-@@ -357,7 +357,7 @@ static void cache_free_handle(struct zs_pool *pool, unsigned long handle)
- 
- static struct zspage *cache_alloc_zspage(struct zs_pool *pool, gfp_t flags)
- {
--	return kmem_cache_alloc(pool->zspage_cachep,
-+	return kmem_cache_zalloc(pool->zspage_cachep,
- 			flags & ~(__GFP_HIGHMEM|__GFP_MOVABLE));
- }
- 
-@@ -1067,7 +1067,6 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
+@@ -1067,6 +1067,9 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
  	if (!zspage)
  		return NULL;
  
--	memset(zspage, 0, sizeof(struct zspage));
++	if (!IS_ENABLED(CONFIG_COMPACTION))
++		gfp &= ~__GFP_MOVABLE;
++
  	zspage->magic = ZSPAGE_MAGIC;
  	migrate_lock_init(zspage);
  
