@@ -1,104 +1,77 @@
-Return-Path: <stable+bounces-165123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0250B1536B
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:31:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29464B153A2
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 21:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1DDC7ADFD7
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:30:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D830542D76
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFF01F4295;
-	Tue, 29 Jul 2025 19:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2431325484D;
+	Tue, 29 Jul 2025 19:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5euAnIS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zohgxlzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B12A290F
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70CB294A1B
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 19:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753817488; cv=none; b=FzOZb5hayMSNlNLRriVAV2Tbj+9Qz0KscT5l0mfK4R1l519jGD00EYdby9muQeVFD5nzfJ4ASzStgAk9aMOG6r/9a6rpjBgNg7OPWbKMoK4zVU0KeVEwIn95xYBrB7/lYgcnJPS1TrVau5vaFRAPluElWUL0XS4BtpOUjcOz+e0=
+	t=1753817850; cv=none; b=Vt6I22jHBSHdKzFoquDad1iQcqKWt3tL0+UnngYjp5QDGTND2P5W7b/AhevN7duj89hC2yasHygXCWIV6Qdl/QxFuOOkWRddguGiIsjFqRG8FNno5Cx4sXNKlzw0/gS4OLSc60hvq6cl7d4tGsmdDZ5eSGxa+LY7DbJjyn8bA5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753817488; c=relaxed/simple;
-	bh=xqqs8ehmPAZoB/krkxs9MowobDaiy+kO1er+qnMveLc=;
+	s=arc-20240116; t=1753817850; c=relaxed/simple;
+	bh=gIVoc/Gh1WvSBk6tBwEL4EcdjtpeKvkbHitmNicllfw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nr+aOEcbsv3BJuwNUJK1hNd8j0DIS6TUXP20/BMfAHYs9V1rPIs880kA7ougoM6RQEeTSo2Rv9Kx5jSBOGkYAdGq4ezQxoo9YCOHTegNIzKZLbHDDj/yTUrVFu2AFxiip5knhoVS9RUZy9da34AczHPf3sg9CJHPh+Dti3YQZmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5euAnIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154C0C4CEEF;
-	Tue, 29 Jul 2025 19:31:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g+qQcryYFkoKD0sPIaN3oX/3SHQLqrL8iJNeI6ahHVY0o8yT8YuqeX7nyn8ovVtdOUr07ll087cu/75yQDIYnzaFl0TUAf9G+IA7tP2YMU6FVm7PMR2wiEgHztmomSy74SQ8N2xBJIlO+DZ0fnzQwEIkLKFhTOi7ExXHb8KoV+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zohgxlzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC14C4CEF6;
+	Tue, 29 Jul 2025 19:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753817487;
-	bh=xqqs8ehmPAZoB/krkxs9MowobDaiy+kO1er+qnMveLc=;
+	s=k20201202; t=1753817848;
+	bh=gIVoc/Gh1WvSBk6tBwEL4EcdjtpeKvkbHitmNicllfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5euAnISeiMZl5EAd+en8BqDY1NLOkjm2Iiy51hdBoD3bnoAlBs8OB9hyH12h2lJ0
-	 Y/EoTsVq+eIrXda6SZsEONG8+JNpal/0rGF2EmZA87wjfRcPlYSp5EXMRUcC8Zlr7Z
-	 uyrTEXE6kE0igIqM9g32JZ0++OLUsItjhDvNmBk8CBzWF63CgEgGRQtkL9lQitmRjr
-	 wOnm3mOtAdCd80SSuftcrqpp4/hLDFBuloiu25p5S2W6Oh0uKRCNKVGf9E3HkNpBmD
-	 Mcusf1RehOq8WDPv//TxKDG/xvfqGQQz1xU3wyRhLw2ynlezGnOsQ8ZyK8P6u0SboN
-	 BCCMbk39T+sEQ==
+	b=Zohgxlzt/TQVRC9aPkPOydp8LYh5O3qYrX2FiRP/FCxDfDPOEgijYCg6HLwF1b2CI
+	 t6QADBEQHqB8Q9rpAW01nuAg8V/iooJCiGybrcZlQ19uL3Y2qL608WrRz6HiinzNP2
+	 Aat7bi5lWFsOgj+oxTwyNv8T/n0MdfZQ3LPfK0X/UNGBqJ79J7N3pwPezCCakFD5I0
+	 //ll07OtEccf8vZk3HZgWD6lQiOiknLi1Foh8e/k4EyiaEZ2YoIw4kDV7UBr2cOjeF
+	 ShLJrMS2szLBfeVpKsxEmNoY5tXtr8crbZ1hQYUCKcJjndp8K5YbOsEaw09TqnpfIM
+	 AAtbOnd+xjOpg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Haoxiang Li <haoxiang_li2024@163.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
-Date: Tue, 29 Jul 2025 15:31:23 -0400
-Message-Id: <20250729193123.2873807-1-sashal@kernel.org>
+To: stable@vger.kernel.org,
+	shung-hsi.yu@suse.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 6.6 1/1] Revert "selftests/bpf: Add a cgroup prog bpf_get_ns_current_pid_tgid() test"
+Date: Tue, 29 Jul 2025 15:37:25 -0400
+Message-Id: <1753811514-0a6263d5@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072801-game-appendix-1d20@gregkh>
-References: <2025072801-game-appendix-1d20@gregkh>
+In-Reply-To: <20250729053652.73667-1-shung-hsi.yu@suse.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 4ff12d82dac119b4b99b5a78b5af3bf2474c0a36 ]
+Hi,
 
-Add check for the return value of devm_kmemdup()
-to prevent potential null pointer dereference.
+Summary of potential issues:
+⚠️ Could not find matching upstream commit
 
-Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ applied the patch to ice_flex_pipe.c instead of ice_ddp.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/intel/ice/ice_flex_pipe.c | 2 ++
- 1 file changed, 2 insertions(+)
+No upstream commit was identified. Using temporary commit for testing.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-index 6cfe8eb7f47d..14fba20ab7f3 100644
---- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-@@ -753,6 +753,8 @@ enum ice_status ice_copy_and_init_pkg(struct ice_hw *hw, const u8 *buf, u32 len)
- 		return ICE_ERR_PARAM;
- 
- 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
-+	if (!buf_copy)
-+		return ICE_ERR_NO_MEMORY;
- 
- 	status = ice_init_pkg(hw, buf_copy, len);
- 	if (status) {
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| 6.6                       | Success     | Success    |
 
