@@ -1,120 +1,153 @@
-Return-Path: <stable+bounces-165048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981DEB14C0A
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 12:18:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF613B14CB2
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 13:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D543BFBE0
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 10:17:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FCA543828
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 11:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BA5288C39;
-	Tue, 29 Jul 2025 10:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9780628C013;
+	Tue, 29 Jul 2025 11:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdskB6UZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IlFmBsX7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5F02046B3;
-	Tue, 29 Jul 2025 10:18:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF331289E0B
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 11:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753784287; cv=none; b=ky/SJE4ZBIp08nxLKGk/QeCuSC1OrNEIpFLZEEV5CTiqxSJvcHLd8y2dv9pCjNb7Ra/WPa+1WSPfm0MM47U8kRL0Bh4vgcJR/efbkSHMk8U6Z0uXhNvanc5I4L/MdQNs6JZtKKlOIBXZi4SjR7iaKc3KxrNwzdumrr/s1ZiI3zE=
+	t=1753787141; cv=none; b=Ka6+/ubG2Ir42632bBAl3tFNuSqEUAP/uqFIsAV0eiD/7YI3Qu3ElWvtMfQswwNK3jQuCpxCvjMvKX4ow7y/MK6zsd0Wk9lo2A0W9gxXuuCjBXku8ts/dQiIe0CiYNvCr3ylCEY4fCvPsUEZzWvk/604EqQJcrv0NK19WSdJY+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753784287; c=relaxed/simple;
-	bh=NuNw1ilHN10vwEgqOnWIiIJkLJgboyfff6Ebml3rcSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IB96Gw2xw8/vZrDMaU13oD0mtV2hS8BuSKmWomQboJpuL2G01VE19cIgK95GNMzlW5pt8ZkJtdyZ4alcPl6aDx+IePpXTgoqhgpVwYxobgafF6KkSjbhpoi/PshLHKu7DKAICsdy5VtZmz4OPcCDQwkGY+z9RW7glaJ00cERHuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdskB6UZ; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1753787141; c=relaxed/simple;
+	bh=J6pUgHT41C3Vivm3o3boU9DDKpnNUXsM9GOyzVDtYJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YtZT5N3HdM1emW/sqF1BDctPrUHtZALbEnmQVAv7iVi9cbIpS+iJUhf5pw0spOEw/n2sAQ0CZ/hpLt7usSIy7aVs1UAMaeG/IaSjy+hYCjKfy3bhAuKII89BoNe9wyDmumdOqkpehnTKnpQDwm8gAEkHdTaipPx/1sCqR+uXRYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IlFmBsX7; arc=none smtp.client-ip=209.85.215.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae3b336e936so1097102866b.3;
-        Tue, 29 Jul 2025 03:18:05 -0700 (PDT)
+Received: by mail-pg1-f193.google.com with SMTP id 41be03b00d2f7-b34a71d9208so4019502a12.3
+        for <stable@vger.kernel.org>; Tue, 29 Jul 2025 04:05:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753784284; x=1754389084; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hwEiTIpSN1SPBIddcumrWXcIt60tGMLxBjokT4wgL80=;
-        b=gdskB6UZRkYlhHlmxyMewA59BcId2W1BT82cq0OYUuwcOLiW8B2dp1QG6LlPsyWylv
-         sjE5rvUmZofr19orRQgOIU9LnVRbcGgqYTfI88mbb1Xa23ybTDJZbnQ32ffmTOrHX4Dr
-         N9SjvljeUtA+sDwVawI0PD7/Q9QkVpBOSAZz28qOt/cG7RrfALWCNYpD0O3gB575+Q+7
-         lxeMG3TIrk2T/xw0osMO2XSeCFI7/r3vyQGBeNDB2SCdG4mAXAW26rEiINkj++sbnCh4
-         rq4wOAPYyrKbXcrylaM9cLQtAu9RzZH6Qh3nNdLvjDBnWk78dIxDa4TPBEKSdmbNGCPj
-         lOAg==
+        d=gmail.com; s=20230601; t=1753787138; x=1754391938; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qVjAx/GPjljGiOQfDzA/cI0gXeEo2lcWvHyzfRGgd18=;
+        b=IlFmBsX7bxr+xxtEARl1cu3Qe++CjYO1Q18wukO2N4W42t+/QaKCMpcfJMM4mItcYu
+         f1487bjL3OdAZUc7sbEsKHYY3Kw0PsTxV7AforwWdaiMHG5uRg+2KzPWaAZ3A+jAGQJ0
+         +EarHmImO3dQBD/JFu1ry2I+WvW/7hhzdyuUMvPfJv7ZBZF7dozfs+i6AKCmsjLBQX87
+         BjHvwu2zsCy8Jm6tJN2te3uJuEEMHjVb0rE8LDDf0jtjSSSXsSH976+7r6Gl4mFXv2C4
+         tfMQ2CH/xvyCyJXKIpUowjxR5H8G3GSA8v5jpT0P5+Tau7czoMpP6ECgp8AvwblLZvfq
+         +ZCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753784284; x=1754389084;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hwEiTIpSN1SPBIddcumrWXcIt60tGMLxBjokT4wgL80=;
-        b=kYqmJMIxs/7vYYes4bAxOM/fzdFCsL5Z6QdMzfvgHfzHATXORdvsN7ScYExGbHPyt0
-         LzirPpy6LB8hNiUezN4BbPK0xCq0/WB7jF2DrYdSa9z4DNb0Y7JocQ2ty+ZbKf2/cvIw
-         Zh0+cclJjIl5Su8t89EGVRENfUfXdeoROaUx65GCdHmc045gWkU4S+8sfyLBd5wgpvs/
-         3naoDy887dBDyQGxoljnCZYCbigDctNCdtevkvYIGgLsB9uImsaflHDUhSXwFNzkJgVf
-         faKsmnwswyYQwlZeQaRdTXPnRyv9IuEpYeMqmJm+q8mvjn5o89IO12HUQQiaxhhd01e/
-         oNKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUY05B6Qe3oVSvMpNhrqNnWfaK7qQd+KAy5MijCpimWt3nkVUvE+4p9z/TurGWvPkTW1REnu4g7gNnyE204Wqr32g==@vger.kernel.org, AJvYcCWfdSblQJy+fLUJa3QR29VL5H+PZAhfReIJGt+w8Ogyl327cE8aT9iATDuaxtdiXtTsNLAibPKF@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuZLtgo5kM0QSnN8w5TFTSrYmFWkPOPsg2l7wg+SaWJzKEI3YU
-	Y8kJI7fJ7ltwjnFcnf0KwmZvqinz8G5gvOXYPcveGap5Bsiz9RcEWqtwAUTpuA==
-X-Gm-Gg: ASbGnculEP/P8GzSSZTMXf5312C0s4PoZtkaPeIXHo5ytzToez2LjKqqHNUSY6jfEch
-	ZeVT+USioCgHisKz5K+OV7hPDX/A/rjSm33iwA49NW0+VSbi9USn7wylWmahn2muktiPWpIdEdD
-	cznqw/9r9zdLlKfYNZjcATX8GNhQAw10CFq8gLBIJ1/fp5a480z6JZ4alfjTDXxeBzdb68PZbD/
-	VfhfotQ7k0kfWJkkl+Wtzd4sB2B1vCPKFPnNd5vaIeGUWleA8kmLREraRv39G8iffaIHmgu4qCo
-	b6A1pA3RdOVAiLdB/isGpMqih93FWEDtN66ZHmBvQrMOMrIl7DGSLxCyvGG9fWQlSALNeWTx+3H
-	GgEp8xmE36JcFMQv8O0r2oocubgq8Ff6ftY8=
-X-Google-Smtp-Source: AGHT+IECkzHllH8u1QlENWvmCk7cRc6JbBNQM7rQL24VWTbtIzjG4IxN4HS3DjEUH1QFe9hf1PeAiA==
-X-Received: by 2002:a17:906:ef0c:b0:ae6:f087:953 with SMTP id a640c23a62f3a-af61c2b411dmr1884064766b.12.1753784284276;
-        Tue, 29 Jul 2025 03:18:04 -0700 (PDT)
-Received: from foxbook (bfh133.neoplus.adsl.tpnet.pl. [83.28.45.133])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635ad7d95sm567005366b.122.2025.07.29.03.18.02
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Tue, 29 Jul 2025 03:18:03 -0700 (PDT)
-Date: Tue, 29 Jul 2025 12:17:59 +0200
-From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
-To: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Cc: linux-usb@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Mathias Nyman
- <mathias.nyman@intel.com>, Vinod Koul <vkoul@kernel.org>,
- stable@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] usb: renesas-xhci: Fix External ROM access timeouts
-Message-ID: <20250729121759.0e9df735@foxbook>
-In-Reply-To: <20250727154516.11599-1-marek.vasut+renesas@mailbox.org>
-References: <20250727154516.11599-1-marek.vasut+renesas@mailbox.org>
+        d=1e100.net; s=20230601; t=1753787138; x=1754391938;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qVjAx/GPjljGiOQfDzA/cI0gXeEo2lcWvHyzfRGgd18=;
+        b=hYTl2qvO7iIkB5avbQTO++pdYBrgXacW09zdapHUMrs7bMfrEXwVT480s1lxy5F+Z8
+         9jCaWwrcgcKNg7O+zr1p8FvAGhLJSfG455fKoKe0NfqSQcNvyv7jL1bjESAE24fyuXVL
+         +v0TqB2ud9rEJc01RHowTXFqwEVLVq1ZH69l1oyeLI9Lm8z0Lr7PjtGCv1CO1+sp+1p2
+         95XX6dDmO9KazVPA5DRsf211wLhIJUwB8WRDpoJuKPR6LtyjGG0n7BQ4YLPgg/bs9Kqn
+         Y3QWNjhjQkbdLkjpdDjtbUwhwUKoi95jv4Om1t2AJ5b1uK5+hPc3ttbjNA6CQQqRnzkb
+         T05w==
+X-Forwarded-Encrypted: i=1; AJvYcCWsa0gZES62BAjZXJFV0Aad+w0xMSU7OwHn3MaMsgemiiI2kRKdUID5W4qNb0J4LPB2HIRgvGE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi85Fyg7qebEbU+M0CbZhbGSUVEnXRif++QaAsIlbcMkwJ/KSq
+	/e8EzF+qnpi+TOhmZ0EEaRMvuQThx0FPptkyjQApfJO9P01TvXJEtfU=
+X-Gm-Gg: ASbGncsuRBeeVKydUE6fjqX11nvdz3kgH+SOpuzX7q82B9c2Qviha8QpkcqUhSwkG6p
+	2wCBHG+rsWmOjGR+mrSp4vnxTjqCio7gHBwoI17IsZZR2YCrtZFjsJBDaEdofkbHHx6j3HCJXwJ
+	+PpRgx68rdO/QRbys6aPnr7HYYbh7EDODJZaWdTRQfhb/Kd3PTGrqVNRrsuvRQVwshIzNLkp6Qq
+	F/YTa0/v6ghsJ7Fu5EIKKOL8WH1qfe6OS4miKDJNNEdV9BwyInGuH2WGDndNXt18huoo9+/0bkn
+	7WAf38T++q7BRaW43Qq0CXcPdmuIaWE/N5Pozf6rYYTSWgs7d/1VXnlxqgXlBQdmJCVhlMzS7DR
+	eQbL0IEI//7DxxqyDaAnIQEDAzE44fZsrraB/1VSB9F0iNSCXpw==
+X-Google-Smtp-Source: AGHT+IF1ELZzJKdpQslsUHi7FZQ5vUSYWawTXVGHtqhOkWX4nj43CqxoSKZ3XPID7VpCyiElBn61Iw==
+X-Received: by 2002:a17:903:15c8:b0:23f:f071:1069 with SMTP id d9443c01a7336-23ff0711244mr131983075ad.16.1753787137829;
+        Tue, 29 Jul 2025 04:05:37 -0700 (PDT)
+Received: from git-send-email.moeko.lan ([139.227.17.83])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fbe30bc1fsm75929025ad.5.2025.07.29.04.05.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 04:05:37 -0700 (PDT)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: intel-xe@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH 6.12 0/4] drm/xe: Fix xe_force_wake_get return handling
+Date: Tue, 29 Jul 2025 19:05:21 +0800
+Message-ID: <20250729110525.49838-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+This patchset fixes the xe driver probe fail with -ETIMEDOUT issue in
+linux 6.12.35 and later version. The failure is caused by commit
+d42b44736ea2 ("drm/xe/gt: Update handling of xe_force_wake_get return"),
+which  incorrectly handles the return value of xe_force_wake_get as
+"refcounted domain mask" (as introduced in 6.13), rather than status
+code (as used in 6.12).
 
-On Sun, 27 Jul 2025 17:44:16 +0200, Marek Vasut wrote:
-> Increase the External ROM access timeouts to prevent failures during
-> programming of External SPI EEPROM chips. The current timeouts are
-> too short for some SPI EEPROMs used with uPD720201 controllers.
-> 
-> The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
-> the current timeout for Sector Erase issued by the controller before
-> Page Program in renesas_fw_download_image() is also 100 ms. Neither
-> timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+In 6.12 stable kernel, xe_force_wake_get still returns a status code.
+The update incorrectly treats the return value as a mask, causing the
+return value of 0 to be misinterpreted as an error. As a result, the
+driver probe fails with -ETIMEDOUT in xe_pci_probe -> xe_device_probe
+-> xe_gt_init_hwconfig -> xe_force_wake_get.
 
-Out of curiosity, who uses this ROM update functionality and why?
+[ 1254.323172] xe 0000:00:02.0: [drm] Found ALDERLAKE_P (device ID 46a6) display version 13.00 stepping D0
+[ 1254.323175] xe 0000:00:02.0: [drm:xe_pci_probe [xe]] ALDERLAKE_P  46a6:000c dgfx:0 gfx:Xe_LP (12.00) media:Xe_M (12.00) display:yes dma_m_s:39 tc:1 gscfi:0 cscfi:0
+[ 1254.323275] xe 0000:00:02.0: [drm:xe_pci_probe [xe]] Stepping = (G:C0, M:C0, B:**)
+[ 1254.323328] xe 0000:00:02.0: [drm:xe_pci_probe [xe]] SR-IOV support: no (mode: none)
+[ 1254.323379] xe 0000:00:02.0: [drm:intel_pch_type [xe]] Found Alder Lake PCH
+[ 1254.323475] xe 0000:00:02.0: probe with driver xe failed with error -110
 
-It seems weird to write nonvolatile memories in a PCI probe routine.
-Boards or PCIe cards fitted with ROMs are programmed with working
-firmware at the factory and there ought to be no need to touch that.
+Similar return handling issue cause by API mismatch are also found in:
+Commit 95a75ed2b005 ("drm/xe/tests/mocs: Update xe_force_wake_get() return handling")
+Commit 9ffd6ec2de08 ("drm/xe/devcoredump: Update handling of xe_force_wake_get return")
 
-And if you want to update this FW, dropping a file in /lib/firmware/
-and loading a kernel module is not the usual (or convenient) UI...
+This patchset fixes them by reverting them all.
 
-Regards,
-Michal
+Additionally, commit deb05f8431f3 ("drm/xe/forcewake: Add a helper
+xe_force_wake_ref_has_domain()") is also reverted as it is not needed in
+6.12.
+
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5373
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+
+
+Tomita Moeko (4):
+  Revert "drm/xe/gt: Update handling of xe_force_wake_get return"
+  Revert "drm/xe/tests/mocs: Update xe_force_wake_get() return handling"
+  Revert "drm/xe/devcoredump: Update handling of xe_force_wake_get
+    return"
+  Revert "drm/xe/forcewake: Add a helper xe_force_wake_ref_has_domain()"
+
+ drivers/gpu/drm/xe/tests/xe_mocs.c  |  21 +++---
+ drivers/gpu/drm/xe/xe_devcoredump.c |  14 ++--
+ drivers/gpu/drm/xe/xe_force_wake.h  |  16 -----
+ drivers/gpu/drm/xe/xe_gt.c          | 105 +++++++++++++---------------
+ 4 files changed, 63 insertions(+), 93 deletions(-)
+
+-- 
+2.47.2
 
 
