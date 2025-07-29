@@ -1,128 +1,120 @@
-Return-Path: <stable+bounces-165109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D803CB15226
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:35:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0CFB15249
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 19:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1839F3BADE9
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 17:34:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 630CA17C8F1
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 17:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BE129898B;
-	Tue, 29 Jul 2025 17:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4A2299A8F;
+	Tue, 29 Jul 2025 17:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKVoOatt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmFpMoXB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0B2149C6F;
-	Tue, 29 Jul 2025 17:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9FB298CA5
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 17:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753810509; cv=none; b=q2HpkhZ0Mm0T1JR2Z3LYBRrpqaIJ5Xgid//xPxTfYBg4VWZHwRWm2NAgfXHttoRt+/Q6xiRrRQWJidxXFyL9df44a5/DkXC+RI1mSOYUq3xhmWRJzTCBeDbiDafASlJPO6ivw4PLAXgAoW+dL2hRzHTSUlbLtTtGOZGrFekJfSc=
+	t=1753811018; cv=none; b=YtngOYJW1POTrEXNaPUHXQQugi0T7ja3hl9oGvIB/ueqDtMljoaz3wIchEz7iiC/iyCG4IqLEvlVsEITyjhSnAph//UQzPwikxkT2w8xdarRWUemfrMkEOtLjGVfRImPEK7L1VTCL6HLbABh7PCrg6srnjBhjQzQdKb1backJts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753810509; c=relaxed/simple;
-	bh=3NmNtZa5VeYSHqANC2TqiMMYhQFfpOOqO+8oQm71evE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=N2hFpI09BASGkTMFl5o6+XYs+J20/Xg8k/GVoOaDx9fD3pjJT2AVlTMOUih4/I/5d55nq4J76k8CaTpvvmmYzr7uUuMqbyFMPr/Z0my6QfsgUwiWVJf6Up5VsatDeRKwk0O3I7h1ypa5+PK8WPFiTqwvCiFYeFzTYdIpvPg9APY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKVoOatt; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-74b50c71b0aso3471917b3a.0;
-        Tue, 29 Jul 2025 10:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753810507; x=1754415307; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HwA1RlZ6wO9TlQ9boahv87HHJljaAP2dy/gW/a+blhQ=;
-        b=OKVoOatt+tzq5lY0BrURCTUkMNcN7G1Z6UANtnd499ZWuptdoHKHBcJpE/RrVsWANc
-         66dLn/MLhW9euvzm7yrZEV4TjWe2z6agpbiibriOxdLN9eO7+JT9WUxWiPYVlvSXkVLd
-         3GLjczCsPxkD2uRcc7PPPdsM+U3Ha3xG8y0iotfDwhIBu8KxsyGkbZlQvM9uqabmBNyZ
-         t2BUb7lz830Tso/Wl8Ilkh7ttVHAgBi70ZF3p0U0E1EW1Mau2IDj2OCOVufSRw4Dl49m
-         qUXTqEmVYq2PKIbYPCsKX3u4bK2WcVDVRyTzQBdmjO++qnpjqycHl11iUi0qgLa2XY2r
-         tJ0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753810507; x=1754415307;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HwA1RlZ6wO9TlQ9boahv87HHJljaAP2dy/gW/a+blhQ=;
-        b=Jr1dqqrjd64mrNNg7erPESayOd9UC5NB45Pn9+dZIm0RwTZjA/ZLzfzqCmYMJNk+Vl
-         dmRe5bOxSrfSBxX/kaFLQyUM9nwLp6S+h+wsZT5ihQjUJSQisxmZBTWRmUvQJaWycVbu
-         tO2gObg6QTINrscy9ibdfqjI93enn3j8v4KJIS1+sFug0tLNByV6ykfTIFPw/O8L7Q65
-         gLydnCyAhNKcF0tIugYxbR0TjV0zTb6gS68GZi0m9CbDiRgmTTjT3Mfs6oswePN45xap
-         QCTDfXemWp3AhV5s0zz5hKObuy71Ppn02yHSVicKvMd9BYz3vTWTdlJei0bGQbZh75zM
-         XQnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUe6x4NIlASrmfBEGhGBrUOHmxyu4Pwsl2w1z8EwyjfeNsxAfn4zw83VHDdzOBaCd+AgSj7vj17TXeH@vger.kernel.org, AJvYcCWWKiCoGpZivlyTjUAXO4x6fYXCoTG0Tf9ry662CoYZ8nbZmrPoLTAniTCWGH8kdijVEANLeWI7vX75soOmVwM=@vger.kernel.org, AJvYcCXRbGO2cjPMCSuO4IgyA30X32J6G4LjQynzxI/ubM/4O53WEjgsCEYTZQXKvcmAKWUvS0QfEacp@vger.kernel.org, AJvYcCXpzYwA/YFlj6SfoaM2ezE68It3g4HUvhDE5KA0PSb2AVuNxarNj7bZGb2gP82yoK4i4VYkW5supAmd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsIS7ibmLSQW4bqHlc8OIzzlTXz81WgwmLgdG4VsJl4mwxkYm2
-	YnK3Qq5g0v3S9fUhSECcbSJ/pGhznLd/lkhnHc6FKdO/tOQYALzJ2Uy1
-X-Gm-Gg: ASbGnctGwClGYMHNordS+AKuY8yUtOOuRSM4xSiSQhOt7zC4nlZxr38euuxDIEnlgKI
-	2GiT5ZlyH4bPutCI1z3WX/UIDrS3viHb5doP0c5vGLvJp8z/UeFfWfpQaX/AdfC5otf1HRresRy
-	xTPEY096KmWhmlto+/RnTmSuHk3mWonSVhKBC4rya3DsHIzxIFkde/9pg93bgXZaEYyrjIuBfc8
-	WiBmFmmXNPbOZHRt29EwJqQwSw16p1k3tmJOFMsEnbCrTygVzYmOHogOg2aEy2LsQjX+OHRdGSI
-	8brdlJO8RbB+fY8elfk41bjmdWJIVbHhc/nPAOtWuN6d7S1aST9XTh6RJPt+VfoGK9o7ZzNbBDm
-	MHjCqYd/Q/Pc9cTzNWxO1DpWDbq6Cu7KnI9SPOdl0E0iK2cODH5HpCUs=
-X-Google-Smtp-Source: AGHT+IE1dmaZoFNOYX+Gigetj57fT95zLeVxN+Drcy30z0zJ7kHrKOg7qJ05QcxUEd5gYQTYuwqFlQ==
-X-Received: by 2002:a05:6a20:7346:b0:237:de39:7ebb with SMTP id adf61e73a8af0-23dc0d32203mr451871637.6.1753810507358;
-        Tue, 29 Jul 2025 10:35:07 -0700 (PDT)
-Received: from [192.168.0.119] ([115.187.48.187])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b41fda7b737sm5233638a12.66.2025.07.29.10.35.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Jul 2025 10:35:07 -0700 (PDT)
-Message-ID: <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
-Date: Tue, 29 Jul 2025 23:05:02 +0530
+	s=arc-20240116; t=1753811018; c=relaxed/simple;
+	bh=C7eu2m0TmmiZmHIOXQNKQu210ejup4oLKPOu8qcg85A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mp8trVdCAvbN04iV0Air4oqLpyX/dg5VDfNGRxJHfDE8C+72LQs2Qw0XEnI5LbYgyFOF+DJEkgep1IRkwBAA+TlvnzJ6Cx9nQBcQ7R71qTqBnKLzGQQfjgIstOnq6K88kik7/vfFpMOz3NNwuf+voPh6av8TeR/r1aaTQfLiUis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmFpMoXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768A0C4CEF4;
+	Tue, 29 Jul 2025 17:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753811017;
+	bh=C7eu2m0TmmiZmHIOXQNKQu210ejup4oLKPOu8qcg85A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KmFpMoXBpWTZ+3KI9DDiEQFCHlFxAObef4VpDnPllUKKLLQY3mEh9YTNauTXQ9MlE
+	 VAB9zJyiwhPTTaU2soI+djpwg0CBWsiE8KOJbco40weoWqRN/Op+ZOxz6PPV5qTQmp
+	 Q/0fvOTLWKI/DfO9cCuXrJq74EECYlPlTxCq8n1RR7UCDjycO4KMkij9zKMN87Rk8x
+	 5pL0/o81qsRzOJYA7moAAdU6ZdrcOXo4x+3mbDYiU/I7NSy54+qzw6sbbRGDgET6lo
+	 k/rn7Z6XXN3YDiTJ+PXclv8PacDv+kgyrl7s1tAayBKq5f9pVR+6qgGG+tpkmgHmU3
+	 yCzX2USJXP3MQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
+Date: Tue, 29 Jul 2025 13:43:33 -0400
+Message-Id: <20250729174333.2834925-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025072832-cannabis-shout-55f6@gregkh>
+References: <2025072832-cannabis-shout-55f6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
- disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, stable@vger.kernel.org
-References: <FB546B0D-2209-4FA0-9DC9-A75C0BC9FA4F@gmail.com>
- <20250711163645.GA2294895@bhelgaas>
- <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hello everyone,
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-I hope this email finds you all in good health.
+[ Upstream commit 9e0c433d0c05fde284025264b89eaa4ad59f0a3e ]
 
-This short email is being made as a humble request to look at the logs I 
-sent previously, and if anything can be done to them.
+On g4x we currently use the 96MHz non-SSC refclk, which can't actually
+generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
+Gbps which seems to be close enough to actually work, but link training
+is currently failing due to miscalculating the DP_LINK_BW value (we
+calcualte it directly from port_clock which reflects the actual PLL
+outpout frequency).
 
-Thanks,
+Ideas how to fix this:
+- nudge port_clock back up to 270000 during PLL computation/readout
+- track port_clock and the nominal link rate separately so they might
+  differ a bit
+- switch to the 100MHz refclk, but that one should be SSC so perhaps
+  not something we want
 
-Bandhan Pramanik
+While we ponder about a better solution apply some band aid to the
+immediate issue of miscalculated DP_LINK_BW value. With this
+I can again use 2.7 Gbps link rate on g4x.
 
-বন্ধন প্রামাণিক
+Cc: stable@vger.kernel.org
+Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250710201718.25310-2-ville.syrjala@linux.intel.com
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+(cherry picked from commit a8b874694db5cae7baaf522756f87acd956e6e66)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[ changed display->platform.g4x to IS_G4X(i915) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/i915/display/intel_dp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index ca9e0c730013..af80f1ac8880 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -1506,6 +1506,12 @@ int intel_dp_rate_select(struct intel_dp *intel_dp, int rate)
+ void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
+ 			   u8 *link_bw, u8 *rate_select)
+ {
++	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
++
++	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
++	if (IS_G4X(i915) && port_clock == 268800)
++		port_clock = 270000;
++
+ 	/* eDP 1.4 rate select method. */
+ 	if (intel_dp->use_rate_select) {
+ 		*link_bw = 0;
+-- 
+2.39.5
 
-On 7/12/25 12:18 PM, Bandhan Pramanik wrote:
-> Compiled the usual way: the bzImage compiled within 4-5 minutes
-> (compared to 1 hour previously), and the modules compiled within 1
-> hour (compared to 8 hours previously). Also, the congestion strangely
-> didn't happen. It was instead silently followed by "No Internet".
->
-> Didn't add the kernel-level journalctl because I'm sure that the
-> normal journalctl includes the kernel-level stuff too:
-> https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/07b34aa3fa19da5afa4bb161454e3cb2081b9880/journalctl%2520v6.16-rc4-PATCH1
->
-> Please let me know what you think of the logs.
->
-> Bandhan
 
