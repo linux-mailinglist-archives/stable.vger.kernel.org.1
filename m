@@ -1,175 +1,208 @@
-Return-Path: <stable+bounces-165061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02863B14DD1
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 14:44:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E08BB14E4E
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 15:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D31C3B52B2
-	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 12:44:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF15B3B4F1B
+	for <lists+stable@lfdr.de>; Tue, 29 Jul 2025 13:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7921E291C03;
-	Tue, 29 Jul 2025 12:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jjisc1tw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A1518CC1C;
+	Tue, 29 Jul 2025 13:22:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CA8238C20
-	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 12:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C87CA4B
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 13:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753793069; cv=none; b=UYCsUJ5HrOZPSeOrTcgUDx0MwUVResvDRnjK+Rl+DnEGmezjNciL494ZxE8V1puV3lTWYeRhsiPNj7RUF/Q/DcrvZl3M2OwQglYpoe/9h+FmQVMXdYuoiIhMKdLUySOF0UX7aWAnFTZD/6Ji+nTCEV5toanpizz1qx9pvoWOEFk=
+	t=1753795345; cv=none; b=m/9MStPKiSD5zTyybmVyO/DsxMhWq3u7F81GhgHH9H7GJPkT4CGOv2/XQ2H/IbcLRAIabyuycdmWDF6mTarC6Z5FskT6fw0Rkr9ywW8IxvntInS0+ca56olRhpegfZPpNr1DUVf84aLd1C3C5ZajHlzx5VmdYNq7IQnrZI1nves=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753793069; c=relaxed/simple;
-	bh=IvGy0Ssa66RZgtaURNknpbKp/p3fsSSmCOzrqt9uf7c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AISGZDpKK2gHCoEe9nEYQjaqTIIP1fRP7C3hwom/ExXY6uPXMH1BchmCY1Xqer2gR2aopI71pBU7WrKT4GUhzR6zXbqf1HHmAgf8DaX5YJTKj4Cw1Fo49hjjEyva4yXy8LDPLLUM7BWIakmBLl2ecigvHewv5G3N3VqNrBmKVVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jjisc1tw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9589AC4CEF4;
-	Tue, 29 Jul 2025 12:44:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753793068;
-	bh=IvGy0Ssa66RZgtaURNknpbKp/p3fsSSmCOzrqt9uf7c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jjisc1tw/HSy2xwZacyj3h9HKtx316+qhdU0W8NnUBBV+ajCSjEvZepSVcHBHwHhW
-	 cNMVJzJeGFcH+175eO5OvTzoVFVfUaZsYHdquvaFS5pHgJqyL4MkNBczp0CItX5jbD
-	 55aP3+YtzYUoBhp5D7VFrT2o51y9NjRzdzbCH2+vFtLZANQOnzelsvyTLyfbASeHqq
-	 9F1AqHYbsWl6lS918Tq69RxtCEWUkQshO3nJMhMVLftpTPGjDZfQXeAsbcOGaUsATN
-	 mHn5UgYhrxsli0IuG8Se+lH6RdWjmolezhmiQj8YeE9jXeACL6rF2wlDOJVyhhrBGM
-	 rPfoudug3wZfA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Cristian Prundeanu <cpru@amazon.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
-Date: Tue, 29 Jul 2025 08:44:24 -0400
-Message-Id: <20250729124424.2699860-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025072811-pension-lyrics-6070@gregkh>
-References: <2025072811-pension-lyrics-6070@gregkh>
+	s=arc-20240116; t=1753795345; c=relaxed/simple;
+	bh=i3yfBj5MLI5OtJ2HB/SA698NYo5UX+kfwJG3hLe90gY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CCrXp8MRC8lCGGbgITiJpBHnOdh8hLTfAAY09UMiyLDzxAvqB3Z/E1642VEo3mACWn8KcDAMeYb9oEkzzOLUmv/XVnPKrfV2p7zMx0YE7GplKDkmLgAAIvFJ7m8ulJSnlIYq9kn65VNZSu+QMx/fvOj3U3JzjCI492NAV7kALjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4brwxP3JsqzYQtvJ
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 21:22:17 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 25C2A1A0B3B
+	for <stable@vger.kernel.org>; Tue, 29 Jul 2025 21:22:16 +0800 (CST)
+Received: from [10.67.109.79] (unknown [10.67.109.79])
+	by APP1 (Coremail) with SMTP id cCh0CgCHQ68Cy4ho4xppBw--.1948S2;
+	Tue, 29 Jul 2025 21:22:11 +0800 (CST)
+Message-ID: <89465e3f-7c07-4354-ba41-36d5a5139261@huaweicloud.com>
+Date: Tue, 29 Jul 2025 21:22:10 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "Revert "cgroup_freezer: cgroup_freezing: Check if not
+ frozen"" has been added to the 6.15-stable tree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, chenridong
+ <chenridong@huawei.com>, stable@vger.kernel.org,
+ "stable-commits@vger.kernel.org Sasha Levin" <sashal@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+References: <20250721125251.814862-1-sashal@kernel.org>
+ <1bafc8a024da4a95b28c02430f3d0c9d@huawei.com>
+ <3f80facc-8bef-4fc7-ac7e-59279906a707@huaweicloud.com>
+ <2025072222-effective-jumble-c817@gregkh>
+ <ebec24b9-e65e-4050-a960-d127b7215543@huaweicloud.com>
+ <2025072253-gravity-shown-3a37@gregkh>
+ <5c09fe1c-cb0c-46bf-ab6d-fda063a0e812@huaweicloud.com>
+ <2025072344-arrogance-shame-7114@gregkh>
+ <9da3269a-9e50-48e9-a1de-6311942f6ea1@huaweicloud.com>
+ <2025072421-deviate-skintight-bbd5@gregkh>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <2025072421-deviate-skintight-bbd5@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgCHQ68Cy4ho4xppBw--.1948S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGr1kWFWxCw1xuF17Kry3urg_yoWrXF4rp3
+	yxJFWYya1ktr17Jw42yw4YqF4Utws2yw1UWr1kAr18JFn0qFyrXr1xJryakryjqr1xK3W7
+	tF1DX34IyF4UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUylb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAK
+	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
+	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
+	67AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUwxhLUUUUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-[ Upstream commit d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb ]
 
-`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
-to different stacks along with the Shadow Call Stack if it is enabled.
-Those two stack changes cannot be done atomically and both functions
-can be interrupted by SErrors or Debug Exceptions which, though unlikely,
-is very much broken : if interrupted, we can end up with mismatched stacks
-and Shadow Call Stack leading to clobbered stacks.
+On 2025/7/24 17:43, Greg KH wrote:
+> On Thu, Jul 24, 2025 at 05:38:52PM +0800, Chen Ridong wrote:
+>>
+>>
+>> On 2025/7/23 13:06, Greg KH wrote:
+>>> On Wed, Jul 23, 2025 at 09:01:43AM +0800, Chen Ridong wrote:
+>>>>
+>>>>
+>>>> On 2025/7/22 20:38, Greg KH wrote:
+>>>>> On Tue, Jul 22, 2025 at 08:25:49PM +0800, Chen Ridong wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 2025/7/22 20:18, Greg KH wrote:
+>>>>>>> On Tue, Jul 22, 2025 at 09:29:13AM +0800, Chen Ridong wrote:
+>>>>>>>>
+>>>>>>>>> This is a note to let you know that I've just added the patch titled
+>>>>>>>>>
+>>>>>>>>>     Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
+>>>>>>>>>
+>>>>>>>>> to the 6.15-stable tree which can be found at:
+>>>>>>>>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>>>>>>>>
+>>>>>>>>> The filename of the patch is:
+>>>>>>>>>      revert-cgroup_freezer-cgroup_freezing-check-if-not-f.patch
+>>>>>>>>> and it can be found in the queue-6.15 subdirectory.
+>>>>>>>>>
+>>>>>>>>> If you, or anyone else, feels it should not be added to the stable tree, please let <stable@vger.kernel.org> know about it.
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> The patch ("sched,freezer: Remove unnecessary warning in __thaw_task") should also be merged to
+>>>>>>>> prevent triggering another warning in __thaw_task().
+>>>>>>>
+>>>>>>> What is the git commit id of that change in Linus's tree?
+>>>>>>>
+>>>>>>> thanks,
+>>>>>>>
+>>>>>>> greg k-h
+>>>>>>
+>>>>>> 9beb8c5e77dc10e3889ff5f967eeffba78617a88 ("sched,freezer: Remove unnecessary warning in __thaw_task")
+>>>>>
+>>>>> Thanks, but that didn't apply to 6.1.y or 6.6.y.  Shouldn't it also go
+>>>>> there as that's what this revert was applied back to.
+>>>>>
+>>>>> greg k-h
+>>>>
+>>>> Hi Greg,
+>>>>
+>>>> The commit 9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...") should be merged together
+>>>> with 14a67b42cb6f ("Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"") to avoid the
+>>>> warning for 6.1.y or 6.6.y.
+>>>
+>>> Ok, but 9beb8c5e77dc does not apply properly there.  Can you please
+>>> provide a working backport?
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>
+>> IIUC, we need to backport these two commits together:
+>> 1.commit 23ab79e8e469 ("freezer,sched: Do not restore saved_state of a thawed task")
+>> 2.commit 9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...").
+>>
+>> After applying these prerequisites, the required change becomes minimal:
+>>
+>> diff --git a/kernel/freezer.c b/kernel/freezer.c
+>> index 4fad0e6fca64..288d1cce1fc4 100644
+>> --- a/kernel/freezer.c
+>> +++ b/kernel/freezer.c
+>> @@ -196,7 +196,7 @@ void __thaw_task(struct task_struct *p)
+>>         unsigned long flags, flags2;
+>>
+>>         spin_lock_irqsave(&freezer_lock, flags);
+>> -       if (WARN_ON_ONCE(freezing(p)))
+>> +       if (!frozen(p))
+>>                 goto unlock;
+>>
+>>         if (lock_task_sighand(p, &flags2)) {
+>>
+>> Would you like me to prepare and submit this patch for the stable branches (6.6.y and 6.1.y)?
+> 
+> Yes, please send me the missing patches as a series for each branch that
+> needs them.
+> 
+> thanks,
+> 
+> greg k-h
 
-In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
-but x18 stills points to the old task's SCS. When the interrupt handler
-tries to save the task's SCS pointer, it will save the old task
-SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
-clobbering it.
+Hi Greg and maintainers,
 
-In `call_on_irq_stack()`, it can happen when switching from the task stack
-to the IRQ stack and when switching back. In both cases, we can be
-interrupted when the SCS pointer points to the IRQ SCS, but SP points to
-the task stack. The nested interrupt handler pushes its return addresses
-on the IRQ SCS. It then detects that SP points to the task stack,
-calls `call_on_irq_stack()` and clobbers the task SCS pointer with
-the IRQ SCS pointer, which it will also use !
+I've sent the patch series for 6.6.y. Backporting commit 9beb8c5e77dc ("sched,freezer: Remove
+unnecessary warning...") requires 4 patches for 6.6.y, and the backport to 6.1.y would be even more
+complex.
 
-This leads to tasks returning to addresses on the wrong SCS,
-or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
-or FPAC if enabled.
+As an alternative, I'm considering addressing the warning directly with the patch I mentioned
+previously. What are your thoughts on this approach?
 
-This is possible on a default config, but unlikely.
-However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
-instead the GIC is responsible for filtering what interrupts the CPU
-should receive based on priority.
-Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
-even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
-frequently depending on the system configuration and workload, leading
-to unpredictable kernel panics.
+The new patch:
 
-Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
-Do the same in `call_on_irq_stack()`, but restore and mask around
-the branch.
-Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
-of behaviour between all configurations.
+diff --git a/kernel/freezer.c b/kernel/freezer.c
+index 4fad0e6fca64..288d1cce1fc4 100644
+--- a/kernel/freezer.c
++++ b/kernel/freezer.c
+@@ -196,7 +196,7 @@ void __thaw_task(struct task_struct *p)
+        unsigned long flags, flags2;
 
-Introduce and use an assembly macro for saving and masking DAIF,
-as the existing one saves but only masks IF.
+        spin_lock_irqsave(&freezer_lock, flags);
+-       if (WARN_ON_ONCE(freezing(p)))
++       if (!frozen(p))
+                goto unlock;
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Reported-by: Cristian Prundeanu <cpru@amazon.com>
-Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
-Tested-by: Cristian Prundeanu <cpru@amazon.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ removed duplicate save_and_disable_daif macro ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/kernel/entry.S | 6 ++++++
- 1 file changed, 6 insertions(+)
+        if (lock_task_sighand(p, &flags2)) {
 
-diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index bdc5f744249b..d0882ce3d97d 100644
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -833,6 +833,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
-  *
-  */
- SYM_FUNC_START(cpu_switch_to)
-+	save_and_disable_daif x11
- 	mov	x10, #THREAD_CPU_CONTEXT
- 	add	x8, x0, x10
- 	mov	x9, sp
-@@ -856,6 +857,7 @@ SYM_FUNC_START(cpu_switch_to)
- 	ptrauth_keys_install_kernel x1, x8, x9, x10
- 	scs_save x0
- 	scs_load_current
-+	restore_irq x11
- 	ret
- SYM_FUNC_END(cpu_switch_to)
- NOKPROBE(cpu_switch_to)
-@@ -882,6 +884,7 @@ NOKPROBE(ret_from_fork)
-  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
-  */
- SYM_FUNC_START(call_on_irq_stack)
-+	save_and_disable_daif x9
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	get_current_task x16
- 	scs_save x16
-@@ -896,8 +899,10 @@ SYM_FUNC_START(call_on_irq_stack)
- 
- 	/* Move to the new stack and call the function there */
- 	add	sp, x16, #IRQ_STACK_SIZE
-+	restore_irq x9
- 	blr	x1
- 
-+	save_and_disable_daif x9
- 	/*
- 	 * Restore the SP from the FP, and restore the FP and LR from the frame
- 	 * record.
-@@ -905,6 +910,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	mov	sp, x29
- 	ldp	x29, x30, [sp], #16
- 	scs_load_current
-+	restore_irq x9
- 	ret
- SYM_FUNC_END(call_on_irq_stack)
- NOKPROBE(call_on_irq_stack)
--- 
-2.39.5
+Best regards,
+Ridong
 
 
