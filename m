@@ -1,246 +1,303 @@
-Return-Path: <stable+bounces-165536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08A3B163F1
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 17:54:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA10B163FD
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 17:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE6BB1AA0836
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 15:54:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DF6B4E8118
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 15:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED43E2DC35B;
-	Wed, 30 Jul 2025 15:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56483299AA4;
+	Wed, 30 Jul 2025 15:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lpLEDcIb"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="c8b76bEF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2067.outbound.protection.outlook.com [40.107.94.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22532264CC;
-	Wed, 30 Jul 2025 15:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3D313AA3C
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 15:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753890866; cv=fail; b=UmztweS3ayJrRWsU4lz7fPnIC/J5FdKKMov8Z8cc+qkkUa3vykdASI88L3OJ52R+GyTX7utBVtY75nHvdKXVXxlCYgB4U1OPFOjMIxzvSPPGlrB0QcHzwKLdNjSQEEAAZyBomosZUw68xKtf/XkW8BM74meUpeefIc69OOtJfDI=
+	t=1753891163; cv=fail; b=HtrWhN9PL8CXK3q/oe6ap2r0jTnHYtmam+LPfwzol5PJjiYtZf6GSoxBDSTEUrtHioKPlsTsFdSNPO+m44xr81nKOcXJC8o7nRn3poLdfQvGfl9Uviz4YYoozXBx2FRnzqQnihv7aJlLzEGWUFO585I2kPe/+XR7TBJEgdkxPy4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753890866; c=relaxed/simple;
-	bh=piC46nSqLrfnPJov3O7mqjQlfGPPdaMMuzQUuAt5jb0=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=e06JYF7igULeAJOu6HsDKqS0YNH9xwtung2Frd6+3r8dGjaIdk7r/Gv5xoGlOMNzH0ekR1UHSQjCTdz1vUtdFxb2pyjFt8DLKTeOJhqthdUuW06Nmvn5BK0mBWy4vuWmf0hbjC+Z0Xad6R0dOucNZeWduefz2B/AWZxICnojtRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lpLEDcIb; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753890865; x=1785426865;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=piC46nSqLrfnPJov3O7mqjQlfGPPdaMMuzQUuAt5jb0=;
-  b=lpLEDcIbBA5u/reREDq7e63orPFqhVEsAsChZxXJCJ7RlDTJE2noLPZ8
-   dLZ98vhpN0FX/3d9IaXgWDKn0ekQk5YuvizWIW/pb6clokOhIkpabpBPt
-   5aY+ii9poQgFP6Rs728YEJG5adYQvWBZX0G2aAuH3zRbNsq6rXEr+gk+U
-   FOvuNO9te3H3PBcEONxrgAQeu4eSRLM3KDagnsntSTdSLKV7/YBU1xUk0
-   xyTWzc0MUSXWvuFdubq8W1nBK4XF1ZBdFBdsc8kgYgbOj80roYNvIGsnY
-   N1ISDTQnfg7aQeBtPD9gk0aRb1yenDwWEcFCSIHDHVrPUd7JyF6rnhQ5P
-   w==;
-X-CSE-ConnectionGUID: 0KU2Ld2yR0KVMOWuC5vHag==
-X-CSE-MsgGUID: GH9m2LaCQSGIiHw3/ikTdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="78748801"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="78748801"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 08:54:23 -0700
-X-CSE-ConnectionGUID: GpBbEiLmRAycRYFW1OgK0Q==
-X-CSE-MsgGUID: 6i2/Et5pQkyvAtbH5Dw2Bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="162608233"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 08:54:23 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 30 Jul 2025 08:54:22 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Wed, 30 Jul 2025 08:54:22 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.66)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 30 Jul 2025 08:54:22 -0700
+	s=arc-20240116; t=1753891163; c=relaxed/simple;
+	bh=Hbefsp4/KGs7dhM3iC+yRa2ky+6Dv6qstoa3PdvjTRc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kZYf41PZIzfrMpuI4C0rhFE5Hq8D8vaXfKAz9Mzo4dw1LzEEqNLOebNHx8km9ggXNOnjD0UWH4va70OK1JdGl48VHz3WvacapHH7CTrSBtPTSb5pxN4osqdXguSphVwHNgl9dGyOvjXtuNaaLxffc0x4ap67hc26fzj7UYvREnI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=c8b76bEF; arc=fail smtp.client-ip=40.107.94.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N7B7svStKhGf/flaJpW7NCfWFH5FhlCZ8eAWGcnk9mLwEEulO3vsrysWKMt6tiltmB30ibrAPzr2QV5S4b/LxySJE+fZMeLjitb52NQmS05DAUkrG/OlLFmLdStw3oy2vbNUj+QxSjgl96YpZsuYXLdt1cOVjug2USTPTR/tN4VWTIcRzJ/ZiHTYOjjVVRn+8/PY21bNhq4kCsW3Z96lI+HrRZ42jJ3yIWD5eUcfiEZ9gFp8uP+N9XcWvcn3ZwwPeWb2CAYKiyonJfygNvaOzZyu/2FZgq9t2khV2mxxeW8OjL7KXIA2T++BjoUNcmzam8P5F6Fjy90FF2hiIqxw9w==
+ b=uBpvFFveH45LnNMe1LmdaYQTYfyJ0Fol9VDhpWZJT/6r6w2oZX227jNTOGURU/Neqq+ZTztjONNMBGlFeisX6gp60xuMEhQ6CyAjtzHhKjIDVvKbrcnXVabL+xLSBeNQRJH8rTtFO9DbEPAZpazFPiawk4Lh8y4csH6KZyI3kNu/gVOMD9BzQWsgb4j8c31kM9Lg6o3ZmHEnEEiJf7X82FDpdsj98hzv+tlEadVbiSTnCIf7hYb2EX0kYIYOE8KcGPkLcZkbmbPuIjPXFdi9xeODp0jSiPDc1uubtRFT+OP95Eg+fUqA9PpWppEHDH5Ybq5ePTsimFZ5X6vDGASrdw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oNxLVoAVzABADkCzxWBwdfMxwMIJUVcf2QN4rozhQco=;
- b=bGgIXXqd8EhbdBR1IZK+6epvqDvipf5S4dBMHpmuwEO+6+ZpQjVRtDYp0FgyUIAuOBXsRFK4oBMT+JFGssKNm8WFciLvM4dwGIsuGK92xh95XwdHQg9tClt9Obz3RUUr0YuKc6Dg8vTbLcvckKmTpEtndQwj+sTNjVjVvOP3mn7OJPUHfTH2AnpsFQV0lWtSeJGnGE6OkrjSLe60kQK7iJVlljFz0wiZV4AyE1wRkku/r5ZtoXtUSivfYzdHWf8rkTRw32g7df3t7tbRpu58RSXO6871Hy+Cm3udbKEq31UxN9IcwfCmVSF1V0y6wH8MIlQgkP7dSg6k18fLaITgng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
- by IA1PR11MB6465.namprd11.prod.outlook.com (2603:10b6:208:3a7::5) with
+ bh=dC2ggBRvaG6A+/TCGEtVAa19qKXLIim+APlZiZ2aIqw=;
+ b=g/XiLjyKlj31OU4SXth2dZpCQWJg0mOvfxoXTSZBG1ri48lGWs/BDiZ8daSTJ46Wd4lT+Y2TMKZEqx8CJHST9A5CXsdmijv7Jsfh+r//AtWyN5Pi8hasI6jH9e/w5TWXaKLF+wrJU8v7XZfTa0il4Wb7jdLjuLtlbS+xRHc80pcAId3he2HXUim78WrH2UnusYLGqJPewkzQQUdS2O0rY0E37ayck1L/hRcnFdpsVVIr+z7dFcrmDV8xaDAC99TLAIz4ZF61Ma/EQIuSmSJKS197pZ9bF6wA6OFZmimgZpaHXLySOhji4amXbUqFhtSpBsz4PhuczGacSjvfpqZ9rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dC2ggBRvaG6A+/TCGEtVAa19qKXLIim+APlZiZ2aIqw=;
+ b=c8b76bEFWqNOzg/b9Q6nRZMR1LbqSsCGsdfzitSUjgjwlDF1SZNAqRS/FA2UC8LC7Dg4SvUzQ+PmzqAZivxZIr1U9P8+vAuyaHyq/DlWo+6IFzJ93IzWQwhdi6dCmhQULdh0Uo+xea/uB04HdPuJvc+8qsUJf+O8IdJj0fSnFOk=
+Received: from DM6PR03CA0031.namprd03.prod.outlook.com (2603:10b6:5:40::44) by
+ PH7PR12MB9221.namprd12.prod.outlook.com (2603:10b6:510:2e8::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.26; Wed, 30 Jul
- 2025 15:54:20 +0000
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::eeac:69b0:1990:4905]) by IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::eeac:69b0:1990:4905%5]) with mapi id 15.20.8964.025; Wed, 30 Jul 2025
- 15:54:20 +0000
-Message-ID: <7c20e0ff-8592-4f54-8cf3-a44bd88173bf@intel.com>
-Date: Wed, 30 Jul 2025 18:54:16 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 3/3] mmc: sdhci-pci-gli: GL9763e: Mask the replay timer
- timeout of AER
-To: Victor Shih <victorshihgli@gmail.com>, <ulf.hansson@linaro.org>
-CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<benchuanggli@gmail.com>, <ben.chuang@genesyslogic.com.tw>,
-	<HL.Liu@genesyslogic.com.tw>, Victor Shih <victor.shih@genesyslogic.com.tw>,
-	<stable@vger.kernel.org>
-References: <20250729065806.423902-1-victorshihgli@gmail.com>
- <20250729065806.423902-4-victorshihgli@gmail.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
- 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
- 4, Domiciled in Helsinki
-In-Reply-To: <20250729065806.423902-4-victorshihgli@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0049.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:469::9) To IA1PR11MB7198.namprd11.prod.outlook.com
- (2603:10b6:208:419::15)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Wed, 30 Jul
+ 2025 15:59:17 +0000
+Received: from DS2PEPF00003446.namprd04.prod.outlook.com
+ (2603:10b6:5:40:cafe::d6) by DM6PR03CA0031.outlook.office365.com
+ (2603:10b6:5:40::44) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.11 via Frontend Transport; Wed,
+ 30 Jul 2025 15:59:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS2PEPF00003446.mail.protection.outlook.com (10.167.17.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8989.10 via Frontend Transport; Wed, 30 Jul 2025 15:59:16 +0000
+Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 30 Jul
+ 2025 10:59:14 -0500
+From: Alex Deucher <alexander.deucher@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Alex Deucher <alexander.deucher@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH] drm/amdgpu/discovery: fix fw based ip discovery
+Date: Wed, 30 Jul 2025 11:59:00 -0400
+Message-ID: <20250730155900.22657-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|IA1PR11MB6465:EE_
-X-MS-Office365-Filtering-Correlation-Id: df962709-0dcf-4ea8-60e8-08ddcf815852
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003446:EE_|PH7PR12MB9221:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11a4951a-8fda-4fd7-9300-08ddcf820956
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?dzVPWWRqTVJpSlpiT2JKcEJTUE1mTHFHMEhGSjB6T2E4YVRWbjdXWWRDb05M?=
- =?utf-8?B?SXJCUlF1MjBhT2xZdjFzVGRDOW1IMWJDTlNmbTVsNGJsMEp0R1ZhN2I2Q1VQ?=
- =?utf-8?B?cEFqTkFVYXIzRFQybGVSdGlyYm94ODhhRy92WGMyZUh5aURtUmQwa1c2aGsw?=
- =?utf-8?B?TUhMNFBPamNEUzdZSmlZTis4TjZSZGJmZ0lIS1g4a1ZBbkNHYzBkZUp2cVI0?=
- =?utf-8?B?dmNBSVBiT01FWklBZEpqUUw1QlAxcmNQa0pNWFptdGh5dWRmY0Q3VU1QV1J3?=
- =?utf-8?B?eWkrSnZvMTlwUE8wWWxZaUZpM21LNzNzNjBXcXZBZXJPYnl0eHRXVkFQbnRJ?=
- =?utf-8?B?K0F5Y3FmN3lyQmUwYm5nMWo1WjJPVys4K3JNekJ2M0xLZUw5dVhkeVZmMWwz?=
- =?utf-8?B?Z0lYVVRYeWQwYjVpVVRkUzY2bUNzSk9pVnl3eGlOODVldEdYRWpRTk1uZk1V?=
- =?utf-8?B?WjU2VEdNd0lpNUx4enl3QkFTYXpweVJ2d2x1TDJWWjJtSHVvVmY3eEdqK3pU?=
- =?utf-8?B?cDhYYTBOcDZzVnVuZnp5V1hWaGJPcmx3QW1jWU0wR3Qwcy9FdVZaQWd1RFVy?=
- =?utf-8?B?NlV1Wjk2c1hVSnNuWFJndmJodzhPUkRCQkpHMDl2U0RKZE9lZkx1OHc3czdX?=
- =?utf-8?B?Qzc2UHZqZVZZL0RIRUZ1VjJlNU55RUF5VzJiY1NvaW5KWlVlS042eGhOLzF3?=
- =?utf-8?B?clpDd0JJeHNIb0VCMUdwaHJjbVhBdWtOVE51eldPcFpnK3RSTXZuMWYwcTBQ?=
- =?utf-8?B?WjZEWWJZVFNyMnhjSVUyTkJ4OWdDWG1CS000KzlMS3J2a0FhNHhLWDBYZk83?=
- =?utf-8?B?WGFQOGhBa2NUVEdUbWg3eVVlSnVlcnlFOEFpZC9MVUZPSVNkcndlTFkyc2ZQ?=
- =?utf-8?B?UStkL3ZZRHVIK2xzck9hbS84eXMwei9WMHhEYi9OVXJzNFZDTW1yUEJJTzVw?=
- =?utf-8?B?WUR1R0J5S1Y3NzZ0eG0veXVTUkhpM0hkUlp1Ukh6Q2UxMmpVRVV1RWxGTEs3?=
- =?utf-8?B?S1Z3RWV1Q3VDMkhtZFJHKytaWW4zS013aWhUL0oxWGQ1M3B0SVgrL3luTU11?=
- =?utf-8?B?ZXhCUWUxRnRQa3oxMFJlQ2V4T0x1THZRbkhLVE5QMmN1T1VIRlc4QlNTbWdJ?=
- =?utf-8?B?UFZWWWlGNC96ejMvYW9pU3d6WFQwbE0wODJ5VVh3YXpGTy9uVFdaMEljTVpk?=
- =?utf-8?B?ai9yck5ya3VST1BzKzdYU1ovbjk0aHNFTzBtcnU5Y2RlOUpYWHdTdUNpSU5o?=
- =?utf-8?B?SGRaN3J2eUZLN3QyWVNBaHMyRXVadWdpUGtIZFgzT3lGSHZnUWNkK1VWNktk?=
- =?utf-8?B?K29UMEZlNjdrV2V6RjYvbHRNRndQLzF1MXNHYUc3c09ZZTBsL3cwVm80aGVF?=
- =?utf-8?B?U0NseUN3VVdlSGZocW5qNnJ5Yk05S2dENDdZNEFoTmo3ZEo1Q3IxL0pON1ZG?=
- =?utf-8?B?TVNQbVRHS2xWdTVVd001VU93eS92bzM3TzdFc29GZWVqRDdEMWIrcmlsY3cy?=
- =?utf-8?B?ZThCNXZRTEtLK0QzaDlqdE1Od2E3WFczelhpM3V4ZGlQSmgyWFh5STlzZDNQ?=
- =?utf-8?B?blB2bEVUQjV5VEZ0R3VTN25DK2tHVGx0dkpWVFFxTDY3V2JYa25jK1ljVzA3?=
- =?utf-8?B?ci90K0cvQ2xEbDRJQVZQRGxqc05TNXR3T3ZDbDVzT0I5bXRLVDdESE5DRjha?=
- =?utf-8?B?M1VYekg1L0FFYWh0eFphUlVnd2Q1ajhYcVJNZmp0SUJhYlFjZkxzWTl1eFBy?=
- =?utf-8?B?OHNwa3JuMFc4VWhUMGNPUzZuTWg3VGp0dUNqYW02dGlnalRjZDQ5TnNYL09k?=
- =?utf-8?B?eWpBSU1UaFdsRDFrejI3TWlrN3B0SXYxbHNsTHE0ZmFWcWFZV0cveHdQa3dm?=
- =?utf-8?B?TzN6ODFhZkFrZkE1VU5zMWVuWVFwSTZQQnVxQ3hrVUgwcDI3QzB6UjArZVQ1?=
- =?utf-8?Q?G3QqJVNcm7A=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZlVjTXJhRVRFRDJWeXFsYTBQTnN0NnZDL25jSnJjZU9EcStTUm9BT0ZyT3Zq?=
- =?utf-8?B?MUFwczI2SW9vcE4xdG90OFRuQmZUY2dmaDlyTDk0NC82Q2w3MnhOR0ZsYW9S?=
- =?utf-8?B?cFBQWVliUEJEWS9kUTAwQlJJSjE4bUk0bUZkSVJ3RzNvemlQZERLby9vSUcv?=
- =?utf-8?B?K3ZxNExSbTArV2tSQlA1OFhkaXljVGlDTHRWaGlXU2g1L01Lb2ZxSnE3STNu?=
- =?utf-8?B?VDVXQUNCQkFBdWZaKzhhcVp5aWlCTUh6cDllMDBFTHc0RTF3emIrelBreWJB?=
- =?utf-8?B?RzBsemQ2b2VBUHhtdW5aVEtJSTdqeFo5SmgvcUZrQlgvTHlOWVlpYVNVQTYx?=
- =?utf-8?B?aEJlTkVXUkhMWEt6a1JzdHlHMGorWUpVdzhVMU94NFVLL3c1RDE0alg3R3J0?=
- =?utf-8?B?aFhNUVdMcnhXNFRqaTVEQW1CTXBITVREdzQ0SVBWVFpPWWgxem1CMzljb3V4?=
- =?utf-8?B?ZUFzdDJNSFJDY2Y1QTVBcTBUck1Hak5DNGRZR2VySnVibTc5clVBaGtJRlBP?=
- =?utf-8?B?SXpxbTR2czI2dnVid3BKOXY5Rk5rTWdrMHhySDJYMTdUVEQzZ0hBOXJPWFBv?=
- =?utf-8?B?RlVMTWozMDFNbUpNUlRmT1NHNkxyL09RQ1ZNK2NYbE1DVDJUdnJHYkJScGNw?=
- =?utf-8?B?MVBldDlmeXM2ZmZEUGFhOEoybXo0UlBNR2RibnB1OTQ5Skl3eW84czhkNlFS?=
- =?utf-8?B?QWhDWlFkRmJacUpHd256Z2xzTHEwNkk1S1h0SXExUzkxTlNaQUxqSENIczRk?=
- =?utf-8?B?VSsvUk4yai9wcWQzd2FKczZUTU95UEtNRXlKRUNqUzBjVEhRUXQ2cENoeWQr?=
- =?utf-8?B?YWQxZVk2SGY0czN4M1hLeDBqc1czK3kyM0NLV3NjaGxJWDFSb24vVXBhM0FT?=
- =?utf-8?B?ek1sKzNmdWwxR2svRzEwelZWTTU2dnZybU5nK1grM0FqaFRQNll1NmtISEtr?=
- =?utf-8?B?cjhEZlppUUFXcEorSTVORmJzZ2l3dEx4NnBkMU93UWJTMmZLVlNpTm1MZkhP?=
- =?utf-8?B?MXNacndCTTBmTVkyeXJDUHBxaXZQS0wzNXp6Y0pkakVvejNhUnUzUUpmWXJj?=
- =?utf-8?B?YTZCbkhpbHUvVmMvTXY2VGdlYXluMExrRytsczk3OEgvVTNXU2R1SlZZbDls?=
- =?utf-8?B?b3FWbWJackZ4ckNPU0ErQmdGMFdqV0NKZENhZ2hZVVo2NGkydk4wandDY2Jw?=
- =?utf-8?B?YlpiWXAxZlBrOEl4Wk9IRTlHcnVmazRzR2MxVXJYMS9QK3ZUMHVpV2FzdUlX?=
- =?utf-8?B?ajN5Uk5BRG40NXcvK29xZ2FsMzJUTDFObXVwOEc0cG5uQktEY3NXTWRsWmlr?=
- =?utf-8?B?V3B5MXQ5dEpkcWpYVWZOUUJwMC9KN3J1ZWM2YU82YTZoNDZYVi9hM2xxVDFK?=
- =?utf-8?B?MkQyZi9uR1NtZk9UNUVXTmRsR1hxdDNFaVp1aHZzNG5UYjFnMXRmN1E1T0d4?=
- =?utf-8?B?ZGZtaVo0VjRQZ05mZCtjK0tJendpYUdTcWVMbG9zZ0FnUzRiN0pxYkd4ZVA0?=
- =?utf-8?B?b1FmT2RWZkEyR0JOL1JTUVpRQ1pVQW14clMxMklSaVpsN1lockhqc2hlMSth?=
- =?utf-8?B?Y3IybktKRkpTNDhYbjJSTjBBbm9TUDFNL2JscGtLY3JoRVBucVdRQzZmdGVL?=
- =?utf-8?B?REU4ajBFUXNtYXQ3aEg2eTJxcmsvZ2xmMWlCdkRicTJIbGVQNmwwNmlSY1BK?=
- =?utf-8?B?dWcvZDMvUEdrQVFKaFNTWjdQeTZTUkRsVWdFT00zRmxFNWliY0xPdW5jNkI0?=
- =?utf-8?B?VmI5K0ZleThuVDhqT2JnKzhRLzMrN1lOVDk0dkxFZnZkSkthdFA4R2ZNY09r?=
- =?utf-8?B?NHhmajRiU1JJcGN5SEVmc0RkdHQrTHh4S3hSMWpYa2s5bDcxYkpLNDR4K2JW?=
- =?utf-8?B?WC96NDRvN1F1SkpNWXQwclNVWDlHNm1QVFp0VlRXaTB4eHVqTy80QXVEdVJ4?=
- =?utf-8?B?ZXdscGx6cFdERG5lNFhGRXc5TDMvRVVWZUEreUp2SWw4WndGV3hQeUVlMUtV?=
- =?utf-8?B?eXcwSytobUdkNUlKOG02bEk2dlNPUjBDcHRlWFdsUS9xOXozYXFXbng4cUVP?=
- =?utf-8?B?c204ZEU2eDFkN3hodmF3RDl0R0RRK2ZSZ1hzVzZvWEd0eEJveE9LbnlQZEIy?=
- =?utf-8?B?WXhMRk1GZzN6dEdtVW0ySVA0NDk4bWVHaUVvRnZPOUJOWDQ4cVpSL1RYeGZN?=
- =?utf-8?B?Z2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: df962709-0dcf-4ea8-60e8-08ddcf815852
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 15:54:20.0715
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ukfrMCdKOxnoDkThLwd97xq7rlCAJKmG/e197WVG/Ul43YsTZCJSo+OLrqV/?=
+ =?us-ascii?Q?EFACX6xFcSsUE5pJEam9VuU0YUJ+V3sRkDQUyYz+1XifwMRIdxC5qvPdozKF?=
+ =?us-ascii?Q?NcfMUoOcPgi3edqvwjecA4hP9DoAYcyxo4BdqAfNVSo8M4JnIp5h+6sixK4P?=
+ =?us-ascii?Q?IKIqKSEFi9EHoDR+FIzzs94lic5rHQBZIz+4tCqWeuAcrGO9e5qO47ErUZfw?=
+ =?us-ascii?Q?khPCZb1zdVYoBbLMN55uidHjwvemiEmHiYnkZrJM9V6Tl5aR4HGNgSepYfer?=
+ =?us-ascii?Q?FNHzxtCpbl1isEeT7odmq982LmJxt8EIEWWTr9CZ/VRYKEf3IFAZjvlszs4j?=
+ =?us-ascii?Q?LuWC4sblWmJh89YSf02G8+LQTAlHlmVe+hJF5IJPFxvBxFduu0ke4o71hZyM?=
+ =?us-ascii?Q?q/ePi2W1LH1bKQuh0UWlDcIQXTAxlVFmfQql6vnweVvzRA2JgOHjvZS+xAJn?=
+ =?us-ascii?Q?/F+TIf+f93NmTli1L4UmFt7vF5adTHi8xfSbN0TDKY5Fzw2iAiBANhYtdEO+?=
+ =?us-ascii?Q?OqC/KmT0o8aNS2WpGZuKpfIouYMiZbF1pqjijsPsdh2qrFfvKb8aSN1KosvU?=
+ =?us-ascii?Q?UOUu+UMGw5mXhsZnJjjM0ht6HieNcUcJYkZqFJWEbZFzxh9kOLopBgyVyH6l?=
+ =?us-ascii?Q?zpoTFF1xb3uoX3eNJ81vvX2MiTp5q49ShoHMssJ45VYUaISMaGDlDJHc8QcN?=
+ =?us-ascii?Q?8XqDWQpJafAIhLEAUdUjtn/EcrkkM2paSyqPGuS9HZviwHF1ZnlRnoWWJ0pU?=
+ =?us-ascii?Q?pjXQVh2Et12SFVwwCvaRvBdAltA8rrU7E/l1jXYLAjTsGohzqap0whbOndrY?=
+ =?us-ascii?Q?iGIofwGehfcCjBnk3QCw0ib5oVrZ6amJO4PEr3g8bsXriEDxN4xSE2u95Cyu?=
+ =?us-ascii?Q?9n3F5LB/YAjXM9tkhXLAUZEG8Y+r1y4xA81FTsv8EVEj5NZZCvFgTpDXrOCr?=
+ =?us-ascii?Q?pMjHWZJhBPsbjxDFaBFiPCi+xi+c9rgw9/K98G7wd2EY0mhi1n+yzE7Jlq/r?=
+ =?us-ascii?Q?o0j3JjK119ocT1EWR8Gg3y9eeHhHiIc6WWXmBMvESV86ISfdshRShdbX6nVZ?=
+ =?us-ascii?Q?IRFIVeORKK/iece344ZG1b1fIjwg4gzR78Qrv/B8CTsEIzrNzFvu7xyNbn2g?=
+ =?us-ascii?Q?dFjik3RE8+MzJuzu4t+K+4REupa+BZJ0In4/f72GtERX5pi6OmNg3R+/L0v/?=
+ =?us-ascii?Q?8/efZS9PBqQw/ymiH05CYYA77P7MCIC/Whpcn36eimQMFL7TH5P0JOcx3JYf?=
+ =?us-ascii?Q?7KlLfGeOrGHr3lXCg9652TmJgj41eQ95ktx+44O5n4pWcGGc8OON7KXl3PZF?=
+ =?us-ascii?Q?rGZErwOFqXv/QzYU556hkFLK2quQ/VlFM7dSgKhhuuxh/4AvLLRMrR2aQf/c?=
+ =?us-ascii?Q?IVj2ChKY1rqGRyIi7XpMsgSRsnelAVOWArC8aB4eIxsqbNLexnMxoHDEmHey?=
+ =?us-ascii?Q?MMI7/EMdJidnAS6oNRvrwsWObz/+7NgGMUIXYe/FZnbpXWVnthe/Yw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 15:59:16.5062
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KlC9eauNwRxENGXiox2yDga/5pT4R1xA48DSTJdQ3g5Ty/qo49YEJoORxm2Cq38K4yD+MFD/JWRXAFfzbnVj2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6465
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11a4951a-8fda-4fd7-9300-08ddcf820956
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003446.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9221
 
-On 29/07/2025 09:58, Victor Shih wrote:
-> From: Victor Shih <victor.shih@genesyslogic.com.tw>
-> 
-> Due to a flaw in the hardware design, the GL9763e replay timer frequently
-> times out when ASPM is enabled. As a result, the warning messages will
-> often appear in the system log when the system accesses the GL9763e
-> PCI config. Therefore, the replay timer timeout must be masked.
-> 
-> Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-> Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-> Cc: stable@vger.kernel.org
+We only need the fw based discovery table for sysfs.  No
+need to parse it.  Additionally parsing some of the board
+specific tables may result in incorrect data on some boards.
+just load the binary and don't parse it on those boards.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4441
+Fixes: 80a0e8282933 ("drm/amdgpu/discovery: optionally use fw based ip discovery")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    |  5 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 72 ++++++++++---------
+ 2 files changed, 41 insertions(+), 36 deletions(-)
 
-> ---
->  drivers/mmc/host/sdhci-pci-gli.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index 436f0460222f..3a1de477e9af 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -1782,6 +1782,9 @@ static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
->  	value |= FIELD_PREP(GLI_9763E_HS400_RXDLY, GLI_9763E_HS400_RXDLY_5);
->  	pci_write_config_dword(pdev, PCIE_GLI_9763E_CLKRXDLY, value);
->  
-> +	/* mask the replay timer timeout of AER */
-> +	sdhci_gli_mask_replay_timer_timeout(pdev);
-> +
->  	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
->  	value &= ~GLI_9763E_VHS_REV;
->  	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index efe98ffb679a4..b2538cff222ce 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2570,9 +2570,6 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
+ 
+ 	adev->firmware.gpu_info_fw = NULL;
+ 
+-	if (adev->mman.discovery_bin)
+-		return 0;
+-
+ 	switch (adev->asic_type) {
+ 	default:
+ 		return 0;
+@@ -2594,6 +2591,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
+ 		chip_name = "arcturus";
+ 		break;
+ 	case CHIP_NAVI12:
++		if (adev->mman.discovery_bin)
++			return 0;
+ 		chip_name = "navi12";
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index 81b3443c8d7f4..27bd7659961e8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -2555,40 +2555,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 
+ 	switch (adev->asic_type) {
+ 	case CHIP_VEGA10:
+-	case CHIP_VEGA12:
+-	case CHIP_RAVEN:
+-	case CHIP_VEGA20:
+-	case CHIP_ARCTURUS:
+-	case CHIP_ALDEBARAN:
+-		/* this is not fatal.  We have a fallback below
+-		 * if the new firmwares are not present. some of
+-		 * this will be overridden below to keep things
+-		 * consistent with the current behavior.
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
+ 		 */
+-		r = amdgpu_discovery_reg_base_init(adev);
+-		if (!r) {
+-			amdgpu_discovery_harvest_ip(adev);
+-			amdgpu_discovery_get_gfx_info(adev);
+-			amdgpu_discovery_get_mall_info(adev);
+-			amdgpu_discovery_get_vcn_info(adev);
+-		}
+-		break;
+-	default:
+-		r = amdgpu_discovery_reg_base_init(adev);
+-		if (r) {
+-			drm_err(&adev->ddev, "discovery failed: %d\n", r);
+-			return r;
+-		}
+-
+-		amdgpu_discovery_harvest_ip(adev);
+-		amdgpu_discovery_get_gfx_info(adev);
+-		amdgpu_discovery_get_mall_info(adev);
+-		amdgpu_discovery_get_vcn_info(adev);
+-		break;
+-	}
+-
+-	switch (adev->asic_type) {
+-	case CHIP_VEGA10:
++		amdgpu_discovery_init(adev);
+ 		vega10_reg_base_init(adev);
+ 		adev->sdma.num_instances = 2;
+ 		adev->gmc.num_umc = 4;
+@@ -2611,6 +2582,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 0);
+ 		break;
+ 	case CHIP_VEGA12:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		vega10_reg_base_init(adev);
+ 		adev->sdma.num_instances = 2;
+ 		adev->gmc.num_umc = 4;
+@@ -2633,6 +2609,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 1);
+ 		break;
+ 	case CHIP_RAVEN:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		vega10_reg_base_init(adev);
+ 		adev->sdma.num_instances = 1;
+ 		adev->vcn.num_vcn_inst = 1;
+@@ -2674,6 +2655,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 		}
+ 		break;
+ 	case CHIP_VEGA20:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		vega20_reg_base_init(adev);
+ 		adev->sdma.num_instances = 2;
+ 		adev->gmc.num_umc = 8;
+@@ -2697,6 +2683,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 1, 0);
+ 		break;
+ 	case CHIP_ARCTURUS:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		arct_reg_base_init(adev);
+ 		adev->sdma.num_instances = 8;
+ 		adev->vcn.num_vcn_inst = 2;
+@@ -2725,6 +2716,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 		adev->ip_versions[UVD_HWIP][1] = IP_VERSION(2, 5, 0);
+ 		break;
+ 	case CHIP_ALDEBARAN:
++		/* This is not fatal.  We only need the discovery
++		 * binary for sysfs.  We don't need it for a
++		 * functional system.
++		 */
++		amdgpu_discovery_init(adev);
+ 		aldebaran_reg_base_init(adev);
+ 		adev->sdma.num_instances = 5;
+ 		adev->vcn.num_vcn_inst = 2;
+@@ -2751,6 +2747,16 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
+ 		adev->ip_versions[XGMI_HWIP][0] = IP_VERSION(6, 1, 0);
+ 		break;
+ 	default:
++		r = amdgpu_discovery_reg_base_init(adev);
++		if (r) {
++			drm_err(&adev->ddev, "discovery failed: %d\n", r);
++			return r;
++		}
++
++		amdgpu_discovery_harvest_ip(adev);
++		amdgpu_discovery_get_gfx_info(adev);
++		amdgpu_discovery_get_mall_info(adev);
++		amdgpu_discovery_get_vcn_info(adev);
+ 		break;
+ 	}
+ 
+-- 
+2.50.1
 
 
