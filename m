@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-165463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC17B15D7E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:55:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17025B15C37
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5DB5A53C4
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 832FE1775B7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729202951BD;
-	Wed, 30 Jul 2025 09:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FAD23D2A2;
+	Wed, 30 Jul 2025 09:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOUhTc5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frFleaRE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D3F2641F9;
-	Wed, 30 Jul 2025 09:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F6336124;
+	Wed, 30 Jul 2025 09:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869235; cv=none; b=VoAgEiwSHlvtYFMYxCHZeiTzWIhx/AtPGwDyqflVOF67aRU3xcWcoNHENmPIQ83R96ccCnOCXC5j6C4RYRS4BQfwX9Ynezu3ubsP8EJACVQ7GmGmSG4ssll67IQZ4PlNvXBJqZj/8u+1YNvHzHCTDJVSkLYxWsF/48b/mWCqyVc=
+	t=1753868397; cv=none; b=k4ftC/R4zN9KxkpWS/LiT2eUjR4HUK8bkveugvbmpUD2WzZuSv64cWwcQczrZf3r8e9nE44zQO+NxXjh/6bNQIlZjEH9U5sY8Tg0hsfwQwvz+NCgSvpTsQiAo03cWKU/dZBCOczjfUQzoZJNucumb6Kb4VM5BbUZVYW2RgIWtIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869235; c=relaxed/simple;
-	bh=ptamTgDw4GP4dVo4bDC1yxpuVRIl67Gd07Ez7yJhhGg=;
+	s=arc-20240116; t=1753868397; c=relaxed/simple;
+	bh=brHKyzCC/Vkfkx4bCgUkTyXwk266HC46y1YCG1s90oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKU/TCg8mSSxXTsu5tFBwU/jnf4oTPsa44ZkTSSHYezMv4BpL8gxW53h7CbY06HEpcPXCtPv4vDhQVyPXF9ZWauraLNv+SIgly8T9F5oNlkApod7gLX+wmRaKiDit/PsmxX8TKsorZz5WXrjCDVIkIxzhtb756Zfap+1hjTsM58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOUhTc5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D96C4CEF5;
-	Wed, 30 Jul 2025 09:53:54 +0000 (UTC)
+	 MIME-Version; b=K1pQUFRHaFpkeS5njo3r6zYh9uhBV9HYph1CuMg01gMES8nlFmJfW2P99XjPtjNnzZ3MI6PpPyj29w/XZrW6HL+lRss7jYgoUreTUD6CWoTftjcLwUnGCAms0at1++cT1A35/a6zng/6M7Mie1/dm7aihDuBcLU4xrh+UauPt9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frFleaRE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E406EC4CEE7;
+	Wed, 30 Jul 2025 09:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869235;
-	bh=ptamTgDw4GP4dVo4bDC1yxpuVRIl67Gd07Ez7yJhhGg=;
+	s=korg; t=1753868397;
+	bh=brHKyzCC/Vkfkx4bCgUkTyXwk266HC46y1YCG1s90oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOUhTc5cd9CX1+Zl78Wlu63VYgnFwXHC4cZQfobDEXkjmVgMJrpM3wL5tIvjKpgbu
-	 r7HpOOCHMeNMO6WsOQoqS+n73ZiDlELf825M2gV5bpj0GgyZwUa0oPKYE0sbH/bTol
-	 Sckr7DpRMhZLyhWvEuJ5ARxPmuNg0PqsH1nyRUlw=
+	b=frFleaREJUtTVUGNFAKvTCg8qIdmakQlAAN+mWDBEpDwY18WfJ7Up+gPDPeFLSE+C
+	 02+5ZeQLtJhupEGcv0vlCL9jaCcOosEBtOPVbe4GzSq9bEAsosfilgCdvgGNPnIkZy
+	 U7dX0hRhuZHDSvj0lQPXtr0fFPvYwzplISZgLJHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nimrod Oren <noren@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 37/92] selftests: drv-net: wait for iperf client to stop sending
+	Michael Zhivich <mzhivich@akamai.com>
+Subject: [PATCH 6.6 52/76] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
 Date: Wed, 30 Jul 2025 11:35:45 +0200
-Message-ID: <20250730093232.187380646@linuxfoundation.org>
+Message-ID: <20250730093228.861559347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nimrod Oren <noren@nvidia.com>
+From: Michael Zhivich <mzhivich@akamai.com>
 
-[ Upstream commit 86941382508850d58c11bdafe0fec646dfd31b09 ]
+For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
+field in zen_patch_rev union on the stack may be garbage.  If so, it will
+prevent correct microcode check when consulting p.ucode_rev, resulting in
+incorrect mitigation selection.
 
-A few packets may still be sent out during the termination of iperf
-processes. These late packets cause failures in rss_ctx.py when they
-arrive on queues expected to be empty.
+This is a stable-only fix.
 
-Example failure observed:
-
-  Check failed 2 != 0 traffic on inactive queues (context 1):
-    [0, 0, 1, 1, 386385, 397196, 0, 0, 0, 0, ...]
-
-  Check failed 4 != 0 traffic on inactive queues (context 2):
-    [0, 0, 0, 0, 2, 2, 247152, 253013, 0, 0, ...]
-
-  Check failed 2 != 0 traffic on inactive queues (context 3):
-    [0, 0, 0, 0, 0, 0, 1, 1, 282434, 283070, ...]
-
-To avoid such failures, wait until all client sockets for the requested
-port are either closed or in the TIME_WAIT state.
-
-Fixes: 847aa551fa78 ("selftests: drv-net: rss_ctx: factor out send traffic and check")
-Signed-off-by: Nimrod Oren <noren@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722122655.3194442-1-noren@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
+Fixes: 90293047df18 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/drivers/net/lib/py/load.py      | 23 +++++++++++++++----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/amd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/lib/py/load.py b/tools/testing/selftests/drivers/net/lib/py/load.py
-index da5af2c680faa..1a9d57c3efa3c 100644
---- a/tools/testing/selftests/drivers/net/lib/py/load.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/load.py
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -549,6 +549,8 @@ static bool amd_check_tsa_microcode(void
+ 	p.model		= c->x86_model;
+ 	p.ext_model	= c->x86_model >> 4;
+ 	p.stepping	= c->x86_stepping;
++	/* reserved bits are expected to be 0 in test below */
++	p.__reserved	= 0;
  
-+import re
- import time
- 
- from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen, bkg
-@@ -10,12 +11,11 @@ class GenerateTraffic:
- 
-         self.env = env
- 
--        if port is None:
--            port = rand_port()
--        self._iperf_server = cmd(f"iperf3 -s -1 -p {port}", background=True)
--        wait_port_listen(port)
-+        self.port = rand_port() if port is None else port
-+        self._iperf_server = cmd(f"iperf3 -s -1 -p {self.port}", background=True)
-+        wait_port_listen(self.port)
-         time.sleep(0.1)
--        self._iperf_client = cmd(f"iperf3 -c {env.addr} -P 16 -p {port} -t 86400",
-+        self._iperf_client = cmd(f"iperf3 -c {env.addr} -P 16 -p {self.port} -t 86400",
-                                  background=True, host=env.remote)
- 
-         # Wait for traffic to ramp up
-@@ -74,3 +74,16 @@ class GenerateTraffic:
-             ksft_pr(">> Server:")
-             ksft_pr(self._iperf_server.stdout)
-             ksft_pr(self._iperf_server.stderr)
-+        self._wait_client_stopped()
-+
-+    def _wait_client_stopped(self, sleep=0.005, timeout=5):
-+        end = time.monotonic() + timeout
-+
-+        live_port_pattern = re.compile(fr":{self.port:04X} 0[^6] ")
-+
-+        while time.monotonic() < end:
-+            data = cmd("cat /proc/net/tcp*", host=self.env.remote).stdout
-+            if not live_port_pattern.search(data):
-+                return
-+            time.sleep(sleep)
-+        raise Exception(f"Waiting for client to stop timed out after {timeout}s")
--- 
-2.39.5
-
+ 	if (cpu_has(c, X86_FEATURE_ZEN3) ||
+ 	    cpu_has(c, X86_FEATURE_ZEN4)) {
 
 
 
