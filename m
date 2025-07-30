@@ -1,124 +1,128 @@
-Return-Path: <stable+bounces-165601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26491B168EF
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 00:13:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B86AB16901
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 00:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2541AA3562
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 22:13:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 442C75A3F75
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 22:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F4821770D;
-	Wed, 30 Jul 2025 22:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672E52264D0;
+	Wed, 30 Jul 2025 22:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeKT/8L2"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4L8iQLhA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0F11DED57
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 22:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF21224B04
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 22:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753913577; cv=none; b=eZwzZ95wdzCx14jBeGVmlQSvX8Ok1RWfj5JplJuhgfc1LRjnDZ8Olf9RDLzKlTvsIwkI8YafsRiTwa1Ut9GY5ZsYWUuRD3GdzO9AFiIHPoHe0RwDTDhYpaZ2r5kv8rUEZrgnrPencfGs9Br1GKjVoqGUoFm/++WG1916KbpUmGw=
+	t=1753914370; cv=none; b=fOjMzyBjuBqor/dQHjZHxKqdrNPy50CPhhaxQFZtDgC0DM3CsmOqlsFhvl8J44wZNUz4ppYZUwuDplYXg3ZALVzUZBw1AH77lEvPIWLY38CAasuKFNSSVQ6xitDUgO2UA5BEFWTF8dPHT9FTbeFFCiHVhyxnbQvFxKgns3KL+NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753913577; c=relaxed/simple;
-	bh=qYO9XYMd9Ess2LLFsyadSHoQze0pFR9pSR+4q7JxSB0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g5grBsFtDYZ4w3cc6JROOeb/SoeCzy5hzadEQsxSxiva07MMpvJ7KDzEEkYuXD2FZbJKKNKgHxclkVacR8SFoxsBCVS9pLl8XzFv4sFQmAzgInyq5qGgg4enJgggd6h5cNUdqmlkfnedGP4I+8XvshAH3OEWeHSSK9NxC5R16Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeKT/8L2; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3e2ab85e0b4so6595615ab.1
-        for <stable@vger.kernel.org>; Wed, 30 Jul 2025 15:12:55 -0700 (PDT)
+	s=arc-20240116; t=1753914370; c=relaxed/simple;
+	bh=I1IpMiqpoKBm33rTZ+oMcFj9fDPtGpmJX2PTagB8X04=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tB6LzdbQf69dCIjmG57WQYsuFMXvfahKbTbTIy/CaeX0s2TtR5XYepaNh0oCMmtAKjI0YNigPdx2+qdbmpnzaGve0TnYRvqPzgkuVdP9gYD+TsNu5NmdupUAfGMjR5k6laBCdNXcmMKgPTxOJDKzIvtRfnozNDduaeUY2rqVz0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4L8iQLhA; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24070dd87e4so56015ad.0
+        for <stable@vger.kernel.org>; Wed, 30 Jul 2025 15:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1753913575; x=1754518375; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6nTYoBlbWe2hufH9UN/C4sSrgwEPP02z/hVZuVmtCWI=;
-        b=EeKT/8L2QvLoSTkFkusA2NX7TlsacAVjXRbKhiiRhgzBc6hR31zhdg1gcVlgMfjwiE
-         WgJtpCanBf7vj0bFjiPfqPiOPSHbsoFcgww4mSV5uXlbdVnr94Z3SyI07lS5nyvpIacD
-         RCpCss6K27Mhw0JDmH9PLyJTvrw6Xa+O4M4fU=
+        d=google.com; s=20230601; t=1753914367; x=1754519167; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uWgbn51tj8/R+WgZVKq4LF2OHJt7uGtmnafFEn6VfJI=;
+        b=4L8iQLhAejleWxe0MSRapJK9gGwiCjh6IK4TypCM6MO1kF7BVjaCQlsJP6VLzTYxP0
+         O8n9zhyJg+qST1lvbpd/pxcbU47BkFo3LSsfda5o69MPaF9Py3Xt6ZkJEPp0sC6qjmjx
+         LzuiwNonm63tPfyOLBSk0Apa7E9+Z2glImJp7jGjcPB/o4vb4QA4P1UEZ8RhINWJF8Ks
+         FqeE3bkp1zzQXgiPYbbDByssbnCf6lu+flnWsEd2/pSu7lrr5jiAX2AtGPBsXE/4uAMH
+         kj9205nr6ESe0tP6IxE+Tk8AoQdH1bBF+uUksO7icOnEdANh8yHz0bxjM25TJpU2ub7v
+         6CXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753913575; x=1754518375;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6nTYoBlbWe2hufH9UN/C4sSrgwEPP02z/hVZuVmtCWI=;
-        b=bVXpdHrwxl0IUNxHSYteO3BjPhM5PSRRxEpxEse6P1+BTf3TgciCLHookQdXq2AJiy
-         EDlj9k6WwrXhWdoLHC6aHbzCogfjV4odRFwBWTyzqIhcMNInTCd79CGMA0bUeBT/nMFO
-         e3p3baHW9EdbFNhpPKj3wLa8uY4Xnb/zNH4zS0TxAFkBajXhlHAbzJcf5lHuXVfAIZwL
-         ArlB8HepryhP+ApPvxjgK3/6Okd5/gTHSELsi0ANkJJ3WB6LSg2z2JhMwZEgI8KOp2oq
-         aOkN2lChoo2aVxEJTdKFGtNHCL6on38i5d7fnaJ7gTZJAl6UengP3rkiB4p0ja1/n4AQ
-         eQXA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8pWuOTN0wfSlxXGMWy4hNYyIRVJXs5QSq6u+L0G2NOlCIxS1CJEsElhKFDeoKb+dvKjNbhRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq2E8lNtk3nN+hrwKyrssMX+VNBd9rz+zYW9wnq7L+R/xCEHqi
-	kEcbMSIJO3eSLyMeuSCs8E1H9/wfR34+att77c5OPMxvpRzFoVh4zxXKR4R6XuXrWfo=
-X-Gm-Gg: ASbGncubqzO+0vOHyAhEtuVHYtVNhJL9YwzHOAqsz5j52LZn7PwCH6MyOfANdMKBT/O
-	bPZDTazds2V6fuA1eUb3eMcQGFa4FCnnRGti2Gnyd5RZRo1jjANwb+hEx1JIcQDuPP48AF2mpgS
-	zYcrwwT/VYhiek5UoGx5jmCSTki1zNmBeMF6Ayj4sCx3ZaMmpXJkrlGNF67MK+Kte6N+ciRa+C3
-	GZ4MElr3sRo0JbFtU0gyd3AlcmCvN9TXVLX1eCP39DDsp1lkOaUPaS5Ld/XsueMddfpCQafucLs
-	yoZIYhYwPOQBUqOzF3Ew9Tosp8GDZzgObxKmQptjLglSYL5g9ZOeACM7uhK2Nc8p9tuvZAxByWZ
-	p5EtA9BaP4uE1HzN5bAU0QUzLA02H/FIv6A==
-X-Google-Smtp-Source: AGHT+IENXvtA8hkhU/P6BXgu/6rZ6F/aOk7oAL7Z3QHmfwQrFaEE1/aG4rLPZfTApHUL7oAUHR3i0w==
-X-Received: by 2002:a05:6e02:ca2:b0:3d9:2992:671b with SMTP id e9e14a558f8ab-3e3e92ceab4mr94834675ab.4.1753913572713;
-        Wed, 30 Jul 2025 15:12:52 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50a55da3360sm91133173.83.2025.07.30.15.12.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Jul 2025 15:12:52 -0700 (PDT)
-Message-ID: <b718868b-d805-4ff3-bcae-3ee8b540707f@linuxfoundation.org>
-Date: Wed, 30 Jul 2025 16:12:51 -0600
+        d=1e100.net; s=20230601; t=1753914367; x=1754519167;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uWgbn51tj8/R+WgZVKq4LF2OHJt7uGtmnafFEn6VfJI=;
+        b=IzWgNygzH5dFQMwiuiiAiutJfBJsjkhBWghN+pBNfebxwyhBuHcbYmUPX+67CUKncW
+         al4xfR5ppRpxFoPgOUplHsKhi8l9WFWmfoVuwCDYzZtDdwdfZXCPaLZQVCVWtklINvAO
+         GXtKlq3DRw+apiYUM65wfxPPKLyt0ZPHO8mbbTHcEvZXlzcmW4J/OoY22qUsnsEyPNTm
+         H2p2YMGbhFil2jZLKzatYRjNYy7e55PmnUz5hTkArV2Pbk+qBmR93KflbjvzWdtZXJSc
+         5XpWmfS+MVY9ulwV6dsh5FmfLiBdvTup+Q/2TY1ZmUV/fdd4sm/rXyqMW8NQK4gcnKHA
+         pq8w==
+X-Forwarded-Encrypted: i=1; AJvYcCXmVrqjzwGoggnZRFwVME0oqiVjClvle9+g3dd0lIG7OaKgJ+Ekhn0gDFXV9Wif+kotzq3r8P0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVsonxcvzEBhLajh9EeCBFS2BNoRmSeIYewFSZJzdg3Gx9HbE1
+	lFUjrcYfrIB5iEAD3zPsi3X+RKA3IlN+sZYweTZNMXhBuU/ErleJeUoCs9r/FeCvAg==
+X-Gm-Gg: ASbGncsMofErP5eIUcVVcXeJp5/pYvLkKNJVGxguCpZJOUOGTTUoPbgy+Rak9e7OZd5
+	dGUP6JtzLC7f78yB8ysGCd4qVM4BtRFKUjlPhAsjGB4QYo2MCT7u6jGuxA+E5QnRda2Wt4ggzlf
+	QchWLF+9U37Bbkt4N4gIeDYKCNZ2lx7HCWv5pkJlq50j1WajSMOUI9kNWLSBDjOsysma9s6Ud/1
+	k3baZ7+6G9D7aBbYa+IfNMh2gQleR+emOu3KdzbE4Zjj4Y2gZ1pZBqowwkXrktNF2JgVn2SQi88
+	IoqRFpOIvhw8pPz7k4Bo/ektnMD+JC5mbq0bBnYUDPmncsaOw6CnS8osegEpMwMeouf3XdiwIdC
+	kNkHX8StwB762Y3VXgzBYyf+UF6vQNlWSHXg1N2OTjIfWXsjZ6Aw01z9DWbFD7gw=
+X-Google-Smtp-Source: AGHT+IF7GIX6tFBmXMXWlNufFCJ9b8Nzm8c5k/dWc/ynk1aExv7w6ih9jVmipAivHuc3sqA81rAOew==
+X-Received: by 2002:a17:903:18e:b0:240:22af:91c1 with SMTP id d9443c01a7336-241ff0c2267mr312105ad.22.1753914367224;
+        Wed, 30 Jul 2025 15:26:07 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2e51:8:9606:2f93:add0:9255])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8975ad9sm1226855ad.98.2025.07.30.15.26.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Jul 2025 15:26:06 -0700 (PDT)
+Date: Wed, 30 Jul 2025 15:26:01 -0700
+From: Isaac Manjarres <isaacmanjarres@google.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: gregkh@linuxfoundation.org, aliceryhl@google.com, surenb@google.com,
+	stable@vger.kernel.org, kernel-team@android.com
+Subject: Re: [PATCH 5.10.y 0/4] Backport series: "permit write-sealed memfd
+ read-only shared mappings"
+Message-ID: <aIqb-bDjsXppmyPN@google.com>
+References: <20250730015406.32569-1-isaacmanjarres@google.com>
+ <c99af418-946d-40c4-9594-36943d8c72bf@lucifer.local>
+ <aIpVKpqXmfuITxf-@google.com>
+ <d8bfc16a-466d-43b9-9021-91f6b65a3a81@lucifer.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/76] 6.6.101-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d8bfc16a-466d-43b9-9021-91f6b65a3a81@lucifer.local>
 
-On 7/30/25 03:34, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.101 release.
-> There are 76 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jul 30, 2025 at 08:34:02PM +0100, Lorenzo Stoakes wrote:
+> > >
+> > > Having said that, I'm not against you doing this, just wondering about
+> > > that.
+> > >
+> > > Also - what kind of testing have you do on these series?
+> > I did the following tests:
+> >
+> > 1. I have a unit test that tries to map write-sealed memfds as
+> > read-only and shared. I verified that this works for each kernel version
+> > that this series is being applied to.
+> >
+> > 2. Android devices do use memfds as well, so I did try these patches out
+> > on a device running each kernel version, and tried boot testing, using
+> > several apps/games. I was looking for functional failures in these
+> > scenarios but didn't encounter any.
+> >
+> > Do you have any other recommendations of what I should test?
 > 
-> Responses should be made by Fri, 01 Aug 2025 09:32:07 +0000.
-> Anything received after that time might be too late.
+> No, that sounds good to me! Thank you for taking the time to implement and
+> carefully check this :)
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.101-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+> In this case I have no objections to these backports!
 > 
-> thanks,
-> 
-> greg k-h
-> 
+> Cheers, Lorenzo
 
-Compiled and booted on my test system. No dmesg regressions.
+Thanks Lorenzo! Just to confirm, is there anything required from my
+end for these patches or they'll get reviewed and merged over time?
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+Thanks,
+Isaac
 
