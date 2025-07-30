@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-165332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C5AB15CBA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DEBB15C45
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3368563C10
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C53E0541DCF
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A2C295523;
-	Wed, 30 Jul 2025 09:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FCD277013;
+	Wed, 30 Jul 2025 09:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kcMS0WC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/zpWYB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA66F2957AC;
-	Wed, 30 Jul 2025 09:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917EC273D95;
+	Wed, 30 Jul 2025 09:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868704; cv=none; b=MQaO6EENtjL1sQ7j3EMwRN3ag5z78v4as8lZ11hPtH1Bed4L74jnQfF9XAzcnVtK8Z31J0XnGV0nbhd4+s9FGe6BvK5FZSKtJW4wQAFTD0pT+UJD6kowf8vNhYePLwdbRyzIy5QuZiR6net8ba76FAISgmYP/7D4e1zBIMWTUYQ=
+	t=1753868441; cv=none; b=B1DL07V4lGG4lH3MaWTNGt+Z7W/N430okgZu9BKiY1FLfXauCr8LDR8EJMnPp7SgdFhsXpo5vHcwRxxFtGAOj5YioX2PWzW9iJ8BJRN7rJXCXH18OuyQXMLvDcw/QzyKv9Vc4hQTaNBXBHghogUFfUR+xM4km/+BZt86n9qxRsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868704; c=relaxed/simple;
-	bh=OIlD6iW3pCdiXIexBQZmXN2bPW/ZilHaUzfKnceyVdA=;
+	s=arc-20240116; t=1753868441; c=relaxed/simple;
+	bh=Md1a5UHZF1Byj0NBoFFqhn5IOYuzyUYGRzeDNykOwPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrwOib3Pxep4YZcI1K/GF0W+wAtllKdAHkeUIEPkHz4g7HEAGr987USaHFjQxr17M5y0/7/QxyFuIZOmJyOqo22JW0xlyf2uc+P9uhzqA4+y+V9cHtsaIKypTx6RZ9n0IgAdousJHmtQsu5MJMFzeErDnQqnDD+KN0TWHvMS118=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kcMS0WC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB36C4CEF5;
-	Wed, 30 Jul 2025 09:45:03 +0000 (UTC)
+	 MIME-Version; b=uZ6wf6jnyjU9vzX+qaVkx24/BlsLDnxfi8zvDSB4+kLUXE7/TQI4P27dlN0Utc3j37xoMh0tPDQFadytIgfjh32t+c6cyfRHgjp+yt7rfHL/Mi4C44Fm4IcYWgjxtNuIiBbX29+c2gcfzTLWqXRfvlIxmg2NAPZkl/7jU9l/ovg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/zpWYB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B88C4CEE7;
+	Wed, 30 Jul 2025 09:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868704;
-	bh=OIlD6iW3pCdiXIexBQZmXN2bPW/ZilHaUzfKnceyVdA=;
+	s=korg; t=1753868441;
+	bh=Md1a5UHZF1Byj0NBoFFqhn5IOYuzyUYGRzeDNykOwPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kcMS0WCZRqwoU04EfaXJfd1WGyWWPam8cO8lvhbNbo9JLw+hPebokIp91664O963
-	 /pRya+8JxNLMfSydEefdW7ooR6e516iPuaYlRisOkdTKIRpZsjaJIIe+yqI+svY63z
-	 s1p2+d2Hen2XP7UgGDGRz1vyh+IkCsGKhsKY0+UU=
+	b=c/zpWYB8i/f/TYBAP+NNKx5fvFuszpbatZy3EhXVk3f1DMocdI6QNf9RUlAMSCjYF
+	 Nyk95pg5iloY2plowGWE9q+IccQF4xH/TO3fCnSi1KCwD9YkiG1qxzNMs9gQJJ/wB3
+	 cFvDOCT5NL4i44K1YmuXJdrb0WKxTMbHlPlPQUfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Kowalski <jacek@jacekk.info>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Simon Horman <horms@kernel.org>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.12 056/117] e1000e: disregard NVM checksum on tgp when valid checksum bit is not set
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 32/76] bus: fsl-mc: Fix potential double device reference in fsl_mc_get_endpoint()
 Date: Wed, 30 Jul 2025 11:35:25 +0200
-Message-ID: <20250730093235.737091738@linuxfoundation.org>
+Message-ID: <20250730093228.087797226@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Kowalski <jacek@jacekk.info>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 536fd741c7ac907d63166cdae1081b1febfab613 upstream.
+commit bddbe13d36a02d5097b99cf02354d5752ad1ac60 upstream.
 
-As described by Vitaly Lifshits:
+The fsl_mc_get_endpoint() function may call fsl_mc_device_lookup()
+twice, which would increment the device's reference count twice if
+both lookups find a device. This could lead to a reference count leak.
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set. Since Tiger Lake devices were the first to have
-> this lock, some systems in the field did not meet this requirement.
-> Therefore, for these transitional devices we skip checksum update and
-> verification, if the valid bit is not set.
+Found by code review.
 
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
 Cc: stable@vger.kernel.org
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 1ac210d128ef ("bus: fsl-mc: add the fsl_mc_get_endpoint function")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 8567494cebe5 ("bus: fsl-mc: rescan devices if endpoint not found")
+Link: https://patch.msgid.link/20250717022309.3339976-1-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bus/fsl-mc/fsl-mc-bus.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -4274,6 +4274,8 @@ static s32 e1000_validate_nvm_checksum_i
- 			ret_val = e1000e_update_nvm_checksum(hw);
- 			if (ret_val)
- 				return ret_val;
-+		} else if (hw->mac.type == e1000_pch_tgp) {
-+			return 0;
- 		}
- 	}
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -942,6 +942,7 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	struct fsl_mc_obj_desc endpoint_desc = {{ 0 }};
+ 	struct dprc_endpoint endpoint1 = {{ 0 }};
+ 	struct dprc_endpoint endpoint2 = {{ 0 }};
++	struct fsl_mc_bus *mc_bus;
+ 	int state, err;
  
+ 	mc_bus_dev = to_fsl_mc_device(mc_dev->dev.parent);
+@@ -965,6 +966,8 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	strcpy(endpoint_desc.type, endpoint2.type);
+ 	endpoint_desc.id = endpoint2.id;
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
++	if (endpoint)
++		return endpoint;
+ 
+ 	/*
+ 	 * We know that the device has an endpoint because we verified by
+@@ -972,17 +975,13 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	 * yet discovered by the fsl-mc bus, thus the lookup returned NULL.
+ 	 * Force a rescan of the devices in this container and retry the lookup.
+ 	 */
+-	if (!endpoint) {
+-		struct fsl_mc_bus *mc_bus = to_fsl_mc_bus(mc_bus_dev);
+-
+-		if (mutex_trylock(&mc_bus->scan_mutex)) {
+-			err = dprc_scan_objects(mc_bus_dev, true);
+-			mutex_unlock(&mc_bus->scan_mutex);
+-		}
+-
+-		if (err < 0)
+-			return ERR_PTR(err);
++	mc_bus = to_fsl_mc_bus(mc_bus_dev);
++	if (mutex_trylock(&mc_bus->scan_mutex)) {
++		err = dprc_scan_objects(mc_bus_dev, true);
++		mutex_unlock(&mc_bus->scan_mutex);
+ 	}
++	if (err < 0)
++		return ERR_PTR(err);
+ 
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
+ 	/*
 
 
 
