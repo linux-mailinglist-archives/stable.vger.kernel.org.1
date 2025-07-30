@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-165310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1177BB15CA2
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:45:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E7AB15C6D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D97A018A1BC4
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43DD23AB878
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E41295DBC;
-	Wed, 30 Jul 2025 09:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CAE28727F;
+	Wed, 30 Jul 2025 09:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HvPe22M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZecNJ1v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BBA23D2A2;
-	Wed, 30 Jul 2025 09:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2338D277CA8;
+	Wed, 30 Jul 2025 09:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868625; cv=none; b=U2COhUs0NBagDCmfs5boiBU1U27PgQhUCWIUA4lDqXHfZhUt9Xg6TGrKeTemSndOmNjKx2a+sdgdRIIaWSqmE2IwmiPwPmTGRCxyDt2FxtWevmEyNqt35h8TS2Ng/ZiQLh5WAHOXWKLPV63QnBDMuPEOPu0wxZ5kQlZIfMF566A=
+	t=1753868522; cv=none; b=GipZmQF6udwWJR54Ty5dLEVG9g+bWRZtd/DlbFGdwcIXJxRkJ/JFyIRAHYJZ/QWvNTf7yYJstgEsx7D5+WG1+6cEbzh//8nQpatQc29Ww1fZ1wWxPvd4j35+F9DkP0zDQi6spCS9Jnr+Ofg1dkHSvT6aJvv1tGCtlZdy5HtLD1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868625; c=relaxed/simple;
-	bh=/0LL4uP5B2tsgBuYpWRsXCQ6BayzYPypz4I5LpV+gEQ=;
+	s=arc-20240116; t=1753868522; c=relaxed/simple;
+	bh=jUak4c/8qy0OK1IVw9BjPrQbuOmckLM9SAsBT5izXgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5Wy3PJiKAM2LQ41Xv5vP2jpywW0mm9h35igxdVpd8H9mvMXIhyuwRJOlQypv99xowWuRkBSKCtEsZSnNe8Kn2xLImS0E/uC91F9K3sfQ8vmCWnrovglxDW9Y5YT5OWTk0ijC4Wan6aEJYhPHafuLfBa+MKCmq1AnDhj+TouiZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HvPe22M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AE8C4CEF5;
-	Wed, 30 Jul 2025 09:43:44 +0000 (UTC)
+	 MIME-Version; b=X9XTGwDjXv3uwezP5kYVkPIZPmRbKEVWJySaTHEZHHdfbpi4Ou02c1UUzBnWyXunytZ6xiMAxACBDnoJQel4dLEDR+5A1QXBww9hsPGELNJ1KGyQ0xpnJ9q5V7X4TKLYKN5xQnwDHqoubbBQfsQKGMkyTE9rTOIn3ghJyq5RuUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZecNJ1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF79C4CEE7;
+	Wed, 30 Jul 2025 09:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868625;
-	bh=/0LL4uP5B2tsgBuYpWRsXCQ6BayzYPypz4I5LpV+gEQ=;
+	s=korg; t=1753868521;
+	bh=jUak4c/8qy0OK1IVw9BjPrQbuOmckLM9SAsBT5izXgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1HvPe22MQHfB5UkGQTvwRM9Ey28ySUauOpCb6qXQBltgIDo4GRPKC8qTynKKhppuu
-	 tlYBkkHwoWni84ZS3/KZ47Urqh5jXgH/hSs3+eP7GkvvRJ0MYjXlRlJTPodEWAsXJv
-	 h7PNQ9foo/nCisefyN9e043uwJTaGNibAaFa1Ylc=
+	b=bZecNJ1vhnAc5lpqiZrDX3Wn6XmWJsvQvy+o9ffvAqH6BFuafGm5LD0jmoLHkdCOW
+	 Lygz2LTdNC6YmW+r3I/Tgf/FZFxslvlSxlZt1gGga1I6aXA+R6gMPO5tC7S/9/AB/N
+	 Bz+SqaVXzshUByTK/Z+9tKbMqMDkg+baW3TmMrNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/117] iio: adc: ad7949: use spi_is_bpw_supported()
-Date: Wed, 30 Jul 2025 11:34:38 +0200
-Message-ID: <20250730093233.954076541@linuxfoundation.org>
+Subject: [PATCH 6.12 010/117] regmap: fix potential memory leak of regmap_bus
+Date: Wed, 30 Jul 2025 11:34:39 +0200
+Message-ID: <20250730093233.991160026@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
 References: <20250730093233.592541778@linuxfoundation.org>
@@ -67,53 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit 7b86482632788acd48d7b9ee1867f5ad3a32ccbb ]
+[ Upstream commit c871c199accb39d0f4cb941ad0dccabfc21e9214 ]
 
-Use spi_is_bpw_supported() instead of directly accessing spi->controller
-->bits_per_word_mask. bits_per_word_mask may be 0, which implies that
-8-bits-per-word is supported. spi_is_bpw_supported() takes this into
-account while spi_ctrl_mask == SPI_BPW_MASK(8) does not.
+When __regmap_init() is called from __regmap_init_i2c() and
+__regmap_init_spi() (and their devm versions), the bus argument
+obtained from regmap_get_i2c_bus() and regmap_get_spi_bus(), may be
+allocated using kmemdup() to support quirks. In those cases, the
+bus->free_on_exit field is set to true.
 
-Fixes: 0b2a740b424e ("iio: adc: ad7949: enable use with non 14/16-bit controllers")
-Closes: https://lore.kernel.org/linux-spi/c8b8a963-6cef-4c9b-bfef-dab2b7bd0b0f@sirena.org.uk/
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20250611-iio-adc-ad7949-use-spi_is_bpw_supported-v1-1-c4e15bfd326e@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+However, inside __regmap_init(), buf is not freed on any error path.
+This could lead to a memory leak of regmap_bus when __regmap_init()
+fails. Fix that by freeing bus on error path when free_on_exit is set.
+
+Fixes: ea030ca68819 ("regmap-i2c: Set regmap max raw r/w from quirks")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20250626172823.18725-1-abdun.nihaal@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7949.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/base/regmap/regmap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index edd0c3a35ab73..202561cad4012 100644
---- a/drivers/iio/adc/ad7949.c
-+++ b/drivers/iio/adc/ad7949.c
-@@ -308,7 +308,6 @@ static void ad7949_disable_reg(void *reg)
- 
- static int ad7949_spi_probe(struct spi_device *spi)
- {
--	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
- 	struct device *dev = &spi->dev;
- 	const struct ad7949_adc_spec *spec;
- 	struct ad7949_adc_chip *ad7949_adc;
-@@ -337,11 +336,11 @@ static int ad7949_spi_probe(struct spi_device *spi)
- 	ad7949_adc->resolution = spec->resolution;
- 
- 	/* Set SPI bits per word */
--	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
-+	if (spi_is_bpw_supported(spi, ad7949_adc->resolution)) {
- 		spi->bits_per_word = ad7949_adc->resolution;
--	} else if (spi_ctrl_mask == SPI_BPW_MASK(16)) {
-+	} else if (spi_is_bpw_supported(spi, 16)) {
- 		spi->bits_per_word = 16;
--	} else if (spi_ctrl_mask == SPI_BPW_MASK(8)) {
-+	} else if (spi_is_bpw_supported(spi, 8)) {
- 		spi->bits_per_word = 8;
- 	} else {
- 		dev_err(dev, "unable to find common BPW with spi controller\n");
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 5962ea1230a17..de4e2f3db942a 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1174,6 +1174,8 @@ struct regmap *__regmap_init(struct device *dev,
+ err_map:
+ 	kfree(map);
+ err:
++	if (bus && bus->free_on_exit)
++		kfree(bus);
+ 	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(__regmap_init);
 -- 
 2.39.5
 
