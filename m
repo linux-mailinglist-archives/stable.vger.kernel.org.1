@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E68BB15DA7
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 760A8B15CF8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8B1B564F9E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:56:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1044171CD7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA16926E71A;
-	Wed, 30 Jul 2025 09:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DD84A32;
+	Wed, 30 Jul 2025 09:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zd2yh3R3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vl+JyO5w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967D5148FE6;
-	Wed, 30 Jul 2025 09:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD12273D95;
+	Wed, 30 Jul 2025 09:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869360; cv=none; b=UdeKT5L36iafnEWWSrS7VmHGu2SwsATFZAqwtScpYxNc6sIe1kueXGywPVmpk/I5koCU5qQmZQ61qXtWp2OJ1CNORXUHNhYfMK+qRATDEl7SfYHJn1z2cGyiIkB75TjMe7vf54guQsQZrwqUyVFTd+BMSak5djmCWzOqNrwz65w=
+	t=1753868925; cv=none; b=qSbGzcIF2qeK3+c9lmhtTZYFlvqH9C0fHpQV5rQDBewTAaWJ9HgeT0wHsDLzVvYhjfvWVZyrwss+QjqePC9S98vA9NcThl9S/0Wj5QF2bp6+X835Fm/uW9F4S8jkKbv2BXtrabtW0CJfuOpnkxGpmLHYybC9MOuMcE6kVrJw9Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869360; c=relaxed/simple;
-	bh=a6kbNv2i40SXa2h4jf4XQgR9rDQOaNeAs6v56eDENts=;
+	s=arc-20240116; t=1753868925; c=relaxed/simple;
+	bh=kXIOlWIv4wqDFAXuB6qN6ulepzgz0GoL+mGf5X/6l4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6i/rF3BrQwPPnRFmvUi5w2pL/OM2t2vDK54ShaMw0citmjBmlhLMLXCSsJ1OMLP18m1HK3XvEjz8K/Q+wGtQg6+ERr5DaBjSOa9bhkhj5cX7GNnMX+SZfNFV32CPn41IO6SMv/cZF5J4n3dtyDq/ZJpuGndzAlQnd00oG3JXmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zd2yh3R3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01CEC4CEE7;
-	Wed, 30 Jul 2025 09:55:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F9ol3WzpCpIIxGgJg9+O2g/AbAPWO8k+mig1LcXAbcsxlGMNUafryCpPsAfbYugtIdn5ebVoj9/qCh4cF8eeWVJWhz9ldPFaNo6KuQQVkLxX+lqve3ST5JeFVNEehLhPxz3HnV2y+nVqkmnMu/nI1u182rmAap6ydmMEMHt0PuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl+JyO5w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BC3C4CEF5;
+	Wed, 30 Jul 2025 09:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869360;
-	bh=a6kbNv2i40SXa2h4jf4XQgR9rDQOaNeAs6v56eDENts=;
+	s=korg; t=1753868925;
+	bh=kXIOlWIv4wqDFAXuB6qN6ulepzgz0GoL+mGf5X/6l4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zd2yh3R39NYaeOB1sJnyBLcC9jIVRfvqEEunUd0FgRgGoCZFIvpzfkdWQFP373egX
-	 4krGwE+1nHRCp+2TlOovAglTLig1oiogURh7HJcrdRWLrR4iRcyaBqlLYfJ7npQFMK
-	 wX+n5VbOvfNyEGyk3avAZRdyTyiXxLxV/KSDtM1U=
+	b=vl+JyO5wb7YoQkBzBl5oU4O+FVvUxwgl2p4GY1a3LwPZCJFq+EABjdzw7LDiNGjCM
+	 1jU46Z/5yn5grYmxHQj3oqidotDzt8dQs8zNArpQRPv8YlQc5w5seMfM+YBgWtumS8
+	 4Yq+71djZvZ0wvPsXSWArwgTdISK/TZG+U0D17vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 72/92] nilfs2: reject invalid file types when reading inodes
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 111/117] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
 Date: Wed, 30 Jul 2025 11:36:20 +0200
-Message-ID: <20250730093233.538967882@linuxfoundation.org>
+Message-ID: <20250730093238.130013268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 4aead50caf67e01020c8be1945c3201e8a972a27 upstream.
+commit 9e0c433d0c05fde284025264b89eaa4ad59f0a3e upstream.
 
-To prevent inodes with invalid file types from tripping through the vfs
-and causing malfunctions or assertion failures, add a missing sanity check
-when reading an inode from a block device.  If the file type is not valid,
-treat it as a filesystem error.
+On g4x we currently use the 96MHz non-SSC refclk, which can't actually
+generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
+Gbps which seems to be close enough to actually work, but link training
+is currently failing due to miscalculating the DP_LINK_BW value (we
+calcualte it directly from port_clock which reflects the actual PLL
+outpout frequency).
 
-Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
-Fixes: 05fe58fdc10d ("nilfs2: inode operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Ideas how to fix this:
+- nudge port_clock back up to 270000 during PLL computation/readout
+- track port_clock and the nominal link rate separately so they might
+  differ a bit
+- switch to the 100MHz refclk, but that one should be SSC so perhaps
+  not something we want
+
+While we ponder about a better solution apply some band aid to the
+immediate issue of miscalculated DP_LINK_BW value. With this
+I can again use 2.7 Gbps link rate on g4x.
+
+Cc: stable@vger.kernel.org
+Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250710201718.25310-2-ville.syrjala@linux.intel.com
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+(cherry picked from commit a8b874694db5cae7baaf522756f87acd956e6e66)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[ changed display->platform.g4x to IS_G4X(i915) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -472,11 +472,18 @@ static int __nilfs_read_inode(struct sup
- 		inode->i_op = &nilfs_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &nilfs_aops;
--	} else {
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		inode->i_op = &nilfs_special_inode_operations;
- 		init_special_inode(
- 			inode, inode->i_mode,
- 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
-+	} else {
-+		nilfs_error(sb,
-+			    "invalid file type bits in mode 0%o for inode %lu",
-+			    inode->i_mode, ino);
-+		err = -EIO;
-+		goto failed_unmap;
- 	}
- 	nilfs_ifile_unmap_inode(raw_inode);
- 	brelse(bh);
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -1506,6 +1506,12 @@ int intel_dp_rate_select(struct intel_dp
+ void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
+ 			   u8 *link_bw, u8 *rate_select)
+ {
++	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
++
++	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
++	if (IS_G4X(i915) && port_clock == 268800)
++		port_clock = 270000;
++
+ 	/* eDP 1.4 rate select method. */
+ 	if (intel_dp->use_rate_select) {
+ 		*link_bw = 0;
 
 
 
