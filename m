@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-165280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88DEB15C5B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787E6B15CF5
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45C6918853D7
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C882F5A571E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF0336124;
-	Wed, 30 Jul 2025 09:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8ED36124;
+	Wed, 30 Jul 2025 09:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U74bloUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU4Wg697"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C55157E6B;
-	Wed, 30 Jul 2025 09:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F5B255F5C;
+	Wed, 30 Jul 2025 09:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868498; cv=none; b=Ai4TRbzFvbzKCuZwAW+NoX8FJLKQqHDtSxyoIEK32bBqjvww0CoH7s00oI3qRSSAfVzZniOdFn5j9I0dnkexh+4XvsUCBqitw46uW+XOy61Gzkxe/Z2Q/XaiR5MZRG6d+zCzNg7KJaoQ/gA0sSbHaqolDZZu8MC+SRNYOG080RA=
+	t=1753868840; cv=none; b=p9UsRJvD2CQVl9cec/vLsa6Nn2fZkw3BWGb0/lfcRLSmX8iyt7Or/fPl1MtzuhwiNjWcKc93InDgUfiK9sE2m1Cv9hQV2ViEebPlPFlQXDNobwqP6it3pApfLXD7Z407T9shac1ZV3vHzI10nhogGHSxh4r/iVcFY5H+clFZWOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868498; c=relaxed/simple;
-	bh=Drjeizqsm4a8hfvFqaDooaHTFQTr9gnsnFIAuft5JAM=;
+	s=arc-20240116; t=1753868840; c=relaxed/simple;
+	bh=QrOFzoNlhFRFRileKoK8rJ4TvvLrsIFEbN8mdeBk8UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gELpFJo6uWjF4vZ871PWaHBuiJmoTFM6PJjSzOzsGcprXjE+R5I4uyJ/zlB/8H0JB5oAs0X+EiYviDaFSWVQQlsVVJkqFynt30x6iglb+Oyv+ESZ0tM3xFGuYHDb1YYck5pqIyoJyuq4cfuis6wpw98Xvu83xOZgMgpoTbc86sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U74bloUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC9AC4CEE7;
-	Wed, 30 Jul 2025 09:41:37 +0000 (UTC)
+	 MIME-Version; b=i68gamEfh6XH2Op9GNsP5266VZ/Vp9BrzCfnE7aNeXFSZ6GXPhLo6Cba1X7LdT7WktiKCndSb6W3/CDAQWHL25JrI7bPsUhHzxMRpN2vdBm4KnA0syUKGFRikZ1eBYLIwe+O8W/kEJRQ4s/6M3PKtYMpz9aM3Urj6hFOdl0ieGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU4Wg697; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01132C4CEF5;
+	Wed, 30 Jul 2025 09:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868498;
-	bh=Drjeizqsm4a8hfvFqaDooaHTFQTr9gnsnFIAuft5JAM=;
+	s=korg; t=1753868840;
+	bh=QrOFzoNlhFRFRileKoK8rJ4TvvLrsIFEbN8mdeBk8UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U74bloUAQ0Gc0PQls0po5VS4gkD/gwu979rj2LZ2KRnJoGiV8mn3ZubngQZPXWrUK
-	 f5iwXWOGthK4steRmCpDa0Lah89u1eJPV8NdzVsZb1jhutoIj8TTPdFKebJR7W5dBO
-	 547s6V7Rj6F7HvhDHNguBDU4b9dq0R470JmbZU2A=
+	b=EU4Wg697OjdxTN1BYdudVF+kpW1zreepvA80DbEo9BX3F0pFe3QMU9oBwev4WFduH
+	 fDKV4h+NbWItER075ATmbYiZrkpkD7bdgklq/yqoLgWh0itxvStE9Z84TXSa8ttPcs
+	 82WIizjENyecSuviDk9U4nQdqgFXg5IusEmLTf6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vince Weaver <vincent.weaver@maine.edu>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 66/76] perf/x86/intel: Fix crash in icl_update_topdown_event()
+Subject: [PATCH 6.12 090/117] ext4: factor out ext4_do_fallocate()
 Date: Wed, 30 Jul 2025 11:35:59 +0200
-Message-ID: <20250730093229.429384297@linuxfoundation.org>
+Message-ID: <20250730093237.290345462@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +64,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit b0823d5fbacb1c551d793cbfe7af24e0d1fa45ed ]
+[ Upstream commit fd2f764826df5489b849a8937b5a093aae5b1816 ]
 
-The perf_fuzzer found a hard-lockup crash on a RaptorLake machine:
+Now the real job of normal fallocate are open coded in ext4_fallocate(),
+factor out a new helper ext4_do_fallocate() to do the real job, like
+others functions (e.g. ext4_zero_range()) in ext4_fallocate() do, this
+can make the code more clear, no functional changes.
 
-  Oops: general protection fault, maybe for address 0xffff89aeceab400: 0000
-  CPU: 23 UID: 0 PID: 0 Comm: swapper/23
-  Tainted: [W]=WARN
-  Hardware name: Dell Inc. Precision 9660/0VJ762
-  RIP: 0010:native_read_pmc+0x7/0x40
-  Code: cc e8 8d a9 01 00 48 89 03 5b cd cc cc cc cc 0f 1f ...
-  RSP: 000:fffb03100273de8 EFLAGS: 00010046
-  ....
-  Call Trace:
-    <TASK>
-    icl_update_topdown_event+0x165/0x190
-    ? ktime_get+0x38/0xd0
-    intel_pmu_read_event+0xf9/0x210
-    __perf_event_read+0xf9/0x210
-
-CPUs 16-23 are E-core CPUs that don't support the perf metrics feature.
-The icl_update_topdown_event() should not be invoked on these CPUs.
-
-It's a regression of commit:
-
-  f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
-
-The bug introduced by that commit is that the is_topdown_event() function
-is mistakenly used to replace the is_topdown_count() call to check if the
-topdown functions for the perf metrics feature should be invoked.
-
-Fix it.
-
-Fixes: f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
-Closes: https://lore.kernel.org/lkml/352f0709-f026-cd45-e60c-60dfd97f73f3@maine.edu/
-Reported-by: Vince Weaver <vincent.weaver@maine.edu>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Vince Weaver <vincent.weaver@maine.edu>
-Cc: stable@vger.kernel.org # v6.15+
-Link: https://lore.kernel.org/r/20250612143818.2889040-1-kan.liang@linux.intel.com
-[ omitted PEBS check ]
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20241220011637.1157197-9-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 29ec9bed2395 ("ext4: fix incorrect punch max_end")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/extents.c |  125 +++++++++++++++++++++++++-----------------------------
+ 1 file changed, 60 insertions(+), 65 deletions(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2734,7 +2734,7 @@ static void intel_pmu_read_event(struct
- 		if (pmu_enabled)
- 			intel_pmu_disable_all();
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4690,6 +4690,58 @@ out:
+ 	return ret;
+ }
  
--		if (is_topdown_event(event))
-+		if (is_topdown_count(event))
- 			static_call(intel_pmu_update_topdown_event)(event);
- 		else
- 			intel_pmu_drain_pebs_buffer();
++static long ext4_do_fallocate(struct file *file, loff_t offset,
++			      loff_t len, int mode)
++{
++	struct inode *inode = file_inode(file);
++	loff_t end = offset + len;
++	loff_t new_size = 0;
++	ext4_lblk_t start_lblk, len_lblk;
++	int ret;
++
++	trace_ext4_fallocate_enter(inode, offset, len, mode);
++
++	start_lblk = offset >> inode->i_blkbits;
++	len_lblk = EXT4_MAX_BLOCKS(len, offset, inode->i_blkbits);
++
++	inode_lock(inode);
++
++	/* We only support preallocation for extent-based files only. */
++	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	if (!(mode & FALLOC_FL_KEEP_SIZE) &&
++	    (end > inode->i_size || end > EXT4_I(inode)->i_disksize)) {
++		new_size = end;
++		ret = inode_newsize_ok(inode, new_size);
++		if (ret)
++			goto out;
++	}
++
++	/* Wait all existing dio workers, newcomers will block on i_rwsem */
++	inode_dio_wait(inode);
++
++	ret = file_modified(file);
++	if (ret)
++		goto out;
++
++	ret = ext4_alloc_file_blocks(file, start_lblk, len_lblk, new_size,
++				     EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT);
++	if (ret)
++		goto out;
++
++	if (file->f_flags & O_SYNC && EXT4_SB(inode->i_sb)->s_journal) {
++		ret = ext4_fc_commit(EXT4_SB(inode->i_sb)->s_journal,
++					EXT4_I(inode)->i_sync_tid);
++	}
++out:
++	inode_unlock(inode);
++	trace_ext4_fallocate_exit(inode, offset, len_lblk, ret);
++	return ret;
++}
++
+ /*
+  * preallocate space for a file. This implements ext4's fallocate file
+  * operation, which gets called from sys_fallocate system call.
+@@ -4700,12 +4752,7 @@ out:
+ long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+ {
+ 	struct inode *inode = file_inode(file);
+-	loff_t new_size = 0;
+-	unsigned int max_blocks;
+-	int ret = 0;
+-	int flags;
+-	ext4_lblk_t lblk;
+-	unsigned int blkbits = inode->i_blkbits;
++	int ret;
+ 
+ 	/*
+ 	 * Encrypted inodes can't handle collapse range or insert
+@@ -4727,71 +4774,19 @@ long ext4_fallocate(struct file *file, i
+ 	ret = ext4_convert_inline_data(inode);
+ 	inode_unlock(inode);
+ 	if (ret)
+-		goto exit;
++		return ret;
+ 
+-	if (mode & FALLOC_FL_PUNCH_HOLE) {
++	if (mode & FALLOC_FL_PUNCH_HOLE)
+ 		ret = ext4_punch_hole(file, offset, len);
+-		goto exit;
+-	}
+-
+-	if (mode & FALLOC_FL_COLLAPSE_RANGE) {
++	else if (mode & FALLOC_FL_COLLAPSE_RANGE)
+ 		ret = ext4_collapse_range(file, offset, len);
+-		goto exit;
+-	}
+-
+-	if (mode & FALLOC_FL_INSERT_RANGE) {
++	else if (mode & FALLOC_FL_INSERT_RANGE)
+ 		ret = ext4_insert_range(file, offset, len);
+-		goto exit;
+-	}
+-
+-	if (mode & FALLOC_FL_ZERO_RANGE) {
++	else if (mode & FALLOC_FL_ZERO_RANGE)
+ 		ret = ext4_zero_range(file, offset, len, mode);
+-		goto exit;
+-	}
+-	trace_ext4_fallocate_enter(inode, offset, len, mode);
+-	lblk = offset >> blkbits;
+-
+-	max_blocks = EXT4_MAX_BLOCKS(len, offset, blkbits);
+-	flags = EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT;
+-
+-	inode_lock(inode);
+-
+-	/*
+-	 * We only support preallocation for extent-based files only
+-	 */
+-	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
+-		ret = -EOPNOTSUPP;
+-		goto out;
+-	}
+-
+-	if (!(mode & FALLOC_FL_KEEP_SIZE) &&
+-	    (offset + len > inode->i_size ||
+-	     offset + len > EXT4_I(inode)->i_disksize)) {
+-		new_size = offset + len;
+-		ret = inode_newsize_ok(inode, new_size);
+-		if (ret)
+-			goto out;
+-	}
+-
+-	/* Wait all existing dio workers, newcomers will block on i_rwsem */
+-	inode_dio_wait(inode);
+-
+-	ret = file_modified(file);
+-	if (ret)
+-		goto out;
++	else
++		ret = ext4_do_fallocate(file, offset, len, mode);
+ 
+-	ret = ext4_alloc_file_blocks(file, lblk, max_blocks, new_size, flags);
+-	if (ret)
+-		goto out;
+-
+-	if (file->f_flags & O_SYNC && EXT4_SB(inode->i_sb)->s_journal) {
+-		ret = ext4_fc_commit(EXT4_SB(inode->i_sb)->s_journal,
+-					EXT4_I(inode)->i_sync_tid);
+-	}
+-out:
+-	inode_unlock(inode);
+-	trace_ext4_fallocate_exit(inode, offset, max_blocks, ret);
+-exit:
+ 	return ret;
+ }
+ 
 
 
 
