@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-165494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2A1B15DA8
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:57:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2AFB15D83
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 535C6565FB6
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:56:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07B375A5A84
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76740277CA8;
-	Wed, 30 Jul 2025 09:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E0C276058;
+	Wed, 30 Jul 2025 09:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJ8e4Yw5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZbAbc5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A64230981;
-	Wed, 30 Jul 2025 09:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FC020E6;
+	Wed, 30 Jul 2025 09:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869369; cv=none; b=PiCCLRtvXzZ4e1r12R/eYLghUvVqAjdB3VygznQGA2+h/CFUmqFnM975iBsmrIz6HovilL+9r11s8EDdD4TiCuOA9pLRRTdiL3U48NJ9Zh6BojNOaxyrnXpmIOsHPwIIMkPTG8Y/fvXssrGbYCE4qqALvGXGrlToEeR3loiz68U=
+	t=1753869247; cv=none; b=OfY0Leydh1nDdV/q1msExUo7ieNNNQWrSrHnTqAObRKbAsEgL89CLyrT9Z1aYdrTJCQcDsOS3mNmx1bXKZ1Y5B319aO3Mi94fAOoPyVWfc34FI8SoG5qalcjBv9XQ8g8KNOHMfMbfWrHqeZynFLzNh06C8y6S6ZjdUCm39U2uiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869369; c=relaxed/simple;
-	bh=4LhtGdoiqZ1EijuZGmVclIg+kNHH9IbcQqG4M/cUEjg=;
+	s=arc-20240116; t=1753869247; c=relaxed/simple;
+	bh=Kk0BePpvO5tWZrBaghTq6zHgRwc/+vwJl52pO/tMpzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XS4bP7nn/gtGUSudd5WWrmRYPuveBvp6f9LsNvtRWPTv3hrz3bXt6eAqLe9xs3tR3rK0/eZkm4ly2qAHP/Rvlc5IWQmrYNb1PeckrZChqvXiwU7e9bQ9PaxxLEKiyjOlEbmy/x9IPvV1T1xVIK5XG+LavlIu3k2tzyn7+MRYdkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJ8e4Yw5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC85CC4CEF6;
-	Wed, 30 Jul 2025 09:56:08 +0000 (UTC)
+	 MIME-Version; b=pk5b0lor37f/NRVFi8rINrfTC1TIpca5G0Ij2Cfef56v6lCsiHosY1bxe3bz7Mgph6xwgEpE8W18BbxqqY42bG4fAfIBzwlW1nicgpglmpDNlp9Gwpss2sgxjxp2j7zpfM3Eou2usNpd93KdknphTxlrYHwNU5Axnjhe2+mKlU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZbAbc5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFBEC4CEF6;
+	Wed, 30 Jul 2025 09:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869369;
-	bh=4LhtGdoiqZ1EijuZGmVclIg+kNHH9IbcQqG4M/cUEjg=;
+	s=korg; t=1753869247;
+	bh=Kk0BePpvO5tWZrBaghTq6zHgRwc/+vwJl52pO/tMpzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJ8e4Yw5FMefhle42uuI5EUBiBbF8rfktTqDgbzsUoL5X1HBh9ha3EI3hXuynaLJs
-	 tp7lnFF29dAAu2HJmYFR+gM9jdAxm5f+lL7hAVNtaBe8Fe+GIqb/DfCs78An3L0j2l
-	 bMlIPNdNRjKZ7/2aWXYYTuE6On4CFC9pCtWqO3tc=
+	b=hZbAbc5S4iQdsV+3qYKg/5RULC40GKxMeI29d1qkXOHT4sTW8aiSm7CkOXtbNr27o
+	 oGKkKxcWbxqmbFzYQtYSpd41W/5lCIHaexNcCCP/JfmZSsNcGGp1Muc/3gHerHtUsn
+	 rDfVnWGw4qpN+cssF7VmdJfy/DiyNHLfLvy7KzfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 64/92] ASoC: mediatek: common: fix device and OF node leak
-Date: Wed, 30 Jul 2025 11:36:12 +0200
-Message-ID: <20250730093233.227075131@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 65/92] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
+Date: Wed, 30 Jul 2025 11:36:13 +0200
+Message-ID: <20250730093233.269600121@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
 References: <20250730093230.629234025@linuxfoundation.org>
@@ -60,53 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 696e123aa36bf0bc72bda98df96dd8f379a6e854 upstream.
+commit ee9f3a81ab08dfe0538dbd1746f81fd4d5147fdc upstream.
 
-Make sure to drop the references to the accdet OF node and platform
-device taken by of_parse_phandle() and of_find_device_by_node() after
-looking up the sound component during probe.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_eth_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-Fixes: cf536e2622e2 ("ASoC: mediatek: common: Handle mediatek,accdet property")
-Cc: stable@vger.kernel.org	# 6.15
-Cc: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20250722092542.32754-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-2-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/mediatek/common/mtk-soundcard-driver.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
-index 713a368f79cf..95a083939f3e 100644
---- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
-+++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
-@@ -262,9 +262,13 @@ int mtk_soundcard_common_probe(struct platform_device *pdev)
- 				soc_card_data->accdet = accdet_comp;
- 			else
- 				dev_err(&pdev->dev, "No sound component found from mediatek,accdet property\n");
-+
-+			put_device(&accdet_pdev->dev);
- 		} else {
- 			dev_err(&pdev->dev, "No device found from mediatek,accdet property\n");
- 		}
-+
-+		of_node_put(accdet_node);
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -4655,12 +4655,19 @@ static int dpaa2_eth_connect_mac(struct
+ 		return PTR_ERR(dpmac_dev);
  	}
  
- 	platform_node = of_parse_phandle(pdev->dev.of_node, "mediatek,platform", 0);
--- 
-2.50.1
-
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
+ 
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
++
+ 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
+ 
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = priv->mc_io;
+@@ -4694,6 +4701,8 @@ err_close_mac:
+ 	dpaa2_mac_close(mac);
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
+ }
+ 
 
 
 
