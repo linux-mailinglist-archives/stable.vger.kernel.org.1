@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-165337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E3DB15CD2
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00830B15D32
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 743AF18C4050
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D063BB760
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A0E293454;
-	Wed, 30 Jul 2025 09:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6671E279DD3;
+	Wed, 30 Jul 2025 09:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqNdo0vC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FibU/3Ir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9E82566D3;
-	Wed, 30 Jul 2025 09:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D5A255F5C;
+	Wed, 30 Jul 2025 09:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868728; cv=none; b=EdIv5miECih4Va5snLWIR7LqlHarElsv0tqx7TyPz683pIA/uui3RqAJmc6lupMwAk299Mybosyz3v21XHvnIj+LPTfHpaeS8ulnR8CWHgV0KP/kx1ygFn8/gFp2o4GaIIkWdANwABqqo3e/Jt8gRRRiS/m1LVQEIFTrGqj4ysU=
+	t=1753869038; cv=none; b=ql2yH5/YDUEadmrJYF2lPdkhCK/KIxWFRYACOZE9zEwUYw1m8yBtWZ5MolKU3525qP90vNmVwGFfquKDUvehxUEXKO094vR7UeVIp5s65oB1B4dlzx1N+YcdnRvCnv5AoY6oEUQL1KzCup36RIMediI4ptn4MGwiHIITDsVbwHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868728; c=relaxed/simple;
-	bh=yXB90O9EKcH0cRRKLZSzqQ79t24gGq+6ti5E3jeqeLc=;
+	s=arc-20240116; t=1753869038; c=relaxed/simple;
+	bh=kd9pM9xsgil9mB+f1RhC8Q/PQVpymwCO0CNPjbqYPpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=laGd9hjlr8Osb8FD4/06i4QDdrOanyDmz2Wiq9kJseFfNC/aDWKxdgRSgHhdX2ozZqYvxa2WwtxkX7lmmjk5kChin3dWazCHK3Pqk79ZY62iqQ1ZNULYw6ca3f1ecW0uN8NAniU0MMGjd32MfPZlkR5CnobZqHgcR1JTqt05yJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqNdo0vC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF5BC4CEF5;
-	Wed, 30 Jul 2025 09:45:27 +0000 (UTC)
+	 MIME-Version; b=LaJ0cTHNmSssqeeac0ai3BtKqH02u2pVW1dObmZu0byIAGogsvam1wY/ApyBOZ4SqGc+oMZGIC4otEPqK7mPnSmNRhxFc7NA7dknUdqstyJhCmoLITov/HyydBOF7/IVEvqwfSEDY/RaLKtM2tuH7sT5hJ7m70OC1cwfvhobzks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FibU/3Ir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250E9C4CEF5;
+	Wed, 30 Jul 2025 09:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868728;
-	bh=yXB90O9EKcH0cRRKLZSzqQ79t24gGq+6ti5E3jeqeLc=;
+	s=korg; t=1753869036;
+	bh=kd9pM9xsgil9mB+f1RhC8Q/PQVpymwCO0CNPjbqYPpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqNdo0vCFZc3PuI68NjOjkUx5V71hBx6GDZTEh29cFUBG4Jj1+JQdsUrT8/aPBkjT
-	 rtwPEYgYRv7FMJszs2T1HRbn8JaWEoZx0a/VIt+ngF0Eugymhx3lp1j0os9RIVpeHe
-	 tFzOg/Tt+rAlsufYGbBUWNiQZbTy3S4RKKcbM8CA=
+	b=FibU/3Ir9eiZTBZ8Qz3XoyM1Rhxshp+DatP9coKronv6aULoLXqCoeqQ3Ax9nIN5z
+	 6SByZSPVyoVutY/RoDXqXx/iTCJntDLChQxLJOxpr1GI9BwiOJ3IdWRYa94UHdQ8cv
+	 hTyLesWg1V/iO/qYw9xCdwPNvLWJHfkYNIrIUfeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 060/117] kasan: use vmalloc_dump_obj() for vmalloc error reports
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Florian Westphal <fw@strlen.de>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 21/92] xfrm: state: use a consistent pcpu_id in xfrm_state_find
 Date: Wed, 30 Jul 2025 11:35:29 +0200
-Message-ID: <20250730093235.888433148@linuxfoundation.org>
+Message-ID: <20250730093231.432118434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit 6ade153349c6bb990d170cecc3e8bdd8628119ab upstream.
+[ Upstream commit 7eb11c0ab70777b9e5145a5ba1c0a2312c3980b2 ]
 
-Since 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent
-possible deadlock"), more detailed info about the vmalloc mapping and the
-origin was dropped due to potential deadlocks.
+If we get preempted during xfrm_state_find, we could run
+xfrm_state_look_at using a different pcpu_id than the one
+xfrm_state_find saw. This could lead to ignoring states that should
+have matched, and triggering acquires on a CPU that already has a pcpu
+state.
 
-While fixing the deadlock is necessary, that patch was too quick in
-killing an otherwise useful feature, and did no due-diligence in
-understanding if an alternative option is available.
+    xfrm_state_find starts on CPU1
+    pcpu_id = 1
+    lookup starts
+    <preemption, we're now on CPU2>
+    xfrm_state_look_at pcpu_id = 2
+       finds a state
+found:
+    best->pcpu_num != pcpu_id (2 != 1)
+    if (!x && !error && !acquire_in_progress) {
+        ...
+        xfrm_state_alloc
+        xfrm_init_tempstate
+        ...
 
-Restore printing more helpful vmalloc allocation info in KASAN reports
-with the help of vmalloc_dump_obj().  Example report:
+This can be avoided by passing the original pcpu_id down to all
+xfrm_state_look_at() calls.
 
-| BUG: KASAN: vmalloc-out-of-bounds in vmalloc_oob+0x4c9/0x610
-| Read of size 1 at addr ffffc900002fd7f3 by task kunit_try_catch/493
-|
-| CPU: [...]
-| Call Trace:
-|  <TASK>
-|  dump_stack_lvl+0xa8/0xf0
-|  print_report+0x17e/0x810
-|  kasan_report+0x155/0x190
-|  vmalloc_oob+0x4c9/0x610
-|  [...]
-|
-| The buggy address belongs to a 1-page vmalloc region starting at 0xffffc900002fd000 allocated at vmalloc_oob+0x36/0x610
-| The buggy address belongs to the physical page:
-| page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x126364
-| flags: 0x200000000000000(node=0|zone=2)
-| raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
-| raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-| page dumped because: kasan: bad access detected
-|
-| [..]
+Also switch to raw_smp_processor_id, disabling preempting just to
+re-enable it immediately doesn't really make sense.
 
-Link: https://lkml.kernel.org/r/20250716152448.3877201-1-elver@google.com
-Fixes: 6ee9b3d84775 ("kasan: remove kasan_find_vm_area() to prevent possible deadlock")
-Signed-off-by: Marco Elver <elver@google.com>
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Acked-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Yunseong Kim <ysk@kzalloc.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kasan/report.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_state.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
---- a/mm/kasan/report.c
-+++ b/mm/kasan/report.c
-@@ -398,7 +398,9 @@ static void print_address_description(vo
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index a5a3bf25fd1d4..cef8d3c20f652 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1307,14 +1307,8 @@ static void xfrm_hash_grow_check(struct net *net, int have_hash_collision)
+ static void xfrm_state_look_at(struct xfrm_policy *pol, struct xfrm_state *x,
+ 			       const struct flowi *fl, unsigned short family,
+ 			       struct xfrm_state **best, int *acq_in_progress,
+-			       int *error)
++			       int *error, unsigned int pcpu_id)
+ {
+-	/* We need the cpu id just as a lookup key,
+-	 * we don't require it to be stable.
+-	 */
+-	unsigned int pcpu_id = get_cpu();
+-	put_cpu();
+-
+ 	/* Resolution logic:
+ 	 * 1. There is a valid state with matching selector. Done.
+ 	 * 2. Valid state with inappropriate selector. Skip.
+@@ -1381,8 +1375,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 	/* We need the cpu id just as a lookup key,
+ 	 * we don't require it to be stable.
+ 	 */
+-	pcpu_id = get_cpu();
+-	put_cpu();
++	pcpu_id = raw_smp_processor_id();
+ 
+ 	to_put = NULL;
+ 
+@@ -1402,7 +1395,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 		    tmpl->id.proto == x->id.proto &&
+ 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
+ 			xfrm_state_look_at(pol, x, fl, encap_family,
+-					   &best, &acquire_in_progress, &error);
++					   &best, &acquire_in_progress, &error, pcpu_id);
  	}
  
- 	if (is_vmalloc_addr(addr)) {
--		pr_err("The buggy address %px belongs to a vmalloc virtual mapping\n", addr);
-+		pr_err("The buggy address belongs to a");
-+		if (!vmalloc_dump_obj(addr))
-+			pr_cont(" vmalloc virtual mapping\n");
- 		page = vmalloc_to_page(addr);
+ 	if (best)
+@@ -1419,7 +1412,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 		    tmpl->id.proto == x->id.proto &&
+ 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
+ 			xfrm_state_look_at(pol, x, fl, family,
+-					   &best, &acquire_in_progress, &error);
++					   &best, &acquire_in_progress, &error, pcpu_id);
  	}
  
+ cached:
+@@ -1460,7 +1453,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 		    tmpl->id.proto == x->id.proto &&
+ 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
+ 			xfrm_state_look_at(pol, x, fl, family,
+-					   &best, &acquire_in_progress, &error);
++					   &best, &acquire_in_progress, &error, pcpu_id);
+ 	}
+ 	if (best || acquire_in_progress)
+ 		goto found;
+@@ -1495,7 +1488,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 		    tmpl->id.proto == x->id.proto &&
+ 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
+ 			xfrm_state_look_at(pol, x, fl, family,
+-					   &best, &acquire_in_progress, &error);
++					   &best, &acquire_in_progress, &error, pcpu_id);
+ 	}
+ 
+ found:
+-- 
+2.39.5
+
 
 
 
