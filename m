@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945DBB15D74
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:55:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51CDAB15CD5
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FBF4E2B28
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E293D18C40FF
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968B9275AE9;
-	Wed, 30 Jul 2025 09:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51160277CAF;
+	Wed, 30 Jul 2025 09:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifKKmlrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNOAg+H8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53375635;
-	Wed, 30 Jul 2025 09:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10079276058;
+	Wed, 30 Jul 2025 09:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869222; cv=none; b=W0RUrzjdZIkOlEaNb4zrJBko+d7+utaBQ1aotwn5bkySScgVR4RWzXRCUkUjTN55ezVICFDm8oQo82w1HOKchZHBJhbz1nKdQrinemrbq5Q5xq3FDPgJ5K09ERcVOKRMg1xib91OMNg/Z63yfAbHf7asWdGPcOYSFRnKYvmxuZY=
+	t=1753868778; cv=none; b=DFIzd2qHu7Ws772LYU9YFZiOBvdUl58vFJC98X4nWxKuznB4AlXj5//iCo+XWJBDHk0szbdMFousuX+6k51rRRc/t6SDxDueRMfw1au0SG/yIkpIG2vIV/qAiAXmCVf7JiYanMe0tA9l+ZTm/mf1KrV6SxUVVoYeFDkjuJkEDqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869222; c=relaxed/simple;
-	bh=YGRNjLnxUDRni/ADeHJTbCGTUiKInnIy/PqUhzF/5hw=;
+	s=arc-20240116; t=1753868778; c=relaxed/simple;
+	bh=kG7nQef9EJmn/DA+QVrqGMf53QA4l6040bMMUNiQDvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8pVoAq98El7ugec7LE3BELQ4Fje4RH220Gy/TkQoC6K+qE5oOlNWUtND36Hfi8gwiXYDwfqzwuZ/9thW5Bl6I2JomQX+tK0BSnwO+hhXgYrHaNcJLRKnBNiw99svBQcCQ9o5nc1tPUXb2fxcrv1sScJ/ALB1izMKBNxrqOJ/cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifKKmlrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22624C4CEF5;
-	Wed, 30 Jul 2025 09:53:40 +0000 (UTC)
+	 MIME-Version; b=r1KrPaJYZa+MZEoHHAlaZkKi6781wzTivcAO7oEuHo1GNDr7FrAiSeP/lnKzWvmrnufMfmraVyTL2iE84JBou6y7d4Jz55L/X/TAoV4Qkz3Q1hHohJG1jgYQXggLJDp9XHV2dMYBJtm/tsT3pjmX/BllMSpjG4+4ZVqW1lJVjc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNOAg+H8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51092C4CEF5;
+	Wed, 30 Jul 2025 09:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869221;
-	bh=YGRNjLnxUDRni/ADeHJTbCGTUiKInnIy/PqUhzF/5hw=;
+	s=korg; t=1753868777;
+	bh=kG7nQef9EJmn/DA+QVrqGMf53QA4l6040bMMUNiQDvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifKKmlrGY8iHNA2lf54nWEdLGi0P0l7hAeZ2/NPLRvIGu5xfjU0YUwKFoxyi5veHI
-	 VLRVdHYt/6+pg0DckYW1XdLaklCBGE+VdchcC7afDDOmOohIFd0uM9nH5xdrfZU+bx
-	 qz6FeG5bmvQsBBons3j0+2qaqZPnoSNS4L/O4D1I=
+	b=qNOAg+H8uIAIahIA21NaJmZCwDG0ZnzJcLJD0McAt6lO5U9jpJWNTqu/dUUmqM7cA
+	 3z3diRpcdILv261kx63we4aSxxGGGtu37+aYVhcP+MWEM3nyhyHY0eLjF3aaNFqgms
+	 n1pSlImpn4PgoVmsg0ABCLwqBKG57YZmdQDy2tSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 33/92] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 072/117] spi: cadence-quadspi: fix cleanup of rx_chan on failure paths
 Date: Wed, 30 Jul 2025 11:35:41 +0200
-Message-ID: <20250730093232.035098422@linuxfoundation.org>
+Message-ID: <20250730093236.341291268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
+commit 04a8ff1bc3514808481ddebd454342ad902a3f60 upstream.
 
-might_sleep could be trigger in the atomic context in qfq_delete_class.
+Remove incorrect checks on cqspi->rx_chan that cause driver breakage
+during failure cleanup. Ensure proper resource freeing on the success
+path when operating in cqspi->use_direct_mode, preventing leaks and
+improving stability.
 
-qfq_destroy_class was moved into atomic context locked
-by sch_tree_lock to avoid a race condition bug on
-qfq_aggregate. However, might_sleep could be triggered by
-qfq_destroy_class, which introduced sleeping in atomic context (path:
-qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
-->might_sleep).
-
-Considering the race is on the qfq_aggregate objects, keeping
-qfq_rm_from_agg in the lock but moving the left part out can solve
-this issue.
-
-Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/89765a2b94f047ded4f14babaefb7ef92ba07cb2.1751274389.git.khairul.anuar.romli@altera.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_qfq.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 2b1b025c31a33..51cc2cfb40936 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -536,9 +536,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1931,11 +1931,6 @@ static int cqspi_probe(struct platform_d
  
- static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
- {
--	struct qfq_sched *q = qdisc_priv(sch);
+ 	pm_runtime_enable(dev);
+ 
+-	if (cqspi->rx_chan) {
+-		dma_release_channel(cqspi->rx_chan);
+-		goto probe_setup_failed;
+-	}
 -
--	qfq_rm_from_agg(q, cl);
- 	gen_kill_estimator(&cl->rate_est);
- 	qdisc_put(cl->qdisc);
- 	kfree(cl);
-@@ -559,10 +556,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
- 
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
--	qfq_destroy_class(sch, cl);
-+	qfq_rm_from_agg(q, cl);
- 
- 	sch_tree_unlock(sch);
- 
-+	qfq_destroy_class(sch, cl);
- 	return 0;
- }
- 
-@@ -1503,6 +1501,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
- 					  common.hnode) {
-+			qfq_rm_from_agg(q, cl);
- 			qfq_destroy_class(sch, cl);
- 		}
- 	}
--- 
-2.39.5
-
+ 	pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_get_noresume(dev);
 
 
 
