@@ -1,103 +1,125 @@
-Return-Path: <stable+bounces-165199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4355BB15A64
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 10:20:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E7CB15AC2
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 10:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF549189A975
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 08:20:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7830616664B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 08:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958A52512D8;
-	Wed, 30 Jul 2025 08:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIU54rE/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCCE43169;
+	Wed, 30 Jul 2025 08:36:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCEB187326;
-	Wed, 30 Jul 2025 08:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.nfschina.com (unknown [42.101.60.213])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id DBCAC12B94;
+	Wed, 30 Jul 2025 08:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753863624; cv=none; b=UQfK/IfWocvLr7SrWjTJhiSP3qc+NkCk5MTxPWfVj2oZQrmurjwcikaM8F31lNDPufOlnb00p/tygkFHD95qUgRlOdghz/fRJByWvXuuEEEh5ad8PP9/+JDCHKcL/nw32BbWS4PlhRrcI0sE3+IxBXJzmyhPPV3oz3PaQt/B7sY=
+	t=1753864616; cv=none; b=p0iAMgHzFhSw6wJmd4KzN1J4s5JLeS9jX799m4G7apUHlUuQjv2ZPbYNAUWavEWhpHVVRQM9BqGgmIlqfpuB/Lf5/DBMeGWSW8IlHNYeywPksEkQUtDTTcsTAZPEhwe3SbCvGrwkIq6huH62FN2F+cdgxJ3LGJm3xfkU1uEW6H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753863624; c=relaxed/simple;
-	bh=G2xhbiG9MhxwFQfbZuB+oDrqa9cbn97T9Zn90EGVbF0=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=PhYVSl1H/XgR6MVVA927vDVOsKlHdE546rjiFy/Ebo5rkgDoSXPCvdTYbflmsouBwjV79zx77fRX4tH8SliRuJI+xkib9s79n/XGfMQdZNxZmxwT0MjLkxC0VZXDbeDgVs1CATmL9ArCTq4OWGcEXtKdyBa3mY8KdaSY8QXAWvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIU54rE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE72C4CEF5;
-	Wed, 30 Jul 2025 08:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753863623;
-	bh=G2xhbiG9MhxwFQfbZuB+oDrqa9cbn97T9Zn90EGVbF0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gIU54rE/53PmhiwB/a0q1TUMwg6FBnJm8rOIhcfkpcIf3TnXT5tJYQOq2om+0SfAb
-	 va+0nhaPM2mySuzIQuHiRS1yF9fJr0KHugT9fcDyKZJE9VBTJA3mcKm2C4vv22HEqP
-	 MSj4+h89kLmi6G5zTK2s4WChbvBA74cevzu5iY3BCf7hEJNh2Q9uxXVa+6YZdAy/1B
-	 VtMhDon9WBCd8SUPzQycZt1H+gAvrZokQx7ucmeRl+EGdVQ5BD7xi4Z0AJxjtZW4L0
-	 EzmBm56rCDVMlOUjWy1Qd1MnpwEG+3wggI+on2PDjIFhlF6Y87UPOB/kJvP4uXUsQx
-	 /RO/Zw4u25ebg==
-Date: Wed, 30 Jul 2025 17:20:20 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, "Alan J. Wylie"
- <alan@wylie.me.uk>, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>
-Subject: Re: "stack state/frame" and "jump dest instruction" errors (was Re:
- Linux 6.16)
-Message-Id: <20250730172020.00a4dd1ad453d94c7ef47f30@kernel.org>
-In-Reply-To: <20250729224000.2f23f59acc79a78f47c1624f@kernel.org>
-References: <CAHk-=wh0kuQE+tWMEPJqCR48F4Tip2EeYQU-mi+2Fx_Oa1Ehbw@mail.gmail.com>
-	<871pq06728.fsf@wylie.me.uk>
-	<hla34nepia6wyi2fndx5ynud4dagxd7j75xnkevtxt365ihkjj@4p746zsu6s6z>
-	<20250729224000.2f23f59acc79a78f47c1624f@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1753864616; c=relaxed/simple;
+	bh=yS7jmUVHtW+OYqy+MmzP+5FmK5X3aid7WjwurKzBX6w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type; b=mTOACgGcIw5Gv5uHaHsSXDBrUiCnJPBptAqZAMWaMwxhHk9Xm41mlqgbsw6pEYN94YGwZaART4OwuxPOW7P81pYBCCcqgzffof7LDBWz2qPzITo6OlAUetPxjrG+2B/XaN3bVHzXK7SLfrWbyEXnDgiJsTXJHe53EeXnBGajIrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from [172.30.20.100] (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 7133C602F9058;
+	Wed, 30 Jul 2025 16:36:45 +0800 (CST)
+Message-ID: <8e9fb1b0-8da9-48aa-ac2c-ac4634ba5f7b@nfschina.com>
+Date: Wed, 30 Jul 2025 16:36:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: slub: avoid deref of free pointer in sanity checks
+ if object is invalid
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: David Rientjes <rientjes@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+X-MD-Sfrom: liqiong@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: liqiong <liqiong@nfschina.com>
+In-Reply-To: <aImn9eytstNbfODq@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 29 Jul 2025 22:40:00 +0900
-Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
 
-> On Mon, 28 Jul 2025 08:42:44 -0700
-> Josh Poimboeuf <jpoimboe@kernel.org> wrote:
-> 
-> > On Mon, Jul 28, 2025 at 09:41:35AM +0100, Alan J. Wylie wrote:
-> > > #regzbot introduced: 6.15.8..6.16
-> 
-> > I don't have time to look at this for at least the next few days, but I
-> > suspect this one:
-> > 
-> >      1a3:	8f ea 78 10 c3 0a 06 00 00 	bextr  $0x60a,%ebx,%eax
-> 
-> Thanks for finding!
-> Indeed, this is encoded by XOP which is not currently supported
-> by x86 decodeer. 
-> 
-> > 
-> > in which case the kernel's x86 decoder (which objtool also uses) needs
-> > to be updated.
-> 
-> OK, let me see how XOP works.
 
-I've sent it to;
+在 2025/7/30 13:04, Harry Yoo 写道:
+> On Wed, Jul 30, 2025 at 09:46:09AM +0800, liqiong wrote:
+>> 在 2025/7/29 21:41, Harry Yoo 写道:
+>>> On Tue, Jul 29, 2025 at 04:14:55PM +0800, Li Qiong wrote:
+>>>> Fixes: bb192ed9aa71 ("mm/slub: Convert most struct page to struct slab by spatch")
+>>> As Vlastimil mentioned in previous version, this is not the first commit
+>>> that introduced this problem.
+> Please don't forget to update Fixes: tag :)
 
-https://lore.kernel.org/all/175386161199.564247.597496379413236944.stgit@devnote2/
+It seems that it's the first commit:    Fixes: 81819f0fc828 ("SLUB core"  )
 
-I confirmed it worked with the XOP encoded "bextr".
 
-Thank you,
+>
+>>>> Cc: <stable@vger.kernel.org>
+>>>> Signed-off-by: Li Qiong <liqiong@nfschina.com>
+>>>> ---
+>>>> v2:
+>>>> - rephrase the commit message, add comment for object_err().
+>>>> v3:
+>>>> - check object pointer in object_err().
+>>>> ---
+>>>>  mm/slub.c | 8 ++++++--
+>>>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/mm/slub.c b/mm/slub.c
+>>>> index 31e11ef256f9..d3abae5a2193 100644
+>>>> --- a/mm/slub.c
+>>>> +++ b/mm/slub.c
+>>>> @@ -1104,7 +1104,11 @@ static void object_err(struct kmem_cache *s, struct slab *slab,
+>>>>  		return;
+>>>>  
+>>>>  	slab_bug(s, reason);
+>>>> -	print_trailer(s, slab, object);
+>>>> +	if (!check_valid_pointer(s, slab, object)) {
+>>>> +		print_slab_info(slab);
+>>>> +		pr_err("invalid object 0x%p\n", object);
+>>> Can we just handle this inside print_trailer() because that's the function
+>>> that prints the object's free pointer, metadata, etc.?
+>> Maybe it's clearer ,  if  object pointer being invalid, don't enter print_trailer()，
+>> print_trailer() prints  valid object.
+> You're probably right. No strong opinion.
+> object_err() is the only user anyway.
+>
+>>>> +	} else
+>>>> +		print_trailer(s, slab, object);
+>>>>  	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+>>>>  
+>>>>  	WARN_ON(1);
+>>>> @@ -1587,7 +1591,7 @@ static inline int alloc_consistency_checks(struct kmem_cache *s,
+>>>>  		return 0;
+>>>>  
+>>>>  	if (!check_valid_pointer(s, slab, object)) {
+>>>> -		object_err(s, slab, object, "Freelist Pointer check fails");
+>>>> +		slab_err(s, slab, "Freelist Pointer(0x%p) check fails", object);
+>>>>  		return 0;
+>>> Do we really need this hunk after making object_err() resiliant
+>>> against wild pointers?
+>> That's the origin issue,   it may be  inappropriate to use object_err(), if check_valid_pointer being false.
+> That was the original issue, but you're making it not crash even if
+> with bad pointers are passed?
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Make sense, fix in object_err(),  it wouldn't  crash and print the message.
+
+>
+>>>>  	}
+
 
