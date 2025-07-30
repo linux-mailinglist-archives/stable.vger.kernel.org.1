@@ -1,183 +1,137 @@
-Return-Path: <stable+bounces-165499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CEBB15E28
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 12:29:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D32B15E82
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 12:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94003188ADCC
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 10:29:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 183E5563448
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 10:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DA9280327;
-	Wed, 30 Jul 2025 10:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDE92690C4;
+	Wed, 30 Jul 2025 10:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ub84NMA4";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Qaala2Jg";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="E7ptiLY2";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="gEoL0hF5"
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="pAiEjjti"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4427226B95A
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 10:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FF71A83ED
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 10:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753871349; cv=none; b=kAkSmlmFHaAXeEnFaUqrWs+32tMQTSiTV+rwHp75VNAu9bjm0cMa8+GbaqQC79eTgPczlsa2wISbfo5LPd3VuGpMoCIHA6aW0u8YO2KFCpWjCqVyGzqpM8CgMAyaV2xIo9e+w0xCtFmaQ5uW/2anfYIAXPTbd0+ilnLPrlo+hdM=
+	t=1753872870; cv=none; b=EfvPBWV8Sai/NtcQygeXRJwywA1n4cZGqNKJ199W0LsTtj4UoAtINWLrWKBrrzUSwTGGEXGCq8ImkXOVBH4tiScES/TJxwAdt0f5FJfZpjMTA/tC7lEAfzc9PJVfJBEr7tkwcv4zm0im2uaoiEwW8TYy2/AavXyuQRhIPUh15DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753871349; c=relaxed/simple;
-	bh=lO7YkAhoMX+qzxXhKtt6Kzmf4wUtQ/sEypG2OHMHblU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jnB1GG6fT30hIk/zyCPjFoi2P3RcPJgdyKeXHt+rMYsv9GfK5MNzEwPV65a3uw+MYjkHXbqfRtl/6OOf2W75Q9wGtgFeMXzlk/I5OiJxqWdZR4wSYISDyZqsEYI2pAd/cJfliCk2ouy7Kn9DZdcHgdLLSjPTbIhOERtCkT0NioI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ub84NMA4; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Qaala2Jg; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=E7ptiLY2; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=gEoL0hF5; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CF3AD21246;
-	Wed, 30 Jul 2025 10:28:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753871340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=sbC6Uq5aYunWTU8USVVOdmjcJNM1Dt2n1UGLWwQRu+8=;
-	b=ub84NMA47RseCfjunnnzV3zEfNtor+YWEe+5S145sG5x5HYl5BSql3N9JlMNF8T4rAmeWt
-	j2sVzdr5sajXe/MtlEtloWujysrXpPtVVzNZxLbQ9bb8veUFx6IRvuH+MbUL+xhqd6ygSN
-	+ALiSyCZnYFC3xIp5XzJCbnU7cIEhFM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753871340;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=sbC6Uq5aYunWTU8USVVOdmjcJNM1Dt2n1UGLWwQRu+8=;
-	b=Qaala2Jg8yjaKT5mp/KNtfn3fA/d09lA7WElo6vWN7wurTieSXrVmELQNagpixSgzeiLPE
-	sfg8Ma5WofD1SZDg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753871339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=sbC6Uq5aYunWTU8USVVOdmjcJNM1Dt2n1UGLWwQRu+8=;
-	b=E7ptiLY2u8hMlo/1derQYVC1+Ul9LerWDx5sX+rEoaj2rLDGVBC1OcmHBytHryRwffmRyu
-	lqXUpAZYfBHPK7mQKy86uHzBX/MWA1ElAHPJ889PURRUcL/gYa1b+Z9jehl2nzBG7foerw
-	/7tCc1aEnFIrWHOBF2x3/+UJNW/tH3o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753871339;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=sbC6Uq5aYunWTU8USVVOdmjcJNM1Dt2n1UGLWwQRu+8=;
-	b=gEoL0hF5yZOWd21zLCSzN9WEthatKLWDoAxBh9xa2QrBNDykpAHwEIO3c0TpqKMYk+FAmD
-	2rPQ29BG5Te9HlAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B8A871388B;
-	Wed, 30 Jul 2025 10:28:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KkoMLevziWhvfQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 30 Jul 2025 10:28:59 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 7277EA094F; Wed, 30 Jul 2025 12:28:59 +0200 (CEST)
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: <linux-fsdevel@vger.kernel.org>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	John Garry <john.g.garry@oracle.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] iomap: Fix broken data integrity guarantees for O_SYNC writes
-Date: Wed, 30 Jul 2025 12:28:41 +0200
-Message-ID: <20250730102840.20470-2-jack@suse.cz>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1753872870; c=relaxed/simple;
+	bh=6kgAWTrsy8tcfMWpM58jGAQr+rQnpahcSEbye4YkNfA=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=DZNXqqZHFe8LehXqChy9dR6MzphYOctjuXzsT7AzWfALBNFZp8zRloGXRGipwu8Y3HzEifkjrqBD8NPFgRpvt7PhPR6uT2fq8rAHRFa/uVKD+N6LLhHyeCt09RbJKnNLiLDWdizRPWCkT7GR/P+BX1E6fcb4x2cvKr9qZXa5XAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=pAiEjjti; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1753872869; x=1785408869;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=NuVZUzDGSawYmBeVLvzEnmb4lRBfWOjfBmp/0WfH2gQ=;
+  b=pAiEjjti6B0ST77WCVp9ADwqFytoxLjabCj5bnB8wt/U2dscNiU0N0Bg
+   TQGdpzIzMb7ojinqVDZvjAuFA4/iRJth8M0g5TayskATwx6GvqOFXJdSE
+   WSNpRaS3NLiL7fCZ+e0rm/6nU447fnfag8mYmkMXTOEB4JAxDA5HE/Dsu
+   YurDhfr5v/gabqehQr3zKDP4ypI56DhlEdklNplg/NwCtYsZiZWKCvGIu
+   /T1cHJBEc2e2x2afENsfvrU/vo935yVY4CEhJ2ZXu3oP0H7pZck/T4Ip+
+   3RbavLbj4+wMCQ45la+PeAzkm8qZ6CgYa0QCsJDP9j0ERN1/zZtngmY3h
+   w==;
+X-IronPort-AV: E=Sophos;i="6.16,350,1744070400"; 
+   d="scan'208";a="519441583"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 10:54:26 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.10.100:31872]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.27.198:2525] with esmtp (Farcaster)
+ id c0f31615-4fd4-4f97-aa6b-9319b63d102e; Wed, 30 Jul 2025 10:54:23 +0000 (UTC)
+X-Farcaster-Flow-ID: c0f31615-4fd4-4f97-aa6b-9319b63d102e
+Received: from EX19D015EUB002.ant.amazon.com (10.252.51.123) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 30 Jul 2025 10:54:21 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB002.ant.amazon.com (10.252.51.123) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 30 Jul 2025 10:54:21 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.1544.014; Wed, 30 Jul 2025 10:54:21 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: Nianyao Tang <tangnianyao@huawei.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, "Roy, Patrick" <roypat@amazon.co.uk>
+Subject: [PATCH 6.1.y] arm64/cpufeatures/kvm: Add ARMv8.9 FEAT_ECBHB bits in
+ ID_AA64MMFR1 register
+Thread-Topic: [PATCH 6.1.y] arm64/cpufeatures/kvm: Add ARMv8.9 FEAT_ECBHB bits
+ in ID_AA64MMFR1 register
+Thread-Index: AQHcAUBONQXj/76f20GQvs41XuzDEw==
+Date: Wed, 30 Jul 2025 10:54:21 +0000
+Message-ID: <20250730105417.18254-1-roypat@amazon.co.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1920; i=jack@suse.cz; h=from:subject; bh=lO7YkAhoMX+qzxXhKtt6Kzmf4wUtQ/sEypG2OHMHblU=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBoifPYe+pOCTKYAOuLCx+ipNUdUqidRt9KSPJKNZUZ bA5qz16JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaInz2AAKCRCcnaoHP2RA2SlQCA ClZnOwpx0K5w2IalXfFQEEJM9eGybMRcz7gyFWpRp2F4W+Ksmm+V1/FrI8TcGHW8ondSO/TG6Lpuh9 ajQCwlfriZcq6gt0IgSE3vatVzfgnP+JhOnFhUhNPJbUu1aqoWsDdrKFK6nhyMP21ZdXhXkZq4uP+u X5O1n5z0SR+iVXdrXNr3wHewSAUTZOBdM14NXVxyry2FxOx642MLvi3pBZA3/F0FbsXW6+DvhBL4gU sllOI9tWNqztsD6ojSKH2/hKStlrc+2CBZRdLmfyPpLOu5DurYAy6gNdnDGarIrVd7G8jAiTUaOzC4 48+LKZvTGm7bS4b3yEExYM+s+mOZLk
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,suse.cz,oracle.com,gmail.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -1.30
 
-Commit d279c80e0bac ("iomap: inline iomap_dio_bio_opflags()") has broken
-the logic in iomap_dio_bio_iter() in a way that when the device does
-support FUA (or has no writeback cache) and the direct IO happens to
-freshly allocated or unwritten extents, we will *not* issue fsync after
-completing direct IO O_SYNC / O_DSYNC write because the
-IOMAP_DIO_WRITE_THROUGH flag stays mistakenly set. Fix the problem by
-clearing IOMAP_DIO_WRITE_THROUGH whenever we do not perform FUA write as
-it was originally intended.
-
-CC: John Garry <john.g.garry@oracle.com>
-CC: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Fixes: d279c80e0bac ("iomap: inline iomap_dio_bio_opflags()")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- fs/iomap/direct-io.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-BTW, I've spotted this because some performance tests got suspiciously fast
-on recent kernels :) Sadly no easy improvement to cherry-pick for me to fix
-customer issue I'm chasing...
-
-diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-index 6f25d4cfea9f..b84f6af2eb4c 100644
---- a/fs/iomap/direct-io.c
-+++ b/fs/iomap/direct-io.c
-@@ -363,14 +363,14 @@ static int iomap_dio_bio_iter(struct iomap_iter *iter, struct iomap_dio *dio)
- 		if (iomap->flags & IOMAP_F_SHARED)
- 			dio->flags |= IOMAP_DIO_COW;
- 
--		if (iomap->flags & IOMAP_F_NEW) {
-+		if (iomap->flags & IOMAP_F_NEW)
- 			need_zeroout = true;
--		} else if (iomap->type == IOMAP_MAPPED) {
--			if (iomap_dio_can_use_fua(iomap, dio))
--				bio_opf |= REQ_FUA;
--			else
--				dio->flags &= ~IOMAP_DIO_WRITE_THROUGH;
--		}
-+		else if (iomap->type == IOMAP_MAPPED &&
-+			 iomap_dio_can_use_fua(iomap, dio))
-+			bio_opf |= REQ_FUA;
-+
-+		if (!(bio_opf & REQ_FUA))
-+			dio->flags &= ~IOMAP_DIO_WRITE_THROUGH;
- 
- 		/*
- 		 * We can only do deferred completion for pure overwrites that
--- 
-2.43.0
-
+From: Nianyao Tang <tangnianyao@huawei.com>=0A=
+=0A=
+[ upstream commit e8cde32f111f7f5681a7bad3ec747e9e697569a9 ]=0A=
+=0A=
+Enable ECBHB bits in ID_AA64MMFR1 register as per ARM DDI 0487K.a=0A=
+specification.=0A=
+=0A=
+When guest OS read ID_AA64MMFR1_EL1, kvm emulate this reg using=0A=
+ftr_id_aa64mmfr1 and always return ID_AA64MMFR1_EL1.ECBHB=3D0 to guest.=0A=
+It results in guest syscall jump to tramp ventry, which is not needed=0A=
+in implementation with ID_AA64MMFR1_EL1.ECBHB=3D1.=0A=
+Let's make the guest syscall process the same as the host.=0A=
+=0A=
+This fixes performance regressions introduced by commit a53b3599d9bf=0A=
+("arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected()=0A=
+lists") for guests running on neoverse v2 hardware, which supports=0A=
+ECBHB.=0A=
+=0A=
+Signed-off-by: Nianyao Tang <tangnianyao@huawei.com>=0A=
+Link: https://lore.kernel.org/r/20240611122049.2758600-1-tangnianyao@huawei=
+.com=0A=
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>=0A=
+Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
+---=0A=
+ arch/arm64/kernel/cpufeature.c | 1 +=0A=
+ 1 file changed, 1 insertion(+)=0A=
+=0A=
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.=
+c=0A=
+index 840cc48b5147..5d2322eeee47 100644=0A=
+--- a/arch/arm64/kernel/cpufeature.c=0A=
++++ b/arch/arm64/kernel/cpufeature.c=0A=
+@@ -343,6 +343,7 @@ static const struct arm64_ftr_bits ftr_id_aa64mmfr0[] =
+=3D {=0A=
+ };=0A=
+ =0A=
+ static const struct arm64_ftr_bits ftr_id_aa64mmfr1[] =3D {=0A=
++	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_E=
+CBHB_SHIFT, 4, 0),=0A=
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL=
+1_TIDCP1_SHIFT, 4, 0),=0A=
+ 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_=
+AFP_SHIFT, 4, 0),=0A=
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_E=
+TS_SHIFT, 4, 0),=0A=
+-- =0A=
+2.50.1=0A=
+=0A=
 
