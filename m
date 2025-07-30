@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-165446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08DBB15D65
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E38B15CF6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53CF5A3E60
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 279035A57B0
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA4C26FA50;
-	Wed, 30 Jul 2025 09:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B726C28727F;
+	Wed, 30 Jul 2025 09:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXW5UpZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJ9cTuBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0D4442C;
-	Wed, 30 Jul 2025 09:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F72157E6B;
+	Wed, 30 Jul 2025 09:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869164; cv=none; b=rop5H3wekrLzysA5tb5f1vpF4EMG6o1hv0PGv2HUy2OaEY73jsmibXhfSAWiNzZf9M4n+iOefhxy23EG1U5+JqbDmlLGEzlquA1DTY9+Ch9IbKU7oVAF6wNySQnBHu/ctXMzM/+f9i3cH+QYSSukXyAGlNTTslGEGjGYzgy7QqU=
+	t=1753868845; cv=none; b=VE+INFirNLP1TnEK6z1lSyFUm8i/NhjI/PVMAjJPv8YdLiYyWOXF9NycsuJZj4nXCNVYK6U84h7N/Bb2xca3cBWlvTr0eas7GQ00q/Xx6Tt/dJ8WJjazVwFJDLEF0PiPIK/D2+gVa0AfOtO5Ln7rzSOCsAtrcqw3at3ms0sgvKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869164; c=relaxed/simple;
-	bh=5TyhXNqeaT+DIy5JRlmLKHKJMQnUFOSwrdzwubI6sIg=;
+	s=arc-20240116; t=1753868845; c=relaxed/simple;
+	bh=R4zNsmU58Kc+mZmf8tvyi9JE6qb0U9t/6t7WW0ibrI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dw9u889HK7blU8TMoP7bxBwjVV4jI+jnAhZcnfw1/5qAYZYT+nGGAYU3Jhiit2+eg7WnAExEnmVzIpQvj5H8bxeSGNlNldZYuXxgVgY9N1vl+fkbv8WsZJLViXaMaEPaFAEFzlOVB9/bmqwUN547XnqQHzpYm7u0p/ETrfwiLkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXW5UpZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BC5C4CEF5;
-	Wed, 30 Jul 2025 09:52:43 +0000 (UTC)
+	 MIME-Version; b=Wz0Hp4ofnufPZv5lpTo+8wKEtxMd2NRPMPfXK0Il8F8cZLvF8uZTDJZRtx6+V3UHtXZzNZRkc5nFFjUE7nzsWharAxO2l/MkZC2nSlJm6ZotLBDKMMKYNcmoWXIQHSR+NQx4YC/sTgmkxF9vXgPjuvFWc2cIQTYXiABbu5MoDyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJ9cTuBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA98C4CEF5;
+	Wed, 30 Jul 2025 09:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869164;
-	bh=5TyhXNqeaT+DIy5JRlmLKHKJMQnUFOSwrdzwubI6sIg=;
+	s=korg; t=1753868845;
+	bh=R4zNsmU58Kc+mZmf8tvyi9JE6qb0U9t/6t7WW0ibrI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXW5UpZrMcrpmSS9z3O+u+YkeFYZSjLvtENo2dAPM6ytg4l9ayKbPJNWnpDeaF0CD
-	 Crbv0LtXN3JfDcOx9SEqVJmJ5yt+wIeZmqngQsziJRCxcjpR81h/MVvMuFu7VfHcIX
-	 hPFsAwFZKMJCQ2d+gTlJqEXYJQPiBrTyo+9rcOYs=
+	b=LJ9cTuBvGoJq9xh5YRTUls43Elb6eC+yRq0mz4yvVuN2G9spXBdb55HqHF33YSSTr
+	 V3K39Nm23PXYYn/Dua9RYQEfOGUwe95qbYD6CVUWrWCADu+IlmrLqZqMm081xgegSk
+	 SLzCVsIfpl5YM5uzDGoCUCbINJXhRgM15+5Tb4mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Stefan Roesch <shr@devkernel.io>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 52/92] mm/ksm: fix -Wsometimes-uninitialized from clang-21 in advisor_mode_show()
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 091/117] ext4: move out inode_lock into ext4_fallocate()
 Date: Wed, 30 Jul 2025 11:36:00 +0200
-Message-ID: <20250730093232.766049405@linuxfoundation.org>
+Message-ID: <20250730093237.331104562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +64,285 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 153ad566724fe6f57b14f66e9726d295d22e576d upstream.
+[ Upstream commit ea3f17efd36b56c5839289716ba83eaa85893590 ]
 
-After a recent change in clang to expose uninitialized warnings from const
-variables [1], there is a false positive warning from the if statement in
-advisor_mode_show().
+Currently, all five sub-functions of ext4_fallocate() acquire the
+inode's i_rwsem at the beginning and release it before exiting. This
+process can be simplified by factoring out the management of i_rwsem
+into the ext4_fallocate() function.
 
-  mm/ksm.c:3687:11: error: variable 'output' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-   3687 |         else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
-        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  mm/ksm.c:3690:33: note: uninitialized use occurs here
-   3690 |         return sysfs_emit(buf, "%s\n", output);
-        |                                        ^~~~~~
-
-Rewrite the if statement to implicitly make KSM_ADVISOR_NONE the else
-branch so that it is obvious to the compiler that ksm_advisor can only be
-KSM_ADVISOR_NONE or KSM_ADVISOR_SCAN_TIME due to the assignments in
-advisor_mode_store().
-
-Link: https://lkml.kernel.org/r/20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org
-Fixes: 66790e9a735b ("mm/ksm: add sysfs knobs for advisor")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2100
-Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20241220011637.1157197-10-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 29ec9bed2395 ("ext4: fix incorrect punch max_end")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/ksm.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/extents.c |   90 ++++++++++++++++--------------------------------------
+ fs/ext4/inode.c   |   13 +++----
+ 2 files changed, 33 insertions(+), 70 deletions(-)
 
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -3669,10 +3669,10 @@ static ssize_t advisor_mode_show(struct
- {
- 	const char *output;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4579,23 +4579,18 @@ static long ext4_zero_range(struct file
+ 	int ret, flags, credits;
  
--	if (ksm_advisor == KSM_ADVISOR_NONE)
--		output = "[none] scan-time";
--	else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
-+	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
- 		output = "none [scan-time]";
-+	else
-+		output = "[none] scan-time";
+ 	trace_ext4_zero_range(inode, offset, len, mode);
++	WARN_ON_ONCE(!inode_is_locked(inode));
  
- 	return sysfs_emit(buf, "%s\n", output);
+-	inode_lock(inode);
+-
+-	/*
+-	 * Indirect files do not support unwritten extents
+-	 */
+-	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
+-		ret = -EOPNOTSUPP;
+-		goto out;
+-	}
++	/* Indirect files do not support unwritten extents */
++	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
++		return -EOPNOTSUPP;
+ 
+ 	if (!(mode & FALLOC_FL_KEEP_SIZE) &&
+ 	    (end > inode->i_size || end > EXT4_I(inode)->i_disksize)) {
+ 		new_size = end;
+ 		ret = inode_newsize_ok(inode, new_size);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 	}
+ 
+ 	/* Wait all existing dio workers, newcomers will block on i_rwsem */
+@@ -4603,7 +4598,7 @@ static long ext4_zero_range(struct file
+ 
+ 	ret = file_modified(file);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	/*
+ 	 * Prevent page faults from reinstantiating pages we have released
+@@ -4685,8 +4680,6 @@ out_handle:
+ 	ext4_journal_stop(handle);
+ out_invalidate_lock:
+ 	filemap_invalidate_unlock(mapping);
+-out:
+-	inode_unlock(inode);
+ 	return ret;
  }
+ 
+@@ -4700,12 +4693,11 @@ static long ext4_do_fallocate(struct fil
+ 	int ret;
+ 
+ 	trace_ext4_fallocate_enter(inode, offset, len, mode);
++	WARN_ON_ONCE(!inode_is_locked(inode));
+ 
+ 	start_lblk = offset >> inode->i_blkbits;
+ 	len_lblk = EXT4_MAX_BLOCKS(len, offset, inode->i_blkbits);
+ 
+-	inode_lock(inode);
+-
+ 	/* We only support preallocation for extent-based files only. */
+ 	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
+ 		ret = -EOPNOTSUPP;
+@@ -4737,7 +4729,6 @@ static long ext4_do_fallocate(struct fil
+ 					EXT4_I(inode)->i_sync_tid);
+ 	}
+ out:
+-	inode_unlock(inode);
+ 	trace_ext4_fallocate_exit(inode, offset, len_lblk, ret);
+ 	return ret;
+ }
+@@ -4772,9 +4763,8 @@ long ext4_fallocate(struct file *file, i
+ 
+ 	inode_lock(inode);
+ 	ret = ext4_convert_inline_data(inode);
+-	inode_unlock(inode);
+ 	if (ret)
+-		return ret;
++		goto out_inode_lock;
+ 
+ 	if (mode & FALLOC_FL_PUNCH_HOLE)
+ 		ret = ext4_punch_hole(file, offset, len);
+@@ -4786,7 +4776,8 @@ long ext4_fallocate(struct file *file, i
+ 		ret = ext4_zero_range(file, offset, len, mode);
+ 	else
+ 		ret = ext4_do_fallocate(file, offset, len, mode);
+-
++out_inode_lock:
++	inode_unlock(inode);
+ 	return ret;
+ }
+ 
+@@ -5291,36 +5282,27 @@ static int ext4_collapse_range(struct fi
+ 	int ret;
+ 
+ 	trace_ext4_collapse_range(inode, offset, len);
+-
+-	inode_lock(inode);
++	WARN_ON_ONCE(!inode_is_locked(inode));
+ 
+ 	/* Currently just for extent based files */
+-	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
+-		ret = -EOPNOTSUPP;
+-		goto out;
+-	}
+-
++	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		return -EOPNOTSUPP;
+ 	/* Collapse range works only on fs cluster size aligned regions. */
+-	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb))) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
++	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb)))
++		return -EINVAL;
+ 	/*
+ 	 * There is no need to overlap collapse range with EOF, in which case
+ 	 * it is effectively a truncate operation
+ 	 */
+-	if (end >= inode->i_size) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (end >= inode->i_size)
++		return -EINVAL;
+ 
+ 	/* Wait for existing dio to complete */
+ 	inode_dio_wait(inode);
+ 
+ 	ret = file_modified(file);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	/*
+ 	 * Prevent page faults from reinstantiating pages we have released from
+@@ -5395,8 +5377,6 @@ out_handle:
+ 	ext4_journal_stop(handle);
+ out_invalidate_lock:
+ 	filemap_invalidate_unlock(mapping);
+-out:
+-	inode_unlock(inode);
+ 	return ret;
+ }
+ 
+@@ -5422,39 +5402,27 @@ static int ext4_insert_range(struct file
+ 	loff_t start;
+ 
+ 	trace_ext4_insert_range(inode, offset, len);
+-
+-	inode_lock(inode);
++	WARN_ON_ONCE(!inode_is_locked(inode));
+ 
+ 	/* Currently just for extent based files */
+-	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
+-		ret = -EOPNOTSUPP;
+-		goto out;
+-	}
+-
++	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		return -EOPNOTSUPP;
+ 	/* Insert range works only on fs cluster size aligned regions. */
+-	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb))) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
++	if (!IS_ALIGNED(offset | len, EXT4_CLUSTER_SIZE(sb)))
++		return -EINVAL;
+ 	/* Offset must be less than i_size */
+-	if (offset >= inode->i_size) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
++	if (offset >= inode->i_size)
++		return -EINVAL;
+ 	/* Check whether the maximum file size would be exceeded */
+-	if (len > inode->i_sb->s_maxbytes - inode->i_size) {
+-		ret = -EFBIG;
+-		goto out;
+-	}
++	if (len > inode->i_sb->s_maxbytes - inode->i_size)
++		return -EFBIG;
+ 
+ 	/* Wait for existing dio to complete */
+ 	inode_dio_wait(inode);
+ 
+ 	ret = file_modified(file);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	/*
+ 	 * Prevent page faults from reinstantiating pages we have released from
+@@ -5555,8 +5523,6 @@ out_handle:
+ 	ext4_journal_stop(handle);
+ out_invalidate_lock:
+ 	filemap_invalidate_unlock(mapping);
+-out:
+-	inode_unlock(inode);
+ 	return ret;
+ }
+ 
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3997,15 +3997,14 @@ int ext4_punch_hole(struct file *file, l
+ 	loff_t end = offset + length;
+ 	handle_t *handle;
+ 	unsigned int credits;
+-	int ret = 0;
++	int ret;
+ 
+ 	trace_ext4_punch_hole(inode, offset, length, 0);
+-
+-	inode_lock(inode);
++	WARN_ON_ONCE(!inode_is_locked(inode));
+ 
+ 	/* No need to punch hole beyond i_size */
+ 	if (offset >= inode->i_size)
+-		goto out;
++		return 0;
+ 
+ 	/*
+ 	 * If the hole extends beyond i_size, set the hole to end after
+@@ -4025,7 +4024,7 @@ int ext4_punch_hole(struct file *file, l
+ 	if (!IS_ALIGNED(offset | end, sb->s_blocksize)) {
+ 		ret = ext4_inode_attach_jinode(inode);
+ 		if (ret < 0)
+-			goto out;
++			return ret;
+ 	}
+ 
+ 	/* Wait all existing dio workers, newcomers will block on i_rwsem */
+@@ -4033,7 +4032,7 @@ int ext4_punch_hole(struct file *file, l
+ 
+ 	ret = file_modified(file);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	/*
+ 	 * Prevent page faults from reinstantiating pages we have released from
+@@ -4109,8 +4108,6 @@ out_handle:
+ 	ext4_journal_stop(handle);
+ out_invalidate_lock:
+ 	filemap_invalidate_unlock(mapping);
+-out:
+-	inode_unlock(inode);
+ 	return ret;
+ }
+ 
 
 
 
