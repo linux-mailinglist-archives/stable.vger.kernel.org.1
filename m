@@ -1,168 +1,83 @@
-Return-Path: <stable+bounces-165522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007CEB16222
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:00:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE701B1622F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939BA3A67CC
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 13:59:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A575161C5B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 14:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CCB2C3252;
-	Wed, 30 Jul 2025 14:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AD42C15BF;
+	Wed, 30 Jul 2025 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4zdTuIp"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="B8Dqw9bp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F3819E97A
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 14:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718282D613;
+	Wed, 30 Jul 2025 14:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753884013; cv=none; b=r1xJD1hF0n5u/j9R/8enzNE4kntNkGtL5Ia/zgBYJcYEz5KsFavnKXygxZBOWKzxyKXNMUDy+nmqY0+VkvT0yQBOrWX7rMK9SflmWFWt4vaSJQ48NDtOO0KgY4aLzyPs9UYXCso23Zzbys1k2CxqoMe5IFyDEkyzLKK3mrRkphE=
+	t=1753884247; cv=none; b=HjeMaujAy0nfuitTjFTRZ4pdZIwsbGisD1xVaKJjjDc+aIaQHUuuacHS9wquFF9yV94tau5AW737yL86Raf0ASCbAJTo7upzh4LInEsz9W2El9whq2FQ+U5yrq9Sdxxj2oQWe9yEOCIG+o6YJUqxacRM/eWQFTbPl4neX+7a7CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753884013; c=relaxed/simple;
-	bh=mmUIy7G6GVPQ/4ABS+zz9/k6r1NK+olXBLC198V55Bo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ti0hl7m4zZKfcND6R8IN/uvPnBc7PCM3Vs1ZE/8hv5OSJZKyyrFdFtQeyNpHCYrczbA+VqK5zL6twlENonamx9hvOcQ0sKpcFPJC6etcXQyetN6Krrb17hspzRjvY8aRDZT2WXTCm4E9zm+KE7bvKJG6nAqSfMet1L3IjMC0z1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4zdTuIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB16C4CEE3;
-	Wed, 30 Jul 2025 14:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753884013;
-	bh=mmUIy7G6GVPQ/4ABS+zz9/k6r1NK+olXBLC198V55Bo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4zdTuIpx6wOtVIyHzQbfEo8QIQFHJ4IZsz/fH15TpUA7HYamZepal7bGPzmA8kP6
-	 d7HbjsQ7vWNkE9CeN68UY4OzVPOt6WYWOtxek8Lf/vH1i/L7oKDvSZoMYZ6JIgGZ6U
-	 ZLcZaxv4cXYgRE4ZkqgNenbpPhp6wFlhZ4rjOGrh6/TM4X9ChZ08yTLmId2qpdVVdp
-	 N/PP5rT5xb1KZkqkp8fCaBivddZQm6ACpj0SZLtwqrrYT+S94LtXcERwNmfd+B0WR6
-	 xArFq7k/NmA2X7ngu23+wv7UeqajWwuRqPh2OPsPS2bBFHrBkenPgPMGZ+wnSQq0xw
-	 236FcNk0OqWwQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y v2 5/5] i2c: stm32f7: unmap DMA mapped buffer
-Date: Wed, 30 Jul 2025 10:00:02 -0400
-Message-Id: <20250730140002.3814528-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250730140002.3814528-1-sashal@kernel.org>
-References: <2025072104-bacteria-resend-dcff@gregkh>
- <20250730140002.3814528-1-sashal@kernel.org>
+	s=arc-20240116; t=1753884247; c=relaxed/simple;
+	bh=YLSfW17T9EaJwX2zsIfpdLJzPFa2O5m2IzdlEfrjEpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oaP8luzRSWX5oSSj58FiEBPbpTylH8Lse33Q2fMJBwJcDye7yK8GZ+zGtBvrk3sdv1GfPwsUW3mGX7qibQadFmOZmxfHknIrhz2NSmf+QAEwn7dSvHURDYu7HczSWa739prLfpTCQ7yE8b7YWrDsPgsLZ7MaHZPjJ4+9t3NPCwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=B8Dqw9bp; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=YLSfW17T9EaJwX2zsIfpdLJzPFa2O5m2IzdlEfrjEpE=; b=B8Dqw9bpOiAhHVrTzhvXMKg+7u
+	5+eCPCHaLcy4qdaeg+Z71lm5lwezolUkLi98CMv7cnryxS5jqMVCsUvviSyyKLucGT8K99m9Hac89
+	gXKgrGIBZblrooweQ6OIPronBKnaU3eTiiUutiww78S78CuVpeixL8fnmMzGSQetAimKcmcWCXJtr
+	Ap1TRp1LJZw5Wi7pZufWPyhIlzyN1DoQzTEV81zvWu1pNnYmmkL4xZW9i/QDmev46cFub2CZ+ROox
+	VDPvv1gSSiFOtN8zJ8XQmXhflwAZOJwJd6Iri5hJyNElzPJ/yXRn015Yvf/3kCFh4F8JgCf8sZLq2
+	SFvqT/Yg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uh7PV-00000001gaY-3qH3;
+	Wed, 30 Jul 2025 14:04:01 +0000
+Date: Wed, 30 Jul 2025 07:04:01 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iomap: Fix broken data integrity guarantees for O_SYNC
+ writes
+Message-ID: <aIomUR0kDpb8W2G9@infradead.org>
+References: <20250730102840.20470-2-jack@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730102840.20470-2-jack@suse.cz>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Clément Le Goffic <clement.legoffic@foss.st.com>
+On Wed, Jul 30, 2025 at 12:28:41PM +0200, Jan Kara wrote:
+> Commit d279c80e0bac ("iomap: inline iomap_dio_bio_opflags()") has broken
+> the logic in iomap_dio_bio_iter() in a way that when the device does
+> support FUA (or has no writeback cache) and the direct IO happens to
+> freshly allocated or unwritten extents, we will *not* issue fsync after
+> completing direct IO O_SYNC / O_DSYNC write because the
+> IOMAP_DIO_WRITE_THROUGH flag stays mistakenly set.
 
-[ Upstream commit 6aae87fe7f180cd93a74466cdb6cf2aa9bb28798 ]
+Uh-oh.
 
-Before each I2C transfer using DMA, the I2C buffer is DMA'pped to make
-sure the memory buffer is DMA'able. This is handle in the function
-`stm32_i2c_prep_dma_xfer()`.
-If the transfer fails for any reason the I2C buffer must be unmap.
-Use the dma_callback to factorize the code and fix this issue.
+Looks good:
 
-Note that the `stm32f7_i2c_dma_callback()` is now called in case of DMA
-transfer success and error and that the `complete()` on the dma_complete
-completion structure is done inconditionnally in case of transfer
-success or error as well as the `dmaengine_terminate_async()`.
-This is allowed as a `complete()` in case transfer error has no effect
-as well as a `dmaengine_terminate_async()` on a transfer success.
-
-Also fix the unneeded cast and remove not more needed variables.
-
-Fixes: 7ecc8cfde553 ("i2c: i2c-stm32f7: Add DMA support")
-Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
-Cc: <stable@vger.kernel.org> # v4.18+
-Acked-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250704-i2c-upstream-v4-2-84a095a2c728@foss.st.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/i2c/busses/i2c-stm32f7.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-stm32f7.c b/drivers/i2c/busses/i2c-stm32f7.c
-index cc76c71666e5..956803ba6c1e 100644
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -726,10 +726,11 @@ static void stm32f7_i2c_disable_dma_req(struct stm32f7_i2c_dev *i2c_dev)
- 
- static void stm32f7_i2c_dma_callback(void *arg)
- {
--	struct stm32f7_i2c_dev *i2c_dev = (struct stm32f7_i2c_dev *)arg;
-+	struct stm32f7_i2c_dev *i2c_dev = arg;
- 	struct stm32_i2c_dma *dma = i2c_dev->dma;
- 
- 	stm32f7_i2c_disable_dma_req(i2c_dev);
-+	dmaengine_terminate_async(dma->chan_using);
- 	dma_unmap_single(i2c_dev->dev, dma->dma_buf, dma->dma_len,
- 			 dma->dma_data_dir);
- 	complete(&dma->dma_complete);
-@@ -1525,7 +1526,6 @@ static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
- {
- 	struct stm32f7_i2c_dev *i2c_dev = data;
- 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
--	struct stm32_i2c_dma *dma = i2c_dev->dma;
- 	void __iomem *base = i2c_dev->base;
- 	u32 status, mask;
- 	int ret;
-@@ -1540,10 +1540,8 @@ static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
- 		dev_dbg(i2c_dev->dev, "<%s>: Receive NACK (addr %x)\n",
- 			__func__, f7_msg->addr);
- 		writel_relaxed(STM32F7_I2C_ICR_NACKCF, base + STM32F7_I2C_ICR);
--		if (i2c_dev->use_dma) {
--			stm32f7_i2c_disable_dma_req(i2c_dev);
--			dmaengine_terminate_async(dma->chan_using);
--		}
-+		if (i2c_dev->use_dma)
-+			stm32f7_i2c_dma_callback(i2c_dev);
- 		f7_msg->result = -ENXIO;
- 	}
- 
-@@ -1561,8 +1559,7 @@ static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
- 			ret = wait_for_completion_timeout(&i2c_dev->dma->dma_complete, HZ);
- 			if (!ret) {
- 				dev_dbg(i2c_dev->dev, "<%s>: Timed out\n", __func__);
--				stm32f7_i2c_disable_dma_req(i2c_dev);
--				dmaengine_terminate_async(dma->chan_using);
-+				stm32f7_i2c_dma_callback(i2c_dev);
- 				f7_msg->result = -ETIMEDOUT;
- 			}
- 		}
-@@ -1604,7 +1601,6 @@ static irqreturn_t stm32f7_i2c_isr_error_thread(int irq, void *data)
- 	u16 addr = f7_msg->addr;
- 	void __iomem *base = i2c_dev->base;
- 	struct device *dev = i2c_dev->dev;
--	struct stm32_i2c_dma *dma = i2c_dev->dma;
- 	u32 status;
- 
- 	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
-@@ -1648,10 +1644,8 @@ static irqreturn_t stm32f7_i2c_isr_error_thread(int irq, void *data)
- 	}
- 
- 	/* Disable dma */
--	if (i2c_dev->use_dma) {
--		stm32f7_i2c_disable_dma_req(i2c_dev);
--		dmaengine_terminate_async(dma->chan_using);
--	}
-+	if (i2c_dev->use_dma)
-+		stm32f7_i2c_dma_callback(i2c_dev);
- 
- 	i2c_dev->master_mode = false;
- 	complete(&i2c_dev->complete);
--- 
-2.39.5
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
