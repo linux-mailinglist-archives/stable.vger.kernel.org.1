@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-165428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED42B15D41
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BD9B15C2B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 079AF5646F4
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640B05A4EDC
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30AC2980C4;
-	Wed, 30 Jul 2025 09:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA981292B26;
+	Wed, 30 Jul 2025 09:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ti0i37nL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjLdt4IE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80802292B5C;
-	Wed, 30 Jul 2025 09:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E0D1F1306;
+	Wed, 30 Jul 2025 09:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869093; cv=none; b=MsHRa41+8wBD/HvBcN7Hi/TDOfcrUqmJ4RMZc2d9kBfybdrJOqhY84pMw7KItwAUrAq36jS5xToxoDlfeUz9IwI6RTWl7K1z40AjoigpvUhR09/+HddZc0tDSTPNOkxgo/ERokUMPIVOVvo6YcD6nf0uZYEkinCw/goeb1njdYs=
+	t=1753868279; cv=none; b=InkglX+Jl1uZHuW4ZB/sEbq32hkURQZpqMYzPBS8P10Hfd7HRkWS0JEld9EZgs1vUESE0gQL6Nws9RvRZoKtnxLoxy4D7tWTwlpIXJNkEMLXFggCo7sHZwZ47OeUSPh4UQOKQyhXmSMRBplOLvdRxQ58vUWjN0Nrze/iUQVpfQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869093; c=relaxed/simple;
-	bh=ACb3iwt/KxWp59ZWLE2HGeL+PFZQKVTgUyx07pe0P/w=;
+	s=arc-20240116; t=1753868279; c=relaxed/simple;
+	bh=b/SlJ/kVFqfFd7ppPFmnUkCtnvn/a+GsHh9EAS5Av2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjitPtmnnn2RmkN2fpkqd7t3/sVhCvWOPwXBFy2EprdGda5oILgJZgncBpBfv1ZMXoXCIEdSMXYBAhGOhpX9gY2vIFpZ5Q2dFOi3KSAMcr4t17Iu82WykFohQpeEfCaJSQsUDbkQzsTxhgAyl8WXSxfSOJRWr2t9/qT4uqHN9TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ti0i37nL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E03C4CEFF;
-	Wed, 30 Jul 2025 09:51:32 +0000 (UTC)
+	 MIME-Version; b=h2s6XoHnDyLT9pDweEtyyM7OYG5o3jt83dzscbgLp+0ypc9OQt10CzZiuFWzKoSAXxw8yrhkf4EJff+hk+Yz4PGuvRm4b6RV3uhw2FiP0EqkHxZS1sH+ub3LeaHor/RgctZ8UA4wLGgDSYfri/zNaITFR9/nv1E9fIaZACJMkcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjLdt4IE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAB2C4CEE7;
+	Wed, 30 Jul 2025 09:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869093;
-	bh=ACb3iwt/KxWp59ZWLE2HGeL+PFZQKVTgUyx07pe0P/w=;
+	s=korg; t=1753868279;
+	bh=b/SlJ/kVFqfFd7ppPFmnUkCtnvn/a+GsHh9EAS5Av2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ti0i37nLt5roYzZcdtzoFH6sv3ucrUoizlPGV0TlbKaag/7jGFoq4kE4ZxE9nBYzy
-	 eLZygXGWg3NGgCOgevbJiD1D3ydVH/AwC66P2aSCdFrSBYvS67gb0byLQsd6PKHXc8
-	 tnq98u2QJcby/aKTr0QyVxC4qjd3JVPmNLJinuyc=
+	b=LjLdt4IEhkbHjPyOCLC0H8sbibs362joQEiDS6REnJYS+EbuNnhQDDpfebnrhhelj
+	 KDgDnwn0cOlAoGl0KyAvbz+V3fecRXUED+2xexwBeh5fuKGyYvFQFeUkSiRHmnxhdr
+	 Dr+9ExhjlgthR8kZsmuo9hYimHKN4zNK5+IHojxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Burri <markus.burri@mt.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Aliaksei Makarau <Aliaksei.Makarau@ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 08/92] iio: fix potential out-of-bound write
+Subject: [PATCH 6.6 23/76] s390/ism: fix concurrency management in ism_cmd()
 Date: Wed, 30 Jul 2025 11:35:16 +0200
-Message-ID: <20250730093230.952332951@linuxfoundation.org>
+Message-ID: <20250730093227.742807414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +66,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Burri <markus.burri@mt.com>
+From: Halil Pasic <pasic@linux.ibm.com>
 
-[ Upstream commit 16285a0931869baa618b1f5d304e1e9d090470a8 ]
+[ Upstream commit 897e8601b9cff1d054cdd53047f568b0e1995726 ]
 
-The buffer is set to 20 characters. If a caller write more characters,
-count is truncated to the max available space in "simple_write_to_buffer".
-To protect from OoB access, check that the input size fit into buffer and
-add a zero terminator after copy to the end of the copied data.
+The s390x ISM device data sheet clearly states that only one
+request-response sequence is allowable per ISM function at any point in
+time.  Unfortunately as of today the s390/ism driver in Linux does not
+honor that requirement. This patch aims to rectify that.
 
-Fixes: 6d5dd486c715 iio: core: make use of simple_write_to_buffer()
-Signed-off-by: Markus Burri <markus.burri@mt.com>
-Link: https://patch.msgid.link/20250508130612.82270-4-markus.burri@mt.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This problem was discovered based on Aliaksei's bug report which states
+that for certain workloads the ISM functions end up entering error state
+(with PEC 2 as seen from the logs) after a while and as a consequence
+connections handled by the respective function break, and for future
+connection requests the ISM device is not considered -- given it is in a
+dysfunctional state. During further debugging PEC 3A was observed as
+well.
+
+A kernel message like
+[ 1211.244319] zpci: 061a:00:00.0: Event 0x2 reports an error for PCI function 0x61a
+is a reliable indicator of the stated function entering error state
+with PEC 2. Let me also point out that a kernel message like
+[ 1211.244325] zpci: 061a:00:00.0: The ism driver bound to the device does not support error recovery
+is a reliable indicator that the ISM function won't be auto-recovered
+because the ISM driver currently lacks support for it.
+
+On a technical level, without this synchronization, commands (inputs to
+the FW) may be partially or fully overwritten (corrupted) by another CPU
+trying to issue commands on the same function. There is hard evidence that
+this can lead to DMB token values being used as DMB IOVAs, leading to
+PEC 2 PCI events indicating invalid DMA. But this is only one of the
+failure modes imaginable. In theory even completely losing one command
+and executing another one twice and then trying to interpret the outputs
+as if the command we intended to execute was actually executed and not
+the other one is also possible.  Frankly, I don't feel confident about
+providing an exhaustive list of possible consequences.
+
+Fixes: 684b89bc39ce ("s390/ism: add device driver for internal shared memory")
+Reported-by: Aliaksei Makarau <Aliaksei.Makarau@ibm.com>
+Tested-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Tested-by: Aliaksei Makarau <Aliaksei.Makarau@ibm.com>
+Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722161817.1298473-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/s390/net/ism_drv.c | 3 +++
+ include/linux/ism.h        | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index b9f4113ae5fc3..ebf17ea5a5f93 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -410,12 +410,15 @@ static ssize_t iio_debugfs_write_reg(struct file *file,
- 	char buf[80];
- 	int ret;
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index af0d90beba638..76ba36c83e522 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -130,6 +130,7 @@ static int ism_cmd(struct ism_dev *ism, void *cmd)
+ 	struct ism_req_hdr *req = cmd;
+ 	struct ism_resp_hdr *resp = cmd;
  
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
-+
- 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
- 				     count);
- 	if (ret < 0)
- 		return ret;
++	spin_lock(&ism->cmd_lock);
+ 	__ism_write_cmd(ism, req + 1, sizeof(*req), req->len - sizeof(*req));
+ 	__ism_write_cmd(ism, req, 0, sizeof(*req));
  
--	buf[count] = '\0';
-+	buf[ret] = '\0';
+@@ -143,6 +144,7 @@ static int ism_cmd(struct ism_dev *ism, void *cmd)
+ 	}
+ 	__ism_read_cmd(ism, resp + 1, sizeof(*resp), resp->len - sizeof(*resp));
+ out:
++	spin_unlock(&ism->cmd_lock);
+ 	return resp->ret;
+ }
  
- 	ret = sscanf(buf, "%i %i", &reg, &val);
+@@ -630,6 +632,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		return -ENOMEM;
+ 
+ 	spin_lock_init(&ism->lock);
++	spin_lock_init(&ism->cmd_lock);
+ 	dev_set_drvdata(&pdev->dev, ism);
+ 	ism->pdev = pdev;
+ 	ism->dev.parent = &pdev->dev;
+diff --git a/include/linux/ism.h b/include/linux/ism.h
+index 9a4c204df3da1..04e2fc1973ce4 100644
+--- a/include/linux/ism.h
++++ b/include/linux/ism.h
+@@ -28,6 +28,7 @@ struct ism_dmb {
+ 
+ struct ism_dev {
+ 	spinlock_t lock; /* protects the ism device */
++	spinlock_t cmd_lock; /* serializes cmds */
+ 	struct list_head list;
+ 	struct pci_dev *pdev;
  
 -- 
 2.39.5
