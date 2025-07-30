@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-165258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF697B15C53
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 040A9B15D5F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F3085A2D39
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1974E5E3F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4B2167DB7;
-	Wed, 30 Jul 2025 09:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201BC293C71;
+	Wed, 30 Jul 2025 09:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rC/2mmLr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS5OQtXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD9C19D065;
-	Wed, 30 Jul 2025 09:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29111E25E1;
+	Wed, 30 Jul 2025 09:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868422; cv=none; b=lN5SZnh8Q25pdmwcHq2Q5lG6YLbXSerI/lfkWIKvuIda9PDps3pRpBroi6o5AasSnpixPuXqzAhaekLwpiMDDZCNCjFeMwfUvWivGY90r8ubjjJYw0FiVXgmt3s5XXuwEaJfbzzgM1rzMQbYGJJEi4fvHKRACRYEKf0N16x38AM=
+	t=1753869123; cv=none; b=Z90tfW8eHbbcLKLaNvcaO4RB7Xp7LlnuhR9ZntM/MxXZFTPdRE2hASMpm2Vb7W/AkVgJd6YsKgKCEBVbpA6aqEPlsyrYi6xWPO6TqsUKTgTnwswxDeo2tz/DpfK1guuwBW7DyaZDRoC92kMWpgAX0FhBCyWkTeXe/K4lN6sxZi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868422; c=relaxed/simple;
-	bh=NZPvdiOPiDoDSlELa9ovJjuWGKPZKtVJLIdjXt0o544=;
+	s=arc-20240116; t=1753869123; c=relaxed/simple;
+	bh=jHIbRkliXP0PxlE5xRMnYQFiV58XvLG/TgJ8qNmBN10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxnmHpZBSG6PpFEs+M42lj2FIuUSvthXIz/ozt49hxtAY1KEmEBZ9mTtEFtf21NXJu9536n6fmiBYBRbHhXQlPFfJ5pQSaM65/6TKpuNpZieMAYRz58QPluTcX0WF0pW3rkxMLTyBmIuhRjMnjJ1hMaYv6VWYQBVJISbC6o4MeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rC/2mmLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488E4C4CEE7;
-	Wed, 30 Jul 2025 09:40:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nwuN24I87GSkl9xz5KpcZwDTKMb7vGxpBdM28DelkuQc2X8osY5cme6bLy32q7m9sYhXR6MFWNVik1zuDvifwgpp36V049WJntMIGKTnSZ9jvutFjWVegRYM8v4lyUEEtBTe5WzdhJiNk5QRfWn+UZMSsi1xBaXDPhgJNACCTjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS5OQtXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F18FC4CEF6;
+	Wed, 30 Jul 2025 09:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868421;
-	bh=NZPvdiOPiDoDSlELa9ovJjuWGKPZKtVJLIdjXt0o544=;
+	s=korg; t=1753869123;
+	bh=jHIbRkliXP0PxlE5xRMnYQFiV58XvLG/TgJ8qNmBN10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rC/2mmLrreTQQO37ECLdXwUmZNnxWRj8xWiARfyHT73Qg0J/cDUjOPmzmxaNQTlrg
-	 oRvvTbsgdSIVS+dFoCeavsKAiJOxlBj7C4UQ8ll2gWP0zQB05SkWhSrK4TttYW9XXR
-	 QjvmPNUhsnmSAJSSjJz+piHxy1MtyAcjCjut8J/w=
+	b=JS5OQtXJXJthwvqoU6zFWGm51pCeBpdFm6vwr8FD0PDXaQ53NnM30HVdF5fzbHpXR
+	 BaKC4mtq5SFOOOT/MsqEV21MkkTMHEQgJU+qszYDZFQB0xrIc1YpENhfPSPGiGqIU/
+	 E/zjdwAHvZUGsN5ltb2DWl4I3Qz8DUlFvliymJag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	David Hildenbrand <david@redhat.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Mattew Wilcox <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jakub Acs <acsjakub@amazon.de>
-Subject: [PATCH 6.6 58/76] mm: khugepaged: fix call hpage_collapse_scan_file() for anonymous vma
+	Kurt Borja <kuurtb@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.15 43/92] platform/x86: alienware-wmi-wmax: Fix `dmi_system_id` array
 Date: Wed, 30 Jul 2025 11:35:51 +0200
-Message-ID: <20250730093229.103714119@linuxfoundation.org>
+Message-ID: <20250730093232.430845659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-commit f1897f2f08b28ae59476d8b73374b08f856973af upstream.
+commit 8346c6af27f1c1410eb314f4be5875fdf1579a10 upstream.
 
-syzkaller reported such a BUG_ON():
+Add missing empty member to `awcc_dmi_table`.
 
- ------------[ cut here ]------------
- kernel BUG at mm/khugepaged.c:1835!
- Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
- ...
- CPU: 6 UID: 0 PID: 8009 Comm: syz.15.106 Kdump: loaded Tainted: G        W          6.13.0-rc6 #22
- Tainted: [W]=WARN
- Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
- pstate: 00400005 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : collapse_file+0xa44/0x1400
- lr : collapse_file+0x88/0x1400
- sp : ffff80008afe3a60
- ...
- Call trace:
-  collapse_file+0xa44/0x1400 (P)
-  hpage_collapse_scan_file+0x278/0x400
-  madvise_collapse+0x1bc/0x678
-  madvise_vma_behavior+0x32c/0x448
-  madvise_walk_vmas.constprop.0+0xbc/0x140
-  do_madvise.part.0+0xdc/0x2c8
-  __arm64_sys_madvise+0x68/0x88
-  invoke_syscall+0x50/0x120
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x34/0x128
-  el0t_64_sync_handler+0xc8/0xd0
-  el0t_64_sync+0x190/0x198
-
-This indicates that the pgoff is unaligned.  After analysis, I confirm the
-vma is mapped to /dev/zero.  Such a vma certainly has vm_file, but it is
-set to anonymous by mmap_zero().  So even if it's mmapped by 2m-unaligned,
-it can pass the check in thp_vma_allowable_order() as it is an
-anonymous-mmap, but then be collapsed as a file-mmap.
-
-It seems the problem has existed for a long time, but actually, since we
-have khugepaged_max_ptes_none check before, we will skip collapse it as it
-is /dev/zero and so has no present page.  But commit d8ea7cc8547c limit
-the check for only khugepaged, so the BUG_ON() can be triggered by
-madvise_collapse().
-
-Add vma_is_anonymous() check to make such vma be processed by
-hpage_collapse_scan_pmd().
-
-Link: https://lkml.kernel.org/r/20250111034511.2223353-1-liushixin2@huawei.com
-Fixes: d8ea7cc8547c ("mm/khugepaged: add flag to predicate khugepaged-only behavior")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mattew Wilcox <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[acsjakub: backport, clean apply]
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: stable@vger.kernel.org
+Fixes: 6d7f1b1a5db6 ("platform/x86: alienware-wmi: Split DMI table")
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250707-dmi-fix-v1-1-6730835d824d@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/khugepaged.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/dell/alienware-wmi-wmax.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2387,7 +2387,7 @@ skip:
- 			VM_BUG_ON(khugepaged_scan.address < hstart ||
- 				  khugepaged_scan.address + HPAGE_PMD_SIZE >
- 				  hend);
--			if (IS_ENABLED(CONFIG_SHMEM) && vma->vm_file) {
-+			if (IS_ENABLED(CONFIG_SHMEM) && !vma_is_anonymous(vma)) {
- 				struct file *file = get_file(vma->vm_file);
- 				pgoff_t pgoff = linear_page_index(vma,
- 						khugepaged_scan.address);
-@@ -2734,7 +2734,7 @@ int madvise_collapse(struct vm_area_stru
- 		mmap_assert_locked(mm);
- 		memset(cc->node_load, 0, sizeof(cc->node_load));
- 		nodes_clear(cc->alloc_nmask);
--		if (IS_ENABLED(CONFIG_SHMEM) && vma->vm_file) {
-+		if (IS_ENABLED(CONFIG_SHMEM) && !vma_is_anonymous(vma)) {
- 			struct file *file = get_file(vma->vm_file);
- 			pgoff_t pgoff = linear_page_index(vma, addr);
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -205,6 +205,7 @@ static const struct dmi_system_id awcc_d
+ 		},
+ 		.driver_data = &g_series_quirks,
+ 	},
++	{}
+ };
  
+ enum WMAX_THERMAL_INFORMATION_OPERATIONS {
 
 
 
