@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-165303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A289BB15C87
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2885AB15C2E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DFE33B45C9
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:42:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1E935A4FD5
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983DB25DB1A;
-	Wed, 30 Jul 2025 09:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB531269AFB;
+	Wed, 30 Jul 2025 09:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GW6r3AGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3r/In3n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560E623D2A2;
-	Wed, 30 Jul 2025 09:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976A0635;
+	Wed, 30 Jul 2025 09:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868601; cv=none; b=M4XvZq+d9lhfNc2KxVAuLOktqJFg7V9EhcMNPxCx1HS95+9FpoCIxPoudYfxncR4ZawUvJp+bTLFhsIvN3RMCSPauUUeEBiBbJU2Dwt1UMXClMsL6ieys3cRXpYrHKUtzHwkqlz30Utv+Tsuu3kgxO6S2E6sF4O3R29AqTIk9do=
+	t=1753868287; cv=none; b=X/l489hdu3sq2Mazy41zzaw67cBrz/0l1+Ape3qbrBPcLfCdPKJoIljJ6E/ajI5DkHFlBJPrz5FSBE1RGE+4tHb1pNXP7fTJDvq5JtRESRrTwyhsxS9g5P7W/anoWvY9KnEPlYHKOU2Cjjyzt1TDhIKBph+gmTFMAWEXKocdb2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868601; c=relaxed/simple;
-	bh=jL8Fkny9RYhuYvDBxtkQxg0d9YfgJMasFFBedYtmEVk=;
+	s=arc-20240116; t=1753868287; c=relaxed/simple;
+	bh=CjRid3Nbq9NgLq4b/w2ebDFGntu3Kg1tEQNig5sFVSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otZwXGgybaHYicIFG3npGCYpsmzqEski6AwuD/dPxlwFUdC2x2InthjkXCZ1/VcnznvsZ+qIMm5rXSlTe3vTgXWnc3yjm10pieSLRfZ6l2Nfc57zMVu9GfzvBcHhsDYom1IVjhDe2V8taAasdlOgnJJ8H9HOeqlN2F3y6tZx0BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GW6r3AGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844FBC4CEF5;
-	Wed, 30 Jul 2025 09:43:18 +0000 (UTC)
+	 MIME-Version; b=Qe3449SkgoA+KeMnhQZ0QG/77XcHjPT+QXtQev88efx9XZrD5BvRguRccpRLlNYcycrQqiuBOBDcj+eIlDgp9Up4XkQWne2s1cLZKUeaS+6wZxA+RJi9SZUAOBx1fIc10zLAGQCdiA0GbYnMv04W3iti/UkxGl/XxGZ2P1rlP5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3r/In3n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85B7C4CEE7;
+	Wed, 30 Jul 2025 09:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868598;
-	bh=jL8Fkny9RYhuYvDBxtkQxg0d9YfgJMasFFBedYtmEVk=;
+	s=korg; t=1753868287;
+	bh=CjRid3Nbq9NgLq4b/w2ebDFGntu3Kg1tEQNig5sFVSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GW6r3AGHEd20UcaPKT8+fG3w7kWk8a6ox2emJDiqw61Rr04c424IS24jA9bVWlurL
-	 VOuLXyBbGGmV96n0lPPkGZVm4yj9CVuIi3M7JxQz2QOgzF0r09v05FbF1EiQ9wBTfq
-	 9ChB144w+kCbeQfS6BCNwtXbwbgEOZ+j04EFJKHM=
+	b=h3r/In3n2bcatinJu6Rry2R6gPSt3C0tUrcISQx6OEXEj7QbmZQ+idaknqHgzRCiw
+	 sY7qeYUov8oFl429zY6vsuzgK8C6Pq5NAt7EaaqTk6ELc9KlanhVJcnb5cSU8rizlN
+	 6W+ywXxd+w78TsTUrr2wODfe9R0dKdlrRQJnXl6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/117] i40e: When removing VF MAC filters, only check PF-set MAC
-Date: Wed, 30 Jul 2025 11:34:56 +0200
-Message-ID: <20250730093234.625438748@linuxfoundation.org>
+Subject: [PATCH 6.6 04/76] RDMA/core: Rate limit GID cache warning messages
+Date: Wed, 30 Jul 2025 11:34:57 +0200
+Message-ID: <20250730093227.028382181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Maor Gottlieb <maorg@nvidia.com>
 
-[ Upstream commit 5a0df02999dbe838c3feed54b1d59e9445f68b89 ]
+[ Upstream commit 333e4d79316c9ed5877d7aac8b8ed22efc74e96d ]
 
-When the PF is processing an Admin Queue message to delete a VF's MACs
-from the MAC filter, we currently check if the PF set the MAC and if
-the VF is trusted.
+The GID cache warning messages can flood the kernel log when there are
+multiple failed attempts to add GIDs. This can happen when creating many
+virtual interfaces without having enough space for their GIDs in the GID
+table.
 
-This results in undesirable behaviour, where if a trusted VF with a
-PF-set MAC sets itself down (which sends an AQ message to delete the
-VF's MAC filters) then the VF MAC is erased from the interface.
+Change pr_warn to pr_warn_ratelimited to prevent log flooding while still
+maintaining visibility of the issue.
 
-This results in the VF losing its PF-set MAC which should not happen.
-
-There is no need to check for trust at all, because an untrusted VF
-cannot change its own MAC. The only check needed is whether the PF set
-the MAC. If the PF set the MAC, then don't erase the MAC on link-down.
-
-Resolve this by changing the deletion check only for PF-set MAC.
-
-(the out-of-tree driver has also intentionally removed the check for VF
-trust here with OOT driver version 2.26.8, this changes the Linux kernel
-driver behaviour and comment to match the OOT driver behaviour)
-
-Fixes: ea2a1cfc3b201 ("i40e: Fix VF MAC filter removal")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/r/fd45ed4a1078e743f498b234c3ae816610ba1b18.1750062357.git.leon@kernel.org
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
+ drivers/infiniband/core/cache.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 8814909168039..97f32a0c68d09 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3137,10 +3137,10 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
- 		const u8 *addr = al->list[i].addr;
+diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
+index 0b88203720b05..77c0b89259911 100644
+--- a/drivers/infiniband/core/cache.c
++++ b/drivers/infiniband/core/cache.c
+@@ -582,8 +582,8 @@ static int __ib_cache_gid_add(struct ib_device *ib_dev, u32 port,
+ out_unlock:
+ 	mutex_unlock(&table->lock);
+ 	if (ret)
+-		pr_warn("%s: unable to add gid %pI6 error=%d\n",
+-			__func__, gid->raw, ret);
++		pr_warn_ratelimited("%s: unable to add gid %pI6 error=%d\n",
++				    __func__, gid->raw, ret);
+ 	return ret;
+ }
  
- 		/* Allow to delete VF primary MAC only if it was not set
--		 * administratively by PF or if VF is trusted.
-+		 * administratively by PF.
- 		 */
- 		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
--			if (i40e_can_vf_change_mac(vf))
-+			if (!vf->pf_set_mac)
- 				was_unimac_deleted = true;
- 			else
- 				continue;
 -- 
 2.39.5
 
