@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-165368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838D3B15CE1
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CB8B15D39
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C317167C0D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F7957A1A02
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3172877D3;
-	Wed, 30 Jul 2025 09:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B338293C51;
+	Wed, 30 Jul 2025 09:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcpuQmuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8OD2l21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DE1279DA0;
-	Wed, 30 Jul 2025 09:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498E3226D17;
+	Wed, 30 Jul 2025 09:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868849; cv=none; b=Tl3Pk9LuA/i9TkBStrRf1ghpqP78hy5rig3gzswiQ2B37a2YOB5rLDWwXXUwFQ/WxwbpsDJAkoRu6g666+JOMOgFaGeYqX10lqiEDO3DnrA0EmCXK2kiVSdOaAjauBW/aZOysIqM4ZC49ZeNTPVaYXLK0y5SSxYkhFBxMjY+g5U=
+	t=1753869062; cv=none; b=qPuwOo94UELLuFZDTf0QoSIs6iWaILc2UOufqlxX0y1/8zjF9p7CSIIosqxqv2LmK+eQaW8m2tTCmqJDcjJRMJP/9VYppcARqbQOwRbuWUSiiC8NJSdVTYCJmCjJC6VtSuw5n3IRGn+CBr1kRZz31OqA2cFLpshw8Assw/LdbzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868849; c=relaxed/simple;
-	bh=crGsTXcHv3aUJ+7IJweXWUGxNivCKHP5B/FZri6vKaE=;
+	s=arc-20240116; t=1753869062; c=relaxed/simple;
+	bh=xTYTfK3EJcWk8a5sTrQ7K8Z52a0gNrUovwDgBg0+9Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8noJVqV6Fyx4KLkPz5yy2ftmm4BLpPXdydOaGWCPIMWB1q6rHvhZp+Fn/lZ6To0FE8IuULKq6NswK+hOtpy0IUQHRl0ULqVtRGis1OFvSpK56XQU1iZgINZ653/AA0GAQaIXay5Wuf0lLHjdfLUmyC6oVZpsO4Wmj7gkejeWgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcpuQmuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1F6C4CEF5;
-	Wed, 30 Jul 2025 09:47:28 +0000 (UTC)
+	 MIME-Version; b=Jbb1twniSxXCIESSmjHR5T8675foAMYqKd3/Ukk5mqBnEs+v6j5PvBbPdeShiLL72IwLU5dYFuULQPWf0tAPa4ArhXs4BG+/3cRBa7Xcsa0fwrq4zq8CvUYvbCSABJ8ogqf/j+BjAQAGS5luX8AdgBL5UJoPn8C4wcZ85r6ibiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8OD2l21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9A3C4CEF5;
+	Wed, 30 Jul 2025 09:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868849;
-	bh=crGsTXcHv3aUJ+7IJweXWUGxNivCKHP5B/FZri6vKaE=;
+	s=korg; t=1753869061;
+	bh=xTYTfK3EJcWk8a5sTrQ7K8Z52a0gNrUovwDgBg0+9Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RcpuQmuu2g/VT/cq3Fh8QCW4xPTTFla63d5RUfOtRd8idHBSuOrmXBe1t0wSOPL7X
-	 cH7nLtknxjWu92L378EOSsEG4N5T/ikNPSRaHbz786WQF+T0j+QFSq0TnCiMFATKDB
-	 ut/y2uvbeRC0Qphzpnz+3gWDtX4Mai3bm3szFWcA=
+	b=O8OD2l211IPfDzs25NiDX0FQ2xDhKzrVyEL8ZdF1ar/QrLTGJAScYROh8HmpxPhXB
+	 ImL3UueufCy5niyKysGGmfydB9OAhathosrKZyNLRbKiDqIKCooMETr5knkhqUlS08
+	 qHgM6DKMNxFKygGlt54UCJSAotBkVrwcIDYCAf88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	syzbot+3b220254df55d8ca8a61@syzkaller.appspotmail.com,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 065/117] mm/vmscan: fix hwpoisoned large folio handling in shrink_folio_list
+	Guoqing Jiang <guoqing.jiang@canonical.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 26/92] ASoC: mediatek: mt8365-dai-i2s: pass correct size to mt8365_dai_set_priv
 Date: Wed, 30 Jul 2025 11:35:34 +0200
-Message-ID: <20250730093236.072393604@linuxfoundation.org>
+Message-ID: <20250730093231.764539949@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,89 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Guoqing Jiang <guoqing.jiang@canonical.com>
 
-commit 9f1e8cd0b7c4c944e9921b52a6661b5eda2705ab upstream.
+[ Upstream commit 6bea85979d05470e6416a2bb504a9bcd9178304c ]
 
-In shrink_folio_list(), the hwpoisoned folio may be large folio, which
-can't be handled by unmap_poisoned_folio().  For THP, try_to_unmap_one()
-must be passed with TTU_SPLIT_HUGE_PMD to split huge PMD first and then
-retry.  Without TTU_SPLIT_HUGE_PMD, we will trigger null-ptr deref of
-pvmw.pte.  Even we passed TTU_SPLIT_HUGE_PMD, we will trigger a
-WARN_ON_ONCE due to the page isn't in swapcache.
+Given mt8365_dai_set_priv allocate priv_size space to copy priv_data which
+means we should pass mt8365_i2s_priv[i] or "struct mtk_afe_i2s_priv"
+instead of afe_priv which has the size of "struct mt8365_afe_private".
 
-Since UCE is rare in real world, and race with reclaimation is more rare,
-just skipping the hwpoisoned large folio is enough.  memory_failure() will
-handle it if the UCE is triggered again.
+Otherwise the KASAN complains about.
 
-This happens when memory reclaim for large folio races with
-memory_failure(), and will lead to kernel panic.  The race is as
-follows:
+[   59.389765] BUG: KASAN: global-out-of-bounds in mt8365_dai_set_priv+0xc8/0x168 [snd_soc_mt8365_pcm]
+...
+[   59.394789] Call trace:
+[   59.395167]  dump_backtrace+0xa0/0x128
+[   59.395733]  show_stack+0x20/0x38
+[   59.396238]  dump_stack_lvl+0xe8/0x148
+[   59.396806]  print_report+0x37c/0x5e0
+[   59.397358]  kasan_report+0xac/0xf8
+[   59.397885]  kasan_check_range+0xe8/0x190
+[   59.398485]  asan_memcpy+0x3c/0x98
+[   59.399022]  mt8365_dai_set_priv+0xc8/0x168 [snd_soc_mt8365_pcm]
+[   59.399928]  mt8365_dai_i2s_register+0x1e8/0x2b0 [snd_soc_mt8365_pcm]
+[   59.400893]  mt8365_afe_pcm_dev_probe+0x4d0/0xdf0 [snd_soc_mt8365_pcm]
+[   59.401873]  platform_probe+0xcc/0x228
+[   59.402442]  really_probe+0x340/0x9e8
+[   59.402992]  driver_probe_device+0x16c/0x3f8
+[   59.403638]  driver_probe_device+0x64/0x1d8
+[   59.404256]  driver_attach+0x1dc/0x4c8
+[   59.404840]  bus_for_each_dev+0x100/0x190
+[   59.405442]  driver_attach+0x44/0x68
+[   59.405980]  bus_add_driver+0x23c/0x500
+[   59.406550]  driver_register+0xf8/0x3d0
+[   59.407122]  platform_driver_register+0x68/0x98
+[   59.407810]  mt8365_afe_pcm_driver_init+0x2c/0xff8 [snd_soc_mt8365_pcm]
 
-cpu0      cpu1
- shrink_folio_list memory_failure
-  TestSetPageHWPoison
-  unmap_poisoned_folio
-  --> trigger BUG_ON due to
-  unmap_poisoned_folio couldn't
-   handle large folio
-
-[tujinjiang@huawei.com: add comment to unmap_poisoned_folio()]
-  Link: https://lkml.kernel.org/r/69fd4e00-1b13-d5f7-1c82-705c7d977ea4@huawei.com
-Link: https://lkml.kernel.org/r/20250627125747.3094074-2-tujinjiang@huawei.com
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Fixes: 1b0449544c64 ("mm/vmscan: don't try to reclaim hwpoison folio")
-Reported-by: syzbot+3b220254df55d8ca8a61@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68412d57.050a0220.2461cf.000e.GAE@google.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 402bbb13a195 ("ASoC: mediatek: mt8365: Add I2S DAI support")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20250710011806.134507-1-guoqing.jiang@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory-failure.c |    4 ++++
- mm/vmscan.c         |    8 ++++++++
- 2 files changed, 12 insertions(+)
+ sound/soc/mediatek/mt8365/mt8365-dai-i2s.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1559,6 +1559,10 @@ static int get_hwpoison_page(struct page
- 	return ret;
- }
- 
-+/*
-+ * The caller must guarantee the folio isn't large folio, except hugetlb.
-+ * try_to_unmap() can't handle it.
-+ */
- int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
+diff --git a/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c b/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c
+index cae51756cead8..cb9beb172ed59 100644
+--- a/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c
++++ b/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c
+@@ -812,11 +812,10 @@ static const struct snd_soc_dapm_route mtk_dai_i2s_routes[] = {
+ static int mt8365_dai_i2s_set_priv(struct mtk_base_afe *afe)
  {
- 	enum ttu_flags ttu = TTU_IGNORE_MLOCK | TTU_SYNC | TTU_HWPOISON;
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1080,6 +1080,14 @@ retry:
- 			goto keep;
+ 	int i, ret;
+-	struct mt8365_afe_private *afe_priv = afe->platform_priv;
  
- 		if (folio_contain_hwpoisoned_page(folio)) {
-+			/*
-+			 * unmap_poisoned_folio() can't handle large
-+			 * folio, just skip it. memory_failure() will
-+			 * handle it if the UCE is triggered again.
-+			 */
-+			if (folio_test_large(folio))
-+				goto keep_locked;
-+
- 			unmap_poisoned_folio(folio, folio_pfn(folio), false);
- 			folio_unlock(folio);
- 			folio_put(folio);
+ 	for (i = 0; i < DAI_I2S_NUM; i++) {
+ 		ret = mt8365_dai_set_priv(afe, mt8365_i2s_priv[i].id,
+-					  sizeof(*afe_priv),
++					  sizeof(mt8365_i2s_priv[i]),
+ 					  &mt8365_i2s_priv[i]);
+ 		if (ret)
+ 			return ret;
+-- 
+2.39.5
+
 
 
 
