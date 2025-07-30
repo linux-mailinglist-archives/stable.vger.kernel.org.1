@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-165193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A530B159BA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72935B159BC
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C87E173492
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 07:40:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1172417F3F0
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 07:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103BD291166;
-	Wed, 30 Jul 2025 07:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D60F28FFEE;
+	Wed, 30 Jul 2025 07:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="UhGjjZNm"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="rtFnWJAX"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79EC2900AD
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 07:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B3328FFE6
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 07:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753861183; cv=none; b=Q/6OIJvaZTwGFzIcZ2fS6HeYeBOLOZaAqyeFNHpXMsR9Y+hYMQrDuIiv9dKidOiE35V1t+z2QVVoeooZotPJRmUtWSRBH6v0ixN27ktCMmosDKbtt+S51fuZrrdTnU4ShBjwhFFRPr1g+lxtUfHl2WvG4LjZAzlqeSBsTivJYVw=
+	t=1753861197; cv=none; b=VoipPDaUrAHbJdtBXqyiggkNI8m7IBh3FQVRkRNjILi9H/Ivee4CNCXWJcKx/rJiVHqwbU+UO/HGXhyW+oTUiy9WEYu0MtKqXouK+qHInAd0L/603Jg54lYJoCk9PKTJo018xt2wma529tQogzTSs3R4+K3sPL/3TI8KvsWteV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753861183; c=relaxed/simple;
+	s=arc-20240116; t=1753861197; c=relaxed/simple;
 	bh=XbM/osrdwppUAadQj/rOMu4sk+QJcZIh4CN8wzXLDao=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qn1vC5SVljS+wSVrbv1VizV+sqht4qCbx+ldfdHMMUSZc0a19RdCbti6EIf4TBsWmnvKlJO80fxn/8dfIrPno0ipIXIZh0avMH4o/9I0RtbK8p6LIgZP42cDayGC3jZ42xbCCTLj7zY+Y2n9jY0507J3KUal3p84OJACF6gY318=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=UhGjjZNm; arc=none smtp.client-ip=34.218.115.239
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pb1hUsZuGBIAltc3/SOcrIIECsHjxQNiXM3BqlabHtBpXUoAwPGYxyjNoFF6K1AXht89Tb7cEiAWVNnO0Nt6XxeAxayiUYI2pUtaRocajSrdMteIgwLp2l9g8DC3M/p3bMVunB2K5oWfTsbI9Mw24N6ypcuxbsdCAVxYYP49HN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=rtFnWJAX; arc=none smtp.client-ip=52.119.213.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1753861181; x=1785397181;
+  t=1753861196; x=1785397196;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
   bh=oVpHujIKEbwnOnxA22ZIgd8V/890VYrstz1N5qLXglg=;
-  b=UhGjjZNmKSrbcXRce/u+qSjPBQoAPBavSlruXCZCDMmqu9fJmLKmLojj
-   vg5/7tNDcKla6Jrxujms1mEdLSmhvJUOIlBoOu81Y5eIjgSXQQ/JmFktX
-   xu0uqC/08TUUn3oCVke3ffqpyPK2Z70IWZpDJCK3wwSvTwGpwg9o+iVuk
-   HT/uCnghcNr3bAaqEr5OH+2x/W4CcESl+MfHyygoZ1VKaPl/nsjNTQnLg
-   Iv3LDy5twMPkpiPc4fUZzf274PO7jGigo/00gAPZI4+N/ptPIeiNVXZfz
-   YSE/IKkPw78U8XpAla8MeqUHYg+fwA5SgZNhfhibfluIBSyvJTkyCArZ5
-   Q==;
-X-CSE-ConnectionGUID: sxu57Rh3Tsu3wsYfVIeVZg==
-X-CSE-MsgGUID: s5qnUr5aStSFIy7rCXS9Og==
+  b=rtFnWJAXACj4DxNh1xcyzmf13mvfOPN1V6gxA9Cb3A1WmkYydwI5htIC
+   00EkLVh3iocHPFy5XjRvk56rseqS6ioUhBTvi+080ZFfW0QturWdbvHzU
+   WLPc5a2UTyBJs7bySEs8dmlLekiIThzSP1t6QbgN1w4heS/tNSJ4rIfbe
+   5T9XiWrobIQBGgZCDvTRKDKxJiHAniS0bspg/KZvCSJpPucolSyIzhC37
+   SWb7+0hrWA6tsAiac9C8fA4D6t59WWBExVfKqR5Kln4jJqNx+koZYbRr0
+   J7LVqtE6It6HgdhMG5ZbqhERncUzUJZBq3YPd12uWb6ljS8S/ilkQRIvB
+   g==;
 X-IronPort-AV: E=Sophos;i="6.16,350,1744070400"; 
-   d="scan'208";a="484926"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 07:39:39 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:37472]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.29:2525] with esmtp (Farcaster)
- id 5ce5c615-36c0-4a07-90cb-41fc505535f6; Wed, 30 Jul 2025 07:39:39 +0000 (UTC)
-X-Farcaster-Flow-ID: 5ce5c615-36c0-4a07-90cb-41fc505535f6
+   d="scan'208";a="744797884"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 07:39:51 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:2512]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.6.204:2525] with esmtp (Farcaster)
+ id 902956ed-3570-4762-a792-007f85fb3c06; Wed, 30 Jul 2025 07:39:50 +0000 (UTC)
+X-Farcaster-Flow-ID: 902956ed-3570-4762-a792-007f85fb3c06
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 30 Jul 2025 07:39:39 +0000
+ Wed, 30 Jul 2025 07:39:50 +0000
 Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
  (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Wed, 30 Jul 2025
- 07:39:36 +0000
+ 07:39:47 +0000
 From: Jakub Acs <acsjakub@amazon.de>
 To: <stable@vger.kernel.org>
 CC: <acsjakub@amazon.de>, <gregkh@linuxfoundation.org>, Liu Shixin
@@ -72,9 +70,9 @@ CC: <acsjakub@amazon.de>, <gregkh@linuxfoundation.org>, Liu Shixin
  Song" <muchun.song@linux.dev>, Nanyong Sun <sunnanyong@huawei.com>, Qi Zheng
 	<zhengqi.arch@bytedance.com>, Andrew Morton <akpm@linux-foundation.org>,
 	<linux-mm@kvack.org>
-Subject: [PATCH v2 6.1.y] mm: khugepaged: fix call hpage_collapse_scan_file() for anonymous vma
-Date: Wed, 30 Jul 2025 07:39:27 +0000
-Message-ID: <20250730073927.27312-1-acsjakub@amazon.de>
+Subject: [PATCH v2 6.12.y] mm: khugepaged: fix call hpage_collapse_scan_file() for anonymous vma
+Date: Wed, 30 Jul 2025 07:39:45 +0000
+Message-ID: <20250730073945.27790-1-acsjakub@amazon.de>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -82,7 +80,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D033UWA004.ant.amazon.com (10.13.139.85) To
+X-ClientProxiedBy: EX19D041UWB001.ant.amazon.com (10.13.139.132) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
