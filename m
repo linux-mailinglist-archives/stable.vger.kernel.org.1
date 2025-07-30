@@ -1,111 +1,93 @@
-Return-Path: <stable+bounces-165202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499F1B15AFD
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 10:56:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FC8B15B2C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89541176305
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 08:56:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 906C33A7D59
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE67292B2E;
-	Wed, 30 Jul 2025 08:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6756266B66;
+	Wed, 30 Jul 2025 09:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uT1E4D+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msAu1NXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D391291C3E
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 08:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968A319D065
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 09:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753865812; cv=none; b=t1HXhRe1FOPRIFxSyLRkl0AI5NSlk7xY2RSwvZX1tyAmIBOhKQO9XftuMbiYaO++CqCNgWiW4xUNkqY07eJB3qY+cGRPl1GCFnP62xJ3IKOw28hbFLMK41+iUMBTIkW5XJ0Jp2a3YKxgQzHIFlKMNP+CkAZUXd26tJJqpspFwek=
+	t=1753866217; cv=none; b=XtqIT//ltKtVA/ITDSyx5WDepEB4GbJ/Q2Tjn77/A1MYx7+LKpSVnXPx7mK9WOLEzkht5A0FtUaMfFqAzTbiaU0K1RQ+xy1VEt5MlP4Y8evx/aevtSO8DcCbjY3ZjR6qkkHqp3zd6WdXy4d/FInwpsyKmVFa5CmPYU/Tk6teUvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753865812; c=relaxed/simple;
-	bh=EfZhugfzbHgTbLEPaIBKkOed2WItYZLV1HRVfZQpNfc=;
+	s=arc-20240116; t=1753866217; c=relaxed/simple;
+	bh=rpUXLjFgouFug6BoRpKzR6ROMRP86sWKSEvgWHsFRnA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ktNbxnGYMOtMwPanP5ua2H0qSx0WaEB5E+tJcrN8lr+XnjUDTAsI9t8tkXMeTd+uzIslmI9wee2TIBH9d3EjhAHekYft5GeVK0WHG5gTe8bC0uj8ZyGa4XsuhEXHQhbpgjOR9FxsAk+4v4ayHhnnTiygYfz6KT2Y/pXFGl7U6gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uT1E4D+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C94C4CEE7;
-	Wed, 30 Jul 2025 08:56:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tzg/x/osYB1AX3Wyv/6Jvn940PllMsJgmFRJDo42rdycqUgvBhx83fJoqB2uHq2CoTpu8W78lt4F7A1qBrV3gN+EJKmBGPN4yEmX7sDhLIxn+w2EimhxYtm9zClDia0eLITZI4k9e+IqjaI+g6McXlpBbbV0/gWMe051awAL0EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msAu1NXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B42C4CEE7;
+	Wed, 30 Jul 2025 09:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753865811;
-	bh=EfZhugfzbHgTbLEPaIBKkOed2WItYZLV1HRVfZQpNfc=;
+	s=korg; t=1753866217;
+	bh=rpUXLjFgouFug6BoRpKzR6ROMRP86sWKSEvgWHsFRnA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uT1E4D+IJbv/xqrcus4bCjapHycaH/c/jKACV3nH99VfaJRuVRxHV6hWj8WMiH34I
-	 gA7FAb84z7JvmviFsxZCuYtV57IoispeLLNYWOkbv6c0yoLKprcte5jHVdlbK8B0fH
-	 QJ2+spvw926hGWjdllNobMdUtHoz9kJdfhCcmbd4=
-Date: Wed, 30 Jul 2025 10:56:49 +0200
+	b=msAu1NXXwg22E31wfW/APfmdHn9LtQ0xH2NUVe0APtO78M0kZsL+x1G7S21bdI0pD
+	 O+8F3m5IB/yuBY7y+RkbQIJLgYVMxJVb0o1KiLKMUY5YwRLdUWlbLMmZrs+8sjolZX
+	 ExCwjP1ZtuPH32VshUetp9hTg2ncvdp5n3/dGI6Y=
+Date: Wed, 30 Jul 2025 11:03:34 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org,
-	stable@vger.kernel.org, lujialin4@huawei.com, chenridong@huawei.com
-Subject: Re: [PATCH 6.6] arm64: kaslr: fix nokaslr cmdline parsing
-Message-ID: <2025073042-sacrifice-cornhusk-a66f@gregkh>
-References: <20250728124644.63207-1-chenridong@huaweicloud.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org,
+	=?iso-8859-1?Q?Cl=E9ment?= Le Goffic <clement.legoffic@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [PATCH 6.6.y 5/6] i2c: stm32: fix the device used for the DMA map
+Message-ID: <2025073007-swapping-upcountry-fd02@gregkh>
+References: <2025072104-bacteria-resend-dcff@gregkh>
+ <20250723001942.1010722-1-sashal@kernel.org>
+ <20250723001942.1010722-5-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250728124644.63207-1-chenridong@huaweicloud.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250723001942.1010722-5-sashal@kernel.org>
 
-On Mon, Jul 28, 2025 at 12:46:44PM +0000, Chen Ridong wrote:
-> From: Chen Ridong <chenridong@huawei.com>
+On Tue, Jul 22, 2025 at 08:19:41PM -0400, Sasha Levin wrote:
+> From: Clément Le Goffic <clement.legoffic@foss.st.com>
 > 
-> Currently, when the command line contains "nokaslrxxx", it was incorrectly
-> treated as a request to disable KASLR virtual memory. However, the behavior
-> is different from physical address handling.
+> [ Upstream commit c870cbbd71fccda71d575f0acd4a8d2b7cd88861 ]
 > 
-> This issue exists before the commit af73b9a2dd39 ("arm64: kaslr: Use
-> feature override instead of parsing the cmdline again"). This patch fixes
-> the parsing logic for the 'nokaslr' command line argument. Only the exact
-> strings, 'nokaslr', will disable KASLR. Other inputs such as 'xxnokaslr',
-> 'xxnokaslrxx', or 'xxnokaslr=xx' will not disable KASLR.
+> If the DMA mapping failed, it produced an error log with the wrong
+> device name:
+> "stm32-dma3 40400000.dma-controller: rejecting DMA map of vmalloc memory"
+> Fix this issue by replacing the dev with the I2C dev.
 > 
-> Fixes: f80fb3a3d508 ("arm64: add support for kernel ASLR")
-> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+> Fixes: bb8822cbbc53 ("i2c: i2c-stm32: Add generic DMA API")
+> Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
+> Cc: <stable@vger.kernel.org> # v4.18+
+> Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+> Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+> Link: https://lore.kernel.org/r/20250704-i2c-upstream-v4-1-84a095a2c728@foss.st.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  arch/arm64/kernel/pi/kaslr_early.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kernel/pi/kaslr_early.c b/arch/arm64/kernel/pi/kaslr_early.c
-> index 17bff6e399e4..731d0a3f1a89 100644
-> --- a/arch/arm64/kernel/pi/kaslr_early.c
-> +++ b/arch/arm64/kernel/pi/kaslr_early.c
-> @@ -35,9 +35,14 @@ static char *__strstr(const char *s1, const char *s2)
->  static bool cmdline_contains_nokaslr(const u8 *cmdline)
->  {
->  	const u8 *str;
-> +	size_t len = strlen("nokaslr");
-> +	const char *after = cmdline + len;
->  
->  	str = __strstr(cmdline, "nokaslr");
-> -	return str == cmdline || (str > cmdline && *(str - 1) == ' ');
-> +	if ((str == cmdline || (str > cmdline && *(str - 1) == ' ')) &&
-> +	    (*after == ' ' || *after == '\0'))
-> +		return true;
-> +	return false;
->  }
->  
->  static bool is_kaslr_disabled_cmdline(void *fdt)
-> -- 
-> 2.34.1
-> 
-> 
+>  drivers/i2c/busses/i2c-stm32.c   | 8 +++-----
+>  drivers/i2c/busses/i2c-stm32f7.c | 4 ++--
+>  2 files changed, 5 insertions(+), 7 deletions(-)
 
-<formletter>
+This is already in 6.6.100, so are you sure you want it again?  :)
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Care to redo this series?
 
-</formletter>
+thanks,
+
+greg k-h
 
