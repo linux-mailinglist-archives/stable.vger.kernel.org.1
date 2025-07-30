@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-165330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3CBB15CC5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE1EB15C41
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF53918C3B8D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D514217BA80
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E8D2951D8;
-	Wed, 30 Jul 2025 09:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4255020E6;
+	Wed, 30 Jul 2025 09:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHXaUwPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc8plRYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC1E279792;
-	Wed, 30 Jul 2025 09:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0119023D2A2;
+	Wed, 30 Jul 2025 09:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868698; cv=none; b=m7V1h7AZyOFs76oyqTLmuR6Cuzf9j8a7D+INwSfRivBH3vtGlEINRyAKqLJ5OAqZjdOr6vR2KTSrKmnY3RhP7mr5xkYnEkWshwzwsfbGwFddXOJzsDDYJXa3+7t6VCxnKMi3JVvs5Ylzb1QwcvA5ppM+ezl7Cgi1jxmINt63ztM=
+	t=1753868433; cv=none; b=CK8mhcVziOrmjpzi8onfdMRlk9DAGhejvNE4h2WvWqeXmsEgrDEKu1a3V4QfwSwwbvif9zNK3qpb0Nyob05Oak9tkzX+XL42X/PJF026fulKazIyDRZ76gCgmxlTx+pH+/uB+WF1p4KrmtIMetrWGBLFADiuKWONHBYa++TcHl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868698; c=relaxed/simple;
-	bh=bRfKeoIyn2I784gTJOxOMBEPWb9xQOh5Bzq0fp1CoU8=;
+	s=arc-20240116; t=1753868433; c=relaxed/simple;
+	bh=g7Vo6sB9luHcLhoVDaoqF2kKZLw6bR6+fd52k3l0B1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRLPcmnYc8vRfn/lL1DFMNGm5MKvPvvT2jj7sf7HKC10ckz33NatPLIn1NN2Nji6vtBxLen7sHfr99Xh7i4RBDb6H3fD+/JX3LzhI/ncL2HYkzrUW/TtYOuv/ENrSS3Z+3rlAh/dygbh4tvaPsfC4dPj3ipBDHPKQGaDT/nxKCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHXaUwPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A90C4CEF5;
-	Wed, 30 Jul 2025 09:44:57 +0000 (UTC)
+	 MIME-Version; b=HF+xjFlXTvk5gVBaDaMqZXrlc4BFXvcMIhe/MPpVH9mG/QKgJ7Rp9khhrm+SHOn/NBAr7slW6pOsmEwOoB5oBOnwAGTHDdL93zCO0RHy06jqSz7fulEPUWFf+1sZeyRGG/0EQNXqRNHGBvmvf16d1GYeYTxXv6jXRt/jvJjsJdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc8plRYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E19C4CEF5;
+	Wed, 30 Jul 2025 09:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868698;
-	bh=bRfKeoIyn2I784gTJOxOMBEPWb9xQOh5Bzq0fp1CoU8=;
+	s=korg; t=1753868432;
+	bh=g7Vo6sB9luHcLhoVDaoqF2kKZLw6bR6+fd52k3l0B1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHXaUwPkuxJ4967j48JouEvcElx3xgv2yBjbt6T9SuG9Q0MveqyMI7Cy5L+JJF3tH
-	 UbkGaqW1DplAa8jhNtGrqT3g3zEUuDB/Qw7twsARanFnITQFQ6SCeUgkLIPkv1z9e1
-	 //ezbsSjqJQQB8fXjXWAG0BHrBCu01vRmvvTUFZY=
+	b=Jc8plRYivgKc8OMsdch2Cu5qkGBTjcgvWDLnNG6iQFppwhTVh+nTU+6CWd02ZRwKx
+	 9oXn6TkJBBVUIgwEA1/D8/sBq6pgUWiYcFK4DK3KNeOIeFJAzavCDWRltouOaKyxdK
+	 aJzpSGKQuT6e8qB1G3yJk5jBw/oZPS6xxfsFRris=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 054/117] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 30/76] i2c: tegra: Fix reset error handling with ACPI
 Date: Wed, 30 Jul 2025 11:35:23 +0200
-Message-ID: <20250730093235.663621453@linuxfoundation.org>
+Message-ID: <20250730093228.008063352@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit ee9f3a81ab08dfe0538dbd1746f81fd4d5147fdc upstream.
+commit 56344e241c543f17e8102fa13466ad5c3e7dc9ff upstream.
 
-The fsl_mc_get_endpoint() function uses device_find_child() for
-localization, which implicitly calls get_device() to increment the
-device's reference count before returning the pointer. However, the
-caller dpaa2_eth_connect_mac() fails to properly release this
-reference in multiple scenarios. We should call put_device() to
-decrement reference count properly.
+The acpi_evaluate_object() returns an ACPI error code and not
+Linux one. For the some platforms the err will have positive code
+which may be interpreted incorrectly. Use device_reset() for
+reset control which handles it correctly.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717022309.3339976-2-make24@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bd2fdedbf2ba ("i2c: tegra: Add the ACPI support")
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Cc: <stable@vger.kernel.org> # v5.17+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250710131206.2316-2-akhilrajeev@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-tegra.c |   24 +-----------------------
+ 1 file changed, 1 insertion(+), 23 deletions(-)
 
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -4655,12 +4655,19 @@ static int dpaa2_eth_connect_mac(struct
- 		return PTR_ERR(dpmac_dev);
- 	}
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -607,7 +607,6 @@ static int tegra_i2c_wait_for_config_loa
+ static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
+ {
+ 	u32 val, clk_divisor, clk_multiplier, tsu_thd, tlow, thigh, non_hs_mode;
+-	acpi_handle handle = ACPI_HANDLE(i2c_dev->dev);
+ 	struct i2c_timings *t = &i2c_dev->timings;
+ 	int err;
  
--	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
-+	if (IS_ERR(dpmac_dev))
- 		return 0;
+@@ -619,11 +618,7 @@ static int tegra_i2c_init(struct tegra_i
+ 	 * emit a noisy warning on error, which won't stay unnoticed and
+ 	 * won't hose machine entirely.
+ 	 */
+-	if (handle)
+-		err = acpi_evaluate_object(handle, "_RST", NULL, NULL);
+-	else
+-		err = reset_control_reset(i2c_dev->rst);
+-
++	err = device_reset(i2c_dev->dev);
+ 	WARN_ON_ONCE(err);
  
-+	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
-+		err = 0;
-+		goto out_put_device;
-+	}
-+
- 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
--	if (!mac)
--		return -ENOMEM;
-+	if (!mac) {
-+		err = -ENOMEM;
-+		goto out_put_device;
-+	}
- 
- 	mac->mc_dev = dpmac_dev;
- 	mac->mc_io = priv->mc_io;
-@@ -4694,6 +4701,8 @@ err_close_mac:
- 	dpaa2_mac_close(mac);
- err_free_mac:
- 	kfree(mac);
-+out_put_device:
-+	put_device(&dpmac_dev->dev);
- 	return err;
+ 	if (IS_DVC(i2c_dev))
+@@ -1668,19 +1663,6 @@ static void tegra_i2c_parse_dt(struct te
+ 		i2c_dev->is_vi = true;
  }
  
+-static int tegra_i2c_init_reset(struct tegra_i2c_dev *i2c_dev)
+-{
+-	if (ACPI_HANDLE(i2c_dev->dev))
+-		return 0;
+-
+-	i2c_dev->rst = devm_reset_control_get_exclusive(i2c_dev->dev, "i2c");
+-	if (IS_ERR(i2c_dev->rst))
+-		return dev_err_probe(i2c_dev->dev, PTR_ERR(i2c_dev->rst),
+-				      "failed to get reset control\n");
+-
+-	return 0;
+-}
+-
+ static int tegra_i2c_init_clocks(struct tegra_i2c_dev *i2c_dev)
+ {
+ 	int err;
+@@ -1790,10 +1772,6 @@ static int tegra_i2c_probe(struct platfo
+ 
+ 	tegra_i2c_parse_dt(i2c_dev);
+ 
+-	err = tegra_i2c_init_reset(i2c_dev);
+-	if (err)
+-		return err;
+-
+ 	err = tegra_i2c_init_clocks(i2c_dev);
+ 	if (err)
+ 		return err;
 
 
 
