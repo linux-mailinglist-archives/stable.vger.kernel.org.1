@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-165432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29BBB15D5B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79883B15C48
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CED94E3DE1
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD4E11885A75
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D3E293C4F;
-	Wed, 30 Jul 2025 09:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F41826980D;
+	Wed, 30 Jul 2025 09:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="df9F8THg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfaWJF7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB8D293C59;
-	Wed, 30 Jul 2025 09:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CDF167DB7;
+	Wed, 30 Jul 2025 09:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869107; cv=none; b=UFJAudgfOAzEmTSTfXk4C54m7npMe/1/hJenku8Jvm+lR9jSqxjkDnVu95HNxxMhKFiLUFN7A3H7jROZww6kPd5IwMh7Gv6pb/ri2Yj8D1Mu+1BtbrdmEz4Bn3DWoY6abAOUpeF95oWWxmAvMHpho4tBWIGLr6deQKk5tT4suXI=
+	t=1753868408; cv=none; b=Kqatw6cXVSCN2NcQR1o4duioKQUu1mTL7xFoIFp6xampdZJ+ASQOCGtwbpoELD2Xec7azsKTz+csWuwfkxbaE0Ue/ehu+ATpd+MPAHowVvDqrfRuHGQ0Gh3aGU2rcvNsALkRse/DEAOpM8c7wzmJWEZ9+kvXU3jxJwP80dOFj6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869107; c=relaxed/simple;
-	bh=ANSojn3stC4brBv0a+xoZ6ehrx+nWcOV/lQO80j8s1w=;
+	s=arc-20240116; t=1753868408; c=relaxed/simple;
+	bh=JK/lnvU8ky1kI/rsRnXdd5+hiAfH4c4nYasRPw3Hp98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNXVpdijkxjkZ4iS6RReH2mI/YAa+kJPn7myTjZImnsUogLMQQBoEXIL7T3Nm6Hx2gxUe4r5qKabzwHPoVeqC2fxUE3JiMb8JWgPF/decVsnR4tH0eGzfh68/hJ7iJgH6i3xHXgauYiYDz9Ykpell/zwzD08HDsmhxKkhxceotQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=df9F8THg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A023FC4CEF5;
-	Wed, 30 Jul 2025 09:51:46 +0000 (UTC)
+	 MIME-Version; b=dauyP1JEzKLHb8wGXUYaTDNXelVvvlssMwqYQABCMYUUTL/+X3obwYw74FFsl+viasN/bLP5q5siRdTE+D7sPuoganxScA3zi7AJk68pddjeGtig8zrkunayvfuTuGNRCHxCU5Z409eWEeeK73c9sJJ9zAtkoah9DdC4blgmimM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfaWJF7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DB7C4CEF9;
+	Wed, 30 Jul 2025 09:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869107;
-	bh=ANSojn3stC4brBv0a+xoZ6ehrx+nWcOV/lQO80j8s1w=;
+	s=korg; t=1753868407;
+	bh=JK/lnvU8ky1kI/rsRnXdd5+hiAfH4c4nYasRPw3Hp98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=df9F8THgWrhqi65dAOQhCT6vm1kZkNU16XaFPvJADSg/OY+0VZiJDmk02dpXvUXzX
-	 rMUG6roN5pDElqGfGQlsGRyJh0ufaiOICYiSQszY70+nmv+ZeVmH+xAaO2hQKHfrgv
-	 9wtqjsG5bOaeHjQrM1EqyBL/uUSMxOsjcDS2dock=
+	b=TfaWJF7Gt8zYYd/0f+S73dNGtwUbdgcnKAVVOpzeCFCdaeobsT2THwk+5ILyXsts7
+	 dtrwzDVu048LlUpH2+XSo46+OmC3X4vvR6ZTXC9QFSs3pNOBVwto1ok9L8UM2vDu9R
+	 IFv6zfSCLuC00OlF8iuOEhJ5nAb5RAnCnwjfqqEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ian Abbott <abbotti@mev.co.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 39/92] net: hns3: fix concurrent setting vlan filter issue
+Subject: [PATCH 6.6 54/76] comedi: comedi_test: Fix possible deletion of uninitialized timers
 Date: Wed, 30 Jul 2025 11:35:47 +0200
-Message-ID: <20250730093232.272184457@linuxfoundation.org>
+Message-ID: <20250730093228.936110084@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 4555f8f8b6aa46940f55feb6a07704c2935b6d6e ]
+commit 1b98304c09a0192598d0767f1eb8c83d7e793091 upstream.
 
-The vport->req_vlan_fltr_en may be changed concurrently by function
-hclge_sync_vlan_fltr_state() called in periodic work task and
-function hclge_enable_vport_vlan_filter() called by user configuration.
-It may cause the user configuration inoperative. Fixes it by protect
-the vport->req_vlan_fltr by vport_lock.
+In `waveform_common_attach()`, the two timers `&devpriv->ai_timer` and
+`&devpriv->ao_timer` are initialized after the allocation of the device
+private data by `comedi_alloc_devpriv()` and the subdevices by
+`comedi_alloc_subdevices()`.  The function may return with an error
+between those function calls.  In that case, `waveform_detach()` will be
+called by the Comedi core to clean up.  The check that
+`waveform_detach()` uses to decide whether to delete the timers is
+incorrect.  It only checks that the device private data was allocated,
+but that does not guarantee that the timers were initialized.  It also
+needs to check that the subdevices were allocated.  Fix it.
 
-Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-2-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 73e0e4dfed4c ("staging: comedi: comedi_test: fix timer lock-up")
+Cc: stable@vger.kernel.org # 6.15+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
+[ changed timer_delete_sync() to del_timer_sync() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 36 +++++++++++--------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ drivers/comedi/drivers/comedi_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 3e28a08934abd..4ea19c089578e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -9576,33 +9576,36 @@ static bool hclge_need_enable_vport_vlan_filter(struct hclge_vport *vport)
- 	return false;
- }
- 
--int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
-+static int __hclge_enable_vport_vlan_filter(struct hclge_vport *vport,
-+					    bool request_en)
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -790,7 +790,7 @@ static void waveform_detach(struct comed
  {
--	struct hclge_dev *hdev = vport->back;
- 	bool need_en;
- 	int ret;
+ 	struct waveform_private *devpriv = dev->private;
  
--	mutex_lock(&hdev->vport_lock);
--
--	vport->req_vlan_fltr_en = request_en;
--
- 	need_en = hclge_need_enable_vport_vlan_filter(vport);
--	if (need_en == vport->cur_vlan_fltr_en) {
--		mutex_unlock(&hdev->vport_lock);
-+	if (need_en == vport->cur_vlan_fltr_en)
- 		return 0;
--	}
- 
- 	ret = hclge_set_vport_vlan_filter(vport, need_en);
--	if (ret) {
--		mutex_unlock(&hdev->vport_lock);
-+	if (ret)
- 		return ret;
--	}
- 
- 	vport->cur_vlan_fltr_en = need_en;
- 
-+	return 0;
-+}
-+
-+int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
-+{
-+	struct hclge_dev *hdev = vport->back;
-+	int ret;
-+
-+	mutex_lock(&hdev->vport_lock);
-+	vport->req_vlan_fltr_en = request_en;
-+	ret = __hclge_enable_vport_vlan_filter(vport, request_en);
- 	mutex_unlock(&hdev->vport_lock);
- 
--	return 0;
-+	return ret;
- }
- 
- static int hclge_enable_vlan_filter(struct hnae3_handle *handle, bool enable)
-@@ -10623,16 +10626,19 @@ static void hclge_sync_vlan_fltr_state(struct hclge_dev *hdev)
- 					&vport->state))
- 			continue;
- 
--		ret = hclge_enable_vport_vlan_filter(vport,
--						     vport->req_vlan_fltr_en);
-+		mutex_lock(&hdev->vport_lock);
-+		ret = __hclge_enable_vport_vlan_filter(vport,
-+						       vport->req_vlan_fltr_en);
- 		if (ret) {
- 			dev_err(&hdev->pdev->dev,
- 				"failed to sync vlan filter state for vport%u, ret = %d\n",
- 				vport->vport_id, ret);
- 			set_bit(HCLGE_VPORT_STATE_VLAN_FLTR_CHANGE,
- 				&vport->state);
-+			mutex_unlock(&hdev->vport_lock);
- 			return;
- 		}
-+		mutex_unlock(&hdev->vport_lock);
+-	if (devpriv) {
++	if (devpriv && dev->n_subdevices) {
+ 		del_timer_sync(&devpriv->ai_timer);
+ 		del_timer_sync(&devpriv->ao_timer);
  	}
- }
- 
--- 
-2.39.5
-
 
 
 
