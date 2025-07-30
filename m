@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-165348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F571B15CD4
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907C4B15D7B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 550683AB9CB
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D23D188CFFC
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF7D2877F9;
-	Wed, 30 Jul 2025 09:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0B9277CA8;
+	Wed, 30 Jul 2025 09:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zo73KoDL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDANE8cM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B53A270ED4;
-	Wed, 30 Jul 2025 09:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7254A32;
+	Wed, 30 Jul 2025 09:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868782; cv=none; b=IPYBQ/zUMltM7BUXcgC8oJznErXTLoHYK4NvNqtKOPYgfcm2Rxu7DqRw/Hgk8LB+35RXYjKcb2KmC2GyiMJ9AFFu2Hjvd+4IS6SnN7cz4hKlf45SZGzT8XbTovfjJ+Tn9gJ2Hdk0TP6GoNYLbLlSoAuU5KQWeaCTyB3je7XrpOM=
+	t=1753869224; cv=none; b=m51CjyDV5s0fGsAK6SbN4DJv5Ecxo5xrRoa13069cB1zbwzpHR4O9yn6wKVDODXyLvSx7ULnvtlVQsz7QUgh//FDNyo0bZxJdL6gcZBApYClbJd2fMoipx1jAtI6MjKVbRmXbfPDmkZWoiszZ3Xe8IlcQjCLOZ6tBrQ+6qdx06I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868782; c=relaxed/simple;
-	bh=Ni7++IXiHaq5UzlAjeLDx7elOfcxz5DtncjkC9SQakA=;
+	s=arc-20240116; t=1753869224; c=relaxed/simple;
+	bh=hHNNbQmoxwoWPcbknwMOQSI1YnzRd/+lTz6dy9gMtIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KR1DjBENnWXbw3UvJOWjTrYWaogkq2cQc/dNsNr6EAjO43VyKl0VI/SzJNU0jU9lfBwvnZxub5x+N/Dl0+ruQw+6Pyils41EbfWgf9691SlKV+hBmYAFVyIXAhkQKEVZTnzsjieRSqkO3xt39jepwMq/BfKjYTK5RscSeLQdjc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zo73KoDL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49230C4CEF5;
-	Wed, 30 Jul 2025 09:46:20 +0000 (UTC)
+	 MIME-Version; b=gI8g3avQk2Olvss/DpjI16WBX9q2TnvPVJY7HvsYhBP+tGY/a68+CzXk00AqU+V/L9Cs4ylqEtmBpa2OkpN3oxhxnX/H9ut5WNNVQpcoUoXMp4xowt0XnzIDrBC48KoGU5RgpRLi8zybVtFRakwOnQxaML0/MyyEcWpWEsU+qHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDANE8cM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAADC4CEF5;
+	Wed, 30 Jul 2025 09:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868780;
-	bh=Ni7++IXiHaq5UzlAjeLDx7elOfcxz5DtncjkC9SQakA=;
+	s=korg; t=1753869224;
+	bh=hHNNbQmoxwoWPcbknwMOQSI1YnzRd/+lTz6dy9gMtIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zo73KoDLqAYUJg++5HhtU8Vo7qLwdvnlLEbd1bxTIzZ5XT5weliuCYk+DbsSJ+RoY
-	 pMKTUO95WPpF4H8sQKiGDW5k9enBK98I9uuiP4zA2dDgnyEjKWWyyC4X3RP1+WUo07
-	 1aAczwwXcPrgySDzDBryPF/pDUFbsry6k2IjxAus=
+	b=PDANE8cMKAkmkuijqeoVfJSv8ILOsUviYqOKGXupRqOGrB2RjY5bpe7JGgFc+yBkv
+	 qUuUBTccPYOYXud2pgV30KpOsM1a6S16Lb+AGFJXp4joWPMU1ttp8mab3Iek0KyE9D
+	 /8mr3EVGVI8qNPTHl4m9QT9IRQ/ePpIGwprvz1hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Zhivich <mzhivich@akamai.com>
-Subject: [PATCH 6.12 073/117] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
+	Andrei Lalaev <andrey.lalaev@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 34/92] can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode
 Date: Wed, 30 Jul 2025 11:35:42 +0200
-Message-ID: <20250730093236.377924666@linuxfoundation.org>
+Message-ID: <20250730093232.073342189@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Zhivich <mzhivich@akamai.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
-field in zen_patch_rev union on the stack may be garbage.  If so, it will
-prevent correct microcode check when consulting p.ucode_rev, resulting in
-incorrect mitigation selection.
+[ Upstream commit c1f3f9797c1f44a762e6f5f72520b2e520537b52 ]
 
-This is a stable-only fix.
+Andrei Lalaev reported a NULL pointer deref when a CAN device is
+restarted from Bus Off and the driver does not implement the struct
+can_priv::do_set_mode callback.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
-Fixes: 7a0395f6607a5 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There are 2 code path that call struct can_priv::do_set_mode:
+- directly by a manual restart from the user space, via
+  can_changelink()
+- delayed automatic restart after bus off (deactivated by default)
+
+To prevent the NULL pointer deference, refuse a manual restart or
+configure the automatic restart delay in can_changelink() and report
+the error via extack to user space.
+
+As an additional safety measure let can_restart() return an error if
+can_priv::do_set_mode is not set instead of dereferencing it
+unchecked.
+
+Reported-by: Andrei Lalaev <andrey.lalaev@gmail.com>
+Closes: https://lore.kernel.org/all/20250714175520.307467-1-andrey.lalaev@gmail.com
+Fixes: 39549eef3587 ("can: CAN Network device driver and Netlink interface")
+Link: https://patch.msgid.link/20250718-fix-nullptr-deref-do_set_mode-v1-1-0b520097bb96@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/dev/dev.c     | 12 +++++++++---
+ drivers/net/can/dev/netlink.c | 12 ++++++++++++
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -378,6 +378,8 @@ static bool amd_check_tsa_microcode(void
- 	p.model		= c->x86_model;
- 	p.ext_model	= c->x86_model >> 4;
- 	p.stepping	= c->x86_stepping;
-+	/* reserved bits are expected to be 0 in test below */
-+	p.__reserved	= 0;
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index 5ec3170b896a4..3fa805ac2c65b 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -145,13 +145,16 @@ void can_change_state(struct net_device *dev, struct can_frame *cf,
+ EXPORT_SYMBOL_GPL(can_change_state);
  
- 	if (cpu_has(c, X86_FEATURE_ZEN3) ||
- 	    cpu_has(c, X86_FEATURE_ZEN4)) {
+ /* CAN device restart for bus-off recovery */
+-static void can_restart(struct net_device *dev)
++static int can_restart(struct net_device *dev)
+ {
+ 	struct can_priv *priv = netdev_priv(dev);
+ 	struct sk_buff *skb;
+ 	struct can_frame *cf;
+ 	int err;
+ 
++	if (!priv->do_set_mode)
++		return -EOPNOTSUPP;
++
+ 	if (netif_carrier_ok(dev))
+ 		netdev_err(dev, "Attempt to restart for bus-off recovery, but carrier is OK?\n");
+ 
+@@ -173,10 +176,14 @@ static void can_restart(struct net_device *dev)
+ 	if (err) {
+ 		netdev_err(dev, "Restart failed, error %pe\n", ERR_PTR(err));
+ 		netif_carrier_off(dev);
++
++		return err;
+ 	} else {
+ 		netdev_dbg(dev, "Restarted\n");
+ 		priv->can_stats.restarts++;
+ 	}
++
++	return 0;
+ }
+ 
+ static void can_restart_work(struct work_struct *work)
+@@ -201,9 +208,8 @@ int can_restart_now(struct net_device *dev)
+ 		return -EBUSY;
+ 
+ 	cancel_delayed_work_sync(&priv->restart_work);
+-	can_restart(dev);
+ 
+-	return 0;
++	return can_restart(dev);
+ }
+ 
+ /* CAN bus-off
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index f1db9b7ffd4d0..d5aa8da87961e 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -285,6 +285,12 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	}
+ 
+ 	if (data[IFLA_CAN_RESTART_MS]) {
++		if (!priv->do_set_mode) {
++			NL_SET_ERR_MSG(extack,
++				       "Device doesn't support restart from Bus Off");
++			return -EOPNOTSUPP;
++		}
++
+ 		/* Do not allow changing restart delay while running */
+ 		if (dev->flags & IFF_UP)
+ 			return -EBUSY;
+@@ -292,6 +298,12 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	}
+ 
+ 	if (data[IFLA_CAN_RESTART]) {
++		if (!priv->do_set_mode) {
++			NL_SET_ERR_MSG(extack,
++				       "Device doesn't support restart from Bus Off");
++			return -EOPNOTSUPP;
++		}
++
+ 		/* Do not allow a restart while not running */
+ 		if (!(dev->flags & IFF_UP))
+ 			return -EINVAL;
+-- 
+2.39.5
+
 
 
 
