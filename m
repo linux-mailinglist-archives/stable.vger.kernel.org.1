@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-165226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BB3B15C31
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8670AB15CC8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7126C5A50FB
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3435118C3DE5
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5813274666;
-	Wed, 30 Jul 2025 09:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED557295D95;
+	Wed, 30 Jul 2025 09:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swv208Kz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMcsAuSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4DC1F1306;
-	Wed, 30 Jul 2025 09:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7A82957B6;
+	Wed, 30 Jul 2025 09:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868295; cv=none; b=Ky1nMWLZRyGu+XQOngKURqncXI5CAXtnrU50AgbCTawBC7JS8rQI5YNtSfTq7eSkL7EnIHuBmpKn8LVCI3TozKt+9RXMKa0Vccb4A71G7YacM9nCe+at2TTfDM2GTUAVrSAXjCBiXYveFbznyQZb1WlTXli/NYm7PkfdqpEe4jw=
+	t=1753868712; cv=none; b=TrNLeLs2ZnxAMwYbFSGiaRVXVoizXEJgBluomqNupypJso93/iA+912Zy34Xxhb24jsBZHjcKB62X9is/cVbdetEbz1udXv67h5YHWQ+ZUpYgDs/b6gyuid7NjIJE3bmCuQrwMG/0lXnNaMPoTNUiXu4XzzWRCDW8DMzgfM35gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868295; c=relaxed/simple;
-	bh=bd5DQUJJXpZ3TBcB3dCWB3rqf2WFkWrflcV7N56XtHQ=;
+	s=arc-20240116; t=1753868712; c=relaxed/simple;
+	bh=ohusYJfAAvhBRw9a1FsHTRPQI0Pxn4mZN2S1tyAMGNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rsn5C6hXtg5TOy2RugpUJ4oOqGcHHuZCTh0iz1D9kl7tyCI9V1anr615E9XoZTEPCAQ3QCuQ9GFMQDoxI4Qcj32zsVbeBQNesWawgLWUY+R4HYxPZT3ViLoswhjNYEU9zwAAF1jj0oBQp20sGhy9vrvg3/idL4TnDsZRGWGbWms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swv208Kz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C25C4CEE7;
-	Wed, 30 Jul 2025 09:38:14 +0000 (UTC)
+	 MIME-Version; b=aDyHUHUhq2+3LuAZ+b5trbLIHDvRy0Xt7bYbVtxn5Lgk+19dqBM1KrXesCE001wob2raJZA6QVMchLJ5+g+c2zHxRQ5IhIeH2aGSw0pRun5pOl022D2oLO+y1gF2bVO1AUwOhZ5/BA+fcvYwwV2uXhhn9hyMb1L+EmyQ6wxvFcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMcsAuSo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD94C4CEF5;
+	Wed, 30 Jul 2025 09:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868295;
-	bh=bd5DQUJJXpZ3TBcB3dCWB3rqf2WFkWrflcV7N56XtHQ=;
+	s=korg; t=1753868712;
+	bh=ohusYJfAAvhBRw9a1FsHTRPQI0Pxn4mZN2S1tyAMGNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swv208Kz/UCvZTDzppKpWVMqopA0pWloIeXrmBSkDucYxkORro6KB8vO8hZV1cIsh
-	 29eAD7zRbdutySlTLDzTUL7mAGzm1fYMtiRDWhQWP0zshfmIguaQdd8GsdWkxjVsXu
-	 7YuOtQZOtETGkRpCXpjxVKXOIBNh2WIMZz37KVDc=
+	b=zMcsAuSowJv+iWXQ889wAJXGbAb5EFB5rZmUsFmv6j95zCBOMBz+grzaXEhOWeaKg
+	 dbVi9DaQlKQa/ZKWLmUS0dqaipz9LAzpF6U17PPb4oKm/3rgU97A6vtnlDHxYw1tdw
+	 0r7KKxEtMQNy5LOiAGdN70vm5sJBf7WmhV9mGpZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	kernel test robot <lkp@intel.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/76] iio: adc: ad7949: use spi_is_bpw_supported()
-Date: Wed, 30 Jul 2025 11:34:59 +0200
-Message-ID: <20250730093227.101495948@linuxfoundation.org>
+Subject: [PATCH 6.12 031/117] drm/bridge: ti-sn65dsi86: Remove extra semicolon in ti_sn_bridge_probe()
+Date: Wed, 30 Jul 2025 11:35:00 +0200
+Message-ID: <20250730093234.773862388@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 7b86482632788acd48d7b9ee1867f5ad3a32ccbb ]
+[ Upstream commit 15a7ca747d9538c2ad8b0c81dd4c1261e0736c82 ]
 
-Use spi_is_bpw_supported() instead of directly accessing spi->controller
-->bits_per_word_mask. bits_per_word_mask may be 0, which implies that
-8-bits-per-word is supported. spi_is_bpw_supported() takes this into
-account while spi_ctrl_mask == SPI_BPW_MASK(8) does not.
+As reported by the kernel test robot, a recent patch introduced an
+unnecessary semicolon. Remove it.
 
-Fixes: 0b2a740b424e ("iio: adc: ad7949: enable use with non 14/16-bit controllers")
-Closes: https://lore.kernel.org/linux-spi/c8b8a963-6cef-4c9b-bfef-dab2b7bd0b0f@sirena.org.uk/
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20250611-iio-adc-ad7949-use-spi_is_bpw_supported-v1-1-c4e15bfd326e@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506301704.0SBj6ply-lkp@intel.com/
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250714130631.1.I1cfae3222e344a3b3c770d079ee6b6f7f3b5d636@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7949.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index edd0c3a35ab73..202561cad4012 100644
---- a/drivers/iio/adc/ad7949.c
-+++ b/drivers/iio/adc/ad7949.c
-@@ -308,7 +308,6 @@ static void ad7949_disable_reg(void *reg)
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index 5500767cda7e4..4d17d1e1c38b4 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -1352,7 +1352,7 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 			regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG,
+ 					   HPD_DISABLE, 0);
+ 		mutex_unlock(&pdata->comms_mutex);
+-	};
++	}
  
- static int ad7949_spi_probe(struct spi_device *spi)
- {
--	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
- 	struct device *dev = &spi->dev;
- 	const struct ad7949_adc_spec *spec;
- 	struct ad7949_adc_chip *ad7949_adc;
-@@ -337,11 +336,11 @@ static int ad7949_spi_probe(struct spi_device *spi)
- 	ad7949_adc->resolution = spec->resolution;
+ 	drm_bridge_add(&pdata->bridge);
  
- 	/* Set SPI bits per word */
--	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
-+	if (spi_is_bpw_supported(spi, ad7949_adc->resolution)) {
- 		spi->bits_per_word = ad7949_adc->resolution;
--	} else if (spi_ctrl_mask == SPI_BPW_MASK(16)) {
-+	} else if (spi_is_bpw_supported(spi, 16)) {
- 		spi->bits_per_word = 16;
--	} else if (spi_ctrl_mask == SPI_BPW_MASK(8)) {
-+	} else if (spi_is_bpw_supported(spi, 8)) {
- 		spi->bits_per_word = 8;
- 	} else {
- 		dev_err(dev, "unable to find common BPW with spi controller\n");
 -- 
 2.39.5
 
