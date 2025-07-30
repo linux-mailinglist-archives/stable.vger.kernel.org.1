@@ -1,152 +1,112 @@
-Return-Path: <stable+bounces-165540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D34B1646A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 18:17:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B7FB16497
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 18:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286FC18849D5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:14:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E22B540898
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B1E2DECD3;
-	Wed, 30 Jul 2025 16:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F08F2DEA95;
+	Wed, 30 Jul 2025 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kM/rN6Yg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RYhio+Qh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EE52D9EEA
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 16:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21862DC343;
+	Wed, 30 Jul 2025 16:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753891898; cv=none; b=t5DZthUc+gtRBENOm06Rk7Op0opbTcBXmP3QTgTjykw9imROEXWTG9Sbh3woexWVW7UiOx5SRQVQhb0bQ2vsD/dB9FCybTorOd2OkDZ0Y+64wRSyIUAKu1Uu9cOuN+5uyz2Q/JpuMS+HdgKpKcGIBnK4lI4ayHbYtClDEWJvb9U=
+	t=1753892877; cv=none; b=u1j+w0MJu5tlWJgPTgCUcICc+PFfQ5fmjQshvewbmeebulFHQFMrazRRx0EkTPH7p/7DtZJPPORPnR1us9TzACuyJo1RQ1rd4c/33tIAiBj6a8KpGpYqjhWGHMd04Du/R+FFgmbcEnBX54uoqRcK3HQBTgu0VG853VX2JYCb6R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753891898; c=relaxed/simple;
-	bh=Fd6r5ej70Gx78OKCjT5dW6+hePHwHbsPkXWk9c0URgA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jSrUjEez7fXhER5kKreFFh8nBwyGbWN2261hie2vwyVNFUuV9XEeKCDAuAybi71LR6VzSZURjgm7RvHBofU68DoTjGy0dtO/rd5C7p++1NKMnGS3FnzMi1ttVYPWniXMubm9u1gsdhXXTA64ZHnvDF5nA2z45bZRe0/JotJ1cr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kM/rN6Yg; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b7834f2e72so2560067f8f.2
-        for <stable@vger.kernel.org>; Wed, 30 Jul 2025 09:11:34 -0700 (PDT)
+	s=arc-20240116; t=1753892877; c=relaxed/simple;
+	bh=VDN1MKYrHnhKs8rJltEkmxfDO0gFuhaDH2a2kia8Czw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jFvomjTdE5K8CnZUJ+67lHqad28LBRUEhV3GabK0mckbk0IuKY5/ZFL6Xt6AFH6aQl0InIHXrmX74SSsXl4TQW6CdGicVVO6agbAHAHBJfxbWVp/cxrwzJCDiVFIeYIwCvn6VCud7rCIb46oKz9FPMPCGUqSGDF7TeRLPJTebic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RYhio+Qh; arc=none smtp.client-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-610cbca60cdso3653382eaf.0;
+        Wed, 30 Jul 2025 09:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753891893; x=1754496693; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UqOwZkurxN6DP6mkxJOVh++qBYZQgQgS3fnY4YseNNE=;
-        b=kM/rN6Ygq+MbGLfNlLSfID9cDiMBbXUl7HwR821U5p2PPPqDzdx5yM59aZ2Wbk7GMx
-         JB+BlZXR2w9fJJuT4y06UbbaPpRkJY36DapfqAb5Eujh+8sTgxgDN/VCLu5CHaohyaDS
-         aruFlH7L94VUUD1YNg0RD6A501uPDqWaSXavh+3gQ+XVpOkSm7J3Y6zk9D1XFx4ZPTOR
-         f3X0iGU/WZZJW3OcbMl+dIAkLtaB/8lFGP24X/yBMpfKlk32Nt725UBYrptuQT6OWeoJ
-         dSgqKnTui95Ro4rL0B8myL264+jxYPKGLfkz+nkbLpM0g6vbZZ8NJAs/sHThGzbLeeGW
-         fy6Q==
+        d=gmail.com; s=20230601; t=1753892875; x=1754497675; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VDN1MKYrHnhKs8rJltEkmxfDO0gFuhaDH2a2kia8Czw=;
+        b=RYhio+Qh70tPxGH+BVl56ifH/1lwMA6R8eFKguF7SM+SMtPW+PICRZmelJxt79xM50
+         tFHFKJ2CGUhIOYUR5m/h35uidtiUx2RRG1H2X+GQdlWRfeRSgqCTa2EhwC/cMjvlCU/j
+         Ca+6VVmtlDLqi/XimTtDIMJ1OhidSrqCvkWk6dxvmvLnsy/cMky0YRMjmEdbmR6i0M5D
+         RpsBhWR1Oavziuw25xdPwCynYu3BwanaPfk/3as8RJhV4cDMuaKPVTYjrth24pC//fUX
+         dtxrtmDKr1PQt3fvbvinuFohKs8+DR9FHH5ir6reyM3mrE9xTm9efP6RPBALtc8kD+BW
+         vYzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753891893; x=1754496693;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1753892875; x=1754497675;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UqOwZkurxN6DP6mkxJOVh++qBYZQgQgS3fnY4YseNNE=;
-        b=Lo5Q50Cl9+foKFAkSzVHtg7vItQG+En0hY/HMCN/gpGpxc7ffwdtLuB9kuBP80xbK1
-         d7k71//XWNrVefuWDEr2APea96LdioZxpmOEYtiI8T+6UzDTBKrNpzBlIWtcgUzBErXX
-         jUdE3KLmH4yskWtQIqYgZcMfll3I9VZa1uUw+FGZv3LGjz8rCSqnu3OamTwwvFm9cpUn
-         lPeyOV61AaDps07hY1Lv2mKFhJD6tFaehlXiMkLY1HnLAoYkAhz6RwkERQI6zCd0ARA6
-         eMcGeOv4D621TxCVoQ8e4RFa28WjgneT0hfrYuA4qKK/MxB/QTdVI77HjDIK2ihWu6Ow
-         dDLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7s8H9ny+vRTzRa97syndK3bcIjSctgayV/RQ659AQXvAqvtcv1YTEANESgd6Pey7t6iYk3eM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe2Hka81n1SH4eojBrU70Wu6Caze+At8MvZeIPo5WcgZWBc0Pj
-	37+3SIeuLZMkGyd0BcvR9/6gEoMyhVQ3N++zyF2SR8pm4KgOulbzS2Yv5tjBAr2X/dU=
-X-Gm-Gg: ASbGncsqYaPuRGIYlnPYT6lPNtoh3kH/AOV0YUh86Ga2CNJY+GziGuJvlV3jq87AU0r
-	WoRKjvRGBGhWu/E1fE6RJ3eFynrrzf3jStVe3RYtBg2PJFAuMg0xZ1bXIVQVTQGNzXUSXyCETDM
-	49JImeb2w18/8NEwCGtWbFfAu3OSftNvjXBinC56asXVz2fmNpB9/2i8kVos7IH5bw/KSrhdxKP
-	vHd7436dXKvDFIDE9ou3vkt+6mXug0jlnGuc84jAdiDjxkhPtHiEjpKmLKcoAvhEV29YiOg9Qnq
-	OU5QENh0FEOQWgPW0u3knWy+9j/GuTOQTT/EgqxHVUxHmRoIPM/Nq3b0K/79a3qkM+qcxZQBIeI
-	D8HgUxqgw+yy5T+LMbMTP
-X-Google-Smtp-Source: AGHT+IE35Ywlzmt6bKCd2ef14MK+xws1qwAv8vwYO/BNrAHqXdxEW1CdRvYO8omT7ooIKsh8esKQuA==
-X-Received: by 2002:a05:6000:1a8d:b0:3b7:8d0b:3282 with SMTP id ffacd0b85a97d-3b794fe90damr2754479f8f.31.1753891893243;
-        Wed, 30 Jul 2025 09:11:33 -0700 (PDT)
-Received: from [127.0.1.1] ([82.79.186.23])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b78acd884dsm9164564f8f.33.2025.07.30.09.11.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 09:11:32 -0700 (PDT)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Wed, 30 Jul 2025 19:11:12 +0300
-Subject: [PATCH] clk: qcom: tcsrcc-x1e80100: Set the bi_tcxo as parent to
- eDP refclk
+        bh=VDN1MKYrHnhKs8rJltEkmxfDO0gFuhaDH2a2kia8Czw=;
+        b=v1KHQj1X1elt4cDHf3EbH73SGsdwqahK75ea9rXJZs6Vf5JEVO5KhcrS1o4LKSyW9y
+         UQc5jzFq6aQ1vSe8FifxQNTqvJbewZ8gQ8vNBossR+k6c3bIlagBGzBsU7xcDC4PnEnq
+         ucxXuEwFdlu7SpECGNiwx79wPhylCUYJylM3u95QvFWEF/lIDFERdW+lq6YW3Pzf8XuU
+         0Qgl0d8XURODR9dtSyyG1u5KeMhFKSwq/F12bA4wjjeeefF8aELq9ho796aoA8rHwwxD
+         cC9MBqlg4jJFccP7SkI7vopJDXpkv5/88OKRevHkvSCcKzmZLoaxlOrOH/FWM2xV1uQb
+         iLkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVaso2IhVgixsCiUTK6wQ6BN/3AaWlJNCQ4qWyBvWXlmkX/B6W3RdDOnaeq6fcyq52gFzaxj6iXqMq4rc=@vger.kernel.org, AJvYcCXdCGeEKZYojzcreVYD8UMvO4emPVN0lJZq5GHaSZFgjxM7h+o5FZ3KsUU0vqtObWe4BAGHU9PL@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9ZH44NATzzzm0IB0QfOI14FrtmS8XMi4ldNjFE7jLFpK6wy6/
+	hojhx+HvCOj6EdtGhCMCfVgktLHbwATxqt+27UB6CtBHExoqp6tB3aTqNAhd3ZX71+BOtzKvJLW
+	kDShjPyfEFY8l8ViUhjDOisy+CVUe7Ls=
+X-Gm-Gg: ASbGncvEQ3BIFlE/rgmPgp1MPL2NliK4XhmbTtJ9byXCpbXzlLmVELkI8BdtaJefCru
+	GiHEr+EkN2wqSFawVJIx+OtK8eZOY5eZKipRY6Hw9i8v2/nudBT+bZs5wDEvgiW0UROkkZy+jKP
+	gD5QLK7qwyosw5TKqxJN3m8dbF/VezoLSyobeyWbFvUmuHNyBtAy9rs4eMxmIGgh1pgY20fpLCv
+	RmjUmMQ
+X-Google-Smtp-Source: AGHT+IFJBBircmFlzkuiZxltpkb8UXxxVju/Ryi2aiX0HE6gttXxNEsyR82wLNIYdBYNG+mN1mHi0d2hU2BueLd1gHE=
+X-Received: by 2002:a05:6820:998:b0:618:d339:1fe with SMTP id
+ 006d021491bc7-6195d2d2924mr2688300eaf.3.1753892874659; Wed, 30 Jul 2025
+ 09:27:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250730-clk-qcom-tcsrcc-x1e80100-parent-edp-refclk-v1-1-7a36ef06e045@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAB9EimgC/x2N0QqDMAxFf0XyvECqdMp+ZeyhxqhhW+1SEUH89
- 3V7PJfDPQdkMZUMt+oAk02zLrGAu1TAc4iToA6FoabaU9sQ8uuJH17euHI2ZtyddOSIMAWTuKI
- MCU3Gn9b1rg3+OpKnAOUwlV33f+z+OM8v1KcEPXwAAAA=
-X-Change-ID: 20250730-clk-qcom-tcsrcc-x1e80100-parent-edp-refclk-8b17a56f050a
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
-Cc: Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>, 
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Abel Vesa <abel.vesa@linaro.org>
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1272; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=Fd6r5ej70Gx78OKCjT5dW6+hePHwHbsPkXWk9c0URgA=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBoikQn1mpNTbomnI6wjUQllPAQi1cNsItik0+LO
- NhyFErPoFqJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCaIpEJwAKCRAbX0TJAJUV
- VqdED/9TUcuk43y0Rv60rmuHzWZ8ypABjV0pMT0RaclplWU0Wdlf1KPt4twokPE4hWzS4QO1oB0
- Q3XhvFPTgYWujJfcQnJxWKwCnJbFfmpJCDga5f5ODbrv1BDvxEJCGB6vPiYO30xLlRx113JqZhW
- GhKSbCuo7ofu6otLGjpkPYGGe68rbK/Pb1ePYqUOqp4/mgJSo8Rgqg6+h67oUV5207B8fn9K+c0
- ln1th174V9uipBKGSRYpSkrx5cfNIaIujPc/LQT4s8ynjy66RpbIe6Xkgilnons33PbCIawGeGE
- BVZY5YYLinXYl1D5H/VHm0xGVHz1eE27Ch4Vx6fy+fx719fXDCRHlFI5U9D/xyp+E0OmykfPZ2d
- q57P28jFeJntrmDz28Lp1mB3TWMN8QpbUMIUOUz+3ip2mKYkytplWY7sG2UNS8MZY2jhptZfF02
- F2ABNDdc9kY2+VHanWGWwtYh0puF/NDYyfeUAAJhw0fRbbet+ab7wT1GdYnEbsufh5hjXnVirIk
- CFur6uOQ439azeVH1zxRTkFAeXguQg/3rpxJU8KAhHpatXZHz+INKc/Cg1QxOMXACW+kbZcwHOS
- JbN3W49T3M8ziNDM5Z+1uStqzEc1dHNFgKmZIkjvyfznBuKEqg2dkTr4eyFHnghbZYR+hLmD7L0
- XjCZTSzqC+I01zQ==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+References: <20250730042617.5620-1-suchitkarunakaran@gmail.com>
+ <30f01900-e79f-4947-b0b4-c4ba29d18084@intel.com> <CAO9wTFhZjWsK27e28Gv2-QqMozns47EacOQfXtTdMfLjR98MTw@mail.gmail.com>
+ <834f393e-8af9-4fc0-9ff4-23e7803e7eb6@intel.com>
+In-Reply-To: <834f393e-8af9-4fc0-9ff4-23e7803e7eb6@intel.com>
+From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+Date: Wed, 30 Jul 2025 21:57:42 +0530
+X-Gm-Features: Ac12FXzlj5yWkI6eKhlg68DANwG9PzzG0U_nSEKVUez-tYk1CF6GB0jjskMMJpo
+Message-ID: <CAO9wTFi6QZoZk2+TM--SeJLUsrYZXLeWkrfh1URXvRB=yWtwig@mail.gmail.com>
+Subject: Re: [PATCH v3] x86/cpu/intel: Fix the constant_tsc model check for
+ Pentium 4s
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, darwi@linutronix.de, 
+	peterz@infradead.org, ravi.bangoria@amd.com, skhan@linuxfoundation.org, 
+	linux-kernel-mentees@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-All the other ref clocks provided by this driver have the bi_tcxo
-as parent. The eDP refclk is the only one without a parent, leading
-to reporting its rate as 0. So set its parent to bi_tcxo, just like
-the rest of the refclks.
+On Wed, 30 Jul 2025 at 21:03, Sohil Mehta <sohil.mehta@intel.com> wrote:
+>
+> On 7/30/2025 7:58 AM, Suchit Karunakaran wrote:
+>
+> > Hi Sohil. Thanks for reviewing it. Should I send a new version of the
+> > patch fixing the minor issues with the reviewed by tag?
+>
+> Yes please, I think one more revision would be helpful and reduce manual
+> steps for the maintainers. (Likely after the merge window has closed).
+>
+> Also, please try to trim your responses to only include the essential
+> context:
+> https://subspace.kernel.org/etiquette.html#trim-your-quotes-when-replying.
+>
+>
 
-Cc: stable@vger.kernel.org # v6.9
-Fixes: 06aff116199c ("clk: qcom: Add TCSR clock driver for x1e80100")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
- drivers/clk/qcom/tcsrcc-x1e80100.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/clk/qcom/tcsrcc-x1e80100.c b/drivers/clk/qcom/tcsrcc-x1e80100.c
-index ff61769a08077e916157a03c789ab3d5b0c090f6..a367e1f55622d990929984facb62185b551d6c50 100644
---- a/drivers/clk/qcom/tcsrcc-x1e80100.c
-+++ b/drivers/clk/qcom/tcsrcc-x1e80100.c
-@@ -29,6 +29,10 @@ static struct clk_branch tcsr_edp_clkref_en = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "tcsr_edp_clkref_en",
-+			.parent_data = &(const struct clk_parent_data){
-+				.index = DT_BI_TCXO_PAD,
-+			},
-+			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-
----
-base-commit: 79fb37f39b77bbf9a56304e9af843cd93a7a1916
-change-id: 20250730-clk-qcom-tcsrcc-x1e80100-parent-edp-refclk-8b17a56f050a
-
-Best regards,
--- 
-Abel Vesa <abel.vesa@linaro.org>
-
+Alright. I will send v4 after the merge window closes. Thanks!
 
