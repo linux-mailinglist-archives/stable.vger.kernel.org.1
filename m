@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-165447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F689B15D6E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF4EB15C5D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755A11885EFD
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FF8B7A82FF
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17CF277804;
-	Wed, 30 Jul 2025 09:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DCF25DB1A;
+	Wed, 30 Jul 2025 09:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDisaYyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2qOuENB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696D7277CAF;
-	Wed, 30 Jul 2025 09:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0484336124;
+	Wed, 30 Jul 2025 09:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869168; cv=none; b=I8x7hlpEy9F6xSNXlEYvyQr9wxrpXM5dLfXv2z1ijzp1WzFX0n5mFJ5F2+REntK2W+1YS6qHcxHj3+oibn9FG/ZQcjZMvfIIkKWJE6LPfU726w7BRd9melIFWbH8tulXd09SYjXvEGYl7Eaa7yszNe+GXfyvFGLu6qwvqKi7Zoo=
+	t=1753868506; cv=none; b=ltJr7eR5JwDQ27wMy/vNwJYnGkkeRGy9nzOoSdOEi05DmqWdYGU/pQVoGpg/FtD8PVhUclkPfPg8iLt+BHKyi/NCEsq7VvgjJZcphlWRoH26B4Lxg5pG+MulZIqg3P9cKQvwMtiDR1KsQ7qqZ0Unv4pde051UG02zo+XQv+nl7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869168; c=relaxed/simple;
-	bh=zMwQYpmbJz9IoFih20BO7wau8SzFr9giWXUS7bFnYl0=;
+	s=arc-20240116; t=1753868506; c=relaxed/simple;
+	bh=NBbO+TIM8NLj72+UkXFmKQJ3L4JlUkWnrr4cBgcscEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdCc1+Vx3lg8IaUjwCqisQXSlAjU/Lhjb3ogrwvBazh4cRfiTYVoEYx5bHZyaVCykXAr3RWOJw6a3Y1RUJWsSJRpQlNnOgy9b4F60ZNNZqWbmFWKNeR3W78RFxomh4sTGnm8Ob/O57QklzqUI7gnCW4twyI27mM0YuDkr8b968Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDisaYyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D30EC4CEF5;
-	Wed, 30 Jul 2025 09:52:47 +0000 (UTC)
+	 MIME-Version; b=dd+Po7xJBXYodQ7170yOg0Ofkt3bU+2+ghg4WWrRR4X2DsLLu8RtgmEKXMIKKWmPvUSjYNV/KwD1E6MH0L6ibfNV76K5PghVCTK4uCVpVKO5I4W5mMeGE9fuqFBDXo7y0B2j8EEZ+gCHWeFQNh8SnteViiBZlKnnSrf7pQA5vyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2qOuENB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848D1C4CEE7;
+	Wed, 30 Jul 2025 09:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869168;
-	bh=zMwQYpmbJz9IoFih20BO7wau8SzFr9giWXUS7bFnYl0=;
+	s=korg; t=1753868505;
+	bh=NBbO+TIM8NLj72+UkXFmKQJ3L4JlUkWnrr4cBgcscEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDisaYyYog5PR2SpxPqnaIDHN9VpZf4eGiqrFtLpJO+LkqiQRnthMCdGPmwxFmLoX
-	 NCW9Wc0IithiFzqgI+B1W00McQ7qCO1HIFr1fNROJ+yfUlcR7zRjbZiAhbTDPTVm9j
-	 5FGC7kKaiwES3/dXptA8HODN3xjOgYMNdy2JLBx4=
+	b=b2qOuENB4x8oVn+3EdyNXmX99cocqJNQGIIZDUXRMNy1CctbC6Bz7USwifeh+Yw6H
+	 R4u20X8jLO8f+dJu8jfd+BeU4ITEvNBFNaYtJldPsLmbSnNVB+B83DoVyNgwmERuaC
+	 OAqWSOUUJ1MkTYdtvkjySwHSsi7LxuO4wZKRBPwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	KernelCI bot <bot@kernelci.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.15 53/92] ARM: 9448/1: Use an absolute path to unified.h in KBUILD_AFLAGS
+	Stefan Metzmacher <metze@samba.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 68/76] ksmbd: add free_transport ops in ksmbd connection
 Date: Wed, 30 Jul 2025 11:36:01 +0200
-Message-ID: <20250730093232.804116945@linuxfoundation.org>
+Message-ID: <20250730093229.504744410@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 87c4e1459e80bf65066f864c762ef4dc932fad4b upstream.
+commit a89f5fae998bdc4d0505306f93844c9ae059d50c upstream.
 
-After commit d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper
-flags and language target"), which updated as-instr to use the
-'assembler-with-cpp' language option, the Kbuild version of as-instr
-always fails internally for arch/arm with
+free_transport function for tcp connection can be called from smbdirect.
+It will cause kernel oops. This patch add free_transport ops in ksmbd
+connection, and add each free_transports for tcp and smbdirect.
 
-  <command-line>: fatal error: asm/unified.h: No such file or directory
-  compilation terminated.
-
-because '-include' flags are now taken into account by the compiler
-driver and as-instr does not have '$(LINUXINCLUDE)', so unified.h is not
-found.
-
-This went unnoticed at the time of the Kbuild change because the last
-use of as-instr in Kbuild that arch/arm could reach was removed in 5.7
-by commit 541ad0150ca4 ("arm: Remove 32bit KVM host support") but a
-stable backport of the Kbuild change to before that point exposed this
-potential issue if one were to be reintroduced.
-
-Follow the general pattern of '-include' paths throughout the tree and
-make unified.h absolute using '$(srctree)' to ensure KBUILD_AFLAGS can
-be used independently.
-
-Closes: https://lore.kernel.org/CACo-S-1qbCX4WAVFA63dWfHtrRHZBTyyr2js8Lx=Az03XHTTHg@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Fixes: d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper flags and language target")
-Reported-by: KernelCI bot <bot@kernelci.org>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 21a4e47578d4 ("ksmbd: fix use-after-free in __smb2_lease_break_noti()")
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/connection.c     |    2 +-
+ fs/smb/server/connection.h     |    1 +
+ fs/smb/server/transport_rdma.c |   10 ++++++++--
+ fs/smb/server/transport_tcp.c  |    3 ++-
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -149,7 +149,7 @@ endif
- # Need -Uarm for gcc < 3.x
- KBUILD_CPPFLAGS	+=$(cpp-y)
- KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
--KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include asm/unified.h -msoft-float
-+KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include $(srctree)/arch/arm/include/asm/unified.h -msoft-float
- KBUILD_RUSTFLAGS += --target=arm-unknown-linux-gnueabi
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -40,7 +40,7 @@ void ksmbd_conn_free(struct ksmbd_conn *
+ 	kvfree(conn->request_buf);
+ 	kfree(conn->preauth_info);
+ 	if (atomic_dec_and_test(&conn->refcnt)) {
+-		ksmbd_free_transport(conn->transport);
++		conn->transport->ops->free_transport(conn->transport);
+ 		kfree(conn);
+ 	}
+ }
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -132,6 +132,7 @@ struct ksmbd_transport_ops {
+ 			  void *buf, unsigned int len,
+ 			  struct smb2_buffer_desc_v1 *desc,
+ 			  unsigned int desc_len);
++	void (*free_transport)(struct ksmbd_transport *kt);
+ };
  
- CHECKFLAGS	+= -D__arm__
+ struct ksmbd_transport {
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -158,7 +158,8 @@ struct smb_direct_transport {
+ };
+ 
+ #define KSMBD_TRANS(t) ((struct ksmbd_transport *)&((t)->transport))
+-
++#define SMBD_TRANS(t)	((struct smb_direct_transport *)container_of(t, \
++				struct smb_direct_transport, transport))
+ enum {
+ 	SMB_DIRECT_MSG_NEGOTIATE_REQ = 0,
+ 	SMB_DIRECT_MSG_DATA_TRANSFER
+@@ -409,6 +410,11 @@ err:
+ 	return NULL;
+ }
+ 
++static void smb_direct_free_transport(struct ksmbd_transport *kt)
++{
++	kfree(SMBD_TRANS(kt));
++}
++
+ static void free_transport(struct smb_direct_transport *t)
+ {
+ 	struct smb_direct_recvmsg *recvmsg;
+@@ -455,7 +461,6 @@ static void free_transport(struct smb_di
+ 
+ 	smb_direct_destroy_pools(t);
+ 	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
+-	kfree(t);
+ }
+ 
+ static struct smb_direct_sendmsg
+@@ -2301,4 +2306,5 @@ static struct ksmbd_transport_ops ksmbd_
+ 	.read		= smb_direct_read,
+ 	.rdma_read	= smb_direct_rdma_read,
+ 	.rdma_write	= smb_direct_rdma_write,
++	.free_transport = smb_direct_free_transport,
+ };
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -93,7 +93,7 @@ static struct tcp_transport *alloc_trans
+ 	return t;
+ }
+ 
+-void ksmbd_free_transport(struct ksmbd_transport *kt)
++static void ksmbd_tcp_free_transport(struct ksmbd_transport *kt)
+ {
+ 	struct tcp_transport *t = TCP_TRANS(kt);
+ 
+@@ -659,4 +659,5 @@ static struct ksmbd_transport_ops ksmbd_
+ 	.read		= ksmbd_tcp_read,
+ 	.writev		= ksmbd_tcp_writev,
+ 	.disconnect	= ksmbd_tcp_disconnect,
++	.free_transport = ksmbd_tcp_free_transport,
+ };
 
 
 
