@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-165416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F90B15D2A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B8AB15C23
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6D1C5644A6
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:51:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A15577A9266
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C68E28469A;
-	Wed, 30 Jul 2025 09:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765952652B2;
+	Wed, 30 Jul 2025 09:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E11/Lswu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyjVqaao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F7C1F09B6;
-	Wed, 30 Jul 2025 09:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3334C167DB7;
+	Wed, 30 Jul 2025 09:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869040; cv=none; b=ijv132QVvS/PBSe5Pn7yErhGGTQnOmxAUJvUMvqy9Ymf2a56kbVgfn6gtcTJrtwdAc0tUrVOX2vxx3TrFxZQvfj7AcvLa94EpAORvwm+JT+JmAY4M8ryzCjUh0YAj/E1ANEi+cIT3Gn7TUz6OZFqfdIyci9oUv0DyxChc8x1YB4=
+	t=1753868333; cv=none; b=kKcgG+TLezWLRZ9TsmWZGqwDB9ExSw73w6mCOmGEPXQ8jnZsVp338KIdFkNo0kJ01C2ljrOszS+VEfYf8TjHRqrOSSJJT1BLgul9YUJ1cmrUEOYShvvfhBtscYe0HBwlcKyjP6YslN3Aps2PmrFxWZ30FJTxCVGM4X4ttbXbrfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869040; c=relaxed/simple;
-	bh=wm2zKLTYvmay6+07Dom2diIVXpsAHr95p0V96zWe8I4=;
+	s=arc-20240116; t=1753868333; c=relaxed/simple;
+	bh=x83MnKvb1IovLhRUzJRo7CfM7qkejx15Tk9oZM1VFws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlY7imZTief56mOFtPqdqgfNGyBF0DzRsiSDm/ds2+v8kLOh1m8amkDhDcMOYRztaP9hyZO+QIF6/hNJROh8DBjUauJ8j0nYIv+Piv2vgR3BfxxhUJAvhpzawpIo3IbBOGwCtpEL1RkRD2Q3ph0MhvnaU4igSoPHm7uIDt5BAo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E11/Lswu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE741C4CEF5;
-	Wed, 30 Jul 2025 09:50:39 +0000 (UTC)
+	 MIME-Version; b=Kq7FO8TGJFXu4u7pxR5rJEqtlzZ23ltJJJo0ubcrfguJhdBl6hFsFZlk1ttSnaJCJpB2BftgYwIYRncU+JBbMB9K1IvL9YlFhfbTK6YKwy+E2ELK9XpUg2Ypdh0ArTagHehtFsbklJCPzP8VDOcQlzYzZgU89zYe8qSSt2WfbAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyjVqaao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B07DC4CEE7;
+	Wed, 30 Jul 2025 09:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869040;
-	bh=wm2zKLTYvmay6+07Dom2diIVXpsAHr95p0V96zWe8I4=;
+	s=korg; t=1753868332;
+	bh=x83MnKvb1IovLhRUzJRo7CfM7qkejx15Tk9oZM1VFws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E11/LswuVjfKGA6WfCOQeYDwggZ/r+MS2X5fwkfS8rA20GQnBy/BG/4jw37r8aiqz
-	 9hym0/NElAJRxxTcQNITOPTdC6rmEmjKEmmI+de63pnLBk6+a9PHPXHzy4h/xKy5+Z
-	 7xAYVrxIFkUaQzt3e6AzZVM4mZ3JdgeY/PcFrf2U=
+	b=DyjVqaaoWkvycf8Bf5thRlkOXtQT8LbKMytu87qHJdg/BQ07mBY40y1abxEuwcXna
+	 xUkvJIjqD0rVm9WcunBneO5suxHm+jXGtF+UPblOOJrQ99dd+OyUD1I/zH+/kAn2W1
+	 tRSmnjINgiqY9cK2GAgC+OJh4pcQZOm4LvL7kSNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 22/92] xfrm: always initialize offload path
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 37/76] dpaa2-switch: Fix device reference count leak in MAC endpoint handling
 Date: Wed, 30 Jul 2025 11:35:30 +0200
-Message-ID: <20250730093231.467781618@linuxfoundation.org>
+Message-ID: <20250730093228.277058556@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit c0f21029f123d1b15f8eddc8e3976bf0c8781c43 ]
+commit 96e056ffba912ef18a72177f71956a5b347b5177 upstream.
 
-Offload path is used for GRO with SW IPsec, and not just for HW
-offload. So initialize it anyway.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_switch_port_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-Fixes: 585b64f5a620 ("xfrm: delay initialization of offload path till its actually requested")
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Closes: https://lore.kernel.org/all/aEGW_5HfPqU1rFjl@krikkit
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-3-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xfrm.h     | 2 +-
- net/xfrm/xfrm_device.c | 1 -
- net/xfrm/xfrm_state.c  | 6 ++----
- net/xfrm/xfrm_user.c   | 1 +
- 4 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 1f1861c57e2ad..29a0759d5582c 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -474,7 +474,7 @@ struct xfrm_type_offload {
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -1447,12 +1447,19 @@ static int dpaa2_switch_port_connect_mac
+ 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
+ 		return PTR_ERR(dpmac_dev);
  
- int xfrm_register_type_offload(const struct xfrm_type_offload *type, unsigned short family);
- void xfrm_unregister_type_offload(const struct xfrm_type_offload *type, unsigned short family);
--void xfrm_set_type_offload(struct xfrm_state *x);
-+void xfrm_set_type_offload(struct xfrm_state *x, bool try_load);
- static inline void xfrm_unset_type_offload(struct xfrm_state *x)
- {
- 	if (!x->type_offload)
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index f46a9e5764f01..a2d3a5f3b4852 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -305,7 +305,6 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
- 		return -EINVAL;
- 	}
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
  
--	xfrm_set_type_offload(x);
- 	if (!x->type_offload) {
- 		NL_SET_ERR_MSG(extack, "Type doesn't support offload");
- 		dev_put(dev);
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index cef8d3c20f652..0cf516b4e6d92 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -424,11 +424,10 @@ void xfrm_unregister_type_offload(const struct xfrm_type_offload *type,
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
++
+ 	mac = kzalloc(sizeof(*mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
+ 
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = port_priv->ethsw_data->mc_io;
+@@ -1482,6 +1489,8 @@ err_close_mac:
+ 	dpaa2_mac_close(mac);
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
  }
- EXPORT_SYMBOL(xfrm_unregister_type_offload);
  
--void xfrm_set_type_offload(struct xfrm_state *x)
-+void xfrm_set_type_offload(struct xfrm_state *x, bool try_load)
- {
- 	const struct xfrm_type_offload *type = NULL;
- 	struct xfrm_state_afinfo *afinfo;
--	bool try_load = true;
- 
- retry:
- 	afinfo = xfrm_state_get_afinfo(x->props.family);
-@@ -607,6 +606,7 @@ static void ___xfrm_state_destroy(struct xfrm_state *x)
- 	kfree(x->coaddr);
- 	kfree(x->replay_esn);
- 	kfree(x->preplay_esn);
-+	xfrm_unset_type_offload(x);
- 	if (x->type) {
- 		x->type->destructor(x);
- 		xfrm_put_type(x->type);
-@@ -780,8 +780,6 @@ void xfrm_dev_state_free(struct xfrm_state *x)
- 	struct xfrm_dev_offload *xso = &x->xso;
- 	struct net_device *dev = READ_ONCE(xso->dev);
- 
--	xfrm_unset_type_offload(x);
--
- 	if (dev && dev->xfrmdev_ops) {
- 		spin_lock_bh(&xfrm_state_dev_gc_lock);
- 		if (!hlist_unhashed(&x->dev_gclist))
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 614b58cb26ab7..d17ea437a1587 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -977,6 +977,7 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
- 	/* override default values from above */
- 	xfrm_update_ae_params(x, attrs, 0);
- 
-+	xfrm_set_type_offload(x, attrs[XFRMA_OFFLOAD_DEV]);
- 	/* configure the hardware if offload is requested */
- 	if (attrs[XFRMA_OFFLOAD_DEV]) {
- 		err = xfrm_dev_state_add(net, x,
--- 
-2.39.5
-
 
 
 
