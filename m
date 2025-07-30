@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B34B15D6B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B750B15C49
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA51A18C4BE0
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 922894E11B6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03382949F1;
-	Wed, 30 Jul 2025 09:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D24A28DF0B;
+	Wed, 30 Jul 2025 09:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vItj97vF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lO8s6eBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886D3230981;
-	Wed, 30 Jul 2025 09:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3F426F462;
+	Wed, 30 Jul 2025 09:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869149; cv=none; b=KER1Ilqs/5kMX2JGC3eXWDU4tzusXsD4RuN3fPazZhEMeet2PdiaRvrmbGPHX09fEyfnWhduPwcPjNk6xxbb0AJiOCTQZJvZXaalJBKe6hCMxByiwYSHdWKNHGKyuGEagsRkJeXkHcN9GOCDY5h+qTBZk+QvgNtpi9dclE//hXE=
+	t=1753868367; cv=none; b=l+rnNyoR90jWB9kK2G0LXZridnqg7Xpx3Zgcnk0naLDeLQD5yw/t4prc51sll0P7472oRM3xi/WfrccKJ7folPbIOFu4F0pXgm6YZb8ebJ9sCR8ZvGuyFDeoFOmr/Shu+Uc48EzXSjFrjzV8J/nyMRDCe2Z39sA6eqnCZTxDuKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869149; c=relaxed/simple;
-	bh=HNxEvs2Oyhs732qiGCxzP+oRhpeFC4TA8ucVqx7LlJw=;
+	s=arc-20240116; t=1753868367; c=relaxed/simple;
+	bh=/gDcrEUrt9yfNLihPkpynrRLbnnxw0oymohmiYp9tJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HX3ERV1sXpYKUohfqUX5qhD5STxaJnifFA5kuk3FK4LIM2WXUoXg4RpRwNU07rQ2N4MRghtuYowAgOp0YOi38cA96G8GvwV84TAmouo1mm4ikzl3e3Rvj6gjfvy1B8dd44V+ip6iUP4lPfT+5Rj2tSP6C9SvqgERTcg0kHDjBy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vItj97vF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05158C4CEF5;
-	Wed, 30 Jul 2025 09:52:28 +0000 (UTC)
+	 MIME-Version; b=VU5Pntxwr+iQIvwFNtgnDUG2X5gc05YNbn5Uwdzx6pOcQCja7e8BQor4gj8W3UG5TqZe8MiX2r6+iyLKYWmNsaIV8Lus3sfI37Rz284GShgN+W7+KnwH8VYFw/hKfE2DbC1DbFy+72VY9guaXptzdW8fMsuHDoxi6Qf6E9v0dhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lO8s6eBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB750C4CEFF;
+	Wed, 30 Jul 2025 09:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869149;
-	bh=HNxEvs2Oyhs732qiGCxzP+oRhpeFC4TA8ucVqx7LlJw=;
+	s=korg; t=1753868367;
+	bh=/gDcrEUrt9yfNLihPkpynrRLbnnxw0oymohmiYp9tJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vItj97vFPU74lZbb7dAuLeC1ey0RUuflElzdyrQKMEGy9YeTCWROgUKNVFej9Q7vB
-	 Znbu4RNLN039pGmV3TTcez/LnmxunikxYQsnFW73y/VF8gsBD1aNJFB/EGJjDphKCm
-	 HRS2/VOnRtnkyi4ZWvPRP2Btd/6KfqzJJoA84DNA=
+	b=lO8s6eBUwzCUh5Ok8bHCRSBEiTPRffTBKUnkRvW1mv3qdfiOp8uNcK2kDGmYv4d1a
+	 +sv30dO8YQM2xoJ4bdFxSYHE8m39sOMcst0O8bly9H7nCsKOoStpgVBPiHU0eoyhtR
+	 GlX6dxbxVTdeGuWN41aCeabvNa52vQh9nBBbtISw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 31/92] i40e: When removing VF MAC filters, only check PF-set MAC
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 46/76] selftests: mptcp: connect: also cover checksum
 Date: Wed, 30 Jul 2025 11:35:39 +0200
-Message-ID: <20250730093231.957662973@linuxfoundation.org>
+Message-ID: <20250730093228.626592458@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 5a0df02999dbe838c3feed54b1d59e9445f68b89 ]
+commit fdf0f60a2bb02ba581d9e71d583e69dd0714a521 upstream.
 
-When the PF is processing an Admin Queue message to delete a VF's MACs
-from the MAC filter, we currently check if the PF set the MAC and if
-the VF is trusted.
+The checksum mode has been added a while ago, but it is only validated
+when manually launching mptcp_connect.sh with "-C".
 
-This results in undesirable behaviour, where if a trusted VF with a
-PF-set MAC sets itself down (which sends an AQ message to delete the
-VF's MAC filters) then the VF MAC is erased from the interface.
+The different CIs were then not validating these MPTCP Connect tests
+with checksum enabled. To make sure they do, add a new test program
+executing mptcp_connect.sh with the checksum mode.
 
-This results in the VF losing its PF-set MAC which should not happen.
-
-There is no need to check for trust at all, because an untrusted VF
-cannot change its own MAC. The only check needed is whether the PF set
-the MAC. If the PF set the MAC, then don't erase the MAC on link-down.
-
-Resolve this by changing the deletion check only for PF-set MAC.
-
-(the out-of-tree driver has also intentionally removed the check for VF
-trust here with OOT driver version 2.26.8, this changes the Linux kernel
-driver behaviour and comment to match the OOT driver behaviour)
-
-Fixes: ea2a1cfc3b201 ("i40e: Fix VF MAC filter removal")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 94d66ba1d8e4 ("selftests: mptcp: enable checksum in mptcp_connect.sh")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-2-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/Makefile                  |    2 +-
+ tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh |    5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 2dbe38eb94941..7ccfc1191ae56 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3137,10 +3137,10 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
- 		const u8 *addr = al->list[i].addr;
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -5,7 +5,7 @@ top_srcdir = ../../../../..
+ CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
  
- 		/* Allow to delete VF primary MAC only if it was not set
--		 * administratively by PF or if VF is trusted.
-+		 * administratively by PF.
- 		 */
- 		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
--			if (i40e_can_vf_change_mac(vf))
-+			if (!vf->pf_set_mac)
- 				was_unimac_deleted = true;
- 			else
- 				continue;
--- 
-2.39.5
-
+ TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
+-	      pm_netlink.sh mptcp_join.sh diag.sh \
++	      mptcp_connect_checksum.sh pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+ 
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -C "${@}"
 
 
 
