@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-165340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E2FB15CCD
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFD0B15C33
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B80A3A40BF
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2885A5A52C8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA75293B4C;
-	Wed, 30 Jul 2025 09:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC36292B50;
+	Wed, 30 Jul 2025 09:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPlLIj8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAGWPx7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A53A29344F;
-	Wed, 30 Jul 2025 09:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78813635;
+	Wed, 30 Jul 2025 09:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868750; cv=none; b=gotcDr0P2hYA+u2eVomTiqzTRredChTmoPJEAr6anIBBzJExGJ6zHy/nyRocDY89ZwHGJzzpCXYGgv/Ri3dDE1n/JK3J/HOoqCbLr3eWg5dQMPCu2Wcu0NuRkpuyJPMIksy9IHSpVu2oOW+3QNGix7Wago8dHJqHL1bC4hbJhyY=
+	t=1753868305; cv=none; b=O2qQN9MPdEPKUroKr7r5kPr2dKgRvYE5lvsIZyCbP/IKVMa/C1DSLTJLkhDCDhZN+Gkabe6MJz7qjwQcDqiMcNAan6PF/UuM3ilgYEOWU6PrSoCLTJ6rz3qeLMckGxiJXIINoKTP6ftKcJLX+ydJv2I0hD/Gn0PYnzeLyoRErC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868750; c=relaxed/simple;
-	bh=f4OuXCv6qC6D/hZSrDO3775/h7/rQ9hPY34FP/nxw1Y=;
+	s=arc-20240116; t=1753868305; c=relaxed/simple;
+	bh=XGpitW5qk3+xLGEja6fPMTXdbOP1vvwbM+dlPnn2PYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqMkMOa0BM9Gi2RV4N3Y2J07sOwQMPUx8KgeC9l9QeT5lAA/adnbmT7Ugo843KoDXP9mIYo92UBAJHp1n1uwrOV6Qo+tTq6YA1cCld/CSTmoMBRYJ6L3AHMhESS0v5Ihh5KJJeQ6UC0euvtO9OI/Px436kaK7f2auTO6q/hLg40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPlLIj8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABB8C4CEF5;
-	Wed, 30 Jul 2025 09:45:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ucro9nP42yObSN5qH1PT60ARb+ZK7fqR64pRLnv7ucuAaHwnMHzC7hvZK50qRUjpJJJtT6n0eGDYNoUSYUmh8ZUgE7CuVwWiG+267mvJXSEucwN+hcpTLSjoKaKOcQAD3LEaczPsy+0s8s2mPNr88qMTk++3tUiU/t0/XiO4WOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAGWPx7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5479C4CEE7;
+	Wed, 30 Jul 2025 09:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868749;
-	bh=f4OuXCv6qC6D/hZSrDO3775/h7/rQ9hPY34FP/nxw1Y=;
+	s=korg; t=1753868305;
+	bh=XGpitW5qk3+xLGEja6fPMTXdbOP1vvwbM+dlPnn2PYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPlLIj8sQwIgnpM2pTtstnsQDeR2vNRMS1GMSnKUTgSeklfWQIL2ch3BKtAtCHVTm
-	 4KbaLM6APt2ODB8RIAxEIJuXHruzZeC42Frrd+w0WzB5wNhhAM6IlLV+1QJPjY2DF/
-	 goUOQv01EDo7fJvH4P3L8ZvvAFUAAulzEGz+jPL0=
+	b=lAGWPx7S/ghBFXibjv65o29u2vNiEwhl31HUQlCIbN+f+w7bk1qWaCEQhI7DgFlKl
+	 wM2f59hbwDxhZZdxQsxKoay8mFwqIOuktVgvDYlqc4nJ6MJU1+6e33OUd8Rv+gWilp
+	 z7z5XxnZT15LKRi6aaoX+ALU8c9Ru+Mg/kcY9pYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nimrod Oren <noren@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Torsten Hilbrich <torsten.hilbrich@secunet.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/117] selftests: drv-net: wait for iperf client to stop sending
+Subject: [PATCH 6.6 09/76] platform/x86: Fix initialization order for firmware_attributes_class
 Date: Wed, 30 Jul 2025 11:35:02 +0200
-Message-ID: <20250730093234.845952272@linuxfoundation.org>
+Message-ID: <20250730093227.213363839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nimrod Oren <noren@nvidia.com>
+From: Torsten Hilbrich <torsten.hilbrich@secunet.com>
 
-[ Upstream commit 86941382508850d58c11bdafe0fec646dfd31b09 ]
+[ Upstream commit 2bfe3ae1aa45f8b61cb0dc462114fd0c9636ad32 ]
 
-A few packets may still be sent out during the termination of iperf
-processes. These late packets cause failures in rss_ctx.py when they
-arrive on queues expected to be empty.
+The think-lmi driver uses the firwmare_attributes_class. But this class
+is registered after think-lmi, causing the "think-lmi" directory in
+"/sys/class/firmware-attributes" to be missing when the driver is
+compiled as builtin.
 
-Example failure observed:
-
-  Check failed 2 != 0 traffic on inactive queues (context 1):
-    [0, 0, 1, 1, 386385, 397196, 0, 0, 0, 0, ...]
-
-  Check failed 4 != 0 traffic on inactive queues (context 2):
-    [0, 0, 0, 0, 2, 2, 247152, 253013, 0, 0, ...]
-
-  Check failed 2 != 0 traffic on inactive queues (context 3):
-    [0, 0, 0, 0, 0, 0, 1, 1, 282434, 283070, ...]
-
-To avoid such failures, wait until all client sockets for the requested
-port are either closed or in the TIME_WAIT state.
-
-Fixes: 847aa551fa78 ("selftests: drv-net: rss_ctx: factor out send traffic and check")
-Signed-off-by: Nimrod Oren <noren@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722122655.3194442-1-noren@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 55922403807a ("platform/x86: think-lmi: Directly use firmware_attributes_class")
+Signed-off-by: Torsten Hilbrich <torsten.hilbrich@secunet.com>
+Link: https://lore.kernel.org/r/7dce5f7f-c348-4350-ac53-d14a8e1e8034@secunet.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/drivers/net/lib/py/load.py      | 23 +++++++++++++++----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/platform/x86/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/lib/py/load.py b/tools/testing/selftests/drivers/net/lib/py/load.py
-index d9c10613ae67b..44151b7b1a24b 100644
---- a/tools/testing/selftests/drivers/net/lib/py/load.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/load.py
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
+index b457de5abf7d7..8012de299174f 100644
+--- a/drivers/platform/x86/Makefile
++++ b/drivers/platform/x86/Makefile
+@@ -58,6 +58,8 @@ obj-$(CONFIG_X86_PLATFORM_DRIVERS_HP)	+= hp/
+ # Hewlett Packard Enterprise
+ obj-$(CONFIG_UV_SYSFS)       += uv_sysfs.o
  
-+import re
- import time
- 
- from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
-@@ -10,12 +11,11 @@ class GenerateTraffic:
- 
-         self.env = env
- 
--        if port is None:
--            port = rand_port()
--        self._iperf_server = cmd(f"iperf3 -s -1 -p {port}", background=True)
--        wait_port_listen(port)
-+        self.port = rand_port() if port is None else port
-+        self._iperf_server = cmd(f"iperf3 -s -1 -p {self.port}", background=True)
-+        wait_port_listen(self.port)
-         time.sleep(0.1)
--        self._iperf_client = cmd(f"iperf3 -c {env.addr} -P 16 -p {port} -t 86400",
-+        self._iperf_client = cmd(f"iperf3 -c {env.addr} -P 16 -p {self.port} -t 86400",
-                                  background=True, host=env.remote)
- 
-         # Wait for traffic to ramp up
-@@ -56,3 +56,16 @@ class GenerateTraffic:
-             ksft_pr(">> Server:")
-             ksft_pr(self._iperf_server.stdout)
-             ksft_pr(self._iperf_server.stderr)
-+        self._wait_client_stopped()
++obj-$(CONFIG_FW_ATTR_CLASS)	+= firmware_attributes_class.o
 +
-+    def _wait_client_stopped(self, sleep=0.005, timeout=5):
-+        end = time.monotonic() + timeout
-+
-+        live_port_pattern = re.compile(fr":{self.port:04X} 0[^6] ")
-+
-+        while time.monotonic() < end:
-+            data = cmd("cat /proc/net/tcp*", host=self.env.remote).stdout
-+            if not live_port_pattern.search(data):
-+                return
-+            time.sleep(sleep)
-+        raise Exception(f"Waiting for client to stop timed out after {timeout}s")
+ # IBM Thinkpad and Lenovo
+ obj-$(CONFIG_IBM_RTL)		+= ibm_rtl.o
+ obj-$(CONFIG_IDEAPAD_LAPTOP)	+= ideapad-laptop.o
+@@ -108,7 +110,6 @@ obj-$(CONFIG_SYSTEM76_ACPI)	+= system76_acpi.o
+ obj-$(CONFIG_TOPSTAR_LAPTOP)	+= topstar-laptop.o
+ 
+ # Platform drivers
+-obj-$(CONFIG_FW_ATTR_CLASS)		+= firmware_attributes_class.o
+ obj-$(CONFIG_SERIAL_MULTI_INSTANTIATE)	+= serial-multi-instantiate.o
+ obj-$(CONFIG_MLX_PLATFORM)		+= mlx-platform.o
+ obj-$(CONFIG_TOUCHSCREEN_DMI)		+= touchscreen_dmi.o
 -- 
 2.39.5
 
