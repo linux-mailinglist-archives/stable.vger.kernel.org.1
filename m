@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C05B15D69
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CE7B15CEE
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E34518C4B84
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAAC25A543A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C662777E1;
-	Wed, 30 Jul 2025 09:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A61326CE28;
+	Wed, 30 Jul 2025 09:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHkKTyHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvRI3aYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F409A1E25E1;
-	Wed, 30 Jul 2025 09:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACC91714B7;
+	Wed, 30 Jul 2025 09:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869141; cv=none; b=X3AxOHKZiOM7C58zQLovjfZJ7QsVpXbxPERu4QsZmipdL68GNyLNExmS30WEjiIHl4F3KrUmyk60vb/PEPVNMyMOuV388hzjJglNEi/iS0BsQXtkg2ZtSTLiW99TJPuEig0yUphm0nGB9R2RK5eT83Br51IAfEiePpTS7OomSP8=
+	t=1753868824; cv=none; b=ry3Li+TadABVSj0OwN0VAQnjpFjUmPjBfat/z5WQoXnlECfFStEyeY8ZQwwXZbPE5SFMDMWAmhmZ6/UVkLcuDkbLCNQ7rERxIWkzNu+3MRmR9f0BR9k5rXYATJsazz7aqSsSrrczXIxKNUP/8BOxoFAf/PR86+pKn5UfjxHq/L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869141; c=relaxed/simple;
-	bh=LJhAdgqr3OsZ5Tqcrk+ox91gkhpBUiQSO49GiDIuMHU=;
+	s=arc-20240116; t=1753868824; c=relaxed/simple;
+	bh=Pe2KLYrmqgj5IjrT8Mrw4FnaZrdqT04ot29IZACfRLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P14zbbLx9Ma+7XRSZ1XUOWeMeZhj0IItgbvCE4JesI2NATrNf/qHTT4fJRZMicNFEyvbMisDDWUWfZW6GIKrRHam8qQ5UBadcjYpRjj1clLrcZYDXBAUcFRFBm0aHICVQVSuK9/DVRMBHbuu4l9P+7L9KRbLlQ5cr+xoV2g38sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHkKTyHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF499C4CEF5;
-	Wed, 30 Jul 2025 09:52:18 +0000 (UTC)
+	 MIME-Version; b=VCNsaEZKd0qTJiya8KRyUCadeSFseW66pVrpCkqTDDRF2NOkkHC8bNUihtQ7lnnZRkXQzcR2F40PEVS0ZF+zMQhndj19Q4AMX/0M1GxyjOHksY0+T+7iBD4ZY/+iZyCUCtzYoKpAlVbIWUwRrFbKqEb78mH3qb0lbwh3MzMXaY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvRI3aYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D24C4CEF5;
+	Wed, 30 Jul 2025 09:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869139;
-	bh=LJhAdgqr3OsZ5Tqcrk+ox91gkhpBUiQSO49GiDIuMHU=;
+	s=korg; t=1753868824;
+	bh=Pe2KLYrmqgj5IjrT8Mrw4FnaZrdqT04ot29IZACfRLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHkKTyHKbr25Ate+H7Y5tGmSg/1jqgepTFvh6ULs/s0wGf8JSLbmL7XJF1e7jw34n
-	 nR+wajeugK6XB51CJLwy/62VG1f5Eq9YO/5VtQRj1zMoIhgkLhMBxkZqbtyIlDvQRy
-	 zR82frWfd432zlkvhsVHiaC8ZpcYN4zlGm2sKIoE=
+	b=OvRI3aYCbDTs6SSRTjEufpMAHuc3S1ZZnRRrlN5hYITPye4bRIfslnzjoxHuHSK4D
+	 cQVpRO+90rgxy9iJKeX2nHK4wZp4bt+RvTT8+D0DiLoQP7rKXVkI3MSe7uBDRFu/eV
+	 3KNZRljh9a9bVpmBJP6EbDGSsXtM57vERH7es6aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.15 46/92] drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 085/117] ext4: dont explicit update times in ext4_fallocate()
 Date: Wed, 30 Jul 2025 11:35:54 +0200
-Message-ID: <20250730093232.539469022@linuxfoundation.org>
+Message-ID: <20250730093237.084733249@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 9e0c433d0c05fde284025264b89eaa4ad59f0a3e upstream.
+[ Upstream commit 73ae756ecdfa9684446134590eef32b0f067249c ]
 
-On g4x we currently use the 96MHz non-SSC refclk, which can't actually
-generate an exact 2.7 Gbps link rate. In practice we end up with 2.688
-Gbps which seems to be close enough to actually work, but link training
-is currently failing due to miscalculating the DP_LINK_BW value (we
-calcualte it directly from port_clock which reflects the actual PLL
-outpout frequency).
+After commit 'ad5cd4f4ee4d ("ext4: fix fallocate to use file_modified to
+update permissions consistently"), we can update mtime and ctime
+appropriately through file_modified() when doing zero range, collapse
+rage, insert range and punch hole, hence there is no need to explicit
+update times in those paths, just drop them.
 
-Ideas how to fix this:
-- nudge port_clock back up to 270000 during PLL computation/readout
-- track port_clock and the nominal link rate separately so they might
-  differ a bit
-- switch to the 100MHz refclk, but that one should be SSC so perhaps
-  not something we want
-
-While we ponder about a better solution apply some band aid to the
-immediate issue of miscalculated DP_LINK_BW value. With this
-I can again use 2.7 Gbps link rate on g4x.
-
-Cc: stable@vger.kernel.org
-Fixes: 665a7b04092c ("drm/i915: Feed the DPLL output freq back into crtc_state")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250710201718.25310-2-ville.syrjala@linux.intel.com
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-(cherry picked from commit a8b874694db5cae7baaf522756f87acd956e6e66)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20241220011637.1157197-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 29ec9bed2395 ("ext4: fix incorrect punch max_end")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/extents.c |    5 -----
+ fs/ext4/inode.c   |    1 -
+ 2 files changed, 6 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1603,6 +1603,12 @@ int intel_dp_rate_select(struct intel_dp
- void intel_dp_compute_rate(struct intel_dp *intel_dp, int port_clock,
- 			   u8 *link_bw, u8 *rate_select)
- {
-+	struct intel_display *display = to_intel_display(intel_dp);
-+
-+	/* FIXME g4x can't generate an exact 2.7GHz with the 96MHz non-SSC refclk */
-+	if (display->platform.g4x && port_clock == 268800)
-+		port_clock = 270000;
-+
- 	/* eDP 1.4 rate select method. */
- 	if (intel_dp->use_rate_select) {
- 		*link_bw = 0;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4675,8 +4675,6 @@ static long ext4_zero_range(struct file
+ 			goto out_mutex;
+ 		}
+ 
+-		inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+-
+ 		ret = ext4_alloc_file_blocks(file, lblk, max_blocks, new_size,
+ 					     flags);
+ 		filemap_invalidate_unlock(mapping);
+@@ -4700,7 +4698,6 @@ static long ext4_zero_range(struct file
+ 		goto out_mutex;
+ 	}
+ 
+-	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 	if (new_size)
+ 		ext4_update_inode_size(inode, new_size);
+ 	ret = ext4_mark_inode_dirty(handle, inode);
+@@ -5431,7 +5428,6 @@ static int ext4_collapse_range(struct fi
+ 	up_write(&EXT4_I(inode)->i_data_sem);
+ 	if (IS_SYNC(inode))
+ 		ext4_handle_sync(handle);
+-	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 	ret = ext4_mark_inode_dirty(handle, inode);
+ 	ext4_update_inode_fsync_trans(handle, inode, 1);
+ 
+@@ -5541,7 +5537,6 @@ static int ext4_insert_range(struct file
+ 	/* Expand file to avoid data loss if there is error while shifting */
+ 	inode->i_size += len;
+ 	EXT4_I(inode)->i_disksize += len;
+-	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 	ret = ext4_mark_inode_dirty(handle, inode);
+ 	if (ret)
+ 		goto out_stop;
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4113,7 +4113,6 @@ int ext4_punch_hole(struct file *file, l
+ 	if (IS_SYNC(inode))
+ 		ext4_handle_sync(handle);
+ 
+-	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 	ret2 = ext4_mark_inode_dirty(handle, inode);
+ 	if (unlikely(ret2))
+ 		ret = ret2;
 
 
 
