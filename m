@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-165231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E29B15C21
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BDFB15D0C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F2DD7A47BA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:37:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147CB564321
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA5D293B63;
-	Wed, 30 Jul 2025 09:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124CF26C383;
+	Wed, 30 Jul 2025 09:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fKTVxnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPG+Ku0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68381293B4F;
-	Wed, 30 Jul 2025 09:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2319255F5C;
+	Wed, 30 Jul 2025 09:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868311; cv=none; b=V+7dlsr3O2rOX96SYQqRGm2Hg9c0O0Hc7iibZR7W/IqNpur7GV5Hpc1I3JMDVo0nJ8ASE3FbZvN1wdlenVAz0w2rxWcJQHhV/U02HVI9NYSxoYEZoJQLtqXxoyAymDU/ECYYSmqMo2BKWBHg7NdsvesVtivOuwOwWn/JlYfIbHg=
+	t=1753868992; cv=none; b=S82mRPkqtVp/YtbHDXlzPCuOSpd7DyTdF/eIYl9JScNNpRDSilowj7l7TzvEDk7X0+pKJkXsLqrqS+UBZOuIk8c51QYx9lJBnxHVccv/BUhzCWJgZ/CxBp2yyk+QiLM5R7yYDFhbaZwo5m0yZVu2xFO/aziFwz0+OSa4n+xSHiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868311; c=relaxed/simple;
-	bh=UnAYBY056l2HKb8SX+2NHPKpq3Fvd17jUFDjK8VJ65Y=;
+	s=arc-20240116; t=1753868992; c=relaxed/simple;
+	bh=vnrs8ipr+rCrFb/REY8WMKIXsYIoZy45EuO4Jdyi914=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeK1dTBe/SlF0jtZQjUBpey65F7L40VVqWbDypm+dHsFUSA/X84rnonMH5CtVGxP+Fr4aBvZOvvjV2kYNCgpxJClqHYPLKgpXbIsF5c283fpFyRiizdDm2fp5wgXeaS0JBydg0d28q/3z3W9TbJLtz0VNdQ0MgdjCNMW7wxGY/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fKTVxnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B6DC4CEF5;
-	Wed, 30 Jul 2025 09:38:30 +0000 (UTC)
+	 MIME-Version; b=pWCsxeN6r+o2CM2VU6P3tprXDCI+8cfLhv7olqPYeH9itVXQ/6kuJXxvSdbTJg+1XUG8svpXjdjXeOFnolzBIPdW0j1d6lP1OT/4rXGqcOy0rXmQe63mCtRsHZCvWb9iwT7QAbwymY7l2ATMElwbNObP/6+z4xj9cf4Ue7gRa0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPG+Ku0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1ADC4CEF5;
+	Wed, 30 Jul 2025 09:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868311;
-	bh=UnAYBY056l2HKb8SX+2NHPKpq3Fvd17jUFDjK8VJ65Y=;
+	s=korg; t=1753868992;
+	bh=vnrs8ipr+rCrFb/REY8WMKIXsYIoZy45EuO4Jdyi914=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fKTVxnm0d951omLGTureLiBZHUEmI47cL71mmJGhXiQ5PrlKlvYgGKAk4oRRUoqK
-	 Q9UlViFn/QO+N5Ukm34le1b0eUS441Wwmti38lnFmkRdegxk/L3nis46R7kPcks6f3
-	 Tz5srUPP6GtKun2hcrRfG8ITarJNtAfInK6GdJ/w=
+	b=FPG+Ku0ef9a/y3+YmZ958pp8tQAaDtNwTWW69VTK6pfQ9ez7m9hbkR33VT6elG6rZ
+	 NFLHAVT0Kvj3MfG9pBIkIKYSnB23gEiDROplIgcipC09vdBIFDCGdZJxJWgqDjlpys
+	 IiWDjvZzcVGqI8qV+cayYTypNOxCXunOmMu5JFrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/76] net: hns3: disable interrupt when ptp init failed
+Subject: [PATCH 6.15 10/92] interconnect: icc-clk: destroy nodes in case of memory allocation failures
 Date: Wed, 30 Jul 2025 11:35:18 +0200
-Message-ID: <20250730093227.821732853@linuxfoundation.org>
+Message-ID: <20250730093231.024899522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit cde304655f25d94a996c45b0f9956e7dcc2bc4c0 ]
+[ Upstream commit 618c810a7b2163517ab1875bd56b633ca3cb3328 ]
 
-When ptp init failed, we'd better disable the interrupt and clear the
-flag, to avoid early report interrupt at next probe.
+When memory allocation fails during creating the name of the nodes in
+icc_clk_register(), the code continues on the error path and it calls
+icc_nodes_remove() to destroy the already created nodes. However that
+function only destroys the nodes which were already added to the provider
+and the newly created nodes are never destroyed in case of error.
 
-Fixes: 0bf5eb788512 ("net: hns3: add support for PTP")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-3-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+In order to avoid a memory leaks, change the code to destroy the newly
+created nodes explicitly in case of memory allocation failures.
+
+Fixes: 44c5aa73ccd1 ("interconnect: icc-clk: check return values of devm_kasprintf()")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20250625-icc-clk-memleak-fix-v1-1-4151484cd24f@gmail.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/interconnect/icc-clk.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-index 9a806ac727cf5..c1e88e67ebb65 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-@@ -497,14 +497,14 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to init freq, ret = %d\n", ret);
--		goto out;
-+		goto out_clear_int;
- 	}
+diff --git a/drivers/interconnect/icc-clk.c b/drivers/interconnect/icc-clk.c
+index 88f311c110207..93c030608d3e0 100644
+--- a/drivers/interconnect/icc-clk.c
++++ b/drivers/interconnect/icc-clk.c
+@@ -117,6 +117,7 @@ struct icc_provider *icc_clk_register(struct device *dev,
  
- 	ret = hclge_ptp_set_ts_mode(hdev, &hdev->ptp->ts_cfg);
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to init ts mode, ret = %d\n", ret);
--		goto out;
-+		goto out_clear_int;
- 	}
+ 		node->name = devm_kasprintf(dev, GFP_KERNEL, "%s_master", data[i].name);
+ 		if (!node->name) {
++			icc_node_destroy(node->id);
+ 			ret = -ENOMEM;
+ 			goto err;
+ 		}
+@@ -135,6 +136,7 @@ struct icc_provider *icc_clk_register(struct device *dev,
  
- 	ktime_get_real_ts64(&ts);
-@@ -512,7 +512,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to init ts time, ret = %d\n", ret);
--		goto out;
-+		goto out_clear_int;
- 	}
- 
- 	set_bit(HCLGE_STATE_PTP_EN, &hdev->state);
-@@ -520,6 +520,9 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 
- 	return 0;
- 
-+out_clear_int:
-+	clear_bit(HCLGE_PTP_FLAG_EN, &hdev->ptp->flags);
-+	hclge_ptp_int_en(hdev, false);
- out:
- 	hclge_ptp_destroy_clock(hdev);
- 
+ 		node->name = devm_kasprintf(dev, GFP_KERNEL, "%s_slave", data[i].name);
+ 		if (!node->name) {
++			icc_node_destroy(node->id);
+ 			ret = -ENOMEM;
+ 			goto err;
+ 		}
 -- 
 2.39.5
 
