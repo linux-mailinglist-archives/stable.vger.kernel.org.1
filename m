@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-165312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F89B15CA3
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:45:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09E6B15C30
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0808156299F
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F3185A5071
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916092989BA;
-	Wed, 30 Jul 2025 09:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F0D2877C1;
+	Wed, 30 Jul 2025 09:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1zSKUqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5hGaehq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE322989A2;
-	Wed, 30 Jul 2025 09:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4272226980D;
+	Wed, 30 Jul 2025 09:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868632; cv=none; b=QeKgrm2ME7PcfNQDZAzSd6V1D5G/h2cGU9w5zy6azqwgGzVOKgcqF6ZKTdgHtTHy929qz5agnayn9hbiyU/2j/uK01cv9Vb/4832WmIGcqM4tVPwZZWQsZcSqpJOCqJF1GKsEMvniECpHXu46SuTPHPig1XPnfImncVxsoYeQtI=
+	t=1753868292; cv=none; b=ibcslPRTG3fdnJTS4/gL0Y9KZs3Yt/z7i1IjqXCDruDtVBb4dwl+5+hf6YF5u6+tgJ0VxrrPefqbhjb9ZZT0Y94e4kX3k59i+0UzRHKX8X2LBtK6BB+e1tqQ8a0ctqbWVEx75/xW9vf1PRVAm9trcZD1cDd+lx8Ad3bA7MT+lEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868632; c=relaxed/simple;
-	bh=OqlUrox7py4+xPWPGf46JQIkjDhGhzK3tASvJcDirmI=;
+	s=arc-20240116; t=1753868292; c=relaxed/simple;
+	bh=LV6fUu18EnFC6SfgtJphV6MiihCQydbVV1DeZVR93EU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXX+tPBFYkFCL1+1RzRqFm+nmc9F8m4+2JSXpB9RDDMDS6PDjm3JmEk1xydKKwyo22BolqirnxpvkG27FcGe7EaxByJ+02yBLzdkEqcG0dioIbze24KZfwWHLFTpi+YL6GWWOOlVPCPTVqRGePdoBWfaWlmm+6e5Y0Gz72gjwaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1zSKUqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D740C4CEF6;
-	Wed, 30 Jul 2025 09:43:51 +0000 (UTC)
+	 MIME-Version; b=AoW9M/z7vG+E0qVOdMBv3/m/J0c1P3NSNi1rjQ899iORfo5nhyzA1xcQvWx4c65/QTGprWNAqeR3lT35cCmDpTFvGNOk4p0W1GwiF6ThLYnRDLN+iOiv/Z507plJMojRVBTqQNgHgd9HV2finExj3WBmnrfzcCKWdf8FZV7+GHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5hGaehq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65601C4CEE7;
+	Wed, 30 Jul 2025 09:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868632;
-	bh=OqlUrox7py4+xPWPGf46JQIkjDhGhzK3tASvJcDirmI=;
+	s=korg; t=1753868290;
+	bh=LV6fUu18EnFC6SfgtJphV6MiihCQydbVV1DeZVR93EU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1zSKUqB5agGcpBtQRzfTcp8ILVbKfh9SZDOIpO2s1fyIl0OmLX8psH0IfOZh+tmj
-	 RhT+0gXXyyoG3+hBRA95pVOuo8apy2yPxURVmqPQAYmJA+aJQ6kARMUccyqjQzQtE+
-	 boDyAfn1aHv0ThXSBAgg9/XTsx7aUWjKfEfoSV+k=
+	b=T5hGaehqJbx2/lu3TTSsR3uslzHPFcrBiuQau358fdSQCOWUfB3RPow+8Qfsd2F/m
+	 r/+1gKsDpYZnsnjNIYA77VuCD1u3y0DwLDKce92Qv03870tA2ZM8GlosOYuWWrzx9h
+	 3tCUPIbM3eOVtr2JvgC+7WPyrVVQgUw6OCeCvfw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xilin Wu <sophon@radxa.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/117] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+Subject: [PATCH 6.6 05/76] interconnect: qcom: sc7280: Add missing num_links to xm_pcie3_1 node
 Date: Wed, 30 Jul 2025 11:34:58 +0200
-Message-ID: <20250730093234.698515766@linuxfoundation.org>
+Message-ID: <20250730093227.066023793@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Xilin Wu <sophon@radxa.com>
 
-[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
+[ Upstream commit 886a94f008dd1a1702ee66dd035c266f70fd9e90 ]
 
-might_sleep could be trigger in the atomic context in qfq_delete_class.
+This allows adding interconnect paths for PCIe 1 in device tree later.
 
-qfq_destroy_class was moved into atomic context locked
-by sch_tree_lock to avoid a race condition bug on
-qfq_aggregate. However, might_sleep could be triggered by
-qfq_destroy_class, which introduced sleeping in atomic context (path:
-qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
-->might_sleep).
-
-Considering the race is on the qfq_aggregate objects, keeping
-qfq_rm_from_agg in the lock but moving the left part out can solve
-this issue.
-
-Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 46bdcac533cc ("interconnect: qcom: Add SC7280 interconnect provider driver")
+Signed-off-by: Xilin Wu <sophon@radxa.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250613-sc7280-icc-pcie1-fix-v1-1-0b09813e3b09@radxa.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/interconnect/qcom/sc7280.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 8e60fb5a7083b..5a345ef35c9f6 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -539,9 +539,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+diff --git a/drivers/interconnect/qcom/sc7280.c b/drivers/interconnect/qcom/sc7280.c
+index a626dbc719995..728589ec80264 100644
+--- a/drivers/interconnect/qcom/sc7280.c
++++ b/drivers/interconnect/qcom/sc7280.c
+@@ -165,6 +165,7 @@ static struct qcom_icc_node xm_pcie3_1 = {
+ 	.id = SC7280_MASTER_PCIE_1,
+ 	.channels = 1,
+ 	.buswidth = 8,
++	.num_links = 1,
+ 	.links = { SC7280_SLAVE_ANOC_PCIE_GEM_NOC },
+ };
  
- static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
- {
--	struct qfq_sched *q = qdisc_priv(sch);
--
--	qfq_rm_from_agg(q, cl);
- 	gen_kill_estimator(&cl->rate_est);
- 	qdisc_put(cl->qdisc);
- 	kfree(cl);
-@@ -562,10 +559,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
- 
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
--	qfq_destroy_class(sch, cl);
-+	qfq_rm_from_agg(q, cl);
- 
- 	sch_tree_unlock(sch);
- 
-+	qfq_destroy_class(sch, cl);
- 	return 0;
- }
- 
-@@ -1506,6 +1504,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
- 					  common.hnode) {
-+			qfq_rm_from_agg(q, cl);
- 			qfq_destroy_class(sch, cl);
- 		}
- 	}
 -- 
 2.39.5
 
