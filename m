@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5FCB15CFF
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2660B15C2D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672E718C46BA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77459172426
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97528277CBA;
-	Wed, 30 Jul 2025 09:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D927C267F61;
+	Wed, 30 Jul 2025 09:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DN8cubpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnbfosUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544E3255F5C;
-	Wed, 30 Jul 2025 09:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9542E19D065;
+	Wed, 30 Jul 2025 09:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868874; cv=none; b=jjFQEjUhEaUNE73xkw6swa5eUaZJsyMrTBwLpt2KG4H42diWVrbtM956Ng/sjKlSi62xuSnl2rqZgkBeNB5/XiEQq0ynaB/e/KuWbtzRCtjpW7iJqAz5GXNo7o73DRqUva/T3nq/4bjq5rcsUO+iGBkgqD7sPLqQrAiABJAm7NI=
+	t=1753868364; cv=none; b=Q7zgHjtPbLMrd77vcTH/l0KC/tYVgJNjasBz3KdukKNSEn6zKMv5vr4muTbc7pEjNbcNn7JslKT9uM89sGUqW/U+6YIKvYgXzflcDkBjNzxpyBAJQsAsdn48ijPSEwGZ5p4an+8FTsL4T+l0gET9UeYfotHpSzW67Mix8p3UMNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868874; c=relaxed/simple;
-	bh=H/z2XPs5aWnrjy+jE6zC4TnsCdy/yyKn0BuIbGLCK1A=;
+	s=arc-20240116; t=1753868364; c=relaxed/simple;
+	bh=5dzfc4PEW0bYHUUFDDW7piC83ZRbT36eDbxnyqbnRnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pTKDaXsLxokNyTlXGPSCYYaXJ+Jxzu9CSCLW6pNlKQ0XKCyuA6YiLojehsnpyKuGqG92RIbL4r5EBtkl5UOOutdjv9K8Gtsc0UMdqj6uCffS1KrvhWbFQPDAHlhdozJRLMhBU6/AE0bJLR1QCtytqOJk5m1GT+JMeQXygeyY0ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DN8cubpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C5CC4CEF5;
-	Wed, 30 Jul 2025 09:47:53 +0000 (UTC)
+	 MIME-Version; b=qO5mMXefrVTfwVkHNvZhpN7ftzadfpncvO7kvUxXMA+B/FjQAsOltt8NQJhpAN1wpR7IuXjWN4spmuzUxkS+zJkumIEAchwMhyi1ekJIMqxdvL7d1BB++Twx45OsksQf1ekBALIABiu8LhZgIx1XRv5xF0CougD1Xqmcg/q9zrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnbfosUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD93C4CEE7;
+	Wed, 30 Jul 2025 09:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868874;
-	bh=H/z2XPs5aWnrjy+jE6zC4TnsCdy/yyKn0BuIbGLCK1A=;
+	s=korg; t=1753868364;
+	bh=5dzfc4PEW0bYHUUFDDW7piC83ZRbT36eDbxnyqbnRnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DN8cubpGa2JDdyqNglcXDscrinhAFVEiRtH/DYFlIOQKoXjD/Z/V6A0Gr0A/zMoTT
-	 cjh5mP/7be9Lng99Az1zl1TxlLDcnnepfjhX5uC6vga7qm9Qbux+71gWoLpwTa3xOD
-	 4MmOMvzjav8u2vXjNwyYgux4lyhBNJt/j9WKCCmE=
+	b=XnbfosUnA7cu0VplT/AIy1iZjWOKe2AqyDE3Q025UV31IXsVRprCerSU5utOQX02F
+	 D5+/UMKFuHDAv/xfw1/e13pDIWbdP1LqDC590CKHgBemazMfDaHyZihMvujtfT7x6e
+	 IYp9KTyw4RjtPg/cORvG8DtzdMp9HsJwd66cicUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 068/117] selftests/bpf: Add tests with stack ptr register in conditional jmp
-Date: Wed, 30 Jul 2025 11:35:37 +0200
-Message-ID: <20250730093236.190392265@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 45/76] selftests: mptcp: connect: also cover alt modes
+Date: Wed, 30 Jul 2025 11:35:38 +0200
+Message-ID: <20250730093228.582504749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 5ffb537e416ee22dbfb3d552102e50da33fec7f6 upstream.
+commit 37848a456fc38c191aedfe41f662cc24db8c23d9 upstream.
 
-Add two tests:
-  - one test has 'rX <op> r10' where rX is not r10, and
-  - another test has 'rX <op> rY' where rX and rY are not r10
-    but there is an early insn 'rX = r10'.
+The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
+available from the beginning, but only tested when mptcp_connect.sh is
+manually launched with "-m mmap" or "-m sendfile", not via the
+kselftests helpers.
 
-Without previous verifier change, both tests will fail.
+The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
+"-m sendfile". Plus other CIs, especially the ones validating the stable
+releases, were not validating these alternate modes.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250524041340.4046304-1-yonghong.song@linux.dev
-[ shung-hsi.yu: contains additional hunks for kernel/bpf/verifier.c that
-  should be part of the previous patch in the series, commit
-  e2d2115e56c4 "bpf: Do not include stack ptr register in precision
-  backtracking bookkeeping", which already incorporated. ]
-Link: https://lore.kernel.org/all/9b41f9f5-396f-47e0-9a12-46c52087df6c@linux.dev/
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To make sure these modes are validated by these CIs, add two new test
+programs executing mptcp_connect.sh with the alternate modes.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Verified that newly added test passes in 6.15.y[1] as well as 6.12.y[2]
+ tools/testing/selftests/net/mptcp/Makefile                  |    3 ++-
+ tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     |    5 +++++
+ tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh |    5 +++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
 
-1: https://github.com/shunghsiyu/libbpf/actions/runs/16561115937/job/46830912531
-2: https://github.com/shunghsiyu/libbpf/actions/runs/16561115937/job/46830912533
----
- kernel/bpf/verifier.c                                  |    7 +-
- tools/testing/selftests/bpf/progs/verifier_precision.c |   53 +++++++++++++++++
- 2 files changed, 58 insertions(+), 2 deletions(-)
-
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15480,6 +15480,8 @@ static int check_cond_jmp_op(struct bpf_
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -4,7 +4,8 @@ top_srcdir = ../../../../..
  
- 		if (src_reg->type == PTR_TO_STACK)
- 			insn_flags |= INSN_F_SRC_REG_STACK;
-+		if (dst_reg->type == PTR_TO_STACK)
-+			insn_flags |= INSN_F_DST_REG_STACK;
- 	} else {
- 		if (insn->src_reg != BPF_REG_0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -15489,10 +15491,11 @@ static int check_cond_jmp_op(struct bpf_
- 		memset(src_reg, 0, sizeof(*src_reg));
- 		src_reg->type = SCALAR_VALUE;
- 		__mark_reg_known(src_reg, insn->imm);
-+
-+		if (dst_reg->type == PTR_TO_STACK)
-+			insn_flags |= INSN_F_DST_REG_STACK;
- 	}
+ CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
  
--	if (dst_reg->type == PTR_TO_STACK)
--		insn_flags |= INSN_F_DST_REG_STACK;
- 	if (insn_flags) {
- 		err = push_insn_history(env, this_branch, insn_flags, 0);
- 		if (err)
---- a/tools/testing/selftests/bpf/progs/verifier_precision.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_precision.c
-@@ -130,4 +130,57 @@ __naked int state_loop_first_last_equal(
- 	);
- }
+-TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
++TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
++	      pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
  
-+__used __naked static void __bpf_cond_op_r10(void)
-+{
-+	asm volatile (
-+	"r2 = 2314885393468386424 ll;"
-+	"goto +0;"
-+	"if r2 <= r10 goto +3;"
-+	"if r1 >= -1835016 goto +0;"
-+	"if r2 <= 8 goto +0;"
-+	"if r3 <= 0 goto +0;"
-+	"exit;"
-+	::: __clobber_all);
-+}
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
 +
-+SEC("?raw_tp")
-+__success __log_level(2)
-+__msg("8: (bd) if r2 <= r10 goto pc+3")
-+__msg("9: (35) if r1 >= 0xffe3fff8 goto pc+0")
-+__msg("10: (b5) if r2 <= 0x8 goto pc+0")
-+__msg("mark_precise: frame1: last_idx 10 first_idx 0 subseq_idx -1")
-+__msg("mark_precise: frame1: regs=r2 stack= before 9: (35) if r1 >= 0xffe3fff8 goto pc+0")
-+__msg("mark_precise: frame1: regs=r2 stack= before 8: (bd) if r2 <= r10 goto pc+3")
-+__msg("mark_precise: frame1: regs=r2 stack= before 7: (05) goto pc+0")
-+__naked void bpf_cond_op_r10(void)
-+{
-+	asm volatile (
-+	"r3 = 0 ll;"
-+	"call __bpf_cond_op_r10;"
-+	"r0 = 0;"
-+	"exit;"
-+	::: __clobber_all);
-+}
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
 +
-+SEC("?raw_tp")
-+__success __log_level(2)
-+__msg("3: (bf) r3 = r10")
-+__msg("4: (bd) if r3 <= r2 goto pc+1")
-+__msg("5: (b5) if r2 <= 0x8 goto pc+2")
-+__msg("mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1")
-+__msg("mark_precise: frame0: regs=r2 stack= before 4: (bd) if r3 <= r2 goto pc+1")
-+__msg("mark_precise: frame0: regs=r2 stack= before 3: (bf) r3 = r10")
-+__naked void bpf_cond_op_not_r10(void)
-+{
-+	asm volatile (
-+	"r0 = 0;"
-+	"r2 = 2314885393468386424 ll;"
-+	"r3 = r10;"
-+	"if r3 <= r2 goto +1;"
-+	"if r2 <= 8 goto +2;"
-+	"r0 = 2 ll;"
-+	"exit;"
-+	::: __clobber_all);
-+}
-+
- char _license[] SEC("license") = "GPL";
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
 
 
 
