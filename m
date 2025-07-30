@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-165408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6A5B15D25
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D3CBB15CC5
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 568CB7A359A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF53918C3B8D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AEA4A32;
-	Wed, 30 Jul 2025 09:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E8D2951D8;
+	Wed, 30 Jul 2025 09:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ust2cZ+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHXaUwPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1111E226D17;
-	Wed, 30 Jul 2025 09:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC1E279792;
+	Wed, 30 Jul 2025 09:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869009; cv=none; b=Uh9rM2x+og3/l1uDG5MiSEd9Y7FgS/Kb41TpXzLOZl8XiOaa9DEHSomspi0mNBQQZSa5RifSimhzIMRrsRplh4dUZOQX2tMn85dkBjXHdjuJNB8gi1jmEj/SGcuNOi/T2JO5jvBoFujRGzFDtNzyiyQ2OgPb/TH5uVwss3FCOl0=
+	t=1753868698; cv=none; b=m7V1h7AZyOFs76oyqTLmuR6Cuzf9j8a7D+INwSfRivBH3vtGlEINRyAKqLJ5OAqZjdOr6vR2KTSrKmnY3RhP7mr5xkYnEkWshwzwsfbGwFddXOJzsDDYJXa3+7t6VCxnKMi3JVvs5Ylzb1QwcvA5ppM+ezl7Cgi1jxmINt63ztM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869009; c=relaxed/simple;
-	bh=59H2+O4FDhRZxwdNNDzFxk4yavNKhcJP2kR5zOH8X9E=;
+	s=arc-20240116; t=1753868698; c=relaxed/simple;
+	bh=bRfKeoIyn2I784gTJOxOMBEPWb9xQOh5Bzq0fp1CoU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A6JVBKD3uGXoRtxSCvLsb5gV49EjtEeV8oYuV/OIjuoWAs5Ibtu66PhtsOJ2S0+Mw1J+VEChfLPqDD9vtUEnXp0zdsmLHqGYRtcE6bTCiXs61p0yP7mCQW0vN/Z9W7yJnhZ2gkeBGLLLYrOGYwxVO55O069dRdb+OMN9AQCVJgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ust2cZ+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3B6C4CEF5;
-	Wed, 30 Jul 2025 09:50:08 +0000 (UTC)
+	 MIME-Version; b=mRLPcmnYc8vRfn/lL1DFMNGm5MKvPvvT2jj7sf7HKC10ckz33NatPLIn1NN2Nji6vtBxLen7sHfr99Xh7i4RBDb6H3fD+/JX3LzhI/ncL2HYkzrUW/TtYOuv/ENrSS3Z+3rlAh/dygbh4tvaPsfC4dPj3ipBDHPKQGaDT/nxKCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHXaUwPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A90C4CEF5;
+	Wed, 30 Jul 2025 09:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869008;
-	bh=59H2+O4FDhRZxwdNNDzFxk4yavNKhcJP2kR5zOH8X9E=;
+	s=korg; t=1753868698;
+	bh=bRfKeoIyn2I784gTJOxOMBEPWb9xQOh5Bzq0fp1CoU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ust2cZ+R4xGgslzeEyQR9JRo1Tv6KA33WJHqvdBxI3Q7Xph3Vlo2QQlWkmsUMkfFY
-	 XV9xbl8KcWHfNhAuvb0YPyzHOC/i0naVSAIqrqlP7shIUVKelCLGPAiYhRi7h1TK1M
-	 cE8dZm8ZWd9U4IrLYy50/hZjEemKRs3+2Hl98gnA=
+	b=IHXaUwPkuxJ4967j48JouEvcElx3xgv2yBjbt6T9SuG9Q0MveqyMI7Cy5L+JJF3tH
+	 UbkGaqW1DplAa8jhNtGrqT3g3zEUuDB/Qw7twsARanFnITQFQ6SCeUgkLIPkv1z9e1
+	 //ezbsSjqJQQB8fXjXWAG0BHrBCu01vRmvvTUFZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shravan Kumar Ramani <shravankr@nvidia.com>,
-	David Thompson <davthompson@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 15/92] platform/mellanox: mlxbf-pmc: Use kstrtobool() to check 0/1 input
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 054/117] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
 Date: Wed, 30 Jul 2025 11:35:23 +0200
-Message-ID: <20250730093231.209305064@linuxfoundation.org>
+Message-ID: <20250730093235.663621453@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravan Kumar Ramani <shravankr@nvidia.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 0e2cebd72321caeef84b6ba7084e85be0287fb4b ]
+commit ee9f3a81ab08dfe0538dbd1746f81fd4d5147fdc upstream.
 
-For setting the enable value, the input should be 0 or 1 only. Use
-kstrtobool() in place of kstrtoint() in mlxbf_pmc_enable_store() to
-accept only valid input.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_eth_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
-Signed-off-by: Shravan Kumar Ramani <shravankr@nvidia.com>
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/2ee618c59976bcf1379d5ddce2fc60ab5014b3a9.1751380187.git.shravankr@nvidia.com
-[ij: split kstrbool() change to own commit.]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-2-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mellanox/mlxbf-pmc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
-index 76966b3dc4ff6..1135d2cf335c8 100644
---- a/drivers/platform/mellanox/mlxbf-pmc.c
-+++ b/drivers/platform/mellanox/mlxbf-pmc.c
-@@ -1772,13 +1772,14 @@ static ssize_t mlxbf_pmc_enable_store(struct device *dev,
- {
- 	struct mlxbf_pmc_attribute *attr_enable = container_of(
- 		attr, struct mlxbf_pmc_attribute, dev_attr);
--	unsigned int en, blk_num;
-+	unsigned int blk_num;
- 	u32 word;
- 	int err;
-+	bool en;
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -4655,12 +4655,19 @@ static int dpaa2_eth_connect_mac(struct
+ 		return PTR_ERR(dpmac_dev);
+ 	}
  
- 	blk_num = attr_enable->nr;
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
  
--	err = kstrtouint(buf, 0, &en);
-+	err = kstrtobool(buf, &en);
- 	if (err < 0)
- 		return err;
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
++
+ 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
  
-@@ -1798,14 +1799,11 @@ static ssize_t mlxbf_pmc_enable_store(struct device *dev,
- 			MLXBF_PMC_CRSPACE_PERFMON_CTL(pmc->block[blk_num].counters),
- 			MLXBF_PMC_WRITE_REG_32, word);
- 	} else {
--		if (en && en != 1)
--			return -EINVAL;
--
- 		err = mlxbf_pmc_config_l3_counters(blk_num, false, !!en);
- 		if (err)
- 			return err;
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = priv->mc_io;
+@@ -4694,6 +4701,8 @@ err_close_mac:
+ 	dpaa2_mac_close(mac);
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
+ }
  
--		if (en == 1) {
-+		if (en) {
- 			err = mlxbf_pmc_config_l3_counters(blk_num, true, false);
- 			if (err)
- 				return err;
--- 
-2.39.5
-
 
 
 
