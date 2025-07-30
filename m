@@ -1,303 +1,124 @@
-Return-Path: <stable+bounces-165599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86A6B167D3
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 22:54:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4815B167F0
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 23:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFFA93B2945
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 20:54:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C30C7A552D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 20:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714FA21B9FF;
-	Wed, 30 Jul 2025 20:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D92D223337;
+	Wed, 30 Jul 2025 21:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L2Ln6bVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M46tIZ6P"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466810F1;
-	Wed, 30 Jul 2025 20:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC2821E0BB
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 21:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753908873; cv=none; b=j75mtADX1/xPfuHS1xN44ri8N8vwfE9Qe9fKYyDkgw6/3n1GCwZ1upoeuQhHJwv0I1b6BPFigYdX0mMwNjWQpQFTk4YG1M5R72ZqoMTX8TQW6XrgldAauzrCnKY5dQ1QpotGlhSeg6k+QeRgzSWXuiNjTx1DLP3yq/QmAesGHqI=
+	t=1753909222; cv=none; b=qdliXvZcrzLUH3lalc1+1uRFoe55aQ2/HGTv3+cbXSTK0Nlnc9DatOiqHa+0VUFzT3HtZDMH41r9zbO6BmYt0Kcn0S8AcOQE9tiAmUr62szzcoU+D8+AXhcFfAQHBhheBJ3+34qdX8ZYdYQJCZDjDL/qVinM5ex6nup6x/iRQoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753908873; c=relaxed/simple;
-	bh=B9Knq1s0O26WBoCrK4ngNaXKjfNel1u/fAqF4ihbGHQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=ZOJaSRW7gwVOx3G6fBzLckZ6tqIWdSP9GkknDJCUQQqDJjdHmKRTrNOLcn1Fck6Sj5SYCtrheW4GjISr75Kv71ak8qdm3b9VfdzRc8Wrs8a+HQ9LfQj6hlnDMY+5DQF0x1ubFqGBe1N9QMNSTFX78QRw2kHeaGpKKNAhF9hKbb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L2Ln6bVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851D3C4CEE3;
-	Wed, 30 Jul 2025 20:54:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753908872;
-	bh=B9Knq1s0O26WBoCrK4ngNaXKjfNel1u/fAqF4ihbGHQ=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=L2Ln6bVt/h0wYsggt/SFzmeV0u0bc1tDHG5anl/9kTHup2cT8AdhbxyFd8vJ2iQ8Z
-	 eYJcql0twEt6pEg+F13mmyPSLArY0rQ5yL0g+spZpyPI4RkaBCpEuNZ6JWDoI3Ta0D
-	 tz7VQTd/RZhZP3yDdEdRpXdJ+v8O+5S3tYvTs0MW5pHcIIGWO3308B4TuQ2a4IMsqD
-	 LXfyNUetI9LCHpNOHQcMDmY0bUVOrpzQUUOBoWP73pHPe/VUjjr1vJArW4j79+tCSv
-	 xcrmOPXz68Dvq/jkdnMdIA6sAdvZOphvz9/jPD7ErXiOomRrboVk6JG4wdF9+bx2Xk
-	 4SP5IYmlVhp+w==
-Date: Wed, 30 Jul 2025 15:54:31 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1753909222; c=relaxed/simple;
+	bh=qYO9XYMd9Ess2LLFsyadSHoQze0pFR9pSR+4q7JxSB0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ccn/S8vzQCF6xhe8PrxKrZNMpGO5VKCw1XUvcB89sFzp7CXquJmvNriVGJsNGykfYo5F/V7ibIpTEHTYakqYw5q8fXfDDMjsdJPyinpG/poBwNcA7IPDI+VvptqXwYg7VtiitwujjpkgBJ7RjG9Jx4fTh88FmlJacspdhzm87mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M46tIZ6P; arc=none smtp.client-ip=209.85.166.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-3e3ceb1030aso1339695ab.1
+        for <stable@vger.kernel.org>; Wed, 30 Jul 2025 14:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1753909219; x=1754514019; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6nTYoBlbWe2hufH9UN/C4sSrgwEPP02z/hVZuVmtCWI=;
+        b=M46tIZ6PXfLfP52r+SU0yCBUE/63HE/9r4avOn3XDSE7WV3r10KYmvT71xXH9/wTF0
+         X5UHPRKDEX5yCEkKm3lovsX6rM6H7Mg6HxTD8Nryx59vPb8JkshwFfo2hoRoMZrmgydg
+         Fmz0rtZynd8g79gEXYbS313g1OVw+woajmNoA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753909219; x=1754514019;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6nTYoBlbWe2hufH9UN/C4sSrgwEPP02z/hVZuVmtCWI=;
+        b=P1fg+vOo45AL4MmXqBUgO7DTpgQ2yCeOR1ihfmD7sNPyRUBGfYpTmoC9AJkjIBs3VP
+         k0RJQAQ49WkBfrNr++VT8Qd8WLz7QOKTgknIto1j4AaG9PrbsmByFpHqhmx07uAZUM22
+         3D7X6yK1R0/t0iZzrtdwu4M/ivh2B+oEAVI5wqM17SwpEXO5FZe2lEFnOuTUSAMPdQtn
+         1H+e49XTR5ifIOPbAzHielt0huqwWAvwtwal5BEHQVo/58ZaQMmvLWWeoZmiEu+Dz2+E
+         4snvHqUoOcds3PCnssmNRzyWKjPPpbSZODO4Iokzx5HyBJRrYfvQR7hs5aSs1LNixfR4
+         7sRA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvuD+ilfltf9RzPf0dJuTVq7LfSJADiMvy5HOql91b2AEcbilJ9Tpr2qN13PIFc2+LdzhoQaM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzozV44Uq0VRRuVA/8+/GhlNN+bTbcmwAhGYY0GE5MBgVPzBZFG
+	SE9txPRcpQmMp5q6qnSs2lVnDpvDf2TpuuLaQJW6O5+uLBeCur4vgIKdgpf7Q5F7png=
+X-Gm-Gg: ASbGncvZfadJVv5j18dKS6UGyACJbw2M540t0a4wIh4huKq8sh1BnLS1EDGnUAy1Lx/
+	hImZjYpdLoDLKdooAC/gj5jWITK1YJ0LyBORgeHGihbVSiz4LpX+mFveGPTh8X+CTr1NZZsi4HM
+	ZOIjpe79gYIEksKcG2rNMNhwEbSl4tMT7jj2tsDBstIAHk90/6TeZFn89HaHs9Lu2n/a8pmWyTa
+	OptGx0iiG/FmePE1FV5H8F4V9XUNnGz286f4kS6HwdgtHMslrpmqM+GzUaadlopSK58Nv3oDVZL
+	1+e2e2XfGjteSNxU9l8TcUSZNVwcrtykx/yrcM9IaXRvZr0TcTOJExHWuj9Jprke2K2wYTMNtHM
+	/MBQiGYUDKdCk6aB0Sgx7AFNkEy06MoLkqQ==
+X-Google-Smtp-Source: AGHT+IGjPEbPegqBnEDpd/XcqciAKEnaO2geFGrPEn0TWYZQKwLtS8S00ByN+2MQJrm5bjkEbIXPWA==
+X-Received: by 2002:a05:6e02:240a:b0:3e3:d50c:d657 with SMTP id e9e14a558f8ab-3e3f60b6207mr86671535ab.3.1753909219396;
+        Wed, 30 Jul 2025 14:00:19 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50a55b19250sm59262173.5.2025.07.30.14.00.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 14:00:19 -0700 (PDT)
+Message-ID: <ba33d960-df47-441f-8898-5253e685ed2d@linuxfoundation.org>
+Date: Wed, 30 Jul 2025 15:00:18 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Sibi Sankar <quic_sibis@quicinc.com>, 
- Rajendra Nayak <quic_rjendra@quicinc.com>, 
- Taniya Das <quic_tdas@quicinc.com>, Conor Dooley <conor+dt@kernel.org>, 
- Johan Hovold <johan@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, stable@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, Dmitry Baryshkov <lumag@kernel.org>, 
- linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Abel Vesa <abel.vesa@linaro.org>
-In-Reply-To: <20250730-phy-qcom-edp-add-missing-refclk-v1-0-6f78afeadbcf@linaro.org>
-References: <20250730-phy-qcom-edp-add-missing-refclk-v1-0-6f78afeadbcf@linaro.org>
-Message-Id: <175390856538.1725252.16820505469946792548.robh@kernel.org>
-Subject: Re: [PATCH 0/3] phy: qcom: edp: Add missing refclk clock to
- x1e80100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 00/76] 6.6.101-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-On Wed, 30 Jul 2025 14:46:47 +0300, Abel Vesa wrote:
-> According to documentation, the eDP PHY on x1e80100 has another clock
-> called refclk. Rework the driver to allow different number of clocks
-> based on match data and add this refclk to the x1e80100. Fix the
-> dt-bindings schema and add the clock to the DT node as well.
+On 7/30/25 03:34, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.101 release.
+> There are 76 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> ---
-> Abel Vesa (3):
->       dt-bindings: phy: qcom-edp: Add missing clock for X Elite
->       phy: qcom: edp: Add missing refclk for X1E80100
->       arm64: dts: qcom: Add missing TCSR refclk to the eDP PHY
+> Responses should be made by Fri, 01 Aug 2025 09:32:07 +0000.
+> Anything received after that time might be too late.
 > 
->  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 23 +++++++++++-
->  arch/arm64/boot/dts/qcom/x1e80100.dtsi             |  6 ++-
->  drivers/phy/qualcomm/phy-qcom-edp.c                | 43 ++++++++++++++++++----
->  3 files changed, 62 insertions(+), 10 deletions(-)
-> ---
-> base-commit: 79fb37f39b77bbf9a56304e9af843cd93a7a1916
-> change-id: 20250730-phy-qcom-edp-add-missing-refclk-5ab82828f8e7
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.101-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 > 
-> Best regards,
-> --
-> Abel Vesa <abel.vesa@linaro.org>
+> thanks,
 > 
-> 
+> greg k-h
 > 
 
+Compiled and booted on my test system. No dmesg regressions.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: using specified base-commit 79fb37f39b77bbf9a56304e9af843cd93a7a1916
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20250730-phy-qcom-edp-add-missing-refclk-v1-0-6f78afeadbcf@linaro.org:
-
-arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dtb: phy@8909a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dtb: phy@890ca00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dtb: phy@aec2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dtb: phy@aec5a00 (qcom,sc8280xp-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-asus-zenbook-a14.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sm7325-nothing-spacewar.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dtb: phy@220c2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dtb: phy@220c5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-crd-pro.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s-oled.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-arcata.dtb: phy@8909a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-arcata.dtb: phy@890ca00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-arcata.dtb: phy@aec2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-arcata.dtb: phy@aec5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-arcata.dtb: phy@220c2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-arcata.dtb: phy@220c5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcm6490-idp.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1p42100-crd.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcs9100-ride.dtb: phy@aec2a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcs9100-ride.dtb: phy@aec5a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e001de-devkit.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-crd.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dtb: phy@aec2a00 (qcom,sc8180x-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-idp.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8775p-ride.dtb: phy@aec2a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8775p-ride.dtb: phy@aec5a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-evoker-lte.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-idp2.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-evoker.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcs9100-ride-r3.dtb: phy@aec2a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcs9100-ride-r3.dtb: phy@aec5a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie-lte.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-herobrine-r1.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-qcp.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie-nvme-lte.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8180x-primus.dtb: phy@aec2a00 (qcom,sc8180x-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1p42100-asus-zenbook-a14.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie-nvme.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus15.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-hp-elitebook-ultra-g1q.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-crd-r3.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-villager-r1.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8775p-ride-r3.dtb: phy@aec2a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8775p-ride-r3.dtb: phy@aec5a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-crd.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8295p-adp.dtb: phy@8909a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8295p-adp.dtb: phy@890ca00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8295p-adp.dtb: phy@aec2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8295p-adp.dtb: phy@aec5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8295p-adp.dtb: phy@220c2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8295p-adp.dtb: phy@220c5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-huawei-gaokun3.dtb: phy@8909a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-huawei-gaokun3.dtb: phy@890ca00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-huawei-gaokun3.dtb: phy@aec2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-huawei-gaokun3.dtb: phy@aec5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-huawei-gaokun3.dtb: phy@220c2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-huawei-gaokun3.dtb: phy@220c5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus13.dtb: phy@aec2a00 (qcom,x1e80100-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-blackrock.dtb: phy@8909a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-blackrock.dtb: phy@890ca00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-blackrock.dtb: phy@aec2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-blackrock.dtb: phy@aec5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-crd.dtb: phy@8909a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-crd.dtb: phy@890ca00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-crd.dtb: phy@aec2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-crd.dtb: phy@aec5a00 (qcom,sc8280xp-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-blackrock.dtb: phy@220c2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-microsoft-blackrock.dtb: phy@220c5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-crd.dtb: phy@220c2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc8280xp-crd.dtb: phy@220c5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8540p-ride.dtb: phy@8909a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8540p-ride.dtb: phy@890ca00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8540p-ride.dtb: phy@aec2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8540p-ride.dtb: phy@aec5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-villager-r1-lte.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8540p-ride.dtb: phy@220c2a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sa8540p-ride.dtb: phy@220c5a00 (qcom,sc8280xp-dp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-arch/arm64/boot/dts/qcom/sc7280-herobrine-villager-r0.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
-	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
-
-
-
-
-
+thanks,
+-- Shuah
 
