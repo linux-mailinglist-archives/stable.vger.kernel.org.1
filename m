@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DBEB15D5D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F83EB15CDE
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 079704E567A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33FB77B351B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AC8293C67;
-	Wed, 30 Jul 2025 09:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74162957BA;
+	Wed, 30 Jul 2025 09:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8GzoJ6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqLYnIE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42743594F;
-	Wed, 30 Jul 2025 09:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CF5292B5F;
+	Wed, 30 Jul 2025 09:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869117; cv=none; b=nA5xEXcY00oex2gtXLnpkjC8sF4FolLgiUMN97sOav4D5NbrDlG0wmxd09DEkXl/v7tyeW3DixCB7K7cdob6qeRXSEFY7uWYKDsBgoRSTKjOkjN5Cjh0Hzcaj6MpkZdpkqXRDMxiMkJYlUSmQbRvfuU6d4eQQpbTHa6wu36LKM4=
+	t=1753868814; cv=none; b=mjDywtCyL+5lKolsaHygc11RWxcJ+fhRaETByKQyPlmiDg5zdkVO2w7c70sl1xIOf82q2Lah/RWRJ3B43DXiaJjNxPqCMrQOlOIYOJJxljix17LgJmKI2ZASjWXkmktt9Qkqm2ETllzocfuOkekyKjIobOYlOWAue4ngmAFIyjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869117; c=relaxed/simple;
-	bh=b3zo+8HX/qYIRFVOICq64hU84oqQjRIW2dvRMqKHWw8=;
+	s=arc-20240116; t=1753868814; c=relaxed/simple;
+	bh=KwoxRMH5i9ghBshm/40ZFgVXwJQMntbG0VsqTbU102o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSdN2bYgY7sOBWaJ5FyUOt9msnoNbIfkNN5+u0i1SIHRKshP2tH07MZNLj44tj7Mh5lyY/zQDAwNaAY6VFiUN2SrFoKimKxYsUBZQTw6xKVWXWbtfdsyDZPZEPP5jRaUNd1c2VT4kW7ZDJXD0m52WXGXQ2VXlnHRMitc6kor6xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8GzoJ6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FF0C4CEF5;
-	Wed, 30 Jul 2025 09:51:57 +0000 (UTC)
+	 MIME-Version; b=OoebGKcS3dsWM5rD082TBY1TgRw65o64ZfLAVFEUERjqcQtWms673XW6fCGjiUboWmyNnZZ02IQs1SOu77T75S+We+cKVjn2DKdKM51VrWpTEXrCkXn29bOgBgk7JaGLV5ZV9CsvXeL1Dkzi+oVGD8WG9fqyv8Cwi6ut4zkJLrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqLYnIE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39782C4CEF8;
+	Wed, 30 Jul 2025 09:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869117;
-	bh=b3zo+8HX/qYIRFVOICq64hU84oqQjRIW2dvRMqKHWw8=;
+	s=korg; t=1753868814;
+	bh=KwoxRMH5i9ghBshm/40ZFgVXwJQMntbG0VsqTbU102o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8GzoJ6dGh8Fp8Uf0Jf+XgN+wcMByO1Ad+wasHV2gt+BPrNOV/csPa5+SylN9cwCB
-	 hjSYXzGbjHv84v6w/gqTOrAc9oESdtPjXu3QkWSZ45JrbOu+Xkq1k+STuL8EjvHohC
-	 X1gacTH82dI17Dax4w9tUZDFMCTAqpnWfyQWZzbM=
+	b=yqLYnIE/h2bbstXtfppgf6vDvFEK8bV5xGhRdEABR7JMvVmTP1AmGsFzbonqn5108
+	 p+AjR0moCxOykoLpZ6nkY5v5VkSqN4ScV/3GlCg1lkTRY6SCOwJjofv4bv1LsK1qao
+	 C5qIAf+Hu1ANToq/hHa8U49mzy/P8avtefea0x4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 42/92] net: hns3: default enable tx bounce buffer when smmu enabled
-Date: Wed, 30 Jul 2025 11:35:50 +0200
-Message-ID: <20250730093232.394719378@linuxfoundation.org>
+Subject: [PATCH 6.12 082/117] erofs: simplify tail inline pcluster handling
+Date: Wed, 30 Jul 2025 11:35:51 +0200
+Message-ID: <20250730093236.950057349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 49ade8630f36e9dca2395592cfb0b7deeb07e746 ]
+[ Upstream commit b7710262d743aca112877d12abed61ce8a5d0d98 ]
 
-The SMMU engine on HIP09 chip has a hardware issue.
-SMMU pagetable prefetch features may prefetch and use a invalid PTE
-even the PTE is valid at that time. This will cause the device trigger
-fake pagefaults. The solution is to avoid prefetching by adding a
-SYNC command when smmu mapping a iova. But the performance of nic has a
-sharp drop. Then we do this workaround, always enable tx bounce buffer,
-avoid mapping/unmapping on TX path.
+Use `z_idata_size != 0` to indicate that ztailpacking is enabled.
+`Z_EROFS_ADVISE_INLINE_PCLUSTER` cannot be ignored, as `h_idata_size`
+could be non-zero prior to erofs-utils 1.6 [1].
 
-This issue only affects HNS3, so we always enable
-tx bounce buffer when smmu enabled to improve performance.
+Additionally, merge `z_idataoff` and `z_fragmentoff` since these two
+features are mutually exclusive for a given inode.
 
-Fixes: 295ba232a8c3 ("net: hns3: add device version to replace pci revision")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-5-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[1] https://git.kernel.org/xiang/erofs-utils/c/547bea3cb71a
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250225114038.3259726-1-hsiangkao@linux.alibaba.com
+Stable-dep-of: b44686c8391b ("erofs: fix large fragment handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 31 +++++++++++++++++++
- .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 ++
- 2 files changed, 33 insertions(+)
+ fs/erofs/internal.h |    9 ++-------
+ fs/erofs/zmap.c     |   20 ++++++++++----------
+ 2 files changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index b03b8758c7774..aaa803563bd2e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -11,6 +11,7 @@
- #include <linux/irq.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
-+#include <linux/iommu.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/skbuff.h>
-@@ -1039,6 +1040,8 @@ static bool hns3_can_use_tx_sgl(struct hns3_enet_ring *ring,
- static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -277,13 +277,8 @@ struct erofs_inode {
+ 			unsigned char  z_algorithmtype[2];
+ 			unsigned char  z_logical_clusterbits;
+ 			unsigned long  z_tailextent_headlcn;
+-			union {
+-				struct {
+-					erofs_off_t    z_idataoff;
+-					unsigned short z_idata_size;
+-				};
+-				erofs_off_t z_fragmentoff;
+-			};
++			erofs_off_t    z_fragmentoff;
++			unsigned short z_idata_size;
+ 		};
+ #endif	/* CONFIG_EROFS_FS_ZIP */
+ 	};
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -395,8 +395,8 @@ static int z_erofs_do_map_blocks(struct
+ 				 struct erofs_map_blocks *map, int flags)
  {
- 	u32 alloc_size = ring->tqp->handle->kinfo.tx_spare_buf_size;
-+	struct net_device *netdev = ring_to_netdev(ring);
-+	struct hns3_nic_priv *priv = netdev_priv(netdev);
- 	struct hns3_tx_spare *tx_spare;
- 	struct page *page;
- 	dma_addr_t dma;
-@@ -1080,6 +1083,7 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
- 	tx_spare->buf = page_address(page);
- 	tx_spare->len = PAGE_SIZE << order;
- 	ring->tx_spare = tx_spare;
-+	ring->tx_copybreak = priv->tx_copybreak;
- 	return;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+-	bool ztailpacking = vi->z_advise & Z_EROFS_ADVISE_INLINE_PCLUSTER;
+ 	bool fragment = vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER;
++	bool ztailpacking = vi->z_idata_size;
+ 	struct z_erofs_maprecorder m = {
+ 		.inode = inode,
+ 		.map = map,
+@@ -415,9 +415,8 @@ static int z_erofs_do_map_blocks(struct
+ 	if (err)
+ 		goto unmap_out;
  
- dma_mapping_error:
-@@ -4874,6 +4878,30 @@ static void hns3_nic_dealloc_vector_data(struct hns3_nic_priv *priv)
- 	devm_kfree(&pdev->dev, priv->tqp_vector);
- }
+-	if (ztailpacking && (flags & EROFS_GET_BLOCKS_FINDTAIL))
+-		vi->z_idataoff = m.nextpackoff;
+-
++	if ((flags & EROFS_GET_BLOCKS_FINDTAIL) && ztailpacking)
++		vi->z_fragmentoff = m.nextpackoff;
+ 	map->m_flags = EROFS_MAP_MAPPED | EROFS_MAP_ENCODED;
+ 	end = (m.lcn + 1ULL) << lclusterbits;
  
-+static void hns3_update_tx_spare_buf_config(struct hns3_nic_priv *priv)
-+{
-+#define HNS3_MIN_SPARE_BUF_SIZE (2 * 1024 * 1024)
-+#define HNS3_MAX_PACKET_SIZE (64 * 1024)
-+
-+	struct iommu_domain *domain = iommu_get_domain_for_dev(priv->dev);
-+	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(priv->ae_handle);
-+	struct hnae3_handle *handle = priv->ae_handle;
-+
-+	if (ae_dev->dev_version < HNAE3_DEVICE_VERSION_V3)
-+		return;
-+
-+	if (!(domain && iommu_is_dma_domain(domain)))
-+		return;
-+
-+	priv->min_tx_copybreak = HNS3_MAX_PACKET_SIZE;
-+	priv->min_tx_spare_buf_size = HNS3_MIN_SPARE_BUF_SIZE;
-+
-+	if (priv->tx_copybreak < priv->min_tx_copybreak)
-+		priv->tx_copybreak = priv->min_tx_copybreak;
-+	if (handle->kinfo.tx_spare_buf_size < priv->min_tx_spare_buf_size)
-+		handle->kinfo.tx_spare_buf_size = priv->min_tx_spare_buf_size;
-+}
-+
- static void hns3_ring_get_cfg(struct hnae3_queue *q, struct hns3_nic_priv *priv,
- 			      unsigned int ring_type)
- {
-@@ -5107,6 +5135,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
- 	int i, j;
- 	int ret;
+@@ -472,7 +471,7 @@ static int z_erofs_do_map_blocks(struct
+ 	}
+ 	if (ztailpacking && m.lcn == vi->z_tailextent_headlcn) {
+ 		map->m_flags |= EROFS_MAP_META;
+-		map->m_pa = vi->z_idataoff;
++		map->m_pa = vi->z_fragmentoff;
+ 		map->m_plen = vi->z_idata_size;
+ 	} else if (fragment && m.lcn == vi->z_tailextent_headlcn) {
+ 		map->m_flags |= EROFS_MAP_FRAGMENT;
+@@ -565,6 +564,10 @@ static int z_erofs_fill_inode_lazy(struc
+ 	vi->z_advise = le16_to_cpu(h->h_advise);
+ 	vi->z_algorithmtype[0] = h->h_algorithmtype & 15;
+ 	vi->z_algorithmtype[1] = h->h_algorithmtype >> 4;
++	if (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER)
++		vi->z_fragmentoff = le32_to_cpu(h->h_fragmentoff);
++	else if (vi->z_advise & Z_EROFS_ADVISE_INLINE_PCLUSTER)
++		vi->z_idata_size = le16_to_cpu(h->h_idata_size);
  
-+	hns3_update_tx_spare_buf_config(priv);
- 	for (i = 0; i < ring_num; i++) {
- 		ret = hns3_alloc_ring_memory(&priv->ring[i]);
- 		if (ret) {
-@@ -5311,6 +5340,8 @@ static int hns3_client_init(struct hnae3_handle *handle)
- 	priv->ae_handle = handle;
- 	priv->tx_timeout_count = 0;
- 	priv->max_non_tso_bd_num = ae_dev->dev_specs.max_non_tso_bd_num;
-+	priv->min_tx_copybreak = 0;
-+	priv->min_tx_spare_buf_size = 0;
- 	set_bit(HNS3_NIC_STATE_DOWN, &priv->state);
+ 	headnr = 0;
+ 	if (vi->z_algorithmtype[0] >= Z_EROFS_COMPRESSION_MAX ||
+@@ -593,18 +596,16 @@ static int z_erofs_fill_inode_lazy(struc
+ 		goto out_put_metabuf;
+ 	}
  
- 	handle->msg_enable = netif_msg_init(debug, DEFAULT_MSG_LEVEL);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index d36c4ed16d8dd..caf7a4df85852 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -596,6 +596,8 @@ struct hns3_nic_priv {
- 	struct hns3_enet_coalesce rx_coal;
- 	u32 tx_copybreak;
- 	u32 rx_copybreak;
-+	u32 min_tx_copybreak;
-+	u32 min_tx_spare_buf_size;
- };
+-	if (vi->z_advise & Z_EROFS_ADVISE_INLINE_PCLUSTER) {
++	if (vi->z_idata_size) {
+ 		struct erofs_map_blocks map = {
+ 			.buf = __EROFS_BUF_INITIALIZER
+ 		};
  
- union l3_hdr_info {
--- 
-2.39.5
-
+-		vi->z_idata_size = le16_to_cpu(h->h_idata_size);
+ 		err = z_erofs_do_map_blocks(inode, &map,
+ 					    EROFS_GET_BLOCKS_FINDTAIL);
+ 		erofs_put_metabuf(&map.buf);
+ 
+-		if (!map.m_plen ||
+-		    erofs_blkoff(sb, map.m_pa) + map.m_plen > sb->s_blocksize) {
++		if (erofs_blkoff(sb, map.m_pa) + map.m_plen > sb->s_blocksize) {
+ 			erofs_err(sb, "invalid tail-packing pclustersize %llu",
+ 				  map.m_plen);
+ 			err = -EFSCORRUPTED;
+@@ -619,7 +620,6 @@ static int z_erofs_fill_inode_lazy(struc
+ 			.buf = __EROFS_BUF_INITIALIZER
+ 		};
+ 
+-		vi->z_fragmentoff = le32_to_cpu(h->h_fragmentoff);
+ 		err = z_erofs_do_map_blocks(inode, &map,
+ 					    EROFS_GET_BLOCKS_FINDTAIL);
+ 		erofs_put_metabuf(&map.buf);
 
 
 
