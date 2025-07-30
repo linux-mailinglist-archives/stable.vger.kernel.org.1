@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439F2B15CBC
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6A5B15D25
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 554537B2986
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 568CB7A359A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E33928DF0B;
-	Wed, 30 Jul 2025 09:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AEA4A32;
+	Wed, 30 Jul 2025 09:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOi06P9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ust2cZ+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF73292B42;
-	Wed, 30 Jul 2025 09:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1111E226D17;
+	Wed, 30 Jul 2025 09:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868695; cv=none; b=HebsP/SNYNDbshpA2/MdMJ2ccnnT0wLz7O6VIqKrrC+DfIYXRRoY6GvtPoqXphyTfTgAkgCpXLGpzqwQDEr2H0w/7rlmxBFanTpzOPx6nSayPlDi2G1sir/FcebkzFNg7VObKe3awIZ5iC2BHQJs80PVMA7TXs7hoaQMs30AYpM=
+	t=1753869009; cv=none; b=Uh9rM2x+og3/l1uDG5MiSEd9Y7FgS/Kb41TpXzLOZl8XiOaa9DEHSomspi0mNBQQZSa5RifSimhzIMRrsRplh4dUZOQX2tMn85dkBjXHdjuJNB8gi1jmEj/SGcuNOi/T2JO5jvBoFujRGzFDtNzyiyQ2OgPb/TH5uVwss3FCOl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868695; c=relaxed/simple;
-	bh=+Fd83sTqtwxUznjJNW2NrXOBOr8Twy84VZVl9Z05ggE=;
+	s=arc-20240116; t=1753869009; c=relaxed/simple;
+	bh=59H2+O4FDhRZxwdNNDzFxk4yavNKhcJP2kR5zOH8X9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBnwu0eBnIOUg3CiX5eAaLaDYWyxsIB/6LZB25Tb/mUEz6k51V8gYPdYWK//1Jop4O0OGhXGtBs9HSLnoXdZfp6DTUKiTYr/bYVf28eG8UMNnw8ezip2k+MdR7d1wLuYwBJHajeY9GJM3fsghownSP2OjQkLr/S57KdUk9hkR0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOi06P9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AFEC4CEF5;
-	Wed, 30 Jul 2025 09:44:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A6JVBKD3uGXoRtxSCvLsb5gV49EjtEeV8oYuV/OIjuoWAs5Ibtu66PhtsOJ2S0+Mw1J+VEChfLPqDD9vtUEnXp0zdsmLHqGYRtcE6bTCiXs61p0yP7mCQW0vN/Z9W7yJnhZ2gkeBGLLLYrOGYwxVO55O069dRdb+OMN9AQCVJgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ust2cZ+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3B6C4CEF5;
+	Wed, 30 Jul 2025 09:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868694;
-	bh=+Fd83sTqtwxUznjJNW2NrXOBOr8Twy84VZVl9Z05ggE=;
+	s=korg; t=1753869008;
+	bh=59H2+O4FDhRZxwdNNDzFxk4yavNKhcJP2kR5zOH8X9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOi06P9Xzlywxs3BBamOA2OxH3FTRq7lOPWpl4Cxa1fLscAzCaKU59GsPJN9YNbDZ
-	 4HljREXvVomWLsUa5VevbCt4jYmDrAA5f+bRWTYr7C+VajeLR8IW3cG0Jpk7MGYlA7
-	 wjGF9Uv0GOkqlsUvnbLcy7Cx7LBw5XmOVKsagXoQ=
+	b=ust2cZ+R4xGgslzeEyQR9JRo1Tv6KA33WJHqvdBxI3Q7Xph3Vlo2QQlWkmsUMkfFY
+	 XV9xbl8KcWHfNhAuvb0YPyzHOC/i0naVSAIqrqlP7shIUVKelCLGPAiYhRi7h1TK1M
+	 cE8dZm8ZWd9U4IrLYy50/hZjEemKRs3+2Hl98gnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Cristian Prundeanu <cpru@amazon.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 053/117] arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
-Date: Wed, 30 Jul 2025 11:35:22 +0200
-Message-ID: <20250730093235.625924582@linuxfoundation.org>
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 15/92] platform/mellanox: mlxbf-pmc: Use kstrtobool() to check 0/1 input
+Date: Wed, 30 Jul 2025 11:35:23 +0200
+Message-ID: <20250730093231.209305064@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,132 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+From: Shravan Kumar Ramani <shravankr@nvidia.com>
 
-commit d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb upstream.
+[ Upstream commit 0e2cebd72321caeef84b6ba7084e85be0287fb4b ]
 
-`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
-to different stacks along with the Shadow Call Stack if it is enabled.
-Those two stack changes cannot be done atomically and both functions
-can be interrupted by SErrors or Debug Exceptions which, though unlikely,
-is very much broken : if interrupted, we can end up with mismatched stacks
-and Shadow Call Stack leading to clobbered stacks.
+For setting the enable value, the input should be 0 or 1 only. Use
+kstrtobool() in place of kstrtoint() in mlxbf_pmc_enable_store() to
+accept only valid input.
 
-In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
-but x18 stills points to the old task's SCS. When the interrupt handler
-tries to save the task's SCS pointer, it will save the old task
-SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
-clobbering it.
-
-In `call_on_irq_stack()`, it can happen when switching from the task stack
-to the IRQ stack and when switching back. In both cases, we can be
-interrupted when the SCS pointer points to the IRQ SCS, but SP points to
-the task stack. The nested interrupt handler pushes its return addresses
-on the IRQ SCS. It then detects that SP points to the task stack,
-calls `call_on_irq_stack()` and clobbers the task SCS pointer with
-the IRQ SCS pointer, which it will also use !
-
-This leads to tasks returning to addresses on the wrong SCS,
-or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
-or FPAC if enabled.
-
-This is possible on a default config, but unlikely.
-However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
-instead the GIC is responsible for filtering what interrupts the CPU
-should receive based on priority.
-Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
-even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
-frequently depending on the system configuration and workload, leading
-to unpredictable kernel panics.
-
-Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
-Do the same in `call_on_irq_stack()`, but restore and mask around
-the branch.
-Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
-of behaviour between all configurations.
-
-Introduce and use an assembly macro for saving and masking DAIF,
-as the existing one saves but only masks IF.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Reported-by: Cristian Prundeanu <cpru@amazon.com>
-Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
-Tested-by: Cristian Prundeanu <cpru@amazon.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
+Signed-off-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/2ee618c59976bcf1379d5ddce2fc60ab5014b3a9.1751380187.git.shravankr@nvidia.com
+[ij: split kstrbool() change to own commit.]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/assembler.h |    5 +++++
- arch/arm64/kernel/entry.S          |    6 ++++++
- 2 files changed, 11 insertions(+)
+ drivers/platform/mellanox/mlxbf-pmc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/include/asm/assembler.h
-+++ b/arch/arm64/include/asm/assembler.h
-@@ -41,6 +41,11 @@
- /*
-  * Save/restore interrupts.
-  */
-+	.macro save_and_disable_daif, flags
-+	mrs	\flags, daif
-+	msr	daifset, #0xf
-+	.endm
-+
- 	.macro	save_and_disable_irq, flags
- 	mrs	\flags, daif
- 	msr	daifset, #3
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -823,6 +823,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
-  *
-  */
- SYM_FUNC_START(cpu_switch_to)
-+	save_and_disable_daif x11
- 	mov	x10, #THREAD_CPU_CONTEXT
- 	add	x8, x0, x10
- 	mov	x9, sp
-@@ -846,6 +847,7 @@ SYM_FUNC_START(cpu_switch_to)
- 	ptrauth_keys_install_kernel x1, x8, x9, x10
- 	scs_save x0
- 	scs_load_current
-+	restore_irq x11
- 	ret
- SYM_FUNC_END(cpu_switch_to)
- NOKPROBE(cpu_switch_to)
-@@ -872,6 +874,7 @@ NOKPROBE(ret_from_fork)
-  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
-  */
- SYM_FUNC_START(call_on_irq_stack)
-+	save_and_disable_daif x9
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	get_current_task x16
- 	scs_save x16
-@@ -886,8 +889,10 @@ SYM_FUNC_START(call_on_irq_stack)
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 76966b3dc4ff6..1135d2cf335c8 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -1772,13 +1772,14 @@ static ssize_t mlxbf_pmc_enable_store(struct device *dev,
+ {
+ 	struct mlxbf_pmc_attribute *attr_enable = container_of(
+ 		attr, struct mlxbf_pmc_attribute, dev_attr);
+-	unsigned int en, blk_num;
++	unsigned int blk_num;
+ 	u32 word;
+ 	int err;
++	bool en;
  
- 	/* Move to the new stack and call the function there */
- 	add	sp, x16, #IRQ_STACK_SIZE
-+	restore_irq x9
- 	blr	x1
+ 	blk_num = attr_enable->nr;
  
-+	save_and_disable_daif x9
- 	/*
- 	 * Restore the SP from the FP, and restore the FP and LR from the frame
- 	 * record.
-@@ -895,6 +900,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	mov	sp, x29
- 	ldp	x29, x30, [sp], #16
- 	scs_load_current
-+	restore_irq x9
- 	ret
- SYM_FUNC_END(call_on_irq_stack)
- NOKPROBE(call_on_irq_stack)
+-	err = kstrtouint(buf, 0, &en);
++	err = kstrtobool(buf, &en);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -1798,14 +1799,11 @@ static ssize_t mlxbf_pmc_enable_store(struct device *dev,
+ 			MLXBF_PMC_CRSPACE_PERFMON_CTL(pmc->block[blk_num].counters),
+ 			MLXBF_PMC_WRITE_REG_32, word);
+ 	} else {
+-		if (en && en != 1)
+-			return -EINVAL;
+-
+ 		err = mlxbf_pmc_config_l3_counters(blk_num, false, !!en);
+ 		if (err)
+ 			return err;
+ 
+-		if (en == 1) {
++		if (en) {
+ 			err = mlxbf_pmc_config_l3_counters(blk_num, true, false);
+ 			if (err)
+ 				return err;
+-- 
+2.39.5
+
 
 
 
