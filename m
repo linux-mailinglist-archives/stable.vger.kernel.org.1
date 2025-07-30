@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-165419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1E0B15D38
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838D3B15CE1
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A60237A95B5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C317167C0D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD621D63F2;
-	Wed, 30 Jul 2025 09:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3172877D3;
+	Wed, 30 Jul 2025 09:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcBnzVrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcpuQmuu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E69D274666;
-	Wed, 30 Jul 2025 09:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DE1279DA0;
+	Wed, 30 Jul 2025 09:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869058; cv=none; b=JEd/+ujO2XFG9VYaCFxvNz0HuHzdMEbH8Gn6kfdiqRLZbSUnZi9D1//dgLo25hmlq8S5iv1kudtAhrlei2pIhhl6YypEnL4NK2XNo37GZVqEq/NJCz2J+6WN1lFvvZ/H0VTjznt+LOYYpHKXAFZc6Qt3OvvGc2XcOvFmgKGexD8=
+	t=1753868849; cv=none; b=Tl3Pk9LuA/i9TkBStrRf1ghpqP78hy5rig3gzswiQ2B37a2YOB5rLDWwXXUwFQ/WxwbpsDJAkoRu6g666+JOMOgFaGeYqX10lqiEDO3DnrA0EmCXK2kiVSdOaAjauBW/aZOysIqM4ZC49ZeNTPVaYXLK0y5SSxYkhFBxMjY+g5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869058; c=relaxed/simple;
-	bh=Z/fmA3Q5r+a+6I/Ihin6/HANR9fYCeMHgLY7SyM70kI=;
+	s=arc-20240116; t=1753868849; c=relaxed/simple;
+	bh=crGsTXcHv3aUJ+7IJweXWUGxNivCKHP5B/FZri6vKaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFBiZ74uJ+Z93k5oD+ufpDu0J76e9j5cbkvMegFT5J9WxltKPGxhVymqareDpfxhmgUR+8sXcIdru5HZwKSS9sZBi1XQGC6KHvpLyxa7U19anJMz5s60KVwFfHLvm/2V3hiUqQiAXPsDP96WHeFkx7cgfA8xXpcS72JJkH9SFH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcBnzVrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651A0C4CEF9;
-	Wed, 30 Jul 2025 09:50:55 +0000 (UTC)
+	 MIME-Version; b=M8noJVqV6Fyx4KLkPz5yy2ftmm4BLpPXdydOaGWCPIMWB1q6rHvhZp+Fn/lZ6To0FE8IuULKq6NswK+hOtpy0IUQHRl0ULqVtRGis1OFvSpK56XQU1iZgINZ653/AA0GAQaIXay5Wuf0lLHjdfLUmyC6oVZpsO4Wmj7gkejeWgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcpuQmuu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1F6C4CEF5;
+	Wed, 30 Jul 2025 09:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869057;
-	bh=Z/fmA3Q5r+a+6I/Ihin6/HANR9fYCeMHgLY7SyM70kI=;
+	s=korg; t=1753868849;
+	bh=crGsTXcHv3aUJ+7IJweXWUGxNivCKHP5B/FZri6vKaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GcBnzVrzGI/Eb79rnbhh1MDB0dPy17u7+U6HA5QH/Z6lb33AnvJOayuVlNmdTZABG
-	 K+pqcE/xI7gkm3YmlGemdhCAFx/5SJQ3VbPqUKbBH6CBi4PUfLO7A+WyAB29iHBzCN
-	 mXE+Xvvo6qjPQhgbMUUGXX/1jKvkl2lVbHmzn0oQ=
+	b=RcpuQmuu2g/VT/cq3Fh8QCW4xPTTFla63d5RUfOtRd8idHBSuOrmXBe1t0wSOPL7X
+	 cH7nLtknxjWu92L378EOSsEG4N5T/ikNPSRaHbz786WQF+T0j+QFSq0TnCiMFATKDB
+	 ut/y2uvbeRC0Qphzpnz+3gWDtX4Mai3bm3szFWcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lonial Con <kongln9170@gmail.com>,
-	Eyal Birger <eyal.birger@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 25/92] xfrm: interface: fix use-after-free after changing collect_md xfrm interface
-Date: Wed, 30 Jul 2025 11:35:33 +0200
-Message-ID: <20250730093231.584755646@linuxfoundation.org>
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	syzbot+3b220254df55d8ca8a61@syzkaller.appspotmail.com,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 065/117] mm/vmscan: fix hwpoisoned large folio handling in shrink_folio_list
+Date: Wed, 30 Jul 2025 11:35:34 +0200
+Message-ID: <20250730093236.072393604@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +68,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eyal Birger <eyal.birger@gmail.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit a90b2a1aaacbcf0f91d7e4868ad6c51c5dee814b ]
+commit 9f1e8cd0b7c4c944e9921b52a6661b5eda2705ab upstream.
 
-collect_md property on xfrm interfaces can only be set on device creation,
-thus xfrmi_changelink() should fail when called on such interfaces.
+In shrink_folio_list(), the hwpoisoned folio may be large folio, which
+can't be handled by unmap_poisoned_folio().  For THP, try_to_unmap_one()
+must be passed with TTU_SPLIT_HUGE_PMD to split huge PMD first and then
+retry.  Without TTU_SPLIT_HUGE_PMD, we will trigger null-ptr deref of
+pvmw.pte.  Even we passed TTU_SPLIT_HUGE_PMD, we will trigger a
+WARN_ON_ONCE due to the page isn't in swapcache.
 
-The check to enforce this was done only in the case where the xi was
-returned from xfrmi_locate() which doesn't look for the collect_md
-interface, and thus the validation was never reached.
+Since UCE is rare in real world, and race with reclaimation is more rare,
+just skipping the hwpoisoned large folio is enough.  memory_failure() will
+handle it if the UCE is triggered again.
 
-Calling changelink would thus errornously place the special interface xi
-in the xfrmi_net->xfrmi hash, but since it also exists in the
-xfrmi_net->collect_md_xfrmi pointer it would lead to a double free when
-the net namespace was taken down [1].
+This happens when memory reclaim for large folio races with
+memory_failure(), and will lead to kernel panic.  The race is as
+follows:
 
-Change the check to use the xi from netdev_priv which is available earlier
-in the function to prevent changes in xfrm collect_md interfaces.
+cpu0      cpu1
+ shrink_folio_list memory_failure
+  TestSetPageHWPoison
+  unmap_poisoned_folio
+  --> trigger BUG_ON due to
+  unmap_poisoned_folio couldn't
+   handle large folio
 
-[1] resulting oops:
-[    8.516540] kernel BUG at net/core/dev.c:12029!
-[    8.516552] Oops: invalid opcode: 0000 [#1] SMP NOPTI
-[    8.516559] CPU: 0 UID: 0 PID: 12 Comm: kworker/u80:0 Not tainted 6.15.0-virtme #5 PREEMPT(voluntary)
-[    8.516565] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[    8.516569] Workqueue: netns cleanup_net
-[    8.516579] RIP: 0010:unregister_netdevice_many_notify+0x101/0xab0
-[    8.516590] Code: 90 0f 0b 90 48 8b b0 78 01 00 00 48 8b 90 80 01 00 00 48 89 56 08 48 89 32 4c 89 80 78 01 00 00 48 89 b8 80 01 00 00 eb ac 90 <0f> 0b 48 8b 45 00 4c 8d a0 88 fe ff ff 48 39 c5 74 5c 41 80 bc 24
-[    8.516593] RSP: 0018:ffffa93b8006bd30 EFLAGS: 00010206
-[    8.516598] RAX: ffff98fe4226e000 RBX: ffffa93b8006bd58 RCX: ffffa93b8006bc60
-[    8.516601] RDX: 0000000000000004 RSI: 0000000000000000 RDI: dead000000000122
-[    8.516603] RBP: ffffa93b8006bdd8 R08: dead000000000100 R09: ffff98fe4133c100
-[    8.516605] R10: 0000000000000000 R11: 00000000000003d2 R12: ffffa93b8006be00
-[    8.516608] R13: ffffffff96c1a510 R14: ffffffff96c1a510 R15: ffffa93b8006be00
-[    8.516615] FS:  0000000000000000(0000) GS:ffff98fee73b7000(0000) knlGS:0000000000000000
-[    8.516619] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    8.516622] CR2: 00007fcd2abd0700 CR3: 000000003aa40000 CR4: 0000000000752ef0
-[    8.516625] PKRU: 55555554
-[    8.516627] Call Trace:
-[    8.516632]  <TASK>
-[    8.516635]  ? rtnl_is_locked+0x15/0x20
-[    8.516641]  ? unregister_netdevice_queue+0x29/0xf0
-[    8.516650]  ops_undo_list+0x1f2/0x220
-[    8.516659]  cleanup_net+0x1ad/0x2e0
-[    8.516664]  process_one_work+0x160/0x380
-[    8.516673]  worker_thread+0x2aa/0x3c0
-[    8.516679]  ? __pfx_worker_thread+0x10/0x10
-[    8.516686]  kthread+0xfb/0x200
-[    8.516690]  ? __pfx_kthread+0x10/0x10
-[    8.516693]  ? __pfx_kthread+0x10/0x10
-[    8.516697]  ret_from_fork+0x82/0xf0
-[    8.516705]  ? __pfx_kthread+0x10/0x10
-[    8.516709]  ret_from_fork_asm+0x1a/0x30
-[    8.516718]  </TASK>
-
-Fixes: abc340b38ba2 ("xfrm: interface: support collect metadata mode")
-Reported-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[tujinjiang@huawei.com: add comment to unmap_poisoned_folio()]
+  Link: https://lkml.kernel.org/r/69fd4e00-1b13-d5f7-1c82-705c7d977ea4@huawei.com
+Link: https://lkml.kernel.org/r/20250627125747.3094074-2-tujinjiang@huawei.com
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Fixes: 1b0449544c64 ("mm/vmscan: don't try to reclaim hwpoison folio")
+Reported-by: syzbot+3b220254df55d8ca8a61@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68412d57.050a0220.2461cf.000e.GAE@google.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_interface_core.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ mm/memory-failure.c |    4 ++++
+ mm/vmscan.c         |    8 ++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-index 622445f041d32..fed96bedd54e3 100644
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -875,7 +875,7 @@ static int xfrmi_changelink(struct net_device *dev, struct nlattr *tb[],
- 		return -EINVAL;
- 	}
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1559,6 +1559,10 @@ static int get_hwpoison_page(struct page
+ 	return ret;
+ }
  
--	if (p.collect_md) {
-+	if (p.collect_md || xi->p.collect_md) {
- 		NL_SET_ERR_MSG(extack, "collect_md can't be changed");
- 		return -EINVAL;
- 	}
-@@ -886,11 +886,6 @@ static int xfrmi_changelink(struct net_device *dev, struct nlattr *tb[],
- 	} else {
- 		if (xi->dev != dev)
- 			return -EEXIST;
--		if (xi->p.collect_md) {
--			NL_SET_ERR_MSG(extack,
--				       "device can't be changed to collect_md");
--			return -EINVAL;
--		}
- 	}
++/*
++ * The caller must guarantee the folio isn't large folio, except hugetlb.
++ * try_to_unmap() can't handle it.
++ */
+ int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
+ {
+ 	enum ttu_flags ttu = TTU_IGNORE_MLOCK | TTU_SYNC | TTU_HWPOISON;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1080,6 +1080,14 @@ retry:
+ 			goto keep;
  
- 	return xfrmi_update(xi, &p);
--- 
-2.39.5
-
+ 		if (folio_contain_hwpoisoned_page(folio)) {
++			/*
++			 * unmap_poisoned_folio() can't handle large
++			 * folio, just skip it. memory_failure() will
++			 * handle it if the UCE is triggered again.
++			 */
++			if (folio_test_large(folio))
++				goto keep_locked;
++
+ 			unmap_poisoned_folio(folio, folio_pfn(folio), false);
+ 			folio_unlock(folio);
+ 			folio_put(folio);
 
 
 
