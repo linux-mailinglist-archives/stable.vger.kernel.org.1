@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6B8B15C17
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43388B15CAC
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE02C16CC11
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06CDE7B1F1F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4374273D95;
-	Wed, 30 Jul 2025 09:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B23C442C;
+	Wed, 30 Jul 2025 09:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9e7KcZ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGQphoXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDA6292B3E;
-	Wed, 30 Jul 2025 09:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC02120E6;
+	Wed, 30 Jul 2025 09:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868253; cv=none; b=mKvI6qOlgir2JOrmYg2TXbqQgEydXyMF9qpnJhG5NjKFd4iGhhxHEsSIi6g+KOdWIIcvRmEvRPoQaRxnxgGrdJlU/HkSfBdtoIzwVEp6K+sOFHUApaxgsBd69QbPXvoRiclB3YDJTLNL9J04icDV0UiavyMDD9Up3nepi6EupLU=
+	t=1753868650; cv=none; b=YvHke787VPooN21FP9aAiQ1EztMuY0TJTK57pcw3PIUMXI+WU4X4G0UdGdwg8Tx2JMJjpV4DVBBGCqRDG46xxJhRqM7LN75C0/TuY7z0DJw79i4k39SsHnKs8TbP7e3NLbX+N1t/a6Zopw3JahEE595Q1rSlHkGnWbhUEQ8qv18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868253; c=relaxed/simple;
-	bh=pbRRZM1OMkscFLdXHg+vqN/DPh+mA9TO4ljxvfqXVH4=;
+	s=arc-20240116; t=1753868650; c=relaxed/simple;
+	bh=SA6L6EF3n31FUc3KHoRbXAoXJpY0Zr/nKuVuZNSTg4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lG7DJBSiw8HWhAdbDQmoAwkYJLMtWmzr4HUemtIJzqUq+6BWkOtTyZD9p+fnX2LKhWNXc8dYE8FLjxkBHDaRfkVjwZ9acNCQW3hrIRxLDwoGLq0T9aQBKdGRcpA4EOJ7T/tweQpFRedP3LqeU8Dbqgs3UzuW+Tri022OLM1YDQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9e7KcZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5E1C4CEE7;
-	Wed, 30 Jul 2025 09:37:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JjxHKiNL7Sf08vaXBycPzrF4T0g6SoiRm1Lz8eE9TxhxhSwFh/v197PI8Qilwi3p5NyACzeDBvkv0GGosnemBH6Tj7TWfOKtMJFZBbvT06WVb9pywpEij8Tug84bsn2A9IWShEy7bGkAB/AYL3hr+lS1JQcaOI5dRAvTmpGgAlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGQphoXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154FAC4CEE7;
+	Wed, 30 Jul 2025 09:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868253;
-	bh=pbRRZM1OMkscFLdXHg+vqN/DPh+mA9TO4ljxvfqXVH4=;
+	s=korg; t=1753868649;
+	bh=SA6L6EF3n31FUc3KHoRbXAoXJpY0Zr/nKuVuZNSTg4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9e7KcZ3e5eFR7v29/ve1ajtI+p3HsLYTwdl2BCuxXN/z6b+x55guuFidAr4dYdio
-	 D+EIy9AqGBLHMWqpVzt6y8+lXGobQLgVXyU2rowO4LqlLl3mZCXPU2s9MkOjT06KDq
-	 4sry+SGj7GsZ/G3O7hRF5bpMeDWmCli0RsQaLv8Y=
+	b=DGQphoXGht5IQsnnEuyluhQtUDcf9kM3M/snpADrurefzswtvEJn+45wyhX5YahgX
+	 Czz9I1fay3KOw5WFotjgA2lVU+azdeo0M/xnKG1jiTkluvD1iTaT3OXMS9F+FKpNGF
+	 5s9oQhS69uBqCBZczUY+QEt/VZqJga4kESS4Zpsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/76] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+	"Lin.Cao" <lincao12@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH 6.12 042/117] drm/sched: Remove optimization that causes hang when killing dependent jobs
 Date: Wed, 30 Jul 2025 11:35:11 +0200
-Message-ID: <20250730093227.558099194@linuxfoundation.org>
+Message-ID: <20250730093235.198540394@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Lin.Cao <lincao12@amd.com>
 
-[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
+commit 15f77764e90a713ee3916ca424757688e4f565b9 upstream.
 
-might_sleep could be trigger in the atomic context in qfq_delete_class.
+When application A submits jobs and application B submits a job with a
+dependency on A's fence, the normal flow wakes up the scheduler after
+processing each job. However, the optimization in
+drm_sched_entity_add_dependency_cb() uses a callback that only clears
+dependencies without waking up the scheduler.
 
-qfq_destroy_class was moved into atomic context locked
-by sch_tree_lock to avoid a race condition bug on
-qfq_aggregate. However, might_sleep could be triggered by
-qfq_destroy_class, which introduced sleeping in atomic context (path:
-qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
-->might_sleep).
+When application A is killed before its jobs can run, the callback gets
+triggered but only clears the dependency without waking up the scheduler,
+causing the scheduler to enter sleep state and application B to hang.
 
-Considering the race is on the qfq_aggregate objects, keeping
-qfq_rm_from_agg in the lock but moving the left part out can solve
-this issue.
+Remove the optimization by deleting drm_sched_entity_clear_dep() and its
+usage, ensuring the scheduler is always woken up when dependencies are
+cleared.
 
-Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 777dbd458c89 ("drm/amdgpu: drop a dummy wakeup scheduler")
+Cc: stable@vger.kernel.org # v4.6+
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20250717084453.921097-1-lincao12@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_qfq.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |   21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index a2b321fec13c1..c3f9a6375b4ea 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -539,9 +539,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -368,17 +368,6 @@ void drm_sched_entity_destroy(struct drm
+ }
+ EXPORT_SYMBOL(drm_sched_entity_destroy);
  
- static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
- {
--	struct qfq_sched *q = qdisc_priv(sch);
+-/* drm_sched_entity_clear_dep - callback to clear the entities dependency */
+-static void drm_sched_entity_clear_dep(struct dma_fence *f,
+-				       struct dma_fence_cb *cb)
+-{
+-	struct drm_sched_entity *entity =
+-		container_of(cb, struct drm_sched_entity, cb);
 -
--	qfq_rm_from_agg(q, cl);
- 	gen_kill_estimator(&cl->rate_est);
- 	qdisc_put(cl->qdisc);
- 	kfree(cl);
-@@ -562,10 +559,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
+-	entity->dependency = NULL;
+-	dma_fence_put(f);
+-}
+-
+ /*
+  * drm_sched_entity_clear_dep - callback to clear the entities dependency and
+  * wake up scheduler
+@@ -389,7 +378,8 @@ static void drm_sched_entity_wakeup(stru
+ 	struct drm_sched_entity *entity =
+ 		container_of(cb, struct drm_sched_entity, cb);
  
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
--	qfq_destroy_class(sch, cl);
-+	qfq_rm_from_agg(q, cl);
- 
- 	sch_tree_unlock(sch);
- 
-+	qfq_destroy_class(sch, cl);
- 	return 0;
+-	drm_sched_entity_clear_dep(f, cb);
++	entity->dependency = NULL;
++	dma_fence_put(f);
+ 	drm_sched_wakeup(entity->rq->sched);
  }
  
-@@ -1506,6 +1504,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
- 					  common.hnode) {
-+			qfq_rm_from_agg(q, cl);
- 			qfq_destroy_class(sch, cl);
- 		}
+@@ -442,13 +432,6 @@ static bool drm_sched_entity_add_depende
+ 		fence = dma_fence_get(&s_fence->scheduled);
+ 		dma_fence_put(entity->dependency);
+ 		entity->dependency = fence;
+-		if (!dma_fence_add_callback(fence, &entity->cb,
+-					    drm_sched_entity_clear_dep))
+-			return true;
+-
+-		/* Ignore it when it is already scheduled */
+-		dma_fence_put(fence);
+-		return false;
  	}
--- 
-2.39.5
-
+ 
+ 	if (!dma_fence_add_callback(entity->dependency, &entity->cb,
 
 
 
