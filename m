@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-165274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192CAB15C58
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96B2B15D01
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 641EE1889B49
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E2E176E29
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4D125DB1A;
-	Wed, 30 Jul 2025 09:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A997279DD3;
+	Wed, 30 Jul 2025 09:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/wrB0RU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G85chA1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB7623D2A2;
-	Wed, 30 Jul 2025 09:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57077277804;
+	Wed, 30 Jul 2025 09:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868479; cv=none; b=s1C2toUDuOa4NkVOYXG1igUfC+Jz9P1F/N88jSl/pY4E42Leu838yAUZQXf70U4+9fvq6+SRaqQiia8xxF22sIl7qgswT/Z3+cbcc1IlF1UFUvzksDTyZVQJliVoU0BEGYaGf1ECeBMNh5chFKq0fD0tth1EHIqWltNIt3JaGS4=
+	t=1753868963; cv=none; b=fMh8l3hAQy2z6A3bvBizRnmIilJiVgc/oOdE7XVcybHYWNv7S8YdfBMcHelRGY8fI3mBBLcf4EHZnejJkBr7Ue3bWuuWq09oPn+iLPw6SKAaPRK4goEl/4wXC5CP5W7bcBvjf7xsUi7jhb+k6D4j2Mkta+yQakZWrrpgnSlQ9Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868479; c=relaxed/simple;
-	bh=FqvBBoPtgNHICNqRXwItvALM0LaSxBW/YnQDqcyrZMQ=;
+	s=arc-20240116; t=1753868963; c=relaxed/simple;
+	bh=BpKrVsk/uDWPn158FLk+cNNfujGBXiBPATUCQUcVExU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECWVm96WMlS/ATyXJB9QJfvrVprE2Gi97cmXvBq0EtJcx1cc+7hyMKhp+yj8wyEIA7OU4K4C4p6eBGpQdHkdUDqg80tP3zx6P+MjvvpMhZcEGPx9la4h0vToPE8sW71pj50MEljWEF9QS8QAP2PqWCHKGYRQjORe5IWAnfcoMWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/wrB0RU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AAAC4CEE7;
-	Wed, 30 Jul 2025 09:41:18 +0000 (UTC)
+	 MIME-Version; b=TJ8tntiTNw4Ufe0Tp1EBwVnT+zrDpK0gLVggv/9+LkcUuzqvZvEQfqzuB5RxMm9iaOEF3GU6nUq0sHoQH9hCkX2e61Kx5INQ+ujJRibgCao8OuJFJHp3ByStopjKxn25HiUzHbHzU/1MEZmLdy7ZgkJrOxw3L/AckNj0BTXfm60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G85chA1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FF8C4CEF9;
+	Wed, 30 Jul 2025 09:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868478;
-	bh=FqvBBoPtgNHICNqRXwItvALM0LaSxBW/YnQDqcyrZMQ=;
+	s=korg; t=1753868963;
+	bh=BpKrVsk/uDWPn158FLk+cNNfujGBXiBPATUCQUcVExU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/wrB0RUu3G9Ux5H2ZatRYiuqgn/pxkW0R3Rxh8mdwqWVNPDxJOzDZAaLbYX1mCIt
-	 YQPdzZ+uxMQALdc/GWor6lQd2lsRWlQNeXNf3xdfyB+GIWEnWdiuGq5ycF2f1yfU1x
-	 54ZGHub/gyZ8fm4EdNDYFk8TruzdFqSYvtkRRRvg=
+	b=G85chA1OCHkMa6g6LeU6AxS/yKPExUZu0yHO64KoKPTYq/kmGj2a7U+sG9a8eMWrY
+	 43bS7H7v3fY5IBdQ8s+LGQVYcYWqITkr8XAwboat9GtLjG6z415QvHIrm/OkiEdJRP
+	 +kmF+8ZDBZYwrxM4BKHEfqL7kt0T+nIGhQaRIudQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 76/76] Revert "selftests/bpf: Add a cgroup prog bpf_get_ns_current_pid_tgid() test"
+	Manuel Andreas <manuel.andreas@tum.de>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 100/117] KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush
 Date: Wed, 30 Jul 2025 11:36:09 +0200
-Message-ID: <20250730093229.809198629@linuxfoundation.org>
+Message-ID: <20250730093237.690145102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,141 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+From: Manuel Andreas <manuel.andreas@tum.de>
 
-This reverts commit 4730b07ef7745d7cd48c6aa9f72d75ac136d436f.
+[ Upstream commit fa787ac07b3ceb56dd88a62d1866038498e96230 ]
 
-The test depends on commit eb166e522c77 "bpf: Allow helper
-bpf_get_[ns_]current_pid_tgid() for all prog types", which was not part of the
-stable 6.6 code base, and thus the test will fail. Revert it since it is a
-false positive.
+In KVM guests with Hyper-V hypercalls enabled, the hypercalls
+HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST and HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_EX
+allow a guest to request invalidation of portions of a virtual TLB.
+For this, the hypercall parameter includes a list of GVAs that are supposed
+to be invalidated.
 
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+However, when non-canonical GVAs are passed, there is currently no
+filtering in place and they are eventually passed to checked invocations of
+INVVPID on Intel / INVLPGA on AMD.  While AMD's INVLPGA silently ignores
+non-canonical addresses (effectively a no-op), Intel's INVVPID explicitly
+signals VM-Fail and ultimately triggers the WARN_ONCE in invvpid_error():
+
+  invvpid failed: ext=0x0 vpid=1 gva=0xaaaaaaaaaaaaa000
+  WARNING: CPU: 6 PID: 326 at arch/x86/kvm/vmx/vmx.c:482
+  invvpid_error+0x91/0xa0 [kvm_intel]
+  Modules linked in: kvm_intel kvm 9pnet_virtio irqbypass fuse
+  CPU: 6 UID: 0 PID: 326 Comm: kvm-vm Not tainted 6.15.0 #14 PREEMPT(voluntary)
+  RIP: 0010:invvpid_error+0x91/0xa0 [kvm_intel]
+  Call Trace:
+    vmx_flush_tlb_gva+0x320/0x490 [kvm_intel]
+    kvm_hv_vcpu_flush_tlb+0x24f/0x4f0 [kvm]
+    kvm_arch_vcpu_ioctl_run+0x3013/0x5810 [kvm]
+
+Hyper-V documents that invalid GVAs (those that are beyond a partition's
+GVA space) are to be ignored.  While not completely clear whether this
+ruling also applies to non-canonical GVAs, it is likely fine to make that
+assumption, and manual testing on Azure confirms "real" Hyper-V interprets
+the specification in the same way.
+
+Skip non-canonical GVAs when processing the list of address to avoid
+tripping the INVVPID failure.  Alternatively, KVM could filter out "bad"
+GVAs before inserting into the FIFO, but practically speaking the only
+downside of pushing validation to the final processing is that doing so
+is suboptimal for the guest, and no well-behaved guest will request TLB
+flushes for non-canonical addresses.
+
+Fixes: 260970862c88 ("KVM: x86: hyper-v: Handle HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST{,EX} calls gently")
+Cc: stable@vger.kernel.org
+Signed-off-by: Manuel Andreas <manuel.andreas@tum.de>
+Suggested-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/c090efb3-ef82-499f-a5e0-360fc8420fb7@tum.de
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c |   73 -----------
- tools/testing/selftests/bpf/progs/test_ns_current_pid_tgid.c |    7 -
- 2 files changed, 80 deletions(-)
+ arch/x86/kvm/hyperv.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-@@ -12,7 +12,6 @@
- #include <sys/wait.h>
- #include <sys/mount.h>
- #include <fcntl.h>
--#include "network_helpers.h"
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -1980,6 +1980,9 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcp
+ 		if (entries[i] == KVM_HV_TLB_FLUSHALL_ENTRY)
+ 			goto out_flush_all;
  
- #define STACK_SIZE (1024 * 1024)
- static char child_stack[STACK_SIZE];
-@@ -75,50 +74,6 @@ cleanup:
- 	return ret;
- }
- 
--static int test_current_pid_tgid_cgrp(void *args)
--{
--	struct test_ns_current_pid_tgid__bss *bss;
--	struct test_ns_current_pid_tgid *skel;
--	int server_fd = -1, ret = -1, err;
--	int cgroup_fd = *(int *)args;
--	pid_t tgid, pid;
--
--	skel = test_ns_current_pid_tgid__open();
--	if (!ASSERT_OK_PTR(skel, "test_ns_current_pid_tgid__open"))
--		return ret;
--
--	bpf_program__set_autoload(skel->progs.cgroup_bind4, true);
--
--	err = test_ns_current_pid_tgid__load(skel);
--	if (!ASSERT_OK(err, "test_ns_current_pid_tgid__load"))
--		goto cleanup;
--
--	bss = skel->bss;
--	if (get_pid_tgid(&pid, &tgid, bss))
--		goto cleanup;
--
--	skel->links.cgroup_bind4 = bpf_program__attach_cgroup(
--		skel->progs.cgroup_bind4, cgroup_fd);
--	if (!ASSERT_OK_PTR(skel->links.cgroup_bind4, "bpf_program__attach_cgroup"))
--		goto cleanup;
--
--	server_fd = start_server(AF_INET, SOCK_STREAM, NULL, 0, 0);
--	if (!ASSERT_GE(server_fd, 0, "start_server"))
--		goto cleanup;
--
--	if (!ASSERT_EQ(bss->user_pid, pid, "pid"))
--		goto cleanup;
--	if (!ASSERT_EQ(bss->user_tgid, tgid, "tgid"))
--		goto cleanup;
--	ret = 0;
--
--cleanup:
--	if (server_fd >= 0)
--		close(server_fd);
--	test_ns_current_pid_tgid__destroy(skel);
--	return ret;
--}
--
- static void test_ns_current_pid_tgid_new_ns(int (*fn)(void *), void *arg)
- {
- 	int wstatus;
-@@ -140,25 +95,6 @@ static void test_ns_current_pid_tgid_new
- 		return;
- }
- 
--static void test_in_netns(int (*fn)(void *), void *arg)
--{
--	struct nstoken *nstoken = NULL;
--
--	SYS(cleanup, "ip netns add ns_current_pid_tgid");
--	SYS(cleanup, "ip -net ns_current_pid_tgid link set dev lo up");
--
--	nstoken = open_netns("ns_current_pid_tgid");
--	if (!ASSERT_OK_PTR(nstoken, "open_netns"))
--		goto cleanup;
--
--	test_ns_current_pid_tgid_new_ns(fn, arg);
--
--cleanup:
--	if (nstoken)
--		close_netns(nstoken);
--	SYS_NOFAIL("ip netns del ns_current_pid_tgid");
--}
--
- /* TODO: use a different tracepoint */
- void serial_test_ns_current_pid_tgid(void)
- {
-@@ -166,13 +102,4 @@ void serial_test_ns_current_pid_tgid(voi
- 		test_current_pid_tgid_tp(NULL);
- 	if (test__start_subtest("new_ns_tp"))
- 		test_ns_current_pid_tgid_new_ns(test_current_pid_tgid_tp, NULL);
--	if (test__start_subtest("new_ns_cgrp")) {
--		int cgroup_fd = -1;
--
--		cgroup_fd = test__join_cgroup("/sock_addr");
--		if (ASSERT_GE(cgroup_fd, 0, "join_cgroup")) {
--			test_in_netns(test_current_pid_tgid_cgrp, &cgroup_fd);
--			close(cgroup_fd);
--		}
--	}
- }
---- a/tools/testing/selftests/bpf/progs/test_ns_current_pid_tgid.c
-+++ b/tools/testing/selftests/bpf/progs/test_ns_current_pid_tgid.c
-@@ -28,11 +28,4 @@ int tp_handler(const void *ctx)
- 	return 0;
- }
- 
--SEC("?cgroup/bind4")
--int cgroup_bind4(struct bpf_sock_addr *ctx)
--{
--	get_pid_tgid();
--	return 1;
--}
--
- char _license[] SEC("license") = "GPL";
++		if (is_noncanonical_invlpg_address(entries[i], vcpu))
++			continue;
++
+ 		/*
+ 		 * Lower 12 bits of 'address' encode the number of additional
+ 		 * pages to flush.
 
 
 
