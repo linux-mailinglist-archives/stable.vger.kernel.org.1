@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1DEB15D3B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA46B15CBB
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30FEB56462E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97B7018C364A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E53C280033;
-	Wed, 30 Jul 2025 09:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D3836124;
+	Wed, 30 Jul 2025 09:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpOXZMr1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiFUUv1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB1A4A32;
-	Wed, 30 Jul 2025 09:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C3E266591;
+	Wed, 30 Jul 2025 09:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869083; cv=none; b=mjleJ8E0F0o7rFD5ba64IpaG9Fm3Ne1VMiExW9ydyT6+InHvk/UNCHxl8T/tC/K77e+og/+71h/b7w4KIrdYmUafRt9mdVKjWY8N9A62U+gNxIH8UGShyoupaQchZ2xWonXMkNQnNpTnqACikH34v80FCFNYxZAkBmsah7UHn4U=
+	t=1753868658; cv=none; b=ITSDv5kE+mTylD5H4K6sqTT21Wkr1t7kzlrjwM9vET5L2vK2XojaAX5KnDH2BSI2SINL0Kg61mOELxaZBwt/M9XmCIqHD8JBfa1iQLqMNZOakq1ghjP61bY8EtpUwSvIOit4Sq5LACYmCI0EsE0uueCoZAmbn1tN5wGGwOd1T5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869083; c=relaxed/simple;
-	bh=6/g+xnBuLMW8Pk4Xap1k7wgrvMyoDvhUWRYir12a4L8=;
+	s=arc-20240116; t=1753868658; c=relaxed/simple;
+	bh=TuTbnI+maS747vZSfMV5VwtwnFmlPY/HDxbwY4Y0b84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U92tJwO71HDTHS27W4w9wxXCsHSIN4hCqH8RF7ZIS4+5xzMKgeCwjcr6rGK0AQWlanpSg75IIhKnfC3fh875FB75TgIx9W5vZXp+q9kVmWIwcE4QAYA3DMDs1oseLhx9WCnZFiYrzkRLJ9QIuobLW+rJS84MK01+MZTgs/MSllo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpOXZMr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61493C4CEF5;
-	Wed, 30 Jul 2025 09:51:22 +0000 (UTC)
+	 MIME-Version; b=RqlyZqIzl0f8v+TgS2Fasdnyw0qEX7uy8TaLQ6EYXVSxkmR4yLFbc1BEaN0wXr0Tdww5epvOCMppwDfx4p69S3ozzjxbBO/14AH9AuncRtu/hNyo/CK3Oy20W19ymIPZGldNGFzEANF9vRU/mu0B52rl/Kln87TEBmtz1ECvjRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiFUUv1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1957C4CEE7;
+	Wed, 30 Jul 2025 09:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869083;
-	bh=6/g+xnBuLMW8Pk4Xap1k7wgrvMyoDvhUWRYir12a4L8=;
+	s=korg; t=1753868658;
+	bh=TuTbnI+maS747vZSfMV5VwtwnFmlPY/HDxbwY4Y0b84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpOXZMr1+ut5dUy4V23ZMFLKpc9/coeZlkcKTa2IZKcVrtQJQG4T1ZPNjRwbPrliw
-	 0EGqWU9m+xSzwsx4EYCHakU1ybUu7WkETtPknz6XaeocOcljDCCVAaMQRE2tlxfdQR
-	 ZFFQmQW239UTq9jDE94Ql9soQeHLtyCkpUvP9fMI=
+	b=FiFUUv1TQzD6bQGPYLF4akN35KrxqQaaOEAYwobdRxfJYHGcmdIik+Wll6fi9Alj4
+	 l61Q0DLo5VQ91jEgwJzX+urSds8zSp6XT1Q/stwi2v6dLrUw0pgG0zj5cPb1tBGNlC
+	 v7hKtPE9T3270s+RvvBt+vYcSxull05tcwyYXA/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Carminati <acarmina@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 05/92] regulator: core: fix NULL dereference on unbind due to stale coupling data
+	Rob Landley <rob@landley.net>,
+	Martin Wetterwald <martin@wetterwald.eu>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.12 044/117] ARM: 9450/1: Fix allowing linker DCE with binutils < 2.36
 Date: Wed, 30 Jul 2025 11:35:13 +0200
-Message-ID: <20250730093230.843633990@linuxfoundation.org>
+Message-ID: <20250730093235.273942496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Carminati <acarmina@redhat.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
+commit 53e7e1fb81cc8ba2da1cb31f8917ef397caafe91 upstream.
 
-Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
-lead to NULL pointer dereference when regulators are accessed post-unbind.
+Commit e7607f7d6d81 ("ARM: 9443/1: Require linker to support KEEP within
+OVERLAY for DCE") accidentally broke the binutils version restriction
+that was added in commit 0d437918fb64 ("ARM: 9414/1: Fix build issue
+with LD_DEAD_CODE_DATA_ELIMINATION"), reintroducing the segmentation
+fault addressed by that workaround.
 
-This can happen during runtime PM or other regulator operations that rely
-on coupling metadata.
+Restore the binutils version dependency by using
+CONFIG_LD_CAN_USE_KEEP_IN_OVERLAY as an additional condition to ensure
+that CONFIG_HAVE_LD_DEAD_CODE_DATA_ELIMINATION is only enabled with
+binutils >= 2.36 and ld.lld >= 21.0.0.
 
-For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
-a panic in regulator_lock_recursive() due to stale coupling state.
+Closes: https://lore.kernel.org/6739da7d-e555-407a-b5cb-e5681da71056@landley.net/
+Closes: https://lore.kernel.org/CAFERDQ0zPoya5ZQfpbeuKVZEo_fKsonLf6tJbp32QnSGAtbi+Q@mail.gmail.com/
 
-Ensure n_coupled is set to 0 to prevent access to invalid pointers.
-
-Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e7607f7d6d81 ("ARM: 9443/1: Require linker to support KEEP within OVERLAY for DCE")
+Reported-by: Rob Landley <rob@landley.net>
+Tested-by: Rob Landley <rob@landley.net>
+Reported-by: Martin Wetterwald <martin@wetterwald.eu>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 90629a7566932..4ecad5c6c8390 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5639,6 +5639,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
- 				 ERR_PTR(err));
- 	}
- 
-+	rdev->coupling_desc.n_coupled = 0;
- 	kfree(rdev->coupling_desc.coupled_rdevs);
- 	rdev->coupling_desc.coupled_rdevs = NULL;
- }
--- 
-2.39.5
-
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -118,7 +118,7 @@ config ARM
+ 	select HAVE_KERNEL_XZ
+ 	select HAVE_KPROBES if !XIP_KERNEL && !CPU_ENDIAN_BE32 && !CPU_V7M
+ 	select HAVE_KRETPROBES if HAVE_KPROBES
+-	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_CAN_USE_KEEP_IN_OVERLAY)
++	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_IS_LLD) && LD_CAN_USE_KEEP_IN_OVERLAY
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_NMI
+ 	select HAVE_OPTPROBES if !THUMB2_KERNEL
 
 
 
