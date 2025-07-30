@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B750B15C49
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC05B15CEA
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 922894E11B6
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CF216BC72
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D24A28DF0B;
-	Wed, 30 Jul 2025 09:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D51292B5C;
+	Wed, 30 Jul 2025 09:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lO8s6eBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1DwEVcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3F426F462;
-	Wed, 30 Jul 2025 09:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D179292B2C;
+	Wed, 30 Jul 2025 09:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868367; cv=none; b=l+rnNyoR90jWB9kK2G0LXZridnqg7Xpx3Zgcnk0naLDeLQD5yw/t4prc51sll0P7472oRM3xi/WfrccKJ7folPbIOFu4F0pXgm6YZb8ebJ9sCR8ZvGuyFDeoFOmr/Shu+Uc48EzXSjFrjzV8J/nyMRDCe2Z39sA6eqnCZTxDuKA=
+	t=1753868886; cv=none; b=j0FnrzMOdduWxR3myTC9AmobA0UHlkiiUt3mOk/Z0qipUHHiiF32cce7WCSoNw/oXuvg0EcHgApQGBgv/Fv/meW68E93SdCWirtwGF0cQlv42HLWxnj84HW+B05sc+3/DNPcVJ2aUsmFpi0GnkVbzQ++Ttc/817SORtx3siNvfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868367; c=relaxed/simple;
-	bh=/gDcrEUrt9yfNLihPkpynrRLbnnxw0oymohmiYp9tJk=;
+	s=arc-20240116; t=1753868886; c=relaxed/simple;
+	bh=Ei547ruXR1q/Cx7hUeFmQ3e5nXfaG3LJ/B43CAZMxDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VU5Pntxwr+iQIvwFNtgnDUG2X5gc05YNbn5Uwdzx6pOcQCja7e8BQor4gj8W3UG5TqZe8MiX2r6+iyLKYWmNsaIV8Lus3sfI37Rz284GShgN+W7+KnwH8VYFw/hKfE2DbC1DbFy+72VY9guaXptzdW8fMsuHDoxi6Qf6E9v0dhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lO8s6eBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB750C4CEFF;
-	Wed, 30 Jul 2025 09:39:26 +0000 (UTC)
+	 MIME-Version; b=k7nRxtyL7UT+GFOLsWYL+JBm7eXRMHEWm8RsSjNYcrEsQWtjfY2Td+AXzISi5gL2V3XRmObtWL1Jm3vFQ0UkltA/4M8+waCCXaSoWFFkuGXktdtLaM/MT7jjnNgKQTORCgphTRYL5hls7shrZjbZG0p4kCa0zZyOB+p95UdS0Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1DwEVcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F719C4CEF8;
+	Wed, 30 Jul 2025 09:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868367;
-	bh=/gDcrEUrt9yfNLihPkpynrRLbnnxw0oymohmiYp9tJk=;
+	s=korg; t=1753868885;
+	bh=Ei547ruXR1q/Cx7hUeFmQ3e5nXfaG3LJ/B43CAZMxDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lO8s6eBUwzCUh5Ok8bHCRSBEiTPRffTBKUnkRvW1mv3qdfiOp8uNcK2kDGmYv4d1a
-	 +sv30dO8YQM2xoJ4bdFxSYHE8m39sOMcst0O8bly9H7nCsKOoStpgVBPiHU0eoyhtR
-	 GlX6dxbxVTdeGuWN41aCeabvNa52vQh9nBBbtISw=
+	b=S1DwEVcTSFKVZm5RZYBs/ojrwazA67O40vDK/SezhqBCs8ZXlcPQimt6AQz1KB1JI
+	 mWBlSVYqTAVhJbMw9Cs2Q2b6hXq9u1DoqY+GlSoNE5jBF8W9WuPVAjMUuZrGC5fesz
+	 TZBzejGnNeOkosnNzgXbiQf3uj20pDVgNET4u2KQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 46/76] selftests: mptcp: connect: also cover checksum
-Date: Wed, 30 Jul 2025 11:35:39 +0200
-Message-ID: <20250730093228.626592458@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 071/117] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+Date: Wed, 30 Jul 2025 11:35:40 +0200
+Message-ID: <20250730093236.302997011@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: RD Babiera <rdbabiera@google.com>
 
-commit fdf0f60a2bb02ba581d9e71d583e69dd0714a521 upstream.
+commit bec15191d52300defa282e3fd83820f69e447116 upstream.
 
-The checksum mode has been added a while ago, but it is only validated
-when manually launching mptcp_connect.sh with "-C".
+This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
+SNKAS.
 
-The different CIs were then not validating these MPTCP Connect tests
-with checksum enabled. To make sure they do, add a new test program
-executing mptcp_connect.sh with the checksum mode.
+tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+testers can interpret the TryWait.Src to Attached.Src transition after
+Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+to the debounce timer.
 
-Fixes: 94d66ba1d8e4 ("selftests: mptcp: enable checksum in mptcp_connect.sh")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-2-8230ddd82454@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Setting the data role can be a costly operation in host mode, and when
+completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+to fail.
+
+Turn VBUS on before tcpm_set_roles to meet timing requirement.
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile                  |    2 +-
- tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
+ drivers/usb/typec/tcpm/tcpm.c |   34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -5,7 +5,7 @@ top_srcdir = ../../../../..
- CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4339,17 +4339,6 @@ static int tcpm_src_attach(struct tcpm_p
  
- TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
--	      pm_netlink.sh mptcp_join.sh diag.sh \
-+	      mptcp_connect_checksum.sh pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+ 	tcpm_enable_auto_vbus_discharge(port, true);
  
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
+-	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
+-			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (port->pd_supported) {
+-		ret = port->tcpc->set_pd_rx(port->tcpc, true);
+-		if (ret < 0)
+-			goto out_disable_mux;
+-	}
+-
+ 	/*
+ 	 * USB Type-C specification, version 1.2,
+ 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
+@@ -4359,13 +4348,24 @@ static int tcpm_src_attach(struct tcpm_p
+ 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
+ 		ret = tcpm_set_vconn(port, true);
+ 		if (ret < 0)
+-			goto out_disable_pd;
++			return ret;
+ 	}
+ 
+ 	ret = tcpm_set_vbus(port, true);
+ 	if (ret < 0)
+ 		goto out_disable_vconn;
+ 
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
++			     tcpm_data_role_for_source(port));
++	if (ret < 0)
++		goto out_disable_vbus;
 +
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -C "${@}"
++	if (port->pd_supported) {
++		ret = port->tcpc->set_pd_rx(port->tcpc, true);
++		if (ret < 0)
++			goto out_disable_mux;
++	}
++
+ 	port->pd_capable = false;
+ 
+ 	port->partner = NULL;
+@@ -4376,14 +4376,14 @@ static int tcpm_src_attach(struct tcpm_p
+ 
+ 	return 0;
+ 
+-out_disable_vconn:
+-	tcpm_set_vconn(port, false);
+-out_disable_pd:
+-	if (port->pd_supported)
+-		port->tcpc->set_pd_rx(port->tcpc, false);
+ out_disable_mux:
+ 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
+ 		     TYPEC_ORIENTATION_NONE);
++out_disable_vbus:
++	tcpm_set_vbus(port, false);
++out_disable_vconn:
++	tcpm_set_vconn(port, false);
++
+ 	return ret;
+ }
+ 
 
 
 
