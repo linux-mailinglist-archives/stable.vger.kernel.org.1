@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-165361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CE7B15CEE
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58CFB15C65
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAAC25A543A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEA9B5A0DE3
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A61326CE28;
-	Wed, 30 Jul 2025 09:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F1426E71A;
+	Wed, 30 Jul 2025 09:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvRI3aYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/W9C5bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACC91714B7;
-	Wed, 30 Jul 2025 09:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B3736124;
+	Wed, 30 Jul 2025 09:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868824; cv=none; b=ry3Li+TadABVSj0OwN0VAQnjpFjUmPjBfat/z5WQoXnlECfFStEyeY8ZQwwXZbPE5SFMDMWAmhmZ6/UVkLcuDkbLCNQ7rERxIWkzNu+3MRmR9f0BR9k5rXYATJsazz7aqSsSrrczXIxKNUP/8BOxoFAf/PR86+pKn5UfjxHq/L4=
+	t=1753868485; cv=none; b=bCHFaBXQeM0P7/p2F6sOVdCltXhDkKRmThS7h+T5fdXDUj7iwu3+5BzHvVAz4LJdu9NN58OfDB51ZdhzQBT225c20tLw63OE4QBWY7P+e15o2AR5R0YmQfYYrauVVFGAa30zVVTKXgmeecI4BnKGLOx0I8VHrNMniFmePqveqqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868824; c=relaxed/simple;
-	bh=Pe2KLYrmqgj5IjrT8Mrw4FnaZrdqT04ot29IZACfRLI=;
+	s=arc-20240116; t=1753868485; c=relaxed/simple;
+	bh=8ZNJtwV+Gh/qH0L+zVZ13tgcw+UUlBL167u+61xOR7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCNsaEZKd0qTJiya8KRyUCadeSFseW66pVrpCkqTDDRF2NOkkHC8bNUihtQ7lnnZRkXQzcR2F40PEVS0ZF+zMQhndj19Q4AMX/0M1GxyjOHksY0+T+7iBD4ZY/+iZyCUCtzYoKpAlVbIWUwRrFbKqEb78mH3qb0lbwh3MzMXaY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvRI3aYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D24C4CEF5;
-	Wed, 30 Jul 2025 09:47:03 +0000 (UTC)
+	 MIME-Version; b=c+3Tth9M/u5NgRTzmvRbyUAd7UsjGf3s9cPPeMX8hMeIu32sU6nJDk2H/9FZM5Qjn4ZKfLx6DA23fL5Yd6sBBfxbbtOYtskdw1SdWkXv3QotMvY0E7cng88lVhH1NCcLRhb8bP3X4VHWRj6zeOJ/MxfTAw75CsNBsXjbKyvQWoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/W9C5bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB8AC4CEE7;
+	Wed, 30 Jul 2025 09:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868824;
-	bh=Pe2KLYrmqgj5IjrT8Mrw4FnaZrdqT04ot29IZACfRLI=;
+	s=korg; t=1753868484;
+	bh=8ZNJtwV+Gh/qH0L+zVZ13tgcw+UUlBL167u+61xOR7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OvRI3aYCbDTs6SSRTjEufpMAHuc3S1ZZnRRrlN5hYITPye4bRIfslnzjoxHuHSK4D
-	 cQVpRO+90rgxy9iJKeX2nHK4wZp4bt+RvTT8+D0DiLoQP7rKXVkI3MSe7uBDRFu/eV
-	 3KNZRljh9a9bVpmBJP6EbDGSsXtM57vERH7es6aU=
+	b=F/W9C5buOgDe+LE1Hjyd9r/ebmHG31iOJdhVrQhJXjYGU0Vc/aX+Vne8fotIoZh62
+	 aIi20FSr99Dx9M9qvZNDMIN4j8qMQZOKCNx4buslN1x0s8YhlVmphhfBBHW29giAX2
+	 FZ7kv0EShH2T6aA3iTlTpSZ/yF9zl8Uq8KNWjo6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/117] ext4: dont explicit update times in ext4_fallocate()
-Date: Wed, 30 Jul 2025 11:35:54 +0200
-Message-ID: <20250730093237.084733249@linuxfoundation.org>
+Subject: [PATCH 6.6 62/76] iio: hid-sensor-prox: Fix incorrect OFFSET calculation
+Date: Wed, 30 Jul 2025 11:35:55 +0200
+Message-ID: <20250730093229.271800678@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 73ae756ecdfa9684446134590eef32b0f067249c ]
+[ Upstream commit 79dabbd505210e41c88060806c92c052496dd61c ]
 
-After commit 'ad5cd4f4ee4d ("ext4: fix fallocate to use file_modified to
-update permissions consistently"), we can update mtime and ctime
-appropriately through file_modified() when doing zero range, collapse
-rage, insert range and punch hole, hence there is no need to explicit
-update times in those paths, just drop them.
+The OFFSET calculation in the prox_read_raw() was incorrectly using the
+unit exponent, which is intended for SCALE calculations.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20241220011637.1157197-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 29ec9bed2395 ("ext4: fix incorrect punch max_end")
+Remove the incorrect OFFSET calculation and set it to a fixed value of 0.
+
+Cc: stable@vger.kernel.org
+Fixes: 39a3a0138f61 ("iio: hid-sensors: Added Proximity Sensor Driver")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20250331055022.1149736-4-lixu.zhang@intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ adapted prox_attr array access to single structure member access ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    5 -----
- fs/ext4/inode.c   |    1 -
- 2 files changed, 6 deletions(-)
+ drivers/iio/light/hid-sensor-prox.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4675,8 +4675,6 @@ static long ext4_zero_range(struct file
- 			goto out_mutex;
- 		}
- 
--		inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
--
- 		ret = ext4_alloc_file_blocks(file, lblk, max_blocks, new_size,
- 					     flags);
- 		filemap_invalidate_unlock(mapping);
-@@ -4700,7 +4698,6 @@ static long ext4_zero_range(struct file
- 		goto out_mutex;
- 	}
- 
--	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	if (new_size)
- 		ext4_update_inode_size(inode, new_size);
- 	ret = ext4_mark_inode_dirty(handle, inode);
-@@ -5431,7 +5428,6 @@ static int ext4_collapse_range(struct fi
- 	up_write(&EXT4_I(inode)->i_data_sem);
- 	if (IS_SYNC(inode))
- 		ext4_handle_sync(handle);
--	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	ret = ext4_mark_inode_dirty(handle, inode);
- 	ext4_update_inode_fsync_trans(handle, inode, 1);
- 
-@@ -5541,7 +5537,6 @@ static int ext4_insert_range(struct file
- 	/* Expand file to avoid data loss if there is error while shifting */
- 	inode->i_size += len;
- 	EXT4_I(inode)->i_disksize += len;
--	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	ret = ext4_mark_inode_dirty(handle, inode);
- 	if (ret)
- 		goto out_stop;
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4113,7 +4113,6 @@ int ext4_punch_hole(struct file *file, l
- 	if (IS_SYNC(inode))
- 		ext4_handle_sync(handle);
- 
--	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	ret2 = ext4_mark_inode_dirty(handle, inode);
- 	if (unlikely(ret2))
- 		ret = ret2;
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -102,8 +102,7 @@ static int prox_read_raw(struct iio_dev
+ 		ret_type = prox_state->scale_precision;
+ 		break;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = hid_sensor_convert_exponent(
+-				prox_state->prox_attr.unit_expo);
++		*val = 0;
+ 		ret_type = IIO_VAL_INT;
+ 		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
 
 
 
