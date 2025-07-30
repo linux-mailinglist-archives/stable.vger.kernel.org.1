@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-165403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BDFB15D0C
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC128B15C2A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147CB564321
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 050431662BE
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124CF26C383;
-	Wed, 30 Jul 2025 09:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD1826980D;
+	Wed, 30 Jul 2025 09:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPG+Ku0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfcC7/2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2319255F5C;
-	Wed, 30 Jul 2025 09:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3102167DB7;
+	Wed, 30 Jul 2025 09:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868992; cv=none; b=S82mRPkqtVp/YtbHDXlzPCuOSpd7DyTdF/eIYl9JScNNpRDSilowj7l7TzvEDk7X0+pKJkXsLqrqS+UBZOuIk8c51QYx9lJBnxHVccv/BUhzCWJgZ/CxBp2yyk+QiLM5R7yYDFhbaZwo5m0yZVu2xFO/aziFwz0+OSa4n+xSHiI=
+	t=1753868356; cv=none; b=XtUEShZ7o+K2RI/JQ0o2NpQsvz/Mvq5hbKPrkUf9JjxWaLXV8FJ659hRPwd3wxyXgoZ5DD9tXhZvz5I8HxTrK/T2Rp6YiMuIR0mXCa6n74dmqjYitWUfsJGUdoJMLeQKx94DBbsMfw2pvysDTrcgvQxwgYaV9AEZ4ZjONNmvhQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868992; c=relaxed/simple;
-	bh=vnrs8ipr+rCrFb/REY8WMKIXsYIoZy45EuO4Jdyi914=;
+	s=arc-20240116; t=1753868356; c=relaxed/simple;
+	bh=R8T4qOabeMjPZlI8Nai1EPHywXu9k7ddiLscHeJUCqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWCsxeN6r+o2CM2VU6P3tprXDCI+8cfLhv7olqPYeH9itVXQ/6kuJXxvSdbTJg+1XUG8svpXjdjXeOFnolzBIPdW0j1d6lP1OT/4rXGqcOy0rXmQe63mCtRsHZCvWb9iwT7QAbwymY7l2ATMElwbNObP/6+z4xj9cf4Ue7gRa0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPG+Ku0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1ADC4CEF5;
-	Wed, 30 Jul 2025 09:49:52 +0000 (UTC)
+	 MIME-Version; b=Gcy5MEevOBsiD5R50fmki8b8Sl4E3N+D/c0BzensicFsQjPdxUgvVpAVhRa0EtlwSi/pNLrXij36U0BtFzyKMj01NknY3KdKHdCcrUnmEYR7NzUXoId+lyB/cKD5bDF4JgfS5putoKX6nmR7QMnFZERkGX62pxKsoE6ypNfa7r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfcC7/2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEF5C4CEF5;
+	Wed, 30 Jul 2025 09:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868992;
-	bh=vnrs8ipr+rCrFb/REY8WMKIXsYIoZy45EuO4Jdyi914=;
+	s=korg; t=1753868355;
+	bh=R8T4qOabeMjPZlI8Nai1EPHywXu9k7ddiLscHeJUCqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPG+Ku0ef9a/y3+YmZ958pp8tQAaDtNwTWW69VTK6pfQ9ez7m9hbkR33VT6elG6rZ
-	 NFLHAVT0Kvj3MfG9pBIkIKYSnB23gEiDROplIgcipC09vdBIFDCGdZJxJWgqDjlpys
-	 IiWDjvZzcVGqI8qV+cayYTypNOxCXunOmMu5JFrk=
+	b=HfcC7/2o9H4+NWCqSi2ZPJ9Ek4sleNV9gCAUAn67ShaqO+lBKDfmrKn/wC55PF5jT
+	 maPvfdV/i0fZOo4i8kA+rfO7HK9v4WCTdkyGfG5TlBRhtOLrFBGIfH+B/nnqdZ6Zkj
+	 pVzZiB8mYEF79nKTQVQ3N9/PIJ0TFRdyXkjnfacw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Georgi Djakov <djakov@kernel.org>,
+	Jian Shen <shenjian15@huawei.com>,
+	Hao Lan <lanhao@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 10/92] interconnect: icc-clk: destroy nodes in case of memory allocation failures
-Date: Wed, 30 Jul 2025 11:35:18 +0200
-Message-ID: <20250730093231.024899522@linuxfoundation.org>
+Subject: [PATCH 6.6 26/76] net: hns3: fixed vf get max channels bug
+Date: Wed, 30 Jul 2025 11:35:19 +0200
+Message-ID: <20250730093227.859098796@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 618c810a7b2163517ab1875bd56b633ca3cb3328 ]
+[ Upstream commit b3e75c0bcc53f647311960bc1b0970b9b480ca5a ]
 
-When memory allocation fails during creating the name of the nodes in
-icc_clk_register(), the code continues on the error path and it calls
-icc_nodes_remove() to destroy the already created nodes. However that
-function only destroys the nodes which were already added to the provider
-and the newly created nodes are never destroyed in case of error.
+Currently, the queried maximum of vf channels is the maximum of channels
+supported by each TC. However, the actual maximum of channels is
+the maximum of channels supported by the device.
 
-In order to avoid a memory leaks, change the code to destroy the newly
-created nodes explicitly in case of memory allocation failures.
-
-Fixes: 44c5aa73ccd1 ("interconnect: icc-clk: check return values of devm_kasprintf()")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20250625-icc-clk-memleak-fix-v1-1-4151484cd24f@gmail.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Fixes: 849e46077689 ("net: hns3: add ethtool_ops.get_channels support for VF")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-4-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/icc-clk.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/interconnect/icc-clk.c b/drivers/interconnect/icc-clk.c
-index 88f311c110207..93c030608d3e0 100644
---- a/drivers/interconnect/icc-clk.c
-+++ b/drivers/interconnect/icc-clk.c
-@@ -117,6 +117,7 @@ struct icc_provider *icc_clk_register(struct device *dev,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 1ba0b57c7a72d..68a9aeeed3da0 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -3029,11 +3029,7 @@ static void hclgevf_uninit_ae_dev(struct hnae3_ae_dev *ae_dev)
  
- 		node->name = devm_kasprintf(dev, GFP_KERNEL, "%s_master", data[i].name);
- 		if (!node->name) {
-+			icc_node_destroy(node->id);
- 			ret = -ENOMEM;
- 			goto err;
- 		}
-@@ -135,6 +136,7 @@ struct icc_provider *icc_clk_register(struct device *dev,
+ static u32 hclgevf_get_max_channels(struct hclgevf_dev *hdev)
+ {
+-	struct hnae3_handle *nic = &hdev->nic;
+-	struct hnae3_knic_private_info *kinfo = &nic->kinfo;
+-
+-	return min_t(u32, hdev->rss_size_max,
+-		     hdev->num_tqps / kinfo->tc_info.num_tc);
++	return min(hdev->rss_size_max, hdev->num_tqps);
+ }
  
- 		node->name = devm_kasprintf(dev, GFP_KERNEL, "%s_slave", data[i].name);
- 		if (!node->name) {
-+			icc_node_destroy(node->id);
- 			ret = -ENOMEM;
- 			goto err;
- 		}
+ /**
 -- 
 2.39.5
 
