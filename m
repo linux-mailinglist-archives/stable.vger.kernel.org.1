@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1620B15C19
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12EFB15CAE
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182D918C2F61
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F21083A7820
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEF1277CAF;
-	Wed, 30 Jul 2025 09:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E539A293B73;
+	Wed, 30 Jul 2025 09:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkMNbgW9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqhuRl01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDE4273D95;
-	Wed, 30 Jul 2025 09:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A132C20E6;
+	Wed, 30 Jul 2025 09:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868249; cv=none; b=lF4vPcghzuh3NDvNAN0OfU6wlG8YHCAnaAvODHbwXkvO30cyKTy/xptbHjgpPQyZMagzDJTkFB6nso8yJufiNIyKVCfky2f9tNLJ8s2ftTNwGMMx61C0+nphODxcJIblNoirJuP70wuu5HptcsiOpxjP2whUIzVHDaETU79TV4k=
+	t=1753868646; cv=none; b=mloPa67bjKUFBEGhRylQU9mTRZ4pWl4EZWN97oyKlfNzglwhhCmTC6CCHWOtmKq95CHJhhs4JquwK+HO/81LvT7Z06FDERL1QryyDiWAAhpI/IxSpv1fKx6qKG9tilVQSag8lFa2IYeRwYVaLaoY/tIjgja+xZ7ZCbeNr1m/8es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868249; c=relaxed/simple;
-	bh=fRABStxVSDO9DgTxaWrFl3IPhv0l729K0Y88q+WcmPE=;
+	s=arc-20240116; t=1753868646; c=relaxed/simple;
+	bh=jVrS//YrL49cA3jq/hYiicEMTgVmCLFKZSIjNX9QUAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lfo/poY4NVkncqXp0CYlu6tw2+08js1OwgPvvt9XAbVp6U6fd+niXz4NGqJgPIA25p/tsan68QI1/Gdpxc6s2oGfDzAw6W4Rn/4D29u5uDIctQOrEF6LO11m96semqpxH+5ij3htWn/yyfnbrtv0U+rbI3H8NG1pHqqYQBfcKPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkMNbgW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3138FC4CEF9;
-	Wed, 30 Jul 2025 09:37:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LF65lc5/vSK0Ly31pIWW/7R5d3+wcUv/M6BLUsP2A/CxfusBDY4HjrQLd2xAzx9ARDpYImpxFn5AgI7pIH9QCkoRfrVUv/P9C/VQVbG8ka327MypUaAf28xvcvjV2Q3N8S1hiZIDtBE+aLvxVn6xcKnTF64Cw61wRTGMVoihRpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqhuRl01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C63C4CEE7;
+	Wed, 30 Jul 2025 09:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868248;
-	bh=fRABStxVSDO9DgTxaWrFl3IPhv0l729K0Y88q+WcmPE=;
+	s=korg; t=1753868646;
+	bh=jVrS//YrL49cA3jq/hYiicEMTgVmCLFKZSIjNX9QUAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkMNbgW9hbXIYIXQHjprR7UB1tepL7oj7jL30SRRdAK70A8a38CUaPRcvse/NBKMe
-	 tyXG05Zl1TU1sN5IYnDZsGEafvmtrpsrNH+Zjbc88PZ3UzvohafjJgHoRKjBMY+LiD
-	 g46CU7/Uu+8CbOoyZ7SihU7Mpjd1VH9sf7lrdJnE=
+	b=nqhuRl013am4rUZ+Io8FtAM6Ij1VZM8FcxmdzJrmq/cizhNYgJmvZWpWUU4sJlbn1
+	 Qc1yClbAC8YoaeI/KbiCQwxZ16uMlG4s5PszOYxyaQ7ixP5z9ILBgk4HBkZUUyc+hO
+	 LSFKt62bTUbOJ4gNIubUnpPeTHzyWYphcbD1mxt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/76] net: appletalk: Fix use-after-free in AARP proxy probe
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH 6.12 041/117] drm/amdgpu: Reset the clear flag in buddy during resume
 Date: Wed, 30 Jul 2025 11:35:10 +0200
-Message-ID: <20250730093227.521317996@linuxfoundation.org>
+Message-ID: <20250730093235.161097871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,187 +63,159 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kito Xu (veritas501) <hxzene@gmail.com>
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
 
-[ Upstream commit 6c4a92d07b0850342d3becf2e608f805e972467c ]
+commit 95a16160ca1d75c66bf7a1c5e0bcaffb18e7c7fc upstream.
 
-The AARP proxy‐probe routine (aarp_proxy_probe_network) sends a probe,
-releases the aarp_lock, sleeps, then re-acquires the lock.  During that
-window an expire timer thread (__aarp_expire_timer) can remove and
-kfree() the same entry, leading to a use-after-free.
+- Added a handler in DRM buddy manager to reset the cleared
+  flag for the blocks in the freelist.
 
-race condition:
+- This is necessary because, upon resuming, the VRAM becomes
+  cluttered with BIOS data, yet the VRAM backend manager
+  believes that everything has been cleared.
 
-         cpu 0                          |            cpu 1
-    atalk_sendmsg()                     |   atif_proxy_probe_device()
-    aarp_send_ddp()                     |   aarp_proxy_probe_network()
-    mod_timer()                         |   lock(aarp_lock) // LOCK!!
-    timeout around 200ms                |   alloc(aarp_entry)
-    and then call                       |   proxies[hash] = aarp_entry
-    aarp_expire_timeout()               |   aarp_send_probe()
-                                        |   unlock(aarp_lock) // UNLOCK!!
-    lock(aarp_lock) // LOCK!!           |   msleep(100);
-    __aarp_expire_timer(&proxies[ct])   |
-    free(aarp_entry)                    |
-    unlock(aarp_lock) // UNLOCK!!       |
-                                        |   lock(aarp_lock) // LOCK!!
-                                        |   UAF aarp_entry !!
+v2:
+  - Add lock before accessing drm_buddy_clear_reset_blocks()(Matthew Auld)
+  - Force merge the two dirty blocks.(Matthew Auld)
+  - Add a new unit test case for this issue.(Matthew Auld)
+  - Having this function being able to flip the state either way would be
+    good. (Matthew Brost)
 
-==================================================================
-BUG: KASAN: slab-use-after-free in aarp_proxy_probe_network+0x560/0x630 net/appletalk/aarp.c:493
-Read of size 4 at addr ffff8880123aa360 by task repro/13278
+v3(Matthew Auld):
+  - Do merge step first to avoid the use of extra reset flag.
 
-CPU: 3 UID: 0 PID: 13278 Comm: repro Not tainted 6.15.2 #3 PREEMPT(full)
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc1/0x630 mm/kasan/report.c:521
- kasan_report+0xca/0x100 mm/kasan/report.c:634
- aarp_proxy_probe_network+0x560/0x630 net/appletalk/aarp.c:493
- atif_proxy_probe_device net/appletalk/ddp.c:332 [inline]
- atif_ioctl+0xb58/0x16c0 net/appletalk/ddp.c:857
- atalk_ioctl+0x198/0x2f0 net/appletalk/ddp.c:1818
- sock_do_ioctl+0xdc/0x260 net/socket.c:1190
- sock_ioctl+0x239/0x6a0 net/socket.c:1311
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x194/0x200 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcb/0x250 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-Allocated:
- aarp_alloc net/appletalk/aarp.c:382 [inline]
- aarp_proxy_probe_network+0xd8/0x630 net/appletalk/aarp.c:468
- atif_proxy_probe_device net/appletalk/ddp.c:332 [inline]
- atif_ioctl+0xb58/0x16c0 net/appletalk/ddp.c:857
- atalk_ioctl+0x198/0x2f0 net/appletalk/ddp.c:1818
-
-Freed:
- kfree+0x148/0x4d0 mm/slub.c:4841
- __aarp_expire net/appletalk/aarp.c:90 [inline]
- __aarp_expire_timer net/appletalk/aarp.c:261 [inline]
- aarp_expire_timeout+0x480/0x6e0 net/appletalk/aarp.c:317
-
-The buggy address belongs to the object at ffff8880123aa300
- which belongs to the cache kmalloc-192 of size 192
-The buggy address is located 96 bytes inside of
- freed 192-byte region [ffff8880123aa300, ffff8880123aa3c0)
-
-Memory state around the buggy address:
- ffff8880123aa200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff8880123aa280: 00 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc
->ffff8880123aa300: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                                       ^
- ffff8880123aa380: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ffff8880123aa400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kito Xu (veritas501) <hxzene@gmail.com>
-Link: https://patch.msgid.link/20250717012843.880423-1-hxzene@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250716075125.240637-2-Arunpravin.PaneerSelvam@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/appletalk/aarp.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |    2 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      |    1 
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c |   17 ++++++++++
+ drivers/gpu/drm/drm_buddy.c                  |   43 +++++++++++++++++++++++++++
+ include/drm/drm_buddy.h                      |    2 +
+ 5 files changed, 65 insertions(+)
 
-diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
-index c7236daa24152..0d7c14a496681 100644
---- a/net/appletalk/aarp.c
-+++ b/net/appletalk/aarp.c
-@@ -35,6 +35,7 @@
- #include <linux/seq_file.h>
- #include <linux/export.h>
- #include <linux/etherdevice.h>
-+#include <linux/refcount.h>
- 
- int sysctl_aarp_expiry_time = AARP_EXPIRY_TIME;
- int sysctl_aarp_tick_time = AARP_TICK_TIME;
-@@ -44,6 +45,7 @@ int sysctl_aarp_resolve_time = AARP_RESOLVE_TIME;
- /* Lists of aarp entries */
- /**
-  *	struct aarp_entry - AARP entry
-+ *	@refcnt: Reference count
-  *	@last_sent: Last time we xmitted the aarp request
-  *	@packet_queue: Queue of frames wait for resolution
-  *	@status: Used for proxy AARP
-@@ -55,6 +57,7 @@ int sysctl_aarp_resolve_time = AARP_RESOLVE_TIME;
-  *	@next: Next entry in chain
-  */
- struct aarp_entry {
-+	refcount_t			refcnt;
- 	/* These first two are only used for unresolved entries */
- 	unsigned long		last_sent;
- 	struct sk_buff_head	packet_queue;
-@@ -79,6 +82,17 @@ static DEFINE_RWLOCK(aarp_lock);
- /* Used to walk the list and purge/kick entries.  */
- static struct timer_list aarp_timer;
- 
-+static inline void aarp_entry_get(struct aarp_entry *a)
-+{
-+	refcount_inc(&a->refcnt);
-+}
-+
-+static inline void aarp_entry_put(struct aarp_entry *a)
-+{
-+	if (refcount_dec_and_test(&a->refcnt))
-+		kfree(a);
-+}
-+
- /*
-  *	Delete an aarp queue
-  *
-@@ -87,7 +101,7 @@ static struct timer_list aarp_timer;
- static void __aarp_expire(struct aarp_entry *a)
- {
- 	skb_queue_purge(&a->packet_queue);
--	kfree(a);
-+	aarp_entry_put(a);
- }
- 
- /*
-@@ -380,9 +394,11 @@ static void aarp_purge(void)
- static struct aarp_entry *aarp_alloc(void)
- {
- 	struct aarp_entry *a = kmalloc(sizeof(*a), GFP_ATOMIC);
-+	if (!a)
-+		return NULL;
- 
--	if (a)
--		skb_queue_head_init(&a->packet_queue);
-+	refcount_set(&a->refcnt, 1);
-+	skb_queue_head_init(&a->packet_queue);
- 	return a;
- }
- 
-@@ -508,6 +524,7 @@ int aarp_proxy_probe_network(struct atalk_iface *atif, struct atalk_addr *sa)
- 	entry->dev = atif->dev;
- 
- 	write_lock_bh(&aarp_lock);
-+	aarp_entry_get(entry);
- 
- 	hash = sa->s_node % (AARP_HASH_SIZE - 1);
- 	entry->next = proxies[hash];
-@@ -533,6 +550,7 @@ int aarp_proxy_probe_network(struct atalk_iface *atif, struct atalk_addr *sa)
- 		retval = 1;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4954,6 +4954,8 @@ exit:
+ 		dev->dev->power.disable_depth--;
+ #endif
  	}
++
++	amdgpu_vram_mgr_clear_reset_blocks(adev);
+ 	adev->in_suspend = false;
  
-+	aarp_entry_put(entry);
- 	write_unlock_bh(&aarp_lock);
- out:
- 	return retval;
--- 
-2.39.5
-
+ 	if (adev->enable_mes)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+@@ -153,6 +153,7 @@ int amdgpu_vram_mgr_reserve_range(struct
+ 				  uint64_t start, uint64_t size);
+ int amdgpu_vram_mgr_query_page_status(struct amdgpu_vram_mgr *mgr,
+ 				      uint64_t start);
++void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev);
+ 
+ bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
+ 			    struct ttm_resource *res);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -783,6 +783,23 @@ uint64_t amdgpu_vram_mgr_vis_usage(struc
+ }
+ 
+ /**
++ * amdgpu_vram_mgr_clear_reset_blocks - reset clear blocks
++ *
++ * @adev: amdgpu device pointer
++ *
++ * Reset the cleared drm buddy blocks.
++ */
++void amdgpu_vram_mgr_clear_reset_blocks(struct amdgpu_device *adev)
++{
++	struct amdgpu_vram_mgr *mgr = &adev->mman.vram_mgr;
++	struct drm_buddy *mm = &mgr->mm;
++
++	mutex_lock(&mgr->lock);
++	drm_buddy_reset_clear(mm, false);
++	mutex_unlock(&mgr->lock);
++}
++
++/**
+  * amdgpu_vram_mgr_intersects - test each drm buddy block for intersection
+  *
+  * @man: TTM memory type manager
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -401,6 +401,49 @@ drm_get_buddy(struct drm_buddy_block *bl
+ EXPORT_SYMBOL(drm_get_buddy);
+ 
+ /**
++ * drm_buddy_reset_clear - reset blocks clear state
++ *
++ * @mm: DRM buddy manager
++ * @is_clear: blocks clear state
++ *
++ * Reset the clear state based on @is_clear value for each block
++ * in the freelist.
++ */
++void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
++{
++	u64 root_size, size, start;
++	unsigned int order;
++	int i;
++
++	size = mm->size;
++	for (i = 0; i < mm->n_roots; ++i) {
++		order = ilog2(size) - ilog2(mm->chunk_size);
++		start = drm_buddy_block_offset(mm->roots[i]);
++		__force_merge(mm, start, start + size, order);
++
++		root_size = mm->chunk_size << order;
++		size -= root_size;
++	}
++
++	for (i = 0; i <= mm->max_order; ++i) {
++		struct drm_buddy_block *block;
++
++		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
++			if (is_clear != drm_buddy_block_is_clear(block)) {
++				if (is_clear) {
++					mark_cleared(block);
++					mm->clear_avail += drm_buddy_block_size(mm, block);
++				} else {
++					clear_reset(block);
++					mm->clear_avail -= drm_buddy_block_size(mm, block);
++				}
++			}
++		}
++	}
++}
++EXPORT_SYMBOL(drm_buddy_reset_clear);
++
++/**
+  * drm_buddy_free_block - free a block
+  *
+  * @mm: DRM buddy manager
+--- a/include/drm/drm_buddy.h
++++ b/include/drm/drm_buddy.h
+@@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_budd
+ 			 u64 new_size,
+ 			 struct list_head *blocks);
+ 
++void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear);
++
+ void drm_buddy_free_block(struct drm_buddy *mm, struct drm_buddy_block *block);
+ 
+ void drm_buddy_free_list(struct drm_buddy *mm,
 
 
 
