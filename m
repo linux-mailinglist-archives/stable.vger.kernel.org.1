@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28F8B15C15
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E68B15D3C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 765B67B0A66
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:37:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9A856455C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CDB275B1D;
-	Wed, 30 Jul 2025 09:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6334C26F461;
+	Wed, 30 Jul 2025 09:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDDC06gk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIJYlXwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B0C26C396;
-	Wed, 30 Jul 2025 09:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222354A32;
+	Wed, 30 Jul 2025 09:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868273; cv=none; b=bPn6OzTxPOf4IcUuAll4fQj/FUB+hmIM1n3J60O8XTZoLm+mNPbysv3K/QihDh6azduUIoW7bkn1WzIxv6/P552Ga3gnwTmeq4bD0RbJxh00W5/lgIm5fJcRE5g/PJ5PTFOksjvjKHgMNXx+osZomIv0GUHkeWESs/2aV6GxAjE=
+	t=1753869087; cv=none; b=jbwXJ3w8teE05Z/RRHe/McjMfO5i+MA4DgaC3s6C/pELjfNM0frunYbPBMmcn1rSKlifqjaoGnQECg6Nu5meXucQay53uwezkwBKb2y1bL9baOMdSopFBS0UAg6VCUzRb5TnX+AOhNcJNG3L67Y79MGccfEEIb5AjlXY7p6xR1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868273; c=relaxed/simple;
-	bh=Uvybr/VD1itZbXrjttU77mRWXnjOBRnSfCOMrokHG7c=;
+	s=arc-20240116; t=1753869087; c=relaxed/simple;
+	bh=n915jj5kfh+lm+XtOoHUQrZN35J+ZalCkF4GGfSF5LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyMAsV16z8cugCCzv1TaV9HTJKUTKY4OqfqCfldhKrr9tcX3v1sQVzK1mKQIhBL4kSwszAYlMcOZtkfxjrVrGNMVAWwJYEMxye/Ajg/DP1ELCr7Pa/blgGTmwezBUzCMFDXuZBdvEpVX0UyTu5KbFEDw6Hnis+AXp7OLbcXkrE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDDC06gk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAC6C4CEE7;
-	Wed, 30 Jul 2025 09:37:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sZNh7ls03upOUNscCNM0R6lCoslr2lc3D1Twtb5XvI0Zyc9EyVMY3yVU3Q3k/CR47qx6L1Qpcvsk6Xo+UFy0lGV22fi1EJvbIjprNBoEvc1/vmH6KIGMjN+A+Kam8+z6YizPrhGGyf3eU+fhvbjMFrm7QJLuNAfVIvZCbzZI7p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIJYlXwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F57C4CEF5;
+	Wed, 30 Jul 2025 09:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868273;
-	bh=Uvybr/VD1itZbXrjttU77mRWXnjOBRnSfCOMrokHG7c=;
+	s=korg; t=1753869087;
+	bh=n915jj5kfh+lm+XtOoHUQrZN35J+ZalCkF4GGfSF5LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDDC06gkLQ/Sps6hL0YixevbS+IS1Hm0pFmMe/I/PkuHzp5GNs3AT/OsMqNEREyWP
-	 0mTpfJ8nLLMvWQEm/g0yrb8TfCg4VpoE78AQ8IrcQnsc7sz5Yp7Ibd3qt1nCsLyOXy
-	 sYugdTxyS+aQmNL/7TR6fWuOAaCpE78YD3YiF5Jc=
+	b=BIJYlXwlALTjSJYoVRZmbgzs9GIz4UyeaOV2erPjbwgnKEs8/A0wYWolHSFgIfvY/
+	 /GGF9AGnAYz0IwbOnT8Y9z1t5YBk64M9fdtBsY19Wm0hukKmBUHiQGUO9BOygajqDp
+	 1JdWFVhJ5/HVbYxKj/5C+znObfwkj0nrzhoDC+ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Lalaev <andrey.lalaev@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Rahul Chandra <rahul@chandra.net>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 21/76] can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode
+Subject: [PATCH 6.15 06/92] platform/x86: asus-nb-wmi: add DMI quirk for ASUS Zenbook Duo UX8406CA
 Date: Wed, 30 Jul 2025 11:35:14 +0200
-Message-ID: <20250730093227.669135761@linuxfoundation.org>
+Message-ID: <20250730093230.880455356@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,122 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Rahul Chandra <rahul@chandra.net>
 
-[ Upstream commit c1f3f9797c1f44a762e6f5f72520b2e520537b52 ]
+[ Upstream commit 7dc6b2d3b5503bcafebbeaf9818112bf367107b4 ]
 
-Andrei Lalaev reported a NULL pointer deref when a CAN device is
-restarted from Bus Off and the driver does not implement the struct
-can_priv::do_set_mode callback.
+Add a DMI quirk entry for the ASUS Zenbook Duo UX8406CA 2025 model to use
+the existing zenbook duo keyboard quirk.
 
-There are 2 code path that call struct can_priv::do_set_mode:
-- directly by a manual restart from the user space, via
-  can_changelink()
-- delayed automatic restart after bus off (deactivated by default)
-
-To prevent the NULL pointer deference, refuse a manual restart or
-configure the automatic restart delay in can_changelink() and report
-the error via extack to user space.
-
-As an additional safety measure let can_restart() return an error if
-can_priv::do_set_mode is not set instead of dereferencing it
-unchecked.
-
-Reported-by: Andrei Lalaev <andrey.lalaev@gmail.com>
-Closes: https://lore.kernel.org/all/20250714175520.307467-1-andrey.lalaev@gmail.com
-Fixes: 39549eef3587 ("can: CAN Network device driver and Netlink interface")
-Link: https://patch.msgid.link/20250718-fix-nullptr-deref-do_set_mode-v1-1-0b520097bb96@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Rahul Chandra <rahul@chandra.net>
+Link: https://lore.kernel.org/r/20250624073301.602070-1-rahul@chandra.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/dev.c     | 12 +++++++++---
- drivers/net/can/dev/netlink.c | 12 ++++++++++++
- 2 files changed, 21 insertions(+), 3 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 88f345966c991..6018444a76b9b 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -125,13 +125,16 @@ void can_change_state(struct net_device *dev, struct can_frame *cf,
- EXPORT_SYMBOL_GPL(can_change_state);
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index 3f8b2a324efdf..f84c3d03c1de7 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -530,6 +530,15 @@ static const struct dmi_system_id asus_quirks[] = {
+ 		},
+ 		.driver_data = &quirk_asus_zenbook_duo_kbd,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "ASUS Zenbook Duo UX8406CA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "UX8406CA"),
++		},
++		.driver_data = &quirk_asus_zenbook_duo_kbd,
++	},
+ 	{},
+ };
  
- /* CAN device restart for bus-off recovery */
--static void can_restart(struct net_device *dev)
-+static int can_restart(struct net_device *dev)
- {
- 	struct can_priv *priv = netdev_priv(dev);
- 	struct sk_buff *skb;
- 	struct can_frame *cf;
- 	int err;
- 
-+	if (!priv->do_set_mode)
-+		return -EOPNOTSUPP;
-+
- 	if (netif_carrier_ok(dev))
- 		netdev_err(dev, "Attempt to restart for bus-off recovery, but carrier is OK?\n");
- 
-@@ -153,10 +156,14 @@ static void can_restart(struct net_device *dev)
- 	if (err) {
- 		netdev_err(dev, "Restart failed, error %pe\n", ERR_PTR(err));
- 		netif_carrier_off(dev);
-+
-+		return err;
- 	} else {
- 		netdev_dbg(dev, "Restarted\n");
- 		priv->can_stats.restarts++;
- 	}
-+
-+	return 0;
- }
- 
- static void can_restart_work(struct work_struct *work)
-@@ -181,9 +188,8 @@ int can_restart_now(struct net_device *dev)
- 		return -EBUSY;
- 
- 	cancel_delayed_work_sync(&priv->restart_work);
--	can_restart(dev);
- 
--	return 0;
-+	return can_restart(dev);
- }
- 
- /* CAN bus-off
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 01aacdcda2606..abe8dc051d94f 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -285,6 +285,12 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 	}
- 
- 	if (data[IFLA_CAN_RESTART_MS]) {
-+		if (!priv->do_set_mode) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Device doesn't support restart from Bus Off");
-+			return -EOPNOTSUPP;
-+		}
-+
- 		/* Do not allow changing restart delay while running */
- 		if (dev->flags & IFF_UP)
- 			return -EBUSY;
-@@ -292,6 +298,12 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 	}
- 
- 	if (data[IFLA_CAN_RESTART]) {
-+		if (!priv->do_set_mode) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Device doesn't support restart from Bus Off");
-+			return -EOPNOTSUPP;
-+		}
-+
- 		/* Do not allow a restart while not running */
- 		if (!(dev->flags & IFF_UP))
- 			return -EINVAL;
 -- 
 2.39.5
 
