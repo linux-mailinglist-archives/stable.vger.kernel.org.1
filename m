@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9B9B15D63
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808F7B15C56
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F0BA1715E7
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 835EE1887BE0
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865F4295510;
-	Wed, 30 Jul 2025 09:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBEF275865;
+	Wed, 30 Jul 2025 09:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyViUHVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HydYjluX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FC52951D8;
-	Wed, 30 Jul 2025 09:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D013A26D4F9;
+	Wed, 30 Jul 2025 09:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869187; cv=none; b=Sa/ETsYCsSDjkTavjBxFz/pzedG4Xc5vV+qs4wyZ+B7knE48TrAOWed/zrV9yjq8OM5p/sj1iQDTPXwTFOOSbvAIFupsjO4Yi3aHCQE+0wS7fAs7hOR6dWvhS15wfajIdn9O7avaEtHJYI/yF6wmqOV8wmxALAICKa/hJ0VQeuA=
+	t=1753868465; cv=none; b=S/biKIJJqqB4bgMy+an01xFz75y9pAz9tI83Z35UqvJzbIJ1wyabk5MVY+ra3irCYat94FZSOoiyhzZnDW7+S2s4vwN/KS8Ln1HzZmhCTTZ8lFwPkVMZhZLqkmfHJWhklRF9Rpzx2pEXb58Mjol0oRx1LbmxTQWnFJXwwrKYptg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869187; c=relaxed/simple;
-	bh=7u+CV2UlghMMjEV/7eJCdn1PGwdpsh4aPUhACUhvfcQ=;
+	s=arc-20240116; t=1753868465; c=relaxed/simple;
+	bh=Aw3qbmxO2I9h+B2QyfaxdcVg9LwdrasSn9owZNLPTOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/vE8svLXyRigaQhFWG2vuXTSHUqcSP1lqedVdpGfGNXuiqU86OmwOW1WmmePWIA11PoWhsOt+8WRUvctOkC/1IJkCIrNJqbZ3InIabhOQQbXew85AdmKFVSv2obVEsqIjyxZe/XTUyTs9Bs+w8OgO4KnDDl9+bPXZRUKv4+PLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyViUHVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF350C4CEFC;
-	Wed, 30 Jul 2025 09:53:05 +0000 (UTC)
+	 MIME-Version; b=lt/V3nfhHX2aNPS8klRNU1PggnvZ8iJidzz9N/9dEGRm4rs+XS0BE9clUCgc8jTtuwcn4KpEIBFsqha25DIuc5JqTho6v5bWQCPlT7lnvQ4O4NN9s5HBhR+e57Fgpaw2cGkOdX680oxnKe0cNFg2Rcdmnbm6fiHAVsdIJ3Js/co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HydYjluX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9DBC4CEE7;
+	Wed, 30 Jul 2025 09:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869187;
-	bh=7u+CV2UlghMMjEV/7eJCdn1PGwdpsh4aPUhACUhvfcQ=;
+	s=korg; t=1753868465;
+	bh=Aw3qbmxO2I9h+B2QyfaxdcVg9LwdrasSn9owZNLPTOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyViUHVHVU0ho8Q4cpSvV636C2nQnduODftkU9NTRo6bLjFspcIO9LAyXLgbqoGl4
-	 g0e+xQ4oANBak1yf8Mj8Y9j4QvQtHW+Ozyn2HonNE6168QUS4CosoQRpEKxTQp9ozK
-	 YwBALYRraivl+gabO1P47BKqPTUaAzVi2Jeu29uE=
+	b=HydYjluXGZ+C61I5lbfX1KGLzUwmnBTF9lSgg7sqdE7lzpeEnf7jbZJu/DTthUUrI
+	 rprN6rJn4RX2sGQjj74+ZTDQ4MMb1W1qocS1HmxepL0ubtZ1KsgHVPDQcPNqH4bpVs
+	 P4yfNCKZaGUysXAXz8Pr8nhI0Z6sxoTkip9zBbiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.15 57/92] i2c: tegra: Fix reset error handling with ACPI
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 72/76] mptcp: reset fallback status gracefully at disconnect() time
 Date: Wed, 30 Jul 2025 11:36:05 +0200
-Message-ID: <20250730093232.956580497@linuxfoundation.org>
+Message-ID: <20250730093229.656732347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 56344e241c543f17e8102fa13466ad5c3e7dc9ff upstream.
+commit da9b2fc7b73d147d88abe1922de5ab72d72d7756 upstream.
 
-The acpi_evaluate_object() returns an ACPI error code and not
-Linux one. For the some platforms the err will have positive code
-which may be interpreted incorrectly. Use device_reset() for
-reset control which handles it correctly.
+mptcp_disconnect() clears the fallback bit unconditionally, without
+touching the associated flags.
 
-Fixes: bd2fdedbf2ba ("i2c: tegra: Add the ACPI support")
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Cc: <stable@vger.kernel.org> # v5.17+
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250710131206.2316-2-akhilrajeev@nvidia.com
+The bit clear is safe, as no fallback operation can race with that --
+all subflow are already in TCP_CLOSE status thanks to the previous
+FASTCLOSE -- but we need to consistently reset all the fallback related
+status.
+
+Also acquire the relevant lock, to avoid fouling static analyzers.
+
+Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250714-net-mptcp-fallback-races-v1-3-391aff963322@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-tegra.c |   24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
+ net/mptcp/protocol.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -607,7 +607,6 @@ static int tegra_i2c_wait_for_config_loa
- static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
- {
- 	u32 val, clk_divisor, clk_multiplier, tsu_thd, tlow, thigh, non_hs_mode;
--	acpi_handle handle = ACPI_HANDLE(i2c_dev->dev);
- 	struct i2c_timings *t = &i2c_dev->timings;
- 	int err;
- 
-@@ -619,11 +618,7 @@ static int tegra_i2c_init(struct tegra_i
- 	 * emit a noisy warning on error, which won't stay unnoticed and
- 	 * won't hose machine entirely.
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3208,7 +3208,16 @@ static int mptcp_disconnect(struct sock
+ 	 * subflow
  	 */
--	if (handle)
--		err = acpi_evaluate_object(handle, "_RST", NULL, NULL);
--	else
--		err = reset_control_reset(i2c_dev->rst);
--
-+	err = device_reset(i2c_dev->dev);
- 	WARN_ON_ONCE(err);
- 
- 	if (IS_DVC(i2c_dev))
-@@ -1666,19 +1661,6 @@ static void tegra_i2c_parse_dt(struct te
- 		i2c_dev->is_vi = true;
- }
- 
--static int tegra_i2c_init_reset(struct tegra_i2c_dev *i2c_dev)
--{
--	if (ACPI_HANDLE(i2c_dev->dev))
--		return 0;
--
--	i2c_dev->rst = devm_reset_control_get_exclusive(i2c_dev->dev, "i2c");
--	if (IS_ERR(i2c_dev->rst))
--		return dev_err_probe(i2c_dev->dev, PTR_ERR(i2c_dev->rst),
--				      "failed to get reset control\n");
--
--	return 0;
--}
--
- static int tegra_i2c_init_clocks(struct tegra_i2c_dev *i2c_dev)
- {
- 	int err;
-@@ -1788,10 +1770,6 @@ static int tegra_i2c_probe(struct platfo
- 
- 	tegra_i2c_parse_dt(i2c_dev);
- 
--	err = tegra_i2c_init_reset(i2c_dev);
--	if (err)
--		return err;
--
- 	err = tegra_i2c_init_clocks(i2c_dev);
- 	if (err)
- 		return err;
+ 	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
++
++	/* The first subflow is already in TCP_CLOSE status, the following
++	 * can't overlap with a fallback anymore
++	 */
++	spin_lock_bh(&msk->fallback_lock);
++	msk->allow_subflows = true;
++	msk->allow_infinite_fallback = true;
+ 	WRITE_ONCE(msk->flags, 0);
++	spin_unlock_bh(&msk->fallback_lock);
++
+ 	msk->cb_flags = 0;
+ 	msk->recovery = false;
+ 	msk->can_ack = false;
 
 
 
