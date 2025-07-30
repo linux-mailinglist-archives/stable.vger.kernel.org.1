@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-165420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CB8B15D39
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C05B15C28
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F7957A1A02
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33C9B563871
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B338293C51;
-	Wed, 30 Jul 2025 09:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D2920E6;
+	Wed, 30 Jul 2025 09:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8OD2l21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZTk0aOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498E3226D17;
-	Wed, 30 Jul 2025 09:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A0A275B1D;
+	Wed, 30 Jul 2025 09:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869062; cv=none; b=qPuwOo94UELLuFZDTf0QoSIs6iWaILc2UOufqlxX0y1/8zjF9p7CSIIosqxqv2LmK+eQaW8m2tTCmqJDcjJRMJP/9VYppcARqbQOwRbuWUSiiC8NJSdVTYCJmCjJC6VtSuw5n3IRGn+CBr1kRZz31OqA2cFLpshw8Assw/LdbzI=
+	t=1753868345; cv=none; b=NQc/A3cKDron1i85X8B6MJvpIG6VSzB1OyNsJlZvW8ugd1cCEVI5IFWLhJSLX+vQdqMwG1lfreDrafFc+VXJeSJLwbBTSAGVlNREevvT4MiLI8toKVW9ncfVhLYwHpUezif83yg0gXQ0U5H1tMgfK/vwp4pcXOWTFYfsjtFCDcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869062; c=relaxed/simple;
-	bh=xTYTfK3EJcWk8a5sTrQ7K8Z52a0gNrUovwDgBg0+9Vk=;
+	s=arc-20240116; t=1753868345; c=relaxed/simple;
+	bh=OJ874T+X9rbciREKHTxlidDhjDLn01MgaN4LemkWiqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jbb1twniSxXCIESSmjHR5T8675foAMYqKd3/Ukk5mqBnEs+v6j5PvBbPdeShiLL72IwLU5dYFuULQPWf0tAPa4ArhXs4BG+/3cRBa7Xcsa0fwrq4zq8CvUYvbCSABJ8ogqf/j+BjAQAGS5luX8AdgBL5UJoPn8C4wcZ85r6ibiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8OD2l21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9A3C4CEF5;
-	Wed, 30 Jul 2025 09:51:00 +0000 (UTC)
+	 MIME-Version; b=Jev52CjeyuIbdW89D4JRr6GrPkCLu3pXwgb+H0fnqqlJp3I/h4OTIpyJUlmqyf9gbA/Y3bSIquH9PvZtNEm/B3X4S9xDG0OdXBDVj72ScCjzitlL+moaB+u4psoy+fNrUMAwnWZZq/nJK5NQF+qi+Yj3zSl4FA+czmEijLNBSMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZTk0aOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F8EC4CEE7;
+	Wed, 30 Jul 2025 09:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869061;
-	bh=xTYTfK3EJcWk8a5sTrQ7K8Z52a0gNrUovwDgBg0+9Vk=;
+	s=korg; t=1753868344;
+	bh=OJ874T+X9rbciREKHTxlidDhjDLn01MgaN4LemkWiqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8OD2l211IPfDzs25NiDX0FQ2xDhKzrVyEL8ZdF1ar/QrLTGJAScYROh8HmpxPhXB
-	 ImL3UueufCy5niyKysGGmfydB9OAhathosrKZyNLRbKiDqIKCooMETr5knkhqUlS08
-	 qHgM6DKMNxFKygGlt54UCJSAotBkVrwcIDYCAf88=
+	b=JZTk0aOgmLOELjhY6Y5Zg6ovFHhMvE8CL/y6T8lUPrmMz5yWeYnLxZ4wNFgGDBgZ6
+	 iEOfo30jVLzL7j8b26M5VW3wQgri2AMbCcB4Kb3HKHdQG6pdiBw1gFkmOWbXF0zBcT
+	 w9nSeUY/rGaaJGgqTGTUPdp/WFS2FYpZaR3K9ZWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoqing Jiang <guoqing.jiang@canonical.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 26/92] ASoC: mediatek: mt8365-dai-i2s: pass correct size to mt8365_dai_set_priv
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 41/76] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
 Date: Wed, 30 Jul 2025 11:35:34 +0200
-Message-ID: <20250730093231.764539949@linuxfoundation.org>
+Message-ID: <20250730093228.428411677@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@canonical.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 6bea85979d05470e6416a2bb504a9bcd9178304c ]
+commit 4ff12d82dac119b4b99b5a78b5af3bf2474c0a36 upstream.
 
-Given mt8365_dai_set_priv allocate priv_size space to copy priv_data which
-means we should pass mt8365_i2s_priv[i] or "struct mtk_afe_i2s_priv"
-instead of afe_priv which has the size of "struct mt8365_afe_private".
+Add check for the return value of devm_kmemdup()
+to prevent potential null pointer dereference.
 
-Otherwise the KASAN complains about.
-
-[   59.389765] BUG: KASAN: global-out-of-bounds in mt8365_dai_set_priv+0xc8/0x168 [snd_soc_mt8365_pcm]
-...
-[   59.394789] Call trace:
-[   59.395167]  dump_backtrace+0xa0/0x128
-[   59.395733]  show_stack+0x20/0x38
-[   59.396238]  dump_stack_lvl+0xe8/0x148
-[   59.396806]  print_report+0x37c/0x5e0
-[   59.397358]  kasan_report+0xac/0xf8
-[   59.397885]  kasan_check_range+0xe8/0x190
-[   59.398485]  asan_memcpy+0x3c/0x98
-[   59.399022]  mt8365_dai_set_priv+0xc8/0x168 [snd_soc_mt8365_pcm]
-[   59.399928]  mt8365_dai_i2s_register+0x1e8/0x2b0 [snd_soc_mt8365_pcm]
-[   59.400893]  mt8365_afe_pcm_dev_probe+0x4d0/0xdf0 [snd_soc_mt8365_pcm]
-[   59.401873]  platform_probe+0xcc/0x228
-[   59.402442]  really_probe+0x340/0x9e8
-[   59.402992]  driver_probe_device+0x16c/0x3f8
-[   59.403638]  driver_probe_device+0x64/0x1d8
-[   59.404256]  driver_attach+0x1dc/0x4c8
-[   59.404840]  bus_for_each_dev+0x100/0x190
-[   59.405442]  driver_attach+0x44/0x68
-[   59.405980]  bus_add_driver+0x23c/0x500
-[   59.406550]  driver_register+0xf8/0x3d0
-[   59.407122]  platform_driver_register+0x68/0x98
-[   59.407810]  mt8365_afe_pcm_driver_init+0x2c/0xff8 [snd_soc_mt8365_pcm]
-
-Fixes: 402bbb13a195 ("ASoC: mediatek: mt8365: Add I2S DAI support")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20250710011806.134507-1-guoqing.jiang@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/mediatek/mt8365/mt8365-dai-i2s.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ddp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c b/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c
-index cae51756cead8..cb9beb172ed59 100644
---- a/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c
-+++ b/sound/soc/mediatek/mt8365/mt8365-dai-i2s.c
-@@ -812,11 +812,10 @@ static const struct snd_soc_dapm_route mtk_dai_i2s_routes[] = {
- static int mt8365_dai_i2s_set_priv(struct mtk_base_afe *afe)
- {
- 	int i, ret;
--	struct mt8365_afe_private *afe_priv = afe->platform_priv;
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -1884,6 +1884,8 @@ enum ice_ddp_state ice_copy_and_init_pkg
+ 		return ICE_DDP_PKG_ERR;
  
- 	for (i = 0; i < DAI_I2S_NUM; i++) {
- 		ret = mt8365_dai_set_priv(afe, mt8365_i2s_priv[i].id,
--					  sizeof(*afe_priv),
-+					  sizeof(mt8365_i2s_priv[i]),
- 					  &mt8365_i2s_priv[i]);
- 		if (ret)
- 			return ret;
--- 
-2.39.5
-
+ 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
++	if (!buf_copy)
++		return ICE_DDP_PKG_ERR;
+ 
+ 	state = ice_init_pkg(hw, buf_copy, len);
+ 	if (!ice_is_init_pkg_successful(state)) {
 
 
 
