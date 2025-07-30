@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05F2B15D33
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB487B15CF2
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E54AD4E2DF9
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46199563FE7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC92277CA8;
-	Wed, 30 Jul 2025 09:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEA22949E0;
+	Wed, 30 Jul 2025 09:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqsiV2Kk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYTobutC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE644255F5C;
-	Wed, 30 Jul 2025 09:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D54293C6F;
+	Wed, 30 Jul 2025 09:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869043; cv=none; b=Lj7a+b8nnlF5xpbRLBEidVrPcelWbBMMXVxDl7Cp0RgHUk6aR/pVWooMGKp2kVhPGYAE7ML3p9ldXmY/jrXWXcfGPgCkcewtMIsQQA9CQte4a3fJ74Y0KqjbuyxO7NQBFUihpg8jlvm9kbF/J7QnYjLyGFHo21g2VmP6F+i7Mrg=
+	t=1753868890; cv=none; b=lMftrh1S86HoErmwh5Tj3T6XHoLQ8421W46np+SZIRqqg19lbfUvMrPqQ1YbmuFftQwMGV2hjWtdGhKiZYujZMApINxW/99/H6YfFfRS0UWbg6prOBlGBS3gv0u9tKjW0oRCKwGvI8yaI29h9luj8qLCYOEVgm1IxWkbCPrTG+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869043; c=relaxed/simple;
-	bh=k1vaAncHF4O4uLllmst3BBd5ctEBkxIihWWgHCFVi2A=;
+	s=arc-20240116; t=1753868890; c=relaxed/simple;
+	bh=E7ur4lpl+H06uO3uEIumj56OwO+ruboDesYQWrqUJXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inPxDjvwGnihfw2NXnbZNlHl0uq+TVqXwooPhrUXZVGl3RE42/p8tbAPzQlTsTL5yQ3rFKBJbGwJRO055TJHhFPek7ECooVSvjMZsb0Fcoxvkb0oXJORs4sWrFzPFXJJm2rYu5aLRT/YuwvUcTVlfRvNfkKdT2J+hhVzGI9dm6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqsiV2Kk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D470C4CEF5;
-	Wed, 30 Jul 2025 09:50:42 +0000 (UTC)
+	 MIME-Version; b=BlB7MS9TX7Idvjh7pneAKpD9Inzh0qogZ8WtgxlKOZDZ5IQe/90cIjqkZHIQYiCFQ7AWuhvXR9pqYIqimRd6ucMPH1h/k5wfr2swzpQ3z9AhzFb9oTMHqHOuBBXJT5VQCKPrdk1oN9SwpTFKZwQjaHfv4NBpPvOe94s78QIW5lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYTobutC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5B6C4CEF6;
+	Wed, 30 Jul 2025 09:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869043;
-	bh=k1vaAncHF4O4uLllmst3BBd5ctEBkxIihWWgHCFVi2A=;
+	s=korg; t=1753868890;
+	bh=E7ur4lpl+H06uO3uEIumj56OwO+ruboDesYQWrqUJXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqsiV2KkMNROKY4HXFWCMq6PBxMZTh15Xcbtzw2RcH2j7GD75+p6/YQ8qfh/n+YjX
-	 WvLVAEvkz3pT01YmQVmrjGxl2TNpGv3rgLKrKyRjCmmaMWyUabvClN8td7ml2QMTXe
-	 v+jG8w2jeGND2uE/owmk2uOYrkk5A8EX+EvCG/nw=
+	b=cYTobutC6OKUsd4N5/Uj+SCOVtqBERvSWZDd+nUflCXS+7VHRP5kiKy6WCH+DBkmq
+	 EQyJjXtkvgLhMBK07vrW9K+PnwmxqgURWSdFZzuo8UJpEtUEgkXfVitWI4yOgLxdLr
+	 HFDrnyZ0+1pGf7evUuz6Udq6F7bbyXidxRGhwHrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Brunner <tobias@strongswan.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 23/92] xfrm: Set transport header to fix UDP GRO handling
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 062/117] resource: fix false warning in __request_region()
 Date: Wed, 30 Jul 2025 11:35:31 +0200
-Message-ID: <20250730093231.506665581@linuxfoundation.org>
+Message-ID: <20250730093235.961712525@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Brunner <tobias@strongswan.org>
+From: Akinobu Mita <akinobu.mita@gmail.com>
 
-[ Upstream commit 3ac9e29211fa2df5539ba0d742c8fe9fe95fdc79 ]
+commit 91a229bb7ba86b2592c3f18c54b7b2c5e6fe0f95 upstream.
 
-The referenced commit replaced a call to __xfrm4|6_udp_encap_rcv() with
-a custom check for non-ESP markers.  But what the called function also
-did was setting the transport header to the ESP header.  The function
-that follows, esp4|6_gro_receive(), relies on that being set when it calls
-xfrm_parse_spi().  We have to set the full offset as the skb's head was
-not moved yet so adding just the UDP header length won't work.
+A warning is raised when __request_region() detects a conflict with a
+resource whose resource.desc is IORES_DESC_DEVICE_PRIVATE_MEMORY.
 
-Fixes: e3fd05777685 ("xfrm: Fix UDP GRO handling for some corner cases")
-Signed-off-by: Tobias Brunner <tobias@strongswan.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But this warning is only valid for iomem_resources.
+The hmem device resource uses resource.desc as the numa node id, which can
+cause spurious warnings.
+
+This warning appeared on a machine with multiple cxl memory expanders.
+One of the NUMA node id is 6, which is the same as the value of
+IORES_DESC_DEVICE_PRIVATE_MEMORY.
+
+In this environment it was just a spurious warning, but when I saw the
+warning I suspected a real problem so it's better to fix it.
+
+This change fixes this by restricting the warning to only iomem_resource.
+This also adds a missing new line to the warning message.
+
+Link: https://lkml.kernel.org/r/20250719112604.25500-1-akinobu.mita@gmail.com
+Fixes: 7dab174e2e27 ("dax/hmem: Move hmem device registration to dax_hmem.ko")
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/xfrm4_input.c | 3 +++
- net/ipv6/xfrm6_input.c | 3 +++
- 2 files changed, 6 insertions(+)
+ kernel/resource.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index 0d31a8c108d4f..f28cfd88eaf59 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -202,6 +202,9 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
-+	/* set the transport header to ESP */
-+	skb_set_transport_header(skb, offset);
-+
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 841c81abaaf4f..9005fc156a20e 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -202,6 +202,9 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
-+	/* set the transport header to ESP */
-+	skb_set_transport_header(skb, offset);
-+
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
--- 
-2.39.5
-
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -1268,8 +1268,9 @@ static int __request_region_locked(struc
+ 		 * become unavailable to other users.  Conflicts are
+ 		 * not expected.  Warn to aid debugging if encountered.
+ 		 */
+-		if (conflict->desc == IORES_DESC_DEVICE_PRIVATE_MEMORY) {
+-			pr_warn("Unaddressable device %s %pR conflicts with %pR",
++		if (parent == &iomem_resource &&
++		    conflict->desc == IORES_DESC_DEVICE_PRIVATE_MEMORY) {
++			pr_warn("Unaddressable device %s %pR conflicts with %pR\n",
+ 				conflict->name, conflict, res);
+ 		}
+ 		if (conflict != parent) {
 
 
 
