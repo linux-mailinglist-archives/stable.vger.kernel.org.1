@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-165217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912C3B15C1B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1C3B15CAF
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC7F18C2FC0
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4BB75A3160
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB293277C9F;
-	Wed, 30 Jul 2025 09:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC54267733;
+	Wed, 30 Jul 2025 09:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIB0UBMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYzSQyiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8839F167DB7;
-	Wed, 30 Jul 2025 09:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B09620E6;
+	Wed, 30 Jul 2025 09:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868260; cv=none; b=Ml2n/siV4GyCbb1zMpxM02wzMoVe3NdB3OfX9ErVL6eLxQpFFeZbBKs2MohrSdCuJZBCUtLwWDtsWXuk2sTgP8JvkerI4Ur870vey7ulbkbxyBeO8rsqGU4fXr/6Q+NLrOTNi1or4CA5JY+X58FtqFv49Tn821/TOZ5/kK1PCpw=
+	t=1753868655; cv=none; b=rUlgUPMez9g5s8tIA5Qh8gqs6KX+0F4OHjmznemhRMXihua1fKu3mYEVxanC3KwyPi4NOWAfGyc8VIvrACX3gAt2YSeBL9DMLumAKkrI16KLSiObRbgcjGwOTTlZ0eOnDJK76MM5WaJOWibHjr39lkSvpBRa3VTfsL5EB+CGvCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868260; c=relaxed/simple;
-	bh=0kIXy6req8TWhuL4Yh7b29cjenbs4oRuZIbwUQvIR7A=;
+	s=arc-20240116; t=1753868655; c=relaxed/simple;
+	bh=4QLlQ/ET9CcP6MYxzq9YOfqt7SUpEAIKQSmyeaGYdtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdVsVrNsiSQdfl6cb/04LvbVENFgI0rzbNt39/uSCq+cnoS3RkrNhlZDzxYJykWuCJxawKDe9Ub03fFngY2EA5uNNOdePzYXywxBu9QFaNigXrZ6FCc8GSoo6H2EE+GMR6q8kaPPe4s/IJnxUp2h1+4hP3LuQ8pjZvvFbv0+N0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIB0UBMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67995C4CEE7;
-	Wed, 30 Jul 2025 09:37:36 +0000 (UTC)
+	 MIME-Version; b=MbyfmNmU/90SWGFL3CnqzXPxxBqBeujRcl3McqZNmGTyTsOM5iiJYHz/I3P8mAwhkMzlRT3q5uQZOFzkFdnf+tEWRFcE4KjBEu4IDSB6yklPY4a70jsYBGQP8A8wiSkK9wwySFEIiq9Md4cdhHgs+/pnYhIbab10MgITg0zbCg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYzSQyiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FD9C4CEE7;
+	Wed, 30 Jul 2025 09:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868257;
-	bh=0kIXy6req8TWhuL4Yh7b29cjenbs4oRuZIbwUQvIR7A=;
+	s=korg; t=1753868655;
+	bh=4QLlQ/ET9CcP6MYxzq9YOfqt7SUpEAIKQSmyeaGYdtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIB0UBMedRGCNpfMGIe2NDuRG2orBy703eJ9K2ytlIfzzG7MzFTAoyNpzIGmU6FFn
-	 cRgcgzhltv9J74lEtusQj2j275qHDG/fI1i9S1ipBr+do8ZVnkw71/XYEwxSozi7fg
-	 ixMyKue9D4guYbc7msk9mCOFZmMPIE1iAe+L39O0=
+	b=uYzSQyiCGCynvJlbg2r98wjUWww0dxaXu9HsMeTpy1cdyHkLB02Q6ABPkh8jGNeoC
+	 M+gN8a2lBlaI4Zw0mSxJexPsyRlqsEHxGb2b0csTcecWclsFrbk9Xxt+iMH1DABTla
+	 JRH7FEVw/9v0rsZURiVrW/ptNKM5wmGnSAnNyr50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 19/76] can: dev: can_restart(): reverse logic to remove need for goto
+	Nathan Chancellor <nathan@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Stefan Roesch <shr@devkernel.io>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 043/117] mm/ksm: fix -Wsometimes-uninitialized from clang-21 in advisor_mode_show()
 Date: Wed, 30 Jul 2025 11:35:12 +0200
-Message-ID: <20250730093227.595051060@linuxfoundation.org>
+Message-ID: <20250730093235.236389264@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 8f3ec204d340af183fb2bb21b8e797ac2ed012b2 ]
+commit 153ad566724fe6f57b14f66e9726d295d22e576d upstream.
 
-Reverse the logic in the if statement and eliminate the need for a
-goto to simplify code readability.
+After a recent change in clang to expose uninitialized warnings from const
+variables [1], there is a false positive warning from the if statement in
+advisor_mode_show().
 
-Link: https://lore.kernel.org/all/20231005-can-dev-fix-can-restart-v2-3-91b5c1fd922c@pengutronix.de
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  mm/ksm.c:3687:11: error: variable 'output' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+   3687 |         else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  mm/ksm.c:3690:33: note: uninitialized use occurs here
+   3690 |         return sysfs_emit(buf, "%s\n", output);
+        |                                        ^~~~~~
+
+Rewrite the if statement to implicitly make KSM_ADVISOR_NONE the else
+branch so that it is obvious to the compiler that ksm_advisor can only be
+KSM_ADVISOR_NONE or KSM_ADVISOR_SCAN_TIME due to the assignments in
+advisor_mode_store().
+
+Link: https://lkml.kernel.org/r/20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org
+Fixes: 66790e9a735b ("mm/ksm: add sysfs knobs for advisor")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2100
+Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/dev/dev.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ mm/ksm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 7d9a7c92d4cf6..6c1ceb8ce6c4b 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -142,14 +142,11 @@ static void can_restart(struct net_device *dev)
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3643,10 +3643,10 @@ static ssize_t advisor_mode_show(struct
+ {
+ 	const char *output;
  
- 	/* send restart message upstream */
- 	skb = alloc_can_err_skb(dev, &cf);
--	if (!skb)
--		goto restart;
--
--	cf->can_id |= CAN_ERR_RESTARTED;
--
--	netif_rx(skb);
-+	if (skb) {
-+		cf->can_id |= CAN_ERR_RESTARTED;
-+		netif_rx(skb);
-+	}
+-	if (ksm_advisor == KSM_ADVISOR_NONE)
+-		output = "[none] scan-time";
+-	else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
++	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+ 		output = "none [scan-time]";
++	else
++		output = "[none] scan-time";
  
--restart:
- 	netdev_dbg(dev, "restarted\n");
- 	priv->can_stats.restarts++;
- 
--- 
-2.39.5
-
+ 	return sysfs_emit(buf, "%s\n", output);
+ }
 
 
 
