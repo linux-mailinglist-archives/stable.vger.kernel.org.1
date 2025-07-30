@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-165476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094B2B15D91
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:56:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA244B15D98
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444935A6F5A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 613A13A24BC
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A920E276058;
-	Wed, 30 Jul 2025 09:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E805294A17;
+	Wed, 30 Jul 2025 09:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYWjPmDa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCF3SeS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671E0442C;
-	Wed, 30 Jul 2025 09:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3E92949F5;
+	Wed, 30 Jul 2025 09:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869285; cv=none; b=Uw1fLUzsYRR5KtPlDWb8pE+C8yAnmHvnYNV+aAKorpu7D5UIkfGM1qq4QhiM0uEDpJ8shZNR3fjM65VBbOEHf1SpKakyPrah17jdt+J6knywusf2+ZQc1Gs6j35k/f4k/bQwTKlct4yqX3R9/hlf2/yRlJRyfhqvB5VG99IXRnw=
+	t=1753869295; cv=none; b=klSBWt3nnDFb5/sNiIF3JICvh3rdHJzdlYmIiJ4ewq1OVKjgcF7BbywcZ9Xf2ptKPOEiFxVtiIa0mkRYBu7IuWPK7LesjJHAgQX48dX3X2Wxmhn0mrhx99RVCy02YE1fd60SnkysSAPiraefz2NUJnfzco+3KxQiZLyZlm/SVbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869285; c=relaxed/simple;
-	bh=79udYCoDzqb8xtIbWNoAstsEcs6SNDaBlhEYIw7WF18=;
+	s=arc-20240116; t=1753869295; c=relaxed/simple;
+	bh=LNXZvdFdO5D297rnt457a3EvIx/MfylF87Na5eb5pmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldfKbj0cVZdRy7cDdh9shR/5LZQZUXIXguKl1F3VO8rcjPrO9nGLGT9Ef+LMR8MefVODQeAAfDnkEhZF+KV/U8l5E6C+oguN6R6HpwHx3LHmlGw2apYXtpG67qlX/wmjwXqk5Wo3QZhMYQ/D2QkH8cNJRPWPugcZeH+yNYIRLwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYWjPmDa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36237C4CEF5;
-	Wed, 30 Jul 2025 09:54:43 +0000 (UTC)
+	 MIME-Version; b=NxxVAzwLhzfwMCS0T0rFx53ehNvmGnCDECFWWMPyZTk+Iey3bbNkZXWCNaHUaHvgVPB93AO9IzmU21oSTqr/+R6SOyMvrcCDev2FyX0J+WlsASEOZmXoRpIR7hiDFpzkohS3+REeoku8HKQfSLARJB/0ePKtTKHRfMCYeHx8obY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCF3SeS7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FD0C4CEF9;
+	Wed, 30 Jul 2025 09:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869284;
-	bh=79udYCoDzqb8xtIbWNoAstsEcs6SNDaBlhEYIw7WF18=;
+	s=korg; t=1753869294;
+	bh=LNXZvdFdO5D297rnt457a3EvIx/MfylF87Na5eb5pmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYWjPmDayUOk+/iYsVNfn3tMDa0qZ2u2Xv85YJnASemiKW3M5NFIRRSpWXawENRnT
-	 gkw7cd3HAijO3xkZ4CU8JMYuSGe8T2ApEz9IBhpufltYiEt10k6i+snS35ns4tTgEZ
-	 m+CwY4XScqSdOG/pDnJQx+pC6HNMbAljBlPlXyJY=
+	b=jCF3SeS7zzEVjEDx2/CbQvtUH8Yhjbf4zzHiFcF+nL5eC4fcHvu9UkW1XdzKnjZJI
+	 tRh3eMxAb7EswvFNwwlc6s13xyGUt4ktrzGxX48f1ZFOp6vnWIHmOM907IyEHBElab
+	 avvcTN4DZtxbC4iRnYtlg79vIpuHlWjsmP6V+5Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 83/92] drm/amdgpu: Implement SDMA soft reset directly for v5.x
-Date: Wed, 30 Jul 2025 11:36:31 +0200
-Message-ID: <20250730093233.959823573@linuxfoundation.org>
+Subject: [PATCH 6.15 84/92] drm/amdgpu: Fix SDMA engine reset with logical instance ID
+Date: Wed, 30 Jul 2025 11:36:32 +0200
+Message-ID: <20250730093233.998230830@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
 References: <20250730093230.629234025@linuxfoundation.org>
@@ -66,96 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jesse.zhang@amd.com <Jesse.zhang@amd.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-commit 5c3e7c49538e2ddad10296a318c225bbb3d37d20 upstream.
+commit 09b585592fa481384597c81388733aed4a04dd05 upstream.
 
-This patch introduces a new function `amdgpu_sdma_soft_reset` to handle SDMA soft resets directly,
-rather than relying on the DPM interface.
+This commit makes the following improvements to SDMA engine reset handling:
 
-1. **New `amdgpu_sdma_soft_reset` Function**:
-   - Implements a soft reset for SDMA engines by directly writing to the hardware registers.
-   - Handles SDMA versions 4.x and 5.x separately:
-     - For SDMA 4.x, the existing `amdgpu_dpm_reset_sdma` function is used for backward compatibility.
-     - For SDMA 5.x, the driver directly manipulates the `GRBM_SOFT_RESET` register to reset the specified SDMA instance.
+1. Clarifies in the function documentation that instance_id refers to a logical ID
+2. Adds conversion from logical to physical instance ID before performing reset
+   using GET_INST(SDMA0, instance_id) macro
+3. Improves error messaging to indicate when a logical instance reset fails
+4. Adds better code organization with blank lines for readability
 
-2. **Integration into `amdgpu_sdma_reset_engine`**:
-   - The `amdgpu_sdma_soft_reset` function is called during the SDMA reset process, replacing the previous call to `amdgpu_dpm_reset_sdma`.
+The change ensures proper SDMA engine reset by using the correct physical
+instance ID while maintaining the logical ID interface for callers.
 
-v2: r should default to an error (Alex)
+V2: Remove harvest_config check and convert directly to physical instance (Lijo)
 
-Suggested-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Suggested-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 09b585592fa4 ("drm/amdgpu: Fix SDMA engine reset with logical instance ID")
+(cherry picked from commit 5efa6217c239ed1ceec0f0414f9b6f6927387dfc)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c |   38 ++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-@@ -26,6 +26,8 @@
- #include "amdgpu_sdma.h"
- #include "amdgpu_ras.h"
- #include "amdgpu_reset.h"
-+#include "gc/gc_10_1_0_offset.h"
-+#include "gc/gc_10_3_0_sh_mask.h"
- 
- #define AMDGPU_CSA_SDMA_SIZE 64
- /* SDMA CSA reside in the 3rd page of CSA */
-@@ -561,6 +563,40 @@ void amdgpu_sdma_register_on_reset_callb
- 	list_add_tail(&funcs->list, &adev->sdma.reset_callback_list);
- }
- 
-+static int amdgpu_sdma_soft_reset(struct amdgpu_device *adev, u32 instance_id)
-+{
-+	struct amdgpu_sdma_instance *sdma_instance = &adev->sdma.instance[instance_id];
-+	int r = -EOPNOTSUPP;
-+
-+	switch (amdgpu_ip_version(adev, SDMA0_HWIP, 0)) {
-+	case IP_VERSION(4, 4, 2):
-+	case IP_VERSION(4, 4, 4):
-+	case IP_VERSION(4, 4, 5):
-+		/* For SDMA 4.x, use the existing DPM interface for backward compatibility */
-+		r = amdgpu_dpm_reset_sdma(adev, 1 << instance_id);
-+		break;
-+	case IP_VERSION(5, 0, 0):
-+	case IP_VERSION(5, 0, 1):
-+	case IP_VERSION(5, 0, 2):
-+	case IP_VERSION(5, 0, 5):
-+	case IP_VERSION(5, 2, 0):
-+	case IP_VERSION(5, 2, 2):
-+	case IP_VERSION(5, 2, 4):
-+	case IP_VERSION(5, 2, 5):
-+	case IP_VERSION(5, 2, 6):
-+	case IP_VERSION(5, 2, 3):
-+	case IP_VERSION(5, 2, 1):
-+	case IP_VERSION(5, 2, 7):
-+		if (sdma_instance->funcs->soft_reset_kernel_queue)
-+			r = sdma_instance->funcs->soft_reset_kernel_queue(adev, instance_id);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return r;
-+}
-+
+@@ -572,8 +572,10 @@ static int amdgpu_sdma_soft_reset(struct
+ 	case IP_VERSION(4, 4, 2):
+ 	case IP_VERSION(4, 4, 4):
+ 	case IP_VERSION(4, 4, 5):
+-		/* For SDMA 4.x, use the existing DPM interface for backward compatibility */
+-		r = amdgpu_dpm_reset_sdma(adev, 1 << instance_id);
++		/* For SDMA 4.x, use the existing DPM interface for backward compatibility,
++		 * we need to convert the logical instance ID to physical instance ID before reset.
++		 */
++		r = amdgpu_dpm_reset_sdma(adev, 1 << GET_INST(SDMA0, instance_id));
+ 		break;
+ 	case IP_VERSION(5, 0, 0):
+ 	case IP_VERSION(5, 0, 1):
+@@ -600,7 +602,7 @@ static int amdgpu_sdma_soft_reset(struct
  /**
   * amdgpu_sdma_reset_engine - Reset a specific SDMA engine
   * @adev: Pointer to the AMDGPU device
-@@ -611,7 +647,7 @@ int amdgpu_sdma_reset_engine(struct amdg
+- * @instance_id: ID of the SDMA engine instance to reset
++ * @instance_id: Logical ID of the SDMA engine instance to reset
+  *
+  * This function performs the following steps:
+  * 1. Calls all registered pre_reset callbacks to allow KFD and AMDGPU to save their state.
+@@ -649,7 +651,7 @@ int amdgpu_sdma_reset_engine(struct amdg
+ 	/* Perform the SDMA reset for the specified instance */
+ 	ret = amdgpu_sdma_soft_reset(adev, instance_id);
+ 	if (ret) {
+-		dev_err(adev->dev, "Failed to reset SDMA instance %u\n", instance_id);
++		dev_err(adev->dev, "Failed to reset SDMA logical instance %u\n", instance_id);
+ 		goto exit;
  	}
  
- 	/* Perform the SDMA reset for the specified instance */
--	ret = amdgpu_dpm_reset_sdma(adev, 1 << instance_id);
-+	ret = amdgpu_sdma_soft_reset(adev, instance_id);
- 	if (ret) {
- 		dev_err(adev->dev, "Failed to reset SDMA instance %u\n", instance_id);
- 		goto exit;
 
 
 
