@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907C4B15D7B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:55:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEDEB15C36
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D23D188CFFC
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9625F1674C8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0B9277CA8;
-	Wed, 30 Jul 2025 09:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007D220E6;
+	Wed, 30 Jul 2025 09:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDANE8cM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ip6QJzlf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7254A32;
-	Wed, 30 Jul 2025 09:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B333719D065;
+	Wed, 30 Jul 2025 09:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869224; cv=none; b=m51CjyDV5s0fGsAK6SbN4DJv5Ecxo5xrRoa13069cB1zbwzpHR4O9yn6wKVDODXyLvSx7ULnvtlVQsz7QUgh//FDNyo0bZxJdL6gcZBApYClbJd2fMoipx1jAtI6MjKVbRmXbfPDmkZWoiszZ3Xe8IlcQjCLOZ6tBrQ+6qdx06I=
+	t=1753868390; cv=none; b=elrOgDBK3FV01ZCT/l6iO01f3QQA8zPlFWa3VzISNmCeBKO9wDtkauXU9VLM/+G0jEpBrn0Ko0pTbBj0B4Tl+yqT/x5JyeV7wdAV9yPzirvUa+KaAH5bRVoBkiFFQ1aWOWwpkRZv1iuPdyi4kG6u0f4GnG2/M+Sxa5S7eDSuXoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869224; c=relaxed/simple;
-	bh=hHNNbQmoxwoWPcbknwMOQSI1YnzRd/+lTz6dy9gMtIQ=;
+	s=arc-20240116; t=1753868390; c=relaxed/simple;
+	bh=NRSbhcm6I1I77P68brqfZBTvl8OTG+GKwuClYDEUn8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gI8g3avQk2Olvss/DpjI16WBX9q2TnvPVJY7HvsYhBP+tGY/a68+CzXk00AqU+V/L9Cs4ylqEtmBpa2OkpN3oxhxnX/H9ut5WNNVQpcoUoXMp4xowt0XnzIDrBC48KoGU5RgpRLi8zybVtFRakwOnQxaML0/MyyEcWpWEsU+qHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDANE8cM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAADC4CEF5;
-	Wed, 30 Jul 2025 09:53:44 +0000 (UTC)
+	 MIME-Version; b=NoBA/xlvxAGBo1yCQMUS8WZtw9MF4wj6U5Auf+y+nmi3HqVkQaKHTIoPFDF6ZkjU0Gusmcdotf+YvIj0ycXYp8aehBM+qSkGLq1rqgVYfQppRApiCE7OkD9l4+Oap2T+sa6LhL21oXdC7EYudnHkcDowPjxGozqRgWG45jymFIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ip6QJzlf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F2DC4CEE7;
+	Wed, 30 Jul 2025 09:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869224;
-	bh=hHNNbQmoxwoWPcbknwMOQSI1YnzRd/+lTz6dy9gMtIQ=;
+	s=korg; t=1753868390;
+	bh=NRSbhcm6I1I77P68brqfZBTvl8OTG+GKwuClYDEUn8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PDANE8cMKAkmkuijqeoVfJSv8ILOsUviYqOKGXupRqOGrB2RjY5bpe7JGgFc+yBkv
-	 qUuUBTccPYOYXud2pgV30KpOsM1a6S16Lb+AGFJXp4joWPMU1ttp8mab3Iek0KyE9D
-	 /8mr3EVGVI8qNPTHl4m9QT9IRQ/ePpIGwprvz1hY=
+	b=ip6QJzlfXM8QTKHgisxhuqgmTZtXREkyKYxaofpxu7wgqNG3GjH/W1tt69946Ub0C
+	 lu5An4iUoLqMlU7aC3Ku9WTVDBjbngzrcePIvDMYu4gqQ1Ak0JKHRCKFFev0hgVVlu
+	 Ex4jjBuKErhkZdLZOzElD5+8fFiC7WIdZm8b2kMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Lalaev <andrey.lalaev@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 34/92] can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode
-Date: Wed, 30 Jul 2025 11:35:42 +0200
-Message-ID: <20250730093232.073342189@linuxfoundation.org>
+Subject: [PATCH 6.6 50/76] usb: typec: tcpm: allow switching to mode accessory to mux properly
+Date: Wed, 30 Jul 2025 11:35:43 +0200
+Message-ID: <20250730093228.787422116@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +62,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit c1f3f9797c1f44a762e6f5f72520b2e520537b52 ]
+commit 8a50da849151e7e12b43c1d8fe7ad302223aef6b upstream.
 
-Andrei Lalaev reported a NULL pointer deref when a CAN device is
-restarted from Bus Off and the driver does not implement the struct
-can_priv::do_set_mode callback.
+The funciton tcpm_acc_attach is not setting the proper state when
+calling tcpm_set_role. The function tcpm_set_role is currently only
+handling TYPEC_STATE_USB. For the tcpm_acc_attach to switch into other
+modal states tcpm_set_role needs to be extended by an extra state
+parameter. This patch is handling the proper state change when calling
+tcpm_acc_attach.
 
-There are 2 code path that call struct can_priv::do_set_mode:
-- directly by a manual restart from the user space, via
-  can_changelink()
-- delayed automatic restart after bus off (deactivated by default)
-
-To prevent the NULL pointer deference, refuse a manual restart or
-configure the automatic restart delay in can_changelink() and report
-the error via extack to user space.
-
-As an additional safety measure let can_restart() return an error if
-can_priv::do_set_mode is not set instead of dereferencing it
-unchecked.
-
-Reported-by: Andrei Lalaev <andrey.lalaev@gmail.com>
-Closes: https://lore.kernel.org/all/20250714175520.307467-1-andrey.lalaev@gmail.com
-Fixes: 39549eef3587 ("can: CAN Network device driver and Netlink interface")
-Link: https://patch.msgid.link/20250718-fix-nullptr-deref-do_set_mode-v1-1-0b520097bb96@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250404-ml-topic-tcpm-v1-3-b99f44badce8@pengutronix.de
+Stable-dep-of: bec15191d523 ("usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/dev/dev.c     | 12 +++++++++---
- drivers/net/can/dev/netlink.c | 12 ++++++++++++
- 2 files changed, 21 insertions(+), 3 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |   27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 5ec3170b896a4..3fa805ac2c65b 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -145,13 +145,16 @@ void can_change_state(struct net_device *dev, struct can_frame *cf,
- EXPORT_SYMBOL_GPL(can_change_state);
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1041,7 +1041,7 @@ static int tcpm_set_attached_state(struc
+ 				     port->data_role);
+ }
  
- /* CAN device restart for bus-off recovery */
--static void can_restart(struct net_device *dev)
-+static int can_restart(struct net_device *dev)
+-static int tcpm_set_roles(struct tcpm_port *port, bool attached,
++static int tcpm_set_roles(struct tcpm_port *port, bool attached, int state,
+ 			  enum typec_role role, enum typec_data_role data)
  {
- 	struct can_priv *priv = netdev_priv(dev);
- 	struct sk_buff *skb;
- 	struct can_frame *cf;
- 	int err;
- 
-+	if (!priv->do_set_mode)
-+		return -EOPNOTSUPP;
-+
- 	if (netif_carrier_ok(dev))
- 		netdev_err(dev, "Attempt to restart for bus-off recovery, but carrier is OK?\n");
- 
-@@ -173,10 +176,14 @@ static void can_restart(struct net_device *dev)
- 	if (err) {
- 		netdev_err(dev, "Restart failed, error %pe\n", ERR_PTR(err));
- 		netif_carrier_off(dev);
-+
-+		return err;
- 	} else {
- 		netdev_dbg(dev, "Restarted\n");
- 		priv->can_stats.restarts++;
- 	}
-+
-+	return 0;
- }
- 
- static void can_restart_work(struct work_struct *work)
-@@ -201,9 +208,8 @@ int can_restart_now(struct net_device *dev)
- 		return -EBUSY;
- 
- 	cancel_delayed_work_sync(&priv->restart_work);
--	can_restart(dev);
- 
--	return 0;
-+	return can_restart(dev);
- }
- 
- /* CAN bus-off
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index f1db9b7ffd4d0..d5aa8da87961e 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -285,6 +285,12 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	enum typec_orientation orientation;
+@@ -1078,7 +1078,7 @@ static int tcpm_set_roles(struct tcpm_po
+ 		}
  	}
  
- 	if (data[IFLA_CAN_RESTART_MS]) {
-+		if (!priv->do_set_mode) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Device doesn't support restart from Bus Off");
-+			return -EOPNOTSUPP;
-+		}
-+
- 		/* Do not allow changing restart delay while running */
- 		if (dev->flags & IFF_UP)
- 			return -EBUSY;
-@@ -292,6 +298,12 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 	}
+-	ret = tcpm_mux_set(port, TYPEC_STATE_USB, usb_role, orientation);
++	ret = tcpm_mux_set(port, state, usb_role, orientation);
+ 	if (ret < 0)
+ 		return ret;
  
- 	if (data[IFLA_CAN_RESTART]) {
-+		if (!priv->do_set_mode) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Device doesn't support restart from Bus Off");
-+			return -EOPNOTSUPP;
-+		}
+@@ -3622,7 +3622,8 @@ static int tcpm_src_attach(struct tcpm_p
+ 
+ 	tcpm_enable_auto_vbus_discharge(port, true);
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
++			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -3780,7 +3781,8 @@ static int tcpm_snk_attach(struct tcpm_p
+ 
+ 	tcpm_enable_auto_vbus_discharge(port, true);
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_SINK, tcpm_data_role_for_sink(port));
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
++			     TYPEC_SINK, tcpm_data_role_for_sink(port));
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -3804,6 +3806,7 @@ static int tcpm_acc_attach(struct tcpm_p
+ 	int ret;
+ 	enum typec_role role;
+ 	enum typec_data_role data;
++	int state = TYPEC_STATE_USB;
+ 
+ 	if (port->attached)
+ 		return 0;
+@@ -3812,7 +3815,13 @@ static int tcpm_acc_attach(struct tcpm_p
+ 	data = tcpm_port_is_sink(port) ? tcpm_data_role_for_sink(port)
+ 				       : tcpm_data_role_for_source(port);
+ 
+-	ret = tcpm_set_roles(port, true, role, data);
++	if (tcpm_port_is_audio(port))
++		state = TYPEC_MODE_AUDIO;
 +
- 		/* Do not allow a restart while not running */
- 		if (!(dev->flags & IFF_UP))
- 			return -EINVAL;
--- 
-2.39.5
-
++	if (tcpm_port_is_debug(port))
++		state = TYPEC_MODE_DEBUG;
++
++	ret = tcpm_set_roles(port, true, state, role, data);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -4514,7 +4523,7 @@ static void run_state_machine(struct tcp
+ 		 */
+ 		tcpm_set_vconn(port, false);
+ 		tcpm_set_vbus(port, false);
+-		tcpm_set_roles(port, port->self_powered, TYPEC_SOURCE,
++		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SOURCE,
+ 			       tcpm_data_role_for_source(port));
+ 		/*
+ 		 * If tcpc fails to notify vbus off, TCPM will wait for PD_T_SAFE_0V +
+@@ -4546,7 +4555,7 @@ static void run_state_machine(struct tcp
+ 		tcpm_set_vconn(port, false);
+ 		if (port->pd_capable)
+ 			tcpm_set_charge(port, false);
+-		tcpm_set_roles(port, port->self_powered, TYPEC_SINK,
++		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SINK,
+ 			       tcpm_data_role_for_sink(port));
+ 		/*
+ 		 * VBUS may or may not toggle, depending on the adapter.
+@@ -4652,10 +4661,10 @@ static void run_state_machine(struct tcp
+ 	case DR_SWAP_CHANGE_DR:
+ 		tcpm_unregister_altmodes(port);
+ 		if (port->data_role == TYPEC_HOST)
+-			tcpm_set_roles(port, true, port->pwr_role,
++			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
+ 				       TYPEC_DEVICE);
+ 		else
+-			tcpm_set_roles(port, true, port->pwr_role,
++			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
+ 				       TYPEC_HOST);
+ 		tcpm_ams_finish(port);
+ 		tcpm_set_state(port, ready_state(port), 0);
 
 
 
