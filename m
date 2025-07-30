@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-165370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7651AB15CF9
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB9BB15C4E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A3B54E7EC4
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A64957B1762
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4776291C23;
-	Wed, 30 Jul 2025 09:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F39C19D065;
+	Wed, 30 Jul 2025 09:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyoqcUjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPIBQ7fQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82213255F5C;
-	Wed, 30 Jul 2025 09:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A47922156D;
+	Wed, 30 Jul 2025 09:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868855; cv=none; b=JsYtY5bNEgZYHtIqVWvtNHm3/GhbRgjirebj/jOvvpoEFJ0qnwVWhmnL8/zDjNxFIsqIZYYorXJo5pU0WKAR+OKfPE9htAqF8ZvfEzEueDEAlkEVSzq/AWH6B+wtleJBu/+OLjFmnZhYE73BgOXPgElMOMRXnwzxsHgZ9j8Vv54=
+	t=1753868459; cv=none; b=kklZtas6ZVAb1D6DtvNMFP5P3X3mqlV3IzOXaeXWu4AVMNy6IJHWIAIx8a4MgPS4uNjQpnugBECJiAh4r5Lci3oogD0WsNvaaPWzIirefHgGUpRbwk2sSzkpkLmquF7oA71knOm4aLUInCBF3w9Ys9dlO/I5DsbmjhCIznLnHMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868855; c=relaxed/simple;
-	bh=ykegQ4r5Y7sw2UYVssGFsrLQ6Kv0tEKBZTIuUgpynwU=;
+	s=arc-20240116; t=1753868459; c=relaxed/simple;
+	bh=6ul6eifmHfcLvdOBccqLjdNPskN9bWHW+wC27HUgJrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DesZLe2AK72jVIEVoLuUxKQMywxlUApEx4dDLprnaVC0BtguaetoqD0W3G1YLFLSgDqRCAuzeLGpkRNMvP271t22y9+58qyRDE0Df3BQNpsZnDcp/KDyGsoqFsdAIPFpwmZ/GRJuPt1HTaSib1mPBVHInsTA9sWRwZ8+Op3iuEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyoqcUjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EBEC4CEF5;
-	Wed, 30 Jul 2025 09:47:34 +0000 (UTC)
+	 MIME-Version; b=d6EzRz50TdUhNV3KOqWlcauBK1080NF7itLDOOKMGZrfP0lUF7IYhPmYU7nd1ggmVGhaZlYCTcbpmgpZkNYGZ19CHKgEFxpgpEnG/zEtefzCdjHph2w7qTRA8hFAUwGxGL4aGsGjsPj0jgYNZ8aU30a87cE03VOAOTKSMSifUU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPIBQ7fQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3F3C4CEE7;
+	Wed, 30 Jul 2025 09:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868855;
-	bh=ykegQ4r5Y7sw2UYVssGFsrLQ6Kv0tEKBZTIuUgpynwU=;
+	s=korg; t=1753868459;
+	bh=6ul6eifmHfcLvdOBccqLjdNPskN9bWHW+wC27HUgJrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyoqcUjIV1J1d6ty2+S7wFTeTbHu+YUdUPniyJtxqAzUGYfoyqzML+ATCzrc9Xr7y
-	 4/X7lHgLkyJQXHRCtwn3tZt7vJUvc6QYA1KVC8mMLky9l7tlD+e8GKYAKhxxeVeWvs
-	 BQDTt4D778vIaW/xGG4NGViH7xKHd1AxAcnFs2k8=
+	b=OPIBQ7fQc5ThhTwV/rJqYGi7CGOUWWf7PVSOfoBQdnvEzBNBuYACA4WpzAejLkuD7
+	 9ntBAumuY9koNQYwiDCJY59goHqRob4l5HSzQteo4eaT/6ASIczsQrNDZnABAAvijJ
+	 W4rtezlFFpZVgFBIQZr8JsGar3GaK1umnsJK+A18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/117] ext4: fix incorrect punch max_end
-Date: Wed, 30 Jul 2025 11:36:02 +0200
-Message-ID: <20250730093237.409971402@linuxfoundation.org>
+	Matthieu Baerts <matttbe@kernel.org>,
+	syzbot+5cf807c20386d699b524@syzkaller.appspotmail.com,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 70/76] mptcp: make fallback action and fallback decision atomic
+Date: Wed, 30 Jul 2025 11:36:03 +0200
+Message-ID: <20250730093229.579209618@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +63,386 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 29ec9bed2395061350249ae356fb300dd82a78e7 ]
+commit f8a1d9b18c5efc76784f5a326e905f641f839894 upstream.
 
-For the extents based inodes, the maxbytes should be sb->s_maxbytes
-instead of sbi->s_bitmap_maxbytes. Additionally, for the calculation of
-max_end, the -sb->s_blocksize operation is necessary only for
-indirect-block based inodes. Correct the maxbytes and max_end value to
-correct the behavior of punch hole.
+Syzkaller reported the following splat:
 
-Fixes: 2da376228a24 ("ext4: limit length to bitmap_maxbytes - blocksize in punch_hole")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  WARNING: CPU: 1 PID: 7704 at net/mptcp/protocol.h:1223 __mptcp_do_fallback net/mptcp/protocol.h:1223 [inline]
+  WARNING: CPU: 1 PID: 7704 at net/mptcp/protocol.h:1223 mptcp_do_fallback net/mptcp/protocol.h:1244 [inline]
+  WARNING: CPU: 1 PID: 7704 at net/mptcp/protocol.h:1223 check_fully_established net/mptcp/options.c:982 [inline]
+  WARNING: CPU: 1 PID: 7704 at net/mptcp/protocol.h:1223 mptcp_incoming_options+0x21a8/0x2510 net/mptcp/options.c:1153
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 7704 Comm: syz.3.1419 Not tainted 6.16.0-rc3-gbd5ce2324dba #20 PREEMPT(voluntary)
+  Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  RIP: 0010:__mptcp_do_fallback net/mptcp/protocol.h:1223 [inline]
+  RIP: 0010:mptcp_do_fallback net/mptcp/protocol.h:1244 [inline]
+  RIP: 0010:check_fully_established net/mptcp/options.c:982 [inline]
+  RIP: 0010:mptcp_incoming_options+0x21a8/0x2510 net/mptcp/options.c:1153
+  Code: 24 18 e8 bb 2a 00 fd e9 1b df ff ff e8 b1 21 0f 00 e8 ec 5f c4 fc 44 0f b7 ac 24 b0 00 00 00 e9 54 f1 ff ff e8 d9 5f c4 fc 90 <0f> 0b 90 e9 b8 f4 ff ff e8 8b 2a 00 fd e9 8d e6 ff ff e8 81 2a 00
+  RSP: 0018:ffff8880a3f08448 EFLAGS: 00010246
+  RAX: 0000000000000000 RBX: ffff8880180a8000 RCX: ffffffff84afcf45
+  RDX: ffff888090223700 RSI: ffffffff84afdaa7 RDI: 0000000000000001
+  RBP: ffff888017955780 R08: 0000000000000001 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+  R13: ffff8880180a8910 R14: ffff8880a3e9d058 R15: 0000000000000000
+  FS:  00005555791b8500(0000) GS:ffff88811c495000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 000000110c2800b7 CR3: 0000000058e44000 CR4: 0000000000350ef0
+  Call Trace:
+   <IRQ>
+   tcp_reset+0x26f/0x2b0 net/ipv4/tcp_input.c:4432
+   tcp_validate_incoming+0x1057/0x1b60 net/ipv4/tcp_input.c:5975
+   tcp_rcv_established+0x5b5/0x21f0 net/ipv4/tcp_input.c:6166
+   tcp_v4_do_rcv+0x5dc/0xa70 net/ipv4/tcp_ipv4.c:1925
+   tcp_v4_rcv+0x3473/0x44a0 net/ipv4/tcp_ipv4.c:2363
+   ip_protocol_deliver_rcu+0xba/0x480 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x2f1/0x500 net/ipv4/ip_input.c:233
+   NF_HOOK include/linux/netfilter.h:317 [inline]
+   NF_HOOK include/linux/netfilter.h:311 [inline]
+   ip_local_deliver+0x1be/0x560 net/ipv4/ip_input.c:254
+   dst_input include/net/dst.h:469 [inline]
+   ip_rcv_finish net/ipv4/ip_input.c:447 [inline]
+   NF_HOOK include/linux/netfilter.h:317 [inline]
+   NF_HOOK include/linux/netfilter.h:311 [inline]
+   ip_rcv+0x514/0x810 net/ipv4/ip_input.c:567
+   __netif_receive_skb_one_core+0x197/0x1e0 net/core/dev.c:5975
+   __netif_receive_skb+0x1f/0x120 net/core/dev.c:6088
+   process_backlog+0x301/0x1360 net/core/dev.c:6440
+   __napi_poll.constprop.0+0xba/0x550 net/core/dev.c:7453
+   napi_poll net/core/dev.c:7517 [inline]
+   net_rx_action+0xb44/0x1010 net/core/dev.c:7644
+   handle_softirqs+0x1d0/0x770 kernel/softirq.c:579
+   do_softirq+0x3f/0x90 kernel/softirq.c:480
+   </IRQ>
+   <TASK>
+   __local_bh_enable_ip+0xed/0x110 kernel/softirq.c:407
+   local_bh_enable include/linux/bottom_half.h:33 [inline]
+   inet_csk_listen_stop+0x2c5/0x1070 net/ipv4/inet_connection_sock.c:1524
+   mptcp_check_listen_stop.part.0+0x1cc/0x220 net/mptcp/protocol.c:2985
+   mptcp_check_listen_stop net/mptcp/mib.h:118 [inline]
+   __mptcp_close+0x9b9/0xbd0 net/mptcp/protocol.c:3000
+   mptcp_close+0x2f/0x140 net/mptcp/protocol.c:3066
+   inet_release+0xed/0x200 net/ipv4/af_inet.c:435
+   inet6_release+0x4f/0x70 net/ipv6/af_inet6.c:487
+   __sock_release+0xb3/0x270 net/socket.c:649
+   sock_close+0x1c/0x30 net/socket.c:1439
+   __fput+0x402/0xb70 fs/file_table.c:465
+   task_work_run+0x150/0x240 kernel/task_work.c:227
+   resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+   exit_to_user_mode_loop+0xd4/0xe0 kernel/entry/common.c:114
+   exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
+   syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
+   syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
+   do_syscall_64+0x245/0x360 arch/x86/entry/syscall_64.c:100
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7fc92f8a36ad
+  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007ffcf52802d8 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+  RAX: 0000000000000000 RBX: 00007ffcf52803a8 RCX: 00007fc92f8a36ad
+  RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+  RBP: 00007fc92fae7ba0 R08: 0000000000000001 R09: 0000002800000000
+  R10: 00007fc92f700000 R11: 0000000000000246 R12: 00007fc92fae5fac
+  R13: 00007fc92fae5fa0 R14: 0000000000026d00 R15: 0000000000026c51
+   </TASK>
+  irq event stamp: 4068
+  hardirqs last  enabled at (4076): [<ffffffff81544816>] __up_console_sem+0x76/0x80 kernel/printk/printk.c:344
+  hardirqs last disabled at (4085): [<ffffffff815447fb>] __up_console_sem+0x5b/0x80 kernel/printk/printk.c:342
+  softirqs last  enabled at (3096): [<ffffffff840e1be0>] local_bh_enable include/linux/bottom_half.h:33 [inline]
+  softirqs last  enabled at (3096): [<ffffffff840e1be0>] inet_csk_listen_stop+0x2c0/0x1070 net/ipv4/inet_connection_sock.c:1524
+  softirqs last disabled at (3097): [<ffffffff813b6b9f>] do_softirq+0x3f/0x90 kernel/softirq.c:480
+
+Since we need to track the 'fallback is possible' condition and the
+fallback status separately, there are a few possible races open between
+the check and the actual fallback action.
+
+Add a spinlock to protect the fallback related information and use it
+close all the possible related races. While at it also remove the
+too-early clearing of allow_infinite_fallback in __mptcp_subflow_connect():
+the field will be correctly cleared by subflow_finish_connect() if/when
+the connection will complete successfully.
+
+If fallback is not possible, as per RFC, reset the current subflow.
+
+Since the fallback operation can now fail and return value should be
+checked, rename the helper accordingly.
+
+Fixes: 0530020a7c8f ("mptcp: track and update contiguous data status")
+Cc: stable@vger.kernel.org
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/570
+Reported-by: syzbot+5cf807c20386d699b524@syzkaller.appspotmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/555
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250714-net-mptcp-fallback-races-v1-1-391aff963322@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in protocol.h, because commit 6ebf6f90ab4a ("mptcp: add
+  mptcpi_subflows_total counter") is not in this version, and this
+  causes conflicts in the context. Commit 65b02260a0e0 ("mptcp: export
+  mptcp_subflow_early_fallback()") is also not in this version, and
+  moves code from protocol.c to protocol.h, but the modification can
+  still apply there. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/mptcp/options.c  |    3 ++-
+ net/mptcp/protocol.c |   42 ++++++++++++++++++++++++++++++++++++------
+ net/mptcp/protocol.h |   24 ++++++++++++++++++------
+ net/mptcp/subflow.c  |   11 +++++------
+ 4 files changed, 61 insertions(+), 19 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -3992,7 +3992,7 @@ int ext4_punch_hole(struct file *file, l
- 	struct inode *inode = file_inode(file);
- 	struct super_block *sb = inode->i_sb;
- 	ext4_lblk_t start_lblk, end_lblk;
--	loff_t max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
-+	loff_t max_end = sb->s_maxbytes;
- 	loff_t end = offset + length;
- 	handle_t *handle;
- 	unsigned int credits;
-@@ -4001,14 +4001,20 @@ int ext4_punch_hole(struct file *file, l
- 	trace_ext4_punch_hole(inode, offset, length, 0);
- 	WARN_ON_ONCE(!inode_is_locked(inode));
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -979,8 +979,9 @@ static bool check_fully_established(stru
+ 		if (subflow->mp_join)
+ 			goto reset;
+ 		subflow->mp_capable = 0;
++		if (!mptcp_try_fallback(ssk))
++			goto reset;
+ 		pr_fallback(msk);
+-		mptcp_do_fallback(ssk);
+ 		return false;
+ 	}
  
-+	/*
-+	 * For indirect-block based inodes, make sure that the hole within
-+	 * one block before last range.
-+	 */
-+	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -623,10 +623,9 @@ static bool mptcp_check_data_fin(struct
+ 
+ static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
+ {
+-	if (READ_ONCE(msk->allow_infinite_fallback)) {
++	if (mptcp_try_fallback(ssk)) {
+ 		MPTCP_INC_STATS(sock_net(ssk),
+ 				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
+-		mptcp_do_fallback(ssk);
+ 	} else {
+ 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
+ 		mptcp_subflow_reset(ssk);
+@@ -887,6 +886,14 @@ static bool __mptcp_finish_join(struct m
+ 	if (sk->sk_state != TCP_ESTABLISHED)
+ 		return false;
+ 
++	spin_lock_bh(&msk->fallback_lock);
++	if (__mptcp_check_fallback(msk)) {
++		spin_unlock_bh(&msk->fallback_lock);
++		return false;
++	}
++	mptcp_subflow_joined(msk, ssk);
++	spin_unlock_bh(&msk->fallback_lock);
 +
- 	/* No need to punch hole beyond i_size */
- 	if (offset >= inode->i_size)
- 		return 0;
- 
- 	/*
- 	 * If the hole extends beyond i_size, set the hole to end after
--	 * the page that contains i_size, and also make sure that the hole
--	 * within one block before last range.
-+	 * the page that contains i_size.
+ 	/* attach to msk socket only after we are sure we will deal with it
+ 	 * at close time
  	 */
- 	if (end > inode->i_size)
- 		end = round_up(inode->i_size, PAGE_SIZE);
+@@ -895,7 +902,6 @@ static bool __mptcp_finish_join(struct m
+ 
+ 	mptcp_subflow_ctx(ssk)->subflow_id = msk->subflow_id++;
+ 	mptcp_sockopt_sync_locked(msk, ssk);
+-	mptcp_subflow_joined(msk, ssk);
+ 	mptcp_stop_tout_timer(sk);
+ 	__mptcp_propagate_sndbuf(sk, ssk);
+ 	return true;
+@@ -1231,10 +1237,14 @@ static void mptcp_update_infinite_map(st
+ 	mpext->infinite_map = 1;
+ 	mpext->data_len = 0;
+ 
++	if (!mptcp_try_fallback(ssk)) {
++		mptcp_subflow_reset(ssk);
++		return;
++	}
++
+ 	MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_INFINITEMAPTX);
+ 	mptcp_subflow_ctx(ssk)->send_infinite_map = 0;
+ 	pr_fallback(msk);
+-	mptcp_do_fallback(ssk);
+ }
+ 
+ #define MPTCP_MAX_GSO_SIZE (GSO_LEGACY_MAX_SIZE - (MAX_TCP_HEADER + 1))
+@@ -2606,9 +2616,9 @@ static void mptcp_check_fastclose(struct
+ 
+ static void __mptcp_retrans(struct sock *sk)
+ {
++	struct mptcp_sendmsg_info info = { .data_lock_held = true, };
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	struct mptcp_subflow_context *subflow;
+-	struct mptcp_sendmsg_info info = {};
+ 	struct mptcp_data_frag *dfrag;
+ 	struct sock *ssk;
+ 	int ret, err;
+@@ -2653,6 +2663,18 @@ static void __mptcp_retrans(struct sock
+ 			info.sent = 0;
+ 			info.limit = READ_ONCE(msk->csum_enabled) ? dfrag->data_len :
+ 								    dfrag->already_sent;
++
++			/*
++			 * make the whole retrans decision, xmit, disallow
++			 * fallback atomic
++			 */
++			spin_lock_bh(&msk->fallback_lock);
++			if (__mptcp_check_fallback(msk)) {
++				spin_unlock_bh(&msk->fallback_lock);
++				release_sock(ssk);
++				return;
++			}
++
+ 			while (info.sent < info.limit) {
+ 				ret = mptcp_sendmsg_frag(sk, ssk, dfrag, &info);
+ 				if (ret <= 0)
+@@ -2668,6 +2690,7 @@ static void __mptcp_retrans(struct sock
+ 					 info.size_goal);
+ 				WRITE_ONCE(msk->allow_infinite_fallback, false);
+ 			}
++			spin_unlock_bh(&msk->fallback_lock);
+ 
+ 			release_sock(ssk);
+ 		}
+@@ -2801,6 +2824,7 @@ static void __mptcp_init_sock(struct soc
+ 	msk->subflow_id = 1;
+ 
+ 	mptcp_pm_data_init(msk);
++	spin_lock_init(&msk->fallback_lock);
+ 
+ 	/* re-use the csk retrans timer for MPTCP-level retrans */
+ 	timer_setup(&msk->sk.icsk_retransmit_timer, mptcp_retransmit_timer, 0);
+@@ -3599,7 +3623,13 @@ bool mptcp_finish_join(struct sock *ssk)
+ 
+ 	/* active subflow, already present inside the conn_list */
+ 	if (!list_empty(&subflow->node)) {
++		spin_lock_bh(&msk->fallback_lock);
++		if (__mptcp_check_fallback(msk)) {
++			spin_unlock_bh(&msk->fallback_lock);
++			return false;
++		}
+ 		mptcp_subflow_joined(msk, ssk);
++		spin_unlock_bh(&msk->fallback_lock);
+ 		mptcp_propagate_sndbuf(parent, ssk);
+ 		return true;
+ 	}
+@@ -3712,7 +3742,7 @@ static void mptcp_subflow_early_fallback
+ 					 struct mptcp_subflow_context *subflow)
+ {
+ 	subflow->request_mptcp = 0;
+-	__mptcp_do_fallback(msk);
++	WARN_ON_ONCE(!__mptcp_try_fallback(msk));
+ }
+ 
+ static int mptcp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -334,6 +334,10 @@ struct mptcp_sock {
+ 	u32		subflow_id;
+ 	u32		setsockopt_seq;
+ 	char		ca_name[TCP_CA_NAME_MAX];
++
++	spinlock_t	fallback_lock;	/* protects fallback and
++					 * allow_infinite_fallback
++					 */
+ };
+ 
+ #define mptcp_data_lock(sk) spin_lock_bh(&(sk)->sk_lock.slock)
+@@ -1097,25 +1101,32 @@ static inline bool mptcp_check_fallback(
+ 	return __mptcp_check_fallback(msk);
+ }
+ 
+-static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
++static inline bool __mptcp_try_fallback(struct mptcp_sock *msk)
+ {
+ 	if (test_bit(MPTCP_FALLBACK_DONE, &msk->flags)) {
+ 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
+-		return;
++		return true;
+ 	}
+-	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
+-		return;
++	spin_lock_bh(&msk->fallback_lock);
++	if (!msk->allow_infinite_fallback) {
++		spin_unlock_bh(&msk->fallback_lock);
++		return false;
++	}
++
+ 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
++	spin_unlock_bh(&msk->fallback_lock);
++	return true;
+ }
+ 
+-static inline void mptcp_do_fallback(struct sock *ssk)
++static inline bool mptcp_try_fallback(struct sock *ssk)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+ 	struct sock *sk = subflow->conn;
+ 	struct mptcp_sock *msk;
+ 
+ 	msk = mptcp_sk(sk);
+-	__mptcp_do_fallback(msk);
++	if (!__mptcp_try_fallback(msk))
++		return false;
+ 	if (READ_ONCE(msk->snd_data_fin_enable) && !(ssk->sk_shutdown & SEND_SHUTDOWN)) {
+ 		gfp_t saved_allocation = ssk->sk_allocation;
+ 
+@@ -1127,6 +1138,7 @@ static inline void mptcp_do_fallback(str
+ 		tcp_shutdown(ssk, SEND_SHUTDOWN);
+ 		ssk->sk_allocation = saved_allocation;
+ 	}
++	return true;
+ }
+ 
+ #define pr_fallback(a) pr_debug("%s:fallback to TCP (msk=%p)\n", __func__, a)
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -524,9 +524,11 @@ static void subflow_finish_connect(struc
+ 	mptcp_get_options(skb, &mp_opt);
+ 	if (subflow->request_mptcp) {
+ 		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_SYNACK)) {
++			if (!mptcp_try_fallback(sk))
++				goto do_reset;
++
+ 			MPTCP_INC_STATS(sock_net(sk),
+ 					MPTCP_MIB_MPCAPABLEACTIVEFALLBACK);
+-			mptcp_do_fallback(sk);
+ 			pr_fallback(msk);
+ 			goto fallback;
+ 		}
+@@ -1350,7 +1352,7 @@ fallback:
+ 			return true;
+ 		}
+ 
+-		if (!READ_ONCE(msk->allow_infinite_fallback)) {
++		if (!mptcp_try_fallback(ssk)) {
+ 			/* fatal protocol error, close the socket.
+ 			 * subflow_error_report() will introduce the appropriate barriers
+ 			 */
+@@ -1366,8 +1368,6 @@ reset:
+ 			WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_NODATA);
+ 			return false;
+ 		}
+-
+-		mptcp_do_fallback(ssk);
+ 	}
+ 
+ 	skb = skb_peek(&ssk->sk_receive_queue);
+@@ -1612,7 +1612,6 @@ int __mptcp_subflow_connect(struct sock
+ 	/* discard the subflow socket */
+ 	mptcp_sock_graft(ssk, sk->sk_socket);
+ 	iput(SOCK_INODE(sf));
+-	WRITE_ONCE(msk->allow_infinite_fallback, false);
+ 	mptcp_stop_tout_timer(sk);
+ 	return 0;
+ 
+@@ -1790,7 +1789,7 @@ static void subflow_state_change(struct
+ 
+ 	msk = mptcp_sk(parent);
+ 	if (subflow_simultaneous_connect(sk)) {
+-		mptcp_do_fallback(sk);
++		WARN_ON_ONCE(!mptcp_try_fallback(sk));
+ 		pr_fallback(msk);
+ 		subflow->conn_finished = 1;
+ 		mptcp_propagate_state(parent, sk, subflow, NULL);
 
 
 
