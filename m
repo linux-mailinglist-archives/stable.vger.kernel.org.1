@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-165260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A0FB15C3E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 439F2B15CBC
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF6D817A224
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 554537B2986
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1795C26CE18;
-	Wed, 30 Jul 2025 09:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E33928DF0B;
+	Wed, 30 Jul 2025 09:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUr1DUnY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOi06P9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA20C20E6;
-	Wed, 30 Jul 2025 09:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF73292B42;
+	Wed, 30 Jul 2025 09:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868428; cv=none; b=Qi1ThhT98i0ME2+PqdtvzeMOLTzlHr//paV+x9jmNdoYSzC3Ydn9k0aupq4kTGYHc+CgKFz3CyvA1qoKGAbIFqjDKj3F6PDoSwDB7GouBx6dW2j3jdnzJxJEeT4lyWWKQlfoxFlu2Dr1hJrk53BkQjDJlQy8T8TzBQp6Nc+GrTU=
+	t=1753868695; cv=none; b=HebsP/SNYNDbshpA2/MdMJ2ccnnT0wLz7O6VIqKrrC+DfIYXRRoY6GvtPoqXphyTfTgAkgCpXLGpzqwQDEr2H0w/7rlmxBFanTpzOPx6nSayPlDi2G1sir/FcebkzFNg7VObKe3awIZ5iC2BHQJs80PVMA7TXs7hoaQMs30AYpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868428; c=relaxed/simple;
-	bh=sJUb7jPLHZJINm1FicvBIKL+lU9Yr4EF+/DaijClnLI=;
+	s=arc-20240116; t=1753868695; c=relaxed/simple;
+	bh=+Fd83sTqtwxUznjJNW2NrXOBOr8Twy84VZVl9Z05ggE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMVPFmxUlFmdpfeGfEcq+epX4Gu5je8UVcyMx53R512o2SoBcdMeT0p76LJSimoQQnkO5SK9/1NCo8kBXgJ74MLiQb4yN/quUXy47WwTlgXvj7Sf4cdyCdJyPAkbhqx8iCL8t0tQO1/A2SuyWKeD6KRbP6dcT7VIIH//b4ijTA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUr1DUnY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F510C4CEF5;
-	Wed, 30 Jul 2025 09:40:27 +0000 (UTC)
+	 MIME-Version; b=DBnwu0eBnIOUg3CiX5eAaLaDYWyxsIB/6LZB25Tb/mUEz6k51V8gYPdYWK//1Jop4O0OGhXGtBs9HSLnoXdZfp6DTUKiTYr/bYVf28eG8UMNnw8ezip2k+MdR7d1wLuYwBJHajeY9GJM3fsghownSP2OjQkLr/S57KdUk9hkR0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOi06P9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AFEC4CEF5;
+	Wed, 30 Jul 2025 09:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868428;
-	bh=sJUb7jPLHZJINm1FicvBIKL+lU9Yr4EF+/DaijClnLI=;
+	s=korg; t=1753868694;
+	bh=+Fd83sTqtwxUznjJNW2NrXOBOr8Twy84VZVl9Z05ggE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUr1DUnYAV0JIyUoJrEENlmQuNZH4UfElA/8G9BL7x9G3n59CNTpfyDH+s4ge1DSB
-	 RWURxmgPzZhStpFOzyeZ8zuazfs4vY26IZHWHA1GQWWOb5O6J3uv5QErw6KKLkpkJN
-	 e02o0mRYy+L18Fv/Se9Uk8K0Di2Z6JZaKxi8WPwo=
+	b=MOi06P9Xzlywxs3BBamOA2OxH3FTRq7lOPWpl4Cxa1fLscAzCaKU59GsPJN9YNbDZ
+	 4HljREXvVomWLsUa5VevbCt4jYmDrAA5f+bRWTYr7C+VajeLR8IW3cG0Jpk7MGYlA7
+	 wjGF9Uv0GOkqlsUvnbLcy7Cx7LBw5XmOVKsagXoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 29/76] i2c: qup: jump out of the loop in case of timeout
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Cristian Prundeanu <cpru@amazon.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 053/117] arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
 Date: Wed, 30 Jul 2025 11:35:22 +0200
-Message-ID: <20250730093227.971041407@linuxfoundation.org>
+Message-ID: <20250730093235.625924582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiwen <forbidden405@outlook.com>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-commit a7982a14b3012527a9583d12525cd0dc9f8d8934 upstream.
+commit d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb upstream.
 
-Original logic only sets the return value but doesn't jump out of the
-loop if the bus is kept active by a client. This is not expected. A
-malicious or buggy i2c client can hang the kernel in this case and
-should be avoided. This is observed during a long time test with a
-PCA953x GPIO extender.
+`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
+to different stacks along with the Shadow Call Stack if it is enabled.
+Those two stack changes cannot be done atomically and both functions
+can be interrupted by SErrors or Debug Exceptions which, though unlikely,
+is very much broken : if interrupted, we can end up with mismatched stacks
+and Shadow Call Stack leading to clobbered stacks.
 
-Fix it by changing the logic to not only sets the return value, but also
-jumps out of the loop and return to the caller with -ETIMEDOUT.
+In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
+but x18 stills points to the old task's SCS. When the interrupt handler
+tries to save the task's SCS pointer, it will save the old task
+SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
+clobbering it.
 
-Fixes: fbfab1ab0658 ("i2c: qup: reorganization of driver code to remove polling for qup v1")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
-Cc: <stable@vger.kernel.org> # v4.17+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com
+In `call_on_irq_stack()`, it can happen when switching from the task stack
+to the IRQ stack and when switching back. In both cases, we can be
+interrupted when the SCS pointer points to the IRQ SCS, but SP points to
+the task stack. The nested interrupt handler pushes its return addresses
+on the IRQ SCS. It then detects that SP points to the task stack,
+calls `call_on_irq_stack()` and clobbers the task SCS pointer with
+the IRQ SCS pointer, which it will also use !
+
+This leads to tasks returning to addresses on the wrong SCS,
+or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
+or FPAC if enabled.
+
+This is possible on a default config, but unlikely.
+However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
+instead the GIC is responsible for filtering what interrupts the CPU
+should receive based on priority.
+Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
+even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
+frequently depending on the system configuration and workload, leading
+to unpredictable kernel panics.
+
+Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
+Do the same in `call_on_irq_stack()`, but restore and mask around
+the branch.
+Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
+of behaviour between all configurations.
+
+Introduce and use an assembly macro for saving and masking DAIF,
+as the existing one saves but only masks IF.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Reported-by: Cristian Prundeanu <cpru@amazon.com>
+Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
+Tested-by: Cristian Prundeanu <cpru@amazon.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-qup.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/assembler.h |    5 +++++
+ arch/arm64/kernel/entry.S          |    6 ++++++
+ 2 files changed, 11 insertions(+)
 
---- a/drivers/i2c/busses/i2c-qup.c
-+++ b/drivers/i2c/busses/i2c-qup.c
-@@ -452,8 +452,10 @@ static int qup_i2c_bus_active(struct qup
- 		if (!(status & I2C_STATUS_BUS_ACTIVE))
- 			break;
+--- a/arch/arm64/include/asm/assembler.h
++++ b/arch/arm64/include/asm/assembler.h
+@@ -41,6 +41,11 @@
+ /*
+  * Save/restore interrupts.
+  */
++	.macro save_and_disable_daif, flags
++	mrs	\flags, daif
++	msr	daifset, #0xf
++	.endm
++
+ 	.macro	save_and_disable_irq, flags
+ 	mrs	\flags, daif
+ 	msr	daifset, #3
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -823,6 +823,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
+  *
+  */
+ SYM_FUNC_START(cpu_switch_to)
++	save_and_disable_daif x11
+ 	mov	x10, #THREAD_CPU_CONTEXT
+ 	add	x8, x0, x10
+ 	mov	x9, sp
+@@ -846,6 +847,7 @@ SYM_FUNC_START(cpu_switch_to)
+ 	ptrauth_keys_install_kernel x1, x8, x9, x10
+ 	scs_save x0
+ 	scs_load_current
++	restore_irq x11
+ 	ret
+ SYM_FUNC_END(cpu_switch_to)
+ NOKPROBE(cpu_switch_to)
+@@ -872,6 +874,7 @@ NOKPROBE(ret_from_fork)
+  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
+  */
+ SYM_FUNC_START(call_on_irq_stack)
++	save_and_disable_daif x9
+ #ifdef CONFIG_SHADOW_CALL_STACK
+ 	get_current_task x16
+ 	scs_save x16
+@@ -886,8 +889,10 @@ SYM_FUNC_START(call_on_irq_stack)
  
--		if (time_after(jiffies, timeout))
-+		if (time_after(jiffies, timeout)) {
- 			ret = -ETIMEDOUT;
-+			break;
-+		}
+ 	/* Move to the new stack and call the function there */
+ 	add	sp, x16, #IRQ_STACK_SIZE
++	restore_irq x9
+ 	blr	x1
  
- 		usleep_range(len, len * 2);
- 	}
++	save_and_disable_daif x9
+ 	/*
+ 	 * Restore the SP from the FP, and restore the FP and LR from the frame
+ 	 * record.
+@@ -895,6 +900,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
+ 	scs_load_current
++	restore_irq x9
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 
 
 
