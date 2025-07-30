@@ -1,81 +1,201 @@
-Return-Path: <stable+bounces-165524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE166B16240
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:06:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB12B16250
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5D603A1D1E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 14:06:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD9E6567E7B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 14:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60CB2D660A;
-	Wed, 30 Jul 2025 14:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FA62D94B3;
+	Wed, 30 Jul 2025 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="BoEelpSQ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dvZlVMC5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2081.outbound.protection.outlook.com [40.107.94.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F652D613
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 14:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753884404; cv=none; b=qEVPAQZdTHKAmcovy3kg2ru2Io8dJN/vp9cAZSsoL3TTStldt/6oPinmJ9M5TcLeOQVGhbQRPo0o+MxObrNdIYj3kayr8kP+2pTipvWqByOwPoKmwpu9Vy9AHq3wQuTLHjeDfmLK3zutNmsEo9CRlCPDH7d89ibeZePuCJIB4Wo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753884404; c=relaxed/simple;
-	bh=PsvjY7RyGo3d3Fonizv10YatysZ4/EGBEC9YTGSUciE=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=JKCavh49LrGSOrm9x/fHLXJ2XsyX4Mcf/CytgyohJ7JEPbojMOwYBU1ZS3/vQ4wFjmDIAboXyOU6bPMKKNK2EC7K7yJlcCOEgdAG3gkGdP/0eNDvi+VLO9pQbfNLB4tXMydeE3yOPQ9k7pw+9FuwfoIHMg2LctJU8ft5YBMT+yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=BoEelpSQ; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1753884392; x=1754143592;
-	bh=8hCLhXl8EWYHmx6oKVBi/Zr/40J5Zxpdt7sV999ExRE=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=BoEelpSQ8W360zAMWC7Yu8kx8xwYS+Ch76wuWutktLIZ7Zlqglqltu9l/2tu9aYqg
-	 gEbNHwhD1cOf1XatrgrI9ni1eea+r6QPEjnWmQB7LNVp8Ub5WAOLjq7XkMKvLFB/n7
-	 FBQuJd4J3ZQSxlBuNfs8m99p/OJIUlqn71wk7DOpaOEXm9ZsXp/FFq9O2VwdWa/Llb
-	 DLT0NY0kuCaiICuxW0hS/uJAYANHS6/4uvHFVJnf+nLmIvGDRHrVSmGilWfgK48GnS
-	 lu+qS5EwI3terjS5O10bQUzypFet7pw2F26y9N2XKidCXxYfsphaFBaDIsAUtovibD
-	 ifp8sYTOcWGgQ==
-Date: Wed, 30 Jul 2025 14:06:27 +0000
-To: Yi Yang <yiyang13@huawei.com>, GONG Ruiqi <gongruiqi1@huawei.com>, Helge Deller <deller@gmx.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>
-From: Jari Ruusu <jariruusu@protonmail.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Text mode VGA-console scrolling is broken in upstream & stable trees
-Message-ID: <C4_ogGo3eSdgo3wcbkdIXQDoGk2CShDfiQEjnwmgLUvd1cVp5kKguDC4M7KlWO4Tg9Ny3joveq7vH9K_zpBGvIA8-UkU2ogSE1T9Y6782js=@protonmail.com>
-Feedback-ID: 22639318:user:proton
-X-Pm-Message-ID: e9ec8cab32d2db1109f7c0fec0fa1078417ff721
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E042900AD;
+	Wed, 30 Jul 2025 14:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753884587; cv=fail; b=RzpIQY8GoFtePsXYYn8xRbaZdXENX52lVp0tusYNdm+mqDTqcv5tcJGzaElyV4rzfAxuHzGPn/x0gi03rX9/awQEwqensKFwrXVbcPO+QM5U+4Pe5Y4Mq6rYmejTAISwYRGmZSt4BIvjca74olsx3/jNIOti3d0T02pRVNQEgSg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753884587; c=relaxed/simple;
+	bh=xM8OvMw+pbqrclaxvNInt9jxqnC4qE7xuep+RCqiW/Q=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=fXcZ9EB2F1DX+dds4q0aaYxEYvvTmlJXYZVT5WszcKUZcbggrS3Msn+T7cjPd8TDdACKt9wt1cW3/rtSczT2cLOgg3bNge/KI7NxuvpLYK38sXvm3mets4D3nDSMV+GnuKGuEbemFjUYBGHBTh38Y5D3gaqA4oyP4iSJ51y9jLo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dvZlVMC5; arc=fail smtp.client-ip=40.107.94.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TJHopkSQWY4a7Zbf4Jb2Te58pCO0kzWqn7iUeboWFMTTbwRWB4taNXB+y3/fRrdbRrYX+MQyM0UfWeVnNbuI/nlGjDoIlcuobxdUnQLbzkSx8rZeOPeOMrQN5JWvZEs0OLxdG5MX9HM0zHej4fRAJc90zYxe9oBXWbHSLi3aYL8GC/rBF/Nn379UCgYuk7k16Sr/OS3Pv7JtDe3mUxrORDA6/PoQFjqyJMgy9xqkBtNwljx8u2mqJjUclB21zLNsNpJy0/54sKji7ljROl5M3td3UcLJH5m8AF591mF7szFYPnyf26A0o2DivSQ0x+1SuSQ8PLz4nTDIw1Ub078QqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yf6M5tbHS+gppiq8q2KzFysDmcsSMuT2hGxnnqOM4+Y=;
+ b=PD9J8r0i8qpi7tXUQFReTMxIWljjK/mpbID9AHi3sG2pqeck/HbwX1RRyS092e1y/qIjLnKLPqFyRG1Yr7A1jkNDRevRAkYhljsWC8INDwI32f6zbxI5vqY3TnzSBslOahD8Z7++kWFGIqj9jmQtrxqTRkdAshCjVHcky0XknqtaQflLoIWkAnAQoo1IHAWgA6GA4K0JxQvjBjPoyOnIHmS5FvWtzuQELss1vHpFeNP5WIaY7T7xrc57DxvuZrqQIoY/0b+DfgaRInESC8JUEqV0nrFTzZHSN6HCBAaGHebgP0qhZIQOi8pPXMH1EwYVq87MBCqr7czBL4+ieWlFcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yf6M5tbHS+gppiq8q2KzFysDmcsSMuT2hGxnnqOM4+Y=;
+ b=dvZlVMC5AqlkKtDO0Y1flDUTMLVN17cor+JmRKSmHwXu911CbfRffnWQOi7Eh8mfW17eY/TbafDYZXM17MjVNJtuyBhDdD77dnHKP6IJBD+jrObLYWCBNo2np6L/7wbfErdNltBYrNa+UaNk3u9i92OibRYYyCmva/1i86QoO4atmFkAFRwqY9ZKLmVUy6H7yFJyxlTiL80vnn+ohj4UusK0/VSluPzOOtafr+dgxPluNPI2bihxrgvDyzEkdiKnyVB+W7gT4kEIvQ6HdxF5q0U7wvj2+2MmAtK/1epMZp3kWB/JgpHNHcma7TQrtStBKyIkZy6dhVOf7dXULDmZhQ==
+Received: from CH0PR08CA0019.namprd08.prod.outlook.com (2603:10b6:610:33::24)
+ by PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Wed, 30 Jul
+ 2025 14:09:42 +0000
+Received: from CH3PEPF0000000E.namprd04.prod.outlook.com
+ (2603:10b6:610:33:cafe::b) by CH0PR08CA0019.outlook.office365.com
+ (2603:10b6:610:33::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.12 via Frontend Transport; Wed,
+ 30 Jul 2025 14:09:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH3PEPF0000000E.mail.protection.outlook.com (10.167.244.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8989.10 via Frontend Transport; Wed, 30 Jul 2025 14:09:42 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 30 Jul
+ 2025 07:09:23 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 30 Jul 2025 07:09:23 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Wed, 30 Jul 2025 07:09:23 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.12 000/117] 6.12.41-rc1 review
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <8998052c-d33f-41e9-8e63-24c29f8902cd@drhqmail201.nvidia.com>
+Date: Wed, 30 Jul 2025 07:09:23 -0700
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000E:EE_|PH7PR12MB5757:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2351fb77-923b-4131-abe8-08ddcf72bae1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V3FzQjg4cXlzYldSNWJqdDJxY29JOG1UanFIeUZlOWxIb0haOGwyaU9OWGUv?=
+ =?utf-8?B?MDZIMjZRZzR5enJENjA3OGhoeXZvNFZhVnU1Ryt6UCtwTElnK3Fha3FxcFh2?=
+ =?utf-8?B?SFZ5d3V0WVVSWkljUjhIZUVLYmZaQ0pzN2N5bHMzMEtQQzJkTTY5anJ2VTc0?=
+ =?utf-8?B?L3VBNnpaV3dRRmtRNkNUejJFZ20rL25JYXo5RkRlV0V2aTZVVFNvK0xZUG9i?=
+ =?utf-8?B?K2tLbkZ0SGI2d3hVd3FJQzllZ0JpSkhaUytYNWFuQ29PMmQvcnRvWWdkd2Fs?=
+ =?utf-8?B?NnVmajdPTEd1dnZKZDZ6S2Z3M2ZTMHBSUmhOdHEzUzg5WHUxZXRiMXZ5SVhy?=
+ =?utf-8?B?Ky95Z2JwWTFNSEpZUTBFRG1FelRmM2U3ZTFFMTZ6MVpLV0FLbktlZ0MyZnRU?=
+ =?utf-8?B?SEtwT0NYT2xKVmM5U3cxZUR6eXY3czZLQlRXSjROcDluNU9PZGxuekpPSmFT?=
+ =?utf-8?B?NXRXNnZEVGE3Z2FMSVYrWmw1c01PRC9BMFBmQkwxTzZmTUhad1pCTVRLNWUw?=
+ =?utf-8?B?aGJhVzMyZDNXMWlzVFNIdnZPM0hrdTdGQUdBVnFENmpydVdmdDE2RGRwNVlN?=
+ =?utf-8?B?azl3YXFzcnhla1o4MnFla25ZWU80MnB4REtjL1drMjJWZ1hOR0xxbmgyb0VQ?=
+ =?utf-8?B?Lyt3dkJQV0p2R1p3RlVXY2RRYVdRNGFtTThtSi84Y0FXK25GdEhxNTV0aVVG?=
+ =?utf-8?B?Qk00YTkvZDk0d01Nb2wxbjdnVVRKTXhBVHhUdkxjL2pNckpJeFU2TkluOWNS?=
+ =?utf-8?B?UGZ5d2ZwZ09xRzVsZW9hOTk3L0FFUUhrRExBbUgzOUxlb25nUWxka2RLOHp2?=
+ =?utf-8?B?S0FSbmdXNlYycW1wWmVhWFNnQlc3Z2ZLRXhoSk02STgvT3FsNGpEdk05ZEFF?=
+ =?utf-8?B?ZCtWdU1sL1RxdDczK3N1ZGw2QStmNXZPbkJRRzJxNUpleFh0TW5lNDJjbkoz?=
+ =?utf-8?B?Vjdza1IxbUQxWVpqNnRpK0hUa3RudXRJdFdhYWpxcHFzTUtwczJWOVFkcito?=
+ =?utf-8?B?dWFMOHByVHhkWEVUSUFKTEtOYVROcUVadjQvMUY2UUtyZEFhQ1A3S3gvUHE5?=
+ =?utf-8?B?Zys4R2lybVRuaExhS0VKMUFRRGMvU0RZYVNTdkdlcnJNSlV6dThCTW9CLzBq?=
+ =?utf-8?B?MjBDQjl5WGdMS3hyMStaZXVmSFV5U05jREdkbnBIeGRnbGJGK1VZQ2RKVEw5?=
+ =?utf-8?B?cnl6WDBFQ3lTRzFScDA2M1A2RWYzMUN1clowYkNrYkJSaU5UQUh2bjVLY1Mv?=
+ =?utf-8?B?d1VWOTY3Vkt3bG1helcydVNkbW5jb01nRHR3dFVNV2RKWHlkVDFJWVJqZUtV?=
+ =?utf-8?B?cnhNdks3VFdRUmI4eEl6VHA5Wk85dTRuWE1wak5ZcG1HeXM5NzZ2VVdXR3ZD?=
+ =?utf-8?B?ZVNJUUdMZGpSekVYWVMrZmQ1eFY2TjFqVXBEV3dBYjdYVXNQWnZ5MVVIaHNT?=
+ =?utf-8?B?RXlnaHFEcUdpVlY0YXBUVzNRdVQwNWtmN3dyakVOdWczeEthL01YaDhqSVlG?=
+ =?utf-8?B?SUllR1EreXNHWmh2bENleUl3Uk9Hc1RscTQyUGsvQkMxMXVDcHZoMUIveVZJ?=
+ =?utf-8?B?TFM2SklaK1lpemt2SncwbWpQeW5zemZQWWJtNDRFSUlLYjlLMS9KMUdPR0d0?=
+ =?utf-8?B?MmtHYlN4ZVNOaEI3Yi8vb3Fia2ZIMUoreXhTL3BYRGRoQ3hTZE5pYTArNktO?=
+ =?utf-8?B?aHUwRk9lcjByREZxbjM5cXUrMEczMm5YdkF5ME5rNnNDdGduM1BhZnZBSkpa?=
+ =?utf-8?B?RjIxd1ZVZ2l2MUVmUTdiRHkzREJjczdFSFJMWmQ4QUI0VzlVZVZ6SFI1ZXVH?=
+ =?utf-8?B?ZDB1QzZJb2t5VVB0aGxabGJvMnVTclZWemJ4QStpTEFySnpFT0JmeGxZeTNW?=
+ =?utf-8?B?UUFqSmJ5YkUyMW9NdTZ6UVY1M1dXTXRmODc4aG54KzBCb0RySG5KeU5PYTVQ?=
+ =?utf-8?B?RXF1R1ZTZjhVNlNmOTdkUnBJQkRrb0tXSVpoblRsckN5cmt6UWJlUGFDaHBN?=
+ =?utf-8?B?ZEdEK1VXamhwNGxxNW12NHNTQ0pnRFZ5dVlBVWdXMmNmYzRqME9yMW9qR2xD?=
+ =?utf-8?B?b0NKQ0FQN0RrbWV0Ykx5Zi9XK2ovNHdZbVltQT09?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 14:09:42.3673
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2351fb77-923b-4131-abe8-08ddcf72bae1
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0000000E.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5757
 
-The patch that broke text mode VGA-console scrolling is this one:
-"vgacon: Add check for vc_origin address range in vgacon_scroll()"
-commit 864f9963ec6b4b76d104d595ba28110b87158003 upstream.
+On Wed, 30 Jul 2025 11:34:29 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.41 release.
+> There are 117 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 01 Aug 2025 09:32:07 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.41-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-How to preproduce:
-(1) boot a kernel that is configured to use text mode VGA-console
-(2) type commands:  ls -l /usr/bin | less -S
-(3) scroll up/down with cursor-down/up keys
+All tests passing for Tegra ...
 
-Above mentioned patch seems to have landed in upstream and all
-kernel.org stable trees with zero testing. Even minimal testing
-would have shown that it breaks text mode VGA-console scrolling.
+Test results for stable-v6.12:
+    10 builds:	10 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    120 tests:	120 pass, 0 fail
 
-Greg, Sasha, Linus,
-Please consider reverting that buggy patch from all affected trees.
+Linux version:	6.12.41-rc1-g487cdbecb4dc
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
---
-Jari Ruusu=C2=A0 4096R/8132F189 12D6 4C3A DCDA 0AA4 27BD=C2=A0 ACDF F073 3C=
-80 8132 F189
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
+Jon
 
