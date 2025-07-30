@@ -1,194 +1,143 @@
-Return-Path: <stable+bounces-165580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D89CB1656E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 19:24:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5D9B16586
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 19:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8B69170645
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 17:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD85D17B38B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 17:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DD42DECD4;
-	Wed, 30 Jul 2025 17:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDD4EEBA;
+	Wed, 30 Jul 2025 17:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0TmPxl4P"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="blp4qorU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DB71DED42
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 17:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C311B0414;
+	Wed, 30 Jul 2025 17:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753896243; cv=none; b=Y8iO5w0Al9GxKVIcgJEu03vdG1RqLRnwGxu8AtHctu7U/TsVCxMjOTsT5JCYjJSQmTO3agWOPwrmRXS81sdGg2b68hvqlIZ9MtCCfHhdoEl9RfeAraoCldZumrgN4L+7PsKcYyLwyPAAogBflKexKiWwpvYrg9C9CqmQzCVNe28=
+	t=1753896682; cv=none; b=DIMNA89C9z1val6Ese77IDL+Cem/jpmYI+lvq6rgebgQNKQQtQyJAbdJWsjLQ20q9OvgKszvVUi059qLvhjk1okS9k0b9ZrFPQEiz5opi61z7JXeitKgrooyVZO0mrgQYyyOOg33bWc7vxyR9NJmyopXrgV3pzbtXs+dqfgWaPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753896243; c=relaxed/simple;
-	bh=ud9NI4UP1XUUxwZIxKxyCKzyc+dghyomDaE1P/Rbr10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OMvyiZFPKVVKT164WbxNibFFRI4xXkZVGSSH1Ly5xUkU+xCYbUB9IOzsxEQnT3flPDBnAuDLuhPr1VuyP7uzz4NCxJ+iCO/EZ7Ltokdg/+I0ryJETxaTU5Y6SyBufr9kEbJdlHJKn7A+l950b3v1vSo1OwMzJcaNF6xITZKUDe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0TmPxl4P; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24070ef9e2eso11255ad.0
-        for <stable@vger.kernel.org>; Wed, 30 Jul 2025 10:24:01 -0700 (PDT)
+	s=arc-20240116; t=1753896682; c=relaxed/simple;
+	bh=wh+OxDjm2ky6TsO+BjsktO3Xiz+K1KybX+LIivatlJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vB0aaxAOKiBNrHW8HreIdOcl2XE+0MVcrgWg4+hNOgFq73WSoS15XvLDQ43UNwEyIAwb925f7pq+MDAwPNVZy6m/4exsYAchrR6Karq92MaQckXtwtuNfxIg2Bd7Ld2ODIfKvn0Z5MMxH7dAql5Ck7rs6rSjxu5xMCDSmvchXfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=blp4qorU; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4561a4a8bf2so614575e9.1;
+        Wed, 30 Jul 2025 10:31:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753896241; x=1754501041; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ABuL6sm2VhvfVKiWwwjxq9f1HfKCyucRnavU2SWMlvA=;
-        b=0TmPxl4P+U0wD1kju8e8/xkz88mGbwwNLkz8r8r9KMU4lv9aUc8Jz6ocL7HFFxwrzl
-         QHdZ8Rkw0ilWJOLeWuWTA116xaE2OsKcvajG+TIywBpK4l0P33oLtk775hFPu4XtGRpD
-         rUCAuGXJW+pog9OoawMDv2ZlKK5dGj9VLEWDhQgTgTkQtG7NYtPLbavavjnyk0gzXE2W
-         u5m7l2gJC2bLcK79hXaHwo4fmXQrcJxAc7zyHkXiGVc2trnHwpelb5QP3VS0wgPz7HfG
-         s2KVdPSehOKfnO3f5urqGcReGQEIRIBAWYe3oaPTfs9ENQ9t8qw9v0qNfYoYJR1OTPPK
-         ha7w==
+        d=googlemail.com; s=20230601; t=1753896679; x=1754501479; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DgAezQfpfvoELnWJXyHtGAEOwJomNa/aau3M286QXoc=;
+        b=blp4qorUuFv7zc99GPoSRwRMQdBBW4H8B5xUUZ5KDJywvA+HQDSXDBl5bEtj2uGLOd
+         g6SnvNgI1mdEwGz1WKmFxHhhPp4j3tsCvTEui+Eca+qvL+WSRD4Dok1xR9DtNUdEAkZU
+         mqQmeLKNJcyOUiVUPSG+kfEPn1JLF29ugI8haGFOZLwP5pRrxdn6H/nUDxtz+AnNaAk/
+         WjcyL001YNy6zsqQ4Nm0gGRJP73FfvWAPmRyNH0oKIBeBh3hzn8f0nAbzZDwZ5WRty4p
+         hP4gZdztSqdpVh9nfjffWanqtPxvqNs1iL7mWZcio336zeSiPlQPfrqJbevHuNTxvBK+
+         XTAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753896241; x=1754501041;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ABuL6sm2VhvfVKiWwwjxq9f1HfKCyucRnavU2SWMlvA=;
-        b=tOVkqwIMX6pS9GrEtk3dfNUVh+B0S0pH2/TVYzK79c4ngi3OFzMJDkB1QxwtpGvA3z
-         Apf/SjlfiDXrg7hxQ1bmuWez2kWKiBhAuCD80RViyw73AhMZoLe7UBoKnta/Oxg0cf4U
-         d7FqXIx83z7b4nwLwK+LKXxo8Xgx8K9aEGWf9KdRIAG8CV5fQ5W0TUpTKecUqYBRiouo
-         Zrww6aANnFoGStgYZ7k8csOY+C7vOfPgyok9UlmwgH2CTrEvw+UMdR+XrsZTQ6XFBQmg
-         DOmoA0I/YJpAIZGt7wliQUaJxhEEa5ebq80Fc/UaKDhVE2EXmPqGsEL0uvt2c024wsNY
-         iGRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXPIiAjJegkYtW19/St5sg3VWbc62sLqiLOXOlTaM+q1OTJlig8Nhl0qXj+TcuebvBmrMbBda8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHzplFhffo+PVQLCVY2RJbeDrty6WP36IBmZQqprTipGiMuE3S
-	f7GqJGQWCiqPZKMDpK9LkPqQii6E7InPXpuGI/W+vvf8B7C5pum/gWkRIXtNQHgmmIC4HBGx0Bz
-	MZHNnvGH/ap4=
-X-Gm-Gg: ASbGncsnyHVFuJ6VWrMsHuVR5LwKp/i/7Yl6aUg45EzkvbjJSo6UxmZBvmUX0lenWjt
-	CXo6/UTezv7bDmJHAV0W9iwXlumhL0Zv97MspmiRC1nMOY65jSRA1bA0mIW66RQhjBO23HFTgG6
-	LOS8rcoN1NGyc+bzwU8Vqe5eHAQirXx+n5Ww9cDAA644beDV95XdA+3YfJBhgeYOrKRNO/+oKyM
-	8DV7Z1OWlo9r+sRKy9NEF9EUpaUG8sCYiSOIySzn53bSz7pGb2R5riECtjNL5p4+MeCUWZodqUV
-	6sLlLAETEBD39nCh01Dnj4UGFNWz0q2hh6pm/NHfPjxBhOcE+25PlDmrEWXXuMTa6600gc9C+fI
-	iASPMthC+NPvc48fTamYzx2P+xZvqkevnIAxZnC7ujHBy2I2UqKt55grXRhsmm4E=
-X-Google-Smtp-Source: AGHT+IE0NCe9pOqFnrtuUQFzjr4ZUIiJ/4BybCGyi87RK6w/jlF/FLUocygkQGDkZEYhNJPoZYcHhg==
-X-Received: by 2002:a17:902:e747:b0:235:f18f:291f with SMTP id d9443c01a7336-240ce62a3f4mr38425ad.23.1753896240640;
-        Wed, 30 Jul 2025 10:24:00 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2e51:8:9606:2f93:add0:9255])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24025f4a855sm75640695ad.127.2025.07.30.10.23.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 10:23:59 -0700 (PDT)
-Date: Wed, 30 Jul 2025 10:23:54 -0700
-From: Isaac Manjarres <isaacmanjarres@google.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: gregkh@linuxfoundation.org, aliceryhl@google.com, surenb@google.com,
-	stable@vger.kernel.org, kernel-team@android.com
-Subject: Re: [PATCH 5.10.y 0/4] Backport series: "permit write-sealed memfd
- read-only shared mappings"
-Message-ID: <aIpVKpqXmfuITxf-@google.com>
-References: <20250730015406.32569-1-isaacmanjarres@google.com>
- <c99af418-946d-40c4-9594-36943d8c72bf@lucifer.local>
+        d=1e100.net; s=20230601; t=1753896679; x=1754501479;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DgAezQfpfvoELnWJXyHtGAEOwJomNa/aau3M286QXoc=;
+        b=TkUd2Vi4egJjBgqX/G+JQ3g+b8SpkOgJqR1uuOefmAlo0sQf/YwbhdmEHdo0YKhoQU
+         UgSjedQ7oQPvHsEi17Qb4cJ+QtkFUiVpiHMD8ZHQxzjfxIiazFurc5hFYtB8can19z90
+         +TpFma6lI7SQKR/z/GD64cvpfKRb/dZOQXbRUH6eiqRtO87lv4IEHCARwsUvKNUcCAFk
+         VNAEWwFelXOJLpwwE/ZbfkclEGtBZXja8HotsLJzJHJTDqk3yBJC0ckyOIoPgSfaCplJ
+         msNX1mITwRWOiNrPFPP9X6LRytECMN0vdRvdhzirmJInN7SYpwG0k+dyUe3HmiO8Ra45
+         pNXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPWyHMiZ1CHgn2pQgBiYksOpKl40bwF/qxpkBoeBVh9SR6xexgahr/6iao5VpBlLype01YJulU@vger.kernel.org, AJvYcCXY3wkz34C/RoT0Qw46TfqcwDBFH6sEEigbha7thPKkMp5Zt8JZ06izkSlNPoGeEKGcO6dYwP6Fx39tnOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2mURARXhaFfx6RuS9zo5SMFO6Sxhqib2JK2G2sfs8EkVMLzmG
+	lT0qzkiGEXGtH6MftRU3CSXwFxziDGU6b2CciY2G53fBNVcI2CkGLlfslK7ZjL4=
+X-Gm-Gg: ASbGncuPwGqy6LQOx7/mXldWww69MwKN87+5cJHzKJYHiv5hEJAJqBM9APfS83FT7Nr
+	573BisUiNaWnKsoITS9Zy3TkeBFDJ3w5K7DRLjthO0Fe/Zru+Secr5nrD7wAuPevDPDb+yqfOzx
+	eBlwVTUPg+Gn3eIMJL0ARrEcFyXShfwfyp5cb99AWFizvwYYncR1nkt2fBulCn9g+OPa6tbJizB
+	Q/3Vv0ehiC1Ww60QdRj9HeeXO3SQu+j/5IMizN7lJ/l1BtTE/z8X6R5y/qlr9VDodtxUIDTKfzO
+	A9pYO5azNwUdjcCJXuW3i0v2DD66Ag1LpGIghcL/qS1XsvRnNyI00DcRGxM18e70BvI6pNgwnk9
+	CdWdmsz1buVA9PJ6Yo9Y0rrOGebaAOT+NBqysxMtF+FEw9Hl6azq4WnXVqeL09lqP8eK2fEuusq
+	A=
+X-Google-Smtp-Source: AGHT+IEtSt2YP/r84p7bemt90c5M7i6/iVLdQs6GJqDQf54Hhh+r1spT0+0cyprZiObRj5UZUJ7U+g==
+X-Received: by 2002:a5d:5f51:0:b0:3b7:8da6:1baf with SMTP id ffacd0b85a97d-3b794fd5940mr3365633f8f.16.1753896679003;
+        Wed, 30 Jul 2025 10:31:19 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4284.dip0.t-ipconnect.de. [91.43.66.132])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b778f04009sm16894324f8f.38.2025.07.30.10.31.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 10:31:18 -0700 (PDT)
+Message-ID: <5cc15441-1759-41f0-a987-6f2c0473340a@googlemail.com>
+Date: Wed, 30 Jul 2025 19:31:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c99af418-946d-40c4-9594-36943d8c72bf@lucifer.local>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 00/76] 6.6.101-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250730093226.854413920@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 30, 2025 at 03:21:48PM +0100, Lorenzo Stoakes wrote:
-> Hi Isaac,
-> 
-> Thanks very much for all your hard work on this!
-> 
-> I'll respond to this one, but this is a general comment for all the
-> backports.
-> 
-> I just wonder if this is what backporting is for - really this is a new
-> feature, yes the documentation is incorrect, which is why I made the
-> change, but it's sort of debatable if that's a bug or a new feature.
+Am 30.07.2025 um 11:34 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.101 release.
+> There are 76 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Hi Lorenzo,
+Built wich Clang 20.1.8 this time, boots and works fine on my 2-socket Ivy Bridge Xeon 
+E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Thanks for your feedback on this. That's a good question. The rationale
-that I had when backporting these fixes was: The original intent of
-F_SEAL_WRITE was to just prevent any writes to region after it had
-been write-sealed, and that the existing behavior on older kernels
-may have been a result of oversight or just an accident, making it a
-bug. So fixing it would be fixing a bug that has been around for a
-while. I hadn't really thought of it as a new feature.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-I also learned recently that, at least for Android, there were attempts
-in the past to map write-sealed memfds as read-only and shared, which
-failed. This was surprising to developers, and they ended up working
-around it. I'm not sure why it wasn't reported then, but this being
-a surprise to multiple developers makes it feel like more of a bug
-to me on older kernels.
 
->
-> Having said that, I'm not against you doing this, just wondering about
-> that.
-> 
-> Also - what kind of testing have you do on these series?
-I did the following tests:
+[    0.000000] Linux version 6.6.101-rc1+ (root@linus.localdomain) (clang version 20.1.8 
+(https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261), LLD 
+20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)) #1 
+SMP PREEMPT_DYNAMIC Wed Jul 30 18:47:00 CEST 2025
+[    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-6.6.101-rc1+ 
+root=UUID=3842ebdd-e37f-4e4e-afd4-d7eb79b41984 ro quiet intel_iommu=on iommu=pt 
+vfio-pci.ids=10de:1201,10de:0e0c
+[    0.000000] KERNEL supported cpus:
+[    0.000000]   Intel GenuineIntel
+[    0.000000]   AMD AuthenticAMD
+[    0.000000]   Hygon HygonGenuine
+[    0.000000]   Centaur CentaurHauls
+[    0.000000]   zhaoxin   Shanghai
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x0000000000096fff] usable
 
-1. I have a unit test that tries to map write-sealed memfds as
-read-only and shared. I verified that this works for each kernel version
-that this series is being applied to.
 
-2. Android devices do use memfds as well, so I did try these patches out
-on a device running each kernel version, and tried boot testing, using
-several apps/games. I was looking for functional failures in these
-scenarios but didn't encounter any.
 
-Do you have any other recommendations of what I should test?
+Beste Grüße,
+Peter Schneider
 
-Thanks,
-Isaac
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-> Cheers, Lorenzo
-> 
-> On Tue, Jul 29, 2025 at 06:53:58PM -0700, Isaac J. Manjarres wrote:
-> > Hello,
-> >
-> > Until kernel version 6.7, a write-sealed memfd could not be mapped as
-> > shared and read-only. This was clearly a bug, and was not inline with
-> > the description of F_SEAL_WRITE in the man page for fcntl()[1].
-> >
-> > Lorenzo's series [2] fixed that issue and was merged in kernel version
-> > 6.7, but was not backported to older kernels. So, this issue is still
-> > present on kernels 5.4, 5.10, 5.15, 6.1, and 6.6.
-> >
-> > This series consists of backports of two of Lorenzo's series [2] and
-> > [3].
-> >
-> > Note: for [2], I dropped the last patch in that series, since it
-> > wouldn't make sense to apply it due to [4] being part of this tree. In
-> > lieu of that, I backported [3] to ultimately allow write-sealed memfds
-> > to be mapped as read-only.
-> >
-> > [1] https://man7.org/linux/man-pages/man2/fcntl.2.html
-> > [2] https://lore.kernel.org/all/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com/T/#m28fbfb0d5727e5693e54a7fb2e0c9ac30e95eca5
-> > [3] https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
-> > [4] https://lore.kernel.org/all/6e0becb36d2f5472053ac5d544c0edfe9b899e25.1730224667.git.lorenzo.stoakes@oracle.com/T/#u
-> >
-> > Lorenzo Stoakes (4):
-> >   mm: drop the assumption that VM_SHARED always implies writable
-> >   mm: update memfd seal write check to include F_SEAL_WRITE
-> >   mm: reinstate ability to map write-sealed memfd mappings read-only
-> >   selftests/memfd: add test for mapping write-sealed memfd read-only
-> >
-> >  fs/hugetlbfs/inode.c                       |  2 +-
-> >  include/linux/fs.h                         |  4 +-
-> >  include/linux/memfd.h                      | 14 ++++
-> >  include/linux/mm.h                         | 80 +++++++++++++++-------
-> >  kernel/fork.c                              |  2 +-
-> >  mm/filemap.c                               |  2 +-
-> >  mm/madvise.c                               |  2 +-
-> >  mm/memfd.c                                 |  2 +-
-> >  mm/mmap.c                                  | 10 ++-
-> >  mm/shmem.c                                 |  2 +-
-> >  tools/testing/selftests/memfd/memfd_test.c | 43 ++++++++++++
-> >  11 files changed, 129 insertions(+), 34 deletions(-)
-> >
-> > --
-> > 2.50.1.552.g942d659e1b-goog
-> >
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
