@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-165262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BAFB15C55
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE27B15D29
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 580CF3AD838
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C71B3ADCB8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C24926D4F9;
-	Wed, 30 Jul 2025 09:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E490125A34F;
+	Wed, 30 Jul 2025 09:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q50y6LdH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfQYU/rL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBE336124;
-	Wed, 30 Jul 2025 09:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A381B635;
+	Wed, 30 Jul 2025 09:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868440; cv=none; b=VcK3K+SXHv7cf7sd0e2LH4f1b5RsSk+CiiC3QLsD6SW//QNno9fYnKQur6iaclFSh5EgyjR/WFUTKxMhoJw5AFokewL58Bx5RA+po8IDIo5bUmEKjzIU1I7VRMi0XPClloxqZcCLDz9r5AYSmdO0N9TpjQ8eb48HOSZyYTyXDeQ=
+	t=1753869012; cv=none; b=JuSeSoQr8u/jahtMp9lEAki/snz9runzBbfIbnUElPdDy1MhM876HK+wEiJvg3aKRpKJmDH7iRfzBzuqjEzihw5yJ5FM58ZWgenyNcDqFiMdv2ejV1Hx5T4Po/UZQphXdY97T7eGZPIxBOryoqVNAY1zKQ+aRe9u9GxRYVrHm2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868440; c=relaxed/simple;
-	bh=nuZbxIZ/uGYNaoj+EMW8gDKSAZryP61W82N4Ajxb+tI=;
+	s=arc-20240116; t=1753869012; c=relaxed/simple;
+	bh=DYnIQLKW85njS5b3uo6KorL8dy/Rh6hx7UW0jVC2cLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScDYqLvg4/WWxRqMmE1ANR6WTpUsN+YXgw7mdfbFGIBY0TUysvI5yqZvOp2FFk2nZLmDRi7gwqhs61LUWvrAJIO61LyQMGG/xZ++8GOIrmhAleZNkTpDujEj0PiSs8x+FiXyN8IAYBcqAftUbBVusyYOLrOgG87vI4lJ1vdFlfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q50y6LdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8050DC4CEF9;
-	Wed, 30 Jul 2025 09:40:36 +0000 (UTC)
+	 MIME-Version; b=u2Lnq4wr8YWsKO6/l4gQtRtiv4omMNifmfsVMcA87zgVKrIWIZvwuB1B/u3I3fB1vUJqBX7446cxtGkaZX2Y2YMPRdNNnAlfoSDuisoitUoePuJMWmVsPUtxe6PPoHq5gcRuA9K4dkmrjaVqix9rsckR7lnoz0HBiaExsJ1+V5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfQYU/rL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD750C4CEF6;
+	Wed, 30 Jul 2025 09:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868438;
-	bh=nuZbxIZ/uGYNaoj+EMW8gDKSAZryP61W82N4Ajxb+tI=;
+	s=korg; t=1753869012;
+	bh=DYnIQLKW85njS5b3uo6KorL8dy/Rh6hx7UW0jVC2cLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q50y6LdHpETga4x7s3CHAxrftNxt06R2/GI94Xw2h3qRTZ42Ojz3hTA4cnpLVS3J9
-	 M1tbIKns4qHOq56He59E8j1gFQ8Y9BBmMEw+oAYdPh4tASfiUzNygSDJXtM6qEYFcj
-	 gkGasdrzgD6Og8l0p0MPxES4iGiGgWvD0qx7G/64=
+	b=dfQYU/rL/BVlJIfKb6Q9E7XLuUtqAZD2AwROjOhy0wG2vUGDxqFZisDHvqGNZkx8W
+	 jeRVkOEbEUZwlbhw7IIxmbv62aBuFXucMG56phNygwSTldxVI18IFJ5g+m7izTj6Jd
+	 +i+V5SmJGZoK15ORe/W8UcbcfTBtNvXrCNOEXffA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 31/76] i2c: virtio: Avoid hang by using interruptible completion wait
+	Yasumasa Suenaga <yasuenag@gmail.com>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 16/92] tools/hv: fcopy: Fix incorrect file path conversion
 Date: Wed, 30 Jul 2025 11:35:24 +0200
-Message-ID: <20250730093228.049161251@linuxfoundation.org>
+Message-ID: <20250730093231.246296591@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Yasumasa Suenaga <yasuenag@gmail.com>
 
-commit a663b3c47ab10f66130818cf94eb59c971541c3f upstream.
+[ Upstream commit 0d86a8d65c1e69610bfe1a7a774f71ff111ed8c1 ]
 
-The current implementation uses wait_for_completion(), which can cause
-the caller to hang indefinitely if the transfer never completes.
+The hv_fcopy_uio_daemon fails to correctly handle file copy requests
+from Windows hosts (e.g. via Copy-VMFile) due to wchar_t size
+differences between Windows and Linux. On Linux, wchar_t is 32 bit,
+whereas Windows uses 16 bit wide characters.
 
-Switch to wait_for_completion_interruptible() so that the operation can
-be interrupted by signals.
+Fix this by ensuring that file transfers from host to Linux guest
+succeed with correctly decoded file names and paths.
 
-Fixes: 84e1d0bf1d71 ("i2c: virtio: disable timeout handling")
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: <stable@vger.kernel.org> # v5.16+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/b8944e9cab8eb959d888ae80add6f2a686159ba2.1751541962.git.viresh.kumar@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Treats file name and path as __u16 arrays, not wchar_t*.
+- Allocates fixed-size buffers (W_MAX_PATH) for converted strings
+  instead of using malloc.
+- Adds a check for target path length to prevent snprintf() buffer
+  overflow.
+
+Fixes: 82b0945ce2c2 ("tools: hv: Add new fcopy application based on uio driver")
+Signed-off-by: Yasumasa Suenaga <yasuenag@gmail.com>
+Reviewed-by: Naman Jain <namjain@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250628022217.1514-2-yasuenag@gmail.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250628022217.1514-2-yasuenag@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-virtio.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ tools/hv/hv_fcopy_uio_daemon.c | 37 +++++++++++++---------------------
+ 1 file changed, 14 insertions(+), 23 deletions(-)
 
---- a/drivers/i2c/busses/i2c-virtio.c
-+++ b/drivers/i2c/busses/i2c-virtio.c
-@@ -116,15 +116,16 @@ static int virtio_i2c_complete_reqs(stru
- 	for (i = 0; i < num; i++) {
- 		struct virtio_i2c_req *req = &reqs[i];
+diff --git a/tools/hv/hv_fcopy_uio_daemon.c b/tools/hv/hv_fcopy_uio_daemon.c
+index 7d9bcb066d3fb..92e8307b2a467 100644
+--- a/tools/hv/hv_fcopy_uio_daemon.c
++++ b/tools/hv/hv_fcopy_uio_daemon.c
+@@ -118,8 +118,11 @@ static int hv_fcopy_create_file(char *file_name, char *path_name, __u32 flags)
  
--		wait_for_completion(&req->completion);
+ 	filesize = 0;
+ 	p = path_name;
+-	snprintf(target_fname, sizeof(target_fname), "%s/%s",
+-		 path_name, file_name);
++	if (snprintf(target_fname, sizeof(target_fname), "%s/%s",
++		     path_name, file_name) >= sizeof(target_fname)) {
++		syslog(LOG_ERR, "target file name is too long: %s/%s", path_name, file_name);
++		goto done;
++	}
+ 
+ 	/*
+ 	 * Check to see if the path is already in place; if not,
+@@ -326,7 +329,7 @@ static void wcstoutf8(char *dest, const __u16 *src, size_t dest_size)
+ {
+ 	size_t len = 0;
+ 
+-	while (len < dest_size) {
++	while (len < dest_size && *src) {
+ 		if (src[len] < 0x80)
+ 			dest[len++] = (char)(*src++);
+ 		else
+@@ -338,27 +341,15 @@ static void wcstoutf8(char *dest, const __u16 *src, size_t dest_size)
+ 
+ static int hv_fcopy_start(struct hv_start_fcopy *smsg_in)
+ {
+-	setlocale(LC_ALL, "en_US.utf8");
+-	size_t file_size, path_size;
+-	char *file_name, *path_name;
+-	char *in_file_name = (char *)smsg_in->file_name;
+-	char *in_path_name = (char *)smsg_in->path_name;
 -
--		if (!failed && req->in_hdr.status != VIRTIO_I2C_MSG_OK)
--			failed = true;
-+		if (!failed) {
-+			if (wait_for_completion_interruptible(&req->completion))
-+				failed = true;
-+			else if (req->in_hdr.status != VIRTIO_I2C_MSG_OK)
-+				failed = true;
-+			else
-+				j++;
-+		}
- 
- 		i2c_put_dma_safe_msg_buf(reqs[i].buf, &msgs[i], !failed);
+-	file_size = wcstombs(NULL, (const wchar_t *restrict)in_file_name, 0) + 1;
+-	path_size = wcstombs(NULL, (const wchar_t *restrict)in_path_name, 0) + 1;
 -
--		if (!failed)
--			j++;
- 	}
+-	file_name = (char *)malloc(file_size * sizeof(char));
+-	path_name = (char *)malloc(path_size * sizeof(char));
+-
+-	if (!file_name || !path_name) {
+-		free(file_name);
+-		free(path_name);
+-		syslog(LOG_ERR, "Can't allocate memory for file name and/or path name");
+-		return HV_E_FAIL;
+-	}
++	/*
++	 * file_name and path_name should have same length with appropriate
++	 * member of hv_start_fcopy.
++	 */
++	char file_name[W_MAX_PATH], path_name[W_MAX_PATH];
  
- 	return j;
+-	wcstoutf8(file_name, (__u16 *)in_file_name, file_size);
+-	wcstoutf8(path_name, (__u16 *)in_path_name, path_size);
++	setlocale(LC_ALL, "en_US.utf8");
++	wcstoutf8(file_name, smsg_in->file_name, W_MAX_PATH - 1);
++	wcstoutf8(path_name, smsg_in->path_name, W_MAX_PATH - 1);
+ 
+ 	return hv_fcopy_create_file(file_name, path_name, smsg_in->copy_flags);
+ }
+-- 
+2.39.5
+
 
 
 
