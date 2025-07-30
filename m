@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-165326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B3CB15CB4
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88235B15C51
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8C127B2053
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:44:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F6CD5A0A59
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B7229008F;
-	Wed, 30 Jul 2025 09:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B00423D2A2;
+	Wed, 30 Jul 2025 09:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysUbTJ3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g48Z9+y7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7068B255F5C;
-	Wed, 30 Jul 2025 09:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED12C36124;
+	Wed, 30 Jul 2025 09:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868685; cv=none; b=JI6rTYYSZYMa159S3O5eupoXqfPOzR79Czi/eMBXAugwdCZAZow8bw/Zspbba/jLKXRa7jlb4E9yHgzZrzLCU8OQtbvlXLlszSmljDktv1r/dZuDBnj/klzE7hOzthrB+PW8MYfg79PesL6YsbJlomcBDGW1VEKmAKipIabWOnk=
+	t=1753868404; cv=none; b=futIK1zNtk8p+7VYIQX0EST5kV3PoV62cI4afL91xLjKsVOjq14d+AXiH1BXOEgCUtyss82BjHnhI8U+1q1BB1yJNJ4AMb0Q7OxDDyTNjQNmbzmqpFZQvXvvGJ8o1PQbh9QOXeo0VtsxNhw1lEBc5XAbfezZkkEAAV6gSSo9Xf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868685; c=relaxed/simple;
-	bh=J8bFkl6Z8NE9U5/yiklXSdNcj7EiIfqARMsQUaXRGGk=;
+	s=arc-20240116; t=1753868404; c=relaxed/simple;
+	bh=xBvIb0I0Pklhm3WLSKDJrOMGSltesO42yF5XDRQvflQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNEt+zD/H90F9tTtdAADwaIXr3xMa3mPepnwEhVe9KUYa/16wf6OSkvQnVEQFbq0U7KzAx70N2Ko9K83c4p1wJU/KtIabmtdOxXAw5T0Hy338ju5PfLfNftRLLplpv+5WiAKJ0zf+KFku+gAMu6QxU/u7Tq9quwb5iq0Ms5eMPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysUbTJ3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41AAC4CEF5;
-	Wed, 30 Jul 2025 09:44:44 +0000 (UTC)
+	 MIME-Version; b=DrBv04g6GKH5pqk5vmIZjfxVr/4d3CeMUe+cnq1cIpl0AB5g8cJ85VUOGRag7DhLMGIwL5dfOn1KjBLJyVaCtqc74KMotoAgKbOGhpfzQ5wiN/8MGVFTaWcHRY0/XDx86L29S8gPOKe0AIVuf75/p/S26kiYZByDH/6WSW3zrhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g48Z9+y7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F4DC4CEE7;
+	Wed, 30 Jul 2025 09:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868685;
-	bh=J8bFkl6Z8NE9U5/yiklXSdNcj7EiIfqARMsQUaXRGGk=;
+	s=korg; t=1753868403;
+	bh=xBvIb0I0Pklhm3WLSKDJrOMGSltesO42yF5XDRQvflQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysUbTJ3Ci3CYtBT2dt5A6oa6Gyk3G+v4xQTI67H3ynnv7fQXtNZbIvqwCPqjDPC78
-	 49M4aojr+93muczKyuPrXJmRX160GWaTCXUh2ytaZy5Qc1tuaGmNUX0lHzQIpj2QTq
-	 g72RIxlngAjxPUf9EgwF7muCZWS/f/FVII56stQM=
+	b=g48Z9+y7qUOD6q5vSMWjDpsjic9saFodkEzqNLJcf606ecdBrTdNjGUsnJ/IEx6up
+	 /+Ekrs0KsoGNENWtH6EH4/QdPBzm6mkgBRrxoZkA9oi4R41dwyTnFw2M707nJy4jsm
+	 2OENcKYNX6BFzXqkKMEHfVdr1UhCm3nvgm/R5eRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 050/117] sprintf.h requires stdarg.h
-Date: Wed, 30 Jul 2025 11:35:19 +0200
-Message-ID: <20250730093235.505258809@linuxfoundation.org>
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 27/76] net: hns3: default enable tx bounce buffer when smmu enabled
+Date: Wed, 30 Jul 2025 11:35:20 +0200
+Message-ID: <20250730093227.894837130@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,46 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
+From: Jijie Shao <shaojijie@huawei.com>
 
-commit 0dec7201788b9152f06321d0dab46eed93834cda upstream.
+[ Upstream commit e6ab19443b36a45ebfb392775cb17d6a78dd07ea ]
 
-In file included from drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c:4:
-include/linux/sprintf.h:11:54: error: unknown type name 'va_list'
-   11 | __printf(2, 0) int vsprintf(char *buf, const char *, va_list);
-      |                                                      ^~~~~~~
-include/linux/sprintf.h:1:1: note: 'va_list' is defined in header '<stdarg.h>'; this is probably fixable by adding '#include <stdarg.h>'
+The SMMU engine on HIP09 chip has a hardware issue.
+SMMU pagetable prefetch features may prefetch and use a invalid PTE
+even the PTE is valid at that time. This will cause the device trigger
+fake pagefaults. The solution is to avoid prefetching by adding a
+SYNC command when smmu mapping a iova. But the performance of nic has a
+sharp drop. Then we do this workaround, always enable tx bounce buffer,
+avoid mapping/unmapping on TX path.
 
-Link: https://lkml.kernel.org/r/20250721173754.42865913@canb.auug.org.au
-Fixes: 39ced19b9e60 ("lib/vsprintf: split out sprintf() and friends")
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue only affects HNS3, so we always enable
+tx bounce buffer when smmu enabled to improve performance.
+
+Fixes: 295ba232a8c3 ("net: hns3: add device version to replace pci revision")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 49ade8630f36 ("net: hns3: default enable tx bounce buffer when smmu enabled")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sprintf.h |    1 +
- 1 file changed, 1 insertion(+)
+ .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 31 +++++++++++++++++++
+ .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 ++
+ 2 files changed, 33 insertions(+)
 
---- a/include/linux/sprintf.h
-+++ b/include/linux/sprintf.h
-@@ -4,6 +4,7 @@
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 0ed01f4d68061..dbf44a17987eb 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -11,6 +11,7 @@
+ #include <linux/irq.h>
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
++#include <linux/iommu.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/skbuff.h>
+@@ -1039,6 +1040,8 @@ static bool hns3_can_use_tx_sgl(struct hns3_enet_ring *ring,
+ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
+ {
+ 	u32 alloc_size = ring->tqp->handle->kinfo.tx_spare_buf_size;
++	struct net_device *netdev = ring_to_netdev(ring);
++	struct hns3_nic_priv *priv = netdev_priv(netdev);
+ 	struct hns3_tx_spare *tx_spare;
+ 	struct page *page;
+ 	dma_addr_t dma;
+@@ -1080,6 +1083,7 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
+ 	tx_spare->buf = page_address(page);
+ 	tx_spare->len = PAGE_SIZE << order;
+ 	ring->tx_spare = tx_spare;
++	ring->tx_copybreak = priv->tx_copybreak;
+ 	return;
  
- #include <linux/compiler_attributes.h>
- #include <linux/types.h>
-+#include <linux/stdarg.h>
+ dma_mapping_error:
+@@ -4879,6 +4883,30 @@ static void hns3_nic_dealloc_vector_data(struct hns3_nic_priv *priv)
+ 	devm_kfree(&pdev->dev, priv->tqp_vector);
+ }
  
- int num_to_str(char *buf, int size, unsigned long long num, unsigned int width);
++static void hns3_update_tx_spare_buf_config(struct hns3_nic_priv *priv)
++{
++#define HNS3_MIN_SPARE_BUF_SIZE (2 * 1024 * 1024)
++#define HNS3_MAX_PACKET_SIZE (64 * 1024)
++
++	struct iommu_domain *domain = iommu_get_domain_for_dev(priv->dev);
++	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(priv->ae_handle);
++	struct hnae3_handle *handle = priv->ae_handle;
++
++	if (ae_dev->dev_version < HNAE3_DEVICE_VERSION_V3)
++		return;
++
++	if (!(domain && iommu_is_dma_domain(domain)))
++		return;
++
++	priv->min_tx_copybreak = HNS3_MAX_PACKET_SIZE;
++	priv->min_tx_spare_buf_size = HNS3_MIN_SPARE_BUF_SIZE;
++
++	if (priv->tx_copybreak < priv->min_tx_copybreak)
++		priv->tx_copybreak = priv->min_tx_copybreak;
++	if (handle->kinfo.tx_spare_buf_size < priv->min_tx_spare_buf_size)
++		handle->kinfo.tx_spare_buf_size = priv->min_tx_spare_buf_size;
++}
++
+ static void hns3_ring_get_cfg(struct hnae3_queue *q, struct hns3_nic_priv *priv,
+ 			      unsigned int ring_type)
+ {
+@@ -5113,6 +5141,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
+ 	int i, j;
+ 	int ret;
  
++	hns3_update_tx_spare_buf_config(priv);
+ 	for (i = 0; i < ring_num; i++) {
+ 		ret = hns3_alloc_ring_memory(&priv->ring[i]);
+ 		if (ret) {
+@@ -5317,6 +5346,8 @@ static int hns3_client_init(struct hnae3_handle *handle)
+ 	priv->ae_handle = handle;
+ 	priv->tx_timeout_count = 0;
+ 	priv->max_non_tso_bd_num = ae_dev->dev_specs.max_non_tso_bd_num;
++	priv->min_tx_copybreak = 0;
++	priv->min_tx_spare_buf_size = 0;
+ 	set_bit(HNS3_NIC_STATE_DOWN, &priv->state);
+ 
+ 	handle->msg_enable = netif_msg_init(debug, DEFAULT_MSG_LEVEL);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+index d36c4ed16d8dd..caf7a4df85852 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+@@ -596,6 +596,8 @@ struct hns3_nic_priv {
+ 	struct hns3_enet_coalesce rx_coal;
+ 	u32 tx_copybreak;
+ 	u32 rx_copybreak;
++	u32 min_tx_copybreak;
++	u32 min_tx_spare_buf_size;
+ };
+ 
+ union l3_hdr_info {
+-- 
+2.39.5
+
 
 
 
