@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-165489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A02B15DAA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:57:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9712AB15D10
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AB443A44FA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB82218C45BF
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243B1293B7D;
-	Wed, 30 Jul 2025 09:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F85126FA50;
+	Wed, 30 Jul 2025 09:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vtx5cfKH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvg1RfRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75FC293B4C;
-	Wed, 30 Jul 2025 09:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD1E25A34F;
+	Wed, 30 Jul 2025 09:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869350; cv=none; b=oF4qUOzMj9RCNQx4PKXW8xAxeTyiq+k62t/5vxBNeYu8e4VUz4+gZaF+77bQ43rjSJbjbsDm2Jj2Mku6iXIeWIROJReRhtmVvEhfWVYFHB0QXZ4ZNi+kjvVknpEvE9LKH7yjOTftMeociJWaEnQBY6KCBZnPhc0xoiVhJJfLZAA=
+	t=1753868919; cv=none; b=ELycv0+SuohN6TjOr5DsjhbzAxQmr1yYGPIwioVVL1DXkG5RiBuxYs6d28KuHCs3hi2H8yuLNpqDN1tZj74qOUVOgFLQwP01CplX3yzB5RfxB0BeTo7VRFjktDrIwpfGarJvzzJlTopmCrA6EbiB4zbewubR53EeXSa8a1kIygY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869350; c=relaxed/simple;
-	bh=hiJZRLER8lrRyXQJL+d9W0mpQeEaofvDFvQJCDqbPMc=;
+	s=arc-20240116; t=1753868919; c=relaxed/simple;
+	bh=hvqkdIUjE8Y9sMP2Zw5tcQijOmAJrVjQrk81uGLHVHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUZS59ci7933vhDQ8Gav/WZjcE841r+mbLL3kRojFZFrrCzucsIrG1PnGEIt2559cAQboqtNsiDr/pjmnhxskx8zMHxj4ud4b016zOsc4iNgiTfDv8qmZG0vueMoNm7B2lzxY2t/JIUNPTuh0oq7s8dsC5JnmNqkikmSUon9eQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vtx5cfKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C58C4CEE7;
-	Wed, 30 Jul 2025 09:55:48 +0000 (UTC)
+	 MIME-Version; b=kwlTIHl3tClJoRI5A93mteUa+aZMfg1B6XGehQTo3nAgv8CXrtTc07cgwvPy+VdDsI2OYaBD0jGGzqKPrAMLHt/RxJwRNtX5DfUXNOvBNy0pTsx0/7eomFCQQOWKCq3YC4dbhA1dIrulUyTMyn4qaaJQj7sW7MnzePVs40o+r94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvg1RfRQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D948C4CEF5;
+	Wed, 30 Jul 2025 09:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869350;
-	bh=hiJZRLER8lrRyXQJL+d9W0mpQeEaofvDFvQJCDqbPMc=;
+	s=korg; t=1753868919;
+	bh=hvqkdIUjE8Y9sMP2Zw5tcQijOmAJrVjQrk81uGLHVHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vtx5cfKHq2P+Nrc7pAb2US9mcPgWbLquVwKufWtkMadajgufvQTOHNQceoPXjho1J
-	 fobd721L9kyzS0HB+y0GxqB3BSIaiAbsR5qvLGDhJbOgMbdsBcoZ+Q2WwrZzcuTw23
-	 H2YCwTpEdnz9S3dwUNnprgMMsoLDosx47i+Rwfb0=
+	b=kvg1RfRQ75OUt9WhCIxHXrV1fGvDs+sh6LFhawydKCD0QWZ4dIRMDchbbIzZjwOvw
+	 NfO55Zluqw31QyE5KYs4kV5m0iqC6u3o+hG7yJ4Ts81lejkxrzvh1TY1Dz0N/1XYYl
+	 2n4RE1TlbrnW3kvwyY1muFS3Tdi1EZTWqV49NX7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Hostetler <thostet@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 69/92] gve: Fix stuck TX queue for DQ queue format
-Date: Wed, 30 Jul 2025 11:36:17 +0200
-Message-ID: <20250730093233.416441071@linuxfoundation.org>
+	Mohan Kumar D <mkumard@nvidia.com>,
+	Sheetal <sheetal@nvidia.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 109/117] ALSA: hda/tegra: Add Tegra264 support
+Date: Wed, 30 Jul 2025 11:36:18 +0200
+Message-ID: <20250730093238.050836940@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +63,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Kaligineedi <pkaligineedi@google.com>
+From: Mohan Kumar D <mkumard@nvidia.com>
 
-commit b03f15c0192b184078206760c839054ae6eb4eaa upstream.
+commit 1c4193917eb3279788968639f24d72ffeebdec6b upstream.
 
-gve_tx_timeout was calculating missed completions in a way that is only
-relevant in the GQ queue format. Additionally, it was attempting to
-disable device interrupts, which is not needed in either GQ or DQ queue
-formats.
+Update HDA driver to support Tegra264 differences from legacy HDA,
+which includes: clocks/resets, always power on, and hardware-managed
+FPCI/IPFS initialization. The driver retrieves this chip-specific
+information from soc_data.
 
-As a result, TX timeouts with the DQ queue format likely would have
-triggered early resets without kicking the queue at all.
-
-This patch drops the check for pending work altogether and always kicks
-the queue after validating the queue has not seen a TX timeout too
-recently.
-
-Cc: stable@vger.kernel.org
-Fixes: 87a7f321bb6a ("gve: Recover from queue stall due to missed IRQ")
-Co-developed-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Link: https://patch.msgid.link/20250717192024.1820931-1-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mohan Kumar D <mkumard@nvidia.com>
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250512064258.1028331-4-sheetal@nvidia.com
+Stable-dep-of: e0a911ac8685 ("ALSA: hda: Add missing NVIDIA HDA codec IDs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c |   71 +++++++++++++++--------------
- 1 file changed, 39 insertions(+), 32 deletions(-)
+ sound/pci/hda/hda_tegra.c  |   51 +++++++++++++++++++++++++++++++++++++++------
+ sound/pci/hda/patch_hdmi.c |    1 
+ 2 files changed, 46 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1916,49 +1916,56 @@ static void gve_turnup_and_check_status(
- 	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
+--- a/sound/pci/hda/hda_tegra.c
++++ b/sound/pci/hda/hda_tegra.c
+@@ -72,6 +72,10 @@
+ struct hda_tegra_soc {
+ 	bool has_hda2codec_2x_reset;
+ 	bool has_hda2hdmi;
++	bool has_hda2codec_2x;
++	bool input_stream;
++	bool always_on;
++	bool requires_init;
+ };
+ 
+ struct hda_tegra {
+@@ -187,7 +191,9 @@ static int __maybe_unused hda_tegra_runt
+ 	if (rc != 0)
+ 		return rc;
+ 	if (chip->running) {
+-		hda_tegra_init(hda);
++		if (hda->soc->requires_init)
++			hda_tegra_init(hda);
++
+ 		azx_init_chip(chip, 1);
+ 		/* disable controller wake up event*/
+ 		azx_writew(chip, WAKEEN, azx_readw(chip, WAKEEN) &
+@@ -252,7 +258,8 @@ static int hda_tegra_init_chip(struct az
+ 	bus->remap_addr = hda->regs + HDA_BAR0;
+ 	bus->addr = res->start + HDA_BAR0;
+ 
+-	hda_tegra_init(hda);
++	if (hda->soc->requires_init)
++		hda_tegra_init(hda);
+ 
+ 	return 0;
  }
+@@ -325,7 +332,7 @@ static int hda_tegra_first_init(struct a
+ 	 * starts with offset 0 which is wrong as HW register for output stream
+ 	 * offset starts with 4.
+ 	 */
+-	if (of_device_is_compatible(np, "nvidia,tegra234-hda"))
++	if (!hda->soc->input_stream)
+ 		chip->capture_streams = 4;
  
--static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
-+static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
-+							unsigned int txqueue)
- {
--	struct gve_notify_block *block;
--	struct gve_tx_ring *tx = NULL;
--	struct gve_priv *priv;
--	u32 last_nic_done;
--	u32 current_time;
- 	u32 ntfy_idx;
+ 	chip->playback_streams = (gcap >> 12) & 0x0f;
+@@ -421,7 +428,6 @@ static int hda_tegra_create(struct snd_c
+ 	chip->driver_caps = driver_caps;
+ 	chip->driver_type = driver_caps & 0xff;
+ 	chip->dev_index = 0;
+-	chip->jackpoll_interval = msecs_to_jiffies(5000);
+ 	INIT_LIST_HEAD(&chip->pcm_list);
  
--	netdev_info(dev, "Timeout on tx queue, %d", txqueue);
--	priv = netdev_priv(dev);
- 	if (txqueue > priv->tx_cfg.num_queues)
--		goto reset;
-+		return NULL;
+ 	chip->codec_probe_mask = -1;
+@@ -438,7 +444,16 @@ static int hda_tegra_create(struct snd_c
+ 	chip->bus.core.sync_write = 0;
+ 	chip->bus.core.needs_damn_long_delay = 1;
+ 	chip->bus.core.aligned_mmio = 1;
+-	chip->bus.jackpoll_in_suspend = 1;
++
++	/*
++	 * HDA power domain and clocks are always on for Tegra264 and
++	 * the jack detection logic would work always, so no need of
++	 * jack polling mechanism running.
++	 */
++	if (!hda->soc->always_on) {
++		chip->jackpoll_interval = msecs_to_jiffies(5000);
++		chip->bus.jackpoll_in_suspend = 1;
++	}
  
- 	ntfy_idx = gve_tx_idx_to_ntfy(priv, txqueue);
- 	if (ntfy_idx >= priv->num_ntfy_blks)
--		goto reset;
-+		return NULL;
-+
-+	return &priv->ntfy_blocks[ntfy_idx];
-+}
-+
-+static bool gve_tx_timeout_try_q_kick(struct gve_priv *priv,
-+				      unsigned int txqueue)
-+{
-+	struct gve_notify_block *block;
-+	u32 current_time;
+ 	err = snd_device_new(card, SNDRV_DEV_LOWLEVEL, chip, &ops);
+ 	if (err < 0) {
+@@ -452,22 +467,44 @@ static int hda_tegra_create(struct snd_c
+ static const struct hda_tegra_soc tegra30_data = {
+ 	.has_hda2codec_2x_reset = true,
+ 	.has_hda2hdmi = true,
++	.has_hda2codec_2x = true,
++	.input_stream = true,
++	.always_on = false,
++	.requires_init = true,
+ };
  
--	block = &priv->ntfy_blocks[ntfy_idx];
--	tx = block->tx;
-+	block = gve_get_tx_notify_block(priv, txqueue);
-+
-+	if (!block)
-+		return false;
+ static const struct hda_tegra_soc tegra194_data = {
+ 	.has_hda2codec_2x_reset = false,
+ 	.has_hda2hdmi = true,
++	.has_hda2codec_2x = true,
++	.input_stream = true,
++	.always_on = false,
++	.requires_init = true,
+ };
  
- 	current_time = jiffies_to_msecs(jiffies);
--	if (tx->last_kick_msec + MIN_TX_TIMEOUT_GAP > current_time)
--		goto reset;
-+	if (block->tx->last_kick_msec + MIN_TX_TIMEOUT_GAP > current_time)
-+		return false;
+ static const struct hda_tegra_soc tegra234_data = {
+ 	.has_hda2codec_2x_reset = true,
+ 	.has_hda2hdmi = false,
++	.has_hda2codec_2x = true,
++	.input_stream = false,
++	.always_on = false,
++	.requires_init = true,
++};
 +
-+	netdev_info(priv->dev, "Kicking queue %d", txqueue);
-+	napi_schedule(&block->napi);
-+	block->tx->last_kick_msec = current_time;
-+	return true;
-+}
-+
-+static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
-+{
-+	struct gve_notify_block *block;
-+	struct gve_priv *priv;
-+
-+	netdev_info(dev, "Timeout on tx queue, %d", txqueue);
-+	priv = netdev_priv(dev);
-+
-+	if (!gve_tx_timeout_try_q_kick(priv, txqueue))
-+		gve_schedule_reset(priv);
++static const struct hda_tegra_soc tegra264_data = {
++	.has_hda2codec_2x_reset = true,
++	.has_hda2hdmi = false,
++	.has_hda2codec_2x = false,
++	.input_stream = false,
++	.always_on = true,
++	.requires_init = false,
+ };
  
--	/* Check to see if there are missed completions, which will allow us to
--	 * kick the queue.
--	 */
--	last_nic_done = gve_tx_load_event_counter(priv, tx);
--	if (last_nic_done - tx->done) {
--		netdev_info(dev, "Kicking queue %d", txqueue);
--		iowrite32be(GVE_IRQ_MASK, gve_irq_doorbell(priv, block));
--		napi_schedule(&block->napi);
--		tx->last_kick_msec = current_time;
--		goto out;
--	} // Else reset.
--
--reset:
--	gve_schedule_reset(priv);
--
--out:
--	if (tx)
--		tx->queue_timeout++;
-+	block = gve_get_tx_notify_block(priv, txqueue);
-+	if (block)
-+		block->tx->queue_timeout++;
- 	priv->tx_timeo_cnt++;
- }
+ static const struct of_device_id hda_tegra_match[] = {
+ 	{ .compatible = "nvidia,tegra30-hda", .data = &tegra30_data },
+ 	{ .compatible = "nvidia,tegra194-hda", .data = &tegra194_data },
+ 	{ .compatible = "nvidia,tegra234-hda", .data = &tegra234_data },
++	{ .compatible = "nvidia,tegra264-hda", .data = &tegra264_data },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, hda_tegra_match);
+@@ -522,7 +559,9 @@ static int hda_tegra_probe(struct platfo
+ 	hda->clocks[hda->nclocks++].id = "hda";
+ 	if (hda->soc->has_hda2hdmi)
+ 		hda->clocks[hda->nclocks++].id = "hda2hdmi";
+-	hda->clocks[hda->nclocks++].id = "hda2codec_2x";
++
++	if (hda->soc->has_hda2codec_2x)
++		hda->clocks[hda->nclocks++].id = "hda2codec_2x";
  
+ 	err = devm_clk_bulk_get(&pdev->dev, hda->nclocks, hda->clocks);
+ 	if (err < 0)
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -4551,6 +4551,7 @@ HDA_CODEC_ENTRY(0x10de002e, "Tegra186 HD
+ HDA_CODEC_ENTRY(0x10de002f, "Tegra194 HDMI/DP2", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0030, "Tegra194 HDMI/DP3", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0031, "Tegra234 HDMI/DP", patch_tegra234_hdmi),
++HDA_CODEC_ENTRY(0x10de0034, "Tegra264 HDMI/DP",	patch_tegra234_hdmi),
+ HDA_CODEC_ENTRY(0x10de0040, "GPU 40 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0041, "GPU 41 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0042, "GPU 42 HDMI/DP",	patch_nvhdmi),
 
 
 
