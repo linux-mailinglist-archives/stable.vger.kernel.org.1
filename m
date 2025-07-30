@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-165273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B434EB15C57
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D899B15D1F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CB6518851F0
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A239318858EA
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4F226D4F9;
-	Wed, 30 Jul 2025 09:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C724A32;
+	Wed, 30 Jul 2025 09:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjT1GW5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGWMZSva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089ED36124;
-	Wed, 30 Jul 2025 09:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16551635;
+	Wed, 30 Jul 2025 09:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868476; cv=none; b=bkWMRy5zrfy0El76bzioWliwxArlUsToVZDIXNENSGrw68U70nDD4vuDH1/T0josWz2FvJXMEEbOaGEMVK928lgRMfz5F36Fxov7huI3dJN5SGV1cG9jLvNA9cPuv72yZCx+IvOmpYehjfh626qGf2cZfV6oK+YB1uzv5FFUMzU=
+	t=1753868960; cv=none; b=RaInH7cwyt6GqwEfJEBJksYgON+0H064wUF6TmdKWoaVXSxc9c2fio+NBJrqZZqwoD/DZNR7BFHdswWyxc7egM8AzLYNV/1FXlHHIcy/+7MMLwlxKCiTEWxkdOfX9xbC9cFPJJ4AWh/lOzqH/li28ol+QYBS4tOJ0XyVd4mKtx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868476; c=relaxed/simple;
-	bh=7aEnrgzJaBZ8Yb976yP9ut0Shck1wGy19paUE2iJa2E=;
+	s=arc-20240116; t=1753868960; c=relaxed/simple;
+	bh=hv9JC1A+/m0EXTqKESmTU8bCkL+NZRaSfrUA+EsDx1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVlKwBGLZjzBkd8A12DM7UmpNe8+MwsboLWqTfNintZNfA+2MMztP6BJB+8q3kvcBPmoT980sl67bDdur1lVll10iesh77XADtj1wx3OLNt1niizKRxhOyQAWd78eAqLJJ8F+5iIwEIhgWeCM8gGy2sdGJvkCwv1MvPsyRPwk4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjT1GW5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC14C4CEF5;
-	Wed, 30 Jul 2025 09:41:15 +0000 (UTC)
+	 MIME-Version; b=Vd7XgiVRTW2Mi0TcuO/lFaezyF5YLIcrcZxw/UFcbz82JFvkhSGpIuoWIBpauynd+lTI/ORYovXq+YgKbYxN66Ty3YpYs27iSYjugsPI7+hqZxn+ulbGyNs1Q/nyCdONuBaBlBDZl4MgYoiiP0PjoNpnC5wLjF7CBt8F8cV0tJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGWMZSva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7890AC4CEF5;
+	Wed, 30 Jul 2025 09:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868475;
-	bh=7aEnrgzJaBZ8Yb976yP9ut0Shck1wGy19paUE2iJa2E=;
+	s=korg; t=1753868960;
+	bh=hv9JC1A+/m0EXTqKESmTU8bCkL+NZRaSfrUA+EsDx1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjT1GW5w/0PRowhgiCknJn85OfC1bwhw+ARqvlNLmIXF6GQaYPRTBho+W+BzPEjMQ
-	 L01cRwmBb852w/fDI6X0nwQAQJkvFRc0RW9g4RGtFMK8JwYrxaHZgT/j57+Ouz01/u
-	 IieEMCDRUhLXdr/9Co3glNIeo/USUlTKh9qguiJU=
+	b=BGWMZSvaWJlUCHVUqfS+rqFeTiZ0Yl7n8yflCKOnIJNLWzie1DrhqG+RXTnu8Mc6W
+	 3akQpykh0/B3t8mDFAYcKSgVLWVJ53E81ip/of6PTobGhZ4Ep8JCDKuEiMQKeOJ0fD
+	 BMnh+CuNUWxuom7X8XZu0n/SHgu5AVJJIVqoU038=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Ronald Wahl <ronald.wahl@legrand.com>
-Subject: [PATCH 6.6 75/76] spi: cadence-quadspi: fix cleanup of rx_chan on failure paths
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 099/117] KVM: x86: model canonical checks more precisely
 Date: Wed, 30 Jul 2025 11:36:08 +0200
-Message-ID: <20250730093229.770650564@linuxfoundation.org>
+Message-ID: <20250730093237.651814805@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,276 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-commit 04a8ff1bc3514808481ddebd454342ad902a3f60 upstream.
+[ Upstream commit 9245fd6b8531497d129a7a6e3eef258042862f85 ]
 
-Remove incorrect checks on cqspi->rx_chan that cause driver breakage
-during failure cleanup. Ensure proper resource freeing on the success
-path when operating in cqspi->use_direct_mode, preventing leaks and
-improving stability.
+As a result of a recent investigation, it was determined that x86 CPUs
+which support 5-level paging, don't always respect CR4.LA57 when doing
+canonical checks.
 
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/89765a2b94f047ded4f14babaefb7ef92ba07cb2.1751274389.git.khairul.anuar.romli@altera.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
+In particular:
+
+1. MSRs which contain a linear address, allow full 57-bitcanonical address
+regardless of CR4.LA57 state. For example: MSR_KERNEL_GS_BASE.
+
+2. All hidden segment bases and GDT/IDT bases also behave like MSRs.
+This means that full 57-bit canonical address can be loaded to them
+regardless of CR4.LA57, both using MSRS (e.g GS_BASE) and instructions
+(e.g LGDT).
+
+3. TLB invalidation instructions also allow the user to use full 57-bit
+address regardless of the CR4.LA57.
+
+Finally, it must be noted that the CPU doesn't prevent the user from
+disabling 5-level paging, even when the full 57-bit canonical address is
+present in one of the registers mentioned above (e.g GDT base).
+
+In fact, this can happen without any userspace help, when the CPU enters
+SMM mode - some MSRs, for example MSR_KERNEL_GS_BASE are left to contain
+a non-canonical address in regard to the new mode.
+
+Since most of the affected MSRs and all segment bases can be read and
+written freely by the guest without any KVM intervention, this patch makes
+the emulator closely follow hardware behavior, which means that the
+emulator doesn't take in the account the guest CPUID support for 5-level
+paging, and only takes in the account the host CPU support.
+
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Link: https://lore.kernel.org/r/20240906221824.491834-4-mlevitsk@redhat.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: fa787ac07b3c ("KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    5 -----
- 1 file changed, 5 deletions(-)
+ arch/x86/kvm/mmu/mmu.c       |    2 -
+ arch/x86/kvm/vmx/nested.c    |   22 +++++++++----------
+ arch/x86/kvm/vmx/pmu_intel.c |    2 -
+ arch/x86/kvm/vmx/sgx.c       |    2 -
+ arch/x86/kvm/vmx/vmx.c       |    4 +--
+ arch/x86/kvm/x86.c           |    8 +++----
+ arch/x86/kvm/x86.h           |   48 +++++++++++++++++++++++++++++++++++++++++--
+ 7 files changed, 66 insertions(+), 22 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1870,11 +1870,6 @@ static int cqspi_probe(struct platform_d
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6234,7 +6234,7 @@ void kvm_mmu_invalidate_addr(struct kvm_
+ 	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
+ 	if (mmu != &vcpu->arch.guest_mmu) {
+ 		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
+-		if (is_noncanonical_address(addr, vcpu))
++		if (is_noncanonical_invlpg_address(addr, vcpu))
+ 			return;
  
- 	pm_runtime_enable(dev);
+ 		kvm_x86_call(flush_tlb_gva)(vcpu, addr);
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3020,8 +3020,8 @@ static int nested_vmx_check_host_state(s
+ 	    CC(!kvm_vcpu_is_legal_cr3(vcpu, vmcs12->host_cr3)))
+ 		return -EINVAL;
  
--	if (cqspi->rx_chan) {
--		dma_release_channel(cqspi->rx_chan);
--		goto probe_setup_failed;
--	}
--
- 	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+-	if (CC(is_noncanonical_address(vmcs12->host_ia32_sysenter_esp, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_ia32_sysenter_eip, vcpu)))
++	if (CC(is_noncanonical_msr_address(vmcs12->host_ia32_sysenter_esp, vcpu)) ||
++	    CC(is_noncanonical_msr_address(vmcs12->host_ia32_sysenter_eip, vcpu)))
+ 		return -EINVAL;
+ 
+ 	if ((vmcs12->vm_exit_controls & VM_EXIT_LOAD_IA32_PAT) &&
+@@ -3055,12 +3055,12 @@ static int nested_vmx_check_host_state(s
+ 	    CC(vmcs12->host_ss_selector == 0 && !ia32e))
+ 		return -EINVAL;
+ 
+-	if (CC(is_noncanonical_address(vmcs12->host_fs_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_gs_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_gdtr_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_idtr_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_tr_base, vcpu)) ||
+-	    CC(is_noncanonical_address(vmcs12->host_rip, vcpu)))
++	if (CC(is_noncanonical_base_address(vmcs12->host_fs_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_gs_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_gdtr_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_idtr_base, vcpu)) ||
++	    CC(is_noncanonical_base_address(vmcs12->host_tr_base, vcpu)) ||
++	    CC(is_noncanonical_address(vmcs12->host_rip, vcpu, 0)))
+ 		return -EINVAL;
+ 
+ 	/*
+@@ -3178,7 +3178,7 @@ static int nested_vmx_check_guest_state(
+ 	}
+ 
+ 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS) &&
+-	    (CC(is_noncanonical_address(vmcs12->guest_bndcfgs & PAGE_MASK, vcpu)) ||
++	    (CC(is_noncanonical_msr_address(vmcs12->guest_bndcfgs & PAGE_MASK, vcpu)) ||
+ 	     CC((vmcs12->guest_bndcfgs & MSR_IA32_BNDCFGS_RSVD))))
+ 		return -EINVAL;
+ 
+@@ -5172,7 +5172,7 @@ int get_vmx_mem_address(struct kvm_vcpu
+ 		 * non-canonical form. This is the only check on the memory
+ 		 * destination for long mode!
+ 		 */
+-		exn = is_noncanonical_address(*ret, vcpu);
++		exn = is_noncanonical_address(*ret, vcpu, 0);
+ 	} else {
+ 		/*
+ 		 * When not in long mode, the virtual/linear address is
+@@ -5983,7 +5983,7 @@ static int handle_invvpid(struct kvm_vcp
+ 		 * invalidation.
+ 		 */
+ 		if (!operand.vpid ||
+-		    is_noncanonical_address(operand.gla, vcpu))
++		    is_noncanonical_invlpg_address(operand.gla, vcpu))
+ 			return nested_vmx_fail(vcpu,
+ 				VMXERR_INVALID_OPERAND_TO_INVEPT_INVVPID);
+ 		vpid_sync_vcpu_addr(vpid02, operand.gla);
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -365,7 +365,7 @@ static int intel_pmu_set_msr(struct kvm_
+ 		}
+ 		break;
+ 	case MSR_IA32_DS_AREA:
+-		if (is_noncanonical_address(data, vcpu))
++		if (is_noncanonical_msr_address(data, vcpu))
+ 			return 1;
+ 
+ 		pmu->ds_area = data;
+--- a/arch/x86/kvm/vmx/sgx.c
++++ b/arch/x86/kvm/vmx/sgx.c
+@@ -37,7 +37,7 @@ static int sgx_get_encls_gva(struct kvm_
+ 		fault = true;
+ 	} else if (likely(is_64_bit_mode(vcpu))) {
+ 		*gva = vmx_get_untagged_addr(vcpu, *gva, 0);
+-		fault = is_noncanonical_address(*gva, vcpu);
++		fault = is_noncanonical_address(*gva, vcpu, 0);
+ 	} else {
+ 		*gva &= 0xffffffff;
+ 		fault = (s.unusable) ||
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2284,7 +2284,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, s
+ 		    (!msr_info->host_initiated &&
+ 		     !guest_cpuid_has(vcpu, X86_FEATURE_MPX)))
+ 			return 1;
+-		if (is_noncanonical_address(data & PAGE_MASK, vcpu) ||
++		if (is_noncanonical_msr_address(data & PAGE_MASK, vcpu) ||
+ 		    (data & MSR_IA32_BNDCFGS_RSVD))
+ 			return 1;
+ 
+@@ -2449,7 +2449,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, s
+ 		index = msr_info->index - MSR_IA32_RTIT_ADDR0_A;
+ 		if (index >= 2 * vmx->pt_desc.num_address_ranges)
+ 			return 1;
+-		if (is_noncanonical_address(data, vcpu))
++		if (is_noncanonical_msr_address(data, vcpu))
+ 			return 1;
+ 		if (index % 2)
+ 			vmx->pt_desc.guest.addr_b[index / 2] = data;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1845,7 +1845,7 @@ static int __kvm_set_msr(struct kvm_vcpu
+ 	case MSR_KERNEL_GS_BASE:
+ 	case MSR_CSTAR:
+ 	case MSR_LSTAR:
+-		if (is_noncanonical_address(data, vcpu))
++		if (is_noncanonical_msr_address(data, vcpu))
+ 			return 1;
+ 		break;
+ 	case MSR_IA32_SYSENTER_EIP:
+@@ -1862,7 +1862,7 @@ static int __kvm_set_msr(struct kvm_vcpu
+ 		 * value, and that something deterministic happens if the guest
+ 		 * invokes 64-bit SYSENTER.
+ 		 */
+-		data = __canonical_address(data, vcpu_virt_addr_bits(vcpu));
++		data = __canonical_address(data, max_host_virt_addr_bits());
+ 		break;
+ 	case MSR_TSC_AUX:
+ 		if (!kvm_is_supported_user_return_msr(MSR_TSC_AUX))
+@@ -8611,7 +8611,7 @@ static gva_t emulator_get_untagged_addr(
+ static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
+ 				       gva_t addr, unsigned int flags)
+ {
+-	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt));
++	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt), flags);
+ }
+ 
+ static const struct x86_emulate_ops emulate_ops = {
+@@ -13763,7 +13763,7 @@ int kvm_handle_invpcid(struct kvm_vcpu *
+ 		 * invalidation.
+ 		 */
+ 		if ((!pcid_enabled && (operand.pcid != 0)) ||
+-		    is_noncanonical_address(operand.gla, vcpu)) {
++		    is_noncanonical_invlpg_address(operand.gla, vcpu)) {
+ 			kvm_inject_gp(vcpu, 0);
+ 			return 1;
+ 		}
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -8,6 +8,7 @@
+ #include <asm/pvclock.h>
+ #include "kvm_cache_regs.h"
+ #include "kvm_emulate.h"
++#include "cpuid.h"
+ 
+ struct kvm_caps {
+ 	/* control of guest tsc rate supported? */
+@@ -233,9 +234,52 @@ static inline u8 vcpu_virt_addr_bits(str
+ 	return kvm_is_cr4_bit_set(vcpu, X86_CR4_LA57) ? 57 : 48;
+ }
+ 
+-static inline bool is_noncanonical_address(u64 la, struct kvm_vcpu *vcpu)
++static inline u8 max_host_virt_addr_bits(void)
+ {
+-	return !__is_canonical_address(la, vcpu_virt_addr_bits(vcpu));
++	return kvm_cpu_cap_has(X86_FEATURE_LA57) ? 57 : 48;
++}
++
++/*
++ * x86 MSRs which contain linear addresses, x86 hidden segment bases, and
++ * IDT/GDT bases have static canonicality checks, the size of which depends
++ * only on the CPU's support for 5-level paging, rather than on the state of
++ * CR4.LA57.  This applies to both WRMSR and to other instructions that set
++ * their values, e.g. SGDT.
++ *
++ * KVM passes through most of these MSRS and also doesn't intercept the
++ * instructions that set the hidden segment bases.
++ *
++ * Because of this, to be consistent with hardware, even if the guest doesn't
++ * have LA57 enabled in its CPUID, perform canonicality checks based on *host*
++ * support for 5 level paging.
++ *
++ * Finally, instructions which are related to MMU invalidation of a given
++ * linear address, also have a similar static canonical check on address.
++ * This allows for example to invalidate 5-level addresses of a guest from a
++ * host which uses 4-level paging.
++ */
++static inline bool is_noncanonical_address(u64 la, struct kvm_vcpu *vcpu,
++					   unsigned int flags)
++{
++	if (flags & (X86EMUL_F_INVLPG | X86EMUL_F_MSR | X86EMUL_F_DT_LOAD))
++		return !__is_canonical_address(la, max_host_virt_addr_bits());
++	else
++		return !__is_canonical_address(la, vcpu_virt_addr_bits(vcpu));
++}
++
++static inline bool is_noncanonical_msr_address(u64 la, struct kvm_vcpu *vcpu)
++{
++	return is_noncanonical_address(la, vcpu, X86EMUL_F_MSR);
++}
++
++static inline bool is_noncanonical_base_address(u64 la, struct kvm_vcpu *vcpu)
++{
++	return is_noncanonical_address(la, vcpu, X86EMUL_F_DT_LOAD);
++}
++
++static inline bool is_noncanonical_invlpg_address(u64 la, struct kvm_vcpu *vcpu)
++{
++	return is_noncanonical_address(la, vcpu, X86EMUL_F_INVLPG);
+ }
+ 
+ static inline void vcpu_cache_mmio_info(struct kvm_vcpu *vcpu,
 
 
 
