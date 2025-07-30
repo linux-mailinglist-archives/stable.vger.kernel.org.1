@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-165277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F5F9B15C59
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF164B15D52
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 835001887027
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE3E07B3FA3
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AB4270ED4;
-	Wed, 30 Jul 2025 09:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63A62949E0;
+	Wed, 30 Jul 2025 09:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc+UU/A3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaAlNu2l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E424419D065;
-	Wed, 30 Jul 2025 09:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650F529344A;
+	Wed, 30 Jul 2025 09:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868488; cv=none; b=patvTT5q4h79gWzZNFJzfgr/SQSSvahlW3kRsPMCCGWzHiKMmN7h6t071vanABpA1RvkcZxvTv9yi0TORxt3pb5wh+jvFWuEnwx5srMFAEeAQ3Af/H9g3GybY8jUT105VcP4HJHq49zqGV+Tv/YJk2VASSmNCTzzF1sVoy08a88=
+	t=1753869146; cv=none; b=JbMPx+8o1+KCKKTp39VkaefI8gKlIDGQR8zJ110PTSWax7/qbVh8WLQrezj6gK/BPabVBtvPpwKk4qGqxgi0hLeXQwwLVa+VdBDetFc07mZX/eQdOCkc1YzSiEdjELDpRLvuYJr5xNhYGK5V5Dgs3UDraHSA9Kj8s29BGX+ucP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868488; c=relaxed/simple;
-	bh=5u29Rk0LFsc5q+8MqE+ae2vxx9nR6cmnjyZD8k3Rt2g=;
+	s=arc-20240116; t=1753869146; c=relaxed/simple;
+	bh=pzDzD2PKqDEetpYxWwemRmeBz2AspTm3M+UNZwpPu0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwbIHFcE9GLMqzVMfb2J2prDMIPewvbLDgIoWhM03yHNyhI6ylgbI9kJKZdQkOfnKepWEV3DrJ6KgRVK2KnMni4OWkY5ciWU+JANR6mPYSVivf+apyg8q0Tl27A0WXgEfYfg1BqHLGMfBs0PHQi6XifUYYPNLbbZORijNUBnEdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc+UU/A3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAE6C4CEE7;
-	Wed, 30 Jul 2025 09:41:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tp1GqlvlBA64CdacIqX6GU9O+LqIEKKhmZWPc7iwRXxXmhZy+/0u78wEhs2bXCPUfJb3I2idlJ9/dwAT+QuO3vTa+ghssE8zqO1TyaWSMCwb4bAYPmG6xtqEKFMd0eNSIjH3ICWe+uzjkW2NaGfpSXZwEAycSArJw/MGjUcM6Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaAlNu2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBBDC4CEF5;
+	Wed, 30 Jul 2025 09:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868487;
-	bh=5u29Rk0LFsc5q+8MqE+ae2vxx9nR6cmnjyZD8k3Rt2g=;
+	s=korg; t=1753869146;
+	bh=pzDzD2PKqDEetpYxWwemRmeBz2AspTm3M+UNZwpPu0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xc+UU/A30Hyv3wOg7ESybTWpakwR93HqoRCSkd8aI9FdWJV95OnPy33VEO0JKyTq4
-	 HV72k9nV/Z7j2hd9Wx4ACgCBUKasQlSTnWsNszsCxwVTNN5rbiytyXGzGkY8BirNcI
-	 GIrqTvQgr5a+uaoCwW1kKSqqlML7VKAZ+O9PLwfo=
+	b=BaAlNu2lA4705EKTV3zCtXaaCyyM0I1yq2fsWsI6orpcIkSz+jqOrqH9xajpvJ6+K
+	 W8FFSESFndwTHgx6dv2SEKzwkDc6fSq6l5OThOANoQdYt6SbY8QHkrJEbefZRzkA4b
+	 XVw41C9kNMJ5h1BkaxwpFSQjMmcfioF7FJ34CZ38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 63/76] iio: hid-sensor-prox: Restore lost scale assignments
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH 6.15 48/92] Revert "drm/gem-framebuffer: Use dma_buf from GEM object instance"
 Date: Wed, 30 Jul 2025 11:35:56 +0200
-Message-ID: <20250730093229.309836007@linuxfoundation.org>
+Message-ID: <20250730093232.614265458@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 83ded7cfaccccd2f4041769c313b58b4c9e265ad ]
+commit 2712ca878b688682ac2ce02aefc413fc76019cd9 upstream.
 
-The variables `scale_pre_decml`, `scale_post_decml`, and `scale_precision`
-were assigned in commit d68c592e02f6 ("iio: hid-sensor-prox: Fix scale not
-correct issue"), but due to a merge conflict in
-commit 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next"),
-these assignments were lost.
+This reverts commit cce16fcd7446dcff7480cd9d2b6417075ed81065.
 
-Add back lost assignments and replace `st->prox_attr` with
-`st->prox_attr[0]` because commit 596ef5cf654b ("iio: hid-sensor-prox: Add
-support for more channels") changed `prox_attr` to an array.
+The dma_buf field in struct drm_gem_object is not stable over the
+object instance's lifetime. The field becomes NULL when user space
+releases the final GEM handle on the buffer object. This resulted
+in a NULL-pointer deref.
 
-Cc: stable@vger.kernel.org # 5.13+
-Fixes: 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250331055022.1149736-2-lixu.zhang@intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ changed st->prox_attr[0] array access to st->prox_attr single struct member ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Workarounds in commit 5307dce878d4 ("drm/gem: Acquire references on
+GEM handles for framebuffers") and commit f6bfc9afc751 ("drm/framebuffer:
+Acquire internal references on GEM handles") only solved the problem
+partially. They especially don't work for buffer objects without a DRM
+framebuffer associated.
+
+Hence, this revert to going back to using .import_attach->dmabuf.
+
+v3:
+- cc stable
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Acked-by: Christian König <christian.koenig@amd.com>
+Acked-by: Zack Rusin <zack.rusin@broadcom.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Link: https://lore.kernel.org/r/20250715155934.150656-6-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/hid-sensor-prox.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -226,6 +226,11 @@ static int prox_parse_report(struct plat
- 	dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
- 			st->prox_attr.report_id);
+--- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
++++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+@@ -419,6 +419,7 @@ EXPORT_SYMBOL(drm_gem_fb_vunmap);
+ static void __drm_gem_fb_end_cpu_access(struct drm_framebuffer *fb, enum dma_data_direction dir,
+ 					unsigned int num_planes)
+ {
++	struct dma_buf_attachment *import_attach;
+ 	struct drm_gem_object *obj;
+ 	int ret;
  
-+	st->scale_precision = hid_sensor_format_scale(hsdev->usage,
-+						      &st->prox_attr,
-+						      &st->scale_pre_decml,
-+						      &st->scale_post_decml);
-+
- 	return ret;
- }
- 
+@@ -427,9 +428,10 @@ static void __drm_gem_fb_end_cpu_access(
+ 		obj = drm_gem_fb_get_obj(fb, num_planes);
+ 		if (!obj)
+ 			continue;
++		import_attach = obj->import_attach;
+ 		if (!drm_gem_is_imported(obj))
+ 			continue;
+-		ret = dma_buf_end_cpu_access(obj->dma_buf, dir);
++		ret = dma_buf_end_cpu_access(import_attach->dmabuf, dir);
+ 		if (ret)
+ 			drm_err(fb->dev, "dma_buf_end_cpu_access(%u, %d) failed: %d\n",
+ 				ret, num_planes, dir);
+@@ -452,6 +454,7 @@ static void __drm_gem_fb_end_cpu_access(
+  */
+ int drm_gem_fb_begin_cpu_access(struct drm_framebuffer *fb, enum dma_data_direction dir)
+ {
++	struct dma_buf_attachment *import_attach;
+ 	struct drm_gem_object *obj;
+ 	unsigned int i;
+ 	int ret;
+@@ -462,9 +465,10 @@ int drm_gem_fb_begin_cpu_access(struct d
+ 			ret = -EINVAL;
+ 			goto err___drm_gem_fb_end_cpu_access;
+ 		}
++		import_attach = obj->import_attach;
+ 		if (!drm_gem_is_imported(obj))
+ 			continue;
+-		ret = dma_buf_begin_cpu_access(obj->dma_buf, dir);
++		ret = dma_buf_begin_cpu_access(import_attach->dmabuf, dir);
+ 		if (ret)
+ 			goto err___drm_gem_fb_end_cpu_access;
+ 	}
 
 
 
