@@ -1,148 +1,205 @@
-Return-Path: <stable+bounces-165191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DA8B15922
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 08:52:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8765EB1593D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27AB83A82EF
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 06:51:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56A418A3195
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 07:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99111F5423;
-	Wed, 30 Jul 2025 06:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C4D1F2BBB;
+	Wed, 30 Jul 2025 07:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rFeOaYj1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="suk5mr6m";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rFeOaYj1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="suk5mr6m"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="i3OjCV0V"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E37A1EFFB4
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 06:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594171F0985
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 07:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753858329; cv=none; b=tGLfkKhCelOGcBYzqh8QkvRrzV74273DX2EE/73WKZ4TmSgmLXiOtnKrSX23o7FtJgv5rN7TpouYvLpMAvriyt6EyibR+iuzam+zPxgHRdY1OnaVZXwRue+WLh6prawmbjPFXnzvmsN/qWcn5L7sqShti+GwWrCIpJxGMED8vCo=
+	t=1753859067; cv=none; b=dWyl6vHIqpRYlR8X4EK27F+CgJMJL6YqIs8Csat5VbmF/i+2eyuqAahjkDrhZz+ebI0k9oaHJfM4n7wtIltnojRsIEEIkgbIoPdLrfBgP+VSHtl/+DYOeg3mB1p8/eNMHXIULUYzpuRm6RLjQSGbCktROxMyUdkYIBnkLM7GU5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753858329; c=relaxed/simple;
-	bh=vcomCsS8vGaH9x5JXSKM2sRl5VCMsY+8hq3RZ+ntiLc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t3m+FFEDtTLwotmUi+jHs9FWOoB6ibwNnwrR1zCN9+DHnBCf2tIFUeGlxx6kT0vbA2Sw1x0A/LxqQOk9vY6fdW/fi1fU4aE2sd8JE0ReZtGS2hittFNfYOZVju0G08i6z5jk7DMMBBfbasBMXT+uHC4QLa27U2Hz9Wd2nyX5zpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rFeOaYj1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=suk5mr6m; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rFeOaYj1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=suk5mr6m; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 548491F45A;
-	Wed, 30 Jul 2025 06:52:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753858326; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
-	b=rFeOaYj1wmgMANPGjYHQ40elAOTfNuJlbhRVfID+eYznUenDHknS96Qhcmx+QjD4sQxQhb
-	znMnxdXffFfwAgGfTtGjYI0SItM6pkyKEn2vWnsgzz7tQmRB0CGJ1wWp0M7K2gwrjS64pz
-	TxcjxRnKI+AWAxOB0jMwQo0s8A0c17o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753858326;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
-	b=suk5mr6mUdpg4G2Km101DOwUFKTu+UgIXpz4Uco/pJaa0SG3ydasajEC4wKGNoz0n6eDDa
-	8WUh1Lv56eY2XaBQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753858326; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
-	b=rFeOaYj1wmgMANPGjYHQ40elAOTfNuJlbhRVfID+eYznUenDHknS96Qhcmx+QjD4sQxQhb
-	znMnxdXffFfwAgGfTtGjYI0SItM6pkyKEn2vWnsgzz7tQmRB0CGJ1wWp0M7K2gwrjS64pz
-	TxcjxRnKI+AWAxOB0jMwQo0s8A0c17o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753858326;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
-	b=suk5mr6mUdpg4G2Km101DOwUFKTu+UgIXpz4Uco/pJaa0SG3ydasajEC4wKGNoz0n6eDDa
-	8WUh1Lv56eY2XaBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 242CD1388B;
-	Wed, 30 Jul 2025 06:52:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sPudBxbBiWhVOgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 30 Jul 2025 06:52:06 +0000
-Date: Wed, 30 Jul 2025 08:52:05 +0200
-Message-ID: <87y0s6rx0q.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: edip@medip.dev
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] ALSA: hda/realtek - Fix mute LED for HP Victus 16-s0xxx
-In-Reply-To: <20250729181848.24432-2-edip@medip.dev>
-References: <20250729181848.24432-2-edip@medip.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1753859067; c=relaxed/simple;
+	bh=acmYQHveT6enlvSsW1OaTBIwoUn6l4DQhiFxH9WVVN8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=D9bE73owue9rLmfGmEEqDNDZs1upuG8p8oc8fk38pN1dFV8r3dzRbI+OhPDU2wP1yAiuGN36oGD6zBpgTuNbXUHXIDAP/ZzhgQWTuMTTLMUgEO9QZoN4uajQMxmSJ36iVS6qsYbmQhOj+ZSxngmbbAVLhDwwVpfQLERmiiX4IHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=i3OjCV0V; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250730070418euoutp015cb2d0c168e63e1c3aff2740ba5ba036~W9YVbeGdo1885118851euoutp01M
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 07:04:18 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250730070418euoutp015cb2d0c168e63e1c3aff2740ba5ba036~W9YVbeGdo1885118851euoutp01M
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1753859058;
+	bh=s9RRy3R2yj+oaDdoueZGj4W8D+VQRo8mLrErLkrXN0Q=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=i3OjCV0VYGLuDlLuq6civ9J5+Jyt6vDpW5quN/xgaV4PYfi8rdSYHGRX9NiCFM5IX
+	 w0XQAUPBD8fgXjUQaV3YbMqgnNPssQNfthCepWdbh9/NhCcoA+DA4u8PYI7gyawb1r
+	 qGMf7gjoNssbbEUkix/cUPJ3TpbobhvSo0WuEZ48=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250730070417eucas1p2f8c3a230581c16a0552c4f9f6231456a~W9YVMkP7Y0123601236eucas1p2L;
+	Wed, 30 Jul 2025 07:04:17 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250730070417eusmtip166d12f714da9471398e06bfe6c5012b4~W9YUpSzBS0768707687eusmtip1e;
+	Wed, 30 Jul 2025 07:04:17 +0000 (GMT)
+Message-ID: <205d3356-5ebe-4e73-b888-6765e5a673ea@samsung.com>
+Date: Wed, 30 Jul 2025 09:04:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: s5p-mfc: Always pass NULL to
+ s5p_mfc_cmd_host2risc_v6()
+To: Nathan Chancellor <nathan@kernel.org>, Andrzej Hajda
+	<andrzej.hajda@intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20250715-media-s5p-mfc-fix-uninit-const-pointer-v1-1-4d52b58cafe9@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250730070417eucas1p2f8c3a230581c16a0552c4f9f6231456a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250730070417eucas1p2f8c3a230581c16a0552c4f9f6231456a
+X-EPHeader: CA
+X-CMS-RootMailID: 20250730070417eucas1p2f8c3a230581c16a0552c4f9f6231456a
+References: <20250715-media-s5p-mfc-fix-uninit-const-pointer-v1-1-4d52b58cafe9@kernel.org>
+	<CGME20250730070417eucas1p2f8c3a230581c16a0552c4f9f6231456a@eucas1p2.samsung.com>
 
-On Tue, 29 Jul 2025 20:18:48 +0200,
-edip@medip.dev wrote:
-> 
-> From: Edip Hazuri <edip@medip.dev>
-> 
-> The mute led on this laptop is using ALC245 but requires a quirk to work
-> This patch enables the existing quirk for the device.
-> 
-> Tested on Victus 16-S0063NT Laptop. The LED behaviour works
-> as intended.
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Edip Hazuri <edip@medip.dev>
+On 16.07.2025 00:13, Nathan Chancellor wrote:
+> A new warning in clang [1] points out a few places in s5p_mfc_cmd_v6.c
+> where an uninitialized variable is passed as a const pointer:
+>
+>    drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:45:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+>       45 |                                         &h2r_args);
+>          |                                          ^~~~~~~~
+>    drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:133:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+>      133 |                                         &h2r_args);
+>          |                                          ^~~~~~~~
+>    drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c:148:7: error: variable 'h2r_args' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+>      148 |                                         &h2r_args);
+>          |                                          ^~~~~~~~
+>
+> The args parameter in s5p_mfc_cmd_host2risc_v6() is never actually used,
+> so just pass NULL to it in the places where h2r_args is currently
+> passed, clearing up the warning and not changing the functionality of
+> the code.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: f96f3cfa0bb8 ("[media] s5p-mfc: Update MFC v4l2 driver to support MFC6.x")
+> Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2103
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>  From what I can tell, it seems like ->cmd_host2risc() is only ever
+> called from v6 code, which always passes NULL? It seems like it should
+> be possible to just drop .cmd_host2risc on the v5 side, then update
+> .cmd_host2risc to only take two parameters? If so, I can send a follow
+> up as a clean up, so that this can go back relatively conflict free.
+> ---
+>   .../platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c      | 22 +++++-----------------
+>   1 file changed, 5 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
+> index 47bc3014b5d8..735471c50dbb 100644
+> --- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
+> +++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_cmd_v6.c
+> @@ -31,7 +31,6 @@ static int s5p_mfc_cmd_host2risc_v6(struct s5p_mfc_dev *dev, int cmd,
+>   
+>   static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+>   {
+> -	struct s5p_mfc_cmd_args h2r_args;
+>   	const struct s5p_mfc_buf_size_v6 *buf_size = dev->variant->buf_size->priv;
+>   	int ret;
+>   
+> @@ -41,33 +40,23 @@ static int s5p_mfc_sys_init_cmd_v6(struct s5p_mfc_dev *dev)
+>   
+>   	mfc_write(dev, dev->ctx_buf.dma, S5P_FIMV_CONTEXT_MEM_ADDR_V6);
+>   	mfc_write(dev, buf_size->dev_ctx, S5P_FIMV_CONTEXT_MEM_SIZE_V6);
+> -	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6,
+> -					&h2r_args);
+> +	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SYS_INIT_V6, NULL);
+>   }
+>   
+>   static int s5p_mfc_sleep_cmd_v6(struct s5p_mfc_dev *dev)
+>   {
+> -	struct s5p_mfc_cmd_args h2r_args;
+> -
+> -	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+> -	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6,
+> -			&h2r_args);
+> +	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_SLEEP_V6, NULL);
+>   }
+>   
+>   static int s5p_mfc_wakeup_cmd_v6(struct s5p_mfc_dev *dev)
+>   {
+> -	struct s5p_mfc_cmd_args h2r_args;
+> -
+> -	memset(&h2r_args, 0, sizeof(struct s5p_mfc_cmd_args));
+> -	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6,
+> -					&h2r_args);
+> +	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_WAKEUP_V6, NULL);
+>   }
+>   
+>   /* Open a new instance and get its number */
+>   static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+>   {
+>   	struct s5p_mfc_dev *dev = ctx->dev;
+> -	struct s5p_mfc_cmd_args h2r_args;
+>   	int codec_type;
+>   
+>   	mfc_debug(2, "Requested codec mode: %d\n", ctx->codec_mode);
+> @@ -130,14 +119,13 @@ static int s5p_mfc_open_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+>   	mfc_write(dev, 0, S5P_FIMV_D_CRC_CTRL_V6); /* no crc */
+>   
+>   	return s5p_mfc_cmd_host2risc_v6(dev, S5P_FIMV_H2R_CMD_OPEN_INSTANCE_V6,
+> -					&h2r_args);
+> +					NULL);
+>   }
+>   
+>   /* Close instance */
+>   static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+>   {
+>   	struct s5p_mfc_dev *dev = ctx->dev;
+> -	struct s5p_mfc_cmd_args h2r_args;
+>   	int ret = 0;
+>   
+>   	dev->curr_ctx = ctx->num;
+> @@ -145,7 +133,7 @@ static int s5p_mfc_close_inst_cmd_v6(struct s5p_mfc_ctx *ctx)
+>   		mfc_write(dev, ctx->inst_no, S5P_FIMV_INSTANCE_ID_V6);
+>   		ret = s5p_mfc_cmd_host2risc_v6(dev,
+>   					S5P_FIMV_H2R_CMD_CLOSE_INSTANCE_V6,
+> -					&h2r_args);
+> +					NULL);
+>   	} else {
+>   		ret = -EINVAL;
+>   	}
+>
+> ---
+> base-commit: 347e9f5043c89695b01e66b3ed111755afcf1911
+> change-id: 20250715-media-s5p-mfc-fix-uninit-const-pointer-cbf944ae4b4b
+>
+> Best regards,
+> --
+> Nathan Chancellor <nathan@kernel.org>
+>
+>
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-Applied both patches now.  Thanks.
-
-
-Takashi
 
