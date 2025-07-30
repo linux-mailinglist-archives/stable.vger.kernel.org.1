@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-165467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113A3B15D89
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:56:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD75B15CFA
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC640188D4DE
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABF8516D685
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B743B255F5C;
-	Wed, 30 Jul 2025 09:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6334A1F5834;
+	Wed, 30 Jul 2025 09:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snwvsL9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJcZwyLi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DB41D63F2;
-	Wed, 30 Jul 2025 09:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221C1442C;
+	Wed, 30 Jul 2025 09:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869250; cv=none; b=jpRLqA1/gQ7dl0lxaqTHdnn2BHDSWK/ui5RC6ejllUYIvFUwbWJsMvrF5nfCXDk2iy/8UENCHNBQkIA8lw1JSOd3Iy8v/Rj5Ifhw66D6AzMXrwAMuAANmTr/18qAJav9TmD2gxc6jJsJR3VHuwC7Ny50Lghi6B93VTsXNmUeNsI=
+	t=1753868940; cv=none; b=EwePBj9bvcH/SALAlwtVPwm+tadMIpumrG7SuRIY8Molpqn/ZWrTnMjO9hTarS57KeGg0iDLeyb7LX2iOqu2IWhd3+NmtEimgBDWF31dnLdjL3ThoKMAa2iIAVlJKGp2c8Hix1p6CxASHTdAmsyI2u/A1fCbJEZGvyHAh8lkctc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869250; c=relaxed/simple;
-	bh=xq1ZMFn7hxVvdg5rY8mZockn9mkPhHww8CBWJz/bWkg=;
+	s=arc-20240116; t=1753868940; c=relaxed/simple;
+	bh=+d6Y7/FAv+3eUk88zbe2KQXiskPBUDBz0xR2ZKCuznw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZfvOERvPQ/ygBxNkhXcvD+ltZCu7mK0c0Pfkon+7ZfDxXnVFgtwsdckgsBHQPAWJC4Oa9Y3TeFk8WY9JiMYjPGnLmt1uZPWcqMx5UhF1uyBX8H3JIkZcJWMIKxufLu26jt7u+4MneOxoxAZ8ojaMGBFXIsB5QO9qJQMvd57OOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snwvsL9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE6AC4CEF6;
-	Wed, 30 Jul 2025 09:54:09 +0000 (UTC)
+	 MIME-Version; b=j9tr5/B+WotHCvYGXDFoqYwMtux5kvEtkEdDxuB/8cN9j72JE70Hmv/Nu2MntwuNuuIGRo6w3AXvL+5OCgUIuyFofVi5WNnUcOygudTdROLOG/xIXWoF82zTaWrt9Li7eHyTVGhhYGQOa7X6vf8UOxrIjQiYkXvtcnZukCjSEA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJcZwyLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F98C4CEF5;
+	Wed, 30 Jul 2025 09:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869250;
-	bh=xq1ZMFn7hxVvdg5rY8mZockn9mkPhHww8CBWJz/bWkg=;
+	s=korg; t=1753868940;
+	bh=+d6Y7/FAv+3eUk88zbe2KQXiskPBUDBz0xR2ZKCuznw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snwvsL9gAiRVGMdXJaQg7392wc9PcJqYiD0OIw1Gu5UoA/8MBDJT5N+nGmOt4UeNQ
-	 6YtWMsI3ujiEZIbtPK16q7eJPhfnhkYQSdkZvIviTGoMrwEw+JzNA8q+oBEi+dUKvz
-	 B+z8tG4w69umDdjZj2q6UK3UV8MuBW6yrmg1u6Cc=
+	b=iJcZwyLiB7/NBwPucnXjGSZS/wXh75rz6TFdcuTp3rJa1DeZJCI/eHqOZaKkPCdYB
+	 ecsFrW5rHd3SVz9+Sj286GFkvqFPrLcNN5z8l9TE0FCTiUh0+djCcaJORgpYWkagWD
+	 CnJVR/cZnS8Ysd5o+abardY9vBkuXZ7QuW8twlhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 74/92] resource: fix false warning in __request_region()
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH 6.12 113/117] Revert "drm/xe/tests/mocs: Update xe_force_wake_get() return handling"
 Date: Wed, 30 Jul 2025 11:36:22 +0200
-Message-ID: <20250730093233.626144296@linuxfoundation.org>
+Message-ID: <20250730093238.208290861@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akinobu Mita <akinobu.mita@gmail.com>
+From: Tomita Moeko <tomitamoeko@gmail.com>
 
-commit 91a229bb7ba86b2592c3f18c54b7b2c5e6fe0f95 upstream.
+This reverts commit 95a75ed2b005447f96fbd4ac61758ccda44069d1.
 
-A warning is raised when __request_region() detects a conflict with a
-resource whose resource.desc is IORES_DESC_DEVICE_PRIVATE_MEMORY.
+The reverted commit updated the handling of xe_force_wake_get to match
+the new "return refcounted domain mask" semantics introduced in commit
+a7ddcea1f5ac ("drm/xe: Error handling in xe_force_wake_get()"). However,
+that API change only exists in 6.13 and later.
 
-But this warning is only valid for iomem_resources.
-The hmem device resource uses resource.desc as the numa node id, which can
-cause spurious warnings.
+In 6.12 stable kernel, xe_force_wake_get still returns a status code.
+The update incorrectly treats the return value as a mask, causing the
+return value of 0 to be misinterpreted as an error.
 
-This warning appeared on a machine with multiple cxl memory expanders.
-One of the NUMA node id is 6, which is the same as the value of
-IORES_DESC_DEVICE_PRIVATE_MEMORY.
-
-In this environment it was just a spurious warning, but when I saw the
-warning I suspected a real problem so it's better to fix it.
-
-This change fixes this by restricting the warning to only iomem_resource.
-This also adds a missing new line to the warning message.
-
-Link: https://lkml.kernel.org/r/20250719112604.25500-1-akinobu.mita@gmail.com
-Fixes: 7dab174e2e27 ("dax/hmem: Move hmem device registration to dax_hmem.ko")
-Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/resource.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/tests/xe_mocs.c |   21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -1279,8 +1279,9 @@ static int __request_region_locked(struc
- 		 * become unavailable to other users.  Conflicts are
- 		 * not expected.  Warn to aid debugging if encountered.
- 		 */
--		if (conflict->desc == IORES_DESC_DEVICE_PRIVATE_MEMORY) {
--			pr_warn("Unaddressable device %s %pR conflicts with %pR",
-+		if (parent == &iomem_resource &&
-+		    conflict->desc == IORES_DESC_DEVICE_PRIVATE_MEMORY) {
-+			pr_warn("Unaddressable device %s %pR conflicts with %pR\n",
- 				conflict->name, conflict, res);
- 		}
- 		if (conflict != parent) {
+--- a/drivers/gpu/drm/xe/tests/xe_mocs.c
++++ b/drivers/gpu/drm/xe/tests/xe_mocs.c
+@@ -43,14 +43,12 @@ static void read_l3cc_table(struct xe_gt
+ {
+ 	struct kunit *test = kunit_get_current_test();
+ 	u32 l3cc, l3cc_expected;
+-	unsigned int fw_ref, i;
++	unsigned int i;
+ 	u32 reg_val;
++	u32 ret;
+ 
+-	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL)) {
+-		xe_force_wake_put(gt_to_fw(gt), fw_ref);
+-		KUNIT_ASSERT_TRUE_MSG(test, true, "Forcewake Failed.\n");
+-	}
++	ret = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	KUNIT_ASSERT_EQ_MSG(test, ret, 0, "Forcewake Failed.\n");
+ 
+ 	for (i = 0; i < info->num_mocs_regs; i++) {
+ 		if (!(i & 1)) {
+@@ -74,7 +72,7 @@ static void read_l3cc_table(struct xe_gt
+ 		KUNIT_EXPECT_EQ_MSG(test, l3cc_expected, l3cc,
+ 				    "l3cc idx=%u has incorrect val.\n", i);
+ 	}
+-	xe_force_wake_put(gt_to_fw(gt), fw_ref);
++	xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+ }
+ 
+ static void read_mocs_table(struct xe_gt *gt,
+@@ -82,14 +80,15 @@ static void read_mocs_table(struct xe_gt
+ {
+ 	struct kunit *test = kunit_get_current_test();
+ 	u32 mocs, mocs_expected;
+-	unsigned int fw_ref, i;
++	unsigned int i;
+ 	u32 reg_val;
++	u32 ret;
+ 
+ 	KUNIT_EXPECT_TRUE_MSG(test, info->unused_entries_index,
+ 			      "Unused entries index should have been defined\n");
+ 
+-	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	KUNIT_ASSERT_NE_MSG(test, fw_ref, 0, "Forcewake Failed.\n");
++	ret = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	KUNIT_ASSERT_EQ_MSG(test, ret, 0, "Forcewake Failed.\n");
+ 
+ 	for (i = 0; i < info->num_mocs_regs; i++) {
+ 		if (regs_are_mcr(gt))
+@@ -107,7 +106,7 @@ static void read_mocs_table(struct xe_gt
+ 				    "mocs reg 0x%x has incorrect val.\n", i);
+ 	}
+ 
+-	xe_force_wake_put(gt_to_fw(gt), fw_ref);
++	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
+ }
+ 
+ static int mocs_kernel_test_run_device(struct xe_device *xe)
 
 
 
