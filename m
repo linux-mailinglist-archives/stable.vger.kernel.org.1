@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEEDEB15C36
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30B3B15CD7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9625F1674C8
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3403918C3DD8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007D220E6;
-	Wed, 30 Jul 2025 09:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CE9291C23;
+	Wed, 30 Jul 2025 09:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ip6QJzlf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6B/2sfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B333719D065;
-	Wed, 30 Jul 2025 09:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21C236124;
+	Wed, 30 Jul 2025 09:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868390; cv=none; b=elrOgDBK3FV01ZCT/l6iO01f3QQA8zPlFWa3VzISNmCeBKO9wDtkauXU9VLM/+G0jEpBrn0Ko0pTbBj0B4Tl+yqT/x5JyeV7wdAV9yPzirvUa+KaAH5bRVoBkiFFQ1aWOWwpkRZv1iuPdyi4kG6u0f4GnG2/M+Sxa5S7eDSuXoI=
+	t=1753868783; cv=none; b=OILhM6lm35yYWHmFdFhRsmR3pKo18D2bWowGGVTvtfwnpsc8UiwufhNyUoGmEM/9x+pSL2uR4NRenxKUJgkMQcViND0XblUjJqfp0luAUN3Q1WytPpvAAnDZfgOEA14Nxns93SfSMMTo3v0prhddFxzDmo3QUomaL7GYivv5CVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868390; c=relaxed/simple;
-	bh=NRSbhcm6I1I77P68brqfZBTvl8OTG+GKwuClYDEUn8Y=;
+	s=arc-20240116; t=1753868783; c=relaxed/simple;
+	bh=dasPaDksRPK+5eb4Nddap29ju4Vx63nih5vvarN7dv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NoBA/xlvxAGBo1yCQMUS8WZtw9MF4wj6U5Auf+y+nmi3HqVkQaKHTIoPFDF6ZkjU0Gusmcdotf+YvIj0ycXYp8aehBM+qSkGLq1rqgVYfQppRApiCE7OkD9l4+Oap2T+sa6LhL21oXdC7EYudnHkcDowPjxGozqRgWG45jymFIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ip6QJzlf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F2DC4CEE7;
-	Wed, 30 Jul 2025 09:39:49 +0000 (UTC)
+	 MIME-Version; b=mFkHm5mYDsO4fC/eS8sq7fmoArujjSuYxQFRI771pY/NXomkkjGpvO2DYCJkhPbUx0DUwhH8St7EWT94g+5h3gaqnXCFP7S85qf7QRPYEfXneG2Vo1LuXkwR2h9qNysnSLIwmK1V3GLJcbs4WXiK3bSK3GSweP9zsgKjv4WCFaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6B/2sfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28823C4CEF5;
+	Wed, 30 Jul 2025 09:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868390;
-	bh=NRSbhcm6I1I77P68brqfZBTvl8OTG+GKwuClYDEUn8Y=;
+	s=korg; t=1753868783;
+	bh=dasPaDksRPK+5eb4Nddap29ju4Vx63nih5vvarN7dv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ip6QJzlfXM8QTKHgisxhuqgmTZtXREkyKYxaofpxu7wgqNG3GjH/W1tt69946Ub0C
-	 lu5An4iUoLqMlU7aC3Ku9WTVDBjbngzrcePIvDMYu4gqQ1Ak0JKHRCKFFev0hgVVlu
-	 Ex4jjBuKErhkZdLZOzElD5+8fFiC7WIdZm8b2kMg=
+	b=D6B/2sfeYAkqfQJ6w8PSeOMnwLC2e1dHw+Ds/PAJzvtI1pA/L6MRRDOJNbBFgSPAE
+	 lQ9vvtgEnjNvyyIM6XN/cuiCeBbUCG8liilWCwWbD4aJ5Ci+959DfOBDzDB9PuQ9Ty
+	 CKquOYhJlkbv9CjKoLl3ls54KyNSjfeVsznbof9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 50/76] usb: typec: tcpm: allow switching to mode accessory to mux properly
+	syzbot+ac2116e48989e84a2893@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Aditya Dutt <duttaditya18@gmail.com>
+Subject: [PATCH 6.12 074/117] jfs: reject on-disk inodes of an unsupported type
 Date: Wed, 30 Jul 2025 11:35:43 +0200
-Message-ID: <20250730093228.787422116@linuxfoundation.org>
+Message-ID: <20250730093236.418969345@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 8a50da849151e7e12b43c1d8fe7ad302223aef6b upstream.
+commit 8c3f9a70d2d4dd6c640afe294b05c6a0a45434d9 upstream.
 
-The funciton tcpm_acc_attach is not setting the proper state when
-calling tcpm_set_role. The function tcpm_set_role is currently only
-handling TYPEC_STATE_USB. For the tcpm_acc_attach to switch into other
-modal states tcpm_set_role needs to be extended by an extra state
-parameter. This patch is handling the proper state change when calling
-tcpm_acc_attach.
+Syzbot has reported the following BUG:
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-tcpm-v1-3-b99f44badce8@pengutronix.de
-Stable-dep-of: bec15191d523 ("usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel BUG at fs/inode.c:668!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 3 UID: 0 PID: 139 Comm: jfsCommit Not tainted 6.12.0-rc4-syzkaller-00085-g4e46774408d9 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+RIP: 0010:clear_inode+0x168/0x190
+Code: 4c 89 f7 e8 ba fe e5 ff e9 61 ff ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 7c c1 4c 89 f7 e8 90 ff e5 ff eb b7
+ 0b e8 01 5d 7f ff 90 0f 0b e8 f9 5c 7f ff 90 0f 0b e8 f1 5c 7f
+RSP: 0018:ffffc900027dfae8 EFLAGS: 00010093
+RAX: ffffffff82157a87 RBX: 0000000000000001 RCX: ffff888104d4b980
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc900027dfc90 R08: ffffffff82157977 R09: fffff520004fbf38
+R10: dffffc0000000000 R11: fffff520004fbf38 R12: dffffc0000000000
+R13: ffff88811315bc00 R14: ffff88811315bda8 R15: ffff88811315bb80
+FS:  0000000000000000(0000) GS:ffff888135f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005565222e0578 CR3: 0000000026ef0000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ? __die_body+0x5f/0xb0
+ ? die+0x9e/0xc0
+ ? do_trap+0x15a/0x3a0
+ ? clear_inode+0x168/0x190
+ ? do_error_trap+0x1dc/0x2c0
+ ? clear_inode+0x168/0x190
+ ? __pfx_do_error_trap+0x10/0x10
+ ? report_bug+0x3cd/0x500
+ ? handle_invalid_op+0x34/0x40
+ ? clear_inode+0x168/0x190
+ ? exc_invalid_op+0x38/0x50
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? clear_inode+0x57/0x190
+ ? clear_inode+0x167/0x190
+ ? clear_inode+0x168/0x190
+ ? clear_inode+0x167/0x190
+ jfs_evict_inode+0xb5/0x440
+ ? __pfx_jfs_evict_inode+0x10/0x10
+ evict+0x4ea/0x9b0
+ ? __pfx_evict+0x10/0x10
+ ? iput+0x713/0xa50
+ txUpdateMap+0x931/0xb10
+ ? __pfx_txUpdateMap+0x10/0x10
+ jfs_lazycommit+0x49a/0xb80
+ ? _raw_spin_unlock_irqrestore+0x8f/0x140
+ ? lockdep_hardirqs_on+0x99/0x150
+ ? __pfx_jfs_lazycommit+0x10/0x10
+ ? __pfx_default_wake_function+0x10/0x10
+ ? __kthread_parkme+0x169/0x1d0
+ ? __pfx_jfs_lazycommit+0x10/0x10
+ kthread+0x2f2/0x390
+ ? __pfx_jfs_lazycommit+0x10/0x10
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x4d/0x80
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+This happens when 'clear_inode()' makes an attempt to finalize an underlying
+JFS inode of unknown type. According to JFS layout description from
+https://jfs.sourceforge.net/project/pub/jfslayout.pdf, inode types from 5 to
+15 are reserved for future extensions and should not be encountered on a valid
+filesystem. So add an extra check for valid inode type in 'copy_from_dinode()'.
+
+Reported-by: syzbot+ac2116e48989e84a2893@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ac2116e48989e84a2893
+Fixes: 79ac5a46c5c1 ("jfs_lookup(): don't bother with . or ..")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ fs/jfs/jfs_imap.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1041,7 +1041,7 @@ static int tcpm_set_attached_state(struc
- 				     port->data_role);
- }
- 
--static int tcpm_set_roles(struct tcpm_port *port, bool attached,
-+static int tcpm_set_roles(struct tcpm_port *port, bool attached, int state,
- 			  enum typec_role role, enum typec_data_role data)
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -3029,14 +3029,23 @@ static void duplicateIXtree(struct super
+  *
+  * RETURN VALUES:
+  *	0	- success
+- *	-ENOMEM	- insufficient memory
++ *	-EINVAL	- unexpected inode type
+  */
+ static int copy_from_dinode(struct dinode * dip, struct inode *ip)
  {
- 	enum typec_orientation orientation;
-@@ -1078,7 +1078,7 @@ static int tcpm_set_roles(struct tcpm_po
- 		}
- 	}
+ 	struct jfs_inode_info *jfs_ip = JFS_IP(ip);
+ 	struct jfs_sb_info *sbi = JFS_SBI(ip->i_sb);
++	int fileset = le32_to_cpu(dip->di_fileset);
  
--	ret = tcpm_mux_set(port, TYPEC_STATE_USB, usb_role, orientation);
-+	ret = tcpm_mux_set(port, state, usb_role, orientation);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3622,7 +3622,8 @@ static int tcpm_src_attach(struct tcpm_p
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3780,7 +3781,8 @@ static int tcpm_snk_attach(struct tcpm_p
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SINK, tcpm_data_role_for_sink(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SINK, tcpm_data_role_for_sink(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3804,6 +3806,7 @@ static int tcpm_acc_attach(struct tcpm_p
- 	int ret;
- 	enum typec_role role;
- 	enum typec_data_role data;
-+	int state = TYPEC_STATE_USB;
- 
- 	if (port->attached)
- 		return 0;
-@@ -3812,7 +3815,13 @@ static int tcpm_acc_attach(struct tcpm_p
- 	data = tcpm_port_is_sink(port) ? tcpm_data_role_for_sink(port)
- 				       : tcpm_data_role_for_source(port);
- 
--	ret = tcpm_set_roles(port, true, role, data);
-+	if (tcpm_port_is_audio(port))
-+		state = TYPEC_MODE_AUDIO;
+-	jfs_ip->fileset = le32_to_cpu(dip->di_fileset);
++	switch (fileset) {
++	case AGGR_RESERVED_I: case AGGREGATE_I: case BMAP_I:
++	case LOG_I: case BADBLOCK_I: case FILESYSTEM_I:
++		break;
++	default:
++		return -EINVAL;
++	}
 +
-+	if (tcpm_port_is_debug(port))
-+		state = TYPEC_MODE_DEBUG;
-+
-+	ret = tcpm_set_roles(port, true, state, role, data);
- 	if (ret < 0)
- 		return ret;
++	jfs_ip->fileset = fileset;
+ 	jfs_ip->mode2 = le32_to_cpu(dip->di_mode);
+ 	jfs_set_inode_flags(ip);
  
-@@ -4514,7 +4523,7 @@ static void run_state_machine(struct tcp
- 		 */
- 		tcpm_set_vconn(port, false);
- 		tcpm_set_vbus(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SOURCE,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SOURCE,
- 			       tcpm_data_role_for_source(port));
- 		/*
- 		 * If tcpc fails to notify vbus off, TCPM will wait for PD_T_SAFE_0V +
-@@ -4546,7 +4555,7 @@ static void run_state_machine(struct tcp
- 		tcpm_set_vconn(port, false);
- 		if (port->pd_capable)
- 			tcpm_set_charge(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SINK,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SINK,
- 			       tcpm_data_role_for_sink(port));
- 		/*
- 		 * VBUS may or may not toggle, depending on the adapter.
-@@ -4652,10 +4661,10 @@ static void run_state_machine(struct tcp
- 	case DR_SWAP_CHANGE_DR:
- 		tcpm_unregister_altmodes(port);
- 		if (port->data_role == TYPEC_HOST)
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_DEVICE);
- 		else
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_HOST);
- 		tcpm_ams_finish(port);
- 		tcpm_set_state(port, ready_state(port), 0);
 
 
 
