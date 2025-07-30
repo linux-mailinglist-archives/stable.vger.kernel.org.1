@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-165328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB92B15CBF
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4406B15D27
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D3C55A1718
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F7243B62D8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE4D2951D0;
-	Wed, 30 Jul 2025 09:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D90635;
+	Wed, 30 Jul 2025 09:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVJf81Nz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDv8winq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD6428DF0B;
-	Wed, 30 Jul 2025 09:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC961F09B6;
+	Wed, 30 Jul 2025 09:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868691; cv=none; b=Z0SQQjvlUPRxs6ovsE4AtlqzUPHBTQTYOT5xHy9tb11pfqnToAaIKRSuMqflQ+fxvzkr8U954T+oXXBkRBzp+qkURGsryvhbeX9NbrgUyqNe8kJmPaDz96XQLOpI+FXGSkNMWehTS1WlC5wvhvtcZv7qQoE4ZbmxYr3IOdzi6mo=
+	t=1753869002; cv=none; b=YNCY1lEY602qwf9p92zh6MDKC1OkqQ65AOxeHIivHNCdUxG+Ry2QfSAtHdBObjcPBaCixT16qrmAaX2dmaUU2uv+BHUKjMKRAxhKFmPYrAswwqVTlsGxxLmU2ITzmZpHabPJx2UzWLJ+yQmBpAdF96h9+OdCRzdT2tPmvNnDagw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868691; c=relaxed/simple;
-	bh=UUjbi+YD1sM+pUCuM4IUsiSpebdOSwAZR9vfGvumWTE=;
+	s=arc-20240116; t=1753869002; c=relaxed/simple;
+	bh=xZg/pNGiGtRzLu5oEKiQqx3FmWYF7fNmtIoq1DJjcas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8vY7gGpD0Rn/JE0P5S+5PAaL577MdCMn+wrhQU99UyaesKp+DKzEEn9VRL0A0fwSO334RIOwPy3tPtv4JLE+SKMbxcIQR0SfyLPDtwRLxa8q5YZcIQNnYm2mPos1qGKIyNFETYnVl10LCP5JYHJNMidl2RrF1T3KaeVDaq3uTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVJf81Nz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBC8C4CEF6;
-	Wed, 30 Jul 2025 09:44:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PveeEKmjN1WNRGVLVZwxu3KSaIOWF7KLR++6Ia6V9/ZV27u146mV2MSBf4ctfRmMcCumfdi6Zlc8Ff2ntBA45vNZrrXwOODArfhD/hUacAn7txBpTv8ApDIaui+TUOSaUs/DWupSG5wJWT4VpyekbrVuPWeuztSOHIDhIeBWq+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDv8winq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16710C4CEF5;
+	Wed, 30 Jul 2025 09:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868691;
-	bh=UUjbi+YD1sM+pUCuM4IUsiSpebdOSwAZR9vfGvumWTE=;
+	s=korg; t=1753869002;
+	bh=xZg/pNGiGtRzLu5oEKiQqx3FmWYF7fNmtIoq1DJjcas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVJf81NzhL2dJU6qu2xUNsQ5GSSess96naB538ugiOjEp4mKW+970rcYJ2WFheZNh
-	 m3taROewaHl1Ezrwd5OgQ86aFKIC2/N6TZ50HxZAbdOZzs6aF8nkcR9u1Rx+d+plNS
-	 6jXjz+/I1DyZHVt3W7G7LiCfg9mmxAsQ+R6Wk9gY=
+	b=EDv8winqGylFoEE/C4ZdhgKk6qdb7gqAzoxjU72S9D1CNuCeahEXHqKdyFCgZiEsO
+	 33w7jfFaJsJzqefxOvHFvx7d1SPiWuwgj1ctQs1RYFI6QFvpPqnFGvNmMplfNjduG+
+	 Lg+FxDOf4XucmoU2mDG6iyTO3pN4MxFXMLtb166w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edip Hazuri <edip@medip.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 052/117] ALSA: hda/realtek - Add mute LED support for HP Victus 15-fa0xxx
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 13/92] platform/mellanox: mlxbf-pmc: Remove newline char from event name input
 Date: Wed, 30 Jul 2025 11:35:21 +0200
-Message-ID: <20250730093235.586508922@linuxfoundation.org>
+Message-ID: <20250730093231.134499249@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edip Hazuri <edip@medip.dev>
+From: Shravan Kumar Ramani <shravankr@nvidia.com>
 
-commit 21c8ed9047b7f44c1c49b889d4ba2f555d9ee17e upstream.
+[ Upstream commit 44e6ca8faeeed12206f3e7189c5ac618b810bb9c ]
 
-The mute led on this laptop is using ALC245 but requires a quirk to work
-This patch enables the existing quirk for the device.
+Since the input string passed via the command line appends a newline char,
+it needs to be removed before comparison with the event_list.
 
-Tested on my Victus 15-fa0xxx Laptop. The LED behaviour works
-as intended.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
-Link: https://patch.msgid.link/20250717212625.366026-2-edip@medip.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1a218d312e65 ("platform/mellanox: mlxbf-pmc: Add Mellanox BlueField PMC driver")
+Signed-off-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/4978c18e33313b48fa2ae7f3aa6dbcfce40877e4.1751380187.git.shravankr@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/mellanox/mlxbf-pmc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10687,6 +10687,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8a2e, "HP Envy 16", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a30, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a31, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8a4f, "HP Victus 15-fa0xxx (MB 8A4F)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a6e, "HP EDNA 360", ALC287_FIXUP_CS35L41_I2C_4),
- 	SND_PCI_QUIRK(0x103c, 0x8a74, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8a78, "HP Dev One", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 771a24c397c12..b8fe51e6d4d3f 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -15,6 +15,7 @@
+ #include <linux/hwmon.h>
+ #include <linux/platform_device.h>
+ #include <linux/string.h>
++#include <linux/string_helpers.h>
+ #include <uapi/linux/psci.h>
+ 
+ #define MLXBF_PMC_WRITE_REG_32 0x82000009
+@@ -1666,6 +1667,7 @@ static ssize_t mlxbf_pmc_event_store(struct device *dev,
+ 		attr, struct mlxbf_pmc_attribute, dev_attr);
+ 	unsigned int blk_num, cnt_num;
+ 	bool is_l3 = false;
++	char *evt_name;
+ 	int evt_num;
+ 	int err;
+ 
+@@ -1673,8 +1675,14 @@ static ssize_t mlxbf_pmc_event_store(struct device *dev,
+ 	cnt_num = attr_event->index;
+ 
+ 	if (isalpha(buf[0])) {
++		/* Remove the trailing newline character if present */
++		evt_name = kstrdup_and_replace(buf, '\n', '\0', GFP_KERNEL);
++		if (!evt_name)
++			return -ENOMEM;
++
+ 		evt_num = mlxbf_pmc_get_event_num(pmc->block_name[blk_num],
+-						  buf);
++						  evt_name);
++		kfree(evt_name);
+ 		if (evt_num < 0)
+ 			return -EINVAL;
+ 	} else {
+-- 
+2.39.5
+
 
 
 
