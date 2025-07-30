@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B3DB15CDF
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52BBB15C39
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98F718C381B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2B5170208
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C503294A1B;
-	Wed, 30 Jul 2025 09:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DB723D2A2;
+	Wed, 30 Jul 2025 09:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcq6vptv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsUvmc5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223FE1F5834;
-	Wed, 30 Jul 2025 09:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C7920E6;
+	Wed, 30 Jul 2025 09:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868800; cv=none; b=YlzDEnsH/D8pZ9O1dML/CCqQ1J+2Qrvco7Wk0YVb0QZX0OMbNDH869Jp+IUyxG4Wb7S9GDK7Lmf32eCBKWxePXXrdi5uxF+YpFhW6qGQxBSCnGN0S5ajStr4i3UDmMeEbEhmsOjSXgQR1RMigRm/EWyJJFd3YshK70worbHCpTs=
+	t=1753868412; cv=none; b=FU+q6Ksv/QNLnOvMqVjPcSZ3VXsmuK4fC/hj9u/66kt8X+gvHAjlowYZcQolc9VCVkcvlEz5gar7NF4QIXTbF1NBcHwtKeY5+18k+m+UTpOpxzytoFe3XLcDqVNBrReoMW3zkp2r+RYxZO/51lMbeB+ip1xqO+b5814As8pU+bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868800; c=relaxed/simple;
-	bh=5Yq4Ob6jUcWxHfavLp19GSQ8gxeryI3mDYPxjf1pUyw=;
+	s=arc-20240116; t=1753868412; c=relaxed/simple;
+	bh=cHqABianXIWEePGaHvLYLqLxV7rLTZCMsn58jXLZaK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmA12uufJ2EgjVJBlaiDu1aXhmSToGZemQbdTC28qzXHP25SbFV8o2/FSvZNEdWpYlCSLd+fSQazuU3QmY9QmUu5FOLdD/tRuC3tJwZi0UZ7ppzUox0qfx9XQ7baf7A5TaSgKuW6IvFTUbPgT5AgpqmPEh7/77qsXE6d0bKcgNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcq6vptv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAA7C4CEF6;
-	Wed, 30 Jul 2025 09:46:39 +0000 (UTC)
+	 MIME-Version; b=oJFMFgCncfkZdpUKzF/41M6vX5JXfIEwXAdgqfv5QEJbzzUJ+3ikvZ9LDQWcnGhB7qgfDrpRaogYRGC+b5a0EE7cJAPEcDXfT8i2cFCqGEqVYGmxkL6qZV+ZVdu+vRTmLtsqF0UgGWZ92ggm+tk8MFlmXSfiCiG6fbIQxtxdepY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsUvmc5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5D6C4CEE7;
+	Wed, 30 Jul 2025 09:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868799;
-	bh=5Yq4Ob6jUcWxHfavLp19GSQ8gxeryI3mDYPxjf1pUyw=;
+	s=korg; t=1753868411;
+	bh=cHqABianXIWEePGaHvLYLqLxV7rLTZCMsn58jXLZaK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcq6vptveXxJNmDcYf4OraGxsJE0iVErXP6xfFDpYaAj85ZHGK7GXMGvTZMGsm8Os
-	 fbsp8Aq3NnmvQKr3sSxZNGzyr24qfGwvoADr8WSXEHSU9a7LVQ4AbcM5AFYENhSR5R
-	 6CJOJ5qUb9gTUyyXEzsU8YJD/KyuH7/qR2UpmRpQ=
+	b=tsUvmc5qv9YZk6LLAvPbebIdfHr8ajOWJZ2FmlttndpnxJtYb8KPxr2r2RTdAVr9v
+	 c8kjzlSGXyLUJ01NLsg4WhG6FU5dY4/rnQsE5u2gZ2lnar/3UqDCcr4A2dko+osDwB
+	 5DZ3D5hCFPd39iYm5k6IItitK3z6YB2HVm86MHz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Mohan Kumar D <mkumard@nvidia.com>,
+	Sheetal <sheetal@nvidia.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/117] erofs: simplify z_erofs_load_compact_lcluster()
+Subject: [PATCH 6.6 55/76] ALSA: hda/tegra: Add Tegra264 support
 Date: Wed, 30 Jul 2025 11:35:48 +0200
-Message-ID: <20250730093236.832499065@linuxfoundation.org>
+Message-ID: <20250730093228.973813516@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +63,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Mohan Kumar D <mkumard@nvidia.com>
 
-[ Upstream commit 2a810ea79cd7a6d5f134ea69ca2ba726e600cbc4 ]
+commit 1c4193917eb3279788968639f24d72ffeebdec6b upstream.
 
- - Get rid of unpack_compacted_index() and fold it into
-   z_erofs_load_compact_lcluster();
+Update HDA driver to support Tegra264 differences from legacy HDA,
+which includes: clocks/resets, always power on, and hardware-managed
+FPCI/IPFS initialization. The driver retrieves this chip-specific
+information from soc_data.
 
- - Avoid a goto.
-
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250114034429.431408-1-hsiangkao@linux.alibaba.com
-Stable-dep-of: b44686c8391b ("erofs: fix large fragment handling")
+Signed-off-by: Mohan Kumar D <mkumard@nvidia.com>
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250512064258.1028331-4-sheetal@nvidia.com
+Stable-dep-of: e0a911ac8685 ("ALSA: hda: Add missing NVIDIA HDA codec IDs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zmap.c |   89 ++++++++++++++++++++++----------------------------------
- 1 file changed, 36 insertions(+), 53 deletions(-)
+ sound/pci/hda/hda_tegra.c  |   51 +++++++++++++++++++++++++++++++++++++++------
+ sound/pci/hda/patch_hdmi.c |    1 
+ 2 files changed, 46 insertions(+), 6 deletions(-)
 
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -97,17 +97,48 @@ static int get_compacted_la_distance(uns
- 	return d1;
- }
+--- a/sound/pci/hda/hda_tegra.c
++++ b/sound/pci/hda/hda_tegra.c
+@@ -72,6 +72,10 @@
+ struct hda_tegra_soc {
+ 	bool has_hda2codec_2x_reset;
+ 	bool has_hda2hdmi;
++	bool has_hda2codec_2x;
++	bool input_stream;
++	bool always_on;
++	bool requires_init;
+ };
  
--static int unpack_compacted_index(struct z_erofs_maprecorder *m,
--				  unsigned int amortizedshift,
--				  erofs_off_t pos, bool lookahead)
-+static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
-+					 unsigned long lcn, bool lookahead)
- {
--	struct erofs_inode *const vi = EROFS_I(m->inode);
-+	struct inode *const inode = m->inode;
-+	struct erofs_inode *const vi = EROFS_I(inode);
-+	const erofs_off_t ebase = sizeof(struct z_erofs_map_header) +
-+		ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
- 	const unsigned int lclusterbits = vi->z_logical_clusterbits;
-+	const unsigned int totalidx = erofs_iblks(inode);
-+	unsigned int compacted_4b_initial, compacted_2b, amortizedshift;
- 	unsigned int vcnt, lo, lobits, encodebits, nblk, bytes;
--	bool big_pcluster;
-+	bool big_pcluster = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1;
-+	erofs_off_t pos;
- 	u8 *in, type;
- 	int i;
+ struct hda_tegra {
+@@ -187,7 +191,9 @@ static int __maybe_unused hda_tegra_runt
+ 	if (rc != 0)
+ 		return rc;
+ 	if (chip->running) {
+-		hda_tegra_init(hda);
++		if (hda->soc->requires_init)
++			hda_tegra_init(hda);
++
+ 		azx_init_chip(chip, 1);
+ 		/* disable controller wake up event*/
+ 		azx_writew(chip, WAKEEN, azx_readw(chip, WAKEEN) &
+@@ -252,7 +258,8 @@ static int hda_tegra_init_chip(struct az
+ 	bus->remap_addr = hda->regs + HDA_BAR0;
+ 	bus->addr = res->start + HDA_BAR0;
  
-+	if (lcn >= totalidx || lclusterbits > 14)
-+		return -EINVAL;
-+
-+	m->lcn = lcn;
-+	/* used to align to 32-byte (compacted_2b) alignment */
-+	compacted_4b_initial = ((32 - ebase % 32) / 4) & 7;
-+	compacted_2b = 0;
-+	if ((vi->z_advise & Z_EROFS_ADVISE_COMPACTED_2B) &&
-+	    compacted_4b_initial < totalidx)
-+		compacted_2b = rounddown(totalidx - compacted_4b_initial, 16);
-+
-+	pos = ebase;
-+	amortizedshift = 2;	/* compact_4b */
-+	if (lcn >= compacted_4b_initial) {
-+		pos += compacted_4b_initial * 4;
-+		lcn -= compacted_4b_initial;
-+		if (lcn < compacted_2b) {
-+			amortizedshift = 1;
-+		} else {
-+			pos += compacted_2b * 2;
-+			lcn -= compacted_2b;
-+		}
-+	}
-+	pos += lcn * (1 << amortizedshift);
-+
-+	/* figure out the lcluster count in this pack */
- 	if (1 << amortizedshift == 4 && lclusterbits <= 14)
- 		vcnt = 2;
- 	else if (1 << amortizedshift == 2 && lclusterbits <= 12)
-@@ -122,7 +153,6 @@ static int unpack_compacted_index(struct
- 	/* it doesn't equal to round_up(..) */
- 	m->nextpackoff = round_down(pos, vcnt << amortizedshift) +
- 			 (vcnt << amortizedshift);
--	big_pcluster = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1;
- 	lobits = max(lclusterbits, ilog2(Z_EROFS_LI_D0_CBLKCNT) + 1U);
- 	encodebits = ((vcnt << amortizedshift) - sizeof(__le32)) * 8 / vcnt;
- 	bytes = pos & ((vcnt << amortizedshift) - 1);
-@@ -207,53 +237,6 @@ static int unpack_compacted_index(struct
+-	hda_tegra_init(hda);
++	if (hda->soc->requires_init)
++		hda_tegra_init(hda);
+ 
  	return 0;
  }
+@@ -325,7 +332,7 @@ static int hda_tegra_first_init(struct a
+ 	 * starts with offset 0 which is wrong as HW register for output stream
+ 	 * offset starts with 4.
+ 	 */
+-	if (of_device_is_compatible(np, "nvidia,tegra234-hda"))
++	if (!hda->soc->input_stream)
+ 		chip->capture_streams = 4;
  
--static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
--					 unsigned long lcn, bool lookahead)
--{
--	struct inode *const inode = m->inode;
--	struct erofs_inode *const vi = EROFS_I(inode);
--	const erofs_off_t ebase = sizeof(struct z_erofs_map_header) +
--		ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
--	unsigned int totalidx = erofs_iblks(inode);
--	unsigned int compacted_4b_initial, compacted_2b;
--	unsigned int amortizedshift;
--	erofs_off_t pos;
--
--	if (lcn >= totalidx || vi->z_logical_clusterbits > 14)
--		return -EINVAL;
--
--	m->lcn = lcn;
--	/* used to align to 32-byte (compacted_2b) alignment */
--	compacted_4b_initial = (32 - ebase % 32) / 4;
--	if (compacted_4b_initial == 32 / 4)
--		compacted_4b_initial = 0;
--
--	if ((vi->z_advise & Z_EROFS_ADVISE_COMPACTED_2B) &&
--	    compacted_4b_initial < totalidx)
--		compacted_2b = rounddown(totalidx - compacted_4b_initial, 16);
--	else
--		compacted_2b = 0;
--
--	pos = ebase;
--	if (lcn < compacted_4b_initial) {
--		amortizedshift = 2;
--		goto out;
--	}
--	pos += compacted_4b_initial * 4;
--	lcn -= compacted_4b_initial;
--
--	if (lcn < compacted_2b) {
--		amortizedshift = 1;
--		goto out;
--	}
--	pos += compacted_2b * 2;
--	lcn -= compacted_2b;
--	amortizedshift = 2;
--out:
--	pos += lcn * (1 << amortizedshift);
--	return unpack_compacted_index(m, amortizedshift, pos, lookahead);
--}
--
- static int z_erofs_load_lcluster_from_disk(struct z_erofs_maprecorder *m,
- 					   unsigned int lcn, bool lookahead)
- {
+ 	chip->playback_streams = (gcap >> 12) & 0x0f;
+@@ -421,7 +428,6 @@ static int hda_tegra_create(struct snd_c
+ 	chip->driver_caps = driver_caps;
+ 	chip->driver_type = driver_caps & 0xff;
+ 	chip->dev_index = 0;
+-	chip->jackpoll_interval = msecs_to_jiffies(5000);
+ 	INIT_LIST_HEAD(&chip->pcm_list);
+ 
+ 	chip->codec_probe_mask = -1;
+@@ -438,7 +444,16 @@ static int hda_tegra_create(struct snd_c
+ 	chip->bus.core.sync_write = 0;
+ 	chip->bus.core.needs_damn_long_delay = 1;
+ 	chip->bus.core.aligned_mmio = 1;
+-	chip->bus.jackpoll_in_suspend = 1;
++
++	/*
++	 * HDA power domain and clocks are always on for Tegra264 and
++	 * the jack detection logic would work always, so no need of
++	 * jack polling mechanism running.
++	 */
++	if (!hda->soc->always_on) {
++		chip->jackpoll_interval = msecs_to_jiffies(5000);
++		chip->bus.jackpoll_in_suspend = 1;
++	}
+ 
+ 	err = snd_device_new(card, SNDRV_DEV_LOWLEVEL, chip, &ops);
+ 	if (err < 0) {
+@@ -452,22 +467,44 @@ static int hda_tegra_create(struct snd_c
+ static const struct hda_tegra_soc tegra30_data = {
+ 	.has_hda2codec_2x_reset = true,
+ 	.has_hda2hdmi = true,
++	.has_hda2codec_2x = true,
++	.input_stream = true,
++	.always_on = false,
++	.requires_init = true,
+ };
+ 
+ static const struct hda_tegra_soc tegra194_data = {
+ 	.has_hda2codec_2x_reset = false,
+ 	.has_hda2hdmi = true,
++	.has_hda2codec_2x = true,
++	.input_stream = true,
++	.always_on = false,
++	.requires_init = true,
+ };
+ 
+ static const struct hda_tegra_soc tegra234_data = {
+ 	.has_hda2codec_2x_reset = true,
+ 	.has_hda2hdmi = false,
++	.has_hda2codec_2x = true,
++	.input_stream = false,
++	.always_on = false,
++	.requires_init = true,
++};
++
++static const struct hda_tegra_soc tegra264_data = {
++	.has_hda2codec_2x_reset = true,
++	.has_hda2hdmi = false,
++	.has_hda2codec_2x = false,
++	.input_stream = false,
++	.always_on = true,
++	.requires_init = false,
+ };
+ 
+ static const struct of_device_id hda_tegra_match[] = {
+ 	{ .compatible = "nvidia,tegra30-hda", .data = &tegra30_data },
+ 	{ .compatible = "nvidia,tegra194-hda", .data = &tegra194_data },
+ 	{ .compatible = "nvidia,tegra234-hda", .data = &tegra234_data },
++	{ .compatible = "nvidia,tegra264-hda", .data = &tegra264_data },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, hda_tegra_match);
+@@ -522,7 +559,9 @@ static int hda_tegra_probe(struct platfo
+ 	hda->clocks[hda->nclocks++].id = "hda";
+ 	if (hda->soc->has_hda2hdmi)
+ 		hda->clocks[hda->nclocks++].id = "hda2hdmi";
+-	hda->clocks[hda->nclocks++].id = "hda2codec_2x";
++
++	if (hda->soc->has_hda2codec_2x)
++		hda->clocks[hda->nclocks++].id = "hda2codec_2x";
+ 
+ 	err = devm_clk_bulk_get(&pdev->dev, hda->nclocks, hda->clocks);
+ 	if (err < 0)
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -4559,6 +4559,7 @@ HDA_CODEC_ENTRY(0x10de002e, "Tegra186 HD
+ HDA_CODEC_ENTRY(0x10de002f, "Tegra194 HDMI/DP2", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0030, "Tegra194 HDMI/DP3", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0031, "Tegra234 HDMI/DP", patch_tegra234_hdmi),
++HDA_CODEC_ENTRY(0x10de0034, "Tegra264 HDMI/DP",	patch_tegra234_hdmi),
+ HDA_CODEC_ENTRY(0x10de0040, "GPU 40 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0041, "GPU 41 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0042, "GPU 42 HDMI/DP",	patch_nvhdmi),
 
 
 
