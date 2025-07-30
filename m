@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-165374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B57B15CE8
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BB1B15C40
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CA5316C446
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC42E3AFB30
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E081F09B6;
-	Wed, 30 Jul 2025 09:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699D4267F61;
+	Wed, 30 Jul 2025 09:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6i1sbNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9l8JIZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146BE26F461;
-	Wed, 30 Jul 2025 09:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C0119D065;
+	Wed, 30 Jul 2025 09:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868870; cv=none; b=dalElOBv6rYvpY6vlwb3iaT34+1RjM1t8Ui66dtXr4wh2BZdGQlTQjKceBAt/iyNsghMBp6UJ3oOnDx3cKae9bH+/WKJhCtm6TZofdXz2DB/eOaGMQaihYPouOU0Ey+beif1BhkZcI5XZ0DGXTfdySE/ALDmKX6cF0sJopxEgBk=
+	t=1753868352; cv=none; b=q6WXD49LuZVLMoc78v/zfDtWXHyDucXX4g1m3gHuuisATCD9XDyN3EMV5LuCSh6++T+H2mamH1R/f6Sq5kRwv9hrSnergL8saHbK0Jo+qlHZ66LsnWEqazbY/S9tSN414bY2ko6EJR9cuextXQA+/l1fsnreuhxx11gHV9Hdv4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868870; c=relaxed/simple;
-	bh=L2INTWHWVx4kDjNnG8OISlUL9lphUlD6iKcCx0bACKA=;
+	s=arc-20240116; t=1753868352; c=relaxed/simple;
+	bh=ohAo/zbUOmDiNPNH8KeM2dCk6UZ/0mlrbiujMbIruuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BB1Ua/YvoJfAk2u9nj/1taRJ794DD7u5959OmPY2pda8pWP6AnA/6oI3UHaz5SwMczDUoTihePh3NPsP7pDWjZKmHQcUGHbCmtMZO7VtgoxtWzyPHFMYDabGWIp5EFF/6Esuafjf8xSGJ3XvvGjvl8Y4TkUKqMqec2KdA6Th6Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6i1sbNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783CFC4CEF8;
-	Wed, 30 Jul 2025 09:47:49 +0000 (UTC)
+	 MIME-Version; b=mrt435N3WE+abwCx7LZNkfjyr8aoh3dD/gDXEf720wEq00nUx4qZMNEHzzr6GUblgO+l/Nvq+qFcYoJAMdQTa5NlpoKl4p/Fcbr++gxw/iKarwApf2yyGDz5+KJZgg5ChbWCO65zvosfvoD4ZJvnVb8NJd31fhGVgXgIQ5QMN5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9l8JIZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA74C4CEE7;
+	Wed, 30 Jul 2025 09:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868870;
-	bh=L2INTWHWVx4kDjNnG8OISlUL9lphUlD6iKcCx0bACKA=;
+	s=korg; t=1753868352;
+	bh=ohAo/zbUOmDiNPNH8KeM2dCk6UZ/0mlrbiujMbIruuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6i1sbNccb9ALJY+MHbR8iBVhB00O1xw3E630q5JSr71NSTJUzdyHEOtNfghDl80n
-	 yqmWTKtgqCEvVIIMVxfyKX4Y/bY5bG12E4jvs/vZE2QkF3PqUjg02EdCX6l6sb9iWE
-	 twjHLxUSIFV1R6tc0lnT6pu5AOY4xf/Hz7QsBSRw=
+	b=g9l8JIZfoYf4NSDs0sxPTkyf39p02oF88HkPmNwREyvjybFMnCrs0g484WLHw9F7Y
+	 Nx8xE76JkYk+irQ8c+lEBChdDKN3L9xaZtZxo/z/mWeOCmZsb2mFqQaE6cyDXXtw7e
+	 QfHHVPM560ODrpbNU48Uzt8aNPxs9Zp4Ovyb9BZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 067/117] rust: give Clippy the minimum supported Rust version
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 43/76] nilfs2: reject invalid file types when reading inodes
 Date: Wed, 30 Jul 2025 11:35:36 +0200
-Message-ID: <20250730093236.146468205@linuxfoundation.org>
+Message-ID: <20250730093228.506188643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit f0915acd1fc6060a35e3f18673072671583ff0be upstream.
+commit 4aead50caf67e01020c8be1945c3201e8a972a27 upstream.
 
-Clippy's lints may avoid emitting a suggestion to use a language or
-library feature that is not supported by the minimum supported version,
-if given by the `msrv` field in the configuration file.
+To prevent inodes with invalid file types from tripping through the vfs
+and causing malfunctions or assertion failures, add a missing sanity check
+when reading an inode from a block device.  If the file type is not valid,
+treat it as a filesystem error.
 
-For instance, Clippy should not suggest using `let ... else` in a lint
-if the MSRV did not implement that syntax.
-
-If the MSRV is not provided, Clippy will assume all features are available.
-
-Thus enable it with the minimum Rust version the kernel supports.
-
-Note that there is currently a small disadvantage in doing so: since
-we still use unstable features that nevertheless work in the range
-of versions we support (e.g. `#[expect(...)]`), we lose suggestions
-for those. However, over time we will stop using unstable features
-(especially language and library ones) as it is our goal, thus, in the
-end, we will want to have the `msrv` set.
-
-Rust is also considering adding a similar feature in `rustc` too, which
-we should probably enable if it becomes available [2].
-
-Link: https://github.com/rust-lang/rust-clippy/blob/8298da72e7b81fa30c515631b40fc4c0845948cb/clippy_utils/src/msrvs.rs#L20 [1]
-Link: https://github.com/rust-lang/compiler-team/issues/772 [2]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20241123222345.346976-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
+Fixes: 05fe58fdc10d ("nilfs2: inode operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .clippy.toml |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nilfs2/inode.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/.clippy.toml
-+++ b/.clippy.toml
-@@ -1,5 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+msrv = "1.78.0"
-+
- check-private-items = true
- 
- disallowed-macros = [
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -517,11 +517,18 @@ static int __nilfs_read_inode(struct sup
+ 		inode->i_op = &nilfs_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_mapping->a_ops = &nilfs_aops;
+-	} else {
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		inode->i_op = &nilfs_special_inode_operations;
+ 		init_special_inode(
+ 			inode, inode->i_mode,
+ 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
++	} else {
++		nilfs_error(sb,
++			    "invalid file type bits in mode 0%o for inode %lu",
++			    inode->i_mode, ino);
++		err = -EIO;
++		goto failed_unmap;
+ 	}
+ 	nilfs_ifile_unmap_inode(root->ifile, ino, bh);
+ 	brelse(bh);
 
 
 
