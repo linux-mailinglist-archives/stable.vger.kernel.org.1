@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E511B15D49
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89756B15CF7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43B1D564876
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7EA018C42AA
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E2F293B75;
-	Wed, 30 Jul 2025 09:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF7298255;
+	Wed, 30 Jul 2025 09:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04/htq1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShAx/YDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54441E25E1;
-	Wed, 30 Jul 2025 09:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A322957C3;
+	Wed, 30 Jul 2025 09:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869128; cv=none; b=NIg8zAeO8HqT6uLCpr+wG1ynBshe1z4LqcSusWcyPfQ3nHFjcrAcGJNVZF2k9+Pd/TGVUsDZiyMz0TYvXrteD0eHeRuZqWKz0qzotWCmizHey+5gjxAAZ3pCHtV1JtWD2IsqCVm4HPYLqeIdp4cpXiCBdGlWMVplGdjYCSpfw4Y=
+	t=1753868818; cv=none; b=E+jjHS1z3xzHDrAbXRlRdicpAgBneHBNNkukfR58qUqggI5QSS8K2r3dMM9UEx5kNUF7rcMJX1AmbxevMdpg+HLUw1ynbYCvOVjS32UBbvFURoMlepGWy1yVM3UsKC4YkZB7TYCy49Hk1IdalvQiDBDRMvAknU7uepdY/wPLmRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869128; c=relaxed/simple;
-	bh=AwTy3lbWb4+lwhN9cIJ+gdptl6CzXuwipru5T70nemM=;
+	s=arc-20240116; t=1753868818; c=relaxed/simple;
+	bh=Ul5QsNkigOYYBoYr51515AORrrRH/QecRUfRrQQ6b5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bl2lLZoGJ6QGGEg4WfatsAC7RBfF4aMwd/hT/7d/WFHu/dCwtnDY+pB9U83pCbgoxm8JFrGDOGzbSPf5ijNV9n08XooFvdFqiPTvSTi9UIAIXmBCE1NZ7hdmCXDo/NDaxq3Kxo2RJvxXT9KNXWFaq1hyGJnIDC3hEBC+Tw9nQe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04/htq1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F6FC4CEF5;
-	Wed, 30 Jul 2025 09:52:07 +0000 (UTC)
+	 MIME-Version; b=GzA0HjhUwY0o+CjEcZU7jImW7LvIlqID/hekHx4DVNueuLx60MgkjqeiQWa3fNlAAwNK+Oc5x0mrFz/7do2wIPK3n0aszL40YAyq/qj+I2UlfUdKTjWUXjsuqsAR/Ni0rplh/D1IJDeML+dYmn2Q4lh0xcKScSN3KTeGjP6hlv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShAx/YDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1961C4CEF8;
+	Wed, 30 Jul 2025 09:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869127;
-	bh=AwTy3lbWb4+lwhN9cIJ+gdptl6CzXuwipru5T70nemM=;
+	s=korg; t=1753868818;
+	bh=Ul5QsNkigOYYBoYr51515AORrrRH/QecRUfRrQQ6b5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04/htq1wn1hH/4G+SP91eqxqOsE3BCRIOYfFteUH1OirkE1UgSh8IWdfEydVFshyX
-	 cqRgI2OqEf6Wrab6pGMmMqf7wKQVKhitTUxBRazfZuSCAGlsReyzawNN5XK4BZ2L3V
-	 q3gf0Jn08R+7VSQZKgk6L3/URflrgEt/NM2bsHoI=
+	b=ShAx/YDagqCXIpbU/72CiBZ/O7dxVPOw6JsCjiI5hkEcWXHHpbX7MJun55tgSC19K
+	 dVdqCGl5qJCfC36YSSJvYwi2pmvBTzh5Ih/enBa/I9yb/5MD5ae8ORhqSp2QNL17PK
+	 S0V/TuaEHR1fNa+iQihbYAbP4meZj4C50sCQuSNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Zhang <i@rong.moe>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.15 44/92] platform/x86: ideapad-laptop: Fix FnLock not remembered among boots
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 083/117] erofs: clean up header parsing for ztailpacking and fragments
 Date: Wed, 30 Jul 2025 11:35:52 +0200
-Message-ID: <20250730093232.467095689@linuxfoundation.org>
+Message-ID: <20250730093236.990878280@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 9533b789df7e8d273543a5991aec92447be043d7 upstream.
+[ Upstream commit 540787d38b10dbc16a7d2bc2845752ab1605403a ]
 
-On devices supported by ideapad-laptop, the HW/FW can remember the
-FnLock state among boots. However, since the introduction of the FnLock
-LED class device, it is turned off while shutting down, as a side effect
-of the LED class device unregistering sequence.
+Simplify the logic in z_erofs_fill_inode_lazy() by combining the
+handling of ztailpacking and fragments, as they are mutually exclusive.
 
-Many users always turn on FnLock because they use function keys much
-more frequently than multimedia keys. The behavior change is
-inconvenient for them. Thus, set LED_RETAIN_AT_SHUTDOWN on the LED class
-device so that the FnLock state gets remembered, which also aligns with
-the behavior of manufacturer utilities on Windows.
+Note that `h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT` is handled
+above, so no need to duplicate the check.
 
-Fixes: 07f48f668fac ("platform/x86: ideapad-laptop: add FnLock LED class device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rong Zhang <i@rong.moe>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250707163808.155876-2-i@rong.moe
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250224123747.1387122-2-hsiangkao@linux.alibaba.com
+Stable-dep-of: b44686c8391b ("erofs: fix large fragment handling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/ideapad-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/zmap.c |   39 ++++++++++++++-------------------------
+ 1 file changed, 14 insertions(+), 25 deletions(-)
 
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1728,7 +1728,7 @@ static int ideapad_fn_lock_led_init(stru
- 	priv->fn_lock.led.name                    = "platform::" LED_FUNCTION_FNLOCK;
- 	priv->fn_lock.led.brightness_get          = ideapad_fn_lock_led_cdev_get;
- 	priv->fn_lock.led.brightness_set_blocking = ideapad_fn_lock_led_cdev_set;
--	priv->fn_lock.led.flags                   = LED_BRIGHT_HW_CHANGED;
-+	priv->fn_lock.led.flags                   = LED_BRIGHT_HW_CHANGED | LED_RETAIN_AT_SHUTDOWN;
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -394,7 +394,8 @@ static int z_erofs_get_extent_decompress
+ static int z_erofs_do_map_blocks(struct inode *inode,
+ 				 struct erofs_map_blocks *map, int flags)
+ {
+-	struct erofs_inode *const vi = EROFS_I(inode);
++	struct erofs_inode *vi = EROFS_I(inode);
++	struct super_block *sb = inode->i_sb;
+ 	bool fragment = vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER;
+ 	bool ztailpacking = vi->z_idata_size;
+ 	struct z_erofs_maprecorder m = {
+@@ -438,7 +439,7 @@ static int z_erofs_do_map_blocks(struct
+ 		}
+ 		/* m.lcn should be >= 1 if endoff < m.clusterofs */
+ 		if (!m.lcn) {
+-			erofs_err(inode->i_sb, "invalid logical cluster 0 at nid %llu",
++			erofs_err(sb, "invalid logical cluster 0 at nid %llu",
+ 				  vi->nid);
+ 			err = -EFSCORRUPTED;
+ 			goto unmap_out;
+@@ -454,7 +455,7 @@ static int z_erofs_do_map_blocks(struct
+ 			goto unmap_out;
+ 		break;
+ 	default:
+-		erofs_err(inode->i_sb, "unknown type %u @ offset %llu of nid %llu",
++		erofs_err(sb, "unknown type %u @ offset %llu of nid %llu",
+ 			  m.type, ofs, vi->nid);
+ 		err = -EOPNOTSUPP;
+ 		goto unmap_out;
+@@ -473,10 +474,16 @@ static int z_erofs_do_map_blocks(struct
+ 		map->m_flags |= EROFS_MAP_META;
+ 		map->m_pa = vi->z_fragmentoff;
+ 		map->m_plen = vi->z_idata_size;
++		if (erofs_blkoff(sb, map->m_pa) + map->m_plen > sb->s_blocksize) {
++			erofs_err(sb, "invalid tail-packing pclustersize %llu",
++				  map->m_plen);
++			err = -EFSCORRUPTED;
++			goto unmap_out;
++		}
+ 	} else if (fragment && m.lcn == vi->z_tailextent_headlcn) {
+ 		map->m_flags |= EROFS_MAP_FRAGMENT;
+ 	} else {
+-		map->m_pa = erofs_pos(inode->i_sb, m.pblk);
++		map->m_pa = erofs_pos(sb, m.pblk);
+ 		err = z_erofs_get_extent_compressedlen(&m, initial_lcn);
+ 		if (err)
+ 			goto unmap_out;
+@@ -495,7 +502,7 @@ static int z_erofs_do_map_blocks(struct
+ 		afmt = m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2 ?
+ 			vi->z_algorithmtype[1] : vi->z_algorithmtype[0];
+ 		if (!(EROFS_I_SB(inode)->available_compr_algs & (1 << afmt))) {
+-			erofs_err(inode->i_sb, "inconsistent algorithmtype %u for nid %llu",
++			erofs_err(sb, "inconsistent algorithmtype %u for nid %llu",
+ 				  afmt, vi->nid);
+ 			err = -EFSCORRUPTED;
+ 			goto unmap_out;
+@@ -596,26 +603,8 @@ static int z_erofs_fill_inode_lazy(struc
+ 		goto out_put_metabuf;
+ 	}
  
- 	err = led_classdev_register(&priv->platform_device->dev, &priv->fn_lock.led);
- 	if (err)
+-	if (vi->z_idata_size) {
+-		struct erofs_map_blocks map = {
+-			.buf = __EROFS_BUF_INITIALIZER
+-		};
+-
+-		err = z_erofs_do_map_blocks(inode, &map,
+-					    EROFS_GET_BLOCKS_FINDTAIL);
+-		erofs_put_metabuf(&map.buf);
+-
+-		if (erofs_blkoff(sb, map.m_pa) + map.m_plen > sb->s_blocksize) {
+-			erofs_err(sb, "invalid tail-packing pclustersize %llu",
+-				  map.m_plen);
+-			err = -EFSCORRUPTED;
+-		}
+-		if (err < 0)
+-			goto out_put_metabuf;
+-	}
+-
+-	if (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER &&
+-	    !(h->h_clusterbits >> Z_EROFS_FRAGMENT_INODE_BIT)) {
++	if (vi->z_idata_size ||
++	    (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER)) {
+ 		struct erofs_map_blocks map = {
+ 			.buf = __EROFS_BUF_INITIALIZER
+ 		};
 
 
 
