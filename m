@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-165272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E9DB15C61
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED1DB15D78
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9C674E1B8D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CA3B188BDC4
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BF225DB1A;
-	Wed, 30 Jul 2025 09:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A02B26E71A;
+	Wed, 30 Jul 2025 09:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l03Tuyf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+IIEQ//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D482119D065;
-	Wed, 30 Jul 2025 09:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA015230981;
+	Wed, 30 Jul 2025 09:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868472; cv=none; b=ek3l2gCVxgNkwDguPQyFUxztLmfIIgIxeel7ptGJJk4QnvIb8xIwFtdg0A9OFYpGMwEo3joqn79IkRoXYolRXXL3EgrVnncn28u9YgTO2BgS/5IM+1Ndg2eyNNTaGmP5aVocREkXsZXo4EpDLx6GHDdmhaLmmprkHz4eHBIeEh8=
+	t=1753869206; cv=none; b=eWVL+9T8Jv7Dor0NDEfj7L+onv73doP92mcP2YYAhFj1D4qEw9By/GIauOedhy+pg9fn6Zfvjau6+AHs1VJ5NbSGqSP/2SPyxwUJESCwDdJkpIbQj6Jx/KZ2TdF7ZVbulsyiGm+h/CTm7MINohXcje43PIQ0Bspyor9NpxhsQKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868472; c=relaxed/simple;
-	bh=VFtpGJXUY+xprFuLU2UFbeCBSsNV/Bf+ubTWToY/3Xk=;
+	s=arc-20240116; t=1753869206; c=relaxed/simple;
+	bh=CfmGNZWF9I/tqV7vd0OktedLdT8AUmConF4RvzTjHdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=beVxHCVkMIgfxzhLObi/UjmOIcVlCuY+YrULJzCTmVKNW2B2C+hDpkS1qWrioXBYNKfarVaVhOiKWRxxMqSw0AZsDsFtrdBW6ltjknsMcLsOUwcfNVXr++58ZXMpSZTnleHnY9E83yaWnwqt6D5jbkoH4yDR/aEzaoIBi/BSF0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l03Tuyf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFFFC4CEF6;
-	Wed, 30 Jul 2025 09:41:12 +0000 (UTC)
+	 MIME-Version; b=Tai7UoWy8M/R9GlJtI+OyAi/7oYhKAQOW/VZQLEV5cgdsVjWL71N7b3H6veBM3/9m7xf9T0OsXQzo0HtFgjQzFBLXM1yxAsjq+bKnfBAK4FlTJ5qAyTfWuanxYOesA9ZvutXpU9tntmQ/YG7R+P/nlEdb3/w86v95XWSGPFiPWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+IIEQ//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9B7C4CEF5;
+	Wed, 30 Jul 2025 09:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868472;
-	bh=VFtpGJXUY+xprFuLU2UFbeCBSsNV/Bf+ubTWToY/3Xk=;
+	s=korg; t=1753869205;
+	bh=CfmGNZWF9I/tqV7vd0OktedLdT8AUmConF4RvzTjHdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l03Tuyf/z/qSRVGmIK59OWECLionTAR2LpP1NGI74qpeqnYkjWHxEz4zQ+yYxCTAO
-	 Ykt/znlpsiQjF3LB+FMqS7krqZ+ZoZY6NBH8gD+xk2/89CsIDqShJyo531g8G7YUaR
-	 NyicLZcnd/Np4/j+X12yS4XuElv7hwQ7VO2Ott88=
+	b=b+IIEQ//1pdMg7PN33xFLt8yrdY0eHXIM9miESb4XpH/nQy8VL8yU+2eSMDqn9H/1
+	 uK+3tC8YdnoNIadT0a7o+0z8bnFQvNge7wgHvYG28IOmWMTnpPDI2peiUYO4qZgd+c
+	 cHYLDJuiRC88vXDUcPVzdGVmV/UqrhgI/5OtZPaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 74/76] drm/sched: Remove optimization that causes hang when killing dependent jobs
-Date: Wed, 30 Jul 2025 11:36:07 +0200
-Message-ID: <20250730093229.733185892@linuxfoundation.org>
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 60/92] sprintf.h requires stdarg.h
+Date: Wed, 30 Jul 2025 11:36:08 +0200
+Message-ID: <20250730093233.077992246@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +65,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Lin.Cao" <lincao12@amd.com>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit 15f77764e90a713ee3916ca424757688e4f565b9 ]
+commit 0dec7201788b9152f06321d0dab46eed93834cda upstream.
 
-When application A submits jobs and application B submits a job with a
-dependency on A's fence, the normal flow wakes up the scheduler after
-processing each job. However, the optimization in
-drm_sched_entity_add_dependency_cb() uses a callback that only clears
-dependencies without waking up the scheduler.
+In file included from drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c:4:
+include/linux/sprintf.h:11:54: error: unknown type name 'va_list'
+   11 | __printf(2, 0) int vsprintf(char *buf, const char *, va_list);
+      |                                                      ^~~~~~~
+include/linux/sprintf.h:1:1: note: 'va_list' is defined in header '<stdarg.h>'; this is probably fixable by adding '#include <stdarg.h>'
 
-When application A is killed before its jobs can run, the callback gets
-triggered but only clears the dependency without waking up the scheduler,
-causing the scheduler to enter sleep state and application B to hang.
-
-Remove the optimization by deleting drm_sched_entity_clear_dep() and its
-usage, ensuring the scheduler is always woken up when dependencies are
-cleared.
-
-Fixes: 777dbd458c89 ("drm/amdgpu: drop a dummy wakeup scheduler")
-Cc: stable@vger.kernel.org # v4.6+
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250717084453.921097-1-lincao12@amd.com
-[ replaced drm_sched_wakeup() calls with drm_sched_wakeup_if_can_queue() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250721173754.42865913@canb.auug.org.au
+Fixes: 39ced19b9e60 ("lib/vsprintf: split out sprintf() and friends")
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   25 ++++---------------------
- 1 file changed, 4 insertions(+), 21 deletions(-)
+ include/linux/sprintf.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -346,20 +346,9 @@ void drm_sched_entity_destroy(struct drm
- }
- EXPORT_SYMBOL(drm_sched_entity_destroy);
+--- a/include/linux/sprintf.h
++++ b/include/linux/sprintf.h
+@@ -4,6 +4,7 @@
  
--/* drm_sched_entity_clear_dep - callback to clear the entities dependency */
--static void drm_sched_entity_clear_dep(struct dma_fence *f,
--				       struct dma_fence_cb *cb)
--{
--	struct drm_sched_entity *entity =
--		container_of(cb, struct drm_sched_entity, cb);
--
--	entity->dependency = NULL;
--	dma_fence_put(f);
--}
--
- /*
-- * drm_sched_entity_clear_dep - callback to clear the entities dependency and
-- * wake up scheduler
-+ * drm_sched_entity_wakeup - callback to clear the entity's dependency and
-+ * wake up the scheduler
-  */
- static void drm_sched_entity_wakeup(struct dma_fence *f,
- 				    struct dma_fence_cb *cb)
-@@ -367,7 +356,8 @@ static void drm_sched_entity_wakeup(stru
- 	struct drm_sched_entity *entity =
- 		container_of(cb, struct drm_sched_entity, cb);
+ #include <linux/compiler_attributes.h>
+ #include <linux/types.h>
++#include <linux/stdarg.h>
  
--	drm_sched_entity_clear_dep(f, cb);
-+	entity->dependency = NULL;
-+	dma_fence_put(f);
- 	drm_sched_wakeup_if_can_queue(entity->rq->sched);
- }
+ int num_to_str(char *buf, int size, unsigned long long num, unsigned int width);
  
-@@ -420,13 +410,6 @@ static bool drm_sched_entity_add_depende
- 		fence = dma_fence_get(&s_fence->scheduled);
- 		dma_fence_put(entity->dependency);
- 		entity->dependency = fence;
--		if (!dma_fence_add_callback(fence, &entity->cb,
--					    drm_sched_entity_clear_dep))
--			return true;
--
--		/* Ignore it when it is already scheduled */
--		dma_fence_put(fence);
--		return false;
- 	}
- 
- 	if (!dma_fence_add_callback(entity->dependency, &entity->cb,
 
 
 
