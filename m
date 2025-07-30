@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-165389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607A0B15D09
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEA5B15D8C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 902A27A54BA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27244188603B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DE625DB1A;
-	Wed, 30 Jul 2025 09:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C10293C42;
+	Wed, 30 Jul 2025 09:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4uxrhKf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RcReM37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4E0275AE9;
-	Wed, 30 Jul 2025 09:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80BF28751E;
+	Wed, 30 Jul 2025 09:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868944; cv=none; b=icv6eXt9C4ajbuJXmi5fHqElkCyS0XUlvBPLB0rChNSzUeOPiapJDXkcH5I39HrXLLPvQarOy/Lrj9WFd1Priw9YJRwjUgpGDkFZ7crpzPlbio25kz7boDb2V8FauAyQ2bmvBth0LJ+/Epo9Lxc4EVOtELhVMTeP1W4YYhv6NC4=
+	t=1753869253; cv=none; b=j+55ONCmRjS2IKOxCkF8KKjFLKk79nKDv1bVr1M5AFA466H88ObRHc5u77DLno7uyd/bl40Xg3QExjn01Lk5bPU6UEYljsdj41f7B9T/cY4JQT7wIrh56sMJU2DnyOi0GjGnLX4nJskJI4vOkjcDsF7XOujhmOoZKVexydt6Yiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868944; c=relaxed/simple;
-	bh=b0bepjW1Ipi/X932vRhh4TXxeVCWFPU3l5/++QfcE7o=;
+	s=arc-20240116; t=1753869253; c=relaxed/simple;
+	bh=Bla+K5SgDprZaR4xR362QTRGa5lfgdv4+9QJ8/7u6VY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXzH9Wt3kjKNtqSlpLq74IlKa3YXxtg8B+GOrP76bgV5IapDzR/QUB1YTY79nh8rwsVbrV/2XYnUH01PyvbtJd6MmfX7bmL3kb+qU7W2QN44SEckIeTBb6tr1VXPguZwlAcPygH8OTOX7OFrseQZuUu1xbe/6VbOvz4dFy712AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4uxrhKf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE8DC4CEF5;
-	Wed, 30 Jul 2025 09:49:03 +0000 (UTC)
+	 MIME-Version; b=iqaMj9pkMlGg7ZNdQRZJOofoD1zhQCjDjbT5huCMG73t+eEdmEHbGDqat3C/VO4SsVdiFD2/0Fjq/pJrd4fVHtDPeNruBnl+oNXcfPnIaIxHjzCSM+Hb2XX2UYIK/LS5gl+6548ov3yT/N5EWLRGdOT0RCA85e6mLOxtX1yX+bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RcReM37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED03C4CEF9;
+	Wed, 30 Jul 2025 09:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868944;
-	bh=b0bepjW1Ipi/X932vRhh4TXxeVCWFPU3l5/++QfcE7o=;
+	s=korg; t=1753869253;
+	bh=Bla+K5SgDprZaR4xR362QTRGa5lfgdv4+9QJ8/7u6VY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4uxrhKfbaHj8IM9F63gFW9WStDLjZW0qInP5olxx+1evN0vIsjjzNnCAg8Roa6Yo
-	 GifYdrE/0ERiBuzZPE60mWn+OH3hUIOlVqytB6ZrnY3tQgwqQUrwv1VDFAikvOdAhf
-	 ND0kDH2UPcj8UbIB+OOPTQiKMCkyRI3KrZdguYw8=
+	b=2RcReM37u4oOQnnQuWecouDqFCzO+8KdGNqnQps+xTaDcVzzogOPfMHAPRzReWT9G
+	 8Cvy4VkNoNDQ0QvMrMcs+nV5PVQMLxGPLOjCxTLhuI+qp3puvxT/hVZ68ttV8YSTe0
+	 E8UsF5oKwch/OxI32z1BtjSif7+g2FrdtvzzgnxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 6.12 114/117] Revert "drm/xe/devcoredump: Update handling of xe_force_wake_get return"
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 75/92] selftests: mptcp: connect: also cover alt modes
 Date: Wed, 30 Jul 2025 11:36:23 +0200
-Message-ID: <20250730093238.246476008@linuxfoundation.org>
+Message-ID: <20250730093233.663151102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomita Moeko <tomitamoeko@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-This reverts commit 9ffd6ec2de08ef4ac5f17f6131d1db57613493f9.
+commit 37848a456fc38c191aedfe41f662cc24db8c23d9 upstream.
 
-The reverted commit updated the handling of xe_force_wake_get to match
-the new "return refcounted domain mask" semantics introduced in commit
-a7ddcea1f5ac ("drm/xe: Error handling in xe_force_wake_get()"). However,
-that API change only exists in 6.13 and later.
+The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
+available from the beginning, but only tested when mptcp_connect.sh is
+manually launched with "-m mmap" or "-m sendfile", not via the
+kselftests helpers.
 
-In 6.12 stable kernel, xe_force_wake_get still returns a status code.
-The update incorrectly treats the return value as a mask, causing the
-return value of 0 to be misinterpreted as an error
+The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
+"-m sendfile". Plus other CIs, especially the ones validating the stable
+releases, were not validating these alternate modes.
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+To make sure these modes are validated by these CIs, add two new test
+programs executing mptcp_connect.sh with the alternate modes.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_devcoredump.c |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ tools/testing/selftests/net/mptcp/Makefile                  |    3 ++-
+ tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     |    5 +++++
+ tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh |    5 +++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
 
---- a/drivers/gpu/drm/xe/xe_devcoredump.c
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.c
-@@ -197,7 +197,6 @@ static void xe_devcoredump_deferred_snap
- 	struct xe_devcoredump_snapshot *ss = container_of(work, typeof(*ss), work);
- 	struct xe_devcoredump *coredump = container_of(ss, typeof(*coredump), snapshot);
- 	struct xe_device *xe = coredump_to_xe(coredump);
--	unsigned int fw_ref;
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -4,7 +4,8 @@ top_srcdir = ../../../../..
  
- 	/*
- 	 * NB: Despite passing a GFP_ flags parameter here, more allocations are done
-@@ -211,12 +210,11 @@ static void xe_devcoredump_deferred_snap
- 	xe_pm_runtime_get(xe);
+ CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
  
- 	/* keep going if fw fails as we still want to save the memory and SW data */
--	fw_ref = xe_force_wake_get(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL);
--	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL))
-+	if (xe_force_wake_get(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL))
- 		xe_gt_info(ss->gt, "failed to get forcewake for coredump capture\n");
- 	xe_vm_snapshot_capture_delayed(ss->vm);
- 	xe_guc_exec_queue_snapshot_capture_delayed(ss->ge);
--	xe_force_wake_put(gt_to_fw(ss->gt), fw_ref);
-+	xe_force_wake_put(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL);
+-TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
++TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
++	      pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
  
- 	xe_pm_runtime_put(xe);
- 
-@@ -243,9 +241,8 @@ static void devcoredump_snapshot(struct
- 	u32 width_mask = (0x1 << q->width) - 1;
- 	const char *process_name = "no process";
- 
--	unsigned int fw_ref;
--	bool cookie;
- 	int i;
-+	bool cookie;
- 
- 	ss->snapshot_time = ktime_get_real();
- 	ss->boot_time = ktime_get_boottime();
-@@ -268,7 +265,8 @@ static void devcoredump_snapshot(struct
- 	}
- 
- 	/* keep going if fw fails as we still want to save the memory and SW data */
--	fw_ref = xe_force_wake_get(gt_to_fw(q->gt), XE_FORCEWAKE_ALL);
-+	if (xe_force_wake_get(gt_to_fw(q->gt), XE_FORCEWAKE_ALL))
-+		xe_gt_info(ss->gt, "failed to get forcewake for coredump capture\n");
- 
- 	ss->ct = xe_guc_ct_snapshot_capture(&guc->ct, true);
- 	ss->ge = xe_guc_exec_queue_snapshot_capture(q);
-@@ -286,7 +284,7 @@ static void devcoredump_snapshot(struct
- 
- 	queue_work(system_unbound_wq, &ss->work);
- 
--	xe_force_wake_put(gt_to_fw(q->gt), fw_ref);
-+	xe_force_wake_put(gt_to_fw(q->gt), XE_FORCEWAKE_ALL);
- 	dma_fence_end_signalling(cookie);
- }
- 
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq mptcp_diag
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
 
 
 
