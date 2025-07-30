@@ -1,185 +1,148 @@
-Return-Path: <stable+bounces-165177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47080B15752
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 03:56:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C33B1575A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 04:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D448218A7A40
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 01:56:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C41177A61F6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 01:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848891D63D8;
-	Wed, 30 Jul 2025 01:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C9B1A0711;
+	Wed, 30 Jul 2025 02:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Va9InuCp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3Zmm8Zsa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD271F30B2
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 01:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AD07E1
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 01:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753840466; cv=none; b=rrkzj6hfy/fadDxMUBJLGAuKLD6XoA8CLbOUiJfVprr8lHuxdR0qRT5kLYTF4IW4gSF1yWi/2i4pzVkMaK4B4pkSQBOg0/HSngOGJsLBLRr42PoUIm0nb3ulyslwPZbdWvcfYGZBQ+IrZmiJuq/P0qjP06bxVq/YEKohKUhcxjc=
+	t=1753840801; cv=none; b=rnMkNBvVW3bK1lbEtxj/RKHuh3Lac2ppObeCmBFJ6vaVDgSAVTZtwQ60AZGVfqh9sxEBbQ/XgmlMobHtbnsspeNmocevd/AO10rIgaF6QIfgltx6DVpEfSUCmvbXe9ZQjnaTQtxwGjtop/iB3khu+m1CvyEBE3n/wieEY/pGL0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753840466; c=relaxed/simple;
-	bh=nPJJLP1zR91c9Y7ZN8HF7eAeTILNv1bxL9VL0/fy/6A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Jp3QQlHHpO3VWybGorPRYXcIMFjQQJA+DHrC7ZFEJqGY9vs/FTjesZliKmTUR1m7tdGzMCuLv+qMqTuFC2BpHyTBYQhE9O63Y5TjxENCcNzgRUWE+lu1rUKYD9E1WkKKspAeRCSq3sjYl3KaiEIk4zY8982BbSSjlQbyRA4RIrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Va9InuCp; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1753840801; c=relaxed/simple;
+	bh=HyB44ZZ6pk8w3wAojyfFHRz7MWKPiai1SP+6ZMkt1/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGqx//t4h81pvrgc14b7cE9368EWuaQTFyln8dAwznuE3nnBD3MPC5AjR2/UPMk9N/Yneg/CuCT/aI8+Be61X8x9gCxsCLelBCzNVgIsk/xWcp7k06LO/6UbjVKKrWsgsbeZx23xX8mcvQaFAXNIRufkpOMYocdKqL3Axz91yoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3Zmm8Zsa; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b31cc625817so360071a12.0
-        for <stable@vger.kernel.org>; Tue, 29 Jul 2025 18:54:24 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24070dd87e4so69275ad.0
+        for <stable@vger.kernel.org>; Tue, 29 Jul 2025 18:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753840464; x=1754445264; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L3flim+Na7xCLw8vVOZ8w5OEJGJTOj64xaI7scCyCdg=;
-        b=Va9InuCp3r4FpkSSL9l7XB8DwN2ZwfmdFGlITrr9fdfDZjXrbmEZm9oWl0xch/4ScI
-         hKbxHJzlVL6F6B7vD9Pyc3O32ww5xvhct2//r5NErF1wGavShp0H8Z+CBKHAcmFBt5o1
-         fhJg5dLB+1ozl4247AeqyP765G/Ku2UxygPKb/9FYp8t7s8Osbv+IGeLsfn5N9kPG5pn
-         DXxdpRUZS+9EqquImECuU/PrCyMkQEyq8rMqdsmpRmMNtR4V2OVC8weKMmamwEqb7WZK
-         TcoiMT+lgNmEDczz4IlUhay0nKYKFywI8Oj+Gamf8kP5OLWV/ypEphcRV6GFSZRhE97f
-         iaeA==
+        d=google.com; s=20230601; t=1753840799; x=1754445599; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QcSJTaElVVvYYo9nNi0EOGtYaOjMylV8RmeZ1BcyB1k=;
+        b=3Zmm8ZsaFw+q7/hudtGqMVJ3EHGaNNjx1r3tqyYMDGtazw7PAWqJw8Cvs1e9lkl85Y
+         XuPjaPckxwepCb3GKNsuh5yjJnIXo3v06ZZVzIEIlfYyljzjNqC7f2GCiHMvW/z1+XiL
+         xxpgmFJE0oRpiKFPjL4bNhopGJapmNEEtTatJwIC3z8Mvb9zvCUrOIpJLVBpgo+iq/5c
+         B5MKFOle8rYqWy5hFb+/P9m6XCA63+LG4dA0qNBm8ZWgE4X5dG3TiUC4RTfM5YNHL+qy
+         vTnNEf2r/x0KgsNgKCM3uaU85PB6bLLLmtuZuS2tsaDmiBsW7/0sX/wndYpAh8qu7twT
+         IsIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753840464; x=1754445264;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L3flim+Na7xCLw8vVOZ8w5OEJGJTOj64xaI7scCyCdg=;
-        b=KT9rZsPDpg+gKnntxU4DRmc47igAFNIh5ihoskUwoTscLS2rvXlWIOgAoKfeoUAC8p
-         qZeGvZxl/LCpsnvEpFRqr0KIaUddRFDyxw5kSmg2pHvk/jJupshJmun75TvxDxcLirz9
-         aUW8yQ+I5wva6iqIT9xE2OSxhomVZzH6h0stLdnD92mxtQV2n96YI+oNkWcbT+S0cKO/
-         BgR4ngTvHTJJEgbV/H4vaVdrvh/BbLemtbhL7Tbm0Rux86V7xkolUgzVKq61wFSMHVF+
-         xOGUdUqa9eRwuxZlablogSFDzIrB16A4XAUSqEPBF5X9V2dBjrmavmXorAkeMUUhWLAD
-         PIcA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPgzVRGOrx8VRDvtPxrGXRd7OsxomfdtI1TCXwlnbwcs7iQ9MF68bKLJKuFsVvkwTt7Lq+5aw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6Jq19jzGxEsQPMUxObixkgoGWJAw+/r5qrtfrMRZJzE/axBeb
-	XBuH/+JDaP1L8wzPed5ne+NUACjawZTwqaIUN6j6D3eNigB2SIIuPnfKdXBZisAWSRLU1aTglK3
-	H1L4yR/Gpfkla0iK2hKleKGNbYzP2ROoWdoaHEw==
-X-Google-Smtp-Source: AGHT+IGSsezyA6LC++SZ5I/UxQYHh/BgAfaZ3ltdoNiNEdtr06IoSwJQnz/o3hhQJ+ktgve5ykzzrjxSLeVPY67bFzlSZw==
-X-Received: from plkv11.prod.google.com ([2002:a17:903:1a2b:b0:240:608a:938d])
- (user=isaacmanjarres job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:90c:b0:231:9817:6ec1 with SMTP id d9443c01a7336-2409689f466mr22524815ad.17.1753840463916;
- Tue, 29 Jul 2025 18:54:23 -0700 (PDT)
-Date: Tue, 29 Jul 2025 18:54:02 -0700
-In-Reply-To: <20250730015406.32569-1-isaacmanjarres@google.com>
+        d=1e100.net; s=20230601; t=1753840799; x=1754445599;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QcSJTaElVVvYYo9nNi0EOGtYaOjMylV8RmeZ1BcyB1k=;
+        b=FlRlp+sXUoIWC+glljXqurT2eQMMMcNlIhOwJAyg7p9DjsZpQii6CUZfyUmUWX/szE
+         8mZVuovi/AFQvvYroGCu/wQUT6W+QddO2Hr4jDEkHMPNrd8xoIYAi5ZpLB5FujNx9ecw
+         vkpgwK6maokOOF1T5yVR/aWV8BmEnneaMWimMYmeF7m0OVjseUiuGjKimUKzgdPbMKjc
+         N7dtkFd60iRVmCZs01oeQshY2XtQtzVhFu93tg+XvCssLJpx+Cqlf4ghODsXvVwqzRAM
+         +oSNMK/DEfXsVUEtMFpS5uhbDEZdF5hHJW60sA+SQQxO9+pdlXVPEQNjz8R5jp9ukZeq
+         xUcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQyEIcacfP3CdUiR4w0Wc7HMfMnR1mDUt4dHi05Iox8B3zW47KMzeEYJxODtmViXUIHNcY5kg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSyJdxK0OSC78yaAqnKRG+u722FMdCaiirCS+FMf57MTbQ2Eds
+	/cADLbADHTfihJD7VCF1NMzp99G6R151J98fwZf4FEi0N6UHwo7ImHWH0H7C8l6c7A==
+X-Gm-Gg: ASbGncul5p6qvRJp7jAI6yMdofEdvKgghdHqw181fMrND9WYyAtcvWyxv9sO427OwUW
+	dRlFV5iSz98RZGMLiGIZnJOLAYguzSVcktp8TiJWuXcgIwa7rErnNBmFVlvO7n820D7Bi7PVN6j
+	M+L9SgBSgemUPGDtj63WIujJinVXMcv8uvG0Yi+Mm7bDU2QDxVwWdqWwmBN/M5YQNeTzvx4tnHj
+	0XOXPSvymCFAWsP/44ugWl0xFvhdWM0eJlW6ZQSLhNpYvGElXY1gfcmKPidqCjHan60UTGJsQPd
+	I3UpLNq7/bTbjsDzv349OA5bzDYnK6vrElJLHBZqbaB0Z5oWoP+p6t/JR1f1eZZc+/MURA+dzA1
+	ZqQaaMq+Usv3FJn/fY/O7a0TzV537j+wr7EDZxpBkSca0JLs5t3m8NIw2C/2TDs4=
+X-Google-Smtp-Source: AGHT+IGjlp72ezcaslBe/4Wam1DWdKTtFPAg2RfpZpa/ZWAp7fRLm64jv1x6op5wLdcpNXOdDDpIQg==
+X-Received: by 2002:a17:902:cf42:b0:240:5c75:4d29 with SMTP id d9443c01a7336-24099e4ecc0mr2140635ad.0.1753840798874;
+        Tue, 29 Jul 2025 18:59:58 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2e51:8:9606:2f93:add0:9255])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76408def71csm9185669b3a.56.2025.07.29.18.59.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 18:59:58 -0700 (PDT)
+Date: Tue, 29 Jul 2025 18:59:51 -0700
+From: Isaac Manjarres <isaacmanjarres@google.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, aliceryhl@google.com,
+	stable@vger.kernel.org, kernel-team@android.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 5.4.y 0/3] Backport series: "permit write-sealed memfd
+ read-only shared mappings"
+Message-ID: <aIl8lyrHJ4DAQkxg@google.com>
+References: <20250730005818.2793577-1-isaacmanjarres@google.com>
+ <aIl1AbmESlTruw7K@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250730015406.32569-1-isaacmanjarres@google.com>
-X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
-Message-ID: <20250730015406.32569-5-isaacmanjarres@google.com>
-Subject: [PATCH 5.10.y 4/4] selftests/memfd: add test for mapping write-sealed
- memfd read-only
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-To: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org, 
-	Shuah Khan <shuah@kernel.org>
-Cc: aliceryhl@google.com, surenb@google.com, stable@vger.kernel.org, 
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>, kernel-team@android.com, 
-	Jann Horn <jannh@google.com>, Julian Orth <ju.orth@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aIl1AbmESlTruw7K@casper.infradead.org>
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+On Wed, Jul 30, 2025 at 02:27:29AM +0100, Matthew Wilcox wrote:
+> On Tue, Jul 29, 2025 at 05:58:05PM -0700, Isaac J. Manjarres wrote:
+> > Lorenzo's series [2] fixed that issue and was merged in kernel version
+> > 6.7, but was not backported to older kernels. So, this issue is still
+> > present on kernels 5.4, 5.10, 5.15, 6.1, and 6.6.
+> > 
+> > This series backports Lorenzo's series to the 5.4 kernel.
+> 
+> That's not how this works.  First you do 6.6, then 6.1, then 5.15 ...
 
-[ Upstream commit ea0916e01d0b0f2cce1369ac1494239a79827270 ]
+Hey Matthew,
 
-Now we have reinstated the ability to map F_SEAL_WRITE mappings read-only,
-assert that we are able to do this in a test to ensure that we do not
-regress this again.
+Thanks for pointing that out. I'm sorry about the confusion. I did
+prepare backports for the other kernel versions too, and the intent
+was to send them together. However, my machine only sent the 5.4
+version of the patches and not the rest.
 
-Link: https://lkml.kernel.org/r/a6377ec470b14c0539b4600cf8fa24bf2e4858ae.1732804776.git.lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Julian Orth <ju.orth@gmail.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
----
- tools/testing/selftests/memfd/memfd_test.c | 43 ++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+I sent the patches for each kernel version and here are the relevant
+links:
 
-diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
-index fba322d1c67a..5d1ad547416a 100644
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -186,6 +186,24 @@ static void *mfd_assert_mmap_shared(int fd)
- 	return p;
- }
- 
-+static void *mfd_assert_mmap_read_shared(int fd)
-+{
-+	void *p;
-+
-+	p = mmap(NULL,
-+		 mfd_def_size,
-+		 PROT_READ,
-+		 MAP_SHARED,
-+		 fd,
-+		 0);
-+	if (p == MAP_FAILED) {
-+		printf("mmap() failed: %m\n");
-+		abort();
-+	}
-+
-+	return p;
-+}
-+
- static void *mfd_assert_mmap_private(int fd)
- {
- 	void *p;
-@@ -802,6 +820,30 @@ static void test_seal_future_write(void)
- 	close(fd);
- }
- 
-+static void test_seal_write_map_read_shared(void)
-+{
-+	int fd;
-+	void *p;
-+
-+	printf("%s SEAL-WRITE-MAP-READ\n", memfd_str);
-+
-+	fd = mfd_assert_new("kern_memfd_seal_write_map_read",
-+			    mfd_def_size,
-+			    MFD_CLOEXEC | MFD_ALLOW_SEALING);
-+
-+	mfd_assert_add_seals(fd, F_SEAL_WRITE);
-+	mfd_assert_has_seals(fd, F_SEAL_WRITE);
-+
-+	p = mfd_assert_mmap_read_shared(fd);
-+
-+	mfd_assert_read(fd);
-+	mfd_assert_read_shared(fd);
-+	mfd_fail_write(fd);
-+
-+	munmap(p, mfd_def_size);
-+	close(fd);
-+}
-+
- /*
-  * Test SEAL_SHRINK
-  * Test whether SEAL_SHRINK actually prevents shrinking
-@@ -1056,6 +1098,7 @@ int main(int argc, char **argv)
- 
- 	test_seal_write();
- 	test_seal_future_write();
-+	test_seal_write_map_read_shared();
- 	test_seal_shrink();
- 	test_seal_grow();
- 	test_seal_resize();
--- 
-2.50.1.552.g942d659e1b-goog
+6.6: https://lore.kernel.org/all/20250730015152.29758-1-isaacmanjarres@google.com/
+6.1: https://lore.kernel.org/all/20250730015247.30827-1-isaacmanjarres@google.com/
+5.15: https://lore.kernel.org/all/20250730015337.31730-1-isaacmanjarres@google.com/
+5.10: https://lore.kernel.org/all/20250730015406.32569-1-isaacmanjarres@google.com/
 
+> Otherwise somebody might upgrade from 5.4 to 6.1 and see a regression.
+
+Understood; sorry again for the confusion.
+
+Thanks,
+Isaac
 
