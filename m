@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3145B15C1C
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1DEB15D3B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4298B18C3060
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30FEB56462E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAB275865;
-	Wed, 30 Jul 2025 09:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E53C280033;
+	Wed, 30 Jul 2025 09:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUQ5SIai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpOXZMr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55491270ED4;
-	Wed, 30 Jul 2025 09:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB1A4A32;
+	Wed, 30 Jul 2025 09:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868270; cv=none; b=ts1iYT4dYqJT5KCEiMlQGqN+H2Rv+zHjWbyuqEZ4n65Gs0VUn0Y1hQoIzkSxjs22Ba0WKPR6yHFV06r/5VZlqvcqRw79WuSYrfgegKy+51d75T2MZk/r95FGgB9VsN8Pk3QmUIdHRurn9NyMhI7XQ8U0yt3POSDLg2DVLOLRQFE=
+	t=1753869083; cv=none; b=mjleJ8E0F0o7rFD5ba64IpaG9Fm3Ne1VMiExW9ydyT6+InHvk/UNCHxl8T/tC/K77e+og/+71h/b7w4KIrdYmUafRt9mdVKjWY8N9A62U+gNxIH8UGShyoupaQchZ2xWonXMkNQnNpTnqACikH34v80FCFNYxZAkBmsah7UHn4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868270; c=relaxed/simple;
-	bh=8lXJGS5GWmSRo18oD3KmVA4JrwFOAONqXGQE0U3qXvY=;
+	s=arc-20240116; t=1753869083; c=relaxed/simple;
+	bh=6/g+xnBuLMW8Pk4Xap1k7wgrvMyoDvhUWRYir12a4L8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVchb+/gKW+dd4bMLNqsrFMEMtoDcYAnS1ik7SHselPnz4q5lbyJ5C7ySgM6JNnKFwPS/x6msqljEiY6WwRAxu22HTZKcg5CReTN63IK2kKjctUsfIkt7wNPglrc+wuZA5NtW6JL9E3A5Ce7ZqTCv5zQdr5quPRFVqR7bD9kUJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUQ5SIai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D96C4CEE7;
-	Wed, 30 Jul 2025 09:37:49 +0000 (UTC)
+	 MIME-Version; b=U92tJwO71HDTHS27W4w9wxXCsHSIN4hCqH8RF7ZIS4+5xzMKgeCwjcr6rGK0AQWlanpSg75IIhKnfC3fh875FB75TgIx9W5vZXp+q9kVmWIwcE4QAYA3DMDs1oseLhx9WCnZFiYrzkRLJ9QIuobLW+rJS84MK01+MZTgs/MSllo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpOXZMr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61493C4CEF5;
+	Wed, 30 Jul 2025 09:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868270;
-	bh=8lXJGS5GWmSRo18oD3KmVA4JrwFOAONqXGQE0U3qXvY=;
+	s=korg; t=1753869083;
+	bh=6/g+xnBuLMW8Pk4Xap1k7wgrvMyoDvhUWRYir12a4L8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUQ5SIaigCEawCSB3spIhQMyu2/K+zkq5uZeEfSMecq8sksepI5UsXd/84WG+C2dn
-	 SVIe1ilQ2HT/a8/ytuOpBKcfZpkZD31FsIHbTvP54Cel3xuXpE6wG/UoqwmiophAN3
-	 FVqVDQSb5gA6W0FclWbbm9H5vuQnvpVL3SQOh+P0=
+	b=qpOXZMr1+ut5dUy4V23ZMFLKpc9/coeZlkcKTa2IZKcVrtQJQG4T1ZPNjRwbPrliw
+	 0EGqWU9m+xSzwsx4EYCHakU1ybUu7WkETtPknz6XaeocOcljDCCVAaMQRE2tlxfdQR
+	 ZFFQmQW239UTq9jDE94Ql9soQeHLtyCkpUvP9fMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Alessandro Carminati <acarmina@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/76] can: dev: can_restart(): move debug message and stats after successful restart
+Subject: [PATCH 6.15 05/92] regulator: core: fix NULL dereference on unbind due to stale coupling data
 Date: Wed, 30 Jul 2025 11:35:13 +0200
-Message-ID: <20250730093227.632657131@linuxfoundation.org>
+Message-ID: <20250730093230.843633990@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Alessandro Carminati <acarmina@redhat.com>
 
-[ Upstream commit f0e0c809c0be05fe865b9ac128ef3ee35c276021 ]
+[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
 
-Move the debug message "restarted" and the CAN restart stats_after_
-the successful restart of the CAN device, because the restart may
-fail.
+Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
+lead to NULL pointer dereference when regulators are accessed post-unbind.
 
-While there update the error message from printing the error number to
-printing symbolic error names.
+This can happen during runtime PM or other regulator operations that rely
+on coupling metadata.
 
-Link: https://lore.kernel.org/all/20231005-can-dev-fix-can-restart-v2-4-91b5c1fd922c@pengutronix.de
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-[mkl: mention stats in subject and description, too]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
+For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
+a panic in regulator_lock_recursive() due to stale coupling state.
+
+Ensure n_coupled is set to 0 to prevent access to invalid pointers.
+
+Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
+Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/dev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/regulator/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 6c1ceb8ce6c4b..88f345966c991 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -147,15 +147,15 @@ static void can_restart(struct net_device *dev)
- 		netif_rx(skb);
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 90629a7566932..4ecad5c6c8390 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -5639,6 +5639,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
+ 				 ERR_PTR(err));
  	}
  
--	netdev_dbg(dev, "restarted\n");
--	priv->can_stats.restarts++;
--
- 	/* Now restart the device */
- 	netif_carrier_on(dev);
- 	err = priv->do_set_mode(dev, CAN_MODE_START);
- 	if (err) {
--		netdev_err(dev, "Error %d during restart", err);
-+		netdev_err(dev, "Restart failed, error %pe\n", ERR_PTR(err));
- 		netif_carrier_off(dev);
-+	} else {
-+		netdev_dbg(dev, "Restarted\n");
-+		priv->can_stats.restarts++;
- 	}
++	rdev->coupling_desc.n_coupled = 0;
+ 	kfree(rdev->coupling_desc.coupled_rdevs);
+ 	rdev->coupling_desc.coupled_rdevs = NULL;
  }
- 
 -- 
 2.39.5
 
