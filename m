@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-165400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD21B15D21
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC169B15DA2
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61C845A547D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07B5A18978BD
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45844277CA8;
-	Wed, 30 Jul 2025 09:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252BF26C383;
+	Wed, 30 Jul 2025 09:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otnejqk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSoBRPq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0133C267733;
-	Wed, 30 Jul 2025 09:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8412255F5C;
+	Wed, 30 Jul 2025 09:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868982; cv=none; b=W1ZqWBIUfHOV0fZwFfwtTJCtd0ib5qOzH2f9Gz5TxTjlkFNoJYQcqrkGv40p7Ev2i1rrm+1At7voCKnNbov3bSmTeLDZPOSIdeqEvn4h14FA+J7T7lCyC3Uaa+sFzGIkPXBC6up8D3K93cupPF59YbimGK+cAM+2TydGBYgOAXE=
+	t=1753869288; cv=none; b=Su5FqquUKHfaHTvY551zzwkPchtpy3O3pw253H9aQMeuNmsNvObpWzG9riNqcmGIrv3sA54RLEg4PuXKPAsBHpjNAoKbXLRWiFTFRyCpBQUBRQ8ioURLjAS8uC7Vi3eNVS5ua72J2PPnA8GmbEL12ZM/rM3ROjGntmke/F2I1iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868982; c=relaxed/simple;
-	bh=+pKoYQXOs6f6pewnoB1HO7FsrSbfZSGlmFW9tgGuqRU=;
+	s=arc-20240116; t=1753869288; c=relaxed/simple;
+	bh=0dyxdE3JqdSsUrwJ9aHfv7jJF4Np57LhL5EWpYppeLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeqRcp4jGIq/qrklyxxX0nGAgGAs7SiN+++9THoOa1eFsDMjsCkDGUXm0hCaKS83TMKx5Y92/JHKzDhHxi2FVexTcpcphknWIRehYdCWzorZvMwKjRVbUGZKlgwqBmawFkNwJqBNv8Zd3pR8RWFJmYID4UXb0wGc/jMBktHE0fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otnejqk8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6133CC4CEF5;
-	Wed, 30 Jul 2025 09:49:41 +0000 (UTC)
+	 MIME-Version; b=KUj3MMCvotQkNxvTkFUT2rRDX58OzdxpIItpdQ4n0c7ber+/3PAhRG1My1z/qJa9Ej8nu+uLErwWzK8uZLJ4HUBk7lryDBVsSZcaJi1kM2MGOMjcU1KJ8en+FkE1QiCtOLdOLKgP5pT/BaTVLe8ofI/SNsYEGBZsw1xdPQxAURA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSoBRPq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A18C4CEF5;
+	Wed, 30 Jul 2025 09:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868981;
-	bh=+pKoYQXOs6f6pewnoB1HO7FsrSbfZSGlmFW9tgGuqRU=;
+	s=korg; t=1753869288;
+	bh=0dyxdE3JqdSsUrwJ9aHfv7jJF4Np57LhL5EWpYppeLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otnejqk8PXAmM+vbwdO9rK0MwVmtW/Egkx9SHcPwatcW1eJj8w7iE3Po05wqFK5VH
-	 rS/kS/MhMR4+rd/DCJ57wlAiWw7WA75cSpjMhVeCbXvQ8H9lKotZQ1YzTU16zBDvAK
-	 1zuDjzomoQEhTKMTQrMVUstAMnrmzTdtPB6E/OZU=
+	b=MSoBRPq5vJCh30Y0yxzozK1pUlRwuq3MJ3Fc1IsOBc1LHiOmLu9avbYo3huQGpMjn
+	 WqRHx8/iEOe2uOmU0gVBG1lS7qt8o5ybwaj/6x/dlOLdrgeLTOCLr7iF1SskbHSZWs
+	 0TJmIAnZ7Hli2GBoHC9LGRkkGyYh0xVuj67TPjQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/117] iio: hid-sensor-prox: Restore lost scale assignments
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 66/92] dpaa2-switch: Fix device reference count leak in MAC endpoint handling
 Date: Wed, 30 Jul 2025 11:36:14 +0200
-Message-ID: <20250730093237.893824527@linuxfoundation.org>
+Message-ID: <20250730093233.306456727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 83ded7cfaccccd2f4041769c313b58b4c9e265ad ]
+commit 96e056ffba912ef18a72177f71956a5b347b5177 upstream.
 
-The variables `scale_pre_decml`, `scale_post_decml`, and `scale_precision`
-were assigned in commit d68c592e02f6 ("iio: hid-sensor-prox: Fix scale not
-correct issue"), but due to a merge conflict in
-commit 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next"),
-these assignments were lost.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_switch_port_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-Add back lost assignments and replace `st->prox_attr` with
-`st->prox_attr[0]` because commit 596ef5cf654b ("iio: hid-sensor-prox: Add
-support for more channels") changed `prox_attr` to an array.
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
-Cc: stable@vger.kernel.org # 5.13+
-Fixes: 9c15db92a8e5 ("Merge tag 'iio-for-5.13a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250331055022.1149736-2-lixu.zhang@intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ changed st->prox_attr[0] array access to st->prox_attr single struct member ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-3-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/hid-sensor-prox.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -227,6 +227,11 @@ static int prox_parse_report(struct plat
- 	dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
- 			st->prox_attr.report_id);
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -1448,12 +1448,19 @@ static int dpaa2_switch_port_connect_mac
+ 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
+ 		return PTR_ERR(dpmac_dev);
  
-+	st->scale_precision = hid_sensor_format_scale(hsdev->usage,
-+						      &st->prox_attr,
-+						      &st->scale_pre_decml,
-+						      &st->scale_post_decml);
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
+ 
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
 +
- 	return ret;
+ 	mac = kzalloc(sizeof(*mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
+ 
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = port_priv->ethsw_data->mc_io;
+@@ -1483,6 +1490,8 @@ err_close_mac:
+ 	dpaa2_mac_close(mac);
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
  }
  
 
