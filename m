@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6C1B15D50
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D88DEB15C5B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F57A564AE5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45C6918853D7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7087626E71A;
-	Wed, 30 Jul 2025 09:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF0336124;
+	Wed, 30 Jul 2025 09:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfI1vDQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U74bloUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC4B27467B;
-	Wed, 30 Jul 2025 09:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C55157E6B;
+	Wed, 30 Jul 2025 09:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869160; cv=none; b=hqwenTb6DK+F1vutzXXlR3OsfxvvdIgBdmQ6IPd5v9+27JExrWienzn0uVEJ9uJsKWIGJSkcbsVWOPiE7JL0Bc0zuqs5ui4p4bhAXLlTDv3m/z99q9STkt5wId7VowWgUi5r7sVcsfVzaEu98HY5CsRwqQE+ni3stez0Bm67GH8=
+	t=1753868498; cv=none; b=Ai4TRbzFvbzKCuZwAW+NoX8FJLKQqHDtSxyoIEK32bBqjvww0CoH7s00oI3qRSSAfVzZniOdFn5j9I0dnkexh+4XvsUCBqitw46uW+XOy61Gzkxe/Z2Q/XaiR5MZRG6d+zCzNg7KJaoQ/gA0sSbHaqolDZZu8MC+SRNYOG080RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869160; c=relaxed/simple;
-	bh=Lliiq1TZbvesRsMD2atRINUPa2GeuRIgLGYGldmPh8c=;
+	s=arc-20240116; t=1753868498; c=relaxed/simple;
+	bh=Drjeizqsm4a8hfvFqaDooaHTFQTr9gnsnFIAuft5JAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i3d8rPfsXwEQ1KcPfspvn84b0gNa3LMTrQkBwVPmeBYeN8Pu++0epF8Ck7qje19/8Ax1B+17bYaNDPaWWfXJD9ULl5k03WaTzNCzVjTIHh3KpJL4B1ZXQHq0mCb7MBt7LKcJ/6/5C+LI2eQ0f0T/cz8rZjQzMPbTRKsWzejbOUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfI1vDQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5BEC4CEF5;
-	Wed, 30 Jul 2025 09:52:39 +0000 (UTC)
+	 MIME-Version; b=gELpFJo6uWjF4vZ871PWaHBuiJmoTFM6PJjSzOzsGcprXjE+R5I4uyJ/zlB/8H0JB5oAs0X+EiYviDaFSWVQQlsVVJkqFynt30x6iglb+Oyv+ESZ0tM3xFGuYHDb1YYck5pqIyoJyuq4cfuis6wpw98Xvu83xOZgMgpoTbc86sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U74bloUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC9AC4CEE7;
+	Wed, 30 Jul 2025 09:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869160;
-	bh=Lliiq1TZbvesRsMD2atRINUPa2GeuRIgLGYGldmPh8c=;
+	s=korg; t=1753868498;
+	bh=Drjeizqsm4a8hfvFqaDooaHTFQTr9gnsnFIAuft5JAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfI1vDQ7PK/VDLjO4WZqgM+aoXJ3R9EI0Pks232i1/WuHJiSaM9jDIt2j7zLd8j8j
-	 c/Af2iJc2Aeqq+HgALcwNBAWKR8DtCG6uEF78LuFSLgMsJbIrTHAOhVEbnswziqdDf
-	 DUM3nFuqtzitq3XkZ/Ky2U44Y34eXLhjv36VgnDI=
+	b=U74bloUAQ0Gc0PQls0po5VS4gkD/gwu979rj2LZ2KRnJoGiV8mn3ZubngQZPXWrUK
+	 f5iwXWOGthK4steRmCpDa0Lah89u1eJPV8NdzVsZb1jhutoIj8TTPdFKebJR7W5dBO
+	 547s6V7Rj6F7HvhDHNguBDU4b9dq0R470JmbZU2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.15 51/92] drm/sched: Remove optimization that causes hang when killing dependent jobs
+	Vince Weaver <vincent.weaver@maine.edu>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 66/76] perf/x86/intel: Fix crash in icl_update_topdown_event()
 Date: Wed, 30 Jul 2025 11:35:59 +0200
-Message-ID: <20250730093232.727807158@linuxfoundation.org>
+Message-ID: <20250730093229.429384297@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin.Cao <lincao12@amd.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 15f77764e90a713ee3916ca424757688e4f565b9 upstream.
+[ Upstream commit b0823d5fbacb1c551d793cbfe7af24e0d1fa45ed ]
 
-When application A submits jobs and application B submits a job with a
-dependency on A's fence, the normal flow wakes up the scheduler after
-processing each job. However, the optimization in
-drm_sched_entity_add_dependency_cb() uses a callback that only clears
-dependencies without waking up the scheduler.
+The perf_fuzzer found a hard-lockup crash on a RaptorLake machine:
 
-When application A is killed before its jobs can run, the callback gets
-triggered but only clears the dependency without waking up the scheduler,
-causing the scheduler to enter sleep state and application B to hang.
+  Oops: general protection fault, maybe for address 0xffff89aeceab400: 0000
+  CPU: 23 UID: 0 PID: 0 Comm: swapper/23
+  Tainted: [W]=WARN
+  Hardware name: Dell Inc. Precision 9660/0VJ762
+  RIP: 0010:native_read_pmc+0x7/0x40
+  Code: cc e8 8d a9 01 00 48 89 03 5b cd cc cc cc cc 0f 1f ...
+  RSP: 000:fffb03100273de8 EFLAGS: 00010046
+  ....
+  Call Trace:
+    <TASK>
+    icl_update_topdown_event+0x165/0x190
+    ? ktime_get+0x38/0xd0
+    intel_pmu_read_event+0xf9/0x210
+    __perf_event_read+0xf9/0x210
 
-Remove the optimization by deleting drm_sched_entity_clear_dep() and its
-usage, ensuring the scheduler is always woken up when dependencies are
-cleared.
+CPUs 16-23 are E-core CPUs that don't support the perf metrics feature.
+The icl_update_topdown_event() should not be invoked on these CPUs.
 
-Fixes: 777dbd458c89 ("drm/amdgpu: drop a dummy wakeup scheduler")
-Cc: stable@vger.kernel.org # v4.6+
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250717084453.921097-1-lincao12@amd.com
+It's a regression of commit:
+
+  f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
+
+The bug introduced by that commit is that the is_topdown_event() function
+is mistakenly used to replace the is_topdown_count() call to check if the
+topdown functions for the perf metrics feature should be invoked.
+
+Fix it.
+
+Fixes: f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
+Closes: https://lore.kernel.org/lkml/352f0709-f026-cd45-e60c-60dfd97f73f3@maine.edu/
+Reported-by: Vince Weaver <vincent.weaver@maine.edu>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Vince Weaver <vincent.weaver@maine.edu>
+Cc: stable@vger.kernel.org # v6.15+
+Link: https://lore.kernel.org/r/20250612143818.2889040-1-kan.liang@linux.intel.com
+[ omitted PEBS check ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ arch/x86/events/intel/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -355,17 +355,6 @@ void drm_sched_entity_destroy(struct drm
- }
- EXPORT_SYMBOL(drm_sched_entity_destroy);
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2734,7 +2734,7 @@ static void intel_pmu_read_event(struct
+ 		if (pmu_enabled)
+ 			intel_pmu_disable_all();
  
--/* drm_sched_entity_clear_dep - callback to clear the entities dependency */
--static void drm_sched_entity_clear_dep(struct dma_fence *f,
--				       struct dma_fence_cb *cb)
--{
--	struct drm_sched_entity *entity =
--		container_of(cb, struct drm_sched_entity, cb);
--
--	entity->dependency = NULL;
--	dma_fence_put(f);
--}
--
- /*
-  * drm_sched_entity_wakeup - callback to clear the entity's dependency and
-  * wake up the scheduler
-@@ -376,7 +365,8 @@ static void drm_sched_entity_wakeup(stru
- 	struct drm_sched_entity *entity =
- 		container_of(cb, struct drm_sched_entity, cb);
- 
--	drm_sched_entity_clear_dep(f, cb);
-+	entity->dependency = NULL;
-+	dma_fence_put(f);
- 	drm_sched_wakeup(entity->rq->sched);
- }
- 
-@@ -429,13 +419,6 @@ static bool drm_sched_entity_add_depende
- 		fence = dma_fence_get(&s_fence->scheduled);
- 		dma_fence_put(entity->dependency);
- 		entity->dependency = fence;
--		if (!dma_fence_add_callback(fence, &entity->cb,
--					    drm_sched_entity_clear_dep))
--			return true;
--
--		/* Ignore it when it is already scheduled */
--		dma_fence_put(fence);
--		return false;
- 	}
- 
- 	if (!dma_fence_add_callback(entity->dependency, &entity->cb,
+-		if (is_topdown_event(event))
++		if (is_topdown_count(event))
+ 			static_call(intel_pmu_update_topdown_event)(event);
+ 		else
+ 			intel_pmu_drain_pebs_buffer();
 
 
 
