@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC05B15CEA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 834B3B15D67
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CF216BC72
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9B94179329
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D51292B5C;
-	Wed, 30 Jul 2025 09:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E0D28BA8C;
+	Wed, 30 Jul 2025 09:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1DwEVcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhbkmHt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D179292B2C;
-	Wed, 30 Jul 2025 09:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1096275B1D;
+	Wed, 30 Jul 2025 09:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868886; cv=none; b=j0FnrzMOdduWxR3myTC9AmobA0UHlkiiUt3mOk/Z0qipUHHiiF32cce7WCSoNw/oXuvg0EcHgApQGBgv/Fv/meW68E93SdCWirtwGF0cQlv42HLWxnj84HW+B05sc+3/DNPcVJ2aUsmFpi0GnkVbzQ++Ttc/817SORtx3siNvfc=
+	t=1753869197; cv=none; b=n+6jSzpyI/ydmM2ggkko9WyyIK0rHgGTaogSOSurnd+Ry/BJ9ykCO78ol2qeNQETMRzBKJ5Z9CrxrnEoODuzEgFnmaRqdujF5c7HDS2M2f+qK5/owKNYgpFtBbnRqVsgaRlvCHKQCDMDoaYd/b8ydSD4INsZkXsOb59jSArNWpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868886; c=relaxed/simple;
-	bh=Ei547ruXR1q/Cx7hUeFmQ3e5nXfaG3LJ/B43CAZMxDc=;
+	s=arc-20240116; t=1753869197; c=relaxed/simple;
+	bh=8beqZkYDVX/fMRnH3Ed1pULfym+atKvHrFogbHK+zGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7nRxtyL7UT+GFOLsWYL+JBm7eXRMHEWm8RsSjNYcrEsQWtjfY2Td+AXzISi5gL2V3XRmObtWL1Jm3vFQ0UkltA/4M8+waCCXaSoWFFkuGXktdtLaM/MT7jjnNgKQTORCgphTRYL5hls7shrZjbZG0p4kCa0zZyOB+p95UdS0Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1DwEVcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F719C4CEF8;
-	Wed, 30 Jul 2025 09:48:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GV5bXdOVo78vkbM2XCZUp/1fB6ILoFrR/TmHsHHMa9YsVX2dtyLhX6U1j4Zo6WyfZ2NeRk36yz11r713ZM5I61J9AbDxh5KDgt2eS8mr95wHCxabAFVrpfUIqkwviiyGZFe5QzkE2KQo2GTWN7Da7tFMbw2f9Vnhf0yjIinljww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhbkmHt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13C1C4CEF5;
+	Wed, 30 Jul 2025 09:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868885;
-	bh=Ei547ruXR1q/Cx7hUeFmQ3e5nXfaG3LJ/B43CAZMxDc=;
+	s=korg; t=1753869197;
+	bh=8beqZkYDVX/fMRnH3Ed1pULfym+atKvHrFogbHK+zGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1DwEVcTSFKVZm5RZYBs/ojrwazA67O40vDK/SezhqBCs8ZXlcPQimt6AQz1KB1JI
-	 mWBlSVYqTAVhJbMw9Cs2Q2b6hXq9u1DoqY+GlSoNE5jBF8W9WuPVAjMUuZrGC5fesz
-	 TZBzejGnNeOkosnNzgXbiQf3uj20pDVgNET4u2KQ=
+	b=mhbkmHt4oG9Uv5W4wGPCfi+G1whkPuYKzMsEM3VsdtNBDouzYZAHrvgsmi3T815Bk
+	 zPOxPXpy8DYx9HDwoTasxL+EqYGYNe1XF+8mDivIQ91H+iti5MmyMXVl+kzN2MZYOk
+	 Uy8zZOXZ4PMtLszR4t2/R1K19CEJbg6+sudhL9nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/117] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+Subject: [PATCH 6.15 32/92] net: appletalk: Fix use-after-free in AARP proxy probe
 Date: Wed, 30 Jul 2025 11:35:40 +0200
-Message-ID: <20250730093236.302997011@linuxfoundation.org>
+Message-ID: <20250730093231.998424964@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +60,190 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Kito Xu (veritas501) <hxzene@gmail.com>
 
-commit bec15191d52300defa282e3fd83820f69e447116 upstream.
+[ Upstream commit 6c4a92d07b0850342d3becf2e608f805e972467c ]
 
-This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
-SNKAS.
+The AARP proxy‐probe routine (aarp_proxy_probe_network) sends a probe,
+releases the aarp_lock, sleeps, then re-acquires the lock.  During that
+window an expire timer thread (__aarp_expire_timer) can remove and
+kfree() the same entry, leading to a use-after-free.
 
-tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
-testers can interpret the TryWait.Src to Attached.Src transition after
-Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
-to the debounce timer.
+race condition:
 
-Setting the data role can be a costly operation in host mode, and when
-completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
-to fail.
+         cpu 0                          |            cpu 1
+    atalk_sendmsg()                     |   atif_proxy_probe_device()
+    aarp_send_ddp()                     |   aarp_proxy_probe_network()
+    mod_timer()                         |   lock(aarp_lock) // LOCK!!
+    timeout around 200ms                |   alloc(aarp_entry)
+    and then call                       |   proxies[hash] = aarp_entry
+    aarp_expire_timeout()               |   aarp_send_probe()
+                                        |   unlock(aarp_lock) // UNLOCK!!
+    lock(aarp_lock) // LOCK!!           |   msleep(100);
+    __aarp_expire_timer(&proxies[ct])   |
+    free(aarp_entry)                    |
+    unlock(aarp_lock) // UNLOCK!!       |
+                                        |   lock(aarp_lock) // LOCK!!
+                                        |   UAF aarp_entry !!
 
-Turn VBUS on before tcpm_set_roles to meet timing requirement.
+==================================================================
+BUG: KASAN: slab-use-after-free in aarp_proxy_probe_network+0x560/0x630 net/appletalk/aarp.c:493
+Read of size 4 at addr ffff8880123aa360 by task repro/13278
 
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
+CPU: 3 UID: 0 PID: 13278 Comm: repro Not tainted 6.15.2 #3 PREEMPT(full)
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xc1/0x630 mm/kasan/report.c:521
+ kasan_report+0xca/0x100 mm/kasan/report.c:634
+ aarp_proxy_probe_network+0x560/0x630 net/appletalk/aarp.c:493
+ atif_proxy_probe_device net/appletalk/ddp.c:332 [inline]
+ atif_ioctl+0xb58/0x16c0 net/appletalk/ddp.c:857
+ atalk_ioctl+0x198/0x2f0 net/appletalk/ddp.c:1818
+ sock_do_ioctl+0xdc/0x260 net/socket.c:1190
+ sock_ioctl+0x239/0x6a0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x194/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcb/0x250 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+Allocated:
+ aarp_alloc net/appletalk/aarp.c:382 [inline]
+ aarp_proxy_probe_network+0xd8/0x630 net/appletalk/aarp.c:468
+ atif_proxy_probe_device net/appletalk/ddp.c:332 [inline]
+ atif_ioctl+0xb58/0x16c0 net/appletalk/ddp.c:857
+ atalk_ioctl+0x198/0x2f0 net/appletalk/ddp.c:1818
+
+Freed:
+ kfree+0x148/0x4d0 mm/slub.c:4841
+ __aarp_expire net/appletalk/aarp.c:90 [inline]
+ __aarp_expire_timer net/appletalk/aarp.c:261 [inline]
+ aarp_expire_timeout+0x480/0x6e0 net/appletalk/aarp.c:317
+
+The buggy address belongs to the object at ffff8880123aa300
+ which belongs to the cache kmalloc-192 of size 192
+The buggy address is located 96 bytes inside of
+ freed 192-byte region [ffff8880123aa300, ffff8880123aa3c0)
+
+Memory state around the buggy address:
+ ffff8880123aa200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff8880123aa280: 00 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff8880123aa300: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                       ^
+ ffff8880123aa380: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+ ffff8880123aa400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kito Xu (veritas501) <hxzene@gmail.com>
+Link: https://patch.msgid.link/20250717012843.880423-1-hxzene@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ net/appletalk/aarp.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4339,17 +4339,6 @@ static int tcpm_src_attach(struct tcpm_p
+diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
+index 9c787e2e4b173..4744e3fd45447 100644
+--- a/net/appletalk/aarp.c
++++ b/net/appletalk/aarp.c
+@@ -35,6 +35,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/export.h>
+ #include <linux/etherdevice.h>
++#include <linux/refcount.h>
  
- 	tcpm_enable_auto_vbus_discharge(port, true);
+ int sysctl_aarp_expiry_time = AARP_EXPIRY_TIME;
+ int sysctl_aarp_tick_time = AARP_TICK_TIME;
+@@ -44,6 +45,7 @@ int sysctl_aarp_resolve_time = AARP_RESOLVE_TIME;
+ /* Lists of aarp entries */
+ /**
+  *	struct aarp_entry - AARP entry
++ *	@refcnt: Reference count
+  *	@last_sent: Last time we xmitted the aarp request
+  *	@packet_queue: Queue of frames wait for resolution
+  *	@status: Used for proxy AARP
+@@ -55,6 +57,7 @@ int sysctl_aarp_resolve_time = AARP_RESOLVE_TIME;
+  *	@next: Next entry in chain
+  */
+ struct aarp_entry {
++	refcount_t			refcnt;
+ 	/* These first two are only used for unresolved entries */
+ 	unsigned long		last_sent;
+ 	struct sk_buff_head	packet_queue;
+@@ -79,6 +82,17 @@ static DEFINE_RWLOCK(aarp_lock);
+ /* Used to walk the list and purge/kick entries.  */
+ static struct timer_list aarp_timer;
  
--	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
--			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
--	if (ret < 0)
--		return ret;
--
--	if (port->pd_supported) {
--		ret = port->tcpc->set_pd_rx(port->tcpc, true);
--		if (ret < 0)
--			goto out_disable_mux;
--	}
--
- 	/*
- 	 * USB Type-C specification, version 1.2,
- 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
-@@ -4359,13 +4348,24 @@ static int tcpm_src_attach(struct tcpm_p
- 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
- 		ret = tcpm_set_vconn(port, true);
- 		if (ret < 0)
--			goto out_disable_pd;
-+			return ret;
- 	}
- 
- 	ret = tcpm_set_vbus(port, true);
- 	if (ret < 0)
- 		goto out_disable_vconn;
- 
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
-+			     tcpm_data_role_for_source(port));
-+	if (ret < 0)
-+		goto out_disable_vbus;
++static inline void aarp_entry_get(struct aarp_entry *a)
++{
++	refcount_inc(&a->refcnt);
++}
 +
-+	if (port->pd_supported) {
-+		ret = port->tcpc->set_pd_rx(port->tcpc, true);
-+		if (ret < 0)
-+			goto out_disable_mux;
-+	}
++static inline void aarp_entry_put(struct aarp_entry *a)
++{
++	if (refcount_dec_and_test(&a->refcnt))
++		kfree(a);
++}
 +
- 	port->pd_capable = false;
- 
- 	port->partner = NULL;
-@@ -4376,14 +4376,14 @@ static int tcpm_src_attach(struct tcpm_p
- 
- 	return 0;
- 
--out_disable_vconn:
--	tcpm_set_vconn(port, false);
--out_disable_pd:
--	if (port->pd_supported)
--		port->tcpc->set_pd_rx(port->tcpc, false);
- out_disable_mux:
- 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
- 		     TYPEC_ORIENTATION_NONE);
-+out_disable_vbus:
-+	tcpm_set_vbus(port, false);
-+out_disable_vconn:
-+	tcpm_set_vconn(port, false);
-+
- 	return ret;
+ /*
+  *	Delete an aarp queue
+  *
+@@ -87,7 +101,7 @@ static struct timer_list aarp_timer;
+ static void __aarp_expire(struct aarp_entry *a)
+ {
+ 	skb_queue_purge(&a->packet_queue);
+-	kfree(a);
++	aarp_entry_put(a);
  }
  
+ /*
+@@ -380,9 +394,11 @@ static void aarp_purge(void)
+ static struct aarp_entry *aarp_alloc(void)
+ {
+ 	struct aarp_entry *a = kmalloc(sizeof(*a), GFP_ATOMIC);
++	if (!a)
++		return NULL;
+ 
+-	if (a)
+-		skb_queue_head_init(&a->packet_queue);
++	refcount_set(&a->refcnt, 1);
++	skb_queue_head_init(&a->packet_queue);
+ 	return a;
+ }
+ 
+@@ -477,6 +493,7 @@ int aarp_proxy_probe_network(struct atalk_iface *atif, struct atalk_addr *sa)
+ 	entry->dev = atif->dev;
+ 
+ 	write_lock_bh(&aarp_lock);
++	aarp_entry_get(entry);
+ 
+ 	hash = sa->s_node % (AARP_HASH_SIZE - 1);
+ 	entry->next = proxies[hash];
+@@ -502,6 +519,7 @@ int aarp_proxy_probe_network(struct atalk_iface *atif, struct atalk_addr *sa)
+ 		retval = 1;
+ 	}
+ 
++	aarp_entry_put(entry);
+ 	write_unlock_bh(&aarp_lock);
+ out:
+ 	return retval;
+-- 
+2.39.5
+
 
 
 
