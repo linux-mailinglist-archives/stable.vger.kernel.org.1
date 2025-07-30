@@ -1,86 +1,115 @@
-Return-Path: <stable+bounces-165528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7687CB162B6
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:26:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72311B162D7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:31:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B576A170F73
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 14:26:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14E6C7AAA04
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 14:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512CA2D9797;
-	Wed, 30 Jul 2025 14:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D8E2D8DC3;
+	Wed, 30 Jul 2025 14:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ax415/bk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TVGZHb/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE5F2BD582;
-	Wed, 30 Jul 2025 14:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE3422539D;
+	Wed, 30 Jul 2025 14:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753885608; cv=none; b=kWDrhBgmXwmG1uptKpFsLmovUV/F4UvqcYysSUzsCLZY6ngCHr/yj+KlBauksgaLgNcItVP1Hfo2adDVz4N4/Fksiyag0bzXR5rGx7mI+LadCOPGFZQtGFDSr/5LW0FH5Q2inCa4QTY+A4cjc7uuUV0Y5fgHGosypa+g4j9y1To=
+	t=1753885871; cv=none; b=u0FhTWkY/ZTrEDXma1+0fYP5WIwdt8mO0fNGrFGhoU8ymwn1lqAhf0JSzz3Xwaks55tawQ2x/1ySjOER9IRINs7H66jKUIQZrkKXxsrbYE0JwFf3SApucI2/DJKgV8ZxnEAs5rsQQrXcAk3t9kWoJtKyFXWkEGZ0XjYKeScpny0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753885608; c=relaxed/simple;
-	bh=NzNLnN8gkgPqDzoHuFxVWpIUGLGJD3DT7IFgIBIS9g4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ONqvnMtdh2HOFyy8kBeT0znEzdtJ+n6Uo/xdlzcPO/4vK84259mY8ce/tiC/B1g89IjeT2jMuLNqcsjwqwnYl3R66BfIJLzOetxJZ8PFwg40OlBIYZKfLyctOxhCFo8GObngXqs4iPDh7HHwLeDJuABkgSscRa6ocgs3tuHhxJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ax415/bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87A8C4CEE3;
-	Wed, 30 Jul 2025 14:26:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753885607;
-	bh=NzNLnN8gkgPqDzoHuFxVWpIUGLGJD3DT7IFgIBIS9g4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ax415/bk24Tzgeq1G/8ojgjMZ9l4aOhSrbgBipGN/WHjGqJ9XbB6s5ML3cPEXE36a
-	 lStSND8JC/ZBTua/JbEymvfLm5FGiSN5yoNjxoRXymTzlLsqTyzkGwV5j5gk320SIc
-	 oKRkSmA2J2fnYhNe2k2qwdRIZ/7jrS2fSCWUvkUY=
-Date: Wed, 30 Jul 2025 16:26:44 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jari Ruusu <jariruusu@protonmail.com>
-Cc: Yi Yang <yiyang13@huawei.com>, GONG Ruiqi <gongruiqi1@huawei.com>,
-	Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: Text mode VGA-console scrolling is broken in upstream & stable
- trees
-Message-ID: <2025073054-stipend-duller-9622@gregkh>
-References: <C4_ogGo3eSdgo3wcbkdIXQDoGk2CShDfiQEjnwmgLUvd1cVp5kKguDC4M7KlWO4Tg9Ny3joveq7vH9K_zpBGvIA8-UkU2ogSE1T9Y6782js=@protonmail.com>
+	s=arc-20240116; t=1753885871; c=relaxed/simple;
+	bh=Snch+KOVqe7Btb1kUNrEoTqutUb5jKG8E3w1pNm7imo=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=nozd1NkOYb5rKZjMg+I2qiE1w1KUJ6pCUVsK2mAt+uXMiVHKGXG+J26zwzPpUyxXprUO9HKQUrdUV5dR0HH8OuZBxjM/89KZAxZ7sP78zr6MWoxGjJ1s0f0NK9qeAutWUucA0A+bS6GxMWrU/VWssB1JvsGjws6D+Flyqobogxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TVGZHb/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27DDC4CEE3;
+	Wed, 30 Jul 2025 14:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753885871;
+	bh=Snch+KOVqe7Btb1kUNrEoTqutUb5jKG8E3w1pNm7imo=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=TVGZHb/A1l0YucqC2rUHutS0EqhFAxlfKKvTI2cliqg/+GY45+2JjV1JOlvSiVc/D
+	 zYAC/AG+Q8tisWKqtZ8TMFZz7KJw1sMq3AuGddoFsUbEUlLwaw4k0nvgNBz4xIfK4I
+	 mdd23JaSRBUjHBsCE7J1UTbSfZPOuEKxljaDQxvcN8IhbgF84iOHw3CM3osdoNNork
+	 JihLPXAOI0oOtYxJs815xJaJWg+EdmEZK01/IRMDqPfYXbXygKetP9AX0rAX64/Ziw
+	 WNwV/lKCqizWfTTHQE8nEsW78e8QeVZ+mXA0f9KzT1EwB792PsB4FxsoNURo1idq3l
+	 PTNojLno1JosQ==
+Date: Wed, 30 Jul 2025 09:31:10 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C4_ogGo3eSdgo3wcbkdIXQDoGk2CShDfiQEjnwmgLUvd1cVp5kKguDC4M7KlWO4Tg9Ny3joveq7vH9K_zpBGvIA8-UkU2ogSE1T9Y6782js=@protonmail.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, Taniya Das <quic_tdas@quicinc.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+ stable@vger.kernel.org, Sibi Sankar <quic_sibis@quicinc.com>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Rajendra Nayak <quic_rjendra@quicinc.com>, Johan Hovold <johan@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, devicetree@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-arm-msm@vger.kernel.org
+To: Abel Vesa <abel.vesa@linaro.org>
+In-Reply-To: <20250730-phy-qcom-edp-add-missing-refclk-v1-1-6f78afeadbcf@linaro.org>
+References: <20250730-phy-qcom-edp-add-missing-refclk-v1-0-6f78afeadbcf@linaro.org>
+ <20250730-phy-qcom-edp-add-missing-refclk-v1-1-6f78afeadbcf@linaro.org>
+Message-Id: <175388587013.1443735.2833199363518772235.robh@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
+ X Elite
 
-On Wed, Jul 30, 2025 at 02:06:27PM +0000, Jari Ruusu wrote:
-> The patch that broke text mode VGA-console scrolling is this one:
-> "vgacon: Add check for vc_origin address range in vgacon_scroll()"
-> commit 864f9963ec6b4b76d104d595ba28110b87158003 upstream.
+
+On Wed, 30 Jul 2025 14:46:48 +0300, Abel Vesa wrote:
+> On X Elite platform, the eDP PHY uses one more clock called
+> refclk. Add it to the schema.
 > 
-> How to preproduce:
-> (1) boot a kernel that is configured to use text mode VGA-console
-> (2) type commands:  ls -l /usr/bin | less -S
-> (3) scroll up/down with cursor-down/up keys
+> Cc: stable@vger.kernel.org # v6.10
+> Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> ---
+>  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 23 +++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
 > 
-> Above mentioned patch seems to have landed in upstream and all
-> kernel.org stable trees with zero testing. Even minimal testing
-> would have shown that it breaks text mode VGA-console scrolling.
-> 
-> Greg, Sasha, Linus,
-> Please consider reverting that buggy patch from all affected trees.
 
-Please work to fix it in Linus's tree first and then we will be glad to
-backport the needed fix.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-thanks,
+yamllint warnings/errors:
 
-greg k-h
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.example.dtb: phy@aec2a00 (qcom,sa8775p-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
+	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/msm/qcom,sc7280-mdss.example.dtb: phy@aec2a00 (qcom,sc7280-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
+	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/phy/qcom,edp-phy.example.dtb: phy@aec2a00 (qcom,sc8180x-edp-phy): clock-names: ['aux', 'cfg_ahb'] is too short
+	from schema $id: http://devicetree.org/schemas/phy/qcom,edp-phy.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250730-phy-qcom-edp-add-missing-refclk-v1-1-6f78afeadbcf@linaro.org
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 
