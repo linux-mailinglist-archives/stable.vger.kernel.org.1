@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002E5B15D14
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42389B15D62
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC0753A3354
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBB4A7A1FE2
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C0B226D17;
-	Wed, 30 Jul 2025 09:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C7D275B1D;
+	Wed, 30 Jul 2025 09:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISnsjFAE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sn/8+kWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E25442C;
-	Wed, 30 Jul 2025 09:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542B9635;
+	Wed, 30 Jul 2025 09:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868951; cv=none; b=m9JtPsNCnOoQdtS2okJi0iQihgseq+E6zAi99XTaHmGC2ephPduB3esLTeSAvQKO7MwAVcjXRE8H4x3qUlf8KlpWYfl9vgXq6alCqCqEoQHg1FzUUouV3LrA1R68gYEaPv8jt4hRZjehK98flIDBxtGj0AV6Cm8/I3aC+xwXXLM=
+	t=1753869202; cv=none; b=T4s0be0RF5/3vIN23w8+vIOm5j2HExSJw/B7r+RmmkOb8CWFKCwcveZ+BFPfkMZysBdWFqa+dqMQLNe4LhOjx/P8stMF6NhS4dnM8Uary5uWvoQ755Zj56byViGjgTB43On+pbRXeTAEfF9enQ1bsOHeACgUOKOvT9BqOePIeuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868951; c=relaxed/simple;
-	bh=Mv4FNN+voKJlbmTM6+Be6IjhUmqolSSQHCiVTHJXVTU=;
+	s=arc-20240116; t=1753869202; c=relaxed/simple;
+	bh=OiVWgjyO4kSXUOZmcc8dvKtbp9fdQYp8gwFzuY+CIsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJ55c4r7knMDPT4XyfZdnVfBs4bpVE70gFepVysg95wgpBW9LtMZeNiccvjlcTt6L8FsG2bqSlGB2uFJkO7ahWUAgEumghDyiHsja4xH4/HL0goKQAz9Y+gZ6d5GHpnZ/36attr5o4NQxWwXGF4wvbZcpiAdjjE+/Hm+4gJb5N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISnsjFAE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCDCC4CEF5;
-	Wed, 30 Jul 2025 09:49:09 +0000 (UTC)
+	 MIME-Version; b=CtRpBxgClFMuX0Xsu/XAQFigqo161kjef4sYBUd0L2Qfm0QsOOzn2AhSh/ss+iYDZg4inE0L8JtJqtPK6lqqT3spDR7wRjoGEmcF8T3x/lnK9Yh3YY5xw4rYhCwriI+qBHgPsRGbvw8pQu+9yMVjEoO3QLXSHMPzfGRQW6gfjYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sn/8+kWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C22BC4CEF8;
+	Wed, 30 Jul 2025 09:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868950;
-	bh=Mv4FNN+voKJlbmTM6+Be6IjhUmqolSSQHCiVTHJXVTU=;
+	s=korg; t=1753869202;
+	bh=OiVWgjyO4kSXUOZmcc8dvKtbp9fdQYp8gwFzuY+CIsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISnsjFAENFof70OJue6VfKCJnEn8/x3h+jN8opOcd3sbrN59xTvr326TJjKY8LkWb
-	 9IJhpPrL3W3G2JMHLZjV6PFbg5NtlAhqQ6c3qSQeRINGpwU0KixyN4U+2UK8ViI/YH
-	 WDw+cxwRLG5vtPqlWsy70AGMt4cb2HssHtvjI+sI=
+	b=sn/8+kWwjoHKcaUsSwPA23DxBazqmYmHDyuQ1IZh6R96fkDpXpQu+1bf+YIkY7tz2
+	 EfgSXXYI+D7zsloiyTqS/GNOzB6gUyaZQgLJS4V2iwx+XxSOY1dHAS+ecAJ8tnzbqZ
+	 9/MlTePsNInXTw42vE03Ko+rx54brqeHzXXsYSD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/117] KVM: x86: Add X86EMUL_F_MSR and X86EMUL_F_DT_LOAD to aid canonical checks
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 59/92] bus: fsl-mc: Fix potential double device reference in fsl_mc_get_endpoint()
 Date: Wed, 30 Jul 2025 11:36:07 +0200
-Message-ID: <20250730093237.611864919@linuxfoundation.org>
+Message-ID: <20250730093233.040831501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit c534b37b7584e2abc5d487b4e017f61a61959ca9 ]
+commit bddbe13d36a02d5097b99cf02354d5752ad1ac60 upstream.
 
-Add emulation flags for MSR accesses and Descriptor Tables loads, and pass
-the new flags as appropriate to emul_is_noncanonical_address().  The flags
-will be used to perform the correct canonical check, as the type of access
-affects whether or not CR4.LA57 is consulted when determining the canonical
-bit.
+The fsl_mc_get_endpoint() function may call fsl_mc_device_lookup()
+twice, which would increment the device's reference count twice if
+both lookups find a device. This could lead to a reference count leak.
 
-No functional change is intended.
+Found by code review.
 
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Link: https://lore.kernel.org/r/20240906221824.491834-3-mlevitsk@redhat.com
-[sean: split to separate patch, massage changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: fa787ac07b3c ("KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1ac210d128ef ("bus: fsl-mc: add the fsl_mc_get_endpoint function")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 8567494cebe5 ("bus: fsl-mc: rescan devices if endpoint not found")
+Link: https://patch.msgid.link/20250717022309.3339976-1-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/emulate.c     |   15 +++++++++------
- arch/x86/kvm/kvm_emulate.h |    5 ++++-
- arch/x86/kvm/x86.c         |    2 +-
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -651,9 +651,10 @@ static inline u8 ctxt_virt_addr_bits(str
- }
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -943,6 +943,7 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	struct fsl_mc_obj_desc endpoint_desc = {{ 0 }};
+ 	struct dprc_endpoint endpoint1 = {{ 0 }};
+ 	struct dprc_endpoint endpoint2 = {{ 0 }};
++	struct fsl_mc_bus *mc_bus;
+ 	int state, err;
  
- static inline bool emul_is_noncanonical_address(u64 la,
--						struct x86_emulate_ctxt *ctxt)
-+						struct x86_emulate_ctxt *ctxt,
-+						unsigned int flags)
- {
--	return !ctxt->ops->is_canonical_addr(ctxt, la);
-+	return !ctxt->ops->is_canonical_addr(ctxt, la, flags);
- }
+ 	mc_bus_dev = to_fsl_mc_device(mc_dev->dev.parent);
+@@ -966,6 +967,8 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	strcpy(endpoint_desc.type, endpoint2.type);
+ 	endpoint_desc.id = endpoint2.id;
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
++	if (endpoint)
++		return endpoint;
  
- /*
-@@ -1733,7 +1734,8 @@ static int __load_segment_descriptor(str
- 		if (ret != X86EMUL_CONTINUE)
- 			return ret;
- 		if (emul_is_noncanonical_address(get_desc_base(&seg_desc) |
--						 ((u64)base3 << 32), ctxt))
-+						 ((u64)base3 << 32), ctxt,
-+						 X86EMUL_F_DT_LOAD))
- 			return emulate_gp(ctxt, err_code);
+ 	/*
+ 	 * We know that the device has an endpoint because we verified by
+@@ -973,17 +976,13 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	 * yet discovered by the fsl-mc bus, thus the lookup returned NULL.
+ 	 * Force a rescan of the devices in this container and retry the lookup.
+ 	 */
+-	if (!endpoint) {
+-		struct fsl_mc_bus *mc_bus = to_fsl_mc_bus(mc_bus_dev);
+-
+-		if (mutex_trylock(&mc_bus->scan_mutex)) {
+-			err = dprc_scan_objects(mc_bus_dev, true);
+-			mutex_unlock(&mc_bus->scan_mutex);
+-		}
+-
+-		if (err < 0)
+-			return ERR_PTR(err);
++	mc_bus = to_fsl_mc_bus(mc_bus_dev);
++	if (mutex_trylock(&mc_bus->scan_mutex)) {
++		err = dprc_scan_objects(mc_bus_dev, true);
++		mutex_unlock(&mc_bus->scan_mutex);
  	}
++	if (err < 0)
++		return ERR_PTR(err);
  
-@@ -2516,8 +2518,8 @@ static int em_sysexit(struct x86_emulate
- 		ss_sel = cs_sel + 8;
- 		cs.d = 0;
- 		cs.l = 1;
--		if (emul_is_noncanonical_address(rcx, ctxt) ||
--		    emul_is_noncanonical_address(rdx, ctxt))
-+		if (emul_is_noncanonical_address(rcx, ctxt, 0) ||
-+		    emul_is_noncanonical_address(rdx, ctxt, 0))
- 			return emulate_gp(ctxt, 0);
- 		break;
- 	}
-@@ -3494,7 +3496,8 @@ static int em_lgdt_lidt(struct x86_emula
- 	if (rc != X86EMUL_CONTINUE)
- 		return rc;
- 	if (ctxt->mode == X86EMUL_MODE_PROT64 &&
--	    emul_is_noncanonical_address(desc_ptr.address, ctxt))
-+	    emul_is_noncanonical_address(desc_ptr.address, ctxt,
-+					 X86EMUL_F_DT_LOAD))
- 		return emulate_gp(ctxt, 0);
- 	if (lgdt)
- 		ctxt->ops->set_gdt(ctxt, &desc_ptr);
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -94,6 +94,8 @@ struct x86_instruction_info {
- #define X86EMUL_F_FETCH			BIT(1)
- #define X86EMUL_F_IMPLICIT		BIT(2)
- #define X86EMUL_F_INVLPG		BIT(3)
-+#define X86EMUL_F_MSR			BIT(4)
-+#define X86EMUL_F_DT_LOAD		BIT(5)
- 
- struct x86_emulate_ops {
- 	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
-@@ -236,7 +238,8 @@ struct x86_emulate_ops {
- 	gva_t (*get_untagged_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
- 				   unsigned int flags);
- 
--	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr);
-+	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
-+				  unsigned int flags);
- };
- 
- /* Type, address-of, and value of an instruction's operand. */
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8609,7 +8609,7 @@ static gva_t emulator_get_untagged_addr(
- }
- 
- static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
--				       gva_t addr)
-+				       gva_t addr, unsigned int flags)
- {
- 	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt));
- }
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
+ 	/*
 
 
 
