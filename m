@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-165214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396A3B15C18
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86452B15D0B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE9C418C2EC5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEB07564127
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208AD29552A;
-	Wed, 30 Jul 2025 09:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CDA26F461;
+	Wed, 30 Jul 2025 09:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6Os0BHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rB9lFC1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E1F293C4D;
-	Wed, 30 Jul 2025 09:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C31D255F5C;
+	Wed, 30 Jul 2025 09:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868245; cv=none; b=TopoyBxwJ6YT4wkslO5lRtKd+zLZdpCrDALVdWSDsDGXd5/k7r/7KoGAAs7DhC+t6G929auIRwu3uzzWTDmywe1Dx+PeyrRRHg6YFELiLzGfDc0xUWy2TDi/mdcvh6hLd3hRJ2dJ9t4qleIA037O8m/g7DihecqAZ/b1MaKnLnU=
+	t=1753868989; cv=none; b=nX1Oq8+eG3zVhwDhJIYfB5fJqE7PFrb5YnnY1HbA2jsy2XkEDSNMF0uIwBszg/MycQAcKAswSjuRj1WJOmJMheat/WVLY9UUwLuJIvqhT+PGh3wkeSe5sOErX71v5E65yU47zCOGuRZXfb8JWPClbbl5cvS6gQYfyxqKYB1fpNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868245; c=relaxed/simple;
-	bh=4CIh8/t0jIp/8V8vIL7YjgfO+MaKriKzQcILfiWc0bw=;
+	s=arc-20240116; t=1753868989; c=relaxed/simple;
+	bh=gHwKynjdf3UoztL2GcQ5MGSxGUEShrrih9KRaCI1JSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foJ/8Rdi2ZpUNB/aJeqe2yMBfy3FMg3Wd7YhqjU19y8Zo5smKaEH2aYxqTX+KmukzupwPldyp5aG+hE+PK7D2CmhcssIGeHX9Twv5b2IExfmuoXjiNPr7HWX0DKGud/QcYVZqOd+IrbjzJlGZbOc8q19ZGRNrOXNjlPX3taboQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6Os0BHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340B6C4CEF8;
-	Wed, 30 Jul 2025 09:37:25 +0000 (UTC)
+	 MIME-Version; b=BYpgf9NU9oHX5pG+JlzeOabycfRIKSsBd4hzzxQtHWCmc0HANphKGRSSXhdKuNfqE9pBq9iq3vVfLDJXIGnNRtWaSiJ0B3bd9eXjKTYgPZOhnpEnAKTrgp/rMEQjEWeabgdFMR2jNFwuwjCQ2lWblLe/vdRK38TFut+tRzjQYFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rB9lFC1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4974C4CEF5;
+	Wed, 30 Jul 2025 09:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868245;
-	bh=4CIh8/t0jIp/8V8vIL7YjgfO+MaKriKzQcILfiWc0bw=;
+	s=korg; t=1753868989;
+	bh=gHwKynjdf3UoztL2GcQ5MGSxGUEShrrih9KRaCI1JSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6Os0BHAxia2qy93Vp3uw4P84KhCvwv0e/oUb0bxDVtsT0S1P71Ubnm/lgd0B7/GK
-	 sdivYegHF5hr9fmso3UQZqyyMRkHTX9ZQLcjgpvPcm/ayn8+OXQw3ZDK/4RvYo1Mtz
-	 VLBfBgUGlAOrc4JhBUoZnSmh6T7zXUYndti6Bvks=
+	b=rB9lFC1wtsCWJ6ZVhc7SpmrgPegHABxGShehCLAccmcLyhV4+IxrJ13paIkqYVMhl
+	 VIOD8q//vVWzlNU5xqZlCNi57C6d5IZ61lqOmq0RGQidTwnSPSUecb8qyOm6DXI12E
+	 R+m9qXxWtrJGO4qVBFjK+ew5WQji4H9HVS/sa9OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 16/76] i40e: When removing VF MAC filters, only check PF-set MAC
+Subject: [PATCH 6.15 01/92] x86/traps: Initialize DR7 by writing its architectural reset value
 Date: Wed, 30 Jul 2025 11:35:09 +0200
-Message-ID: <20250730093227.482415813@linuxfoundation.org>
+Message-ID: <20250730093230.687699289@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +66,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit 5a0df02999dbe838c3feed54b1d59e9445f68b89 ]
+commit fa7d0f83c5c4223a01598876352473cb3d3bd4d7 upstream.
 
-When the PF is processing an Admin Queue message to delete a VF's MACs
-from the MAC filter, we currently check if the PF set the MAC and if
-the VF is trusted.
+Initialize DR7 by writing its architectural reset value to always set
+bit 10, which is reserved to '1', when "clearing" DR7 so as not to
+trigger unanticipated behavior if said bit is ever unreserved, e.g. as
+a feature enabling flag with inverted polarity.
 
-This results in undesirable behaviour, where if a trusted VF with a
-PF-set MAC sets itself down (which sends an AQ message to delete the
-VF's MAC filters) then the VF MAC is erased from the interface.
-
-This results in the VF losing its PF-set MAC which should not happen.
-
-There is no need to check for trust at all, because an untrusted VF
-cannot change its own MAC. The only check needed is whether the PF set
-the MAC. If the PF set the MAC, then don't erase the MAC on link-down.
-
-Resolve this by changing the deletion check only for PF-set MAC.
-
-(the out-of-tree driver has also intentionally removed the check for VF
-trust here with OOT driver version 2.26.8, this changes the Linux kernel
-driver behaviour and comment to match the OOT driver behaviour)
-
-Fixes: ea2a1cfc3b201 ("i40e: Fix VF MAC filter removal")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250620231504.2676902-3-xin%40zytor.com
+[ context adjusted: no KVM_DEBUGREG_AUTO_SWITCH flag test" ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/debugreg.h |   19 +++++++++++++++----
+ arch/x86/include/asm/kvm_host.h |    2 +-
+ arch/x86/kernel/cpu/common.c    |    2 +-
+ arch/x86/kernel/kgdb.c          |    2 +-
+ arch/x86/kernel/process_32.c    |    2 +-
+ arch/x86/kernel/process_64.c    |    2 +-
+ arch/x86/kvm/x86.c              |    4 ++--
+ 7 files changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index b233ae45d89c2..6d7a4f2c3a49b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3143,10 +3143,10 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
- 		const u8 *addr = al->list[i].addr;
+--- a/arch/x86/include/asm/debugreg.h
++++ b/arch/x86/include/asm/debugreg.h
+@@ -9,6 +9,14 @@
+ #include <asm/cpufeature.h>
+ #include <asm/msr.h>
  
- 		/* Allow to delete VF primary MAC only if it was not set
--		 * administratively by PF or if VF is trusted.
-+		 * administratively by PF.
- 		 */
- 		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
--			if (i40e_can_vf_change_mac(vf))
-+			if (!vf->pf_set_mac)
- 				was_unimac_deleted = true;
- 			else
- 				continue;
--- 
-2.39.5
-
++/*
++ * Define bits that are always set to 1 in DR7, only bit 10 is
++ * architecturally reserved to '1'.
++ *
++ * This is also the init/reset value for DR7.
++ */
++#define DR7_FIXED_1	0x00000400
++
+ DECLARE_PER_CPU(unsigned long, cpu_dr7);
+ 
+ #ifndef CONFIG_PARAVIRT_XXL
+@@ -100,8 +108,8 @@ static __always_inline void native_set_d
+ 
+ static inline void hw_breakpoint_disable(void)
+ {
+-	/* Zero the control register for HW Breakpoint */
+-	set_debugreg(0UL, 7);
++	/* Reset the control register for HW Breakpoint */
++	set_debugreg(DR7_FIXED_1, 7);
+ 
+ 	/* Zero-out the individual HW breakpoint address registers */
+ 	set_debugreg(0UL, 0);
+@@ -125,9 +133,12 @@ static __always_inline unsigned long loc
+ 		return 0;
+ 
+ 	get_debugreg(dr7, 7);
+-	dr7 &= ~0x400; /* architecturally set bit */
++
++	/* Architecturally set bit */
++	dr7 &= ~DR7_FIXED_1;
+ 	if (dr7)
+-		set_debugreg(0, 7);
++		set_debugreg(DR7_FIXED_1, 7);
++
+ 	/*
+ 	 * Ensure the compiler doesn't lower the above statements into
+ 	 * the critical section; disabling breakpoints late would not
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -31,6 +31,7 @@
+ 
+ #include <asm/apic.h>
+ #include <asm/pvclock-abi.h>
++#include <asm/debugreg.h>
+ #include <asm/desc.h>
+ #include <asm/mtrr.h>
+ #include <asm/msr-index.h>
+@@ -247,7 +248,6 @@ enum x86_intercept_stage;
+ #define DR7_BP_EN_MASK	0x000000ff
+ #define DR7_GE		(1 << 9)
+ #define DR7_GD		(1 << 13)
+-#define DR7_FIXED_1	0x00000400
+ #define DR7_VOLATILE	0xffff2bff
+ 
+ #define KVM_GUESTDBG_VALID_MASK \
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2220,7 +2220,7 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard)
+ static void initialize_debug_regs(void)
+ {
+ 	/* Control register first -- to make sure everything is disabled. */
+-	set_debugreg(0, 7);
++	set_debugreg(DR7_FIXED_1, 7);
+ 	set_debugreg(DR6_RESERVED, 6);
+ 	/* dr5 and dr4 don't exist */
+ 	set_debugreg(0, 3);
+--- a/arch/x86/kernel/kgdb.c
++++ b/arch/x86/kernel/kgdb.c
+@@ -385,7 +385,7 @@ static void kgdb_disable_hw_debug(struct
+ 	struct perf_event *bp;
+ 
+ 	/* Disable hardware debugging while we are in kgdb: */
+-	set_debugreg(0UL, 7);
++	set_debugreg(DR7_FIXED_1, 7);
+ 	for (i = 0; i < HBP_NUM; i++) {
+ 		if (!breakinfo[i].enabled)
+ 			continue;
+--- a/arch/x86/kernel/process_32.c
++++ b/arch/x86/kernel/process_32.c
+@@ -93,7 +93,7 @@ void __show_regs(struct pt_regs *regs, e
+ 
+ 	/* Only print out debug registers if they are in their non-default state. */
+ 	if ((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
+-	    (d6 == DR6_RESERVED) && (d7 == 0x400))
++	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))
+ 		return;
+ 
+ 	printk("%sDR0: %08lx DR1: %08lx DR2: %08lx DR3: %08lx\n",
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -132,7 +132,7 @@ void __show_regs(struct pt_regs *regs, e
+ 
+ 	/* Only print out debug registers if they are in their non-default state. */
+ 	if (!((d0 == 0) && (d1 == 0) && (d2 == 0) && (d3 == 0) &&
+-	    (d6 == DR6_RESERVED) && (d7 == 0x400))) {
++	    (d6 == DR6_RESERVED) && (d7 == DR7_FIXED_1))) {
+ 		printk("%sDR0: %016lx DR1: %016lx DR2: %016lx\n",
+ 		       log_lvl, d0, d1, d2);
+ 		printk("%sDR3: %016lx DR6: %016lx DR7: %016lx\n",
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10979,7 +10979,7 @@ static int vcpu_enter_guest(struct kvm_v
+ 		wrmsrl(MSR_IA32_XFD_ERR, vcpu->arch.guest_fpu.xfd_err);
+ 
+ 	if (unlikely(vcpu->arch.switch_db_regs)) {
+-		set_debugreg(0, 7);
++		set_debugreg(DR7_FIXED_1, 7);
+ 		set_debugreg(vcpu->arch.eff_db[0], 0);
+ 		set_debugreg(vcpu->arch.eff_db[1], 1);
+ 		set_debugreg(vcpu->arch.eff_db[2], 2);
+@@ -10988,7 +10988,7 @@ static int vcpu_enter_guest(struct kvm_v
+ 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+ 			kvm_x86_call(set_dr6)(vcpu, vcpu->arch.dr6);
+ 	} else if (unlikely(hw_breakpoint_active())) {
+-		set_debugreg(0, 7);
++		set_debugreg(DR7_FIXED_1, 7);
+ 	}
+ 
+ 	vcpu->arch.host_debugctl = get_debugctlmsr();
 
 
 
