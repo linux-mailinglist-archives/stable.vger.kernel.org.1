@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B652B15CB2
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7C5B15C5C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 168B73A812C
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68B135A35F2
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2F293C47;
-	Wed, 30 Jul 2025 09:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F7C26E71A;
+	Wed, 30 Jul 2025 09:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ux/axNLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtrugPqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262BE273D95;
-	Wed, 30 Jul 2025 09:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9E622156D;
+	Wed, 30 Jul 2025 09:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868668; cv=none; b=p536LB4qjdlxuXVet4QuHBvgjHWCzdWhbKKDa2LdRYm9Fl8UUY7kDw74kUyx0I0cVGSoEmcoz04Kpv+8//ogPsm0O7buo9mFoarmdWMkpq0T7h9Gfx6aeMZGWs3r/lZ7aSm8x6jVHs+xa2AEh1x453YGCup2dlk64G0QElwLGxI=
+	t=1753868448; cv=none; b=Knib0X79O4VCafb2I0+nX1FcNlnLefbpzny3Rb9LJm956zhrnRIGXwJskqTi+Vyufw6FNMoCxFsH69EZG+p85ijwboHAT+d/uIWj8PWloUuAKrRFDIj0geUc+evgzxdR6JWfyRSAmPIx/rmZTrpNuC9zNInI+02sNe3T6vzdpE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868668; c=relaxed/simple;
-	bh=4kuJL0EBRaLmUkN37pM+EgF7SupzDs5TqxV5KBro4dI=;
+	s=arc-20240116; t=1753868448; c=relaxed/simple;
+	bh=kS5o6LP4N4f+MD5wyO293jQ7DIfNkkt59rv9cH7Gid4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZzw0hjkRpy/i2FEtUMwULg8nsWQdW/c3+z4yrR/Axxo5ZOgNPVDBzMUQCa59eUkEKX2G9UR12qPaGJuqqQUE20Y/Tafo8oe0VfR2blsutVB/+KYD52dThIBLnBEW5S80sQIgFZtjoBrlNrS740JRs/aiX9ifca8BR2o5zBZtEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ux/axNLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C8EC4CEF6;
-	Wed, 30 Jul 2025 09:44:27 +0000 (UTC)
+	 MIME-Version; b=hzzqHqVfFINZC34bctSLQFvkxMcdqCVOQcFeKuJ9X3DaT/ZVs6NGxMLfr5hPyu9Ptk8xyndx7gnNbyFgOzWdSQnEWCZgQGzRg3+HecCWb+UCURZhzDQeEKuRvwOE4yQupyqn4klZqTfsN9SEYXp68Le4SiDQd41g/WdRoYxiJZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtrugPqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E29C4CEE7;
+	Wed, 30 Jul 2025 09:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868668;
-	bh=4kuJL0EBRaLmUkN37pM+EgF7SupzDs5TqxV5KBro4dI=;
+	s=korg; t=1753868448;
+	bh=kS5o6LP4N4f+MD5wyO293jQ7DIfNkkt59rv9cH7Gid4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ux/axNLqgi/gvyCQx8q0w5cE0Bb1Pp5Nu/8YTUNa68t/zmNBcZUhrMQ8O5909GfBf
-	 ScLbKL80ixK7+d99CkQktpH+GXymjExAybJCKMJ+iDeAvdNHuBOfU/VU6ySVQuKnaK
-	 5y7tuxcsSlj0rHz0/MVlHsOOd1CXUCC4dyXE8+9I=
+	b=qtrugPqEmUti1TVKpNmrt21isWdlqfYI+aOOcBJaWnow5im2Df1+UxXMUKgeJNbIm
+	 3kSHCyGwa6HmYl6zz7NU8Pwx4Ha5/ogw0+TZoQpPL+fZATezV77lXpjOUmnGJvIqIC
+	 IUY5Rx4RkHKsMbNbvcJYTH5s47+CHxEdp/u/Y0fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 047/117] i2c: tegra: Fix reset error handling with ACPI
-Date: Wed, 30 Jul 2025 11:35:16 +0200
-Message-ID: <20250730093235.386261204@linuxfoundation.org>
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 24/76] net: hns3: fix concurrent setting vlan filter issue
+Date: Wed, 30 Jul 2025 11:35:17 +0200
+Message-ID: <20250730093227.781315030@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit 56344e241c543f17e8102fa13466ad5c3e7dc9ff upstream.
+[ Upstream commit 4555f8f8b6aa46940f55feb6a07704c2935b6d6e ]
 
-The acpi_evaluate_object() returns an ACPI error code and not
-Linux one. For the some platforms the err will have positive code
-which may be interpreted incorrectly. Use device_reset() for
-reset control which handles it correctly.
+The vport->req_vlan_fltr_en may be changed concurrently by function
+hclge_sync_vlan_fltr_state() called in periodic work task and
+function hclge_enable_vport_vlan_filter() called by user configuration.
+It may cause the user configuration inoperative. Fixes it by protect
+the vport->req_vlan_fltr by vport_lock.
 
-Fixes: bd2fdedbf2ba ("i2c: tegra: Add the ACPI support")
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Cc: <stable@vger.kernel.org> # v5.17+
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250710131206.2316-2-akhilrajeev@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-2-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tegra.c |   24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 36 +++++++++++--------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -607,7 +607,6 @@ static int tegra_i2c_wait_for_config_loa
- static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
- {
- 	u32 val, clk_divisor, clk_multiplier, tsu_thd, tlow, thigh, non_hs_mode;
--	acpi_handle handle = ACPI_HANDLE(i2c_dev->dev);
- 	struct i2c_timings *t = &i2c_dev->timings;
- 	int err;
- 
-@@ -619,11 +618,7 @@ static int tegra_i2c_init(struct tegra_i
- 	 * emit a noisy warning on error, which won't stay unnoticed and
- 	 * won't hose machine entirely.
- 	 */
--	if (handle)
--		err = acpi_evaluate_object(handle, "_RST", NULL, NULL);
--	else
--		err = reset_control_reset(i2c_dev->rst);
--
-+	err = device_reset(i2c_dev->dev);
- 	WARN_ON_ONCE(err);
- 
- 	if (IS_DVC(i2c_dev))
-@@ -1666,19 +1661,6 @@ static void tegra_i2c_parse_dt(struct te
- 		i2c_dev->is_vi = true;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 4d318af748a0b..789f72d1067f8 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -9493,33 +9493,36 @@ static bool hclge_need_enable_vport_vlan_filter(struct hclge_vport *vport)
+ 	return false;
  }
  
--static int tegra_i2c_init_reset(struct tegra_i2c_dev *i2c_dev)
--{
--	if (ACPI_HANDLE(i2c_dev->dev))
--		return 0;
--
--	i2c_dev->rst = devm_reset_control_get_exclusive(i2c_dev->dev, "i2c");
--	if (IS_ERR(i2c_dev->rst))
--		return dev_err_probe(i2c_dev->dev, PTR_ERR(i2c_dev->rst),
--				      "failed to get reset control\n");
--
--	return 0;
--}
--
- static int tegra_i2c_init_clocks(struct tegra_i2c_dev *i2c_dev)
+-int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
++static int __hclge_enable_vport_vlan_filter(struct hclge_vport *vport,
++					    bool request_en)
  {
- 	int err;
-@@ -1788,10 +1770,6 @@ static int tegra_i2c_probe(struct platfo
+-	struct hclge_dev *hdev = vport->back;
+ 	bool need_en;
+ 	int ret;
  
- 	tegra_i2c_parse_dt(i2c_dev);
- 
--	err = tegra_i2c_init_reset(i2c_dev);
--	if (err)
--		return err;
+-	mutex_lock(&hdev->vport_lock);
 -
- 	err = tegra_i2c_init_clocks(i2c_dev);
- 	if (err)
- 		return err;
+-	vport->req_vlan_fltr_en = request_en;
+-
+ 	need_en = hclge_need_enable_vport_vlan_filter(vport);
+-	if (need_en == vport->cur_vlan_fltr_en) {
+-		mutex_unlock(&hdev->vport_lock);
++	if (need_en == vport->cur_vlan_fltr_en)
+ 		return 0;
+-	}
+ 
+ 	ret = hclge_set_vport_vlan_filter(vport, need_en);
+-	if (ret) {
+-		mutex_unlock(&hdev->vport_lock);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	vport->cur_vlan_fltr_en = need_en;
+ 
++	return 0;
++}
++
++int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
++{
++	struct hclge_dev *hdev = vport->back;
++	int ret;
++
++	mutex_lock(&hdev->vport_lock);
++	vport->req_vlan_fltr_en = request_en;
++	ret = __hclge_enable_vport_vlan_filter(vport, request_en);
+ 	mutex_unlock(&hdev->vport_lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int hclge_enable_vlan_filter(struct hnae3_handle *handle, bool enable)
+@@ -10540,16 +10543,19 @@ static void hclge_sync_vlan_fltr_state(struct hclge_dev *hdev)
+ 					&vport->state))
+ 			continue;
+ 
+-		ret = hclge_enable_vport_vlan_filter(vport,
+-						     vport->req_vlan_fltr_en);
++		mutex_lock(&hdev->vport_lock);
++		ret = __hclge_enable_vport_vlan_filter(vport,
++						       vport->req_vlan_fltr_en);
+ 		if (ret) {
+ 			dev_err(&hdev->pdev->dev,
+ 				"failed to sync vlan filter state for vport%u, ret = %d\n",
+ 				vport->vport_id, ret);
+ 			set_bit(HCLGE_VPORT_STATE_VLAN_FLTR_CHANGE,
+ 				&vport->state);
++			mutex_unlock(&hdev->vport_lock);
+ 			return;
+ 		}
++		mutex_unlock(&hdev->vport_lock);
+ 	}
+ }
+ 
+-- 
+2.39.5
+
 
 
 
