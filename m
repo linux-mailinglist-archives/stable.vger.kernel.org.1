@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-165317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43388B15CAC
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF756B15D53
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06CDE7B1F1F
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:44:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7004F1889F1C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B23C442C;
-	Wed, 30 Jul 2025 09:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59C0292B50;
+	Wed, 30 Jul 2025 09:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGQphoXG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kyx9BJtP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC02120E6;
-	Wed, 30 Jul 2025 09:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C68274666;
+	Wed, 30 Jul 2025 09:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868650; cv=none; b=YvHke787VPooN21FP9aAiQ1EztMuY0TJTK57pcw3PIUMXI+WU4X4G0UdGdwg8Tx2JMJjpV4DVBBGCqRDG46xxJhRqM7LN75C0/TuY7z0DJw79i4k39SsHnKs8TbP7e3NLbX+N1t/a6Zopw3JahEE595Q1rSlHkGnWbhUEQ8qv18=
+	t=1753869080; cv=none; b=TzCizCxw2eHMZfsMS/BK90NRV2XLYejDAH7KZ9p/x716IEdnVVtPjgQjvYNfR2QtuSyqYz0HXYQ1pbe4R7KXGNEEXLI3o9jM5pJJIle0gpXfSwkJVQo2zYzLHbLOOJrqKGthRbNb+aIMUPKsCKaogppIeFI8/4lH9PnPwiAImS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868650; c=relaxed/simple;
-	bh=SA6L6EF3n31FUc3KHoRbXAoXJpY0Zr/nKuVuZNSTg4I=;
+	s=arc-20240116; t=1753869080; c=relaxed/simple;
+	bh=pJiNb5x7hbhKcLwdf71UUhEAy8Lim3cvLxK5TxJ2sJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JjxHKiNL7Sf08vaXBycPzrF4T0g6SoiRm1Lz8eE9TxhxhSwFh/v197PI8Qilwi3p5NyACzeDBvkv0GGosnemBH6Tj7TWfOKtMJFZBbvT06WVb9pywpEij8Tug84bsn2A9IWShEy7bGkAB/AYL3hr+lS1JQcaOI5dRAvTmpGgAlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGQphoXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154FAC4CEE7;
-	Wed, 30 Jul 2025 09:44:08 +0000 (UTC)
+	 MIME-Version; b=SL/PWHH5nCZMkloU4vZ+jaVc1lGXh9+pSynLyXLTkXPQrYhO6U+hpokRqt5uuUllUKSoE4lvgMZaz3uPyJWK7Gcn7o7dnxmkEydmNbgf1ajE3WTghdpRJ9oxoDEoMbJYOVG3X3zRJDOyBQT7K90hQQQd5TXoztHjKmKXT9QJ5BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kyx9BJtP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA81C4CEF6;
+	Wed, 30 Jul 2025 09:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868649;
-	bh=SA6L6EF3n31FUc3KHoRbXAoXJpY0Zr/nKuVuZNSTg4I=;
+	s=korg; t=1753869077;
+	bh=pJiNb5x7hbhKcLwdf71UUhEAy8Lim3cvLxK5TxJ2sJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGQphoXGht5IQsnnEuyluhQtUDcf9kM3M/snpADrurefzswtvEJn+45wyhX5YahgX
-	 Czz9I1fay3KOw5WFotjgA2lVU+azdeo0M/xnKG1jiTkluvD1iTaT3OXMS9F+FKpNGF
-	 5s9oQhS69uBqCBZczUY+QEt/VZqJga4kESS4Zpsg=
+	b=Kyx9BJtPyzEYuRzpMaXnl5k9gF0P0t2ZsitJjbApgj8HWtJAZGWzm9Jf9sRwKAJYe
+	 27eggsOYlvdR+kVXaO+PodJiTzRpUGlKtp7XDTrBpSKzp3Cpq8PCqOmouxaoGQci7g
+	 fiVNh3/qpDUHkOR22ZNolh/U11N/90OJnEg6thGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.12 042/117] drm/sched: Remove optimization that causes hang when killing dependent jobs
-Date: Wed, 30 Jul 2025 11:35:11 +0200
-Message-ID: <20250730093235.198540394@linuxfoundation.org>
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 04/92] drm/amd/display: Dont allow OLED to go down to fully off
+Date: Wed, 30 Jul 2025 11:35:12 +0200
+Message-ID: <20250730093230.805950628@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +63,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin.Cao <lincao12@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 15f77764e90a713ee3916ca424757688e4f565b9 upstream.
+[ Upstream commit 39d81457ad3417a98ac826161f9ca0e642677661 ]
 
-When application A submits jobs and application B submits a job with a
-dependency on A's fence, the normal flow wakes up the scheduler after
-processing each job. However, the optimization in
-drm_sched_entity_add_dependency_cb() uses a callback that only clears
-dependencies without waking up the scheduler.
+[Why]
+OLED panels can be fully off, but this behavior is unexpected.
 
-When application A is killed before its jobs can run, the callback gets
-triggered but only clears the dependency without waking up the scheduler,
-causing the scheduler to enter sleep state and application B to hang.
+[How]
+Ensure that minimum luminance is at least 1.
 
-Remove the optimization by deleting drm_sched_entity_clear_dep() and its
-usage, ensuring the scheduler is always woken up when dependencies are
-cleared.
-
-Fixes: 777dbd458c89 ("drm/amdgpu: drop a dummy wakeup scheduler")
-Cc: stable@vger.kernel.org # v4.6+
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250717084453.921097-1-lincao12@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4338
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 51496c7737d06a74b599d0aa7974c3d5a4b1162e)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -368,17 +368,6 @@ void drm_sched_entity_destroy(struct drm
- }
- EXPORT_SYMBOL(drm_sched_entity_destroy);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 87c2bc5f64a6c..f6d71bf7c89c2 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3548,13 +3548,15 @@ static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
  
--/* drm_sched_entity_clear_dep - callback to clear the entities dependency */
--static void drm_sched_entity_clear_dep(struct dma_fence *f,
--				       struct dma_fence_cb *cb)
--{
--	struct drm_sched_entity *entity =
--		container_of(cb, struct drm_sched_entity, cb);
--
--	entity->dependency = NULL;
--	dma_fence_put(f);
--}
--
- /*
-  * drm_sched_entity_clear_dep - callback to clear the entities dependency and
-  * wake up scheduler
-@@ -389,7 +378,8 @@ static void drm_sched_entity_wakeup(stru
- 	struct drm_sched_entity *entity =
- 		container_of(cb, struct drm_sched_entity, cb);
+ 	luminance_range = &conn_base->display_info.luminance_range;
  
--	drm_sched_entity_clear_dep(f, cb);
-+	entity->dependency = NULL;
-+	dma_fence_put(f);
- 	drm_sched_wakeup(entity->rq->sched);
- }
+-	if (luminance_range->max_luminance) {
+-		caps->aux_min_input_signal = luminance_range->min_luminance;
++	if (luminance_range->max_luminance)
+ 		caps->aux_max_input_signal = luminance_range->max_luminance;
+-	} else {
+-		caps->aux_min_input_signal = 0;
++	else
+ 		caps->aux_max_input_signal = 512;
+-	}
++
++	if (luminance_range->min_luminance)
++		caps->aux_min_input_signal = luminance_range->min_luminance;
++	else
++		caps->aux_min_input_signal = 1;
  
-@@ -442,13 +432,6 @@ static bool drm_sched_entity_add_depende
- 		fence = dma_fence_get(&s_fence->scheduled);
- 		dma_fence_put(entity->dependency);
- 		entity->dependency = fence;
--		if (!dma_fence_add_callback(fence, &entity->cb,
--					    drm_sched_entity_clear_dep))
--			return true;
--
--		/* Ignore it when it is already scheduled */
--		dma_fence_put(fence);
--		return false;
- 	}
- 
- 	if (!dma_fence_add_callback(entity->dependency, &entity->cb,
+ 	min_input_signal_override = drm_get_panel_min_brightness_quirk(aconnector->drm_edid);
+ 	if (min_input_signal_override >= 0)
+-- 
+2.39.5
+
 
 
 
