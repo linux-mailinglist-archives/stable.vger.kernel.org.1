@@ -1,334 +1,143 @@
-Return-Path: <stable+bounces-165594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CC1B1674E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 22:03:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116FFB16759
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 22:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48CD7176232
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 20:03:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1D4A3AE673
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 20:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7671199FAB;
-	Wed, 30 Jul 2025 20:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBFC20485B;
+	Wed, 30 Jul 2025 20:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="co8kpolR"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="P21/MKo+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80FABE6C
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 20:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753905792; cv=fail; b=rQNTskox5uKs6Z86FZ0QmU7yzats+FH/U0WhxpwPRCOBCjTzUOicqIZrNT2xh04KnwiDfwK9WA+jLZL92FXjPKxiLGDlUY1io8RYeK5hFvmxHFSNApnVU94Szjd7CGxklZUQHJGP6/4vhNkmpNBZJkQF8gDaWpNcfMcLJQIi8oU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753905792; c=relaxed/simple;
-	bh=cV3REdm8P3PfxPV+vcedXrK0h5qHLhaejoxscxmqGnw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gKkhQwgPLz6AnYc/LSh3bjUpqagL5RUzZZ65DaeiDTdx8Yw+HEmdK8dF88q7wWTPZA19EvL9+F1Am7muFwdNl/X6Mx3rXjr0JI4oXkpQuo7bhhqXiEqOaP20T+uTzdyJsy8ytnloHUXyqSNQfCfQ7KO+feZvNn291n2L7Yg8wCo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=co8kpolR; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753905790; x=1785441790;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=cV3REdm8P3PfxPV+vcedXrK0h5qHLhaejoxscxmqGnw=;
-  b=co8kpolRS6t78yK6hp7lhqpibi/OUaDddp2//KJYs8WH3eQFdNF/8Vbc
-   y9T87r9XhhIC3oXeXC91Z9yO8tIZrirpE2RQqwwwyX8uCeg3c++lAY3WW
-   6TXdCSf15QWr3DUm9ZVSEJ1hIAbR8jDhPeIiUczVVTYdP2oh9PNOWmow3
-   8NCn+xfmtLRYi/17394cHMue3d51zxcVTrIc3L7lMq87L6UnjY1kndGDq
-   beZeZwMNkXBLx4Jzh7a70O9kECJHRRk9Nor/OEqSXLLhban92mRjzzNp2
-   TjUXMDDzf+A5KLNyJGHPqWQORgABUC5Ap/ETB2PDveJ6mvwW4i9JY34+w
-   w==;
-X-CSE-ConnectionGUID: w+bRNIZMSe2bpBEF/3tkOw==
-X-CSE-MsgGUID: Lc47RKnlRSakd0uOGHsiNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="73808732"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="73808732"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 13:02:55 -0700
-X-CSE-ConnectionGUID: gtYZgZFlQcK62okwsh5jWQ==
-X-CSE-MsgGUID: KfqdBqbHS2mipaF0l1txmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="162957208"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 13:02:48 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 30 Jul 2025 13:02:44 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Wed, 30 Jul 2025 13:02:44 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.70)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 30 Jul 2025 13:02:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NbRrEr1eMBowZoArdpW58R49uqG6I+/HGl1nrS+l1/SGk6qRGeH797qNVyFdlQGmvryBmLLKqZxtdILfZcH3JPVx/yjws78DeHd8qjX5aYzAZlRbfj7GvtMwwfnWZy7hi9PhHiFcgIWpz0x+RYfYQU1I9UHnfsHDhb/t/TfVdf/cOgLOcR015WJqYKuzHf0WybkFn6M0w/CDP2YvBlsJz18rfup46dQPdQUeTu/ayuXz7CNxCNxweSDzlKdnEdn8xSZGdEwOBXA3tRQ5CLb5dmaDipYO4BtuhwRhhvupkdA8aWpoH88YOxR7PR+nGf9dkNCkE4lw7aIt8QSTyeUrMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q1rkMhSwlbCAjcqHkFSTjyGMWedVumQstAH9/VFv/8E=;
- b=AoTeHlNhg1D5OuPrmoia3NDcPcuRA1GJo3mRVEdOSwr2xsgwGUbpoijLe5UMUlHxtJ1MaTDql73vw268TESwkxOxmvZL54pU9IrucIIKP9C0eVb8NWawHOCwNq+aHros2PXb1j89tawHVruz/4lV1D2QbZjELqUzHcUEGNqML7DMhh0REkUlfpdLHjJs+Ao3cgT3Ll4KHS8f+khClX+2TEZemu2qdsE5nl8GJwKNdlvG258QbvyPYGVm10e1zFBRuxov+y5l5FvT/iN19tmaisTsiXbdpRgiMPBpvvMVBoxJGyM/VHGPGTHz/BC+uxYeqHS0Ck11YLPM8QM/NkNVpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by SJ0PR11MB4927.namprd11.prod.outlook.com (2603:10b6:a03:2d6::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Wed, 30 Jul
- 2025 20:02:37 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%5]) with mapi id 15.20.8989.010; Wed, 30 Jul 2025
- 20:02:37 +0000
-Date: Wed, 30 Jul 2025 23:02:26 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Nicusor Huhulea <nicusor.huhulea@siemens.com>
-CC: <stable@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>, <cip-dev@lists.cip-project.org>,
-	<jouni.hogander@intel.com>, <neil.armstrong@linaro.org>,
-	<jani.nikula@linux.intel.com>, <maarten.lankhorst@linux.intel.com>,
-	<mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
-	<daniel@ffwll.ch>, <joonas.lahtinen@linux.intel.com>,
-	<rodrigo.vivi@intel.com>, <tvrtko.ursulin@linux.intel.com>,
-	<laurentiu.palcu@oss.nxp.com>, <cedric.hombourger@siemens.com>,
-	<shrikant.bobade@siemens.com>
-Subject: Re: [PATCH 0/5] drm/i915: fixes for i915 Hot Plug Detection and
- build/runtime issues
-Message-ID: <aIp6UgiwtDU1Ktmp@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20250730161106.80725-1-nicusor.huhulea@siemens.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250730161106.80725-1-nicusor.huhulea@siemens.com>
-X-ClientProxiedBy: DU2PR04CA0018.eurprd04.prod.outlook.com
- (2603:10a6:10:3b::23) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63AA1EA7FF;
+	Wed, 30 Jul 2025 20:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753906132; cv=none; b=iDnV/oH2aslcZSxLJJARNKuCaJmufVjXoTqknQDBQeLY/Uz5d+9DSc933SJjNBXDN9Zx9M1ssv8CI2Um+ggTSFozIGjqxqmyDxT3A5XCsjUTd40iygiVyrFykiGOnjDxEeAFBTAIEYFcP/0zBmDNFmfISUt9YgogNkgHUlMwqkM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753906132; c=relaxed/simple;
+	bh=I2VwIorDAW82CA2/qdCBZgMLcdD+U2jqsGaJ1dMtPxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OLT8oUZitgjonXRBI86nwdE5um9PuiDn7Su6SEIdnYQNNhC1BG6kSeQstxNnM5joHdo5X0X7ifJn1HhfjtI+ehc2d/F9NK0/xcvxb8KycF5+WAQPqzINGwd4IteblSdyUmAi3xCC3O71pgOAjmdWpq1x8bDQBa8TR28S1gnIzdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=P21/MKo+; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b78d13bf10so240818f8f.1;
+        Wed, 30 Jul 2025 13:08:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1753906129; x=1754510929; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+cMNnDttzZ6RQt6wGgmmTCVQa3RNZnes1HqAh2ZhHsc=;
+        b=P21/MKo+Y/085b9So5lWWc1MOFeq6rDGJtpOYaEoGkaFFAr5S/YDHpw1bfGhQjFflA
+         veZhraRo2nZKzGB+iBx1pKRIY++gGCcQw6QRfV5aCtiCGSKaUfDCLY0X+zaX3vnzu+ES
+         A3km30nDVjb8zmaa/4rKc0qxMg+HSSbVJlisyOtkfVcRTSyGEjhY8EoCXOO+936QhFp9
+         Axen0Cs/8OV1YEhGIozqmqwN6ZRleRzn3XMmphxBHWkNy9Pb6UZRAT2VxLOTdpLt2LxE
+         FzPpf4z2AdEp+RUdqpVDtdKg4Y9baK36JlDbcl/qHKadDBkeVlBLEla9JrXV87OU8Shd
+         cgpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753906129; x=1754510929;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+cMNnDttzZ6RQt6wGgmmTCVQa3RNZnes1HqAh2ZhHsc=;
+        b=omLCrscXS/IJW7okt2AuzfCcs+p/qCCiLsuLARBli6UoPrlHVQebN35Dw3iIRDqasY
+         75Vjfx/RSu6sBvvQXVEg7sAfd6afEOUX6ij17ze6bJ2apQXP22elre8Xadl9DfR+zdjz
+         koRr19iHPAS3vu0AGyl6smB96N+g6S1DfRIjBdSJJb/hwk+pSk+CnvOKXlCLFp03Cbte
+         AnZE0q+U6YfXIcnBWm5VMtJ6chJ5jqotJW+d5TFa2VW94SEzw3duo9euBJGhGBcMXS9F
+         RHXlQVIBQbYTebgz9TOa0KCt1lKJfM9DMMadIyZCc3HxYpTLa2x4sDkEWOy1Jva/sxln
+         ie0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVpU2w8n5Fa9ULRROiiOXzUAxhm+9WUXOe+Bfk5yYv2XYYVp4uD5bDTjS7yOzzSoN6F79nTQoNIqya+I9g=@vger.kernel.org, AJvYcCWHl+N02mwJqWbyGI7omB8FnjIAtjaaxkZ4MslEZgqCGfYXYzdyKZqzkMv2iZjew3SKJl5lWyj+@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMOqkT5k24tW30+WMzgl1KQYjvRt37dXf8w4pfjBOTFxyz0HtH
+	jG9OgerqWqxM8yT7+TwTCnVfouJbStcVGnc0MNEWPdZtctcMpu+CN3U=
+X-Gm-Gg: ASbGnctNJIVTu69ydBHmbI2fZTugiLBT0oevTEluWE4iPuSMPQWrVIGb8W4kanMkEwx
+	49/pVZTdDMc69uurEP4nw9aQiH+TG/dSm2z/uZs8QLvtsMdkN2FWWKEKNlsCodm0PQucbkkepqt
+	Y4mknpMYaVfr0JZF2+dZ8SURnjWVQ3TEm1o1myMmyWA5jtRbbuJORmuUbtI08nZrc0YGt+ySVJh
+	3SUk1OiSPekQ4BWzZ0J0n4nqMiFvckz7K7jTh6rXQS0+FoP+ncTp4fUc4982C/F4JcKBygKkxDF
+	suVe2CBDJ8oTKGx0RapPzL3MOgGlGZZcw9mITd+ZX4PZeZ8gSSR4LGg7G/ReU9DH6ZY5Ni3OiLD
+	R0CP+XXTtwy2dwTcVXxSTxhR5N1631QWVvPOimXxGB15T492JpYDbjdTTQOa+GfdKEZefVkSCpl
+	w3LLOX+zcJNQ==
+X-Google-Smtp-Source: AGHT+IGbbeFnHcOTsEgMeBZIa911Ksjql+ptroLdZznDSsPIw7/H4yUH8bndCMfzMG5rIym/4F2a2g==
+X-Received: by 2002:a05:6000:2003:b0:3b7:886b:fb8d with SMTP id ffacd0b85a97d-3b795026234mr3404428f8f.31.1753906128897;
+        Wed, 30 Jul 2025 13:08:48 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4284.dip0.t-ipconnect.de. [91.43.66.132])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3abe18sm14384f8f.2.2025.07.30.13.08.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 13:08:48 -0700 (PDT)
+Message-ID: <c0060290-ee3f-4b54-8b16-50a1ea5ac2ec@googlemail.com>
+Date: Wed, 30 Jul 2025 22:08:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|SJ0PR11MB4927:EE_
-X-MS-Office365-Filtering-Correlation-Id: f84032d5-7a6a-4b06-e33a-08ddcfa407f9
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MGd5U3ZxaE0wVzJSR1RJNm40eWh2VVQ5NmZ5RzZQSUIydVhXUkx4RDl6cWVk?=
- =?utf-8?B?ald2NmRZRHBWdzdTc3pHN0hBQWVoeExkTy94UHJ4dFM4dHVWMmVMSWtHNnl5?=
- =?utf-8?B?c2YxTmdNZEdXeFFKZHFHWm85NTdncTdsem9DbVUrU1UxK3p3c3VMTDJDOHgw?=
- =?utf-8?B?aTVHQXdJT0hkaXRNK1llc25HaUUvMVEyZnFzTlZjQU4zd3ZpSWJIRFZPSnJM?=
- =?utf-8?B?djVlV1pVY1drUWZFUjh1SytnRHV1Rmx0MGdrSVg1VHhJQ0hoWnFidDNsUWVK?=
- =?utf-8?B?NEhNczNMTXNyeDhYZnFUQk1uazhtaHVsSlh5a2czVUE1OGJKS1VjMllxL1Bq?=
- =?utf-8?B?NmJFa1E1amFXYzBoSWhFY3RyVmYzMXZSMXdTRFFOaGM0R3dyS0FPc2VQc1Vm?=
- =?utf-8?B?NWVlVStpTVlKekdhSGlOR0FoMGRTd2hrN0Jrc3NzTWp2VGI5NmloVitVenFB?=
- =?utf-8?B?Z0c4clJib0thZGQ1dGdhODdjRTlJSkp0MEtHUk1WL0VVNnZvbXdmdDJFeUJ0?=
- =?utf-8?B?Y0FEeUlGVnFwbHJYQWlNUzNZTUtyVStoRXNabFJQSlN5Znl0TFZxRm5kbjRv?=
- =?utf-8?B?a0RYNjJOR3lNcmlLS3U2L1BUdGdrRGVpM2xuL0NxTHZ0RmhoK24xNU02QnZw?=
- =?utf-8?B?SXk4bm5sM3dBVmhUSnpyOGN4YU9xckFUK3d6NTIydTlEK1c4RmVySWFBcktZ?=
- =?utf-8?B?YXFKQXFyRnJ0WkVMazN1a1dMKzhud0NGYUlZZE9OeWZxMVBES3FNN2YxdWd5?=
- =?utf-8?B?MzVXOExUdHBJazMycVkrZzZzZEtFRHNlNVc4YjRDQXZnQTJ1V1Bqa05WOHRE?=
- =?utf-8?B?dEVuczFhbXBTTVNSeEZ6QmQvbVJ3MHFGVHhZbytna1d6ZkRPMmFnOUpwRHI3?=
- =?utf-8?B?SkVIclo1MGhvQURFdHYxYk91QWpmR3ZnU0laRHlpaGI2cms4ekNVTjFRN2VK?=
- =?utf-8?B?eW13ZWIrY2NzVVU5b1ExTDdLeE9JRjJZKzQwcHd0L3gxNUdSeGVPVDlxdFl1?=
- =?utf-8?B?dzhiYkNESUdqdnorZkdXbFhWaTZkc2VZcWwwL0JwS3IybjJnR3U3VDJEbWhG?=
- =?utf-8?B?N0Nva25qYTA2dUlLQjdWaFRvYmJZd2tGR3ErdDVCUy90ZGJLdGZZdURTRkl6?=
- =?utf-8?B?TmVITTJjQkxYMEV5U0JobWFrV1d6ckFLRmVxeWZtVjBTYko1U2p5MWY2SFcr?=
- =?utf-8?B?Z1NjeG8wQWs2emF2dmxZdFRSUzJBdWJ0bTgvalRaUUpFK2YxZEJiMHlnMU15?=
- =?utf-8?B?ZHhvcmc0L3R6K1kyWkJSVmhrZGMyVnp3cUxFSzhuS28yT0xNOXFUY0p1aFNY?=
- =?utf-8?B?cUJ0amdnZ3lrY1ozLzIwR3R6dEpaYmh0WjBrTkgrdkc5WTdybmkrbWtBUWs1?=
- =?utf-8?B?WkZSNmN1ejZOenJRUjd2STdkc29pcWU2b3cvSStBM01jUy9pQlFMRlhhVVQw?=
- =?utf-8?B?STcwQzJlTnR5cjBQbXhJRkJCNFZwQ2srUDFObTU4RkFaYzVDNEdzZkJNdkc0?=
- =?utf-8?B?TzVlZm1Ic0I4NVUrUTNzYTc4UFlXZkp4ZWJVZ2NnNFE0UG9sb29idCt5bWV1?=
- =?utf-8?B?VkFvejR6R25oWlcwTWIvdXIxTURrWWVacG1xZlRCVHFtalpWcWFwZDh6YW1N?=
- =?utf-8?B?ZjBMLzNCcEMrZnJxc3JGclhPdVFPN2o2b3l2TithMDZHUHg4K00wWGVDcGJK?=
- =?utf-8?B?WkZFN0lXZ0UwWGZEc2ozVUh0NHFRK2hHUEp3MmwzMUtROVd4aVMxWGN5ajZU?=
- =?utf-8?B?YXBaMlRqeGxpMnRVZWovRFNPUGtOTWdhRWFTekZGTU1rQ2lYVUNMY0lDeWtu?=
- =?utf-8?Q?rUqAP6cBTyCT0NeUbUab4BfuekcOQ/OFARZ40=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlBxaDhsRkhFLzgrUkpaYjJFaWhDUHBuSVp0V293MG84VVcrd0ROSVFJdS9W?=
- =?utf-8?B?TU1rR0ZsUnAyMUIwSnNOMkI5andrUGF4MEpFTUpDU3lQVHR2UHM5NEVTYmxU?=
- =?utf-8?B?cmRDZjFpaERVcWNjRVpvS3Y1SGx3NDF6OXppaWxzNkIzdEdnemQ1TXBlSVA1?=
- =?utf-8?B?VjJTV2dQK05IMzBabWY3bnZBV29uWGJxNFJLeWVTNkpZTU5mOGRaM0I5eUVs?=
- =?utf-8?B?V1BwdzFDTkNEMVBVRklsWWFiQU1aNkRhMEYxTDlneVJmbXdKSys1bzE1aTkx?=
- =?utf-8?B?d1g3TmhtbUdLbHhZRlJ1M3A2S25sSzFoeWNWYzJxd2ZQN2hsUVdZVlVGQTla?=
- =?utf-8?B?UmU5YXZJVEwrSExIcEl0OTdiNFZPVnhpRldaamg3b01OS3k5clp4R3doeTgx?=
- =?utf-8?B?bHIwRUR2VFFDMGpsN0ZnVFdxdWMxVTYrMWxGMVprUUQ5R0llOGh6bUVzVlZQ?=
- =?utf-8?B?N3JDZmpteGgvZTNheXdISHhBN0o3OUVQcXF0OWVmcjRQSm95cjhrNDRrT2dw?=
- =?utf-8?B?OG0yaFJselU0SzZFRkRkaDBVK1ExL1VGZnZOQUhXTy8yQlVWVEFmd1hhL2hC?=
- =?utf-8?B?QU9rQThROU9la1BNMG94MXYrMFExbnZVZk5LNmxNUXVVd0J5dG1SaFFhR1pP?=
- =?utf-8?B?ZlRQaEY2cEdRdDlIcFdEcGI3aXFiMFY4bjhENG9YYVBkaFNPZFNFMUdNS0VN?=
- =?utf-8?B?NUZjMXhvOXFVTHBzVXRmekZiR1EzOWRhYkp6RjhGcXpqQnczTWxRY1o0KzdJ?=
- =?utf-8?B?UDBKdDc4Tk5acFl1S0FKMnc1TDNUVGZIUDBacWp4SlVqYXhaZGE3NUgwNmRx?=
- =?utf-8?B?MFdmMWs0QW5Edk1EY2NINllLNGVTeUZMWjN3UlpvdDVVUUh3VU9nU3pTc251?=
- =?utf-8?B?TlJQUnJRY2ZhUlQwWnFHY2I0eG41TnNjNG9pRC9xbmRSaVBpRmd6ZndxYUlX?=
- =?utf-8?B?Q285cDE2Q3hGaDh4b3NLT0lMMnJoZWFJUFRzK3JzYWowUW9mb3JWNFRDNmtC?=
- =?utf-8?B?LzVUS0JodDBVMndyTU1MdDB2SW1KenZyVUg1R0dNK3dqUjBkbXBNOWIzb2ti?=
- =?utf-8?B?TWhnWEV1UUhjUGJmV0VGU3hhbjMzemtMWkR0cUl2Z3lnb05FcmU3bUVOQ2lG?=
- =?utf-8?B?UEozNG9QS2h0MFBZMFpFRFJlVGRSQkpqTW44dmdOL2M4TEtNN052MGhhTTU1?=
- =?utf-8?B?UG9uUUJmQ1IrMExzaVlrTFJJRTJxUERKOStwenpxRnREa2tBZUNLRkFNRE1l?=
- =?utf-8?B?RVErNUozMncrYkJQcUYvK2FrYWpUS1dLc0lxbTl6V1kxQW96VjUwVEhlNmRP?=
- =?utf-8?B?UERXUUdPVzMrT09kNDZLT0t6ZnpLZ01QRUJFanR4d1ZSN3cranVtUWxMTEFh?=
- =?utf-8?B?RnNHcVlNYWRpOXR0OEZQTG9wTjR4ZEhpUlFIU3VtcXBrNnQ1L3FqdVJUeTRE?=
- =?utf-8?B?MzdLN0xrd0R6SXJRci9mS2Nrb1lGYWllY1NBNnlTV3RZTEdPYUhaaEtsTmxt?=
- =?utf-8?B?REx1TWN6WEwycU5WMlc1WWpXRU5jTjZuaVdTN3pCKzZNYjJhamlSWlZVaElh?=
- =?utf-8?B?akUrTjJKbDNvK2FRNjljeTlNcTVtUnhYeDMrV0Iyd0RMRzBIME1tdW9Xa2Fl?=
- =?utf-8?B?R213dUlCdy8zaWMxWFBVVnhvaUFva21PL3ZMRmlidXdQeFBzUUpjekVPVzgy?=
- =?utf-8?B?dGdOR2N5LzhhaGhSTXFDM3NaRzdjY0Y4TUJ2WUgvdUlCVUFmOE8xenhtOVRW?=
- =?utf-8?B?MkFFNTFYM1AvODFHL0VwSmpXMXl3dDIrMlZtNk55UWQ1TW01VEdQeldJekl0?=
- =?utf-8?B?TVdPSDlqc28vSDYyZlkrRjArVFUxdnIwWjA1eUwxbUlBRlMvQjd0dDY5VThY?=
- =?utf-8?B?b1crWlN3MXJpcHdDQi9qaVBoMS9tTTVqVnAyV0VVUkNDSjFwTGdlWjI3bUlj?=
- =?utf-8?B?cEduSjlFZVNqZEI1RS81Wi8ybWt4Wi8wMSthd3hjZEpXQTEzVmkzd3pWUVlr?=
- =?utf-8?B?TWlwczJPWU51WFpiOVB0K0FjdzRCdDhORTdLUVA3K0Z2T2VLZ2ZWODU5QVFQ?=
- =?utf-8?B?bW8wNEpEL3FJRFFobnF0WnVGK3RZVWJxV3IrOFFoUmhVUUY5VlN4T1ZUVWdq?=
- =?utf-8?B?bHdEb0w2VkZkd3kvcVQzcFFRa2V5TUxaWStiS0FhK2w0NzNkTDlmKzQ2a0RV?=
- =?utf-8?Q?N5p60AMvdfJMFSLmIhkOXuf2fWXra9nH6nyDLeAA95TA?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f84032d5-7a6a-4b06-e33a-08ddcfa407f9
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 20:02:37.4119
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hNVA0EEnK9Sxm6vUohktjjYpVNegxmQl9JA+RelrAH0hvglOVvHRxJU/lq91B+usTGWihb3yXqsQoL8SmwjKnQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4927
-X-OriginatorOrg: intel.com
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.15 00/92] 6.15.9-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250730093230.629234025@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Nicusor,
+Am 30.07.2025 um 11:35 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.15.9 release.
+> There are 92 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-thanks for the report and the root causing effort. The patchset itself
-has a few issues:
+Built wich Clang 20.1.8 this time, boots and works fine on my 2-socket Ivy Bridge Xeon 
+E5-2697 v2 server. No dmesg oddities or regressions found.
 
-- commit cfd48ad8c4a9 ("drm/i915: Fix HPD polling, reenabling the output
-  poll work as needed") you backport fixes d33a54e3991d
-  ("drm/probe_helper: sort out poll_running vs poll_enabled"), but this
-  fixed commit is not part of the 6.1.y stable tree which you are
-  targeting.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-  Similarly commit d33a54e3991d fixes c8268795c9a9 ("drm/probe-helper:
-  enable and disable HPD on connectors"), which is not part of 6.1.y
-  either.
 
-  This means the issue commit cfd48ad8c4a9 is fixing is not present in
-  the 6.1.y tree, as the changes introducing that issue are not present
-  in that tree either.
+[    0.000000] Linux version 6.15.9-rc1+ (root@linus.localdomain) (clang version 20.1.8 
+(https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261), LLD 
+20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)) #1 
+SMP PREEMPT_DYNAMIC Wed Jul 30 21:01:43 CEST 2025
+[    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-6.15.9-rc1+ 
+root=UUID=3842ebdd-e37f-4e4e-afd4-d7eb79b41984 ro quiet intel_iommu=on iommu=pt 
+vfio-pci.ids=10de:1201,10de:0e0c
+[    0.000000] KERNEL supported cpus:
+[    0.000000]   Intel GenuineIntel
+[    0.000000]   AMD AuthenticAMD
+[    0.000000]   Hygon HygonGenuine
+[    0.000000]   Centaur CentaurHauls
+[    0.000000]   zhaoxin   Shanghai
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x0000000000096fff] usable
 
-- The compile errors the patches in your patchset introduce would
-  prevent bisection, so fixing up these compile errors only at the end
-  of the patchset is not ok; the tree should compile without errors at
-  each patch/commit.
 
-Looking at v6.1.y and the patchset I suspect the actual issue is the
 
-commit 4ad8d57d902f ("drm: Check output polling initialized before
-disabling") backport in v6.1.y, which had the
+Beste Grüße,
+Peter Schneider
 
--       if (!dev->mode_config.poll_enabled || !drm_kms_helper_poll)
-+       if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
-+           !drm_kms_helper_poll || dev->mode_config.poll_running)
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-change, not part of the original
-
-commit 5abffb66d12b ("drm: Check output polling initialized before
-disabling"). i.e. the original patch didn't add the check for
-dev->mode_config.poll_running. So could you try on top of v6.1.147
-(w/o the changes in the patchset you posted):
-
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 0e5eadc6d44d..a515b78f839e 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -250,7 +250,7 @@ void drm_kms_helper_poll_enable(struct drm_device *dev)
-        unsigned long delay = DRM_OUTPUT_POLL_PERIOD;
-
-        if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
--           !drm_kms_helper_poll || dev->mode_config.poll_running)
-+           !drm_kms_helper_poll)
-                return;
-
-        drm_connector_list_iter_begin(dev, &conn_iter);
-
-If this doesn't resolve the issue, I think we need to figure out the
-actual root cause, for that could you please open at a ticket at
-
-https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/new
-
-attaching a dmesg log booting v6.1.147 and if possible also the latest
-drm-tip kernel with the drm.debug=0xe kernel parameter?
-
-Thanks,
-Imre
-
-On Wed, Jul 30, 2025 at 07:11:01PM +0300, Nicusor Huhulea wrote:
-> Hello maintainers,
-> 
-> This series addresses a defect observed on certain hardware platforms using Linux kernel 6.1.147 with the i915 driver. The issue concerns hot plug detection (HPD) logic,
-> leading to unreliable or missed detection events on affected hardware. This is happening on some specific devices.
-> 
-> ### Background
-> 
-> Issue:
->     On Simatic IPC227E, we observed unreliable or missing hot plug detection events, while on Simatic IPC227G (otherwise similar platform), expected hot plug behavior was maintained.
-> Affected kernel:
->     This patch series is intended for the Linux 6.1.y stable tree only (tested on 6.1.147)
->     Most of the tests were conducted on 6.1.147 (manual/standalone kernel build, CIP/Isar context).
-> Root cause analysis:
->     I do not have access to hardware signal traces or scope data to conclusively prove the root cause at electrical level. My understanding is based on observed driver behavior and logs.
->     Therefore my assumption as to the real cause is that on IPC227G, HPD IRQ storms are apparently not occurring, so the standard HPD IRQ-based detection works as expected. On IPC227E,
->     frequent HPD interrupts trigger the i915 driver’s storm detection logic, causing it to switch to polling mode. Therefore polling does not resume correctly, leading to the hotplug
->     issue this series addresses. Device IPC227E's behavior triggers this kernel edge case, likely due to slight variations in signal integrity, electrical margins, or internal component timing.
->     Device IPC227G, functions as expected, possibly due to cleaner electrical signaling or more optimal timing characteristics, thus avoiding the triggering condition.
-> Conclusion:
->     This points to a hardware-software interaction where kernel code assumes nicer signaling or margins than IPC227E is able to provide, exposing logic gaps not visible on more robust hardware.
-> 
-> ### Patches
-> 
-> Patches 1-4:
->     - Partial backports of upstream commits; only the relevant logic or fixes are applied, with other code omitted due to downstream divergence.
->     - Applied minimal merging without exhaustive backport of all intermediate upstream changes.
-> Patch 5:
->     - Contains cherry-picked logic plus context/compatibility amendments as needed. Ensures that the driver builds.
->     - Together these fixes greatly improve reliability of hotplug detection on both devices, with no regression detected in our setups.
-> 
-> Thank you for your review,
-> Nicusor Huhulea
-> 
-> This patch series contains the following changes:
-> 
-> Dmitry Baryshkov (2):
->   drm/probe_helper: extract two helper functions
->   drm/probe-helper: enable and disable HPD on connectors
-> 
-> Imre Deak (2):
->   drm/i915: Fix HPD polling, reenabling the output poll work as needed
->   drm: Add an HPD poll helper to reschedule the poll work
-> 
-> Nicusor Huhulea (1):
->   drm/i915: fixes for i915 Hot Plug Detection and build/runtime issues
-> 
->  drivers/gpu/drm/drm_probe_helper.c           | 127 ++++++++++++++-----
->  drivers/gpu/drm/i915/display/intel_hotplug.c |   4 +-
->  include/drm/drm_modeset_helper_vtables.h     |  22 ++++
->  include/drm/drm_probe_helper.h               |   1 +
->  4 files changed, 122 insertions(+), 32 deletions(-)
-> 
-> -- 
-> 2.39.2
-> 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
