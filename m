@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-165427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7137B15D4C
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F3BB15CB0
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FC8F3AC009
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CADCA3BCCB6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD8D277804;
-	Wed, 30 Jul 2025 09:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A8C293C4B;
+	Wed, 30 Jul 2025 09:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2SUVJBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRaGNSKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6020426E71A;
-	Wed, 30 Jul 2025 09:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CAD273D95;
+	Wed, 30 Jul 2025 09:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869090; cv=none; b=CAk5AJhqHcKfyRwHt5tRH5FDcHAg3dfPNsk0NaloINHXrXvpQrXNXMbBd5uTPJ8Awnni6md6b/EWQWhDloPZ91Vs3rmykRXLNRa8vyUzSbSAztBNeVDnK2K6ZRjLwTCXSX0qvfh9S0wVZK+UKHnASE+H5yv1fCexI3U7o82Lt/Q=
+	t=1753868665; cv=none; b=HFwq0fswRezrKSm0zh5mIgcnH3kgtdRk0SRyj0MEPtqUIVETXZ5NE+r9Cx9Qzby7ajB3y8VBkk88eVKTaerusIM5aRCS/QUUprNN5bD2NMneS9AXCZb8CawBeNm6jUiGRNBgcsmCn4ltLAtnGj8w/6w8LaOvyL2rBUBBLhY3mAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869090; c=relaxed/simple;
-	bh=6osrjUoo6bMjKzmIz2Bz8MQKpEdQcNcfo8V1kwfFq2A=;
+	s=arc-20240116; t=1753868665; c=relaxed/simple;
+	bh=AOBkB7IJmy0ZTGnjEP+0OUm/krOIpylGtKQipeHju1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSac/UIHhaL1TFKMeaF0C4qJjY4BuKrIZzXzDEUjxGTvLCc2F7PR8eNlAxwR2YUdUPACKg8QjTgtQ0okjM+kg4VMaMwTbS17aeYyiWwUbVZkdxsoUOLzyCARMN+dUoj+eUjGd7TsZ0sIr1oin6u3l4E9V28NuvVZIKr99N9nxUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2SUVJBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B83C4CEF5;
-	Wed, 30 Jul 2025 09:51:29 +0000 (UTC)
+	 MIME-Version; b=bSVvtLTvXFqkxFKIBT3CU09MLIS5aZsQ2lY9JDyE8zfOCXHv9j5x89QXMv2v4XdQMgwSL4ygCu5PdDNfUa6OiQ9ggatCvdmXvymqFJjIdD89f/gjRYKaebcUJe7grdYWi+R7w6PcUV6RdQdq9ZGXCK5ZR5PnjmEEVK4Lt4jm4ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRaGNSKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B27C4CEE7;
+	Wed, 30 Jul 2025 09:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869090;
-	bh=6osrjUoo6bMjKzmIz2Bz8MQKpEdQcNcfo8V1kwfFq2A=;
+	s=korg; t=1753868665;
+	bh=AOBkB7IJmy0ZTGnjEP+0OUm/krOIpylGtKQipeHju1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2SUVJBhvjHpXhwq+QcF3eoqGkzX16Stf9Pel6PU9qT1X3zVML0yEipAEN6xll74u
-	 DNs93rshCr55R4smGxO3vooQtTLDewAnDJgu0joHNaTVn8StR1z7zZ5iihV+c1x3Vn
-	 C6Ez49FjKvh3mYpzFmE9eBI3Q1Al8uG0WdMfqhFk=
+	b=xRaGNSKj5F//xzxad2tzbuHXZMtNjygP4ZHQlhz3PTEhOcLfYykpjwr32QglOZga4
+	 skE1Eyc7qYzS8jslG5gZEtSMb9Az8zxw1PFFJEC7G+nMywfFnay5hva5T5PPQHv74Q
+	 cEoYmmiq92mWz/SR+VZr1UtqRgFR4IniTCja6lX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 07/92] RDMA/core: Rate limit GID cache warning messages
+	Yang Xiwen <forbidden405@outlook.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.12 046/117] i2c: qup: jump out of the loop in case of timeout
 Date: Wed, 30 Jul 2025 11:35:15 +0200
-Message-ID: <20250730093230.916876836@linuxfoundation.org>
+Message-ID: <20250730093235.347799509@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maor Gottlieb <maorg@nvidia.com>
+From: Yang Xiwen <forbidden405@outlook.com>
 
-[ Upstream commit 333e4d79316c9ed5877d7aac8b8ed22efc74e96d ]
+commit a7982a14b3012527a9583d12525cd0dc9f8d8934 upstream.
 
-The GID cache warning messages can flood the kernel log when there are
-multiple failed attempts to add GIDs. This can happen when creating many
-virtual interfaces without having enough space for their GIDs in the GID
-table.
+Original logic only sets the return value but doesn't jump out of the
+loop if the bus is kept active by a client. This is not expected. A
+malicious or buggy i2c client can hang the kernel in this case and
+should be avoided. This is observed during a long time test with a
+PCA953x GPIO extender.
 
-Change pr_warn to pr_warn_ratelimited to prevent log flooding while still
-maintaining visibility of the issue.
+Fix it by changing the logic to not only sets the return value, but also
+jumps out of the loop and return to the caller with -ETIMEDOUT.
 
-Link: https://patch.msgid.link/r/fd45ed4a1078e743f498b234c3ae816610ba1b18.1750062357.git.leon@kernel.org
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fbfab1ab0658 ("i2c: qup: reorganization of driver code to remove polling for qup v1")
+Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+Cc: <stable@vger.kernel.org> # v4.17+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-qup.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index 9979a351577f1..81cf3c902e819 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -582,8 +582,8 @@ static int __ib_cache_gid_add(struct ib_device *ib_dev, u32 port,
- out_unlock:
- 	mutex_unlock(&table->lock);
- 	if (ret)
--		pr_warn("%s: unable to add gid %pI6 error=%d\n",
--			__func__, gid->raw, ret);
-+		pr_warn_ratelimited("%s: unable to add gid %pI6 error=%d\n",
-+				    __func__, gid->raw, ret);
- 	return ret;
- }
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -452,8 +452,10 @@ static int qup_i2c_bus_active(struct qup
+ 		if (!(status & I2C_STATUS_BUS_ACTIVE))
+ 			break;
  
--- 
-2.39.5
-
+-		if (time_after(jiffies, timeout))
++		if (time_after(jiffies, timeout)) {
+ 			ret = -ETIMEDOUT;
++			break;
++		}
+ 
+ 		usleep_range(len, len * 2);
+ 	}
 
 
 
