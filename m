@@ -1,134 +1,257 @@
-Return-Path: <stable+bounces-165533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615F7B16387
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 17:20:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96ADEB15E47
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 12:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0D7F188BEEE
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 15:21:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5FE05A0896
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 10:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5125F299AA1;
-	Wed, 30 Jul 2025 15:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QImK2UTz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4342853F1;
+	Wed, 30 Jul 2025 10:35:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B41B1A5B92;
-	Wed, 30 Jul 2025 15:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D90D276058
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 10:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753888847; cv=none; b=MF6+5TSXCm7Mo7Dmh24DymmxGersna0ii8DEsr6v9+8kxXSyFl38eU6Xj1nxiyRBcIJybwegK3QXI7wlxX01Bdh9/M4Bh3KXZi13gLpaWzSwxANacSLDSLgVnmAbmtUgEFrWx7uQ5WL4xKSy0gTpFYjY/EbdXNQzBlpBRP5DsX8=
+	t=1753871755; cv=none; b=TQZkziA/CXuayhl2Z3Bxy0ZJAgpwcMU5SzvdQxUEV45gU09OGGzImylmNHVZwuNc4Co4qN/eCBuJAQz6SntxX7p+vd0wlq7GBJxphDbisj0a03KU21YHQqV9giTOUgOLBKi/K1VrRugwjJC9oWpJnWn3Wcv2WNvJjlXrP/JJrv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753888847; c=relaxed/simple;
-	bh=2YJILWFVi9iNE2E7aaZODttyLwFM9GOA/QeoQJ4EfeY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=buEr5ppC1EvajbLds7DJSdRwt23XQcdDfjHOY1cPvp2EjHNQnymIfvrzORCgEkRZBX3NFlOR/CdQ8u+ILF1jP7CleqttkciAkGZBK5STgVNqFqvaMJaqoq/yPxPHe+Sqvf0VwjIO4TKIwnD6cmbbGrtz+yC9UGI7KBzUl6rQjKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QImK2UTz; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3b78d337dd9so1701977f8f.3;
-        Wed, 30 Jul 2025 08:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753888843; x=1754493643; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Kci03Gb7LVvbq3eEOdY/a+e9RESG12PudUU6mEsPhsY=;
-        b=QImK2UTzs99K9rosAUMdz7lytv5ymcoStKsqj/P+sxlaNts3O4U2haW9gDKafXo4n1
-         3Cr3RBqTW53xdZ1sksR2xmsUdOSW7GF6iivrkuvU58PQNI2FCLVyQW33ZWy4zkkhETCv
-         CZ4dFnkiiWHsLh8vSuY+woR7lIurpTdXypWPpXdyUsdXJX8Dl8ALdDUBhm3VlJR6wDbh
-         ueWK3GWgWI63MlWqbAld4rcF5RzohvnDihqA0SO9MPG1YA5im8Zj/CyQ3dRRI+ZJLTLv
-         zZJR4P0T5M0WfyTaGK3UaXeooCZUpugp18wHwFhTG5wE8CudXS8ff9pevx+jhiyOGmTx
-         dGsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753888843; x=1754493643;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kci03Gb7LVvbq3eEOdY/a+e9RESG12PudUU6mEsPhsY=;
-        b=NwWDxLllNw491STs5QowiSbnPVd33gLi84cZd+bD1ind8T11bkPwp0Hft2bdPtAC3d
-         VVrkRWSt+TBQmyCs+zKnUu7a8Oh92lkXuR4L7FB4unzc0T2/VR65T4nkopuPBAbq0Dqi
-         A+/3XnlcDL3VSjOPOD3yoInH4ssNf7VxKOr4KDmjwsANVsoIA1TFO6cSVkOA6DAeOOLY
-         IMxv7j9c1R2N4JxHWn0M8zvqNRsl48a6LAKxwTySA9nA1gwlrPYGUTzDqWFOqazPUALh
-         Wsp143g0YaXqJqh2Iob0vnPthtzEp1XHQZpMIQ+1xtusNGBdxL/rYHDd6OyEK9V/kqL5
-         gNhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV4mwEnt1xJV392XKkP3BiffNXny/iE4ZABnp8xR9SKiL3JX577UFn0oGHonFNG0+7cbihBdarZu9e7TEs=@vger.kernel.org, AJvYcCWh3AikiwZ1eKUgD188UzK5uRE6vaMM2HFJz+473raL69+LilztMeHr2VV/BuF76bccpJal3D1j@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxg1dsEHJVzDDPFT7iw1y2oJgUOuPdLLi3sMcpQ0L7Fog7VxYvf
-	v+H0sekPtfFlmIHC3K580i8G7daZ0dsHRDLVxnoKXrU1TksvsCdTiMxo
-X-Gm-Gg: ASbGncsDF7A9xHhOz1mkmMf53uBDoms6pA7R+t2xZQe0tZlYnoVocbO/XGaEAo1U5yT
-	wiQUmghkn5HIHN+VrykPUMJqHXak5hpYAMqp2u0I7fjh4HrwlntEr5+X7Aig4FQOnRLmlVkT309
-	gt4f2TtKE95G5tG/c25VXrRKzWE/6++8Y6uMo00CEMpQuJnkxG7fs4z1E1+kwu7CgmhAgsTvmjO
-	DJ9uIoBtK4Bix6F0ud4kRrLyV5SI7z15Q+J8dnnoQiw8nVRWibSpu/PbJOlHsmbAcycDZAYfjE/
-	qzrqeBz2cbBUPWPvy8A38By3P/ua6BCpKfqJOyllAxre433AQLRPE/J7n4lwhlRnPEaUAhLMSZ2
-	LzJlRM/yUhb+rTSmMUY85b6kEKYO/Xvv3M5krrs0hTSZ3Z/kMI0uQUJP4z2qOF88cmg==
-X-Google-Smtp-Source: AGHT+IFujs7Q9eRhqfnwDZ+MvXL7x9DocH05EbUQKXWIE5rTbWniIFMJNpGqQkP0jEAo4UKtbeJXqg==
-X-Received: by 2002:a05:6000:381:b0:3a4:dc93:1e87 with SMTP id ffacd0b85a97d-3b794fc19d1mr3452329f8f.1.1753888843257;
-        Wed, 30 Jul 2025 08:20:43 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953cfe56sm32874015e9.20.2025.07.30.08.20.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 08:20:42 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 76D18BE2DE0; Wed, 30 Jul 2025 17:20:41 +0200 (CEST)
-Date: Wed, 30 Jul 2025 17:20:41 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jari Ruusu <jariruusu@protonmail.com>, Yi Yang <yiyang13@huawei.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>, Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: Text mode VGA-console scrolling is broken in upstream & stable
- trees
-Message-ID: <aIo4SSJXIrJEanmP@eldamar.lan>
-References: <C4_ogGo3eSdgo3wcbkdIXQDoGk2CShDfiQEjnwmgLUvd1cVp5kKguDC4M7KlWO4Tg9Ny3joveq7vH9K_zpBGvIA8-UkU2ogSE1T9Y6782js=@protonmail.com>
- <2025073054-stipend-duller-9622@gregkh>
+	s=arc-20240116; t=1753871755; c=relaxed/simple;
+	bh=qweWPyKEs3pN6MuNg0KaCYdJj9vxUHHf8MFrmW68PPY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=GZOeyWvb/WdVWGaz1KiltVbet6MKUsfrD79BUvFxtNj5GFFkIbyJDNjY24AGZyXorC2mBPO9N67aLL6VMSfqoBkss9UTarODssA7WZ0Rd8B6+dyc3OjRD6YWoJhrfJY7ZjV23USPy3sNgQNV/Z76UUFaIoqBJX3/Xu+2ysg2f2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1753871743-086e23295483150001-OJig3u
+Received: from ZXBJMBX02.zhaoxin.com (ZXBJMBX02.zhaoxin.com [10.29.252.6]) by mx1.zhaoxin.com with ESMTP id EoKJyGyVHCBkiczC (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 30 Jul 2025 18:35:43 +0800 (CST)
+X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.6
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXBJMBX02.zhaoxin.com
+ (10.29.252.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Wed, 30 Jul
+ 2025 18:35:36 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::cd37:5202:5b71:926f]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::cd37:5202:5b71:926f%7]) with mapi id
+ 15.01.2507.044; Wed, 30 Jul 2025 18:35:36 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.6
+Received: from [10.29.8.21] (10.29.8.21) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Wed, 30 Jul
+ 2025 15:21:49 +0800
+Message-ID: <683553fc-3874-0c31-d317-03b28dc3431e@zhaoxin.com>
+Date: Wed, 30 Jul 2025 23:21:51 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025073054-stipend-duller-9622@gregkh>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2] usb:xhci:Fix slot_id resource race conflict
+Content-Language: en-US
+X-ASG-Orig-Subj: Re: [PATCH v2] usb:xhci:Fix slot_id resource race conflict
+To: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	<gregkh@linuxfoundation.org>, <mathias.nyman@intel.com>,
+	<linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <WeitaoWang@zhaoxin.com>, <wwt8723@163.com>, <CobeChen@zhaoxin.com>,
+	<stable@vger.kernel.org>
+References: <20250725185101.8375-1-WeitaoWang-oc@zhaoxin.com>
+ <094f9822-9f12-4c67-b648-84a48c2e154b@linux.intel.com>
+ <dec32556-c28e-aeed-8516-2e0bb56c3a58@zhaoxin.com>
+ <855b4621-fc40-4281-9e44-7a2ac861dd4b@linux.intel.com>
+From: "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>
+In-Reply-To: <855b4621-fc40-4281-9e44-7a2ac861dd4b@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 7/30/2025 6:35:34 PM
+X-Barracuda-Connect: ZXBJMBX02.zhaoxin.com[10.29.252.6]
+X-Barracuda-Start-Time: 1753871743
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 5302
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -1.60
+X-Barracuda-Spam-Status: No, SCORE=-1.60 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_03_06, DATE_IN_FUTURE_03_06_2
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.145035
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.01 DATE_IN_FUTURE_03_06   Date: is 3 to 6 hours after Received: date
+	0.42 DATE_IN_FUTURE_03_06_2 DATE_IN_FUTURE_03_06_2
 
-Hi,
+On 2025/7/29 23:00, Mathias Nyman wrote:
+>=20
+> On 29.7.2025 20.25, WeitaoWang-oc@zhaoxin.com wrote:
+>> On 2025/7/28 21:16, Mathias Nyman wrote:
+>>>
+>>> On 25.7.2025 21.51, Weitao Wang wrote:
+>>>> In such a scenario, device-A with slot_id equal to 1 is disconnecting
+>>>> while device-B is enumerating, device-B will fail to enumerate in the
+>>>> follow sequence.
+>>>>
+>>>> 1.[device-A] send disable slot command
+>>>> 2.[device-B] send enable slot command
+>>>> 3.[device-A] disable slot command completed and wakeup waiting thread
+>>>> 4.[device-B] enable slot command completed with slot_id equal to 1 and
+>>>> wakeup waiting thread
+>>>> 5.[device-B] driver check this slot_id was used by someone(device-A) i=
+n
+>>>> xhci_alloc_virt_device, this device fails to enumerate as this conflic=
+t
+>>>> 6.[device-A] xhci->devs[slot_id] set to NULL in xhci_free_virt_device
+>>>>
+>>>> To fix driver's slot_id resources conflict, let the xhci_free_virt_dev=
+ice
+>>>> functionm call in the interrupt handler when disable slot command succ=
+ess.
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command an=
+d host runtime=20
+>>>> suspend")
+>>>> Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+>>>
+>>> Nice catch, good to get this fixed.
+>>>
+>>> This however has the downside of doing a lot in interrupt context.
+>>>
+>>> what if we only clear some strategic pointers in the interrupt context,
+>>> and then do all the actual unmapping and endpoint ring segments freeing=
+,
+>>> contexts freeing ,etc later?
+>>>
+>>> Pseudocode:
+>>>
+>>> xhci_handle_cmd_disable_slot(xhci, slot_id, comp_code)
+>>> {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 if (cmd_comp_code =3D=3D COMP_SUCCESS) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xhci->dcbaa->dev_conte=
+xt_ptrs[slot_id] =3D 0;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xhci->devs[slot_id] =
+=3D NULL;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> }
+>>>
+>>> xhci_disable_and_free_slot(xhci, slot_id)
+>>> {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 struct xhci_virt_device *vdev =3D xhci->devs[s=
+lot_id];
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 xhci_disable_slot(xhci, slot_id);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 xhci_free_virt_device(xhci, vdev, slot_id);
+>>> }
+>>>
+>>> xhci_free_virt_device(xhci, vdev, slot_id)
+>>> {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 if (xhci->dcbaa->dev_context_ptrs[slot_id] =3D=
+=3D vdev->out_ctx->dma)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xhci->dcbaa->dev_conte=
+xt_ptrs[slot_id] =3D 0;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 // free and unmap things just like before
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 ...
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 if (xhci->devs[slot_id] =3D=3D vdev)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xhci->devs[slot_id] =
+=3D NULL;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 kfee(vdev);
+>>> }
+>>
+>> Hi Mathias,
+>>
+>> Yes, your suggestion is a better revision, I made some modifications
+>> to the patch which is listed below. Please help to review again.
+>> Thanks for your help.
+>>
+>> ---
+>> =C2=A0 drivers/usb/host/xhci-hub.c=C2=A0 |=C2=A0 3 +--
+>> =C2=A0 drivers/usb/host/xhci-mem.c=C2=A0 | 21 ++++++++++-----------
+>> =C2=A0 drivers/usb/host/xhci-ring.c |=C2=A0 9 +++++++--
+>> =C2=A0 drivers/usb/host/xhci.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 23 ++++++=
+++++++++++-------
+>> =C2=A0 drivers/usb/host/xhci.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +=
++-
+>> =C2=A0 5 files changed, 36 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+>> index 92bb84f8132a..b3a59ce1b3f4 100644
+>> --- a/drivers/usb/host/xhci-hub.c
+>> +++ b/drivers/usb/host/xhci-hub.c
+>> @@ -704,8 +704,7 @@ static int xhci_enter_test_mode(struct xhci_hcd *xhc=
+i,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!xhci->devs[i=
+])
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 continue;
+>>
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retval =3D xhci_disable_slot=
+(xhci, i);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xhci_free_virt_device(xhci, =
+i);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retval =3D xhci_disable_and_=
+free_slot(xhci, i);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (retval)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 xhci_err(xhci, "Failed to disable slot %d, %d. Enter test mode anywa=
+y\n",
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i, retval);
+>> diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+>> index 6680afa4f596..fc4aca2e65bc 100644
+>> --- a/drivers/usb/host/xhci-mem.c
+>> +++ b/drivers/usb/host/xhci-mem.c
+>> @@ -865,21 +865,18 @@ int xhci_alloc_tt_info(struct xhci_hcd *xhci,
+>> =C2=A0=C2=A0 * will be manipulated by the configure endpoint, allocate d=
+evice, or update
+>> =C2=A0=C2=A0 * hub functions while this function is removing the TT entr=
+ies from the list.
+>> =C2=A0=C2=A0 */
+>> -void xhci_free_virt_device(struct xhci_hcd *xhci, int slot_id)
+>> +void xhci_free_virt_device(struct xhci_hcd *xhci, struct xhci_virt_devi=
+ce *dev,
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int slot_id)
+>> =C2=A0 {
+>> -=C2=A0=C2=A0=C2=A0 struct xhci_virt_device *dev;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int i;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int old_active_eps =3D 0;
+>>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Slot ID 0 is reserved */
+>> -=C2=A0=C2=A0=C2=A0 if (slot_id =3D=3D 0 || !xhci->devs[slot_id])
+>> +=C2=A0=C2=A0=C2=A0 if (slot_id =3D=3D 0 || !dev)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>>
+>> -=C2=A0=C2=A0=C2=A0 dev =3D xhci->devs[slot_id];
+>> -
+>> -=C2=A0=C2=A0=C2=A0 xhci->dcbaa->dev_context_ptrs[slot_id] =3D 0;
+>> -=C2=A0=C2=A0=C2=A0 if (!dev)
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>> +=C2=A0=C2=A0=C2=A0 if (xhci->dcbaa->dev_context_ptrs[slot_id] =3D=3D de=
+v->out_ctx->dma)
+>=20
+> forgot that dev_context_ptrs[] values are stored as le64 while
+> out_ctx->dma=C2=A0 is in whatever cpu uses.
+>=20
+> So above should be:
+> if (xhci->dcbaa->dev_context_ptrs[slot_id] =3D=3D cpu_to_le64(dev->out_ct=
+x->dma))
+>=20
+> Otherwise it looks good to me
 
-On Wed, Jul 30, 2025 at 04:26:44PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Jul 30, 2025 at 02:06:27PM +0000, Jari Ruusu wrote:
-> > The patch that broke text mode VGA-console scrolling is this one:
-> > "vgacon: Add check for vc_origin address range in vgacon_scroll()"
-> > commit 864f9963ec6b4b76d104d595ba28110b87158003 upstream.
-> > 
-> > How to preproduce:
-> > (1) boot a kernel that is configured to use text mode VGA-console
-> > (2) type commands:  ls -l /usr/bin | less -S
-> > (3) scroll up/down with cursor-down/up keys
-> > 
-> > Above mentioned patch seems to have landed in upstream and all
-> > kernel.org stable trees with zero testing. Even minimal testing
-> > would have shown that it breaks text mode VGA-console scrolling.
-> > 
-> > Greg, Sasha, Linus,
-> > Please consider reverting that buggy patch from all affected trees.
-> 
-> Please work to fix it in Linus's tree first and then we will be glad to
-> backport the needed fix.
+Ok, I got it. I'll submit a new version with this issue fix.
 
-FWIW, and maybe just an interesting side node: if it ever get
-considered to revert the commit, this will re-introduce/re-open
-CVE-2025-38213.
-
-Cf. https://lore.kernel.org/linux-cve-announce/2025070422-CVE-2025-38213-c3e3@gregkh/T/#u
-
-Regards,
-Salvatore
+Best Regards,
+weitao
 
