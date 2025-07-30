@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-165551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F999B1649D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 18:29:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6410DB1649E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 18:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FBD218C4283
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:29:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 778113BEFD1
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2753E2DCC06;
-	Wed, 30 Jul 2025 16:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2F12D838B;
+	Wed, 30 Jul 2025 16:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdVbPwYa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iO5cqo/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3471DFD96
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 16:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC421DFD96
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 16:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753892936; cv=none; b=SMkJao4nhOIivv1sLWKPqOdDPjtGaqcaUQoTKuKEOzWnoxr56fpoSRqZvOXSeLgKd3VN0vxKQxWJKXy/pvVIRwxlMse6Pnt5ytSuXawTnnS0Z7GpgpFoRrp1EHuYy2aocQnNdEo2svxeH2+jgZMcBHKfm8Aqvh2F30X4kGIj74I=
+	t=1753892940; cv=none; b=qzwYs+6LfJodcTKBEScrcF8iISe989ahgA97kSXjAvqG6zkVyeuRKoP+2+XXOHC7+Fq6hZVJ6S2lMXZDagTBtkfmbLU1ljNm577P1tGPD/ZHfHUE2e+q0uaRdek6WKL2WPaH3cxIx+CRwoT0A6gIXwrLF6s7suqQ7+5UCE/XoTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753892936; c=relaxed/simple;
-	bh=QKx0aKzZNUAosK/88cXzbpqCeh75jUXfuW+PIguZuMs=;
+	s=arc-20240116; t=1753892940; c=relaxed/simple;
+	bh=+Qbu5Dt+ARZGiKyba/banPote71Eaf0NYm6ef6WVzgo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cGM+lG/8YfVcP8ptE4LvXhbYs5TxldEKueLJmzZywq1cLr2UIm0JoeTpsFdoITM6SMNrOkV0MKXeUEDcm0aPzRtsyfPpm4NmTeT4i0zVQxUSoygZx/na2THaBD3qNbFnFWhviEC0TrqmavXFyDmcKKwwXv4TAjAJZmXLHE8W0kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdVbPwYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1D8C4CEF7;
-	Wed, 30 Jul 2025 16:28:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JrkshGQEQp0SDKcy7l+oZDkIRcySQGLhUjT81BGgjhY+cDyXm+JNXMKAeae5qQixTNHTLjy66a9PCjxrbgXjcrnjMd+sr/OrEKNecsmBRVDW03po3Ucd0EU4p1C+PeYddMwzW6ViEOiw+e/5Nxbnmk4/CT9S7c9TPkqFB+rsMSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iO5cqo/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30289C4CEE7;
+	Wed, 30 Jul 2025 16:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753892936;
-	bh=QKx0aKzZNUAosK/88cXzbpqCeh75jUXfuW+PIguZuMs=;
+	s=k20201202; t=1753892939;
+	bh=+Qbu5Dt+ARZGiKyba/banPote71Eaf0NYm6ef6WVzgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IdVbPwYaTbTl0RhYCC7Xe4EhX7E8RfiCNkIKPxC9lEkAqpw+N/S+GX6fz0pLTzdxp
-	 k1OdMFp9sqM2WIhIM0P/J0KQXFM1Y4jN56jIWRv/6dIHYeDX5xy7PwC3AK9nBIDnn+
-	 BjxF4Qw0ey//c0QIFNW2uDsuWpVZfvlPiIK/4vz9GAmOeptc4DBBCx0SjOLHb5Mip8
-	 YscKSfvUzVynEJTLd7Dog/lXtWVe56M87gzxlB8mwShib9sEbwrO0Map5SgyO75ylo
-	 /XkrbNqv7v6zzn6vFiJt9+OnBrqPNIlE+RCQDXapNERgFuRIZPaiSKXxhACcDTGJmR
-	 WbYXGkWsYdeaQ==
+	b=iO5cqo/UkQ00mVR5/c6qhw2jvjW4Adm8m3UVFWDps7orojrA4ZaLaUXmtzhjvWMEn
+	 4WHOGRXWmzdAAy+Edj2Y1QyJ6GxtuKv0A1rVNUJvCfU1xCZH5Xymbofbl+wgghLotL
+	 uIOSt/5ugyPpPaeRnTIH/Lt/6ezx6GT64qDQx+wwEdxKkpMfCT4abN2LDJhVcDvUn7
+	 cWe9/cHZKtUrTyEc8z2NgA8U+45GyFuwp5FqCFsouSr5/QnPqE2pdlfi+N9fgCgdGv
+	 b0EJnZmQkt2aV298CxLXsb66yib6TS4Wtvpdh+li3Z2aD6w49EXqtjme2hNPfe04s/
+	 pizku27LlDP4w==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	matttbe@kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 4/4] selftests/memfd: add test for mapping write-sealed memfd read-only
-Date: Wed, 30 Jul 2025 12:28:54 -0400
-Message-Id: <1753862086-900b1730@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y 2/3] selftests: mptcp: connect: also cover alt modes
+Date: Wed, 30 Jul 2025 12:28:57 -0400
+Message-Id: <1753887608-2e6325ec@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250730015247.30827-5-isaacmanjarres@google.com>
+In-Reply-To: <20250730102806.1405622-7-matttbe@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,47 +64,18 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 2/3 of a series
+⚠️ Could not find matching upstream commit
 
-The upstream commit SHA1 provided is correct: ea0916e01d0b0f2cce1369ac1494239a79827270
+The claimed upstream commit SHA1 (37848a456fc38c191aedfe41f662cc24db8c23d9) was not found.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Isaac J. Manjarres <isaacmanjarres@google.com>
-Commit author: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Not found
-6.6.y | Not found
-
-Note: The patch differs from the upstream commit:
----
-1:  ea0916e01d0b ! 1:  6ed30ba1cb86 selftests/memfd: add test for mapping write-sealed memfd read-only
-    @@ Metadata
-      ## Commit message ##
-         selftests/memfd: add test for mapping write-sealed memfd read-only
-     
-    +    [ Upstream commit ea0916e01d0b0f2cce1369ac1494239a79827270 ]
-    +
-         Now we have reinstated the ability to map F_SEAL_WRITE mappings read-only,
-         assert that we are able to do this in a test to ensure that we do not
-         regress this again.
-    @@ Commit message
-         Cc: Shuah Khan <shuah@kernel.org>
-         Cc: Vlastimil Babka <vbabka@suse.cz>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    Cc: stable@vger.kernel.org
-    +    Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-     
-      ## tools/testing/selftests/memfd/memfd_test.c ##
-     @@ tools/testing/selftests/memfd/memfd_test.c: static void *mfd_assert_mmap_shared(int fd)
-
----
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| 6.1                       | Success     | Success    |
+| 5.15                      | Success     | Success    |
 
