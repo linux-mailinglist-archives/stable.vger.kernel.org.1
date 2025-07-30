@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DB3B15CDA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1E0B15D38
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0EC17B36D5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A60237A95B5
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387D726FA50;
-	Wed, 30 Jul 2025 09:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD621D63F2;
+	Wed, 30 Jul 2025 09:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEEGeI7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcBnzVrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB57E442C;
-	Wed, 30 Jul 2025 09:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E69D274666;
+	Wed, 30 Jul 2025 09:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868810; cv=none; b=Op+piZBheGuDIGf10XGjoyRS9VY0vySBdmqHcYmEMgjzP99zWskEfBzWTiVCbx7Kzdj7P08bSFy+apdQ9+ha2PXkMyluHi38ZL+v9uVHwifigxbHcOUwBJ/dklCiWyrefIvYqNwAZt+juiQoXhLI3M6IhWT3FJlyIp15+d5vD+M=
+	t=1753869058; cv=none; b=JEd/+ujO2XFG9VYaCFxvNz0HuHzdMEbH8Gn6kfdiqRLZbSUnZi9D1//dgLo25hmlq8S5iv1kudtAhrlei2pIhhl6YypEnL4NK2XNo37GZVqEq/NJCz2J+6WN1lFvvZ/H0VTjznt+LOYYpHKXAFZc6Qt3OvvGc2XcOvFmgKGexD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868810; c=relaxed/simple;
-	bh=nT/tsXhrArgkaY+eq3G5X6RHk+gSb02VGD0/3WCLISs=;
+	s=arc-20240116; t=1753869058; c=relaxed/simple;
+	bh=Z/fmA3Q5r+a+6I/Ihin6/HANR9fYCeMHgLY7SyM70kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qr3Nle6dDaPMp/9EmMthbA3/Q2b+Fn2WvUmvMhZcTnamqZWCmNI0N2WxtowE0EI3HNpgxfeROHG95kB/EtFthdIwEw+3ZfkrixUAXQ/Df9hFiPGiOjoPEgsWkLElvkfGI7nrIaZk6dRzVbUILAvrNU7rwZ8T3F/qwhvewJllwmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEEGeI7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68510C4CEF6;
-	Wed, 30 Jul 2025 09:46:49 +0000 (UTC)
+	 MIME-Version; b=kFBiZ74uJ+Z93k5oD+ufpDu0J76e9j5cbkvMegFT5J9WxltKPGxhVymqareDpfxhmgUR+8sXcIdru5HZwKSS9sZBi1XQGC6KHvpLyxa7U19anJMz5s60KVwFfHLvm/2V3hiUqQiAXPsDP96WHeFkx7cgfA8xXpcS72JJkH9SFH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcBnzVrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651A0C4CEF9;
+	Wed, 30 Jul 2025 09:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868809;
-	bh=nT/tsXhrArgkaY+eq3G5X6RHk+gSb02VGD0/3WCLISs=;
+	s=korg; t=1753869057;
+	bh=Z/fmA3Q5r+a+6I/Ihin6/HANR9fYCeMHgLY7SyM70kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HEEGeI7b9RXn7C1vU+vN0VDpf5BqIsflH+BMy3GfFkZLIlDWMPVTNyN0dv6lJvKZi
-	 mGZqXyBwiVDavj8BY/Tkl19GluY38KStZbwo3Gp0XRPjOd8cV+hQGJCOc6pxionQNQ
-	 aHEdXJmfW3bjl4uYN2XOPz3kxxAkRzQBuYjRQYI0=
+	b=GcBnzVrzGI/Eb79rnbhh1MDB0dPy17u7+U6HA5QH/Z6lb33AnvJOayuVlNmdTZABG
+	 K+pqcE/xI7gkm3YmlGemdhCAFx/5SJQ3VbPqUKbBH6CBi4PUfLO7A+WyAB29iHBzCN
+	 mXE+Xvvo6qjPQhgbMUUGXX/1jKvkl2lVbHmzn0oQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 064/117] selftests: mptcp: connect: also cover checksum
+	Lonial Con <kongln9170@gmail.com>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 25/92] xfrm: interface: fix use-after-free after changing collect_md xfrm interface
 Date: Wed, 30 Jul 2025 11:35:33 +0200
-Message-ID: <20250730093236.035480108@linuxfoundation.org>
+Message-ID: <20250730093231.584755646@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-commit fdf0f60a2bb02ba581d9e71d583e69dd0714a521 upstream.
+[ Upstream commit a90b2a1aaacbcf0f91d7e4868ad6c51c5dee814b ]
 
-The checksum mode has been added a while ago, but it is only validated
-when manually launching mptcp_connect.sh with "-C".
+collect_md property on xfrm interfaces can only be set on device creation,
+thus xfrmi_changelink() should fail when called on such interfaces.
 
-The different CIs were then not validating these MPTCP Connect tests
-with checksum enabled. To make sure they do, add a new test program
-executing mptcp_connect.sh with the checksum mode.
+The check to enforce this was done only in the case where the xi was
+returned from xfrmi_locate() which doesn't look for the collect_md
+interface, and thus the validation was never reached.
 
-Fixes: 94d66ba1d8e4 ("selftests: mptcp: enable checksum in mptcp_connect.sh")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-2-8230ddd82454@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Calling changelink would thus errornously place the special interface xi
+in the xfrmi_net->xfrmi hash, but since it also exists in the
+xfrmi_net->collect_md_xfrmi pointer it would lead to a double free when
+the net namespace was taken down [1].
+
+Change the check to use the xi from netdev_priv which is available earlier
+in the function to prevent changes in xfrm collect_md interfaces.
+
+[1] resulting oops:
+[    8.516540] kernel BUG at net/core/dev.c:12029!
+[    8.516552] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[    8.516559] CPU: 0 UID: 0 PID: 12 Comm: kworker/u80:0 Not tainted 6.15.0-virtme #5 PREEMPT(voluntary)
+[    8.516565] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    8.516569] Workqueue: netns cleanup_net
+[    8.516579] RIP: 0010:unregister_netdevice_many_notify+0x101/0xab0
+[    8.516590] Code: 90 0f 0b 90 48 8b b0 78 01 00 00 48 8b 90 80 01 00 00 48 89 56 08 48 89 32 4c 89 80 78 01 00 00 48 89 b8 80 01 00 00 eb ac 90 <0f> 0b 48 8b 45 00 4c 8d a0 88 fe ff ff 48 39 c5 74 5c 41 80 bc 24
+[    8.516593] RSP: 0018:ffffa93b8006bd30 EFLAGS: 00010206
+[    8.516598] RAX: ffff98fe4226e000 RBX: ffffa93b8006bd58 RCX: ffffa93b8006bc60
+[    8.516601] RDX: 0000000000000004 RSI: 0000000000000000 RDI: dead000000000122
+[    8.516603] RBP: ffffa93b8006bdd8 R08: dead000000000100 R09: ffff98fe4133c100
+[    8.516605] R10: 0000000000000000 R11: 00000000000003d2 R12: ffffa93b8006be00
+[    8.516608] R13: ffffffff96c1a510 R14: ffffffff96c1a510 R15: ffffa93b8006be00
+[    8.516615] FS:  0000000000000000(0000) GS:ffff98fee73b7000(0000) knlGS:0000000000000000
+[    8.516619] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    8.516622] CR2: 00007fcd2abd0700 CR3: 000000003aa40000 CR4: 0000000000752ef0
+[    8.516625] PKRU: 55555554
+[    8.516627] Call Trace:
+[    8.516632]  <TASK>
+[    8.516635]  ? rtnl_is_locked+0x15/0x20
+[    8.516641]  ? unregister_netdevice_queue+0x29/0xf0
+[    8.516650]  ops_undo_list+0x1f2/0x220
+[    8.516659]  cleanup_net+0x1ad/0x2e0
+[    8.516664]  process_one_work+0x160/0x380
+[    8.516673]  worker_thread+0x2aa/0x3c0
+[    8.516679]  ? __pfx_worker_thread+0x10/0x10
+[    8.516686]  kthread+0xfb/0x200
+[    8.516690]  ? __pfx_kthread+0x10/0x10
+[    8.516693]  ? __pfx_kthread+0x10/0x10
+[    8.516697]  ret_from_fork+0x82/0xf0
+[    8.516705]  ? __pfx_kthread+0x10/0x10
+[    8.516709]  ret_from_fork_asm+0x1a/0x30
+[    8.516718]  </TASK>
+
+Fixes: abc340b38ba2 ("xfrm: interface: support collect metadata mode")
+Reported-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile                  |    2 +-
- tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
+ net/xfrm/xfrm_interface_core.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -5,7 +5,7 @@ top_srcdir = ../../../../..
- CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index 622445f041d32..fed96bedd54e3 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -875,7 +875,7 @@ static int xfrmi_changelink(struct net_device *dev, struct nlattr *tb[],
+ 		return -EINVAL;
+ 	}
  
- TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
--	      pm_netlink.sh mptcp_join.sh diag.sh \
-+	      mptcp_connect_checksum.sh pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+-	if (p.collect_md) {
++	if (p.collect_md || xi->p.collect_md) {
+ 		NL_SET_ERR_MSG(extack, "collect_md can't be changed");
+ 		return -EINVAL;
+ 	}
+@@ -886,11 +886,6 @@ static int xfrmi_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	} else {
+ 		if (xi->dev != dev)
+ 			return -EEXIST;
+-		if (xi->p.collect_md) {
+-			NL_SET_ERR_MSG(extack,
+-				       "device can't be changed to collect_md");
+-			return -EINVAL;
+-		}
+ 	}
  
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -C "${@}"
+ 	return xfrmi_update(xi, &p);
+-- 
+2.39.5
+
 
 
 
