@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484DBB15D7D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:55:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBEEB15C44
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3645A4C14
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2381D18C0FDC
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2D3294A16;
-	Wed, 30 Jul 2025 09:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849AB26D4F9;
+	Wed, 30 Jul 2025 09:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/n9nCVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdgvPX0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7982949F2;
-	Wed, 30 Jul 2025 09:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42005167DB7;
+	Wed, 30 Jul 2025 09:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869232; cv=none; b=vFAd8XMNfMMk8jZCAoTUGL3Kv9emUhKa55EUg0nCP7aCVyP0l5ldie5K0jRwropoJRR9hTuFXXudrge72j6R4eg2uKNJ52WHxVphq5NnNEeXNe883Xn/mpdTQDgVQPme6i6uPP4CmKUk/bKxKRa8H3a/7xCANY+N2CsR3yj4aMg=
+	t=1753868394; cv=none; b=k82H5VZ8E6zbQQEt5AS0rphRnd+DoF9DLr8mqM3MbbHXC7/7T0XeUOpWZBD2JPH3pcNZjatruZnEtJy+L0fueuD+tVSZzKJpYVO+MC2IUtLCbr4MA+VdU1kuSKOVSH+K8DEPr/B7c/k9JprZ6Asob6sj9YicNQ+O0MKnuJll4dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869232; c=relaxed/simple;
-	bh=F5LlUituxm9a+kuNXtAZMTuw3RhPi5lEKC9zv5BL+/c=;
+	s=arc-20240116; t=1753868394; c=relaxed/simple;
+	bh=kdFkfnNqACTUlcAa6ZJOT8kpb+W6usGjaYbMjOmjDOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYjkBJrr2Mh01EbGWWzUqJuy+ruRJMtUfNQ8vZgiHbplSnk7HcgTm1GQ/Nzr9UxL0eFbcb9/4gG6KefVG/TDl2bbul/mIqkCoUX9iv+pZOpnqyJqAv4x5a/8Td516pbG4jUoUv9Np54kGsP2uqwoOGuILrpOMpfzYQZgnyRlic0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/n9nCVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A176C4CEF5;
-	Wed, 30 Jul 2025 09:53:51 +0000 (UTC)
+	 MIME-Version; b=VBskfUtKFkoI21UEIgNqeM87mXFrEjsWz14OH41cBF4+H2EIbxPMV96BOnMn3zA7L2PcZK6Df3Li7gF/e+ulP5ua7Dmhwgif/sjljvUi3bhF2gJQmPzH88PxETXwwWYAjBtf/cDzSz6jhhVcLpDpTS25Fi2AZssqw9HZGCiom3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdgvPX0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED81C4CEF5;
+	Wed, 30 Jul 2025 09:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869231;
-	bh=F5LlUituxm9a+kuNXtAZMTuw3RhPi5lEKC9zv5BL+/c=;
+	s=korg; t=1753868394;
+	bh=kdFkfnNqACTUlcAa6ZJOT8kpb+W6usGjaYbMjOmjDOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/n9nCVzD6TB8SUHy3rE7OVawwCYGp4D5lcmqQPiw/h2Mm/fj4OS4WQQo1usnDUN7
-	 kcJhQATOqO+erpM3Jd1iCIVhpqtnNd7b4yvDPWB9FonIBv+j1yBzkONw6r/rCdXti5
-	 aHgvB2f7tIMeVbErDYesqYhix4x0C2z9dOiyfBf8=
+	b=bdgvPX0gVzG0zH0JEZ0XUIj3N+U8i2He6GnaC/Q1yHn9aLoK8kLsS0bw6oII2MTkt
+	 OGeOkjGzDxV68tLOSxo9+IGl2qr1RSX+J8Bjl2rZ4GbEDZVcW/TFFvGQwQbnfriIyh
+	 3pfGI7EumNA9hflGTPq0TeZWo8LDzyMB/1vjybPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SHARAN KUMAR M <sharweshraajan@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 36/92] ALSA: hda/realtek: Fix mute LED mask on HP OMEN 16 laptop
+Subject: [PATCH 6.6 51/76] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
 Date: Wed, 30 Jul 2025 11:35:44 +0200
-Message-ID: <20250730093232.151208725@linuxfoundation.org>
+Message-ID: <20250730093228.824405902@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SHARAN KUMAR M <sharweshraajan@gmail.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 931837cd924048ab785eedb4cee5b276c90a2924 ]
+commit bec15191d52300defa282e3fd83820f69e447116 upstream.
 
-this patch is to fix my previous Commit <e5182305a519> i have fixed mute
-led but for by This patch corrects the coefficient mask value introduced
-in commit <e5182305a519>, which was intended to enable the mute LED
-functionality. During testing, multiple values were evaluated, and
-an incorrect value was mistakenly included in the final commit.
-This update fixes that error by applying the correct mask value for
-proper mute LED behavior.
+This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
+SNKAS.
 
-Tested on 6.15.5-arch1-1
+tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+testers can interpret the TryWait.Src to Attached.Src transition after
+Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+to the debounce timer.
 
-Fixes: e5182305a519 ("ALSA: hda/realtek: Enable Mute LED on HP OMEN 16 Laptop xd000xx")
-Signed-off-by: SHARAN KUMAR M <sharweshraajan@gmail.com>
-Link: https://patch.msgid.link/20250722172224.15359-1-sharweshraajan@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Setting the data role can be a costly operation in host mode, and when
+completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+to fail.
+
+Turn VBUS on before tcpm_set_roles to meet timing requirement.
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |   34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5a6d0424bfedc..347096dc354ec 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4753,7 +4753,7 @@ static void alc245_fixup_hp_mute_led_v1_coefbit(struct hda_codec *codec,
- 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
- 		spec->mute_led_polarity = 0;
- 		spec->mute_led_coef.idx = 0x0b;
--		spec->mute_led_coef.mask = 1 << 3;
-+		spec->mute_led_coef.mask = 3 << 2;
- 		spec->mute_led_coef.on = 1 << 3;
- 		spec->mute_led_coef.off = 0;
- 		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
--- 
-2.39.5
-
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3622,17 +3622,6 @@ static int tcpm_src_attach(struct tcpm_p
+ 
+ 	tcpm_enable_auto_vbus_discharge(port, true);
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
+-			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (port->pd_supported) {
+-		ret = port->tcpc->set_pd_rx(port->tcpc, true);
+-		if (ret < 0)
+-			goto out_disable_mux;
+-	}
+-
+ 	/*
+ 	 * USB Type-C specification, version 1.2,
+ 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
+@@ -3642,13 +3631,24 @@ static int tcpm_src_attach(struct tcpm_p
+ 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
+ 		ret = tcpm_set_vconn(port, true);
+ 		if (ret < 0)
+-			goto out_disable_pd;
++			return ret;
+ 	}
+ 
+ 	ret = tcpm_set_vbus(port, true);
+ 	if (ret < 0)
+ 		goto out_disable_vconn;
+ 
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
++			     tcpm_data_role_for_source(port));
++	if (ret < 0)
++		goto out_disable_vbus;
++
++	if (port->pd_supported) {
++		ret = port->tcpc->set_pd_rx(port->tcpc, true);
++		if (ret < 0)
++			goto out_disable_mux;
++	}
++
+ 	port->pd_capable = false;
+ 
+ 	port->partner = NULL;
+@@ -3658,14 +3658,14 @@ static int tcpm_src_attach(struct tcpm_p
+ 
+ 	return 0;
+ 
+-out_disable_vconn:
+-	tcpm_set_vconn(port, false);
+-out_disable_pd:
+-	if (port->pd_supported)
+-		port->tcpc->set_pd_rx(port->tcpc, false);
+ out_disable_mux:
+ 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
+ 		     TYPEC_ORIENTATION_NONE);
++out_disable_vbus:
++	tcpm_set_vbus(port, false);
++out_disable_vconn:
++	tcpm_set_vconn(port, false);
++
+ 	return ret;
+ }
+ 
 
 
 
