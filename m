@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-165265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7C5B15C5C
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5FAB15D54
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68B135A35F2
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F97D3B8861
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F7C26E71A;
-	Wed, 30 Jul 2025 09:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7003298990;
+	Wed, 30 Jul 2025 09:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtrugPqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aqf6qMQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9E622156D;
-	Wed, 30 Jul 2025 09:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EEE275AE9;
+	Wed, 30 Jul 2025 09:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868448; cv=none; b=Knib0X79O4VCafb2I0+nX1FcNlnLefbpzny3Rb9LJm956zhrnRIGXwJskqTi+Vyufw6FNMoCxFsH69EZG+p85ijwboHAT+d/uIWj8PWloUuAKrRFDIj0geUc+evgzxdR6JWfyRSAmPIx/rmZTrpNuC9zNInI+02sNe3T6vzdpE4=
+	t=1753869096; cv=none; b=gixfYLAmwU3r/HCTeoK1/D/kCqZ4b9mIXlI73v06QxNSpkHb+RjOBT4RKCVXpz3LKIrvol489s0U8fnxYkSOf3cUTlNRfyiOgyfeISHBq+9liX0bwBUjQVyKloV5Y8gDswDY5oRXrkR1cuNBOYdPW+ZH1/NIG23alIkcNhruJcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868448; c=relaxed/simple;
-	bh=kS5o6LP4N4f+MD5wyO293jQ7DIfNkkt59rv9cH7Gid4=;
+	s=arc-20240116; t=1753869096; c=relaxed/simple;
+	bh=Z5ulYsprUqu+aKRngLNirmiAiJwG00nbh2mzalTefMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzzqHqVfFINZC34bctSLQFvkxMcdqCVOQcFeKuJ9X3DaT/ZVs6NGxMLfr5hPyu9Ptk8xyndx7gnNbyFgOzWdSQnEWCZgQGzRg3+HecCWb+UCURZhzDQeEKuRvwOE4yQupyqn4klZqTfsN9SEYXp68Le4SiDQd41g/WdRoYxiJZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtrugPqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E29C4CEE7;
-	Wed, 30 Jul 2025 09:40:47 +0000 (UTC)
+	 MIME-Version; b=FlqJRjYQ47aHONCYH9V5oztJcvqCzJ85369hX8wo2aD8BaFeME4BlgWHey0bTvRhCnIBmh/fFNgOFKcMAojKcSbCPtpfor4X1G/AURHIdQrOhoNFRS+9f8uBKBEZP2LKhY+tIZfGoe07RtG8I3jdZu+ycmwa7hksF5iWGqKEkA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aqf6qMQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F0DC4CEF8;
+	Wed, 30 Jul 2025 09:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868448;
-	bh=kS5o6LP4N4f+MD5wyO293jQ7DIfNkkt59rv9cH7Gid4=;
+	s=korg; t=1753869096;
+	bh=Z5ulYsprUqu+aKRngLNirmiAiJwG00nbh2mzalTefMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtrugPqEmUti1TVKpNmrt21isWdlqfYI+aOOcBJaWnow5im2Df1+UxXMUKgeJNbIm
-	 3kSHCyGwa6HmYl6zz7NU8Pwx4Ha5/ogw0+TZoQpPL+fZATezV77lXpjOUmnGJvIqIC
-	 IUY5Rx4RkHKsMbNbvcJYTH5s47+CHxEdp/u/Y0fQ=
+	b=Aqf6qMQRL4i9prTJgCUZMVOQwx1JBD9WGZX9ESgmVxFNLI0O4FUiMwWhLx5I29k8h
+	 fN5a6DqXkqGhdoop3NSdpFX3P+6B860xEvNYMpiC5mjxcTO/QzhxUWwxof24IWk1UF
+	 GxSbv+jDFIUu0uCGRdTYPDFp7Rh1wMO9cfVI4yig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xilin Wu <sophon@radxa.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/76] net: hns3: fix concurrent setting vlan filter issue
+Subject: [PATCH 6.15 09/92] interconnect: qcom: sc7280: Add missing num_links to xm_pcie3_1 node
 Date: Wed, 30 Jul 2025 11:35:17 +0200
-Message-ID: <20250730093227.781315030@linuxfoundation.org>
+Message-ID: <20250730093230.989157378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Xilin Wu <sophon@radxa.com>
 
-[ Upstream commit 4555f8f8b6aa46940f55feb6a07704c2935b6d6e ]
+[ Upstream commit 886a94f008dd1a1702ee66dd035c266f70fd9e90 ]
 
-The vport->req_vlan_fltr_en may be changed concurrently by function
-hclge_sync_vlan_fltr_state() called in periodic work task and
-function hclge_enable_vport_vlan_filter() called by user configuration.
-It may cause the user configuration inoperative. Fixes it by protect
-the vport->req_vlan_fltr by vport_lock.
+This allows adding interconnect paths for PCIe 1 in device tree later.
 
-Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-2-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 46bdcac533cc ("interconnect: qcom: Add SC7280 interconnect provider driver")
+Signed-off-by: Xilin Wu <sophon@radxa.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250613-sc7280-icc-pcie1-fix-v1-1-0b09813e3b09@radxa.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 36 +++++++++++--------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ drivers/interconnect/qcom/sc7280.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 4d318af748a0b..789f72d1067f8 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -9493,33 +9493,36 @@ static bool hclge_need_enable_vport_vlan_filter(struct hclge_vport *vport)
- 	return false;
- }
- 
--int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
-+static int __hclge_enable_vport_vlan_filter(struct hclge_vport *vport,
-+					    bool request_en)
- {
--	struct hclge_dev *hdev = vport->back;
- 	bool need_en;
- 	int ret;
- 
--	mutex_lock(&hdev->vport_lock);
--
--	vport->req_vlan_fltr_en = request_en;
--
- 	need_en = hclge_need_enable_vport_vlan_filter(vport);
--	if (need_en == vport->cur_vlan_fltr_en) {
--		mutex_unlock(&hdev->vport_lock);
-+	if (need_en == vport->cur_vlan_fltr_en)
- 		return 0;
--	}
- 
- 	ret = hclge_set_vport_vlan_filter(vport, need_en);
--	if (ret) {
--		mutex_unlock(&hdev->vport_lock);
-+	if (ret)
- 		return ret;
--	}
- 
- 	vport->cur_vlan_fltr_en = need_en;
- 
-+	return 0;
-+}
-+
-+int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
-+{
-+	struct hclge_dev *hdev = vport->back;
-+	int ret;
-+
-+	mutex_lock(&hdev->vport_lock);
-+	vport->req_vlan_fltr_en = request_en;
-+	ret = __hclge_enable_vport_vlan_filter(vport, request_en);
- 	mutex_unlock(&hdev->vport_lock);
- 
--	return 0;
-+	return ret;
- }
- 
- static int hclge_enable_vlan_filter(struct hnae3_handle *handle, bool enable)
-@@ -10540,16 +10543,19 @@ static void hclge_sync_vlan_fltr_state(struct hclge_dev *hdev)
- 					&vport->state))
- 			continue;
- 
--		ret = hclge_enable_vport_vlan_filter(vport,
--						     vport->req_vlan_fltr_en);
-+		mutex_lock(&hdev->vport_lock);
-+		ret = __hclge_enable_vport_vlan_filter(vport,
-+						       vport->req_vlan_fltr_en);
- 		if (ret) {
- 			dev_err(&hdev->pdev->dev,
- 				"failed to sync vlan filter state for vport%u, ret = %d\n",
- 				vport->vport_id, ret);
- 			set_bit(HCLGE_VPORT_STATE_VLAN_FLTR_CHANGE,
- 				&vport->state);
-+			mutex_unlock(&hdev->vport_lock);
- 			return;
- 		}
-+		mutex_unlock(&hdev->vport_lock);
- 	}
- }
+diff --git a/drivers/interconnect/qcom/sc7280.c b/drivers/interconnect/qcom/sc7280.c
+index 346f18d70e9e5..905403a3a930a 100644
+--- a/drivers/interconnect/qcom/sc7280.c
++++ b/drivers/interconnect/qcom/sc7280.c
+@@ -238,6 +238,7 @@ static struct qcom_icc_node xm_pcie3_1 = {
+ 	.id = SC7280_MASTER_PCIE_1,
+ 	.channels = 1,
+ 	.buswidth = 8,
++	.num_links = 1,
+ 	.links = { SC7280_SLAVE_ANOC_PCIE_GEM_NOC },
+ };
  
 -- 
 2.39.5
