@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-165150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23C9B156BA
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 02:47:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7FAB156C7
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 02:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38A0618A0840
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 00:47:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454B65438A1
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 00:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74BD288AD;
-	Wed, 30 Jul 2025 00:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113D014883F;
+	Wed, 30 Jul 2025 00:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V09TStsM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NqLZvq7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3DD290F;
-	Wed, 30 Jul 2025 00:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B649876034;
+	Wed, 30 Jul 2025 00:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753836442; cv=none; b=dIJvl29izWi6mSydoZzg03m68Yxz4TsMB9/EB6VJ3yJ7VYhX0pZ0Z3wwHI2NvGJrM1mWccSjQ5xNk+9q8tL5I9MoCF0UHy8nRvCkRrah99t3cuVYDNGZnDNkeiG+6G6Dh3ZE+w4PatcV8l8Z6idKxawSRJ9LLLgJrGYcfsQjOck=
+	t=1753836739; cv=none; b=NKamdRXUBwc4Xljq9OPXtOXdSnF97757WHQq1mDsiFnmHpje5sNC2tJUcTAwln8Y8jCnu6+4gztpFZWnt38MGngkHEol+vwdvDo6vf/PZ3Ymm6JV5opnf/CUl1VcsB8EnQiPUDEIcYYCBAiM8gLDU8fwpSnTbzsR4hZRkBen9/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753836442; c=relaxed/simple;
-	bh=u67O+gLwEAa/gq2wCXXMjm9mL65NJXOFP1Zua84rpjY=;
+	s=arc-20240116; t=1753836739; c=relaxed/simple;
+	bh=jkBmzSmPV94LC+ja+IPJ0d+EvqCY2J5S5RouHbBqu1Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kf1Ul/AMvRnlumskDvrMFOME8A6c+DaePpS6jb2gml+XVdquqGHY3L8oN10Zin1QhwYQ7Ddxu8yevx067xwbQSCrwj742SzpOrZKm/XyTcjhYDvhqepQwsJ1d4wR0x4YnVmGCL6nc7tAAPq/ZZNSWgow5KWE8iXAbFnTJvVoI7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V09TStsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6984C4CEEF;
-	Wed, 30 Jul 2025 00:47:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fRqYgxySNZ0wedfBBsEPjr7A8pO2fPy7jxojPccz2V6mP0wmgnTpYao1ZceJZBi3MvCBk2f4zSngytUjaOjaEKSyhLkDHoWMuuKXpAXoQhMm0giQZom4BwaFc8oqvI1+43qF19WAX3k1uWLQH1QF2MZqmJ52+OYf1WBAaQWvrqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NqLZvq7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A10EC4CEEF;
+	Wed, 30 Jul 2025 00:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753836441;
-	bh=u67O+gLwEAa/gq2wCXXMjm9mL65NJXOFP1Zua84rpjY=;
+	s=k20201202; t=1753836737;
+	bh=jkBmzSmPV94LC+ja+IPJ0d+EvqCY2J5S5RouHbBqu1Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V09TStsMMDLa5jAhxxeLT3ZKdaWehBrRFfiSOAVtWEKPXui6OtjjJJRqOHMPuV2gM
-	 8G6ixJKohDk53Qb2cjMoEypV04EXGzbRk98MhSHJdlvQ8wQ/FL1GrHFhqaogJvQe8S
-	 rqXj0DAPB7SyaZkO9ChUua9kQVPI7421aNBmyIREhMEOFX4wnNZMl7mc1ic94Eqhaz
-	 LNUIOccM8TWjNzT/pXJrSAj678ZXb02pYjb4RzwmAk7Bpou8wKznkR1vxTuKLHQaaD
-	 sU4ZFBKtl8B/OjFq60hBXJUnq4+Sgzi88rJOb//YRRgwvRcOcEFm+BIsugZ6sj0Kqs
-	 MrdoaQKBDOlyQ==
-Date: Tue, 29 Jul 2025 17:47:17 -0700
+	b=NqLZvq7HqI12euM24CWcJEa6U0shJVZ6f5b+ORyJJpHm1fCWcisczNXjbJENKaSWj
+	 AB7pp9gokr7/t8B9spmlxd3OTFtJSMPuhqmymFZqv0vWTNdEsjpg+ZXIeFYc3zcuLT
+	 dYIAAAc9tngW9W9XTxXxWYjlF65vsCgqIEU5n6Lgspyr9hBcePqGLKXd3uIzSSApRo
+	 Z0AfVfx5ZLtruj2j8QvtnZ4/UGNGE9oLwJpB+CivuHAWLbuLqWHVOdZlsJITEunG1J
+	 2teScO4Cg6B20BOAazfK/7yHp+Lp/SM7neazBwUjveV82Ihc5TLKRe8rDpeZRxQkCk
+	 3eZ5WbOKyVRYA==
+Date: Tue, 29 Jul 2025 17:52:12 -0700
 From: Nathan Chancellor <nathan@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+To: Nicolas Dufresne <nicolas@ndufresne.ca>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] kbuild: userprogs: use correct linker when mixing clang
- and GNU ld
-Message-ID: <20250730004717.GA2984390@ax162>
-References: <20250724-userprogs-clang-gnu-ld-v1-1-3d3d071e53a7@linutronix.de>
- <20250724231025.GA3620641@ax162>
- <20250725122604-44874f95-859c-4c0a-b3b0-14b30e00b796@linutronix.de>
+Subject: Re: [PATCH] media: s5p-mfc: Always pass NULL to
+ s5p_mfc_cmd_host2risc_v6()
+Message-ID: <20250730005212.GB2984390@ax162>
+References: <20250715-media-s5p-mfc-fix-uninit-const-pointer-v1-1-4d52b58cafe9@kernel.org>
+ <9650d2e240a9170175069e3a4f6d6d9512d62aa3.camel@ndufresne.ca>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,40 +64,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250725122604-44874f95-859c-4c0a-b3b0-14b30e00b796@linutronix.de>
+In-Reply-To: <9650d2e240a9170175069e3a4f6d6d9512d62aa3.camel@ndufresne.ca>
 
-On Fri, Jul 25, 2025 at 12:36:34PM +0200, Thomas Weißschuh wrote:
-> FWIW some architectures use GNU ld implicitly with clang because they also link
-> through $(CC) but do not use --ld-path. One example is UML, where the vDSO and
-> vmlinux are linked this way. But linking vmlinux of UML with ld.lld will
-> require changes to at least the linker script. Something for the ClangBuiltLinux
-> TODO? There were more examples, but I don't remember them right now.
+Hi Nicolas,
 
-Yes, I believe this is the issue we had for tracking using ld.lld with
-UML: https://github.com/ClangBuiltLinux/linux/issues/1715
+On Tue, Jul 29, 2025 at 10:24:22AM -0400, Nicolas Dufresne wrote:
+> Le mardi 15 juillet 2025 à 15:13 -0700, Nathan Chancellor a écrit :
+> > From what I can tell, it seems like ->cmd_host2risc() is only ever
+> > called from v6 code, which always passes NULL? It seems like it should
+> > be possible to just drop .cmd_host2risc on the v5 side, then update
+> > .cmd_host2risc to only take two parameters? If so, I can send a follow
+> > up as a clean up, so that this can go back relatively conflict free.
+> 
+> It seems so yes. For this specific patch, I would probably rename "args" to
+> "__unused" to make the reading faster. But does not matter so much if you later
+> remove it.
 
-I had not considered that it could be a linker script handling
-difference. I will have to look into that soon.
+Yes, after this change is picked up in a maintainer's tree, I do plan to
+send a patch to remove the "args" parameter altogether. If you really
+care, I can certainly rename the parameter in this change to "__unused"
+as suggested but if you don't, I will just leave it as is to make
+backporting this a little easier.
 
-> Longterm --ld-path should probably be added to the global KBUILD_CFLAGS, too.
+> Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-'--ld-path' is only relevant when the linking phase is run by the
-compiler, which is not really normal for the primary kernel build, as
-calling the linker directly with $(LD) is preferred. Doing that would
-break the build because of -Werror=unused-command-line-argument, which
-is needed to make cc-option work correctly.
-
-  $ echo 'int main(void) { return 0; }' | /usr/bin/clang --ld-path=/usr/bin/ld.lld -c -o /dev/null -x c -
-  clang: warning: argument unused during compilation: '--ld-path=/usr/bin/ld.lld' [-Wunused-command-line-argument]
-
-  $ echo 'int main(void) { return 0; }' | /usr/bin/clang --ld-path=/usr/bin/ld.lld -o /dev/null -x c -
-
-> No, it isn't respected. On the other hand I didn't yet run into any issues.
-> Do we want to fix it proactively?
-
-No, I think it is fine to just leave it as is and fix it if it comes up
-in the future, as I believe getting LLVM_IAS=1 working for sparc64 is
-the next major focus of the whole LLVM sparc endeavour.
+Thanks a lot for taking a look!
 
 Cheers,
 Nathan
