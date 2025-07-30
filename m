@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-165424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF756B15D53
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 912C3B15C1B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7004F1889F1C
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC7F18C2FC0
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59C0292B50;
-	Wed, 30 Jul 2025 09:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB293277C9F;
+	Wed, 30 Jul 2025 09:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kyx9BJtP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIB0UBMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C68274666;
-	Wed, 30 Jul 2025 09:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8839F167DB7;
+	Wed, 30 Jul 2025 09:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869080; cv=none; b=TzCizCxw2eHMZfsMS/BK90NRV2XLYejDAH7KZ9p/x716IEdnVVtPjgQjvYNfR2QtuSyqYz0HXYQ1pbe4R7KXGNEEXLI3o9jM5pJJIle0gpXfSwkJVQo2zYzLHbLOOJrqKGthRbNb+aIMUPKsCKaogppIeFI8/4lH9PnPwiAImS4=
+	t=1753868260; cv=none; b=Ml2n/siV4GyCbb1zMpxM02wzMoVe3NdB3OfX9ErVL6eLxQpFFeZbBKs2MohrSdCuJZBCUtLwWDtsWXuk2sTgP8JvkerI4Ur870vey7ulbkbxyBeO8rsqGU4fXr/6Q+NLrOTNi1or4CA5JY+X58FtqFv49Tn821/TOZ5/kK1PCpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869080; c=relaxed/simple;
-	bh=pJiNb5x7hbhKcLwdf71UUhEAy8Lim3cvLxK5TxJ2sJw=;
+	s=arc-20240116; t=1753868260; c=relaxed/simple;
+	bh=0kIXy6req8TWhuL4Yh7b29cjenbs4oRuZIbwUQvIR7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SL/PWHH5nCZMkloU4vZ+jaVc1lGXh9+pSynLyXLTkXPQrYhO6U+hpokRqt5uuUllUKSoE4lvgMZaz3uPyJWK7Gcn7o7dnxmkEydmNbgf1ajE3WTghdpRJ9oxoDEoMbJYOVG3X3zRJDOyBQT7K90hQQQd5TXoztHjKmKXT9QJ5BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kyx9BJtP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA81C4CEF6;
-	Wed, 30 Jul 2025 09:51:16 +0000 (UTC)
+	 MIME-Version; b=bdVsVrNsiSQdfl6cb/04LvbVENFgI0rzbNt39/uSCq+cnoS3RkrNhlZDzxYJykWuCJxawKDe9Ub03fFngY2EA5uNNOdePzYXywxBu9QFaNigXrZ6FCc8GSoo6H2EE+GMR6q8kaPPe4s/IJnxUp2h1+4hP3LuQ8pjZvvFbv0+N0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIB0UBMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67995C4CEE7;
+	Wed, 30 Jul 2025 09:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869077;
-	bh=pJiNb5x7hbhKcLwdf71UUhEAy8Lim3cvLxK5TxJ2sJw=;
+	s=korg; t=1753868257;
+	bh=0kIXy6req8TWhuL4Yh7b29cjenbs4oRuZIbwUQvIR7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kyx9BJtPyzEYuRzpMaXnl5k9gF0P0t2ZsitJjbApgj8HWtJAZGWzm9Jf9sRwKAJYe
-	 27eggsOYlvdR+kVXaO+PodJiTzRpUGlKtp7XDTrBpSKzp3Cpq8PCqOmouxaoGQci7g
-	 fiVNh3/qpDUHkOR22ZNolh/U11N/90OJnEg6thGA=
+	b=ZIB0UBMedRGCNpfMGIe2NDuRG2orBy703eJ9K2ytlIfzzG7MzFTAoyNpzIGmU6FFn
+	 cRgcgzhltv9J74lEtusQj2j275qHDG/fI1i9S1ipBr+do8ZVnkw71/XYEwxSozi7fg
+	 ixMyKue9D4guYbc7msk9mCOFZmMPIE1iAe+L39O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 04/92] drm/amd/display: Dont allow OLED to go down to fully off
+Subject: [PATCH 6.6 19/76] can: dev: can_restart(): reverse logic to remove need for goto
 Date: Wed, 30 Jul 2025 11:35:12 +0200
-Message-ID: <20250730093230.805950628@linuxfoundation.org>
+Message-ID: <20250730093227.595051060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 39d81457ad3417a98ac826161f9ca0e642677661 ]
+[ Upstream commit 8f3ec204d340af183fb2bb21b8e797ac2ed012b2 ]
 
-[Why]
-OLED panels can be fully off, but this behavior is unexpected.
+Reverse the logic in the if statement and eliminate the need for a
+goto to simplify code readability.
 
-[How]
-Ensure that minimum luminance is at least 1.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4338
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 51496c7737d06a74b599d0aa7974c3d5a4b1162e)
+Link: https://lore.kernel.org/all/20231005-can-dev-fix-can-restart-v2-3-91b5c1fd922c@pengutronix.de
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/can/dev/dev.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 87c2bc5f64a6c..f6d71bf7c89c2 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3548,13 +3548,15 @@ static void update_connector_ext_caps(struct amdgpu_dm_connector *aconnector)
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index 7d9a7c92d4cf6..6c1ceb8ce6c4b 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -142,14 +142,11 @@ static void can_restart(struct net_device *dev)
  
- 	luminance_range = &conn_base->display_info.luminance_range;
+ 	/* send restart message upstream */
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (!skb)
+-		goto restart;
+-
+-	cf->can_id |= CAN_ERR_RESTARTED;
+-
+-	netif_rx(skb);
++	if (skb) {
++		cf->can_id |= CAN_ERR_RESTARTED;
++		netif_rx(skb);
++	}
  
--	if (luminance_range->max_luminance) {
--		caps->aux_min_input_signal = luminance_range->min_luminance;
-+	if (luminance_range->max_luminance)
- 		caps->aux_max_input_signal = luminance_range->max_luminance;
--	} else {
--		caps->aux_min_input_signal = 0;
-+	else
- 		caps->aux_max_input_signal = 512;
--	}
-+
-+	if (luminance_range->min_luminance)
-+		caps->aux_min_input_signal = luminance_range->min_luminance;
-+	else
-+		caps->aux_min_input_signal = 1;
+-restart:
+ 	netdev_dbg(dev, "restarted\n");
+ 	priv->can_stats.restarts++;
  
- 	min_input_signal_override = drm_get_panel_min_brightness_quirk(aconnector->drm_edid);
- 	if (min_input_signal_override >= 0)
 -- 
 2.39.5
 
