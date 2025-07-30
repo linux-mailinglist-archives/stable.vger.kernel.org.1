@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-165251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17025B15C37
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3A8B15CD6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 832FE1775B7
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 040C53A456F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FAD23D2A2;
-	Wed, 30 Jul 2025 09:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8568293C4D;
+	Wed, 30 Jul 2025 09:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frFleaRE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6V8coqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F6336124;
-	Wed, 30 Jul 2025 09:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CC8293B75;
+	Wed, 30 Jul 2025 09:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868397; cv=none; b=k4ftC/R4zN9KxkpWS/LiT2eUjR4HUK8bkveugvbmpUD2WzZuSv64cWwcQczrZf3r8e9nE44zQO+NxXjh/6bNQIlZjEH9U5sY8Tg0hsfwQwvz+NCgSvpTsQiAo03cWKU/dZBCOczjfUQzoZJNucumb6Kb4VM5BbUZVYW2RgIWtIA=
+	t=1753868790; cv=none; b=Y8D/t8JtCi2Ordfv6A0WNeDsk/Iw/fHVpZmVFxEbAyT+/kgV153cgABuA1C266IG/CBtNDInl8DfofDL2/98j8E3Qy80lPgNB6/VYFz1hpKSYwQpDCh+sygdj5+zBzaTyC07/kCToZ0WniLeGIxo7nwNdWwdy8fa+FfgZEdLIkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868397; c=relaxed/simple;
-	bh=brHKyzCC/Vkfkx4bCgUkTyXwk266HC46y1YCG1s90oo=;
+	s=arc-20240116; t=1753868790; c=relaxed/simple;
+	bh=Yg16AQsoVBakFk4Q9Av+KOwHGxkhDSaniSN3cDlr/Sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1pQUFRHaFpkeS5njo3r6zYh9uhBV9HYph1CuMg01gMES8nlFmJfW2P99XjPtjNnzZ3MI6PpPyj29w/XZrW6HL+lRss7jYgoUreTUD6CWoTftjcLwUnGCAms0at1++cT1A35/a6zng/6M7Mie1/dm7aihDuBcLU4xrh+UauPt9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frFleaRE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E406EC4CEE7;
-	Wed, 30 Jul 2025 09:39:56 +0000 (UTC)
+	 MIME-Version; b=K9G5+uaWppDOEXzAu046DKphStdgD3aavh/XB9Uh6ILrCw2ycYHX9a+xDfx8JDAMM7MZDfN2lyJjXhWQJUdZ72HV8KwUWNNn98SLgmTSC2cAc7/8PxhwaiDBc8v698kCwfJ6L//YXK9c6CeVkuRkJjeQ5WCVzoEHEEw1yIMplfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6V8coqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A36C4CEF8;
+	Wed, 30 Jul 2025 09:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868397;
-	bh=brHKyzCC/Vkfkx4bCgUkTyXwk266HC46y1YCG1s90oo=;
+	s=korg; t=1753868790;
+	bh=Yg16AQsoVBakFk4Q9Av+KOwHGxkhDSaniSN3cDlr/Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frFleaREJUtTVUGNFAKvTCg8qIdmakQlAAN+mWDBEpDwY18WfJ7Up+gPDPeFLSE+C
-	 02+5ZeQLtJhupEGcv0vlCL9jaCcOosEBtOPVbe4GzSq9bEAsosfilgCdvgGNPnIkZy
-	 U7dX0hRhuZHDSvj0lQPXtr0fFPvYwzplISZgLJHI=
+	b=C6V8coqPY/odlFFr2yFl6JFWW6JnwMIZ/cFOE4ttTcFx+UWTJS6q5uZ9Q9fMdNTno
+	 wIu2l1vK+cG2ruKMXo8GzbM1RKumQIJ1DSwqKaYGwMCtiFyJfDX7njtRYd/ukY1o76
+	 TDRd+P7s4CUDkX9WRqp39/yhgmm2sB9bBndCLevY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Zhivich <mzhivich@akamai.com>
-Subject: [PATCH 6.6 52/76] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
+	Eric Biggers <ebiggers@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 076/117] crypto: powerpc/poly1305 - add depends on BROKEN for now
 Date: Wed, 30 Jul 2025 11:35:45 +0200
-Message-ID: <20250730093228.861559347@linuxfoundation.org>
+Message-ID: <20250730093236.499636813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Zhivich <mzhivich@akamai.com>
+From: Eric Biggers <ebiggers@google.com>
 
-For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
-field in zen_patch_rev union on the stack may be garbage.  If so, it will
-prevent correct microcode check when consulting p.ucode_rev, resulting in
-incorrect mitigation selection.
+[ Upstream commit bc8169003b41e89fe7052e408cf9fdbecb4017fe ]
 
-This is a stable-only fix.
+As discussed in the thread containing
+https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
+Power10-optimized Poly1305 code is currently not safe to call in softirq
+context.  Disable it for now.  It can be re-enabled once it is fixed.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
-Fixes: 90293047df18 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ applied to arch/powerpc/crypto/Kconfig ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/crypto/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -549,6 +549,8 @@ static bool amd_check_tsa_microcode(void
- 	p.model		= c->x86_model;
- 	p.ext_model	= c->x86_model >> 4;
- 	p.stepping	= c->x86_stepping;
-+	/* reserved bits are expected to be 0 in test below */
-+	p.__reserved	= 0;
- 
- 	if (cpu_has(c, X86_FEATURE_ZEN3) ||
- 	    cpu_has(c, X86_FEATURE_ZEN4)) {
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -143,6 +143,7 @@ config CRYPTO_CHACHA20_P10
+ config CRYPTO_POLY1305_P10
+ 	tristate "Hash functions: Poly1305 (P10 or later)"
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
++	depends on BROKEN # Needs to be fixed to work in softirq context
+ 	select CRYPTO_HASH
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+ 	help
 
 
 
