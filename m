@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-165209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CAAB15C0D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A2BB15CD1
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D51CE562F9A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F2E23A532C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB7B26D4F9;
-	Wed, 30 Jul 2025 09:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CEF267733;
+	Wed, 30 Jul 2025 09:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orhUHVG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3Z1n9xz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9867E294A11;
-	Wed, 30 Jul 2025 09:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8410C20E6;
+	Wed, 30 Jul 2025 09:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868227; cv=none; b=nquN0XgTtZAfI8f4x+Np7yzidK4/qvlomQ28RN6RPvIq6vOcky3dQ3HKNpYD64yARKHxEq1e505RVwWC7844+PMZ6f/Tgr10a9HqJH6nCn1XEp/mmkJGR3gmld9Fn4uCMuRR4FXmsQYtKmUz21/R5lWCZfw4T0Fr8Dv6edb8cBk=
+	t=1753868763; cv=none; b=mzGMTkKpgRASS7L1ytIbt4FDFbRDH0Q+8lv7YnYrb7cQaEhrsT/m8TM880RKxWuqdoUTKe0A4fFYP1RxQLsZPnqJsBXn4/iRKsZPxtoaYGXgzTwgixbKwZtBMXXbnf6ex12NK6BOxrf4nC8N30CrC11gGHmBeY31y4U5J3oSE/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868227; c=relaxed/simple;
-	bh=EToBX7FbBB2cQIFK+02l7lq610MDlj+yOgS9uJIhe8c=;
+	s=arc-20240116; t=1753868763; c=relaxed/simple;
+	bh=ckzlDI6GaHxMClgME+xXDKu6gypCmLgkqxMdeTuztlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVo4tTWgbSeRfLJEhqhUgSlsagyNIXlhOetEPjY5ea3TBulBi3aCnG2fazYWyQ0nkvqC+r+x9Umt9O279BiyACaWFVB/18vC8TQzLUVLKMgbffI+ZKGHsty9HKbvJBmawCPGIqdi1GPOhiKqMGOpsHuX5vAQ7oxe1z7guje1iX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orhUHVG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EF4C4AF09;
-	Wed, 30 Jul 2025 09:37:06 +0000 (UTC)
+	 MIME-Version; b=AaSSKgkRUdqQHxIdGxe3C1mWyYfxIS81smvMYKk9K3mSP6/eJGncL4KYopg/O8RTZcd4thTae20ONWN0u/fxcBIBaZRdH6783ylovee01FdDj3908j1UmuzN7eV/UrhkW+m3fKg437n4BEefuRqWBFxs4Oc7jv6WJsumPIcxmnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3Z1n9xz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8137C4CEF5;
+	Wed, 30 Jul 2025 09:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868227;
-	bh=EToBX7FbBB2cQIFK+02l7lq610MDlj+yOgS9uJIhe8c=;
+	s=korg; t=1753868763;
+	bh=ckzlDI6GaHxMClgME+xXDKu6gypCmLgkqxMdeTuztlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orhUHVG8C1GcAyfNdIBCgZCEgm6+OYk9zYAMbCW/nIO+grdhvvqzdnUrBrK2wdRWL
-	 dyary28npmzu/2mDQpZv2tW4yYC4A3HrFe0rMDJxpX3JtuGldpFQV4K9csoF/XQKPr
-	 0mlU+0H7J5++ywbrwU/CvbhDb5tLxOs/vNliMbjE=
+	b=b3Z1n9xz4zsBbSaUvvcCA1hip7Fid6FQoDVKfmibg9U9XbbJm5qhCXQ7DNZrKdhuH
+	 9xDvKipQ5ML1RZhDIP02yXg5K721E/TKxZ+t8sR6rFdacehAGf7gajYOhDLW3dLdG9
+	 xWieAg+9v1m6PWNzChZr0yPzZone73kcO2hN3HzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Tereshkin <atereshkin@nvidia.com>,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/76] net/mlx5: Fix memory leak in cmd_exec()
+Subject: [PATCH 6.12 036/117] net: hns3: disable interrupt when ptp init failed
 Date: Wed, 30 Jul 2025 11:35:05 +0200
-Message-ID: <20250730093227.328487120@linuxfoundation.org>
+Message-ID: <20250730093234.978950604@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,49 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-[ Upstream commit 3afa3ae3db52e3c216d77bd5907a5a86833806cc ]
+[ Upstream commit cde304655f25d94a996c45b0f9956e7dcc2bc4c0 ]
 
-If cmd_exec() is called with callback and mlx5_cmd_invoke() returns an
-error, resources allocated in cmd_exec() will not be freed.
+When ptp init failed, we'd better disable the interrupt and clear the
+flag, to avoid early report interrupt at next probe.
 
-Fix the code to release the resources if mlx5_cmd_invoke() returns an
-error.
-
-Fixes: f086470122d5 ("net/mlx5: cmdif, Return value improvements")
-Reported-by: Alex Tereshkin <atereshkin@nvidia.com>
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Fixes: 0bf5eb788512 ("net: hns3: add support for PTP")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1752753970-261832-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-3-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 3e6bd27f6315d..5a2126679415c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1916,8 +1916,8 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+index 0ffda5146bae5..16ef5a584af36 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+@@ -496,14 +496,14 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init freq, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
  
- 	err = mlx5_cmd_invoke(dev, inb, outb, out, out_size, callback, context,
- 			      pages_queue, token, force_polling);
--	if (callback)
--		return err;
-+	if (callback && !err)
-+		return 0;
+ 	ret = hclge_ptp_set_ts_mode(hdev, &hdev->ptp->ts_cfg);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init ts mode, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
  
- 	if (err > 0) /* Failed in FW, command didn't execute */
- 		err = deliv_status_to_err(err);
+ 	ktime_get_real_ts64(&ts);
+@@ -511,7 +511,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init ts time, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
+ 
+ 	set_bit(HCLGE_STATE_PTP_EN, &hdev->state);
+@@ -519,6 +519,9 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 
+ 	return 0;
+ 
++out_clear_int:
++	clear_bit(HCLGE_PTP_FLAG_EN, &hdev->ptp->flags);
++	hclge_ptp_int_en(hdev, false);
+ out:
+ 	hclge_ptp_destroy_clock(hdev);
+ 
 -- 
 2.39.5
 
