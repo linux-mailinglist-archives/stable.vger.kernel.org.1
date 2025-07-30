@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-165452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE797B15D66
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002E5B15D14
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B3B177FEE
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC0753A3354
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3E3226D17;
-	Wed, 30 Jul 2025 09:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C0B226D17;
+	Wed, 30 Jul 2025 09:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T93Yen1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISnsjFAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A700293B5F;
-	Wed, 30 Jul 2025 09:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E25442C;
+	Wed, 30 Jul 2025 09:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869192; cv=none; b=SodhmB5ofMW/9CYfwlTWqG+V/2u2ju8W3kJJJw5sFQEUaw3MU9SzoeXG957BkiwpwxcVM8Z7vXFjGu1Og5u5BGpTNOAkn9geoz8Ra8HY9mUKKIXUVQy36Vj+3PN4QORwg/WiQkfTUMzXghi9ORExlqKtH7lbbb6ZiUOp6LMmqY4=
+	t=1753868951; cv=none; b=m9JtPsNCnOoQdtS2okJi0iQihgseq+E6zAi99XTaHmGC2ephPduB3esLTeSAvQKO7MwAVcjXRE8H4x3qUlf8KlpWYfl9vgXq6alCqCqEoQHg1FzUUouV3LrA1R68gYEaPv8jt4hRZjehK98flIDBxtGj0AV6Cm8/I3aC+xwXXLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869192; c=relaxed/simple;
-	bh=AAliCyxLB9K1ZWzG50HkJ59O92jpjCyl+UkZgc0XOms=;
+	s=arc-20240116; t=1753868951; c=relaxed/simple;
+	bh=Mv4FNN+voKJlbmTM6+Be6IjhUmqolSSQHCiVTHJXVTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i0ixkyl25SQM3yGrRKAo4fW1o1v8z3MwkHvtBvFUOTMF434rwgP8BYIVun7sM1/yHQTR66QPkIrMJtW6IjjNBhpZ56iLNjIbh7LEs3/5dTP3jQ9hC9H2XUt3JlG0I3pkjjWt28pvQTM0t8+q9/Howj5IzkvsNny2KLauueKuLpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T93Yen1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383FFC4CEF5;
-	Wed, 30 Jul 2025 09:53:10 +0000 (UTC)
+	 MIME-Version; b=HJ55c4r7knMDPT4XyfZdnVfBs4bpVE70gFepVysg95wgpBW9LtMZeNiccvjlcTt6L8FsG2bqSlGB2uFJkO7ahWUAgEumghDyiHsja4xH4/HL0goKQAz9Y+gZ6d5GHpnZ/36attr5o4NQxWwXGF4wvbZcpiAdjjE+/Hm+4gJb5N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISnsjFAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCDCC4CEF5;
+	Wed, 30 Jul 2025 09:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869192;
-	bh=AAliCyxLB9K1ZWzG50HkJ59O92jpjCyl+UkZgc0XOms=;
+	s=korg; t=1753868950;
+	bh=Mv4FNN+voKJlbmTM6+Be6IjhUmqolSSQHCiVTHJXVTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T93Yen1qFOa+yy4X2WIt1sf15aMt7CDovtGkFIXmv+/kZlAghl46bgKQ+v1hqFCI0
-	 4AWilxcV8JrEzPx1N1rIQWYZvdTZEsKlMOxABIOVj8Jqtbt8cON4nRHYm9C/m5xgGQ
-	 1FTKNyB3rlHTzV+xcowPUr8nmyxqTZdD6jWmh7c8=
+	b=ISnsjFAENFof70OJue6VfKCJnEn8/x3h+jN8opOcd3sbrN59xTvr326TJjKY8LkWb
+	 9IJhpPrL3W3G2JMHLZjV6PFbg5NtlAhqQ6c3qSQeRINGpwU0KixyN4U+2UK8ViI/YH
+	 WDw+cxwRLG5vtPqlWsy70AGMt4cb2HssHtvjI+sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.15 58/92] i2c: virtio: Avoid hang by using interruptible completion wait
-Date: Wed, 30 Jul 2025 11:36:06 +0200
-Message-ID: <20250730093232.996441104@linuxfoundation.org>
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 098/117] KVM: x86: Add X86EMUL_F_MSR and X86EMUL_F_DT_LOAD to aid canonical checks
+Date: Wed, 30 Jul 2025 11:36:07 +0200
+Message-ID: <20250730093237.611864919@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-commit a663b3c47ab10f66130818cf94eb59c971541c3f upstream.
+[ Upstream commit c534b37b7584e2abc5d487b4e017f61a61959ca9 ]
 
-The current implementation uses wait_for_completion(), which can cause
-the caller to hang indefinitely if the transfer never completes.
+Add emulation flags for MSR accesses and Descriptor Tables loads, and pass
+the new flags as appropriate to emul_is_noncanonical_address().  The flags
+will be used to perform the correct canonical check, as the type of access
+affects whether or not CR4.LA57 is consulted when determining the canonical
+bit.
 
-Switch to wait_for_completion_interruptible() so that the operation can
-be interrupted by signals.
+No functional change is intended.
 
-Fixes: 84e1d0bf1d71 ("i2c: virtio: disable timeout handling")
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: <stable@vger.kernel.org> # v5.16+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/b8944e9cab8eb959d888ae80add6f2a686159ba2.1751541962.git.viresh.kumar@linaro.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Link: https://lore.kernel.org/r/20240906221824.491834-3-mlevitsk@redhat.com
+[sean: split to separate patch, massage changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: fa787ac07b3c ("KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-virtio.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/x86/kvm/emulate.c     |   15 +++++++++------
+ arch/x86/kvm/kvm_emulate.h |    5 ++++-
+ arch/x86/kvm/x86.c         |    2 +-
+ 3 files changed, 14 insertions(+), 8 deletions(-)
 
---- a/drivers/i2c/busses/i2c-virtio.c
-+++ b/drivers/i2c/busses/i2c-virtio.c
-@@ -116,15 +116,16 @@ static int virtio_i2c_complete_reqs(stru
- 	for (i = 0; i < num; i++) {
- 		struct virtio_i2c_req *req = &reqs[i];
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -651,9 +651,10 @@ static inline u8 ctxt_virt_addr_bits(str
+ }
  
--		wait_for_completion(&req->completion);
--
--		if (!failed && req->in_hdr.status != VIRTIO_I2C_MSG_OK)
--			failed = true;
-+		if (!failed) {
-+			if (wait_for_completion_interruptible(&req->completion))
-+				failed = true;
-+			else if (req->in_hdr.status != VIRTIO_I2C_MSG_OK)
-+				failed = true;
-+			else
-+				j++;
-+		}
+ static inline bool emul_is_noncanonical_address(u64 la,
+-						struct x86_emulate_ctxt *ctxt)
++						struct x86_emulate_ctxt *ctxt,
++						unsigned int flags)
+ {
+-	return !ctxt->ops->is_canonical_addr(ctxt, la);
++	return !ctxt->ops->is_canonical_addr(ctxt, la, flags);
+ }
  
- 		i2c_put_dma_safe_msg_buf(reqs[i].buf, &msgs[i], !failed);
--
--		if (!failed)
--			j++;
+ /*
+@@ -1733,7 +1734,8 @@ static int __load_segment_descriptor(str
+ 		if (ret != X86EMUL_CONTINUE)
+ 			return ret;
+ 		if (emul_is_noncanonical_address(get_desc_base(&seg_desc) |
+-						 ((u64)base3 << 32), ctxt))
++						 ((u64)base3 << 32), ctxt,
++						 X86EMUL_F_DT_LOAD))
+ 			return emulate_gp(ctxt, err_code);
  	}
  
- 	return j;
+@@ -2516,8 +2518,8 @@ static int em_sysexit(struct x86_emulate
+ 		ss_sel = cs_sel + 8;
+ 		cs.d = 0;
+ 		cs.l = 1;
+-		if (emul_is_noncanonical_address(rcx, ctxt) ||
+-		    emul_is_noncanonical_address(rdx, ctxt))
++		if (emul_is_noncanonical_address(rcx, ctxt, 0) ||
++		    emul_is_noncanonical_address(rdx, ctxt, 0))
+ 			return emulate_gp(ctxt, 0);
+ 		break;
+ 	}
+@@ -3494,7 +3496,8 @@ static int em_lgdt_lidt(struct x86_emula
+ 	if (rc != X86EMUL_CONTINUE)
+ 		return rc;
+ 	if (ctxt->mode == X86EMUL_MODE_PROT64 &&
+-	    emul_is_noncanonical_address(desc_ptr.address, ctxt))
++	    emul_is_noncanonical_address(desc_ptr.address, ctxt,
++					 X86EMUL_F_DT_LOAD))
+ 		return emulate_gp(ctxt, 0);
+ 	if (lgdt)
+ 		ctxt->ops->set_gdt(ctxt, &desc_ptr);
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -94,6 +94,8 @@ struct x86_instruction_info {
+ #define X86EMUL_F_FETCH			BIT(1)
+ #define X86EMUL_F_IMPLICIT		BIT(2)
+ #define X86EMUL_F_INVLPG		BIT(3)
++#define X86EMUL_F_MSR			BIT(4)
++#define X86EMUL_F_DT_LOAD		BIT(5)
+ 
+ struct x86_emulate_ops {
+ 	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
+@@ -236,7 +238,8 @@ struct x86_emulate_ops {
+ 	gva_t (*get_untagged_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
+ 				   unsigned int flags);
+ 
+-	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr);
++	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
++				  unsigned int flags);
+ };
+ 
+ /* Type, address-of, and value of an instruction's operand. */
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8609,7 +8609,7 @@ static gva_t emulator_get_untagged_addr(
+ }
+ 
+ static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
+-				       gva_t addr)
++				       gva_t addr, unsigned int flags)
+ {
+ 	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt));
+ }
 
 
 
