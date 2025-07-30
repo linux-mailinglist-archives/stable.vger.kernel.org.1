@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994DDB15C4C
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4CFB15D12
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7023188775E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6170A56437A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CACF26C396;
-	Wed, 30 Jul 2025 09:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6596F1F09B6;
+	Wed, 30 Jul 2025 09:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJ0quym0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jq8SJrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FEB20E6;
-	Wed, 30 Jul 2025 09:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155151E25E1;
+	Wed, 30 Jul 2025 09:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868425; cv=none; b=NwKLYBsf+672Q2zTBNDCOsktJeF9J81b5OouS9eTI8UevTmuskGlQkckv93rGkfczFGtvxpdAFbL9Fhu4NFSN/jCEauu6JZf9kdbIp0uVnwgSV0bSya06cRIadnCjDImtmXhqV8KC0rnlXTpJWgCE5LcvXl84CxM5qUG3FXHFVI=
+	t=1753869006; cv=none; b=ezyjyH7rlNBLTR4ewgDG273x2xomMo1CTbXEH9P5qbSN+Cr+/4hhNJv2RqN/lmw6VNdhqZB4vP+nc5RkInjLIlOUz6kW+ifBD5/ErkqfWYPhUdys8ee6AIMYERiiLslJci3LOTbmmAculxp8F3JUFHiSuxqv15P8ZgLldgc3J58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868425; c=relaxed/simple;
-	bh=FiNqHJnggDOeehiB+u3Hdnf3nL5x+EmqHsrQoQmj0vY=;
+	s=arc-20240116; t=1753869006; c=relaxed/simple;
+	bh=L+ykS5JjwgehocijCnhiBiU3S1Tib96QG2MforA1nyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cRjrUuBm1nHDVLog83cQYdgYVrC0S5I/b17C6Huih4uLTljd+mtiwyfWLZfATd3Mn/7TE9L0K2G6sTdsx2jzFV2WY4kOTmnc0lGTVaaeSagG4+A5WVApLHB37HAUz4F5cv433OqvdyP9LyRGiNHkko5hvsi4o3wwCDyFj8JxoDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJ0quym0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83411C4CEE7;
-	Wed, 30 Jul 2025 09:40:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ppUI9ZTnlHVvbvZsLu3zKOAkkG9ZKhw3aqH7wM/oX9bcD9cb8qh6WWBmBnRhxevvY/s1xsFG38gVAlXQ20t70BKGIwULhJHYZrWnCZ7B3mNWa7tePZMBvVeuS3D7X8v15nA04erNNI/cV27a1HxxtaywUXoscuBL/10DSUFlux4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jq8SJrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C214C4CEF5;
+	Wed, 30 Jul 2025 09:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868424;
-	bh=FiNqHJnggDOeehiB+u3Hdnf3nL5x+EmqHsrQoQmj0vY=;
+	s=korg; t=1753869005;
+	bh=L+ykS5JjwgehocijCnhiBiU3S1Tib96QG2MforA1nyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PJ0quym0rRuvsYwLrcBGaKXVMSAiEv+hlXzRvvzMQce+Ld0Qn9A37jv1xZLuYaDo/
-	 mtTSU6xfccKi2+ng0fOnR3VTRQd4b4bOVSht2yNREr7/Mif0Q+55u1Ijvq8eIc90Mz
-	 1PXljMM8kKUvC3RIKCVRKMt4kLWAoEB+9KWrIIrI=
+	b=1jq8SJrMZLP571x4Jf4rywm9EJ1RbGXzDjzB0MLyW34ywyd29XpDfJgEh8Q15tGWH
+	 XzuicLLjKxJrptr9DwzPgLiv8P02yaPWwS2NL2ZXPLt408kJFyn8TfBZHfsH8/4sMO
+	 mQquRnVwxnAJSq/NplN1TVdLJwPUcEFJ8GZpodIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Zhang <i@rong.moe>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 28/76] platform/x86: ideapad-laptop: Fix kbd backlight not remembered among boots
-Date: Wed, 30 Jul 2025 11:35:21 +0200
-Message-ID: <20250730093227.932533301@linuxfoundation.org>
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 14/92] platform/mellanox: mlxbf-pmc: Validate event/enable input
+Date: Wed, 30 Jul 2025 11:35:22 +0200
+Message-ID: <20250730093231.172697016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Shravan Kumar Ramani <shravankr@nvidia.com>
 
-commit e10981075adce203eac0be866389309eeb8ef11e upstream.
+[ Upstream commit f8c1311769d3b2c82688b294b4ae03e94f1c326d ]
 
-On some models supported by ideapad-laptop, the HW/FW can remember the
-state of keyboard backlight among boots. However, it is always turned
-off while shutting down, as a side effect of the LED class device
-unregistering sequence.
+Before programming the event info, validate the event number received as input
+by checking if it exists in the event_list. Also fix a typo in the comment for
+mlxbf_pmc_get_event_name() to correctly mention that it returns the event name
+when taking the event number as input, and not the other way round.
 
-This is inconvenient for users who always prefer turning on the
-keyboard backlight. Thus, set LED_RETAIN_AT_SHUTDOWN on the LED class
-device so that the state of keyboard backlight gets remembered, which
-also aligns with the behavior of manufacturer utilities on Windows.
-
-Fixes: 503325f84bc0 ("platform/x86: ideapad-laptop: add keyboard backlight control support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rong Zhang <i@rong.moe>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250707163808.155876-3-i@rong.moe
+Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
+Signed-off-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/2ee618c59976bcf1379d5ddce2fc60ab5014b3a9.1751380187.git.shravankr@nvidia.com
+[ij: split kstrbool() change to own commit.]
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/mellanox/mlxbf-pmc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1600,7 +1600,7 @@ static int ideapad_kbd_bl_init(struct id
- 	priv->kbd_bl.led.name                    = "platform::" LED_FUNCTION_KBD_BACKLIGHT;
- 	priv->kbd_bl.led.brightness_get          = ideapad_kbd_bl_led_cdev_brightness_get;
- 	priv->kbd_bl.led.brightness_set_blocking = ideapad_kbd_bl_led_cdev_brightness_set;
--	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED;
-+	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED | LED_RETAIN_AT_SHUTDOWN;
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index b8fe51e6d4d3f..76966b3dc4ff6 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -1105,7 +1105,7 @@ static int mlxbf_pmc_get_event_num(const char *blk, const char *evt)
+ 	return -ENODEV;
+ }
  
- 	err = led_classdev_register(&priv->platform_device->dev, &priv->kbd_bl.led);
- 	if (err)
+-/* Get the event number given the name */
++/* Get the event name given the number */
+ static char *mlxbf_pmc_get_event_name(const char *blk, u32 evt)
+ {
+ 	const struct mlxbf_pmc_events *events;
+@@ -1689,6 +1689,9 @@ static ssize_t mlxbf_pmc_event_store(struct device *dev,
+ 		err = kstrtouint(buf, 0, &evt_num);
+ 		if (err < 0)
+ 			return err;
++
++		if (!mlxbf_pmc_get_event_name(pmc->block_name[blk_num], evt_num))
++			return -EINVAL;
+ 	}
+ 
+ 	if (strstr(pmc->block_name[blk_num], "l3cache"))
+-- 
+2.39.5
+
 
 
 
