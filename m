@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-165418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D840B15D34
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5F9B15CCF
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADF244E5F9A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC4F77B3128
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A992877D3;
-	Wed, 30 Jul 2025 09:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107C5275AE9;
+	Wed, 30 Jul 2025 09:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J1kivC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzZJO24z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F1336124;
-	Wed, 30 Jul 2025 09:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C31E2877D3;
+	Wed, 30 Jul 2025 09:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869047; cv=none; b=pelcelrwCirximteUK001y+teqqLBR5OeLP+qV1B9G8Py2yLrbToUm0OcWIhqEDtNQktQz6t+7zT/8h+kXmaGtY+TRVjazlfCsjExLwj4iQG8BWLiAvGF4mzM0iPfjIXX7a+S1ep9zeHuX/GFHiUeUfhJMnXly8bL2Vozp2217g=
+	t=1753868774; cv=none; b=rQPpUBXHjdJ06a0sgQo7hkdO/sqgXzkdgI4t0/JHh/JXfX5brwtfNp1hhQ1oDSxX0H3gi4r/DIU+VITnQVtLXknFJ0oiHVn0xawEJdhtWV86/f1BSLSjjPT53YB/DS4LOlFkxTyd42dW7cb8R19AzM+SpLlboa/7afJx3gXdSEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869047; c=relaxed/simple;
-	bh=VX//OmU7/gFEHby7Owy6Bjw7TMORw+UsP+/Cw4CqUHc=;
+	s=arc-20240116; t=1753868774; c=relaxed/simple;
+	bh=ERB+HogELJPUpTDPBTllpQVRHs6osO80qJ1cbJIdoLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nBf4LpSy8RH8jn7UWbdmcPUwWcgBYdGIljcre2TBtk92DG1S0zs2a71oPr2gln84FWi4z4u+taTF6/3MQ9rvZmRuZ88rBtkourr1hr2n/o0C4CcRJHWCY5dIiOieHmB9VZPbNtTqToMEngHK7a9Ko5rY3MsVT/5pYQTzsSZtfIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J1kivC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5D5C4CEF5;
-	Wed, 30 Jul 2025 09:50:45 +0000 (UTC)
+	 MIME-Version; b=Zo+ndb0JRvkJjSx+cJd+Yk/7amPpXUurR8K3/1aL8ym5q/Kpe+s4x8t91g8S1SMJWkHw6kv2GjEfKlOXAtOaGaBk+cUOov2x8HpEH5gfBBK/4jz1E6yHGT6a9JAAIr5uIzM+paT1+Rglk6+YiVAVF5sgewhhOkG8kzFzCVdl+ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzZJO24z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188B1C4CEF5;
+	Wed, 30 Jul 2025 09:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869046;
-	bh=VX//OmU7/gFEHby7Owy6Bjw7TMORw+UsP+/Cw4CqUHc=;
+	s=korg; t=1753868774;
+	bh=ERB+HogELJPUpTDPBTllpQVRHs6osO80qJ1cbJIdoLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J1kivC8rWGNs1+HEsOV/6/m9MClSvReiNLgZ2Bd0FaRszVi5XnHNxifdemSInQ6G
-	 lQPISLv/cJ72ozQiN343yDWt13nrvcHcP5xlSqQ/dLmHtwz9t3rCYxcDcqLkTrI+Bb
-	 FZQ0Pu46TV7a3zr1xn0+AQYO7gqWklLQjGKK7OqA=
+	b=LzZJO24zb5VnYkGpbf3dbLfWg/FVXWYCOQMmKyTP8WBqI1XTm76MvGmdUXUZ2uZ84
+	 CiTubK9M9pPekDpp+vdxecoTIS0T0W9KBHQ5pVZzPcgbahc2dBtZCCeeB2doigLnqS
+	 ZLVUg+pQpp30txBW3a4fYRzNKIcLDjpME2htHTlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 24/92] xfrm: ipcomp: adjust transport header after decompressing
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 063/117] selftests: mptcp: connect: also cover alt modes
 Date: Wed, 30 Jul 2025 11:35:32 +0200
-Message-ID: <20250730093231.548487935@linuxfoundation.org>
+Message-ID: <20250730093235.998627431@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 2ca58d87ebae20906cf808ef813d747db0177a18 ]
+commit 37848a456fc38c191aedfe41f662cc24db8c23d9 upstream.
 
-The skb transport header pointer needs to be adjusted by network header
-pointer plus the size of the ipcomp header.
+The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
+available from the beginning, but only tested when mptcp_connect.sh is
+manually launched with "-m mmap" or "-m sendfile", not via the
+kselftests helpers.
 
-This shows up when running traffic over ipcomp using transport mode.
-After being reinjected, packets are dropped because the header isn't
-adjusted properly and some checks can be triggered. E.g the skb is
-mistakenly considered as IP fragmented packet and later dropped.
+The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
+"-m sendfile". Plus other CIs, especially the ones validating the stable
+releases, were not validating these alternate modes.
 
-kworker/30:1-mm     443 [030]   102.055250:     skb:kfree_skb:skbaddr=0xffff8f104aa3ce00 rx_sk=(
-        ffffffff8419f1f4 sk_skb_reason_drop+0x94 ([kernel.kallsyms])
-        ffffffff8419f1f4 sk_skb_reason_drop+0x94 ([kernel.kallsyms])
-        ffffffff84281420 ip_defrag+0x4b0 ([kernel.kallsyms])
-        ffffffff8428006e ip_local_deliver+0x4e ([kernel.kallsyms])
-        ffffffff8432afb1 xfrm_trans_reinject+0xe1 ([kernel.kallsyms])
-        ffffffff83758230 process_one_work+0x190 ([kernel.kallsyms])
-        ffffffff83758f37 worker_thread+0x2d7 ([kernel.kallsyms])
-        ffffffff83761cc9 kthread+0xf9 ([kernel.kallsyms])
-        ffffffff836c3437 ret_from_fork+0x197 ([kernel.kallsyms])
-        ffffffff836718da ret_from_fork_asm+0x1a ([kernel.kallsyms])
+To make sure these modes are validated by these CIs, add two new test
+programs executing mptcp_connect.sh with the alternate modes.
 
-Fixes: eb2953d26971 ("xfrm: ipcomp: Use crypto_acomp interface")
-Link: https://bugzilla.suse.com/1244532
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_ipcomp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/Makefile                  |    3 ++-
+ tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     |    5 +++++
+ tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh |    5 +++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
 
-diff --git a/net/xfrm/xfrm_ipcomp.c b/net/xfrm/xfrm_ipcomp.c
-index 907c3ccb440da..a38545413b801 100644
---- a/net/xfrm/xfrm_ipcomp.c
-+++ b/net/xfrm/xfrm_ipcomp.c
-@@ -97,7 +97,7 @@ static int ipcomp_input_done2(struct sk_buff *skb, int err)
- 	struct ip_comp_hdr *ipch = ip_comp_hdr(skb);
- 	const int plen = skb->len;
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -4,7 +4,8 @@ top_srcdir = ../../../../..
  
--	skb_reset_transport_header(skb);
-+	skb->transport_header = skb->network_header + sizeof(*ipch);
+ CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
  
- 	return ipcomp_post_acomp(skb, err, 0) ?:
- 	       skb->len < (plen + sizeof(ip_comp_hdr)) ? -EINVAL :
--- 
-2.39.5
-
+-TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
++TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
++	      pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+ 
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
 
 
 
