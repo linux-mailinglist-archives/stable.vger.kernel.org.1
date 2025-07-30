@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3A1B15D31
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECC8B15C26
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92E475A5565
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F2E546C5D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4275293462;
-	Wed, 30 Jul 2025 09:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CDA277013;
+	Wed, 30 Jul 2025 09:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQ8HKTPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ3FGo1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83212277CA8;
-	Wed, 30 Jul 2025 09:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F3820F078;
+	Wed, 30 Jul 2025 09:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869033; cv=none; b=jdqcgKyhEYRujmRyZLogO5ED07lxA3wTCunVxrdyA0a5OX6/l+FbFPxUGYJpKo0A0BY9cAE4moxUGwdTII92sYS8SWtadN+Dkvzq9UQ/wLHZYGDaffJ1sJbLIy0gXKRhs7hZWPFquH9L4n2UzCGtgBhDKdN89jI9MEzoPqEdyRk=
+	t=1753868319; cv=none; b=onBTUVr5gyxo+LQv77TxgoOsqIJYd2NIZOfpDGBc3zzvaJLs+Q+Cx+bu/bA/lNnTDov9qA/T8S43FA9TtnRfV8BKv4553gPIwCghMhcQ18GL9otmiEMTbYv9ANTestR6Z9iI2xoq0jkB8OKMoYI9oWKiBP2P9YCSwG5kBnEJ4+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869033; c=relaxed/simple;
-	bh=WNuQPfdiP3wDPud/Zzw4CgN3b1IJpDBOmyOYQeK/0OQ=;
+	s=arc-20240116; t=1753868319; c=relaxed/simple;
+	bh=N55/4h1LVLW7aFEi0i3/O6NTz5SSZwp6ifR7k1LFpSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6eOOvSqxoaEEv6xH7W0NCCRqtLSX+naA3SEGQePhe+jh7g2kiYD7yOhYCevphHwU+lLqugmI6uGqceme0r6STka09GYg9Yr3kGFDDUAB75WWj0weG4dvbKZs5ndztbbC0bX5SzUfeX1bFJ5I6zuXayYLr59kFK5qR8F3yjYo9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQ8HKTPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CA5C4CEF6;
-	Wed, 30 Jul 2025 09:50:32 +0000 (UTC)
+	 MIME-Version; b=niHXtTtahksmel+tm6RG0eSla9J8e+XC3PrOvKlw8wmhC3hApFDuOZ9pvJrXMaDxnHjDMI3l36VbhWK9tIEbGPPX+LM2MXiUz3zkaEPJmP1OUzS3TEavb4TyeRnEKsTPzfjuGv7BwK7rfiA8qVOGnl79+kAd2OPLBFPlvKqQTAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ3FGo1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EC3C4CEE7;
+	Wed, 30 Jul 2025 09:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869033;
-	bh=WNuQPfdiP3wDPud/Zzw4CgN3b1IJpDBOmyOYQeK/0OQ=;
+	s=korg; t=1753868319;
+	bh=N55/4h1LVLW7aFEi0i3/O6NTz5SSZwp6ifR7k1LFpSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQ8HKTPDczfk+hySD6rxT3zThktSy+lDBS4OzPTI0BUdhF94E+0AIV0kZFiTcC5nS
-	 JVHNfQCfsTFR0jXC6sOOoENI8tqJDuIsU+l+MhY5dFtJVWSZGj5vj6hFWRYqzOkw9u
-	 tgQ9geR4ecX40D0chOugSLF41nJOtcBKYeswwTek=
+	b=WQ3FGo1PEU9YFcTV/LHocUOvPSL+o9jhrQwayBtArmnHkIOsea4PIfHxZ/cFvNQLN
+	 s1YK5dhwVEEk7oACtcSk82rVdNYz3yX0Z/mlQlYASn3gjqK7BA/v8yVrOJz+7CxNU9
+	 k6ETbP7njPP7HaUol4sFFzm/ZoAe4hqd72qilvbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7ed9d47e15e88581dc5b@syzkaller.appspotmail.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Florian Westphal <fw@strlen.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 20/92] xfrm: state: initialize state_ptrs earlier in xfrm_state_find
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Cristian Prundeanu <cpru@amazon.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 35/76] arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
 Date: Wed, 30 Jul 2025 11:35:28 +0200
-Message-ID: <20250730093231.394949009@linuxfoundation.org>
+Message-ID: <20250730093228.200132064@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-[ Upstream commit 94d077c331730510d5611b438640a292097341f0 ]
+commit d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb upstream.
 
-In case of preemption, xfrm_state_look_at will find a different
-pcpu_id and look up states for that other CPU. If we matched a state
-for CPU2 in the state_cache while the lookup started on CPU1, we will
-jump to "found", but the "best" state that we got will be ignored and
-we will enter the "acquire" block. This block uses state_ptrs, which
-isn't initialized at this point.
+`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
+to different stacks along with the Shadow Call Stack if it is enabled.
+Those two stack changes cannot be done atomically and both functions
+can be interrupted by SErrors or Debug Exceptions which, though unlikely,
+is very much broken : if interrupted, we can end up with mismatched stacks
+and Shadow Call Stack leading to clobbered stacks.
 
-Let's initialize state_ptrs just after taking rcu_read_lock. This will
-also prevent a possible misuse in the future, if someone adjusts this
-function.
+In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
+but x18 stills points to the old task's SCS. When the interrupt handler
+tries to save the task's SCS pointer, it will save the old task
+SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
+clobbering it.
 
-Reported-by: syzbot+7ed9d47e15e88581dc5b@syzkaller.appspotmail.com
-Fixes: e952837f3ddb ("xfrm: state: fix out-of-bounds read during lookup")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In `call_on_irq_stack()`, it can happen when switching from the task stack
+to the IRQ stack and when switching back. In both cases, we can be
+interrupted when the SCS pointer points to the IRQ SCS, but SP points to
+the task stack. The nested interrupt handler pushes its return addresses
+on the IRQ SCS. It then detects that SP points to the task stack,
+calls `call_on_irq_stack()` and clobbers the task SCS pointer with
+the IRQ SCS pointer, which it will also use !
+
+This leads to tasks returning to addresses on the wrong SCS,
+or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
+or FPAC if enabled.
+
+This is possible on a default config, but unlikely.
+However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
+instead the GIC is responsible for filtering what interrupts the CPU
+should receive based on priority.
+Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
+even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
+frequently depending on the system configuration and workload, leading
+to unpredictable kernel panics.
+
+Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
+Do the same in `call_on_irq_stack()`, but restore and mask around
+the branch.
+Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
+of behaviour between all configurations.
+
+Introduce and use an assembly macro for saving and masking DAIF,
+as the existing one saves but only masks IF.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Reported-by: Cristian Prundeanu <cpru@amazon.com>
+Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
+Tested-by: Cristian Prundeanu <cpru@amazon.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_state.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/assembler.h |    5 +++++
+ arch/arm64/kernel/entry.S          |    6 ++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 5ece039846e20..a5a3bf25fd1d4 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1389,6 +1389,8 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 	sequence = read_seqcount_begin(&net->xfrm.xfrm_state_hash_generation);
- 
- 	rcu_read_lock();
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
+--- a/arch/arm64/include/asm/assembler.h
++++ b/arch/arm64/include/asm/assembler.h
+@@ -45,6 +45,11 @@
+ /*
+  * Save/restore interrupts.
+  */
++	.macro save_and_disable_daif, flags
++	mrs	\flags, daif
++	msr	daifset, #0xf
++	.endm
 +
- 	hlist_for_each_entry_rcu(x, &pol->state_cache_list, state_cache) {
- 		if (x->props.family == encap_family &&
- 		    x->props.reqid == tmpl->reqid &&
-@@ -1429,8 +1431,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 	else if (acquire_in_progress) /* XXX: acquire_in_progress should not happen */
- 		WARN_ON(1);
+ 	.macro	save_and_disable_irq, flags
+ 	mrs	\flags, daif
+ 	msr	daifset, #3
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -824,6 +824,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
+  *
+  */
+ SYM_FUNC_START(cpu_switch_to)
++	save_and_disable_daif x11
+ 	mov	x10, #THREAD_CPU_CONTEXT
+ 	add	x8, x0, x10
+ 	mov	x9, sp
+@@ -847,6 +848,7 @@ SYM_FUNC_START(cpu_switch_to)
+ 	ptrauth_keys_install_kernel x1, x8, x9, x10
+ 	scs_save x0
+ 	scs_load_current
++	restore_irq x11
+ 	ret
+ SYM_FUNC_END(cpu_switch_to)
+ NOKPROBE(cpu_switch_to)
+@@ -873,6 +875,7 @@ NOKPROBE(ret_from_fork)
+  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
+  */
+ SYM_FUNC_START(call_on_irq_stack)
++	save_and_disable_daif x9
+ #ifdef CONFIG_SHADOW_CALL_STACK
+ 	get_current_task x16
+ 	scs_save x16
+@@ -887,8 +890,10 @@ SYM_FUNC_START(call_on_irq_stack)
  
--	xfrm_hash_ptrs_get(net, &state_ptrs);
--
- 	h = __xfrm_dst_hash(daddr, saddr, tmpl->reqid, encap_family, state_ptrs.hmask);
- 	hlist_for_each_entry_rcu(x, state_ptrs.bydst + h, bydst) {
- #ifdef CONFIG_XFRM_OFFLOAD
--- 
-2.39.5
-
+ 	/* Move to the new stack and call the function there */
+ 	add	sp, x16, #IRQ_STACK_SIZE
++	restore_irq x9
+ 	blr	x1
+ 
++	save_and_disable_daif x9
+ 	/*
+ 	 * Restore the SP from the FP, and restore the FP and LR from the frame
+ 	 * record.
+@@ -896,6 +901,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
+ 	scs_load_current
++	restore_irq x9
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 
 
 
