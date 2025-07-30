@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7D6B15D51
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDDDB15C54
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B89F7B3F4F
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:51:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D89A1886BCE
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7231D293C4A;
-	Wed, 30 Jul 2025 09:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0551525DB1A;
+	Wed, 30 Jul 2025 09:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlDi+c6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxB5p9NE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28503230981;
-	Wed, 30 Jul 2025 09:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89F622156D;
+	Wed, 30 Jul 2025 09:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869135; cv=none; b=FQd9b4jF06Yet/h0OCaJ6VL6t55C29WQ8dky5o1pmTgxcqOt6HByqr6/IGfeCcBstqITKN7sK2mxMtUamajKkSotErqUnYH6pwZBAv4M56GO4upJMRYjEp1L4YPiHpZO3lTQ5uWnLTH66vW8iU+yYYTBbzfptvprbRGTy89lxQE=
+	t=1753868451; cv=none; b=rtnHbyRY4b+Nf7OIjxvGrqUkEDlZo9EEV1Aq6rIgnBbN2Sl+jrn0sUC3BTwNevovr97ypC/vZFRjF3TaqDdfR2TMDUCXJDp/wBndERdwbXW32Qte6YZhJ5VKmuZmZwx65XIK5BdiYx0EeSa25ExEYflTaXK8NoFNuzMLMl+HGzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869135; c=relaxed/simple;
-	bh=V1xmIt+oMmhG8n7eZB4qzz6DbNIsBml505dN0bQK3h0=;
+	s=arc-20240116; t=1753868451; c=relaxed/simple;
+	bh=JaqoMKYALp/VCy24AjQZKUGfzlCEMOZzXjXZt0NYXyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c1GHbv1NMSZ/AQgMxLPqqcYZPVDwd40CZa+E6qsP9Wh9k6zH3GLlRk55xMKI6Apjn97lZyXVNtlcBZb4S8JmM/zI8ZHR7c8FBSI4cadcyp1nxoD0PTsU53WKyWAWR8mh2nI4h3ZzSZYNvlqdOuCKVeoKVG3gF2DfBxOAgZshvFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlDi+c6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A01FC4CEF5;
-	Wed, 30 Jul 2025 09:52:13 +0000 (UTC)
+	 MIME-Version; b=CblmwjvYtNh1TP3ji84L3/KAJkm7KiwD3bYxx8GfXS1TFRKmY4UGstE+zhnYjPOZ5/SccEqExUYFOV0JH5BV1/qu/qc5ufKlVfttUshGQfma7b3QCFEGqvLGfkpKaXNrRSzD0oeULqeOdm4/BjjmYmRU3ULSd/al8i3MrFkTraI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxB5p9NE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB90C4CEE7;
+	Wed, 30 Jul 2025 09:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869134;
-	bh=V1xmIt+oMmhG8n7eZB4qzz6DbNIsBml505dN0bQK3h0=;
+	s=korg; t=1753868451;
+	bh=JaqoMKYALp/VCy24AjQZKUGfzlCEMOZzXjXZt0NYXyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlDi+c6XgwbJCF7odgCWPh07UIsLLtUUTbgY+JYwVB7QJq2ruNs9P1xmE6DC1j3PF
-	 wGQpiC339vDJi9pruIn9MV511bB6eRUNwu9kNbQ2N78RpnC/jUfVc3UD+wSuOWguVz
-	 MMHSK6NLMCJW6TFEQehleWzJ8BavgcT6ovN4AB1I=
+	b=FxB5p9NEQCNQbLHk4dH3bArNhpNqkMalvQdrcl6kVPtH93D6Zc+3RB1KW1/M98Qgq
+	 gxrCdA5sWpsxUZcQjHtj91khHnsEHifSr7Y5HwJwvxPltdy2xxTifcS8fN9idEweb9
+	 mGjV+PpkJ9lshQOne3a5EUQYYKKCFUMohIxgd0Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Zhang <i@rong.moe>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.15 45/92] platform/x86: ideapad-laptop: Fix kbd backlight not remembered among boots
+	Eric Biggers <ebiggers@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 60/76] crypto: powerpc/poly1305 - add depends on BROKEN for now
 Date: Wed, 30 Jul 2025 11:35:53 +0200
-Message-ID: <20250730093232.503505469@linuxfoundation.org>
+Message-ID: <20250730093229.194154351@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Eric Biggers <ebiggers@google.com>
 
-commit e10981075adce203eac0be866389309eeb8ef11e upstream.
+[ Upstream commit bc8169003b41e89fe7052e408cf9fdbecb4017fe ]
 
-On some models supported by ideapad-laptop, the HW/FW can remember the
-state of keyboard backlight among boots. However, it is always turned
-off while shutting down, as a side effect of the LED class device
-unregistering sequence.
+As discussed in the thread containing
+https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
+Power10-optimized Poly1305 code is currently not safe to call in softirq
+context.  Disable it for now.  It can be re-enabled once it is fixed.
 
-This is inconvenient for users who always prefer turning on the
-keyboard backlight. Thus, set LED_RETAIN_AT_SHUTDOWN on the LED class
-device so that the state of keyboard backlight gets remembered, which
-also aligns with the behavior of manufacturer utilities on Windows.
-
-Fixes: 503325f84bc0 ("platform/x86: ideapad-laptop: add keyboard backlight control support")
+Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
 Cc: stable@vger.kernel.org
-Signed-off-by: Rong Zhang <i@rong.moe>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250707163808.155876-3-i@rong.moe
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ applied to arch/powerpc/crypto/Kconfig ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/ideapad-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/crypto/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1669,7 +1669,7 @@ static int ideapad_kbd_bl_init(struct id
- 	priv->kbd_bl.led.name                    = "platform::" LED_FUNCTION_KBD_BACKLIGHT;
- 	priv->kbd_bl.led.brightness_get          = ideapad_kbd_bl_led_cdev_brightness_get;
- 	priv->kbd_bl.led.brightness_set_blocking = ideapad_kbd_bl_led_cdev_brightness_set;
--	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED;
-+	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED | LED_RETAIN_AT_SHUTDOWN;
- 
- 	err = led_classdev_register(&priv->platform_device->dev, &priv->kbd_bl.led);
- 	if (err)
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -129,6 +129,7 @@ config CRYPTO_CHACHA20_P10
+ config CRYPTO_POLY1305_P10
+ 	tristate "Hash functions: Poly1305 (P10 or later)"
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
++	depends on BROKEN # Needs to be fixed to work in softirq context
+ 	select CRYPTO_HASH
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+ 	help
 
 
 
