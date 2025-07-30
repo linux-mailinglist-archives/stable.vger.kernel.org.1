@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-165366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787E6B15CF5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B08DBB15D65
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C882F5A571E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53CF5A3E60
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8ED36124;
-	Wed, 30 Jul 2025 09:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA4C26FA50;
+	Wed, 30 Jul 2025 09:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU4Wg697"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXW5UpZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F5B255F5C;
-	Wed, 30 Jul 2025 09:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0D4442C;
+	Wed, 30 Jul 2025 09:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868840; cv=none; b=p9UsRJvD2CQVl9cec/vLsa6Nn2fZkw3BWGb0/lfcRLSmX8iyt7Or/fPl1MtzuhwiNjWcKc93InDgUfiK9sE2m1Cv9hQV2ViEebPlPFlQXDNobwqP6it3pApfLXD7Z407T9shac1ZV3vHzI10nhogGHSxh4r/iVcFY5H+clFZWOA=
+	t=1753869164; cv=none; b=rop5H3wekrLzysA5tb5f1vpF4EMG6o1hv0PGv2HUy2OaEY73jsmibXhfSAWiNzZf9M4n+iOefhxy23EG1U5+JqbDmlLGEzlquA1DTY9+Ch9IbKU7oVAF6wNySQnBHu/ctXMzM/+f9i3cH+QYSSukXyAGlNTTslGEGjGYzgy7QqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868840; c=relaxed/simple;
-	bh=QrOFzoNlhFRFRileKoK8rJ4TvvLrsIFEbN8mdeBk8UY=;
+	s=arc-20240116; t=1753869164; c=relaxed/simple;
+	bh=5TyhXNqeaT+DIy5JRlmLKHKJMQnUFOSwrdzwubI6sIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i68gamEfh6XH2Op9GNsP5266VZ/Vp9BrzCfnE7aNeXFSZ6GXPhLo6Cba1X7LdT7WktiKCndSb6W3/CDAQWHL25JrI7bPsUhHzxMRpN2vdBm4KnA0syUKGFRikZ1eBYLIwe+O8W/kEJRQ4s/6M3PKtYMpz9aM3Urj6hFOdl0ieGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU4Wg697; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01132C4CEF5;
-	Wed, 30 Jul 2025 09:47:19 +0000 (UTC)
+	 MIME-Version; b=Dw9u889HK7blU8TMoP7bxBwjVV4jI+jnAhZcnfw1/5qAYZYT+nGGAYU3Jhiit2+eg7WnAExEnmVzIpQvj5H8bxeSGNlNldZYuXxgVgY9N1vl+fkbv8WsZJLViXaMaEPaFAEFzlOVB9/bmqwUN547XnqQHzpYm7u0p/ETrfwiLkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXW5UpZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BC5C4CEF5;
+	Wed, 30 Jul 2025 09:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868840;
-	bh=QrOFzoNlhFRFRileKoK8rJ4TvvLrsIFEbN8mdeBk8UY=;
+	s=korg; t=1753869164;
+	bh=5TyhXNqeaT+DIy5JRlmLKHKJMQnUFOSwrdzwubI6sIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EU4Wg697OjdxTN1BYdudVF+kpW1zreepvA80DbEo9BX3F0pFe3QMU9oBwev4WFduH
-	 fDKV4h+NbWItER075ATmbYiZrkpkD7bdgklq/yqoLgWh0itxvStE9Z84TXSa8ttPcs
-	 82WIizjENyecSuviDk9U4nQdqgFXg5IusEmLTf6E=
+	b=HXW5UpZrMcrpmSS9z3O+u+YkeFYZSjLvtENo2dAPM6ytg4l9ayKbPJNWnpDeaF0CD
+	 Crbv0LtXN3JfDcOx9SEqVJmJ5yt+wIeZmqngQsziJRCxcjpR81h/MVvMuFu7VfHcIX
+	 hPFsAwFZKMJCQ2d+gTlJqEXYJQPiBrTyo+9rcOYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/117] ext4: factor out ext4_do_fallocate()
-Date: Wed, 30 Jul 2025 11:35:59 +0200
-Message-ID: <20250730093237.290345462@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Stefan Roesch <shr@devkernel.io>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 52/92] mm/ksm: fix -Wsometimes-uninitialized from clang-21 in advisor_mode_show()
+Date: Wed, 30 Jul 2025 11:36:00 +0200
+Message-ID: <20250730093232.766049405@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,185 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit fd2f764826df5489b849a8937b5a093aae5b1816 ]
+commit 153ad566724fe6f57b14f66e9726d295d22e576d upstream.
 
-Now the real job of normal fallocate are open coded in ext4_fallocate(),
-factor out a new helper ext4_do_fallocate() to do the real job, like
-others functions (e.g. ext4_zero_range()) in ext4_fallocate() do, this
-can make the code more clear, no functional changes.
+After a recent change in clang to expose uninitialized warnings from const
+variables [1], there is a false positive warning from the if statement in
+advisor_mode_show().
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20241220011637.1157197-9-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 29ec9bed2395 ("ext4: fix incorrect punch max_end")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  mm/ksm.c:3687:11: error: variable 'output' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+   3687 |         else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  mm/ksm.c:3690:33: note: uninitialized use occurs here
+   3690 |         return sysfs_emit(buf, "%s\n", output);
+        |                                        ^~~~~~
+
+Rewrite the if statement to implicitly make KSM_ADVISOR_NONE the else
+branch so that it is obvious to the compiler that ksm_advisor can only be
+KSM_ADVISOR_NONE or KSM_ADVISOR_SCAN_TIME due to the assignments in
+advisor_mode_store().
+
+Link: https://lkml.kernel.org/r/20250715-ksm-fix-clang-21-uninit-warning-v1-1-f443feb4bfc4@kernel.org
+Fixes: 66790e9a735b ("mm/ksm: add sysfs knobs for advisor")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2100
+Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |  125 +++++++++++++++++++++++++-----------------------------
- 1 file changed, 60 insertions(+), 65 deletions(-)
+ mm/ksm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4690,6 +4690,58 @@ out:
- 	return ret;
- }
- 
-+static long ext4_do_fallocate(struct file *file, loff_t offset,
-+			      loff_t len, int mode)
-+{
-+	struct inode *inode = file_inode(file);
-+	loff_t end = offset + len;
-+	loff_t new_size = 0;
-+	ext4_lblk_t start_lblk, len_lblk;
-+	int ret;
-+
-+	trace_ext4_fallocate_enter(inode, offset, len, mode);
-+
-+	start_lblk = offset >> inode->i_blkbits;
-+	len_lblk = EXT4_MAX_BLOCKS(len, offset, inode->i_blkbits);
-+
-+	inode_lock(inode);
-+
-+	/* We only support preallocation for extent-based files only. */
-+	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+
-+	if (!(mode & FALLOC_FL_KEEP_SIZE) &&
-+	    (end > inode->i_size || end > EXT4_I(inode)->i_disksize)) {
-+		new_size = end;
-+		ret = inode_newsize_ok(inode, new_size);
-+		if (ret)
-+			goto out;
-+	}
-+
-+	/* Wait all existing dio workers, newcomers will block on i_rwsem */
-+	inode_dio_wait(inode);
-+
-+	ret = file_modified(file);
-+	if (ret)
-+		goto out;
-+
-+	ret = ext4_alloc_file_blocks(file, start_lblk, len_lblk, new_size,
-+				     EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT);
-+	if (ret)
-+		goto out;
-+
-+	if (file->f_flags & O_SYNC && EXT4_SB(inode->i_sb)->s_journal) {
-+		ret = ext4_fc_commit(EXT4_SB(inode->i_sb)->s_journal,
-+					EXT4_I(inode)->i_sync_tid);
-+	}
-+out:
-+	inode_unlock(inode);
-+	trace_ext4_fallocate_exit(inode, offset, len_lblk, ret);
-+	return ret;
-+}
-+
- /*
-  * preallocate space for a file. This implements ext4's fallocate file
-  * operation, which gets called from sys_fallocate system call.
-@@ -4700,12 +4752,7 @@ out:
- long ext4_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3669,10 +3669,10 @@ static ssize_t advisor_mode_show(struct
  {
- 	struct inode *inode = file_inode(file);
--	loff_t new_size = 0;
--	unsigned int max_blocks;
--	int ret = 0;
--	int flags;
--	ext4_lblk_t lblk;
--	unsigned int blkbits = inode->i_blkbits;
-+	int ret;
+ 	const char *output;
  
- 	/*
- 	 * Encrypted inodes can't handle collapse range or insert
-@@ -4727,71 +4774,19 @@ long ext4_fallocate(struct file *file, i
- 	ret = ext4_convert_inline_data(inode);
- 	inode_unlock(inode);
- 	if (ret)
--		goto exit;
-+		return ret;
- 
--	if (mode & FALLOC_FL_PUNCH_HOLE) {
-+	if (mode & FALLOC_FL_PUNCH_HOLE)
- 		ret = ext4_punch_hole(file, offset, len);
--		goto exit;
--	}
--
--	if (mode & FALLOC_FL_COLLAPSE_RANGE) {
-+	else if (mode & FALLOC_FL_COLLAPSE_RANGE)
- 		ret = ext4_collapse_range(file, offset, len);
--		goto exit;
--	}
--
--	if (mode & FALLOC_FL_INSERT_RANGE) {
-+	else if (mode & FALLOC_FL_INSERT_RANGE)
- 		ret = ext4_insert_range(file, offset, len);
--		goto exit;
--	}
--
--	if (mode & FALLOC_FL_ZERO_RANGE) {
-+	else if (mode & FALLOC_FL_ZERO_RANGE)
- 		ret = ext4_zero_range(file, offset, len, mode);
--		goto exit;
--	}
--	trace_ext4_fallocate_enter(inode, offset, len, mode);
--	lblk = offset >> blkbits;
--
--	max_blocks = EXT4_MAX_BLOCKS(len, offset, blkbits);
--	flags = EXT4_GET_BLOCKS_CREATE_UNWRIT_EXT;
--
--	inode_lock(inode);
--
--	/*
--	 * We only support preallocation for extent-based files only
--	 */
--	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))) {
--		ret = -EOPNOTSUPP;
--		goto out;
--	}
--
--	if (!(mode & FALLOC_FL_KEEP_SIZE) &&
--	    (offset + len > inode->i_size ||
--	     offset + len > EXT4_I(inode)->i_disksize)) {
--		new_size = offset + len;
--		ret = inode_newsize_ok(inode, new_size);
--		if (ret)
--			goto out;
--	}
--
--	/* Wait all existing dio workers, newcomers will block on i_rwsem */
--	inode_dio_wait(inode);
--
--	ret = file_modified(file);
--	if (ret)
--		goto out;
+-	if (ksm_advisor == KSM_ADVISOR_NONE)
+-		output = "[none] scan-time";
+-	else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
++	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+ 		output = "none [scan-time]";
 +	else
-+		ret = ext4_do_fallocate(file, offset, len, mode);
++		output = "[none] scan-time";
  
--	ret = ext4_alloc_file_blocks(file, lblk, max_blocks, new_size, flags);
--	if (ret)
--		goto out;
--
--	if (file->f_flags & O_SYNC && EXT4_SB(inode->i_sb)->s_journal) {
--		ret = ext4_fc_commit(EXT4_SB(inode->i_sb)->s_journal,
--					EXT4_I(inode)->i_sync_tid);
--	}
--out:
--	inode_unlock(inode);
--	trace_ext4_fallocate_exit(inode, offset, max_blocks, ret);
--exit:
- 	return ret;
+ 	return sysfs_emit(buf, "%s\n", output);
  }
- 
 
 
 
