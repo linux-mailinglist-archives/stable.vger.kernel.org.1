@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A3CB15CB7
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 396A3B15C18
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1604918C3D9D
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE9C418C2EC5
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884D0293B42;
-	Wed, 30 Jul 2025 09:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208AD29552A;
+	Wed, 30 Jul 2025 09:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJkOPsaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6Os0BHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4538226E71A;
-	Wed, 30 Jul 2025 09:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E1F293C4D;
+	Wed, 30 Jul 2025 09:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868643; cv=none; b=j0RiJW1FjDtNlX6Zh7Rp3WmQJz+wKBSl8BOXveTyisF6LOW0RYfNcwDUIaBS+v/CixmgZcK/TpKl8KHvvEXQCBdIHRC0NLzJpEUc0RdfY6kwArCZWAnLpJmriK/2XnVZcAb1W2pcGhH0uywtJ2GuLkvrgltR4GqTuA8+u7UHsA8=
+	t=1753868245; cv=none; b=TopoyBxwJ6YT4wkslO5lRtKd+zLZdpCrDALVdWSDsDGXd5/k7r/7KoGAAs7DhC+t6G929auIRwu3uzzWTDmywe1Dx+PeyrRRHg6YFELiLzGfDc0xUWy2TDi/mdcvh6hLd3hRJ2dJ9t4qleIA037O8m/g7DihecqAZ/b1MaKnLnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868643; c=relaxed/simple;
-	bh=PAfgvNWC/QK+eWoNodSFaDiYUr8sGbeuyS9C8d3LAEk=;
+	s=arc-20240116; t=1753868245; c=relaxed/simple;
+	bh=4CIh8/t0jIp/8V8vIL7YjgfO+MaKriKzQcILfiWc0bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=psp7PAJZpfqkZ+pFdHpPFxYui0jbS9Z2ZxQUyx1OdZj9yOr6+kUjnc5YQ9ljzN2YF/34aaNOdMk+4AwYsD++pKECDaOlTuErWHZ3sAW7TWi3/1iK02rDCm9eEHC0NwVScZE6nE8pFslGXU3RpAnoCinIBN90Cjk0Nr1KA2J6b4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJkOPsaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD271C4CEF5;
-	Wed, 30 Jul 2025 09:44:02 +0000 (UTC)
+	 MIME-Version; b=foJ/8Rdi2ZpUNB/aJeqe2yMBfy3FMg3Wd7YhqjU19y8Zo5smKaEH2aYxqTX+KmukzupwPldyp5aG+hE+PK7D2CmhcssIGeHX9Twv5b2IExfmuoXjiNPr7HWX0DKGud/QcYVZqOd+IrbjzJlGZbOc8q19ZGRNrOXNjlPX3taboQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6Os0BHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340B6C4CEF8;
+	Wed, 30 Jul 2025 09:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868643;
-	bh=PAfgvNWC/QK+eWoNodSFaDiYUr8sGbeuyS9C8d3LAEk=;
+	s=korg; t=1753868245;
+	bh=4CIh8/t0jIp/8V8vIL7YjgfO+MaKriKzQcILfiWc0bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJkOPsaUuNG7bmZVgJW5qCdRF5WHLV9PU3XEftzd2ed5qwBrSxemjgQceDBvlMnGz
-	 EMN5I1PmaChCn48ysaxvRCFglEPebRup3VRPHJqaZVtdW8RWeqRlP+uBqWwoe9Lz7C
-	 jAGr5CoeRv2yiv/fLAcr4bvKDrVeg9Zxwji0pDvA=
+	b=S6Os0BHAxia2qy93Vp3uw4P84KhCvwv0e/oUb0bxDVtsT0S1P71Ubnm/lgd0B7/GK
+	 sdivYegHF5hr9fmso3UQZqyyMRkHTX9ZQLcjgpvPcm/ayn8+OXQw3ZDK/4RvYo1Mtz
+	 VLBfBgUGlAOrc4JhBUoZnSmh6T7zXUYndti6Bvks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Zhang <i@rong.moe>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 040/117] platform/x86: ideapad-laptop: Fix kbd backlight not remembered among boots
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 16/76] i40e: When removing VF MAC filters, only check PF-set MAC
 Date: Wed, 30 Jul 2025 11:35:09 +0200
-Message-ID: <20250730093235.123011693@linuxfoundation.org>
+Message-ID: <20250730093227.482415813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-commit e10981075adce203eac0be866389309eeb8ef11e upstream.
+[ Upstream commit 5a0df02999dbe838c3feed54b1d59e9445f68b89 ]
 
-On some models supported by ideapad-laptop, the HW/FW can remember the
-state of keyboard backlight among boots. However, it is always turned
-off while shutting down, as a side effect of the LED class device
-unregistering sequence.
+When the PF is processing an Admin Queue message to delete a VF's MACs
+from the MAC filter, we currently check if the PF set the MAC and if
+the VF is trusted.
 
-This is inconvenient for users who always prefer turning on the
-keyboard backlight. Thus, set LED_RETAIN_AT_SHUTDOWN on the LED class
-device so that the state of keyboard backlight gets remembered, which
-also aligns with the behavior of manufacturer utilities on Windows.
+This results in undesirable behaviour, where if a trusted VF with a
+PF-set MAC sets itself down (which sends an AQ message to delete the
+VF's MAC filters) then the VF MAC is erased from the interface.
 
-Fixes: 503325f84bc0 ("platform/x86: ideapad-laptop: add keyboard backlight control support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rong Zhang <i@rong.moe>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250707163808.155876-3-i@rong.moe
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This results in the VF losing its PF-set MAC which should not happen.
+
+There is no need to check for trust at all, because an untrusted VF
+cannot change its own MAC. The only check needed is whether the PF set
+the MAC. If the PF set the MAC, then don't erase the MAC on link-down.
+
+Resolve this by changing the deletion check only for PF-set MAC.
+
+(the out-of-tree driver has also intentionally removed the check for VF
+trust here with OOT driver version 2.26.8, this changes the Linux kernel
+driver behaviour and comment to match the OOT driver behaviour)
+
+Fixes: ea2a1cfc3b201 ("i40e: Fix VF MAC filter removal")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1672,7 +1672,7 @@ static int ideapad_kbd_bl_init(struct id
- 	priv->kbd_bl.led.name                    = "platform::" LED_FUNCTION_KBD_BACKLIGHT;
- 	priv->kbd_bl.led.brightness_get          = ideapad_kbd_bl_led_cdev_brightness_get;
- 	priv->kbd_bl.led.brightness_set_blocking = ideapad_kbd_bl_led_cdev_brightness_set;
--	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED;
-+	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED | LED_RETAIN_AT_SHUTDOWN;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index b233ae45d89c2..6d7a4f2c3a49b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3143,10 +3143,10 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
+ 		const u8 *addr = al->list[i].addr;
  
- 	err = led_classdev_register(&priv->platform_device->dev, &priv->kbd_bl.led);
- 	if (err)
+ 		/* Allow to delete VF primary MAC only if it was not set
+-		 * administratively by PF or if VF is trusted.
++		 * administratively by PF.
+ 		 */
+ 		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
+-			if (i40e_can_vf_change_mac(vf))
++			if (!vf->pf_set_mac)
+ 				was_unimac_deleted = true;
+ 			else
+ 				continue;
+-- 
+2.39.5
+
 
 
 
