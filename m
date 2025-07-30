@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-165283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42586B15C62
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7D6B15D51
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D54617A5291
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B89F7B3F4F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E0A25DB1A;
-	Wed, 30 Jul 2025 09:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7231D293C4A;
+	Wed, 30 Jul 2025 09:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMo5AIkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlDi+c6X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F0936124;
-	Wed, 30 Jul 2025 09:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28503230981;
+	Wed, 30 Jul 2025 09:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868510; cv=none; b=ae4OQ0VffjYYS2IHHb3SR7fibkTBn9ZQ0gfndsyoMxUlqQ907v28zda+IMl2rEGD9utMF1msU6iZDFltPP4kuLOhGt+pOYGOE6TnpkT8jP53a2wKe5IO4i2DvIZkAw9+5QpTOW3TxYsJNd8vRuYbQ7XknWp3RNx/lCsrdMbmAQc=
+	t=1753869135; cv=none; b=FQd9b4jF06Yet/h0OCaJ6VL6t55C29WQ8dky5o1pmTgxcqOt6HByqr6/IGfeCcBstqITKN7sK2mxMtUamajKkSotErqUnYH6pwZBAv4M56GO4upJMRYjEp1L4YPiHpZO3lTQ5uWnLTH66vW8iU+yYYTBbzfptvprbRGTy89lxQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868510; c=relaxed/simple;
-	bh=HvcGCVzBsqQn24K3or10/cYxJS5OMprvp34AIP0ePew=;
+	s=arc-20240116; t=1753869135; c=relaxed/simple;
+	bh=V1xmIt+oMmhG8n7eZB4qzz6DbNIsBml505dN0bQK3h0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXHfMB6HxrB/6MI6YZKcvW+W0uYARnjptS3qorksrvLBiRSgP3AD8WEIBJkG3wO+l2+ww3Z2cIz8DOKtPGa1un/MGikGiqXuHyblxl3DI/FHSSwlZ2yxB46WgEg7KWo4Z6I7LY7bThaJYLddzMBjy1ZU04InNN7xEbenmID2GiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMo5AIkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E222C4CEE7;
-	Wed, 30 Jul 2025 09:41:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c1GHbv1NMSZ/AQgMxLPqqcYZPVDwd40CZa+E6qsP9Wh9k6zH3GLlRk55xMKI6Apjn97lZyXVNtlcBZb4S8JmM/zI8ZHR7c8FBSI4cadcyp1nxoD0PTsU53WKyWAWR8mh2nI4h3ZzSZYNvlqdOuCKVeoKVG3gF2DfBxOAgZshvFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlDi+c6X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A01FC4CEF5;
+	Wed, 30 Jul 2025 09:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868509;
-	bh=HvcGCVzBsqQn24K3or10/cYxJS5OMprvp34AIP0ePew=;
+	s=korg; t=1753869134;
+	bh=V1xmIt+oMmhG8n7eZB4qzz6DbNIsBml505dN0bQK3h0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMo5AIkYpE9vO4zY0ssA77LmzR//WZlx9qN/cQZLxrNVFfOCSj9wE1buT7+vX9XZB
-	 +iIZZolmVv8SLvurYxjXRY6EriTwKVLXGWrimfjdMbrH6EHZ7bWSZA3v+A/CL1ii1r
-	 Vv3ogkVDFuG8lLwthWXmfbjslsGEixOX0whkWmII=
+	b=HlDi+c6XgwbJCF7odgCWPh07UIsLLtUUTbgY+JYwVB7QJq2ruNs9P1xmE6DC1j3PF
+	 wGQpiC339vDJi9pruIn9MV511bB6eRUNwu9kNbQ2N78RpnC/jUfVc3UD+wSuOWguVz
+	 MMHSK6NLMCJW6TFEQehleWzJ8BavgcT6ovN4AB1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.6 59/76] erofs: address D-cache aliasing
-Date: Wed, 30 Jul 2025 11:35:52 +0200
-Message-ID: <20250730093229.143225707@linuxfoundation.org>
+	Rong Zhang <i@rong.moe>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.15 45/92] platform/x86: ideapad-laptop: Fix kbd backlight not remembered among boots
+Date: Wed, 30 Jul 2025 11:35:53 +0200
+Message-ID: <20250730093232.503505469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,140 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Rong Zhang <i@rong.moe>
 
-commit 27917e8194f91dffd8b4825350c63cb68e98ce58 upstream.
+commit e10981075adce203eac0be866389309eeb8ef11e upstream.
 
-Flush the D-cache before unlocking folios for compressed inodes, as
-they are dirtied during decompression.
+On some models supported by ideapad-laptop, the HW/FW can remember the
+state of keyboard backlight among boots. However, it is always turned
+off while shutting down, as a side effect of the LED class device
+unregistering sequence.
 
-Avoid calling flush_dcache_folio() on every CPU write, since it's more
-like playing whack-a-mole without real benefit.
+This is inconvenient for users who always prefer turning on the
+keyboard backlight. Thus, set LED_RETAIN_AT_SHUTDOWN on the LED class
+device so that the state of keyboard backlight gets remembered, which
+also aligns with the behavior of manufacturer utilities on Windows.
 
-It has no impact on x86 and arm64/risc-v: on x86, flush_dcache_folio()
-is a no-op, and on arm64/risc-v, PG_dcache_clean (PG_arch_1) is clear
-for new page cache folios.  However, certain ARM boards are affected,
-as reported.
-
-Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
-Closes: https://lore.kernel.org/r/c1e51e16-6cc6-49d0-a63e-4e9ff6c4dd53@pengutronix.de
-Closes: https://lore.kernel.org/r/38d43fae-1182-4155-9c5b-ffc7382d9917@siemens.com
-Tested-by: Jan Kiszka <jan.kiszka@siemens.com>
-Tested-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250709034614.2780117-2-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Fixes: 503325f84bc0 ("platform/x86: ideapad-laptop: add keyboard backlight control support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rong Zhang <i@rong.moe>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250707163808.155876-3-i@rong.moe
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/decompressor.c |    6 ++----
- fs/erofs/zdata.c        |   32 +++++++++++++++++++-------------
- 2 files changed, 21 insertions(+), 17 deletions(-)
+ drivers/platform/x86/ideapad-laptop.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -342,14 +342,12 @@ static int z_erofs_transform_plain(struc
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1669,7 +1669,7 @@ static int ideapad_kbd_bl_init(struct id
+ 	priv->kbd_bl.led.name                    = "platform::" LED_FUNCTION_KBD_BACKLIGHT;
+ 	priv->kbd_bl.led.brightness_get          = ideapad_kbd_bl_led_cdev_brightness_get;
+ 	priv->kbd_bl.led.brightness_set_blocking = ideapad_kbd_bl_led_cdev_brightness_set;
+-	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED;
++	priv->kbd_bl.led.flags                   = LED_BRIGHT_HW_CHANGED | LED_RETAIN_AT_SHUTDOWN;
  
- 	if (outpages > inpages) {
- 		DBG_BUGON(!rq->out[outpages - 1]);
--		if (rq->out[outpages - 1] != rq->in[inpages - 1]) {
-+		if (rq->out[outpages - 1] != rq->in[inpages - 1])
- 			memcpy_to_page(rq->out[outpages - 1], 0, src +
- 					(interlaced_offset ? 0 : righthalf),
- 				       lefthalf);
--		} else if (!interlaced_offset) {
-+		else if (!interlaced_offset)
- 			memmove(src, src + righthalf, lefthalf);
--			flush_dcache_page(rq->in[inpages - 1]);
--		}
- 	}
- 	kunmap_local(src);
- 	return 0;
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -122,9 +122,11 @@ static inline unsigned int z_erofs_pclus
- 
- /*
-  * bit 30: I/O error occurred on this page
-+ * bit 29: CPU has dirty data in D-cache (needs aliasing handling);
-  * bit 0 - 29: remaining parts to complete this page
-  */
--#define Z_EROFS_PAGE_EIO			(1 << 30)
-+#define Z_EROFS_ONLINEPAGE_EIO		30
-+#define Z_EROFS_ONLINEPAGE_DIRTY	29
- 
- static inline void z_erofs_onlinepage_init(struct page *page)
- {
-@@ -143,7 +145,7 @@ static inline void z_erofs_onlinepage_sp
- 	atomic_inc((atomic_t *)&page->private);
- }
- 
--static void z_erofs_onlinepage_endio(struct page *page, int err)
-+static void z_erofs_onlinepage_end(struct page *page, int err, bool dirty)
- {
- 	int orig, v;
- 
-@@ -151,16 +153,20 @@ static void z_erofs_onlinepage_endio(str
- 
- 	do {
- 		orig = atomic_read((atomic_t *)&page->private);
--		v = (orig - 1) | (err ? Z_EROFS_PAGE_EIO : 0);
-+		DBG_BUGON(orig <= 0);
-+		v = dirty << Z_EROFS_ONLINEPAGE_DIRTY;
-+		v |= (orig - 1) | (!!err << Z_EROFS_ONLINEPAGE_EIO);
- 	} while (atomic_cmpxchg((atomic_t *)&page->private, orig, v) != orig);
- 
--	if (!(v & ~Z_EROFS_PAGE_EIO)) {
--		set_page_private(page, 0);
--		ClearPagePrivate(page);
--		if (!(v & Z_EROFS_PAGE_EIO))
--			SetPageUptodate(page);
--		unlock_page(page);
--	}
-+	if (v & (BIT(Z_EROFS_ONLINEPAGE_DIRTY) - 1))
-+		return;
-+	set_page_private(page, 0);
-+	ClearPagePrivate(page);
-+	if (v & BIT(Z_EROFS_ONLINEPAGE_DIRTY))
-+		flush_dcache_page(page);
-+	if (!(v & BIT(Z_EROFS_ONLINEPAGE_EIO)))
-+		SetPageUptodate(page);
-+	unlock_page(page);
- }
- 
- #define Z_EROFS_ONSTACK_PAGES		32
-@@ -1060,7 +1066,7 @@ next_part:
- 		goto repeat;
- 
- out:
--	z_erofs_onlinepage_endio(page, err);
-+	z_erofs_onlinepage_end(page, err, false);
- 	return err;
- }
- 
-@@ -1163,7 +1169,7 @@ static void z_erofs_fill_other_copies(st
- 			cur += len;
- 		}
- 		kunmap_local(dst);
--		z_erofs_onlinepage_endio(bvi->bvec.page, err);
-+		z_erofs_onlinepage_end(bvi->bvec.page, err, true);
- 		list_del(p);
- 		kfree(bvi);
- 	}
-@@ -1333,7 +1339,7 @@ out:
- 		/* recycle all individual short-lived pages */
- 		if (z_erofs_put_shortlivedpage(be->pagepool, page))
- 			continue;
--		z_erofs_onlinepage_endio(page, err);
-+		z_erofs_onlinepage_end(page, err, true);
- 	}
- 
- 	if (be->decompressed_pages != be->onstack_pages)
+ 	err = led_classdev_register(&priv->platform_device->dev, &priv->kbd_bl.led);
+ 	if (err)
 
 
 
