@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-165352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41486B15CD3
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFD8B15D7F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69080563E61
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 778F43A9FEB
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408912949F2;
-	Wed, 30 Jul 2025 09:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120D02949E0;
+	Wed, 30 Jul 2025 09:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idy344C8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9D+zESb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2041293C74;
-	Wed, 30 Jul 2025 09:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28662641F9;
+	Wed, 30 Jul 2025 09:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868795; cv=none; b=q0btwKWaoFpqh+Kx8c08fE+HP4SMi/srYBZcJUr7a3R9IKk+D4AWNO1m5iGa2KCUA5IxnW/n8g902Pu2E9JDG9qb4an4g1oO/hCpAakkkOIg3h06SzggGuVZJBlQVZ6BnxzFCz++4Kkbxr9w4mRP2ZBlMoL/cd84R1q3+UMLb4o=
+	t=1753869238; cv=none; b=nHlOOC6CguXqCL37gsm2jfD35S+AQhVLwRUscXcAhSBe1aMu4U5NB9+7DwXtjrRl0h+iz4dez37iVr3EMYYM2ZS2Pt4VHR2dNujZK6K/4Zp6z6xsMsIkAyVaBbIyEk0CClMmb/Pq62dl7G1YpI+V/5AKPkVaVieaMwXK+9jlJA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868795; c=relaxed/simple;
-	bh=rO/huANhTbc24ltXyAZAN0n2OGlyIu6AHI9RhIrtHOI=;
+	s=arc-20240116; t=1753869238; c=relaxed/simple;
+	bh=ArwOFvVFY5KrRyQ3W85qiTh3LcQly5fCoT7MfZV36r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGVaW07cycKgbC9h+ufwX7FL2IRS+t7W3b33aBdCZkzwt4MBbqSXCbXodETv7+qGFBeOD21/21KXh7TdUzBP0GYJdv7CklgVaHaozl17224HVsKY7Lu3mydIO6bL2SkFnnxfdVtw6tFwj75ppvDPsMiWOH4cnAMoEZMf++phwpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idy344C8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF2EC4CEF5;
-	Wed, 30 Jul 2025 09:46:32 +0000 (UTC)
+	 MIME-Version; b=IGXWzELQao+OjWO/QdbUiWGWP4pIuROr6+4kgbeR7IEzCuGxJmPiEdZ7iI9hQkS3hvJNMSQfwSjldmnHwcE2CHdQ38cU3yR9s4firxsrUF0BOkM3BuEug3C+uWgqYZNj97VmrdlOmyIddWzIZyadFn+CQFv2ZP2ntLALSn8IC3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9D+zESb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88FBC4CEF5;
+	Wed, 30 Jul 2025 09:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868793;
-	bh=rO/huANhTbc24ltXyAZAN0n2OGlyIu6AHI9RhIrtHOI=;
+	s=korg; t=1753869238;
+	bh=ArwOFvVFY5KrRyQ3W85qiTh3LcQly5fCoT7MfZV36r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idy344C8X9C1Gl6mOOMDComCOedx7JPa9yjunTFwbKOfsEzERAlqgu0gBKsDVt2x4
-	 gURQ/jhBStRh4qHqSTJtc3J55CrZI03J/V0P/ynFsjou/u6wCOuuK+WqKOTutrcqVm
-	 Q5n3oCwggs8i/Sw8tsjijpW8iPvJz0gS8yt2Sd+M=
+	b=v9D+zESb4NpWL1ufKQtuLtAwjGlxN2OplS2pGauQiIG4rHwrnDNs7qgJ1HKfSoiz/
+	 ymd30BpNWR54D68D4p30wfwTf112NMDWCbntEQ51EQRXT7I9dMHRqLvuofIofbGRb6
+	 zD8cp2AKORE0/A33eC56n7C9EvinfrelyHAgf5tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Aliaksei Makarau <Aliaksei.Makarau@ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/117] mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
+Subject: [PATCH 6.15 38/92] s390/ism: fix concurrency management in ism_cmd()
 Date: Wed, 30 Jul 2025 11:35:46 +0200
-Message-ID: <20250730093236.538138049@linuxfoundation.org>
+Message-ID: <20250730093232.224648260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
+From: Halil Pasic <pasic@linux.ibm.com>
 
-[ Upstream commit 47bddabbf69da50999ec68be92b58356c687e1d6 ]
+[ Upstream commit 897e8601b9cff1d054cdd53047f568b0e1995726 ]
 
-For QPIC V2 onwards there is a separate register to read
-last code word "QPIC_NAND_READ_LOCATION_LAST_CW_n".
+The s390x ISM device data sheet clearly states that only one
+request-response sequence is allowable per ISM function at any point in
+time.  Unfortunately as of today the s390/ism driver in Linux does not
+honor that requirement. This patch aims to rectify that.
 
-qcom_param_page_type_exec() is used to read only one code word
-If it configures the number of code words to 1 in QPIC_NAND_DEV0_CFG0
-register then QPIC controller thinks its reading the last code word,
-since we are having separate register to read the last code word,
-we have to configure "QPIC_NAND_READ_LOCATION_LAST_CW_n" register
-to fetch data from QPIC buffer to system memory.
+This problem was discovered based on Aliaksei's bug report which states
+that for certain workloads the ISM functions end up entering error state
+(with PEC 2 as seen from the logs) after a while and as a consequence
+connections handled by the respective function break, and for future
+connection requests the ISM device is not considered -- given it is in a
+dysfunctional state. During further debugging PEC 3A was observed as
+well.
 
-Without this change page read was failing with timeout error
+A kernel message like
+[ 1211.244319] zpci: 061a:00:00.0: Event 0x2 reports an error for PCI function 0x61a
+is a reliable indicator of the stated function entering error state
+with PEC 2. Let me also point out that a kernel message like
+[ 1211.244325] zpci: 061a:00:00.0: The ism driver bound to the device does not support error recovery
+is a reliable indicator that the ISM function won't be auto-recovered
+because the ISM driver currently lacks support for it.
 
-/ # hexdump -C /dev/mtd1
-[  129.206113] qcom-nandc 1cc8000.nand-controller: failure to read page/oob
-hexdump: /dev/mtd1: Connection timed out
+On a technical level, without this synchronization, commands (inputs to
+the FW) may be partially or fully overwritten (corrupted) by another CPU
+trying to issue commands on the same function. There is hard evidence that
+this can lead to DMB token values being used as DMB IOVAs, leading to
+PEC 2 PCI events indicating invalid DMA. But this is only one of the
+failure modes imaginable. In theory even completely losing one command
+and executing another one twice and then trying to interpret the outputs
+as if the command we intended to execute was actually executed and not
+the other one is also possible.  Frankly, I don't feel confident about
+providing an exhaustive list of possible consequences.
 
-This issue only seen on SDX targets since SDX target used QPICv2. But
-same working on IPQ targets since IPQ used QPICv1.
-
-Cc: stable@vger.kernel.org
-Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 684b89bc39ce ("s390/ism: add device driver for internal shared memory")
+Reported-by: Aliaksei Makarau <Aliaksei.Makarau@ibm.com>
+Tested-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Tested-by: Aliaksei Makarau <Aliaksei.Makarau@ibm.com>
+Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722161817.1298473-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/s390/net/ism_drv.c | 3 +++
+ include/linux/ism.h        | 1 +
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2858,7 +2858,12 @@ static int qcom_param_page_type_exec(str
- 	const struct nand_op_instr *instr = NULL;
- 	unsigned int op_id = 0;
- 	unsigned int len = 0;
--	int ret;
-+	int ret, reg_base;
-+
-+	reg_base = NAND_READ_LOCATION_0;
-+
-+	if (nandc->props->qpic_v2)
-+		reg_base = NAND_READ_LOCATION_LAST_CW_0;
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index 60ed70a39d2cc..b8464d9433e96 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -130,6 +130,7 @@ static int ism_cmd(struct ism_dev *ism, void *cmd)
+ 	struct ism_req_hdr *req = cmd;
+ 	struct ism_resp_hdr *resp = cmd;
  
- 	ret = qcom_parse_instructions(chip, subop, &q_op);
- 	if (ret)
-@@ -2910,7 +2915,10 @@ static int qcom_param_page_type_exec(str
- 	op_id = q_op.data_instr_idx;
- 	len = nand_subop_get_data_len(subop, op_id);
++	spin_lock(&ism->cmd_lock);
+ 	__ism_write_cmd(ism, req + 1, sizeof(*req), req->len - sizeof(*req));
+ 	__ism_write_cmd(ism, req, 0, sizeof(*req));
  
--	nandc_set_read_loc(chip, 0, 0, 0, len, 1);
-+	if (nandc->props->qpic_v2)
-+		nandc_set_read_loc_last(chip, reg_base, 0, len, 1);
-+	else
-+		nandc_set_read_loc_first(chip, reg_base, 0, len, 1);
+@@ -143,6 +144,7 @@ static int ism_cmd(struct ism_dev *ism, void *cmd)
+ 	}
+ 	__ism_read_cmd(ism, resp + 1, sizeof(*resp), resp->len - sizeof(*resp));
+ out:
++	spin_unlock(&ism->cmd_lock);
+ 	return resp->ret;
+ }
  
- 	if (!nandc->props->qpic_v2) {
- 		write_reg_dma(nandc, NAND_DEV_CMD_VLD, 1, 0);
+@@ -606,6 +608,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		return -ENOMEM;
+ 
+ 	spin_lock_init(&ism->lock);
++	spin_lock_init(&ism->cmd_lock);
+ 	dev_set_drvdata(&pdev->dev, ism);
+ 	ism->pdev = pdev;
+ 	ism->dev.parent = &pdev->dev;
+diff --git a/include/linux/ism.h b/include/linux/ism.h
+index 5428edd909823..8358b4cd7ba6a 100644
+--- a/include/linux/ism.h
++++ b/include/linux/ism.h
+@@ -28,6 +28,7 @@ struct ism_dmb {
+ 
+ struct ism_dev {
+ 	spinlock_t lock; /* protects the ism device */
++	spinlock_t cmd_lock; /* serializes cmds */
+ 	struct list_head list;
+ 	struct pci_dev *pdev;
+ 
+-- 
+2.39.5
+
 
 
 
