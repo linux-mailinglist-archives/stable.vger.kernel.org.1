@@ -1,149 +1,148 @@
-Return-Path: <stable+bounces-165190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1116B158E5
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 08:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DA8B15922
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 08:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E23D63AA213
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 06:21:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27AB83A82EF
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 06:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DAB1E571B;
-	Wed, 30 Jul 2025 06:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99111F5423;
+	Wed, 30 Jul 2025 06:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IDrflg8L"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rFeOaYj1";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="suk5mr6m";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rFeOaYj1";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="suk5mr6m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F41199BC;
-	Wed, 30 Jul 2025 06:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E37A1EFFB4
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 06:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753856519; cv=none; b=FOPhDuYDLiFPL8DUPArOr7g1ZGXMYQzVyrT46yylmXsEjqxr9b0FZlyZDUjh9+NI3ZNiQDt5kbajBjuqeZygkjfJGGLVmZtmWIgnjH8DBMjNPf81fSU4HOVcZsyoOvT0zc4ynMt//JuTiHpLqzoBCzZag2cOQ3wnPSOyF7GJY/I=
+	t=1753858329; cv=none; b=tGLfkKhCelOGcBYzqh8QkvRrzV74273DX2EE/73WKZ4TmSgmLXiOtnKrSX23o7FtJgv5rN7TpouYvLpMAvriyt6EyibR+iuzam+zPxgHRdY1OnaVZXwRue+WLh6prawmbjPFXnzvmsN/qWcn5L7sqShti+GwWrCIpJxGMED8vCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753856519; c=relaxed/simple;
-	bh=JNZ6D3nGRFd1xsk3HwOPijD+rO+P2HFJjzPwNSl5yOg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d+f4kFy4kr4O+QmCyE3RAuk0UyZGBiIVIMruiH+iFoX4bEMeB2irOkNE2AJ7YepTsqp+GGluVXQzjmpH4n5aVUkdRXDFJiZnA965QqnlY9ptWZoiA9r8Ci7djPUTKiex1yp6Ukpo8NKcXdxGdx1tWSooH7MK6LlM+D0zLwstZaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IDrflg8L; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-615a4b504b2so1058112eaf.1;
-        Tue, 29 Jul 2025 23:21:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753856516; x=1754461316; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FBkTI/UCDoqQNlnpZlPe3NHTfCsdIAJow1MJiptYraY=;
-        b=IDrflg8Lxu5PWMXoE+hdwsPKFI/2HLsMqAXyb1FW09y0UzcP+K0CCDD3Od4r2LcxSj
-         L6ARw5P/k2niCffhbuCZ4Xnv6/JB9wqHGL6oHfEPwwm+4LAr62iHYoAz9Yidp/j06OC/
-         5C3KG3p6lbcs3nmKVF+jeUfx/3tqrLzsTPXWGaMbpJ5IHOoBLbGMQBXI5m3hbrXlsWql
-         UHveqo0oG/UV/wYBBqSpKlZYrPS0KCbetoBL1cpWYXyyBzKirogQTG7JiHOZVFZqTr5S
-         Qp32hmxdQU1QKQ47WxyyyE6ti9Um6rtQ8D146Vwn3SL2yC1+0g3BIkk0qIAUFiY/CXPu
-         2NiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753856516; x=1754461316;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FBkTI/UCDoqQNlnpZlPe3NHTfCsdIAJow1MJiptYraY=;
-        b=LqjWqgemm1Th1pCWdLsqNerN9icm4W3RJXFLuQKWpLfG2aNqYcDfH18NzX3w0fbtNP
-         ERzjo//L4IcuSxikiedT4LxoolxyzbrRdQifkvB3HViagUdXoNRfYn2p+uvo7Uz2t91N
-         rtCY49ApveDTExJIDxMIYOuRrl6Q0cLXTkBjF4RjzGqrA/C+uGWORpdn4CrSGNYTfWrt
-         QlEPKqEaDCZZ+vvdDZz0Ccf/aV1hyYf0FODQL41lIDUm+8hZKNMkkyaO9xNM427k8ZTH
-         YuDQikNypxpK9pqJLT87uauHnEVP+serHaVD8OnKslOIjjfzA0s/gd08jIJ2jYLkmkIF
-         wDtA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKKJzCU9ZQ6JhbHDSUX1Leb88r5SKk5XDqqYeLTrnzdcluUSRpRruqEPI3PwKI9xPrClmAt0+4@vger.kernel.org, AJvYcCWHRUwO/8BpU9xTA/uR5iPCJNYmf6bTAHF8uCepNxBXA8b0GtJgOx39Fz8ObySUae3Grt9a/GevBoNuOSs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeLnvNRmCEd40QtTydukelUBL1ZvD9wFWBLW2iMc43a+0JgujJ
-	iFVFRsttkQ/BK09A1A0fec3zOd+ufRLjQc5GZOeyJ5PJL44zR5ceL0KHyU5vFGqXfPPyRciZs3+
-	nmGTTv28yWXajdfXjAphz+7X3iVbr0Q0=
-X-Gm-Gg: ASbGncvVG0uo8wT6mFTbKVRT2JeXnz5KXC5YYzZYzH0ZuCMxQFkslbWXiRrTLSN4FCY
-	mozRDwJ3+LTRpUpBGS6cfMDFCLRB02qQDS7kIOtbam9htm0x6r4fdovQ3jcNiGzQ01+JBRodNb/
-	lRfa877+Aq0nzqa976BPO5NABFF1pGuR7gqFXXj0nckbRGeEXF8U7mgDqh2YAFYORvh+vhkNK8p
-	0D+talo/2iUdmXoCwHGEKpVLg4LTQ==
-X-Google-Smtp-Source: AGHT+IFhgRosSR72T+vNr0bx5hr3ciS38puiGjuj01JgbYBPEjB7f2hpeWkGLda67/RjHPy2kUR5TUoZLWCQGjWUJzc=
-X-Received: by 2002:a05:6820:210d:b0:619:64d1:8b8b with SMTP id
- 006d021491bc7-61964d1a470mr358563eaf.1.1753856516508; Tue, 29 Jul 2025
- 23:21:56 -0700 (PDT)
+	s=arc-20240116; t=1753858329; c=relaxed/simple;
+	bh=vcomCsS8vGaH9x5JXSKM2sRl5VCMsY+8hq3RZ+ntiLc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t3m+FFEDtTLwotmUi+jHs9FWOoB6ibwNnwrR1zCN9+DHnBCf2tIFUeGlxx6kT0vbA2Sw1x0A/LxqQOk9vY6fdW/fi1fU4aE2sd8JE0ReZtGS2hittFNfYOZVju0G08i6z5jk7DMMBBfbasBMXT+uHC4QLa27U2Hz9Wd2nyX5zpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rFeOaYj1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=suk5mr6m; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rFeOaYj1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=suk5mr6m; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 548491F45A;
+	Wed, 30 Jul 2025 06:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753858326; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
+	b=rFeOaYj1wmgMANPGjYHQ40elAOTfNuJlbhRVfID+eYznUenDHknS96Qhcmx+QjD4sQxQhb
+	znMnxdXffFfwAgGfTtGjYI0SItM6pkyKEn2vWnsgzz7tQmRB0CGJ1wWp0M7K2gwrjS64pz
+	TxcjxRnKI+AWAxOB0jMwQo0s8A0c17o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753858326;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
+	b=suk5mr6mUdpg4G2Km101DOwUFKTu+UgIXpz4Uco/pJaa0SG3ydasajEC4wKGNoz0n6eDDa
+	8WUh1Lv56eY2XaBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753858326; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
+	b=rFeOaYj1wmgMANPGjYHQ40elAOTfNuJlbhRVfID+eYznUenDHknS96Qhcmx+QjD4sQxQhb
+	znMnxdXffFfwAgGfTtGjYI0SItM6pkyKEn2vWnsgzz7tQmRB0CGJ1wWp0M7K2gwrjS64pz
+	TxcjxRnKI+AWAxOB0jMwQo0s8A0c17o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753858326;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NC/ae93nUOfFJAm7ykrBqKhQrOW+D+LntLOlpAiHbU=;
+	b=suk5mr6mUdpg4G2Km101DOwUFKTu+UgIXpz4Uco/pJaa0SG3ydasajEC4wKGNoz0n6eDDa
+	8WUh1Lv56eY2XaBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 242CD1388B;
+	Wed, 30 Jul 2025 06:52:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sPudBxbBiWhVOgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Wed, 30 Jul 2025 06:52:06 +0000
+Date: Wed, 30 Jul 2025 08:52:05 +0200
+Message-ID: <87y0s6rx0q.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: edip@medip.dev
+Cc: perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] ALSA: hda/realtek - Fix mute LED for HP Victus 16-s0xxx
+In-Reply-To: <20250729181848.24432-2-edip@medip.dev>
+References: <20250729181848.24432-2-edip@medip.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250730042617.5620-1-suchitkarunakaran@gmail.com>
- <2025073013-stimulus-snowdrift-d28c@gregkh> <CAO9wTFihpoVsf-SZYn6yUhCSuN9cBXFGWeGegDsS1QHk4wS7-Q@mail.gmail.com>
- <2025073024-musky-smashing-812e@gregkh>
-In-Reply-To: <2025073024-musky-smashing-812e@gregkh>
-From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Date: Wed, 30 Jul 2025 11:51:44 +0530
-X-Gm-Features: Ac12FXyTmCZhlXPJ6VHRvUCE8qUeiyA07qunSM3G46ojasxIgFGJg8XhQqlKO9E
-Message-ID: <CAO9wTFiRCgFvyboh_K=HWYMtfgj3OGr=fcHFDkNBa9EHMyCtcQ@mail.gmail.com>
-Subject: Re: [PATCH v3] x86/cpu/intel: Fix the constant_tsc model check for
- Pentium 4s
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, darwi@linutronix.de, 
-	sohil.mehta@intel.com, peterz@infradead.org, ravi.bangoria@amd.com, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
 
-On Wed, 30 Jul 2025 at 11:25, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Jul 30, 2025 at 11:05:31AM +0530, Suchit Karunakaran wrote:
-> > On Wed, 30 Jul 2025 at 10:22, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Wed, Jul 30, 2025 at 09:56:17AM +0530, Suchit Karunakaran wrote:
-> > > > The logic to synthesize constant_tsc for Pentium 4s (Family 15) is
-> > > > wrong. Since INTEL_P4_PRESCOTT is numerically greater than
-> > > > INTEL_P4_WILLAMETTE, the logic always results in false and never sets
-> > > > X86_FEATURE_CONSTANT_TSC for any Pentium 4 model.
-> > > > The error was introduced while replacing the x86_model check with a VFM
-> > > > one. The original check was as follows:
-> > > >         if ((c->x86 == 0xf && c->x86_model >= 0x03) ||
-> > > >                 (c->x86 == 0x6 && c->x86_model >= 0x0e))
-> > > >                 set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
-> > >
-> > > What do you mean by "original check"?  Before the change that caused
-> > > this, or what it should be?
-> > >
-> >
-> > Original check in this context refers to the change before the erroneous code.
-> >
-> > > > Fix the logic to cover all Pentium 4 models from Prescott (model 3) to
-> > > > Cedarmill (model 6) which is the last model released in Family 15.
-> > > >
-> > > > Fixes: fadb6f569b10 ("x86/cpu/intel: Limit the non-architectural constant_tsc model checks")
-> > > >
-> > > > Cc: <stable@vger.kernel.org> # v6.15
-> > > >
-> > > > Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-> > >
-> > > Nit, no blank lines beween all of those last lines.  Hint, look at all
-> > > of the patches on the mailing lists AND in the tree already, you have
-> > > hundreds of thousands of examples here of how to format things :)
-> > >
-> >
-> > Sorry about it. Should I send a new version of the patch removing the
-> > blank lines?
->
-> That's up to the maintainer(s) of this subsystem, if they want to
-> manually edit the change or not.  As it's the middle of the merge
-> window, no one will probably be doing anything for another 2 weeks on it
-> anyway, so just relax and see what happens :)
->
-> thanks,
->
-> greg k-h
+On Tue, 29 Jul 2025 20:18:48 +0200,
+edip@medip.dev wrote:
+> 
+> From: Edip Hazuri <edip@medip.dev>
+> 
+> The mute led on this laptop is using ALC245 but requires a quirk to work
+> This patch enables the existing quirk for the device.
+> 
+> Tested on Victus 16-S0063NT Laptop. The LED behaviour works
+> as intended.
+> 
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Edip Hazuri <edip@medip.dev>
 
-Hi Greg,
-Thank you for the clarification. I apologize for the mistakes and
-appreciate your patience in reviewing.
+Applied both patches now.  Thanks.
 
-Thanks,
-Suchit
+
+Takashi
 
