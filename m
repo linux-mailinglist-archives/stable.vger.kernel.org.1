@@ -1,162 +1,158 @@
-Return-Path: <stable+bounces-165586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D18B165CC
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 19:49:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069A1B16528
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 19:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC1518C3487
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 17:50:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01B483BB26E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 17:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912B72E03E4;
-	Wed, 30 Jul 2025 17:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44242DC344;
+	Wed, 30 Jul 2025 17:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ahu2yZS5"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZBsuf+cs"
 X-Original-To: stable@vger.kernel.org
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B951E0DE8;
-	Wed, 30 Jul 2025 17:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D9915A8
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 17:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753897791; cv=none; b=X9EdRfm/AI9P4jmB4FiBuAU6yqLNzXBkQ1sdZBffRxyQI0VzCfXBh4TbfK7Ez1xouc6UFJB0ZlVcp1vcPKxdqCgkKagEaNXUKjy/YjIoIno1+7aLxi/YfrqEO2BXwqiPBOqg5I1jCWPE1lphvVaZtoWWa3x2d8jUI5159bp7WF8=
+	t=1753895258; cv=none; b=oYf0lXeSm+0ULLCtW7sEQMV4tlE5YMmHSMepWDybD3uRe0i+XTBG0sVDc8+3YcDSVlUjCoYawgTaZP+zEMLKzqf4BaZ3DZCnGzhgz6dbBLjusem1pL6zvcwkxRXZWEWBjvePHGR7WCY4o6AeLLMhWnHuj+ccT3z18MjIndfQDoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753897791; c=relaxed/simple;
-	bh=/p3QCeb5vrjQsgDySv7ceP1YaCttjBmqpB2bCe9hbyY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kO7UnCuBmpSgoB4HLC2Xyi9zgDb6tjK5KrXdhM3rDe3Lqb+2Xj+y1SPHe8pIhEj8r3kSsZPRT2/O7XRTpIBcQiKEEdFg6EydXDErD6vBjnIFY4YAjOWoTho3uN34WFfL9I6JG+yeMLuyztx1fH4Fp6o4HxMR6JqSA1hdME996Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ahu2yZS5; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [IPv6:2001:4b98:dc4:8::235])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id F3A7B583E84;
-	Wed, 30 Jul 2025 17:03:05 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6F0BE442AA;
-	Wed, 30 Jul 2025 17:02:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1753894977;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p2UE0f0lxM12DzKY8SLP9Ryrfpakau+5gbE2rpdBN1A=;
-	b=ahu2yZS5PpM6RqG4gIA/3xnCkg4qml3y3KjQG8RWCeS0mvQ8P3OO48pA1rjRhGSrKzrK7i
-	xxkgydLuwN02xdb5Ml6RPck3kBzCDx+pkpu5ylKcKwPORFhLh8pcpuLaYUiDiF8tg+5cAv
-	glJgPdehk+mWn7F0mT65XneDhDEyWbo+itCG78QK53R5CMcaxIXTAdpS7ALLA6xKJWjVKA
-	b9Qfv5dmHeIaaouIiJVme4EiM4UyXGpj+CXD4PkLcdT2bu7dHbL2zd88p7K/SzgCeMxxFo
-	PjPaPgg+Ccs6LAfJztYZtdj7421A95gj0SUdHn9FKnjKBuFY4dZ4M0n2GyRw3A==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 30 Jul 2025 19:02:47 +0200
-Subject: [PATCH 4/4] drm/tidss: Fix sampling edge configuration
+	s=arc-20240116; t=1753895258; c=relaxed/simple;
+	bh=DX1GHJEw+yV3RRzbL6bG3xAge8rpg3j/1QwDNAVuivQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MHQnJUyAGtL5lAbnpqjfjYDcUIBX/sh+OAizpzVKC0g88G/rm7q6ZOJ5QyhunKrVrXdkcHvdJWcUFs1ZqByGlY9xD2QxJOjJCmEpVaYvSu6IG4t3C65qMVB+qlUCPLM6OglXFJgGP5E77JuguDtpOKtuVQcphRiaCdrKZ8rHtOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZBsuf+cs; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-23ff7d61fb7so9708655ad.1
+        for <stable@vger.kernel.org>; Wed, 30 Jul 2025 10:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753895256; x=1754500056; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iwvX/+FCFrBIkeHTGaFzh+izLhsSIPbGbCbxZr6W88I=;
+        b=ZBsuf+csfQxlgG2dSBYTLs1gPALrU6SoJDDl9czF8f/3d8IZ9IsaGKAhNBhVxN+V/N
+         FnSSSzzQ1jCuWK+GoYb8h/bBNpNv7RXpgoaYtOovvmPHfZaStEhPocDnEyxW1OhJPafi
+         LgcxVUvx+1Uz5J3D07ZAG5Oc+YYyjE9Um2Q/ZrzCfL0TyIILLAAWmEaQxqM2Dg8O7deE
+         yKIhPMDHf9AEOVMiDcNuDp8cnPnu7h8QSW+tasDYTVGWvoYtptTByYdIkP4wN1IZgORk
+         XZ3Nvk3Ae8HGPeOnXKnUpt4IqW2w9x0qlJ2ZQto1xx5AZZjD7mi1yWv55LkHj5sU/HLh
+         QDbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753895256; x=1754500056;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iwvX/+FCFrBIkeHTGaFzh+izLhsSIPbGbCbxZr6W88I=;
+        b=ad/6duRB32bDw8waZRXXgAh8gI8AtpZxR2kAKKnJlhxLrUzUQvbWSWItBeYzRYO/C0
+         JQDIIe6AcVTKgGo9S1TN91oixpEjTWy7UEirRu7Xy6etWDiALqRibj9FBY1YRlnRUfXW
+         NHcSuaJg9av2T0MbRIhhog6GnQgA5PbJ7y8jtY53BGAnCDppf9/uXOBgh6DAamaYJHQH
+         8EidfNhexU3hbQPSdLsM6pIdHhZj4efWMmd3Rb9XNORaq+owP84Ghp9dD8gCCX/55v2X
+         rRO/5atQxw9aCSfgzAiMmGFMpxNoFQYew38iMv7YNogn2wNxhTLEMKdJhClcRKav/7hT
+         k+RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWWcAXw6sNeAc4acWK2r3yqofUknViy6eXVxlxKt7/ZjHjmxL4KcOQB25P81CsWq6bkzcRodWA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxalmLHM4IY9qb1n8DVwZJMoT8RdE10qOX5ILb25lQT11dK9xeb
+	X7zo0PqekiitSsZpOqkwMmGHyIXQbZVYYookLvbeXc/KsN5+j57DfOfqHtcg6s2GQ7EMO3L7NaJ
+	5TbU52A==
+X-Google-Smtp-Source: AGHT+IFRpqzleLfhY584F3gS5nWpI1NhhfzwuIDnKy5qdpfvKqCIZN9aFroMt2PQhlQ+ZIOuvhwlGyX2lGc=
+X-Received: from pjee12.prod.google.com ([2002:a17:90b:578c:b0:313:246f:8d54])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54c:b0:240:b884:2fa0
+ with SMTP id d9443c01a7336-240b8843050mr21999235ad.26.1753895256448; Wed, 30
+ Jul 2025 10:07:36 -0700 (PDT)
+Date: Wed, 30 Jul 2025 10:07:33 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250730-fix-edge-handling-v1-4-1bdfb3fe7922@bootlin.com>
-References: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
-In-Reply-To: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
-To: Jyri Sarha <jyri.sarha@iki.fi>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sam Ravnborg <sam@ravnborg.org>, 
- Benoit Parrot <bparrot@ti.com>, Lee Jones <lee@kernel.org>, 
- Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Tero Kristo <kristo@kernel.org>
-Cc: thomas.petazzoni@bootlin.com, Jyri Sarha <jsarha@ti.com>, 
- Tomi Valkeinen <tomi.valkeinen@ti.com>, dri-devel@lists.freedesktop.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
- Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2065;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=/p3QCeb5vrjQsgDySv7ceP1YaCttjBmqpB2bCe9hbyY=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoilA3+uu7ksY6HhTrzvxrlNdnU7OHWYsxGYCQ2
- fxOj7ZMH/+JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaIpQNwAKCRAgrS7GWxAs
- 4tKXD/4sZ0sUqe4etG+L+kea89Ub7gI7TmlWL/HHW/R4eN/jjonq+ae5qyuwSAYLbvlFvEBEgyC
- qGTFg0GCF67gfuuN095HEUNZ1EP9dGB2S0Yqj3MKXM36OHsCG2DHXtsBaFxs62DBxrwgnA1tEa+
- 04f30TQYPpAPR4oKH/FF1/MEfz3j0Idt7cQXQcbqV8svD0waNm95iMrezSX15XkMajTFFQ5fB+S
- tbzr/utpbB4oFoT+mpoLBLPIeaE6Y9MlIi+iui9Ze3e4E4DjGRtj10IzVkig8tKyF+juxQNq61s
- OFuZuBz0o9eRx1ZQSuOW5HQrSP+3EkS0Om7KQ6OvJNvn/22fQb0zhxbON9UZ9LNjx4ooAZ/NxHR
- e7kMUuRN/CN4K92cH4vXzB65xti1xFFgmoQUpvjIUSH4FSTSvcxbdPYgoVjLvrImV6IOCzwysv0
- A7bhsLRoY4ZsyY2jqRTICAx4X3SQ10DCf7JwLKfvd+mxkZivK9nxJ9t64krM0M8PpYjQ802gPk3
- 5tao4daQfje4SJ0R/shh8sCut2UJrR2QEdLX62WNxIWlRWfqaQTRDDHTBv9hJF1Sg4Z0dtPmyYR
- XZlEuSKxYEjSz/DNucVZ6iYTK+KIHJy27udRLPlcsFeAVY9MJnojagC9sn5AbuY827lx87j98Ps
- 241f24OZV4aqqFA==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelkeegkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephedtjedttdetieeigfeljeekteetvefhudekgeelffejheegieevhfegudffvddvnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvhedprhgtphhtthhopehjhihrihdrshgrrhhhrgesihhkihdrfhhipdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhrihhsthhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtoheps
- hhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehnmhesthhirdgtohhm
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
+Message-ID: <20250730170733.3829267-1-surenb@google.com>
+Subject: [PATCH 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles a THP hole
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: peterx@redhat.com, david@redhat.com, aarcange@redhat.com, 
+	lokeshgidra@google.com, surenb@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-As stated in the AM62x Technical Reference Manual (SPRUIV7B), the data
-sampling edge needs to be configured in two distinct registers: one in the
-TIDSS IP and another in the memory-mapped control register modules. Since
-the latter is not within the same address range, a phandle to a syscon
-device is used to access the regmap.
+When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+encounters a non-present THP, it fails to properly recognize an unmapped
+hole and tries to access a non-existent folio, resulting in
+a crash. Add a check to skip non-present THPs.
 
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
----
-
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 Cc: stable@vger.kernel.org
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ mm/userfaultfd.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index c0277fa36425ee1f966dccecf2b69a2d01794899..65ca7629a2e75437023bf58f8a1bddc24db5e3da 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -498,6 +498,7 @@ struct dispc_device {
- 	const struct dispc_features *feat;
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index cbed91b09640..60be8080ddd0 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1818,27 +1818,35 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
  
- 	struct clk *fclk;
-+	struct regmap *clk_ctrl;
- 
- 	bool is_enabled;
- 
-@@ -1267,6 +1268,11 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
- 		       FLD_VAL(mode->vdisplay - 1, 27, 16));
- 
- 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
+ 		ptl = pmd_trans_huge_lock(src_pmd, src_vma);
+ 		if (ptl) {
+-			/* Check if we can move the pmd without splitting it. */
+-			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+-			    !pmd_none(dst_pmdval)) {
+-				struct folio *folio = pmd_folio(*src_pmd);
++			if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
++				/* Check if we can move the pmd without splitting it. */
++				if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
++				    !pmd_none(dst_pmdval)) {
++					if (pmd_present(*src_pmd)) {
++						struct folio *folio = pmd_folio(*src_pmd);
 +
-+	if (dispc->clk_ctrl) {
-+		regmap_update_bits(dispc->clk_ctrl, 0, 0x100, ipc ? 0x100 : 0x000);
-+		regmap_update_bits(dispc->clk_ctrl, 0, 0x200, rf ? 0x200 : 0x000);
-+	}
- }
++						if (!folio || (!is_huge_zero_folio(folio) &&
++							       !PageAnonExclusive(&folio->page))) {
++							spin_unlock(ptl);
++							err = -EBUSY;
++							break;
++						}
++					}
  
- void dispc_vp_disable(struct dispc_device *dispc, u32 hw_videoport)
-@@ -3012,6 +3018,14 @@ int dispc_init(struct tidss_device *tidss)
+-				if (!folio || (!is_huge_zero_folio(folio) &&
+-					       !PageAnonExclusive(&folio->page))) {
+ 					spin_unlock(ptl);
+-					err = -EBUSY;
+-					break;
++					split_huge_pmd(src_vma, src_pmd, src_addr);
++					/* The folio will be split by move_pages_pte() */
++					continue;
+ 				}
  
- 	dispc_init_errata(dispc);
- 
-+	dispc->clk_ctrl = syscon_regmap_lookup_by_phandle_optional(tidss->dev->of_node,
-+								   "ti,clk-ctrl");
-+	if (IS_ERR(dispc->clk_ctrl)) {
-+		r = dev_err_probe(dispc->dev, PTR_ERR(dispc->clk_ctrl),
-+				  "DISPC: syscon_regmap_lookup_by_phandle failed.\n");
-+		return r;
-+	}
-+
- 	dispc->fourccs = devm_kcalloc(dev, ARRAY_SIZE(dispc_color_formats),
- 				      sizeof(*dispc->fourccs), GFP_KERNEL);
- 	if (!dispc->fourccs)
++				err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
++							  dst_pmdval, dst_vma, src_vma,
++							  dst_addr, src_addr);
++			} else {
++				/* nothing to do to move a hole */
+ 				spin_unlock(ptl);
+-				split_huge_pmd(src_vma, src_pmd, src_addr);
+-				/* The folio will be split by move_pages_pte() */
+-				continue;
++				err = 0;
+ 			}
+-
+-			err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
+-						  dst_pmdval, dst_vma, src_vma,
+-						  dst_addr, src_addr);
+ 			step_size = HPAGE_PMD_SIZE;
+ 		} else {
+ 			if (pmd_none(*src_pmd)) {
 
+base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
 -- 
-2.50.1
+2.50.1.552.g942d659e1b-goog
 
 
