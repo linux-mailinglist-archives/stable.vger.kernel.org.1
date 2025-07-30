@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-165321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F3BB15CB0
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6436B15C1E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CADCA3BCCB6
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C056C18C3091
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A8C293C4B;
-	Wed, 30 Jul 2025 09:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D2729008F;
+	Wed, 30 Jul 2025 09:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRaGNSKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PacikRy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CAD273D95;
-	Wed, 30 Jul 2025 09:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631621F1306;
+	Wed, 30 Jul 2025 09:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868665; cv=none; b=HFwq0fswRezrKSm0zh5mIgcnH3kgtdRk0SRyj0MEPtqUIVETXZ5NE+r9Cx9Qzby7ajB3y8VBkk88eVKTaerusIM5aRCS/QUUprNN5bD2NMneS9AXCZb8CawBeNm6jUiGRNBgcsmCn4ltLAtnGj8w/6w8LaOvyL2rBUBBLhY3mAY=
+	t=1753868276; cv=none; b=rbYfQV6BVZa+yCAB0LJfJWfsP3QO0se8MVvXN9sFHptrQO47J4HfwBleM3nF8caAQA5pfYDPv3i2+3P+jTodW/ZEIjDzuf2BUOUxEenlSIrimDyQ/wAwZscUm0DfBBln7EtPJsplI/gB+XLRj26JncLJl+Z2gDU1QyOJ9lYugos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868665; c=relaxed/simple;
-	bh=AOBkB7IJmy0ZTGnjEP+0OUm/krOIpylGtKQipeHju1I=;
+	s=arc-20240116; t=1753868276; c=relaxed/simple;
+	bh=iWjPBoHL27Ot6AKUZWnq9dknp3EP/IPd5eHQErVggLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSVvtLTvXFqkxFKIBT3CU09MLIS5aZsQ2lY9JDyE8zfOCXHv9j5x89QXMv2v4XdQMgwSL4ygCu5PdDNfUa6OiQ9ggatCvdmXvymqFJjIdD89f/gjRYKaebcUJe7grdYWi+R7w6PcUV6RdQdq9ZGXCK5ZR5PnjmEEVK4Lt4jm4ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRaGNSKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B27C4CEE7;
-	Wed, 30 Jul 2025 09:44:24 +0000 (UTC)
+	 MIME-Version; b=dO6TVzCVkM2BRKaRths67B4CGtJ3B7ubk5qKkfEzZ+YbpDuhLcz7gX/r/7G0mlJ1JuJJalG+aqHa5WM1cS5+kNsK7Eh40c5VYH6KBHvB0cKbl9HzuMcg/RD38XywinrN3sprK16yhEU+JD6nrbP81EhqN33wcNE3WdRN/AblI+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PacikRy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7C8C4CEE7;
+	Wed, 30 Jul 2025 09:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868665;
-	bh=AOBkB7IJmy0ZTGnjEP+0OUm/krOIpylGtKQipeHju1I=;
+	s=korg; t=1753868276;
+	bh=iWjPBoHL27Ot6AKUZWnq9dknp3EP/IPd5eHQErVggLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRaGNSKj5F//xzxad2tzbuHXZMtNjygP4ZHQlhz3PTEhOcLfYykpjwr32QglOZga4
-	 skE1Eyc7qYzS8jslG5gZEtSMb9Az8zxw1PFFJEC7G+nMywfFnay5hva5T5PPQHv74Q
-	 cEoYmmiq92mWz/SR+VZr1UtqRgFR4IniTCja6lX0=
+	b=PacikRy8bea5mzMSSLWtUg0cT0d18xGblf5rcjJ4XxFaYcy3o4Yb9npknq7qLDDyU
+	 iYNjr2vP18LY8bebrh/fNzBI4fLeMjJFkJR9W8iHRomRs/BoSLks670b9kKAvKvpWH
+	 c2h58bLUErvelz/n4Uqeju0tuCGZKwRrzcURZaSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 046/117] i2c: qup: jump out of the loop in case of timeout
+	kernel test robot <lkp@intel.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 22/76] drm/bridge: ti-sn65dsi86: Remove extra semicolon in ti_sn_bridge_probe()
 Date: Wed, 30 Jul 2025 11:35:15 +0200
-Message-ID: <20250730093235.347799509@linuxfoundation.org>
+Message-ID: <20250730093227.706523384@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Xiwen <forbidden405@outlook.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit a7982a14b3012527a9583d12525cd0dc9f8d8934 upstream.
+[ Upstream commit 15a7ca747d9538c2ad8b0c81dd4c1261e0736c82 ]
 
-Original logic only sets the return value but doesn't jump out of the
-loop if the bus is kept active by a client. This is not expected. A
-malicious or buggy i2c client can hang the kernel in this case and
-should be avoided. This is observed during a long time test with a
-PCA953x GPIO extender.
+As reported by the kernel test robot, a recent patch introduced an
+unnecessary semicolon. Remove it.
 
-Fix it by changing the logic to not only sets the return value, but also
-jumps out of the loop and return to the caller with -ETIMEDOUT.
-
-Fixes: fbfab1ab0658 ("i2c: qup: reorganization of driver code to remove polling for qup v1")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
-Cc: <stable@vger.kernel.org> # v4.17+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506301704.0SBj6ply-lkp@intel.com/
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250714130631.1.I1cfae3222e344a3b3c770d079ee6b6f7f3b5d636@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qup.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-qup.c
-+++ b/drivers/i2c/busses/i2c-qup.c
-@@ -452,8 +452,10 @@ static int qup_i2c_bus_active(struct qup
- 		if (!(status & I2C_STATUS_BUS_ACTIVE))
- 			break;
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index 002f8aaa509bc..59cbff209acd6 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -1352,7 +1352,7 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 			regmap_update_bits(pdata->regmap, SN_HPD_DISABLE_REG,
+ 					   HPD_DISABLE, 0);
+ 		mutex_unlock(&pdata->comms_mutex);
+-	};
++	}
  
--		if (time_after(jiffies, timeout))
-+		if (time_after(jiffies, timeout)) {
- 			ret = -ETIMEDOUT;
-+			break;
-+		}
+ 	drm_bridge_add(&pdata->bridge);
  
- 		usleep_range(len, len * 2);
- 	}
+-- 
+2.39.5
+
 
 
 
