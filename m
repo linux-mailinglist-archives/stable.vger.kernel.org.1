@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-165218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7241B15C27
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:39:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B198B15C1A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE2D5A4C99
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F44816A88C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3AB291880;
-	Wed, 30 Jul 2025 09:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F067C28469A;
+	Wed, 30 Jul 2025 09:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uK8zDft4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syf3zmws"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B9726C396;
-	Wed, 30 Jul 2025 09:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE32126C396;
+	Wed, 30 Jul 2025 09:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868260; cv=none; b=qJa2/h9AY9PWxggW5C75PsQQqGwvRDeq3dwRqTCc9z4KIgYAZPGuvldjKIugtwDuYAG83IT9GN7b5iEALj7SHxefSW2eczow7R+guYgNnWujustD5uRz/k5dcSFxwnnxGB2cWz9lG/3jecIxe3Onqx/LBYnvqePWVydEa9mKR4w=
+	t=1753868283; cv=none; b=NEk7FNp3UdfFwI8gVnNhC9UwAfEsPcqd/9+szc+qvT1nM6q/IOmfr8ByHiRUjCFCYcwM1ipQ7YQod29ajixQGUyWwuG5Nrvf3E/IZGtRtn9VSEavhQcVSSSho9a+OueS8vZSSaaJSjHQ+gTNQTcW6yYLQAusdvNTIWXvX43SdUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868260; c=relaxed/simple;
-	bh=pbwz/30dYhQBslUUCAHs6ilLwTRci2xjmZYJahWdZgY=;
+	s=arc-20240116; t=1753868283; c=relaxed/simple;
+	bh=R0C7QC088vFjnsmiOQnYVb2XYL71UagoWVFoh11vkG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZizFEcQfQ1KY5lX4ouY5ghFg8VOvQK5s0AtMhJua6E/V+8e560DR7qZhCte4vKnoVkStJOat23d23LP4IUpInEl8r4cd8paq6Jyo47F6DwqmYigbRtrEFiJF+WPBTKnvrbQEVxC7sHuqyHsepfNN11VyMbsc+BscVlmJiD9mDc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uK8zDft4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6E2C4CEF8;
-	Wed, 30 Jul 2025 09:37:39 +0000 (UTC)
+	 MIME-Version; b=J7uEwPzrIfEvEnKCYsyzYI7ScErEmIXMnW+LerAytXc8rTbpt7BCE95hVEtjoXXipzDK2lPi28PGFTApZqRkMJc1JAY5P4e2bFExUeiDbkpwk9yDpE7rnlc5MQV8SNh9A9TUa2jOc3iKVfLuSv8DkP3WnYDRprWijXK98Bigq6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syf3zmws; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A38C4CEE7;
+	Wed, 30 Jul 2025 09:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868260;
-	bh=pbwz/30dYhQBslUUCAHs6ilLwTRci2xjmZYJahWdZgY=;
+	s=korg; t=1753868283;
+	bh=R0C7QC088vFjnsmiOQnYVb2XYL71UagoWVFoh11vkG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uK8zDft4syS4hmE9Tn+HmMx4mPgVUPtzCqhEI393ht9asbflz4Pn9VmPf1M39Tvae
-	 YmMqI6hSjI4quURt7nqWzd08lhKlX2WsJeiPynQtMyvC55gIb1bY3hRAJkE25S/LDo
-	 Q5UH8QKGHHBQd4ieSQAz/6QKjf0Fg0+2Ejuk4zo8=
+	b=syf3zmwsinR+joR72b8xoHSEIa7yp3Gl2y8soIY778vsXnprpnTJBD9dtCFPlCy5G
+	 XRkt1PEcxK8waNXnb3JApkcDrFfQOGRprV8kd5MoMplF/Dp5SG/J8bUec4WtE0N4CS
+	 tWmNgrfYK0z008ie3nG0BT99VNyV7h2e04PFwxUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xuanzhuo@linux.alibaba.com,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alessandro Carminati <acarmina@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 02/76] virtio_ring: Fix error reporting in virtqueue_resize
-Date: Wed, 30 Jul 2025 11:34:55 +0200
-Message-ID: <20250730093226.951409619@linuxfoundation.org>
+Subject: [PATCH 6.6 03/76] regulator: core: fix NULL dereference on unbind due to stale coupling data
+Date: Wed, 30 Jul 2025 11:34:56 +0200
+Message-ID: <20250730093226.991355236@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
 References: <20250730093226.854413920@linuxfoundation.org>
@@ -70,64 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Alessandro Carminati <acarmina@redhat.com>
 
-[ Upstream commit 45ebc7e6c125ce93d2ddf82cd5bea20121bb0258 ]
+[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
 
-The virtqueue_resize() function was not correctly propagating error codes
-from its internal resize helper functions, specifically
-virtqueue_resize_packet() and virtqueue_resize_split(). If these helpers
-returned an error, but the subsequent call to virtqueue_enable_after_reset()
-succeeded, the original error from the resize operation would be masked.
-Consequently, virtqueue_resize() could incorrectly report success to its
-caller despite an underlying resize failure.
+Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
+lead to NULL pointer dereference when regulators are accessed post-unbind.
 
-This change restores the original code behavior:
+This can happen during runtime PM or other regulator operations that rely
+on coupling metadata.
 
-       if (vdev->config->enable_vq_after_reset(_vq))
-               return -EBUSY;
+For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
+a panic in regulator_lock_recursive() due to stale coupling state.
 
-       return err;
+Ensure n_coupled is set to 0 to prevent access to invalid pointers.
 
-Fix: commit ad48d53b5b3f ("virtio_ring: separate the logic of reset/enable from virtqueue_resize")
-Cc: xuanzhuo@linux.alibaba.com
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20250521092236.661410-2-lvivier@redhat.com
-Tested-by: Lei Yang <leiyang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
+Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_ring.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/regulator/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index c5f04234d9511..db4582687b958 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -2739,7 +2739,7 @@ int virtqueue_resize(struct virtqueue *_vq, u32 num,
- 		     void (*recycle)(struct virtqueue *vq, void *buf))
- {
- 	struct vring_virtqueue *vq = to_vvq(_vq);
--	int err;
-+	int err, err_reset;
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index d2e21dc61dd7d..1d49612eeb7e5 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -5422,6 +5422,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
+ 				 ERR_PTR(err));
+ 	}
  
- 	if (num > vq->vq.num_max)
- 		return -E2BIG;
-@@ -2759,7 +2759,11 @@ int virtqueue_resize(struct virtqueue *_vq, u32 num,
- 	else
- 		err = virtqueue_resize_split(_vq, num);
- 
--	return virtqueue_enable_after_reset(_vq);
-+	err_reset = virtqueue_enable_after_reset(_vq);
-+	if (err_reset)
-+		return err_reset;
-+
-+	return err;
++	rdev->coupling_desc.n_coupled = 0;
+ 	kfree(rdev->coupling_desc.coupled_rdevs);
+ 	rdev->coupling_desc.coupled_rdevs = NULL;
  }
- EXPORT_SYMBOL_GPL(virtqueue_resize);
- 
 -- 
 2.39.5
 
