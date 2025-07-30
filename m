@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-165300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAA8B15C7B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:43:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66D0B15C0E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F038A547755
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:43:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D0D3BED84
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4484E2698BF;
-	Wed, 30 Jul 2025 09:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CB8279DAD;
+	Wed, 30 Jul 2025 09:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeIHlhDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViSUshSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037E923D2A2;
-	Wed, 30 Jul 2025 09:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA51F26D4F9;
+	Wed, 30 Jul 2025 09:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868589; cv=none; b=evj3fDJj39RxjJVf838Cv+A1z/u/btK75xNGWduY6B71qdphtNrmyVK4mrjiqigJ3pgeVKeNFrltKTUGTH9XbyxXYg5upvgAS9LSxBFZE/Su43C9d0sjAdzwYd7R6Bv+P14y8DNBqXphNKgyl7MWcYmjNNtG6uSx/NYIGPob0wk=
+	t=1753868217; cv=none; b=MTQUjJk1f8SEB3o9va125f/ZAbGdhny41e7yxzTirDHISlQduTBPCP4eRf0iCJVvE6hSBLLsurQyJZgvZhZ86LzgZxIDz2GS1S60DQdnixnZLP2l5H/Ms8TyNXfxppD4Y/2mgly8631WBzLNfYGeDtU3lCWlKUPpox5ZrXo1m9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868589; c=relaxed/simple;
-	bh=CFnOKN+rUQVAwSCRUc7SVvpfvX9vVnR19+SFR4UeWxY=;
+	s=arc-20240116; t=1753868217; c=relaxed/simple;
+	bh=mYsTNTamxS5CCGcfl3/A8G8ax7dJTiOKL0HI1Rorgi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Js8gAAOxbAmJQ8rqwf2Kfa4H2fNeXT1A2LQe4mzDIQM2dtjWjPufJEgfxyObo+VORBU5NHor3Xxf+aBGI+uroJCQonNR5Av+zQSyHtAv0gUMaJc/7qlROWETGu+aj+Gh305cFzHE9A7JWFBqCzpiv3v+TxdfytwbFF5YDISlgqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeIHlhDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A90C4CEF5;
-	Wed, 30 Jul 2025 09:43:08 +0000 (UTC)
+	 MIME-Version; b=KyHy82YbXy3S2kf3DYpc+khEl2HeI6DvBhAGej4BXwipYwgzMphnWEHUklooRSadNeSNBxxd6sN2+Zxle7KluSKkYAC9l93j2ZwmN1ROyvqCaIYfnuXBgZmR+sOj4E/Edwv+nrrq2d9KiJtluV5vZcL5wVjQ5MJ8S+kHeHI9PpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViSUshSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A38C4CEE7;
+	Wed, 30 Jul 2025 09:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868588;
-	bh=CFnOKN+rUQVAwSCRUc7SVvpfvX9vVnR19+SFR4UeWxY=;
+	s=korg; t=1753868217;
+	bh=mYsTNTamxS5CCGcfl3/A8G8ax7dJTiOKL0HI1Rorgi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeIHlhDn/OctW46lJ2jiftWMrEePNYNUBCNlZtryLd+Jmpj0YW0qKSYC4c0qW2Q9N
-	 ratCoKokEY8sey/7+LUvQWjI7kkqq5ZSrHp+W5n9XhqKaNtMRVinsAiVUl8Ku2j/88
-	 wI8w8FwSQXYDH+3vc61ArthLfSQeDPtIEnTkDN2k=
+	b=ViSUshSdF1X9TPHFHiC/nRpnU0xaB3LWMHCldN8+jvhlEPuX/rfG894nT98x2Edd5
+	 lWqyusglRKETmtuytmyLZJxRcVc8VqKBoYyUVUx8oIG9+u1Ze4tVU5TyMUPqPAIw/u
+	 lKpS85iBcUuF0ODXdrKLS+sUYM07fdP6FWdnFOk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Tereshkin <atereshkin@nvidia.com>,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/117] net/mlx5: Fix memory leak in cmd_exec()
-Date: Wed, 30 Jul 2025 11:34:53 +0200
-Message-ID: <20250730093234.514260252@linuxfoundation.org>
+Subject: [PATCH 6.6 01/76] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
+Date: Wed, 30 Jul 2025 11:34:54 +0200
+Message-ID: <20250730093226.912243258@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,52 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-[ Upstream commit 3afa3ae3db52e3c216d77bd5907a5a86833806cc ]
+commit f4a8f561d08e39f7833d4a278ebfb12a41eef15f upstream.
 
-If cmd_exec() is called with callback and mlx5_cmd_invoke() returns an
-error, resources allocated in cmd_exec() will not be freed.
+When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
+hard irq context, but the input_event() takes a spin_lock, which isn't
+allowed there as it is converted to a rt_spin_lock().
 
-Fix the code to release the resources if mlx5_cmd_invoke() returns an
-error.
+[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
+...
+[ 4054.290195]  __might_resched+0x13c/0x1f4
+[ 4054.290209]  rt_spin_lock+0x54/0x11c
+[ 4054.290219]  input_event+0x48/0x80
+[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
+[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
+[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
+[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
+[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
+[ 4054.290297]  handle_irq_desc+0x40/0x58
+[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
+[ 4054.290316]  gic_handle_irq+0x44/0xcc
 
-Fixes: f086470122d5 ("net/mlx5: cmdif, Return value improvements")
-Reported-by: Alex Tereshkin <atereshkin@nvidia.com>
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1752753970-261832-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
+be threaded, it seems there's no point in requesting the timer isr to
+run in hard irq context.
+
+Relax the hrtimer not to use the hard context.
+
+Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[ adjusted context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 4 ++--
+ drivers/input/keyboard/gpio_keys.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index e733b81e18a21..5bb4940da59d4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1925,8 +1925,8 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -495,7 +495,7 @@ static irqreturn_t gpio_keys_irq_isr(int
+ 	if (bdata->release_delay)
+ 		hrtimer_start(&bdata->release_timer,
+ 			      ms_to_ktime(bdata->release_delay),
+-			      HRTIMER_MODE_REL_HARD);
++			      HRTIMER_MODE_REL);
+ out:
+ 	spin_unlock_irqrestore(&bdata->lock, flags);
+ 	return IRQ_HANDLED;
+@@ -632,7 +632,7 @@ static int gpio_keys_setup_key(struct pl
  
- 	err = mlx5_cmd_invoke(dev, inb, outb, out, out_size, callback, context,
- 			      pages_queue, token, force_polling);
--	if (callback)
--		return err;
-+	if (callback && !err)
-+		return 0;
+ 		bdata->release_delay = button->debounce_interval;
+ 		hrtimer_init(&bdata->release_timer,
+-			     CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
++			     CLOCK_REALTIME, HRTIMER_MODE_REL);
+ 		bdata->release_timer.function = gpio_keys_irq_timer;
  
- 	if (err > 0) /* Failed in FW, command didn't execute */
- 		err = deliv_status_to_err(err);
--- 
-2.39.5
-
+ 		isr = gpio_keys_irq_isr;
 
 
 
