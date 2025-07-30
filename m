@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-165449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B08DB15D68
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C8FB15CE6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C4615A4A53
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8009E169CAB
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028AB292B50;
-	Wed, 30 Jul 2025 09:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C7D293462;
+	Wed, 30 Jul 2025 09:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prkpgkkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOA74C4R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D4A28ECC4;
-	Wed, 30 Jul 2025 09:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EE8277CBA;
+	Wed, 30 Jul 2025 09:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869174; cv=none; b=fvedyfX646fStZwaUlDWCER9Q1K8xklAdHo2wXpXkPqhFvI1VLmdz+0j7onHGHEZjCyycwPJaa8msBURMDhOpxLHrlmjSEJv+QSq6VPi8zAng67yWVtlGwdF+fJu0K/CyafFvNAGTBlzYXXbPjGIuWD9mMVwQio4KvoLnJsGFLs=
+	t=1753868860; cv=none; b=lNQzqboEEg42n4wV45rW3ctl8r5XsKyrwVvhMYSrkBs5JJPJrRYa/Qfe1V+RAb0tWlX9KUdAqjj8D3pYex+HvLQ3EvwV5bT8ulzsxG/LYQsw4ItQ7gU82vLngYppVZ1vf7o/NuwRJsGfOxTNnsxmdeIEM28+Y46W4FNQa8FtVmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869174; c=relaxed/simple;
-	bh=P+DACpmm4LTIvF1NkjICUF1ydZY5IuNNgoGEvro8ebA=;
+	s=arc-20240116; t=1753868860; c=relaxed/simple;
+	bh=ZMZbMk8w6mYf5NySIfEH+JHqry24vZRydenO5yXWQhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uieYA2uAybdcNgDbj1j4PgfK4UzXsVI2xk8ASi0Cvj65QSk+HL3FHBAP5B/iPNyBqlCPxofPXNHJrmIxxz00ZkxQOuRaL9ngUEiehRD55w5lV2bc84x1hdZ8jSX2/sa7plVQrtpiL4YzdXOrZSBqygArtGOxf4l9Gx8203jiByI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prkpgkkm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F92C4CEF5;
-	Wed, 30 Jul 2025 09:52:53 +0000 (UTC)
+	 MIME-Version; b=ZzxBXbfoSWwrHFF/dgeVgaeWNyHXolz7B7A+6B2ZNKEdH1LPjgXKlqOKiHiiPBCZtVmck4YBDC6dfwA933cEL++jYlWmpbya44D6gg3ofdms1qbvu6YRfgz0/F780ZDXHy4vpTiYqhHUTkdvQT9tA1nker/z9sIoiW2nKloBIiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOA74C4R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A419C4CEF5;
+	Wed, 30 Jul 2025 09:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869174;
-	bh=P+DACpmm4LTIvF1NkjICUF1ydZY5IuNNgoGEvro8ebA=;
+	s=korg; t=1753868859;
+	bh=ZMZbMk8w6mYf5NySIfEH+JHqry24vZRydenO5yXWQhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prkpgkkmIfqhN8n6y8abOBaS0A2mce7v4jQV71Rb9tNxyuwx+EiGfDgjWLG3ic2Wx
-	 V4owaeuj+P/+9/nAlTM2iMyzhzzIy7MXBEb8YCy5WMJt+myoGNaBlDSJUQHJmytlQS
-	 blmg4H38VxXXG05a1anHS0cJGy97pFyrQ41QKVPw=
+	b=TOA74C4RyXL7z6bK+OFgfG9it530LoXdNCwzx8mpysikiQagtoVwIjfT9xPIrBV6n
+	 lnm/DyAqUgKFjS5wjaBg9sWwsgvH/JeO8Mm3FY0itnI4U/FKGCaTzGm0b9+55dl6RD
+	 n5FQqd+UVEsKY3sXMlR3iPmjAMIaNLw+0wkMT9sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Markus=20Bl=C3=B6chl?= <markus@blochl.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>
-Subject: [PATCH 6.15 55/92] timekeeping: Zero initialize system_counterval when querying time from phc drivers
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 094/117] ext4: correct the error handle in ext4_fallocate()
 Date: Wed, 30 Jul 2025 11:36:03 +0200
-Message-ID: <20250730093232.878176395@linuxfoundation.org>
+Message-ID: <20250730093237.449923308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Blöchl <markus@blochl.de>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 67c632b4a7fbd6b76a08b86f4950f0f84de93439 upstream.
+[ Upstream commit 129245cfbd6d79c6d603f357f428010ccc0f0ee7 ]
 
-Most drivers only populate the fields cycles and cs_id of system_counterval
-in their get_time_fn() callback for get_device_system_crosststamp(), unless
-they explicitly provide nanosecond values.
+The error out label of file_modified() should be out_inode_lock in
+ext4_fallocate().
 
-When the use_nsecs field was added to struct system_counterval, most
-drivers did not care.  Clock sources other than CSID_GENERIC could then get
-converted in convert_base_to_cs() based on an uninitialized use_nsecs field,
-which usually results in -EINVAL during the following range check.
-
-Pass in a fully zero initialized system_counterval_t to cure that.
-
-Fixes: 6b2e29977518 ("timekeeping: Provide infrastructure for converting to/from a base clock")
-Signed-off-by: Markus Blöchl <markus@blochl.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <jstultz@google.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250720-timekeeping_uninit_crossts-v2-1-f513c885b7c2@blochl.de
+Fixes: 2890e5e0f49e ("ext4: move out common parts into ext4_fallocate()")
+Reported-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250319023557.2785018-1-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timekeeping.c |    2 +-
+ fs/ext4/extents.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -1256,7 +1256,7 @@ int get_device_system_crosststamp(int (*
- 				  struct system_time_snapshot *history_begin,
- 				  struct system_device_crosststamp *xtstamp)
- {
--	struct system_counterval_t system_counterval;
-+	struct system_counterval_t system_counterval = {};
- 	struct timekeeper *tk = &tk_core.timekeeper;
- 	u64 cycles, now, interval_start;
- 	unsigned int clock_was_set_seq = 0;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4745,7 +4745,7 @@ long ext4_fallocate(struct file *file, i
+ 
+ 	ret = file_modified(file);
+ 	if (ret)
+-		return ret;
++		goto out_inode_lock;
+ 
+ 	if ((mode & FALLOC_FL_MODE_MASK) == FALLOC_FL_ALLOCATE_RANGE) {
+ 		ret = ext4_do_fallocate(file, offset, len, mode);
 
 
 
