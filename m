@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-165241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BB1B15C40
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AF6B15D36
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC42E3AFB30
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 214D25A543C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699D4267F61;
-	Wed, 30 Jul 2025 09:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E705292B48;
+	Wed, 30 Jul 2025 09:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9l8JIZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzmGC5o/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C0119D065;
-	Wed, 30 Jul 2025 09:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADB9273D95;
+	Wed, 30 Jul 2025 09:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868352; cv=none; b=q6WXD49LuZVLMoc78v/zfDtWXHyDucXX4g1m3gHuuisATCD9XDyN3EMV5LuCSh6++T+H2mamH1R/f6Sq5kRwv9hrSnergL8saHbK0Jo+qlHZ66LsnWEqazbY/S9tSN414bY2ko6EJR9cuextXQA+/l1fsnreuhxx11gHV9Hdv4I=
+	t=1753869070; cv=none; b=Uys8Gow9ySNTJu56zmC3cQkoXOm68ruED0wpSP5yqcS1ZPeGj0JR4esw225UFfBnZOMShzm5K+I0hm9d9hBtNjyvfl7L1SEy5aRqnrJTlhbhKY4WCIyKtQiQgXEOrqhgXW5H2jaMpOA29vobCWwQgiaz7MXDzVGtIcmpRqBrcao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868352; c=relaxed/simple;
-	bh=ohAo/zbUOmDiNPNH8KeM2dCk6UZ/0mlrbiujMbIruuY=;
+	s=arc-20240116; t=1753869070; c=relaxed/simple;
+	bh=93C0myd6nPYgm3yUJLTvahQUEBbMjECZmTSgj4fTX5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrt435N3WE+abwCx7LZNkfjyr8aoh3dD/gDXEf720wEq00nUx4qZMNEHzzr6GUblgO+l/Nvq+qFcYoJAMdQTa5NlpoKl4p/Fcbr++gxw/iKarwApf2yyGDz5+KJZgg5ChbWCO65zvosfvoD4ZJvnVb8NJd31fhGVgXgIQ5QMN5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9l8JIZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA74C4CEE7;
-	Wed, 30 Jul 2025 09:39:11 +0000 (UTC)
+	 MIME-Version; b=t6+2TCQCGcW3xq1YLfD1lqed+9jU2Sl/fBnlUe596M9HMO1ji3hpqyiafgdXJMcXBfLdLrq2DnBe5iFQK3USWSk7viZaDM/U129b9A6/lfcSM8xFXAxfSwWHYt07SSb7MZSUaVCA3icr8cvWnt+CIaD2erJotIopcyXV97mQKr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzmGC5o/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5989FC4CEF8;
+	Wed, 30 Jul 2025 09:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868352;
-	bh=ohAo/zbUOmDiNPNH8KeM2dCk6UZ/0mlrbiujMbIruuY=;
+	s=korg; t=1753869069;
+	bh=93C0myd6nPYgm3yUJLTvahQUEBbMjECZmTSgj4fTX5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9l8JIZfoYf4NSDs0sxPTkyf39p02oF88HkPmNwREyvjybFMnCrs0g484WLHw9F7Y
-	 Nx8xE76JkYk+irQ8c+lEBChdDKN3L9xaZtZxo/z/mWeOCmZsb2mFqQaE6cyDXXtw7e
-	 QfHHVPM560ODrpbNU48Uzt8aNPxs9Zp4Ovyb9BZY=
+	b=FzmGC5o/A/qvya0+oyaNZM7j4HX2jSatJynp/Tz+4ZY8XIfXWwQwdMb+NTnvpPC+t
+	 KMsOhtblTNyWJeFv1qaxD3FAme9E+gVNMj6V+JUlnTVAUo/OZQVkuIGbC7x87YFZZH
+	 nCROEL/yKfhBTKEa0HArqC2c2z/+3NjSM//WRxqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 43/76] nilfs2: reject invalid file types when reading inodes
+	Alex Tereshkin <atereshkin@nvidia.com>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 28/92] net/mlx5: Fix memory leak in cmd_exec()
 Date: Wed, 30 Jul 2025 11:35:36 +0200
-Message-ID: <20250730093228.506188643@linuxfoundation.org>
+Message-ID: <20250730093231.846004610@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +67,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-commit 4aead50caf67e01020c8be1945c3201e8a972a27 upstream.
+[ Upstream commit 3afa3ae3db52e3c216d77bd5907a5a86833806cc ]
 
-To prevent inodes with invalid file types from tripping through the vfs
-and causing malfunctions or assertion failures, add a missing sanity check
-when reading an inode from a block device.  If the file type is not valid,
-treat it as a filesystem error.
+If cmd_exec() is called with callback and mlx5_cmd_invoke() returns an
+error, resources allocated in cmd_exec() will not be freed.
 
-Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
-Fixes: 05fe58fdc10d ("nilfs2: inode operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the code to release the resources if mlx5_cmd_invoke() returns an
+error.
+
+Fixes: f086470122d5 ("net/mlx5: cmdif, Return value improvements")
+Reported-by: Alex Tereshkin <atereshkin@nvidia.com>
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1752753970-261832-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/inode.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -517,11 +517,18 @@ static int __nilfs_read_inode(struct sup
- 		inode->i_op = &nilfs_symlink_inode_operations;
- 		inode_nohighmem(inode);
- 		inode->i_mapping->a_ops = &nilfs_aops;
--	} else {
-+	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
-+		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
- 		inode->i_op = &nilfs_special_inode_operations;
- 		init_special_inode(
- 			inode, inode->i_mode,
- 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
-+	} else {
-+		nilfs_error(sb,
-+			    "invalid file type bits in mode 0%o for inode %lu",
-+			    inode->i_mode, ino);
-+		err = -EIO;
-+		goto failed_unmap;
- 	}
- 	nilfs_ifile_unmap_inode(root->ifile, ino, bh);
- 	brelse(bh);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index e53dbdc0a7a17..34256ce5473ba 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -1948,8 +1948,8 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+ 
+ 	err = mlx5_cmd_invoke(dev, inb, outb, out, out_size, callback, context,
+ 			      pages_queue, token, force_polling);
+-	if (callback)
+-		return err;
++	if (callback && !err)
++		return 0;
+ 
+ 	if (err > 0) /* Failed in FW, command didn't execute */
+ 		err = deliv_status_to_err(err);
+-- 
+2.39.5
+
 
 
 
