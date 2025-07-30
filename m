@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-165248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8FBB15C4F
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F571B15CD4
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E83B05A4D6B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:39:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 550683AB9CB
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC39167DB7;
-	Wed, 30 Jul 2025 09:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF7D2877F9;
+	Wed, 30 Jul 2025 09:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIXxIO6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zo73KoDL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED82620E6;
-	Wed, 30 Jul 2025 09:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B53A270ED4;
+	Wed, 30 Jul 2025 09:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868387; cv=none; b=fbI9RqmQI4PQ2Cb7hxTvXTpjNwfJdb3/nueatg3vs6nRM97pFn3/Rb2n1N0uMcUtmR6javlf8aMZSJ5yozzNBSF8TQbkxuZHx76u24Onw7paAIpUF25/MQertmmcQMlPAWClKw1Wh0HVg/t0NEyhiYtNbTlaa3wxy8HtUwFJo/I=
+	t=1753868782; cv=none; b=IPYBQ/zUMltM7BUXcgC8oJznErXTLoHYK4NvNqtKOPYgfcm2Rxu7DqRw/Hgk8LB+35RXYjKcb2KmC2GyiMJ9AFFu2Hjvd+4IS6SnN7cz4hKlf45SZGzT8XbTovfjJ+Tn9gJ2Hdk0TP6GoNYLbLlSoAuU5KQWeaCTyB3je7XrpOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868387; c=relaxed/simple;
-	bh=7FGmBXUgcnVH5lj28wajGeyaKa7OEE1124Xl87OJEy0=;
+	s=arc-20240116; t=1753868782; c=relaxed/simple;
+	bh=Ni7++IXiHaq5UzlAjeLDx7elOfcxz5DtncjkC9SQakA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iy4oKCiWiGvg+vJnVXpLrjwv3il7RoXF1b1G3pNqSWFNkXwHQEacZRlWgI7Qe7EHGZ4Ev6H0CH9s84cqJkzZy0QbBepz+rD2/vNEo1iXt4Tb+tnRgi37pT+e35qmG0s1bxVeUFinAkIByWcJGFIVpmoAspAqGy5CpAWqC3lr4sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIXxIO6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1913C4CEE7;
-	Wed, 30 Jul 2025 09:39:43 +0000 (UTC)
+	 MIME-Version; b=KR1DjBENnWXbw3UvJOWjTrYWaogkq2cQc/dNsNr6EAjO43VyKl0VI/SzJNU0jU9lfBwvnZxub5x+N/Dl0+ruQw+6Pyils41EbfWgf9691SlKV+hBmYAFVyIXAhkQKEVZTnzsjieRSqkO3xt39jepwMq/BfKjYTK5RscSeLQdjc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zo73KoDL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49230C4CEF5;
+	Wed, 30 Jul 2025 09:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868386;
-	bh=7FGmBXUgcnVH5lj28wajGeyaKa7OEE1124Xl87OJEy0=;
+	s=korg; t=1753868780;
+	bh=Ni7++IXiHaq5UzlAjeLDx7elOfcxz5DtncjkC9SQakA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIXxIO6yIqhmIdGf03ET/gkU8NzkQZBWy6R3n/c5aaP57qxwvgjsP2LolQcuv0Br2
-	 vY8KIgZCGjFjVIG8oXYa46r2LedwMVd6xk8lEGZzlrkUnSlB53hTeVuuhWzhL3/psT
-	 UbWUJHDTUnFsnpzcpTH0WdJhq7oZf3LTsLR6j2FU=
+	b=Zo73KoDLqAYUJg++5HhtU8Vo7qLwdvnlLEbd1bxTIzZ5XT5weliuCYk+DbsSJ+RoY
+	 pMKTUO95WPpF4H8sQKiGDW5k9enBK98I9uuiP4zA2dDgnyEjKWWyyC4X3RP1+WUo07
+	 1aAczwwXcPrgySDzDBryPF/pDUFbsry6k2IjxAus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 49/76] usb: typec: tcpm: allow to use sink in accessory mode
+	Michael Zhivich <mzhivich@akamai.com>
+Subject: [PATCH 6.12 073/117] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
 Date: Wed, 30 Jul 2025 11:35:42 +0200
-Message-ID: <20250730093228.749935834@linuxfoundation.org>
+Message-ID: <20250730093236.377924666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Michael Zhivich <mzhivich@akamai.com>
 
-commit 64843d0ba96d3eae297025562111d57585273366 upstream.
+For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
+field in zen_patch_rev union on the stack may be garbage.  If so, it will
+prevent correct microcode check when consulting p.ucode_rev, resulting in
+incorrect mitigation selection.
 
-Since the function tcpm_acc_attach is not setting the data and role for
-for the sink case we extend it to check for it first.
+This is a stable-only fix.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-tcpm-v1-1-b99f44badce8@pengutronix.de
-Stable-dep-of: bec15191d523 ("usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
+Fixes: 7a0395f6607a5 ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/amd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3802,12 +3802,17 @@ static void tcpm_snk_detach(struct tcpm_
- static int tcpm_acc_attach(struct tcpm_port *port)
- {
- 	int ret;
-+	enum typec_role role;
-+	enum typec_data_role data;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -378,6 +378,8 @@ static bool amd_check_tsa_microcode(void
+ 	p.model		= c->x86_model;
+ 	p.ext_model	= c->x86_model >> 4;
+ 	p.stepping	= c->x86_stepping;
++	/* reserved bits are expected to be 0 in test below */
++	p.__reserved	= 0;
  
- 	if (port->attached)
- 		return 0;
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SOURCE,
--			     tcpm_data_role_for_source(port));
-+	role = tcpm_port_is_sink(port) ? TYPEC_SINK : TYPEC_SOURCE;
-+	data = tcpm_port_is_sink(port) ? tcpm_data_role_for_sink(port)
-+				       : tcpm_data_role_for_source(port);
-+
-+	ret = tcpm_set_roles(port, true, role, data);
- 	if (ret < 0)
- 		return ret;
- 
+ 	if (cpu_has(c, X86_FEATURE_ZEN3) ||
+ 	    cpu_has(c, X86_FEATURE_ZEN4)) {
 
 
 
