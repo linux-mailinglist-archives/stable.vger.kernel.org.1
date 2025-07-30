@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-165543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9626B16478
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 18:18:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED77B1647C
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 18:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5861564BDE
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:14:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B4656555B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 16:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79952DE6E7;
-	Wed, 30 Jul 2025 16:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928E02DE6EA;
+	Wed, 30 Jul 2025 16:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=nicusor.huhulea@siemens.com header.b="iIaJRT+c"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=nicusor.huhulea@siemens.com header.b="OQnyxUHD"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-64-228.siemens.flowmailer.net (mta-64-228.siemens.flowmailer.net [185.136.64.228])
+Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1A52DAFA9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2A82DE216
 	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 16:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753892004; cv=none; b=IgIBISX4B8PBgHPAzkSsS5otxpDZ5KVfmWxVjJXBNXR9MwgV2rMZLoVQaD2ZgdN8KXT0M7O/2vEjGB3rVKJhh5JyUaKMBH/MCmsJ9UPJ87855YJuCPI8RqscX65n9je30tw63ZQau2xl5jWVtOme7q/FduUtUPirhcZ/8cP4uxc=
+	t=1753892005; cv=none; b=Gm09wTXrGuTX/GGjOPnm68JwIQ9qJAgw8KxLJq8ipdvQlVTan7GxX17yslQmhAxv5+SRb+M8R1zVgF7K1NZcZw+KhZzHflnm8PDS838v80m3Qo62kqRP/firlQNBpdBofAFcakiSrvX5LVTZsMeCESuAIe95Fe1EPf8N9T9JgxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753892004; c=relaxed/simple;
-	bh=WXCnWgnITYQQ3SzA6kUiqvbTKy1ZnO7jKbuB+/feJ0Q=;
+	s=arc-20240116; t=1753892005; c=relaxed/simple;
+	bh=+CbQzN6Fvf7hKFsLQ/AE4SPgFBKtJMP3wqf2Q7cYuFo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rRA9PN+yVDQTfSXlFjuvIZfd+GMP2doQBtpBWO4q/LKtQiVpcGUs4Aarexbld2qXLAgnnIjw1JBu/TJ3YUR2u5PofrXmi5QRAtg7wePipvZDP/MMql2YTs1R+BOs9eK8QASZYOeUhmc5PgVA3+zLbtqqQ8VLRm7/QkDOi+5SUR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=nicusor.huhulea@siemens.com header.b=iIaJRT+c; arc=none smtp.client-ip=185.136.64.228
+	 MIME-Version; b=U38E9CDNTIu6kD4TrU4SW5jlAlgFlTowkqMmfRHGqo6V0UN5DD6EFtiWAeSNGFPZXhqAvgvXUKttPikKIyrZgJAKHMv671JfCCzVd3UECqNRPm6Cqxw90NEggwURfeoDi5q7k/dEudv0LajexewjIEIzvKgSWnZKxWuNRLumfms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=nicusor.huhulea@siemens.com header.b=OQnyxUHD; arc=none smtp.client-ip=185.136.64.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id 20250730161314963f49c62ea0138602
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 20250730161315a0c6888443cec2d34f
         for <stable@vger.kernel.org>;
-        Wed, 30 Jul 2025 18:13:14 +0200
+        Wed, 30 Jul 2025 18:13:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
  d=siemens.com; i=nicusor.huhulea@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=/FpSd6XrEiDlegW7TGUbZc+yNUb5v89AQii/650dub8=;
- b=iIaJRT+ccdwMSxtQ0LahuNcmrmJLW+d2XTD3d4FczQ11pSmyFkOSt4wZ/ax2EwnSCCS+ob
- L9oP7O5DwVwfuFyzO2w4CzWDoOr147DQqywYz/KnG/8KrI1ghYlq8p+dHQsE9GFGSwsRlxQn
- 1Xjv69PVnzY1CXcH/uSsXFXk3m4J7le1hArDXgwR6Z4xqSLNe2SMkNvMWB0m75ZsGX8SADHR
- QR82HglZUd6fW8g0DVAf7/6p6zYWzlBkoH99WbCE2LFWf2ozRKEZaCcA3ilvhrk2zg7ky7B3
- BsNN8tgZktek7TtfGc6cfey+CAJA2OHfONnJ9eMrlNjl90sn6dwI4ocA==;
+ bh=YFPzJYoDv3cX+8o/GvSkSkoQ51LHu7AECjzM4Hsiq/U=;
+ b=OQnyxUHD5CsAuL9spD+tylm+gUMS42osIg5+Pz8wfGHWjkYP3maOoQjmUpfjRO7BEMe6XI
+ n+0RNaAGAvvn+PgdgU6NGC9zs6VnMjXQT/M4wBBHHWrDoosgfSArgqwu9xUOnok6qCa2+Wdy
+ 33WMdR11z4kiDcMbb3w6b0GmUMjojVuJL/yVvPlQKudonxYSknWC+33q2A0hYbUUISPgUksw
+ DhAbgeQLKWz4WLnVeOgrHgrRMVrbWSiNoS5t45uSN5CFtuX/luPAfM5Z5ShoF+MFkteMAWq/
+ e2IjBnekR2aNq1Fyab2hgXllDLVC8abdxIIyTOvWwfEOqoB4uiGexfmg==;
 From: Nicusor Huhulea <nicusor.huhulea@siemens.com>
 To: stable@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
@@ -64,11 +64,11 @@ Cc: cip-dev@lists.cip-project.org,
 	cedric.hombourger@siemens.com,
 	shrikant.bobade@siemens.com,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Nicusor Huhulea <nicusor.huhulea@siemens.com>
-Subject: [PATCH 3/5] drm/probe_helper: extract two helper functions
-Date: Wed, 30 Jul 2025 19:11:04 +0300
-Message-Id: <20250730161106.80725-4-nicusor.huhulea@siemens.com>
+Subject: [PATCH 4/5] drm/probe-helper: enable and disable HPD on connectors
+Date: Wed, 30 Jul 2025 19:11:05 +0300
+Message-Id: <20250730161106.80725-5-nicusor.huhulea@siemens.com>
 In-Reply-To: <20250730161106.80725-1-nicusor.huhulea@siemens.com>
 References: <20250730161106.80725-1-nicusor.huhulea@siemens.com>
 Precedence: bulk
@@ -83,80 +83,67 @@ Feedback-ID: 519:519-1331196:519-21489:flowmailer
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit cbf143b282c64e59559cc8351c0b5b1ab4bbdcbe upstream
+commit c8268795c9a9cc7be50f78d4502fad83a2a4f8df upstream
 
-This is not a direct cherry-pick of the upstream commit. Only the helper
-functions required as dependencies for "drm/i915: Fix HPD polling, reenabling
-the output poll work as needed" were extracted from the original commit. The rest
-of the code was not applied, as the codebase has diverged significantly.
+This is not a direct cherry-pick of the upstream commit.
+Only the helper functions required as dependencies for
+"drm/i915: Fix HPD polling, reenabling the output poll work as needed"
+were extracted from the original commit. The rest of the code was not
+applied, as the codebase has diverged significantly from upstream.
 
-This partial adaptation ensures that the required helpers are available for the
-dependent fix, while minimizing changes to the existing code.
+This partial adaptation ensures that the required drm_connector_helper_funcs
+are available for the dependent fix, while minimizing changes to the existing code.
 
-Extract drm_kms_helper_enable_hpd() and drm_kms_helper_disable_hpd(),
-two helpers that enable and disable HPD handling on all device's
-connectors.
+Introduce two drm_connector_helper_funcs: enable_hpd() and disable_hpd().
+They are called by drm_kms_helper_poll_enable() and
+drm_kms_helper_poll_disable() (and thus drm_kms_helper_poll_init() and
+drm_kms_helper_poll_fini()) respectively.
+
+This allows DRM drivers to rely on drm_kms_helper_poll for enabling and
+disabling HPD detection rather than doing that manually.
 
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230124104548.3234554-1-dmitry.baryshkov@linaro.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20221102180705.459294-3-dmitry.baryshkov@linaro.org
 Signed-off-by: Nicusor Huhulea <nicusor.huhulea@siemens.com>
 ---
- drivers/gpu/drm/drm_probe_helper.c | 39 ++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ include/drm/drm_modeset_helper_vtables.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 787f6699971f..938649e3a282 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -244,6 +244,45 @@ static void reschedule_output_poll_work(struct drm_device *dev)
- 	schedule_delayed_work(&dev->mode_config.output_poll_work, delay);
- }
+diff --git a/include/drm/drm_modeset_helper_vtables.h b/include/drm/drm_modeset_helper_vtables.h
+index 6f19cf5c210e..54f4848a655a 100644
+--- a/include/drm/drm_modeset_helper_vtables.h
++++ b/include/drm/drm_modeset_helper_vtables.h
+@@ -1144,6 +1144,28 @@ struct drm_connector_helper_funcs {
+ 	 */
+ 	void (*cleanup_writeback_job)(struct drm_writeback_connector *connector,
+ 				      struct drm_writeback_job *job);
++
++	/**
++	 * @enable_hpd:
++	 *
++	 * Enable hot-plug detection for the connector.
++	 *
++	 * This operation is optional.
++	 *
++	 * This callback is used by the drm_kms_helper_poll_enable() helpers.
++	 */
++	void (*enable_hpd)(struct drm_connector *connector);
++
++	/**
++	 * @disable_hpd:
++	 *
++	 * Disable hot-plug detection for the connector.
++	 *
++	 * This operation is optional.
++	 *
++	 * This callback is used by the drm_kms_helper_poll_disable() helpers.
++	 */
++	void (*disable_hpd)(struct drm_connector *connector);
+ };
  
-+static void drm_kms_helper_disable_hpd(struct drm_device *dev)
-+{
-+	struct drm_connector *connector;
-+	struct drm_connector_list_iter conn_iter;
-+
-+	drm_connector_list_iter_begin(dev, &conn_iter);
-+	drm_for_each_connector_iter(connector, &conn_iter) {
-+		const struct drm_connector_helper_funcs *funcs =
-+			connector->helper_private;
-+
-+		if (funcs && funcs->disable_hpd)
-+			funcs->disable_hpd(connector);
-+	}
-+	drm_connector_list_iter_end(&conn_iter);
-+}
-+
-+static bool drm_kms_helper_enable_hpd(struct drm_device *dev)
-+{
-+	bool poll = false;
-+	struct drm_connector *connector;
-+	struct drm_connector_list_iter conn_iter;
-+
-+	drm_connector_list_iter_begin(dev, &conn_iter);
-+	drm_for_each_connector_iter(connector, &conn_iter) {
-+		const struct drm_connector_helper_funcs *funcs =
-+			connector->helper_private;
-+
-+		if (funcs && funcs->enable_hpd)
-+			funcs->enable_hpd(connector);
-+
-+		if (connector->polled & (DRM_CONNECTOR_POLL_CONNECT |
-+					 DRM_CONNECTOR_POLL_DISCONNECT))
-+			poll = true;
-+	}
-+	drm_connector_list_iter_end(&conn_iter);
-+
-+	return poll;
-+}
-+
  /**
-  * drm_kms_helper_poll_enable - re-enable output polling.
-  * @dev: drm_device
 -- 
 2.39.2
 
