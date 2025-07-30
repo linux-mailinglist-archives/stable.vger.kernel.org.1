@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-165264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC293B15C4A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:40:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E260B15CC6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FD10544331
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD78518A4D05
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B3C27603B;
-	Wed, 30 Jul 2025 09:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2296B295529;
+	Wed, 30 Jul 2025 09:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHmasSEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMLAJ2aV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220E319D065;
-	Wed, 30 Jul 2025 09:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D5C1714B7;
+	Wed, 30 Jul 2025 09:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868445; cv=none; b=bVZNWTAs2RshKe3zKwEcVSjV94p3giv2c0tUGOy0FicIV8LsR0s3RRv601FpTpEouMgQ3J2OIff/wDS7TeaDl5IjSfdscgV7jY6nL/8ubZs4A6zCPeQR1vusLl9bZ5vTXklQ0W9Kw92ax/ihBsga4Q06Wsu3k+CkZKJ9zkVqN8c=
+	t=1753868707; cv=none; b=Tol3ZY/6ebWeJ8noxZnXUCOtBU13yI8c8gx03VWT/1tWrrb3Xe0yCj2VYBFnGzSdH8Ty8jA65szJMqZf5hSfNDkeqzDok3cxv+aG8P7GUGT/2Vk44sGCgS/N3PFF8ci2q65YccvAn8815ytIFfny3Cge/F575Ic/gSbPefDQIMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868445; c=relaxed/simple;
-	bh=/b//2pdX6eQaKsOib2Ll8DLDh2m3EfC394WaWhKg2GY=;
+	s=arc-20240116; t=1753868707; c=relaxed/simple;
+	bh=OnQLw46G/mpdiZZBR4evvp2Exn9BcyJILdjShvaP+UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGMRqnWOKnYCE7z6ey1QIhVwVPUSHRTl/Sx1TmMn5qFTIB0ouULBbUO+AQyyhO4WpsyEsglO+BNaU1BnSdPjwuB5MylowmIiZJfS1oSA+sj8zhVGD9+0eqb16BZrx2rtVXBnfBunUp728255on2UX3cLY/K/M8c5V4bINFlbyaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHmasSEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F33C4CEE7;
-	Wed, 30 Jul 2025 09:40:44 +0000 (UTC)
+	 MIME-Version; b=YjLTPqDoqzIPwLo9+BNe257U1D9U+o+P/HW0IyEWpsxGYHKtTqiJXxIJSiGaEufhaUnCU2yYX4dT5WICA+rKmem+FN0iznpZJejdIxkYXutH49NMne8cqyyD+N7Z1l2Xr9hSq211jSGlZAqolJHpL2SCRvk+azageuQq8Q/kr78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMLAJ2aV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465E5C4CEF5;
+	Wed, 30 Jul 2025 09:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868445;
-	bh=/b//2pdX6eQaKsOib2Ll8DLDh2m3EfC394WaWhKg2GY=;
+	s=korg; t=1753868707;
+	bh=OnQLw46G/mpdiZZBR4evvp2Exn9BcyJILdjShvaP+UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHmasSEJRHlDT3tFd36nG5L2Y0gQQqQ86PUWp3NK0VAP9EBEsxjm/0QtVfbnR9TW1
-	 uktcBa37I3Lw/HnIWVb0KGi7TL+bS9kl5hMgALy85h22h1Ip4Vu3ZEBTR2jQUZRqrf
-	 uTQ6tjPx7Yo+IDm1ZZ40TjZjhYtTwwRqwCrFfHPc=
+	b=YMLAJ2aVcJHbxKA1ZVSNnsnvOXUjPdNLgTx3AUHgubLer0V4MPvpbsjskyIqAenic
+	 TtCpnKlPoYio3ow3jOudVmhpn7pr7SeJr+cqAiup5v+lUPfDvcc7mmMWuvvAVzTzRF
+	 XSr7J4opRjJ7mHN88Bo+ek39Q8ruSh9GbVAkpsmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 33/76] sprintf.h requires stdarg.h
+	Jacek Kowalski <jacek@jacekk.info>,
+	Vlad URSU <vlad@ursu.me>,
+	Simon Horman <horms@kernel.org>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 057/117] e1000e: ignore uninitialized checksum word on tgp
 Date: Wed, 30 Jul 2025 11:35:26 +0200
-Message-ID: <20250730093228.124852161@linuxfoundation.org>
+Message-ID: <20250730093235.774690049@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,51 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
+From: Jacek Kowalski <jacek@jacekk.info>
 
-commit 0dec7201788b9152f06321d0dab46eed93834cda upstream.
+commit 61114910a5f6a71d0b6ea3b95082dfe031b19dfe upstream.
 
-In file included from drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c:4:
-include/linux/sprintf.h:11:54: error: unknown type name 'va_list'
-   11 | __printf(2, 0) int vsprintf(char *buf, const char *, va_list);
-      |                                                      ^~~~~~~
-include/linux/sprintf.h:1:1: note: 'va_list' is defined in header '<stdarg.h>'; this is probably fixable by adding '#include <stdarg.h>'
+As described by Vitaly Lifshits:
 
-Link: https://lkml.kernel.org/r/20250721173754.42865913@canb.auug.org.au
-Fixes: 39ced19b9e60 ("lib/vsprintf: split out sprintf() and friends")
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
+> driver cannot perform checksum validation and correction. This means
+> that all NVM images must leave the factory with correct checksum and
+> checksum valid bit set.
+
+Unfortunately some systems have left the factory with an uninitialized
+value of 0xFFFF at register address 0x3F (checksum word location).
+So on Tiger Lake platform we ignore the computed checksum when such
+condition is encountered.
+
+Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
+Tested-by: Vlad URSU <vlad@ursu.me>
+Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sprintf.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/e1000e/defines.h |    3 +++
+ drivers/net/ethernet/intel/e1000e/nvm.c     |    6 ++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/include/linux/sprintf.h b/include/linux/sprintf.h
-index 51cab2def9ec..876130091384 100644
---- a/include/linux/sprintf.h
-+++ b/include/linux/sprintf.h
-@@ -4,6 +4,7 @@
+--- a/drivers/net/ethernet/intel/e1000e/defines.h
++++ b/drivers/net/ethernet/intel/e1000e/defines.h
+@@ -638,6 +638,9 @@
+ /* For checksumming, the sum of all words in the NVM should equal 0xBABA. */
+ #define NVM_SUM                    0xBABA
  
- #include <linux/compiler_attributes.h>
- #include <linux/types.h>
-+#include <linux/stdarg.h>
++/* Uninitialized ("empty") checksum word value */
++#define NVM_CHECKSUM_UNINITIALIZED 0xFFFF
++
+ /* PBA (printed board assembly) number words */
+ #define NVM_PBA_OFFSET_0           8
+ #define NVM_PBA_OFFSET_1           9
+--- a/drivers/net/ethernet/intel/e1000e/nvm.c
++++ b/drivers/net/ethernet/intel/e1000e/nvm.c
+@@ -558,6 +558,12 @@ s32 e1000e_validate_nvm_checksum_generic
+ 		checksum += nvm_data;
+ 	}
  
- int num_to_str(char *buf, int size, unsigned long long num, unsigned int width);
- 
--- 
-2.50.1
-
++	if (hw->mac.type == e1000_pch_tgp &&
++	    nvm_data == NVM_CHECKSUM_UNINITIALIZED) {
++		e_dbg("Uninitialized NVM Checksum on TGP platform - ignoring\n");
++		return 0;
++	}
++
+ 	if (checksum != (u16)NVM_SUM) {
+ 		e_dbg("NVM Checksum Invalid\n");
+ 		return -E1000_ERR_NVM;
 
 
 
