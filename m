@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-165404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F816B15D0E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B3CB15CB4
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73FDF56433B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:50:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8C127B2053
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA33226D17;
-	Wed, 30 Jul 2025 09:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B7229008F;
+	Wed, 30 Jul 2025 09:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7OwAhQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysUbTJ3C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB1425A34F;
-	Wed, 30 Jul 2025 09:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7068B255F5C;
+	Wed, 30 Jul 2025 09:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868996; cv=none; b=FQrCokZQb686HaSBKF3deWhmoMfE+Fn6HydlsrthqYHPn+rxDGYo1LR0MdJ5BXV2t4XCke90QV8i2LyTFOfImqm1d3ofrJhggHiV0KfU0+MHh82wov3Qtaiqiv+hLtiChVw2Ik5ApTgbVtqbcRqTpSd47cv3MVPmbpd6BVo3wuY=
+	t=1753868685; cv=none; b=JI6rTYYSZYMa159S3O5eupoXqfPOzR79Czi/eMBXAugwdCZAZow8bw/Zspbba/jLKXRa7jlb4E9yHgzZrzLCU8OQtbvlXLlszSmljDktv1r/dZuDBnj/klzE7hOzthrB+PW8MYfg79PesL6YsbJlomcBDGW1VEKmAKipIabWOnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868996; c=relaxed/simple;
-	bh=h5Jov4owEO38QanwqW4sCjqsVirrA08OzOIfKPrcAxY=;
+	s=arc-20240116; t=1753868685; c=relaxed/simple;
+	bh=J8bFkl6Z8NE9U5/yiklXSdNcj7EiIfqARMsQUaXRGGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1vnzAnjq7hEXACTKiJcUVOAAxPe4vLmPG1FgOV33J9UgXXLd/umTqQaem9vrTGulAiiwUsZp9xgxwiZl7Wkn68GmY8fl4PxaB44VC+IBMRHIUAsjjTeM3iMEXENMsOKQwdnJj1ciYBEEV6+7Iy/2qA7g+4mllW20Cs5xs1W37c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7OwAhQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862BEC4CEF5;
-	Wed, 30 Jul 2025 09:49:55 +0000 (UTC)
+	 MIME-Version; b=lNEt+zD/H90F9tTtdAADwaIXr3xMa3mPepnwEhVe9KUYa/16wf6OSkvQnVEQFbq0U7KzAx70N2Ko9K83c4p1wJU/KtIabmtdOxXAw5T0Hy338ju5PfLfNftRLLplpv+5WiAKJ0zf+KFku+gAMu6QxU/u7Tq9quwb5iq0Ms5eMPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysUbTJ3C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41AAC4CEF5;
+	Wed, 30 Jul 2025 09:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868996;
-	bh=h5Jov4owEO38QanwqW4sCjqsVirrA08OzOIfKPrcAxY=;
+	s=korg; t=1753868685;
+	bh=J8bFkl6Z8NE9U5/yiklXSdNcj7EiIfqARMsQUaXRGGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7OwAhQf1oIORqYj3InoZXWkXPlBpVStZjSORzC8rr3cHF7A7JA2axS7EHemcKE+b
-	 ieO+HSJcxNOo02BxctiXnAM1IcfkmKbKIASpuG3pnbS4PbCj2Fgcp3B8Fc+x96ODfq
-	 sV0G6iY/gYIsHvOaOL3iDXCheSUFbyem7MVz3jks=
+	b=ysUbTJ3Ci3CYtBT2dt5A6oa6Gyk3G+v4xQTI67H3ynnv7fQXtNZbIvqwCPqjDPC78
+	 49M4aojr+93muczKyuPrXJmRX160GWaTCXUh2ytaZy5Qc1tuaGmNUX0lHzQIpj2QTq
+	 g72RIxlngAjxPUf9EgwF7muCZWS/f/FVII56stQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 11/92] iio: adc: ad7949: use spi_is_bpw_supported()
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Andriy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 050/117] sprintf.h requires stdarg.h
 Date: Wed, 30 Jul 2025 11:35:19 +0200
-Message-ID: <20250730093231.061053993@linuxfoundation.org>
+Message-ID: <20250730093235.505258809@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +67,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit 7b86482632788acd48d7b9ee1867f5ad3a32ccbb ]
+commit 0dec7201788b9152f06321d0dab46eed93834cda upstream.
 
-Use spi_is_bpw_supported() instead of directly accessing spi->controller
-->bits_per_word_mask. bits_per_word_mask may be 0, which implies that
-8-bits-per-word is supported. spi_is_bpw_supported() takes this into
-account while spi_ctrl_mask == SPI_BPW_MASK(8) does not.
+In file included from drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c:4:
+include/linux/sprintf.h:11:54: error: unknown type name 'va_list'
+   11 | __printf(2, 0) int vsprintf(char *buf, const char *, va_list);
+      |                                                      ^~~~~~~
+include/linux/sprintf.h:1:1: note: 'va_list' is defined in header '<stdarg.h>'; this is probably fixable by adding '#include <stdarg.h>'
 
-Fixes: 0b2a740b424e ("iio: adc: ad7949: enable use with non 14/16-bit controllers")
-Closes: https://lore.kernel.org/linux-spi/c8b8a963-6cef-4c9b-bfef-dab2b7bd0b0f@sirena.org.uk/
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20250611-iio-adc-ad7949-use-spi_is_bpw_supported-v1-1-c4e15bfd326e@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250721173754.42865913@canb.auug.org.au
+Fixes: 39ced19b9e60 ("lib/vsprintf: split out sprintf() and friends")
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7949.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ include/linux/sprintf.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index edd0c3a35ab73..202561cad4012 100644
---- a/drivers/iio/adc/ad7949.c
-+++ b/drivers/iio/adc/ad7949.c
-@@ -308,7 +308,6 @@ static void ad7949_disable_reg(void *reg)
+--- a/include/linux/sprintf.h
++++ b/include/linux/sprintf.h
+@@ -4,6 +4,7 @@
  
- static int ad7949_spi_probe(struct spi_device *spi)
- {
--	u32 spi_ctrl_mask = spi->controller->bits_per_word_mask;
- 	struct device *dev = &spi->dev;
- 	const struct ad7949_adc_spec *spec;
- 	struct ad7949_adc_chip *ad7949_adc;
-@@ -337,11 +336,11 @@ static int ad7949_spi_probe(struct spi_device *spi)
- 	ad7949_adc->resolution = spec->resolution;
+ #include <linux/compiler_attributes.h>
+ #include <linux/types.h>
++#include <linux/stdarg.h>
  
- 	/* Set SPI bits per word */
--	if (spi_ctrl_mask & SPI_BPW_MASK(ad7949_adc->resolution)) {
-+	if (spi_is_bpw_supported(spi, ad7949_adc->resolution)) {
- 		spi->bits_per_word = ad7949_adc->resolution;
--	} else if (spi_ctrl_mask == SPI_BPW_MASK(16)) {
-+	} else if (spi_is_bpw_supported(spi, 16)) {
- 		spi->bits_per_word = 16;
--	} else if (spi_ctrl_mask == SPI_BPW_MASK(8)) {
-+	} else if (spi_is_bpw_supported(spi, 8)) {
- 		spi->bits_per_word = 8;
- 	} else {
- 		dev_err(dev, "unable to find common BPW with spi controller\n");
--- 
-2.39.5
-
+ int num_to_str(char *buf, int size, unsigned long long num, unsigned int width);
+ 
 
 
 
