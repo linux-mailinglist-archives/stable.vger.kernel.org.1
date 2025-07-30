@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-165423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2A6B15D4B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:53:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6B8B15C17
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D2F61885C6F
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE02C16CC11
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD62295DA6;
-	Wed, 30 Jul 2025 09:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4374273D95;
+	Wed, 30 Jul 2025 09:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCXHB8go"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9e7KcZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F672957AD;
-	Wed, 30 Jul 2025 09:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDA6292B3E;
+	Wed, 30 Jul 2025 09:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869074; cv=none; b=UhLuWZ3cNCsYONQh3zhlL9Rs9SkZk+3v16+c445duOrYT+M762oTmkZdG3pJz5QpAZ6xf2DQC2P08Rt/ZzbvJhovC3csN/j7UwopwCCz2Gk/0xwDMqX+N0LVsFAgBihlxQtynoZ3DcsmpJHY4ccfWJjC8UxhWuJDwzvdyfoD4Vs=
+	t=1753868253; cv=none; b=mKvI6qOlgir2JOrmYg2TXbqQgEydXyMF9qpnJhG5NjKFd4iGhhxHEsSIi6g+KOdWIIcvRmEvRPoQaRxnxgGrdJlU/HkSfBdtoIzwVEp6K+sOFHUApaxgsBd69QbPXvoRiclB3YDJTLNL9J04icDV0UiavyMDD9Up3nepi6EupLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869074; c=relaxed/simple;
-	bh=Iom35eJIMuZSQMM8HDPd3YLBa+vVwLNQfCwA9/aXgNQ=;
+	s=arc-20240116; t=1753868253; c=relaxed/simple;
+	bh=pbRRZM1OMkscFLdXHg+vqN/DPh+mA9TO4ljxvfqXVH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFYUHCCKTVlcur0VFl6EXkT9jWGyS0Mkd/5J2NI6OgC580FtBMdLDf9we1oWQ3KqMDgK4FISG8oPgq2pvIco4Ievn8F1CN2YKdsRC0+3ESeHDG3qlaRe0qIUGiqlwV7DJ8mTC8bYtSGn1t94/CjfeEtTpqIRmtZoo4wLOnlZuRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCXHB8go; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849EFC4CEF6;
-	Wed, 30 Jul 2025 09:51:13 +0000 (UTC)
+	 MIME-Version; b=lG7DJBSiw8HWhAdbDQmoAwkYJLMtWmzr4HUemtIJzqUq+6BWkOtTyZD9p+fnX2LKhWNXc8dYE8FLjxkBHDaRfkVjwZ9acNCQW3hrIRxLDwoGLq0T9aQBKdGRcpA4EOJ7T/tweQpFRedP3LqeU8Dbqgs3UzuW+Tri022OLM1YDQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9e7KcZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5E1C4CEE7;
+	Wed, 30 Jul 2025 09:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753869074;
-	bh=Iom35eJIMuZSQMM8HDPd3YLBa+vVwLNQfCwA9/aXgNQ=;
+	s=korg; t=1753868253;
+	bh=pbRRZM1OMkscFLdXHg+vqN/DPh+mA9TO4ljxvfqXVH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCXHB8gob8LK7D23AAzrATDas5x42cz3j3Mt1dHTFZQIkuyXAXOJWiMEf+zNxdm8a
-	 fDf5lL+cnguHYtzQQjoDxhs4QoVECzxNHlHg+OQXq2C8sPuNcubK1NbJEM4jbi+rPJ
-	 QypjjohgrGmV83Hi8HNQFq571V3WRUx3opGOQibY=
+	b=k9e7KcZ3e5eFR7v29/ve1ajtI+p3HsLYTwdl2BCuxXN/z6b+x55guuFidAr4dYdio
+	 D+EIy9AqGBLHMWqpVzt6y8+lXGobQLgVXyU2rowO4LqlLl3mZCXPU2s9MkOjT06KDq
+	 4sry+SGj7GsZ/G3O7hRF5bpMeDWmCli0RsQaLv8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xuanzhuo@linux.alibaba.com,
-	Laurent Vivier <lvivier@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 03/92] virtio_ring: Fix error reporting in virtqueue_resize
+Subject: [PATCH 6.6 18/76] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
 Date: Wed, 30 Jul 2025 11:35:11 +0200
-Message-ID: <20250730093230.766052292@linuxfoundation.org>
+Message-ID: <20250730093227.558099194@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
-References: <20250730093230.629234025@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 45ebc7e6c125ce93d2ddf82cd5bea20121bb0258 ]
+[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
 
-The virtqueue_resize() function was not correctly propagating error codes
-from its internal resize helper functions, specifically
-virtqueue_resize_packet() and virtqueue_resize_split(). If these helpers
-returned an error, but the subsequent call to virtqueue_enable_after_reset()
-succeeded, the original error from the resize operation would be masked.
-Consequently, virtqueue_resize() could incorrectly report success to its
-caller despite an underlying resize failure.
+might_sleep could be trigger in the atomic context in qfq_delete_class.
 
-This change restores the original code behavior:
+qfq_destroy_class was moved into atomic context locked
+by sch_tree_lock to avoid a race condition bug on
+qfq_aggregate. However, might_sleep could be triggered by
+qfq_destroy_class, which introduced sleeping in atomic context (path:
+qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
+->might_sleep).
 
-       if (vdev->config->enable_vq_after_reset(_vq))
-               return -EBUSY;
+Considering the race is on the qfq_aggregate objects, keeping
+qfq_rm_from_agg in the lock but moving the left part out can solve
+this issue.
 
-       return err;
-
-Fix: commit ad48d53b5b3f ("virtio_ring: separate the logic of reset/enable from virtqueue_resize")
-Cc: xuanzhuo@linux.alibaba.com
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20250521092236.661410-2-lvivier@redhat.com
-Tested-by: Lei Yang <leiyang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_ring.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/sched/sch_qfq.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index b784aab668670..4397392bfef00 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -2797,7 +2797,7 @@ int virtqueue_resize(struct virtqueue *_vq, u32 num,
- 		     void (*recycle_done)(struct virtqueue *vq))
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index a2b321fec13c1..c3f9a6375b4ea 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -539,9 +539,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 
+ static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
  {
- 	struct vring_virtqueue *vq = to_vvq(_vq);
--	int err;
-+	int err, err_reset;
+-	struct qfq_sched *q = qdisc_priv(sch);
+-
+-	qfq_rm_from_agg(q, cl);
+ 	gen_kill_estimator(&cl->rate_est);
+ 	qdisc_put(cl->qdisc);
+ 	kfree(cl);
+@@ -562,10 +559,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
  
- 	if (num > vq->vq.num_max)
- 		return -E2BIG;
-@@ -2819,7 +2819,11 @@ int virtqueue_resize(struct virtqueue *_vq, u32 num,
- 	else
- 		err = virtqueue_resize_split(_vq, num);
+ 	qdisc_purge_queue(cl->qdisc);
+ 	qdisc_class_hash_remove(&q->clhash, &cl->common);
+-	qfq_destroy_class(sch, cl);
++	qfq_rm_from_agg(q, cl);
  
--	return virtqueue_enable_after_reset(_vq);
-+	err_reset = virtqueue_enable_after_reset(_vq);
-+	if (err_reset)
-+		return err_reset;
-+
-+	return err;
+ 	sch_tree_unlock(sch);
+ 
++	qfq_destroy_class(sch, cl);
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(virtqueue_resize);
  
+@@ -1506,6 +1504,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
+ 					  common.hnode) {
++			qfq_rm_from_agg(q, cl);
+ 			qfq_destroy_class(sch, cl);
+ 		}
+ 	}
 -- 
 2.39.5
 
