@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBECB15CFC
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B34B15D6B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 976F35A5CF0
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA51A18C4BE0
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE59292B4D;
-	Wed, 30 Jul 2025 09:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03382949F1;
+	Wed, 30 Jul 2025 09:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZExmdlXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vItj97vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A463A292B2C;
-	Wed, 30 Jul 2025 09:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886D3230981;
+	Wed, 30 Jul 2025 09:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868882; cv=none; b=m4TmeRxa59OZKQlORHgc88/pcggMt9021j0Ls4OnspGx1KIKarH0trLFAl7Majq6vQij9IkGJTHeDGQkCY33smZkK9+1Iyoe8ZaK+NLmOqvVEqK0KmOeR1LOBt8chNfG0b04qB53e8jY3ILNAuguFkmwehGAyMQE2YpzW4rl2V4=
+	t=1753869149; cv=none; b=KER1Ilqs/5kMX2JGC3eXWDU4tzusXsD4RuN3fPazZhEMeet2PdiaRvrmbGPHX09fEyfnWhduPwcPjNk6xxbb0AJiOCTQZJvZXaalJBKe6hCMxByiwYSHdWKNHGKyuGEagsRkJeXkHcN9GOCDY5h+qTBZk+QvgNtpi9dclE//hXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868882; c=relaxed/simple;
-	bh=2la83UqN/4D9s7t8yeMko4quMFTqBvHQW9zRzc545Qc=;
+	s=arc-20240116; t=1753869149; c=relaxed/simple;
+	bh=HNxEvs2Oyhs732qiGCxzP+oRhpeFC4TA8ucVqx7LlJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmMVTSI3AsCmEmTdSWw1V84IRLN6N3yyZlhvLjR6QITb5RYOw4/IG3I/jaLKWbZcIeq7Ga25pHneGDZu/HOJMs6A/yT+6ik4FQ3FoAVdgcUaE15s5QMglYqwk3PlUJ75SqUGrkMS6kdbffmmtHQUfdfWpT9RsGSuXPa8MysUdOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZExmdlXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25780C4CEF5;
-	Wed, 30 Jul 2025 09:48:01 +0000 (UTC)
+	 MIME-Version; b=HX3ERV1sXpYKUohfqUX5qhD5STxaJnifFA5kuk3FK4LIM2WXUoXg4RpRwNU07rQ2N4MRghtuYowAgOp0YOi38cA96G8GvwV84TAmouo1mm4ikzl3e3Rvj6gjfvy1B8dd44V+ip6iUP4lPfT+5Rj2tSP6C9SvqgERTcg0kHDjBy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vItj97vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05158C4CEF5;
+	Wed, 30 Jul 2025 09:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868882;
-	bh=2la83UqN/4D9s7t8yeMko4quMFTqBvHQW9zRzc545Qc=;
+	s=korg; t=1753869149;
+	bh=HNxEvs2Oyhs732qiGCxzP+oRhpeFC4TA8ucVqx7LlJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZExmdlXFAesZMp1AiWQ9rvaOWQ5A1RUHqbfxTMUiXNrDdbPEXdyuvo/B6HizhGhCm
-	 wdAsSY7Kprdpaotg2GCmvh5Tzp6OdHfsfgxkH2iB7iPnMg+M7KBVNm/N+FpPYx5v9q
-	 sU45rYni2z7urIUNdByJmWV0OD+Rk2vrnGMlohfA=
+	b=vItj97vFPU74lZbb7dAuLeC1ey0RUuflElzdyrQKMEGy9YeTCWROgUKNVFej9Q7vB
+	 Znbu4RNLN039pGmV3TTcez/LnmxunikxYQsnFW73y/VF8gsBD1aNJFB/EGJjDphKCm
+	 HRS2/VOnRtnkyi4ZWvPRP2Btd/6KfqzJJoA84DNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/117] usb: typec: tcpm: allow switching to mode accessory to mux properly
+Subject: [PATCH 6.15 31/92] i40e: When removing VF MAC filters, only check PF-set MAC
 Date: Wed, 30 Jul 2025 11:35:39 +0200
-Message-ID: <20250730093236.264411446@linuxfoundation.org>
+Message-ID: <20250730093231.957662973@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-commit 8a50da849151e7e12b43c1d8fe7ad302223aef6b upstream.
+[ Upstream commit 5a0df02999dbe838c3feed54b1d59e9445f68b89 ]
 
-The funciton tcpm_acc_attach is not setting the proper state when
-calling tcpm_set_role. The function tcpm_set_role is currently only
-handling TYPEC_STATE_USB. For the tcpm_acc_attach to switch into other
-modal states tcpm_set_role needs to be extended by an extra state
-parameter. This patch is handling the proper state change when calling
-tcpm_acc_attach.
+When the PF is processing an Admin Queue message to delete a VF's MACs
+from the MAC filter, we currently check if the PF set the MAC and if
+the VF is trusted.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-tcpm-v1-3-b99f44badce8@pengutronix.de
-Stable-dep-of: bec15191d523 ("usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach")
+This results in undesirable behaviour, where if a trusted VF with a
+PF-set MAC sets itself down (which sends an AQ message to delete the
+VF's MAC filters) then the VF MAC is erased from the interface.
+
+This results in the VF losing its PF-set MAC which should not happen.
+
+There is no need to check for trust at all, because an untrusted VF
+cannot change its own MAC. The only check needed is whether the PF set
+the MAC. If the PF set the MAC, then don't erase the MAC on link-down.
+
+Resolve this by changing the deletion check only for PF-set MAC.
+
+(the out-of-tree driver has also intentionally removed the check for VF
+trust here with OOT driver version 2.26.8, this changes the Linux kernel
+driver behaviour and comment to match the OOT driver behaviour)
+
+Fixes: ea2a1cfc3b201 ("i40e: Fix VF MAC filter removal")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1132,7 +1132,7 @@ static int tcpm_set_attached_state(struc
- 				     port->data_role);
- }
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 2dbe38eb94941..7ccfc1191ae56 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3137,10 +3137,10 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
+ 		const u8 *addr = al->list[i].addr;
  
--static int tcpm_set_roles(struct tcpm_port *port, bool attached,
-+static int tcpm_set_roles(struct tcpm_port *port, bool attached, int state,
- 			  enum typec_role role, enum typec_data_role data)
- {
- 	enum typec_orientation orientation;
-@@ -1169,7 +1169,7 @@ static int tcpm_set_roles(struct tcpm_po
- 		}
- 	}
- 
--	ret = tcpm_mux_set(port, TYPEC_STATE_USB, usb_role, orientation);
-+	ret = tcpm_mux_set(port, state, usb_role, orientation);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -4339,7 +4339,8 @@ static int tcpm_src_attach(struct tcpm_p
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -4514,7 +4515,8 @@ static int tcpm_snk_attach(struct tcpm_p
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SINK, tcpm_data_role_for_sink(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SINK, tcpm_data_role_for_sink(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -4539,6 +4541,7 @@ static int tcpm_acc_attach(struct tcpm_p
- 	int ret;
- 	enum typec_role role;
- 	enum typec_data_role data;
-+	int state = TYPEC_STATE_USB;
- 
- 	if (port->attached)
- 		return 0;
-@@ -4547,7 +4550,13 @@ static int tcpm_acc_attach(struct tcpm_p
- 	data = tcpm_port_is_sink(port) ? tcpm_data_role_for_sink(port)
- 				       : tcpm_data_role_for_source(port);
- 
--	ret = tcpm_set_roles(port, true, role, data);
-+	if (tcpm_port_is_audio(port))
-+		state = TYPEC_MODE_AUDIO;
-+
-+	if (tcpm_port_is_debug(port))
-+		state = TYPEC_MODE_DEBUG;
-+
-+	ret = tcpm_set_roles(port, true, state, role, data);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -5306,7 +5315,7 @@ static void run_state_machine(struct tcp
+ 		/* Allow to delete VF primary MAC only if it was not set
+-		 * administratively by PF or if VF is trusted.
++		 * administratively by PF.
  		 */
- 		tcpm_set_vconn(port, false);
- 		tcpm_set_vbus(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SOURCE,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SOURCE,
- 			       tcpm_data_role_for_source(port));
- 		/*
- 		 * If tcpc fails to notify vbus off, TCPM will wait for PD_T_SAFE_0V +
-@@ -5338,7 +5347,7 @@ static void run_state_machine(struct tcp
- 		tcpm_set_vconn(port, false);
- 		if (port->pd_capable)
- 			tcpm_set_charge(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SINK,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SINK,
- 			       tcpm_data_role_for_sink(port));
- 		/*
- 		 * VBUS may or may not toggle, depending on the adapter.
-@@ -5462,10 +5471,10 @@ static void run_state_machine(struct tcp
- 	case DR_SWAP_CHANGE_DR:
- 		tcpm_unregister_altmodes(port);
- 		if (port->data_role == TYPEC_HOST)
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_DEVICE);
- 		else
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_HOST);
- 		tcpm_ams_finish(port);
- 		tcpm_set_state(port, ready_state(port), 0);
+ 		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
+-			if (i40e_can_vf_change_mac(vf))
++			if (!vf->pf_set_mac)
+ 				was_unimac_deleted = true;
+ 			else
+ 				continue;
+-- 
+2.39.5
+
 
 
 
