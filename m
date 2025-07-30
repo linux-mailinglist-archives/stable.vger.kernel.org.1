@@ -1,131 +1,128 @@
-Return-Path: <stable+bounces-165157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7C6B15708
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 03:46:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D3BB15725
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 03:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C1E75A123F
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 01:46:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3285018A6D39
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 01:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7392E62C;
-	Wed, 30 Jul 2025 01:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9908BEE;
+	Wed, 30 Jul 2025 01:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zbBpltgW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 6351B2E36E0;
-	Wed, 30 Jul 2025 01:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CCC84D13
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 01:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753839991; cv=none; b=Ro0/69ESQ3O42CalYFpJTLdpAz91FUsSrraCgU6gGh/pvfVSQREKFdlgHQhk6in6g2pkMnYFeKoSXr2HsxDROqeBx6VCbWvOBr5Mb5LLc4vBPKm6OnTJgdWOcmEWQk6cu1x/MlUyOUGVjCigyc7Do438WQVrPMtugp1NHhUWAoM=
+	t=1753840337; cv=none; b=oExjwBRBK5xshlkmIHArOGiQQF0SPZ55ExtFd3Erd237F8syyzdJ2tndbjeOb1e8vgmy3gBZ0xD2AjnV4rtHvF0gwy6o2TefDZLPATH8sXB6k/iQuulo706dasgNQZeIkLXc0yPZSFasOwYppQsEyrXQJdz0DD4WyMLmrPhUko4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753839991; c=relaxed/simple;
-	bh=ixuFqC5gUdt9/G6HV1zdtifv6cLTz89LDVT7XjDz3M4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type; b=JY/MvIInDfcka/PXOyiyjJK8Cirl7TrxwcSESFKccaazUd7nAyBMcJq4Zr68pR338NAXTLXOaJfZmgSk8y8YjqmkzNtWAq9t8xG9iB3H0VZAEzdKCGw5oBGSbhfmBCxImNWOonQddxHpZ6iIIpiFOMsCbG4vjwiK834LlxpKAn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from [172.30.20.100] (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id A1D576018E413;
-	Wed, 30 Jul 2025 09:46:09 +0800 (CST)
-Message-ID: <b8ed1a62-79bd-4c86-a951-80b128223f19@nfschina.com>
-Date: Wed, 30 Jul 2025 09:46:09 +0800
+	s=arc-20240116; t=1753840337; c=relaxed/simple;
+	bh=MFAb+2aknwQ+BUxA4x7uUkT4WSBzNA7W1/F4JB2sANQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mIY8F/kNmkr4o46HAoALm8k2hNA0rIlKqQsW0yHf1WBdcSUDhRIwwIl5JEYlu7FuouOq1Gn55IV6wcaDD1XPK1FOx8sLJOeBeTMK9RgFKajEDWHgHkA3otWUXDG/3WScg1hBMbGykVChmi0wpO5kf/BaQSH9l0jVlv+4G8B8IH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zbBpltgW; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31ea14cc097so3289184a91.3
+        for <stable@vger.kernel.org>; Tue, 29 Jul 2025 18:52:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753840335; x=1754445135; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pZbKZno4o5NbyA2p7HuJpqvvJhuZbFTfts+n5dR9Hz0=;
+        b=zbBpltgWaKa0P/DJ0na8mPaQjWD79PTQpx5PUvboojMcmhVgU31j6mNW+47lHw3cgN
+         gHAPIklckbR9yptoO1ydp849YkxKIDHRTJ/1wQ04eBPn8jvCMZEqTp9cNVptwdTuvmX0
+         2zZwp7XQZnzedDQ2IWHX8lQsgc0KuaurhEUdxgz1hGfgpZMTeFMdWuOy1qMBI+fQNEjc
+         mMAoFxWBBwMqpuw+blggfA9I9F24GzpKbOXlPugwukdqp2rHSCfa9h+vzsc+Q6GaH13N
+         kgs1GP5ptBEW/joBKBrv5CeefWxUSpvqBglAZGvfg5z0zuK6yA+ATYEDJp8e3PP2/BWF
+         U4OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753840335; x=1754445135;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pZbKZno4o5NbyA2p7HuJpqvvJhuZbFTfts+n5dR9Hz0=;
+        b=nZQvQzGu7gi/pI6Ni2R5j3v11mIGCebJNCcyqnsTZtWdkAFdQGuuMk4vw1HgkpvLOP
+         xIOhBzAG1sASUmjkmIExdKMSOWR0yhUnLPqpDRBp4VI+bFfl/iBKgi29n2zkPyDs+6it
+         OxssLt3xuUgkVe6w4k5k9Y7tBYijX0EwLQTGhCCqHf3g6EXQfkjUsnr1BQIIWLBIOX81
+         zE+eHgwyMgyP7AdeUuMRd7JgoHuI+6wyUV17aV8SWsjj4b6IWxQ2hbg/KaHx4v0LA6/Z
+         hqEai4wBnSBAvKJJ++Rw0fyMYWPpxn11o2H8/+cQUYcE1OtxtZBe6MFSYLwvfL6NIad8
+         a5Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNJ2KDxnr8a+C8l5wv/QR7xdcxO7ntds6ukw5+Pet3N1pKDY2wbxqBlHZcSW6jI8O+cmYze8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDye2fsTHmE7cW1t0yX4i0g6NWX8DdLMmFp5V6GuLIqYSjEvlk
+	03v8Kxd4J8g/2dQJp/k78KKW5iUEHELs4cxvnCp47jxnyRr2NSZnmVHEJBf+AdzrbhYSYWwzeMd
+	MuU4TRoMq+Fcczu8sSCx7YFzPCcYs8ubgbVFaaA==
+X-Google-Smtp-Source: AGHT+IEBqhTXyFrfwCpj/7NbPcuneHFHPgmfwfQDvXuLyG6VL+ZIZT1N7dHhjgYNnSZakdrulhatJ4cjs+Ipv+FbrqaZKw==
+X-Received: from plgl6.prod.google.com ([2002:a17:902:f686:b0:240:25ce:3b7a])
+ (user=isaacmanjarres job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:291:b0:23f:f68b:fa1d with SMTP id d9443c01a7336-24096b41b12mr19279155ad.39.1753840335093;
+ Tue, 29 Jul 2025 18:52:15 -0700 (PDT)
+Date: Tue, 29 Jul 2025 18:51:44 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: slub: avoid deref of free pointer in sanity checks
- if object is invalid
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: David Rientjes <rientjes@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-X-MD-Sfrom: liqiong@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: liqiong <liqiong@nfschina.com>
-In-Reply-To: <aIjPlvRyRttUDAow@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
+Message-ID: <20250730015152.29758-1-isaacmanjarres@google.com>
+Subject: [PATCH 6.6.y 0/4] Backport series: "permit write-sealed memfd
+ read-only shared mappings"
+From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+To: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org
+Cc: aliceryhl@google.com, surenb@google.com, stable@vger.kernel.org, 
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>, kernel-team@android.com
+Content-Type: text/plain; charset="UTF-8"
 
+Hello,
 
+Until kernel version 6.7, a write-sealed memfd could not be mapped as
+shared and read-only. This was clearly a bug, and was not inline with
+the description of F_SEAL_WRITE in the man page for fcntl()[1].
 
-在 2025/7/29 21:41, Harry Yoo 写道:
-> On Tue, Jul 29, 2025 at 04:14:55PM +0800, Li Qiong wrote:
->> For debugging, object_err() prints free pointer of the object.
->> However, if check_valid_pointer() returns false for a object,
->> dereferncing `object + s->offset` can lead to a crash. Therefore,
->> print the object's address in such cases.
-> As the code changed a bit, I think the commit message could better reflect
-> what this patch actually does.
-Yes.
+Lorenzo's series [2] fixed that issue and was merged in kernel version
+6.7, but was not backported to older kernels. So, this issue is still
+present on kernels 5.4, 5.10, 5.15, 6.1, and 6.6.
 
->
->> Fixes: bb192ed9aa71 ("mm/slub: Convert most struct page to struct slab by spatch")
-> As Vlastimil mentioned in previous version, this is not the first commit
-> that introduced this problem.
->
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Li Qiong <liqiong@nfschina.com>
->> ---
->> v2:
->> - rephrase the commit message, add comment for object_err().
->> v3:
->> - check object pointer in object_err().
->> ---
->>  mm/slub.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 31e11ef256f9..d3abae5a2193 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -1104,7 +1104,11 @@ static void object_err(struct kmem_cache *s, struct slab *slab,
->>  		return;
->>  
->>  	slab_bug(s, reason);
->> -	print_trailer(s, slab, object);
->> +	if (!check_valid_pointer(s, slab, object)) {
->> +		print_slab_info(slab);
->> +		pr_err("invalid object 0x%p\n", object);
-> Can we just handle this inside print_trailer() because that's the function
-> that prints the object's free pointer, metadata, etc.?
-Maybe it's clearer ,  if  object pointer being invalid, don't enter print_trailer()，
-print_trailer() prints  valid object.
+This series consists of backports of two of Lorenzo's series [2] and
+[3].
 
->
-> Also, the message should start with a capital letter.
->
-> and "invalid object" sounds misleading because it's the pointer
-> that is invalid. Perhaps simply "Invalid pointer 0x%p\n"?
-> (What would be the most comprehensive message here? :P)
+Note: for [2], I dropped the last patch in that series, since it
+wouldn't make sense to apply it due to [4] being part of this tree. In
+lieu of that, I backported [3] to ultimately allow write-sealed memfds
+to be mapped as read-only.
 
-Make sense,   will change it.
->
->> +	} else
->> +		print_trailer(s, slab, object);
->>  	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
->>  
->>  	WARN_ON(1);
->> @@ -1587,7 +1591,7 @@ static inline int alloc_consistency_checks(struct kmem_cache *s,
->>  		return 0;
->>  
->>  	if (!check_valid_pointer(s, slab, object)) {
->> -		object_err(s, slab, object, "Freelist Pointer check fails");
->> +		slab_err(s, slab, "Freelist Pointer(0x%p) check fails", object);
->>  		return 0;
-> Do we really need this hunk after making object_err() resiliant
-> against wild pointers?
+[1] https://man7.org/linux/man-pages/man2/fcntl.2.html
+[2] https://lore.kernel.org/all/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com/T/#m28fbfb0d5727e5693e54a7fb2e0c9ac30e95eca5
+[3] https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
+[4] https://lore.kernel.org/all/6e0becb36d2f5472053ac5d544c0edfe9b899e25.1730224667.git.lorenzo.stoakes@oracle.com/T/#u
 
-That's the origin issue,   it may be  inappropriate to use object_err(), if check_valid_pointer being false.
+Lorenzo Stoakes (4):
+  mm: drop the assumption that VM_SHARED always implies writable
+  mm: update memfd seal write check to include F_SEAL_WRITE
+  mm: reinstate ability to map write-sealed memfd mappings read-only
+  selftests/memfd: add test for mapping write-sealed memfd read-only
 
->
->>  	}
+ fs/hugetlbfs/inode.c                       |  2 +-
+ include/linux/fs.h                         |  4 +-
+ include/linux/memfd.h                      | 14 ++++
+ include/linux/mm.h                         | 82 +++++++++++++++-------
+ kernel/fork.c                              |  2 +-
+ mm/filemap.c                               |  2 +-
+ mm/madvise.c                               |  2 +-
+ mm/memfd.c                                 |  2 +-
+ mm/mmap.c                                  | 12 ++--
+ mm/shmem.c                                 |  2 +-
+ tools/testing/selftests/memfd/memfd_test.c | 43 ++++++++++++
+ 11 files changed, 131 insertions(+), 36 deletions(-)
+
+-- 
+2.50.1.552.g942d659e1b-goog
 
 
