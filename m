@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A215B15C60
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF68B15D06
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B65C3A3707
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFFDD5A5DEE
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E34523D2A2;
-	Wed, 30 Jul 2025 09:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296C8293C76;
+	Wed, 30 Jul 2025 09:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lbCYu+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2kEBE22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE58622156D;
-	Wed, 30 Jul 2025 09:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF15292B5F;
+	Wed, 30 Jul 2025 09:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868469; cv=none; b=pBiq9fIgVgiWr8nm3//QvFwTiUmFwlKRAlL0vT/GobW4FgB8gsHlH5hqDyKIsW6cgDiJn5zNwwVyhFg8l1i7mslGhInbdoDG8qblkPnVDgzMWONvRN+zr9QvOsmWA6caxfxM9Y24ZhbLaG7VZQsiQyijL5Rnax7W2elDHsfw9wg=
+	t=1753868897; cv=none; b=dk9nYEuQYuhqzP2Q6+sz6/Z51VJJVFaRcFtX+sTlpUL0isDfMpswppo+2WTliHLrGieQOvdUDfVbLBV5a8DmioenzZI9JgY9Ty90LCU+a5OFq40AFULwfurgiJUAtFtNlwJhg5li/P1SBXFsfxj6vkAOuP2d73lfI0X4ndFoN8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868469; c=relaxed/simple;
-	bh=i34Naeetb7ooY3kY+Ed7J+FCT5dIlrX73+Zu93HvoBE=;
+	s=arc-20240116; t=1753868897; c=relaxed/simple;
+	bh=Fpk9DlX4wpoXHZcYLD9bBuoM9WQn6GPWejjV/I1OT3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/yZbBn+yeE5928Vcu/uS0gpUMot0Fo/0n8HJ1RUkfFHYK894NhTT0pkVMp0qEopVypmZl1qLkOwom802O0R/8Ui3LooRjqiK6aDguC+1YMvDvpY0i1HzLjAoCLSiciXAO1JQ/W7/Oz86q1CaMCoKqrC8B7pET8l4/QNEGsEiKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lbCYu+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5BAC4CEE7;
-	Wed, 30 Jul 2025 09:41:08 +0000 (UTC)
+	 MIME-Version; b=HGzcW1XdRpE3W4CRNvb6/4OrGLOYLVDh+XmdXMOAZ5Qt0pklpd084ONQZSQnvhYdko3c1xwwyKT6VOocYEropxhLKYBVYzDeH4hlGUSv551mhWo8NEOtwNXrZkL19QVsXMMGcaJsAbDolf7EWYa6dEmpwSNRtj8lag0vPSnyO70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2kEBE22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D50C4CEF5;
+	Wed, 30 Jul 2025 09:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868468;
-	bh=i34Naeetb7ooY3kY+Ed7J+FCT5dIlrX73+Zu93HvoBE=;
+	s=korg; t=1753868896;
+	bh=Fpk9DlX4wpoXHZcYLD9bBuoM9WQn6GPWejjV/I1OT3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1lbCYu+4Vs2aDVOipAfD2M0RLww2XcrjXCrv127KdMSzkmTzQ5KrhJiEOdsLPXQfp
-	 veG0GlrzMcRjS7PAkeMgHluWXf4U7GwmJLP9mCcImlfb6lCEoOVgwMRpX/P1GTUEzl
-	 nd/eZUPvjqXHGahzSMenQ4Yd2FDWbTWDHClwfcvc=
+	b=x2kEBE22mMIhPiekpwaX3eXVBO3Pyxganv5WTMKI+T4P5OEhvqUe6mK6wGYnrTRL/
+	 yJd23vvG4khQ0gcuYDTX/LIO+aPrD5dLZxjQ/ue/nrz2AmJlGAU0fOh2fRs9B66yg2
+	 GjqiqZb8GZq7luPvzaWHEfESk8qNfGlxzc+n2nAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	KernelCI bot <bot@kernelci.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 73/76] ARM: 9448/1: Use an absolute path to unified.h in KBUILD_AFLAGS
+Subject: [PATCH 6.12 097/117] KVM: x86: Route non-canonical checks in emulator through emulate_ops
 Date: Wed, 30 Jul 2025 11:36:06 +0200
-Message-ID: <20250730093229.695162812@linuxfoundation.org>
+Message-ID: <20250730093237.570184114@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit 87c4e1459e80bf65066f864c762ef4dc932fad4b ]
+[ Upstream commit 16ccadefa295af434ca296e566f078223ecd79ca ]
 
-After commit d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper
-flags and language target"), which updated as-instr to use the
-'assembler-with-cpp' language option, the Kbuild version of as-instr
-always fails internally for arch/arm with
+Add emulate_ops.is_canonical_addr() to perform (non-)canonical checks in
+the emulator, which will allow extending is_noncanonical_address() to
+support different flavors of canonical checks, e.g. for descriptor table
+bases vs. MSRs, without needing duplicate logic in the emulator.
 
-  <command-line>: fatal error: asm/unified.h: No such file or directory
-  compilation terminated.
+No functional change is intended.
 
-because '-include' flags are now taken into account by the compiler
-driver and as-instr does not have '$(LINUXINCLUDE)', so unified.h is not
-found.
-
-This went unnoticed at the time of the Kbuild change because the last
-use of as-instr in Kbuild that arch/arm could reach was removed in 5.7
-by commit 541ad0150ca4 ("arm: Remove 32bit KVM host support") but a
-stable backport of the Kbuild change to before that point exposed this
-potential issue if one were to be reintroduced.
-
-Follow the general pattern of '-include' paths throughout the tree and
-make unified.h absolute using '$(srctree)' to ensure KBUILD_AFLAGS can
-be used independently.
-
-Closes: https://lore.kernel.org/CACo-S-1qbCX4WAVFA63dWfHtrRHZBTyyr2js8Lx=Az03XHTTHg@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Fixes: d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper flags and language target")
-Reported-by: KernelCI bot <bot@kernelci.org>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-[ No KBUILD_RUSTFLAGS in <=6.12 ]
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Link: https://lore.kernel.org/r/20240906221824.491834-3-mlevitsk@redhat.com
+[sean: separate from additional of flags, massage changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: fa787ac07b3c ("KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/emulate.c     |    2 +-
+ arch/x86/kvm/kvm_emulate.h |    2 ++
+ arch/x86/kvm/x86.c         |    7 +++++++
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -142,7 +142,7 @@ endif
- # Need -Uarm for gcc < 3.x
- KBUILD_CPPFLAGS	+=$(cpp-y)
- KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
--KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include asm/unified.h -msoft-float
-+KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include $(srctree)/arch/arm/include/asm/unified.h -msoft-float
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -653,7 +653,7 @@ static inline u8 ctxt_virt_addr_bits(str
+ static inline bool emul_is_noncanonical_address(u64 la,
+ 						struct x86_emulate_ctxt *ctxt)
+ {
+-	return !__is_canonical_address(la, ctxt_virt_addr_bits(ctxt));
++	return !ctxt->ops->is_canonical_addr(ctxt, la);
+ }
  
- CHECKFLAGS	+= -D__arm__
+ /*
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -235,6 +235,8 @@ struct x86_emulate_ops {
  
+ 	gva_t (*get_untagged_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr,
+ 				   unsigned int flags);
++
++	bool (*is_canonical_addr)(struct x86_emulate_ctxt *ctxt, gva_t addr);
+ };
+ 
+ /* Type, address-of, and value of an instruction's operand. */
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8608,6 +8608,12 @@ static gva_t emulator_get_untagged_addr(
+ 					       addr, flags);
+ }
+ 
++static bool emulator_is_canonical_addr(struct x86_emulate_ctxt *ctxt,
++				       gva_t addr)
++{
++	return !is_noncanonical_address(addr, emul_to_vcpu(ctxt));
++}
++
+ static const struct x86_emulate_ops emulate_ops = {
+ 	.vm_bugged           = emulator_vm_bugged,
+ 	.read_gpr            = emulator_read_gpr,
+@@ -8654,6 +8660,7 @@ static const struct x86_emulate_ops emul
+ 	.triple_fault        = emulator_triple_fault,
+ 	.set_xcr             = emulator_set_xcr,
+ 	.get_untagged_addr   = emulator_get_untagged_addr,
++	.is_canonical_addr   = emulator_is_canonical_addr,
+ };
+ 
+ static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
 
 
 
