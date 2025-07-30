@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-165180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E39B1579E
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 04:43:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05719B1579F
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 04:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61DEF18A3E1B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 02:43:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CCCA3BDE8B
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 02:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D4A1BD9D0;
-	Wed, 30 Jul 2025 02:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C161C68A6;
+	Wed, 30 Jul 2025 02:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLN88Z3j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOzNeRz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137F415A8
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 02:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0223315A8
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 02:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753843402; cv=none; b=Z4l30Vy6YFJf0SgdVGYtaYDdXADtbV6ciXyjx6d6dwNoHbyr3LuhO1My9817k3fHD0kMjQlKpRkVYwGLcQWcT8sPPG8fyQnqcb6RUAZPLB6lIDFqTXm6zdrvoaQNIrczORI/Qu2IvAsobxdivdbHpZUdVHFtHYs7wBSZ1UfYr58=
+	t=1753843405; cv=none; b=Q8GqCs6Y5OyumSegvWFOHHyrHxT6otnvYI0OG28DD59/FuxxH9vBGqGehGiXUXJZfP+DHEX8xVd91+704aV8nNI49dxqBgU4VGkKTwn6iu6MA78H9A68ok2nkRmOBUTKugNi6q9vF0ReTIdToi2CcD2rHo6fWi5OH89pAH8ZLts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753843402; c=relaxed/simple;
-	bh=LLJzeb2JmZxg6UgxkbXT2idBrDeShyCirppJjZPexHc=;
+	s=arc-20240116; t=1753843405; c=relaxed/simple;
+	bh=yEIqm4L5ayU/5yfMoKyxLQigMtkqfl/W2C2TaJyhmXA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gDz2OymXjvTPb736Upja6gojoK6NWE6xP7GdnGhwtQDODKoM+RunDalhOyF36iYZjsP72WH81Z559ejjzKgJKumNhoGmOHAcuFo8E5/Ip3ejdnQKwNh92mVBpNgJ3EzbgtI2SR3A/IkVLUSxOohw3BXingyI8hj4F3zvU5VepDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLN88Z3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEC3C4CEEF;
-	Wed, 30 Jul 2025 02:43:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cB0boa4waIEHA2f2x6WNp0uyzqk8fgMF6DRNf9D6MDFqYC0bT4HtyujpwDcVAGKQABmnph9u+oh/vAFEVfnCY+IE7gGeaAMs1/q/O/k5SKFfe/4TTaHl06FhkOMVseNKzPGvEJsHGbFITvy8fnuD5Zc+WdkckIA6aobz/PxdW6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOzNeRz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6674C4CEEF;
+	Wed, 30 Jul 2025 02:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753843401;
-	bh=LLJzeb2JmZxg6UgxkbXT2idBrDeShyCirppJjZPexHc=;
+	s=k20201202; t=1753843404;
+	bh=yEIqm4L5ayU/5yfMoKyxLQigMtkqfl/W2C2TaJyhmXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLN88Z3jteVh5mVAVtxNs1lphYQCSZIKZZ5DxS14TGYWlz9TDKV/gIKqy5gD5X7Dj
-	 QlxMIphppJIoD3w4afxsw8/GTKMRwyoiPt0IEwttQUTCDPYx0w9beL2YqRrBIfeEFf
-	 +Te2cAapor5frNgf2zpKlDL6pbmxM16IcOmpNLpz1SA1kNlntFxdaZjm/2VHF+Yt8g
-	 DpRsQeFw1iXRlDlqOUbEFCbZ+aGTaiD/ToUJ2neVCepO5SXAAXDauQ40iZDax1oho9
-	 5TzxbwSNrTEqlOipiXSjenP1h3vvvcUrnBQegaB/I6mLyRDmoQwIShJA39lJqECPoY
-	 Um0TTc1VE+4cw==
+	b=TOzNeRz33IMGKDKvY3jbrEbJTPi8GMtT3p+qi50h9ff6MhV9WUhONT3FtPszZUcMY
+	 lK/kjr7GxiUiWhvYPpfdRVvFFE87GTdwlpaaMZNEPBebe0dX/4+8rqGSi8fhmRH1r1
+	 oKogLF4Wr5wGGtB712QMjQbuDwla9Ilp9vDUWZ9+IndGI0hk6+dTBJXmsWM2zhNeAA
+	 SZuJ5rnGYnBO4LYmT49ZXOnchLUd8pyse2KCNon7w4X4RufTPRC8f3uXou7gD+ken+
+	 5H2EV8+LBoRzbgesm8uT5xjXRaUdfYfA9wtyrBtr/H/wmVUmill14Kk2QFOaJ2jwdG
+	 lX6mKU+FTb0lA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y 2/3] mm: update memfd seal write check to include F_SEAL_WRITE
-Date: Tue, 29 Jul 2025 22:43:19 -0400
-Message-Id: <1753842163-a00b7eb8@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 1/3] mm: drop the assumption that VM_SHARED always implies writable
+Date: Tue, 29 Jul 2025 22:43:22 -0400
+Message-Id: <1753842031-acf97e18@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250730005818.2793577-3-isaacmanjarres@google.com>
+In-Reply-To: <20250730005818.2793577-2-isaacmanjarres@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 28464bbb2ddc199433383994bcb9600c8034afa1
+The upstream commit SHA1 provided is correct: e8e17ee90eaf650c855adb0a3e5e965fd6692ff1
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Isaac J. Manjarres <isaacmanjarres@google.com>
@@ -82,50 +82,8 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  28464bbb2ddc ! 1:  3f153c98f29a mm: update memfd seal write check to include F_SEAL_WRITE
-    @@ Metadata
-      ## Commit message ##
-         mm: update memfd seal write check to include F_SEAL_WRITE
-     
-    +    [ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
-    +
-         The seal_check_future_write() function is called by shmem_mmap() or
-         hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
-         sealed this way.
-    @@ Commit message
-         Cc: Mike Kravetz <mike.kravetz@oracle.com>
-         Cc: Muchun Song <muchun.song@linux.dev>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    Cc: stable@vger.kernel.org
-    +    Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-     
-      ## fs/hugetlbfs/inode.c ##
-     @@ fs/hugetlbfs/inode.c: static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
-    - 	vm_flags_set(vma, VM_HUGETLB | VM_DONTEXPAND);
-    + 	vma->vm_flags |= VM_HUGETLB | VM_DONTEXPAND;
-      	vma->vm_ops = &hugetlb_vm_ops;
-      
-     -	ret = seal_check_future_write(info->seals, vma);
-    @@ fs/hugetlbfs/inode.c: static int hugetlbfs_file_mmap(struct file *file, struct v
-      
-     
-      ## include/linux/mm.h ##
-    -@@ include/linux/mm.h: static inline void mem_dump_obj(void *object) {}
-    - #endif
-    +@@ include/linux/mm.h: static inline int pages_identical(struct page *page1, struct page *page2)
-    + }
-      
-      /**
-     - * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
-    @@ include/linux/mm.h: static inline void mem_dump_obj(void *object) {}
-     
-      ## mm/shmem.c ##
-     @@ mm/shmem.c: static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
-    - 	struct shmem_inode_info *info = SHMEM_I(inode);
-    + 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
-      	int ret;
-      
-     -	ret = seal_check_future_write(info->seals, vma);
+1:  e8e17ee90eaf < -:  ------------ mm: drop the assumption that VM_SHARED always implies writable
+-:  ------------ > 1:  bc4bb0b14ec1 mm: drop the assumption that VM_SHARED always implies writable
 
 ---
 
