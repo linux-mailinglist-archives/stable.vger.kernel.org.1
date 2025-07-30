@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-165350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C70B15CC7
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:47:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC17B15D7E
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC975563DCB
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:47:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5DB5A53C4
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEA728ECC4;
-	Wed, 30 Jul 2025 09:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729202951BD;
+	Wed, 30 Jul 2025 09:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaYMPrN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOUhTc5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FD0255F5C;
-	Wed, 30 Jul 2025 09:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D3F2641F9;
+	Wed, 30 Jul 2025 09:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868787; cv=none; b=Ntom9lWgHTGSSkhCvo40iFo41rIvDzI5v828mLD60loFMzbWlvBVc4/d4bIO2NwcWCdVp5lsYMWvVT/d3jAF2pZN8y3KlYKqz8m/PqLlqDXgMQVOKCf1XfmHvlpUM981Eb3EpGzfyjcEM7hphUUhp365pEN/hrE75z+luc7C9hI=
+	t=1753869235; cv=none; b=VoAgEiwSHlvtYFMYxCHZeiTzWIhx/AtPGwDyqflVOF67aRU3xcWcoNHENmPIQ83R96ccCnOCXC5j6C4RYRS4BQfwX9Ynezu3ubsP8EJACVQ7GmGmSG4ssll67IQZ4PlNvXBJqZj/8u+1YNvHzHCTDJVSkLYxWsF/48b/mWCqyVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868787; c=relaxed/simple;
-	bh=rdPPsjro/aX6TyP7Zpr6P9XyRuhQOP/82KahRQM3fC0=;
+	s=arc-20240116; t=1753869235; c=relaxed/simple;
+	bh=ptamTgDw4GP4dVo4bDC1yxpuVRIl67Gd07Ez7yJhhGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5C+lDhBX/LP45o1sIbkGCujiG5ypNrh4oKAt4k+Xz2OOYBnpyjEL0Rvq9lEAB4DmMLgTfvYxXWmxvbt33hmmXCGJJeikgyl5piGwRnEZNkZRujY+KKfAlWHHAG5/ZEedizINF0D2uKuGHTQa6/VOC52VTwpPIXUPwV6gfdsHIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaYMPrN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADA3C4CEF6;
-	Wed, 30 Jul 2025 09:46:26 +0000 (UTC)
+	 MIME-Version; b=ZKU/TCg8mSSxXTsu5tFBwU/jnf4oTPsa44ZkTSSHYezMv4BpL8gxW53h7CbY06HEpcPXCtPv4vDhQVyPXF9ZWauraLNv+SIgly8T9F5oNlkApod7gLX+wmRaKiDit/PsmxX8TKsorZz5WXrjCDVIkIxzhtb756Zfap+1hjTsM58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOUhTc5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D96C4CEF5;
+	Wed, 30 Jul 2025 09:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868787;
-	bh=rdPPsjro/aX6TyP7Zpr6P9XyRuhQOP/82KahRQM3fC0=;
+	s=korg; t=1753869235;
+	bh=ptamTgDw4GP4dVo4bDC1yxpuVRIl67Gd07Ez7yJhhGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaYMPrN5CZ7pJDwaUqq49mlOrEl7jFqvtdkF/b3Omm8wniEp7FAEUlK8cjCtxUQCY
-	 AfzT5yAG6SIf3OLmpBBpjPbx0S8ya8O+mgyRmXRPaVhh1336oFTmAGZX3azUOscQLI
-	 hoigPupUUOoj1kw2qqxe9+IDOTRqNoPpxYWBdmJc=
+	b=kOUhTc5cd9CX1+Zl78Wlu63VYgnFwXHC4cZQfobDEXkjmVgMJrpM3wL5tIvjKpgbu
+	 r7HpOOCHMeNMO6WsOQoqS+n73ZiDlELf825M2gV5bpj0GgyZwUa0oPKYE0sbH/bTol
+	 Sckr7DpRMhZLyhWvEuJ5ARxPmuNg0PqsH1nyRUlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>,
+	Nimrod Oren <noren@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/117] comedi: comedi_test: Fix possible deletion of uninitialized timers
-Date: Wed, 30 Jul 2025 11:35:44 +0200
-Message-ID: <20250730093236.458326766@linuxfoundation.org>
+Subject: [PATCH 6.15 37/92] selftests: drv-net: wait for iperf client to stop sending
+Date: Wed, 30 Jul 2025 11:35:45 +0200
+Message-ID: <20250730093232.187380646@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +65,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Nimrod Oren <noren@nvidia.com>
 
-commit 1b98304c09a0192598d0767f1eb8c83d7e793091 upstream.
+[ Upstream commit 86941382508850d58c11bdafe0fec646dfd31b09 ]
 
-In `waveform_common_attach()`, the two timers `&devpriv->ai_timer` and
-`&devpriv->ao_timer` are initialized after the allocation of the device
-private data by `comedi_alloc_devpriv()` and the subdevices by
-`comedi_alloc_subdevices()`.  The function may return with an error
-between those function calls.  In that case, `waveform_detach()` will be
-called by the Comedi core to clean up.  The check that
-`waveform_detach()` uses to decide whether to delete the timers is
-incorrect.  It only checks that the device private data was allocated,
-but that does not guarantee that the timers were initialized.  It also
-needs to check that the subdevices were allocated.  Fix it.
+A few packets may still be sent out during the termination of iperf
+processes. These late packets cause failures in rss_ctx.py when they
+arrive on queues expected to be empty.
 
-Fixes: 73e0e4dfed4c ("staging: comedi: comedi_test: fix timer lock-up")
-Cc: stable@vger.kernel.org # 6.15+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
-[ changed timer_delete_sync() to del_timer_sync() ]
+Example failure observed:
+
+  Check failed 2 != 0 traffic on inactive queues (context 1):
+    [0, 0, 1, 1, 386385, 397196, 0, 0, 0, 0, ...]
+
+  Check failed 4 != 0 traffic on inactive queues (context 2):
+    [0, 0, 0, 0, 2, 2, 247152, 253013, 0, 0, ...]
+
+  Check failed 2 != 0 traffic on inactive queues (context 3):
+    [0, 0, 0, 0, 0, 0, 1, 1, 282434, 283070, ...]
+
+To avoid such failures, wait until all client sockets for the requested
+port are either closed or in the TIME_WAIT state.
+
+Fixes: 847aa551fa78 ("selftests: drv-net: rss_ctx: factor out send traffic and check")
+Signed-off-by: Nimrod Oren <noren@nvidia.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722122655.3194442-1-noren@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/comedi_test.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/drivers/net/lib/py/load.py      | 23 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/comedi/drivers/comedi_test.c
-+++ b/drivers/comedi/drivers/comedi_test.c
-@@ -790,7 +790,7 @@ static void waveform_detach(struct comed
- {
- 	struct waveform_private *devpriv = dev->private;
+diff --git a/tools/testing/selftests/drivers/net/lib/py/load.py b/tools/testing/selftests/drivers/net/lib/py/load.py
+index da5af2c680faa..1a9d57c3efa3c 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/load.py
++++ b/tools/testing/selftests/drivers/net/lib/py/load.py
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
  
--	if (devpriv) {
-+	if (devpriv && dev->n_subdevices) {
- 		del_timer_sync(&devpriv->ai_timer);
- 		del_timer_sync(&devpriv->ao_timer);
- 	}
++import re
+ import time
+ 
+ from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen, bkg
+@@ -10,12 +11,11 @@ class GenerateTraffic:
+ 
+         self.env = env
+ 
+-        if port is None:
+-            port = rand_port()
+-        self._iperf_server = cmd(f"iperf3 -s -1 -p {port}", background=True)
+-        wait_port_listen(port)
++        self.port = rand_port() if port is None else port
++        self._iperf_server = cmd(f"iperf3 -s -1 -p {self.port}", background=True)
++        wait_port_listen(self.port)
+         time.sleep(0.1)
+-        self._iperf_client = cmd(f"iperf3 -c {env.addr} -P 16 -p {port} -t 86400",
++        self._iperf_client = cmd(f"iperf3 -c {env.addr} -P 16 -p {self.port} -t 86400",
+                                  background=True, host=env.remote)
+ 
+         # Wait for traffic to ramp up
+@@ -74,3 +74,16 @@ class GenerateTraffic:
+             ksft_pr(">> Server:")
+             ksft_pr(self._iperf_server.stdout)
+             ksft_pr(self._iperf_server.stderr)
++        self._wait_client_stopped()
++
++    def _wait_client_stopped(self, sleep=0.005, timeout=5):
++        end = time.monotonic() + timeout
++
++        live_port_pattern = re.compile(fr":{self.port:04X} 0[^6] ")
++
++        while time.monotonic() < end:
++            data = cmd("cat /proc/net/tcp*", host=self.env.remote).stdout
++            if not live_port_pattern.search(data):
++                return
++            time.sleep(sleep)
++        raise Exception(f"Waiting for client to stop timed out after {timeout}s")
+-- 
+2.39.5
+
 
 
 
