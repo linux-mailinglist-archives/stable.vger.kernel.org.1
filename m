@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-165401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37F4B15D23
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A215B15C60
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 674C55A5700
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:49:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B65C3A3707
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2731F5834;
-	Wed, 30 Jul 2025 09:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E34523D2A2;
+	Wed, 30 Jul 2025 09:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+B445mM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lbCYu+4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA43226D17;
-	Wed, 30 Jul 2025 09:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE58622156D;
+	Wed, 30 Jul 2025 09:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868985; cv=none; b=YhddICQa5ne4kCLj0FAsaxMvamwFry/IyiXDb7ar41kh9NJAmRWwzU9DG1LuyrIM+tCjD4lDaGA700PyWNYY4eyXWvEK4HjTiApkEuvx97XGbxSWwD7Uh2wyNZA9xJ5Nru8XjnAt/NThJ/i+jHJTBoWJGrojUExU8Q+wGexx0nQ=
+	t=1753868469; cv=none; b=pBiq9fIgVgiWr8nm3//QvFwTiUmFwlKRAlL0vT/GobW4FgB8gsHlH5hqDyKIsW6cgDiJn5zNwwVyhFg8l1i7mslGhInbdoDG8qblkPnVDgzMWONvRN+zr9QvOsmWA6caxfxM9Y24ZhbLaG7VZQsiQyijL5Rnax7W2elDHsfw9wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868985; c=relaxed/simple;
-	bh=oroqXZ6uROR2Jya0VxzILAmhv/IOekyb80t25HckNGo=;
+	s=arc-20240116; t=1753868469; c=relaxed/simple;
+	bh=i34Naeetb7ooY3kY+Ed7J+FCT5dIlrX73+Zu93HvoBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdMLPg2G8/dLRqjzQLExEYnU+W9xi5UY2Y7VPMv+m80LDvxZmGxu3bLD26EDcOufV9k9tQI8Cl97fspae2ZuIM5wJpoZZYhScHhDneHwqtR+RrkHInqaqv0fMhk/S1OmqunbD4w+tNAojIvYl/KrtAAAexh/sRkTZqIf8UPe1ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+B445mM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2445C4CEF6;
-	Wed, 30 Jul 2025 09:49:44 +0000 (UTC)
+	 MIME-Version; b=k/yZbBn+yeE5928Vcu/uS0gpUMot0Fo/0n8HJ1RUkfFHYK894NhTT0pkVMp0qEopVypmZl1qLkOwom802O0R/8Ui3LooRjqiK6aDguC+1YMvDvpY0i1HzLjAoCLSiciXAO1JQ/W7/Oz86q1CaMCoKqrC8B7pET8l4/QNEGsEiKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lbCYu+4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5BAC4CEE7;
+	Wed, 30 Jul 2025 09:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868985;
-	bh=oroqXZ6uROR2Jya0VxzILAmhv/IOekyb80t25HckNGo=;
+	s=korg; t=1753868468;
+	bh=i34Naeetb7ooY3kY+Ed7J+FCT5dIlrX73+Zu93HvoBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+B445mM2Q65bYbbp2E8sJ9w8nmzrOsOTKaTxL7MmRPTIg3JMc+52z7DtTKRe/NOE
-	 q/4ccBlrvfZN3RaU4NGM0u78FdtdyhHtXhRSEL9h4kx6J38FvTGEvdr0WWg9TbnTck
-	 mWgCELLaaYOWgExYowj81AUck0hiBXCc3RgW7Vsk=
+	b=1lbCYu+4Vs2aDVOipAfD2M0RLww2XcrjXCrv127KdMSzkmTzQ5KrhJiEOdsLPXQfp
+	 veG0GlrzMcRjS7PAkeMgHluWXf4U7GwmJLP9mCcImlfb6lCEoOVgwMRpX/P1GTUEzl
+	 nd/eZUPvjqXHGahzSMenQ4Yd2FDWbTWDHClwfcvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
+	KernelCI bot <bot@kernelci.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/117] KVM: x86: drop x86.h include from cpuid.h
-Date: Wed, 30 Jul 2025 11:36:05 +0200
-Message-ID: <20250730093237.530052999@linuxfoundation.org>
+Subject: [PATCH 6.6 73/76] ARM: 9448/1: Use an absolute path to unified.h in KBUILD_AFLAGS
+Date: Wed, 30 Jul 2025 11:36:06 +0200
+Message-ID: <20250730093229.695162812@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
+References: <20250730093226.854413920@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit e52ad1ddd0a3b07777141ec9406d5dc2c9a0de17 ]
+[ Upstream commit 87c4e1459e80bf65066f864c762ef4dc932fad4b ]
 
-Drop x86.h include from cpuid.h to allow the x86.h to include the cpuid.h
-instead.
+After commit d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper
+flags and language target"), which updated as-instr to use the
+'assembler-with-cpp' language option, the Kbuild version of as-instr
+always fails internally for arch/arm with
 
-Also fix various places where x86.h was implicitly included via cpuid.h
+  <command-line>: fatal error: asm/unified.h: No such file or directory
+  compilation terminated.
 
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Link: https://lore.kernel.org/r/20240906221824.491834-2-mlevitsk@redhat.com
-[sean: fixup a missed include in mtrr.c]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: fa787ac07b3c ("KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush")
+because '-include' flags are now taken into account by the compiler
+driver and as-instr does not have '$(LINUXINCLUDE)', so unified.h is not
+found.
+
+This went unnoticed at the time of the Kbuild change because the last
+use of as-instr in Kbuild that arch/arm could reach was removed in 5.7
+by commit 541ad0150ca4 ("arm: Remove 32bit KVM host support") but a
+stable backport of the Kbuild change to before that point exposed this
+potential issue if one were to be reintroduced.
+
+Follow the general pattern of '-include' paths throughout the tree and
+make unified.h absolute using '$(srctree)' to ensure KBUILD_AFLAGS can
+be used independently.
+
+Closes: https://lore.kernel.org/CACo-S-1qbCX4WAVFA63dWfHtrRHZBTyyr2js8Lx=Az03XHTTHg@mail.gmail.com/
+
+Cc: stable@vger.kernel.org
+Fixes: d5c8d6e0fa61 ("kbuild: Update assembler calls to use proper flags and language target")
+Reported-by: KernelCI bot <bot@kernelci.org>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+[ No KBUILD_RUSTFLAGS in <=6.12 ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.h      |    1 -
- arch/x86/kvm/mmu.h        |    1 +
- arch/x86/kvm/mtrr.c       |    1 +
- arch/x86/kvm/vmx/hyperv.c |    1 +
- arch/x86/kvm/vmx/nested.c |    2 +-
- arch/x86/kvm/vmx/sgx.c    |    3 +--
- 6 files changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -2,7 +2,6 @@
- #ifndef ARCH_X86_KVM_CPUID_H
- #define ARCH_X86_KVM_CPUID_H
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -142,7 +142,7 @@ endif
+ # Need -Uarm for gcc < 3.x
+ KBUILD_CPPFLAGS	+=$(cpp-y)
+ KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
+-KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include asm/unified.h -msoft-float
++KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include $(srctree)/arch/arm/include/asm/unified.h -msoft-float
  
--#include "x86.h"
- #include "reverse_cpuid.h"
- #include <asm/cpu.h>
- #include <asm/processor.h>
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -4,6 +4,7 @@
+ CHECKFLAGS	+= -D__arm__
  
- #include <linux/kvm_host.h>
- #include "kvm_cache_regs.h"
-+#include "x86.h"
- #include "cpuid.h"
- 
- extern bool __read_mostly enable_mmio_caching;
---- a/arch/x86/kvm/mtrr.c
-+++ b/arch/x86/kvm/mtrr.c
-@@ -19,6 +19,7 @@
- #include <asm/mtrr.h>
- 
- #include "cpuid.h"
-+#include "x86.h"
- 
- static u64 *find_mtrr(struct kvm_vcpu *vcpu, unsigned int msr)
- {
---- a/arch/x86/kvm/vmx/hyperv.c
-+++ b/arch/x86/kvm/vmx/hyperv.c
-@@ -4,6 +4,7 @@
- #include <linux/errno.h>
- #include <linux/smp.h>
- 
-+#include "x86.h"
- #include "../cpuid.h"
- #include "hyperv.h"
- #include "nested.h"
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -7,6 +7,7 @@
- #include <asm/debugreg.h>
- #include <asm/mmu_context.h>
- 
-+#include "x86.h"
- #include "cpuid.h"
- #include "hyperv.h"
- #include "mmu.h"
-@@ -16,7 +17,6 @@
- #include "sgx.h"
- #include "trace.h"
- #include "vmx.h"
--#include "x86.h"
- #include "smm.h"
- 
- static bool __read_mostly enable_shadow_vmcs = 1;
---- a/arch/x86/kvm/vmx/sgx.c
-+++ b/arch/x86/kvm/vmx/sgx.c
-@@ -4,12 +4,11 @@
- 
- #include <asm/sgx.h>
- 
--#include "cpuid.h"
-+#include "x86.h"
- #include "kvm_cache_regs.h"
- #include "nested.h"
- #include "sgx.h"
- #include "vmx.h"
--#include "x86.h"
- 
- bool __read_mostly enable_sgx = 1;
- module_param_named(sgx, enable_sgx, bool, 0444);
 
 
 
