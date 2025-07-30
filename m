@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-165267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD77B15C4B
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:41:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7651AB15CF9
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9E4217BA80
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:41:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A3B54E7EC4
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC7F27467A;
-	Wed, 30 Jul 2025 09:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4776291C23;
+	Wed, 30 Jul 2025 09:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqHQfSOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyoqcUjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6F322156D;
-	Wed, 30 Jul 2025 09:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82213255F5C;
+	Wed, 30 Jul 2025 09:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868454; cv=none; b=ZrDV3CZizXNw+7LrBUcYuwpv8tMS+k0LMtIEv2qHNYU0CdWys8+L2iI3Tle5XJc5iThYeAq+4ZkLOYyBO+s3/i/WmmZ0kImePL605JcRHVAFYGgAhE9PrAHYcmHnmcSUaSb17z6fmil61wt1vB9Cq0CgJs7kRhYsSrC1S0QR2aw=
+	t=1753868855; cv=none; b=JsYtY5bNEgZYHtIqVWvtNHm3/GhbRgjirebj/jOvvpoEFJ0qnwVWhmnL8/zDjNxFIsqIZYYorXJo5pU0WKAR+OKfPE9htAqF8ZvfEzEueDEAlkEVSzq/AWH6B+wtleJBu/+OLjFmnZhYE73BgOXPgElMOMRXnwzxsHgZ9j8Vv54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868454; c=relaxed/simple;
-	bh=dgipGGjt1gsRvWOooCeI1x/EXoX5ealCAEwEZ2KvCso=;
+	s=arc-20240116; t=1753868855; c=relaxed/simple;
+	bh=ykegQ4r5Y7sw2UYVssGFsrLQ6Kv0tEKBZTIuUgpynwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDDbIGElo70bsvLob+Ms7OiC6QHvXVFrJfQWU4lFTf8mQdXdgSG1q21Diadhm4h8NB5ywqcdqwXiaDLKIfRFdprkMaGZTgeix3eafSeNESWeT1lSYsLlniZdVZx0hlxpQuTnF2sdMyCQORDcGVewzpNVN2BRv6FMrH+h9GJCA2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqHQfSOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E067C4CEE7;
-	Wed, 30 Jul 2025 09:40:54 +0000 (UTC)
+	 MIME-Version; b=DesZLe2AK72jVIEVoLuUxKQMywxlUApEx4dDLprnaVC0BtguaetoqD0W3G1YLFLSgDqRCAuzeLGpkRNMvP271t22y9+58qyRDE0Df3BQNpsZnDcp/KDyGsoqFsdAIPFpwmZ/GRJuPt1HTaSib1mPBVHInsTA9sWRwZ8+Op3iuEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyoqcUjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EBEC4CEF5;
+	Wed, 30 Jul 2025 09:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868454;
-	bh=dgipGGjt1gsRvWOooCeI1x/EXoX5ealCAEwEZ2KvCso=;
+	s=korg; t=1753868855;
+	bh=ykegQ4r5Y7sw2UYVssGFsrLQ6Kv0tEKBZTIuUgpynwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqHQfSOPyk9dTP27pJ9fffXcevEFmm+EKjyNkhdmOln/hWton2p1ypV/l/7oEJ/r/
-	 KhXDspob/NBlspaPW9ucKK/FOFgVcBmi4irpgZeBtiKZQ0OWvolB+vlVdj7HEEL5sr
-	 QLubvbYQWSSFHGpZjpDDQVzxI9qklLZIzN3onWhU=
+	b=KyoqcUjIV1J1d6ty2+S7wFTeTbHu+YUdUPniyJtxqAzUGYfoyqzML+ATCzrc9Xr7y
+	 4/X7lHgLkyJQXHRCtwn3tZt7vJUvc6QYA1KVC8mMLky9l7tlD+e8GKYAKhxxeVeWvs
+	 BQDTt4D778vIaW/xGG4NGViH7xKHd1AxAcnFs2k8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nianyao Tang <tangnianyao@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Patrick Roy <roypat@amazon.co.uk>
-Subject: [PATCH 6.6 69/76] arm64/cpufeatures/kvm: Add ARMv8.9 FEAT_ECBHB bits in ID_AA64MMFR1 register
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 093/117] ext4: fix incorrect punch max_end
 Date: Wed, 30 Jul 2025 11:36:02 +0200
-Message-ID: <20250730093229.542288382@linuxfoundation.org>
+Message-ID: <20250730093237.409971402@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093226.854413920@linuxfoundation.org>
-References: <20250730093226.854413920@linuxfoundation.org>
+In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
+References: <20250730093233.592541778@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nianyao Tang <tangnianyao@huawei.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit e8cde32f111f7f5681a7bad3ec747e9e697569a9 upstream.
+[ Upstream commit 29ec9bed2395061350249ae356fb300dd82a78e7 ]
 
-Enable ECBHB bits in ID_AA64MMFR1 register as per ARM DDI 0487K.a
-specification.
+For the extents based inodes, the maxbytes should be sb->s_maxbytes
+instead of sbi->s_bitmap_maxbytes. Additionally, for the calculation of
+max_end, the -sb->s_blocksize operation is necessary only for
+indirect-block based inodes. Correct the maxbytes and max_end value to
+correct the behavior of punch hole.
 
-When guest OS read ID_AA64MMFR1_EL1, kvm emulate this reg using
-ftr_id_aa64mmfr1 and always return ID_AA64MMFR1_EL1.ECBHB=0 to guest.
-It results in guest syscall jump to tramp ventry, which is not needed
-in implementation with ID_AA64MMFR1_EL1.ECBHB=1.
-Let's make the guest syscall process the same as the host.
-
-Signed-off-by: Nianyao Tang <tangnianyao@huawei.com>
-Link: https://lore.kernel.org/r/20240611122049.2758600-1-tangnianyao@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ This fixes performance regressions introduced by commit 4117975672c4
-  ("arm64: errata: Add newer ARM cores to the
-  spectre_bhb_loop_affected() lists") for guests running on neoverse v2
-  hardware, which supports ECBHB. ]
-Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
+Fixes: 2da376228a24 ("ext4: limit length to bitmap_maxbytes - blocksize in punch_hole")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250506012009.3896990-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/cpufeature.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/inode.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -364,6 +364,7 @@ static const struct arm64_ftr_bits ftr_i
- };
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3992,7 +3992,7 @@ int ext4_punch_hole(struct file *file, l
+ 	struct inode *inode = file_inode(file);
+ 	struct super_block *sb = inode->i_sb;
+ 	ext4_lblk_t start_lblk, end_lblk;
+-	loff_t max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
++	loff_t max_end = sb->s_maxbytes;
+ 	loff_t end = offset + length;
+ 	handle_t *handle;
+ 	unsigned int credits;
+@@ -4001,14 +4001,20 @@ int ext4_punch_hole(struct file *file, l
+ 	trace_ext4_punch_hole(inode, offset, length, 0);
+ 	WARN_ON_ONCE(!inode_is_locked(inode));
  
- static const struct arm64_ftr_bits ftr_id_aa64mmfr1[] = {
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_ECBHB_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_TIDCP1_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_AFP_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64MMFR1_EL1_HCX_SHIFT, 4, 0),
++	/*
++	 * For indirect-block based inodes, make sure that the hole within
++	 * one block before last range.
++	 */
++	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
++
+ 	/* No need to punch hole beyond i_size */
+ 	if (offset >= inode->i_size)
+ 		return 0;
+ 
+ 	/*
+ 	 * If the hole extends beyond i_size, set the hole to end after
+-	 * the page that contains i_size, and also make sure that the hole
+-	 * within one block before last range.
++	 * the page that contains i_size.
+ 	 */
+ 	if (end > inode->i_size)
+ 		end = round_up(inode->i_size, PAGE_SIZE);
 
 
 
