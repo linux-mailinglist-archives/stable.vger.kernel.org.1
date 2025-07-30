@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-165356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13586B15CE0
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:48:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DBEB15D5D
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 538B018C43A2
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 079704E567A
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67F5292B48;
-	Wed, 30 Jul 2025 09:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AC8293C67;
+	Wed, 30 Jul 2025 09:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahKH2+dp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8GzoJ6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855F026B951;
-	Wed, 30 Jul 2025 09:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42743594F;
+	Wed, 30 Jul 2025 09:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868807; cv=none; b=i0hAmCO7xkkKYb3zY7sUQraT1Vo54bF6mhG4nn0T5Jdi3RydanZbinylO5W7cl4EeuAbPVZw/ZNDeeK39eYV7RMF5Eq6iEkxbdQYbFjcwzxlXzfMqe0nXAIZNNo3BljUJfXvJB+FE0aaOjZuMuvLv0QosNPhrPzgk82/EiK3Bs8=
+	t=1753869117; cv=none; b=nA5xEXcY00oex2gtXLnpkjC8sF4FolLgiUMN97sOav4D5NbrDlG0wmxd09DEkXl/v7tyeW3DixCB7K7cdob6qeRXSEFY7uWYKDsBgoRSTKjOkjN5Cjh0Hzcaj6MpkZdpkqXRDMxiMkJYlUSmQbRvfuU6d4eQQpbTHa6wu36LKM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868807; c=relaxed/simple;
-	bh=erQ0bBaLpSiKYHqGD03+cdrzrWIdJAEEpqfSLRZsScg=;
+	s=arc-20240116; t=1753869117; c=relaxed/simple;
+	bh=b3zo+8HX/qYIRFVOICq64hU84oqQjRIW2dvRMqKHWw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKo9gUCBWGf9ATFpLCMEGQ5IKTcznT3YzcmxPhHkPcOZBZ+wANgQNBdj4Yl8G2gtbXv5F1EE3f+sErhfQGNAguQufXcxIafbpYVIjx0jTAY88XYhkLQY1DdGKnOZ4GgTIaZIGWJCTSkXO3fFxidFYHSc+1WV850EECBLScC6/eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahKH2+dp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1F4C4CEF5;
-	Wed, 30 Jul 2025 09:46:46 +0000 (UTC)
+	 MIME-Version; b=BSdN2bYgY7sOBWaJ5FyUOt9msnoNbIfkNN5+u0i1SIHRKshP2tH07MZNLj44tj7Mh5lyY/zQDAwNaAY6VFiUN2SrFoKimKxYsUBZQTw6xKVWXWbtfdsyDZPZEPP5jRaUNd1c2VT4kW7ZDJXD0m52WXGXQ2VXlnHRMitc6kor6xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8GzoJ6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FF0C4CEF5;
+	Wed, 30 Jul 2025 09:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868807;
-	bh=erQ0bBaLpSiKYHqGD03+cdrzrWIdJAEEpqfSLRZsScg=;
+	s=korg; t=1753869117;
+	bh=b3zo+8HX/qYIRFVOICq64hU84oqQjRIW2dvRMqKHWw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahKH2+dpSzhiak2YcipAHIj7l++9IV4NKlbt2VjeA9oOH8gEm9hoPci5+uyoc6dF5
-	 tQXljagvwBU1iC2ei/FdH4Qb+ZJCJgfMZxOqJ66mmTFpT2KtozWPNmgM3rUdU27u73
-	 XyC58dFDqOdkQSfEwMgFl2neZQTWZOmgDpbyZecY=
+	b=W8GzoJ6dGh8Fp8Uf0Jf+XgN+wcMByO1Ad+wasHV2gt+BPrNOV/csPa5+SylN9cwCB
+	 hjSYXzGbjHv84v6w/gqTOrAc9oESdtPjXu3QkWSZ45JrbOu+Xkq1k+STuL8EjvHohC
+	 X1gacTH82dI17Dax4w9tUZDFMCTAqpnWfyQWZzbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongzhen Luo <hongzhen@linux.alibaba.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/117] erofs: use Z_EROFS_LCLUSTER_TYPE_MAX to simplify switches
+Subject: [PATCH 6.15 42/92] net: hns3: default enable tx bounce buffer when smmu enabled
 Date: Wed, 30 Jul 2025 11:35:50 +0200
-Message-ID: <20250730093236.909319307@linuxfoundation.org>
+Message-ID: <20250730093232.394719378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongzhen Luo <hongzhen@linux.alibaba.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 3b7781aeaefb627d4e07c1af9be923f9e8047d8b ]
+[ Upstream commit 49ade8630f36e9dca2395592cfb0b7deeb07e746 ]
 
-There's no need to enumerate each type.  No logic changes.
+The SMMU engine on HIP09 chip has a hardware issue.
+SMMU pagetable prefetch features may prefetch and use a invalid PTE
+even the PTE is valid at that time. This will cause the device trigger
+fake pagefaults. The solution is to avoid prefetching by adding a
+SYNC command when smmu mapping a iova. But the performance of nic has a
+sharp drop. Then we do this workaround, always enable tx bounce buffer,
+avoid mapping/unmapping on TX path.
 
-Signed-off-by: Hongzhen Luo <hongzhen@linux.alibaba.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20250210032923.3382136-1-hongzhen@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Stable-dep-of: b44686c8391b ("erofs: fix large fragment handling")
+This issue only affects HNS3, so we always enable
+tx bounce buffer when smmu enabled to improve performance.
+
+Fixes: 295ba232a8c3 ("net: hns3: add device version to replace pci revision")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-5-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zmap.c |   63 +++++++++++++++++++++-----------------------------------
- 1 file changed, 24 insertions(+), 39 deletions(-)
+ .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 31 +++++++++++++++++++
+ .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 ++
+ 2 files changed, 33 insertions(+)
 
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -265,26 +265,22 @@ static int z_erofs_extent_lookback(struc
- 		if (err)
- 			return err;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index b03b8758c7774..aaa803563bd2e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -11,6 +11,7 @@
+ #include <linux/irq.h>
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
++#include <linux/iommu.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/skbuff.h>
+@@ -1039,6 +1040,8 @@ static bool hns3_can_use_tx_sgl(struct hns3_enet_ring *ring,
+ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
+ {
+ 	u32 alloc_size = ring->tqp->handle->kinfo.tx_spare_buf_size;
++	struct net_device *netdev = ring_to_netdev(ring);
++	struct hns3_nic_priv *priv = netdev_priv(netdev);
+ 	struct hns3_tx_spare *tx_spare;
+ 	struct page *page;
+ 	dma_addr_t dma;
+@@ -1080,6 +1083,7 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
+ 	tx_spare->buf = page_address(page);
+ 	tx_spare->len = PAGE_SIZE << order;
+ 	ring->tx_spare = tx_spare;
++	ring->tx_copybreak = priv->tx_copybreak;
+ 	return;
  
--		switch (m->type) {
--		case Z_EROFS_LCLUSTER_TYPE_NONHEAD:
-+		if (m->type >= Z_EROFS_LCLUSTER_TYPE_MAX) {
-+			erofs_err(sb, "unknown type %u @ lcn %lu of nid %llu",
-+				  m->type, lcn, vi->nid);
-+			DBG_BUGON(1);
-+			return -EOPNOTSUPP;
-+		} else if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
- 			lookback_distance = m->delta[0];
- 			if (!lookback_distance)
--				goto err_bogus;
-+				break;
- 			continue;
--		case Z_EROFS_LCLUSTER_TYPE_PLAIN:
--		case Z_EROFS_LCLUSTER_TYPE_HEAD1:
--		case Z_EROFS_LCLUSTER_TYPE_HEAD2:
-+		} else {
- 			m->headtype = m->type;
- 			m->map->m_la = (lcn << lclusterbits) | m->clusterofs;
- 			return 0;
--		default:
--			erofs_err(sb, "unknown type %u @ lcn %lu of nid %llu",
--				  m->type, lcn, vi->nid);
--			DBG_BUGON(1);
--			return -EOPNOTSUPP;
- 		}
- 	}
--err_bogus:
- 	erofs_err(sb, "bogus lookback distance %u @ lcn %lu of nid %llu",
- 		  lookback_distance, m->lcn, vi->nid);
- 	DBG_BUGON(1);
-@@ -329,35 +325,28 @@ static int z_erofs_get_extent_compressed
- 	DBG_BUGON(lcn == initial_lcn &&
- 		  m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD);
- 
--	switch (m->type) {
--	case Z_EROFS_LCLUSTER_TYPE_PLAIN:
--	case Z_EROFS_LCLUSTER_TYPE_HEAD1:
--	case Z_EROFS_LCLUSTER_TYPE_HEAD2:
-+	if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
-+		if (m->delta[0] != 1) {
-+			erofs_err(sb, "bogus CBLKCNT @ lcn %lu of nid %llu", lcn, vi->nid);
-+			DBG_BUGON(1);
-+			return -EFSCORRUPTED;
-+		}
-+		if (m->compressedblks)
-+			goto out;
-+	} else if (m->type < Z_EROFS_LCLUSTER_TYPE_MAX) {
- 		/*
- 		 * if the 1st NONHEAD lcluster is actually PLAIN or HEAD type
- 		 * rather than CBLKCNT, it's a 1 block-sized pcluster.
- 		 */
- 		m->compressedblks = 1;
--		break;
--	case Z_EROFS_LCLUSTER_TYPE_NONHEAD:
--		if (m->delta[0] != 1)
--			goto err_bonus_cblkcnt;
--		if (m->compressedblks)
--			break;
--		fallthrough;
--	default:
--		erofs_err(sb, "cannot found CBLKCNT @ lcn %lu of nid %llu", lcn,
--			  vi->nid);
--		DBG_BUGON(1);
--		return -EFSCORRUPTED;
-+		goto out;
- 	}
-+	erofs_err(sb, "cannot found CBLKCNT @ lcn %lu of nid %llu", lcn, vi->nid);
-+	DBG_BUGON(1);
-+	return -EFSCORRUPTED;
- out:
- 	m->map->m_plen = erofs_pos(sb, m->compressedblks);
- 	return 0;
--err_bonus_cblkcnt:
--	erofs_err(sb, "bogus CBLKCNT @ lcn %lu of nid %llu", lcn, vi->nid);
--	DBG_BUGON(1);
--	return -EFSCORRUPTED;
+ dma_mapping_error:
+@@ -4874,6 +4878,30 @@ static void hns3_nic_dealloc_vector_data(struct hns3_nic_priv *priv)
+ 	devm_kfree(&pdev->dev, priv->tqp_vector);
  }
  
- static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
-@@ -386,9 +375,7 @@ static int z_erofs_get_extent_decompress
- 				m->delta[1] = 1;
- 				DBG_BUGON(1);
- 			}
--		} else if (m->type == Z_EROFS_LCLUSTER_TYPE_PLAIN ||
--			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD1 ||
--			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
-+		} else if (m->type < Z_EROFS_LCLUSTER_TYPE_MAX) {
- 			if (lcn != headlcn)
- 				break;	/* ends at the next HEAD lcluster */
- 			m->delta[1] = 1;
-@@ -452,8 +439,7 @@ static int z_erofs_do_map_blocks(struct
- 		}
- 		/* m.lcn should be >= 1 if endoff < m.clusterofs */
- 		if (!m.lcn) {
--			erofs_err(inode->i_sb,
--				  "invalid logical cluster 0 at nid %llu",
-+			erofs_err(inode->i_sb, "invalid logical cluster 0 at nid %llu",
- 				  vi->nid);
- 			err = -EFSCORRUPTED;
- 			goto unmap_out;
-@@ -469,8 +455,7 @@ static int z_erofs_do_map_blocks(struct
- 			goto unmap_out;
- 		break;
- 	default:
--		erofs_err(inode->i_sb,
--			  "unknown type %u @ offset %llu of nid %llu",
-+		erofs_err(inode->i_sb, "unknown type %u @ offset %llu of nid %llu",
- 			  m.type, ofs, vi->nid);
- 		err = -EOPNOTSUPP;
- 		goto unmap_out;
++static void hns3_update_tx_spare_buf_config(struct hns3_nic_priv *priv)
++{
++#define HNS3_MIN_SPARE_BUF_SIZE (2 * 1024 * 1024)
++#define HNS3_MAX_PACKET_SIZE (64 * 1024)
++
++	struct iommu_domain *domain = iommu_get_domain_for_dev(priv->dev);
++	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(priv->ae_handle);
++	struct hnae3_handle *handle = priv->ae_handle;
++
++	if (ae_dev->dev_version < HNAE3_DEVICE_VERSION_V3)
++		return;
++
++	if (!(domain && iommu_is_dma_domain(domain)))
++		return;
++
++	priv->min_tx_copybreak = HNS3_MAX_PACKET_SIZE;
++	priv->min_tx_spare_buf_size = HNS3_MIN_SPARE_BUF_SIZE;
++
++	if (priv->tx_copybreak < priv->min_tx_copybreak)
++		priv->tx_copybreak = priv->min_tx_copybreak;
++	if (handle->kinfo.tx_spare_buf_size < priv->min_tx_spare_buf_size)
++		handle->kinfo.tx_spare_buf_size = priv->min_tx_spare_buf_size;
++}
++
+ static void hns3_ring_get_cfg(struct hnae3_queue *q, struct hns3_nic_priv *priv,
+ 			      unsigned int ring_type)
+ {
+@@ -5107,6 +5135,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
+ 	int i, j;
+ 	int ret;
+ 
++	hns3_update_tx_spare_buf_config(priv);
+ 	for (i = 0; i < ring_num; i++) {
+ 		ret = hns3_alloc_ring_memory(&priv->ring[i]);
+ 		if (ret) {
+@@ -5311,6 +5340,8 @@ static int hns3_client_init(struct hnae3_handle *handle)
+ 	priv->ae_handle = handle;
+ 	priv->tx_timeout_count = 0;
+ 	priv->max_non_tso_bd_num = ae_dev->dev_specs.max_non_tso_bd_num;
++	priv->min_tx_copybreak = 0;
++	priv->min_tx_spare_buf_size = 0;
+ 	set_bit(HNS3_NIC_STATE_DOWN, &priv->state);
+ 
+ 	handle->msg_enable = netif_msg_init(debug, DEFAULT_MSG_LEVEL);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+index d36c4ed16d8dd..caf7a4df85852 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+@@ -596,6 +596,8 @@ struct hns3_nic_priv {
+ 	struct hns3_enet_coalesce rx_coal;
+ 	u32 tx_copybreak;
+ 	u32 rx_copybreak;
++	u32 min_tx_copybreak;
++	u32 min_tx_spare_buf_size;
+ };
+ 
+ union l3_hdr_info {
+-- 
+2.39.5
+
 
 
 
