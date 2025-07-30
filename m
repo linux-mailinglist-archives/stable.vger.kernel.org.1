@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-165503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C566B15F19
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 13:11:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1433EB15F75
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 13:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54FF3162C89
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:11:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CEA07A6A40
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4149F1E32DB;
-	Wed, 30 Jul 2025 11:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFFA276057;
+	Wed, 30 Jul 2025 11:29:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-42a9.mail.infomaniak.ch (smtp-42a9.mail.infomaniak.ch [84.16.66.169])
+Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA80118C928
-	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 11:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AAF36124
+	for <stable@vger.kernel.org>; Wed, 30 Jul 2025 11:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753873877; cv=none; b=gWMNBecNdcld0TusKczGKjoGP7nOC3rTt+bvCOzTP+Fv7Uz4OeMPGaNy/0wpvvuvn5eWX1A92Lz51szHtK67AOzlUZcteJi+HvQ0KaYUbeVXBEDn5jvizguNu2190DqnkqPCdI0BL3WCQXXAJT7dKR/29zdROOESGGHc3w/daQ0=
+	t=1753874992; cv=none; b=jI2JWUvAeH/dDFa1P495pkPbc8+c5JtN4PlqFwmFNCYRXysmTjUu02O9PPGMCBJ9mfNFdYmk0D36zd/18utktKotYF1l1x1sXZR9aPPdDbsBHOt4UOQQKFUYiOuntqnrc6wpy3HwTqulFX+yF6R91135Gd9sIBEGAP0h4zb+CbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753873877; c=relaxed/simple;
-	bh=/3Q+xjsxdcuJ/QBIitJb0wEd2BwfmEVX0eUDol4kiBI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kISicx9YTw2dgnbbrgh5MZ1sFxLdF1Z2AVRXgZwZN2sm5+cxaPnE1SpQDuAwJUQjhj9zn297DnLSLMYZ43lFdUwuKCoMwOfFVUkC2e2bZhYf2pAcrdQRWsm5iLp7CoIJw0AGz3G8lpHBHBkssKDMglawOPPLWs4B7zp0lzkQ0AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; arc=none smtp.client-ip=84.16.66.169
+	s=arc-20240116; t=1753874992; c=relaxed/simple;
+	bh=Uu90uPBP6AfVvNKeUVX3NxA5B61cx5fIfis2vyIaTbo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LZZoIl5wudG4fR0R+Qq0ZTFdpDD6JiZ1EjHaO1KjFEX9qTwI6lR+4un/D4ooMnebkyDa5k4h/NbrqjSRdD0Y1JuWYC7NbLefv11xUi5Vs/5yec+82ndR5AImsvz2yyCUPnY7zXj1wOH5ATWozGAk5jlKWEFQvzxJmLe9yGX6sp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; arc=none smtp.client-ip=45.157.188.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0leil.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0leil.net
 Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4bsTzb2Vd0zY4w;
-	Wed, 30 Jul 2025 13:11:07 +0200 (CEST)
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4bsTzZ0x18zxZk;
-	Wed, 30 Jul 2025 13:11:06 +0200 (CEST)
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4bsTzd2T1hzX3x;
+	Wed, 30 Jul 2025 13:11:09 +0200 (CEST)
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4bsTzc4QwgzkX;
+	Wed, 30 Jul 2025 13:11:08 +0200 (CEST)
 From: Quentin Schulz <foss+uboot@0leil.net>
-Subject: [PATCH 0/6] rockchip: puma-rk3399: anticipate breakage with v6.16
- DT
-Date: Wed, 30 Jul 2025 13:10:16 +0200
-Message-Id: <20250730-puma-usb-cypress-v1-0-b1c203c733f9@cherry.de>
+Date: Wed, 30 Jul 2025 13:10:19 +0200
+Subject: [PATCH 3/6] dt-bindings: usb: cypress,hx3: Add support for all
+ variants
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,11 +46,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJj9iWgC/02OQW7DIBBFr2LNukgwQAy+ShVZA4xrFrYTiKNUU
- e4eknTR5fvSf3p3qFwyVxi6OxS+5pq3tYH66iDOtP6wyKkxoEQrey3FaV9I7DWI+HsqXKvAhN7
- 2Eo1BA+3W1inf3srv44cLn/dmvnxGCFRZxG1Z8mXoLLmUkGV0xiltg43+QBN6ReQP3HuK0aPmC
- P+Lhu7dY9C+UsZtDRuVNM57GP+yxvmmBTqtvNOT4sTD1cDx8XgCOI7dfPEAAAA=
-X-Change-ID: 20250730-puma-usb-cypress-2d2957024424
+Message-Id: <20250730-puma-usb-cypress-v1-3-b1c203c733f9@cherry.de>
+References: <20250730-puma-usb-cypress-v1-0-b1c203c733f9@cherry.de>
+In-Reply-To: <20250730-puma-usb-cypress-v1-0-b1c203c733f9@cherry.de>
 To: Klaus Goger <klaus.goger@cherry.de>, Tom Rini <trini@konsulko.com>, 
  Sumit Garg <sumit.garg@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -58,60 +56,68 @@ To: Klaus Goger <klaus.goger@cherry.de>, Tom Rini <trini@konsulko.com>,
  Philipp Tomsich <philipp.tomsich@vrull.eu>, 
  Kever Yang <kever.yang@rock-chips.com>
 Cc: u-boot@lists.denx.de, Quentin Schulz <quentin.schulz@cherry.de>, 
- "Rob Herring (Arm)" <robh@kernel.org>, 
  Lukasz Czechowski <lukasz.czechowski@thaumatec.com>, stable@vger.kernel.org, 
- Heiko Stuebner <heiko@sntech.de>
+ "Rob Herring (Arm)" <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>
 X-Mailer: b4 0.14.2
 X-Infomaniak-Routing: alpha
 
-Due to updates to the Device Tree (migrating to onboard USB hub nodes
-instead of (badly) hacking things with a gpio regulator that doesn't
-actually work properly), we now need to enable the onboard USB hub
-driver in U-Boot.
+From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
 
-This anticipates upcoming breakage when 6.16 DT will be merged into
-U-Boot's dts/upstream.
+The Cypress HX3 hubs use different default PID value depending
+on the variant. Update compatibles list.
+Becasuse all hub variants use the same driver data, allow the
+dt node to have two compatibles: leftmost which matches the HW
+exactly, and the second one as fallback.
 
-The series can be applied as is before v6.16 DT is merged or only the
-defconfig changes after 6.16 DT has been merged.
+Fixes: 1eca51f58a10 ("dt-bindings: usb: Add binding for Cypress HX3 USB 3.0 family")
+Cc: stable@vger.kernel.org # 6.6
+Cc: stable@vger.kernel.org # Backport of the patch ("dt-bindings: usb: usb-device: relax compatible pattern to a contains") from list: https://lore.kernel.org/linux-usb/20250418-dt-binding-usb-device-compatibles-v2-1-b3029f14e800@cherry.de/
+Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table in drivers/usb/misc/onboard_usb_dev.c driver
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Reviewed-by: "Rob Herring (Arm)" <robh@kernel.org>
+Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-2-4a76a474a010@thaumatec.com
+[taken with Greg's blessing]
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 
-The last two patches are simply to avoid probing devices that aren't
-actually routed on RK3399 Puma, which is nice to have but doesn't fix
-anything.
+[ upstream commit: 1ad4b5a7de16806afc1aeaf012337e62af04e001 ]
 
-Note that this depends on the following series:
-https://lore.kernel.org/u-boot/20250722-usb_onboard_hub_cypress_hx3-v4-0-91c3ee958c0e@thaumatec.com/
-
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+(cherry picked from commit 53aacaed0ad140b017c803d9777473c6c62f5352)
 ---
-Lukasz Czechowski (2):
-      dt-bindings: usb: cypress,hx3: Add support for all variants
-      arm64: dts: rockchip: fix internal USB hub instability on RK3399 Puma
+ dts/upstream/Bindings/usb/cypress,hx3.yaml | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-Quentin Schulz (4):
-      configs: puma-rk3399: enable onboard USB hub support
-      dt-bindings: usb: usb-device: relax compatible pattern to a contains
-      arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma
-      arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
+diff --git a/dts/upstream/Bindings/usb/cypress,hx3.yaml b/dts/upstream/Bindings/usb/cypress,hx3.yaml
+index 1033b7a4b8f953424cc3d31d561992c17f3594b2..d6eac1213228d2acb50ebc959d1ff15134c5a91c 100644
+--- a/dts/upstream/Bindings/usb/cypress,hx3.yaml
++++ b/dts/upstream/Bindings/usb/cypress,hx3.yaml
+@@ -14,9 +14,22 @@ allOf:
+ 
+ properties:
+   compatible:
+-    enum:
+-      - usb4b4,6504
+-      - usb4b4,6506
++    oneOf:
++      - enum:
++          - usb4b4,6504
++          - usb4b4,6506
++      - items:
++          - enum:
++              - usb4b4,6500
++              - usb4b4,6508
++          - const: usb4b4,6504
++      - items:
++          - enum:
++              - usb4b4,6502
++              - usb4b4,6503
++              - usb4b4,6507
++              - usb4b4,650a
++          - const: usb4b4,6506
+ 
+   reg: true
+ 
 
- configs/puma-rk3399_defconfig                      |  1 +
- dts/upstream/Bindings/usb/cypress,hx3.yaml         | 19 +++++++--
- dts/upstream/Bindings/usb/usb-device.yaml          |  3 +-
- .../src/arm64/rockchip/rk3399-puma-haikou.dts      |  8 ----
- dts/upstream/src/arm64/rockchip/rk3399-puma.dtsi   | 48 +++++++++++-----------
- 5 files changed, 43 insertions(+), 36 deletions(-)
----
-base-commit: 5a8dd2e0c848135b5c96af291aa96e79acc923ec
-change-id: 20250730-puma-usb-cypress-2d2957024424
-prerequisite-change-id: 20250425-usb_onboard_hub_cypress_hx3-2831983f1ede:v4
-prerequisite-patch-id: 515a13b22600d40716e9c36d16b084086ce7d474
-prerequisite-patch-id: 9f8a11bd6c66e976c51dc0f0bc3292183f9403f3
-prerequisite-patch-id: 45ef5b9422333db5fcd23d95b6570b320635c49b
-prerequisite-patch-id: 19092f1c3db746292401b8513807439c87ea9589
-prerequisite-patch-id: fced7578d40069c5fe83d97aa42476015cf9cbda
-
-Best regards,
 -- 
-Quentin Schulz <quentin.schulz@cherry.de>
+2.50.1
 
 
