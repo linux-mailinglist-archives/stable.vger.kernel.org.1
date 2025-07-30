@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-165398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA691B15D1A
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:50:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2A1B15DA8
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 11:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7772B7A2C26
-	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:48:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 535C6565FB6
+	for <lists+stable@lfdr.de>; Wed, 30 Jul 2025 09:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8051125DB1A;
-	Wed, 30 Jul 2025 09:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76740277CA8;
+	Wed, 30 Jul 2025 09:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ObAbGT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJ8e4Yw5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8AA1F5834;
-	Wed, 30 Jul 2025 09:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A64230981;
+	Wed, 30 Jul 2025 09:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753868975; cv=none; b=ECE9qnaA/PwlpU+mZHhdInYdItPe+s8AoUOBLh8HOXBPySqWbC8yKmF+/4EW2pmEx6q69z5JwrNPFCQ9zHWj9DfW4AJgfVNyNDKzPcJD8lkEeU/ypUMVbKjS6uGszWkkeLNvpImra0CdGPh52K6w4Op3peG77kU/OhjwXxIdaoI=
+	t=1753869369; cv=none; b=PiCCLRtvXzZ4e1r12R/eYLghUvVqAjdB3VygznQGA2+h/CFUmqFnM975iBsmrIz6HovilL+9r11s8EDdD4TiCuOA9pLRRTdiL3U48NJ9Zh6BojNOaxyrnXpmIOsHPwIIMkPTG8Y/fvXssrGbYCE4qqALvGXGrlToEeR3loiz68U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753868975; c=relaxed/simple;
-	bh=casZh6l3D2uxrVXXi9OI1u/Lc/vqbOegs9v8cRydiIg=;
+	s=arc-20240116; t=1753869369; c=relaxed/simple;
+	bh=4LhtGdoiqZ1EijuZGmVclIg+kNHH9IbcQqG4M/cUEjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQmGCMKQ7Wf6sFXK8mYbTPhg4CbFqGCakTWr7G/lPrctOiQ/I3YvmVioM4KJu9L1yx7dwGK0gl1u3i2r7naz6ENYyRNx+nuQkuNwhCNnLAiMHYlukNI+59lYfxrylOlKXRkxt+QJUzLGTzyLKyHsC5r2gmoOx7WxKj2nHK6kmsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ObAbGT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951A9C4CEF5;
-	Wed, 30 Jul 2025 09:49:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XS4bP7nn/gtGUSudd5WWrmRYPuveBvp6f9LsNvtRWPTv3hrz3bXt6eAqLe9xs3tR3rK0/eZkm4ly2qAHP/Rvlc5IWQmrYNb1PeckrZChqvXiwU7e9bQ9PaxxLEKiyjOlEbmy/x9IPvV1T1xVIK5XG+LavlIu3k2tzyn7+MRYdkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJ8e4Yw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC85CC4CEF6;
+	Wed, 30 Jul 2025 09:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753868975;
-	bh=casZh6l3D2uxrVXXi9OI1u/Lc/vqbOegs9v8cRydiIg=;
+	s=korg; t=1753869369;
+	bh=4LhtGdoiqZ1EijuZGmVclIg+kNHH9IbcQqG4M/cUEjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ObAbGT3wAJqay9yje+CP2a+O3ONC62kPziq77Tq3YRyHhoDluHB4PJ/aIohzX/uL
-	 scuVaWeCAmK1zyR+PUz0xKSwmZRscelLuJOZToPwFTkvHCtcvVtJ5jqJL6cf0ZmtHo
-	 nWVlme44X6HS8df8lEK3JxpPwCe8NwzDDZpFTi1I=
+	b=sJ8e4Yw5FMefhle42uuI5EUBiBbF8rfktTqDgbzsUoL5X1HBh9ha3EI3hXuynaLJs
+	 tp7lnFF29dAAu2HJmYFR+gM9jdAxm5f+lL7hAVNtaBe8Fe+GIqb/DfCs78An3L0j2l
+	 bMlIPNdNRjKZ7/2aWXYYTuE6On4CFC9pCtWqO3tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Caleb Jorden <cjorden@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/117] Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO"
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.15 64/92] ASoC: mediatek: common: fix device and OF node leak
 Date: Wed, 30 Jul 2025 11:36:12 +0200
-Message-ID: <20250730093237.815292276@linuxfoundation.org>
+Message-ID: <20250730093233.227075131@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730093233.592541778@linuxfoundation.org>
-References: <20250730093233.592541778@linuxfoundation.org>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+References: <20250730093230.629234025@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 766ea2cf5a398c7eed519b12c6c6cf1631143ea2 ]
+commit 696e123aa36bf0bc72bda98df96dd8f379a6e854 upstream.
 
-For MLO, mac80211 will send the BA action for each link to
-the driver, so the driver does not need to handle it itself.
-Therefore, revert this patch.
+Make sure to drop the references to the accdet OF node and platform
+device taken by of_parse_phandle() and of_find_device_by_node() after
+looking up the sound component during probe.
 
-Fixes: eb2a9a12c609 ("wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Tested-by: Caleb Jorden <cjorden@gmail.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20250305000851.493671-1-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-[ struct mt76_vif_link -> struct mt76_vif ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf536e2622e2 ("ASoC: mediatek: common: Handle mediatek,accdet property")
+Cc: stable@vger.kernel.org	# 6.15
+Cc: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20250722092542.32754-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c   |   10 ++--
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c    |   52 ++++-----------------
- drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h |    2 
- 3 files changed, 15 insertions(+), 49 deletions(-)
+ sound/soc/mediatek/common/mtk-soundcard-driver.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1296,22 +1296,22 @@ mt7925_ampdu_action(struct ieee80211_hw
- 	case IEEE80211_AMPDU_RX_START:
- 		mt76_rx_aggr_start(&dev->mt76, &msta->deflink.wcid, tid, ssn,
- 				   params->buf_size);
--		mt7925_mcu_uni_rx_ba(dev, vif, params, true);
-+		mt7925_mcu_uni_rx_ba(dev, params, true);
- 		break;
- 	case IEEE80211_AMPDU_RX_STOP:
- 		mt76_rx_aggr_stop(&dev->mt76, &msta->deflink.wcid, tid);
--		mt7925_mcu_uni_rx_ba(dev, vif, params, false);
-+		mt7925_mcu_uni_rx_ba(dev, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_OPERATIONAL:
- 		mtxq->aggr = true;
- 		mtxq->send_bar = false;
--		mt7925_mcu_uni_tx_ba(dev, vif, params, true);
-+		mt7925_mcu_uni_tx_ba(dev, params, true);
- 		break;
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
- 		mtxq->aggr = false;
- 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
--		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
-+		mt7925_mcu_uni_tx_ba(dev, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
- 		set_bit(tid, &msta->deflink.wcid.ampdu_state);
-@@ -1320,7 +1320,7 @@ mt7925_ampdu_action(struct ieee80211_hw
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		mtxq->aggr = false;
- 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
--		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
-+		mt7925_mcu_uni_tx_ba(dev, params, false);
- 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
- 		break;
- 	}
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -529,10 +529,10 @@ void mt7925_mcu_rx_event(struct mt792x_d
- 
- static int
- mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif *mvif,
--		  struct mt76_wcid *wcid,
- 		  struct ieee80211_ampdu_params *params,
- 		  bool enable, bool tx)
- {
-+	struct mt76_wcid *wcid = (struct mt76_wcid *)params->sta->drv_priv;
- 	struct sta_rec_ba_uni *ba;
- 	struct sk_buff *skb;
- 	struct tlv *tlv;
-@@ -560,60 +560,28 @@ mt7925_mcu_sta_ba(struct mt76_dev *dev,
- 
- /** starec & wtbl **/
- int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
--			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable)
- {
- 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
--	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
--	struct mt792x_link_sta *mlink;
--	struct mt792x_bss_conf *mconf;
--	unsigned long usable_links = ieee80211_vif_usable_links(vif);
--	struct mt76_wcid *wcid;
--	u8 link_id, ret;
--
--	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
--		mconf = mt792x_vif_to_link(mvif, link_id);
--		mlink = mt792x_sta_to_link(msta, link_id);
--		wcid = &mlink->wcid;
--
--		if (enable && !params->amsdu)
--			mlink->wcid.amsdu = false;
--
--		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
--					enable, true);
--		if (ret < 0)
--			break;
--	}
-+	struct mt792x_vif *mvif = msta->vif;
- 
--	return ret;
-+	if (enable && !params->amsdu)
-+		msta->deflink.wcid.amsdu = false;
+diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+index 713a368f79cf..95a083939f3e 100644
+--- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
++++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+@@ -262,9 +262,13 @@ int mtk_soundcard_common_probe(struct platform_device *pdev)
+ 				soc_card_data->accdet = accdet_comp;
+ 			else
+ 				dev_err(&pdev->dev, "No sound component found from mediatek,accdet property\n");
 +
-+	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
-+				 enable, true);
- }
++			put_device(&accdet_pdev->dev);
+ 		} else {
+ 			dev_err(&pdev->dev, "No device found from mediatek,accdet property\n");
+ 		}
++
++		of_node_put(accdet_node);
+ 	}
  
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
--			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable)
- {
- 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
--	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
--	struct mt792x_link_sta *mlink;
--	struct mt792x_bss_conf *mconf;
--	unsigned long usable_links = ieee80211_vif_usable_links(vif);
--	struct mt76_wcid *wcid;
--	u8 link_id, ret;
--
--	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
--		mconf = mt792x_vif_to_link(mvif, link_id);
--		mlink = mt792x_sta_to_link(msta, link_id);
--		wcid = &mlink->wcid;
--
--		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
--					enable, false);
--		if (ret < 0)
--			break;
--	}
-+	struct mt792x_vif *mvif = msta->vif;
- 
--	return ret;
-+	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
-+				 enable, false);
- }
- 
- static int mt7925_mcu_read_eeprom(struct mt792x_dev *dev, u32 offset, u8 *val)
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -245,11 +245,9 @@ int mt7925_mcu_set_beacon_filter(struct
- 				 struct ieee80211_vif *vif,
- 				 bool enable);
- int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
--			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable);
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
--			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable);
- void mt7925_scan_work(struct work_struct *work);
+ 	platform_node = of_parse_phandle(pdev->dev.of_node, "mediatek,platform", 0);
+-- 
+2.50.1
+
 
 
 
