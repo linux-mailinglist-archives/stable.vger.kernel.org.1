@@ -1,211 +1,129 @@
-Return-Path: <stable+bounces-165683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F3DB1759B
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 19:31:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3CBCB175BB
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 19:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9EC7A830BA
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:30:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2913D567B51
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E58124DCED;
-	Thu, 31 Jul 2025 17:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8766D24DCED;
+	Thu, 31 Jul 2025 17:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vIadDMlG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ur0Jxm83"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879BE1B87F2
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 17:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E175F1DE4E7;
+	Thu, 31 Jul 2025 17:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753983063; cv=none; b=cg2oqKXo0mbrYaZX7c4aud0595wdx0KAOnKKuL12assRznt0UpOIJoErcwQ4D0PvDqj4Ehzn9wjjACG35DMw8GNkIM1M1ThWADveKf1BOSPkgABWD7WDlt8VmEkv4GNfLcyYeV5WqpLEsvYl9EL1jh5Kp1rpaPUBMo8lOqTGbLU=
+	t=1753983594; cv=none; b=u0qCIrwdiXzftDIsQlGttThhnU1lBxehx7TUyC9wBRoI+AB39TTZbbVOn/PN8MyIzngXapWFm692WAWE0T5+7VntejTuMLYJlJmzEqaBWpYyFMGGmLokoxTW6ONMni4YqbXex8qwBGjEJwcWjkmsOHE6xJRqfMf047nTduQUOG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753983063; c=relaxed/simple;
-	bh=s8Fkj2wMw9x/f8DV4m/VFl3/5T54yAmMlF1RuB1J8Zc=;
+	s=arc-20240116; t=1753983594; c=relaxed/simple;
+	bh=D0eyeakQXkUoxnhS6LOjXaO2NDWgEEQN8gNn6R8fmQE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gm/Qp5R5bx3cwORgFUpSUmYSy5rloDc4Ob/cm/G5nghIWm0tqjpjTEfoW5jt5B0gyOiBpzWHQEfKzdAMzOeMWVqRCvy6xQe79g7vjVeE+72s2v7hgedDi1RvbJ0fxXthcFWuKI9VjT8FjakO8q1yHUA6/h5UQeTrW/ySQPP05Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vIadDMlG; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6156c3301ccso654a12.1
-        for <stable@vger.kernel.org>; Thu, 31 Jul 2025 10:31:00 -0700 (PDT)
+	 To:Cc:Content-Type; b=eTRNTPanMkCBJQqPlkQwpBElNLShGEPhWd5M/G9qIAW8rxSfJVLn19G1xjMIKirsVWuZwAYosqD6q3k+fZCt7opt5faO4hXblkVtAh87qj2uNZyi+YhCAPsEpdiBv64mmKWoR+A8mBx0IFcNBam8o7RwO/vWtWxUmWS7Adx5zEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ur0Jxm83; arc=none smtp.client-ip=209.85.160.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2ffbbe6ec3eso511075fac.1;
+        Thu, 31 Jul 2025 10:39:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753983059; x=1754587859; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uTYZ6ctQGC42ES6NTcAXoMAQOzCvBSfMLOvM1LONwic=;
-        b=vIadDMlGg9Td+k1aaZpCt1PYRMRmADkx/ghEdmG7OEzPJI3JFudjeyrSMyI3b0ozt9
-         4r0L+W6azV87rGzf5CYfHLI/Hu+jhI2UYCnrPhlsV2Jmy5XvdKhqupInT9bUBMdJgSqe
-         I8BSHTXtSRdY1OJbjoHH7oiT09u7yPCnY/SUkTqbvC16eW2wyLRPhFD/PDlzHuQNWuuR
-         ++JSdvZyVkxXnApw/nuERrd0Cup/jd4CjwFQiAUnOOB3NcKoIplTY251vO/wHgqt1zw4
-         BqTYD/W0QlclmDLrJoVgv2bWY3r7emIHIoozE1Sn+ier5Em3bg3jWsKpHOahyA6DQVpx
-         /YxQ==
+        d=gmail.com; s=20230601; t=1753983592; x=1754588392; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=JQSkOyzA6O++KgoodZR4f5SJR35/IGJdbUx6uOChaLk=;
+        b=Ur0Jxm83/y+AN/7DPXXHUxJf/O/AkO+36kVxZ59BxyA3KLlXsMGYoch9PCco/LDWxW
+         +xEpBPc7AAPUpvVlQFn1xNtO7Dv+fEHKS7BVvA8bDYUEBVZAj6Tj9nCRg9IfdwKUMu3Q
+         m/G3tbE7aJmI5tdKUHgu2A7ULal06W9U7avX078xbOSbcIQ1jfcIMex/IDdTeKHA6j/f
+         ZSgHBfywWl/Icd1xi1sr2stt7oXcN0PMLPUNrjbbI399pove6hsoZV90cJhOh5X1ORcf
+         tKglx7BR5yEdkGddW1x9muCjWErfWIGO94PSz18YdpcXRizWv1qXtRwnRsNSLrIavqKS
+         MITw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753983059; x=1754587859;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uTYZ6ctQGC42ES6NTcAXoMAQOzCvBSfMLOvM1LONwic=;
-        b=ZAik3LVh/FTH4nwjMaXpkgurmO5pjUyNb7G8DzGhZPEaoYo4U8OSwtzrWE8lLBfWVj
-         qvJ9fFOU5WXGZLBjTg8FsQs5ODdPUXNzoM0ZHM/ZmfHKFISgDzsYTC5V/Ao7yNvXU8SW
-         lVjuVeqZk7tIRzIABbesyj4+yz1gbugW7G9luLxoEY38GJukNAZdP08sOq8tnUMwfgnm
-         Iiyckoffmg4HpuOCCIGS+Eb41uSsPeVIVa+04KKzybIvomgO1/tv2MZR8/5Y1ovpcb9w
-         SSEdVGUZsfV5R0JSCDKGNgHNxVp0z9DaJzu3TYUMj2jhN2a5HfWy77Tdx8pocGaIGjhP
-         wFWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNMC8D1h+LC38AOivjwE14dtEbgKPnWvfTvSRb4kPwQaOHw42/cpd7aPuYL+cp89760vYe6M8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFbTWpQDGyncG/SuMziBQLHQLSUN48WarQ2TXva98S7Ni8tT6O
-	+Rn5ncIO/0P2Z1Z4nM59dInyZwxzKXeHJt31v9NYPfNyEkj0gLOT7Mpq1Piz29LW+GqALhAHBaa
-	6V8Wps2JoiUWl+BDkqH4dwxPR7F5i71lTsGxoQU4f
-X-Gm-Gg: ASbGnctrjbCnJ1nqbpbDtIeHJ183rDn8+NL2uAdRMbpqykOtQ44uvBfG+zOFLjRfmdu
-	RIJQ2XzgB3R84FN6N+kd213R6sI1vaNuXJI7F7DyP5A3O305M83EBYE6TNWKTrJ7tlu7YH9EVH7
-	K2LOhzgfZ+S8k5cB0yKZirKzqofXuGQ3+OpLiaLGUHy3EnksK40k0ypY5eQU2OczMheZRD9OjRc
-	eAPii7Yz6pqwnJyYYavL9QGwPe4LzhIjVmlWnIIzw==
-X-Google-Smtp-Source: AGHT+IF1QJ83Q6c4dkzDCM2z6KKYFAxir5RDC4UAZQtNvYOpT4gEPwIqWv3dD6bsp3P9MtuExIQPvuxLjZH4h+ZidhU=
-X-Received: by 2002:aa7:c687:0:b0:615:2899:a4e5 with SMTP id
- 4fb4d7f45d1cf-615aeb102b5mr84457a12.5.1753983058516; Thu, 31 Jul 2025
- 10:30:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753983592; x=1754588392;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JQSkOyzA6O++KgoodZR4f5SJR35/IGJdbUx6uOChaLk=;
+        b=A1fSn6FG2jizi7hpbFGBQDD+lwzMlMprtH4T8R3VbK4cIWMy/SwUdAzv5hNbTEEkID
+         4lPRDJQENiWtGhMvmyM2Akna5741CN+c7f3BGH8aL7JE4RiD8vEw61uvYkgo+GnvBwbm
+         9yxI+SwinzNuWHbe9JaH/quOBVEa667cXHBSchP2FUmMmXhsQb5UpR/0NFT06RRJX7tL
+         9cgIEwwb3VMYpOJjqYzUPX5Di9omQDsb+56AoKddc8ycm6OkAe5UMftbhUINV9MpIVsT
+         zKZR+HhBz+KX4P713s48yKLWfUDtwBPL5cyoFG6lo0/4YuX0l2DEvrGMTDGINnjY9uIK
+         sn+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVFuVN1HuMf0oMO+1amMt/pFBL2g2nZHuxdHT4yecSdyvERZYPR18KBjjBgpgz91QvN0PSlISwHJEnqSkY=@vger.kernel.org, AJvYcCWr4PfOnLUE+vy9SzpLrOLWCTyseo7RSUTnXj/E0yOeLYvxFmu64MPWQMmi5RqE1f0UrOWY4my5@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb10WGLr7Few51EKR2DOB+rI1FO03bY4wTRll2IheALX6lNC0Y
+	sdHQBJBaqeZ0NL3kuBbTdLotdwcJCQPZvAjeBW1ZqIgYYqsgfync/Mlk1sBFjPfT+R2Du3u5PHC
+	HwsFzkzAnl9j1V2ac00oOUa4p78XHtTioc+aZm/0=
+X-Gm-Gg: ASbGncvz6sJY0Yl/zEG31dm9GEGMNVBFN5U2piGAmCFNYfQLY5pPlN9ts5qy92WGmRe
+	EHjqJWf5/2H52yEwJ0l9OfejeQBNamyQueEhQP5VOnXpMz/yq5JL1PC5S7a4/tGj4SaBezJBFLH
+	+qWw1+mWV2TkjuizyvO95jOcln5CbyVKMCYOeCBjKGlWU1TDStlpZG9UjoYBJgOMIie7kz1aGLf
+	KC8uPQP
+X-Google-Smtp-Source: AGHT+IF8K1aMntK0gup5gkIQtDoiv/HeMVtZBk8VrB6eUvqSgNrGCf42CNoqy8Qy6/0IJ5evV/G3Q9oWUL49MuaiG6Y=
+X-Received: by 2002:a05:6870:702b:b0:306:eb45:960c with SMTP id
+ 586e51a60fabf-307859bfb80mr5396845fac.5.1753983591809; Thu, 31 Jul 2025
+ 10:39:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250731154442.319568-1-surenb@google.com>
-In-Reply-To: <20250731154442.319568-1-surenb@google.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Thu, 31 Jul 2025 10:30:46 -0700
-X-Gm-Features: Ac12FXwZbn_-TO6sOPye9GKpC7g4hj7tbdyDuoXOlj14tXOv6tXKAlm_xFPsw5k
-Message-ID: <CA+EESO4T-rYwmd_h3AxAkiiHgqcLQQzE1SmGNSGqOFbGvEShGg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
- a THP hole
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@redhat.com, 
-	aarcange@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20250730042617.5620-1-suchitkarunakaran@gmail.com> <3093fd14-d57a-4fc6-9e15-d9ce8b075b30@intel.com>
+In-Reply-To: <3093fd14-d57a-4fc6-9e15-d9ce8b075b30@intel.com>
+From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+Date: Thu, 31 Jul 2025 23:09:40 +0530
+X-Gm-Features: Ac12FXz5Tlex75MwJYIHpIkLDLQm1GiTbT22FXNrlirDozssD_dMrPmRplEz7ws
+Message-ID: <CAO9wTFjaQZFg3U7eGjk+xXV6S-gKSAoV5sz7fqsuyYUkAMu_4g@mail.gmail.com>
+Subject: Re: [PATCH v3] x86/cpu/intel: Fix the constant_tsc model check for
+ Pentium 4s
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, darwi@linutronix.de, 
+	sohil.mehta@intel.com, peterz@infradead.org, ravi.bangoria@amd.com, 
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 31, 2025 at 8:44=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
+On Thu, 31 Jul 2025 at 21:29, Dave Hansen <dave.hansen@intel.com> wrote:
 >
-> When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
-> encounters a non-present THP, it fails to properly recognize an unmapped
-> hole and tries to access a non-existent folio, resulting in
-> a crash. Add a check to skip non-present THPs.
+> On 7/29/25 21:26, Suchit Karunakaran wrote:
+> > The logic to synthesize constant_tsc for Pentium 4s (Family 15) is
+> > wrong. Since INTEL_P4_PRESCOTT is numerically greater than
+> > INTEL_P4_WILLAMETTE, the logic always results in false and never sets
+> > X86_FEATURE_CONSTANT_TSC for any Pentium 4 model.
+> > The error was introduced while replacing the x86_model check with a VFM
+> > one. The original check was as follows:
+> >         if ((c->x86 == 0xf && c->x86_model >= 0x03) ||
+> >                 (c->x86 == 0x6 && c->x86_model >= 0x0e))
+> >                 set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+> >
+> > Fix the logic to cover all Pentium 4 models from Prescott (model 3) to
+> > Cedarmill (model 6) which is the last model released in Family 15.
 >
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@goog=
-le.com/
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-
-Reviewed-by: Lokesh Gidra <lokeshgidra@google.com>
-> Cc: stable@vger.kernel.org
-> ---
-> Changes since v1 [1]
-> - Fixed step size calculation, per Lokesh Gidra
-> - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gi=
-dra
+> Could we have a slightly different changelog, please? The fact that the
+> logic results in the bit never getting set for P4's is IMNHO immaterial.
+> This looks like a plain and simple typo, not a logical error on the
+> patch author's part.
 >
-> [1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.co=
-m/
+> How about this as a changelog?
 >
->  mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
->  1 file changed, 29 insertions(+), 16 deletions(-)
->
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index cbed91b09640..b5af31c22731 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, u=
-nsigned long dst_start,
->
->                 ptl =3D pmd_trans_huge_lock(src_pmd, src_vma);
->                 if (ptl) {
-> -                       /* Check if we can move the pmd without splitting=
- it. */
-> -                       if (move_splits_huge_pmd(dst_addr, src_addr, src_=
-start + len) ||
-> -                           !pmd_none(dst_pmdval)) {
-> -                               struct folio *folio =3D pmd_folio(*src_pm=
-d);
-> +                       if (pmd_present(*src_pmd) || is_pmd_migration_ent=
-ry(*src_pmd)) {
-> +                               /* Check if we can move the pmd without s=
-plitting it. */
-> +                               if (move_splits_huge_pmd(dst_addr, src_ad=
-dr, src_start + len) ||
-> +                                   !pmd_none(dst_pmdval)) {
-> +                                       if (pmd_present(*src_pmd)) {
-> +                                               struct folio *folio =3D p=
-md_folio(*src_pmd);
-> +
-> +                                               if (!folio || (!is_huge_z=
-ero_folio(folio) &&
-> +                                                              !PageAnonE=
-xclusive(&folio->page))) {
-> +                                                       spin_unlock(ptl);
-> +                                                       err =3D -EBUSY;
-> +                                                       break;
-> +                                               }
-> +                                       }
->
-> -                               if (!folio || (!is_huge_zero_folio(folio)=
- &&
-> -                                              !PageAnonExclusive(&folio-=
->page))) {
->                                         spin_unlock(ptl);
-> -                                       err =3D -EBUSY;
-> -                                       break;
-> +                                       split_huge_pmd(src_vma, src_pmd, =
-src_addr);
-> +                                       /* The folio will be split by mov=
-e_pages_pte() */
-> +                                       continue;
->                                 }
->
-> +                               err =3D move_pages_huge_pmd(mm, dst_pmd, =
-src_pmd,
-> +                                                         dst_pmdval, dst=
-_vma, src_vma,
-> +                                                         dst_addr, src_a=
-ddr);
-> +                               step_size =3D HPAGE_PMD_SIZE;
-> +                       } else {
->                                 spin_unlock(ptl);
-> -                               split_huge_pmd(src_vma, src_pmd, src_addr=
-);
-> -                               /* The folio will be split by move_pages_=
-pte() */
-> -                               continue;
-> +                               if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_H=
-OLES)) {
-> +                                       err =3D -ENOENT;
-> +                                       break;
-> +                               }
-> +                               /* nothing to do to move a hole */
-> +                               err =3D 0;
-> +                               step_size =3D min(HPAGE_PMD_SIZE, src_sta=
-rt + len - src_addr);
->                         }
-> -
-> -                       err =3D move_pages_huge_pmd(mm, dst_pmd, src_pmd,
-> -                                                 dst_pmdval, dst_vma, sr=
-c_vma,
-> -                                                 dst_addr, src_addr);
-> -                       step_size =3D HPAGE_PMD_SIZE;
->                 } else {
->                         if (pmd_none(*src_pmd)) {
->                                 if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_H=
-OLES)) {
->
-> base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
 > --
-> 2.50.1.552.g942d659e1b-goog
 >
+> Pentium 4's which are INTEL_P4_PRESCOTT (mode 0x03) and later have a
+> constant TSC. This was correctly captured until fadb6f569b10
+> ("x86/cpu/intel: Limit the non-architectural constant_tsc model
+> checks"). In that commit, the model was transposed from 0x03 to
+> INTEL_P4_WILLAMETTE, which is just plain wrong. That was presumably a
+> simple typo, probably just copying and pasting the wrong P4 model.
+>
+> Fix the constant TSC logic to cover all later P4 models. End at
+> INTEL_P4_CEDARMILL which is the last P4 model.
+
+Yeah, I agree it's more of a typo than a logical error.
 
