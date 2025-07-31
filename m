@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-165693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6234EB17816
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 23:24:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B948BB1787C
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 23:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22EA43AB915
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 21:24:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5ABB566C62
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 21:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A8F26657B;
-	Thu, 31 Jul 2025 21:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A07726AA98;
+	Thu, 31 Jul 2025 21:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8Hb6FUM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgoCFLKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517EF26529E;
-	Thu, 31 Jul 2025 21:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6DF2586C2;
+	Thu, 31 Jul 2025 21:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753997048; cv=none; b=i+ZhOtcIqPEEy4ayFb4vxC77i9GHITNV/f7XDBBUYvk5psow4bwzYsrcqmRgj4mi1WaIekxn8I8k+B/gTjqRTMV1FJveqPbNF6Mp86izdRjJ1PBpB/9SSHxYyRI9UJYq0YCEEcGH0l7zSE5bf7+MKCB86lWXEmE3weiM++LbiqM=
+	t=1753998844; cv=none; b=GAgSXTPeW4Cpe3JdXzBiKRXDPjzBH4AVkeJpHUKGNcuWDZSysCpNScTP0A8hXJa5e/olDmtviMFNgGHwFQ/Q282HG6Phv2eUnEj2PLRqwTNgu+qW5zbHCcO32WPMXhZFggx+fdTtMfkQ5e8DUURrP9Dr3E4DNk/4KXucRUD9V/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753997048; c=relaxed/simple;
-	bh=10xZrZKLy96+1t62WkYqn4As03OohTGiwGgJNIB8B4M=;
+	s=arc-20240116; t=1753998844; c=relaxed/simple;
+	bh=mqPumVqdioNdsUjPC0EYQ3RlGqcjrunkflhnOEy0xsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpi2Etus8SPb9jAYcAmk+6NfTV5JYdgKHUyJZK8b8kL+uRkY/IPeuvMSosS48WdxAkoNKLdFMSAv9b0+WE777/eF/57Jvhq5/k9pQ7Sr3/fHMRWoHrE+sLJe+qIPMQDkUShNf2LHhPXTlISMwCYxh5fRlgUNkmzxhwRXa2X81Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8Hb6FUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72022C4CEF4;
-	Thu, 31 Jul 2025 21:24:07 +0000 (UTC)
+	 MIME-Version; b=Seq+Z67yyXgSe4X5tbhdLnkgYQeCVPmbB+Z2l3cZ0l4sL2/jEhRvn+BPu+My5w8xWRRxEg0VLVVJuCx1AU79w86+HF/cneL8UFM5R4iHKFm4nZZUmDfKS/QKADPvwouinlN6f2hkszNMzNc6I2S8b1PXj6CgaA+vVeVc7bVEFoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgoCFLKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9203CC4CEF4;
+	Thu, 31 Jul 2025 21:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753997047;
-	bh=10xZrZKLy96+1t62WkYqn4As03OohTGiwGgJNIB8B4M=;
+	s=k20201202; t=1753998843;
+	bh=mqPumVqdioNdsUjPC0EYQ3RlGqcjrunkflhnOEy0xsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8Hb6FUMjgP21mHoTL9VejxjZU0DhmEzyG7xb5xkrOzrpPJoJFhQkVAcV/pUQtBgE
-	 AU7VIRfGRvymEPjZxNAB1cv4g/Bw1NMuvdLQ9yp/vLS+soFkgE7DsZ5JNO/uTfV0Yy
-	 vP80KVJvGB6E6gkk31AElo1emKRo56Y5+aPxLLzAOgG8uo+xTFaQsuWrTqyTQi9XE4
-	 Q/y3PrcdZPvvTTAohvY3uJPMpOhdInb3UQfc4X5unCcpPTD6vJ95xow6aRJGt0/PY5
-	 iFTNvhBE5sJvHydLEWKK9ESeeiTEx3KMZMYBoFgbkxCLn/YMvPXHYQjcG5vdHERODq
-	 Yo6DD5f+TQOgQ==
+	b=IgoCFLKqad8gK5oAo+pxxbi7Crn6SSVAxaBH+TustdmMtmK60H7MU3pG9dvm+2Poi
+	 FRFEcaMrT2ippZzNmq+SpMr0BaPwpirdHX1CWHf8gCpthxny8C34RsRqpCLHXlx+QO
+	 tnSv9zKxFeF+mkoipEXunYiJP/JCrLMwVYnXYr/lqf9qETw7g4uQCbkFfSyjb5EVYx
+	 Qp2L7YR37Lsr3g5ZDUiHhIYsr7VppIJtYMVCubaK8NqAkfpc1vRWP3/V2mLLA+j86b
+	 wdMqpgXNvPlF33slhE/6iaHZ+3jXFHXhH9noFoW3OodmIC/WR1A200KcMKOqOl9Yoj
+	 zt9vRILq2QSAg==
 From: Eric Biggers <ebiggers@kernel.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+To: Peter Huewe <peterhuewe@gmx.de>,
 	Jarkko Sakkinen <jarkko@kernel.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	keyrings@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	linux-integrity@vger.kernel.org,
+	linux-integrity@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
 	linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Eric Biggers <ebiggers@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/3] KEYS: trusted_tpm1: Compare HMAC values in constant time
-Date: Thu, 31 Jul 2025 14:23:52 -0700
-Message-ID: <20250731212354.105044-2-ebiggers@kernel.org>
+Subject: [PATCH 1/2] tpm: Compare HMAC values in constant time
+Date: Thu, 31 Jul 2025 14:52:54 -0700
+Message-ID: <20250731215255.113897-2-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250731212354.105044-1-ebiggers@kernel.org>
-References: <20250731212354.105044-1-ebiggers@kernel.org>
+In-Reply-To: <20250731215255.113897-1-ebiggers@kernel.org>
+References: <20250731215255.113897-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,67 +68,65 @@ Content-Transfer-Encoding: 8bit
 To prevent timing attacks, HMAC value comparison needs to be constant
 time.  Replace the memcmp() with the correct function, crypto_memneq().
 
-Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
+Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
 Cc: stable@vger.kernel.org
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- security/keys/trusted-keys/trusted_tpm1.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/char/tpm/Kconfig         | 1 +
+ drivers/char/tpm/tpm2-sessions.c | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-index 89c9798d18007..e73f2c6c817a0 100644
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -5,10 +5,11 @@
-  *
-  * See Documentation/security/keys/trusted-encrypted.rst
-  */
- 
- #include <crypto/hash_info.h>
+diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+index dddd702b2454a..f9d8a4e966867 100644
+--- a/drivers/char/tpm/Kconfig
++++ b/drivers/char/tpm/Kconfig
+@@ -31,10 +31,11 @@ config TCG_TPM2_HMAC
+ 	bool "Use HMAC and encrypted transactions on the TPM bus"
+ 	default X86_64
+ 	select CRYPTO_ECDH
+ 	select CRYPTO_LIB_AESCFB
+ 	select CRYPTO_LIB_SHA256
++	select CRYPTO_LIB_UTILS
+ 	help
+ 	  Setting this causes us to deploy a scheme which uses request
+ 	  and response HMACs in addition to encryption for
+ 	  communicating with the TPM to prevent or detect bus snooping
+ 	  and interposer attacks (see tpm-security.rst).  Saying Y
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index bdb119453dfbe..5fbd62ee50903 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -69,10 +69,11 @@
+ #include <linux/unaligned.h>
+ #include <crypto/kpp.h>
+ #include <crypto/ecdh.h>
+ #include <crypto/hash.h>
+ #include <crypto/hmac.h>
 +#include <crypto/utils.h>
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/parser.h>
- #include <linux/string.h>
- #include <linux/err.h>
-@@ -239,11 +240,11 @@ int TSS_checkhmac1(unsigned char *buffer,
- 			  TPM_NONCE_SIZE, enonce, TPM_NONCE_SIZE, ononce,
- 			  1, continueflag, 0, 0);
- 	if (ret < 0)
- 		goto out;
  
--	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
- 	return ret;
- }
-@@ -332,20 +333,20 @@ static int TSS_checkhmac2(unsigned char *buffer,
- 	ret = TSS_rawhmac(testhmac1, key1, keylen1, SHA1_DIGEST_SIZE,
- 			  paramdigest, TPM_NONCE_SIZE, enonce1,
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-+	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
- 		ret = -EINVAL;
+ /* maximum number of names the TPM must remember for authorization */
+ #define AUTH_MAX_NAMES	3
+ 
+ #define AES_KEY_BYTES	AES_KEYSIZE_128
+@@ -827,16 +828,15 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
+ 	sha256_update(&sctx, auth->our_nonce, sizeof(auth->our_nonce));
+ 	sha256_update(&sctx, &auth->attrs, 1);
+ 	/* we're done with the rphash, so put our idea of the hmac there */
+ 	tpm2_hmac_final(&sctx, auth->session_key, sizeof(auth->session_key)
+ 			+ auth->passphrase_len, rphash);
+-	if (memcmp(rphash, &buf->data[offset_s], SHA256_DIGEST_SIZE) == 0) {
+-		rc = 0;
+-	} else {
++	if (crypto_memneq(rphash, &buf->data[offset_s], SHA256_DIGEST_SIZE)) {
+ 		dev_err(&chip->dev, "TPM: HMAC check failed\n");
  		goto out;
  	}
- 	ret = TSS_rawhmac(testhmac2, key2, keylen2, SHA1_DIGEST_SIZE,
- 			  paramdigest, TPM_NONCE_SIZE, enonce2,
- 			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-+	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
- 		ret = -EINVAL;
- out:
- 	kfree_sensitive(sdesc);
- 	return ret;
- }
-
-base-commit: d6084bb815c453de27af8071a23163a711586a6c
++	rc = 0;
+ 
+ 	/* now do response decryption */
+ 	if (auth->attrs & TPM2_SA_ENCRYPT) {
+ 		/* need key and IV */
+ 		tpm2_KDFa(auth->session_key, SHA256_DIGEST_SIZE
 -- 
 2.50.1
 
