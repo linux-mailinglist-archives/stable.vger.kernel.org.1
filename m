@@ -1,136 +1,156 @@
-Return-Path: <stable+bounces-165629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D601B16CDA
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 09:43:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7BFB16CF0
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 09:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 877F718C6BDC
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 07:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 405DB5A5E9B
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 07:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DCE29CB59;
-	Thu, 31 Jul 2025 07:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807F829DB8B;
+	Thu, 31 Jul 2025 07:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o8IjCfbs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3QVQU1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8FC182B4;
-	Thu, 31 Jul 2025 07:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE4B239E88;
+	Thu, 31 Jul 2025 07:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753947822; cv=none; b=qd7DiQuzXVviY/k0oFGyGBpjxuU9Bw7CdX/5ronox+SJ+tuCXlHIExCffMS4gSN+JB3c/xLVIH5n/BNc8x5nQlNsqJuBljVNwU11vOLpJAdNTXwSPlQGz0OPPxRWASm1vear1KaiJuaqqZa1HB71R5IX+WSqNAqSCIa35K1OaCc=
+	t=1753948411; cv=none; b=JSTiHFWlFdMiC3UF6VWE/IhSmBziK2ZijZr9/L7nwabcRzFBWdtkwXYu52U3hfXJLH9FqTBuH9lKCCbEcqoTEUBGpN1JCjdCOuYVj1STKV66FtzuJ+12MmDqA/AwCuRgn0vCiLEqOKcrYtA3hza6tLepN54pDw59cIywdDG5ZvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753947822; c=relaxed/simple;
-	bh=dfkxlAhth0XmEKtbUibM0ahNPbD745YG3XeVC3p4lnc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B4ZP99YCNfbhUCY1piUjh5YYxIvMKw29vdLGRGMYPUSNZmQUDTF1maxqi+YRLOc+uZNGkbxzPS7fYMm3k5NWRBBC8wiUlNsMFAhNO+L6bfJpIZ1qzDYTq4LFqM+GLhv1vxqoCD3OA33efASF1i6fgSBSXYCzgLO9nR4rG9RPlIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o8IjCfbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11B7C4CEEF;
-	Thu, 31 Jul 2025 07:43:40 +0000 (UTC)
+	s=arc-20240116; t=1753948411; c=relaxed/simple;
+	bh=UJl4z9vF2kzQ+3bzci3Xb3mCWDp4ilOWOwkLWewufw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhsfy8BEGXOTjvQzHER+xWX7hMI6b8nMstevQ8hPlVm2g2QOJEok24XlC6HuZoF2DLwJ0EyP4CkcXSUjG8up2mEKdNO84EstBSIWPmmuUj+TElMZu0jrsYVJ8jQ01Y9sFrP2SOek3GUZqctgHff63Mllqg3QE3d9RFqqMGMizG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3QVQU1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73733C4CEF6;
+	Thu, 31 Jul 2025 07:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753947821;
-	bh=dfkxlAhth0XmEKtbUibM0ahNPbD745YG3XeVC3p4lnc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=o8IjCfbs1pNofaCmeDZ7T6nO6psFfbn91KBp5/3PThlMAVdRTMo4WWuqzbXzs2OFo
-	 WM9xYQz/afLQ3F56m9qRiLJkCYh5vZ83YEmXFremwDAzi6xa5u0eXmdCFxopHIwlXo
-	 ri0JYL/m6JRePkaU5wD6DlnCvRjKse/BCTndNd1pMsxrZjmIxsjHc6N2GP1MXFfTk9
-	 0UPKe2obOOWrRnFtFs9MRwxFF1QYjXjRLyeX67X6oxIf8uyVN/iQeVnhovYnha1rpP
-	 d+23xcsXM5Extn24MzQWb8KPe0KjY3fCmpOu7Kli/Qzwvq4I4avyg0nVsJTAB0knFU
-	 6Di8drWojC9zw==
-Message-ID: <f7257221-cbfa-4f51-8ac4-38060bfaf2f4@kernel.org>
-Date: Thu, 31 Jul 2025 09:43:38 +0200
+	s=k20201202; t=1753948410;
+	bh=UJl4z9vF2kzQ+3bzci3Xb3mCWDp4ilOWOwkLWewufw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F3QVQU1Xmnd4eGA6SINGg+MKH6pjLsCn9p2nrFoM4ov+WjluK83tTTSLCIF6zflVz
+	 6pUrh8F0s/azrEGL+K10m866iXoYru8X0MqDdEPKI220HQ4pH+XXmEHUJDM0B7zFuZ
+	 vAYCyuEwKz05gXVEsUSeuayfyd/QG1m6KmbO/2Yvqyf/cSM5wo66sjtfUHNlTd+84b
+	 fj0WA7kZ2Hdfm/NQgjjDvZv5SV5AgUFMcPLKZ04qHM5sppcpBLIjV7box1HaYDr2xg
+	 DNv7zYCwEii36fIv0J0EQSTELb9ST+E6wpoBSmxrZkMk/z52xB7lW41moIvpwYSIP6
+	 vhTmLU0HmGotQ==
+Date: Thu, 31 Jul 2025 09:53:25 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Pavel Tikhomirov <snorcht@gmail.com>
+Cc: Andrei Vagin <avagin@google.com>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Andrei Vagin <avagin@gmail.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, criu@lists.linux.dev, Linux API <linux-api@vger.kernel.org>, 
+	stable <stable@vger.kernel.org>
+Subject: Re: do_change_type(): refuse to operate on unmounted/not ours mounts
+Message-ID: <20250731-masten-resolut-89aca1e3454f@brauner>
+References: <CANaxB-xXgW1FEj6ydBT2=cudTbP=fX6x8S53zNkWcw1poL=L2A@mail.gmail.com>
+ <20250724230052.GW2580412@ZenIV>
+ <CANaxB-xbsOMkKqfaOJ0Za7-yP2N8axO=E1XS1KufnP78H1YzsA@mail.gmail.com>
+ <20250726175310.GB222315@ZenIV>
+ <CAEWA0a6jgj8vQhrijSJXUHBnCTtz0HEV66tmaVKPe83ng=3feQ@mail.gmail.com>
+ <CAE1zp74Myaab_U5ZswjCE=ND66bT907Y=vmsk14hV89R_ugbtg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] HID: multitouch: fix integer overflow in set_abs()
-To: Qasim Ijaz <qasdev00@gmail.com>
-Cc: jikos@kernel.org, bentiss@kernel.org, linux-input@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250723173659.59327-1-qasdev00@gmail.com>
- <914ff45b-2260-42c0-9ccf-a3efd667d4f5@kernel.org>
- <aIJXqs-U8vDpYv0S@gmail.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <aIJXqs-U8vDpYv0S@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAE1zp74Myaab_U5ZswjCE=ND66bT907Y=vmsk14hV89R_ugbtg@mail.gmail.com>
 
-On 24. 07. 25, 17:56, Qasim Ijaz wrote:
-> On Thu, Jul 24, 2025 at 08:58:40AM +0200, Jiri Slaby wrote:
->> On 23. 07. 25, 19:36, Qasim Ijaz wrote:
->>> It is possible for a malicious HID device to trigger a signed integer
->>> overflow (undefined behaviour) in set_abs() in the following expression
->>> by supplying bogus logical maximum and minimum values:
->>> 	
->>> 	int fuzz = snratio ? (fmax - fmin) / snratio : 0;
->>>
->>> For example, if the logical_maximum is INT_MAX and logical_minimum is -1
->>> then (fmax - fmin) resolves to INT_MAX + 1, which does not fit in a 32-bit
->>> signed int, so the subtraction overflows.
->>
->> The question is if it matters with -fwrapv?
+On Thu, Jul 31, 2025 at 10:40:40AM +0800, Pavel Tikhomirov wrote:
+> If detached mounts are our only concern, it looks like the check instead of:
 > 
-> Ah yea thanks for bringing this up Jiri. I think you might be correct,
-> after doing some research it looks like the kernel enables -fno‑strict‑overflow
-> which implies -fwrapv which leads to wrap around instead of UB If I undestand
-> correctly. So with that in mind this patch probably doesn't do anything
-> useful, do you agree?
+> if (!check_mnt(mnt)) {
+>         err = -EINVAL;
+>         goto out_unlock;
+> }
+> 
+> could've been a more relaxed one:
+> 
+> if (mnt_detached(mnt)) {
+>         err = -EINVAL;
+>         goto out_unlock;
+> }
+> 
+> bool mnt_detached(struct mount *mnt)
+> {
+>         return !mnt->mnt_ns;
+> }
+> 
+> not to allow propagation change only on detached mounts. (As
+> umount_tree sets mnt_ns to NULL.)
 
-Yes, it correctly wraps around. But the question remains :). Does it 
-matter or not?
+Changing propagation settings on detached mounts is fine and shoud work?
+Changing propagation settings on unmounted mounts not so much...
 
-thanks,
--- 
-js
-suse labs
+> 
+> Also in do_mount_setattr we have a more relaxed check too:
+> 
+> if ((mnt_has_parent(mnt) || !is_anon_ns(mnt->mnt_ns)) && !check_mnt(mnt))
+>         goto out;
+> 
+> Best Regards, Tikhomirov Pavel.
+> 
+> On Sun, Jul 27, 2025 at 5:01 AM Andrei Vagin <avagin@google.com> wrote:
+> >
+> > On Sat, Jul 26, 2025 at 10:53 AM Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > >
+> > > On Sat, Jul 26, 2025 at 10:12:34AM -0700, Andrei Vagin wrote:
+> > > > On Thu, Jul 24, 2025 at 4:00 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > > > >
+> > > > > On Thu, Jul 24, 2025 at 01:02:48PM -0700, Andrei Vagin wrote:
+> > > > > > Hi Al and Christian,
+> > > > > >
+> > > > > > The commit 12f147ddd6de ("do_change_type(): refuse to operate on
+> > > > > > unmounted/not ours mounts") introduced an ABI backward compatibility
+> > > > > > break. CRIU depends on the previous behavior, and users are now
+> > > > > > reporting criu restore failures following the kernel update. This change
+> > > > > > has been propagated to stable kernels. Is this check strictly required?
+> > > > >
+> > > > > Yes.
+> > > > >
+> > > > > > Would it be possible to check only if the current process has
+> > > > > > CAP_SYS_ADMIN within the mount user namespace?
+> > > > >
+> > > > > Not enough, both in terms of permissions *and* in terms of "thou
+> > > > > shalt not bugger the kernel data structures - nobody's priveleged
+> > > > > enough for that".
+> > > >
+> > > > Al,
+> > > >
+> > > > I am still thinking in terms of "Thou shalt not break userspace"...
+> > > >
+> > > > Seriously though, this original behavior has been in the kernel for 20
+> > > > years, and it hasn't triggered any corruptions in all that time.
+> > >
+> > > For a very mild example of fun to be had there:
+> > >         mount("none", "/mnt", "tmpfs", 0, "");
+> > >         chdir("/mnt");
+> > >         umount2(".", MNT_DETACH);
+> > >         mount(NULL, ".", NULL, MS_SHARED, NULL);
+> > > Repeat in a loop, watch mount group id leak.  That's a trivial example
+> > > of violating the assertion ("a mount that had been through umount_tree()
+> > > is out of propagation graph and related data structures for good").
+> >
+> > I wasn't referring to detached mounts. CRIU modifies mounts from
+> > non-current namespaces.
+> >
+> > >
+> > > As for the "CAP_SYS_ADMIN within the mount user namespace" - which
+> > > userns do you have in mind?
+> > >
+> >
+> > The user namespace of the target mount:
+> > ns_capable(mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)
+> >
 
