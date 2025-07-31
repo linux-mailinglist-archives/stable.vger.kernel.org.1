@@ -1,160 +1,124 @@
-Return-Path: <stable+bounces-165676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBCAB1747D
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:59:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF31B174C2
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 18:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C65F7586381
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 15:59:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2190CA836EE
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 16:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689E1222591;
-	Thu, 31 Jul 2025 15:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577F520D51A;
+	Thu, 31 Jul 2025 16:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iz5bA0fG"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="TO2TwJhu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mail-10697.protonmail.ch (mail-10697.protonmail.ch [79.135.106.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C092576;
-	Thu, 31 Jul 2025 15:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB76220F54
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 16:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753977579; cv=none; b=o0RcauB08UmBb/C2nY8xOOIFGGcG7WUly1NIQ96NvOA1FLzP4oQHD2zMYnSFTkaNDd9PUw/Swy9lvlVYZEIggCTNxrjx2s7I6LUkStYIGItJAd8cds/cXN7iEd3nbgk8IEv/ja1BcuzTGSSLFJzmKAkRVMFC/3glkQP4h4TSZxg=
+	t=1753978388; cv=none; b=n/qQ0XaGcXqrn+wrpzS/1XOmEEFau7FvJaGnE3u7Uoly0Ua8FgWOGdYP98p9GkaI+JXiMtJUc9FYMN7PhcUg+LH7UwxHoIWkWU+diNT8Yviz7eh6qiiw3p4E84e9qj6QL9rSsYQ9V7oP2kufDVqfE7sYT5zKz4C5QIdfQosVdIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753977579; c=relaxed/simple;
-	bh=mmRcCImDzrZp0hu+IQGRPIsQJTluZBrHvuO0Rqa2YB4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ogArPHzB3PqCJjQLBeoQf2S1KvP16VYKxG0KXsGF9hif61YblQpuN90rjOLvdBTTfeJUM5aoxIZcNw3NQb2ds8+7yhdGQOyqCUz6fW7dRGDY8bxaj9sarLHdbySDEqwoZ861vUX+a1c3W9KsprEnMYOhmZ2sHLuPKAHykgnbOsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iz5bA0fG; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753977578; x=1785513578;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=mmRcCImDzrZp0hu+IQGRPIsQJTluZBrHvuO0Rqa2YB4=;
-  b=Iz5bA0fGOKfakZAl69NDqEB6paQeUpvVueYo96BDp+ZWWZS4Itzlq2Id
-   SKgmTo+C2PZDs8alCw9y7LXZMIBWmEPMdT4bZ8DhPyPa0Il1YlECux5jd
-   IqWbJGx4o/bFTvdusam23li7VWvzzM8HlFwTCa9HNtFK+y6kF6BF1tmuw
-   E5Xp78BWhDYROzIskiUJ5fnX8Mik7A2qQYpdvfGdG6PSGnqnbnPnQk+K+
-   H0Pf21pdeAN75rfEDkp6MUM3kmRqbIju0Ha7wMRXw/vIuTXp0QzApI2e4
-   uHd18ILWqPRDzyC9abnW9d61WzMSfFNu3NLUsbgyzSCRtrb4CF36bNwe/
-   g==;
-X-CSE-ConnectionGUID: pGQIEJVlS5ecQGh8ouQCQw==
-X-CSE-MsgGUID: ztmqVeuIRr6ppKhC/nv/bw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="73765840"
-X-IronPort-AV: E=Sophos;i="6.17,254,1747724400"; 
-   d="scan'208";a="73765840"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 08:57:49 -0700
-X-CSE-ConnectionGUID: 8cIJHB/3SUmlM0a4cX/yPQ==
-X-CSE-MsgGUID: XqtxjqHFRdi3S8nGUSXvgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,254,1747724400"; 
-   d="scan'208";a="162575528"
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.109.198]) ([10.125.109.198])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 08:57:47 -0700
-Message-ID: <3093fd14-d57a-4fc6-9e15-d9ce8b075b30@intel.com>
-Date: Thu, 31 Jul 2025 08:57:47 -0700
+	s=arc-20240116; t=1753978388; c=relaxed/simple;
+	bh=aI1FVzVfrDeaTWiVhLom4GmGgm/c+7E5j1bMQKatl6I=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CSZGyL5seOLCSK9twBRIXqBT/5OoAtC1YJQ2A21+TLoSsNGmUMMPmenrafs0NYw3fgn8koveWFNLwQwGM1VgF86KK6Vf4Ax8V1/dFnUmP3BggIb7YI020aualIOQ82MnbFsH/kq+gNf1V45oBkGKHufoYP6DYi+qfHOVW9pMD/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=TO2TwJhu; arc=none smtp.client-ip=79.135.106.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1753978378; x=1754237578;
+	bh=ReuuQ2WpSSBdPU9V3Nd3gVcOly6NwjGCUI1vmWY1pPU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=TO2TwJhu29yI/BivJboZ0hx4f3XWM3A5FIhGKSHp7vHPDYn6xkEyw8psOXFdl0a9H
+	 UfXJfNMDoWdJfteBeHEXuwcIadbQmHA17U0IFQ75/TBe7+ioxJNGGgLVJXhar0S+zc
+	 yi2w7Ic0S9tDiF9cDwmzKpWCzv4NGRIEPBVH1HoClVUUqjXKdBSdiMGaHTotgN2VR+
+	 3imjLB5STLw9+V46WamkEYOCB5enUTMcPvuCzWq9tF130uMrP+uzMYb7cauWXAaRWX
+	 X/kvyAe+k7KQVqugFrMTbhw2yhJ627C8S7mcVh3ZX5DnYllkEeSNZZmbbGsliMw27m
+	 CsC+VTpCA9Lvg==
+Date: Thu, 31 Jul 2025 16:12:52 +0000
+To: Jiri Slaby <jirislaby@kernel.org>
+From: Jari Ruusu <jariruusu@protonmail.com>
+Cc: Yi Yang <yiyang13@huawei.com>, GONG Ruiqi <gongruiqi1@huawei.com>, Helge Deller <deller@gmx.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: Text mode VGA-console scrolling is broken in upstream & stable trees
+Message-ID: <7_oOa5sZXTsEK5rGL7HpT4HfjvhfpGa8r69NDAZWuKTxWP1ONLD9yDbrfJ3nzfducuK8TpC-fF1llnfVjpGHzdmhdzDq7FvvoOYU9eEX9Uc=@protonmail.com>
+In-Reply-To: <a1d0172f-5f3c-4f3e-9362-d9de0192e8b2@kernel.org>
+References: <C4_ogGo3eSdgo3wcbkdIXQDoGk2CShDfiQEjnwmgLUvd1cVp5kKguDC4M7KlWO4Tg9Ny3joveq7vH9K_zpBGvIA8-UkU2ogSE1T9Y6782js=@protonmail.com> <a1d0172f-5f3c-4f3e-9362-d9de0192e8b2@kernel.org>
+Feedback-ID: 22639318:user:proton
+X-Pm-Message-ID: f232cd1324770b9f5fd19ca58bf498644d43c660
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/cpu/intel: Fix the constant_tsc model check for
- Pentium 4s
-To: Suchit Karunakaran <suchitkarunakaran@gmail.com>, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- darwi@linutronix.de, sohil.mehta@intel.com, peterz@infradead.org,
- ravi.bangoria@amd.com
-Cc: skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250730042617.5620-1-suchitkarunakaran@gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250730042617.5620-1-suchitkarunakaran@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 7/29/25 21:26, Suchit Karunakaran wrote:
-> The logic to synthesize constant_tsc for Pentium 4s (Family 15) is
-> wrong. Since INTEL_P4_PRESCOTT is numerically greater than
-> INTEL_P4_WILLAMETTE, the logic always results in false and never sets
-> X86_FEATURE_CONSTANT_TSC for any Pentium 4 model.
-> The error was introduced while replacing the x86_model check with a VFM
-> one. The original check was as follows:
->         if ((c->x86 == 0xf && c->x86_model >= 0x03) ||
->                 (c->x86 == 0x6 && c->x86_model >= 0x0e))
->                 set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
-> 
-> Fix the logic to cover all Pentium 4 models from Prescott (model 3) to
-> Cedarmill (model 6) which is the last model released in Family 15.
+On Thursday, July 31st, 2025 at 10:22, Jiri Slaby <jirislaby@kernel.org> wr=
+ote:
+> At the time this was posted (privately and on security@), I commented:
+> =3D=3D=3D=3D=3D
+>  > --- a/drivers/video/console/vgacon.c
+>  > +++ b/drivers/video/console/vgacon.c
+>  > @@ -1168,7 +1168,7 @@ static bool vgacon_scroll(struct vc_data *c, uns=
+igned int t, unsigned int b,
+>  >                                    c->vc_screenbuf_size - delta);
+>  >                       c->vc_origin =3D vga_vram_end - c->vc_screenbuf_=
+size;
+>  >                       vga_rolled_over =3D 0;
+>  > -             } else
+>  > +             } else if (oldo - delta >=3D (unsigned long)c->vc_screen=
+buf)
+>  >                       c->vc_origin -=3D delta;
+>=20
+> IMO you should also add:
+>     else
+>       c->vc_origin =3D c->vc_screenbuf;
+>=20
+> Or clamp 'delta' beforehand and don't add the 'if'.
+> =3D=3D=3D=3D=3D
+> That did not happen, AFAICS. Care to test the above suggestion?
 
-Could we have a slightly different changelog, please? The fact that the
-logic results in the bit never getting set for P4's is IMNHO immaterial.
-This looks like a plain and simple typo, not a logical error on the
-patch author's part.
+My reading of the code in vgacon_scroll() is that it directly
+bit-bangs video-RAM and checks that scroll read/write accesses
+stay in range vga_vram_base...vga_vram_end-1.
 
-How about this as a changelog?
+Checking that c->vc_origin end up being >=3D c->vc_screenbuf is
+wrong because in text mode it should be index to video-RAM.
+
+Quote from original "messed up" patch, fix for CVE-2025-38213:
+> By analyzing the vmcore, we found that vc->vc_origin was somehow placed
+> one line prior to vc->vc_screenbuf when vc was in KD_TEXT mode, and
+> further writings to /dev/vcs caused out-of-bounds reads (and writes
+> right after) in vcs_write_buf_noattr().
+>=20
+> Our further experiments show that in most cases, vc->vc_origin equals to
+> vga_vram_base when the console is in KD_TEXT mode, and it's around
+> vc->vc_screenbuf for the KD_GRAPHICS mode. But via triggerring a
+> TIOCL_SETVESABLANK ioctl beforehand, we can make vc->vc_origin be around
+> vc->vc_screenbuf while the console is in KD_TEXT mode, and then by
+> writing the special 'ESC M' control sequence to the tty certain times
+> (depends on the value of `vc->state.y - vc->vc_top`), we can eventually
+> move vc->vc_origin prior to vc->vc_screenbuf. Here's the PoC, tested on
+> QEMU:
+
+To me that sounds like the bug is in TIOCL_SETVESABLANK ioctl().
+It should not be changing c->vc_origin to point elsewhere
+other than video-RAM when the console is in text mode.
+
+How about adding a check to begining of vgacon_scroll() that
+bails out early if c->vc_origin is not a valid index to video-RAM?
 
 --
+Jari Ruusu=C2=A0 4096R/8132F189 12D6 4C3A DCDA 0AA4 27BD=C2=A0 ACDF F073 3C=
+80 8132 F189
 
-Pentium 4's which are INTEL_P4_PRESCOTT (mode 0x03) and later have a
-constant TSC. This was correctly captured until fadb6f569b10
-("x86/cpu/intel: Limit the non-architectural constant_tsc model
-checks"). In that commit, the model was transposed from 0x03 to
-INTEL_P4_WILLAMETTE, which is just plain wrong. That was presumably a
-simple typo, probably just copying and pasting the wrong P4 model.
-
-Fix the constant TSC logic to cover all later P4 models. End at
-INTEL_P4_CEDARMILL which is the last P4 model.
 
