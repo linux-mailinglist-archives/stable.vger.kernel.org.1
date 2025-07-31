@@ -1,176 +1,99 @@
-Return-Path: <stable+bounces-165658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2362DB17150
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 14:33:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8852B17153
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 14:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161D6A8048D
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 12:33:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2445D17C061
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 12:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFA5214A6E;
-	Thu, 31 Jul 2025 12:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3540F22A801;
+	Thu, 31 Jul 2025 12:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJoXmKkM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hg3X4ZzD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC32335947;
-	Thu, 31 Jul 2025 12:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E0E221720
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 12:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753965219; cv=none; b=oU0m1PLlJTsNeaOfH0MYXAIRrd13wrd8/qRaawWKIYLqnTEuKvz3DYiKUfPP57zNP+ZsfyHIk9qEa8TYGqnJcRa+0GWf/1qci+b5x7nk5tVTDZx8HXs+dV+ADYrm9aBaWS/S4roKZqa6+Z3H19QuIkD2/qKVsU4NAWV2AtLHEsI=
+	t=1753965291; cv=none; b=mF4Sfg/ff9+t3mTLOvsa0j3yooAgY1XQ2fFKhh4uAM3NwhjChSVEdK8+owL+P9ow60DX+l4WofsZnggQYncEi1wE7kOvwylDELpwjCeTKq/srys5hYgejDrOrcVyJGpU5bIED2o6E+I0Sys9b3yHgVA+8uPHUtpS9ed5YJ8+0M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753965219; c=relaxed/simple;
-	bh=qHPfHCfn6kgsHPzp5dCmEFMS26jIA83Y8ZGsjCJzbOM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Rd2jtnppgfz43nomBq+GUtk8iLXy8IDOO2A7t8ZdMSiTMRGDCMq36Mlp0nnBldg2M/yUYlhIDjMV3ya3zZWwbbcpq+b9FNi5DqsigJqVlMC/o8kPZV1GBZi68x1qfeShJUgeMYZ3tXoy2EVExsl6dUflWgyqykNIKp+2fRAdQus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJoXmKkM; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b42254ea4d5so567742a12.1;
-        Thu, 31 Jul 2025 05:33:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753965215; x=1754570015; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/36nYe2WCOObs9eQmPyTwjtNHg3LkxY/OMOrZAoHJJI=;
-        b=ZJoXmKkMUrVaibyMIflRcLGxBqvrKXfNzKTse904lzUeqmTsTPruW9ZG2lL1jW+IMF
-         R6LuYMM6XjUtUrVF6z5UrFBCFJzJJhSeWjaP7isPO30+kdc1BQnRo7IrXXAIUvg81F8g
-         RJv5juZOmZz/YbISMKfX0RLf/8I/ncdh722Rf8jhOZeMl9o6QCffRtG9yZMa8dzSyLE0
-         TKxERunipdUNrTucoRCr9dkjYBhoT8fQJVvPQSV7oO2GF2uQ0Dj/0hsMclm5IzeZRCpR
-         VEwXhMDTHsacjYOXgj5tv/jdPh0Wp47VtLJe23YISZ2mEzeXNv0N+WGNfoyq9TV5nQh3
-         mTUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753965215; x=1754570015;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/36nYe2WCOObs9eQmPyTwjtNHg3LkxY/OMOrZAoHJJI=;
-        b=PHrl4DKS4m8nxSel2QQ3106EMkZTlwMHjgpPtr2OG61bhCHX8Bd9DUdtQnkadLNhff
-         h2UQh9415yo67SbG8hJE/rH3t+i8aYlaEPgl0aebMqyUs3H7AeNU8HT0NgZ1t4E69CjM
-         qYOLI2z+bPo8BL6l3LqT0Mm4QuFMPYNpCXvyHNogcN3tngTTN0ZNdr5NPijMOZ7SryBA
-         dilReIk5XIadtEmr/83uBf0y/Rk8eUNrM1SjnuzNLhUih9fDz8AkQbYMeqRvvo39HXC/
-         AVa3TtNnetUIxDSUaWdyoCTCHv/GHqfzlC5RQkiqm79rY0+quOBX3eQo+M/pyRT16RYz
-         ZlOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJURTaD2lAdmcZjfGnqXYRbdHjZunKjnukGGKLe88WUABC9sNstK8nnr4AxEB41Wated2tDYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRUvUHEPZ2LC2jixNXlLnmHv9RYFK+gV/0XQdSXkz0k4DbrH6k
-	Nmw5MNx/9qsAonfHdoQG7jVCS9sqLnM0nJdg5kteNcEYbqpSJAuu8mP0f1TTWPXjZXc=
-X-Gm-Gg: ASbGncuaQxQpifPd3W3OV75v0FXET29FDU4HbUjaXcbKL3AhDilIgQKFgK5vCjS4XRh
-	KKd/rLqVM48g5RCnyLoLhbQ1ngzIkJEqSBxT90XlbvghK1aliNZ7E/2AIwZDYsHs7T7y2XbRo7E
-	8JFB6QF/j1CUa6s4PSiOLhAQ44ZtDjDDFmg97ugDQS5dOZff4tSA2nZTqH+mmzA76TPTZEWKtSh
-	5PF+kEU+rPI8+A/qkQEtO+xe1fy4YMaaDjq2vQS/iPU46ZYpdoIVBXfIPrp15MGNQdgPXezYtq5
-	1Iw0EDpyvoZgYPEqBLGYAS3tHZSqWxj+nO69ulm7ZuTbexu+u1bwJdoRsh62ElBlhCi94X80p+p
-	jnMSf8gkzwajOQW7WdxDPvplxOuU=
-X-Google-Smtp-Source: AGHT+IF2ybQ8rJvr1FVMyaRTLAkALRfeQzNbDaB4aLKXP+SgtQ2Jtdrfb0hi0qxG5LbP7m4tpLY8WA==
-X-Received: by 2002:a17:90b:1fcf:b0:312:f0d0:bc4 with SMTP id 98e67ed59e1d1-31f5dd9ccc8mr9023739a91.5.1753965214501;
-        Thu, 31 Jul 2025 05:33:34 -0700 (PDT)
-Received: from localhost ([121.30.179.102])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63f0cc41sm4590375a91.32.2025.07.31.05.33.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 05:33:33 -0700 (PDT)
-From: Julian Sun <sunjunchao2870@gmail.com>
-X-Google-Original-From: Julian Sun <sunjunchao@bytedance.com>
-To: linux-block@vger.kernel.org
-Cc: axboe@kernel.dk,
-	stable@vger.kernel.org,
-	Julian Sun <sunjunchao@bytedance.com>
-Subject: [PATCH] blk-wbt: Fix io starvation in wbt_rqw_done()
-Date: Thu, 31 Jul 2025 20:33:19 +0800
-Message-Id: <20250731123319.1271527-1-sunjunchao@bytedance.com>
-X-Mailer: git-send-email 2.20.1
+	s=arc-20240116; t=1753965291; c=relaxed/simple;
+	bh=2gu6cfYj8vAX0i99xBVixXHZz+4R0OpZvhoZUDoAfSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=JolYKFxZEQrDnCSNIrmhtpEdamCS6PuwoUISjCCPMJ5X2AA3lDT3lbSuTB13FrssnD2/LMkd8uB0hj+UDQQRKTJlDgKlM7RbJaCFCzSezeu9cREWZPJ91VcRJQZiSd4TN+NQ4QUHt1HiZO1F3SMqEGtcv5Szm6civggRj+OLbx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hg3X4ZzD; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753965288; x=1785501288;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=2gu6cfYj8vAX0i99xBVixXHZz+4R0OpZvhoZUDoAfSs=;
+  b=Hg3X4ZzDwLJb4EJx8olYi6XohFpreTQVviawRJO8p8/mMbyiYEj7YvKQ
+   HfS8zi9Ky04UQ0V7I3oa3ZQ/k9pp4ZLzRoV93HQKp1d9ZMXCYbNZ1UW6H
+   YdvuDQDzG0nR8sw0HYC356Me6ncRuasKTtm9yti+NKs7AcXFjj1yXJdYQ
+   pejoYa0qsF2Qpr2Pbv3h/s12DjwR12225Mvk6FCq58iymVqXCm3TU/iwR
+   zFZP3M6VeSyu9axA9HyK6qVodbpu15fYtHqMwiLENgYCOnnnu4uoObJ/2
+   RPOvXixdNcEioBVZBpBzy7WhnYnN3zJvMtvMT/vG62ozVe7Q72HjppLlR
+   Q==;
+X-CSE-ConnectionGUID: 8mNFzY0ISrGmdhKlh/qFTg==
+X-CSE-MsgGUID: NDJTPJZrRBuPQedp/3eekg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="66852914"
+X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; 
+   d="scan'208";a="66852914"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 05:34:48 -0700
+X-CSE-ConnectionGUID: Yd3pDRtdSDadPGu/V4b+0A==
+X-CSE-MsgGUID: gSSshkcvSAOOKP3/qK6XKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; 
+   d="scan'208";a="194245871"
+Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 31 Jul 2025 05:34:46 -0700
+Received: from kbuild by 160750d4a34c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uhSUe-0003lk-2J;
+	Thu, 31 Jul 2025 12:34:44 +0000
+Date: Thu, 31 Jul 2025 20:34:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Julian Sun <sunjunchao2870@gmail.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] blk-wbt: Fix io starvation in wbt_rqw_done()
+Message-ID: <aItiuYO5PNhhUxl_@e754814b2865>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250731123319.1271527-1-sunjunchao@bytedance.com>
 
-Recently, we encountered the following hungtask:
+Hi,
 
-INFO: task kworker/11:2:2981147 blocked for more than 6266 seconds
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-kworker/11:2    D    0 2981147      2 0x80004000
-Workqueue: cgroup_destroy css_free_rwork_fn
-Call Trace:
- __schedule+0x934/0xe10
- schedule+0x40/0xb0
- wb_wait_for_completion+0x52/0x80
- ? finish_wait+0x80/0x80
- mem_cgroup_css_free+0x3a/0x1b0
- css_free_rwork_fn+0x42/0x380
- process_one_work+0x1a2/0x360
- worker_thread+0x30/0x390
- ? create_worker+0x1a0/0x1a0
- kthread+0x110/0x130
- ? __kthread_cancel_work+0x40/0x40
- ret_from_fork+0x1f/0x30
+Thanks for your patch.
 
-This is because the writeback thread has been continuously and repeatedly
-throttled by wbt, but at the same time, the writes of another thread
-proceed quite smoothly.
-After debugging, I believe it is caused by the following reasons.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-When thread A is blocked by wbt, the I/O issued by thread B will
-use a deeper queue depth(rwb->rq_depth.max_depth) because it
-meets the conditions of wb_recent_wait(), thus allowing thread B's
-I/O to be issued smoothly and resulting in the inflight I/O of wbt
-remaining relatively high.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-However, when I/O completes, due to the high inflight I/O of wbt,
-the condition "limit - inflight >= rwb->wb_background / 2"
-in wbt_rqw_done() cannot be satisfied, causing thread A's I/O
-to remain unable to be woken up.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] blk-wbt: Fix io starvation in wbt_rqw_done()
+Link: https://lore.kernel.org/stable/20250731123319.1271527-1-sunjunchao%40bytedance.com
 
-Some on-site information:
-
->>> rwb.rq_depth.max_depth
-(unsigned int)48
->>> rqw.inflight.counter.value_()
-44
->>> rqw.inflight.counter.value_()
-35
->>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-(unsigned long)3
->>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-(unsigned long)2
->>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-(unsigned long)20
->>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-(unsigned long)12
-
-cat wb_normal
-24
-cat wb_background
-12
-
-To fix this issue, we can use max_depth in wbt_rqw_done(), so that
-the handling of wb_recent_wait by wbt_rqw_done() and get_limit()
-will also be consistent, which is more reasonable.
-
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
-Fixes: e34cbd307477 ("blk-wbt: add general throttling mechanism")
----
- block/blk-wbt.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/block/blk-wbt.c b/block/blk-wbt.c
-index a50d4cd55f41..d6a2782d442f 100644
---- a/block/blk-wbt.c
-+++ b/block/blk-wbt.c
-@@ -210,6 +210,8 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq_wait *rqw,
- 	else if (blk_queue_write_cache(rwb->rqos.disk->queue) &&
- 		 !wb_recent_wait(rwb))
- 		limit = 0;
-+	else if (wb_recent_wait(rwb))
-+		limit = rwb->rq_depth.max_depth;
- 	else
- 		limit = rwb->wb_normal;
- 
 -- 
-2.20.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
