@@ -1,52 +1,62 @@
-Return-Path: <stable+bounces-165639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CA5B16F01
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 11:50:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A594B16F24
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 12:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB6CB3AF620
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 09:50:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3E171AA1BC3
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 10:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD052BE023;
-	Thu, 31 Jul 2025 09:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF7729CEB;
+	Thu, 31 Jul 2025 10:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="O2s09FwL"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="llKVSWGX"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825CF2BD5A7;
-	Thu, 31 Jul 2025 09:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D062BDC38
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 10:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753955428; cv=none; b=rU/ZAhvi730vBHUpJt/f/KYhzygIyFeDgijfhTqO1qOClBrTBkQmx9MMn8Ry9ABlIFcfy1Vx2lIl4ph+083zD2BhHcho/DJc8MfS8YA8MkSiYVkhWnu0OS3wOpRjDLJrZbtbFJY3FAt+9dxlH/5pXnkj65pLTJLIOtWnoAYPOUk=
+	t=1753956267; cv=none; b=fvo4c4/XFDbc6b8eAsI5hLTu4lDf4UTVnPpVJhiqbttPaiHs1ElibUGUSxkZO3u76vpKRXNQaNt6/thR1aHNE5KOsukneWGqQ1fnU9OD6V/3OfABElwARwmwnRKZkIOG/n99XiLeP7YidFyE39OFAhFh1p5XlHVD6D14TYovO5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753955428; c=relaxed/simple;
-	bh=L4wEv5yD2YGJZlT2oppXRQ7NXwcHptUuqESz0gDytiw=;
+	s=arc-20240116; t=1753956267; c=relaxed/simple;
+	bh=WigGKFbgtCVAFw2VbTCB01cMzYJQXuFISWadikcrpjk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gnlwFMKYfz8inwSVbuF32dX04Z4Yc3c5kVNU8cNBaChAHuxzE4srYAS8FsuX3cHaVxkcafOzxTvGO8agT9aM4Eu4mdj2g0JxUDrrLsWA8gzfcjh5dnU+hqwoc4RiPEUrOkAk0blDf1Qyqo0OqJcH1+tvFWkFsBm8EZ7Kirazdrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=O2s09FwL; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 15CA243854;
-	Thu, 31 Jul 2025 09:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1753955418;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oQZaEeF9d7skWsfawRi1lhOPl2zgtzHvwTKPULZo3oY=;
-	b=O2s09FwLDoyIJnk/6dSjw3g3U7UcPzW9P4u7udmFTu0FSLNhbqZQgC/L851x4QIWbNeiKX
-	CAj03MM4/ipe3/IALyAtpEt5XGCb3vgZJMxfOp5ltuwCjQneLW5kXWPVrbkQOrQpVXZRBj
-	iHqp9cjZdA6QvsgcyAlhnwdpt5F9LIAnxoiOGGLUyXxTzJ1kG8/3vS5M3jI583MVUsrgVz
-	uu0tUdBY7rS7YZU06ZK7VJKL8q93C+bkD7asgweDVaPfcbEQ+SIUi1POmbRJgY//OXC//W
-	OVtPn3yZyla+Y4O6BNxt18eYzPukHlBkwPQDf5CBvX5H0wftyH0LwYWpxFVm4A==
-Message-ID: <8a2b1876-d1d4-4523-ae6a-bd14875772cf@bootlin.com>
-Date: Thu, 31 Jul 2025 11:50:16 +0200
+	 In-Reply-To:Content-Type; b=MnytexM/qbActWhr2/azQ9LwK2KoYmmeXn5I+badwBM+ytjJ7IBd1TZB0MSZ5e2jaTBC8KFHZrpLsPuC6RTPl3InaEjkD9qNs+XgpWqYxxivA3eIpxgW/WIP++on9xG3WFBSHuJmhdtoPg5MJ5d3GbXO2nP8rbrY6pIR2MCANls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=llKVSWGX; arc=none smtp.client-ip=51.81.35.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 0B681223DF
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 09:56:08 +0000 (UTC)
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.113.132])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 7D0A7200AF
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 09:56:00 +0000 (UTC)
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id 5C91B3E8CA;
+	Thu, 31 Jul 2025 09:55:53 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 622E7400F0;
+	Thu, 31 Jul 2025 09:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1753955751; bh=WigGKFbgtCVAFw2VbTCB01cMzYJQXuFISWadikcrpjk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=llKVSWGXoIKsVRCYYxy5skiSzvnNfmVBbfwadXWaxvBgNHEa2GH4ZiR7uu0f2dF+t
+	 b3FhT7NdnsIDHkLTeBizl2RE/gO3EcKKzY6RNNlO/eVhzyGi7kDSyxMDMQ7wlMUeRs
+	 j3ItWm29VS9iKZ/adulVluG7KlZY1kNm8kEYt4us=
+Received: from [127.0.0.1] (unknown [203.175.14.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 704C74168E;
+	Thu, 31 Jul 2025 09:55:47 +0000 (UTC)
+Message-ID: <0b4df78a-5740-415e-9939-b9c00ead84e7@aosc.io>
+Date: Thu, 31 Jul 2025 17:55:43 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,166 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] arm64: dts: ti: k3-am62-main: Add tidss clk-ctrl
- property
-To: Rob Herring <robh@kernel.org>
-Cc: Jyri Sarha <jyri.sarha@iki.fi>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
- Benoit Parrot <bparrot@ti.com>, Lee Jones <lee@kernel.org>,
- Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
- Tero Kristo <kristo@kernel.org>, thomas.petazzoni@bootlin.com,
- Jyri Sarha <jsarha@ti.com>, Tomi Valkeinen <tomi.valkeinen@ti.com>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- stable@vger.kernel.org
-References: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
- <20250730-fix-edge-handling-v1-3-1bdfb3fe7922@bootlin.com>
- <20250731001725.GA1938112-robh@kernel.org>
+Subject: Re: [PATCH v3 1/5] drm/xe/bo: fix alignment with non-4KiB kernel page
+ sizes
+To: Simon Richter <Simon.Richter@hogyros.de>, intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org, Wenbin Fang <fangwenbin@vip.qq.com>,
+ Haien Liang <27873200@qq.com>, Jianfeng Liu <liujianfeng1994@gmail.com>,
+ Shirong Liu <lsr1024@qq.com>, Haofeng Wu <s2600cw2@126.com>,
+ Shang Yatsen <429839446@qq.com>
+References: <20250723074540.2660-1-Simon.Richter@hogyros.de>
+ <20250723074540.2660-2-Simon.Richter@hogyros.de>
 Content-Language: en-US
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
- 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
-In-Reply-To: <20250731001725.GA1938112-robh@kernel.org>
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <20250723074540.2660-2-Simon.Richter@hogyros.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddutddtgeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeetieekffetjeeugfdvfefhudetueelleetuddvtddtvdehgefgudeugfehgeelfeenucffohhmrghinhepthhirdgtohhmpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvgedprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhihrhhirdhsrghrhhgrsehikhhirdhfihdprhgtphhtthhopehtohhmihdrvhgrlhhkvghinhgvnhesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhug
- idrihhnthgvlhdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghh
-X-GND-Sasl: louis.chauvet@bootlin.com
+X-Rspamd-Queue-Id: 622E7400F0
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,vip.qq.com,qq.com,gmail.com,126.com];
+	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com,qq.com,vip.qq.com];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Action: no action
 
+Hi Simon,
 
+Thanks for your revision, however, there is an issue with this patch.
 
-Le 31/07/2025 à 02:17, Rob Herring a écrit :
-> On Wed, Jul 30, 2025 at 07:02:46PM +0200, Louis Chauvet wrote:
->> For am62 processors, we need to use the newly created clk-ctrl property to
->> properly handle data edge sampling configuration. Add them in the main
->> device tree.
->>
->> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
->> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
->> ---
->>
->> Cc: stable@vger.kernel.org
->> ---
->>   arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
->> index 9e0b6eee9ac77d66869915b2d7bec3e2275c03ea..d3131e6da8e70fde035d3c44716f939e8167795a 100644
->> --- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
->> +++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
->> @@ -76,6 +76,11 @@ audio_refclk1: clock-controller@82e4 {
->>   			assigned-clock-parents = <&k3_clks 157 18>;
->>   			#clock-cells = <0>;
->>   		};
->> +
->> +		dss_clk_ctrl: dss_clk_ctrl@8300 {
->> +			compatible = "ti,am625-dss-clk-ctrl", "syscon";
->> +			reg = <0x8300 0x4>;
-> 
-> H/w blocks are rarely only 4 bytes of registers... Does this belong to
-> some larger block. The problem with bindings defining single registers
-> like this is they don't get defined until needed and you have a constant
-> stream of DT updates.
+在 2025/7/23 15:45, Simon Richter 写道:
 
-In this case, I don't think there is a "larger block". This register 
-exists only because TI had issues in the display controller [1].
+<snip>
 
-Here is the extract of MMR registers ([2], page 4311):
+> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+> index 00ce067d5fd3..649e6d0e05a1 100644
+> --- a/drivers/gpu/drm/xe/xe_bo.c
+> +++ b/drivers/gpu/drm/xe/xe_bo.c
+> @@ -1861,9 +1861,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+>   		flags |= XE_BO_FLAG_INTERNAL_64K;
+>   		alignment = align >> PAGE_SHIFT;
+>   	} else {
+> -		aligned_size = ALIGN(size, SZ_4K);
+> +		aligned_size = ALIGN(size, PAGE_SIZE);
+>   		flags &= ~XE_BO_FLAG_INTERNAL_64K;
+> -		alignment = SZ_4K >> PAGE_SHIFT;
+> +		alignment = PAGE_SIZE >> PAGE_SHIFT;
+>   	}
+>   
+>   	if (type == ttm_bo_type_device && aligned_size != size)
 
-[...]
-A2E4h AUDIO_REFCLK1_CTRL_PROXY <unrelated>
-A300h DPI0_CLK_CTRL_PROXY <this register, 32 bits>
-<nothing between 0xA304 and 0xA319>
-A320h DSS_DISPC0_CLKSEL1_PROXY <an other dss clock stuff, 32 bits>
-A330h MCASP0_CLKSEL_PROXY <unrelated>
-[...]
+A previous change under this struct:
 
-I agree that DSS_DISPC_CLKSEL_PROXY is also related to DSS clock stuff, 
-so may be included in the same block, but there is also a big hole in 
-between. What do you think is better?
+-	bo->size = size;
++	bo->size = aligned_size;
 
-[1]:https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1228207/am62a7-rgb-display-flickering-and-pixel-issue/4687209#4687209
-[2]:https://www.ti.com/lit/ug/spruiv7b/spruiv7b.pdf#page=4311
+Is actually still needed. Without this change, the kernel does not start 
+up with an Intel B580.
 
->> +		};
->>   	};
->>   
->>   	dmss: bus@48000000 {
->> @@ -787,6 +792,7 @@ dss: dss@30200000 {
->>   			 <&k3_clks 186 2>;
->>   		clock-names = "fck", "vp1", "vp2";
->>   		interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
->> +		ti,clk-ctrl = <&dss_clk_ctrl>;
->>   		status = "disabled";
->>   
->>   		dss_ports: ports {
->>
->> -- 
->> 2.50.1
->>
-
--- 
-Louis Chauvet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Best Regards,
+Mingcong Bai
 
