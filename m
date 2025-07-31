@@ -1,251 +1,200 @@
-Return-Path: <stable+bounces-165672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9F2B173C8
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 346E2B1740C
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E2CE7B9129
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 15:07:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 164127A4C1D
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 15:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6B21B87F2;
-	Thu, 31 Jul 2025 15:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4722C19ABAC;
+	Thu, 31 Jul 2025 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u0CH1QBK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAKcuXDk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C5E190477
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 15:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9757CD515;
+	Thu, 31 Jul 2025 15:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753974526; cv=none; b=SVqRiq3cLnsIDPc0TJ+sOI5ia7d4UEN7VgeZjZko42J7WO5sNZGSGKG2SFDXjwDHlHWs9ekXHjXjvzJLYc6bcQ51uZdVn7pB2fHDpk9bOZWUaRbqbJc/wBASReiKma/d+AAS3phrWsiRt8Wd0fpeGjFBR9iwI45jQjzHtJpo510=
+	t=1753976457; cv=none; b=Ss0FQOA9u46IbJ87Sb6snKg1q1nKKUDL73puPUnUiHItJVMskq2K/XuSU8t+cMB+X5LS661WRGCz/3yD8Xj+isdWLwNkmxbhC0gVjJdcG5UsE9dWakR5yd+BC29oXytEUHH3R3EGoRbsJYRActjVS2kOfft2JB0Tl4nSPIwNjWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753974526; c=relaxed/simple;
-	bh=5Ch2EPDaL3/YaRiCeHOGVQTgZRs5/v0F0jy2C1yq1fI=;
+	s=arc-20240116; t=1753976457; c=relaxed/simple;
+	bh=snpfnB2u0qDqMruJo552AP5LezEAdyTiUuMSNOlOYys=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KS41Qs6f/Mas9ezjxmzesMVwe8LLQaUgmBlC1/CvsGF+JXhpFW0L5PNkD0Rx8W4UXy6+f4iPfzA62Ogm8i1IssRWs3qazaIxMv7ENBRhRsbhdQHt8FAPceAxjO2FOTgGh92MstMyI3Kg2at1rliCX9B3g36VU8kjD3HxzBExvIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u0CH1QBK; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso10644a12.1
-        for <stable@vger.kernel.org>; Thu, 31 Jul 2025 08:08:44 -0700 (PDT)
+	 To:Cc:Content-Type; b=U2XvCOdGGg3V8VpueoV5GWp/s4KuQF7w6lcbXiQ6ojd5NpbknXnqlGoHH6TpU3a8dpyT4MEwCCupIYFnUYbE0Oc0k86SU6NXlcK2T9vYm2NDQiNLTg82Hyvi1hLdH7KFUiaByb8xRxfxkDrTvcEUrMWC3AMtwv9YlvPks7dKacc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAKcuXDk; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76b6422756fso911984b3a.2;
+        Thu, 31 Jul 2025 08:40:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753974523; x=1754579323; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753976455; x=1754581255; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zmMz7Y87iVAn/fXyg5XDVIpHc/uVHLJxWrjG1qWFlkA=;
-        b=u0CH1QBKjfbrrtljROo8rlBWLGT9zMu1N1YJVzxY8Ue62XsVym+33kEyqiLUz7FBC9
-         EL6L7Hbs3M7xGQypER57SUMe5i0jeVpwMIrhYnmnkjaEoPIFTz+GM8kufj2zP32ljhZk
-         nrbjL2Kali9M/geqDbdMNdrPorf4o0uZrWYygvSqrv1Kw75sSrQUI+3yWoeuiX1gVw8n
-         gTOjHOIsYkQsWR0D9yDUEta7M1pz29lLqrg1TBKeP9aFlpnU1oY60mS1ilT2f7yBH0+B
-         dfGSsGfBMUG/urMOgHrXXE9lKmaJhCd+1O1QqvF0orxp5CcLpEryHZ1rvyFw53W0yh00
-         2ddw==
+        bh=dnI/pC2FOUpLrTb2n3FGcI/c4+jS6eu9eY6xd6NHIOM=;
+        b=FAKcuXDkgj9ciEZBRBkNSO55XFDNNqsnXyqHoh7jzvuGPDzfNn/N/Sij5ktehG6xFz
+         acH4Xox/5ffTNoYCv+43Mmz0qrPzbfFd6tCnB3V9lAFkBPEchd7Y/4iIicp+q4kf9LZM
+         EwNWChF6gAtb2bDGIPFlXRx52xAUoiEue4aHAWsZuweMOgjM4y02kivmaOunZvlnBXxu
+         f1bt0ftKRUhi54gvcZs5f4Mc0a/p0/bZ9ViKaT1cX47w77OQ2/FoQiriBBxJhNwC5oxN
+         oH6/qzh/o5qcTRBE3dezw5chJc8L80WlGiTtzOSOD9PxffMSSIGOedOk8WhA1opRk8lV
+         x2oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753974523; x=1754579323;
+        d=1e100.net; s=20230601; t=1753976455; x=1754581255;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zmMz7Y87iVAn/fXyg5XDVIpHc/uVHLJxWrjG1qWFlkA=;
-        b=ZW5q2KAikHmyMSZYNV4rKdVYul917aTtUnw4bSSA44M994Yw0eXZXL/JWjI27jVlam
-         oZAmtErqL+5MNZscbdZzAEso2hqzkKUxK9X8fP4s8HXt789q/6uNMU+DFiCrrpRYn5g9
-         cNtQs0HOblPAA9/I6/SySeGoq5Y7r3uQ0ale+YjSDE1CtwM/bf5gUfzL3mhGrvNsG+PA
-         vLtDW4rQZYk1NkNI3iXgsH0DHBRJFRrimoJmLWvW9m73ONRUBUP3fFwEVE0cIy7kF7aN
-         /H4V5hb/JK+JO8ChR+CqMvkoPiMWe0rNMpPaS9tnkpt0VOdVtfDJmXgc2ak2fIgv8Huy
-         JLSg==
-X-Forwarded-Encrypted: i=1; AJvYcCW49adB2HODIvfSTj/O+Cr/osNvM8gwfCf8T4v7n5xq1THGZdBr8f09oSEMSziDqUZGI+bHiW4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN4SjycgTJSV0Dw8FTu7gwj2SA213QnXbalUupeUvqzXJSLNWM
-	M1ZCYfppRfkoiQTiGbFZ0qUUlbhJz+kEj31rPc66VreAVyGGGEbqScb26uLkvmene7z6ae0P4aF
-	inue+s8KI6D4EHrdnw1octUOHwiZVBuxH0uo1KvpTJgkmXAFc8o5NpcsWbzIXdg==
-X-Gm-Gg: ASbGncvdckro024xH+4cCAJshjCBFIhqVUWqUXnrBut38Tfzc/Q1N53hjG9bRZqbUiq
-	uu+XX3Rpjshxl2bZPOCc1+uvnmFhTXvjtAvM3XUTNXwD022SX7RLHMWbzwU3VjQzFuGLIA25Ftp
-	k0na8HgWZDxQ90lTUdks22+WqIpK10EsTWf9bZCTwRzGsAQq+58yfQ+g6zkb6cpUb8o9wJTfG9+
-	6Y9NzReTrxaoB9hVFXLrc1nI7H99omTzQrDWFVd2w==
-X-Google-Smtp-Source: AGHT+IHpZroMnR8gNbnJ6Hl9Azyb+Hb8r/YpRDMj/t8qAd1gcDSdLIfF7iA0Z5SXN0Jk5/1OoME3F4GcnV0AJtVw4OA=
-X-Received: by 2002:a50:d75c:0:b0:607:d206:7657 with SMTP id
- 4fb4d7f45d1cf-615ab47613amr78190a12.2.1753974522596; Thu, 31 Jul 2025
- 08:08:42 -0700 (PDT)
+        bh=dnI/pC2FOUpLrTb2n3FGcI/c4+jS6eu9eY6xd6NHIOM=;
+        b=aJhXA/i2ysD3VlH13iAVeS9wayJfpdJ9snCCbTUzc9DM3w1ZlhDQM2f8pnyp5t7oti
+         uHV6LyQ5+eSxqsUBabsW08ePtzXx5uz/uQNITgCR4ktg2psKR5PZEExzJGCiyJhCrAZC
+         yoZHRtsPOmaTxID7biDGSjtiqLSs7lQg6pbHZr+fQX6elGi4XKS3tbt9uAuKolazZ+6C
+         9SL/kxrOSGVLIWroyohe5hVomNQ1wNOy/srQsX7EIxn+z06MnWhAE5Fknuok2CT8I6N/
+         sk767IyzRc7kd5z255sb4i0SRbomuxAmbENLRsX8wu1RNKEv/8H7wJVVdtSf4q/9qLcG
+         ScKw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsPdCdiczUulB5npIX2U6vvkyU39vJYjTLu2QnI0xBBdql+/54j7oN/besYjBi1NORyumzzyA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8hB2oyLkAu1trWuupMEVs1zZXgA/wHXl1p0azpN9m4TavegxO
+	LlcFeJXJNg0TUsSGwWNsW71rMoU6DrTHHXduUecLLsnWaOPev9toJav457rMy4NOXMDQGdnUglD
+	HYIMeYRF4ILmjtxhkA+Kaiy8h4712Xk0=
+X-Gm-Gg: ASbGncvS1e8TLAK8HtBbSvfH5iAJBUpoNIFrg7+vPn7R5b1O5rN97BYMCC9oXwqu1TT
+	ZjBFUkXhBC1H/AM19jpreuZpJDjDIGjLWjx0fq/odkR2K3vMmBgLPZosGquGSO42v71PQ/SWxt5
+	8Oyeaw/YkH+m/s2Nw11m8ThdCTBXXcn2GwMs0CmoBFi0hSTwcP5wyd8dUoH07IDfj8tlCJuplGO
+	borsnY4euTpqM5z8ScWuhr0x7+7ftEko5a8+kDB
+X-Google-Smtp-Source: AGHT+IFv7YNcQGxUy1B/6TDXI5tQDSKEhIH32T+Y8wS2g++R/BZ4t/pufUlMpUonepN8gUVM31bl6g37IEqPU2t1ShE=
+X-Received: by 2002:a17:903:a8b:b0:235:eefe:68f4 with SMTP id
+ d9443c01a7336-24096b23822mr124021265ad.29.1753976454739; Thu, 31 Jul 2025
+ 08:40:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730170733.3829267-1-surenb@google.com> <20250731015241.3576-1-hdanton@sina.com>
- <CA+EESO4mkiedqVMCV3fEnB-xeBMKyct1_WA=YDFVbqSGU4F+6A@mail.gmail.com> <CAJuCfpGzazWVYzc9XXh+xTP9R7cMffiP2P4G5OJTQ0-Ji4xFEQ@mail.gmail.com>
-In-Reply-To: <CAJuCfpGzazWVYzc9XXh+xTP9R7cMffiP2P4G5OJTQ0-Ji4xFEQ@mail.gmail.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Thu, 31 Jul 2025 08:08:30 -0700
-X-Gm-Features: Ac12FXxDR_jDXV2_itlIrHvfQvtXRY2GLBRhyzMxKRUo0_JmXQBqs2eQDyu-PXM
-Message-ID: <CA+EESO7axBaw7zWhG=Asuu3d5mR+QMw=cht64xdGdJGi7URhsg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles a
- THP hole
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Hillf Danton <hdanton@sina.com>, akpm@linux-foundation.org, peterx@redhat.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, 
-	syzbot <syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com>, 
-	stable@vger.kernel.org
+References: <20250731123319.1271527-1-sunjunchao@bytedance.com>
+In-Reply-To: <20250731123319.1271527-1-sunjunchao@bytedance.com>
+From: Yizhou Tang <tangyeechou@gmail.com>
+Date: Thu, 31 Jul 2025 23:40:42 +0800
+X-Gm-Features: Ac12FXzWBNVaaDJRff4TEzyPEHnvD51rDphiIy0QsXQ1hJ39M3JnxzvaSsyqxtI
+Message-ID: <CAOB9oOZV5ObqvgNxr9m0ztm7ruM9N9RMi8QHmiG5WL4sNbLxuw@mail.gmail.com>
+Subject: Re: [PATCH] blk-wbt: Fix io starvation in wbt_rqw_done()
+To: Julian Sun <sunjunchao2870@gmail.com>
+Cc: linux-block@vger.kernel.org, axboe@kernel.dk, stable@vger.kernel.org, 
+	Julian Sun <sunjunchao@bytedance.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 31, 2025 at 7:24=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Thu, Jul 31, 2025 at 12:35=E2=80=AFAM Lokesh Gidra <lokeshgidra@google=
-.com> wrote:
-> >
-> > On Wed, Jul 30, 2025 at 6:58=E2=80=AFPM Hillf Danton <hdanton@sina.com>=
- wrote:
-> > >
-> > > #syz test
-> > >
-> > > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
-> > > encounters a non-present THP, it fails to properly recognize an unmap=
-ped
-> > > hole and tries to access a non-existent folio, resulting in
-> > > a crash. Add a check to skip non-present THPs.
-> > >
-> > Thanks Suren for promptly addressing this issue.
-> >
-> > > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> > > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> > > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@=
-google.com/
-> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > Cc: stable@vger.kernel.org
-> > > ---
-> > >  mm/userfaultfd.c | 38 +++++++++++++++++++++++---------------
-> > >  1 file changed, 23 insertions(+), 15 deletions(-)
-> > >
-> > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > > index cbed91b09640..60be8080ddd0 100644
-> > > --- a/mm/userfaultfd.c
-> > > +++ b/mm/userfaultfd.c
-> > > @@ -1818,27 +1818,35 @@ ssize_t move_pages(struct userfaultfd_ctx *ct=
-x, unsigned long dst_start,
-> > >
-> > >                 ptl =3D pmd_trans_huge_lock(src_pmd, src_vma);
-> > >                 if (ptl) {
-> > > -                       /* Check if we can move the pmd without split=
-ting it. */
-> > > -                       if (move_splits_huge_pmd(dst_addr, src_addr, =
-src_start + len) ||
-> > > -                           !pmd_none(dst_pmdval)) {
-> > > -                               struct folio *folio =3D pmd_folio(*sr=
-c_pmd);
-> > > +                       if (pmd_present(*src_pmd) || is_pmd_migration=
-_entry(*src_pmd)) {
-> > > +                               /* Check if we can move the pmd witho=
-ut splitting it. */
-> > > +                               if (move_splits_huge_pmd(dst_addr, sr=
-c_addr, src_start + len) ||
-> > > +                                   !pmd_none(dst_pmdval)) {
-> > > +                                       if (pmd_present(*src_pmd)) {
-> > > +                                               struct folio *folio =
-=3D pmd_folio(*src_pmd);
-> > > +
-> > > +                                               if (!folio || (!is_hu=
-ge_zero_folio(folio) &&
-> > > +                                                              !PageA=
-nonExclusive(&folio->page))) {
-> > > +                                                       spin_unlock(p=
-tl);
-> > > +                                                       err =3D -EBUS=
-Y;
-> > > +                                                       break;
-> > > +                                               }
-> > > +                                       }
-> > >
-> > > -                               if (!folio || (!is_huge_zero_folio(fo=
-lio) &&
-> > > -                                              !PageAnonExclusive(&fo=
-lio->page))) {
-> > >                                         spin_unlock(ptl);
-> > > -                                       err =3D -EBUSY;
-> > > -                                       break;
-> > > +                                       split_huge_pmd(src_vma, src_p=
-md, src_addr);
-> > > +                                       /* The folio will be split by=
- move_pages_pte() */
-> > > +                                       continue;
-> > >                                 }
-> > >
-> > > +                               err =3D move_pages_huge_pmd(mm, dst_p=
-md, src_pmd,
-> > > +                                                         dst_pmdval,=
- dst_vma, src_vma,
-> > > +                                                         dst_addr, s=
-rc_addr);
-> > > +                       } else {
-> > > +                               /* nothing to do to move a hole */
-> > >                                 spin_unlock(ptl);
-> > > -                               split_huge_pmd(src_vma, src_pmd, src_=
-addr);
-> > > -                               /* The folio will be split by move_pa=
-ges_pte() */
-> > > -                               continue;
-> > > +                               err =3D 0;
-> > I think we need to act here depending on whether
-> > UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES is set or not.
->
-> Hmm, yes, I think you are right. I thought we would bail out earlier
-> if !UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES but I think it's possible to get
-> here if the PMD was established earlier but then unmapped.
+Hi Julian,
 
-That makes sense too. My thinking was that the
-!UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES check above is only when !src_pmd,
-which means the src pmd-page itself isn't present. However, the case
-where pmd-page is present, but the pmd entry is not; continuing
-skipping the hole even when user cannot tolerate src-holes would break
-the userspace logic.
+On Thu, Jul 31, 2025 at 8:33=E2=80=AFPM Julian Sun <sunjunchao2870@gmail.co=
+m> wrote:
 >
-> >
-> >            err =3D (mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES) ? 0 : -ENO=
-ENT;
-> >
-> > Also, IMO, the step_size in this case should be the minimum of
-> > remaining length and HPAGE_PMD_SIZE.
+> Recently, we encountered the following hungtask:
 >
-> Ah, ok. I think it matters only for incrementing "moved" correctly
-> because otherwise the functionality is the same.
->
-Right. Returning an incorrect "moved" value to userspace can break the
-logic, possibly causing data corruption.
+> INFO: task kworker/11:2:2981147 blocked for more than 6266 seconds
+> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> kworker/11:2    D    0 2981147      2 0x80004000
+> Workqueue: cgroup_destroy css_free_rwork_fn
+> Call Trace:
+>  __schedule+0x934/0xe10
+>  schedule+0x40/0xb0
+>  wb_wait_for_completion+0x52/0x80
 
-> > >                         }
-> > > -
-> > > -                       err =3D move_pages_huge_pmd(mm, dst_pmd, src_=
-pmd,
-> > > -                                                 dst_pmdval, dst_vma=
-, src_vma,
-> > > -                                                 dst_addr, src_addr)=
-;
-> > >                         step_size =3D HPAGE_PMD_SIZE;
-> > >                 } else {
-> > >                         if (pmd_none(*src_pmd)) {
-> > I have a related question/doubt: why do we populate the page-table
-> > hierarchy on the src side [1] (and then also at line 1857) when a hole
-> > is found? IMHO, it shouldn't be needed. Depending on whether
-> > UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES is set or not, it should either
-> > return -ENOENT, or continue past the hole. Please correct me if I'm
-> > wrong.
+I don=E2=80=99t see __wbt_wait() or rq_qos_wait() here, so I suspect this c=
+all
+stack is not directly related to wbt.
+
+
+>  ? finish_wait+0x80/0x80
+>  mem_cgroup_css_free+0x3a/0x1b0
+>  css_free_rwork_fn+0x42/0x380
+>  process_one_work+0x1a2/0x360
+>  worker_thread+0x30/0x390
+>  ? create_worker+0x1a0/0x1a0
+>  kthread+0x110/0x130
+>  ? __kthread_cancel_work+0x40/0x40
+>  ret_from_fork+0x1f/0x30
 >
-> I thought about that too. I think it's done to simplify the logic.
-> This way we can treat the cases when PMD was never allocated and when
-> PMD was allocated, mapped and then unmapped the same way.
+> This is because the writeback thread has been continuously and repeatedly
+> throttled by wbt, but at the same time, the writes of another thread
+> proceed quite smoothly.
+> After debugging, I believe it is caused by the following reasons.
 >
-Makes sense. Thanks for clarifying.
-> >
-> > [1] https://elixir.bootlin.com/linux/v6.16/source/mm/userfaultfd.c#L179=
-7
-> >
-> > >
-> > > base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
-> > > --
-> > > 2.50.1.552.g942d659e1b-goog
+> When thread A is blocked by wbt, the I/O issued by thread B will
+> use a deeper queue depth(rwb->rq_depth.max_depth) because it
+> meets the conditions of wb_recent_wait(), thus allowing thread B's
+> I/O to be issued smoothly and resulting in the inflight I/O of wbt
+> remaining relatively high.
+>
+> However, when I/O completes, due to the high inflight I/O of wbt,
+> the condition "limit - inflight >=3D rwb->wb_background / 2"
+> in wbt_rqw_done() cannot be satisfied, causing thread A's I/O
+> to remain unable to be woken up.
+
+From your description above, it seems you're suggesting that if A is
+throttled by wbt, then a writer B on the same device could
+continuously starve A.
+This situation is not possible =E2=80=94 please refer to rq_qos_wait(): if =
+A
+is already sleeping, then when B calls wq_has_sleeper(), it will
+detect A=E2=80=99s presence, meaning B will also be throttled.
+
+Thanks,
+Yi
+
+>
+> Some on-site information:
+>
+> >>> rwb.rq_depth.max_depth
+> (unsigned int)48
+> >>> rqw.inflight.counter.value_()
+> 44
+> >>> rqw.inflight.counter.value_()
+> 35
+> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+> (unsigned long)3
+> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+> (unsigned long)2
+> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+> (unsigned long)20
+> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+> (unsigned long)12
+>
+> cat wb_normal
+> 24
+> cat wb_background
+> 12
+>
+> To fix this issue, we can use max_depth in wbt_rqw_done(), so that
+> the handling of wb_recent_wait by wbt_rqw_done() and get_limit()
+> will also be consistent, which is more reasonable.
+>
+> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+> Fixes: e34cbd307477 ("blk-wbt: add general throttling mechanism")
+> ---
+>  block/blk-wbt.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/block/blk-wbt.c b/block/blk-wbt.c
+> index a50d4cd55f41..d6a2782d442f 100644
+> --- a/block/blk-wbt.c
+> +++ b/block/blk-wbt.c
+> @@ -210,6 +210,8 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq=
+_wait *rqw,
+>         else if (blk_queue_write_cache(rwb->rqos.disk->queue) &&
+>                  !wb_recent_wait(rwb))
+>                 limit =3D 0;
+> +       else if (wb_recent_wait(rwb))
+> +               limit =3D rwb->rq_depth.max_depth;
+>         else
+>                 limit =3D rwb->wb_normal;
+>
+> --
+> 2.20.1
+>
+>
 
