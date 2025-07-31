@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-165648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B01EB17053
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45374B17052
 	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 13:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7B7189910F
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 11:24:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4534E16FC96
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 11:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A882C08AD;
-	Thu, 31 Jul 2025 11:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2707B2C0323;
+	Thu, 31 Jul 2025 11:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8WtptoK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="clJO9CtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E72D2C0323;
-	Thu, 31 Jul 2025 11:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B632BE059;
+	Thu, 31 Jul 2025 11:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753961062; cv=none; b=IxXPhjn0h8LxINdsYNPh7dEe5gDFO+MYCHKifdgj0p3W0DP9K7SHD7dKmIeMdQOiYuUxXV7ZpetFcqbGiBZJbSanIj2I5+sJHAAm5Fs3NJ3PuiQAxg3kD0qtRI9PCi1AH+7tA/IkfzmuX6gOcOFNAGIovvsXYOoRWUAIZkWIUtM=
+	t=1753961064; cv=none; b=kcSBiTYD3RQkcblq6tZTA05JZpV3dV9b18oR+L5uNu5mgmVYmisJICwSyuAWBHJPBYT+i2kCUO2JsjTLpLZG+ECaUtttjKGkwBPrPXsXlLlLLX3NhOsQEGGM+FOL0PSRg1uJ5mrXv01n9vx7DitMuJROsx+DZqozIoAp3pgZXMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753961062; c=relaxed/simple;
-	bh=MPSbPtQjAV2eygYGhFiBQ4sM5BAfTiZnZlyvvgaJ2Ws=;
+	s=arc-20240116; t=1753961064; c=relaxed/simple;
+	bh=W4Qda+mvWHWz1R0Gx8QU3A4Dcqty5W8B6mYAXLBraP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afrXG7D/cHl28i2f9KQ8tcSJqWY1x19JQI8jNXNJRY7C67V7JyMuIUbrxG+4oJtEWQkpwY3ARzRRr5dwRgjX+6cv2b0dH7On4rYK+cL+ZmYyB8jN2JsXINHvRIZu+3pUTnvYGr0pkSjHobI3Ogygt/ouW4pBNr5u9aRbI+8GH+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8WtptoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB28DC4CEF7;
-	Thu, 31 Jul 2025 11:24:20 +0000 (UTC)
+	 MIME-Version; b=XWwaLMlqAConqiBULFVayAgUj4Yk6sCGSEGpzvs8BROpoZxUGrxWrmDWewRCh549/CR4BV4ViCeYznh91wKEdQ7lkKdbwm/fU5WoJcqvhDfRxU7yRfzjbocc9HOZJITv8WuaLHdPcHcFsRxHvGIYcd8pqhqtSV+pR1lPyC3eEdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=clJO9CtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3011C4CEEF;
+	Thu, 31 Jul 2025 11:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753961062;
-	bh=MPSbPtQjAV2eygYGhFiBQ4sM5BAfTiZnZlyvvgaJ2Ws=;
+	s=k20201202; t=1753961064;
+	bh=W4Qda+mvWHWz1R0Gx8QU3A4Dcqty5W8B6mYAXLBraP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8WtptoKAGCbtIYrcJ/HtZUJ8e1FCnBmIHcFWyWdpG5DLL0O+IHq+r0gjB6pvlhwn
-	 5+m1OnSLhkJDwtTVsaa7WWlOCYIpDXt4nwm3ckDRbxv+5/k3VsL4Kyjz18J/Kaf9kB
-	 GfQhCBPRu9bwsWv/I/wH+BpwB9/p7nyRHA8bbAupIZe27V8XYzBO8PyhT6fGIyIixq
-	 jYZ3jasZibSkavUGiLC/88pp7coVJ/sGyIk9cVGx2y1ndb8Ne72uigj5+zIbPeGMme
-	 hR+bK2n+SOuGsQRndvULo34ISJsGk3ZjWA5jmi1dHuqDY+lgfxyGed+/lTVDru7VdN
-	 G+5X3oALKeAeQ==
+	b=clJO9CtDo4m+ezGVawoUJp7OcRNwVzyZrsIoI8P9XrxEVQ82Eb4opfG+8xT+sMHSw
+	 Z5eqpG+73pWxQUDunbU679K0YAJ1snh8AkMwFTOPdHl+E3bWaowT4W57r5jmn1zUw7
+	 r8sN19qjTAbAjHjH9IH5yL4xCM+wu7tDcux2t+l6tGBSIdZyoz8uYOUhzvPE7XSMtE
+	 bhZokE7fOUGbgqmZHCHZGcIbjpDkRZTzgDbNy3Nc9kQs3NEr2kIzO2WVsdcCUUxpP1
+	 plQSN18xdshdPK8Dt3a3b2C6VyUbBynnmYMpN9co/FQjxKxb5zAj6I7dfUbQ1T5Edx
+	 aQdJ8B5yHoaeA==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
+Cc: Mat Martineau <mathew.j.martineau@linux.intel.com>,
 	sashal@kernel.org,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15.y 3/6] mptcp: introduce MAPPING_BAD_CSUM
-Date: Thu, 31 Jul 2025 13:23:57 +0200
-Message-ID: <20250731112353.2638719-11-matttbe@kernel.org>
+Subject: [PATCH 5.15.y 4/6] selftests: mptcp: Initialize variables to quiet gcc 12 warnings
+Date: Thu, 31 Jul 2025 13:23:58 +0200
+Message-ID: <20250731112353.2638719-12-matttbe@kernel.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250731112353.2638719-8-matttbe@kernel.org>
 References: <20250731112353.2638719-8-matttbe@kernel.org>
@@ -62,81 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2606; i=matttbe@kernel.org; h=from:subject; bh=mLRnr7LXgyI96bAmZqsGlfibrcb7p5Fc95Zh9jlPYpo=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDK6g4LC5ttkvIu6s/foju+9/nNtza+2VPN5zVofYBoc/ +9VgYxaRykLgxgXg6yYIot0W2T+zOdVvCVefhYwc1iZQIYwcHEKwET2szL8D/nturG/LOTqku9z npnoF3pxLlitt+zsyTWq7tHXT5uf+8XwV3r+NyUPnwcHZz7M/Z0X/fOIfEp8kuDuw2xMDWLqfkv iWQE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1545; i=matttbe@kernel.org; h=from:subject; bh=uA3dGsq1KQVY/0mRDNfeGEq/tEmcX9yXO+wq962/Iic=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDK6g4Ilbl4pt62vyubVZF8VcGrjE4tJTeY7L5w2mfgvN mHGQ86+jlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIksamVk+B6jK3gy3bPj2JGg PWf+bs6913bti4xmzcvZqW9rzrest2X4X8habp1QqMlRs+jgo/BJ+mY70wRstiuuelUpIXTh2eN d/AA=
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Mat Martineau <mathew.j.martineau@linux.intel.com>
 
-commit 31bf11de146c3f8892093ff39f8f9b3069d6a852 upstream.
+commit fd37c2ecb21f7aee04ccca5f561469f07d00063c upstream.
 
-This allow moving a couple of conditional out of the fast path,
-making the code more easy to follow and will simplify the next
-patch.
+In a few MPTCP selftest tools, gcc 12 complains that the 'sock' variable
+might be used uninitialized. This is a false positive because the only
+code path that could lead to uninitialized access is where getaddrinfo()
+fails, but the local xgetaddrinfo() wrapper exits if such a failure
+occurs.
 
-Fixes: ae66fb2ba6c3 ("mptcp: Do TCP fallback on early DSS checksum failure")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Initialize the 'sock' variable anyway to allow the tools to build with
+gcc 12.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Acked-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in subflow.c, because commit 0348c690ed37 ("mptcp: add the
-  fallback check") is not in this version. This commit is linked to a
-  new feature, changing the context around. The new condition can still
-  be added at the same place. ]
+[ mptcp_inq.c and mptcp_sockopt.c are not in this version. The fix can
+  still be applied in mptcp_connect.c without conflicts. ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/subflow.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 6a7c48397e3d..6bc36132d490 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -848,7 +848,8 @@ enum mapping_status {
- 	MAPPING_INVALID,
- 	MAPPING_EMPTY,
- 	MAPPING_DATA_FIN,
--	MAPPING_DUMMY
-+	MAPPING_DUMMY,
-+	MAPPING_BAD_CSUM
- };
- 
- static void dbg_bad_map(struct mptcp_subflow_context *subflow, u32 ssn)
-@@ -963,9 +964,7 @@ static enum mapping_status validate_data_csum(struct sock *ssk, struct sk_buff *
- 				 subflow->map_data_csum);
- 	if (unlikely(csum)) {
- 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DATACSUMERR);
--		if (subflow->mp_join || subflow->valid_csum_seen)
--			subflow->send_mp_fail = 1;
--		return subflow->mp_join ? MAPPING_INVALID : MAPPING_DUMMY;
-+		return MAPPING_BAD_CSUM;
- 	}
- 
- 	subflow->valid_csum_seen = 1;
-@@ -1188,10 +1187,8 @@ static bool subflow_check_data_avail(struct sock *ssk)
- 
- 		status = get_mapping_status(ssk, msk);
- 		trace_subflow_check_data_avail(status, skb_peek(&ssk->sk_receive_queue));
--		if (unlikely(status == MAPPING_INVALID))
--			goto fallback;
--
--		if (unlikely(status == MAPPING_DUMMY))
-+		if (unlikely(status == MAPPING_INVALID || status == MAPPING_DUMMY ||
-+			     status == MAPPING_BAD_CSUM))
- 			goto fallback;
- 
- 		if (status != MAPPING_OK)
-@@ -1232,7 +1229,10 @@ static bool subflow_check_data_avail(struct sock *ssk)
- 
- fallback:
- 	/* RFC 8684 section 3.7. */
--	if (subflow->send_mp_fail) {
-+	if (status == MAPPING_BAD_CSUM &&
-+	    (subflow->mp_join || subflow->valid_csum_seen)) {
-+		subflow->send_mp_fail = 1;
-+
- 		if (mptcp_has_another_subflow(ssk) ||
- 		    !READ_ONCE(msk->allow_infinite_fallback)) {
- 			while ((skb = skb_peek(&ssk->sk_receive_queue)))
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+index 95e81d557b08..599befcc1c4d 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -188,7 +188,7 @@ static void set_mark(int fd, uint32_t mark)
+ static int sock_listen_mptcp(const char * const listenaddr,
+ 			     const char * const port)
+ {
+-	int sock;
++	int sock = -1;
+ 	struct addrinfo hints = {
+ 		.ai_protocol = IPPROTO_TCP,
+ 		.ai_socktype = SOCK_STREAM,
 -- 
 2.50.0
 
