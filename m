@@ -1,48 +1,67 @@
-Return-Path: <stable+bounces-165632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F036B16D78
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 10:26:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA12B16DA8
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 10:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E02C3A31C4
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 08:26:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D85DD7B35E6
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 08:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16A8244695;
-	Thu, 31 Jul 2025 08:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B6529E108;
+	Thu, 31 Jul 2025 08:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tz5o3jnf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="0vA0tvCc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3A821B18B;
-	Thu, 31 Jul 2025 08:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D57EC13D
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 08:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753950405; cv=none; b=KY48s919YuOCmb/2zAOhPERBdKS3ran+NY8g0PC2UmrjVi9Ym5G1FN7HOE630JILQyEHS8n6PPMTAxMw5hLa7IA+hjwEPNdJxcp6y+Sy/UEqyq7mu+VBdvIlnwtIKszX5yJc/H6du15fYT5FalPCjhOFIuOLMyUHmVfVxWheWXw=
+	t=1753951029; cv=none; b=tnwKn59inhUda0bNpsQAt0vHpdnUsU2m5W6xs0/CVnPtgWVlnK/22elwaILwUs2lzoYuQAymDoeR1CAcmZh26wt8ISuH9lj2zoDNai13BwZaN/nmL2DdTWfma7ncrkXRhGlstlLxAopbug+EWBQgyYi/HLsaTmS82iUUMYl1FeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753950405; c=relaxed/simple;
-	bh=KxO2rMJS8QEJUDJyEirf6BYCXZiblAus6Uwt4nEjRhs=;
+	s=arc-20240116; t=1753951029; c=relaxed/simple;
+	bh=d6vv6eakRyIvuGiDTGqAt739nwa+GVzji5Ne7c0xBtc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RzsdiPEzD+U2N2EF/GxAISGhFqvzNWu4VsgrGrJ1ZFEQTxMQeA1bEjarHSaL4bGIOJL0qNK+sWxitg1PaR/3WVS65/tZlPxO9KcgMlC959HE0DRF1Wsxqy82bTXldcjJNBemppIxPJnNdwkgj2wV3J2PISuW4qqo19bBBvbgrl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tz5o3jnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3832BC4CEEF;
-	Thu, 31 Jul 2025 08:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753950405;
-	bh=KxO2rMJS8QEJUDJyEirf6BYCXZiblAus6Uwt4nEjRhs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tz5o3jnf5sBqDEV09Yjnaz/suQ0YFra78vfY8Zl/ClkuCaRrWDCUDhEAaemFZdiir
-	 XKNJ2yyLy8QRLrOdNNt8McqHLDm0tdqwJxO1IWsDEyfaN8pblTLitFvrL0mE5jRilO
-	 gFxesAXjNaS9Hu4gZ7Wa2PH10pS6qCnTGNSYHEvmcg+o2g/ty9snzDdS7jfcImClDx
-	 5Tk4TqvcvlME7B0bMSLS7WS1dFmWCZFqJ17lX4UU2c/SoEuymdGBksUnPIdm5s4yNd
-	 q0dii8QuTrYzrDvIrIdbhERRP54WDcYZXH8zbE6PCmeKg+bw9tP1UPFRrNcoJBi8qS
-	 ve3x9dutEERqA==
-Message-ID: <547c9214-8b61-413b-98e6-f95dc0500d62@kernel.org>
-Date: Thu, 31 Jul 2025 10:26:37 +0200
+	 In-Reply-To:Content-Type; b=l6fxYawK3teGz7shREBSj0niR1w7mKHIKpJchkRMwFF4XxXzZAIfHoo4BT1lV16gDAGnqC3BCTcLABhogqbccb2h2siXHXab4f0UOulm/Yjp0m+9gMevqiPp9O7H5YcKahiyv+UTt5d48cYJ2bGsYGTm9VVljVRXX+q8j8FTSYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=0vA0tvCc; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5005b.ext.cloudfilter.net ([10.0.29.189])
+	by cmsmtp with ESMTPS
+	id hDg3uxLq4JLhFhOmYuQZFo; Thu, 31 Jul 2025 08:36:58 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id hOmXu6hykb6dmhOmXu3dj9; Thu, 31 Jul 2025 08:36:57 +0000
+X-Authority-Analysis: v=2.4 cv=bs9MBFai c=1 sm=1 tr=0 ts=688b2b29
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=v0eEEZAoNUg_BbrKGCsA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tc+flYPvwVIjvmZiDyrWijlUd6u0n/v8BfGnNJ0OMJ8=; b=0vA0tvCceErZnzHg2aG1u0rtCk
+	NIdiTGLrUNSbCoi/YXZO1UEBVDMvYaacHdDTUm8WcLsKdyN2siu5vJmIarzIqy2Ggf8t0PfFoVFNb
+	fMJtIP6a8Ghmx+Qtk+XH2Cy9+j9/liOFi+9FewmM+J1e6DbLArp80LV1VUNgEc0wKgwoGcThEgJga
+	48QPa7YvBIZVoRulnLydohK63Xg0jW7xWlw7Zr3Ys5+CcnncbE7OBVSjW+MajymfGEoE2LSpCuyfs
+	TD/ArQwJK/P7bPCdXJBV8BTva09wi65PTRtsmLp1VaQ1JvNi4hTt2TsIBO3X1ZBpj4+p/4giuHiJb
+	5WEdaMPQ==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:42876 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1uhOmW-00000001Xok-0m5L;
+	Thu, 31 Jul 2025 02:36:56 -0600
+Message-ID: <41fdee77-7652-4310-ba4f-2ff56ec6fec5@w6rz.net>
+Date: Thu, 31 Jul 2025 01:36:53 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,145 +69,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: phy: qcom-edp: Add missing clock for X
- Elite
-To: Abel Vesa <abel.vesa@linaro.org>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Dmitry Baryshkov <lumag@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
- Sibi Sankar <quic_sibis@quicinc.com>,
- Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250730-phy-qcom-edp-add-missing-refclk-v1-0-6f78afeadbcf@linaro.org>
- <20250730-phy-qcom-edp-add-missing-refclk-v1-1-6f78afeadbcf@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH 6.15 00/92] 6.15.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250730093230.629234025@linuxfoundation.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250730-phy-qcom-edp-add-missing-refclk-v1-1-6f78afeadbcf@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250730093230.629234025@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1uhOmW-00000001Xok-0m5L
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:42876
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJ3BfBZi508RdvXQgbqY1cr75ZxKv44DBe5FlT9Ftv/K+yZJ2GMttKdp2IFz4Tl5gyjC1EryjGZPNn1Y0UmUHjKk1ysmviy3wYGe+RalspxVqscfVw44
+ OxYgCTXm+JNS5VvBPgO6y4c6Nn8jmHjVilwAOZ6kYaYKPwsU5Rbqf0oyPzICam/M872aIvFdhjsIIA==
 
-On 30/07/2025 13:46, Abel Vesa wrote:
-> On X Elite platform, the eDP PHY uses one more clock called
-> refclk. Add it to the schema.
+On 7/30/25 02:35, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.15.9 release.
+> There are 92 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 01 Aug 2025 09:32:07 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-And what happens if you do not provide that clock? You need to provide
-rationale for ABI break.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-> 
-> Cc: stable@vger.kernel.org # v6.10
-> Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> ---
->  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 23 +++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> index 293fb6a9b1c330438bceba15226c91e392c840fb..2e594b2ea81d385118684bf58da3440c88ca32b9 100644
-> --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> @@ -32,12 +32,14 @@ properties:
->        - description: PLL register block
->  
->    clocks:
-> -    maxItems: 2
-> +    minItems: 2
-> +    maxItems: 3
->  
->    clock-names:
->      items:
->        - const: aux
->        - const: cfg_ahb
-> +      - const: refclk
+Tested-by: Ron Economos <re@w6rz.net>
 
-This does not match clocks. You miss minItems before the items.
-
->  
->    "#clock-cells":
->      const: 1
-> @@ -59,6 +61,25 @@ required:
->    - "#clock-cells"
->    - "#phy-cells"
->  
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - qcom,x1e80100-dp-phy
-> +    then:
-> +      properties:
-> +        clocks:
-
-Missing minItems... or you wanted to make it flexible, but then drop
-entire if branch leading only second one for other variants (maxItems: 2).
-
-> +          maxItems: 3
-> +        clock-names:
-
-Same here.
-
-> +          maxItems: 3
-> +    else:
-> +      properties:
-> +        clocks:
-> +          maxItems: 2
-> +        clock-names:
-> +          maxItems: 2
-> +
->  additionalProperties: false
->  
->  examples:
-> 
-
-
-Best regards,
-Krzysztof
 
