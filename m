@@ -1,200 +1,185 @@
-Return-Path: <stable+bounces-165673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346E2B1740C
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:41:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE748B17411
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 164127A4C1D
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 15:39:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01240584D97
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 15:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4722C19ABAC;
-	Thu, 31 Jul 2025 15:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043F01D5ADC;
+	Thu, 31 Jul 2025 15:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAKcuXDk"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="GVVs9BMK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9757CD515;
-	Thu, 31 Jul 2025 15:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AA2D515;
+	Thu, 31 Jul 2025 15:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753976457; cv=none; b=Ss0FQOA9u46IbJ87Sb6snKg1q1nKKUDL73puPUnUiHItJVMskq2K/XuSU8t+cMB+X5LS661WRGCz/3yD8Xj+isdWLwNkmxbhC0gVjJdcG5UsE9dWakR5yd+BC29oXytEUHH3R3EGoRbsJYRActjVS2kOfft2JB0Tl4nSPIwNjWE=
+	t=1753976620; cv=none; b=ktdBImoD8yRxr9KSGYgYtIIVAdaS7jKjdeZ+LzlK9rbSImgKThQhIxMQsDsuvV92EC+i/72s21uxPnEZXvHom94DtEDWodRcgCdL9JaDZaruQaeBvoLAMShrKQushw0de7KEwDjJxJ0UYvaV84Vf0DjjytqOjDh1G02DW9k9HL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753976457; c=relaxed/simple;
-	bh=snpfnB2u0qDqMruJo552AP5LezEAdyTiUuMSNOlOYys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U2XvCOdGGg3V8VpueoV5GWp/s4KuQF7w6lcbXiQ6ojd5NpbknXnqlGoHH6TpU3a8dpyT4MEwCCupIYFnUYbE0Oc0k86SU6NXlcK2T9vYm2NDQiNLTg82Hyvi1hLdH7KFUiaByb8xRxfxkDrTvcEUrMWC3AMtwv9YlvPks7dKacc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAKcuXDk; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76b6422756fso911984b3a.2;
-        Thu, 31 Jul 2025 08:40:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753976455; x=1754581255; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dnI/pC2FOUpLrTb2n3FGcI/c4+jS6eu9eY6xd6NHIOM=;
-        b=FAKcuXDkgj9ciEZBRBkNSO55XFDNNqsnXyqHoh7jzvuGPDzfNn/N/Sij5ktehG6xFz
-         acH4Xox/5ffTNoYCv+43Mmz0qrPzbfFd6tCnB3V9lAFkBPEchd7Y/4iIicp+q4kf9LZM
-         EwNWChF6gAtb2bDGIPFlXRx52xAUoiEue4aHAWsZuweMOgjM4y02kivmaOunZvlnBXxu
-         f1bt0ftKRUhi54gvcZs5f4Mc0a/p0/bZ9ViKaT1cX47w77OQ2/FoQiriBBxJhNwC5oxN
-         oH6/qzh/o5qcTRBE3dezw5chJc8L80WlGiTtzOSOD9PxffMSSIGOedOk8WhA1opRk8lV
-         x2oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753976455; x=1754581255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dnI/pC2FOUpLrTb2n3FGcI/c4+jS6eu9eY6xd6NHIOM=;
-        b=aJhXA/i2ysD3VlH13iAVeS9wayJfpdJ9snCCbTUzc9DM3w1ZlhDQM2f8pnyp5t7oti
-         uHV6LyQ5+eSxqsUBabsW08ePtzXx5uz/uQNITgCR4ktg2psKR5PZEExzJGCiyJhCrAZC
-         yoZHRtsPOmaTxID7biDGSjtiqLSs7lQg6pbHZr+fQX6elGi4XKS3tbt9uAuKolazZ+6C
-         9SL/kxrOSGVLIWroyohe5hVomNQ1wNOy/srQsX7EIxn+z06MnWhAE5Fknuok2CT8I6N/
-         sk767IyzRc7kd5z255sb4i0SRbomuxAmbENLRsX8wu1RNKEv/8H7wJVVdtSf4q/9qLcG
-         ScKw==
-X-Forwarded-Encrypted: i=1; AJvYcCXsPdCdiczUulB5npIX2U6vvkyU39vJYjTLu2QnI0xBBdql+/54j7oN/besYjBi1NORyumzzyA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8hB2oyLkAu1trWuupMEVs1zZXgA/wHXl1p0azpN9m4TavegxO
-	LlcFeJXJNg0TUsSGwWNsW71rMoU6DrTHHXduUecLLsnWaOPev9toJav457rMy4NOXMDQGdnUglD
-	HYIMeYRF4ILmjtxhkA+Kaiy8h4712Xk0=
-X-Gm-Gg: ASbGncvS1e8TLAK8HtBbSvfH5iAJBUpoNIFrg7+vPn7R5b1O5rN97BYMCC9oXwqu1TT
-	ZjBFUkXhBC1H/AM19jpreuZpJDjDIGjLWjx0fq/odkR2K3vMmBgLPZosGquGSO42v71PQ/SWxt5
-	8Oyeaw/YkH+m/s2Nw11m8ThdCTBXXcn2GwMs0CmoBFi0hSTwcP5wyd8dUoH07IDfj8tlCJuplGO
-	borsnY4euTpqM5z8ScWuhr0x7+7ftEko5a8+kDB
-X-Google-Smtp-Source: AGHT+IFv7YNcQGxUy1B/6TDXI5tQDSKEhIH32T+Y8wS2g++R/BZ4t/pufUlMpUonepN8gUVM31bl6g37IEqPU2t1ShE=
-X-Received: by 2002:a17:903:a8b:b0:235:eefe:68f4 with SMTP id
- d9443c01a7336-24096b23822mr124021265ad.29.1753976454739; Thu, 31 Jul 2025
- 08:40:54 -0700 (PDT)
+	s=arc-20240116; t=1753976620; c=relaxed/simple;
+	bh=pXDN5BVQvE+Lf+U4XpfBddw3aUhzamvB5vMx6LuxteE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RgckIvYvEkZ186UC8DW5Evf6EHESev4ypAUO+/MEY2cXst1IvHIFpGhIYXISTuSUxK0+ZPjtwT6eFSXXo+gqBQy/P1yawB5vWr0rEI5M9UuCKt1GpMcE7wxagJvUv2Y17wqo6sCLGr1MeD+D45edvgTP/Yx575enb0QPV5x/grk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=GVVs9BMK; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.79.64.80] (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0FF432117669;
+	Thu, 31 Jul 2025 08:43:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0FF432117669
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1753976612;
+	bh=Q5WATQ/rql3wsSDIyfkwGauwnqHAuGg6FZHUhagfDbQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GVVs9BMKe16JeC7NuOagTIy+oxap9EhwgxZI1d7J0wh1OVF2XP8v9+xYdp4n8DiDc
+	 MhicKJpoFwqTj96B+NeWxvDTGeYkzllsLyW/MrGBjQKeBZVI6EhAS41ubF245puZcY
+	 /QJU7XJBCsaEG2hLq9FfL24+IiRiRzXDd8mxujaQ=
+Message-ID: <4abf15ac-de18-48d4-9420-19d40f26fdd2@linux.microsoft.com>
+Date: Thu, 31 Jul 2025 21:13:27 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250731123319.1271527-1-sunjunchao@bytedance.com>
-In-Reply-To: <20250731123319.1271527-1-sunjunchao@bytedance.com>
-From: Yizhou Tang <tangyeechou@gmail.com>
-Date: Thu, 31 Jul 2025 23:40:42 +0800
-X-Gm-Features: Ac12FXzWBNVaaDJRff4TEzyPEHnvD51rDphiIy0QsXQ1hJ39M3JnxzvaSsyqxtI
-Message-ID: <CAOB9oOZV5ObqvgNxr9m0ztm7ruM9N9RMi8QHmiG5WL4sNbLxuw@mail.gmail.com>
-Subject: Re: [PATCH] blk-wbt: Fix io starvation in wbt_rqw_done()
-To: Julian Sun <sunjunchao2870@gmail.com>
-Cc: linux-block@vger.kernel.org, axboe@kernel.dk, stable@vger.kernel.org, 
-	Julian Sun <sunjunchao@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Julian,
-
-On Thu, Jul 31, 2025 at 8:33=E2=80=AFPM Julian Sun <sunjunchao2870@gmail.co=
-m> wrote:
->
-> Recently, we encountered the following hungtask:
->
-> INFO: task kworker/11:2:2981147 blocked for more than 6266 seconds
-> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> kworker/11:2    D    0 2981147      2 0x80004000
-> Workqueue: cgroup_destroy css_free_rwork_fn
-> Call Trace:
->  __schedule+0x934/0xe10
->  schedule+0x40/0xb0
->  wb_wait_for_completion+0x52/0x80
-
-I don=E2=80=99t see __wbt_wait() or rq_qos_wait() here, so I suspect this c=
-all
-stack is not directly related to wbt.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12] Drivers: hv: Make the sysfs node size for the ring
+ buffer dynamic
+To: Michael Kelley <mhklinux@outlook.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Long Li <longli@microsoft.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250723070200.2775-1-namjain@linux.microsoft.com>
+ <SN6PR02MB41579080792040E166B5EB69D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <e1d394bd-93a6-4d8f-b7f9-fc01449df98a@t-8ch.de>
+ <SN6PR02MB415792B00B021D4DB76A6014D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Naman Jain <namjain@linux.microsoft.com>
+In-Reply-To: <SN6PR02MB415792B00B021D4DB76A6014D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
->  ? finish_wait+0x80/0x80
->  mem_cgroup_css_free+0x3a/0x1b0
->  css_free_rwork_fn+0x42/0x380
->  process_one_work+0x1a2/0x360
->  worker_thread+0x30/0x390
->  ? create_worker+0x1a0/0x1a0
->  kthread+0x110/0x130
->  ? __kthread_cancel_work+0x40/0x40
->  ret_from_fork+0x1f/0x30
->
-> This is because the writeback thread has been continuously and repeatedly
-> throttled by wbt, but at the same time, the writes of another thread
-> proceed quite smoothly.
-> After debugging, I believe it is caused by the following reasons.
->
-> When thread A is blocked by wbt, the I/O issued by thread B will
-> use a deeper queue depth(rwb->rq_depth.max_depth) because it
-> meets the conditions of wb_recent_wait(), thus allowing thread B's
-> I/O to be issued smoothly and resulting in the inflight I/O of wbt
-> remaining relatively high.
->
-> However, when I/O completes, due to the high inflight I/O of wbt,
-> the condition "limit - inflight >=3D rwb->wb_background / 2"
-> in wbt_rqw_done() cannot be satisfied, causing thread A's I/O
-> to remain unable to be woken up.
 
-From your description above, it seems you're suggesting that if A is
-throttled by wbt, then a writer B on the same device could
-continuously starve A.
-This situation is not possible =E2=80=94 please refer to rq_qos_wait(): if =
-A
-is already sleeping, then when B calls wq_has_sleeper(), it will
-detect A=E2=80=99s presence, meaning B will also be throttled.
+On 7/30/2025 1:15 AM, Michael Kelley wrote:
+> From: Thomas Weißschuh <linux@weissschuh.net> Sent: Tuesday, July 29, 2025 11:47 AM
+>>
+>> On 2025-07-29 18:39:45+0000, Michael Kelley wrote:
+>>> From: Naman Jain <namjain@linux.microsoft.com> Sent: Wednesday, July 23, 2025 12:02 AM
+>>>>
+>>>> The ring buffer size varies across VMBus channels. The size of sysfs
+>>>> node for the ring buffer is currently hardcoded to 4 MB. Userspace
+>>>> clients either use fstat() or hardcode this size for doing mmap().
+>>>> To address this, make the sysfs node size dynamic to reflect the
+>>>> actual ring buffer size for each channel. This will ensure that
+>>>> fstat() on ring sysfs node always returns the correct size of
+>>>> ring buffer.
+>>>>
+>>>> This is a backport of the upstream commit
+>>>> 65995e97a1ca ("Drivers: hv: Make the sysfs node size for the ring buffer dynamic")
+>>>> with modifications, as the original patch has missing dependencies on
+>>>> kernel v6.12.x. The structure "struct attribute_group" does not have
+>>>> bin_size field in v6.12.x kernel so the logic of configuring size of
+>>>> sysfs node for ring buffer has been moved to
+>>>> vmbus_chan_bin_attr_is_visible().
+>>>>
+>>>> Original change was not a fix, but it needs to be backported to fix size
+>>>> related discrepancy caused by the commit mentioned in Fixes tag.
+>>>>
+>>>> Fixes: bf1299797c3c ("uio_hv_generic: Align ring size to system page")
+>>>> Cc: <stable@vger.kernel.org> # 6.12.x
+>>>> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+>>>> ---
+>>>>
+>>>> This change won't apply on older kernels currently due to missing
+>>>> dependencies. I will take care of them after this goes in.
+>>>>
+>>>> I did not retain any Reviewed-by or Tested-by tags, since the code has
+>>>> changed completely, while the functionality remains same.
+>>>> Requesting Michael, Dexuan, Wei to please review again.
+>>>>
+>>>> ---
+>>>>   drivers/hv/vmbus_drv.c | 2 +-
+>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+>>>> index 1f519e925f06..616e63fb2f15 100644
+>>>> --- a/drivers/hv/vmbus_drv.c
+>>>> +++ b/drivers/hv/vmbus_drv.c
+>>>> @@ -1810,7 +1810,6 @@ static struct bin_attribute chan_attr_ring_buffer = {
+>>>>   		.name = "ring",
+>>>>   		.mode = 0600,
+>>>>   	},
+>>>> -	.size = 2 * SZ_2M,
+>>>>   	.mmap = hv_mmap_ring_buffer_wrapper,
+>>>>   };
+>>>>   static struct attribute *vmbus_chan_attrs[] = {
+>>>> @@ -1866,6 +1865,7 @@ static umode_t vmbus_chan_bin_attr_is_visible(struct kobject *kobj,
+>>>>   	/* Hide ring attribute if channel's ring_sysfs_visible is set to false */
+>>>>   	if (attr ==  &chan_attr_ring_buffer && !channel->ring_sysfs_visible)
+>>>>   		return 0;
+>>>> +	attr->size = channel->ringbuffer_pagecount << PAGE_SHIFT;
+>>>
+>>> Suppose a VM has two devices using UIO, such as DPDK network device with
+>>> a 2MiB ring buffer, and an fcopy device with a 16KiB ring buffer. Both devices
+>>> will be referencing the same static instance of chan_attr_ring_buffer, and the
+>>> .size field it contains. The above statement will change that .size field
+>>> between 2MiB and 16KiB as the /sys entries are initially populated, and as
+>>> the visibility is changed if the devices are removed and re-instantiated (which
+>>> is much more likely for fcopy than for netvsc). That changing of the .size
+>>> value will probably work most of the time, but it's racy if two devices with
+>>> different ring buffer sizes get instantiated or re-instantiated at the same time.
+>>
+>> IIRC it works out in practice. While the global attribute instance is indeed
+>> modified back-and-forth the size from it will be *copied* into kernfs
+>> after each recalculation. So each attribute should get its own correct size.
+> 
+> The race I see is in fs/sysfs/group.c in the create_files() function. It calls the
+> is_bin_visible() function, which this patch uses to set the .size field of the static
+> attribute. Then creates_files() calls sysfs_add_bin_file_mode_ns(), which reads
+> the .size field and uses it to create the sysfs entry. But if create_files() is called
+> in parallel on two different kobjs of the same type, but with different values
+> for the .size field, the second create_files() could overwrite the static .size
+> field after the first create_files() has set it, but before it has used it. I don't
+> see any global lock that would prevent such, though maybe I'm missing
+> something.
+> 
+>>
+>>> Unfortunately, I don't see a fix, short of backporting support for the
+>>> .bin_size function, as this is exactly the problem that function solves.
+>>
+>> It should work out in practice. (I introduced the .bin_size function)
+> 
+> The race I describe is unlikely, particularly if attribute groups are created
+> once and then not disturbed. But note that the Hyper-V fcopy group can
+> get updated in a running VM via update_sysfs_group(), which also calls
+> create_files(). Such an update might marginally increase the potential for
+> the race and for getting the wrong size. Still, I agree it should work out
+> in practice.
+> 
+> Michael
+> 
+>>
+>> Thomas
+
+
+hi Thomas,
+Would it be possible to port your changes on 6.12 kernel, to avoid such
+race conditions? Or if it has a lot of dependencies, or if you have a
+follow-up advice, please let us us know.
 
 Thanks,
-Yi
+Naman
 
->
-> Some on-site information:
->
-> >>> rwb.rq_depth.max_depth
-> (unsigned int)48
-> >>> rqw.inflight.counter.value_()
-> 44
-> >>> rqw.inflight.counter.value_()
-> 35
-> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-> (unsigned long)3
-> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-> (unsigned long)2
-> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-> (unsigned long)20
-> >>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
-> (unsigned long)12
->
-> cat wb_normal
-> 24
-> cat wb_background
-> 12
->
-> To fix this issue, we can use max_depth in wbt_rqw_done(), so that
-> the handling of wb_recent_wait by wbt_rqw_done() and get_limit()
-> will also be consistent, which is more reasonable.
->
-> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
-> Fixes: e34cbd307477 ("blk-wbt: add general throttling mechanism")
-> ---
->  block/blk-wbt.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/block/blk-wbt.c b/block/blk-wbt.c
-> index a50d4cd55f41..d6a2782d442f 100644
-> --- a/block/blk-wbt.c
-> +++ b/block/blk-wbt.c
-> @@ -210,6 +210,8 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq=
-_wait *rqw,
->         else if (blk_queue_write_cache(rwb->rqos.disk->queue) &&
->                  !wb_recent_wait(rwb))
->                 limit =3D 0;
-> +       else if (wb_recent_wait(rwb))
-> +               limit =3D rwb->rq_depth.max_depth;
->         else
->                 limit =3D rwb->wb_normal;
->
-> --
-> 2.20.1
->
->
 
