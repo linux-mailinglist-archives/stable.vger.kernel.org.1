@@ -1,102 +1,124 @@
-Return-Path: <stable+bounces-165645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5358B1704F
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 13:24:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81EEB17050
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 13:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D214E37C8
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 11:23:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDA191691C8
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 11:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17562C08A8;
-	Thu, 31 Jul 2025 11:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB202C08AD;
+	Thu, 31 Jul 2025 11:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tAaC4Db1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLe/2p4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE6C24BC09;
-	Thu, 31 Jul 2025 11:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C32BDC38;
+	Thu, 31 Jul 2025 11:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753961056; cv=none; b=pLxjiN8CUD1ugB03iSPXwGYeHZh48JZ7DQOZt8NJipmr9SDxYeH6n+9HHHGirsehYSlCLA2ltUGMSoMLGW4BQJavibZRcnQ7TdKd8fvJ4rZfXQ+fTwQMXSfFejZpm7PyIPiPCniikSmpVL8z3RwLC8OZ8LwHpAsJUIV1Ljfjp+k=
+	t=1753961058; cv=none; b=FmkylcbBwzniQSCjjVEu/oVDCTz7hRM4GkkCbgwDHy5bpUdnHpW8Mng9ZVTnLwXOgUI2lfVnakuxBzAG1DDs/NV+TrHjqPUPixU9bJu4ke0MI54kbQw4q/l/Utv2IsfBvGKT50oADyEghXWlyG2z7lzWBpof+zsE3ttP7YqvDDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753961056; c=relaxed/simple;
-	bh=R3GjpU8cp4HEkJsw5ea3JcnCRdAbqK8spRb6UBa1TQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tY43uiLrwvCUxEd4U2UujuR6XFvWvKFi9+850STOeLOypF2kCnGT+sy1oCtjt42EOG/mpk73/Rt2nsAWvj83RWaMkfrk2gh1AgKs3sbFeBeZOpsgO46N6/nBkvvGGXRVmIuSm2hMxP0GnK2tgYC0zw4V9QNK72FhloZEDFsP8jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tAaC4Db1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017CFC4CEEF;
-	Thu, 31 Jul 2025 11:24:14 +0000 (UTC)
+	s=arc-20240116; t=1753961058; c=relaxed/simple;
+	bh=QIi4OnFPyi1q9PY3zHhv9AGFDh6nq9BB6EBl5oXwrDU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uLxRqbKZeqJ5p40P6njjdD334WECQLL/B19bRR0ZoG5G8ttm0uLtYWfUZuxO39i9ovI4kQxodixRyFGv4HnkAd/HqH/MdnFnqkPZ+v8ShM6yEFIu/06y/xY8czU5NMzJR+50kLHnM8JTbQhBENzSwlF2t9k0SEI0/zDUSeYbJr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLe/2p4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AFEC4CEF6;
+	Thu, 31 Jul 2025 11:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753961056;
-	bh=R3GjpU8cp4HEkJsw5ea3JcnCRdAbqK8spRb6UBa1TQ0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=tAaC4Db1JKqqSwJAiuZP+kpXTyK7h5VNtXsbj6j+sgKN/tJh+VNnTO6yGqgyNRvoL
-	 Kck2p/kO4KRqUtk1JK7V8RTqIpbdn86kPG+GzoabNEw0U9p/dxlRKPzTYsvfQjiUNP
-	 KTJf2Q9hP27yJ5DTMH1RzuKaiPtFyM8qFq1COM8cdpNjhijHF7Fvw6yuxSn/MJpBEo
-	 EQN2+mm25UUClx2rmGvlB4vuO2KN8ClWAXdqkymxoj1Bd2LAALTpOqn3qtT7uK0zPw
-	 cL1Ilv+sfgwlTDku4PZrW5cItHA+7zZQ8rzBP1SfC4/bhyBfiMO6T4CMR8gdbVOylp
-	 81OLkqthIdYBQ==
+	s=k20201202; t=1753961058;
+	bh=QIi4OnFPyi1q9PY3zHhv9AGFDh6nq9BB6EBl5oXwrDU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TLe/2p4QhhfRgR67Vcu5zTqsledMv0Q994nx+Cw3t4xwpblyAAXjUQw5xAFYo/4k9
+	 GFqLxSGYxUQk60yfVjYSamtVqxZkUuTesCzEKNsNpZ7jbDJLmesu3lBLn0d1ZRIrUy
+	 sPpAumPfKJxIGqqyHor9qyGUeS5SCKd1WpHSgN9HaMPzYu/TvGhenwYnkge/3qx6KL
+	 H3Weu+TjlkqBLQ6ziNzd4EgFEMoRNRHvnYpUZOOt22WwMK4HzEfItLPS5ogKky9V57
+	 OziFxak9QKXnr/H2jevtnoWdUqejiLVWiTXc3ayvdxFLwcI4YEVsXXvzwT6FpC7z4V
+	 S+kvVFeJZV/mw==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	sashal@kernel.org
-Subject: [PATCH 5.15.y 0/6] Old missing backports
-Date: Thu, 31 Jul 2025 13:23:54 +0200
-Message-ID: <20250731112353.2638719-8-matttbe@kernel.org>
+Cc: Matthieu Baerts <matthieu.baerts@tessares.net>,
+	sashal@kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15.y 1/6] selftests: mptcp: add missing join check
+Date: Thu, 31 Jul 2025 13:23:55 +0200
+Message-ID: <20250731112353.2638719-9-matttbe@kernel.org>
 X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250731112353.2638719-8-matttbe@kernel.org>
+References: <20250731112353.2638719-8-matttbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1477; i=matttbe@kernel.org; h=from:subject; bh=R3GjpU8cp4HEkJsw5ea3JcnCRdAbqK8spRb6UBa1TQ0=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDK6g7xEIv6qr9lrtPzkOc4164NsD4kyr/n6PH6/qLL6k gkLGXOfd5SyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEzkxC5Ghu378wtjjfqe3tT4 wryCreCB6uXpwnMnTo9xdDq3tfaUGz8jw1GncPOMe24K4mskn0htWRNyVWa+bp1PseCBT96zDS6 J8wEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2238; i=matttbe@kernel.org; h=from:subject; bh=Tm6WUpa0BQKwE7MrXJ0pzaot8s0NlBN6lvVjqNU5XS8=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDK6g/y/HJkqq919pfvrsu2nZ137VGv0vV32iD/PqpRTt 8OP7p14oKOUhUGMi0FWTJFFui0yf+bzKt4SLz8LmDmsTCBDGLg4BWAiS+4xMny16JNMO/8ioiZo h+PrVq5jDllMOm+28F/7rPm+6+Y5S1NGhj5zzs7XJsv2irIFJN6ZfOr5oY59szfv+P8mvVHEgcu Xjw0A
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-When working on an issue in the MPTCP selftests due to a recent
-backport, I noticed it was due to a missing backports. A few years ago,
-we were not properly monitoring the failed backports, and we missed a
-few patches:
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-- 857898eb4b28 ("selftests: mptcp: add missing join check")
-- 0c1f78a49af7 ("mptcp: fix error mibs accounting")
-- 31bf11de146c ("mptcp: introduce MAPPING_BAD_CSUM")
-- fd37c2ecb21f ("selftests: mptcp: Initialize variables to quiet gcc 12 warnings")
-- c886d70286bf ("mptcp: do not queue data on closed subflows")
+commit 857898eb4b28daf3faca3ae334c78b2bb141475e upstream.
 
-An extra patch has been added to ease the other backports:
+This function also writes the name of the test with its ID, making clear
+a new test has been executed.
 
-- b8e0def397d7 ("mptcp: drop unused sk in mptcp_push_release")
+Without that, the ADD_ADDR results from this test was appended at the
+end of the previous test causing confusions. Especially when the second
+test was failing, we had:
 
-Geliang Tang (1):
-  mptcp: drop unused sk in mptcp_push_release
+  17 signal invalid addresses     syn[ ok ] - synack[ ok ] - ack[ ok ]
+                                  add[ ok ] - echo  [ ok ]
+                                  add[fail] got 2 ADD_ADDR[s] expected 3
 
-Mat Martineau (1):
-  selftests: mptcp: Initialize variables to quiet gcc 12 warnings
+In fact, this 17th test was OK but not the 18th one.
 
-Matthieu Baerts (1):
-  selftests: mptcp: add missing join check
+Now we have:
 
-Paolo Abeni (3):
-  mptcp: fix error mibs accounting
-  mptcp: introduce MAPPING_BAD_CSUM
-  mptcp: do not queue data on closed subflows
+  17 signal invalid addresses     syn[ ok ] - synack[ ok ] - ack[ ok ]
+                                  add[ ok ] - echo  [ ok ]
+  18 signal addresses race test   syn[fail] got 2 JOIN[s] syn expected 3
+   - synack[fail] got 2 JOIN[s] synack expected
+   - ack[fail] got 2 JOIN[s] ack expected 3
+                                  add[fail] got 2 ADD_ADDR[s] expected 3
 
- net/mptcp/options.c                           |  1 +
- net/mptcp/protocol.c                          | 17 ++++++++++------
- net/mptcp/protocol.h                          | 11 ++++++----
- net/mptcp/subflow.c                           | 20 +++++++++----------
- .../selftests/net/mptcp/mptcp_connect.c       |  2 +-
- .../testing/selftests/net/mptcp/mptcp_join.sh |  1 +
- 6 files changed, 30 insertions(+), 22 deletions(-)
+Fixes: 33c563ad28e3 ("selftests: mptcp: add_addr and echo race test")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in mptcp_join.sh, because commit 86e39e04482b ("mptcp: keep
+  track of local endpoint still available for each msk") is not in this
+  version and changed the context. The same line can still be applied at
+  the same place. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 145749460bec..06634417e3c4 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -1138,6 +1138,7 @@ signal_address_tests()
+ 	ip netns exec $ns2 ./pm_nl_ctl add 10.0.3.2 flags signal
+ 	ip netns exec $ns2 ./pm_nl_ctl add 10.0.4.2 flags signal
+ 	run_tests $ns1 $ns2 10.0.1.1
++	chk_join_nr "signal addresses race test" 3 3 3
+ 	chk_add_nr 4 4
+ }
+ 
 -- 
 2.50.0
 
