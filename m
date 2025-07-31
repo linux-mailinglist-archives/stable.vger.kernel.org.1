@@ -1,133 +1,93 @@
-Return-Path: <stable+bounces-165694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B948BB1787C
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 23:54:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6509EB1790B
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 00:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5ABB566C62
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 21:54:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F6383B13E5
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 22:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A07726AA98;
-	Thu, 31 Jul 2025 21:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4BD2701DF;
+	Thu, 31 Jul 2025 22:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgoCFLKq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2TXk2JX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6DF2586C2;
-	Thu, 31 Jul 2025 21:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F97D265284
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 22:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753998844; cv=none; b=GAgSXTPeW4Cpe3JdXzBiKRXDPjzBH4AVkeJpHUKGNcuWDZSysCpNScTP0A8hXJa5e/olDmtviMFNgGHwFQ/Q282HG6Phv2eUnEj2PLRqwTNgu+qW5zbHCcO32WPMXhZFggx+fdTtMfkQ5e8DUURrP9Dr3E4DNk/4KXucRUD9V/A=
+	t=1754000355; cv=none; b=ArsvVrRwDMDjN07XndCrnifRe+1jaujzO2h03KPtqkvvGOi1B7xIJKiepZHsX8fCCp/UZmTnLu/OiYqXCMuo4tc1IduyYTG5poWM0bcwHMzq1B0htTMc2votYqAPVgjWfphQIuZ2Q9X7mN3RUntV8bojDFS2k6rtfkePcHb3Lw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753998844; c=relaxed/simple;
-	bh=mqPumVqdioNdsUjPC0EYQ3RlGqcjrunkflhnOEy0xsM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Seq+Z67yyXgSe4X5tbhdLnkgYQeCVPmbB+Z2l3cZ0l4sL2/jEhRvn+BPu+My5w8xWRRxEg0VLVVJuCx1AU79w86+HF/cneL8UFM5R4iHKFm4nZZUmDfKS/QKADPvwouinlN6f2hkszNMzNc6I2S8b1PXj6CgaA+vVeVc7bVEFoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgoCFLKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9203CC4CEF4;
-	Thu, 31 Jul 2025 21:54:03 +0000 (UTC)
+	s=arc-20240116; t=1754000355; c=relaxed/simple;
+	bh=yuI4CQemnL7A5mVT5PGCHc6prjeV7Qy30Il4XFziPu8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z3eIP+cmWc71n/MedKvvRKb7+tFW5inFZo4oOFUJFgiW0qpapgpNMiXgUKi/eFEQMzi1xlaVi4i1ts7+yCf3klvdN9glfpy469BIoeRpf4y3XbxGTR9DoaaJYKsJfzsyJCX7/mNojq5NIwkqFfEIp3fHaApnJ65bOFmljmhsLDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2TXk2JX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48335C4CEEF;
+	Thu, 31 Jul 2025 22:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753998843;
-	bh=mqPumVqdioNdsUjPC0EYQ3RlGqcjrunkflhnOEy0xsM=;
+	s=k20201202; t=1754000354;
+	bh=yuI4CQemnL7A5mVT5PGCHc6prjeV7Qy30Il4XFziPu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IgoCFLKqad8gK5oAo+pxxbi7Crn6SSVAxaBH+TustdmMtmK60H7MU3pG9dvm+2Poi
-	 FRFEcaMrT2ippZzNmq+SpMr0BaPwpirdHX1CWHf8gCpthxny8C34RsRqpCLHXlx+QO
-	 tnSv9zKxFeF+mkoipEXunYiJP/JCrLMwVYnXYr/lqf9qETw7g4uQCbkFfSyjb5EVYx
-	 Qp2L7YR37Lsr3g5ZDUiHhIYsr7VppIJtYMVCubaK8NqAkfpc1vRWP3/V2mLLA+j86b
-	 wdMqpgXNvPlF33slhE/6iaHZ+3jXFHXhH9noFoW3OodmIC/WR1A200KcMKOqOl9Yoj
-	 zt9vRILq2QSAg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	linux-integrity@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] tpm: Compare HMAC values in constant time
-Date: Thu, 31 Jul 2025 14:52:54 -0700
-Message-ID: <20250731215255.113897-2-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250731215255.113897-1-ebiggers@kernel.org>
-References: <20250731215255.113897-1-ebiggers@kernel.org>
+	b=V2TXk2JXEwc5vsfS1FrOr6ZUSYEEcsKo8rQPuCIZELmIulshFbA3bn2IcNZ2nzDbU
+	 cS/aziXTYp/zNOaMCthttRyUA+jvZHC0FQmMsA+wfO+/rvIb9suepT1tcHWXABUPwx
+	 GuO7urwebfQl8CoLHaKK0XtBICq+knnuw3vYbMAEXonBtjy+mai+G9VxG7NW3dA5qo
+	 0AwnQF6mLzYJejmKcRYC9E9ZJ/InvNws6fF0vC9Sw3Ge5CO3RV1p5EVI4Aom5PFOJa
+	 s8GTD/7h0xiNGlHQbgmhkvzBYEccwcfqlWIJkNZT+iEzQxPneEkAbSnDg1gSqng8C9
+	 qeXpr4ViefuOw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y 4/6] selftests: mptcp: Initialize variables to quiet gcc 12 warnings
+Date: Thu, 31 Jul 2025 18:19:12 -0400
+Message-Id: <1753976139-4f0c157a@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250731112353.2638719-12-matttbe@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-To prevent timing attacks, HMAC value comparison needs to be constant
-time.  Replace the memcmp() with the correct function, crypto_memneq().
+[ Sasha's backport helper bot ]
 
-Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Hi,
+
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
+
+The upstream commit SHA1 provided is correct: fd37c2ecb21f7aee04ccca5f561469f07d00063c
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Commit author: Mat Martineau <mathew.j.martineau@linux.intel.com>
+
+Status in newer kernel trees:
+6.15.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+
+Note: The patch differs from the upstream commit:
 ---
- drivers/char/tpm/Kconfig         | 1 +
- drivers/char/tpm/tpm2-sessions.c | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+1:  fd37c2ecb21f < -:  ------------ selftests: mptcp: Initialize variables to quiet gcc 12 warnings
+-:  ------------ > 1:  95a487dc0102 selftests: mptcp: Initialize variables to quiet gcc 12 warnings
 
-diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
-index dddd702b2454a..f9d8a4e966867 100644
---- a/drivers/char/tpm/Kconfig
-+++ b/drivers/char/tpm/Kconfig
-@@ -31,10 +31,11 @@ config TCG_TPM2_HMAC
- 	bool "Use HMAC and encrypted transactions on the TPM bus"
- 	default X86_64
- 	select CRYPTO_ECDH
- 	select CRYPTO_LIB_AESCFB
- 	select CRYPTO_LIB_SHA256
-+	select CRYPTO_LIB_UTILS
- 	help
- 	  Setting this causes us to deploy a scheme which uses request
- 	  and response HMACs in addition to encryption for
- 	  communicating with the TPM to prevent or detect bus snooping
- 	  and interposer attacks (see tpm-security.rst).  Saying Y
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index bdb119453dfbe..5fbd62ee50903 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -69,10 +69,11 @@
- #include <linux/unaligned.h>
- #include <crypto/kpp.h>
- #include <crypto/ecdh.h>
- #include <crypto/hash.h>
- #include <crypto/hmac.h>
-+#include <crypto/utils.h>
- 
- /* maximum number of names the TPM must remember for authorization */
- #define AUTH_MAX_NAMES	3
- 
- #define AES_KEY_BYTES	AES_KEYSIZE_128
-@@ -827,16 +828,15 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 	sha256_update(&sctx, auth->our_nonce, sizeof(auth->our_nonce));
- 	sha256_update(&sctx, &auth->attrs, 1);
- 	/* we're done with the rphash, so put our idea of the hmac there */
- 	tpm2_hmac_final(&sctx, auth->session_key, sizeof(auth->session_key)
- 			+ auth->passphrase_len, rphash);
--	if (memcmp(rphash, &buf->data[offset_s], SHA256_DIGEST_SIZE) == 0) {
--		rc = 0;
--	} else {
-+	if (crypto_memneq(rphash, &buf->data[offset_s], SHA256_DIGEST_SIZE)) {
- 		dev_err(&chip->dev, "TPM: HMAC check failed\n");
- 		goto out;
- 	}
-+	rc = 0;
- 
- 	/* now do response decryption */
- 	if (auth->attrs & TPM2_SA_ENCRYPT) {
- 		/* need key and IV */
- 		tpm2_KDFa(auth->session_key, SHA256_DIGEST_SIZE
--- 
-2.50.1
+---
 
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| 5.15                      | Success     | Success    |
 
