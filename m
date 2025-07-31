@@ -1,98 +1,158 @@
-Return-Path: <stable+bounces-165652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF26B17056
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 13:24:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1DCB170B3
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 13:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F399B189DC45
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 11:25:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C677A82150
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 11:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF8A2C032C;
-	Thu, 31 Jul 2025 11:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBEE2C324C;
+	Thu, 31 Jul 2025 11:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mck/8Cfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p96UlHqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDADD2BDC38;
-	Thu, 31 Jul 2025 11:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0312C08C1;
+	Thu, 31 Jul 2025 11:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753961083; cv=none; b=CZCS/fCtGMnQKCArszJqShJNApkzuYjgnK4nlnNRzCVA1VjTrQGvcBtq1H97nCo8JZI5r+LswgZ7U/lQ9UXwLuMOUyZJeQCcvUPCb5gUZzqNRgWpfldrqc8O6FGEQ3G/Ys/NjU9ctDqnyKUfLFVOAyLyj293nbUMvcBVP5EN1vU=
+	t=1753962752; cv=none; b=MPeHrxZDz3+Q6xWUJAWMe1NOsu5jGp2Aakr2uYdx+Je8r6KrNXFAufdMFDWDeRCNsdZqfuS/mgxo6UfHghh8sIU9+JX5jEHLRUDn+fc2mie1/WmxJfNduSrzHtOmHceLLp6Ii6QJGMs6yI+qzlZuHLwmK6MJggMhr46pogk2w3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753961083; c=relaxed/simple;
-	bh=JHSaOCbpZCUVajXOtrMAa09eXfXSlqRlabPkVQTQSsk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GEwc7/8aHpF72oX+olFz2c30BUQUhYYCEqzRTf8C8z7X4u4M0Rm1HnZVEo4coZvYPbPRjaoEyfRlqSs4RNvcQzJBFqyqtAHnPzII27/KnurqN7DCK+vBGR8SrrBmRKs+fMCXOtJNkaSehra9+ZEzlEmXNGT7awKLBWjYovm6Hu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mck/8Cfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4FEC4CEEF;
-	Thu, 31 Jul 2025 11:24:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753961083;
-	bh=JHSaOCbpZCUVajXOtrMAa09eXfXSlqRlabPkVQTQSsk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mck/8CfvElUaoOtqb8LBXnZCEPgD1s6KrT7MuLXubFvLk9cEaSB/wPTRv0IhxhjKH
-	 fPN4DnIzvwX2yZWUUEWlgMBbs5L1mqr0TbDbjReDT2Z19DQJdH41WZpxr1W9TD817o
-	 InJqa3KT7pSm5iCehBG921emzvDPKbZJygXDLDHzjZcEtknSQIwUl6RZGMLfoONaXp
-	 Dw7idfkvj6YDArS/kdVgTJhinkYnFou4jO5wuVQ54FqAYmSK0zQOgDtVocCSgxLoIJ
-	 SsLKgVnDxVUn9/E3oETubTTEWKFaPZumkV0vugPSRkpYj+6+pX6mmQovLBQqjcyR3G
-	 tNkz+fgOsayTw==
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	s=arc-20240116; t=1753962752; c=relaxed/simple;
+	bh=L+Oj+lgcb5CliM2jzbx09ewH/vd7ovKgOLBsvX7o3ck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZG8xzk1yzmtwXpq7gxJSGY51dW5p4Q8BMqi2I6zO9VUA/j8y56netJzKuSam/zhbCeVD3zvQCvFhFxvEa6WoInuu203N4SWyfAu6kwM4XTnF+oLmrYUCYkifuZH5g4gzncgan3Drd+RlMUy9CRzzoEvSQu1t7+4sQkeuSELMhYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p96UlHqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A852FC4CEEF;
+	Thu, 31 Jul 2025 11:52:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753962752;
+	bh=L+Oj+lgcb5CliM2jzbx09ewH/vd7ovKgOLBsvX7o3ck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p96UlHqiFFrkaTDbfQuB/eKt9KJY/OkRMDTR2favyWTiCBGEB5YJ5ybcg1BuwJ680
+	 6tBXJ6R25SZ85H+UTR2mix4hbrxIq5T6jMQU+6c8WsL4o/3Yu4nwARid+m2zaNiu+L
+	 6ZynRgXd/O6yJCS7wXTHN+rr4VgtZmH7MNI5dAE8=
+Date: Thu, 31 Jul 2025 13:52:25 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Salah Triki <salah.triki@gmail.com>
+Cc: Markus Elfring <Markus.Elfring@web.de>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] iomap: Fix broken data integrity guarantees for O_SYNC writes
-Date: Thu, 31 Jul 2025 13:24:37 +0200
-Message-ID: <20250731-kultobjekt-ansagen-2961e4be4ad2@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250730102840.20470-2-jack@suse.cz>
-References: <20250730102840.20470-2-jack@suse.cz>
+Subject: Re: [PATCH V3] Bluetooth: bfusb: Fix use-after-free and memory leak
+ in device lifecycle
+Message-ID: <2025073152-molecular-porthole-c949@gregkh>
+References: <aIrSp18mz3GS67a1@pc>
+ <2025073101-upon-lilac-9d22@gregkh>
+ <aItRhGyTWNCJmXFA@pc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1376; i=brauner@kernel.org; h=from:subject:message-id; bh=JHSaOCbpZCUVajXOtrMAa09eXfXSlqRlabPkVQTQSsk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR0B5W5zUl4E+aw2UrzrG5eg67Had8LPus67X9xP9ywU 8Zm5naBjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIkU1DEyLPtVtmGLZ8y8s07v p1u4Vnqd+hN3UjFt27P2nWcLTG+qLmP4X3BmTmCekWmvziuep59nT7eq27tgSoya3IPt3vWzvQ/ OZQYA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aItRhGyTWNCJmXFA@pc>
 
-On Wed, 30 Jul 2025 12:28:41 +0200, Jan Kara wrote:
-> Commit d279c80e0bac ("iomap: inline iomap_dio_bio_opflags()") has broken
-> the logic in iomap_dio_bio_iter() in a way that when the device does
-> support FUA (or has no writeback cache) and the direct IO happens to
-> freshly allocated or unwritten extents, we will *not* issue fsync after
-> completing direct IO O_SYNC / O_DSYNC write because the
-> IOMAP_DIO_WRITE_THROUGH flag stays mistakenly set. Fix the problem by
-> clearing IOMAP_DIO_WRITE_THROUGH whenever we do not perform FUA write as
-> it was originally intended.
+On Thu, Jul 31, 2025 at 12:20:36PM +0100, Salah Triki wrote:
+> Hello Greg,
 > 
-> [...]
+> Thanks for your feedback.
+> 
+> On Thu, Jul 31, 2025 at 06:32:35AM +0200, Greg KH wrote:
+> > On Thu, Jul 31, 2025 at 03:19:19AM +0100, Salah Triki wrote:
+> > > The driver stores a reference to the `usb_device` structure (`udev`)
+> > > in its private data (`data->udev`), which can persist beyond the
+> > > immediate context of the `bfusb_probe()` function.
+> > > 
+> > > Without proper reference count management, this can lead to two issues:
+> > > 
+> > > 1. A `use-after-free` scenario if `udev` is accessed after its main
+> > >    reference count drops to zero (e.g., if the device is disconnected
+> > >    and the `data` structure is still active).
+> > 
+> > How can that happen as during the probe/remove cycle, the reference
+> > count is always properly incremetned.
+> > 
+> > > 2. A `memory leak` if `udev`'s reference count is not properly
+> > >    decremented during driver disconnect, preventing the `usb_device`
+> > >    object from being freed.
+> > 
+> > There is no leak here at all, sorry.
+> > 
+> 
+> I understand your concern about the existence of a memory leak or 
+> use-after-free scenario in the driver's current context.
+> 
+> My intention with this patch is to ensure the driver adheres to best
+> practices for managing `usb_device` structure references, as outlined in
+> the kernel's documentation. The `usb_get_dev()` function is explicitly
+> designed for use when a driver stores a reference to a `usb_device`
+> structure in its private data, which is the case here with `data->udev`.
+> 
+> As the documentation for `usb_get_dev()` states:
+> 
+> ``Each live reference to a device should be refcounted. Drivers for USB
+> interfaces should normally record such references in their probe()
+> methods, when they bind to an interface, and release them by calling
+> usb_put_dev(), in their disconnect() methods.``
+> 
+> By following this recommendation, adding `usb_get_dev(udev)` in
+> `bfusb_probe()` and `usb_put_dev(data->udev)` in `bfusb_disconnect()`
+> ensures the `udev` structure's lifetime is explicitly managed by the driver
+> as long as it's being referenced. This proactively prevents potential
+> issues that could arise in future scenarios, even if a specific problem
+> hasn't been observed or reported yet.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Yes, I agree with the documentation, I wrote it :)
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+But, I am saying, you are NOT actually fixing anything here.  It's a
+"best practice" but due to the fact that the dev pointer is only being
+reference counted by your change across the probe/release function, it
+is a pointless change.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+It's also a "dangerous" change in that you are trying to say "this fixes
+a security issue!" when it does not do anything like that at all.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+> > > To correctly manage the `udev` lifetime, explicitly increment its
+> > > reference count with `usb_get_dev(udev)` when storing it in the
+> > > driver's private data. Correspondingly, decrement the reference count
+> > > with `usb_put_dev(data->udev)` in the `bfusb_disconnect()` callback.
+> > > 
+> > > This ensures `udev` remains valid while referenced by the driver's
+> > > private data and is properly released when no longer needed.
+> > 
+> > How was this tested?
+> > 
+> > I'm not saying the change is wrong, just that I don't think it's
+> > actually a leak, or fix of anything real.
+> > 
+> > Or do you have a workload that shows this is needed?  If so, what is the
+> > crash reported?
+> > 
+> 
+> While I don't have a specific workload that reproduces a current crash or
+> memory leak, this patch aims to enhance the driver's robustness by
+> aligning its behavior with the established conventions for managing
+> `usb_device` object references. It's a preventive measure to ensure the
+> driver correctly handles the lifetime of the `usb_device` object it
+> references, even in scenarios of unexpected disconnection or re-enumeration
+> that might otherwise have unforeseen consequences.
+> 
+> Please let me know if you have any further questions.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+Please test this to see if it actually makes any difference in the code
+before making claims that it fixes a real bug.
 
-[1/1] iomap: Fix broken data integrity guarantees for O_SYNC writes
-      https://git.kernel.org/vfs/vfs/c/16f206eebbf8
+thanks,
+
+greg k-h
 
