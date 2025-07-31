@@ -1,255 +1,150 @@
-Return-Path: <stable+bounces-165656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84F8B170FE
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 14:21:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B17B17145
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 14:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3F2D54216F
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 12:21:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34C004E1F24
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 12:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7A92BD034;
-	Thu, 31 Jul 2025 12:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D3F2C15BE;
+	Thu, 31 Jul 2025 12:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=open-e.com header.i=artur.piechocki@open-e.com header.b="B3zbBdcU"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325AB21FF4E
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 12:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C57D2C158B
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 12:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753964487; cv=none; b=Lbas/yJHRjXb2JKptyzZjzqr78rSPevjdbxi2eU/+4jp9daqBaFVX5A+rdGxWEj83sOFA35uaPYOUqdDRKh6ezRaoOLzVulY17/hXa2jOhQdjS5nY21n08tTvDXHXkVHRAQ6PUcu8qndLfOxQCP3Vc0mqnWP9KCTIYOJYIjg6nA=
+	t=1753965003; cv=none; b=e/PMjsudh9igZ74K9sY9/FpmKVW0ZjYFNpGvSParGRH59ExbjX5lEwtP41K2/+AOHSonZ6p3/qZd/97b0pMZysTi25lmhPxxb1xJQ3cM0kXb7jHY7A8HH/c1iLQHa8Rz3yhiIljd/koeE6XYsdH7EyQ+w4UV+wogbgIEggtIxDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753964487; c=relaxed/simple;
-	bh=1sdmTE1E/CJrdEVYc+i7Ltsj/nG6ZKBHcJqRZDWTghQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZIL3EZO4rksz9iFpsnxRYjS7tBvXo0VgBIxIdw8vLk9DB3qKksePdmSnPVkh4fRANZZPezCWvY1z7rkRcjSVOYFevUJvjpc8TOkFNQvW2zRCm1TYE7XYs/tWv8/SrbKrKugOSa2+uKEXaPcY39IpfIS4uGpodChEFBz8w47VGRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bt7VB4N2fzKHMt3
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 20:21:22 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 858621A0D7C
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 20:21:21 +0800 (CST)
-Received: from [10.67.109.79] (unknown [10.67.109.79])
-	by APP3 (Coremail) with SMTP id _Ch0CgDHjNe9X4tozUpBCA--.13629S2;
-	Thu, 31 Jul 2025 20:21:19 +0800 (CST)
-Message-ID: <f5217926-d4c5-42f0-b14f-ae7875fadeba@huaweicloud.com>
-Date: Thu, 31 Jul 2025 20:21:16 +0800
+	s=arc-20240116; t=1753965003; c=relaxed/simple;
+	bh=L8d/TgfaemUz00R0wLDmWJx06bp9OFZCE3k9bJVgyr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DB/zgyxmwFTt7gPtdHhsf/1t3FkcfWeV+34CuqxHUAz0u+OVxHzq1b00DvLR4UkGryHBsJiFFH6pgYAE8kAX1tXuoD1bXPZmjt7l+TKdE20YKcErkw+eWI/wtbpP4hKk9/9B8S2B4MHR2ZnhmH0M2SWeQkWOWeE7lSZM/O2el4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=open-e.com; spf=pass smtp.mailfrom=open-e.com; dkim=pass (2048-bit key) header.d=open-e.com header.i=artur.piechocki@open-e.com header.b=B3zbBdcU; arc=none smtp.client-ip=217.72.192.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=open-e.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-e.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=open-e.com;
+	s=s1-ionos; t=1753964995; x=1754569795;
+	i=artur.piechocki@open-e.com;
+	bh=M9BXKtvY5DWPgIo4RHN98DZ3dEdRGdWC+qZAUcM5y6c=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=B3zbBdcUFi1bb5ybCQmCY6Cidlvp2LSFB/ImTKdpaaR8uwG2UInjCEoZQh20g0PJ
+	 m0Yzdq/auNZ4n1sKB1OTWhEBfAnibQtnu6pNmjU1rUuYc8cK+ERh/a9pwDj4XAmox
+	 0guXY7zJex4lqdH/oW7rNYUzkXp540FVxJmc9hogWVco/ZCVPvZx5IufeCwJbLpCT
+	 brd+uicWXYzRpH+l6nzsEpxLTCYAsBq9V29THq/tGOjqhd1SRUVfvC+FemLGlsOWe
+	 V+7L9AYvVYvUV1To770Avtb0rk/aZECh18A3j0/SD82ChHfEjavwBerxB9gJbNfaz
+	 2x/ute67dHaM3Qu3/Q==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from rato-hp ([193.25.251.95]) by mrelayeu.kundenserver.de (mreue106
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1MtOX2-1uOI8q3q8c-0120SK; Thu, 31
+ Jul 2025 14:29:55 +0200
+From: Artur Piechocki <artur.piechocki@open-e.com>
+To: artur.piechocki@open-e.com
+Cc: Nirmal Patel <nirmal.patel@linux.intel.com>,
+	stable@vger.kernel.org,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Subject: [PATCH] PCI: vmd: Assign VMD IRQ domain before enumeration
+Date: Thu, 31 Jul 2025 14:29:41 +0200
+Message-ID: <20250731122941.23458-1-artur.piechocki@open-e.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "Revert "cgroup_freezer: cgroup_freezing: Check if not
- frozen"" has been added to the 6.15-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "mingo@redhat.com >> Ingo Molnar" <mingo@redhat.com>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, bristot@redhat.com,
- Valentin Schneider <vschneid@redhat.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, pavel@ucw.cz,
- Peter Zijlstra <peterz@infradead.org>, chenridong <chenridong@huawei.com>,
- stable@vger.kernel.org,
- "stable-commits@vger.kernel.org Sasha Levin" <sashal@kernel.org>,
- Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-References: <2025072222-effective-jumble-c817@gregkh>
- <ebec24b9-e65e-4050-a960-d127b7215543@huaweicloud.com>
- <2025072253-gravity-shown-3a37@gregkh>
- <5c09fe1c-cb0c-46bf-ab6d-fda063a0e812@huaweicloud.com>
- <2025072344-arrogance-shame-7114@gregkh>
- <9da3269a-9e50-48e9-a1de-6311942f6ea1@huaweicloud.com>
- <2025072421-deviate-skintight-bbd5@gregkh>
- <89465e3f-7c07-4354-ba41-36d5a5139261@huaweicloud.com>
- <2025072950-tamale-rural-8332@gregkh>
- <0ec06dfd-0cab-4164-b3fc-37bc5effd037@huaweicloud.com>
- <2025073105-obsessive-jigsaw-71ad@gregkh>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <2025073105-obsessive-jigsaw-71ad@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_Ch0CgDHjNe9X4tozUpBCA--.13629S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuFy3WF1ktF1kAF1fKr1UGFg_yoW7CrWUpr
-	WUJF4jya1Dtr17Jr1jyw4YqF1UtrZ7tr1UWr1kJr1UJrn0qF1xXr1xJr1Ykryjqr18Gw1U
-	tF1UXryxJF1UAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:N0OK+COuhMSaZwjfMAOBeO4HLi+7hzXbWxe9J6Q+D9ZAO8IZmvy
+ +lkqpJCWBzKHRAA08a/y0htmUvsXt4i1HzY0YX8htC051CHyZKQC1skdMZpUDJi4RnBYd+q
+ aDJPSjsTZblwIIqhfc0lOrMqqL014t27qLjXoP4/yca5FCUJ0BmzM3/2AGsYlcjry7n/0Tn
+ g30Hg3BamYsvDezL6S3fA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:pJWPNorlLdk=;sl70FvV4quHCMyx69mLhwrJTtyr
+ yPJQmITqs5OjSaHZF8hsb85RqvJ2UwffomxAiiLJkPAFhgE1THxgxlKBRNs/iCfe2ztnGABRD
+ eSsdSAuPTL9dZdzYD2qek2Hn8BGBKUQlVo3cJAx80inHPaq7Ob+xOfuT34FzSfggboc8zBS3Y
+ j3oz51qEgn/+CXDP2PYR5Y5RT8CMDsOqNrWX6dTFIdjvfIwXDGFK4wm5CpeVnRZXn8upB56jI
+ kLeubRk46sj0RNnD0MqP09J8ux2g1FiiiQi01I/PtpT4kAGxmTTC8778KniZqOV9GycSB3lon
+ y0rJFS1rQpxboQJXgKWFwpy9E/Zq2Gmg/8Z4itEv2EXLCbLUP521sRHpKLT156Q/McxIFZob4
+ PavHk02xCHYikVGUcvCU9lTjtw/BeUDLLVgcY/AT8f7+UGegJpqPR05WOuUhufpweKiPfMDIc
+ nkGitxXfmuNPy0F8KJGYYyO8vmCSSmglrETtiIX9zzolKKCNCfoaB8//QYm24H9MYoHT/jP9+
+ b+7v90ZVPrrtntlC7r9mO7OtNWGduc1Fw5M4Mb5oF8wk/iVbrrTIujbANDd3bDRgibGG24OP4
+ 3Y9eohXMnOhdxSpkX/v9sbZ+zAktyXEeW23yX8b4xsY9/PHhymmWDvazr4f3UlUA+02aC8i5y
+ kO+upWI6v+Eu3NrgPyWq1M0e/dkw84ctGbaoFJr7gFMSmqKeMFLhMgwx+tG8Fw9U7SpHWSaJh
+ Eyy05IrLZ1orK044hERJzpK2SP5YgU4ExrVwW0zz4B5gThOBMhgkYXL/vb9AV8Bl+JUUDGNif
+ vPHSSIvHuo7fqS4O9AMAG4GAuQbTrQmQ4wUvUbMtTb4D+AfoOLkReav5P7mwZ8OSUdHBfZWQe
+ UrDqqStNM/xGjAhPCz6gSqYKdFEFaz9Ncvv4O6qT+2LjO1CHtee3tBxXwyXBJdq63UH0TMlPx
+ Llp9bQiLAKr2XWYg1dShkK8HoKS2b9VBWV1Zxisn1dgceHYL2WsPLSrWvSlOswRLhPjlB4kEY
+ Vy/enJL51GpKeOzFAzxdB+vYL5Tbyagnh4hVbCcfbflMhIO31hknf5Ymvapx7KLFc1QiezA37
+ 2Y7JHD3e/ajoBaJEgbVOpd6Y5Jvmafg+xiN6bPjl36XfzqXwif1u8qxHv4j7AKfy/wFOr0MAz
+ WtzgLGeXfXVxbxHp8hSD6J745qEq5axeeoYQC/ilCD5c971aUt7Tp50k9rST/9MWsDdvoCfV/
+ ULIEIQcrbvbaBpVzuafpNid/ygDSSgyHSW74O8YDjBsWRZ4kyOsLNtiJ96zJqnCqUORNSUL1/
+ Xg55C/PpJKS2STZ0GAx/Xp/17zpiXLvXDAJQRvCT6cpyXqFhFGLUdF60UQmxivYteE/Fa6sjf
+ LgS+7vswIKD8gECk8O+zrkwrt9Ir0sN2W5M2HFd1kBYX7YfpDPpi0Z+mhOU58h3kQbPNsAJNy
+ LImyWQvDsftjRfyIeMfVwXrWh+8dZGC320B5LnLr7g78DrmV4lnZ2LYdSwJHZHbazJj5csNKo
+ /YqTk9mUHagPG2gQ7J+rCGg4fozWlIczYrcMeQXDZM9tFNRg45MmCzCYba49mA==
 
+From: Nirmal Patel <nirmal.patel@linux.intel.com>
 
+During the boot process all the PCI devices are assigned default PCI-MSI
+IRQ domain including VMD endpoint devices. If interrupt-remapping is
+enabled by IOMMU, the PCI devices except VMD get new INTEL-IR-MSI IRQ
+domain. And VMD is supposed to create and assign a separate VMD-MSI IRQ
+domain for its child devices in order to support MSI-X remapping
+capabilities.
 
-On 2025/7/31 20:13, Greg KH wrote:
-> On Thu, Jul 31, 2025 at 08:01:17PM +0800, Chen Ridong wrote:
->>
->>
->> On 2025/7/29 22:33, Greg KH wrote:
->>> On Tue, Jul 29, 2025 at 09:22:10PM +0800, Chen Ridong wrote:
->>>>
->>>>
->>>> On 2025/7/24 17:43, Greg KH wrote:
->>>>> On Thu, Jul 24, 2025 at 05:38:52PM +0800, Chen Ridong wrote:
->>>>>>
->>>>>>
->>>>>> On 2025/7/23 13:06, Greg KH wrote:
->>>>>>> On Wed, Jul 23, 2025 at 09:01:43AM +0800, Chen Ridong wrote:
->>>>>>>>
->>>>>>>>
->>>>>>>> On 2025/7/22 20:38, Greg KH wrote:
->>>>>>>>> On Tue, Jul 22, 2025 at 08:25:49PM +0800, Chen Ridong wrote:
->>>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> On 2025/7/22 20:18, Greg KH wrote:
->>>>>>>>>>> On Tue, Jul 22, 2025 at 09:29:13AM +0800, Chen Ridong wrote:
->>>>>>>>>>>>
->>>>>>>>>>>>> This is a note to let you know that I've just added the patch titled
->>>>>>>>>>>>>
->>>>>>>>>>>>>     Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"
->>>>>>>>>>>>>
->>>>>>>>>>>>> to the 6.15-stable tree which can be found at:
->>>>>>>>>>>>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>>>>>>>>>>>
->>>>>>>>>>>>> The filename of the patch is:
->>>>>>>>>>>>>      revert-cgroup_freezer-cgroup_freezing-check-if-not-f.patch
->>>>>>>>>>>>> and it can be found in the queue-6.15 subdirectory.
->>>>>>>>>>>>>
->>>>>>>>>>>>> If you, or anyone else, feels it should not be added to the stable tree, please let <stable@vger.kernel.org> know about it.
->>>>>>>>>>>>>
->>>>>>>>>>>>
->>>>>>>>>>>> The patch ("sched,freezer: Remove unnecessary warning in __thaw_task") should also be merged to
->>>>>>>>>>>> prevent triggering another warning in __thaw_task().
->>>>>>>>>>>
->>>>>>>>>>> What is the git commit id of that change in Linus's tree?
->>>>>>>>>>>
->>>>>>>>>>> thanks,
->>>>>>>>>>>
->>>>>>>>>>> greg k-h
->>>>>>>>>>
->>>>>>>>>> 9beb8c5e77dc10e3889ff5f967eeffba78617a88 ("sched,freezer: Remove unnecessary warning in __thaw_task")
->>>>>>>>>
->>>>>>>>> Thanks, but that didn't apply to 6.1.y or 6.6.y.  Shouldn't it also go
->>>>>>>>> there as that's what this revert was applied back to.
->>>>>>>>>
->>>>>>>>> greg k-h
->>>>>>>>
->>>>>>>> Hi Greg,
->>>>>>>>
->>>>>>>> The commit 9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...") should be merged together
->>>>>>>> with 14a67b42cb6f ("Revert "cgroup_freezer: cgroup_freezing: Check if not frozen"") to avoid the
->>>>>>>> warning for 6.1.y or 6.6.y.
->>>>>>>
->>>>>>> Ok, but 9beb8c5e77dc does not apply properly there.  Can you please
->>>>>>> provide a working backport?
->>>>>>>
->>>>>>> thanks,
->>>>>>>
->>>>>>> greg k-h
->>>>>>
->>>>>> IIUC, we need to backport these two commits together:
->>>>>> 1.commit 23ab79e8e469 ("freezer,sched: Do not restore saved_state of a thawed task")
->>>>>> 2.commit 9beb8c5e77dc ("sched,freezer: Remove unnecessary warning...").
->>>>>>
->>>>>> After applying these prerequisites, the required change becomes minimal:
->>>>>>
->>>>>> diff --git a/kernel/freezer.c b/kernel/freezer.c
->>>>>> index 4fad0e6fca64..288d1cce1fc4 100644
->>>>>> --- a/kernel/freezer.c
->>>>>> +++ b/kernel/freezer.c
->>>>>> @@ -196,7 +196,7 @@ void __thaw_task(struct task_struct *p)
->>>>>>         unsigned long flags, flags2;
->>>>>>
->>>>>>         spin_lock_irqsave(&freezer_lock, flags);
->>>>>> -       if (WARN_ON_ONCE(freezing(p)))
->>>>>> +       if (!frozen(p))
->>>>>>                 goto unlock;
->>>>>>
->>>>>>         if (lock_task_sighand(p, &flags2)) {
->>>>>>
->>>>>> Would you like me to prepare and submit this patch for the stable branches (6.6.y and 6.1.y)?
->>>>>
->>>>> Yes, please send me the missing patches as a series for each branch that
->>>>> needs them.
->>>>>
->>>>> thanks,
->>>>>
->>>>> greg k-h
->>>>
->>>> Hi Greg and maintainers,
->>>>
->>>> I've sent the patch series for 6.6.y. Backporting commit 9beb8c5e77dc ("sched,freezer: Remove
->>>> unnecessary warning...") requires 4 patches for 6.6.y, and the backport to 6.1.y would be even more
->>>> complex.
->>>>
->>>> As an alternative, I'm considering addressing the warning directly with the patch I mentioned
->>>> previously. What are your thoughts on this approach?
->>>>
->>>> The new patch:
->>>>
->>>> diff --git a/kernel/freezer.c b/kernel/freezer.c
->>>> index 4fad0e6fca64..288d1cce1fc4 100644
->>>> --- a/kernel/freezer.c
->>>> +++ b/kernel/freezer.c
->>>> @@ -196,7 +196,7 @@ void __thaw_task(struct task_struct *p)
->>>>         unsigned long flags, flags2;
->>>>
->>>>         spin_lock_irqsave(&freezer_lock, flags);
->>>> -       if (WARN_ON_ONCE(freezing(p)))
->>>> +       if (!frozen(p))
->>>>                 goto unlock;
->>>>
->>>>         if (lock_task_sighand(p, &flags2)) {
->>>>
->>>
->>> I have no idea, sorry, please work with the developers/maintainers of
->>> the original change and get their approval.  But normally, we do NOT
->>> want one-off changes being made to older kernel trees unless it has to
->>> be done, as that makes maintaining them much much much harder over time.
->>>
->>> thanks,
->>>
->>> greg k-h
->>
->> Hi, developers/maintainers,
->>
->> Could you please review this series for 6.6.y?
-> 
-> What "this series" are you responding to?  This email subject says 6.15?
-> Please submit the patches, properly backported, in a form that you have
-> tested and wish to have reviewed, otherwise we have no idea of what to
-> do here.
-> 
-> Remember, some of us get 1000+ emails a day, context matters :)
-> 
-> thanks,
-> 
-> greg k-h
+Now when MSI-X remapping in VMD is disabled in order to improve
+performance, VMD skips VMD-MSI IRQ domain assignment process to its
+child devices. Thus the devices behind VMD get default PCI-MSI IRQ
+domain instead of INTEL-IR-MSI IRQ domain when VMD creates root bus and
+configures child devices.
 
-Thanks, greg.
+As a result host OS fails to boot and DMAR errors were observed when
+interrupt remapping was enabled on Intel Icelake CPUs. For instance:
 
-See, I will resend the series for 6.6.y.
+  DMAR: DRHD: handling fault status reg 2
+  DMAR: [INTR-REMAP] Request device [0xe2:0x00.0] fault index 0xa00 [fault=
+ reason 0x25] Blocked a compatibility format interrupt request
 
-Best regards,
-Ridong
+To fix this issue, dev_msi_info struct in dev struct maintains correct
+value of IRQ domain. VMD will use this information to assign proper IRQ
+domain to its child devices when it doesn't create a separate IRQ domain.
+
+Link: https://lore.kernel.org/r/20220511095707.25403-2-nirmal.patel@linux.=
+intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Nirmal Patel <nirmal.patel@linux.intel.com>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Signed-off-by: Artur Piechocki <artur.piechocki@open-e.com>
+=2D--
+ drivers/pci/controller/vmd.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index eb05cceab964..5015adc04d19 100644
+=2D-- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -853,6 +853,9 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsi=
+gned long features)
+ 	vmd_attach_resources(vmd);
+ 	if (vmd->irq_domain)
+ 		dev_set_msi_domain(&vmd->bus->dev, vmd->irq_domain);
++	else
++		dev_set_msi_domain(&vmd->bus->dev,
++				   dev_get_msi_domain(&vmd->dev->dev));
+=20
+ 	vmd_acpi_begin();
+=20
+=2D-=20
+2.50.1
 
 
