@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-165697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA1BB1790D
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 00:19:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABCBB1790E
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 00:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1B9E1C80A54
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 22:19:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8719A3B03F0
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 22:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9122701DF;
-	Thu, 31 Jul 2025 22:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C057275B1D;
+	Thu, 31 Jul 2025 22:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIZ6GS7/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biefKOWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA38265284
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 22:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E143B265284
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 22:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754000361; cv=none; b=eZpXl6cekcf9XityKKMBQ+F0tLb8Ch/waGJVNJRtIi62rbamiSLUz5g1dmnhGhlwYaGUG3q9nQF01srhljCaAjsRqoLBJPxDyfrjxCZXg0REC/HUIjGNcz4FWCkgl4HXcEkbC45MNqEvVzRA5tKhU1Fxsw8ISvbOvco8TaOygpo=
+	t=1754000364; cv=none; b=Db9YTb4IyMAPw56HSKNlox4wjKN+C59/wc2tubwIVck/B+ZG+O2P3uAMvo2L1LBoT6QhboFSk7UfgyFzqZG4AOCPNjMwH3ih7GD4b7wTRaeJeV+vRbHilNp1YffItUYsWoHMBqfassKEPFO+3ugd2S8RSRIAuvd40TPSFUuGA60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754000361; c=relaxed/simple;
-	bh=F+PO65dkgjpGCHWlSXmJxBA73wFSU3IL2qiIgD96kXU=;
+	s=arc-20240116; t=1754000364; c=relaxed/simple;
+	bh=SObR5sqR1/YkaDYUbCxejICAHWLOpF3PyGmcK3g+wTY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Er3CPZeWXal4joHwq2cwgE53z16higgDzsEwDMIEGXYl/9SQakW7pzCnHbTtlY1ZWL6g8YQNY4Lv7AYV5a26M18OR5tG4lvOn0FC94bbaidKqoO924B505i/3gvCRWOlmvmvPeeoiqCOs7XOrWzuujOPpgaoYkuyfDj9cd1AzVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIZ6GS7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A491C4CEEF;
-	Thu, 31 Jul 2025 22:19:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VCggbKSf5ddaZwhonsPBCZF0Pb2PTdix8ZNQJOA/ckq6DBtWyRLvAVUYx7XG2JtgI0iImzt4+u5rMbWbfEUSrvbPgrRMfHdYQg1LQ3txpCs/yvwF2pX3E2r/7PzBylZ3urjXfGKXzLxclJb9hITjCQxbSgk6pzOtrLHyXd/6IC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biefKOWl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF870C4CEEF;
+	Thu, 31 Jul 2025 22:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754000360;
-	bh=F+PO65dkgjpGCHWlSXmJxBA73wFSU3IL2qiIgD96kXU=;
+	s=k20201202; t=1754000363;
+	bh=SObR5sqR1/YkaDYUbCxejICAHWLOpF3PyGmcK3g+wTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIZ6GS7/T8QyBg4X3OY8armqMcdolpIw4g/8UxEf5qzphHGKGVcm5DIpwHwP/K+Kn
-	 HFpxm/EK2/A8iwv1NiJeaX3RSZq7D7AXHbho6BBLtf+Bd8T+7PWXyVN6eX0ZXALyLc
-	 KhPsNAc8ZshQPewvw+4FcDj6c46p2Fg7YOLUTdV/Csgm8QvD7xl9NddurwPz4CsLDi
-	 Ni4C0tffgz1L/ohWhBuCX9KrHaFFtgon6UBikzqSLchXGiCYCRNKH5FjM7032VO7+P
-	 zLeLn+WFzeN0Uk1YaKcqHrYwapYmcAoGxuR5JBKVqtO6saz7dgI4oHWWupJQ6radOE
-	 2VewUeTuXHGqw==
+	b=biefKOWlzuMzh7ej4E/AkyCZnk6bhnoECFhKPGS1cXJbIM4+xamwGarlh8C3Gzd5N
+	 i3KRBRiKLgPFZ7SLt//Q9dv0N2KcDFS7zT+VuAZEjA/ABOMG1p4my7Qk8fdq4epWBX
+	 AUQlB+DMn+7uGVndCoYWFnT5hxBcMEXFkBVYNX0QPT6cDAaXzCfRDDGRgPlrR85PJH
+	 0mp0w18Vwan9kzXyr2Vc+SK8yNMRuALjs0stc+S+7p4XJIaC6hYjozIev2Oq6SgzSS
+	 3oH9kMmb7VEFHYQGCsL0aDXbBIQjwScB+aibIRLXjU/lfdJuv7stCWieMtBrRMX8cO
+	 iVwyIn2G4D1kw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] Revert "bcache: remove heap-related macros and switch to generic min_heap"
-Date: Thu, 31 Jul 2025 18:19:18 -0400
-Message-Id: <1753977355-5eb688b8@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y 6/6] mptcp: do not queue data on closed subflows
+Date: Thu, 31 Jul 2025 18:19:21 -0400
+Message-Id: <1753976295-3d4a3ac1@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250731123819.31647-1-visitorckw@gmail.com>
+In-Reply-To: <20250731112353.2638719-14-matttbe@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,28 +66,26 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-Found matching upstream commit: 48fd7ebe00c1cdc782b42576548b25185902f64c
+The upstream commit SHA1 provided is correct: c886d70286bf3ad411eb3d689328a67f7102c6ae
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Commit author: Paolo Abeni <pabeni@redhat.com>
 
 Status in newer kernel trees:
-6.15.y | Present (different SHA1: 875dd4b6b0f3)
+6.15.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
 
-Note: The patch differs from the upstream commit:
+Note: Could not generate a diff with upstream commit:
 ---
-1:  48fd7ebe00c1 ! 1:  79c6a7994d93 Revert "bcache: remove heap-related macros and switch to generic min_heap"
-    @@ Commit message
-         Cc: Kent Overstreet <kent.overstreet@linux.dev>
-         Cc: <stable@vger.kernel.org>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-     
-      ## drivers/md/bcache/alloc.c ##
-     @@ drivers/md/bcache/alloc.c: static void bch_invalidate_one_bucket(struct cache *ca, struct bucket *b)
-
+Note: Could not generate diff - patch failed to apply for comparison
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-6.12.y       | Success     | Success    |
+| 5.15                      | Success     | Success    |
 
