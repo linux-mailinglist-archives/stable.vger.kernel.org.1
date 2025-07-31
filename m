@@ -1,126 +1,186 @@
-Return-Path: <stable+bounces-165681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0322B1756E
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 19:07:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83575B1757A
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 19:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F89EA82841
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:07:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 098BB189E4C2
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 17:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26797213E9F;
-	Thu, 31 Jul 2025 17:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FE223F40E;
+	Thu, 31 Jul 2025 17:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e62FE+iq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kj5JV3tO"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4FD1C07C3
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 17:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6204225784;
+	Thu, 31 Jul 2025 17:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753981672; cv=none; b=mkkbbJlaLS/9+Azp8B9OJhQ8yhepEjLZvetU9uRDkeGJwD+31Lklm2qaIe5gxiwpyBx6gmPWYHtwKd6Me9/YWivqUs2LWdroGYNLgJ3Nx1IxM1s01fvHXaGY27DmZz0VllI5kkavZ1rkUKFRIZN5z7BHqdEY0KA+CdXuldCYYp0=
+	t=1753981979; cv=none; b=UHfpCbjDlUmhapzZIfGUdqaC+Vd76w8oJCZrd9jP1WVFTmkSm1InTwr0OliMe0QEK29HE+EAQJhzG+PHsVFCHnlQcc66XEZZ7c+TVIOwUEPfSyrVZEQVsW0mdl56f8SZBDY3KZJdVvdpLUUrPpmB4xOIP5f9mWV5UBPykJ0TOKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753981672; c=relaxed/simple;
-	bh=+2WEWkxO2XBNPcVgfr9midutx7eBQLn7Ih+Z6y/lz10=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d1MEsQiNoWuaNRabAv8DvI83wkedJIXwjWVc66qIuTzqtpU08iBUtdR/jiKNZIDsaHgTO+FBTVnBzJNz2fevWBZEt8rSQ6OhW5v6YwPQZ/u8DkSJqNa8ebh7IFfkqQL/jADIQfd7/pHyC6UL2Ie6WF1zfMuhgO1iqSaajctUpFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e62FE+iq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753981670;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=W95fwcngNFVN7Dw8Ifafjvzeu2sGcCu0bDX4W6mcjRc=;
-	b=e62FE+iqqhFn9mlbtj4z0CRCpAJp/iu7EjQM4r+XRrDKz2btSbKtNwdX8CFU/LPMcrY9xG
-	zYNvQt1OrWgKq2LNfSALPLJWcFJpbpKpDtL1QT9KsIwvBQSPr4F5om6SixLgq8S0YiDsTk
-	IjMCTbXgdhDi7gxnRbtFTQADzmbH2GY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-Dw9zymN4MkyVfF9afuXumg-1; Thu, 31 Jul 2025 13:07:48 -0400
-X-MC-Unique: Dw9zymN4MkyVfF9afuXumg-1
-X-Mimecast-MFC-AGG-ID: Dw9zymN4MkyVfF9afuXumg_1753981667
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4562985ac6aso8471185e9.3
-        for <stable@vger.kernel.org>; Thu, 31 Jul 2025 10:07:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753981667; x=1754586467;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W95fwcngNFVN7Dw8Ifafjvzeu2sGcCu0bDX4W6mcjRc=;
-        b=VUYR5LymKV/D2BeRUv5gezc27JZvT9/Y+eGUo5eybozc7ZGGsgWTGQQ8NvxOcs5tfH
-         4gbObrHXvAqUw7oZbqHP/n9bigrD6FPFrnUJ5CFFcCioM+07o2XP5BNNtOKplgDsU9ER
-         tTsB9cCEkZKbcXu/KIziqaIBVjSUAGQktn5nKo3qK29rP2ROLUgnogMvMXmhP8ah0UpC
-         cDmfMUNf32eeDcVkppNy2jaL7/aMpECK4usGnD0dqJcIqPA8xWTSOLAkX6HasnJJ+/Ou
-         K1nmAmgdNI7U1lZOmgutA0A4WBpxceHvNSHaRTmfHhmVq7D9t/OaYaWHtFao6UHaQKvC
-         ZIGg==
-X-Forwarded-Encrypted: i=1; AJvYcCWzVcjKr0gWgMFFO39fGxskPtQf+q8pmtKT9n9is5jHCBoJG3P3p282ZlerfxIHBSVHcrqibZM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlmMF06PAeMTt+TLSu+TuNICSpvhGYH5/LMuM47JBYsuCewuqf
-	WkDDZQwiDqeEFYofeGTIHrrS0ZbqC7lUrm1Yl5gP+uOfjkUBdyqAufaROlETxWdZfd/SUAt7eOa
-	Qt/K84K3T0GliHIGYNxqxrZUXQKLl86wNQxMNjHusJeTPznRYRLUyJ/II
-X-Gm-Gg: ASbGnctJaLE1a8AwVDr1GjbuhRx7/KisdeEOLt9gIoLvnqeA4sWo6VTIAxLDaIa3/uL
-	xDdalLtrN6bHKcv1+adapxgFAIRihldRJNVQGLLp4t5y/EHfj3SkMBokfX9Lg4E4uxWa8S6GVnw
-	RgyvcrckZMYpewuN3GroEtZYcWDxE38yovSgHon+wKZhhb8Ks+8uHxbvwpHd4o55FLRjYPZ64Gq
-	R/JmO8rUnDvD3Yp5OcUQ7zVFIAHqrlC3fqFEptk9eh6/FZkcMq6NE7FUuerwwxE3N00bvjzuASu
-	8jGon5wKlgVPZ5Zg7jt8gPD1pocr4y9s2qiqwq336VqCXC/9AROqGA0wQ0PDQBbH/h69U+0ICsO
-	6
-X-Received: by 2002:a05:600c:a345:b0:456:2ce8:b341 with SMTP id 5b1f17b1804b1-45892bc48e1mr78580025e9.17.1753981667453;
-        Thu, 31 Jul 2025 10:07:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF6o5/vv6lNd3QYeNpO1xKq81HEgcr1sVdbp0YqpyF3awQbNrbMJ8dFKmysleE1fre88AIVw==
-X-Received: by 2002:a05:600c:a345:b0:456:2ce8:b341 with SMTP id 5b1f17b1804b1-45892bc48e1mr78579815e9.17.1753981667058;
-        Thu, 31 Jul 2025 10:07:47 -0700 (PDT)
-Received: from thinky.alberand.com (ip-217-030-074-039.aim-net.cz. [217.30.74.39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953cfcadsm76942415e9.18.2025.07.31.10.07.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 10:07:46 -0700 (PDT)
-From: Andrey Albershteyn <aalbersh@redhat.com>
-X-Google-Original-From: Andrey Albershteyn <aalbersh@kernel.org>
-To: linux-xfs@vger.kernel.org,
-	cem@kernel.org
-Cc: djwong@kernel.org,
-	Andrey Albershteyn <aalbersh@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] xfs: fix scrub trace with null pointer in quotacheck
-Date: Thu, 31 Jul 2025 19:07:22 +0200
-Message-ID: <20250731170720.2042926-3-aalbersh@kernel.org>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1753981979; c=relaxed/simple;
+	bh=749QrL7J0/QGXNnQBMQXrAxmTfG1i6S/8klvDMbN0Zk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NcJ4pPzvCzWkLFcONWI40rYp06pBPMARC0qAFEjXvdEIcc7170foVQwg+4Q4JV+dcPWkmBkJL9gcbzHf4EaCqFnZzgw3fUniKtD7XAPeIwRVkve7GdbV8B9vxvcM3Y2UTEwcT1Oep4VQAR3E1qEq1/aM84tGyMxmpQ4CEJEbVjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kj5JV3tO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA434C4CEEF;
+	Thu, 31 Jul 2025 17:12:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753981979;
+	bh=749QrL7J0/QGXNnQBMQXrAxmTfG1i6S/8klvDMbN0Zk=;
+	h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Kj5JV3tOEOJziKA5GcWydOQLVXuuxUDhzo9hx04OjNFlbGyFVdEkNEXiEBglYUOFe
+	 w3UhNalj62focn6MClwC3yB/MJpPvVC1NskaaVyX6V+yymHVY5QdigQSugDkn6q48a
+	 P55+BzlRK41SUDOHMzn5OYagSncHkdOwaeMM6aRrXo+Oi5tx3mMfosRU4bqVr0pZRh
+	 K7gFBnpVaIH81SnKxhQknFTZMtkmae5WnjeJEZpamKBdFUQINSWRdV1vlQ+EltrqFH
+	 tpjgJRSSGa7R46LoRuN6ZWkOX4YS3a/MtLCZmG1XHy3irrUz4KRFWIR1PfT/PyZ6ZC
+	 9HmClJewkmwTw==
+Message-ID: <2ca5109a-341c-497a-9da7-422d56620348@kernel.org>
+Date: Fri, 1 Aug 2025 01:12:55 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: yukuai@kernel.org
+Subject: Re: [PATCH] blk-wbt: Fix io starvation in wbt_rqw_done()
+To: Yizhou Tang <tangyeechou@gmail.com>, Julian Sun <sunjunchao2870@gmail.com>
+Cc: linux-block@vger.kernel.org, axboe@kernel.dk, stable@vger.kernel.org,
+ Julian Sun <sunjunchao@bytedance.com>
+References: <20250731123319.1271527-1-sunjunchao@bytedance.com>
+ <CAOB9oOZV5ObqvgNxr9m0ztm7ruM9N9RMi8QHmiG5WL4sNbLxuw@mail.gmail.com>
+Content-Language: en-US
+From: Yu Kuai <yukuai@kernel.org>
+In-Reply-To: <CAOB9oOZV5ObqvgNxr9m0ztm7ruM9N9RMi8QHmiG5WL4sNbLxuw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-The quotacheck doesn't initialize sc->ip.
+Hi,
 
-Cc: <stable@vger.kernel.org> # v6.8
-Fixes: 21d7500929c8a0 ("xfs: improve dquot iteration for scrub")
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
----
- fs/xfs/scrub/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+在 2025/7/31 23:40, Yizhou Tang 写道:
+> Hi Julian,
+>
+> On Thu, Jul 31, 2025 at 8:33 PM Julian Sun <sunjunchao2870@gmail.com> wrote:
+>> Recently, we encountered the following hungtask:
+>>
+>> INFO: task kworker/11:2:2981147 blocked for more than 6266 seconds
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> kworker/11:2    D    0 2981147      2 0x80004000
+>> Workqueue: cgroup_destroy css_free_rwork_fn
+>> Call Trace:
+>>   __schedule+0x934/0xe10
+>>   schedule+0x40/0xb0
+>>   wb_wait_for_completion+0x52/0x80
+> I don’t see __wbt_wait() or rq_qos_wait() here, so I suspect this call
+> stack is not directly related to wbt.
+>
+>
+>>   ? finish_wait+0x80/0x80
+>>   mem_cgroup_css_free+0x3a/0x1b0
+>>   css_free_rwork_fn+0x42/0x380
+>>   process_one_work+0x1a2/0x360
+>>   worker_thread+0x30/0x390
+>>   ? create_worker+0x1a0/0x1a0
+>>   kthread+0x110/0x130
+>>   ? __kthread_cancel_work+0x40/0x40
+>>   ret_from_fork+0x1f/0x30
+This is writeback cgroup is waiting for writeback to be done, if you 
+figured out
+they are throttled by wbt, you need to explain clearly, and it's very 
+important to
+provide evidence to support your analysis. However, the following 
+analysis is
+a mess :(
+>>
+>> This is because the writeback thread has been continuously and repeatedly
+>> throttled by wbt, but at the same time, the writes of another thread
+>> proceed quite smoothly.
+>> After debugging, I believe it is caused by the following reasons.
+>>
+>> When thread A is blocked by wbt, the I/O issued by thread B will
+>> use a deeper queue depth(rwb->rq_depth.max_depth) because it
+>> meets the conditions of wb_recent_wait(), thus allowing thread B's
+>> I/O to be issued smoothly and resulting in the inflight I/O of wbt
+>> remaining relatively high.
+>>
+>> However, when I/O completes, due to the high inflight I/O of wbt,
+>> the condition "limit - inflight >= rwb->wb_background / 2"
+>> in wbt_rqw_done() cannot be satisfied, causing thread A's I/O
+>> to remain unable to be woken up.
+>  From your description above, it seems you're suggesting that if A is
+> throttled by wbt, then a writer B on the same device could
+> continuously starve A.
+> This situation is not possible — please refer to rq_qos_wait(): if A
+> is already sleeping, then when B calls wq_has_sleeper(), it will
+> detect A’s presence, meaning B will also be throttled.
+Yes, there are three rq_wait in wbt, and each one is FIFO. It will be 
+possible
+if  A is backgroup, and B is swap.
+>
+> Thanks,
+> Yi
+>
+>> Some on-site information:
+>>
+>>>>> rwb.rq_depth.max_depth
+>> (unsigned int)48
+>>>>> rqw.inflight.counter.value_()
+>> 44
+>>>>> rqw.inflight.counter.value_()
+>> 35
+>>>>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+>> (unsigned long)3
+>>>>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+>> (unsigned long)2
+>>>>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+>> (unsigned long)20
+>>>>> prog['jiffies'] - rwb.rqos.q.backing_dev_info.last_bdp_sleep
+>> (unsigned long)12
+>>
+>> cat wb_normal
+>> 24
+>> cat wb_background
+>> 12
+>>
+>> To fix this issue, we can use max_depth in wbt_rqw_done(), so that
+>> the handling of wb_recent_wait by wbt_rqw_done() and get_limit()
+>> will also be consistent, which is more reasonable.
+Are you able to reproduce this problem, and give this patch a test before
+you send it?
 
-diff --git a/fs/xfs/scrub/trace.h b/fs/xfs/scrub/trace.h
-index 1e6e9c10cea2..a8187281eb96 100644
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -479,7 +479,7 @@ DECLARE_EVENT_CLASS(xchk_dqiter_class,
- 		__field(xfs_exntst_t, state)
- 	),
- 	TP_fast_assign(
--		__entry->dev = cursor->sc->ip->i_mount->m_super->s_dev;
-+		__entry->dev = cursor->sc->mp->m_super->s_dev;
- 		__entry->dqtype = cursor->dqtype;
- 		__entry->ino = cursor->quota_ip->i_ino;
- 		__entry->cur_id = cursor->id;
--- 
-2.50.0
+Thanks,
+Kuai
+>>
+>> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+>> Fixes: e34cbd307477 ("blk-wbt: add general throttling mechanism")
+>> ---
+>>   block/blk-wbt.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/block/blk-wbt.c b/block/blk-wbt.c
+>> index a50d4cd55f41..d6a2782d442f 100644
+>> --- a/block/blk-wbt.c
+>> +++ b/block/blk-wbt.c
+>> @@ -210,6 +210,8 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq_wait *rqw,
+>>          else if (blk_queue_write_cache(rwb->rqos.disk->queue) &&
+>>                   !wb_recent_wait(rwb))
+>>                  limit = 0;
+>> +       else if (wb_recent_wait(rwb))
+>> +               limit = rwb->rq_depth.max_depth;
+>>          else
+>>                  limit = rwb->wb_normal;
+>>
+>> --
+>> 2.20.1
+>>
+>>
 
 
