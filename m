@@ -1,152 +1,155 @@
-Return-Path: <stable+bounces-165608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559A5B16A4F
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 04:08:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D36B16A5B
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 04:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2332C6206D0
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 02:07:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E706718C5C7C
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 02:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB4B1A01C6;
-	Thu, 31 Jul 2025 02:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2C1233728;
+	Thu, 31 Jul 2025 02:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YExX0o6u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F6jaJoQR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5021C1DED5D;
-	Thu, 31 Jul 2025 02:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775AA22318;
+	Thu, 31 Jul 2025 02:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753927698; cv=none; b=uNDJHgLe0XOY9NLvVBD3/J4rk2voL98e5bssiDVepp7rMmta9jnsd05kKWqJmg8lt1QQ5HJkvurqIduXWzB+XHswslC+7wuSvXFwD0VWsbdehHzUMdBAH87Mh23q3krO3NR5tRlGS8o1kk2/2jFOY0oMJ9GeAy64WhQIHIwrrhk=
+	t=1753928367; cv=none; b=fsu/XdmRa6+kHsx9o2KZRiBRoRjlCJ0RmXU810LC4BuAcwPx9PUNzaGHQuGkF8Crb6xrnbEGqil1ZQTREFaoFnriXR77jGLXzjfSh+QSzWmYdOBMFCvxDJf7f6VBhvLz/wx5uj26CgMWg9ET98Iqib9RVncQZrw0wh6Ickguchg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753927698; c=relaxed/simple;
-	bh=jYjmmUbhAo5Rx12q31rCMDi0MJPFmBegHSkQ5/vkesA=;
+	s=arc-20240116; t=1753928367; c=relaxed/simple;
+	bh=/EMZUGIb+jSGRcKKS31fRFqZ32wWToO8WQ5zfarulMQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Z6/fALs3mWdhY1hELT2p0Vc8DOrCeVLOWvXdZ2z8+kkr1Op9Sfz8QCz/9Z6AGO+wmkXEVxD3LK26kDkiu0apxCTD2lGNpkadJmho9l18+Y/z97k9+HUWylvgk+B3uLFYrrOz8T4Z4gCkJHT4eILyY25sjEnK41oFAl8gaxMz+zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YExX0o6u; arc=none smtp.client-ip=209.85.128.52
+	 Content-Disposition; b=ZeoIrJVFTX6IHRQzIutwztBEuJ6shpKzgSvEeXfIgtK8m2RDDU5+MnmBHDTEBjrQUXQ3inLF170/vlSgVJT+SmutrIb0r4Zdi/xR2q8Hlt6YkxqZGZEMsH2WhlfvedixgvhV/bQ2jyWJlviWBO2Z9ovlLYBJKEhtqqFAs2BcPBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F6jaJoQR; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45629702e52so1485395e9.2;
-        Wed, 30 Jul 2025 19:08:16 -0700 (PDT)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4561a4a8bf2so4045895e9.1;
+        Wed, 30 Jul 2025 19:19:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753927694; x=1754532494; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ttbMdEkxoTUOprk+YRVdSAOn6EZRYe2hYPzeU8X5k20=;
-        b=YExX0o6uGhpDg8P6to+jWGY8mqmJ7GBLtUPzyJALeSlsow5EzSSiSJzSZexO3PkmTh
-         k0ixiFnIHoi2SpzUhqZSb79RJeK7s+AA2r8u7A6kWDdF/WhaQzHRdiqfomzX8xsejoxr
-         65Lkwfpe85bQVuy5s3D1hN/ZJkFTkuIgG6m6t8367RNHJillYizWUuCxN3Gdks3OLnZ9
-         J701P9+BdvePT28h1rklEFHwgbHj3X0NzQs+2bilTgJINFCMwsO+r7shaTU201+OY4/C
-         MdHY3NDxmCAJPNb71YT579HnMGhx0O9RUJzCLywLOvAykh8Bn4vy/Obgy5vm5BJW5hdG
-         F3tA==
+        d=gmail.com; s=20230601; t=1753928364; x=1754533164; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b/rG/4GRP2jN1wvu1hAC2b4sTXSJWfazoIpwk4Gm8xA=;
+        b=F6jaJoQR+E8uIGYSNJTAEVBN3Y02LtYrI/QwUUhAC9z1PcRQRBSxBGAQG9c3fle5TA
+         J+1USHXhnLoTw5fhE930OwCJtpGD2hHP66AcI712e53DRlfIo7pfXMZXHqBYX4P3kQRg
+         4yE9oRTy0nfEM6C2ofTy7t6xJ1zchp3a5pckRwoDJR+vo5HSJQo7ZXQLwZgiWaBBlyl+
+         IlVLmUhd7V+CRdfBdAsYCuxuj7w6mA/8p3HI1yf+h4liHq7h9hTfM4SOokjvfrn4+ta4
+         Q8gwUUCa79PcqK4Kg2WE/QwJRQS1drZKjJJBkZ4AtgypugDria1DOPlOKc2iFZ9G0omK
+         7sHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753927694; x=1754532494;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ttbMdEkxoTUOprk+YRVdSAOn6EZRYe2hYPzeU8X5k20=;
-        b=tTuY47GOldmLL9Seive35c8A2otdF5TJTBhXz+EnxAUcMzsLhYjkgXC4QNqrJMIlmN
-         7NqfP0OX6uY/ckfjgtS4TKXUsf15j8JDyoVrGQHWmn95XBHZE9YqYa16XbS2zZAkemoz
-         KflQGwvSzrf+ZVncOGOioP8QslIw+3ciyZrzKYpR7TnJt4cLF0mEaJMH9jdTVAk9uqAI
-         olulsiJCQLsdrXbqRT+u6w5SEfs9VrBNvk8Lp49sOHmlbK5cGE5ud9um59Uw8sk9REgN
-         g1Ph1SEkg0DBJ9OwcsdU0WzjeRQ333G0kFVGOwHIkq+PtT9hxd1kx+dOC9PM7RiyZT8v
-         N4Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCU7jf3igBf826PUqwFBAOtn5NYe6CDh529UdFgpvNl53oQhNnc1WzC63DKUvwSYcWrkt2Z6Xr+cZrmQrlU=@vger.kernel.org, AJvYcCVxOi7UBHXxF/jv0ANJeMkTcdyaP//BU2BMnZfhySc6EYP1CW9//Y/bLxH4LgdtYx9z2kp+paF4@vger.kernel.org
-X-Gm-Message-State: AOJu0YylZSiG/VmUN1e5pcdUFJXDY5OqJ9aedrjDCWqTO0XhAuDlxloq
-	cZrs8WJIJxCsheuR74LvF2b4pFN3g0nswf6JDKBs6isjjxPSMVFXihvQ
-X-Gm-Gg: ASbGncuQAXpJR02jUFqEN39QfZM1VjDrxloMNbdzjQvscnElL5xkNc2xlicBwZj3z74
-	yMDD1YpIiSvcczauYs3uFVueUqRNWvDnswG2x9Gtmyab8n7xmCkZNwIPOudCUDzZu0/MQDyeSlH
-	IccTdoYiATgwTPafYzVSi3iXrHUxDloZNwW49Oimj62GSPdhSJPA8cNMkRVCmZIhl/VeNrnQQjb
-	TzZNRGIvgf0R92GJ6L8kunDaFg2AXwm1IDIM4KC2wLaws/wqIXZV+uQ7BidOCxgtRQejUjaT3om
-	7zmivdColZevG/tHwB5Up34WWM9MdoOOLbq6D8u8jkwWUSWxYpyz6voo5wbQcA9v4TyKpK6OftC
-	dNfVKdw81xu+lozwuMJ1wgg==
-X-Google-Smtp-Source: AGHT+IHsylB7+NHRuBW9mU53rbrnh3rovtARDLzE2S2cbV7OlcCzjAu5Wxz6+1u5fMJj5KOTcLkQ5g==
-X-Received: by 2002:a05:600d:108:20b0:456:26ad:46d2 with SMTP id 5b1f17b1804b1-45893943cefmr25724855e9.6.1753927694491;
-        Wed, 30 Jul 2025 19:08:14 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753928364; x=1754533164;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b/rG/4GRP2jN1wvu1hAC2b4sTXSJWfazoIpwk4Gm8xA=;
+        b=JkBYlNxUldnC5MQNsxdMkHZW+sBHL6G3o0z2HKHgUMlgR5lcsvuL7XJNZeuLizujF5
+         UcjU3neNZzAEnTOA6qNt0Lj3keW24ww1xGpbj/ZqKpImVy1McjBcUUXQ+Dyvu9eqCkxI
+         WpTxtyR49/qRy34NsA6SoyiJlR+0XbOdGtVZs2QKmN/pBbd3+1kbp9NGEaVN9nPRvNCF
+         h/YFieNHdFpFncewzqEV8ZTSVSXOagSCN7UOEpVc4yxWr8hv91X2DQQ/j07SABggK+rm
+         eE8Ecl3y2hvCScCWw4PYN7PHM+kqE3wyX+QeZZM0J8fi2lJeioTMAzLbWtT5nqRnPJEb
+         ZX3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVya+KhdyO4/tN/62ad1jw1hTnZcECtEfKGTuX7/IHc87R3ptiZLd2zjUe0sZUjhS+ayKJGAtzI@vger.kernel.org, AJvYcCXQz1RltgycgJYlVUdaYsQxXhm70rc2Z5hDcsyVnzU4fPxwxLDLWWE+VKdeo+488BW9YU4IPzJEwyIt9o6A@vger.kernel.org, AJvYcCXkn7e90E0/jXFbUnNAs5im4DVy3HHqu0d+PI8cWzGqsxK0j2Df3yfQQwidNlJrZRWUeGHZMfQJauGpjr+p7Vo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvMvRGlblT9h8O0NcvXy+bmDnCZsb2N15SdZMVM3Ku1M/nSu61
+	T8LK2D7HOvErAcSvrQ/OWB27h9+nDy3FDqLYToF2ZNJ2fEsd5k7/De/xh91dmFYr
+X-Gm-Gg: ASbGncsuRu7MKhNeX1ASsxgFv3WSOK5DdOWqadNvYVpGkDYEysM81/EzFzw0xyGXFog
+	Lk3Gr3UWjvfXyFyzlbtXSkf0heBm13keiTW5utmNYx8/gHUXA3z4LUuDRazDfGPFwMSpmsZdG/H
+	wSqhAn9MbFbG1CVVYXFTtfeVhPKU7jUbMPAs1TI5uaJL7mmVgr6LJIIgMWV4yvYAW+vbBAPxKYK
+	LbH8AmiVSsMsrWYT9F5qbbfm2hqH7BYK1BEv7SuO6UM3/rQZ3HphSBCCTaqRNrjH7sUiuHdjg8x
+	lnnBidT/8eoH3RzlPJTbkEaxxiSlY0+9LQmQ8+dHkXxpsfSsWOftyt1unf0zW6rTGUNgcA5XzCe
+	NuWhveEKV74Q=
+X-Google-Smtp-Source: AGHT+IFO4MHztFKSK6takGVorJXNttTmeTk7NbkHF16a2QXKUseuUs1uqQ2pxHvICB01OcSO4cpZAQ==
+X-Received: by 2002:a05:600c:3ba1:b0:456:1fd9:c8f0 with SMTP id 5b1f17b1804b1-45892b947c9mr57241695e9.2.1753928363779;
+        Wed, 30 Jul 2025 19:19:23 -0700 (PDT)
 Received: from pc ([165.51.119.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589ee4f239sm7657055e9.21.2025.07.30.19.08.12
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c48de68sm719878f8f.67.2025.07.30.19.19.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 19:08:14 -0700 (PDT)
-Date: Thu, 31 Jul 2025 03:08:11 +0100
+        Wed, 30 Jul 2025 19:19:22 -0700 (PDT)
+Date: Thu, 31 Jul 2025 03:19:19 +0100
 From: Salah Triki <salah.triki@gmail.com>
 To: Markus Elfring <Markus.Elfring@web.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
 Cc: salah.triki@gmail.com
-Subject: [PATCH V2] drm/amdgpu: check return value of xa_store()
-Message-ID: <aIrQC78VWg17Iqhf@pc>
+Subject: [PATCH V3] Bluetooth: bfusb: Fix use-after-free and memory leak in
+ device lifecycle
+Message-ID: <aIrSp18mz3GS67a1@pc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-The `xa_store()` function can fail due to memory allocation issues or other
-internal errors. Currently, the return value of `xa_store()` is not
-checked, which can lead to a memory leak if it fails to store `numa_info`.
+The driver stores a reference to the `usb_device` structure (`udev`)
+in its private data (`data->udev`), which can persist beyond the
+immediate context of the `bfusb_probe()` function.
 
-This patch checks the return value of `xa_store()`. If an error is
-detected, the allocated `numa_info` is freed, and NULL is returned to
-indicate the failure, preventing a memory leak and ensuring proper error
-handling.
+Without proper reference count management, this can lead to two issues:
+
+1. A `use-after-free` scenario if `udev` is accessed after its main
+   reference count drops to zero (e.g., if the device is disconnected
+   and the `data` structure is still active).
+2. A `memory leak` if `udev`'s reference count is not properly
+   decremented during driver disconnect, preventing the `usb_device`
+   object from being freed.
+
+To correctly manage the `udev` lifetime, explicitly increment its
+reference count with `usb_get_dev(udev)` when storing it in the
+driver's private data. Correspondingly, decrement the reference count
+with `usb_put_dev(data->udev)` in the `bfusb_disconnect()` callback.
+
+This ensures `udev` remains valid while referenced by the driver's
+private data and is properly released when no longer needed.
 
 Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Fixes: 1cc823011a23f ("drm/amdgpu: Store additional numa node information")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
+Fixes: 9c724357f432d ("[Bluetooth] Code cleanup of the drivers source code")
 Cc: stable@vger.kernel.org
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 ---
+Changes in v3:
+    - Add tag Cc
+
 Changes in v2:
-    - Improve description
     - Add tags Fixes and Cc
+ drivers/bluetooth/bfusb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-index f5466c592d94..b4a3e4d3e957 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -876,7 +876,7 @@ static inline uint64_t amdgpu_acpi_get_numa_size(int nid)
+diff --git a/drivers/bluetooth/bfusb.c b/drivers/bluetooth/bfusb.c
+index 8df310983bf6..f966bd8361b0 100644
+--- a/drivers/bluetooth/bfusb.c
++++ b/drivers/bluetooth/bfusb.c
+@@ -622,7 +622,7 @@ static int bfusb_probe(struct usb_interface *intf, const struct usb_device_id *i
+ 	if (!data)
+ 		return -ENOMEM;
  
- static struct amdgpu_numa_info *amdgpu_acpi_get_numa_info(uint32_t pxm)
- {
--	struct amdgpu_numa_info *numa_info;
-+	struct amdgpu_numa_info *numa_info, *old;
- 	int nid;
+-	data->udev = udev;
++	data->udev = usb_get_dev(udev);
+ 	data->bulk_in_ep    = bulk_in_ep->desc.bEndpointAddress;
+ 	data->bulk_out_ep   = bulk_out_ep->desc.bEndpointAddress;
+ 	data->bulk_pkt_size = le16_to_cpu(bulk_out_ep->desc.wMaxPacketSize);
+@@ -701,6 +701,8 @@ static void bfusb_disconnect(struct usb_interface *intf)
  
- 	numa_info = xa_load(&numa_info_xa, pxm);
-@@ -898,7 +898,11 @@ static struct amdgpu_numa_info *amdgpu_acpi_get_numa_info(uint32_t pxm)
- 		} else {
- 			numa_info->size = amdgpu_acpi_get_numa_size(nid);
- 		}
--		xa_store(&numa_info_xa, numa_info->pxm, numa_info, GFP_KERNEL);
-+		old = xa_store(&numa_info_xa, numa_info->pxm, numa_info, GFP_KERNEL);
-+		if (xa_is_err(old)) {
-+			kfree(numa_info);
-+			return NULL;
-+		}
- 	}
+ 	usb_set_intfdata(intf, NULL);
  
- 	return numa_info;
++	usb_put_dev(data->udev);
++
+ 	bfusb_close(hdev);
+ 
+ 	hci_unregister_dev(hdev);
 -- 
 2.43.0
 
