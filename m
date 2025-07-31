@@ -1,168 +1,234 @@
-Return-Path: <stable+bounces-165670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B81BB17318
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 16:20:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C41CB17333
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 16:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81927583E35
-	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 14:20:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FF231884216
+	for <lists+stable@lfdr.de>; Thu, 31 Jul 2025 14:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570C513C82E;
-	Thu, 31 Jul 2025 14:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AD314885D;
+	Thu, 31 Jul 2025 14:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="mSCtBGpi"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Urfy7wUB"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2042.outbound.protection.outlook.com [40.92.21.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76648130A54
-	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 14:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.21.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753971599; cv=fail; b=fJLLZ0KSznoZvlnbxDtF6GheMM1Xg34qGPobuN8dNKUpT8U3obu64jaAMBAzvp0PrtsAUujLJ7oMDgDsz5J5rRhNOseRlWmguVhgnz0akHByaM8YgaPo+X6MxPcEaZyPDsB96eGlEO7B0VK1rcVn0RPiApP6cgqgtO57zQbi9qg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753971599; c=relaxed/simple;
-	bh=wxLBcjMVrzoEntEj5XLBhMBEt34da11Gt/7PqDSnsHQ=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=skA84UBVHuO/sFtNyEhepMdu4Gk7fvCXHWUqppJvYkCUxNMs3Lm7pU87dbJBFPSfcPB60Iei3K5pBEMaEE+ChpklmrPeraaFukzzHgbGBzL3Mn7rEDJaKuegucGS93kaqkvNl6nGIgqbN8fJUObrZtwu6XoK2TwEPEdFq2dLGpU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=mSCtBGpi; arc=fail smtp.client-ip=40.92.21.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aQ5RDDVYkas7gi4CM88/XfLUjMqu3ZRYi/i8hpa4g3R4M+9zxjRZNhvle39eajNlYr86XHTA88Y81/a5/SlNtawvzVQl/9lFySaK3dxeddi4mcfBHsCXtMoVrw+/2zZBPrQdzZuuIgqa5SBwN6T0zGSFN2w5B0cNGCS5JjNeWd7Dm0SUwnDPztaVaxpYNU0qnFhDEoUQAligIkK6H9Iv8C89lGiyvrcAhzBqPMf3DOBGp4xNqTrz9wBhh0d2spP7nKgJ7/mDpxh8OqVorF7kcwMl62gVc8DfUkGy7t6l3VOdbhOU7k9CSQTaCbU4Lcmdx0am/nOHOKtHr1sPBk31Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wxLBcjMVrzoEntEj5XLBhMBEt34da11Gt/7PqDSnsHQ=;
- b=bUf2oi+aho0yBWHuHcUwXCa5BuESX4fAC6oIjHf/Q5rdPUyTuOXQrZ96+eB/MrCcxsWm5vzrtnd303QVvI52fy27ty0f4BVLXJArYlq+c8uWYd6kHja1cm0c4yLk6wVl5OelJctFoVRy58nCjatHGoSS65am+7P2AYbyRVTAAoTcnCQnJwTSOA+wZQEOKrT0T4IHB0ernWQwlB4bXFyaySkhV7XKekvIvJw/HC3PLcGOFnZ5bbfQjDYsEVLvWVxvQCbMJb409UTZ3UWlqzg4mRbyIZErwF7R2RLmRQCZa1q+VrsVPaE3F2i576ne3Zo2aUDElk/ToFCaNA/3JofftQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wxLBcjMVrzoEntEj5XLBhMBEt34da11Gt/7PqDSnsHQ=;
- b=mSCtBGpiZolcWJhybP0l7I0bRMSgm8T1WOVKxqKRSTSDJT8iKNcVXo0ctDEIp0bmx7vqGxV4D2lGupOCGkDgOhQdC/mD1wquYX7u/ZSQCvGl+a/DCd3rqtVzQsWA00IgDspMVUoclwP3tzby7yuSDgpR5kQ1BBc7Ets18MFm+Veoed+mrcIU7q6y7VUvBnR8hBjlOgh64+nGH9MKSUvhGCUYoWrhlOw2Dj8IDQeX1pL8dKeSI+e53dOvJDUIbSAJWZLq70Td2wnT69n3ec7Rg7pR/ZeFtJUw868+N0kjPTOh2+Ky8VGPIhzD22waob/36WLMa22kQO323trzy6nssw==
-Received: from SN6PR17MB2477.namprd17.prod.outlook.com (2603:10b6:805:d5::31)
- by PH0PR17MB5504.namprd17.prod.outlook.com (2603:10b6:510:bc::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.13; Thu, 31 Jul
- 2025 14:19:55 +0000
-Received: from SN6PR17MB2477.namprd17.prod.outlook.com
- ([fe80::c94b:9ff:95b4:eb55]) by SN6PR17MB2477.namprd17.prod.outlook.com
- ([fe80::c94b:9ff:95b4:eb55%3]) with mapi id 15.20.8989.011; Thu, 31 Jul 2025
- 14:19:55 +0000
-From: Alyssa Campbell <alyssa.b2bconnect@outlook.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Need to Know About Details of NRF Retail's Big Show
-Thread-Topic: Need to Know About Details of NRF Retail's Big Show
-Thread-Index: AdwBpkU4ecjm1N3LRyyvfAySeVuscg==
-Disposition-Notification-To: Alyssa Campbell <alyssa.b2bconnect@outlook.com>
-Date: Thu, 31 Jul 2025 14:19:54 +0000
-Message-ID:
- <SN6PR17MB2477FC99679D9B77EDC731E7AB27A@SN6PR17MB2477.namprd17.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR17MB2477:EE_|PH0PR17MB5504:EE_
-x-ms-office365-filtering-correlation-id: b088432f-7def-4abd-6fa8-08ddd03d525d
-x-ms-exchange-slblob-mailprops:
- CLk2x5OX5VaWByBIbrvOWDzHensRyrdtU1/O1gWIJHfPMEE0wqoBXcNpLQ3MtpUqhrEF583xdXeHyxAQRUIMlPmnX9ltmU1a8HidLtzqt9UqCeKuQB/aqYLow979Tvlw/DwhHbLTJ3ESFQ7SkarPNPePlIcSgVI294diCDQc2TUtdsR9cxFkXnkURinavSbH1unw2Wo2Y2EyC42gzr/TDZjdJ11oK7BZZxKyykUdFy5hM64EsoBoJL8t+cYpiIb+SHnmj9dUD1enP2LFBZFMhLJodLmqZi5vCIZ34s0pZXh10Zl8e3NUJvMCoiqG8WSMYQWRBNpjTOroWHyQQVvPZ66T2B0XSqDFletQQ/giYbbz/0smMYiEb4ykl+tyhSDwSCPJQF7afUbb7sbPYZiun/M1EX1BBOENXjE7yqhT7+mEjSHpg+rCqo4bBMbv0lcQyZLBzDz24cLzRYxyBL2gUYwRRUSBlOutNwwtJsBlkUOX3w+HjL5eXeaGpWqGw65ISyw6KG2tA12f1Rfio8ycOQZA6xwv2lRsv2hezqCDnaKlxigEGdlvIKWG2dCxNMEj9nHHgsxZS3MzVIlvV4WQ1XZPpLnQ2tNv7zT9STLLbGJC3tDrMwFgMHfY+hhutxoAo5Qxu72BJoyQfD3UEAN88AH/uA2zfEt2tJbTA3KZszaqnpsP8GtX3ZPzym4l/vUEeUs/Xml29gV6ugQqXptU0A==
-x-microsoft-antispam:
- BCL:0;ARA:14566002|41001999006|8062599012|19110799012|15080799012|461199028|8060799015|39105399003|40105399003|440099028|51005399003|3412199025|12091999003|102099032|56899033;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?KlE+KoGqRQAKUZSArnZembblYfZneQDT3bZhNJZgyMgeiKJH0UOTWbvIIr?=
- =?iso-8859-1?Q?XGqYCU4c73PoN7LCyWZ548YzXIgts7mocPv1cLtmFSzG1aHin5F8ilNGhY?=
- =?iso-8859-1?Q?ea7NUOn73Hc40s/5AhII6Vwes6d+8cJc76DD0grZJVOJOjn2QRtiULTjvf?=
- =?iso-8859-1?Q?NbWV3/ie5WsQ3al20QCk87aE8bXSS48IWNLbOM1idcuf8zp64MpZiuo6Z/?=
- =?iso-8859-1?Q?/3ihQTbgNWxM0WpFoLfChPP6bCBuC00hHqarybhCxl1BE37PLXOJ8dyNde?=
- =?iso-8859-1?Q?hzQiw8CNY9CiP9EDXGLMQ1qDXqrwdrif1j/4k5xgSvZ3Segg6pKlsY92n9?=
- =?iso-8859-1?Q?PBqgAgLvV8zV6Dz6epRyFjwqJfR947ar4VABC8t33oFyr0X2SXQ/x9uNVR?=
- =?iso-8859-1?Q?TYzRbtqQ3dxhQmV/k6PKcaF5X5wduRZE52nHcquA5R0QXkjZF76Wb6+QHF?=
- =?iso-8859-1?Q?uX6t2O3eZIy0Ud+PJ1wlCh8+AhM1fz2lhGVazsdycThR2OL0cKV3VnHMCv?=
- =?iso-8859-1?Q?gZV7RHnDoEuOltEejiZWM/B7rF8hpqXHm8dVhaMF+Kcq/S4BR9j+38P99n?=
- =?iso-8859-1?Q?6ekp7liUd0i/TEAoPGUuSKvDtD7ei0XgccnUA1xhFt/DRFc1T+k/69xtHw?=
- =?iso-8859-1?Q?8TgW6H9oQ821xlDJbkA48w8EiYsAmOuSCrlTHbnfbbWy/ct/d4FKkJNR3j?=
- =?iso-8859-1?Q?yhdqoUBn0xzindoZk/Od5qF5+OkNzTYSgoeJGNLG/1q9i7iLp3pHChIwnX?=
- =?iso-8859-1?Q?cV5OUmrqy8Zm+rx5vN6BVWYGpuHKXQEtdrNqEKhQofCxgWm5sn0nNuELoB?=
- =?iso-8859-1?Q?H1RAb4zvlo2ybG1/HoxyWLDgNcIryHyVu7ls63NgkGTOFkbcLe8v0ZDqRu?=
- =?iso-8859-1?Q?GIZQ1EW8fep9FfMDYGuGtpQnhioxwA4iDs0/xN4JQlk1wxZAl9WUQynT4s?=
- =?iso-8859-1?Q?6vPvfP0RnQHsuiuJgGk5nNIDxDehspSmDNYyNEcGVuS6H4Hu4CxayyFNwZ?=
- =?iso-8859-1?Q?YhkXxa4OM/22YrjFpWto9zCq2XrDEq/oPr8Kl1wslsTWnl+de5+Gk/xE8V?=
- =?iso-8859-1?Q?ooY5PR9PMNmNkmE9BFdORm2agjLeNH5C9JHQdNsy1CC7XsFEaW4aXj9uCS?=
- =?iso-8859-1?Q?Epi3o6NNQ1fJmeALmVd8YR6yBkzUeUFmIakO779AZWdI5F7lQcycvBBRPm?=
- =?iso-8859-1?Q?xuB29bH0Zpnwuciu+8xOv9rQ2M2Z0kvjOepZqAwBafxni+kd0J52nn9xAx?=
- =?iso-8859-1?Q?FxVek+9YaargqqsMlPwTjbRzolBl15orLF2PFFUQEBgdrtYd124QPa/uuk?=
- =?iso-8859-1?Q?akCk?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?LMdYC6f0xwjedHRflInKZpJ6VfPQgKF/M9tMFoOE26IXY2iQdTLTBphBej?=
- =?iso-8859-1?Q?4IFH3EzYl0YGz4UDS8kyHBTQJWZ/26m6+zzB+6/0xg71tqKZysw6M92vmn?=
- =?iso-8859-1?Q?6BB97hrvwMb5xVWQx+uzjqrQJ/8Ob1C5f0xalOoT8bgM3SFCQ9OvmNqZB5?=
- =?iso-8859-1?Q?u8TZVV1q5LpDJQ4sKbI4zC9nkc2mIl8stUNOgQu2RVulQth0kQU/PxjlvQ?=
- =?iso-8859-1?Q?IEBKkVHnBm4SyY+kodKfup/dnqbfKFmmGQIy8sH9nyadkJdJdaQrIfYIud?=
- =?iso-8859-1?Q?D6lfAiSrZpeeE/gaC2V49SNXaiK0+XdwDYBScvJLLPL7qHFYEqsTAO47lr?=
- =?iso-8859-1?Q?i125+NHCz5I4cUgMhx6gC/cNLBYwUEh8Mjwu5UgYnbhay6KTWMg27Z/Mnv?=
- =?iso-8859-1?Q?iBo1tJ/A3vd9nYK376aamop8mJ44iPLdFhZ+owTqOQ2RYjMf6m/n2ayQA0?=
- =?iso-8859-1?Q?O2vzUqb68UbN7AIe+wiYj2BbUXWiTKQvm7sttcKHvucZQVSW1XoI6q/w/p?=
- =?iso-8859-1?Q?tuM9aIUp58zrbiZZYUC3IyVQZymdnaL8De5iOJKlMAKkji59M7cY9DnxVU?=
- =?iso-8859-1?Q?ebSnMm/m5wOY+3h9nwI6Ze3iHbMnAeT7aP3svRbmAVPnMsaShDvGo+pjk8?=
- =?iso-8859-1?Q?hWpQvNdAbFqyGioI1kOTjoCCYvm3o17yFU2rOuhTMkiuyWSLds9EJ4g0ew?=
- =?iso-8859-1?Q?+JfKNHqFYhCZKWDjxcHRfKBQDhu57XlwBBxVwJJq2AVqCUF00BhNux+tnG?=
- =?iso-8859-1?Q?Wm/b44L5tH9K6f51OFvyTd+Z/y8koFWPIifLd3gu1NPUfNIBbVpdhdOvqC?=
- =?iso-8859-1?Q?Ri+4hCRFvbuMjt9BPHptoCwpE1Il1ybYiNv/HlsCL3GZfpRvBJleMEDp2l?=
- =?iso-8859-1?Q?HorkOjdhfo8exp5Zw8HToeBccMuzfOcFPcWnsZJOQOExBafAOezsTn6MCP?=
- =?iso-8859-1?Q?ojAlV9OsvZ8J62L/U749zKLmeia8rY3eWu36BoUE+zoryreHrkfVNvn2N7?=
- =?iso-8859-1?Q?a+ZUpV4gKujvQeHI+lkjpZ+xwkwILp91s32+YE7/sUD1Hb5sOSeLvqOXH8?=
- =?iso-8859-1?Q?31XsLA0S2pnk7u38sw9tzcHGjxJHOE/WYIMFKQz/FgVR0ZFqqR1SiaEDli?=
- =?iso-8859-1?Q?0zpdyGSf/TWh0TdfEcg8lK8d2jolZ5czrakNIIX5um9u+BqxbWe1OFu6p0?=
- =?iso-8859-1?Q?CWNHiiSqmS99liKIqW9m+7ATO3YpYcAy6QQG+q8cmg7QBdmjTi8L/YmXbQ?=
- =?iso-8859-1?Q?c8Bw/6vfHwKN0sqxeOhMpJhgJE7o0xIxXelTQ+vXyZhAtwaHUqKoFajxZY?=
- =?iso-8859-1?Q?Pe6k?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C42F24
+	for <stable@vger.kernel.org>; Thu, 31 Jul 2025 14:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753971848; cv=none; b=pIwYKDJhkzvNP/kueh+LIeW1Qdy6Bd+T7btR6Od9Y6umd5U06des1DwIDvGkAVYv+EuCtTcFceJQHIpRDYowLiUlZFUFT20tUFCl7Dm7ZBFBKp+cyfjKmiW1JAIV0Btw0ygRtz1y3+NF0qBI7yhEsT24uv6z9Jnfe4+sPRcBPSQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753971848; c=relaxed/simple;
+	bh=2zcrs1xswIA1l7tTfNbMKxV75YXhdUEj7fyBQro4ue0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nRbL2c+vZgKFFeb2xidFrNnmsaFvpVRRc++sYBNY0FnSSXSLeF+lMtHSghl5ht0nG3tMsqkrYWUZcx1+oTyCXX6H88MWvV4dSU0RL0QP2D+0E7RlT4qH8UjfckZBEjN/lKrSgRbCOkxJ0MdFBz/VTMLemkgvz3/FUrgV1qBMtww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Urfy7wUB; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ab3ad4c61fso405651cf.0
+        for <stable@vger.kernel.org>; Thu, 31 Jul 2025 07:24:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753971845; x=1754576645; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CaEPQlDrJ3xUdOaNniHVDx2+n9iGAETTjj86f/r2NQg=;
+        b=Urfy7wUBRNXK1SXcj5S6UCg4eCQBIib9qFDFicziStrkJIaNnTbIatwjfIxDl7rze8
+         /gQRbaJbd2FasYpTWASNdVOGBus2itigJ0+AUv+K6MnOPZdm4YFzWEUeRQE76Em9mFcb
+         IP3N68UeED4Jo86QUQBSklnfmjmWTMh9+xxm1YMYSEWIud6lWHM+48jDbrHX1SnV9Wle
+         x2zP+PxvaoMc+SsBfR+qaGyzCKAKajXPE7V4/diutie2WyUMx5dw8YDqzL0lyhXsXq6q
+         7Q2+/SHhQawWaobWLjUr2cxXPcwsnSOrtYF6ZnJ4mMJrAnv443fFMJFLu+dsdp2qZ9kt
+         YxNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753971845; x=1754576645;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CaEPQlDrJ3xUdOaNniHVDx2+n9iGAETTjj86f/r2NQg=;
+        b=D1K8/DEcGlLRt2Ffosh+CMzIztsXnwj7iInYbFgZCEMAXlSYU1VbZzI7xunJMr5tle
+         gH1eioN0oJErM5bbWybA7c1MqSTvMAhX4sTKP/1VbWzgqArLebDVSHyQx9KGRgXt+Pc2
+         RcNYHwzS4cfQmxEiwMHj0SrBJ2HIwgQfGghf72SVvQjqWBcvXfXfTWdqkC/tN3Ge5JOa
+         VaNiRqVdqcXO5ZIAYfZ/jQzjFuQ7swlQsZVUK34c3MnzcAdKDd/KJtgjtrFryXKpccGi
+         7zF89wobo5WEPDWzA+y0mhD1w1C5x4J0fsTm7rLN1wELzrufz4ETqU0sgVNhxIr+LWPH
+         DUow==
+X-Forwarded-Encrypted: i=1; AJvYcCVk4iKqYvf7tm1MFFqr7+i70V8OhKVxNnul3Rl1iHRz3ON8SINAt5Q2FbjHm1dpQxLKJ3RMtgE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz894ENBPP84HAZ5E7M3e4ZlGVWvn4jdJYpoiimXG60+0t+ZYyr
+	7A6S/0tcIcLnYYVK6dZV9/4ZMbzQEIYh5PewNRe7bLPyfl4Ebn9ugw/KfQIcdJX5dKKTIQg8xP9
+	fhpl0D12XS/Uy14YgT6apz2yICGn7jmPVnG+/9nFj
+X-Gm-Gg: ASbGncsUGa04UTBqC7e07EdzcnCDhRKuKTDlO3D4+uICBEt1oEeFNvd8l8bWPs30QFE
+	lQFBAuS8BdNA01+5G1UnNF8L6wYVmT/On4iQJ4i7o7zPvWmBwKHqwgy6t/gSAENIm0XljUUESua
+	7JR3sGLajqoLCfuZvjAeiO3aJtwti8e4n+ltursfN/XHpi7uoPWKkFQ/zDVxZZQUYWvpO/ptnl5
+	EMEfCYEAzMn2kNGsjgL4qjeFkREA6eZGMAtqw==
+X-Google-Smtp-Source: AGHT+IH+U7W48iIJwZXQgQOQ/vHHdTop5m5TFsH8fhOVp61+aOVc0QiEilGP1nFKe1yRkmhH6wUYo0aGLXGz+zulmMk=
+X-Received: by 2002:ac8:7f14:0:b0:4a8:19d5:e9bb with SMTP id
+ d75a77b69052e-4aef1c60a48mr2832411cf.13.1753971845017; Thu, 31 Jul 2025
+ 07:24:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR17MB2477.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: b088432f-7def-4abd-6fa8-08ddd03d525d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2025 14:19:54.9636
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR17MB5504
+References: <20250730170733.3829267-1-surenb@google.com> <20250731015241.3576-1-hdanton@sina.com>
+ <CA+EESO4mkiedqVMCV3fEnB-xeBMKyct1_WA=YDFVbqSGU4F+6A@mail.gmail.com>
+In-Reply-To: <CA+EESO4mkiedqVMCV3fEnB-xeBMKyct1_WA=YDFVbqSGU4F+6A@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 31 Jul 2025 07:23:54 -0700
+X-Gm-Features: Ac12FXy9AeUURppfkgynMqQjKLG3IYh8hvItem-Sdjqlh2M8Jm5M7zE6NTKVTE4
+Message-ID: <CAJuCfpGzazWVYzc9XXh+xTP9R7cMffiP2P4G5OJTQ0-Ji4xFEQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles a
+ THP hole
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Hillf Danton <hdanton@sina.com>, akpm@linux-foundation.org, peterx@redhat.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, 
+	syzbot <syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
-=A0
-Hope today's treating you well!
-=A0
-I wanted to know if you would be interested in purchasing the attendees lis=
-t of NRF 2025 Retail's Big Show ?
-=A0
-Attendees count: 25,000 Leads
-=A0
-Contact Information: Company Name, Web URL, Contact Name, Title, Direct Ema=
-il, Phone Number, Mailing Address, Industry, Employee Size, Annual Sales.=20
-=A0
-If this ignites your interest please let me know, I'd be glad to offer you =
-the pricing options, for your assessment.
-=A0
-I'm grateful for your quick reply. Can't wait to hear from you.
-=A0
-Best
-Alyssa Campbell
-Demand Generation Manager
-B2B Connect, Inc.
-=A0
-Please respond with a 'REMOVE' if you don't wish to receive further emails
+On Thu, Jul 31, 2025 at 12:35=E2=80=AFAM Lokesh Gidra <lokeshgidra@google.c=
+om> wrote:
+>
+> On Wed, Jul 30, 2025 at 6:58=E2=80=AFPM Hillf Danton <hdanton@sina.com> w=
+rote:
+> >
+> > #syz test
+> >
+> > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+> > encounters a non-present THP, it fails to properly recognize an unmappe=
+d
+> > hole and tries to access a non-existent folio, resulting in
+> > a crash. Add a check to skip non-present THPs.
+> >
+> Thanks Suren for promptly addressing this issue.
+>
+> > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@go=
+ogle.com/
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  mm/userfaultfd.c | 38 +++++++++++++++++++++++---------------
+> >  1 file changed, 23 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > index cbed91b09640..60be8080ddd0 100644
+> > --- a/mm/userfaultfd.c
+> > +++ b/mm/userfaultfd.c
+> > @@ -1818,27 +1818,35 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx,=
+ unsigned long dst_start,
+> >
+> >                 ptl =3D pmd_trans_huge_lock(src_pmd, src_vma);
+> >                 if (ptl) {
+> > -                       /* Check if we can move the pmd without splitti=
+ng it. */
+> > -                       if (move_splits_huge_pmd(dst_addr, src_addr, sr=
+c_start + len) ||
+> > -                           !pmd_none(dst_pmdval)) {
+> > -                               struct folio *folio =3D pmd_folio(*src_=
+pmd);
+> > +                       if (pmd_present(*src_pmd) || is_pmd_migration_e=
+ntry(*src_pmd)) {
+> > +                               /* Check if we can move the pmd without=
+ splitting it. */
+> > +                               if (move_splits_huge_pmd(dst_addr, src_=
+addr, src_start + len) ||
+> > +                                   !pmd_none(dst_pmdval)) {
+> > +                                       if (pmd_present(*src_pmd)) {
+> > +                                               struct folio *folio =3D=
+ pmd_folio(*src_pmd);
+> > +
+> > +                                               if (!folio || (!is_huge=
+_zero_folio(folio) &&
+> > +                                                              !PageAno=
+nExclusive(&folio->page))) {
+> > +                                                       spin_unlock(ptl=
+);
+> > +                                                       err =3D -EBUSY;
+> > +                                                       break;
+> > +                                               }
+> > +                                       }
+> >
+> > -                               if (!folio || (!is_huge_zero_folio(foli=
+o) &&
+> > -                                              !PageAnonExclusive(&foli=
+o->page))) {
+> >                                         spin_unlock(ptl);
+> > -                                       err =3D -EBUSY;
+> > -                                       break;
+> > +                                       split_huge_pmd(src_vma, src_pmd=
+, src_addr);
+> > +                                       /* The folio will be split by m=
+ove_pages_pte() */
+> > +                                       continue;
+> >                                 }
+> >
+> > +                               err =3D move_pages_huge_pmd(mm, dst_pmd=
+, src_pmd,
+> > +                                                         dst_pmdval, d=
+st_vma, src_vma,
+> > +                                                         dst_addr, src=
+_addr);
+> > +                       } else {
+> > +                               /* nothing to do to move a hole */
+> >                                 spin_unlock(ptl);
+> > -                               split_huge_pmd(src_vma, src_pmd, src_ad=
+dr);
+> > -                               /* The folio will be split by move_page=
+s_pte() */
+> > -                               continue;
+> > +                               err =3D 0;
+> I think we need to act here depending on whether
+> UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES is set or not.
+
+Hmm, yes, I think you are right. I thought we would bail out earlier
+if !UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES but I think it's possible to get
+here if the PMD was established earlier but then unmapped.
+
+>
+>            err =3D (mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES) ? 0 : -ENOEN=
+T;
+>
+> Also, IMO, the step_size in this case should be the minimum of
+> remaining length and HPAGE_PMD_SIZE.
+
+Ah, ok. I think it matters only for incrementing "moved" correctly
+because otherwise the functionality is the same.
+
+> >                         }
+> > -
+> > -                       err =3D move_pages_huge_pmd(mm, dst_pmd, src_pm=
+d,
+> > -                                                 dst_pmdval, dst_vma, =
+src_vma,
+> > -                                                 dst_addr, src_addr);
+> >                         step_size =3D HPAGE_PMD_SIZE;
+> >                 } else {
+> >                         if (pmd_none(*src_pmd)) {
+> I have a related question/doubt: why do we populate the page-table
+> hierarchy on the src side [1] (and then also at line 1857) when a hole
+> is found? IMHO, it shouldn't be needed. Depending on whether
+> UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES is set or not, it should either
+> return -ENOENT, or continue past the hole. Please correct me if I'm
+> wrong.
+
+I thought about that too. I think it's done to simplify the logic.
+This way we can treat the cases when PMD was never allocated and when
+PMD was allocated, mapped and then unmapped the same way.
+
+>
+> [1] https://elixir.bootlin.com/linux/v6.16/source/mm/userfaultfd.c#L1797
+>
+> >
+> > base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
+> > --
+> > 2.50.1.552.g942d659e1b-goog
 
