@@ -1,135 +1,378 @@
-Return-Path: <stable+bounces-165770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFA3B187A7
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 21:21:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1E6B187C0
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 21:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C705C626608
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 19:21:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D6E178E0F
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 19:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710DE28D85F;
-	Fri,  1 Aug 2025 19:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89113205AA1;
+	Fri,  1 Aug 2025 19:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="EGaM/1Z3"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RPUnxaTD"
 X-Original-To: stable@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8454A4A04;
-	Fri,  1 Aug 2025 19:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F811FBC92
+	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 19:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754076056; cv=none; b=JoDyuj82dR/gMz+iyImNV/mYBDSSCopyJMI1VCYYhyG0WtjturGMxSqoDIwVRul36C5P1qOLKHQnsASvOBrv24fi124T0Mo/bfXMD4RglI+e/W5CNMJ+e5Puw4CVZW6aY7/gu4JTs8EMauDLXul/wnlhwQ0PqA6bPIixFMi9KTI=
+	t=1754076618; cv=none; b=X8Y/V0gTn0CCLdtXqXz9ktOCAikjypsNpzxSqWdmGr4IgF774Dk1eEbPD8B3SskOmcmRAmB0HcTHZZS59B0aPZG3cKeX9ibhMK0dzLv/VoB8tEie94nNJatxUGXjHrYTR9qwpHq0YfofOqdTyjcN8PsIRKQlaIMwgYof1g4W1AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754076056; c=relaxed/simple;
-	bh=/OhmmueiM+PBzyqYNxwzAhMVDfVEDoowF1MB6aWN5jI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PcQPsdrnSmwKYId/RcqU+M+12NNHDqQslJuf4P7N+F/qDQ/+IX3sEL4KX8TYZtGRbaMtXECZ33xhWrgb16XF4Elb6u5YdCIRIp1JzLiNhgwRz3A4DU+qNtgAAzwNo8/soNJsLsuQ7kUPlUbOGAHUJDyScwjgpLMSpyZ0nCvpvJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=EGaM/1Z3; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1754076053;
-	bh=/OhmmueiM+PBzyqYNxwzAhMVDfVEDoowF1MB6aWN5jI=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=EGaM/1Z39PREFkhPU43ZWTej9Ci/WbZbWKO4SGQVaIy5FA2UGpIofMhykT8dnk/Aw
-	 DXOSoH7n7EhjJk8DXZsaPCUcDulQs3fjZlXav4uvkrzbF+ud0pyTvNdLDaL5VC+69n
-	 hYUZyHNdBcMO8H4jC9Y4HbLiUV+dfwILgQgnRlHo=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 28C011C02E9;
-	Fri, 01 Aug 2025 15:20:53 -0400 (EDT)
-Message-ID: <605314b70efde2e31f9e6a34a6bb0ea0060e0c67.camel@HansenPartnership.com>
-Subject: Re: [PATCH 1/2] tpm: Compare HMAC values in constant time
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	linux-integrity@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Fri, 01 Aug 2025 15:20:52 -0400
-In-Reply-To: <20250801190331.GC1274@sol>
-References: <20250731215255.113897-1-ebiggers@kernel.org>
-	 <20250731215255.113897-2-ebiggers@kernel.org>
-	 <3ed1ae7e7f52afe53ce2ff00f362ed153b3eec20.camel@HansenPartnership.com>
-	 <20250801030210.GA1495@sol>
-	 <ca85bbe8a3235102707da3b24dba07a8649c3771.camel@HansenPartnership.com>
-	 <20250801171125.GA1274@sol>
-	 <2da3f6d36dccb86f19292015ea48e5d7a89e3171.camel@HansenPartnership.com>
-	 <20250801184026.GB1274@sol>
-	 <321c09c7cb2edb113ce9a829d37c0ae5c835e17f.camel@HansenPartnership.com>
-	 <20250801190331.GC1274@sol>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1754076618; c=relaxed/simple;
+	bh=mfanK206pIXizsL2pLcY7vv9XivfIfMYTdb6jhjHWyk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YGQVxjnh4nDcKTvARbVwOcHR7bT1rLef+RKBRlLzCpqvB+lCLBGC9ZcrAMYpu83Xn+Y590oDpFW34fewIC3xGY/Db54trP0kBUkirr/xOKlemd11mhXrpcnYM3tOVLwpSOjknBuplkK36jdDzv/TLdphkA+xazXtCDc1iqZmBls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RPUnxaTD; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ab86a29c98so57691cf.0
+        for <stable@vger.kernel.org>; Fri, 01 Aug 2025 12:30:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754076615; x=1754681415; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=twDNEhjIuV3P8FWkQWfYnM6bEXR/NJ1nyF/4WQ2JH/0=;
+        b=RPUnxaTDgBXNkEZSjTQnRwLIRsOr55Va2xyZfHU6enzDy23hfQMsiotuKBCHQVqZIm
+         lf/myJtHULJ5umH/QuVey8EZ5vHSRtOTahRjIVpGa2ssyJq+EWYx7b55acDX611weLhR
+         /3q1Su1Hl/G+f27jPzVHrnVzS+qL2hGyueBZsSOGFrsfN7DNJLk7URO4OFPaKIoodVav
+         bM1ZsE9FD8aFD+nUZ09FzYFCNavjyud9yt/PWRAqPmUJJDtT44sYxpf696OIipf3/mVl
+         ppumpTCTfrhjU+brpkrTl6BT2t6jr3Rlzu4QTbYaeCHYmKGlIsF5x4S0fp/2Wu5YLTaQ
+         BXIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754076615; x=1754681415;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=twDNEhjIuV3P8FWkQWfYnM6bEXR/NJ1nyF/4WQ2JH/0=;
+        b=XBmgHgy6SIymDaRuWzZOkz4GEtL0wEsgaBVM8N8AeW6hiDcdDDBlMz4jJ1wqOggLm7
+         2Wp8igDPYyzEGHlv2WmYaZSjceJD9vvJ5lAK8h+80iPFZgW0rF2b8DlmnhtNQdEoImZL
+         CTGZCPGRpU4JzxpRCao1IbuL1xUvmfPGAIsXiAV/J7pHZhN2cGCkbB4HcGL3VYCS2S7N
+         gz2/mgpG0yYdBvoVO9DH3x5+vXuTQyhWDkS5qX5aAGno9+hqQ75f519759RGCuNxBEb6
+         ACileqwCarIekrDnq5Tkuw0uS63Clov+qgpprqMQKoms4LTb1EbOWAnZT6NZBAvjDZvu
+         dJAw==
+X-Forwarded-Encrypted: i=1; AJvYcCX4uC+BaoGbysgI+XBRTME1rQQOOgridBihVwBiILVM5eEYKLUObq0SgwNduZy1OGhGwHMn74M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZk7q4B8ygAdySequoQ32K/MIAxy9HyIyYYJ1Iqtfpsz0DerBL
+	KtKRA0uho/oUvCsZQuTQRxtxQBrygL43jnJfTqoOoFCzzVVYoKfgjlW83plZv6G1SNF+Hp6UhJs
+	qsfULfW/edpX6+es9YLN2R8lo5Je0PgD4u0Kz9k1OgVy3CzGV8RvTrY5qXh8=
+X-Gm-Gg: ASbGncsBAlhBge9u2N4jgvydLMsKDwsYILkvG2Y7fU/Jospc0a+bTAD8YaBUBefkKXu
+	f0ylvVNTh8dNud4tKqFz9ExaElBZ9Xlb75oXYFmr0Aw/rSNBH30B3QqAg0WMLTWPK7oDOOl/+CZ
+	vWTm5mvDhIZ5y6w9tyftiEfdna0HesEO2Oh1jPHC5U/Dto62DKEUzQyy+YpB152ct4kZnRkozCI
+	IT6ZuoHHk2nlZ5EVp+S1/Q0IS6mh3/h11g=
+X-Google-Smtp-Source: AGHT+IGJz6lFXVxVdLxtOYGPbfOs+p+cwbfDc9Hr4tq8znJjmVLXS2URnxtlM7GxjpvFbqbJihK6yqO34DNYKLHSJ4U=
+X-Received: by 2002:ac8:5d49:0:b0:4ae:e478:268d with SMTP id
+ d75a77b69052e-4af13199dd2mr477631cf.5.1754076614621; Fri, 01 Aug 2025
+ 12:30:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250731154442.319568-1-surenb@google.com> <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
+ <aIzMGlrR1SL5Y_Gp@x1.local> <CAJuCfpEqOUj8VPybstQjoJvCzyZtG6Q5Vr4WT0Lx_r3LFVS7og@mail.gmail.com>
+ <aIzp6WqdzhomPhhf@x1.local> <CAJuCfpGWLnu+r2wvY2Egy2ESPD=tAVvfVvAKXUv1b+Z0hweeJg@mail.gmail.com>
+ <aIz1xrzBc2Spa2OH@x1.local> <CAJuCfpFJGaDaFyNLa3JsVh19NWLGNGo1ebC_ijGTgPGNyfUFig@mail.gmail.com>
+ <aI0Ffc9WXeU2X71O@x1.local>
+In-Reply-To: <aI0Ffc9WXeU2X71O@x1.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 1 Aug 2025 19:30:02 +0000
+X-Gm-Features: Ac12FXwqbmtzOOF0OpEWd-6TjRB4swEi2Z6oN7xIU_JaZp9vQNVpQvwwBAnRsUI
+Message-ID: <CAJuCfpFSY3fDH36dabS=nGzasZJ6FtQ_jv79eFWVZrEWRMMTiQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
+ a THP hole
+To: Peter Xu <peterx@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org, aarcange@redhat.com, 
+	lokeshgidra@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2025-08-01 at 12:03 -0700, Eric Biggers wrote:
-> On Fri, Aug 01, 2025 at 02:53:09PM -0400, James Bottomley wrote:
-> > On Fri, 2025-08-01 at 11:40 -0700, Eric Biggers wrote:
-> > > On Fri, Aug 01, 2025 at 02:03:47PM -0400, James Bottomley wrote:
-> > > > On Fri, 2025-08-01 at 10:11 -0700, Eric Biggers wrote:
-> > [...]
-> > > > > It's true that such attacks don't work with one-time keys.=C2=A0
-> > > > > But here it's not necessarily a one-time key.=C2=A0 E.g.,
-> > > > > tpm2_get_random() sets a key, then authenticates multiple
-> > > > > messages using that key.
-> > > >=20
-> > > > The nonces come one from us and one from the TPM.=C2=A0 I think our=
-s
-> > > > doesn't change if the session is continued although it could,
-> > > > whereas the TPM one does, so the HMAC key is different for
-> > > > every communication of a continued session.
-> > >=20
-> > > Again, tpm2_get_random() sets a HMAC key once and then uses it
-> > > multiple times.
-> >=20
-> > No it doesn't.=C2=A0 If you actually read the code, you'd find it does
-> > what I say above.=C2=A0 Specifically=C2=A0 tpm_buf_fill_hmac_session() =
-which
-> > is called inside that loop recalculates the hmac key from the
-> > nonces.=C2=A0 This recalculated key is what is used in
-> > tpm_buf_check_hmac_response(), and which is where the new tpm nonce
-> > is collected for the next
-> > iteration.
->=20
-> tpm_buf_fill_hmac_session() computes a HMAC value, but it doesn't
-> modify the HMAC key.=C2=A0 tpm2_parse_start_auth_session() is the only
-> place where the HMAC key is changed.=C2=A0 You may be confusing HMAC
-> values with keys.
+On Fri, Aug 1, 2025 at 6:21=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+>
+> On Fri, Aug 01, 2025 at 05:45:10PM +0000, Suren Baghdasaryan wrote:
+> > On Fri, Aug 1, 2025 at 5:13=E2=80=AFPM Peter Xu <peterx@redhat.com> wro=
+te:
+> > >
+> > > On Fri, Aug 01, 2025 at 09:41:31AM -0700, Suren Baghdasaryan wrote:
+> > > > On Fri, Aug 1, 2025 at 9:23=E2=80=AFAM Peter Xu <peterx@redhat.com>=
+ wrote:
+> > > > >
+> > > > > On Fri, Aug 01, 2025 at 08:28:38AM -0700, Suren Baghdasaryan wrot=
+e:
+> > > > > > On Fri, Aug 1, 2025 at 7:16=E2=80=AFAM Peter Xu <peterx@redhat.=
+com> wrote:
+> > > > > > >
+> > > > > > > On Fri, Aug 01, 2025 at 09:21:30AM +0200, David Hildenbrand w=
+rote:
+> > > > > > > > On 31.07.25 17:44, Suren Baghdasaryan wrote:
+> > > > > > > >
+> > > > > > > > Hi!
+> > > > > > > >
+> > > > > > > > Did you mean in you patch description:
+> > > > > > > >
+> > > > > > > > "userfaultfd: fix a crash in UFFDIO_MOVE with some non-pres=
+ent PMDs"
+> > > > > > > >
+> > > > > > > > Talking about THP holes is very very confusing.
+> > > > > > > >
+> > > > > > > > > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_=
+HOLES and it
+> > > > > > > > > encounters a non-present THP, it fails to properly recogn=
+ize an unmapped
+> > > > > > > >
+> > > > > > > > You mean a "non-present PMD that is not a migration entry".
+> > > > > > > >
+> > > > > > > > > hole and tries to access a non-existent folio, resulting =
+in
+> > > > > > > > > a crash. Add a check to skip non-present THPs.
+> > > > > > > >
+> > > > > > > > That makes sense. The code we have after this patch is rath=
+er complicated
+> > > > > > > > and hard to read.
+> > > > > > > >
+> > > > > > > > >
+> > > > > > > > > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> > > > > > > > > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspo=
+tmail.com
+> > > > > > > > > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693=
+ce.0050.GAE@google.com/
+> > > > > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > > > ---
+> > > > > > > > > Changes since v1 [1]
+> > > > > > > > > - Fixed step size calculation, per Lokesh Gidra
+> > > > > > > > > - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLE=
+S, per Lokesh Gidra
+> > > > > > > > >
+> > > > > > > > > [1] https://lore.kernel.org/all/20250730170733.3829267-1-=
+surenb@google.com/
+> > > > > > > > >
+> > > > > > > > >   mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----=
+------------
+> > > > > > > > >   1 file changed, 29 insertions(+), 16 deletions(-)
+> > > > > > > > >
+> > > > > > > > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > > > > > > > > index cbed91b09640..b5af31c22731 100644
+> > > > > > > > > --- a/mm/userfaultfd.c
+> > > > > > > > > +++ b/mm/userfaultfd.c
+> > > > > > > > > @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfau=
+ltfd_ctx *ctx, unsigned long dst_start,
+> > > > > > > > >             ptl =3D pmd_trans_huge_lock(src_pmd, src_vma)=
+;
+> > > > > > > > >             if (ptl) {
+> > > > > > > > > -                   /* Check if we can move the pmd witho=
+ut splitting it. */
+> > > > > > > > > -                   if (move_splits_huge_pmd(dst_addr, sr=
+c_addr, src_start + len) ||
+> > > > > > > > > -                       !pmd_none(dst_pmdval)) {
+> > > > > > > > > -                           struct folio *folio =3D pmd_f=
+olio(*src_pmd);
+> > > > > > > > > +                   if (pmd_present(*src_pmd) || is_pmd_m=
+igration_entry(*src_pmd)) {
+> > > > > > >
+> > > > > > > [1]
+> > > > > > >
+> > > > > > > > > +                           /* Check if we can move the p=
+md without splitting it. */
+> > > > > > > > > +                           if (move_splits_huge_pmd(dst_=
+addr, src_addr, src_start + len) ||
+> > > > > > > > > +                               !pmd_none(dst_pmdval)) {
+> > > > > > > > > +                                   if (pmd_present(*src_=
+pmd)) {
+> > > > >
+> > > > > [2]
+> > > > >
+> > > > > > > > > +                                           struct folio =
+*folio =3D pmd_folio(*src_pmd);
+> > > > >
+> > > > > [3]
+> > > > >
+> > > > > > > > > +
+> > > > > > > > > +                                           if (!folio ||=
+ (!is_huge_zero_folio(folio) &&
+> > > > > > > > > +                                                        =
+  !PageAnonExclusive(&folio->page))) {
+> > > > > > > > > +                                                   spin_=
+unlock(ptl);
+> > > > > > > > > +                                                   err =
+=3D -EBUSY;
+> > > > > > > > > +                                                   break=
+;
+> > > > > > > > > +                                           }
+> > > > > > > > > +                                   }
+> > > > > > > >
+> > > > > > > > ... in particular that. Is there some way to make this code=
+ simpler / easier
+> > > > > > > > to read? Like moving that whole last folio-check thingy int=
+o a helper?
+> > > > > > >
+> > > > > > > One question might be relevant is, whether the check above [1=
+] can be
+> > > > > > > dropped.
+> > > > > > >
+> > > > > > > The thing is __pmd_trans_huge_lock() does double check the pm=
+d to be !none
+> > > > > > > before returning the ptl.  I didn't follow closely on the rec=
+ent changes on
+> > > > > > > mm side on possible new pmd swap entries, if migration is the=
+ only possible
+> > > > > > > one then it looks like [1] can be avoided.
+> > > > > >
+> > > > > > Hi Peter,
+> > > > > > is_swap_pmd() check in __pmd_trans_huge_lock() allows for (!pmd=
+_none()
+> > > > > > && !pmd_present()) PMD to pass and that's when this crash is hi=
+t.
+> > > > >
+> > > > > First for all, thanks for looking into the issue with Lokesh; I a=
+m still
+> > > > > catching up with emails after taking weeks off.
+> > > > >
+> > > > > I didn't yet read into the syzbot report, but I thought the bug w=
+as about
+> > > > > referencing the folio on top of a swap entry after reading your c=
+urrent
+> > > > > patch, which has:
+> > > > >
+> > > > >         if (move_splits_huge_pmd(dst_addr, src_addr, src_start + =
+len) ||
+> > > > >             !pmd_none(dst_pmdval)) {
+> > > > >                 struct folio *folio =3D pmd_folio(*src_pmd); <---=
+-
+> > > > >
+> > > > > Here looks like *src_pmd can be a migration entry. Is my understa=
+nding
+> > > > > correct?
+> > > >
+> > > > Correct.
+> > > >
+> > > > >
+> > > > > > If we drop the check at [1] then the path that takes us to
+> > > > >
+> > > > > If my above understanding is correct, IMHO it should be [2] above=
+ that
+> > > > > makes sure the reference won't happen on a swap entry, not necess=
+arily [1]?
+> > > >
+> > > > Yes, in case of migration entry this is what protects us.
+> > > >
+> > > > >
+> > > > > > split_huge_pmd() will bail out inside split_huge_pmd_locked() w=
+ith no
+> > > > > > indication that split did not happen. Afterwards we will retry
+> > > > >
+> > > > > So we're talking about the case where it's a swap pmd entry, righ=
+t?
+> > > >
+> > > > Hmm, my understanding is that it's being treated as a swap entry bu=
+t
+> > > > in reality is not. I thought THPs are always split before they get
+> > > > swapped, no?
+> > >
+> > > Yes they should be split, afaiu.
+> > >
+> > > >
+> > > > > Could you elaborate why the split would fail?
+> > > >
+> > > > Just looking at the code, split_huge_pmd_locked() checks for
+> > > > (pmd_trans_huge(*pmd) || is_pmd_migration_entry(*pmd)).
+> > > > pmd_trans_huge() is false if !pmd_present() and it's not a migratio=
+n
+> > > > entry, so __split_huge_pmd_locked() will be skipped.
+> > >
+> > > Here might be the major part of where confusion came from: I thought =
+it
+> > > must be a migration pmd entry to hit the issue, so it's not?
+> > >
+> > > I checked the code just now:
+> > >
+> > > __handle_mm_fault:
+> > >                 if (unlikely(is_swap_pmd(vmf.orig_pmd))) {
+> > >                         VM_BUG_ON(thp_migration_supported() &&
+> > >                                           !is_pmd_migration_entry(vmf=
+.orig_pmd));
+> > >
+> > > So IIUC pmd migration entry is still the only possible way to have a =
+swap
+> > > entry.  It doesn't look like we have "real" swap entries for PMD (whi=
+ch can
+> > > further points to some swapfiles)?
+> >
+> > Correct. AFAIU here we stumble on a pmd entry which was allocated but
+> > never populated.
+>
+> Do you mean a pmd_none()?
 
-Is this simply a semantic quibble about what gets called a key?  For
-each TPM command we compute a cphash across all the command parameters
-(and for each return a rphash).  This hash then forms a
-hmac(session_key, cphash | our_nonce | tpm_nonce | attrs).  The point
-being that although session_key is fixed across the session, the
-our_nonce and tpm_nonce can change with every iteration.  Since the
-cphash is over the ciphertext, it's the only bit you get to vary with a
-chosen ciphertext attack, so the other parameters effectively key the
-hmac.
+Yes.
 
-Regards,
+>
+> If so, that goes back to my original question, on why
+> __pmd_trans_huge_lock() returns non-NULL if it's a pmd_none()?  IMHO it
+> really should have returned NULL for pmd_none().
 
-James
+That was exactly the answer I gave Lokesh when he theorized about the
+cause of this crash but after reproducing it I saw that
+pmd_trans_huge_lock() happily returns the PTL as long as PMD is not
+pmd_none(). And that's because it passes as is_swap_pmd(). But even if
+we change that we still need to implement the code to skip the entire
+PMD.
 
+>
+> IOW, I still don't understand why below won't already work:
+>
+> =3D=3D=3D8<=3D=3D=3D
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 52d7d5f144b8e..33e78f52ee9f5 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1880,13 +1880,15 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, u=
+nsigned long dst_start,
+>                         /* Check if we can move the pmd without splitting=
+ it. */
+>                         if (move_splits_huge_pmd(dst_addr, src_addr, src_=
+start + len) ||
+>                             !pmd_none(dst_pmdval)) {
+> -                               struct folio *folio =3D pmd_folio(*src_pm=
+d);
+> -
+> -                               if (!folio || (!is_huge_zero_folio(folio)=
+ &&
+> -                                              !PageAnonExclusive(&folio-=
+>page))) {
+> -                                       spin_unlock(ptl);
+> -                                       err =3D -EBUSY;
+> -                                       break;
+> +                               if (pmd_present(*src_pmd)) {
+> +                                       struct folio *folio =3D pmd_folio=
+(*src_pmd);
+> +
+> +                                       if (!folio || (!is_huge_zero_foli=
+o(folio) &&
+> +                                                      !PageAnonExclusive=
+(&folio->page))) {
+> +                                               spin_unlock(ptl);
+> +                                               err =3D -EBUSY;
+> +                                               break;
+> +                                       }
+>                                 }
+>
+>                                 spin_unlock(ptl);
+>
+> =3D=3D=3D8<=3D=3D=3D
+>
+> Likely I missed something important..  I'll be afk for a while soon, I'll
+> also double check (maybe early next week) on the reproducer.
+>
+> Thanks,
+>
+> --
+> Peter Xu
+>
 
