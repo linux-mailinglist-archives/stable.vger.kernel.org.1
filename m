@@ -1,137 +1,129 @@
-Return-Path: <stable+bounces-165772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A9CB187FF
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 22:14:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5179B18803
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 22:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CBA61886FC6
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 20:14:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4437AA6DF6
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 20:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4015204863;
-	Fri,  1 Aug 2025 20:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645C420C038;
+	Fri,  1 Aug 2025 20:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Aiwa2GL5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KlkK79AR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F908DF71;
-	Fri,  1 Aug 2025 20:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1643C77111;
+	Fri,  1 Aug 2025 20:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754079264; cv=none; b=G7CtdojoCWOhhN1YaXuGjgkUbhc7L2yRWpqUAIcOm8ZQzSUjL0GbcxQAF1j0fOpv6wDZSYjxU2cDRJ/ejrQsWuHnuJM5gg5Mz4zCxdXfJL1LFfi3A4+vx4gJQZZs4vPMfyyz5Wr3k1h0mWMjafIq+mHCJjIX2cUDJcNCgBRXEJI=
+	t=1754079350; cv=none; b=sErRCzF3hwbjUrVJo+fZU6bedrtdajOEcB92cNakew+8sMTeq88PMeOLLTr1KOYS4gEHDaYbpJ4viX1a6oMGEagpQM1guHxvZDVAzw9PTpRI0hMAyqboTGkSziPw6I/GmS0yvOPCbJYeJ2qk+2IgE3YpwbTVjDTngKuyKoNB+/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754079264; c=relaxed/simple;
-	bh=d2XZyV+/gWsZx/bSr/1trDF83S2snHbP0P55uU9+S5Q=;
-	h=Date:To:From:Subject:Message-Id; b=u/Lg19bGJAeY5ThEEfExQEb7z6ynHXvx21xayHdPii9WCqPBw98e4VFlSkuIyx2JvJohtBojBin1vtNA0USjEPxcD01XUfRPp8Wep2FHTlIPD61BB7Jcjz/ViLVmdcGoyU6/oL/Xw7SNpdj6BLVcJ7UWwvLLgs91VdtwGY0ljr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Aiwa2GL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD0EC4CEE7;
-	Fri,  1 Aug 2025 20:14:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754079264;
-	bh=d2XZyV+/gWsZx/bSr/1trDF83S2snHbP0P55uU9+S5Q=;
-	h=Date:To:From:Subject:From;
-	b=Aiwa2GL5/tx3Sec5ZB7gCySzFABtxOy50miN4+URgVTFRJ3eGNGVQbN4cO1um4nHz
-	 1C8lw4Zcuc37g6y7K5XGIm66svEw9ujNUVoDD4FNhdsBtLDrN8W6sZxhKdmPPFlige
-	 U+DxVhjHewl1dSVuk/v180V88FLeHY1mrOODgqiY=
-Date: Fri, 01 Aug 2025 13:14:23 -0700
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,dvyukov@google.com,andreyknvl@gmail.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kunit-kasan_test-disable-fortify-string-checker-on-kasan_strings-test.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250801201423.EDD0EC4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1754079350; c=relaxed/simple;
+	bh=KCGSw5/Bp54la2qDUzQm9jnwIIRKcCH/zxZ0U6jbIC0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=shxKqJmm7hjxHdpOe8DWIPtYsbwWlP0o1NqIm2APFa63c+f1T2owuL8PinaeUYZXFMFtfRLodkHZ19R1pctMM8E5yXVUlDbg4S99F07NDCIVanDnkmnIbFOV3o6xAJW1t8mQ75QHGjbRmmEBUW3vZnr9SV31tsz1oo7BoJlRLuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KlkK79AR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC67C4CEE7;
+	Fri,  1 Aug 2025 20:15:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754079349;
+	bh=KCGSw5/Bp54la2qDUzQm9jnwIIRKcCH/zxZ0U6jbIC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KlkK79ARWGVT7sIpq4cFnVEYopFRn9V64rTfUBF9rZ4DqjNvenubWMhvAMblR8ep1
+	 PEAjCh2ESWglpx0z6UJbG4BTRCr1803jOCJynTEKEFpI1cOoKjEB/NrdnZKjooG4lJ
+	 tIOhfwm94wq+GSDSVpjeNYfxaLJo3ewoUqMCCZwAZlobtoOhxwaOr66BDv4DbklN1O
+	 Z20L5WHfIR6PRmOVCpFUvKojlzFJgPv+otICGnZ6UqKj3d9eYaWEnLKombzirRlNpn
+	 Z/s6w6EyDqsRfQk0Vhz8EAEUAEFCVjbW5F+Og885OPck4wf/7OqCf0Gh2r4qIYOmIu
+	 ktuE87gs/RbAw==
+Date: Fri, 1 Aug 2025 13:14:55 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Peter Huewe <peterhuewe@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+	linux-integrity@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] tpm: Compare HMAC values in constant time
+Message-ID: <20250801201455.GA5141@sol>
+References: <20250731215255.113897-2-ebiggers@kernel.org>
+ <3ed1ae7e7f52afe53ce2ff00f362ed153b3eec20.camel@HansenPartnership.com>
+ <20250801030210.GA1495@sol>
+ <ca85bbe8a3235102707da3b24dba07a8649c3771.camel@HansenPartnership.com>
+ <20250801171125.GA1274@sol>
+ <2da3f6d36dccb86f19292015ea48e5d7a89e3171.camel@HansenPartnership.com>
+ <20250801184026.GB1274@sol>
+ <321c09c7cb2edb113ce9a829d37c0ae5c835e17f.camel@HansenPartnership.com>
+ <20250801190331.GC1274@sol>
+ <605314b70efde2e31f9e6a34a6bb0ea0060e0c67.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <605314b70efde2e31f9e6a34a6bb0ea0060e0c67.camel@HansenPartnership.com>
 
+On Fri, Aug 01, 2025 at 03:20:52PM -0400, James Bottomley wrote:
+> On Fri, 2025-08-01 at 12:03 -0700, Eric Biggers wrote:
+> > On Fri, Aug 01, 2025 at 02:53:09PM -0400, James Bottomley wrote:
+> > > On Fri, 2025-08-01 at 11:40 -0700, Eric Biggers wrote:
+> > > > On Fri, Aug 01, 2025 at 02:03:47PM -0400, James Bottomley wrote:
+> > > > > On Fri, 2025-08-01 at 10:11 -0700, Eric Biggers wrote:
+> > > [...]
+> > > > > > It's true that such attacks don't work with one-time keys. 
+> > > > > > But here it's not necessarily a one-time key.  E.g.,
+> > > > > > tpm2_get_random() sets a key, then authenticates multiple
+> > > > > > messages using that key.
+> > > > > 
+> > > > > The nonces come one from us and one from the TPM.  I think ours
+> > > > > doesn't change if the session is continued although it could,
+> > > > > whereas the TPM one does, so the HMAC key is different for
+> > > > > every communication of a continued session.
+> > > > 
+> > > > Again, tpm2_get_random() sets a HMAC key once and then uses it
+> > > > multiple times.
+> > > 
+> > > No it doesn't.  If you actually read the code, you'd find it does
+> > > what I say above.  Specifically  tpm_buf_fill_hmac_session() which
+> > > is called inside that loop recalculates the hmac key from the
+> > > nonces.  This recalculated key is what is used in
+> > > tpm_buf_check_hmac_response(), and which is where the new tpm nonce
+> > > is collected for the next
+> > > iteration.
+> > 
+> > tpm_buf_fill_hmac_session() computes a HMAC value, but it doesn't
+> > modify the HMAC key.  tpm2_parse_start_auth_session() is the only
+> > place where the HMAC key is changed.  You may be confusing HMAC
+> > values with keys.
+> 
+> Is this simply a semantic quibble about what gets called a key?  For
+> each TPM command we compute a cphash across all the command parameters
+> (and for each return a rphash).  This hash then forms a
+> hmac(session_key, cphash | our_nonce | tpm_nonce | attrs).  The point
+> being that although session_key is fixed across the session, the
+> our_nonce and tpm_nonce can change with every iteration.  Since the
+> cphash is over the ciphertext, it's the only bit you get to vary with a
+> chosen ciphertext attack, so the other parameters effectively key the
+> hmac.
 
-The patch titled
-     Subject: kunit: kasan_test: disable fortify string checker on kasan_strings() test
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kunit-kasan_test-disable-fortify-string-checker-on-kasan_strings-test.patch
+No, it's not "simply a semantic quibble".  You're just wrong.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kunit-kasan_test-disable-fortify-string-checker-on-kasan_strings-test.patch
+As I said earlier, our_nonce (which is not a key) does appear to make
+MAC timing attacks not possible.  All the other fields appear to be
+attacker-controlled, contrary to what you're claiming above.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Anyway, point taken: I'll drop the Fixes and Cc stable from the commit,
+and include my own analysis of why MAC timing attacks don't appear to be
+possible with this protocol.  Everything else in this thread has just
+been a pointless distraction.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: kunit: kasan_test: disable fortify string checker on kasan_strings() test
-Date: Fri, 1 Aug 2025 13:02:36 +0100
-
-Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
-FORTIFY_SOURCE") the kernel is panicing in kasan_string().
-
-This is due to the `src` and `ptr` not being hidden from the optimizer
-which would disable the runtime fortify string checker.
-
-Call trace:
-  __fortify_panic+0x10/0x20 (P)
-  kasan_strings+0x980/0x9b0
-  kunit_try_run_case+0x68/0x190
-  kunit_generic_run_threadfn_adapter+0x34/0x68
-  kthread+0x1c4/0x228
-  ret_from_fork+0x10/0x20
- Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
- ---[ end trace 0000000000000000 ]---
- note: kunit_try_catch[128] exited with irqs disabled
- note: kunit_try_catch[128] exited with preempt_count 1
-     # kasan_strings: try faulted: last
-** replaying previous printk message **
-     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
-     # kasan_strings: internal error occurred preventing test case from running: -4
-
-Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
-Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/kasan_test_c.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/mm/kasan/kasan_test_c.c~kunit-kasan_test-disable-fortify-string-checker-on-kasan_strings-test
-+++ a/mm/kasan/kasan_test_c.c
-@@ -1578,9 +1578,11 @@ static void kasan_strings(struct kunit *
- 
- 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
-+	OPTIMIZER_HIDE_VAR(ptr);
- 
- 	src = kmalloc(KASAN_GRANULE_SIZE, GFP_KERNEL | __GFP_ZERO);
- 	strscpy(src, "f0cacc1a0000000", KASAN_GRANULE_SIZE);
-+	OPTIMIZER_HIDE_VAR(src);
- 
- 	/*
- 	 * Make sure that strscpy() does not trigger KASAN if it overreads into
-_
-
-Patches currently in -mm which might be from yeoreum.yun@arm.com are
-
-kunit-kasan_test-disable-fortify-string-checker-on-kasan_strings-test.patch
-
+- Eric
 
