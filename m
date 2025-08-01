@@ -1,208 +1,371 @@
-Return-Path: <stable+bounces-165716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33AEB17E10
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 10:13:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E472B17F54
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 11:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48BB05831F7
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 08:13:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153103B5FD5
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 09:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B4920E03F;
-	Fri,  1 Aug 2025 08:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65192253A7;
+	Fri,  1 Aug 2025 09:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qHxSWG4l";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SIuZh/k4";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qHxSWG4l";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SIuZh/k4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S63z+e0D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8891FBEB1
-	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 08:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E2978F58;
+	Fri,  1 Aug 2025 09:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754035981; cv=none; b=gU2SKIrPA0en5l5J1TadZkiWSD+CpMXjg681IrYPxHzm3xC3aPR3GnJpKGr97QchT44CXPAiAkOV9jrLbGbleDVcMtVUcfX5QWp+IpGjSeetj5oFWjEEtJlHkMIHmsYL6UL735oIYIXYlaPChnrt4EcGMhTfxRGfY3TMb8IsYrA=
+	t=1754040771; cv=none; b=Rlg4Szn6gnUlWte3DJUXtaTFVWD36teP+Rqif6LcDehBghSxzdIrLEsoeKUf7WxbdQ5r2kdHIEq9UAZqeMU733sLgqwVhpaXeNQjdZpyHvJ/9lxwHclRCqVyELBw/5IIqRk8cwMOcafp7iJwA+md3j1dO2sNCGB+u4pEkAvoDQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754035981; c=relaxed/simple;
-	bh=pIVjqoAd2uYaOFfmj/QvgxbUeeXomGCtAIHSoZdTd7c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MEbu5sRQARdwE3gfhW+Hlt3lkM3QBcQZ55D5t+Wjwun4wlYT0nPbwTO2SLKCFKeQm1wdZsbR1Q07rFYcyvR96QzB/cAlHtiVEyIcZCEPrMZJUic3MTFNgo8O7Cw7F3u0RZqxiYs1/23Vfr2pBdZLYKtTTY1N7EVWID8C1PIR0xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qHxSWG4l; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SIuZh/k4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qHxSWG4l; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SIuZh/k4; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5B46A21A77;
-	Fri,  1 Aug 2025 08:12:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754035978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
-	b=qHxSWG4lVOhtunEgOG+lOXQhDj90+bIIRUIJ/gvA1/vZlxCPPciEI2T89crwxCAySoWrf4
-	03l4pqtkcXHzgsdfj34DNb2L/kMoOCxi7m7xLB1zV2cac/GudccoLJEvzaweKE8Ob4+iOO
-	sMfqOcPz9cQ1e+YGvvBf7FPyDfA05Ho=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754035978;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
-	b=SIuZh/k48X1aZC5n/Ywqt5RKbUXPKbevte5ioyqkuYQZz/9f0mk4rkZ8wZ1ZQf5YUITEMd
-	n6DHA2Tfgn/wNjCA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754035978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
-	b=qHxSWG4lVOhtunEgOG+lOXQhDj90+bIIRUIJ/gvA1/vZlxCPPciEI2T89crwxCAySoWrf4
-	03l4pqtkcXHzgsdfj34DNb2L/kMoOCxi7m7xLB1zV2cac/GudccoLJEvzaweKE8Ob4+iOO
-	sMfqOcPz9cQ1e+YGvvBf7FPyDfA05Ho=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754035978;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
-	b=SIuZh/k48X1aZC5n/Ywqt5RKbUXPKbevte5ioyqkuYQZz/9f0mk4rkZ8wZ1ZQf5YUITEMd
-	n6DHA2Tfgn/wNjCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B5E5138A5;
-	Fri,  1 Aug 2025 08:12:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NX07Cgp3jGgoIgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 08:12:58 +0000
-Message-ID: <f37ec25e-70b1-4f24-9d18-d869576aa7eb@suse.cz>
-Date: Fri, 1 Aug 2025 10:12:57 +0200
+	s=arc-20240116; t=1754040771; c=relaxed/simple;
+	bh=eiqaLq3RtG+Ff+hrJ3FvvqiTG8TbnTbVBk9r1Wnw5Q8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jTEVeDfpI8+bRgu1UKLGxfBAtqQ0cjiOSHvfUQSjdNLyonIYthzEoQejtf6cXyD6AEsJYWZSZHQfW1kiGc9r1Ph4whbI8M5pmFBJOi7gGg/crnzKzABrznVtTRkNuEe+VeLGcUilZqzgxE/VElN8SjuC7GShFvyrtWfkh4khtNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S63z+e0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC4AC4CEE7;
+	Fri,  1 Aug 2025 09:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1754040770;
+	bh=eiqaLq3RtG+Ff+hrJ3FvvqiTG8TbnTbVBk9r1Wnw5Q8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=S63z+e0DX10h5g/gJHamYKYTpPEvQVHOKnL5cNZAv1MnMuiRqPWa/yGvia9WlsY6S
+	 1ynTzCaXy8Z6aj5xqymF+vpjjkCq3EWnrWsQNISbL/VRO2MKbrbaWb1xJmx56D79CA
+	 NCS0ygSOgRZxGyyAU+QgS0tZGeAhG4sdurEC12+I=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.6.101
+Date: Fri,  1 Aug 2025 10:32:44 +0100
+Message-ID: <2025080145-uncounted-decency-3943@gregkh>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] RDMA/siw: Fix the sendmsg byte count in
- siw_tcp_sendpages
-Content-Language: en-US
-To: Bernard Metzler <bernard.metzler@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, David Howells <dhowells@redhat.com>,
- Tom Talpey <tom@talpey.com>, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- torvalds@linux-foundation.org, stable@vger.kernel.org,
- kernel test robot <oliver.sang@intel.com>
-References: <20250729120348.495568-1-pfalcato@suse.de>
- <8fad6c00-9c15-4315-a8c5-b8eac4281757@linux.dev>
- <x43xlqzuher54k3j4iwkos36jz5qkhtgxw4zh52j5cz6l2spzw@yips5h4liqbi>
- <631a1251-5bbc-484d-9bd9-167c5e7cb69f@linux.dev>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <631a1251-5bbc-484d-9bd9-167c5e7cb69f@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -4.30
+Content-Transfer-Encoding: 8bit
 
-On 7/31/25 22:19, Bernard Metzler wrote:
-> On 30.07.2025 11:26, Pedro Falcato wrote:
->> On Tue, Jul 29, 2025 at 08:53:02PM +0200, Bernard Metzler wrote:
->>> On 29.07.2025 14:03, Pedro Falcato wrote:
->> Thanks!
->>
->> Do you want to take the fix through your tree? Otherwise I suspect Vlastimil
->> could simply take it (and possibly resubmit the SLAB PR, which hasn't been
->> merged yet).
->>
-> Thanks Pedro. Having Vlastimil taking care sounds good to me.
-> 
-> I am currently without development infrastructure (small village
-> 
-> in the mountains thing). And fixing the SLAB PR in the
-> 
-> first place would be even better.
+I'm announcing the release of the 6.6.101 kernel.
 
-The SLAB PR was meanwhile merged and Jason said he would take care of
-sending a PR with the fix:
-https://lore.kernel.org/all/20250730184724.GC89283@nvidia.com/
+All users of the 6.6 kernel series must upgrade.
 
-> Best,
-> 
-> Bernard.
-> 
+The updated 6.6.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                                      |    2 
+ arch/arm/Makefile                                             |    2 
+ arch/arm64/include/asm/assembler.h                            |    5 
+ arch/arm64/kernel/cpufeature.c                                |    1 
+ arch/arm64/kernel/entry.S                                     |    6 
+ arch/powerpc/crypto/Kconfig                                   |    1 
+ arch/x86/events/intel/core.c                                  |    2 
+ arch/x86/hyperv/irqdomain.c                                   |    4 
+ arch/x86/kernel/cpu/amd.c                                     |    2 
+ drivers/base/regmap/regmap.c                                  |    2 
+ drivers/bus/fsl-mc/fsl-mc-bus.c                               |   19 -
+ drivers/comedi/drivers/comedi_test.c                          |    2 
+ drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c               |    9 
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c                          |   47 ++--
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c                         |    2 
+ drivers/gpu/drm/i915/display/intel_dp.c                       |    6 
+ drivers/gpu/drm/scheduler/sched_entity.c                      |   25 --
+ drivers/i2c/busses/i2c-qup.c                                  |    4 
+ drivers/i2c/busses/i2c-tegra.c                                |   24 --
+ drivers/i2c/busses/i2c-virtio.c                               |   15 -
+ drivers/iio/adc/ad7949.c                                      |    7 
+ drivers/iio/light/hid-sensor-prox.c                           |    8 
+ drivers/infiniband/core/cache.c                               |    4 
+ drivers/input/keyboard/gpio_keys.c                            |    4 
+ drivers/interconnect/qcom/sc7280.c                            |    1 
+ drivers/mtd/nand/raw/qcom_nandc.c                             |   12 -
+ drivers/net/can/dev/dev.c                                     |   31 +-
+ drivers/net/can/dev/netlink.c                                 |   12 +
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c              |   15 +
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c           |   15 +
+ drivers/net/ethernet/google/gve/gve_main.c                    |   67 +++---
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c               |   31 ++
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.h               |    2 
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c       |   36 +--
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c        |    9 
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c     |    6 
+ drivers/net/ethernet/intel/e1000e/defines.h                   |    3 
+ drivers/net/ethernet/intel/e1000e/ich8lan.c                   |    2 
+ drivers/net/ethernet/intel/e1000e/nvm.c                       |    6 
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c                |    3 
+ drivers/net/ethernet/intel/i40e/i40e_main.c                   |   18 -
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c            |    8 
+ drivers/net/ethernet/intel/ice/ice_ddp.c                      |    2 
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c                 |    4 
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c    |  108 +++++-----
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c              |    3 
+ drivers/platform/x86/Makefile                                 |    3 
+ drivers/platform/x86/ideapad-laptop.c                         |    2 
+ drivers/regulator/core.c                                      |    1 
+ drivers/s390/net/ism_drv.c                                    |    3 
+ drivers/spi/spi-cadence-quadspi.c                             |    5 
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c |    3 
+ drivers/usb/typec/tcpm/tcpm.c                                 |   64 +++--
+ drivers/virtio/virtio_ring.c                                  |    8 
+ fs/erofs/decompressor.c                                       |    6 
+ fs/erofs/zdata.c                                              |   32 +-
+ fs/jfs/jfs_imap.c                                             |   13 +
+ fs/nilfs2/inode.c                                             |    9 
+ fs/smb/server/connection.c                                    |    4 
+ fs/smb/server/connection.h                                    |    1 
+ fs/smb/server/transport_rdma.c                                |   10 
+ fs/smb/server/transport_tcp.c                                 |   15 -
+ fs/smb/server/transport_tcp.h                                 |    1 
+ include/linux/ism.h                                           |    1 
+ include/linux/sprintf.h                                       |    1 
+ kernel/resource.c                                             |    5 
+ mm/kasan/report.c                                             |    4 
+ mm/khugepaged.c                                               |    4 
+ mm/zsmalloc.c                                                 |    3 
+ net/appletalk/aarp.c                                          |   24 +-
+ net/mptcp/options.c                                           |    3 
+ net/mptcp/pm.c                                                |    8 
+ net/mptcp/protocol.c                                          |   58 ++++-
+ net/mptcp/protocol.h                                          |   27 +-
+ net/mptcp/subflow.c                                           |   30 +-
+ net/sched/sch_qfq.c                                           |    7 
+ net/xfrm/xfrm_interface_core.c                                |    7 
+ sound/pci/hda/hda_tegra.c                                     |   51 ++++
+ sound/pci/hda/patch_hdmi.c                                    |   20 +
+ sound/pci/hda/patch_realtek.c                                 |    1 
+ tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c  |   73 ------
+ tools/testing/selftests/bpf/progs/test_ns_current_pid_tgid.c  |    7 
+ tools/testing/selftests/net/mptcp/Makefile                    |    3 
+ tools/testing/selftests/net/mptcp/mptcp_connect_checksum.sh   |    5 
+ tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh       |    5 
+ tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh   |    5 
+ 86 files changed, 680 insertions(+), 449 deletions(-)
+
+Abdun Nihaal (1):
+      regmap: fix potential memory leak of regmap_bus
+
+Ada Couprie Diaz (1):
+      arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
+
+Akhil R (1):
+      i2c: tegra: Fix reset error handling with ACPI
+
+Akinobu Mita (1):
+      resource: fix false warning in __request_region()
+
+Alessandro Carminati (1):
+      regulator: core: fix NULL dereference on unbind due to stale coupling data
+
+Chiara Meiohas (1):
+      net/mlx5: Fix memory leak in cmd_exec()
+
+Daniel Dadap (1):
+      ALSA: hda: Add missing NVIDIA HDA codec IDs
+
+David Lechner (1):
+      iio: adc: ad7949: use spi_is_bpw_supported()
+
+Dawid Rezler (1):
+      ALSA: hda/realtek - Add mute LED support for HP Pavilion 15-eg0xxx
+
+Dennis Chen (1):
+      i40e: report VF tx_dropped with tx_errors instead of tx_discards
+
+Deren Wu (1):
+      wifi: mt76: mt7921: prevent decap offload config before STA initialization
+
+Dmitry Antipov (1):
+      jfs: reject on-disk inodes of an unsupported type
+
+Douglas Anderson (1):
+      drm/bridge: ti-sn65dsi86: Remove extra semicolon in ti_sn_bridge_probe()
+
+Eric Biggers (1):
+      crypto: powerpc/poly1305 - add depends on BROKEN for now
+
+Eyal Birger (1):
+      xfrm: interface: fix use-after-free after changing collect_md xfrm interface
+
+Fabrice Gasnier (1):
+      Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
+
+Gao Xiang (1):
+      erofs: address D-cache aliasing
+
+Giovanni Cabiddu (1):
+      crypto: qat - add shutdown handler to qat_dh895xcc
+
+Greg Kroah-Hartman (1):
+      Linux 6.6.101
+
+Halil Pasic (1):
+      s390/ism: fix concurrency management in ism_cmd()
+
+Haoxiang Li (1):
+      ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
+
+Harry Yoo (1):
+      mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
+
+Ian Abbott (1):
+      comedi: comedi_test: Fix possible deletion of uninitialized timers
+
+Jacek Kowalski (2):
+      e1000e: disregard NVM checksum on tgp when valid checksum bit is not set
+      e1000e: ignore uninitialized checksum word on tgp
+
+Jamie Bainbridge (1):
+      i40e: When removing VF MAC filters, only check PF-set MAC
+
+Jian Shen (2):
+      net: hns3: fix concurrent setting vlan filter issue
+      net: hns3: fixed vf get max channels bug
+
+Jijie Shao (1):
+      net: hns3: default enable tx bounce buffer when smmu enabled
+
+Kan Liang (1):
+      perf/x86/intel: Fix crash in icl_update_topdown_event()
+
+Khairul Anuar Romli (1):
+      spi: cadence-quadspi: fix cleanup of rx_chan on failure paths
+
+Kito Xu (veritas501) (1):
+      net: appletalk: Fix use-after-free in AARP proxy probe
+
+Laurent Vivier (1):
+      virtio_ring: Fix error reporting in virtqueue_resize
+
+Lin.Cao (1):
+      drm/sched: Remove optimization that causes hang when killing dependent jobs
+
+Liu Shixin (1):
+      mm: khugepaged: fix call hpage_collapse_scan_file() for anonymous vma
+
+Ma Ke (3):
+      bus: fsl-mc: Fix potential double device reference in fsl_mc_get_endpoint()
+      dpaa2-eth: Fix device reference count leak in MAC endpoint handling
+      dpaa2-switch: Fix device reference count leak in MAC endpoint handling
+
+Maor Gottlieb (1):
+      RDMA/core: Rate limit GID cache warning messages
+
+Marc Kleine-Budde (3):
+      can: dev: can_restart(): reverse logic to remove need for goto
+      can: dev: can_restart(): move debug message and stats after successful restart
+      can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode
+
+Marco Elver (1):
+      kasan: use vmalloc_dump_obj() for vmalloc error reports
+
+Matthieu Baerts (NGI0) (2):
+      selftests: mptcp: connect: also cover alt modes
+      selftests: mptcp: connect: also cover checksum
+
+Md Sadre Alam (1):
+      mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
+
+Michael Grzeschik (2):
+      usb: typec: tcpm: allow to use sink in accessory mode
+      usb: typec: tcpm: allow switching to mode accessory to mux properly
+
+Michael Zhivich (1):
+      x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
+
+Mohan Kumar D (1):
+      ALSA: hda/tegra: Add Tegra264 support
+
+Namjae Jeon (2):
+      ksmbd: fix use-after-free in __smb2_lease_break_noti()
+      ksmbd: add free_transport ops in ksmbd connection
+
+Nathan Chancellor (1):
+      ARM: 9448/1: Use an absolute path to unified.h in KBUILD_AFLAGS
+
+Nianyao Tang (1):
+      arm64/cpufeatures/kvm: Add ARMv8.9 FEAT_ECBHB bits in ID_AA64MMFR1 register
+
+Nuno Das Neves (1):
+      x86/hyperv: Fix usage of cpu_online_mask to get valid cpu
+
+Paolo Abeni (3):
+      mptcp: make fallback action and fallback decision atomic
+      mptcp: plug races between subflow fail and subflow creation
+      mptcp: reset fallback status gracefully at disconnect() time
+
+Philip Yang (1):
+      drm/amdkfd: Don't call mmput from MMU notifier callback
+
+Praveen Kaligineedi (1):
+      gve: Fix stuck TX queue for DQ queue format
+
+RD Babiera (1):
+      usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+
+Rong Zhang (1):
+      platform/x86: ideapad-laptop: Fix kbd backlight not remembered among boots
+
+Ryusuke Konishi (1):
+      nilfs2: reject invalid file types when reading inodes
+
+Shahar Shitrit (1):
+      net/mlx5: E-Switch, Fix peer miss rules to use peer eswitch
+
+Shung-Hsi Yu (1):
+      Revert "selftests/bpf: Add a cgroup prog bpf_get_ns_current_pid_tgid() test"
+
+Stefan Wahren (1):
+      staging: vchiq_arm: Make vchiq_shutdown never fail
+
+Stephen Rothwell (1):
+      sprintf.h requires stdarg.h
+
+Torsten Hilbrich (1):
+      platform/x86: Fix initialization order for firmware_attributes_class
+
+Ville Syrjälä (1):
+      drm/i915/dp: Fix 2.7 Gbps DP_LINK_BW value on g4x
+
+Viresh Kumar (1):
+      i2c: virtio: Avoid hang by using interruptible completion wait
+
+Xiang Mei (1):
+      net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+
+Xilin Wu (1):
+      interconnect: qcom: sc7280: Add missing num_links to xm_pcie3_1 node
+
+Yajun Deng (1):
+      i40e: Add rx_missed_errors for buffer exhaustion
+
+Yang Xiwen (1):
+      i2c: qup: jump out of the loop in case of timeout
+
+Yonglong Liu (1):
+      net: hns3: disable interrupt when ptp init failed
+
+Zhang Lixu (2):
+      iio: hid-sensor-prox: Fix incorrect OFFSET calculation
+      iio: hid-sensor-prox: Restore lost scale assignments
 
 
