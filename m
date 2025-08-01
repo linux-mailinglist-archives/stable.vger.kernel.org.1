@@ -1,157 +1,248 @@
-Return-Path: <stable+bounces-165729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E9EB1807C
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 12:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0386B1809A
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 13:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4450DA84084
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 10:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1011CA8440E
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 11:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49F4233D88;
-	Fri,  1 Aug 2025 10:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F15242D66;
+	Fri,  1 Aug 2025 11:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=open-e.com header.i=artur.piechocki@open-e.com header.b="0/1aES9Z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cgqBk+K5"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE46B220F25
-	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 10:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777EA2405ED
+	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 11:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754045923; cv=none; b=cjWqWzBbg+/tAuC1zB2yOzHZh7LygcxejKmSMDCPqTcaTkmJVTl5yY0J8cXLqhjxKCyuLChLxI6WMsGE7qfoJrOS5+AApg2Zf+z9LiRC9CdcTngOhG+ke48sgsvKSQQ0gvwgdgJARSlCaNryC3v+0DzZ6xxtsKmN0sESvI8OVAY=
+	t=1754046044; cv=none; b=mV+ARm0XS+t4gN7E33dqf3P5UNbnV8RwNRuu+5/1GY9hlz9tbaYU1Gx9cfYZj++s3eBYtZYRrRX3J6ttI+Nsr7ga+ehl9ByCwLVxXizaVcfAy0zSLWBZj4M/s7g0DCrprBvHcsPfDHCwOSKZtXGzyMkd7i47YkwMaDBhmiKGMdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754045923; c=relaxed/simple;
-	bh=pn28ph/m1tlQFiTkPNfMpW0rRzCXNwm/PnH7SS/uh20=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Eg34jGjMj3bUtVY1cTPBkg/fIq1Eu4UJsVKGRVWAPuLB8fQDT+LiyqJX5o6wdqsUhqe2UeCTpmSSFWgAKhoyg/GxUpdpcMGcsFWJYLm+M1xiJvJCDtUUf9yOBR/PSgwGJZXtdzgxOJu1vUYePVO84IBto+AtNFIEYczROmj9t5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=open-e.com; spf=pass smtp.mailfrom=open-e.com; dkim=pass (2048-bit key) header.d=open-e.com header.i=artur.piechocki@open-e.com header.b=0/1aES9Z; arc=none smtp.client-ip=212.227.126.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=open-e.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-e.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=open-e.com;
-	s=s1-ionos; t=1754045917; x=1754650717;
-	i=artur.piechocki@open-e.com;
-	bh=sSZGaY1Evf4mE8DhvEFZPkjYp6XzmEuWaDq4QPP4tU4=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=0/1aES9ZO67bzIIRc7UE5S+D5QKJRPWvET1OebISJ/rKMRUMQb8EEJcItH3pF3+u
-	 IWoIv96nNX3L1X0k5POfa/9K4oiEvtPYq8btyOBpde8nEBa8eK1tvn5qRJyfiJIyq
-	 l6MbtfS+kZhUaAXWbFkF3v3bZS5Xh6gB+T8OquqnUOk5myuDTZ9RiqndEu2OUn9I5
-	 ik/27I2LtaLdp6m7HTaHbbwg7zEgONHT2GF0wnqoHahp8bDJw8MdjQS3zCXgr8+Ea
-	 TBpxvHmFa6DYFi8s2bWB0Z/uNPJgWkmGgKpQ3Z9C6wM3gV3ABhhm03YDhkCgAvWEf
-	 jjhlHjOVU/GDeV0LFw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from rato-hp ([193.25.251.95]) by mrelayeu.kundenserver.de (mreue009
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MMoXE-1uyMNk3nN6-00W6nW; Fri, 01
- Aug 2025 12:58:37 +0200
-From: Artur Piechocki <artur.piechocki@open-e.com>
-To: stable@vger.kernel.org
-Cc: Nirmal Patel <nirmal.patel@linux.intel.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Artur Piechocki <artur.piechocki@open-e.com>
-Subject: [PATCH 5.15.y] PCI: vmd: Assign VMD IRQ domain before enumeration
-Date: Fri,  1 Aug 2025 12:58:12 +0200
-Message-ID: <20250801105812.25362-1-artur.piechocki@open-e.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1754046044; c=relaxed/simple;
+	bh=PF+7KTgtJOQe91aaQ4AfOOIWpw1FJ41ZDPQHlUzDbyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=dtBjA5SWu7zI9hdkH/9mDPgAJwu3dfpSWkNzEQpVWvIh5PPbFg6HG2EXR4SFBfMPPguh5cesecPyLcRuFrgN4WtCH0Vc2mMp267NVIJ95giUIGNc7ywL3o6XFj84gHlLy+XzFyPZcEXPJ8L48ApYP9AmUmXM4cfBntxp30JmvyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cgqBk+K5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754046041;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=Yy4oMG6QVFtodhwMcPtL7d4Z650yocP7F5ES6CSW5QU=;
+	b=cgqBk+K5My+Ys6aMECZokStE8cPmpvdSZH21BK2GQ+sJfq4Hj8n63ZfxSOAgYJhpEqIYTR
+	rl3dNJNRzupeIbElhbqWyo+nl2S+5YJIVBr4YQBMPtnAmU3frmpopMYbNjLIGMFSMrBpNG
+	m4tPKhIF6nrftvYmX/GeqWHgphDH2Rg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-swfE5ckCPSekdCv3fAnP7w-1; Fri, 01 Aug 2025 07:00:38 -0400
+X-MC-Unique: swfE5ckCPSekdCv3fAnP7w-1
+X-Mimecast-MFC-AGG-ID: swfE5ckCPSekdCv3fAnP7w_1754046037
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b785aee904so837961f8f.2
+        for <stable@vger.kernel.org>; Fri, 01 Aug 2025 04:00:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754046037; x=1754650837;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yy4oMG6QVFtodhwMcPtL7d4Z650yocP7F5ES6CSW5QU=;
+        b=s11ECHxM7b3X78CwwgVvZE2n+rYmKY+V0BKGfDMGuKNRom75MiOSsu5Pbf4BPIgiWA
+         JEI8U8jT2HE3gcQPfaYTykRqjBYPkqUQCFVZQ0eyG0hZRxRLqh5rOLKPiV9j77WPbBEC
+         dHOgTo7PsIHzbgBKtrfM8OpScJSxFV0eaqAhfJN8n6keaBSD4RlyO4zyfH582C0J+f6y
+         2kYGME3DcTnDNHPhlxdlKADYhneItYbKp1tcK7A1EGkz062ask0J2hk/559dOrgjfEj2
+         XAfNEb24eQs/2EHxG+Jkpunz9xUs3kJ64AxppJLHvhwmhlre+nLrEpgwDrDMqFKvV99n
+         zqSA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ2gRFUnGW0bHBtKdSgHALtW2HxKZEuCWXRozbf0CYOu963c6ZynW+B6w7bfI0ie4BoOdtcn0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGAOdTioWl/TGsxg6a+n1K4Kmt7tT9xd/A6IxtUEo0BEm8pq4+
+	N6F+j/26SSIkbjgczVjaGPcZZMEX/8o3CVc30CZjdPoCRhqMbRLbOJCxo8SW2RAOZtYPLlFAEzl
+	4Qt42wDAwQb9CsmPSWhvYoEAdF/xP9qHOQtTk9kDQdZzYnkjO1/qZnOS0Mg==
+X-Gm-Gg: ASbGncvOAjPhLm/uqYVJmDywmxU557tL2CAXH1wwJuRrt+8y48ebmgvfEHcexx9NdVh
+	uzxywAYIhkGUZftK2DqpPbyA/0DfB1JueWMVc/myRhtxf/2qa3Y5tM1VEEQ9EC29Nr/kwyeyqKp
+	dB2mEWTgdQnGmBamDbKcqyPVravRgi+Zv/JsPhU/euj+CtUUVh/OwlxlyIJTkZit1kepxfH4U0o
+	o0dnIyj1fq8pvE5ndiUAj4uDuasvr/5kqxZPzjKFUGBLkAvxM8yXtmj58HWgDmj1PixKS0rpuRF
+	LeqCeb5toOI8k1Hscr62QexToL/UykVn
+X-Received: by 2002:adf:8b59:0:b0:3a6:d95e:f38c with SMTP id ffacd0b85a97d-3b79501e606mr6507424f8f.33.1754046036762;
+        Fri, 01 Aug 2025 04:00:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHSUPIJPkabuEQDBcH7GMaJaxabiVWOJ9YCOFkgGy6BbYI6a1t93zsxBqYtzSj23fHn5sb9Uw==
+X-Received: by 2002:adf:8b59:0:b0:3a6:d95e:f38c with SMTP id ffacd0b85a97d-3b79501e606mr6507382f8f.33.1754046036194;
+        Fri, 01 Aug 2025 04:00:36 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453ab0sm5624086f8f.44.2025.08.01.04.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Aug 2025 04:00:35 -0700 (PDT)
+Date: Fri, 1 Aug 2025 07:00:32 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acourbot@google.com, alok.a.tiwari@oracle.com,
+	anders.roxell@linaro.org, dtatulea@nvidia.com, eperezma@redhat.com,
+	eric.auger@redhat.com, gnurou@gmail.com, jasowang@redhat.com,
+	jonah.palmer@oracle.com, kraxel@redhat.com, leiyang@redhat.com,
+	linux@treblig.org, lulu@redhat.com, michael.christie@oracle.com,
+	mst@redhat.com, parav@nvidia.com, si-wei.liu@oracle.com,
+	stable@vger.kernel.org, viresh.kumar@linaro.org,
+	wangyuli@uniontech.com, will@kernel.org, wquan@redhat.com,
+	xiaopei01@kylinos.cn
+Subject: [GIT PULL] virtio, vhost: features, fixes
+Message-ID: <20250801070032-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JCqi1zKAxWiAPwqI2QxXiZ+GfezzsXDibPvplYN5L6g3fLGWm/G
- /dG+1Y8YAD/YvKvWcj+7lexsg5+2ovj0xmZms3eMDXozB92wKOSZvGzoXl5DocPGGoDTyYg
- 44S/+oCoAaUe6Vdt4llqcCm6TfUraRbXPQx2cby+jpY8Cmo4FGl5tSndLy4/JWE2hxPFxhG
- KATltKUbCneHPg7u2BgIg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:tXDGUeos89Y=;iYbuoJ+mTxKAFhTJwu1l5Jdr+Tn
- 44g9bu8RL+2jqM1d2P7OqDq5DoSFJXDQe8tQa39wTmnpWcOsgzZZs1+etUJVA382xCtqOboLS
- 1BUxWuQMuu2GKexuE5j90YBCyVYc6N8Sw2IywyEHAEZiZA3cr2Ui/GvTa7wwh5WK9pIpBacot
- 9PVinUIv+X9jsXDJdRL9Ly/sxTIJrkuGlcrR/i/vif83bYuigUnget41OaLs/xGzH4byeRqPD
- SQydQU3Uno2yWFTm0Pk2yynU/6SnJ23r4uI2UyUhOGqHgp7lKXAxf4oETz5x7O9ao6FankWqt
- wDJQO1PpRY1FdjiE9s38KbfcAmKVufx6a1shwEdyXFRMEYXoPG5ufbtd/WoSXNcCTHCKXdENa
- KfmhjoWxNFthNJjTPKG7NlaStIAWWPQw9RXGiwc9SDbt5wwPkmxf4i3p0+g+UAATJLrDEdz+O
- 9G9KEdGmTekb4MhI1mjlv38JrOq72G5tyW11tKA5IF9jtOgi83+tPGmfcpL9p0zIAUI/T4yv1
- NpooXTt9VpYR0FuNckI0khJkKONqutRvKaiFbLRPEDefre4TuvAMmsobTGu9Jqgs+aW5CuD0e
- 1v6jiR6J1sU6w3vJ5Q6WPAobZYAhND+D3qcxOYgZm/9Oho9bHFtXKv3IRcBNCITTKP2qn02Jx
- uQL9k5TZ9XZZI+CVzKRSsARY2+ComrvmkZXw18AzXVuOzd1+CRpzWhfCLuwNFsu3o+3ENT/3U
- s9dLW0B4EobjYpkn/GogUb/z5g+T6/CvFyVF/JeBzt4yi5D8cWMm4kh0V/AON/Lb84tVXbOhI
- WSBGnjGYWOBBxp1yzafCaBw+euPZ5kGeC8FPVOmn6FBbDlDUMWRbFm2lMGwx4vZcUbprLygjH
- 8Vj3zC9lvG6Fvbe1rQGDGKOefKiAalBb2C4byJtbfEZHwJBZIxX+NQu83LKmu3QetL7VrBGt7
- vrS+1HLcnuYL8X8vM/qsnOPH4Anr9lkXQxCMoKFL/c56wUqEgKqkLByEU+anzEztkwI4vXCWD
- igRB+sHkt0kxsb9MZrCy+Oh1vFJkhhwz5XGTMpEHj8hbgrg1PjAuHtqus9epCCiaI7TtlVgCY
- AazqoUF1q/qXmNDT/d++lcKLYKEOffCrclqjNjiDVsOrtNJc8tZR7L3oAE6qQfVG0tjGw0OqR
- gPC2KP8GUDP1c+nJSR1Eo1AySutgijIH9VECNPbeSV92hxY2q9X+VIJTM8aGH9oGL4xLmHvaX
- QO4nBA5SdIOYNnvDwb/JdyjV8ew9ZW/If//dkuZUWeUzAfCcZXXxCR0pcY/JKUvV0+8VyIhzw
- Mca/7GzL2jFKlljsYuENozgEA/RbdR2NNelICLB4stadDAu2ZXukm4ZL8eji14gA5ZmEyHWYA
- tmU28yg4BfQT2vJaLdbutx80JWBk0lzF4feNVkEEjplZkoCRmcHS9cWEH50Y+bpAblp+Og7+8
- V1HGNMgEQf9oghx22DAqMLItZDHwNOsm4N+ixMSlhw/W4gA9O4YEx/Ndp/qonvaFo2LGeNaH9
- UxF1FDszICM5LJvijaUi+bvvLe5aZDOo9hyugfuPPXR4/EKxJGQu5vCHWh2HUw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-Fcc: =sent
 
-From: Nirmal Patel <nirmal.patel@linux.intel.com>
+The following changes since commit 347e9f5043c89695b01e66b3ed111755afcf1911:
 
-[ Upstream commit 886e67100b904cb1b106ed1dfa8a60696aff519a ]
+  Linux 6.16-rc6 (2025-07-13 14:25:58 -0700)
 
-During the boot process all the PCI devices are assigned default PCI-MSI
-IRQ domain including VMD endpoint devices. If interrupt-remapping is
-enabled by IOMMU, the PCI devices except VMD get new INTEL-IR-MSI IRQ
-domain. And VMD is supposed to create and assign a separate VMD-MSI IRQ
-domain for its child devices in order to support MSI-X remapping
-capabilities.
+are available in the Git repository at:
 
-Now when MSI-X remapping in VMD is disabled in order to improve
-performance, VMD skips VMD-MSI IRQ domain assignment process to its
-child devices. Thus the devices behind VMD get default PCI-MSI IRQ
-domain instead of INTEL-IR-MSI IRQ domain when VMD creates root bus and
-configures child devices.
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
-As a result host OS fails to boot and DMAR errors were observed when
-interrupt remapping was enabled on Intel Icelake CPUs. For instance:
+for you to fetch changes up to c7991b44d7b44f9270dec63acd0b2965d29aab43:
 
-  DMAR: DRHD: handling fault status reg 2
-  DMAR: [INTR-REMAP] Request device [0xe2:0x00.0] fault index 0xa00 [fault=
- reason 0x25] Blocked a compatibility format interrupt request
+  vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers (2025-07-17 08:33:09 -0400)
 
-To fix this issue, dev_msi_info struct in dev struct maintains correct
-value of IRQ domain. VMD will use this information to assign proper IRQ
-domain to its child devices when it doesn't create a separate IRQ domain.
+----------------------------------------------------------------
+virtio, vhost: features, fixes
 
-Link: https://lore.kernel.org/r/20220511095707.25403-2-nirmal.patel@linux.=
-intel.com
-Signed-off-by: Nirmal Patel <nirmal.patel@linux.intel.com>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-(cherry picked from commit 886e67100b904cb1b106ed1dfa8a60696aff519a)
+vhost can now support legacy threading
+	if enabled in Kconfig
+vsock memory allocation strategies for
+	large buffers have been improved,
+	reducing pressure on kmalloc
+vhost now supports the in-order feature
+	guest bits missed the merge window
 
-[ This patch has already been backported to the Ubuntu 5.15 kernel
-  and fixes boot issues on Intel platforms with VMD rev 04,
-  confirmed on version 5.15.189. ]
+fixes, cleanups all over the place
 
-Signed-off-by: Artur Piechocki <artur.piechocki@open-e.com>
-=2D--
- drivers/pci/controller/vmd.c | 3 +++
- 1 file changed, 3 insertions(+)
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 846590706a38..d0d18e9c6968 100644
-=2D-- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -799,6 +799,9 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsi=
-gned long features)
- 	vmd_attach_resources(vmd);
- 	if (vmd->irq_domain)
- 		dev_set_msi_domain(&vmd->bus->dev, vmd->irq_domain);
-+	else
-+		dev_set_msi_domain(&vmd->bus->dev,
-+				   dev_get_msi_domain(&vmd->dev->dev));
-=20
- 	WARN(sysfs_create_link(&vmd->dev->dev.kobj, &vmd->bus->dev.kobj,
- 			       "domain"), "Can't create symlink to domain\n");
-=2D-=20
-2.50.1
+----------------------------------------------------------------
+Alexandre Courbot (1):
+      media: add virtio-media driver
+
+Alok Tiwari (4):
+      virtio: Fix typo in register_virtio_device() doc comment
+      vhost-scsi: Fix typos and formatting in comments and logs
+      vhost: Fix typos
+      vhost-scsi: Fix check for inline_sg_cnt exceeding preallocated limit
+
+Anders Roxell (1):
+      vdpa: Fix IDR memory leak in VDUSE module exit
+
+Cindy Lu (1):
+      vhost: Reintroduce kthread API and add mode selection
+
+Dr. David Alan Gilbert (2):
+      vhost: vringh: Remove unused iotlb functions
+      vhost: vringh: Remove unused functions
+
+Dragos Tatulea (2):
+      vdpa/mlx5: Fix needs_teardown flag calculation
+      vdpa/mlx5: Fix release of uninitialized resources on error path
+
+Gerd Hoffmann (1):
+      drm/virtio: implement virtio_gpu_shutdown
+
+Jason Wang (3):
+      vhost: fail early when __vhost_add_used() fails
+      vhost: basic in order support
+      vhost_net: basic in_order support
+
+Michael S. Tsirkin (6):
+      virtio: document ENOSPC
+      pci: report surprise removal event
+      virtio: fix comments, readability
+      virtio: pack config changed flags
+      virtio: allow transports to suppress config change
+      virtio: support device disconnect
+
+Mike Christie (1):
+      vhost-scsi: Fix log flooding with target does not exist errors
+
+Pei Xiao (1):
+      vhost: Use ERR_CAST inlined function instead of ERR_PTR(PTR_ERR(...))
+
+Viresh Kumar (2):
+      virtio-mmio: Remove virtqueue list from mmio device
+      virtio-vdpa: Remove virtqueue list
+
+WangYuli (1):
+      virtio: virtio_dma_buf: fix missing parameter documentation
+
+Will Deacon (9):
+      vhost/vsock: Avoid allocating arbitrarily-sized SKBs
+      vsock/virtio: Validate length in packet header before skb_put()
+      vsock/virtio: Move length check to callers of virtio_vsock_skb_rx_put()
+      vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
+      vsock/virtio: Rename virtio_vsock_alloc_skb()
+      vsock/virtio: Move SKB allocation lower-bound check to callers
+      vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers
+      vsock/virtio: Rename virtio_vsock_skb_rx_put()
+      vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers
+
+ MAINTAINERS                                |    6 +
+ drivers/gpu/drm/virtio/virtgpu_drv.c       |    8 +-
+ drivers/media/Kconfig                      |   13 +
+ drivers/media/Makefile                     |    2 +
+ drivers/media/virtio/Makefile              |    9 +
+ drivers/media/virtio/protocol.h            |  288 ++++++
+ drivers/media/virtio/scatterlist_builder.c |  563 ++++++++++++
+ drivers/media/virtio/scatterlist_builder.h |  111 +++
+ drivers/media/virtio/session.h             |  109 +++
+ drivers/media/virtio/virtio_media.h        |   93 ++
+ drivers/media/virtio/virtio_media_driver.c |  959 ++++++++++++++++++++
+ drivers/media/virtio/virtio_media_ioctls.c | 1297 ++++++++++++++++++++++++++++
+ drivers/pci/pci.h                          |    6 +
+ drivers/vdpa/mlx5/core/mr.c                |    3 +
+ drivers/vdpa/mlx5/net/mlx5_vnet.c          |   12 +-
+ drivers/vdpa/vdpa_user/vduse_dev.c         |    1 +
+ drivers/vhost/Kconfig                      |   18 +
+ drivers/vhost/net.c                        |   88 +-
+ drivers/vhost/scsi.c                       |   24 +-
+ drivers/vhost/vhost.c                      |  377 +++++++-
+ drivers/vhost/vhost.h                      |   30 +-
+ drivers/vhost/vringh.c                     |  118 ---
+ drivers/vhost/vsock.c                      |   15 +-
+ drivers/virtio/virtio.c                    |   25 +-
+ drivers/virtio/virtio_dma_buf.c            |    2 +
+ drivers/virtio/virtio_mmio.c               |   52 +-
+ drivers/virtio/virtio_pci_common.c         |   45 +
+ drivers/virtio/virtio_pci_common.h         |    3 +
+ drivers/virtio/virtio_pci_legacy.c         |    2 +
+ drivers/virtio/virtio_pci_modern.c         |    2 +
+ drivers/virtio/virtio_ring.c               |    4 +
+ drivers/virtio/virtio_vdpa.c               |   44 +-
+ include/linux/pci.h                        |   45 +
+ include/linux/virtio.h                     |   13 +-
+ include/linux/virtio_config.h              |   32 +
+ include/linux/virtio_vsock.h               |   46 +-
+ include/linux/vringh.h                     |   12 -
+ include/uapi/linux/vhost.h                 |   29 +
+ include/uapi/linux/virtio_ids.h            |    1 +
+ kernel/vhost_task.c                        |    2 +-
+ net/vmw_vsock/virtio_transport.c           |   20 +-
+ net/vmw_vsock/virtio_transport_common.c    |    3 +-
+ 42 files changed, 4186 insertions(+), 346 deletions(-)
+ create mode 100644 drivers/media/virtio/Makefile
+ create mode 100644 drivers/media/virtio/protocol.h
+ create mode 100644 drivers/media/virtio/scatterlist_builder.c
+ create mode 100644 drivers/media/virtio/scatterlist_builder.h
+ create mode 100644 drivers/media/virtio/session.h
+ create mode 100644 drivers/media/virtio/virtio_media.h
+ create mode 100644 drivers/media/virtio/virtio_media_driver.c
+ create mode 100644 drivers/media/virtio/virtio_media_ioctls.c
 
 
