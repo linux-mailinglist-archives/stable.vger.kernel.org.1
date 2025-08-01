@@ -1,102 +1,138 @@
-Return-Path: <stable+bounces-165776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857C1B1886F
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 23:01:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A3DB18890
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 23:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F70DAA5296
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 21:01:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A7D57B3433
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 21:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C661822126B;
-	Fri,  1 Aug 2025 21:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAC328C851;
+	Fri,  1 Aug 2025 21:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="Hk1SCEXa"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uLoBCnHM"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDF14207F;
-	Fri,  1 Aug 2025 21:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605F72036FE;
+	Fri,  1 Aug 2025 21:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754082083; cv=none; b=fKPE4QI6Srn19xR1VDMe3JbzGft7hYmnOaq3S9eLsm2gVZk05s/4KfXTFXGyI0EPzoHdWdwQem9KFTbjyb5kw9Ydv3QIqaA+KV4sN8tOy/EBCh0egmxJHiVNz3Xufr7j5giLJFIQ64WiRQLRXgfQvaMazRTfOXHDJI0oABKZTm8=
+	t=1754082695; cv=none; b=Neh4UJ5D3FeCU/42H0PpxzhJRllVGLja7bAVgi19josKsXu6wu5FToV87gwJisRWfpMxK+C8u6fSNC+QgqY7JnErbNzJs3NHO4UHK6J5xEa5ljqAXv2N+lQRyK1oxFxWXXz4UrEbSnh2yL3qbD8gv2ZBUhgF4UsNBDnkY8bkxvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754082083; c=relaxed/simple;
-	bh=PVeG3LcWV98xhs5CzZv3kX6ost9c8KHyZTHCcL+3rrE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qh7HEEJvM9/u7t4T90n7z/KMr2Fa83GVuY/wenGE2D5kZ9o5dFoR6FxJUn5rlxclntN8T7wIS+DuCMDjQCpFMSPpfbECYYxqZJI2hfN0RTCucaY+XsItENZMuHY877nLGqq5z7Lq8CgAFhFrRQ5pM282j5x725IER4bcNWry8PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=Hk1SCEXa; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=f4EUtpQvfD1GWjXjCaIBDDisUV6m4mX8lVb0bZq8pMw=; b=Hk1SCEXal1ou/150
-	I+6mXB1y9B7k9Q+ydLpadDDD2e2UjgCFVqoCK/ULop1nwGYg6+meyRcdx9E2JDWrfMwNSGungqARM
-	DQKxNDPjOGksuP3j6MIRlG0lxjzdPc8H/sgQeK6PF7hheyOj8vd5gJRveye1hOXa2DVcCd1TMsAaC
-	EDD3hGCccHVa4iLuIIE9VB+qunPwNEkZB1uxmUcCV0y8FCD2fhbtxOwFgS7v7IscuD1OzAKLVTa1B
-	wbog1jbONAgWuO7TmZtMaVwgerXHoTEpwTyTVViy28/Xc1gKjQdo0wwmwH4Yc1Ozr7N1d6rbJWUoX
-	kQ7N6IEHDYyU7XSxMw==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1uhwsB-001mFM-00;
-	Fri, 01 Aug 2025 21:01:03 +0000
-Date: Fri, 1 Aug 2025 21:01:02 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alok.a.tiwari@oracle.com,
-	anders.roxell@linaro.org, dtatulea@nvidia.com, eperezma@redhat.com,
-	eric.auger@redhat.com, jasowang@redhat.com, jonah.palmer@oracle.com,
-	kraxel@redhat.com, leiyang@redhat.com, lulu@redhat.com,
-	michael.christie@oracle.com, parav@nvidia.com,
-	si-wei.liu@oracle.com, stable@vger.kernel.org,
-	viresh.kumar@linaro.org, wangyuli@uniontech.com, will@kernel.org,
-	wquan@redhat.com, xiaopei01@kylinos.cn
-Subject: Re: [GIT PULL v2] virtio, vhost: features, fixes
-Message-ID: <aI0rDljG8XYyiSvv@gallifrey>
-References: <20250801091318-mutt-send-email-mst@kernel.org>
- <CAHk-=whgYijnRXoAxbYLsceWFWC8B8in17WOws5-ojsAkdrqTg@mail.gmail.com>
+	s=arc-20240116; t=1754082695; c=relaxed/simple;
+	bh=3yxcwkca5yKSX/TeLduikPqF5CqYYiXa99FX6vfUtSg=;
+	h=Date:To:From:Subject:Message-Id; b=OHenDu6HeTmYOZuazFkLXP6dg7FNkE6iVN1uI6nO+ZjnKZuHyevHvtgW4Q9Og/7w9NhwLFPucNtAMPwzH3v9REYq0rEZH557WDn5TEYogwvsNDG9XuJC4y5Hfiw32ty7+B63xQaRL1PFtallcYCiUqRwlc8fBSlyfSbiFvU+k5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uLoBCnHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A4AC4CEE7;
+	Fri,  1 Aug 2025 21:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754082694;
+	bh=3yxcwkca5yKSX/TeLduikPqF5CqYYiXa99FX6vfUtSg=;
+	h=Date:To:From:Subject:From;
+	b=uLoBCnHMQS4Cyts92bSw5IiUcxWWd85Gk9p/S/Wa4J+NYDDJzjb4EZNpLTE+xViFl
+	 t2JgRzEYiuFjeJI4UzjMNNaXfMAQr92ysv2KH0a+XWzh4DGM23YkTjBQA2DmJrBH7C
+	 YawcsFGgi1RAsXiGdVLUQeksz+iK8kjFc6450xsE=
+Date: Fri, 01 Aug 2025 14:11:34 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,david@redhat.com,aarcange@redhat.com,sashal@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-userfaultfd-fix-kmap_local-lifo-ordering-for-config_highpte.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250801211134.D9A4AC4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whgYijnRXoAxbYLsceWFWC8B8in17WOws5-ojsAkdrqTg@mail.gmail.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 20:59:29 up 96 days,  5:13,  2 users,  load average: 0.00, 0.00,
- 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
 
-* Linus Torvalds (torvalds@linux-foundation.org) wrote:
-> On Fri, 1 Aug 2025 at 06:13, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> >         drop commits that I put in there by mistake. Sorry!
-> 
-> Not only does this mean they were all recently rebased, absolutely
-> *NONE* of this has been in linux-next as fat as I can tell. Not in a
-> rebased form _or_ in the pre-rebased form.
 
-My notes say that I saw my two vhost: vringh  deadcode patches in -next
-on 2025-07-17.
+The patch titled
+     Subject: mm/userfaultfd: fix kmap_local LIFO ordering for CONFIG_HIGHPTE
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-userfaultfd-fix-kmap_local-lifo-ordering-for-config_highpte.patch
 
-Dave
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-fix-kmap_local-lifo-ordering-for-config_highpte.patch
 
-> So no. This is not acceptable, you can try again next time when you do
-> it properly.
-> 
->             Linus
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Sasha Levin <sashal@kernel.org>
+Subject: mm/userfaultfd: fix kmap_local LIFO ordering for CONFIG_HIGHPTE
+Date: Thu, 31 Jul 2025 10:44:31 -0400
+
+With CONFIG_HIGHPTE on 32-bit ARM, move_pages_pte() maps PTE pages using
+kmap_local_page(), which requires unmapping in Last-In-First-Out order.
+
+The current code maps dst_pte first, then src_pte, but unmaps them in the
+same order (dst_pte, src_pte), violating the LIFO requirement.  This
+causes the warning in kunmap_local_indexed():
+
+  WARNING: CPU: 0 PID: 604 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
+  addr \!= __fix_to_virt(FIX_KMAP_BEGIN + idx)
+
+Fix this by reversing the unmap order to respect LIFO ordering.
+
+This issue follows the same pattern as similar fixes:
+- commit eca6828403b8 ("crypto: skcipher - fix mismatch between mapping and unmapping order")
+- commit 8cf57c6df818 ("nilfs2: eliminate staggered calls to kunmap in nilfs_rename")
+
+Both of which addressed the same fundamental requirement that kmap_local
+operations must follow LIFO ordering.
+
+Link: https://lkml.kernel.org/r/20250731144431.773923-1-sashal@kernel.org
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/userfaultfd.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+--- a/mm/userfaultfd.c~mm-userfaultfd-fix-kmap_local-lifo-ordering-for-config_highpte
++++ a/mm/userfaultfd.c
+@@ -1453,10 +1453,15 @@ out:
+ 		folio_unlock(src_folio);
+ 		folio_put(src_folio);
+ 	}
+-	if (dst_pte)
+-		pte_unmap(dst_pte);
++	/*
++	 * Unmap in reverse order (LIFO) to maintain proper kmap_local
++	 * index ordering when CONFIG_HIGHPTE is enabled. We mapped dst_pte
++	 * first, then src_pte, so we must unmap src_pte first, then dst_pte.
++	 */
+ 	if (src_pte)
+ 		pte_unmap(src_pte);
++	if (dst_pte)
++		pte_unmap(dst_pte);
+ 	mmu_notifier_invalidate_range_end(&range);
+ 	if (si)
+ 		put_swap_device(si);
+_
+
+Patches currently in -mm which might be from sashal@kernel.org are
+
+mm-userfaultfd-fix-kmap_local-lifo-ordering-for-config_highpte.patch
+
 
