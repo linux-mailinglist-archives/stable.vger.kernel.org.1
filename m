@@ -1,79 +1,238 @@
-Return-Path: <stable+bounces-165781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09629B188D2
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 23:36:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B43B188E4
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 23:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 693471C85D91
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 21:36:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7078F7B729F
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 21:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B2328D8D1;
-	Fri,  1 Aug 2025 21:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DB128DF0B;
+	Fri,  1 Aug 2025 21:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKbOGzXg"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xp7KauDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503271A0712;
-	Fri,  1 Aug 2025 21:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88E219F121;
+	Fri,  1 Aug 2025 21:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754084166; cv=none; b=SKCIgNr0rCTkITEHOP9QXLgLaYiqvbzLm/TYPrcU2hapvdEpqPyEL59ROJGVvT1ihuD5yVE5odJCzbJYN46gyNaOnZ5jgwb4iqWYrIhtjAvxqSbF6U874H9sTtbBNxD7sk8WK6j/0eUgJvv5oOq/bidxh1ozNfapITBwK8MqEgQ=
+	t=1754084598; cv=none; b=ue4xZWGasisKmYxmKFVkG82RiMiM8fUp/ZiWMeZ7Qg4KPwR/7jBaSMOelPLWrbB1Q2iQG5dt22x/hYBHpDjgJUpJjPpUWpCj7o7uBYny3boL6zFWVxJCGRBbCKcPD4Mih3pXyLxOZQlofjvF5Kta0fJlaFLdWHMGL0Ppkhsb55k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754084166; c=relaxed/simple;
-	bh=OAhxtFG5/w7PuEcTCyyGE3DZIR3gPMJhst9cdG+Sii8=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Y15skCjxJxrChBjDEjML+V0dr40+BWuyrjunu6xj3I+2ObbzvgFROnvBufcZeXvhVqyeO3iZMsP1zjHv70+dbCWaWkndUCWVBm6M0z8CeGRHqYIBA6xVHrZtOul6F9z1SkzwmX9KG2E+/1pULinvzoDsICXZ1IrIj5K8QRCTNR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKbOGzXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3145BC4CEE7;
-	Fri,  1 Aug 2025 21:36:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754084166;
-	bh=OAhxtFG5/w7PuEcTCyyGE3DZIR3gPMJhst9cdG+Sii8=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=LKbOGzXgxsPFW8TtF7VP1qfx/+sHCW+gx/mom/RaRml6ukmz1lpq/rjEGlVoP4HVI
-	 M0GibQPDIEob8KYA5gikYNNvrQ9+6OH9tSatdzwdHZCOxip8I9wx0DFIL/HSQQZBAO
-	 6s9e4PLoo7Y95EXKcghNJ3gZs8AqdnjJrXgZBflyIrd3P9ZXPxa2q2QvtMvRLtRkzN
-	 S7n4RaG7sCWNx5io3KS4U3xzhlzKylo+NcAqQd8YE0v2+8/FNMpmsGUnrQPZza1Uc/
-	 hEDW5+1Lit4nBcozsOGaF5WrPDxPeC7/zmuEi4Rkvw7SuLx0A3CR7/TVdA7/430OBg
-	 ZF5fm4Hdqn3SQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE152383BF56;
-	Fri,  1 Aug 2025 21:36:22 +0000 (UTC)
-Subject: Re: [GIT PULL v2] virtio, vhost: features, fixes
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20250801091318-mutt-send-email-mst@kernel.org>
-References: <20250801091318-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-List-Id: <stable.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20250801091318-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-X-PR-Tracked-Commit-Id: 6693731487a8145a9b039bc983d77edc47693855
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 821c9e515db512904250e1d460109a1dc4c7ef6b
-Message-Id: <175408418138.4088284.1058038045286020103.pr-tracker-bot@kernel.org>
-Date: Fri, 01 Aug 2025 21:36:21 +0000
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, alok.a.tiwari@oracle.com, anders.roxell@linaro.org, dtatulea@nvidia.com, eperezma@redhat.com, eric.auger@redhat.com, jasowang@redhat.com, jonah.palmer@oracle.com, kraxel@redhat.com, leiyang@redhat.com, linux@treblig.org, lulu@redhat.com, michael.christie@oracle.com, mst@redhat.com, parav@nvidia.com, si-wei.liu@oracle.com, stable@vger.kernel.org, viresh.kumar@linaro.org, wangyuli@uniontech.com, will@kernel.org, wquan@redhat.com, xiaopei01@kylinos.cn
+	s=arc-20240116; t=1754084598; c=relaxed/simple;
+	bh=Xiwy4ScgP7j84te4JGd+4Gr5fis8hv7c267ijEI3f40=;
+	h=Date:To:From:Subject:Message-Id; b=QlZkxXdrVG2meITtZsfehFNb6BeKgT2wkeeA8HWr3+aNh8dBoKdOKBauasDhp7tUwrqf/sgiuX8qG/W2JjK4aoUJT/sOzfnRzJU6FucgewMk2hDO1gOQ2oc91iXZkPa9thI2s2Nnl8jEOm94/vs570pj8n1iQdMAqpCU+y4/Gro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xp7KauDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D911C4CEE7;
+	Fri,  1 Aug 2025 21:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754084598;
+	bh=Xiwy4ScgP7j84te4JGd+4Gr5fis8hv7c267ijEI3f40=;
+	h=Date:To:From:Subject:From;
+	b=xp7KauDF3sNDjWm8vec6o03iM4FcmP7EVUyv1a+MbR1pk0YPnNL3z8SK7MBghoTYf
+	 e6NTzYcrMMAMlqsyBsyggD7X4KkuBHuiulUzPfHKE+bB+ttQf/Lsm+jZ19DzC1qzQp
+	 nQCvTIRtZAoNY9bFDshXnWKuF9cMNjOvftP+VV8E=
+Date: Fri, 01 Aug 2025 14:43:17 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,ville.syrjala@linux.intel.com,tzimmermann@suse.de,tursulin@ursulin.net,stable@vger.kernel.org,rodrigo.vivi@intel.com,Ray.Huang@amd.com,patryk@kowalczyk.ws,mripard@kernel.org,matthew.brost@intel.com,matthew.auld@intel.com,maarten.lankhorst@linux.intel.com,joonas.lahtinen@linux.intel.com,jani.nikula@linux.intel.com,hughd@google.com,david@redhat.com,christian.koenig@amd.com,airlied@gmail.com,baolin.wang@linux.alibaba.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [alternative-merged] mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver.patch removed from -mm tree
+Message-Id: <20250801214318.6D911C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-The pull request you sent on Fri, 1 Aug 2025 09:13:18 -0400:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+The quilt patch titled
+     Subject: mm: shmem: fix the shmem large folio allocation for the i915 driver
+has been removed from the -mm tree.  Its filename was
+     mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver.patch
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/821c9e515db512904250e1d460109a1dc4c7ef6b
+This patch was dropped because an alternative patch was or shall be merged
 
-Thank you!
+------------------------------------------------------
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: mm: shmem: fix the shmem large folio allocation for the i915 driver
+Date: Mon, 28 Jul 2025 16:03:53 +0800
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+After commit acd7ccb284b8 ("mm: shmem: add large folio support for
+tmpfs"), we extend the 'huge=' option to allow any sized large folios for
+tmpfs, which means tmpfs will allow getting a highest order hint based on
+the size of write() and fallocate() paths, and then will try each
+allowable large order.
+
+However, when the i915 driver allocates shmem memory, it doesn't provide
+hint information about the size of the large folio to be allocated,
+resulting in the inability to allocate PMD-sized shmem, which in turn
+affects GPU performance.
+
+To fix this issue, add the 'end' information for shmem_read_folio_gfp() to
+help allocate PMD-sized large folios.  Additionally, use the maximum
+allocation chunk (via mapping_max_folio_size()) to determine the size of
+the large folios to allocate in the i915 driver.
+
+Patryk added:
+
+: In my tests, the performance drop ranges from a few percent up to 13%
+: in Unigine Superposition under heavy memory usage on the CPU Core Ultra
+: 155H with the Xe 128 EU GPU.  Other users have reported performance
+: impact up to 30% on certain workloads.  Please find more in the
+: regressions reports:
+: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645
+: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845
+: 
+: I believe the change should be backported to all active kernel branches
+: after version 6.12.
+
+Link: https://lkml.kernel.org/r/0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com
+Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+Cc: Christan König <christian.koenig@amd.com>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Huang Ray <Ray.Huang@amd.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Jonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Thomas Zimemrmann <tzimmermann@suse.de>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/gpu/drm/drm_gem.c                 |    2 +-
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c |    7 ++++++-
+ drivers/gpu/drm/ttm/ttm_backup.c          |    2 +-
+ include/linux/shmem_fs.h                  |    4 ++--
+ mm/shmem.c                                |    7 ++++---
+ 5 files changed, 14 insertions(+), 8 deletions(-)
+
+--- a/drivers/gpu/drm/drm_gem.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
++++ a/drivers/gpu/drm/drm_gem.c
+@@ -627,7 +627,7 @@ struct page **drm_gem_get_pages(struct d
+ 	i = 0;
+ 	while (i < npages) {
+ 		long nr;
+-		folio = shmem_read_folio_gfp(mapping, i,
++		folio = shmem_read_folio_gfp(mapping, i, 0,
+ 				mapping_gfp_mask(mapping));
+ 		if (IS_ERR(folio))
+ 			goto fail;
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
++++ a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -69,6 +69,7 @@ int shmem_sg_alloc_table(struct drm_i915
+ 	struct scatterlist *sg;
+ 	unsigned long next_pfn = 0;	/* suppress gcc warning */
+ 	gfp_t noreclaim;
++	size_t chunk;
+ 	int ret;
+ 
+ 	if (overflows_type(size / PAGE_SIZE, page_count))
+@@ -94,6 +95,7 @@ int shmem_sg_alloc_table(struct drm_i915
+ 	mapping_set_unevictable(mapping);
+ 	noreclaim = mapping_gfp_constraint(mapping, ~__GFP_RECLAIM);
+ 	noreclaim |= __GFP_NORETRY | __GFP_NOWARN;
++	chunk = mapping_max_folio_size(mapping);
+ 
+ 	sg = st->sgl;
+ 	st->nents = 0;
+@@ -105,10 +107,13 @@ int shmem_sg_alloc_table(struct drm_i915
+ 			0,
+ 		}, *s = shrink;
+ 		gfp_t gfp = noreclaim;
++		loff_t bytes = (page_count - i) << PAGE_SHIFT;
++		loff_t pos = i << PAGE_SHIFT;
+ 
++		bytes = min_t(loff_t, chunk, bytes);
+ 		do {
+ 			cond_resched();
+-			folio = shmem_read_folio_gfp(mapping, i, gfp);
++			folio = shmem_read_folio_gfp(mapping, i, pos + bytes, gfp);
+ 			if (!IS_ERR(folio))
+ 				break;
+ 
+--- a/drivers/gpu/drm/ttm/ttm_backup.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
++++ a/drivers/gpu/drm/ttm/ttm_backup.c
+@@ -100,7 +100,7 @@ ttm_backup_backup_page(struct file *back
+ 	struct folio *to_folio;
+ 	int ret;
+ 
+-	to_folio = shmem_read_folio_gfp(mapping, idx, alloc_gfp);
++	to_folio = shmem_read_folio_gfp(mapping, idx, 0, alloc_gfp);
+ 	if (IS_ERR(to_folio))
+ 		return PTR_ERR(to_folio);
+ 
+--- a/include/linux/shmem_fs.h~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
++++ a/include/linux/shmem_fs.h
+@@ -153,12 +153,12 @@ enum sgp_type {
+ int shmem_get_folio(struct inode *inode, pgoff_t index, loff_t write_end,
+ 		struct folio **foliop, enum sgp_type sgp);
+ struct folio *shmem_read_folio_gfp(struct address_space *mapping,
+-		pgoff_t index, gfp_t gfp);
++		pgoff_t index, loff_t end, gfp_t gfp);
+ 
+ static inline struct folio *shmem_read_folio(struct address_space *mapping,
+ 		pgoff_t index)
+ {
+-	return shmem_read_folio_gfp(mapping, index, mapping_gfp_mask(mapping));
++	return shmem_read_folio_gfp(mapping, index, 0, mapping_gfp_mask(mapping));
+ }
+ 
+ static inline struct page *shmem_read_mapping_page(
+--- a/mm/shmem.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
++++ a/mm/shmem.c
+@@ -5930,6 +5930,7 @@ int shmem_zero_setup(struct vm_area_stru
+  * shmem_read_folio_gfp - read into page cache, using specified page allocation flags.
+  * @mapping:	the folio's address_space
+  * @index:	the folio index
++ * @end:	end of a read if allocating a new folio
+  * @gfp:	the page allocator flags to use if allocating
+  *
+  * This behaves as a tmpfs "read_cache_page_gfp(mapping, index, gfp)",
+@@ -5942,14 +5943,14 @@ int shmem_zero_setup(struct vm_area_stru
+  * with the mapping_gfp_mask(), to avoid OOMing the machine unnecessarily.
+  */
+ struct folio *shmem_read_folio_gfp(struct address_space *mapping,
+-		pgoff_t index, gfp_t gfp)
++		pgoff_t index, loff_t end, gfp_t gfp)
+ {
+ #ifdef CONFIG_SHMEM
+ 	struct inode *inode = mapping->host;
+ 	struct folio *folio;
+ 	int error;
+ 
+-	error = shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
++	error = shmem_get_folio_gfp(inode, index, end, &folio, SGP_CACHE,
+ 				    gfp, NULL, NULL);
+ 	if (error)
+ 		return ERR_PTR(error);
+@@ -5968,7 +5969,7 @@ EXPORT_SYMBOL_GPL(shmem_read_folio_gfp);
+ struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
+ 					 pgoff_t index, gfp_t gfp)
+ {
+-	struct folio *folio = shmem_read_folio_gfp(mapping, index, gfp);
++	struct folio *folio = shmem_read_folio_gfp(mapping, index, 0, gfp);
+ 	struct page *page;
+ 
+ 	if (IS_ERR(folio))
+_
+
+Patches currently in -mm which might be from baolin.wang@linux.alibaba.com are
+
+
 
