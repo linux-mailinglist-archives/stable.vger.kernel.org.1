@@ -1,265 +1,242 @@
-Return-Path: <stable+bounces-165758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9BCB1865F
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 19:14:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D55B186BD
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 19:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73A4556246F
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 17:14:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7727C563CDB
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 17:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD331DFDAB;
-	Fri,  1 Aug 2025 17:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44C61D5170;
+	Fri,  1 Aug 2025 17:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E4bFfPKG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mncldl43"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5191DDC33
-	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 17:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228E342065;
+	Fri,  1 Aug 2025 17:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754068440; cv=none; b=u6qV3e2qwpF9HWRwe+8pynrjoL3vok/zSIGa4mg0QLHBhkBYF//cSCC+crIKL/mHuqLqHveMnPiq8Zq821Q93kLmM5fvsqDrI2PoVe5q1Yd7iMq5fOBdX+e5kixDFfzAnn/hTNjFAybijJVjPMJDgvcBgF0mxalCUDa3uGtMjrI=
+	t=1754069489; cv=none; b=mw7tOJpX3/tRAB5+geDaUgdLIKQkwtmmaULheE1WjbUg2SjzhZaGzji0vy/6CDPyJSeeSIJOxQOxGwKdtEhWyOB8rTNN/1Bcs3sBHxN9elUJ6LD+o5vPbINsCZT9nVy583to5idnusoVLXdM4nJBpP3NA8xeMUXCH2dLOmSYdMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754068440; c=relaxed/simple;
-	bh=urjHTNxVtznsZGPK5MfG0R49OKWj2ch5jHzSEmSRmi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HYeNbtxh7RNadwp1xMQz2JY6Bp2pcJO6V6U33T5ovUzqR1aD2CUyCmeoFDLtlFcMSDHZF+jxFbO8BQhuwOS6gNV81foPkhalhoYMyOMB/+V9zYs0YE1/+saMA5U1b+x5md/ehFjFGeOorSK1RE75jiFk6EBRmu4CbHFlIOkyj+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E4bFfPKG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754068437;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UapQRB4TdH6jPVjzlLlw/CIcbZ+SS127yBars+dasnY=;
-	b=E4bFfPKGADA5XJIVWQDJfLrojC5d6uX81nDf3B5VpmMlLH9zgmLwky9qScNY4l05gIOosj
-	S39gQPof8EVukt7EvljDPsAYC0zlxSbbPaMxUcHdxaPmRcZEsE4QCT0lCqJ11qOHKLMwPw
-	cnbgxw2yf/DzcUr9OH+kk2OZYh+frxg=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-1esqrPGdMty_dneVPgoh6Q-1; Fri, 01 Aug 2025 13:13:56 -0400
-X-MC-Unique: 1esqrPGdMty_dneVPgoh6Q-1
-X-Mimecast-MFC-AGG-ID: 1esqrPGdMty_dneVPgoh6Q_1754068436
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4ab68cc66d8so52368381cf.1
-        for <stable@vger.kernel.org>; Fri, 01 Aug 2025 10:13:56 -0700 (PDT)
+	s=arc-20240116; t=1754069489; c=relaxed/simple;
+	bh=6p5x1d/4VmlIH4ExUe3oL0Y5f3XnqxSn6nPpu6za/B0=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=CW7YtwbEdyRQ68KOMn/zFtrye6PL4S1nEKjZ+JdyxxfFfcVvWKYqjep1P6faropB33CadeERFESkma/RYwU3AoZ3vmVDZcvo/kX5yaMEOBwDb+mQRIOHTcNK3pErGxnWPnjzs6B99fWVti+oHUASH3S1+s7rfWPwzFjgHpU6uPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mncldl43; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b3220c39cffso1217480a12.0;
+        Fri, 01 Aug 2025 10:31:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754069487; x=1754674287; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UYkhBI7Ln9fYlOieDEvuny+XS7GVAdJ2Y1G82qbanHk=;
+        b=mncldl43iwPq72EFShj/IEq8apPvEbhI0+Rkcv/srhUFJMNCXzkhwwBKOP1AUBhSC2
+         OqzaE2NLpPG+xGq+NrrKkzTiBpdEByIF0bz64S1wC/3nVEgfkqwhncolPrMCK4U1ALlU
+         ovbpbg4/qCHLK5osq5A9dKm5vx1nhgZceMnh+HmF8VmIig4jMgPC3/tW1iorMldpSw3u
+         lv1nwoPoBDQwrJDyKCpprvrdGRfAQ572MjIh6yxXnFWghvGWMeygynN1QAkQuEMpDWsm
+         Rnoyjx0+pxeccYqSO6Dd/5eyOpieSCYRdJEtS+jUpMT+ngFU0QLXMyy0rDRwqtpXR94v
+         xrVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754068435; x=1754673235;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UapQRB4TdH6jPVjzlLlw/CIcbZ+SS127yBars+dasnY=;
-        b=cQrlmuC/7CS2JwpUbppNjoqMQq3etty14lr+7rNdPCwZXiYgKbBrriXO4IixAqiFT+
-         hfPkf9SJB9Rrf4YH7suvkCe6ldUb4oAIi1aZrR0+qpd57sgkYx8gHJcpQne94j1/bRSL
-         QrDPu9mRwRxUPvxLQd6wNwX1DV+p3BIv7cgo9VnabRIdxy/Vzlw6rNNjvkXLpJXfBbX0
-         ufkg+Ce4C3LdePXwHmhtDHLgCSpRkwVlsy/Hlfo4Nx/lRR1+AvFyXlyBPBqyVEj0+3Cz
-         EUW2hOcvG7fOP7jaL+enV0paLWKfOqWrNd/ixi1B2Dr6rcGe6JzDoBnzBwKTd/gACmP7
-         m2aA==
-X-Forwarded-Encrypted: i=1; AJvYcCXAkuQIK58qaTj8BnOAuBq525N6rvJb9C29TiUbv7ta5EHoBr0Yvw+moo8FHLH6/dhzLlMZJaU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztC+iS+rTlk54uK2C6vxavR4TY85vy5tjTFtb0kj37hoYrT115
-	25z4sDQE/UJKzXradW1PLHezXMpdy4DtHNDkl/AyiGLkY/IJLVtXLss/+k2sx08oWs8Aj1131+x
-	k6xybCYRtxJcNDcObCS3dK8HR6mGLHSMzFP7S4eWYBdvt4k4fwgL4t1wuIw==
-X-Gm-Gg: ASbGncuTCB0E5Bw8/r9KIQj5r6fZlozOvLEr7Zf0J2T0Kh6L6gCs8EkwJ/tKj4gd1BO
-	EPnfv3C2sMDGAgu9QiDpYOx6jOom9BXVVEqO8iheOkEz8g2NgPljHi01pOdLcKBqF2B14i3P/5k
-	xMe7dqR6Csv67o/VTMd5KwDoOmOZSvX4SrXBiuzR0q9ngsRE9CA6xjyb6r5dG//SVkNf3FXrigm
-	TnAVO5p7Q0d1wfcq+O7aZ8mf5DY3vkgZizGB+CS4X/Inzl937MKgxT1NgsytDAOxpYitAJ0qYo3
-	JUwe6sGsYEW7ZJHuBgp40FVXHyCgI37A
-X-Received: by 2002:a05:622a:a953:20b0:4af:36a:a60f with SMTP id d75a77b69052e-4af036aa957mr25038471cf.21.1754068435402;
-        Fri, 01 Aug 2025 10:13:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG8+K6i2QRol52KGBLA9S6CAT2dneVBlknXiG0f/LH2d8sJO8oI3hxjPNdTh/rQMWdVl3tj8g==
-X-Received: by 2002:a05:622a:a953:20b0:4af:36a:a60f with SMTP id d75a77b69052e-4af036aa957mr25037891cf.21.1754068434728;
-        Fri, 01 Aug 2025 10:13:54 -0700 (PDT)
-Received: from x1.local ([174.89.135.171])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4aeeebde17fsm22954801cf.1.2025.08.01.10.13.53
+        d=1e100.net; s=20230601; t=1754069487; x=1754674287;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UYkhBI7Ln9fYlOieDEvuny+XS7GVAdJ2Y1G82qbanHk=;
+        b=iWxzWgFWRF2g/kCCwKF+IGWKgDCS2z9uOhYpDBcGcKA8dO/kEEkqXeDumHQRAQ427e
+         1U1q9/P7bgMzJmKcyO5rKWCMI1yVF5fhr99KZ8aC1+rSAc7dsQKHZHnRL4usL61HGE3h
+         IZBb1gPznZtTCZ0Jb1SyGYj+nniVOBkZJO/4FGDCuwyIMzZRUxZJD2Nro9Vt9D5AKOke
+         CM7sNiBcyu0zNzbR2JQ2jS/7WHVIJtvYf+U/9jECyK0lCK1yLRt2Pun5j2tWTfnZfPvt
+         YrjUbZHYS6pGvhgJcJgK4tQFgk8/pKmSCDWRmO+w6/8nmm2WiPIV8YUvcQl23gqKfU3d
+         izCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWU9zIutOTFI9h/8pGDXyBODECKGXGBi3rNbRrf5He5H89jk5GsUmKB0JPEYJwvJdJDmXxbkVc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrnaY8FEOwsoUmtnrHEVCJnl81qbWTaHqCiIiXW3mtUftkilQl
+	/6IpyVSFbDb1rfcRCI2owtx/rSzk1MaxjfUw13R/uVYuqhFfxvYohWFmO0Fvag==
+X-Gm-Gg: ASbGncsG2SCP05/EHEKn8eoqkW+jZwrCAqjRdTo3TbTHf2+JMO6UCT8SwFDQIjEhLWK
+	bYmd12dGDn+RD+wstqZfYkCUpAEVx493FVfRgyeeT81zXyiRf6fcsUE1Q37FjkJ2/Yvp9StZIBC
+	ew4o9xuaMukF/0I2dj/pzkg+F1zoa+TAqF2k753q8LJNLJwpiekB5T1lGyswbPsjCeawy9zlSfJ
+	sujyds56K7KjXN8WxQycpccBdlmknRS2VK+KYAQSEf0nkFk8aV9uffZ6tNUo1ICLnH2Q0dfvvNa
+	Y4lwE3zs6yRgKLevSe4CGIoY1ZKsSqnUkDcjEzIsMDugNItCPJjFatoveUnIgUND8bvs+bQG/cy
+	vTmYKO4HhbG2fNxg=
+X-Google-Smtp-Source: AGHT+IEILVqTRLBBaQ0amWjTizr2ivYHmUAzrruxTd/9XNKSBJp43sLWgmmPtBYWsDPdQ0MV3QAGKg==
+X-Received: by 2002:a17:90b:3ecb:b0:31e:c8fc:e62a with SMTP id 98e67ed59e1d1-32116315768mr748254a91.35.1754069486671;
+        Fri, 01 Aug 2025 10:31:26 -0700 (PDT)
+Received: from dw-tp ([49.205.218.89])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b422bacbb74sm4183608a12.42.2025.08.01.10.31.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Aug 2025 10:13:54 -0700 (PDT)
-Date: Fri, 1 Aug 2025 13:13:42 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
-	aarcange@redhat.com, lokeshgidra@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
- a THP hole
-Message-ID: <aIz1xrzBc2Spa2OH@x1.local>
-References: <20250731154442.319568-1-surenb@google.com>
- <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
- <aIzMGlrR1SL5Y_Gp@x1.local>
- <CAJuCfpEqOUj8VPybstQjoJvCzyZtG6Q5Vr4WT0Lx_r3LFVS7og@mail.gmail.com>
- <aIzp6WqdzhomPhhf@x1.local>
- <CAJuCfpGWLnu+r2wvY2Egy2ESPD=tAVvfVvAKXUv1b+Z0hweeJg@mail.gmail.com>
+        Fri, 01 Aug 2025 10:31:25 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Donet Tom <donettom@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Vishal Chourasia <vishalc@linux.ibm.com>, Donet Tom <donettom@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] powerpc/mm: Fix SLB multihit issue during SLB preload
+In-Reply-To: <20250801103747.21864-1-donettom@linux.ibm.com>
+Date: Fri, 01 Aug 2025 22:56:37 +0530
+Message-ID: <87qzxvq7g2.fsf@gmail.com>
+References: <20250801103747.21864-1-donettom@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpGWLnu+r2wvY2Egy2ESPD=tAVvfVvAKXUv1b+Z0hweeJg@mail.gmail.com>
 
-On Fri, Aug 01, 2025 at 09:41:31AM -0700, Suren Baghdasaryan wrote:
-> On Fri, Aug 1, 2025 at 9:23 AM Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Fri, Aug 01, 2025 at 08:28:38AM -0700, Suren Baghdasaryan wrote:
-> > > On Fri, Aug 1, 2025 at 7:16 AM Peter Xu <peterx@redhat.com> wrote:
-> > > >
-> > > > On Fri, Aug 01, 2025 at 09:21:30AM +0200, David Hildenbrand wrote:
-> > > > > On 31.07.25 17:44, Suren Baghdasaryan wrote:
-> > > > >
-> > > > > Hi!
-> > > > >
-> > > > > Did you mean in you patch description:
-> > > > >
-> > > > > "userfaultfd: fix a crash in UFFDIO_MOVE with some non-present PMDs"
-> > > > >
-> > > > > Talking about THP holes is very very confusing.
-> > > > >
-> > > > > > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
-> > > > > > encounters a non-present THP, it fails to properly recognize an unmapped
-> > > > >
-> > > > > You mean a "non-present PMD that is not a migration entry".
-> > > > >
-> > > > > > hole and tries to access a non-existent folio, resulting in
-> > > > > > a crash. Add a check to skip non-present THPs.
-> > > > >
-> > > > > That makes sense. The code we have after this patch is rather complicated
-> > > > > and hard to read.
-> > > > >
-> > > > > >
-> > > > > > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> > > > > > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> > > > > > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-> > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > ---
-> > > > > > Changes since v1 [1]
-> > > > > > - Fixed step size calculation, per Lokesh Gidra
-> > > > > > - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gidra
-> > > > > >
-> > > > > > [1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.com/
-> > > > > >
-> > > > > >   mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
-> > > > > >   1 file changed, 29 insertions(+), 16 deletions(-)
-> > > > > >
-> > > > > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > > > > > index cbed91b09640..b5af31c22731 100644
-> > > > > > --- a/mm/userfaultfd.c
-> > > > > > +++ b/mm/userfaultfd.c
-> > > > > > @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
-> > > > > >             ptl = pmd_trans_huge_lock(src_pmd, src_vma);
-> > > > > >             if (ptl) {
-> > > > > > -                   /* Check if we can move the pmd without splitting it. */
-> > > > > > -                   if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> > > > > > -                       !pmd_none(dst_pmdval)) {
-> > > > > > -                           struct folio *folio = pmd_folio(*src_pmd);
-> > > > > > +                   if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
-> > > >
-> > > > [1]
-> > > >
-> > > > > > +                           /* Check if we can move the pmd without splitting it. */
-> > > > > > +                           if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> > > > > > +                               !pmd_none(dst_pmdval)) {
-> > > > > > +                                   if (pmd_present(*src_pmd)) {
-> >
-> > [2]
-> >
-> > > > > > +                                           struct folio *folio = pmd_folio(*src_pmd);
-> >
-> > [3]
-> >
-> > > > > > +
-> > > > > > +                                           if (!folio || (!is_huge_zero_folio(folio) &&
-> > > > > > +                                                          !PageAnonExclusive(&folio->page))) {
-> > > > > > +                                                   spin_unlock(ptl);
-> > > > > > +                                                   err = -EBUSY;
-> > > > > > +                                                   break;
-> > > > > > +                                           }
-> > > > > > +                                   }
-> > > > >
-> > > > > ... in particular that. Is there some way to make this code simpler / easier
-> > > > > to read? Like moving that whole last folio-check thingy into a helper?
-> > > >
-> > > > One question might be relevant is, whether the check above [1] can be
-> > > > dropped.
-> > > >
-> > > > The thing is __pmd_trans_huge_lock() does double check the pmd to be !none
-> > > > before returning the ptl.  I didn't follow closely on the recent changes on
-> > > > mm side on possible new pmd swap entries, if migration is the only possible
-> > > > one then it looks like [1] can be avoided.
-> > >
-> > > Hi Peter,
-> > > is_swap_pmd() check in __pmd_trans_huge_lock() allows for (!pmd_none()
-> > > && !pmd_present()) PMD to pass and that's when this crash is hit.
-> >
-> > First for all, thanks for looking into the issue with Lokesh; I am still
-> > catching up with emails after taking weeks off.
-> >
-> > I didn't yet read into the syzbot report, but I thought the bug was about
-> > referencing the folio on top of a swap entry after reading your current
-> > patch, which has:
-> >
-> >         if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> >             !pmd_none(dst_pmdval)) {
-> >                 struct folio *folio = pmd_folio(*src_pmd); <----
-> >
-> > Here looks like *src_pmd can be a migration entry. Is my understanding
-> > correct?
-> 
-> Correct.
-> 
-> >
-> > > If we drop the check at [1] then the path that takes us to
-> >
-> > If my above understanding is correct, IMHO it should be [2] above that
-> > makes sure the reference won't happen on a swap entry, not necessarily [1]?
-> 
-> Yes, in case of migration entry this is what protects us.
-> 
-> >
-> > > split_huge_pmd() will bail out inside split_huge_pmd_locked() with no
-> > > indication that split did not happen. Afterwards we will retry
-> >
-> > So we're talking about the case where it's a swap pmd entry, right?
-> 
-> Hmm, my understanding is that it's being treated as a swap entry but
-> in reality is not. I thought THPs are always split before they get
-> swapped, no?
+Donet Tom <donettom@linux.ibm.com> writes:
 
-Yes they should be split, afaiu.
+> On systems using the hash MMU, there is a software SLB preload cache that
+> mirrors the entries loaded into the hardware SLB buffer. This preload
+> cache is subject to periodic eviction — typically after every 256 context
+> switches — to remove old entry.
+>
+> To optimize performance, the kernel skips switch_mmu_context() in
+> switch_mm_irqs_off() when the prev and next mm_struct are the same.
+> However, on hash MMU systems, this can lead to inconsistencies between
+> the hardware SLB and the software preload cache.
+>
+> If an SLB entry for a process is evicted from the software cache on one
+> CPU, and the same process later runs on another CPU without executing
+> switch_mmu_context(), the hardware SLB may retain stale entries. If the
+> kernel then attempts to reload that entry, it can trigger an SLB
+> multi-hit error.
+>
+> The following timeline shows how stale SLB entries are created and can
+> cause a multi-hit error when a process moves between CPUs without a
+> MMU context switch.
+>
+> CPU 0                                   CPU 1
+> -----                                    -----
+> Process P
+> exec                                    swapper/1
+>  load_elf_binary
+>   begin_new_exc
+>     activate_mm
+>      switch_mm_irqs_off
+>       switch_mmu_context
+>        switch_slb
+>        /*
+>         * This invalidates all
+>         * the entries in the HW
+>         * and setup the new HW
+>         * SLB entries as per the
+>         * preload cache.
+>         */
+> context_switch
+> sched_migrate_task migrates process P to cpu-1
+>
+> Process swapper/0                       context switch (to process P)
+> (uses mm_struct of Process P)           switch_mm_irqs_off()
+>                                          switch_slb
+>                                            load_slb++
+>                                             /*
+>                                             * load_slb becomes 0 here
+>                                             * and we evict an entry from
+>                                             * the preload cache with
+>                                             * preload_age(). We still
+>                                             * keep HW SLB and preload
+>                                             * cache in sync, that is
+>                                             * because all HW SLB entries
+>                                             * anyways gets evicted in
+>                                             * switch_slb during SLBIA.
+>                                             * We then only add those
+>                                             * entries back in HW SLB,
+>                                             * which are currently
+>                                             * present in preload_cache
+>                                             * (after eviction).
+>                                             */
+>                                         load_elf_binary continues...
+>                                          setup_new_exec()
+>                                           slb_setup_new_exec()
+>
+>                                         sched_switch event
+>                                         sched_migrate_task migrates
+>                                         process P to cpu-0
+>
+> context_switch from swapper/0 to Process P
+>  switch_mm_irqs_off()
+>   /*
+>    * Since both prev and next mm struct are same we don't call
+>    * switch_mmu_context(). This will cause the HW SLB and SW preload
+>    * cache to go out of sync in preload_new_slb_context. Because there
+>    * was an SLB entry which was evicted from both HW and preload cache
+>    * on cpu-1. Now later in preload_new_slb_context(), when we will try
+>    * to add the same preload entry again, we will add this to the SW
+>    * preload cache and then will add it to the HW SLB. Since on cpu-0
+>    * this entry was never invalidated, hence adding this entry to the HW
+>    * SLB will cause a SLB multi-hit error.
+>    */
+> load_elf_binary continues...
+>  START_THREAD
+>   start_thread
+>    preload_new_slb_context
+>    /*
+>     * This tries to add a new EA to preload cache which was earlier
+>     * evicted from both cpu-1 HW SLB and preload cache. This caused the
+>     * HW SLB of cpu-0 to go out of sync with the SW preload cache. The
+>     * reason for this was, that when we context switched back on CPU-0,
+>     * we should have ideally called switch_mmu_context() which will
+>     * bring the HW SLB entries on CPU-0 in sync with SW preload cache
+>     * entries by setting up the mmu context properly. But we didn't do
+>     * that since the prev mm_struct running on cpu-0 was same as the
+>     * next mm_struct (which is true for swapper / kernel threads). So
+>     * now when we try to add this new entry into the HW SLB of cpu-0,
+>     * we hit a SLB multi-hit error.
+>     */
+>
+> WARNING: CPU: 0 PID: 1810970 at arch/powerpc/mm/book3s64/slb.c:62
+> assert_slb_presence+0x2c/0x50(48 results) 02:47:29 [20157/42149]
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 1810970 Comm: dd Not tainted 6.16.0-rc3-dirty #12
+> VOLUNTARY
+> Hardware name: IBM pSeries (emulated by qemu) POWER8 (architected)
+> 0x4d0200 0xf000004 of:SLOF,HEAD hv:linux,kvm pSeries
+> NIP:  c00000000015426c LR: c0000000001543b4 CTR: 0000000000000000
+> REGS: c0000000497c77e0 TRAP: 0700   Not tainted  (6.16.0-rc3-dirty)
+> MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER: 00000000
+> CFAR: c0000000001543b0 IRQMASK: 3
+> <...>
+> NIP [c00000000015426c] assert_slb_presence+0x2c/0x50
+> LR [c0000000001543b4] slb_insert_entry+0x124/0x390
+> Call Trace:
+>   0x7fffceb5ffff (unreliable)
+>   preload_new_slb_context+0x100/0x1a0
+>   start_thread+0x26c/0x420
+>   load_elf_binary+0x1b04/0x1c40
+>   bprm_execve+0x358/0x680
+>   do_execveat_common+0x1f8/0x240
+>   sys_execve+0x58/0x70
+>   system_call_exception+0x114/0x300
+>   system_call_common+0x160/0x2c4
+>
+> To fix this issue, we add a code change to always switch the MMU context on
+> hash MMU if the SLB preload cache has aged. With this change, the
+> SLB multi-hit error no longer occurs.
+>
+> cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> cc: Michael Ellerman <mpe@ellerman.id.au>
+> cc: Nicholas Piggin <npiggin@gmail.com>
+> Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
+> cc: stable@vger.kernel.org
+> Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> ---
+>
+> v1 -> v2 : Changed commit message and added a comment in
+> switch_mm_irqs_off()
+>
+> v1 - https://lore.kernel.org/all/20250731161027.966196-1-donettom@linux.ibm.com/
 
-> 
-> > Could you elaborate why the split would fail?
-> 
-> Just looking at the code, split_huge_pmd_locked() checks for
-> (pmd_trans_huge(*pmd) || is_pmd_migration_entry(*pmd)).
-> pmd_trans_huge() is false if !pmd_present() and it's not a migration
-> entry, so __split_huge_pmd_locked() will be skipped.
+Thanks for adding the details in the commit msg. The change looks good
+to me. Please feel free to add - 
 
-Here might be the major part of where confusion came from: I thought it
-must be a migration pmd entry to hit the issue, so it's not?
-
-I checked the code just now:
-
-__handle_mm_fault:
-		if (unlikely(is_swap_pmd(vmf.orig_pmd))) {
-			VM_BUG_ON(thp_migration_supported() &&
-					  !is_pmd_migration_entry(vmf.orig_pmd));
-
-So IIUC pmd migration entry is still the only possible way to have a swap
-entry.  It doesn't look like we have "real" swap entries for PMD (which can
-further points to some swapfiles)?
-
--- 
-Peter Xu
-
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
