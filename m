@@ -1,303 +1,188 @@
-Return-Path: <stable+bounces-165726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09D9B18044
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 12:38:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6700B18067
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 12:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDB25561EF6
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 10:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 931EB3A9E6F
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 10:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36822233D64;
-	Fri,  1 Aug 2025 10:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8694E239E67;
+	Fri,  1 Aug 2025 10:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L0tbB07U"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3bQCwe+8";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tNnXAiRK";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3bQCwe+8";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tNnXAiRK"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D9722688C;
-	Fri,  1 Aug 2025 10:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2704A2B9A5
+	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 10:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754044698; cv=none; b=WacAgaexVvwmdNzbr71J3s6SkyTkBt9n6t1X7HHcXtMKy2YTv4FFd6pspuomb33jixk8jS3rD5PLNkuWoDY+mvoWzsIv+O1xrQ+g488blsom1BgF/G/A/yRJzrLGkEbFb9qxu8eyocXSjJ7ijRJO4qAYbbm/R//B81Iw1lCJTgs=
+	t=1754045294; cv=none; b=qwP3gXBW9nD8mHPUrk/MwQ2PtGRLctx7wkeqeGXWGeKmMNK8LEDVrKFJZfoc4BIa6xaMC1daJhjOWkUgR7cqjriYQQnaV7uwZrlE1sqXLaDo9OkRoSB5BfD7sXvhfXAw/+u8MGiRYQY8L6C39Q+ZRe+hWYjP00QPFIgrJbr8AB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754044698; c=relaxed/simple;
-	bh=9mERBhIma4fJeN2UzOtRXlHe+ri/heIYSMH0vdyYnGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nUFRnTVexbbOqjvi+XvW+YM6nGsbBaT2vsAYSFwrnohA8rRaIId078nOphTge9RT2NnpRfHJKJCn+Cn/ZTSoFsnTxjJCvBQjiGQcqfm+iTde5m8Vr5e7qDY/YIx9N5FlF2SFttHE7Eax21IvUyiBo1b/wiapa6wxXiKuhySs4B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L0tbB07U; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5716lEsq017483;
-	Fri, 1 Aug 2025 10:38:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=uvXCgyq8iO7DjIvxLkszVszOFS4P
-	5UUPEfAZBgUlOMg=; b=L0tbB07U8kTPcjyiqtbfy5q9P3sTdSstyD9OYYgHadGT
-	gXS0T3DQNWKcq/+SRJcSoI0DZ8haouNSVBDMKRkrcIpa4RSQFTsHUIj4WOzU8K8r
-	vAdE+ExsrZT/hYQqpm/kgiIZItACfUndg7xueAUx36Z/FILMjFaRAwG2nBYVhfKm
-	twYkk78n5oND/+uxAqJLenhS0d5vbkPS2hcIM5WNoXjcj/IC2ocHfVgXdp4ZN2JN
-	p4pOUqOfszzpybkFWh8G/w7/2BE/XjkWgZrZx2wRNfrK+sozp/N+2JqVXTEeZVkW
-	EsWIwjuGC+BlY0O4O1Fg1Ngyk3Y4t0cGUzHS166TWw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4864k88kxy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Aug 2025 10:38:02 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 571Ac1xV007046;
-	Fri, 1 Aug 2025 10:38:01 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4864k88kxu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Aug 2025 10:38:01 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57189p42017369;
-	Fri, 1 Aug 2025 10:38:00 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4859r0h3w1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Aug 2025 10:38:00 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 571AbvPx50594150
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Aug 2025 10:37:57 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0864120043;
-	Fri,  1 Aug 2025 10:37:57 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 69A7320040;
-	Fri,  1 Aug 2025 10:37:54 +0000 (GMT)
-Received: from li-06431bcc-2712-11b2-a85c-a6fe68df28f9.ibm.com.com (unknown [9.39.20.90])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Aug 2025 10:37:54 +0000 (GMT)
-From: Donet Tom <donettom@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-kernel@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Vishal Chourasia <vishalc@linux.ibm.com>,
-        Donet Tom <donettom@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH v2] powerpc/mm: Fix SLB multihit issue during SLB preload
-Date: Fri,  1 Aug 2025 16:07:47 +0530
-Message-ID: <20250801103747.21864-1-donettom@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1754045294; c=relaxed/simple;
+	bh=qawU/hgul6DO0p7PkqaVzmv3qF3Q0v23J+MMsJIYuAs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I4u/3xe5CWnODehhSojlPL2vidLSPqpoR53+FQAQGjzR3S5Jrj52sOpJFQ4y1PDU84glwdQIlYQ7f5wl6Z3kFLyiyqEeuoScsqBIiAuEm+dwLN/FPu2ymYVIP7QhqPMsxUtG2c9nuN2OfYOFTPgyB+63DGhQA0Bk1lObWgaVsdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3bQCwe+8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tNnXAiRK; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3bQCwe+8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tNnXAiRK; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4CFCA1F802;
+	Fri,  1 Aug 2025 10:48:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754045290; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
+	b=3bQCwe+8m+b1pJXki7i0SE19LRJuLZX/aYgO8A3ZiSqrxzSq+JlrRllc40Ijgjp0TEoRmy
+	oEmC7LLWO65q+KAukErRJmt4xvjB2DU7z1kH1ytR78Z+c0qtd40vBaJ5wmgvdX4pZNQolO
+	uULuN2WRCFTgAM3bwR4y0sDtMF26K4A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754045290;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
+	b=tNnXAiRKs4dWG6re5uc2xbcv5wm+9c7z4s8kRNOflfN1gsjkjp0s4yqknTPOzjZfL2uObF
+	VqmUlolodqbMRNDw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754045290; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
+	b=3bQCwe+8m+b1pJXki7i0SE19LRJuLZX/aYgO8A3ZiSqrxzSq+JlrRllc40Ijgjp0TEoRmy
+	oEmC7LLWO65q+KAukErRJmt4xvjB2DU7z1kH1ytR78Z+c0qtd40vBaJ5wmgvdX4pZNQolO
+	uULuN2WRCFTgAM3bwR4y0sDtMF26K4A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754045290;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
+	b=tNnXAiRKs4dWG6re5uc2xbcv5wm+9c7z4s8kRNOflfN1gsjkjp0s4yqknTPOzjZfL2uObF
+	VqmUlolodqbMRNDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3E7D413876;
+	Fri,  1 Aug 2025 10:48:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id w3vxDmqbjGhSUwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 01 Aug 2025 10:48:10 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id ABB00A09FB; Fri,  1 Aug 2025 12:48:09 +0200 (CEST)
+Date: Fri, 1 Aug 2025 12:48:09 +0200
+From: Jan Kara <jack@suse.cz>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Sargun Dhillon <sargun@sargun.me>, 
+	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs: correctly check for errors from replace_fd() in
+ receive_fd_replace()
+Message-ID: <fq2s55tc5hhvh4dfjdzek4neozffmn36rwdlsrsxxjqzts2f4c@j67nruhocdiz>
+References: <20250801-fix-receive_fd_replace-v1-1-d46d600c74d6@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Y7g5A_dDmV6PbSlORhVpZJHCD84LYchZ
-X-Proofpoint-GUID: 05-Wfiw2eq0MTkcOzytVI2NkaLeniX5s
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAxMDA3NiBTYWx0ZWRfX/wn0Vcp0L2Ef
- GDHDBLnhN8yhEe1wqAv5M8RfaJMI/NzeWNK7/qeyrstTYia9xTxNlk8MEhA0TvaWykcx0bh8YgV
- 6CUVC23o+cuZLIBKy9mQddwwmxNFCv6d732aPD1g17YbJHYIUgiQs0YMXJJN+BndpSqNFzS1X/Z
- qVLOzfsKfWWSYhUZyEzW9I7+7TPSpjrBsFMAsyti+sFLVCTcfKnVwCHi2ILsYktrs5Y/XVY2oEx
- ZAd2yI55gXpFp/lBkL72dIktJFfRslGDHEiwPTvZTDlYm+k6yS5R3YTVMoC6F14EUQS1jcFzg7b
- 2rlVzQ/s59bWG1uDOdXt+ddYCXGvzFYpst0fjDIfMeVHfAaHJGyz04Snbt3fDKBVsj/gtxfFn6X
- M8xioLAKwc+46weGKRyKjDjg/+rHNTNA6IXIN8qBPu2BujsOcPRzJjH3SWDQZ7uWZIIHNwOM
-X-Authority-Analysis: v=2.4 cv=ZoDtK87G c=1 sm=1 tr=0 ts=688c990a cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=1UX6Do5GAAAA:8 a=pGLkceISAAAA:8 a=Z9p2nfiIB6IMVperFDQA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-01_03,2025-07-31_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 mlxscore=0 clxscore=1011
- adultscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
- suspectscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2508010076
+In-Reply-To: <20250801-fix-receive_fd_replace-v1-1-d46d600c74d6@linutronix.de>
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -3.80
 
-On systems using the hash MMU, there is a software SLB preload cache that
-mirrors the entries loaded into the hardware SLB buffer. This preload
-cache is subject to periodic eviction ‚Äî typically after every 256 context
-switches ‚Äî to remove old entry.
+On Fri 01-08-25 09:38:38, Thomas Weiﬂschuh wrote:
+> replace_fd() returns either a negative error number or the number of the
+> new file descriptor. The current code misinterprets any positive file
+> descriptor number as an error.
+> 
+> Only check for negative error numbers, so that __receive_sock() is called
+> correctly for valid file descriptors.
+> 
+> Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
+> Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
-To optimize performance, the kernel skips switch_mmu_context() in
-switch_mm_irqs_off() when the prev and next mm_struct are the same.
-However, on hash MMU systems, this can lead to inconsistencies between
-the hardware SLB and the software preload cache.
+Indeed. I'm wondering how come nobody noticed... Feel free to add:
 
-If an SLB entry for a process is evicted from the software cache on one
-CPU, and the same process later runs on another CPU without executing
-switch_mmu_context(), the hardware SLB may retain stale entries. If the
-kernel then attempts to reload that entry, it can trigger an SLB
-multi-hit error.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-The following timeline shows how stale SLB entries are created and can
-cause a multi-hit error when a process moves between CPUs without a
-MMU context switch.
+								Honza
 
-CPU 0                                   CPU 1
------                                    -----
-Process P
-exec                                    swapper/1
- load_elf_binary
-  begin_new_exc
-    activate_mm
-     switch_mm_irqs_off
-      switch_mmu_context
-       switch_slb
-       /*
-        * This invalidates all
-        * the entries in the HW
-        * and setup the new HW
-        * SLB entries as per the
-        * preload cache.
-        */
-context_switch
-sched_migrate_task migrates process P to cpu-1
-
-Process swapper/0                       context switch (to process P)
-(uses mm_struct of Process P)           switch_mm_irqs_off()
-                                         switch_slb
-                                           load_slb++
-                                            /*
-                                            * load_slb becomes 0 here
-                                            * and we evict an entry from
-                                            * the preload cache with
-                                            * preload_age(). We still
-                                            * keep HW SLB and preload
-                                            * cache in sync, that is
-                                            * because all HW SLB entries
-                                            * anyways gets evicted in
-                                            * switch_slb during SLBIA.
-                                            * We then only add those
-                                            * entries back in HW SLB,
-                                            * which are currently
-                                            * present in preload_cache
-                                            * (after eviction).
-                                            */
-                                        load_elf_binary continues...
-                                         setup_new_exec()
-                                          slb_setup_new_exec()
-
-                                        sched_switch event
-                                        sched_migrate_task migrates
-                                        process P to cpu-0
-
-context_switch from swapper/0 to Process P
- switch_mm_irqs_off()
-  /*
-   * Since both prev and next mm struct are same we don't call
-   * switch_mmu_context(). This will cause the HW SLB and SW preload
-   * cache to go out of sync in preload_new_slb_context. Because there
-   * was an SLB entry which was evicted from both HW and preload cache
-   * on cpu-1. Now later in preload_new_slb_context(), when we will try
-   * to add the same preload entry again, we will add this to the SW
-   * preload cache and then will add it to the HW SLB. Since on cpu-0
-   * this entry was never invalidated, hence adding this entry to the HW
-   * SLB will cause a SLB multi-hit error.
-   */
-load_elf_binary continues...
- START_THREAD
-  start_thread
-   preload_new_slb_context
-   /*
-    * This tries to add a new EA to preload cache which was earlier
-    * evicted from both cpu-1 HW SLB and preload cache. This caused the
-    * HW SLB of cpu-0 to go out of sync with the SW preload cache. The
-    * reason for this was, that when we context switched back on CPU-0,
-    * we should have ideally called switch_mmu_context() which will
-    * bring the HW SLB entries on CPU-0 in sync with SW preload cache
-    * entries by setting up the mmu context properly. But we didn't do
-    * that since the prev mm_struct running on cpu-0 was same as the
-    * next mm_struct (which is true for swapper / kernel threads). So
-    * now when we try to add this new entry into the HW SLB of cpu-0,
-    * we hit a SLB multi-hit error.
-    */
-
-WARNING: CPU: 0 PID: 1810970 at arch/powerpc/mm/book3s64/slb.c:62
-assert_slb_presence+0x2c/0x50(48 results) 02:47:29 [20157/42149]
-Modules linked in:
-CPU: 0 UID: 0 PID: 1810970 Comm: dd Not tainted 6.16.0-rc3-dirty #12
-VOLUNTARY
-Hardware name: IBM pSeries (emulated by qemu) POWER8 (architected)
-0x4d0200 0xf000004 of:SLOF,HEAD hv:linux,kvm pSeries
-NIP:  c00000000015426c LR: c0000000001543b4 CTR: 0000000000000000
-REGS: c0000000497c77e0 TRAP: 0700   Not tainted  (6.16.0-rc3-dirty)
-MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER: 00000000
-CFAR: c0000000001543b0 IRQMASK: 3
-<...>
-NIP [c00000000015426c] assert_slb_presence+0x2c/0x50
-LR [c0000000001543b4] slb_insert_entry+0x124/0x390
-Call Trace:
-  0x7fffceb5ffff (unreliable)
-  preload_new_slb_context+0x100/0x1a0
-  start_thread+0x26c/0x420
-  load_elf_binary+0x1b04/0x1c40
-  bprm_execve+0x358/0x680
-  do_execveat_common+0x1f8/0x240
-  sys_execve+0x58/0x70
-  system_call_exception+0x114/0x300
-  system_call_common+0x160/0x2c4
-
-To fix this issue, we add a code change to always switch the MMU context on
-hash MMU if the SLB preload cache has aged. With this change, the
-SLB multi-hit error no longer occurs.
-
-cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-cc: Michael Ellerman <mpe@ellerman.id.au>
-cc: Nicholas Piggin <npiggin@gmail.com>
-Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
-cc: stable@vger.kernel.org
-Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
----
-
-v1 -> v2 : Changed commit message and added a comment in
-switch_mm_irqs_off()
-
-v1 - https://lore.kernel.org/all/20250731161027.966196-1-donettom@linux.ibm.com/
----
- arch/powerpc/mm/book3s64/slb.c | 2 +-
- arch/powerpc/mm/mmu_context.c  | 7 +++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-index 6b783552403c..08daac3f978c 100644
---- a/arch/powerpc/mm/book3s64/slb.c
-+++ b/arch/powerpc/mm/book3s64/slb.c
-@@ -509,7 +509,7 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
- 	 * SLB preload cache.
- 	 */
- 	tsk->thread.load_slb++;
--	if (!tsk->thread.load_slb) {
-+	if (tsk->thread.load_slb == U8_MAX) {
- 		unsigned long pc = KSTK_EIP(tsk);
- 
- 		preload_age(ti);
-diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
-index 3e3af29b4523..95455d787288 100644
---- a/arch/powerpc/mm/mmu_context.c
-+++ b/arch/powerpc/mm/mmu_context.c
-@@ -83,8 +83,11 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 	/* Some subarchs need to track the PGD elsewhere */
- 	switch_mm_pgdir(tsk, next);
- 
--	/* Nothing else to do if we aren't actually switching */
--	if (prev == next)
-+	/*
-+	 * Nothing else to do if we aren't actually switching and
-+	 * the preload slb cache has not aged
-+	 */
-+	if ((prev == next) && (tsk->thread.load_slb != U8_MAX))
- 		return;
- 
- 	/*
+> ---
+> Untested, it stuck out while reading the code.
+> ---
+>  fs/file.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/file.c b/fs/file.c
+> index 6d2275c3be9c6967d16c75d1b6521f9b58980926..56c3a045121d8f43a54cf05e6ce1962f896339ac 100644
+> --- a/fs/file.c
+> +++ b/fs/file.c
+> @@ -1387,7 +1387,7 @@ int receive_fd_replace(int new_fd, struct file *file, unsigned int o_flags)
+>  	if (error)
+>  		return error;
+>  	error = replace_fd(new_fd, file, o_flags);
+> -	if (error)
+> +	if (error < 0)
+>  		return error;
+>  	__receive_sock(file);
+>  	return new_fd;
+> 
+> ---
+> base-commit: 89748acdf226fd1a8775ff6fa2703f8412b286c8
+> change-id: 20250801-fix-receive_fd_replace-7fdd5ce6532d
+> 
+> Best regards,
+> -- 
+> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> 
 -- 
-2.50.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
