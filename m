@@ -1,248 +1,114 @@
-Return-Path: <stable+bounces-165730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0386B1809A
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 13:01:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC957B18126
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 13:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1011CA8440E
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 11:01:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3CD1C816F2
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 11:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F15242D66;
-	Fri,  1 Aug 2025 11:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE9023B60B;
+	Fri,  1 Aug 2025 11:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cgqBk+K5"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QF2I5S88"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777EA2405ED
-	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 11:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1757153598;
+	Fri,  1 Aug 2025 11:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754046044; cv=none; b=mV+ARm0XS+t4gN7E33dqf3P5UNbnV8RwNRuu+5/1GY9hlz9tbaYU1Gx9cfYZj++s3eBYtZYRrRX3J6ttI+Nsr7ga+ehl9ByCwLVxXizaVcfAy0zSLWBZj4M/s7g0DCrprBvHcsPfDHCwOSKZtXGzyMkd7i47YkwMaDBhmiKGMdw=
+	t=1754048167; cv=none; b=HEdwSf1BlUNH9//Fu6wgT2vP6rBT09NXl3o30FjAjD2aX5S+RGiOhfP6mFsPN5Dx1t/l1ocDRKWoj1h+Ls21v2YKRityUNlgofM3+tZMoTUGXyb8uzMcLqHoaAVmT7Z+CLbHcCHiwWfVpZyg7nTRfLJSen/vNsN93nJ7wQhq24Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754046044; c=relaxed/simple;
-	bh=PF+7KTgtJOQe91aaQ4AfOOIWpw1FJ41ZDPQHlUzDbyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=dtBjA5SWu7zI9hdkH/9mDPgAJwu3dfpSWkNzEQpVWvIh5PPbFg6HG2EXR4SFBfMPPguh5cesecPyLcRuFrgN4WtCH0Vc2mMp267NVIJ95giUIGNc7ywL3o6XFj84gHlLy+XzFyPZcEXPJ8L48ApYP9AmUmXM4cfBntxp30JmvyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cgqBk+K5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754046041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=Yy4oMG6QVFtodhwMcPtL7d4Z650yocP7F5ES6CSW5QU=;
-	b=cgqBk+K5My+Ys6aMECZokStE8cPmpvdSZH21BK2GQ+sJfq4Hj8n63ZfxSOAgYJhpEqIYTR
-	rl3dNJNRzupeIbElhbqWyo+nl2S+5YJIVBr4YQBMPtnAmU3frmpopMYbNjLIGMFSMrBpNG
-	m4tPKhIF6nrftvYmX/GeqWHgphDH2Rg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-swfE5ckCPSekdCv3fAnP7w-1; Fri, 01 Aug 2025 07:00:38 -0400
-X-MC-Unique: swfE5ckCPSekdCv3fAnP7w-1
-X-Mimecast-MFC-AGG-ID: swfE5ckCPSekdCv3fAnP7w_1754046037
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b785aee904so837961f8f.2
-        for <stable@vger.kernel.org>; Fri, 01 Aug 2025 04:00:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754046037; x=1754650837;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yy4oMG6QVFtodhwMcPtL7d4Z650yocP7F5ES6CSW5QU=;
-        b=s11ECHxM7b3X78CwwgVvZE2n+rYmKY+V0BKGfDMGuKNRom75MiOSsu5Pbf4BPIgiWA
-         JEI8U8jT2HE3gcQPfaYTykRqjBYPkqUQCFVZQ0eyG0hZRxRLqh5rOLKPiV9j77WPbBEC
-         dHOgTo7PsIHzbgBKtrfM8OpScJSxFV0eaqAhfJN8n6keaBSD4RlyO4zyfH582C0J+f6y
-         2kYGME3DcTnDNHPhlxdlKADYhneItYbKp1tcK7A1EGkz062ask0J2hk/559dOrgjfEj2
-         XAfNEb24eQs/2EHxG+Jkpunz9xUs3kJ64AxppJLHvhwmhlre+nLrEpgwDrDMqFKvV99n
-         zqSA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ2gRFUnGW0bHBtKdSgHALtW2HxKZEuCWXRozbf0CYOu963c6ZynW+B6w7bfI0ie4BoOdtcn0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGAOdTioWl/TGsxg6a+n1K4Kmt7tT9xd/A6IxtUEo0BEm8pq4+
-	N6F+j/26SSIkbjgczVjaGPcZZMEX/8o3CVc30CZjdPoCRhqMbRLbOJCxo8SW2RAOZtYPLlFAEzl
-	4Qt42wDAwQb9CsmPSWhvYoEAdF/xP9qHOQtTk9kDQdZzYnkjO1/qZnOS0Mg==
-X-Gm-Gg: ASbGncvOAjPhLm/uqYVJmDywmxU557tL2CAXH1wwJuRrt+8y48ebmgvfEHcexx9NdVh
-	uzxywAYIhkGUZftK2DqpPbyA/0DfB1JueWMVc/myRhtxf/2qa3Y5tM1VEEQ9EC29Nr/kwyeyqKp
-	dB2mEWTgdQnGmBamDbKcqyPVravRgi+Zv/JsPhU/euj+CtUUVh/OwlxlyIJTkZit1kepxfH4U0o
-	o0dnIyj1fq8pvE5ndiUAj4uDuasvr/5kqxZPzjKFUGBLkAvxM8yXtmj58HWgDmj1PixKS0rpuRF
-	LeqCeb5toOI8k1Hscr62QexToL/UykVn
-X-Received: by 2002:adf:8b59:0:b0:3a6:d95e:f38c with SMTP id ffacd0b85a97d-3b79501e606mr6507424f8f.33.1754046036762;
-        Fri, 01 Aug 2025 04:00:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSUPIJPkabuEQDBcH7GMaJaxabiVWOJ9YCOFkgGy6BbYI6a1t93zsxBqYtzSj23fHn5sb9Uw==
-X-Received: by 2002:adf:8b59:0:b0:3a6:d95e:f38c with SMTP id ffacd0b85a97d-3b79501e606mr6507382f8f.33.1754046036194;
-        Fri, 01 Aug 2025 04:00:36 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453ab0sm5624086f8f.44.2025.08.01.04.00.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Aug 2025 04:00:35 -0700 (PDT)
-Date: Fri, 1 Aug 2025 07:00:32 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acourbot@google.com, alok.a.tiwari@oracle.com,
-	anders.roxell@linaro.org, dtatulea@nvidia.com, eperezma@redhat.com,
-	eric.auger@redhat.com, gnurou@gmail.com, jasowang@redhat.com,
-	jonah.palmer@oracle.com, kraxel@redhat.com, leiyang@redhat.com,
-	linux@treblig.org, lulu@redhat.com, michael.christie@oracle.com,
-	mst@redhat.com, parav@nvidia.com, si-wei.liu@oracle.com,
-	stable@vger.kernel.org, viresh.kumar@linaro.org,
-	wangyuli@uniontech.com, will@kernel.org, wquan@redhat.com,
-	xiaopei01@kylinos.cn
-Subject: [GIT PULL] virtio, vhost: features, fixes
-Message-ID: <20250801070032-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1754048167; c=relaxed/simple;
+	bh=RzOp+Cgdi84+OkyH84IiDbQFTpRjJQue6u/n1F/JBxM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G90yeFMDFdwX7SQ2Bexf7cfLWaJz/P0G4btLF7VymD7NS5UY21YHr9aZCZNexzQ0XGoSbor/CqTTYaGIehnLGW4pv3vSKH7kDHAW2TPCF++Z3F/Z/apI0V1vj1BoNxfEs9NtwHCsEYmPElpFUH3e0V7OtZheDuU8gIGEdxToGoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QF2I5S88; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1754048163;
+	bh=RzOp+Cgdi84+OkyH84IiDbQFTpRjJQue6u/n1F/JBxM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=QF2I5S88OB2pf/NHaUThhhIDLZKKOhmTYkOl99EV+63KuUZGxxruptVPxqp90RYmg
+	 JtNXfWaZlwENH9k7ZiioH16VxJtvo/qfwle36EIZVPTEqPQsIQx6fGLpm76IHGflGn
+	 PazOe3wHhRqfcHb4MYnYdFLx76cHzLna9W9JRL9o=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 4C17A1C0360;
+	Fri, 01 Aug 2025 07:36:03 -0400 (EDT)
+Message-ID: <ca85bbe8a3235102707da3b24dba07a8649c3771.camel@HansenPartnership.com>
+Subject: Re: [PATCH 1/2] tpm: Compare HMAC values in constant time
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Peter Huewe <peterhuewe@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	linux-integrity@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Fri, 01 Aug 2025 07:36:02 -0400
+In-Reply-To: <20250801030210.GA1495@sol>
+References: <20250731215255.113897-1-ebiggers@kernel.org>
+	 <20250731215255.113897-2-ebiggers@kernel.org>
+	 <3ed1ae7e7f52afe53ce2ff00f362ed153b3eec20.camel@HansenPartnership.com>
+	 <20250801030210.GA1495@sol>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mutt-Fcc: =sent
 
-The following changes since commit 347e9f5043c89695b01e66b3ed111755afcf1911:
+On Thu, 2025-07-31 at 20:02 -0700, Eric Biggers wrote:
+> On Thu, Jul 31, 2025 at 10:28:49PM -0400, James Bottomley wrote:
+> > On Thu, 2025-07-31 at 14:52 -0700, Eric Biggers wrote:
+> > > To prevent timing attacks, HMAC value comparison needs to be
+> > > constant time.=C2=A0 Replace the memcmp() with the correct function,
+> > > crypto_memneq().
+> >=20
+> > Um, OK, I'm all for more security but how could there possibly be a
+> > timing attack in the hmac final comparison code?=C2=A0 All it's doing i=
+s
+> > seeing if the HMAC the TPM returns matches the calculated one.=C2=A0
+> > Beyond this calculation, there's nothing secret about the HMAC key.
+>=20
+> I'm not sure I understand your question.=C2=A0 Timing attacks on MAC
+> validation are a well-known issue that can allow a valid MAC to be
+> guessed without knowing the key.=C2=A0 Whether it's practical in this
+> particular case for some architecture+compiler+kconfig combination is
+> another question, but there's no reason not to use the constant-time
+> comparison function that solves this problem.
+>=20
+> Is your claim that in this case the key is public, so the MAC really
+> just serves as a checksum (and thus the wrong primitive is being
+> used)?
 
-  Linux 6.16-rc6 (2025-07-13 14:25:58 -0700)
+The keys used for TPM HMAC calculations are all derived from a shared
+secret and updating parameters making them one time ones which are
+never reused, so there's no benefit to an attacker working out after
+the fact what the key was.
 
-are available in the Git repository at:
+Regards,
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-
-for you to fetch changes up to c7991b44d7b44f9270dec63acd0b2965d29aab43:
-
-  vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers (2025-07-17 08:33:09 -0400)
-
-----------------------------------------------------------------
-virtio, vhost: features, fixes
-
-vhost can now support legacy threading
-	if enabled in Kconfig
-vsock memory allocation strategies for
-	large buffers have been improved,
-	reducing pressure on kmalloc
-vhost now supports the in-order feature
-	guest bits missed the merge window
-
-fixes, cleanups all over the place
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Alexandre Courbot (1):
-      media: add virtio-media driver
-
-Alok Tiwari (4):
-      virtio: Fix typo in register_virtio_device() doc comment
-      vhost-scsi: Fix typos and formatting in comments and logs
-      vhost: Fix typos
-      vhost-scsi: Fix check for inline_sg_cnt exceeding preallocated limit
-
-Anders Roxell (1):
-      vdpa: Fix IDR memory leak in VDUSE module exit
-
-Cindy Lu (1):
-      vhost: Reintroduce kthread API and add mode selection
-
-Dr. David Alan Gilbert (2):
-      vhost: vringh: Remove unused iotlb functions
-      vhost: vringh: Remove unused functions
-
-Dragos Tatulea (2):
-      vdpa/mlx5: Fix needs_teardown flag calculation
-      vdpa/mlx5: Fix release of uninitialized resources on error path
-
-Gerd Hoffmann (1):
-      drm/virtio: implement virtio_gpu_shutdown
-
-Jason Wang (3):
-      vhost: fail early when __vhost_add_used() fails
-      vhost: basic in order support
-      vhost_net: basic in_order support
-
-Michael S. Tsirkin (6):
-      virtio: document ENOSPC
-      pci: report surprise removal event
-      virtio: fix comments, readability
-      virtio: pack config changed flags
-      virtio: allow transports to suppress config change
-      virtio: support device disconnect
-
-Mike Christie (1):
-      vhost-scsi: Fix log flooding with target does not exist errors
-
-Pei Xiao (1):
-      vhost: Use ERR_CAST inlined function instead of ERR_PTR(PTR_ERR(...))
-
-Viresh Kumar (2):
-      virtio-mmio: Remove virtqueue list from mmio device
-      virtio-vdpa: Remove virtqueue list
-
-WangYuli (1):
-      virtio: virtio_dma_buf: fix missing parameter documentation
-
-Will Deacon (9):
-      vhost/vsock: Avoid allocating arbitrarily-sized SKBs
-      vsock/virtio: Validate length in packet header before skb_put()
-      vsock/virtio: Move length check to callers of virtio_vsock_skb_rx_put()
-      vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
-      vsock/virtio: Rename virtio_vsock_alloc_skb()
-      vsock/virtio: Move SKB allocation lower-bound check to callers
-      vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers
-      vsock/virtio: Rename virtio_vsock_skb_rx_put()
-      vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers
-
- MAINTAINERS                                |    6 +
- drivers/gpu/drm/virtio/virtgpu_drv.c       |    8 +-
- drivers/media/Kconfig                      |   13 +
- drivers/media/Makefile                     |    2 +
- drivers/media/virtio/Makefile              |    9 +
- drivers/media/virtio/protocol.h            |  288 ++++++
- drivers/media/virtio/scatterlist_builder.c |  563 ++++++++++++
- drivers/media/virtio/scatterlist_builder.h |  111 +++
- drivers/media/virtio/session.h             |  109 +++
- drivers/media/virtio/virtio_media.h        |   93 ++
- drivers/media/virtio/virtio_media_driver.c |  959 ++++++++++++++++++++
- drivers/media/virtio/virtio_media_ioctls.c | 1297 ++++++++++++++++++++++++++++
- drivers/pci/pci.h                          |    6 +
- drivers/vdpa/mlx5/core/mr.c                |    3 +
- drivers/vdpa/mlx5/net/mlx5_vnet.c          |   12 +-
- drivers/vdpa/vdpa_user/vduse_dev.c         |    1 +
- drivers/vhost/Kconfig                      |   18 +
- drivers/vhost/net.c                        |   88 +-
- drivers/vhost/scsi.c                       |   24 +-
- drivers/vhost/vhost.c                      |  377 +++++++-
- drivers/vhost/vhost.h                      |   30 +-
- drivers/vhost/vringh.c                     |  118 ---
- drivers/vhost/vsock.c                      |   15 +-
- drivers/virtio/virtio.c                    |   25 +-
- drivers/virtio/virtio_dma_buf.c            |    2 +
- drivers/virtio/virtio_mmio.c               |   52 +-
- drivers/virtio/virtio_pci_common.c         |   45 +
- drivers/virtio/virtio_pci_common.h         |    3 +
- drivers/virtio/virtio_pci_legacy.c         |    2 +
- drivers/virtio/virtio_pci_modern.c         |    2 +
- drivers/virtio/virtio_ring.c               |    4 +
- drivers/virtio/virtio_vdpa.c               |   44 +-
- include/linux/pci.h                        |   45 +
- include/linux/virtio.h                     |   13 +-
- include/linux/virtio_config.h              |   32 +
- include/linux/virtio_vsock.h               |   46 +-
- include/linux/vringh.h                     |   12 -
- include/uapi/linux/vhost.h                 |   29 +
- include/uapi/linux/virtio_ids.h            |    1 +
- kernel/vhost_task.c                        |    2 +-
- net/vmw_vsock/virtio_transport.c           |   20 +-
- net/vmw_vsock/virtio_transport_common.c    |    3 +-
- 42 files changed, 4186 insertions(+), 346 deletions(-)
- create mode 100644 drivers/media/virtio/Makefile
- create mode 100644 drivers/media/virtio/protocol.h
- create mode 100644 drivers/media/virtio/scatterlist_builder.c
- create mode 100644 drivers/media/virtio/scatterlist_builder.h
- create mode 100644 drivers/media/virtio/session.h
- create mode 100644 drivers/media/virtio/virtio_media.h
- create mode 100644 drivers/media/virtio/virtio_media_driver.c
- create mode 100644 drivers/media/virtio/virtio_media_ioctls.c
+James
 
 
