@@ -1,188 +1,108 @@
-Return-Path: <stable+bounces-165727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6700B18067
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 12:48:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8F8B1806E
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 12:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 931EB3A9E6F
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 10:48:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 825EA583CEA
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 10:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8694E239E67;
-	Fri,  1 Aug 2025 10:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422AB236457;
+	Fri,  1 Aug 2025 10:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3bQCwe+8";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tNnXAiRK";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3bQCwe+8";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tNnXAiRK"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="MFPtCz9E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2704A2B9A5
-	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 10:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E6C2B9A5;
+	Fri,  1 Aug 2025 10:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754045294; cv=none; b=qwP3gXBW9nD8mHPUrk/MwQ2PtGRLctx7wkeqeGXWGeKmMNK8LEDVrKFJZfoc4BIa6xaMC1daJhjOWkUgR7cqjriYQQnaV7uwZrlE1sqXLaDo9OkRoSB5BfD7sXvhfXAw/+u8MGiRYQY8L6C39Q+ZRe+hWYjP00QPFIgrJbr8AB4=
+	t=1754045541; cv=none; b=pLJ7iszFIHsX+GeDqW3o75gejYXmlANgouD2VRuAdTsoG2zph6cPHd8Ffc44cebOmQbihQBpJFaTwhscz5o/LIvynOCEsu1UVCAuZS/vKjEJhkZK68WtCIk1BpGyg73hCY/xR2IUgBa3//5SgqULnlcw/nBOXAyM6ybJMu+XMnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754045294; c=relaxed/simple;
-	bh=qawU/hgul6DO0p7PkqaVzmv3qF3Q0v23J+MMsJIYuAs=;
+	s=arc-20240116; t=1754045541; c=relaxed/simple;
+	bh=Pq4K8Lbc77aD4fbd+31DfDceIFn4GKRekMM7Bcbhbaw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I4u/3xe5CWnODehhSojlPL2vidLSPqpoR53+FQAQGjzR3S5Jrj52sOpJFQ4y1PDU84glwdQIlYQ7f5wl6Z3kFLyiyqEeuoScsqBIiAuEm+dwLN/FPu2ymYVIP7QhqPMsxUtG2c9nuN2OfYOFTPgyB+63DGhQA0Bk1lObWgaVsdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3bQCwe+8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tNnXAiRK; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3bQCwe+8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tNnXAiRK; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4CFCA1F802;
-	Fri,  1 Aug 2025 10:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754045290; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
-	b=3bQCwe+8m+b1pJXki7i0SE19LRJuLZX/aYgO8A3ZiSqrxzSq+JlrRllc40Ijgjp0TEoRmy
-	oEmC7LLWO65q+KAukErRJmt4xvjB2DU7z1kH1ytR78Z+c0qtd40vBaJ5wmgvdX4pZNQolO
-	uULuN2WRCFTgAM3bwR4y0sDtMF26K4A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754045290;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
-	b=tNnXAiRKs4dWG6re5uc2xbcv5wm+9c7z4s8kRNOflfN1gsjkjp0s4yqknTPOzjZfL2uObF
-	VqmUlolodqbMRNDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754045290; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
-	b=3bQCwe+8m+b1pJXki7i0SE19LRJuLZX/aYgO8A3ZiSqrxzSq+JlrRllc40Ijgjp0TEoRmy
-	oEmC7LLWO65q+KAukErRJmt4xvjB2DU7z1kH1ytR78Z+c0qtd40vBaJ5wmgvdX4pZNQolO
-	uULuN2WRCFTgAM3bwR4y0sDtMF26K4A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754045290;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nlpcRid/jLviLnOCIII1zFUp+X5/v5OApsbSvqgkX0g=;
-	b=tNnXAiRKs4dWG6re5uc2xbcv5wm+9c7z4s8kRNOflfN1gsjkjp0s4yqknTPOzjZfL2uObF
-	VqmUlolodqbMRNDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3E7D413876;
-	Fri,  1 Aug 2025 10:48:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id w3vxDmqbjGhSUwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 01 Aug 2025 10:48:10 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id ABB00A09FB; Fri,  1 Aug 2025 12:48:09 +0200 (CEST)
-Date: Fri, 1 Aug 2025 12:48:09 +0200
-From: Jan Kara <jack@suse.cz>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Sargun Dhillon <sargun@sargun.me>, 
-	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fs: correctly check for errors from replace_fd() in
- receive_fd_replace()
-Message-ID: <fq2s55tc5hhvh4dfjdzek4neozffmn36rwdlsrsxxjqzts2f4c@j67nruhocdiz>
-References: <20250801-fix-receive_fd_replace-v1-1-d46d600c74d6@linutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=I3IUdzDsmkPL0JQea9fGadrN9nXart+x8n0R1OsoYUByik7WSLGoYAgeIotAP3ELOniLkyKNnDh7Ez/vrggKRyQTnfbvKZw0ip1VjRZYtiFNrZeenIxogn8vJmhHQJpPNfOmIgByRwXcTJEWrOUVJqmc3H6TCwUBCfDTFLEMpvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=MFPtCz9E; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1754045535;
+	bh=Pq4K8Lbc77aD4fbd+31DfDceIFn4GKRekMM7Bcbhbaw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MFPtCz9E09oRpuzc89z+FHmxx7ew/EaVMdUB1wrjQVihZpQ3HrUYJLrAlxozJeVF1
+	 uK4CVbyUWqTAersD5/jIxjOlXzs7g3Bfrnwx2JIEUw5/UJ7UZFJcOla5v+ihZAUMl5
+	 zhL/ZJwt4hWKd2UP2FPe6lmPk8oC88DdGLyRC/V0=
+Date: Fri, 1 Aug 2025 12:52:15 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Naman Jain <namjain@linux.microsoft.com>
+Cc: Michael Kelley <mhklinux@outlook.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	"K . Y . Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Long Li <longli@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 6.12] Drivers: hv: Make the sysfs node size for the ring
+ buffer dynamic
+Message-ID: <8f642ca2-04dc-4d87-b120-5d128ec3202e@t-8ch.de>
+References: <20250723070200.2775-1-namjain@linux.microsoft.com>
+ <SN6PR02MB41579080792040E166B5EB69D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <e1d394bd-93a6-4d8f-b7f9-fc01449df98a@t-8ch.de>
+ <SN6PR02MB415792B00B021D4DB76A6014D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <4abf15ac-de18-48d4-9420-19d40f26fdd2@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250801-fix-receive_fd_replace-v1-1-d46d600c74d6@linutronix.de>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -3.80
+In-Reply-To: <4abf15ac-de18-48d4-9420-19d40f26fdd2@linux.microsoft.com>
 
-On Fri 01-08-25 09:38:38, Thomas Weiﬂschuh wrote:
-> replace_fd() returns either a negative error number or the number of the
-> new file descriptor. The current code misinterprets any positive file
-> descriptor number as an error.
-> 
-> Only check for negative error numbers, so that __receive_sock() is called
-> correctly for valid file descriptors.
-> 
-> Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
-> Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+Hi Naman,
 
-Indeed. I'm wondering how come nobody noticed... Feel free to add:
+On 2025-07-31 21:13:27+0530, Naman Jain wrote:
+> On 7/30/2025 1:15 AM, Michael Kelley wrote:
+> > From: Thomas Wei√üschuh <linux@weissschuh.net> Sent: Tuesday, July 29, 2025 11:47 AM
+> > > On 2025-07-29 18:39:45+0000, Michael Kelley wrote:
+> > > > From: Naman Jain <namjain@linux.microsoft.com> Sent: Wednesday, July 23, 2025 12:02 AM
+<snip>
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+> > > > Unfortunately, I don't see a fix, short of backporting support for the
+> > > > .bin_size function, as this is exactly the problem that function solves.
+> > > 
+> > > It should work out in practice. (I introduced the .bin_size function)
+> > 
+> > The race I describe is unlikely, particularly if attribute groups are created
+> > once and then not disturbed. But note that the Hyper-V fcopy group can
+> > get updated in a running VM via update_sysfs_group(), which also calls
+> > create_files(). Such an update might marginally increase the potential for
+> > the race and for getting the wrong size. Still, I agree it should work out
+> > in practice.
+> > 
+> > Michael
+> > 
+> > > 
+> > > Thomas
+> 
+> hi Thomas,
+> Would it be possible to port your changes on 6.12 kernel, to avoid such
+> race conditions?
 
-								Honza
+Possible, surely. But Greg has to accept it.
+And you will need to do the backports.
 
-> ---
-> Untested, it stuck out while reading the code.
-> ---
->  fs/file.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/file.c b/fs/file.c
-> index 6d2275c3be9c6967d16c75d1b6521f9b58980926..56c3a045121d8f43a54cf05e6ce1962f896339ac 100644
-> --- a/fs/file.c
-> +++ b/fs/file.c
-> @@ -1387,7 +1387,7 @@ int receive_fd_replace(int new_fd, struct file *file, unsigned int o_flags)
->  	if (error)
->  		return error;
->  	error = replace_fd(new_fd, file, o_flags);
-> -	if (error)
-> +	if (error < 0)
->  		return error;
->  	__receive_sock(file);
->  	return new_fd;
-> 
-> ---
-> base-commit: 89748acdf226fd1a8775ff6fa2703f8412b286c8
-> change-id: 20250801-fix-receive_fd_replace-7fdd5ce6532d
-> 
-> Best regards,
-> -- 
-> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Or if it has a lot of dependencies, or if you have a
+> follow-up advice, please let us us know.
+
+Not more than mentioned before.
+
+
+Thomas
 
