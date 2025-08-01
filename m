@@ -1,180 +1,256 @@
-Return-Path: <stable+bounces-165736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0A3B18213
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 15:03:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00B0B18215
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 15:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AA634E7A2D
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 13:03:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212741C2743F
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 13:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63D722069E;
-	Fri,  1 Aug 2025 13:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7422248191;
+	Fri,  1 Aug 2025 13:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Pqd6n8kZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KODomn30"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2069.outbound.protection.outlook.com [40.107.220.69])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E251798F
-	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 13:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754053399; cv=fail; b=LhO3o64PJc6qkd3n++PBNPZhMfgQKxmh2b7y1no3jfpUUbj0HpmpAMc4AtfEbQlqF3l4VbQZ/2ul1zRi03d1trTagee8EUbc2yQhXM3tQC0f/II0SgOrJp7iDmgR35lQMbMTBN3gxwFG3HX4Vk1g8upyslEH8btUYhpiTa2ILLw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754053399; c=relaxed/simple;
-	bh=k1+d1FlW57kV4DZH5nGqrakfH7wpLsY46UoafaEHyLc=;
-	h=Message-ID:Date:To:From:Subject:Content-Type:MIME-Version; b=U7LtjgnxIVPMd0N5Z4+DBf6FFDonWht83WR4ymlPNQQwa7NuHBswlDySfzQ4bLG7BuWl4N23VnYPKQpKDVtbAR2Wo6VWfdJ4XhFe1j+A2vUxjMmqA3wPLfVA/ErgdtvCrIHqqjXX9W07tXsB/5pMXmEJPkd4xb8hgeTgPuYnSyo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Pqd6n8kZ; arc=fail smtp.client-ip=40.107.220.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fl9zHKfzSAcjwXkyjBNzdZZ9BbIwfato7FwX0JEzWnGZTrRixzEJFIibiNMo2lKAMo9fxLyDc/PDTQ6dw9w+jWtWiLcEpMAHt/xKGwu18ancuORQCpQK10k0GS89v2cM91d/ELEs/XPfvlglncakU9N0lWog9gSVv6rrmkeEobK90VnHUEB0k86Cvt0ouj5bJkV8UeLfQ+innfcLt8lfWeekrD6+SGyUQBIJkt9ugsj/QY5/kmm0G+T0fZ/OF8QJ9MoOwAaUhRtQHLXuRca3DTEXCmjhvkkN/LObbI9HqUnU+LKDBH1GuWWrtifHxn6JW5HK5SiLe0HKtUIgYJd4pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nJIcYpDyStqzba/M6bJ6dT8FRd2vKWUyvh5maZ3n7Zg=;
- b=zNZuCuLU95Lo3kPd3adMSy0mgWUcAb5pYDVi6TtIuelRkY+aUwttXZ6ZzvkhAj5kuki4cq28ezyRq2trIogECFyCFHwca0ZPuUND1E1oo8XpwIOBpHsht6dTndnSKj16kEa6FQCGxsb9HmPrPzZKYw4muvE/70VuKX7A4d6gxpR4Kv+OzDxXPXijIFHSJsewaIk9yLyG4Mo3reCpK4Bw0otgwxQ/noyog2uK3O0YKeeD3Q7IXetRAIR65BLBjwwCKXApK8zqu1nRlfEPQFPFkpPBX9FiaFDPnfW20RsaV4ucQQeaIR7byvPLo44/ERGBeJPHHg31o7mqN5JgMtXPOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nJIcYpDyStqzba/M6bJ6dT8FRd2vKWUyvh5maZ3n7Zg=;
- b=Pqd6n8kZCh1p0Xcxqildb+H1DO/oOwIJ1qP0rlRLgUuo3JsNIgR74V5gOfwOIjSngfDg4Jy2Mey3WAhyzqTvammnFifA+0VYePgN6OAwLSMLKI8jtIaeafPAxbIZSNRuMq9ARZfZ/2jUyizZMlzJLtwojIP6hgOv0NPOOr16F6g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by MW6PR12MB7069.namprd12.prod.outlook.com (2603:10b6:303:238::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.16; Fri, 1 Aug
- 2025 13:03:14 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.8989.017; Fri, 1 Aug 2025
- 13:03:14 +0000
-Message-ID: <9469816e-6ae8-476e-b154-28c78a79bac8@amd.com>
-Date: Fri, 1 Aug 2025 18:33:09 +0530
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-From: Mario Limonciello <mario.limonciello@amd.com>
-Subject: Adjustments for pinctrl-amd debounce behavior
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0126.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:6::11) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0947719F13F
+	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 13:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754053422; cv=none; b=XJ/Djsbu0QJbWbhTQvrJDQy4fH+ik1FCZ1EaJt4dT8WDQG+ZHduVQK8v9o22q/8r8Fa7q8dPtPAZYk2pWhQJR+qLs+tcDo7+AlVPDzEXmLxmMof0wMFSUTkYnIUyx3ti0FyXH85YYoSeNBkJo9uoit12BrRsp6kDiOO+pGgHT48=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754053422; c=relaxed/simple;
+	bh=LGAFsaZhZE9+YVDjSQvh4z1jMFg+F2jCvZkkxWqWe4E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r2XmMjjgluEsfk767rLplsnnjPfn4/mpwVjq76XhPeg5Q0AEyFjuHljYjj8jM6ytKf/h6N3jmV181kIUoPQa2Bc9lyJ9o9h1iRoEhpQOZZpxCDbd5kPoQTmIMBlJ88r8jN+7CyzoGyPBnabHlRi5UYNZ5H3MdVVwKWSMs5R40rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KODomn30; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754053420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wRQvRY1Ic3xqYJoWjzoX1AeSxDMgzF+1WipYbCuWjwo=;
+	b=KODomn30wwami+O9fA2D+L1a4RAudE8/mjeBlMQ3ndnfjP3nZI7J9xVW6OUevQBSf2NQcg
+	1ImhQVQDpqSpQrX1FhBRTzR/skd2MzWZVyvhk1PTjaiJ8r2RMyQhJfiu8Ov2iDrm5V8l8g
+	3gMD7vIYATWNeZNmGI+Du5AV8lEXmmw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-581-z7kM5t7iPOGV0Y7LXB-adA-1; Fri, 01 Aug 2025 09:03:38 -0400
+X-MC-Unique: z7kM5t7iPOGV0Y7LXB-adA-1
+X-Mimecast-MFC-AGG-ID: z7kM5t7iPOGV0Y7LXB-adA_1754053417
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3b81e16c17dso415412f8f.3
+        for <stable@vger.kernel.org>; Fri, 01 Aug 2025 06:03:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754053417; x=1754658217;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wRQvRY1Ic3xqYJoWjzoX1AeSxDMgzF+1WipYbCuWjwo=;
+        b=G1a44iITVRLnvxuJolS9bRd9qdxCxDVNGNFVI+CG2K7A1/2TQM4qbnwg2wKuxOF+77
+         YhBKAz9LvWhJgrGM/WL3KBW95ZTP0XpMcUGBlCFbC163WrbTcGDieve8vqclCVrtgRtz
+         +XY+WDr23u53jwfbjX9ZksF6l4vTtOOpEjmfOrQbB7T0x/o492nxoqi3vF+hjvfqspL9
+         bGRx0t0y0H4oeycR/4OIDfMhzzs8H+t3rFdVi7DD7XufHFyCmaQqZC7h0ZzZz+m5p53W
+         H+4BhEvt0QKVFSL+T/olV8WLS3yKKbyh+w/ZVIPoOA1rLD3Rp3MQ3uRQz1ijT+mHkIkA
+         13FA==
+X-Forwarded-Encrypted: i=1; AJvYcCUfRD9gxEpizF8Z6CEqac7KPzneqpxpq8ovlA1QQo+PmwWPektRC0jNT9CQYFnlobNMo5/7Czk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1emr9etduvNs50uM+gBmwyF/dXIe5H3MHt8CQSrZT510HPqwb
+	6G6H6FvmucTaThIUo/u0PlGTSxTdCi6PXNEOQ71+ZG7dz/sXoRf16A3pLJINm6Sy5/nVGrcYn+8
+	Og60cv2aQsX5umoq6lYd2IJpfUsmZbq1ef01VEKYANpyDpFBpQVITs76NNg==
+X-Gm-Gg: ASbGncsn1oKbKx3Kgkqo9PsTszfCe+38fMP2k4L4N8pE2p598oKTOYoINjjbWgWP+k9
+	91YvL5rBWNK4E/wvDusNpKXnwMKowcvOn8Q3sviUGyehorxIkNta69oJ8RKBfNYFYwTWqPNQ4vi
+	KjT0jQjxOo6q9GN1nGWh+lpRqTE7LMaaw5IgS2CalS5CEqXr66A29yRDy9CA6W6BDy8X3lErK3L
+	PIbbaFCq48mXzuGvQBZYmO0dCvPT8zDZMoVmJPzZZV0Pqw+ea599Rhp67+Nz2C4pkGPqvEh4cW9
+	vpUvjIzHAh96aEd59Chd7Zu9VyvvVbFU
+X-Received: by 2002:a05:6000:2481:b0:3b8:bb8b:6b05 with SMTP id ffacd0b85a97d-3b8bb8b6deemr4345606f8f.29.1754053416417;
+        Fri, 01 Aug 2025 06:03:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHjHiezwm6gooBQWulD3psAw7200KYzsNILZaaeqjUjY2ZWI9IK3v40njhdn3wBHktdq15jSA==
+X-Received: by 2002:a05:6000:2481:b0:3b8:bb8b:6b05 with SMTP id ffacd0b85a97d-3b8bb8b6deemr4345535f8f.29.1754053415774;
+        Fri, 01 Aug 2025 06:03:35 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c45346asm5907298f8f.39.2025.08.01.06.03.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Aug 2025 06:03:35 -0700 (PDT)
+Date: Fri, 1 Aug 2025 09:03:31 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acourbot@google.com, alok.a.tiwari@oracle.com,
+	anders.roxell@linaro.org, dtatulea@nvidia.com, eperezma@redhat.com,
+	eric.auger@redhat.com, gnurou@gmail.com, jasowang@redhat.com,
+	jonah.palmer@oracle.com, kraxel@redhat.com, leiyang@redhat.com,
+	linux@treblig.org, lulu@redhat.com, michael.christie@oracle.com,
+	parav@nvidia.com, si-wei.liu@oracle.com, stable@vger.kernel.org,
+	viresh.kumar@linaro.org, wangyuli@uniontech.com, will@kernel.org,
+	wquan@redhat.com, xiaopei01@kylinos.cn
+Subject: Re: [GIT PULL] virtio, vhost: features, fixes
+Message-ID: <20250801090250-mutt-send-email-mst@kernel.org>
+References: <20250801070032-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MW6PR12MB7069:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a2258ee-a5f2-441a-5076-08ddd0fbc681
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OVhQZmpxYmRsVjFHTHdaVyszcGV2cEZrcHk2aUY1Y0s1eUdReXJtZ1NlSTNt?=
- =?utf-8?B?MXdGZit0MUNZNG5sam13dWJsZUlVV05kVS9JYjN6RGRPbVNUTWdKSHdDQ1Uv?=
- =?utf-8?B?eXdGb2t4MnV5WjRKQkVZVUVUN05ScDIwZE5jdmUrWUpDUE1pRkQzd3F4VlV4?=
- =?utf-8?B?YnVYQTVhTEYwT2NTN3c3OUQ3dDBSNWtVcjFiYzVFNGZoeHkyQUJlV1hYcTRY?=
- =?utf-8?B?OWx4Y2pUQUE2T3pGZXplZ3Nhbzk2SitoTFA3dERvMXhyb1lVRzE3U3N5Y1Nm?=
- =?utf-8?B?WDNJMUxFZmRqY0tkNmZFZ2E2SkFienFPZjkrRWFlV252V3JmT1piYmpoYVkr?=
- =?utf-8?B?ZHk3MnJRWjF6WkxaVUJWZ2k1MkR6c0JXNTVrZkk1RXhVNzNJRzRkSTZwOVlZ?=
- =?utf-8?B?SVBGcThMSFNwbnBBb05UYXlWWEQyOVdtdDlsS0ZRWE4wdXZFZjJId2UzdDdJ?=
- =?utf-8?B?QnRJUE50aVF5SVV2YUdVemdiZE5VTzFrUXkxeGI5SisvWG9OZXFwZTlsUWR3?=
- =?utf-8?B?WmtFVFQ3OTJtbEZkRVRjaEhkY2FZRUNibVBlandDOEE2enM5NTJKdGp0WGVT?=
- =?utf-8?B?QUtoK1RYYmx4cmZsNHV0VDEvZ3NtYnFJdlEzeFdoeEdyUVdCMlJhczU2eitP?=
- =?utf-8?B?WjY1WnBack9aL0ZXcmR0NWQrNUxYcnlKdzhUcEdSZDhucWpXQ09JMFQwUmI4?=
- =?utf-8?B?OG5XdmlRQkwwN1lZcGFoR2RXeHZLZE84YjFwWStUZURVaG1IQmlBT0l2SG1Z?=
- =?utf-8?B?UDdYVDFLSTdZWk45VWpNMGhkcnRNS2RMMWNUV2lETXNVSzBZZjNCbTd0UEE0?=
- =?utf-8?B?VWViS3Y4N0czRXB6bHRPclpZN3lML2c1ci95ak51ZElUUkR0UXo3N1hkMkhr?=
- =?utf-8?B?dHFzOVViUFo3clNXM2UzOG1YZUdFUTY3Y3IzTlFMQkc2OXByN0lNSEZjamVT?=
- =?utf-8?B?WXltUUpMa3lMZlN3cW5wNTBHZ2FvMkNmbk16RWdUK3lza3JNWWhBMlhPYmUz?=
- =?utf-8?B?VUlBdGl5ais5OWc5bzFEM016eS9HWGswejlsN21MU1cyNFJ3SlZILzhKazZ0?=
- =?utf-8?B?c1daUUtseUJoRW1RVHZ2RFBPM2gwWUxzSUZpV1VqV0hFWExsWVRMQnZzL2hV?=
- =?utf-8?B?S3UvUjBtMmIvd080TVMyWFJEUWMzck5yQXczM2J0QVVSTWp2N1hUaWRMWEZn?=
- =?utf-8?B?OVB5S05jQUkyLzlNUHI5ZkdFSlNsdlRHcVBGT01tTnhQci9EVlJGbXBjWnZS?=
- =?utf-8?B?RS9TK0hreTVWd09FZVNVQTJlN2pkejNORmZYMjVycmpkTmJ1UXU0OE1idXFS?=
- =?utf-8?B?U0xOVGgzVU9aWXRPOVRIU3VzN3UyWU1tRVc4V0FvbTlSUUVFRGdLZE1iZlly?=
- =?utf-8?B?cXYwVGRicENuaGgrSjZKUHgvNXlKZXVmSFovbysvbXFYRUFQM3hoY1FNMk9w?=
- =?utf-8?B?WlZqVnhiNS8wOFQ4azdQaEJGWWhHRGlOcTBwSUxkWFBUR0FaK1BSb3ZHV3Rs?=
- =?utf-8?B?Tkhza3FtQkdaTTJVVzF6VitMalZmd2xJcEJYZlludE9ERHhUUCt1QXNpOUpJ?=
- =?utf-8?B?TEFMRXhLa3A2Q09MSUJnMGoyNkh1Y0t6WERES2ZUZ2NHZFBKcWgwQkhoTmVk?=
- =?utf-8?B?ZGtIaVJCL0RqU1Z1UXI5Y3VjSjZWbHZWYkxFZjFLMkRtTmlaTmEvL0s0SEFk?=
- =?utf-8?B?SXFLTjlja1I4Vis1VTY5QVBmdHBNVGo3UnhtaCtVKzBjcUExb3E3WS80QkNW?=
- =?utf-8?B?Z2xOY0dGdDlUZms1MkxnMnN4N1JvMjdoeFk1aDVYRHl5Y3dTRzZsL1hJb1Vi?=
- =?utf-8?B?c1EyNTYzRFFjWDI3UFVFekNkTFVrRVZ6ZkdJUzd5SG5QSXFoem5TWTAzREt2?=
- =?utf-8?B?UXRoR3FVUW9qcEtWTTZrSGozNzEvVTZianpQL0RzcHVkT1NucExpWG5XaWJK?=
- =?utf-8?Q?VMUcdIac36s=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MlZvUGl6NkN5ZWR4eG1qTXFxNWFsdWVuSnZpc25NY2VkSkpkbUxTWDJ5a0dF?=
- =?utf-8?B?d1F3blU0UWZrSHQxRTZ0QU56ajNaalgvWUtrL01DNzZ6Ynd5cGdabWdBbW04?=
- =?utf-8?B?ZVpBeGkwK1MxQXBaQ0pncG5LbmwzUkJNdmY0cWpoYy9iUldVVHk1RXh6OUs5?=
- =?utf-8?B?N3krQklWcHNnNHk1aGtpbERKODJDdFVOQjI3YVZ2VDZqRkRBdnFNZ2NJYVpn?=
- =?utf-8?B?SUlMcTVFL1R6cnNqc01IblkvUHo2ZjJ2TWRnb3cwMHU2R3Y3TlB5YlloQ2Fq?=
- =?utf-8?B?dWNWU1RXS21SeHIyNU1may9rellnRUlET2E1VVg5eFdYU1dmNlR6L1Q0N1hJ?=
- =?utf-8?B?MnRBWFhCNXEvd1Zjc2xSNlppUzU0R1NMTW9iY2V6V291dHRhZ1V6aFdpd0RW?=
- =?utf-8?B?QnQyc1FkdE5WbEJ5Q0p3WHR0eDU4dVBYYnVoZ2ZPK0l5NGtBYktESmtiYzdu?=
- =?utf-8?B?Tlo3L29KUzVtSjhnSmFGSE9PQXM0WVk3Y0d0MUVWWEREcFBUS2hmblRKdFZU?=
- =?utf-8?B?Tm44UVVtVUNIdDZscTRlZW1yUTMyb2V3YmZNa0d1cXdWdSs0eThUSmtkVjA2?=
- =?utf-8?B?S2dCd3h3aC9ZZy9oZ3o4YmZMMlpLZndWVGxHcEN4U0cvZXQ5ZlNxcTNxMThh?=
- =?utf-8?B?MlE1T2F6b1pTS3hJd3RUS2E0NHVTNm1zUW00dms5dzNmTCtWOE5zTUxFbURH?=
- =?utf-8?B?Y0JYZDdhaUNtd21PNkY0ZFFPbHRBOEp2aTJ3TTMvWFZsZDJvV2hJV3lmZXBZ?=
- =?utf-8?B?NG0zQjZDQU0yM3BZelF0UFBDUEN3UDl0RHpTTmJ2bkd6ZHRYaFc0YXBva29w?=
- =?utf-8?B?SStLRy9udlltaDJscWdzblcvdm5ITCtSV056WEVHTlZVM0VkcUVPSWlMVmhJ?=
- =?utf-8?B?b0xxbzhWMWVPaWFuaXhEV2FvRTZXL0N2TVpobjlrSkUyWS9UUG5wWXEvMXJK?=
- =?utf-8?B?QkQ5bUtOUzBvcDBPQllYZ3gwSlZ0YmdGOGo1UFFDdWVodkl4N1pvK2lLeFd3?=
- =?utf-8?B?OElDUUJRYmpUc1VubFQzdWkvYk5IOUR4RVJsTEtobjE2Vm1oK20vc0hPZnVZ?=
- =?utf-8?B?MDdqZmtSRWdWSStwQm5LYS9xVFhJWFdBRjBBRkVNUXpVUklVS1UrUTlkWXVK?=
- =?utf-8?B?cllad2RvMHFDNXNmdHR0dzBtZW5nSHV0dk15bEJFNU54MkdtRE5VSEZ1cW1M?=
- =?utf-8?B?a0NqYk41RVhzc2dTUklCcFdVQVJiU3c2SldXZkhPcThrdmduN1R4K0RSYmxO?=
- =?utf-8?B?ek9IMnNNdVl1OHNNc1EwSnNEZGhzRi9UWmFyVk0yZisxOEdzVTA3aDN6QmRK?=
- =?utf-8?B?dGlhRzBaVnNRaWtUb0VtaFhNR0ZnRkF5Rk1ob3k2bHpUMkdYWXRlYURVS0s5?=
- =?utf-8?B?SUI5ZTlCOVdvbTcrU25ObFZKWXJvSDZkaS9kT0hVem1ucU9kR3d4NUFSeWVy?=
- =?utf-8?B?ZUFhb0MwVy9RQU5vbmlXdmdjQ0JVSVRYckRlT0JlY1NIaE0zQkNxVlFEU0VM?=
- =?utf-8?B?U3JMYzgxOXhGS2JLOUhtMXlHbVRtOE9Jb2FoMXY4UDRHd05RMnhtQ0lxeUd5?=
- =?utf-8?B?Sk0yYkVxRm1uNmRXTlRQTUtwMzVEZ2I0M2tQU2hiNjRlV004OUF0U0NCV2FN?=
- =?utf-8?B?ZTJZazZURGV3M0h4WWNuYnh3NkR6WVNwSFZNWnR1alJwWU9vMDZudEwrMm44?=
- =?utf-8?B?a0ZId2dvVWw2TVkycjFZNG0zY0txOWQ2TEZ6bzlZMUFKTFY3V1pnUnE0bTlM?=
- =?utf-8?B?VkZha3pNTTR2SWQrMmxsTHNYMG4wZzZqYnRTQW1raUZQNHlQS2NGZ2dFL3Q5?=
- =?utf-8?B?UVdVbU8zWUd1cTF1M2tSV0ZETjRYUG9rWFBYcUVWaHF6V2lYb0NFdmNtVG03?=
- =?utf-8?B?T244T21UeUpnWnRMLzhmajJXY2I2MXY4bzA2T1RraStoS1JyZ2VLOTNsazRv?=
- =?utf-8?B?TmlvS1VLbC9hOTh2STlsZlZlRmRGRExpMHhIRTJsQXQwekl0THNmNUQ1NC9U?=
- =?utf-8?B?eTRTeGpjamtRWGZWbkwyaHlXSm1jLytwUGlka3VlOWUwY3JaSllNVkMvbUpl?=
- =?utf-8?B?YlZCek9NTjFUZzZzL3NIZC8zNS9vL1loWmVQU1ltRks1Qk13STNYbTR2Zi9i?=
- =?utf-8?Q?90tiXz3CXiLUZprJuY1UZO+os?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a2258ee-a5f2-441a-5076-08ddd0fbc681
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 13:03:14.5916
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YYq/QhnOs2S7VfZhv6zeLTTbjvMN/T6ZN1M0Ex09nyENi/SfMoAIUZJzdWc0UvbshUUeeCIZuMogApL26VjpoA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB7069
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250801070032-mutt-send-email-mst@kernel.org>
 
-Hi,
+On Fri, Aug 01, 2025 at 07:00:32AM -0400, Michael S. Tsirkin wrote:
+> The following changes since commit 347e9f5043c89695b01e66b3ed111755afcf1911:
+> 
+>   Linux 6.16-rc6 (2025-07-13 14:25:58 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+> 
+> for you to fetch changes up to c7991b44d7b44f9270dec63acd0b2965d29aab43:
+> 
+>   vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers (2025-07-17 08:33:09 -0400)
 
-The issue that I originally fixed with
+Oh no I am sorry! Please ignore, a bad commit snuck in there - it still
+needs maintainer approval, and I forgot.
+Will resend.
 
-commit 8ff4fb276e23 ("pinctrl: amd: Clear GPIO debounce for suspend")
 
-I have found out will be a problem on more platforms due to more designs 
-switching to power button controlled this way.
+> ----------------------------------------------------------------
+> virtio, vhost: features, fixes
+> 
+> vhost can now support legacy threading
+> 	if enabled in Kconfig
+> vsock memory allocation strategies for
+> 	large buffers have been improved,
+> 	reducing pressure on kmalloc
+> vhost now supports the in-order feature
+> 	guest bits missed the merge window
+> 
+> fixes, cleanups all over the place
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> ----------------------------------------------------------------
+> Alexandre Courbot (1):
+>       media: add virtio-media driver
+> 
+> Alok Tiwari (4):
+>       virtio: Fix typo in register_virtio_device() doc comment
+>       vhost-scsi: Fix typos and formatting in comments and logs
+>       vhost: Fix typos
+>       vhost-scsi: Fix check for inline_sg_cnt exceeding preallocated limit
+> 
+> Anders Roxell (1):
+>       vdpa: Fix IDR memory leak in VDUSE module exit
+> 
+> Cindy Lu (1):
+>       vhost: Reintroduce kthread API and add mode selection
+> 
+> Dr. David Alan Gilbert (2):
+>       vhost: vringh: Remove unused iotlb functions
+>       vhost: vringh: Remove unused functions
+> 
+> Dragos Tatulea (2):
+>       vdpa/mlx5: Fix needs_teardown flag calculation
+>       vdpa/mlx5: Fix release of uninitialized resources on error path
+> 
+> Gerd Hoffmann (1):
+>       drm/virtio: implement virtio_gpu_shutdown
+> 
+> Jason Wang (3):
+>       vhost: fail early when __vhost_add_used() fails
+>       vhost: basic in order support
+>       vhost_net: basic in_order support
+> 
+> Michael S. Tsirkin (6):
+>       virtio: document ENOSPC
+>       pci: report surprise removal event
+>       virtio: fix comments, readability
+>       virtio: pack config changed flags
+>       virtio: allow transports to suppress config change
+>       virtio: support device disconnect
+> 
+> Mike Christie (1):
+>       vhost-scsi: Fix log flooding with target does not exist errors
+> 
+> Pei Xiao (1):
+>       vhost: Use ERR_CAST inlined function instead of ERR_PTR(PTR_ERR(...))
+> 
+> Viresh Kumar (2):
+>       virtio-mmio: Remove virtqueue list from mmio device
+>       virtio-vdpa: Remove virtqueue list
+> 
+> WangYuli (1):
+>       virtio: virtio_dma_buf: fix missing parameter documentation
+> 
+> Will Deacon (9):
+>       vhost/vsock: Avoid allocating arbitrarily-sized SKBs
+>       vsock/virtio: Validate length in packet header before skb_put()
+>       vsock/virtio: Move length check to callers of virtio_vsock_skb_rx_put()
+>       vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
+>       vsock/virtio: Rename virtio_vsock_alloc_skb()
+>       vsock/virtio: Move SKB allocation lower-bound check to callers
+>       vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers
+>       vsock/virtio: Rename virtio_vsock_skb_rx_put()
+>       vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers
+> 
+>  MAINTAINERS                                |    6 +
+>  drivers/gpu/drm/virtio/virtgpu_drv.c       |    8 +-
+>  drivers/media/Kconfig                      |   13 +
+>  drivers/media/Makefile                     |    2 +
+>  drivers/media/virtio/Makefile              |    9 +
+>  drivers/media/virtio/protocol.h            |  288 ++++++
+>  drivers/media/virtio/scatterlist_builder.c |  563 ++++++++++++
+>  drivers/media/virtio/scatterlist_builder.h |  111 +++
+>  drivers/media/virtio/session.h             |  109 +++
+>  drivers/media/virtio/virtio_media.h        |   93 ++
+>  drivers/media/virtio/virtio_media_driver.c |  959 ++++++++++++++++++++
+>  drivers/media/virtio/virtio_media_ioctls.c | 1297 ++++++++++++++++++++++++++++
+>  drivers/pci/pci.h                          |    6 +
+>  drivers/vdpa/mlx5/core/mr.c                |    3 +
+>  drivers/vdpa/mlx5/net/mlx5_vnet.c          |   12 +-
+>  drivers/vdpa/vdpa_user/vduse_dev.c         |    1 +
+>  drivers/vhost/Kconfig                      |   18 +
+>  drivers/vhost/net.c                        |   88 +-
+>  drivers/vhost/scsi.c                       |   24 +-
+>  drivers/vhost/vhost.c                      |  377 +++++++-
+>  drivers/vhost/vhost.h                      |   30 +-
+>  drivers/vhost/vringh.c                     |  118 ---
+>  drivers/vhost/vsock.c                      |   15 +-
+>  drivers/virtio/virtio.c                    |   25 +-
+>  drivers/virtio/virtio_dma_buf.c            |    2 +
+>  drivers/virtio/virtio_mmio.c               |   52 +-
+>  drivers/virtio/virtio_pci_common.c         |   45 +
+>  drivers/virtio/virtio_pci_common.h         |    3 +
+>  drivers/virtio/virtio_pci_legacy.c         |    2 +
+>  drivers/virtio/virtio_pci_modern.c         |    2 +
+>  drivers/virtio/virtio_ring.c               |    4 +
+>  drivers/virtio/virtio_vdpa.c               |   44 +-
+>  include/linux/pci.h                        |   45 +
+>  include/linux/virtio.h                     |   13 +-
+>  include/linux/virtio_config.h              |   32 +
+>  include/linux/virtio_vsock.h               |   46 +-
+>  include/linux/vringh.h                     |   12 -
+>  include/uapi/linux/vhost.h                 |   29 +
+>  include/uapi/linux/virtio_ids.h            |    1 +
+>  kernel/vhost_task.c                        |    2 +-
+>  net/vmw_vsock/virtio_transport.c           |   20 +-
+>  net/vmw_vsock/virtio_transport_common.c    |    3 +-
+>  42 files changed, 4186 insertions(+), 346 deletions(-)
+>  create mode 100644 drivers/media/virtio/Makefile
+>  create mode 100644 drivers/media/virtio/protocol.h
+>  create mode 100644 drivers/media/virtio/scatterlist_builder.c
+>  create mode 100644 drivers/media/virtio/scatterlist_builder.h
+>  create mode 100644 drivers/media/virtio/session.h
+>  create mode 100644 drivers/media/virtio/virtio_media.h
+>  create mode 100644 drivers/media/virtio/virtio_media_driver.c
+>  create mode 100644 drivers/media/virtio/virtio_media_ioctls.c
 
-I think it would be a good idea to take it back to stable kernels.
-
-Thanks!
 
