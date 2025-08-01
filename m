@@ -1,123 +1,81 @@
-Return-Path: <stable+bounces-165714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4D6B17DB2
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 09:38:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C440B17DC1
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 09:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 787623BAA9E
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 07:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5CAC18840AA
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 07:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC671E835B;
-	Fri,  1 Aug 2025 07:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B0A70805;
+	Fri,  1 Aug 2025 07:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kGi2ZJGe";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iUl8Vj+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qySnn6W8"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1A6F9D9;
-	Fri,  1 Aug 2025 07:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1183735280
+	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 07:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754033925; cv=none; b=lT1RuyZI0B6EVrrQ7Ir9OhZPhXA/0p+2Z0fkLNvt6HzkwgDMobbgL79R+HAaGEhLSxyDnklcet3jepHFa0qgqWl83z8uHoMUM1CJmXkkhYa+BFbXY5PyJ56Uqss4f4vNhLfIKxKVLku71Uu+gd56dSZybdbWhZY+Q5GU3gTQj/E=
+	t=1754034085; cv=none; b=iwCGcbI0EQAK3W8SlAh7T7+BhaRnFKtCrUoA0aFMFADDvOq5s+MTkhj9/kW3TIg4y2lBw8Cq7+gXjf7762rZp8De5nNeekifLRHvEs5YBPY0DtsIjjPybN0gXF5L1gEBEyWPoABx8qpivF/iX8CH0AIjJm8VZEnqye51/0cxdYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754033925; c=relaxed/simple;
-	bh=PGSS8x7qm8EIe3sbWot/wbVpmWKX74SZE2yiS8a1uXw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pT5rbU1h2DowCyq+JwGMZpqpnIhuMKGP2/H7AYV2j+y/kMYWrXfiAQtbVUACk6oQiwA6k36QQEA7Lu91MRVyiVb4MikJURx1syrXNSXDsw4aR8h2+f5iRXaBEXvb2mcbghxnQdpaU4Unf7+MAIyjDziF+WaJ7EscdeaIF9CgiWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kGi2ZJGe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iUl8Vj+D; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1754033921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5kF2WlUlEx7Vqnbj22AkyXv6Snlc8aWmu7qYKOYjR2Y=;
-	b=kGi2ZJGe64q7dEkyQUw2e1Ec9kq+WN2oRBAJDaj42ercgCEJGmN1Nl6Y2XXxl5JX6aLTjy
-	0UXenrKnJI8nvaB2mNmJgUnwgNX9szLLQfdD82PlTE4umiPou9wIcEkgiKl5z/hWPDWFLF
-	vMfuZM1n83zxQBo2zsxwl3HaT8DznH9qNRBBF9p3cVpmkVHDGrjk5SkBkqubUHfdh1BMQY
-	AtAbEu9xLaqr7vvbU5Pu0XlU/ycfxT3BnJJZtMmIA71Yu7Srr5TSVPcZnJP+bn1d/90GKo
-	Ntp+Cnk6sHpOrq12h92iqwISvrOXIfpb8llZ6XbedK9w5EC0JIdAzuR7PwVeZA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1754033921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5kF2WlUlEx7Vqnbj22AkyXv6Snlc8aWmu7qYKOYjR2Y=;
-	b=iUl8Vj+DMODle1VAKyqzKCwTXzSUGWrP6rXXRLozwpiXCTtWAcL4cUxsEITAer4V8rPjnB
-	8cNaeIrl7zruV6Dw==
-Date: Fri, 01 Aug 2025 09:38:38 +0200
-Subject: [PATCH] fs: correctly check for errors from replace_fd() in
- receive_fd_replace()
+	s=arc-20240116; t=1754034085; c=relaxed/simple;
+	bh=lbqAt85uQA1Br76zvT+Pz1Ztyr6cwykPB42rZnZ5hRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=irnwlNgL7ublP6b/GVJqM9yzwqIglMu8CRU7N98Qo5fmFa58W/IZogNJEd03Th9f/P/drAu5EzgCxQqN0P2WL9lAK3M7YHq/zTYqzIMpJgb22bLaMmntbZJeZhZtIDRqt0cIL8phuSfJwyeNeCP5VbmXQg2oCmilhXoxbeZgREM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qySnn6W8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7BCC4CEE7;
+	Fri,  1 Aug 2025 07:41:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1754034084;
+	bh=lbqAt85uQA1Br76zvT+Pz1Ztyr6cwykPB42rZnZ5hRk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qySnn6W8o1GUqoopAb4M+kI47i9isitxyVan1XFOciJXocuXdOLnsnfNcnNZTC1oE
+	 mL6plIolzsg0kKexkmRTGBXdlcQ8FLZBFoGzFOq48bz9ds1Vp9WgvuALcxFFtE88G0
+	 7PnVTcXm5/ZvlpMrrozPCWFfIHBDAFRsUpi/wM4g=
+Date: Fri, 1 Aug 2025 09:41:19 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Qingfeng Hao <qingfeng.hao@windriver.com>
+Cc: cve@kernel.org, stable@vger.kernel.org, zhe.he@windriver.com
+Subject: Re: [PATCH vulns 0/1] change the sha1 for CVE-2024-26661
+Message-ID: <2025080132-landlady-stilt-e9f2@gregkh>
+References: <20250801040635.4190980-1-qingfeng.hao@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250801-fix-receive_fd_replace-v1-1-d46d600c74d6@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIAP1ujGgC/x2M4QpAQBAGX0X729U5HfIqknT7HVtCeyUl7+7yc
- 2pmHkpQQaK+eEhxSZJjz1CVBYV13hcY4czkrPO2s5WJchtFgFyYIk+Kc5sDTBuZfUDja8eU41O
- RzX88jO/7AY2Nv/hoAAAA
-X-Change-ID: 20250801-fix-receive_fd_replace-7fdd5ce6532d
-To: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Sargun Dhillon <sargun@sargun.me>, Kees Cook <kees@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754033920; l=1294;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=PGSS8x7qm8EIe3sbWot/wbVpmWKX74SZE2yiS8a1uXw=;
- b=OOn1jtA+R/DDitrIWgv1RnQw5cNJhSUhdhc3wUpCSB/tOmMJUfGj+BsCUhw662PgfLeaVLHqg
- lwetsICDeSKAF1LWTkt/23USztKQlF+6fcWWRF1n31YkM7rvKmEzXZl
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250801040635.4190980-1-qingfeng.hao@windriver.com>
 
-replace_fd() returns either a negative error number or the number of the
-new file descriptor. The current code misinterprets any positive file
-descriptor number as an error.
+On Fri, Aug 01, 2025 at 12:06:34PM +0800, Qingfeng Hao wrote:
+> There is a fix 17ba9cde11c2bfebbd70867b0a2ac4a22e573379
+> introduced in v6.8 to fix the problem introduced by
+> the original fix 66951d98d9bf45ba25acf37fe0747253fafdf298,
+> and they together fix the CVE-2024-26661.
 
-Only check for negative error numbers, so that __receive_sock() is called
-correctly for valid file descriptors.
+Those are two different things, shouldn't they get different CVE ids?
 
-Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
-Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
-Untested, it stuck out while reading the code.
----
- fs/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Since this is the first time I submit the changes on vulns project,
+> not sure if the changes in my patch are exact, @Greg, please point 
+> out the problems if there are and I will fix them.
 
-diff --git a/fs/file.c b/fs/file.c
-index 6d2275c3be9c6967d16c75d1b6521f9b58980926..56c3a045121d8f43a54cf05e6ce1962f896339ac 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1387,7 +1387,7 @@ int receive_fd_replace(int new_fd, struct file *file, unsigned int o_flags)
- 	if (error)
- 		return error;
- 	error = replace_fd(new_fd, file, o_flags);
--	if (error)
-+	if (error < 0)
- 		return error;
- 	__receive_sock(file);
- 	return new_fd;
+There's never a need to modify the .dyad or .json files (hint, you also
+did not touch the .mbox file.)  they are all auto-generated from the
+.sha1 file.
 
----
-base-commit: 89748acdf226fd1a8775ff6fa2703f8412b286c8
-change-id: 20250801-fix-receive_fd_replace-7fdd5ce6532d
+But again, I don't think this is correct, either this specific CVE is
+not a CVE (i.e. it doesn't actually fix an issue), or we need to assign
+another one, right?
 
-Best regards,
--- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+thanks,
 
+greg k-h
 
