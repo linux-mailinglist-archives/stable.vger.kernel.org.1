@@ -1,398 +1,185 @@
-Return-Path: <stable+bounces-165747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7E6B183C6
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 16:29:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC35AB183CE
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 16:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54A8D7A7890
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 14:27:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23494189AC9E
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 14:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B52B26B95B;
-	Fri,  1 Aug 2025 14:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DD72441AF;
+	Fri,  1 Aug 2025 14:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGdlUFe7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dtQCZsEM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6183269AFB;
-	Fri,  1 Aug 2025 14:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA82324166F
+	for <stable@vger.kernel.org>; Fri,  1 Aug 2025 14:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754058559; cv=none; b=KQxqNOp48Qi6lDTDGziKVANiBYoFCmzBDFz9HIQDUF2H9alOs5+U3/nxxTq79+0v+//DuV3sSqfOq8Y9m7H2KjVjN2JqEUb3rMCzF1Y2fSl+h/en9GJi1zVbEo1xYQsjJd8zQncDk46XkH83rlpQ9vPBEg2hKs/cVEMx1D5UMm8=
+	t=1754058709; cv=none; b=WNQKCaa2vd4YrKkKCaIcBl9WTzG8ZARUw4l5GPcyi3YRodex1GTAXo4XuuYTCQK9uf22DaKIwCo1Tnf0Ws350ERUP1Zm3XGYUyWuSQuEgVA/cSfHBPY+xcl1Ns09dF8njD2FAgO4DnTLLpUMurk/ZvYcXyTZpKJbNaTz7dyzumI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754058559; c=relaxed/simple;
-	bh=tFUMDxejLbYRp6nHK4kYnIu6fQ9xVWf6kSqvk6y4oP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PUDFp96G0mtlmm350ULkZJB5zsoqjFfgA8OTkEuyrKEO4v4y1GDLT+GqOH6Fl6TqXZ6tkkLSZ0dR56fIOPo7WpAbrkAcIVSenc2rQXeXVgdZyUUz2nG4PWOU4PuqbT7JXfYc8lmxmWoT/WflMC+jAr7q6wcMZ/CwJTtzDs1w4M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGdlUFe7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110C9C4CEE7;
-	Fri,  1 Aug 2025 14:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754058559;
-	bh=tFUMDxejLbYRp6nHK4kYnIu6fQ9xVWf6kSqvk6y4oP0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IGdlUFe7mmEULI2N9ygPLdMMRSR4pA41SrFviHUJ8QEYEgN9E49W/OVc9jAoqM5yO
-	 jBLiDkxukEgInsuJof4aH/LNKu+djDxZpCXjDEKGHNk/Dab/TmqKrAbwHOvWgXKYlS
-	 vkw0XV+y4yfKETXSi5+Kewi7ACROcVin4bWLpbvr0qZPo2upDxTU04CWk1ULDf/j86
-	 wuv8EApB4qzxybl209R1QfcxF73JSynAzmrC7++ZP4Q2QwiqRydkUJdJ1F3lrGQJRj
-	 GvARfYBAsQoe2adzE3tnYVUmqSrnq+ZA3rarJglHoTYO9PBvJMPW8lefI7ptSxPz3W
-	 QwJPGAWbjRb8Q==
-Date: Fri, 1 Aug 2025 10:29:17 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, peterx@redhat.com,
-	aarcange@redhat.com, surenb@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: fix missing PTE unmap for non-migration
- entries
-Message-ID: <aIzPPWTaf_88i8-a@lappy>
-References: <20250630031958.1225651-1-sashal@kernel.org>
- <20250630175746.e52af129fd2d88deecc25169@linux-foundation.org>
- <a4d8b292-154a-4d14-90e4-6c822acf1cfb@redhat.com>
- <aG06QBVeBJgluSqP@lappy>
- <a8f863b1-ea06-4396-b4da-4dca41e3d9a5@redhat.com>
- <aItjffoR7molh3QF@lappy>
- <214e78a0-7774-4b1e-8d85-9a66d2384744@redhat.com>
- <aIzAj9xUOPCsmZEG@lappy>
- <593b222e-1a62-475c-9502-76e128d3625d@redhat.com>
+	s=arc-20240116; t=1754058709; c=relaxed/simple;
+	bh=FK0vyelFnv1mUU8CyGh29LkgK4hFNqWbgWNw58bAiUY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ndOQwlQeBcX3mnPN7w8KcUt5rghVGomNpc26RStdMCwFg8c3u9XYRIs9zG8IybOa8H+hOT7d+sZ+mKv//OfjhMlaGK8hOxwfCRW5PvMvNx+v7EbKg/pkxMFFQmwgxnrNY5zaq0QUxDoRv1Q7qpYWCr9JJmU9PmnaVypA9ZvCjZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dtQCZsEM; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b78b2c6ecfso1452653f8f.0
+        for <stable@vger.kernel.org>; Fri, 01 Aug 2025 07:31:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1754058705; x=1754663505; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AieFr6QqT2maFLAJIA2s1XsjLSFuKHyndgzoToJrS2E=;
+        b=dtQCZsEMuhRlkjx5T9VOTvCh4h0SUE4kxod9zZaf0kCaO3n7WWWOg6w4NSX5xR4SQa
+         Uy5UpSeCACfrnAAR7zm5ayvDHe5ilKqp21RFvTBG3pyHX9W57nPtEEN72iEwd6+gEvUY
+         IrL0ummdluyq+9DJ+UubhB9lNmpsyoiZK7Vvf0VTGc05+8FD7+zBw6xsB1UInGIggNiU
+         sGXN4BWZ2QPJ7ZEUH3ZECuOirLYL7SWXb/6Jv2bDDIRyLv+xUbWB7Cb5C2WMfvOTUFx/
+         lx6XXzUACOSWj8yvZWjm+dVA1vQEklb1mz5tWQudrY31JRb6j+7+2bVLdpru8qO/ytD+
+         LJ0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754058705; x=1754663505;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AieFr6QqT2maFLAJIA2s1XsjLSFuKHyndgzoToJrS2E=;
+        b=Hnj/N+oyQKXpl3NDQ45gfyLKQS78Hn5fXEJhP3cb14y3BSAyrt8hMEJWrzRjcOlVkB
+         VnoFmvlfEjOK9uXGcPkFSC1rfsb4e4eSIZ+/AG/xQSJnbYkFB5oJLMAdWvR0/TMt630u
+         1nULcg/lybrG56VVzbuQKIFeTJsTwb1MdjWwAXxBqWwS8vRAgWbZaFDPOuUlrNmD4S3Y
+         G4AXGgTPB7aNHYHVrj78gkaczC2CwT3oXhyNg9pKts4HWGoZzetgXXr1zs+v670tf3DW
+         Fcqwk/eZhOibQLYYZKCUnvmucLyYmD9AC40ZifZH2juCCgTU8wYJSrrrkIdHJtxesjTk
+         0roA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoYh+MVM82kDqxTPFkRbqFBUGJyWNbQrBKtvS2YKfzokSppza769GBVvzWJCmfhAlDacBmwBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz82LijqA2knIXMzlMVaxdElgp3pCARLGXgPoDS0zJqXfscKyZr
+	aJsnMPSs/ccfIbvr3c7HVBKMxfc8+UAF/5+kxNlwZQf48k3E9XbS8GfNnWtgo61fLgA=
+X-Gm-Gg: ASbGncviqc6K9NP1wT6kxw9RE3JAwXTGIKzJ5DZvpfOXC05X2iicrIbYQgEJU9Y7/uZ
+	hpHqT0YzZcAWlDuUqHyGHRaUCvUTzJpGTv6JUqdI/X38Z1/GCDXATwbG228Ef6GUmsd/43H8AUa
+	mraa0W/uaLhnd64Kq/TAY49d8Kh8WzafbIXNKDEZ/gLBncU6qlj8N9i40zCX0IMOid+uJ+oxE56
+	lSvTqPyyxC9S6nmTV2tFSoon9MfMNVYLx41wyuyCRtIYTqEBO2HYlso4suMyEjXzm7mZrEg+A/t
+	sDxcxctVAhn53DLUA65CZZfHLte8ykELs3FUUqfDMWt61Oh3ze9N/y1kzKWvRzBuRC5rh1tltwP
+	gjFM/BLhLHB/nXTF3fMrxd+w5GnB/9YYd50DqwQ==
+X-Google-Smtp-Source: AGHT+IFsFT3WFtGw9qAky7zYLbRwPgM0Lo6AQ8+E1AcAZECTEtITCALi3O2SmSLsaNNNGaGdYR0uiQ==
+X-Received: by 2002:adf:e047:0:b0:3b7:9c28:f856 with SMTP id ffacd0b85a97d-3b79c28f954mr4079994f8f.48.1754058705140;
+        Fri, 01 Aug 2025 07:31:45 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c48a05bsm6129217f8f.69.2025.08.01.07.31.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Aug 2025 07:31:44 -0700 (PDT)
+Date: Fri, 1 Aug 2025 17:31:41 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
+	gregkh@linuxfoundation.org, mathias.nyman@intel.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, WeitaoWang@zhaoxin.com,
+	wwt8723@163.com, CobeChen@zhaoxin.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb:xhci:Fix slot_id resource race conflict
+Message-ID: <b5ab0f46-0fde-420e-97a2-136d3074b59c@suswa.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="X3x0H1EPY+A97Av3"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <593b222e-1a62-475c-9502-76e128d3625d@redhat.com>
+In-Reply-To: <20250730152715.8368-1-WeitaoWang-oc@zhaoxin.com>
 
+Hi Weitao,
 
---X3x0H1EPY+A97Av3
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+kernel test robot noticed the following build warnings:
 
-On Fri, Aug 01, 2025 at 04:06:14PM +0200, David Hildenbrand wrote:
->On 01.08.25 15:26, Sasha Levin wrote:
->>On Thu, Jul 31, 2025 at 02:56:25PM +0200, David Hildenbrand wrote:
->>>On 31.07.25 14:37, Sasha Levin wrote:
->>>>On Tue, Jul 08, 2025 at 05:42:16PM +0200, David Hildenbrand wrote:
->>>>>On 08.07.25 17:33, Sasha Levin wrote:
->>>>>>On Tue, Jul 08, 2025 at 05:10:44PM +0200, David Hildenbrand wrote:
->>>>>>>On 01.07.25 02:57, Andrew Morton wrote:
->>>>>>>>On Sun, 29 Jun 2025 23:19:58 -0400 Sasha Levin <sashal@kernel.org> wrote:
->>>>>>>>
->>>>>>>>>When handling non-swap entries in move_pages_pte(), the error handling
->>>>>>>>>for entries that are NOT migration entries fails to unmap the page table
->>>>>>>>>entries before jumping to the error handling label.
->>>>>>>>>
->>>>>>>>>This results in a kmap/kunmap imbalance which on CONFIG_HIGHPTE systems
->>>>>>>>>triggers a WARNING in kunmap_local_indexed() because the kmap stack is
->>>>>>>>>corrupted.
->>>>>>>>>
->>>>>>>>>Example call trace on ARM32 (CONFIG_HIGHPTE enabled):
->>>>>>>>>   WARNING: CPU: 1 PID: 633 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
->>>>>>>>>   Call trace:
->>>>>>>>>     kunmap_local_indexed from move_pages+0x964/0x19f4
->>>>>>>>>     move_pages from userfaultfd_ioctl+0x129c/0x2144
->>>>>>>>>     userfaultfd_ioctl from sys_ioctl+0x558/0xd24
->>>>>>>>>
->>>>>>>>>The issue was introduced with the UFFDIO_MOVE feature but became more
->>>>>>>>>frequent with the addition of guard pages (commit 7c53dfbdb024 ("mm: add
->>>>>>>>>PTE_MARKER_GUARD PTE marker")) which made the non-migration entry code
->>>>>>>>>path more commonly executed during userfaultfd operations.
->>>>>>>>>
->>>>>>>>>Fix this by ensuring PTEs are properly unmapped in all non-swap entry
->>>>>>>>>paths before jumping to the error handling label, not just for migration
->>>>>>>>>entries.
->>>>>>>>
->>>>>>>>I don't get it.
->>>>>>>>
->>>>>>>>>--- a/mm/userfaultfd.c
->>>>>>>>>+++ b/mm/userfaultfd.c
->>>>>>>>>@@ -1384,14 +1384,15 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
->>>>>>>>>  		entry = pte_to_swp_entry(orig_src_pte);
->>>>>>>>>  		if (non_swap_entry(entry)) {
->>>>>>>>>+			pte_unmap(src_pte);
->>>>>>>>>+			pte_unmap(dst_pte);
->>>>>>>>>+			src_pte = dst_pte = NULL;
->>>>>>>>>  			if (is_migration_entry(entry)) {
->>>>>>>>>-				pte_unmap(src_pte);
->>>>>>>>>-				pte_unmap(dst_pte);
->>>>>>>>>-				src_pte = dst_pte = NULL;
->>>>>>>>>  				migration_entry_wait(mm, src_pmd, src_addr);
->>>>>>>>>  				err = -EAGAIN;
->>>>>>>>>-			} else
->>>>>>>>>+			} else {
->>>>>>>>>  				err = -EFAULT;
->>>>>>>>>+			}
->>>>>>>>>  			goto out;
->>>>>>>>
->>>>>>>>where we have
->>>>>>>>
->>>>>>>>out:
->>>>>>>>	...
->>>>>>>>	if (dst_pte)
->>>>>>>>		pte_unmap(dst_pte);
->>>>>>>>	if (src_pte)
->>>>>>>>		pte_unmap(src_pte);
->>>>>>>
->>>>>>>AI slop?
->>>>>>
->>>>>>Nah, this one is sadly all me :(
->>>>>
->>>>>Haha, sorry :P
->>>>
->>>>So as I was getting nowhere with this, I asked AI to help me :)
->>>>
->>>>If you're not interested in reading LLM generated code, feel free to
->>>>stop reading now...
->>>>
->>>>After it went over the logs, and a few prompts to point it the right
->>>>way, it ended up generating a patch (below) that made sense, and fixed
->>>>the warning that LKFT was being able to trigger.
->>>>
->>>>If anyone who's more familiar with the code than me (and the AI) agrees
->>>>with the patch and ways to throw their Reviewed-by, I'll send out the
->>>>patch.
->>>
->>>Seems to check out for me. In particular, out pte_unmap() everywhere
->>>else in that function (and mremap.c:move_ptes) are ordered properly.
->>>
->>>Even if it would not fix the issue, it would be a cleanup :)
->>>
->>>Acked-by: David Hildenbrand <david@redhat.com>
->>
->>David, I ended up LLM generating a .cocci script to detect this type of
->>issues, and it ended up detecting a similar issue in
->>arch/loongarch/mm/init.c.
->
->Does loongarch have these kmap_local restrictions?
->
->>
->>Would you be open to reviewing both the .cocci script as well as the
->>loongarch fix?
->
->Sure, if it's prechecked by you no problem.
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Yup. Though I definitely learned a thing or two about Coccinelle patches
-during this experiment.
+url:    https://github.com/intel-lab-lkp/linux/commits/Weitao-Wang/usb-xhci-Fix-slot_id-resource-race-conflict/20250730-183802
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+patch link:    https://lore.kernel.org/r/20250730152715.8368-1-WeitaoWang-oc%40zhaoxin.com
+patch subject: [PATCH v3] usb:xhci:Fix slot_id resource race conflict
+config: x86_64-randconfig-161-20250801 (https://download.01.org/0day-ci/archive/20250801/202508010850.Bqd6wf47-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202508010850.Bqd6wf47-lkp@intel.com/
+
+New smatch warnings:
+drivers/usb/host/xhci-mem.c:913 xhci_free_virt_device() warn: variable dereferenced before check 'dev->out_ctx' (see line 878)
+
+vim +913 drivers/usb/host/xhci-mem.c
+
+0b5ed80150eb59 Weitao Wang    2025-07-30  868  void xhci_free_virt_device(struct xhci_hcd *xhci, struct xhci_virt_device *dev,
+0b5ed80150eb59 Weitao Wang    2025-07-30  869  		int slot_id)
+3ffbba9511b414 Sarah Sharp    2009-04-27  870  {
+3ffbba9511b414 Sarah Sharp    2009-04-27  871  	int i;
+2e27980e6eb781 Sarah Sharp    2011-09-02  872  	int old_active_eps = 0;
+3ffbba9511b414 Sarah Sharp    2009-04-27  873  
+3ffbba9511b414 Sarah Sharp    2009-04-27  874  	/* Slot ID 0 is reserved */
+0b5ed80150eb59 Weitao Wang    2025-07-30  875  	if (slot_id == 0 || !dev)
+3ffbba9511b414 Sarah Sharp    2009-04-27  876  		return;
+3ffbba9511b414 Sarah Sharp    2009-04-27  877  
+0b5ed80150eb59 Weitao Wang    2025-07-30 @878  	if (xhci->dcbaa->dev_context_ptrs[slot_id] == cpu_to_le64(dev->out_ctx->dma))
+                                                                                                          ^^^^^^^^^^^^
+dev->out_ctx dereferenced without checking for NULL
+
+8e595a5d30a5ee Sarah Sharp    2009-07-27  879  		xhci->dcbaa->dev_context_ptrs[slot_id] = 0;
+3ffbba9511b414 Sarah Sharp    2009-04-27  880  
+d850c1658328e7 Zhengjun Xing  2018-06-21  881  	trace_xhci_free_virt_device(dev);
+d850c1658328e7 Zhengjun Xing  2018-06-21  882  
+2e27980e6eb781 Sarah Sharp    2011-09-02  883  	if (dev->tt_info)
+2e27980e6eb781 Sarah Sharp    2011-09-02  884  		old_active_eps = dev->tt_info->active_eps;
+2e27980e6eb781 Sarah Sharp    2011-09-02  885  
+98871e9470a50c Felipe Balbi   2017-01-23  886  	for (i = 0; i < 31; i++) {
+63a0d9abd18cdc Sarah Sharp    2009-09-04  887  		if (dev->eps[i].ring)
+63a0d9abd18cdc Sarah Sharp    2009-09-04  888  			xhci_ring_free(xhci, dev->eps[i].ring);
+8df75f42f8e67e Sarah Sharp    2010-04-02  889  		if (dev->eps[i].stream_info)
+8df75f42f8e67e Sarah Sharp    2010-04-02  890  			xhci_free_stream_info(xhci,
+8df75f42f8e67e Sarah Sharp    2010-04-02  891  					dev->eps[i].stream_info);
+5aed5b7c2430ce Mathias Nyman  2022-10-24  892  		/*
+5aed5b7c2430ce Mathias Nyman  2022-10-24  893  		 * Endpoints are normally deleted from the bandwidth list when
+5aed5b7c2430ce Mathias Nyman  2022-10-24  894  		 * endpoints are dropped, before device is freed.
+5aed5b7c2430ce Mathias Nyman  2022-10-24  895  		 * If host is dying or being removed then endpoints aren't
+5aed5b7c2430ce Mathias Nyman  2022-10-24  896  		 * dropped cleanly, so delete the endpoint from list here.
+5aed5b7c2430ce Mathias Nyman  2022-10-24  897  		 * Only applicable for hosts with software bandwidth checking.
+2e27980e6eb781 Sarah Sharp    2011-09-02  898  		 */
+5aed5b7c2430ce Mathias Nyman  2022-10-24  899  
+5aed5b7c2430ce Mathias Nyman  2022-10-24  900  		if (!list_empty(&dev->eps[i].bw_endpoint_list)) {
+5aed5b7c2430ce Mathias Nyman  2022-10-24  901  			list_del_init(&dev->eps[i].bw_endpoint_list);
+5aed5b7c2430ce Mathias Nyman  2022-10-24  902  			xhci_dbg(xhci, "Slot %u endpoint %u not removed from BW list!\n",
+2e27980e6eb781 Sarah Sharp    2011-09-02  903  				 slot_id, i);
+8df75f42f8e67e Sarah Sharp    2010-04-02  904  		}
+5aed5b7c2430ce Mathias Nyman  2022-10-24  905  	}
+839c817ce67178 Sarah Sharp    2011-09-02  906  	/* If this is a hub, free the TT(s) from the TT list */
+839c817ce67178 Sarah Sharp    2011-09-02  907  	xhci_free_tt_info(xhci, dev, slot_id);
+2e27980e6eb781 Sarah Sharp    2011-09-02  908  	/* If necessary, update the number of active TTs on this root port */
+2e27980e6eb781 Sarah Sharp    2011-09-02  909  	xhci_update_tt_active_eps(xhci, dev, old_active_eps);
+3ffbba9511b414 Sarah Sharp    2009-04-27  910  
+3ffbba9511b414 Sarah Sharp    2009-04-27  911  	if (dev->in_ctx)
+d115b04818e57b John Youn      2009-07-27  912  		xhci_free_container_ctx(xhci, dev->in_ctx);
+3ffbba9511b414 Sarah Sharp    2009-04-27 @913  	if (dev->out_ctx)
+                                                    ^^^^^^^^^^^^
+Can dev->out_ctx be NULL?
+
+d115b04818e57b John Youn      2009-07-27  914  		xhci_free_container_ctx(xhci, dev->out_ctx);
+d115b04818e57b John Youn      2009-07-27  915  
+a400efe455f7b6 Mathias Nyman  2018-03-16  916  	if (dev->udev && dev->udev->slot_id)
+a400efe455f7b6 Mathias Nyman  2018-03-16  917  		dev->udev->slot_id = 0;
+74151b5349266b Niklas Neronin 2024-02-29  918  	if (dev->rhub_port && dev->rhub_port->slot_id == slot_id)
+74151b5349266b Niklas Neronin 2024-02-29  919  		dev->rhub_port->slot_id = 0;
+0b5ed80150eb59 Weitao Wang    2025-07-30  920  	if (xhci->devs[slot_id] == dev)
+326b4810cc9952 Randy Dunlap   2010-04-19  921  		xhci->devs[slot_id] = NULL;
+0b5ed80150eb59 Weitao Wang    2025-07-30  922  	kfree(dev);
+3ffbba9511b414 Sarah Sharp    2009-04-27  923  }
 
 -- 
-Thanks,
-Sasha
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
---X3x0H1EPY+A97Av3
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-coccinelle-add-semantic-patch-to-detect-kmap_local-L.patch"
-
-From 8beef54a334bb244574506491472e1c955388198 Mon Sep 17 00:00:00 2001
-From: Sasha Levin <sashal@kernel.org>
-Date: Fri, 1 Aug 2025 08:47:24 -0400
-Subject: [PATCH 1/2] coccinelle: add semantic patch to detect kmap_local LIFO
- violations
-
-Add a Coccinelle semantic patch to detect violations of kmap_local's
-Last-In-First-Out (LIFO) ordering requirement. When using kmap_local_page(),
-kmap_atomic(), pte_offset_map(), or pte_offset_map_rw_nolock() variants,
-the mappings must be unmapped in reverse order to maintain correct highmem
-slot ordering.
-
-This semantic patch identifies patterns where:
-- Multiple kmap operations are unmapped in the wrong order
-- The same pattern applies to pte_offset_map() and kmap_atomic()
-- Conditional unmapping patterns that violate LIFO ordering
-
-These violations can cause warnings on CONFIG_HIGHPTE systems:
-  WARNING: CPU: 0 PID: 604 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
-  addr \!= __fix_to_virt(FIX_KMAP_BEGIN + idx)
-
-Co-developed-by: Claude claude-opus-4-20250514
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- scripts/coccinelle/api/kmap_local_lifo.cocci | 114 +++++++++++++++++++
- 1 file changed, 114 insertions(+)
- create mode 100644 scripts/coccinelle/api/kmap_local_lifo.cocci
-
-diff --git a/scripts/coccinelle/api/kmap_local_lifo.cocci b/scripts/coccinelle/api/kmap_local_lifo.cocci
-new file mode 100644
-index 000000000000..e6ba780753de
---- /dev/null
-+++ b/scripts/coccinelle/api/kmap_local_lifo.cocci
-@@ -0,0 +1,114 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/// Detect violations of kmap_local LIFO ordering
-+///
-+/// kmap_local_page() and pte_offset_map() operations must follow
-+/// Last-In-First-Out (LIFO) ordering. This means if you map A then B,
-+/// you must unmap B then A.
-+///
-+// Confidence: High
-+// Copyright: (C) 2025 Sasha Levin
-+
-+virtual report
-+
-+// Pattern 1: kmap_local_page() followed by kunmap_local() in wrong order
-+@kmap_lifo@
-+expression E1, E2;
-+identifier ptr1 != ptr2;
-+identifier ptr2;
-+position p1, p2, p3, p4;
-+@@
-+
-+ptr1 = kmap_local_page(E1)@p1;
-+... when != kunmap_local(ptr1)
-+ptr2 = kmap_local_page(E2)@p2;
-+... when != kunmap_local(ptr1)
-+    when != kunmap_local(ptr2)
-+kunmap_local(ptr1)@p3;
-+... when != kunmap_local(ptr2)
-+kunmap_local(ptr2)@p4;
-+
-+@script:python depends on report@
-+p1 << kmap_lifo.p1;
-+p2 << kmap_lifo.p2;
-+p3 << kmap_lifo.p3;
-+ptr1 << kmap_lifo.ptr1;
-+ptr2 << kmap_lifo.ptr2;
-+@@
-+
-+coccilib.report.print_report(p3[0], "WARNING: kmap_local LIFO violation - %s mapped before %s but unmapped first" % (ptr1, ptr2))
-+
-+// Pattern 2: pte_offset_map() followed by pte_unmap() in wrong order
-+@pte_lifo@
-+expression E1, E2, E3, E4;
-+identifier ptr1 != ptr2;
-+identifier ptr2;
-+position p1, p2, p3, p4;
-+@@
-+
-+ptr1 = pte_offset_map(E1, E2)@p1;
-+... when != pte_unmap(ptr1)
-+ptr2 = pte_offset_map(E3, E4)@p2;
-+... when != pte_unmap(ptr1)
-+    when != pte_unmap(ptr2)
-+pte_unmap(ptr1)@p3;
-+... when != pte_unmap(ptr2)
-+pte_unmap(ptr2)@p4;
-+
-+@script:python depends on report@
-+p1 << pte_lifo.p1;
-+p2 << pte_lifo.p2;
-+p3 << pte_lifo.p3;
-+ptr1 << pte_lifo.ptr1;
-+ptr2 << pte_lifo.ptr2;
-+@@
-+
-+coccilib.report.print_report(p3[0], "WARNING: pte_offset_map LIFO violation - %s mapped before %s but unmapped first" % (ptr1, ptr2))
-+
-+// Pattern 3: kmap_atomic() followed by kunmap_atomic() in wrong order
-+@atomic_lifo@
-+expression E1, E2;
-+identifier ptr1 != ptr2;
-+identifier ptr2;
-+position p1, p2, p3, p4;
-+@@
-+
-+ptr1 = kmap_atomic(E1)@p1;
-+... when != kunmap_atomic(ptr1)
-+ptr2 = kmap_atomic(E2)@p2;
-+... when != kunmap_atomic(ptr1)
-+    when != kunmap_atomic(ptr2)
-+kunmap_atomic(ptr1)@p3;
-+... when != kunmap_atomic(ptr2)
-+kunmap_atomic(ptr2)@p4;
-+
-+@script:python depends on report@
-+p1 << atomic_lifo.p1;
-+p2 << atomic_lifo.p2;
-+p3 << atomic_lifo.p3;
-+ptr1 << atomic_lifo.ptr1;
-+ptr2 << atomic_lifo.ptr2;
-+@@
-+
-+coccilib.report.print_report(p3[0], "WARNING: kmap_atomic LIFO violation - %s mapped before %s but unmapped first" % (ptr1, ptr2))
-+
-+// Pattern 4: Specific pattern for userfaultfd conditional unmapping
-+@userfault_pattern@
-+identifier dst_pte, src_pte;
-+position p1, p2, p3, p4;
-+@@
-+
-+dst_pte@p1 = pte_offset_map_rw_nolock(...);
-+... when exists
-+src_pte@p2 = pte_offset_map_rw_nolock(...);
-+... when exists
-+when any
-+if (dst_pte)
-+	pte_unmap(dst_pte)@p3;
-+if (src_pte)
-+	pte_unmap(src_pte)@p4;
-+
-+@script:python depends on report@
-+p3 << userfault_pattern.p3;
-+@@
-+
-+coccilib.report.print_report(p3[0], "WARNING: pte_offset_map_rw_nolock LIFO violation - dst_pte mapped before src_pte but unmapped first")
--- 
-2.39.5
-
-
---X3x0H1EPY+A97Av3
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0002-LoongArch-fix-kmap_local_page-LIFO-ordering-in-copy_.patch"
-
-From a547687db03ecfe13ddc74e452357df78f880255 Mon Sep 17 00:00:00 2001
-From: Sasha Levin <sashal@kernel.org>
-Date: Fri, 1 Aug 2025 09:17:04 -0400
-Subject: [PATCH 2/2] LoongArch: fix kmap_local_page() LIFO ordering in
- copy_user_highpage()
-
-The current implementation violates kmap_local_page()'s LIFO ordering
-requirement by unmapping the pages in the same order they were mapped.
-
-This was introduced by commit 477a0ebec101 ("LoongArch: Replace
-kmap_atomic() with kmap_local_page() in copy_user_highpage()") when
-converting from kmap_atomic() to kmap_local_page(). The original code
-correctly unmapped in reverse order, but the conversion swapped the
-mapping order while keeping the unmapping order unchanged, resulting
-in a LIFO violation.
-
-kmap_local_page() requires unmapping to be done in reverse order
-(Last-In-First-Out). Currently we map vfrom and then vto, but unmap
-vfrom and then vto, which is incorrect. This patch corrects it to
-unmap vto first, then vfrom.
-
-This issue was detected by the kmap_local_lifo.cocci semantic patch.
-
-Fixes: 477a0ebec101 ("LoongArch: Replace kmap_atomic() with kmap_local_page() in copy_user_highpage()")
-Co-developed-by: Claude claude-opus-4-20250514
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/loongarch/mm/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-index c3e4586a7975..01c43f455486 100644
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -47,8 +47,8 @@ void copy_user_highpage(struct page *to, struct page *from,
- 	vfrom = kmap_local_page(from);
- 	vto = kmap_local_page(to);
- 	copy_page(vto, vfrom);
--	kunmap_local(vfrom);
- 	kunmap_local(vto);
-+	kunmap_local(vfrom);
- 	/* Make sure this page is cleared on other CPU's too before using it */
- 	smp_wmb();
- }
--- 
-2.39.5
-
-
---X3x0H1EPY+A97Av3--
 
