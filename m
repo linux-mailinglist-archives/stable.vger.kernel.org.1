@@ -1,238 +1,112 @@
-Return-Path: <stable+bounces-165782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B43B188E4
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 23:43:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16FFAB18911
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 00:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7078F7B729F
-	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 21:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61FE1C8463E
+	for <lists+stable@lfdr.de>; Fri,  1 Aug 2025 22:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DB128DF0B;
-	Fri,  1 Aug 2025 21:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1887D222582;
+	Fri,  1 Aug 2025 22:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xp7KauDF"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="r1BlZvi8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88E219F121;
-	Fri,  1 Aug 2025 21:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B182E630;
+	Fri,  1 Aug 2025 22:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754084598; cv=none; b=ue4xZWGasisKmYxmKFVkG82RiMiM8fUp/ZiWMeZ7Qg4KPwR/7jBaSMOelPLWrbB1Q2iQG5dt22x/hYBHpDjgJUpJjPpUWpCj7o7uBYny3boL6zFWVxJCGRBbCKcPD4Mih3pXyLxOZQlofjvF5Kta0fJlaFLdWHMGL0Ppkhsb55k=
+	t=1754085741; cv=none; b=qcr6ajJY/E7VhscXIt//djLN4vBm+82Gd4UXVh8oxWBMyN4LhFOQWDDxA8JjBBfRXWX3UkjivaV+CD9TQb1WiN7sfSHRaS4zHozDcPIbi8Zj6JYOPg7Qjs/eLjrYcU1ri2xK63MqMsXsZHhMAFXTs11wxKmXwjLHUzNDqPj46hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754084598; c=relaxed/simple;
-	bh=Xiwy4ScgP7j84te4JGd+4Gr5fis8hv7c267ijEI3f40=;
-	h=Date:To:From:Subject:Message-Id; b=QlZkxXdrVG2meITtZsfehFNb6BeKgT2wkeeA8HWr3+aNh8dBoKdOKBauasDhp7tUwrqf/sgiuX8qG/W2JjK4aoUJT/sOzfnRzJU6FucgewMk2hDO1gOQ2oc91iXZkPa9thI2s2Nnl8jEOm94/vs570pj8n1iQdMAqpCU+y4/Gro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xp7KauDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D911C4CEE7;
-	Fri,  1 Aug 2025 21:43:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754084598;
-	bh=Xiwy4ScgP7j84te4JGd+4Gr5fis8hv7c267ijEI3f40=;
-	h=Date:To:From:Subject:From;
-	b=xp7KauDF3sNDjWm8vec6o03iM4FcmP7EVUyv1a+MbR1pk0YPnNL3z8SK7MBghoTYf
-	 e6NTzYcrMMAMlqsyBsyggD7X4KkuBHuiulUzPfHKE+bB+ttQf/Lsm+jZ19DzC1qzQp
-	 nQCvTIRtZAoNY9bFDshXnWKuF9cMNjOvftP+VV8E=
-Date: Fri, 01 Aug 2025 14:43:17 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,ville.syrjala@linux.intel.com,tzimmermann@suse.de,tursulin@ursulin.net,stable@vger.kernel.org,rodrigo.vivi@intel.com,Ray.Huang@amd.com,patryk@kowalczyk.ws,mripard@kernel.org,matthew.brost@intel.com,matthew.auld@intel.com,maarten.lankhorst@linux.intel.com,joonas.lahtinen@linux.intel.com,jani.nikula@linux.intel.com,hughd@google.com,david@redhat.com,christian.koenig@amd.com,airlied@gmail.com,baolin.wang@linux.alibaba.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [alternative-merged] mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver.patch removed from -mm tree
-Message-Id: <20250801214318.6D911C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1754085741; c=relaxed/simple;
+	bh=O6TIqBiOGFX2hC9KjwxsvIHMeLSf2YQDy1J/KHF416Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tUtnYNO1ZPlOT7StpRzJSXoz7xWUc8HqU0b9VVhgbpBkMgN2o9oBdqjB7pgJuv0rrP0olq7o+cq7HPP3g3DPiTqWY5n4GToy+bMYvIbwevhVwFye08p5cwABrdSZFwMExrmV4TS+HKHV7H2JNUfGy0nWPKwmBxcA6dZdlXy7sFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=r1BlZvi8; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=owta+X3NcgkTdhOwj+zQx9oNDSxqNnmvxaNHTrw4HBw=; b=r1BlZvi8H3AwcZHx0HHEiBaPYV
+	1CAaZbw/VY7BhoTJtwhtzXfamQrq/XLGJ7i8mZtSu+K4NMqEBy5R2/AiISJDfvj7McO7BF98RLh16
+	9RRrYfytXV5qSO5IQCnrERy7E7wdHLTeHAZ6atR/mO3Ej+jLo2CPWwNhiTDZEg5Xpb4uBCZCDjkqB
+	EQ6JvYuVSWQdlw0gq+rtR+aVIkDibAZBs5Wy8RkJZQ+OeOeeFcH1nHbXIgKdMQuf2E4NZmshjFsFj
+	VQAVoB/CD1xHjFQHxmC+RrkAfLPO62WpOPXicb2Cc4H6+DxcXCqu7vnSk757QEXwq+CbDPAPFPu/s
+	YMN8nRvw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uhxpP-00000002VMa-46DH;
+	Fri, 01 Aug 2025 22:02:16 +0000
+Date: Fri, 1 Aug 2025 23:02:15 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Jan Kara <jack@suse.cz>
+Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Sargun Dhillon <sargun@sargun.me>, Kees Cook <kees@kernel.org>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs: correctly check for errors from replace_fd() in
+ receive_fd_replace()
+Message-ID: <20250801220215.GS222315@ZenIV>
+References: <20250801-fix-receive_fd_replace-v1-1-d46d600c74d6@linutronix.de>
+ <fq2s55tc5hhvh4dfjdzek4neozffmn36rwdlsrsxxjqzts2f4c@j67nruhocdiz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fq2s55tc5hhvh4dfjdzek4neozffmn36rwdlsrsxxjqzts2f4c@j67nruhocdiz>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
+On Fri, Aug 01, 2025 at 12:48:09PM +0200, Jan Kara wrote:
+> On Fri 01-08-25 09:38:38, Thomas Weiﬂschuh wrote:
+> > replace_fd() returns either a negative error number or the number of the
+> > new file descriptor. The current code misinterprets any positive file
+> > descriptor number as an error.
+> > 
+> > Only check for negative error numbers, so that __receive_sock() is called
+> > correctly for valid file descriptors.
+> > 
+> > Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
+> > Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> 
+> Indeed. I'm wondering how come nobody noticed...
 
-The quilt patch titled
-     Subject: mm: shmem: fix the shmem large folio allocation for the i915 driver
-has been removed from the -mm tree.  Its filename was
-     mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver.patch
+One word: seccomp.  Considering the background amount of bogus userland
+behaviour coming with it, I wouldn't expect a... vigorous test coverage
+for that one ;-/
 
-This patch was dropped because an alternative patch was or shall be merged
+It's definitely a bug that needs fixing, but I'm not sure this is the right
+way to fix it.
 
-------------------------------------------------------
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: mm: shmem: fix the shmem large folio allocation for the i915 driver
-Date: Mon, 28 Jul 2025 16:03:53 +0800
+Look: replace_fd(fd, file, flags) returns fd on success and -E... on failure.
+Not a single user cares which non-negative value had been returned.  What's
+more, "returns fd on success" is a side effect of using do_dup2() and
+being lazy about it.
 
-After commit acd7ccb284b8 ("mm: shmem: add large folio support for
-tmpfs"), we extend the 'huge=' option to allow any sized large folios for
-tmpfs, which means tmpfs will allow getting a highest order hint based on
-the size of write() and fallocate() paths, and then will try each
-allowable large order.
+And the entire thing is not on any hot paths.  So I suspect that a better fix
+would be
 
-However, when the i915 driver allocates shmem memory, it doesn't provide
-hint information about the size of the large folio to be allocated,
-resulting in the inability to allocate PMD-sized shmem, which in turn
-affects GPU performance.
+	err = do_dup2(files, file, fd, flags);
+	if (err < 0)
+		return err;
+	return 0;
 
-To fix this issue, add the 'end' information for shmem_read_folio_gfp() to
-help allocate PMD-sized large folios.  Additionally, use the maximum
-allocation chunk (via mapping_max_folio_size()) to determine the size of
-the large folios to allocate in the i915 driver.
+in replace_fd() in place of
+	return do_dup2(files, file, fd, flags);
 
-Patryk added:
-
-: In my tests, the performance drop ranges from a few percent up to 13%
-: in Unigine Superposition under heavy memory usage on the CPU Core Ultra
-: 155H with the Xe 128 EU GPU.  Other users have reported performance
-: impact up to 30% on certain workloads.  Please find more in the
-: regressions reports:
-: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645
-: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845
-: 
-: I believe the change should be backported to all active kernel branches
-: after version 6.12.
-
-Link: https://lkml.kernel.org/r/0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com
-Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Reported-by: Ville Syrj√§l√§ <ville.syrjala@linux.intel.com>
-Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Cc: Christan K√∂nig <christian.koenig@amd.com>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Huang Ray <Ray.Huang@amd.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Jonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Thomas Zimemrmann <tzimmermann@suse.de>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/gpu/drm/drm_gem.c                 |    2 +-
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c |    7 ++++++-
- drivers/gpu/drm/ttm/ttm_backup.c          |    2 +-
- include/linux/shmem_fs.h                  |    4 ++--
- mm/shmem.c                                |    7 ++++---
- 5 files changed, 14 insertions(+), 8 deletions(-)
-
---- a/drivers/gpu/drm/drm_gem.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
-+++ a/drivers/gpu/drm/drm_gem.c
-@@ -627,7 +627,7 @@ struct page **drm_gem_get_pages(struct d
- 	i = 0;
- 	while (i < npages) {
- 		long nr;
--		folio = shmem_read_folio_gfp(mapping, i,
-+		folio = shmem_read_folio_gfp(mapping, i, 0,
- 				mapping_gfp_mask(mapping));
- 		if (IS_ERR(folio))
- 			goto fail;
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
-+++ a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -69,6 +69,7 @@ int shmem_sg_alloc_table(struct drm_i915
- 	struct scatterlist *sg;
- 	unsigned long next_pfn = 0;	/* suppress gcc warning */
- 	gfp_t noreclaim;
-+	size_t chunk;
- 	int ret;
- 
- 	if (overflows_type(size / PAGE_SIZE, page_count))
-@@ -94,6 +95,7 @@ int shmem_sg_alloc_table(struct drm_i915
- 	mapping_set_unevictable(mapping);
- 	noreclaim = mapping_gfp_constraint(mapping, ~__GFP_RECLAIM);
- 	noreclaim |= __GFP_NORETRY | __GFP_NOWARN;
-+	chunk = mapping_max_folio_size(mapping);
- 
- 	sg = st->sgl;
- 	st->nents = 0;
-@@ -105,10 +107,13 @@ int shmem_sg_alloc_table(struct drm_i915
- 			0,
- 		}, *s = shrink;
- 		gfp_t gfp = noreclaim;
-+		loff_t bytes = (page_count - i) << PAGE_SHIFT;
-+		loff_t pos = i << PAGE_SHIFT;
- 
-+		bytes = min_t(loff_t, chunk, bytes);
- 		do {
- 			cond_resched();
--			folio = shmem_read_folio_gfp(mapping, i, gfp);
-+			folio = shmem_read_folio_gfp(mapping, i, pos + bytes, gfp);
- 			if (!IS_ERR(folio))
- 				break;
- 
---- a/drivers/gpu/drm/ttm/ttm_backup.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
-+++ a/drivers/gpu/drm/ttm/ttm_backup.c
-@@ -100,7 +100,7 @@ ttm_backup_backup_page(struct file *back
- 	struct folio *to_folio;
- 	int ret;
- 
--	to_folio = shmem_read_folio_gfp(mapping, idx, alloc_gfp);
-+	to_folio = shmem_read_folio_gfp(mapping, idx, 0, alloc_gfp);
- 	if (IS_ERR(to_folio))
- 		return PTR_ERR(to_folio);
- 
---- a/include/linux/shmem_fs.h~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
-+++ a/include/linux/shmem_fs.h
-@@ -153,12 +153,12 @@ enum sgp_type {
- int shmem_get_folio(struct inode *inode, pgoff_t index, loff_t write_end,
- 		struct folio **foliop, enum sgp_type sgp);
- struct folio *shmem_read_folio_gfp(struct address_space *mapping,
--		pgoff_t index, gfp_t gfp);
-+		pgoff_t index, loff_t end, gfp_t gfp);
- 
- static inline struct folio *shmem_read_folio(struct address_space *mapping,
- 		pgoff_t index)
- {
--	return shmem_read_folio_gfp(mapping, index, mapping_gfp_mask(mapping));
-+	return shmem_read_folio_gfp(mapping, index, 0, mapping_gfp_mask(mapping));
- }
- 
- static inline struct page *shmem_read_mapping_page(
---- a/mm/shmem.c~mm-shmem-fix-the-shmem-large-folio-allocation-for-the-i915-driver
-+++ a/mm/shmem.c
-@@ -5930,6 +5930,7 @@ int shmem_zero_setup(struct vm_area_stru
-  * shmem_read_folio_gfp - read into page cache, using specified page allocation flags.
-  * @mapping:	the folio's address_space
-  * @index:	the folio index
-+ * @end:	end of a read if allocating a new folio
-  * @gfp:	the page allocator flags to use if allocating
-  *
-  * This behaves as a tmpfs "read_cache_page_gfp(mapping, index, gfp)",
-@@ -5942,14 +5943,14 @@ int shmem_zero_setup(struct vm_area_stru
-  * with the mapping_gfp_mask(), to avoid OOMing the machine unnecessarily.
-  */
- struct folio *shmem_read_folio_gfp(struct address_space *mapping,
--		pgoff_t index, gfp_t gfp)
-+		pgoff_t index, loff_t end, gfp_t gfp)
- {
- #ifdef CONFIG_SHMEM
- 	struct inode *inode = mapping->host;
- 	struct folio *folio;
- 	int error;
- 
--	error = shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
-+	error = shmem_get_folio_gfp(inode, index, end, &folio, SGP_CACHE,
- 				    gfp, NULL, NULL);
- 	if (error)
- 		return ERR_PTR(error);
-@@ -5968,7 +5969,7 @@ EXPORT_SYMBOL_GPL(shmem_read_folio_gfp);
- struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
- 					 pgoff_t index, gfp_t gfp)
- {
--	struct folio *folio = shmem_read_folio_gfp(mapping, index, gfp);
-+	struct folio *folio = shmem_read_folio_gfp(mapping, index, 0, gfp);
- 	struct page *page;
- 
- 	if (IS_ERR(folio))
-_
-
-Patches currently in -mm which might be from baolin.wang@linux.alibaba.com are
-
-
+so we don't invite more surprises like that.
 
