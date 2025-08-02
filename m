@@ -1,344 +1,627 @@
-Return-Path: <stable+bounces-165800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD41B18E38
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 13:27:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BE6B18F20
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 16:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C47E17EEDA
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 11:27:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BE9F189F677
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 14:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F592063FD;
-	Sat,  2 Aug 2025 11:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MRuGRQbo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BBC23C4E9;
+	Sat,  2 Aug 2025 14:29:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F2851C5A
-	for <stable@vger.kernel.org>; Sat,  2 Aug 2025 11:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754134066; cv=fail; b=CiQ9ihbM6OF39Jw+wTPD+TziZqgCfc8v1zZrOF6FEynk1wy6qrXXNQBb2lxeUem09yhjKpl66fmL7K3N2TQH/4RggEEBCbE1jU22vezVrJAySjkLO8wf8/uMPC/6idgfxi1oOBQKYBnk7dClbijcxnLsIYwjprPvljhfU7jzStA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754134066; c=relaxed/simple;
-	bh=V09noKUjZ4g8Ld0vuvr+fowBxs8yC2cep8s95fDIO+g=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M9IgcoMDPRTO+9fu1HnRn6UUZrwWx31T68B+7SGQKRU2/me8DnC8ZFGvhz9ugZGVw8jgXlvR2PsN/bVlZ0sAiAijEgsL4fCC274nD5W3p2fldlVMFw9CgP633BPjpfvN2dsCNGU2mrcLS2OY1N/e/G/tRpVmcQfa5VUErekm2Kg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MRuGRQbo; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754134064; x=1785670064;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=V09noKUjZ4g8Ld0vuvr+fowBxs8yC2cep8s95fDIO+g=;
-  b=MRuGRQbowW3upFTTcO5+P6v1x331Olr0IkM7+bZA6R5T3x7N2HVWAka5
-   U1+diBIbA2NM+lYjeIZFiYVFYA4D612f9I6NRla/J0kxyhPCG0Htm1mRU
-   BHmtSU35Qj7r7b9widiXDnmWleQ5BZBLADc/CKzPPTKUn8bNr22ecDx9+
-   mTvLz3F4KvMz9cPK4DasfYy6FJDl0T9Yz6txkNJWYMBH2asw6WHXtBmZZ
-   q5ss9WtoJI+XPBcngrmayJKlPCN5ZeqIV7TPpbOIhFsnMIDZTkqdIjsje
-   z3qv2Ws+nJHUp06yV+TXN5BpCNZkoX7mira6eDjsjz2AZ49Y0zqGWHWgQ
-   A==;
-X-CSE-ConnectionGUID: FFLVhM8nTIqiTk7h0PjdbA==
-X-CSE-MsgGUID: z8dimqtIR6qRSAAYydrM/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="60103211"
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="60103211"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2025 04:27:44 -0700
-X-CSE-ConnectionGUID: yeQ61NVYQ1eYsSWSC0qVFA==
-X-CSE-MsgGUID: P87HgmWWTOyV3AE/Ljc+6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="163464785"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2025 04:27:43 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Sat, 2 Aug 2025 04:27:42 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Sat, 2 Aug 2025 04:27:42 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.70) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Sat, 2 Aug 2025 04:27:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YR10IGyVKOcuCJFim5mnhVV4M9FeycFcLvk9p6u6X2L5xYkCaPfHwrvYu3HhS8g+wCgh0F7bbEo/uxeIiQO/y155gORzg+J8a6rA+0vhKtkpxsZTAx22HB8gIVTf3KYnGK0IR7eMLi/cLIfBpEIuqUCKmvLB33up+ZoWIq151VudewwxpF00e3js2HygqRQiDcEJUB+awr+cd3yv7eH5CWo63/NieJZH83UNgwLLm2f8n9CJZzHuer4HLZMjJfW2g/l/RexITN2CLjdzYBbDQZMU7kHc7mepbfg99NeS2qzZTZ16xU99xycMm0U8nMsNEU1jejCjPqtXKwci+NJowQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jQbUTQ+8NZAxSF/oNG52eR7dwhTl9OVP2Rk+0h9m3vg=;
- b=ntQq/Tp4dYmKYxY2PVVmu5xZRWh0k6lH0BmfZAPcqgdfd8gZxSF7vnN2Te9IhnRtgG+n5nm/bKM8vrox1a2dDgGhfZnSD4+cXry7eJaisl3TDulSmOJ25dmllcGc7N59EGBKb9phcbTbDZBa8QEYewVJP05YW1K4lp89bikl8uxLh676Gi1yLEecd5OsbLnkPqyF+pJCOrRsNcHWxsbwFw0D5n/V0sZc+hIh8KKkSbRK5t6cX8RcG8fygkrPysYwt+fH3LjhkMVGy1p4hm/ki5p9fy2DDUaFVCx4fyIdfKbBhdqywe6fpAYHhdSNOCHffEnZ0zyq/R/Gvo3ImZHp1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by PH7PR11MB8456.namprd11.prod.outlook.com (2603:10b6:510:2fe::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.17; Sat, 2 Aug
- 2025 11:27:39 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%5]) with mapi id 15.20.8989.017; Sat, 2 Aug 2025
- 11:27:38 +0000
-Date: Sat, 2 Aug 2025 14:27:25 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nicusor Huhulea
-	<nicusor.huhulea@siemens.com>
-CC: Shradha Gupta <shradhagupta@linux.microsoft.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org"
-	<intel-gfx@lists.freedesktop.org>, "cip-dev@lists.cip-project.org"
-	<cip-dev@lists.cip-project.org>, "jouni.hogander@intel.com"
-	<jouni.hogander@intel.com>, "neil.armstrong@linaro.org"
-	<neil.armstrong@linaro.org>, "jani.nikula@linux.intel.com"
-	<jani.nikula@linux.intel.com>, "maarten.lankhorst@linux.intel.com"
-	<maarten.lankhorst@linux.intel.com>, "mripard@kernel.org"
-	<mripard@kernel.org>, "tzimmermann@suse.de" <tzimmermann@suse.de>,
-	"airlied@gmail.com" <airlied@gmail.com>, "daniel@ffwll.ch" <daniel@ffwll.ch>,
-	"joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-	"rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
-	"tvrtko.ursulin@linux.intel.com" <tvrtko.ursulin@linux.intel.com>,
-	"laurentiu.palcu@oss.nxp.com" <laurentiu.palcu@oss.nxp.com>,
-	"cedric.hombourger@siemens.com" <cedric.hombourger@siemens.com>,
-	"shrikant.bobade@siemens.com" <shrikant.bobade@siemens.com>
-Subject: Re: [PATCH 0/5] drm/i915: fixes for i915 Hot Plug Detection and
- build/runtime issues
-Message-ID: <aI32HUzrT95nS_H9@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20250730161106.80725-1-nicusor.huhulea@siemens.com>
- <aIp6UgiwtDU1Ktmp@ideak-desk>
- <DB3SPRMB000631927D36A721EAE657F3E626A@DB3SPRMB0006.EURPRD10.PROD.OUTLOOK.COM>
- <aIzcjMgUttb1UpVt@ideak-desk>
- <2025080225-attach-ravioli-3d3d@gregkh>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <2025080225-attach-ravioli-3d3d@gregkh>
-X-ClientProxiedBy: LO2P123CA0086.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:138::19) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B011F4C99;
+	Sat,  2 Aug 2025 14:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754144957; cv=none; b=JqJkqQ4gSVK36KG6f+pguAzWAhyeWQhD2zoUB6eNqylCqevUpG8QzBnbme8aTWDnDI+iJFQKEM5SLDK7pZVdJVR+kOOo0YNGmncBbGgXneuFawG17X3HPtBSsuI53ixQ1ZVhk+Ru1A3SlQXhV+HHKyVxVGpRt6tJGWiSYVI0aN8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754144957; c=relaxed/simple;
+	bh=yv8X9xc/9WTt6k4IAYjjS+6GoRUW6LAE+u2YqoKqv5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WNcK43B9YzDsODiNtFT2f34j7mFo0GfkX0QeyIcbsH9gRrXJ2QyUNMpKdWqYvFd4+RksGAjHJamXoFDYBdadgk6R5HDWm657v2504di5oa4bBN1NgsTO/6rY0WE0uKSTSzXmC9PYEiNWpXbM4v+E8zEAYmLXOYWN+Eis4HpkS2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2400a0c3cf7so4704195ad.0;
+        Sat, 02 Aug 2025 07:29:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754144954; x=1754749754;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6GT4acsfxr3w5Qitiyweq0pnAwjYfSJgX40mxl6GJEo=;
+        b=WssVkyUAazk0wPxWoLXanl6YOYRJxj5bAYjI66zDHbzOGUn6BwjfdFHD3tWktID5YR
+         783o9T3JgvV3IR7/6oXZVXcK/ZcPjTyBO0roGJ1VTBPRPlX+pGHFHL/WcJL0cVBnc/TR
+         F/+YhSJfvWCbuuEfULtYSu/Ce0uLmfwlV2QqbjQEathHxxGoKTJHBFhzeHxdGct/vqZk
+         0QCyx94Z/l3Bjil3/M/knSvhPxaRvT1b362NA6Wo71AgJ6a2mQDk4GORFOHyECk4My14
+         aH5PPPxlLTSpIv1euTHA/04bMtZHd+ypo2ITLc8U9cQTb/kxvGafqUUABxef9g8dI7/n
+         YJpg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8jE79YaiMp5QIi6CFPIjmmeGV5KVePAj1izldj2t5oI/DCOYIi86nfiYrxQliz0yV5ux1Newn@vger.kernel.org, AJvYcCUnIwagx3ntdDyfHQtfn9pqr1XrrNrBHWDIju7YxQAhYvISoXcOzaZMndbd9tJzfdehhBuw7ItvZ9i2@vger.kernel.org, AJvYcCWsNs8UBvC/WUf/B3eekNY9GfgtE63O7q7jmmBj2GCSbVAMjgJZ4sI5U7SaRbUAwVWimKvUY+2PBvJNUWE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3+1m/Aq0Ws5Y9G76PVuIETsrJB0vcz7ZgwLgI+xUvylcx5ygx
+	HR3UMs1Uevi2aXvG1Vnt+IPfine+aY3ZHKt07Wq8oBRsThUHha7ziDd5
+X-Gm-Gg: ASbGncs9ouwxaNpJ8qdJtG1g9e0djOX75dvnAEYNvhc61bgCY00i0AeiyvFrVf5zWe1
+	bsrc1jew+hT4Biv7atyh1FZow1voKB9qGBL1bv25Z36ctNU7UPj42oE1wYRB1BGNQlnsdrYseHQ
+	DpmoPK4Oe3bBY9NlcB1BfPme6s0UHLd+o5GQ6Ff/pn8eGlc/7zdG9vPrTX5K6R2PpuoHD2UZ+y7
+	/dz/unpgFJE87OoO9EzP9vaVraPfvq0bszlqImmzaLyUpbKFi34i6nLuIC0AD4NQVmgyTtMgVDr
+	CLFoTdqGWbBLoKMxEfB/HVVbiBUfcNkNDzOKL8JQpxbfswau0ujQQ3B3IuodOOLiqMvpSo7L1pg
+	s75hKESGaD//G
+X-Google-Smtp-Source: AGHT+IEalD7iTZn0WfUaHQorrq90EOZoLgtQO4rk3/sa+x7vQ05SW/rgzKzO8G2QmvUA9IEiOxkGEA==
+X-Received: by 2002:a05:6a00:2e9d:b0:74d:3a55:42ef with SMTP id d2e1a72fcca58-76bec4c8559mr1792267b3a.6.1754144954447;
+        Sat, 02 Aug 2025 07:29:14 -0700 (PDT)
+Received: from localhost ([218.152.98.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bccfd88dbsm6541336b3a.103.2025.08.02.07.29.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Aug 2025 07:29:14 -0700 (PDT)
+From: Yunseong Kim <ysk@kzalloc.com>
+To: Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Byungchul Park <byungchul@sk.com>,
+	max.byungchul.park@gmail.com,
+	"ppbuk5246 @ gmail . com" <ppbuk5246@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Yunseong Kim <ysk@kzalloc.com>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	stable@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	syzkaller@googlegroups.com,
+	linux-usb@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH v2] kcov, usb: Fix invalid context sleep in softirq path on PREEMPT_RT
+Date: Sat,  2 Aug 2025 14:26:49 +0000
+Message-ID: <20250802142647.139186-3-ysk@kzalloc.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|PH7PR11MB8456:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7be16a81-d137-4569-8958-08ddd1b79613
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9989lhQ3ooY9hMdQnjRr6szBQAMwSgJRhC986ZjsFw2AOJULs7lRnIGjsYYJ?=
- =?us-ascii?Q?uv4YkH4apXq+d99udES6zb9MRrZ6+/RXeQVTFVYr6Qf8qqVjgUp52jjC+j8X?=
- =?us-ascii?Q?b/hO3yjpPrWaIhwFu0Fft0ASeQMsUoEAtIQdUA1mSpZnMQUS1Nlhz8Fknngw?=
- =?us-ascii?Q?wlVA+AgewYeobbSZm2NzQpwALtIDUy3M3AdDD+wkvoso8ZOk32LXs58ju8Vu?=
- =?us-ascii?Q?8Fz6cZbFAAXKAb2KL64JUwBhcu87HODyYbt8wqLKjhseyBCWRbcXZ/v8fWE0?=
- =?us-ascii?Q?yA2ubpdvf3rAVlDaUgf0lKDuJkucJhhWUpOWQi/mk7TXI34/NeQzPhAbkdgh?=
- =?us-ascii?Q?NeZysDtNCbYZsgUuuCdaqTJ9WYflqSQerAXggm5YqAY1W74PGPFApFREuQ40?=
- =?us-ascii?Q?kvgGmITBxJqryFQtKbLv5jP6bSPK0kngvbGzNHaoHRlgEIFigvSchQpZi7XX?=
- =?us-ascii?Q?XSsSoeJQI+vOjF5mcJQyoY64qN6e2oHYYQOImHogNwayI+Y6eWIlgV4Rcfvz?=
- =?us-ascii?Q?0hcepNk713zuC+S128ElL0GwqtS+DPx6yIRJKyr2ljMFej2PgJ0lyLCqJw5a?=
- =?us-ascii?Q?AzTpha4aWG70ZELPR0imkiJgexbr1SFoWOZkkD2ZPtzeHZdZBvQ10mA2RpEp?=
- =?us-ascii?Q?PMYiZx1GTVl4QLLXbcwR10qha6cT9w3hdjfyD/eLw6UmS7xCW9O/uzp+T0bJ?=
- =?us-ascii?Q?xntfbMEze6Z7A57Zlw748sSaheFcoJg70jOdhZyzpn/pTlgO1ebKxYjbGZJN?=
- =?us-ascii?Q?M/GWA6USt7lAEVEpBhD17/tyXHu+IR2jySOicplG96620t63AS/gQk/tVVor?=
- =?us-ascii?Q?KiWJWh97PqeW+0Hbq4GU94eyTBlfyArLCo3AS76U3ns785UI9UR0PoYp3bYO?=
- =?us-ascii?Q?ndzKy6TKZFVwk5bQ7sefRC1eWOfK4A1FVyM2UkQvWiO4RzJjw1Iq0yfQtCoR?=
- =?us-ascii?Q?6XPKb4f6yS9wyNy0tStFtd1FqGrikXIT6Qa5RKVFUe96J6FPyFoxArinOgm6?=
- =?us-ascii?Q?Fuh2VAH3pM4F2ReU0c0CmJmKtt5hITBs1eVeM2i75HumDwk0gwR1s9iMJ3s0?=
- =?us-ascii?Q?NeS+I5KFUMUwn7w6vfokDOY1WC37k5VHXqodOjGNuqa9kei2RXOg+x5RV7j0?=
- =?us-ascii?Q?Xpi+RqMr/x/TWtZ2gl7HjpMTDmphlHlrxGEOcXESYnjsPqHjXxzc5WYO3oqM?=
- =?us-ascii?Q?hWfT6N0DeWnKi8XwPXO3XLNigEByX+mslFnG7shRZ97O4w5GFuacMCYWnIxl?=
- =?us-ascii?Q?lNdiL/swdrPLqen2MlEinHqD06E480/vxOieqFJPJZtNF4C/9Lqow3yYXIgR?=
- =?us-ascii?Q?a+MjYd3BG8A9oJ1TZHAXmRPxl8kiSsjozNqK4WSgHviuqDt0GV7ZbewpPVDZ?=
- =?us-ascii?Q?zJmbG7Jzu2yQyNohYsm5vWjjuIjL5E+6F5rOosIBvw5GXJO9KlSQWvZoTQRd?=
- =?us-ascii?Q?QsmhFuGOBGk=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oM+slfMLQggdl/nghFhiuK0342u1GVWDVXQNZRoYdaqzU5goSRDWStfp3diQ?=
- =?us-ascii?Q?ROkmoYAstBnwBM2hG/XPA++8RY3DrtquYlq6x70uB71VCasNXRMVGhhnHHOZ?=
- =?us-ascii?Q?XZ9RMczwxRDcu6Tm2xIIwhzkz2x97dTursk/5Bw68z+caab4600+T6A4oc66?=
- =?us-ascii?Q?sSw6oBSpQRLuuh/u0qNgHOXeUCiDvxzUZzHoCU7w0MOmEhskemm48wjNehR+?=
- =?us-ascii?Q?P+iWYukR8fKCA4VQH4vvZKnqe9svcEKG6y8VRZxYVheYE5UGugViK5V6ZhGn?=
- =?us-ascii?Q?e/vqds1OkMT9YdmC+P5COIb4PhfxSbmEqD9Uas+oee8kRSc4Bpuz73tQUWzc?=
- =?us-ascii?Q?xYNgcRS3H/cakEXVsCHWqm6hUER7qC7v/7uxYdSNOV75/R1RiYE/64BB+Lxq?=
- =?us-ascii?Q?KrQjPkXg5MJ7LHk3F/RfaIF7d0M3nht/V2UwZujgqLjm3jX5zFb3PFAGyzoe?=
- =?us-ascii?Q?ZYHffr17BNtEqOPKogYGtr/WvKAfg9SJ/+8er5zrUsR8whGjUXKpEoM/TKGS?=
- =?us-ascii?Q?6H4pxPO/2TpiqhS1+g2dSc4f84ouekFA7TKRXkx4Cc2FupQ5PGlSFB1Fz7De?=
- =?us-ascii?Q?lCGRdaS5hVrRsiGlaXytwkbTS2j4+hm9wLG2dXWG6QcXzkpH15ptcjnEZS1U?=
- =?us-ascii?Q?Yy3U3KXOwSfZs9NIS8pliE6qbs7BfW96Vk+pwTJMXh25/DOp8WElLlIFzTNZ?=
- =?us-ascii?Q?DGkOV/0Lnah724bg1QBUw4RTwQ0jC8Pk7BsrRhnOTLr2mr5IvbQQiLDvSXCe?=
- =?us-ascii?Q?sFnltwLl+k4vj/9p22wvsI2TEPCBKwYpwn/s67Ab6CEUIUr9l6rQ7Cpa1DEq?=
- =?us-ascii?Q?wYKepsww5sXXN/CNY3X9tHwWJWCdYDbzzZKYigzteQ6gqMri3ZMCB2OSgb/X?=
- =?us-ascii?Q?Mo9H9Dt9ZlufkJEf7Tw+qfd9o2Y8NJDvGaBGieC4zCR2lmoptGWvUcI9bFQg?=
- =?us-ascii?Q?t6Ly94DFzxKo++c8B+Gc7XOaZpWNPRJShooJwu8SW8w4rd9l9bdVyTJplxf6?=
- =?us-ascii?Q?ybtzyW4QYJVHXlHnV+ZP4c2kgUbnx/OyK3beD3ZrBzgw9vIP3rJ9vtroCeBW?=
- =?us-ascii?Q?+HsH7cjWx1YvXj/hG+9bwrh8MbhiY+0pLNKTAc3NWW838s/r2OKm9NwS8DAj?=
- =?us-ascii?Q?WTcS/KbhPviDblB4eUEXzy39QrqvQnsZGrMJ2WrY9BOWCir0h+e9Wf3HMF88?=
- =?us-ascii?Q?qQ2uAtnJyrL/QcE1eBdZcvOLoYjKEC/9q2/8XaLTtBUkY/AKbIzGETYFREx4?=
- =?us-ascii?Q?ctX2A348yikcR23H8VdJ/bQYrSZ0OA3/zuLmAOLi787rgD77ZNeFp50qwXwH?=
- =?us-ascii?Q?yxxXh/PG+AbGM0q5Im5qXG2+COiaue2yfVTgWFKJd/Lo6kkElwX8ZuJHGtmV?=
- =?us-ascii?Q?9tQR0KAw1iEK103Uk2PNMrCkTExaxKG4SMFXt96u3eg68KHK+dn/eTq/jafC?=
- =?us-ascii?Q?pgASawQVZ7WO9PFhA0eLXio/pgiFytUjWACq0+lntHnPaag5Djj28cI+9hUc?=
- =?us-ascii?Q?X08b2ZSlQUKwTs+eWGghHELjjmrlRQktHnT/cuW64fA9Fic7FzKgGUB/3e59?=
- =?us-ascii?Q?39wW8SidaxXVRngoPJ3Tt4d9z2MEd0b233iJPdnGb9P27VW4TcODkNMXHGG5?=
- =?us-ascii?Q?D6aLN5I9ySXXxyAD/ByHWWnt5ckLkHtp0dJgu85Qaf/c?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7be16a81-d137-4569-8958-08ddd1b79613
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2025 11:27:38.5748
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MwLYR1UUe+aG4TEL9Z7H3LyluqFCbGMBVWgwn+1D6FvnvrbQqwC8ONksMao+nkDC3GHwXMDZNL3tCe/v7zloXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8456
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 02, 2025 at 08:38:36AM +0100, Greg Kroah-Hartman wrote:
-> On Fri, Aug 01, 2025 at 06:26:04PM +0300, Imre Deak wrote:
-> > Hi Greg and Shradha,
-> > 
-> > could you please check the comment below about the 4ad8d57d902f backport
-> > commit in the v6.1.y stable tree and if you agree with the reasoning why
-> > it has an issue, then suggest a way to resolve it?
-> > 
-> > Also, AFAICS, other stable trees are not affected, since the original
-> > 5abffb66d12bcac commit got only backported to the above v6.1.y tree, but
-> > please confirm this.
-> > 
-> > On Fri, Aug 01, 2025 at 02:37:04PM +0000, nicusor.huhulea@siemens.com wrote:
-> > > > -----Original Message-----
-> > > > From: Imre Deak <imre.deak@intel.com>
-> > > > Sent: Wednesday, July 30, 2025 11:02 PM
-> > > > To: Nicusor Liviu Huhulea (FT FDS CES LX PBU 1) <nicusor.huhulea@siemens.com>
-> > > > Cc: stable@vger.kernel.org; dri-devel@lists.freedesktop.org;
-> > > > intel-gfx@lists.freedesktop.org; cip-dev@lists.cip-project.org;
-> > > > jouni.hogander@intel.com; neil.armstrong@linaro.org; jani.nikula@linux.intel.com;
-> > > > maarten.lankhorst@linux.intel.com; mripard@kernel.org; tzimmermann@suse.de;
-> > > > airlied@gmail.com; daniel@ffwll.ch; joonas.lahtinen@linux.intel.com;
-> > > > rodrigo.vivi@intel.com; tvrtko.ursulin@linux.intel.com;
-> > > > laurentiu.palcu@oss.nxp.com;
-> > > > Cedric Hombourger (FT FDS CES LX) <cedric.hombourger@siemens.com>;
-> > > > Shrikant Krishnarao Bobade (FT FDS CES LX PBU 1) <shrikant.bobade@siemens.com>
-> > > > Subject: Re: [PATCH 0/5] drm/i915: fixes for i915 Hot Plug Detection and build/runtime issues
-> > > > 
-> > > > Hi Nicusor,
-> > > > 
-> > > > thanks for the report and the root causing effort. The patchset itself has a few
-> > > > issues:
-> > > > 
-> > > > - commit cfd48ad8c4a9 ("drm/i915: Fix HPD polling, reenabling the output
-> > > >   poll work as needed") you backport fixes d33a54e3991d
-> > > >   ("drm/probe_helper: sort out poll_running vs poll_enabled"), but this
-> > > >   fixed commit is not part of the 6.1.y stable tree which you are
-> > > >   targeting.
-> > > > 
-> > > >   Similarly commit d33a54e3991d fixes c8268795c9a9 ("drm/probe-helper:
-> > > >   enable and disable HPD on connectors"), which is not part of 6.1.y
-> > > >   either.
-> > > > 
-> > > >   This means the issue commit cfd48ad8c4a9 is fixing is not present in
-> > > >   the 6.1.y tree, as the changes introducing that issue are not present
-> > > >   in that tree either.
-> > > > 
-> > > > - The compile errors the patches in your patchset introduce would
-> > > >   prevent bisection, so fixing up these compile errors only at the end
-> > > >   of the patchset is not ok; the tree should compile without errors at
-> > > >   each patch/commit.
-> > > > 
-> > > > Looking at v6.1.y and the patchset I suspect the actual issue is the
-> > > > 
-> > > > commit 4ad8d57d902f ("drm: Check output polling initialized before
-> > > > disabling") backport in v6.1.y, which had the
-> > > > 
-> > > > -       if (!dev->mode_config.poll_enabled || !drm_kms_helper_poll)
-> > > > +       if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
-> > > > +           !drm_kms_helper_poll || dev->mode_config.poll_running)
-> > > > 
-> > > > change, not part of the original
-> > > > 
-> > > > commit 5abffb66d12b ("drm: Check output polling initialized before disabling"). i.e.
-> > > > the original patch didn't add the check for
-> > > > dev->mode_config.poll_running. So could you try on top of v6.1.147
-> > > > (w/o the changes in the patchset you posted):
-> > > > 
-> > > > diff --git a/drivers/gpu/drm/drm_probe_helper.c
-> > > > b/drivers/gpu/drm/drm_probe_helper.c
-> > > > index 0e5eadc6d44d..a515b78f839e 100644
-> > > > --- a/drivers/gpu/drm/drm_probe_helper.c
-> > > > +++ b/drivers/gpu/drm/drm_probe_helper.c
-> > > > @@ -250,7 +250,7 @@ void drm_kms_helper_poll_enable(struct drm_device *dev)
-> > > >         unsigned long delay = DRM_OUTPUT_POLL_PERIOD;
-> > > > 
-> > > >         if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
-> > > > -           !drm_kms_helper_poll || dev->mode_config.poll_running)
-> > > > +           !drm_kms_helper_poll)
-> > > >                 return;
-> > > > 
-> > > >         drm_connector_list_iter_begin(dev, &conn_iter);
-> > > 
-> > > Thank you for your thorough explanation, especially regarding the
-> > > bisecting issue. I hadn't anticipated that by fixing compile errors
-> > > only at the end of the series, I would make bisection unreliable.
-> > > 
-> > > I have tested your idea/fix and it works. HPD polling works reliably
-> > > on both devices. I can see the polling in logs when display cable is
-> > > not connected.
-> > > 
-> > > Since this fix is mostly your solution, would you prefer to submit
-> > > yourself, or would you like me to resubmit it as a v2 and credit you
-> > > appropriately ?
-> > 
-> > Thanks again Nicusor for the effort to root cause this and for all the
-> > tests.
-> > 
-> > Greg, Shradha, as described above I think in the 4ad8d57d902f backport
-> > commit in v6.1.y it was incorrect to add the
-> > 
-> > 	dev->mode_config.poll_running
-> > 
-> > condition, as the original 5abffb66d12b commit was not the one adding
-> > this, in that commit that condition was only part of the diff context.
-> > OTOH, adding the check for this condition causes an issue in the i915
-> > driver's IRQ storm handling in the v6.1.y stable tree: after
-> > dev->mode_config.poll_running gets set (during the first connector
-> > detection in drm_helper_probe_single_connector_modes()), the
-> > 
-> > 	drm_kms_helper_poll_enable()
-> > 
-> > call in intel_hpd_irq_storm_switch_to_polling() will not any more
-> > schedule the output_poll_work as expected. Thus after an IRQ storm, the
-> > HPD IRQs get disabled, but the HPD polling will not run and so the HPD
-> > detection will not work as Nicusor described above.
-> > 
-> > If you agree with the above and the above proposed solution to remove
-> > the dev->mode_config.poll_running check from the v6.1.y tree, then what
-> > would be Greg the correct way to do this?
-> 
-> Send whatever fix is needed please.
+The KCOV subsystem currently utilizes standard spinlock_t and local_lock_t
+for synchronization. In PREEMPT_RT configurations, these locks can be
+implemented via rtmutexes and may therefore sleep. This behavior is
+problematic as kcov locks are sometimes used in atomic contexts or protect
+data accessed during critical instrumentation paths where sleeping is not
+permissible.
 
-Ok. Nicusor could you please send a patch with the above diff removing
-the dev->mode_config.poll_running check to stable@vger.kernel.org, also
-CCing Shradha? You could also add a Link: line to this email thread. The
-patch description should mention that it is a fix for the v6.1.y stable
-tree for commit 4ad8d57d902f in that tree, give a concise explanation of
-the issue with the commit itself based on the above and describe the
-problem you observed it causes (vs. that the patch fixes this problem
-based on your tests)?
+Address these issues to make kcov PREEMPT_RT friendly:
 
-Thanks,
-Imre
+1. Convert kcov->lock and kcov_remote_lock from spinlock_t to
+   raw_spinlock_t. This ensures they remain true, non-sleeping
+   spinlocks even on PREEMPT_RT kernels.
+
+2. Refactor the KCOV_REMOTE_ENABLE path to move memory allocations
+   out of the critical section. All necessary struct kcov_remote
+   structures are now pre-allocated individually in kcov_ioctl()
+   using GFP_KERNEL (allowing sleep) before acquiring the raw
+   spinlocks.
+
+3. Modify the ioctl handling logic to utilize these pre-allocated
+   structures within the critical section. kcov_remote_add() is
+   modified to accept a pre-allocated structure instead of allocating
+   one internally.
+
+4. Remove the local_lock_t protection for kcov_percpu_data in
+   kcov_remote_start/stop(). Since local_lock_t can also sleep under
+   RT, and the required protection is against local interrupts when
+   accessing per-CPU data, it is replaced with explicit
+   local_irq_save/restore().
+
+Link: https://lore.kernel.org/all/20250725201400.1078395-2-ysk@kzalloc.com/t/#u
+Fixes: f85d39dd7ed8 ("kcov, usb: disable interrupts in kcov_remote_start_usb_softirq")
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: stable@vger.kernel.org
+Cc: kasan-dev@googlegroups.com
+Cc: syzkaller@googlegroups.com
+Cc: linux-usb@vger.kernel.org
+Cc: linux-rt-devel@lists.linux.dev
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+---
+ kernel/kcov.c | 243 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 130 insertions(+), 113 deletions(-)
+
+diff --git a/kernel/kcov.c b/kernel/kcov.c
+index 187ba1b80bda..9c8e4325cff8 100644
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -54,7 +54,7 @@ struct kcov {
+ 	 */
+ 	refcount_t		refcount;
+ 	/* The lock protects mode, size, area and t. */
+-	spinlock_t		lock;
++	raw_spinlock_t		lock;
+ 	enum kcov_mode		mode;
+ 	/* Size of arena (in long's). */
+ 	unsigned int		size;
+@@ -84,13 +84,12 @@ struct kcov_remote {
+ 	struct hlist_node	hnode;
+ };
+ 
+-static DEFINE_SPINLOCK(kcov_remote_lock);
++static DEFINE_RAW_SPINLOCK(kcov_remote_lock);
+ static DEFINE_HASHTABLE(kcov_remote_map, 4);
+ static struct list_head kcov_remote_areas = LIST_HEAD_INIT(kcov_remote_areas);
+ 
+ struct kcov_percpu_data {
+ 	void			*irq_area;
+-	local_lock_t		lock;
+ 
+ 	unsigned int		saved_mode;
+ 	unsigned int		saved_size;
+@@ -99,9 +98,7 @@ struct kcov_percpu_data {
+ 	int			saved_sequence;
+ };
+ 
+-static DEFINE_PER_CPU(struct kcov_percpu_data, kcov_percpu_data) = {
+-	.lock = INIT_LOCAL_LOCK(lock),
+-};
++static DEFINE_PER_CPU(struct kcov_percpu_data, kcov_percpu_data);
+ 
+ /* Must be called with kcov_remote_lock locked. */
+ static struct kcov_remote *kcov_remote_find(u64 handle)
+@@ -116,15 +113,9 @@ static struct kcov_remote *kcov_remote_find(u64 handle)
+ }
+ 
+ /* Must be called with kcov_remote_lock locked. */
+-static struct kcov_remote *kcov_remote_add(struct kcov *kcov, u64 handle)
++static struct kcov_remote *kcov_remote_add(struct kcov *kcov, u64 handle,
++					   struct kcov_remote *remote)
+ {
+-	struct kcov_remote *remote;
+-
+-	if (kcov_remote_find(handle))
+-		return ERR_PTR(-EEXIST);
+-	remote = kmalloc(sizeof(*remote), GFP_ATOMIC);
+-	if (!remote)
+-		return ERR_PTR(-ENOMEM);
+ 	remote->handle = handle;
+ 	remote->kcov = kcov;
+ 	hash_add(kcov_remote_map, &remote->hnode, handle);
+@@ -404,9 +395,8 @@ static void kcov_remote_reset(struct kcov *kcov)
+ 	int bkt;
+ 	struct kcov_remote *remote;
+ 	struct hlist_node *tmp;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&kcov_remote_lock, flags);
++	raw_spin_lock(&kcov_remote_lock);
+ 	hash_for_each_safe(kcov_remote_map, bkt, tmp, remote, hnode) {
+ 		if (remote->kcov != kcov)
+ 			continue;
+@@ -415,7 +405,7 @@ static void kcov_remote_reset(struct kcov *kcov)
+ 	}
+ 	/* Do reset before unlock to prevent races with kcov_remote_start(). */
+ 	kcov_reset(kcov);
+-	spin_unlock_irqrestore(&kcov_remote_lock, flags);
++	raw_spin_unlock(&kcov_remote_lock);
+ }
+ 
+ static void kcov_disable(struct task_struct *t, struct kcov *kcov)
+@@ -450,7 +440,7 @@ void kcov_task_exit(struct task_struct *t)
+ 	if (kcov == NULL)
+ 		return;
+ 
+-	spin_lock_irqsave(&kcov->lock, flags);
++	raw_spin_lock_irqsave(&kcov->lock, flags);
+ 	kcov_debug("t = %px, kcov->t = %px\n", t, kcov->t);
+ 	/*
+ 	 * For KCOV_ENABLE devices we want to make sure that t->kcov->t == t,
+@@ -475,12 +465,12 @@ void kcov_task_exit(struct task_struct *t)
+ 	 * By combining all three checks into one we get:
+ 	 */
+ 	if (WARN_ON(kcov->t != t)) {
+-		spin_unlock_irqrestore(&kcov->lock, flags);
++		raw_spin_unlock_irqrestore(&kcov->lock, flags);
+ 		return;
+ 	}
+ 	/* Just to not leave dangling references behind. */
+ 	kcov_disable(t, kcov);
+-	spin_unlock_irqrestore(&kcov->lock, flags);
++	raw_spin_unlock_irqrestore(&kcov->lock, flags);
+ 	kcov_put(kcov);
+ }
+ 
+@@ -492,14 +482,14 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
+ 	struct page *page;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&kcov->lock, flags);
++	raw_spin_lock_irqsave(&kcov->lock, flags);
+ 	size = kcov->size * sizeof(unsigned long);
+ 	if (kcov->area == NULL || vma->vm_pgoff != 0 ||
+ 	    vma->vm_end - vma->vm_start != size) {
+ 		res = -EINVAL;
+ 		goto exit;
+ 	}
+-	spin_unlock_irqrestore(&kcov->lock, flags);
++	raw_spin_unlock_irqrestore(&kcov->lock, flags);
+ 	vm_flags_set(vma, VM_DONTEXPAND);
+ 	for (off = 0; off < size; off += PAGE_SIZE) {
+ 		page = vmalloc_to_page(kcov->area + off);
+@@ -511,7 +501,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
+ 	}
+ 	return 0;
+ exit:
+-	spin_unlock_irqrestore(&kcov->lock, flags);
++	raw_spin_unlock_irqrestore(&kcov->lock, flags);
+ 	return res;
+ }
+ 
+@@ -525,7 +515,7 @@ static int kcov_open(struct inode *inode, struct file *filep)
+ 	kcov->mode = KCOV_MODE_DISABLED;
+ 	kcov->sequence = 1;
+ 	refcount_set(&kcov->refcount, 1);
+-	spin_lock_init(&kcov->lock);
++	raw_spin_lock_init(&kcov->lock);
+ 	filep->private_data = kcov;
+ 	return nonseekable_open(inode, filep);
+ }
+@@ -586,10 +576,8 @@ static int kcov_ioctl_locked(struct kcov *kcov, unsigned int cmd,
+ 			     unsigned long arg)
+ {
+ 	struct task_struct *t;
+-	unsigned long flags, unused;
+-	int mode, i;
+-	struct kcov_remote_arg *remote_arg;
+-	struct kcov_remote *remote;
++	unsigned long unused;
++	int mode;
+ 
+ 	switch (cmd) {
+ 	case KCOV_ENABLE:
+@@ -627,69 +615,80 @@ static int kcov_ioctl_locked(struct kcov *kcov, unsigned int cmd,
+ 		kcov_disable(t, kcov);
+ 		kcov_put(kcov);
+ 		return 0;
+-	case KCOV_REMOTE_ENABLE:
+-		if (kcov->mode != KCOV_MODE_INIT || !kcov->area)
+-			return -EINVAL;
+-		t = current;
+-		if (kcov->t != NULL || t->kcov != NULL)
+-			return -EBUSY;
+-		remote_arg = (struct kcov_remote_arg *)arg;
+-		mode = kcov_get_mode(remote_arg->trace_mode);
+-		if (mode < 0)
+-			return mode;
+-		if ((unsigned long)remote_arg->area_size >
+-		    LONG_MAX / sizeof(unsigned long))
+-			return -EINVAL;
+-		kcov->mode = mode;
+-		t->kcov = kcov;
+-	        t->kcov_mode = KCOV_MODE_REMOTE;
+-		kcov->t = t;
+-		kcov->remote = true;
+-		kcov->remote_size = remote_arg->area_size;
+-		spin_lock_irqsave(&kcov_remote_lock, flags);
+-		for (i = 0; i < remote_arg->num_handles; i++) {
+-			if (!kcov_check_handle(remote_arg->handles[i],
+-						false, true, false)) {
+-				spin_unlock_irqrestore(&kcov_remote_lock,
+-							flags);
+-				kcov_disable(t, kcov);
+-				return -EINVAL;
+-			}
+-			remote = kcov_remote_add(kcov, remote_arg->handles[i]);
+-			if (IS_ERR(remote)) {
+-				spin_unlock_irqrestore(&kcov_remote_lock,
+-							flags);
+-				kcov_disable(t, kcov);
+-				return PTR_ERR(remote);
+-			}
+-		}
+-		if (remote_arg->common_handle) {
+-			if (!kcov_check_handle(remote_arg->common_handle,
+-						true, false, false)) {
+-				spin_unlock_irqrestore(&kcov_remote_lock,
+-							flags);
+-				kcov_disable(t, kcov);
+-				return -EINVAL;
+-			}
+-			remote = kcov_remote_add(kcov,
+-					remote_arg->common_handle);
+-			if (IS_ERR(remote)) {
+-				spin_unlock_irqrestore(&kcov_remote_lock,
+-							flags);
+-				kcov_disable(t, kcov);
+-				return PTR_ERR(remote);
+-			}
+-			t->kcov_handle = remote_arg->common_handle;
+-		}
+-		spin_unlock_irqrestore(&kcov_remote_lock, flags);
+-		/* Put either in kcov_task_exit() or in KCOV_DISABLE. */
+-		kcov_get(kcov);
+-		return 0;
+ 	default:
+ 		return -ENOTTY;
+ 	}
+ }
+ 
++static int kcov_ioctl_locked_remote_enabled(struct kcov *kcov,
++				 unsigned int cmd, unsigned long arg,
++				 struct kcov_remote *remote_handles,
++				 struct kcov_remote *remote_common_handle)
++{
++	struct task_struct *t;
++	int mode, i, ret;
++	struct kcov_remote_arg *remote_arg;
++
++	if (kcov->mode != KCOV_MODE_INIT || !kcov->area)
++		return -EINVAL;
++	t = current;
++	if (kcov->t != NULL || t->kcov != NULL)
++		return -EBUSY;
++	remote_arg = (struct kcov_remote_arg *)arg;
++	mode = kcov_get_mode(remote_arg->trace_mode);
++	if (mode < 0)
++		return mode;
++	if ((unsigned long)remote_arg->area_size >
++		LONG_MAX / sizeof(unsigned long))
++		return -EINVAL;
++	kcov->mode = mode;
++	t->kcov = kcov;
++	t->kcov_mode = KCOV_MODE_REMOTE;
++	kcov->t = t;
++	kcov->remote = true;
++	kcov->remote_size = remote_arg->area_size;
++	raw_spin_lock(&kcov_remote_lock);
++	for (i = 0; i < remote_arg->num_handles; i++) {
++		if (!kcov_check_handle(remote_arg->handles[i],
++					false, true, false)) {
++			ret = -EINVAL;
++			goto err;
++		}
++		if (kcov_remote_find(remote_arg->handles[i])) {
++			ret = -EEXIST;
++			goto err;
++		}
++		kcov_remote_add(kcov, remote_arg->handles[i],
++			&remote_handles[i]);
++	}
++	if (remote_arg->common_handle) {
++		if (!kcov_check_handle(remote_arg->common_handle,
++					true, false, false)) {
++			ret = -EINVAL;
++			goto err;
++		}
++		if (kcov_remote_find(remote_arg->common_handle)) {
++			ret = -EEXIST;
++			goto err;
++		}
++		kcov_remote_add(kcov,
++			remote_arg->common_handle, remote_common_handle);
++		t->kcov_handle = remote_arg->common_handle;
++	}
++	raw_spin_unlock(&kcov_remote_lock);
++	/* Put either in kcov_task_exit() or in KCOV_DISABLE. */
++	kcov_get(kcov);
++	return 0;
++
++err:
++	raw_spin_unlock(&kcov_remote_lock);
++	kcov_disable(t, kcov);
++	kfree(remote_common_handle);
++	kfree(remote_handles);
++
++	return ret;
++}
++
+ static long kcov_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ {
+ 	struct kcov *kcov;
+@@ -697,6 +696,7 @@ static long kcov_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 	struct kcov_remote_arg *remote_arg = NULL;
+ 	unsigned int remote_num_handles;
+ 	unsigned long remote_arg_size;
++	struct kcov_remote *remote_handles, *remote_common_handle;
+ 	unsigned long size, flags;
+ 	void *area;
+ 
+@@ -716,16 +716,16 @@ static long kcov_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 		area = vmalloc_user(size * sizeof(unsigned long));
+ 		if (area == NULL)
+ 			return -ENOMEM;
+-		spin_lock_irqsave(&kcov->lock, flags);
++		raw_spin_lock_irqsave(&kcov->lock, flags);
+ 		if (kcov->mode != KCOV_MODE_DISABLED) {
+-			spin_unlock_irqrestore(&kcov->lock, flags);
++			raw_spin_unlock_irqrestore(&kcov->lock, flags);
+ 			vfree(area);
+ 			return -EBUSY;
+ 		}
+ 		kcov->area = area;
+ 		kcov->size = size;
+ 		kcov->mode = KCOV_MODE_INIT;
+-		spin_unlock_irqrestore(&kcov->lock, flags);
++		raw_spin_unlock_irqrestore(&kcov->lock, flags);
+ 		return 0;
+ 	case KCOV_REMOTE_ENABLE:
+ 		if (get_user(remote_num_handles, (unsigned __user *)(arg +
+@@ -743,18 +743,35 @@ static long kcov_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 			return -EINVAL;
+ 		}
+ 		arg = (unsigned long)remote_arg;
+-		fallthrough;
++		remote_handles = kmalloc_array(remote_arg->num_handles,
++					sizeof(struct kcov_remote), GFP_KERNEL);
++		if (!remote_handles)
++			return -ENOMEM;
++		remote_common_handle = kmalloc(sizeof(struct kcov_remote), GFP_KERNEL);
++		if (!remote_common_handle) {
++			kfree(remote_handles);
++			return -ENOMEM;
++		}
++
++		raw_spin_lock_irqsave(&kcov->lock, flags);
++		res = kcov_ioctl_locked_remote_enabled(kcov, cmd, arg,
++				remote_handles, remote_common_handle);
++		raw_spin_unlock_irqrestore(&kcov->lock, flags);
++		kfree(remote_arg);
++		break;
+ 	default:
+ 		/*
++		 * KCOV_ENABLE, KCOV_DISABLE:
+ 		 * All other commands can be normally executed under a spin lock, so we
+ 		 * obtain and release it here in order to simplify kcov_ioctl_locked().
+ 		 */
+-		spin_lock_irqsave(&kcov->lock, flags);
++		raw_spin_lock_irqsave(&kcov->lock, flags);
+ 		res = kcov_ioctl_locked(kcov, cmd, arg);
+-		spin_unlock_irqrestore(&kcov->lock, flags);
+-		kfree(remote_arg);
+-		return res;
++		raw_spin_unlock_irqrestore(&kcov->lock, flags);
++		break;
+ 	}
++
++	return res;
+ }
+ 
+ static const struct file_operations kcov_fops = {
+@@ -862,7 +879,7 @@ void kcov_remote_start(u64 handle)
+ 	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+-	local_lock_irqsave(&kcov_percpu_data.lock, flags);
++	local_irq_save(flags);
+ 
+ 	/*
+ 	 * Check that kcov_remote_start() is not called twice in background
+@@ -870,7 +887,7 @@ void kcov_remote_start(u64 handle)
+ 	 */
+ 	mode = READ_ONCE(t->kcov_mode);
+ 	if (WARN_ON(in_task() && kcov_mode_enabled(mode))) {
+-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++		local_irq_restore(flags);
+ 		return;
+ 	}
+ 	/*
+@@ -879,15 +896,15 @@ void kcov_remote_start(u64 handle)
+ 	 * happened while collecting coverage from a background thread.
+ 	 */
+ 	if (WARN_ON(in_serving_softirq() && t->kcov_softirq)) {
+-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++		local_irq_restore(flags);
+ 		return;
+ 	}
+ 
+-	spin_lock(&kcov_remote_lock);
++	raw_spin_lock(&kcov_remote_lock);
+ 	remote = kcov_remote_find(handle);
+ 	if (!remote) {
+-		spin_unlock(&kcov_remote_lock);
+-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++		raw_spin_unlock(&kcov_remote_lock);
++		local_irq_restore(flags);
+ 		return;
+ 	}
+ 	kcov_debug("handle = %llx, context: %s\n", handle,
+@@ -908,17 +925,17 @@ void kcov_remote_start(u64 handle)
+ 		size = CONFIG_KCOV_IRQ_AREA_SIZE;
+ 		area = this_cpu_ptr(&kcov_percpu_data)->irq_area;
+ 	}
+-	spin_unlock(&kcov_remote_lock);
++	raw_spin_unlock(&kcov_remote_lock);
+ 
+ 	/* Can only happen when in_task(). */
+ 	if (!area) {
+-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++		local_irq_restore(flags);
+ 		area = vmalloc(size * sizeof(unsigned long));
+ 		if (!area) {
+ 			kcov_put(kcov);
+ 			return;
+ 		}
+-		local_lock_irqsave(&kcov_percpu_data.lock, flags);
++		local_irq_save(flags);
+ 	}
+ 
+ 	/* Reset coverage size. */
+@@ -930,7 +947,7 @@ void kcov_remote_start(u64 handle)
+ 	}
+ 	kcov_start(t, kcov, size, area, mode, sequence);
+ 
+-	local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++	local_irq_restore(flags);
+ 
+ }
+ EXPORT_SYMBOL(kcov_remote_start);
+@@ -1004,12 +1021,12 @@ void kcov_remote_stop(void)
+ 	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+-	local_lock_irqsave(&kcov_percpu_data.lock, flags);
++	local_irq_save(flags);
+ 
+ 	mode = READ_ONCE(t->kcov_mode);
+ 	barrier();
+ 	if (!kcov_mode_enabled(mode)) {
+-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++		local_irq_restore(flags);
+ 		return;
+ 	}
+ 	/*
+@@ -1017,12 +1034,12 @@ void kcov_remote_stop(void)
+ 	 * actually found the remote handle and started collecting coverage.
+ 	 */
+ 	if (in_serving_softirq() && !t->kcov_softirq) {
+-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++		local_irq_restore(flags);
+ 		return;
+ 	}
+ 	/* Make sure that kcov_softirq is only set when in softirq. */
+ 	if (WARN_ON(!in_serving_softirq() && t->kcov_softirq)) {
+-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++		local_irq_restore(flags);
+ 		return;
+ 	}
+ 
+@@ -1037,22 +1054,22 @@ void kcov_remote_stop(void)
+ 		kcov_remote_softirq_stop(t);
+ 	}
+ 
+-	spin_lock(&kcov->lock);
++	raw_spin_lock(&kcov->lock);
+ 	/*
+ 	 * KCOV_DISABLE could have been called between kcov_remote_start()
+ 	 * and kcov_remote_stop(), hence the sequence check.
+ 	 */
+ 	if (sequence == kcov->sequence && kcov->remote)
+ 		kcov_move_area(kcov->mode, kcov->area, kcov->size, area);
+-	spin_unlock(&kcov->lock);
++	raw_spin_unlock(&kcov->lock);
+ 
+ 	if (in_task()) {
+-		spin_lock(&kcov_remote_lock);
++		raw_spin_lock(&kcov_remote_lock);
+ 		kcov_remote_area_put(area, size);
+-		spin_unlock(&kcov_remote_lock);
++		raw_spin_unlock(&kcov_remote_lock);
+ 	}
+ 
+-	local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
++	local_irq_restore(flags);
+ 
+ 	/* Get in kcov_remote_start(). */
+ 	kcov_put(kcov);
+-- 
+2.50.0
+
 
