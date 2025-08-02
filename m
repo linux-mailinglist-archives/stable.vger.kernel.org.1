@@ -1,202 +1,89 @@
-Return-Path: <stable+bounces-165792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAA0B18B1B
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 09:38:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80CDB18B37
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 10:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7472B189F0F1
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 07:39:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBF7C7A46A5
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 08:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFB11EEA5F;
-	Sat,  2 Aug 2025 07:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC53A4A01;
+	Sat,  2 Aug 2025 08:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YW5RQ5S+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7SPtNah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D2F1E9B35
-	for <stable@vger.kernel.org>; Sat,  2 Aug 2025 07:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE428F7D
+	for <stable@vger.kernel.org>; Sat,  2 Aug 2025 08:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754120319; cv=none; b=K68x2ch3UFKKEqilJs3l851L9FS2xE/nWpj7SrGHPNhzMMDp2xsmbz5rCf9bHPq1ZZuiRolY6Lw4SeY2lFqd3r4JsQFPvO5AsWpZb0D0F4DpYYlxFdtYe3Qsi0AD9H/Vo33Z6ASKY3Qa+4WHgSGk3aoIGNNwT4tLIxXIqqkI3GU=
+	t=1754122773; cv=none; b=PiPqQbxyvr7hKGqBQRHm1aDGLndqhnsQxY6ry0bJLt2/TpIVM0pY9gZwYZ75CkoBCEClShq4iRHT/yOwWouxl49i2Uq5TZiCacJUxnROGPlDYkdZ/CCDRB8luVp8hSsUpYrO8GRIeYnKxnlJaMZi7e+Hxyv/1t8u6lzHKdr6WJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754120319; c=relaxed/simple;
-	bh=2vLf14wUZIg7Aa40PWmweWyk77F53nEKWVI/sHXH0+Q=;
+	s=arc-20240116; t=1754122773; c=relaxed/simple;
+	bh=26a/XwM9f+Pel2nEcX+CYgaMul57Q1tb8FeA/yg1bxs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VyTf77qKOU5cdfczx4eyet60o09Crc2ioXn+u7L66Y45bWcPULiVy4g2SS90IgHc8ZN9xRNqs4kiOOn68rMn2eMtpuxIqdQk5uclBXNCsadIEH24JSL3SHaUUhjQwi7VrRwaAdFB5ujaymXDhPfoImtKhfBl7MYWAnpZLVrBtko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW5RQ5S+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709B1C4CEEF;
-	Sat,  2 Aug 2025 07:38:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=f/PjbmQJUVWayJDmS8SmaMuIDCH/U6X5MVjD2hRgGUfp/RyJzSdoRnc+qAOvC0IOlH1XHIBpJmw9bzYYuTsLewKN0uig5W1Oai+85SaReUQeC/yafJ0UPHL8AcH8zZwdJqj0ikLymHnqiA2cZoKg6XmdqXMzhnx5E6TaOv0xWQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7SPtNah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC17FC4CEEF;
+	Sat,  2 Aug 2025 08:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754120319;
-	bh=2vLf14wUZIg7Aa40PWmweWyk77F53nEKWVI/sHXH0+Q=;
+	s=korg; t=1754122773;
+	bh=26a/XwM9f+Pel2nEcX+CYgaMul57Q1tb8FeA/yg1bxs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YW5RQ5S+wS8w8bjrFrrmpEQxWCN1OoX0hrWQ8Qu7vDwfD69rWKN+zZ9Zw54z6T0iR
-	 SgpOdyyiSJBPC17LUzY6ELofT9SoWXlYJL7G5STU/V/aiAum+1Na5zwc5bF0OwiZuY
-	 ggfcJRwe/gRSo1kFy1e+PtTHHsbehAnqe93LsyB4=
-Date: Sat, 2 Aug 2025 08:38:36 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Nicusor Huhulea <nicusor.huhulea@siemens.com>,
+	b=F7SPtNahSx75Hz47T7nfXdEYJIIyvmeJ/YORcwZjQqHIAjmB1Iupc2l/DHAUOQ+k2
+	 UzI8En7UYFLOccWbFk+G98lMhD/lmCCKXj8RMZbUhMKFDMwrsWpKqHbnJcRZQgOiCz
+	 eMgGVd+5LCpPvJh1AY3pCksfqj/FsVme50HIGd5I=
+Date: Sat, 2 Aug 2025 09:19:30 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Hao, Qingfeng" <Qingfeng.Hao@windriver.com>
+Cc: "cve@kernel.org" <cve@kernel.org>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"cip-dev@lists.cip-project.org" <cip-dev@lists.cip-project.org>,
-	"jouni.hogander@intel.com" <jouni.hogander@intel.com>,
-	"neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
-	"jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"mripard@kernel.org" <mripard@kernel.org>,
-	"tzimmermann@suse.de" <tzimmermann@suse.de>,
-	"airlied@gmail.com" <airlied@gmail.com>,
-	"daniel@ffwll.ch" <daniel@ffwll.ch>,
-	"joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
-	"rodrigo.vivi@intel.com" <rodrigo.vivi@intel.com>,
-	"tvrtko.ursulin@linux.intel.com" <tvrtko.ursulin@linux.intel.com>,
-	"laurentiu.palcu@oss.nxp.com" <laurentiu.palcu@oss.nxp.com>,
-	"cedric.hombourger@siemens.com" <cedric.hombourger@siemens.com>,
-	"shrikant.bobade@siemens.com" <shrikant.bobade@siemens.com>
-Subject: Re: [PATCH 0/5] drm/i915: fixes for i915 Hot Plug Detection and
- build/runtime issues
-Message-ID: <2025080225-attach-ravioli-3d3d@gregkh>
-References: <20250730161106.80725-1-nicusor.huhulea@siemens.com>
- <aIp6UgiwtDU1Ktmp@ideak-desk>
- <DB3SPRMB000631927D36A721EAE657F3E626A@DB3SPRMB0006.EURPRD10.PROD.OUTLOOK.COM>
- <aIzcjMgUttb1UpVt@ideak-desk>
+	"He, Zhe" <Zhe.He@windriver.com>
+Subject: Re: [PATCH vulns 0/1] change the sha1 for CVE-2024-26661
+Message-ID: <2025080251-outright-lubricant-1e05@gregkh>
+References: <20250801040635.4190980-1-qingfeng.hao@windriver.com>
+ <2025080132-landlady-stilt-e9f2@gregkh>
+ <DS0PR11MB79597F9B511913D0EF4DDA458826A@DS0PR11MB7959.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aIzcjMgUttb1UpVt@ideak-desk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DS0PR11MB79597F9B511913D0EF4DDA458826A@DS0PR11MB7959.namprd11.prod.outlook.com>
 
-On Fri, Aug 01, 2025 at 06:26:04PM +0300, Imre Deak wrote:
-> Hi Greg and Shradha,
-> 
-> could you please check the comment below about the 4ad8d57d902f backport
-> commit in the v6.1.y stable tree and if you agree with the reasoning why
-> it has an issue, then suggest a way to resolve it?
-> 
-> Also, AFAICS, other stable trees are not affected, since the original
-> 5abffb66d12bcac commit got only backported to the above v6.1.y tree, but
-> please confirm this.
-> 
-> On Fri, Aug 01, 2025 at 02:37:04PM +0000, nicusor.huhulea@siemens.com wrote:
-> > > -----Original Message-----
-> > > From: Imre Deak <imre.deak@intel.com>
-> > > Sent: Wednesday, July 30, 2025 11:02 PM
-> > > To: Nicusor Liviu Huhulea (FT FDS CES LX PBU 1) <nicusor.huhulea@siemens.com>
-> > > Cc: stable@vger.kernel.org; dri-devel@lists.freedesktop.org;
-> > > intel-gfx@lists.freedesktop.org; cip-dev@lists.cip-project.org;
-> > > jouni.hogander@intel.com; neil.armstrong@linaro.org; jani.nikula@linux.intel.com;
-> > > maarten.lankhorst@linux.intel.com; mripard@kernel.org; tzimmermann@suse.de;
-> > > airlied@gmail.com; daniel@ffwll.ch; joonas.lahtinen@linux.intel.com;
-> > > rodrigo.vivi@intel.com; tvrtko.ursulin@linux.intel.com;
-> > > laurentiu.palcu@oss.nxp.com;
-> > > Cedric Hombourger (FT FDS CES LX) <cedric.hombourger@siemens.com>;
-> > > Shrikant Krishnarao Bobade (FT FDS CES LX PBU 1) <shrikant.bobade@siemens.com>
-> > > Subject: Re: [PATCH 0/5] drm/i915: fixes for i915 Hot Plug Detection and build/runtime issues
-> > > 
-> > > Hi Nicusor,
-> > > 
-> > > thanks for the report and the root causing effort. The patchset itself has a few
-> > > issues:
-> > > 
-> > > - commit cfd48ad8c4a9 ("drm/i915: Fix HPD polling, reenabling the output
-> > >   poll work as needed") you backport fixes d33a54e3991d
-> > >   ("drm/probe_helper: sort out poll_running vs poll_enabled"), but this
-> > >   fixed commit is not part of the 6.1.y stable tree which you are
-> > >   targeting.
-> > > 
-> > >   Similarly commit d33a54e3991d fixes c8268795c9a9 ("drm/probe-helper:
-> > >   enable and disable HPD on connectors"), which is not part of 6.1.y
-> > >   either.
-> > > 
-> > >   This means the issue commit cfd48ad8c4a9 is fixing is not present in
-> > >   the 6.1.y tree, as the changes introducing that issue are not present
-> > >   in that tree either.
-> > > 
-> > > - The compile errors the patches in your patchset introduce would
-> > >   prevent bisection, so fixing up these compile errors only at the end
-> > >   of the patchset is not ok; the tree should compile without errors at
-> > >   each patch/commit.
-> > > 
-> > > Looking at v6.1.y and the patchset I suspect the actual issue is the
-> > > 
-> > > commit 4ad8d57d902f ("drm: Check output polling initialized before
-> > > disabling") backport in v6.1.y, which had the
-> > > 
-> > > -       if (!dev->mode_config.poll_enabled || !drm_kms_helper_poll)
-> > > +       if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
-> > > +           !drm_kms_helper_poll || dev->mode_config.poll_running)
-> > > 
-> > > change, not part of the original
-> > > 
-> > > commit 5abffb66d12b ("drm: Check output polling initialized before disabling"). i.e.
-> > > the original patch didn't add the check for
-> > > dev->mode_config.poll_running. So could you try on top of v6.1.147
-> > > (w/o the changes in the patchset you posted):
-> > > 
-> > > diff --git a/drivers/gpu/drm/drm_probe_helper.c
-> > > b/drivers/gpu/drm/drm_probe_helper.c
-> > > index 0e5eadc6d44d..a515b78f839e 100644
-> > > --- a/drivers/gpu/drm/drm_probe_helper.c
-> > > +++ b/drivers/gpu/drm/drm_probe_helper.c
-> > > @@ -250,7 +250,7 @@ void drm_kms_helper_poll_enable(struct drm_device *dev)
-> > >         unsigned long delay = DRM_OUTPUT_POLL_PERIOD;
-> > > 
-> > >         if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
-> > > -           !drm_kms_helper_poll || dev->mode_config.poll_running)
-> > > +           !drm_kms_helper_poll)
-> > >                 return;
-> > > 
-> > >         drm_connector_list_iter_begin(dev, &conn_iter);
-> > 
-> > Thank you for your thorough explanation, especially regarding the
-> > bisecting issue. I hadn't anticipated that by fixing compile errors
-> > only at the end of the series, I would make bisection unreliable.
-> > 
-> > I have tested your idea/fix and it works. HPD polling works reliably
-> > on both devices. I can see the polling in logs when display cable is
-> > not connected.
-> > 
-> > Since this fix is mostly your solution, would you prefer to submit
-> > yourself, or would you like me to resubmit it as a v2 and credit you
-> > appropriately ?
-> 
-> Thanks again Nicusor for the effort to root cause this and for all the
-> tests.
-> 
-> Greg, Shradha, as described above I think in the 4ad8d57d902f backport
-> commit in v6.1.y it was incorrect to add the
-> 
-> 	dev->mode_config.poll_running
-> 
-> condition, as the original 5abffb66d12b commit was not the one adding
-> this, in that commit that condition was only part of the diff context.
-> OTOH, adding the check for this condition causes an issue in the i915
-> driver's IRQ storm handling in the v6.1.y stable tree: after
-> dev->mode_config.poll_running gets set (during the first connector
-> detection in drm_helper_probe_single_connector_modes()), the
-> 
-> 	drm_kms_helper_poll_enable()
-> 
-> call in intel_hpd_irq_storm_switch_to_polling() will not any more
-> schedule the output_poll_work as expected. Thus after an IRQ storm, the
-> HPD IRQs get disabled, but the HPD polling will not run and so the HPD
-> detection will not work as Nicusor described above.
-> 
-> If you agree with the above and the above proposed solution to remove
-> the dev->mode_config.poll_running check from the v6.1.y tree, then what
-> would be Greg the correct way to do this?
+On Fri, Aug 01, 2025 at 12:04:54PM +0000, Hao, Qingfeng wrote:
+> Hi Greg,
+> Thanks for your check and comments. Sorry that I mistakenly changed 
+> the files of .dyad and .json. I'll pay attention next time. 
+> The original fix 66951d98d9bf ("drm/amd/display: Add NULL test for 'timing generator' in 'dcn21_set_pipe()'") 
+> or fb5a3d037082 for CVE-2024-26661 didn't fix the CVE (or even made it worse) because the key change 
+> is to check if “tg” is NULL before referencing it, but the fix does NOT do that correctly:
+> +       if (!abm && !tg && !panel_cntl) 
+> +               return; 
+> Here "&&" should have been "||".
+> The follow-up commit 17ba9cde11c2 fixes this by:
+> -       if (!abm && !tg && !panel_cntl) 
+> +       if (!abm || !tg || !panel_cntl) 
+>                 return; 
+> So we consider that 66951d98d9bf is not a complete fix. It actually made things worse.
+> 66951d98d9bf and 17ba9cde11c2 together fix CVE-2024-26661.
+> The same problem happened to CVE-2024-26662.
+> If you agree with the above analysis, should I append 17ba9cde11c2bfebbd70867b0a2ac4a22e573379 to CVE-2024-26661.sha1 ? 
 
-Send whatever fix is needed please.
+I think that the original CVE should just be rejected and a new one
+added for the other sha1 you have pointed out that actually fixes the
+issue because the first one does not do anything.  Is that ok?
+
+thanks,
+
+greg k-h
 
