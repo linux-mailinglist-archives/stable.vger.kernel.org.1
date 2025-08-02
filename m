@@ -1,110 +1,140 @@
-Return-Path: <stable+bounces-165794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03622B18DE1
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 12:02:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD76BB18E0D
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 12:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E4ED1AA41B6
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 10:02:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDA67626D01
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 10:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52F91E8836;
-	Sat,  2 Aug 2025 10:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1887A225A3E;
+	Sat,  2 Aug 2025 10:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="kMF4lsM+"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="ejbwAO4N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C9018D;
-	Sat,  2 Aug 2025 10:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD1222068B;
+	Sat,  2 Aug 2025 10:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754128939; cv=none; b=iNrDxxPV0kOFV+ot71B/dR3+e+12cgVPz91l3UlS63FEektqQ7MJEXwuFa3UnCFyyTaUV45wainsVxf1XZjMwt3E1K4MUt9nyciGGUGRQecXADStnskOtvSDkJLJlvElDGJtymxGQj5PWw0xLZcn9vtbhNryy0ZyS547LNoQLBE=
+	t=1754131347; cv=none; b=SEtcFpZt+r+EcGJ/DAsS4x3mpclFjk1+IPd26+Wx1hlUgq1xRlQv21QyBtvFMOtSKXRdtBahfYJsL55Yk6PeKxVK6JsCBCQDOeMeFq7WBbqxgpj5ec6BiTwLRefcTxMYvipqoDa4jtwzABx++TGcGpL6Ri/gohebWOTkJEA1fGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754128939; c=relaxed/simple;
-	bh=l85/MQ61VxNEbDkg0SYEIgrzuUJ3jO290jyf8eXl9lo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xf3uz5R5sNjSNpZyz3BmPhfxW2+D6J+3v3l5tlJP2dtDy6qN8SR9w3lxgpEpNr61JSDyU9bSrljg1e+/TBwTZrpacJdRJqYTuhWbC2es9+upYJH1WS4QX2CFyOS+Xq5x3LwDs2RcCvwZHJDHloYMX6Zw6p/m1DfRLU3/Fp2mkbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=kMF4lsM+; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2406fe901c4so18078215ad.1;
-        Sat, 02 Aug 2025 03:02:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1754128937; x=1754733737; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SunfwaMKGIuht1NXta7qE72eMa+DmpHbef3GOE9+HT0=;
-        b=kMF4lsM+duP48qQC+AOINO3/ti+0yQKk1WaOJ/WbcwcojAM7Gdikb3R9IS9PUq2riz
-         eg7aRJ9xKtcaBIw3/2sy0Nlx42q+FUex4xMTNwxmwMeEWSrncZmpDfFAoSO+FrRda3vf
-         OTOZ1By5Ef3CwiPVI5De8m7KJed/zjkFZzG9//JpbmjPpP0BMbY6ns/sRoEztU4Jwos6
-         fz7MgVZ+Fm6Fr9EzzwZuuwfN4DaPV5miyW66aWsRG99Ru4dFSNnMasUfRFom9o/zvn5x
-         U2HNmuqPXund33HxGkwm537gaxGEqZmQClWYJRzF8ejalX8v9NMLXwPA4nLeXhbTNUB3
-         1y/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754128937; x=1754733737;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SunfwaMKGIuht1NXta7qE72eMa+DmpHbef3GOE9+HT0=;
-        b=mAy1RaE5/ESyXBuwNOJTsuW87qO3QvZUHwXr9UCBXh6HLUfb5SqUVFJ1j26CIXVjcQ
-         9LbqnnfMuTIWVf/xg1YTXQudCqix2l9LIbzjren5VG0vFFiPFGwHu1MvtjYB1cORcsMM
-         w1g/4E39SD6m+u417++5rHveQyFQsjIwdZsz7Mhkitk1MGp9o/I/cHCcp/yTTBstVKEd
-         +OWpZecSOnO6C8BPqhvXtM/J7ViRQUGytgWFilFk34xMGQvMgyXkZPCrRmhpERzOfFkQ
-         pv+BhV+LvIF9p/u+xYlE8RW0lsZUudA1dIVjAKDk9oJGPnGO0jlf5q17M3fNycU75qwl
-         CJKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbPeTpOkbxbsyGRg7krkSqpIxUxR8N/injZwfuAtMuFm0+7u7QZEs2RdrNDm11sUOTUJWjrU9mlKH7H5w=@vger.kernel.org, AJvYcCVk8oqqjD1Rp63AgElyJoW7JS2TGou/kA3+KMtoNEeA3Bn5Wrs8fNpBT7ELsHUoVK8wHzlWTip/@vger.kernel.org
-X-Gm-Message-State: AOJu0YzixT8ndQJRPNMIYLyWeln0I2DU4F0gHSLEbST44T7AYx2mrK6Z
-	1TGmWKXGQaBraW/XpyNAIgDgDc3m3P3+nHKScASnCvBbi1M+cBzyyFEHgAP4TT02z5duULc0muS
-	wmmicc0QNVZ3WyaM5tyVy0EcnfqhI2/M=
-X-Gm-Gg: ASbGncsfmncBX9v3Y/HyofT5lsmxgLDdT2Ag23hbn7b3I4mz1G1io0PE//MYcTKi48B
-	bj7x5IDrHTg9HJr+NsmVlmsHYQGrYQ+rtjM4CYu4W3e8jfeFpx1tGhgSKAc268xJLp4e883t+LN
-	McRoM+AjtOQ1MwcvwCcDqy6zU/lSiq38eaJZ8Z4PRiTkqD94NueGWVAz2AncgugnEbhUReGQrtZ
-	pDzZpsqqNsNAC+iVY8CZxjYWUY/TAN4yZNXPbYhJkHGZgWCED4=
-X-Google-Smtp-Source: AGHT+IGOt/4l4J9IhYkjHTK2Oetd+MLMwWR2adcwj8NjCk/EXB2Sr+1dYWJ3QAEsHw4NizPwdZrM+iGTE7dwlj2oHms=
-X-Received: by 2002:a17:902:e810:b0:240:11be:4dd3 with SMTP id
- d9443c01a7336-24246f46073mr31260365ad.3.1754128937389; Sat, 02 Aug 2025
- 03:02:17 -0700 (PDT)
+	s=arc-20240116; t=1754131347; c=relaxed/simple;
+	bh=xSUK/j01UG865sOU+RsV5k6Ch4ClwFDItzSTQLmO21c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EQaEzt73DXGYRTZ2l+igeZMmtrbyDSUPuGgn1gd80EhWYZ9MvbKX1IFHn+Opb+K12XjODKZ1zTw7yQ1Z48rOkNACpSxVPY1wIQ/UZyw4PJrdTh6ej4uXsJbwbAhcjE05AKbrQDMSIQdN9rclQ7ATY9DfzBdoxp/RCSYl1zTqcUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ejbwAO4N; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: from sven-desktop.home.narfation.org (unknown [IPv6:2a00:1ca0:1d86:99fc::8c24])
+	by dvalin.narfation.org (Postfix) with UTF8SMTPSA id 3CC88203BF;
+	Sat,  2 Aug 2025 10:32:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1754130741;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dDLiRoVeRuEyGD5JJcCaUvZvWoRM9yWClaoTfsHbcLs=;
+	b=ejbwAO4NWSU6QimuC1fH61DFZMHZxhceEWmN8bFb5687NyqCTyut53h/hSrD3W8+4kwp57
+	BXQC1QXoUdFZLqRTmPvY29bHIxyv3N6ETjg9XUoXgoEMf2rZNPTOZeHXE5u9JnvC1d42Dk
+	+dRKUtWvnFqyLJ/Sjor5Ki+XDQpAv48=
+From: Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 0/4] i2c: rtl9300: Fix multi-byte I2C operations
+Date: Sat, 02 Aug 2025 12:31:59 +0200
+Message-Id: <20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250725074019.8765-1-johan@kernel.org>
-In-Reply-To: <20250725074019.8765-1-johan@kernel.org>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Sat, 2 Aug 2025 12:02:05 +0200
-X-Gm-Features: Ac12FXwURosII2dlcOALSUn1if13dVdtjG5hnIKv2HjEhOB0uY5AXgIZbdV4pwY
-Message-ID: <CAFBinCALsUdn3fGh2e9qys4KKKT=mDnx5vtkyEz-ZGRmgvNs0A@mail.gmail.com>
-Subject: Re: [PATCH] firmware: meson_sm: fix device leak at probe
-To: Johan Hovold <johan@kernel.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Carlo Caione <ccaione@baylibre.com>, 
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB/pjWgC/x3MQQqDMBBA0avIrB0YR8TYqxQXSRzbAbUliaUSv
+ LvB5Vv8nyFKUInwqDIE+WnUz1bQ1BX4t91egjoVAxN3ZIhR2WNIy9AS4bovSdEdSVAma5vZken
+ ZQ4m/QWb93+PneJ4XsBodQWgAAAA=
+X-Change-ID: 20250802-i2c-rtl9300-multi-byte-edaa1fb0872c
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+ Andi Shyti <andi.shyti@kernel.org>
+Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonas Jelonek <jelonek.jonas@gmail.com>, 
+ Harshal Gohel <hg@simonwunderlich.de>, 
+ Simon Wunderlich <sw@simonwunderlich.de>, 
+ Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2926; i=sven@narfation.org;
+ h=from:subject:message-id; bh=xSUK/j01UG865sOU+RsV5k6Ch4ClwFDItzSTQLmO21c=;
+ b=owGbwMvMwCXmy1+ufVnk62nG02pJDBm9L01WLVS7/uThTBe3N95ZVU9+lk4PdJfVSuyd9ZSFe
+ 6f9u9TXHaUsDGJcDLJiiix7ruSf38z+Vv7ztI9HYeawMoEMYeDiFICJ6HQyMpxnuvUmWtXz8Lst
+ q/1rUuUCfLa//PSmOOTnC42dG6W+BnYz/JXaeyUzcKdtSf2Gyeuqss7NK3rO92xTlPKWxMcuC6x
+ qDnMCAA==
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-On Fri, Jul 25, 2025 at 9:41=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> Make sure to drop the reference to the secure monitor device taken by
-> of_find_device_by_node() when looking up its driver data on behalf of
-> other drivers (e.g. during probe).
->
-> Note that holding a reference to the platform device does not prevent
-> its driver data from going away so there is no point in keeping the
-> reference after the helper returns.
->
-> Fixes: 8cde3c2153e8 ("firmware: meson_sm: Rework driver as a proper platf=
-orm driver")
-> Cc: stable@vger.kernel.org      # 5.5
-> Cc: Carlo Caione <ccaione@baylibre.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+During the integration of the RTL8239 POE chip + its frontend MCU, it was
+noticed that multi-byte operations were basically broken in the current
+driver.
+
+Tests using SMBus Block Writes showed that the data (after the Wr + Ack
+marker) was mixed up on the wire. At first glance, it looked like an
+endianness problem. But for transfers were the number of count + data bytes
+was not divisible by 4, the last bytes were not looking like an endianness
+problem because they were were in the wrong order but not for example 0 -
+which would be the case for an endianness problem with 32 bit registers. At
+the end, it turned out to be a the way how i2c_write tried to add the bytes
+to the send registers.
+
+Each 32 bit register was used similar to a shift register - shifting the
+various bytes up the register while the next one is added to the least
+significant byte. But the I2C controller expects the first byte of the
+tranmission in the least significant byte of the first register. And the
+last byte (assuming it is a 16 byte transfer) in the most significant byte
+of the fourth register.
+
+While doing these tests, it was also observed that the count byte was
+missing from the SMBus Block Writes. The driver just removed them from the
+data->block (from the I2C subsystem). But the I2C controller DOES NOT
+automatically add this byte - for example by using the configured
+transmission length.
+
+The RTL8239 MCU is not actually an SMBus compliant device. Instead, it
+expects I2C Block Reads + I2C Block Writes. But according to the already
+identified bugs in the driver, it was clear that the I2C controller can
+simply be modified to not send the count byte for I2C_SMBUS_I2C_BLOCK_DATA.
+The receive part, just needs to write the content of the receive buffer to
+the correct position in data->block.
+
+While the on-wire formwat was now correct, reads were still not possible
+against the MCU (for the RTL8239 POE chip). It was always timing out
+because the 2ms were not enough for sending the read request and then
+receiving the 12 byte answer.
+
+These changes were originally submitted to OpenWrt. But there are plans to
+migrate OpenWrt to the upstream Linux driver. As result, the pull request
+was stopped and the changes were redone against this driver.
+
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+---
+Harshal Gohel (2):
+      i2c: rtl9300: Fix multi-byte I2C write
+      i2c: rtl9300: Implement I2C block read and write
+
+Sven Eckelmann (2):
+      i2c: rtl9300: Increase timeout for transfer polling
+      i2c: rtl9300: Add missing count byte for SMBus Block Write
+
+ drivers/i2c/busses/i2c-rtl9300.c | 43 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
+---
+base-commit: b9ddaa95fd283bce7041550ddbbe7e764c477110
+change-id: 20250802-i2c-rtl9300-multi-byte-edaa1fb0872c
+
+Best regards,
+-- 
+Sven Eckelmann <sven@narfation.org>
+
 
