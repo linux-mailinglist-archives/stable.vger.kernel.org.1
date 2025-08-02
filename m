@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-165802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B11EB18FA7
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 20:38:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A84B18FB5
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 20:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A97C31899FB6
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 18:38:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C013BF440
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 18:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847CE22759B;
-	Sat,  2 Aug 2025 18:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCB41E7C1C;
+	Sat,  2 Aug 2025 18:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zZSryEHT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ygJYGEAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CB019597F;
-	Sat,  2 Aug 2025 18:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27151C3C18;
+	Sat,  2 Aug 2025 18:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754159915; cv=none; b=p2QbvY50vwqhoKNkfceQhHZxgMB1uXDqYiVx2/LXU+seVa7SY924SUJ9TT8GZvN7G/Urmykyv5TX+/IzKJtkPrfRN5xElfIWxNiMigHi1W9XLd6dH5amCOhECxbWLoDi327K5ScnsY6mCG+yHa6YWf2ATqOVxcVfE6sdt8ZrxDs=
+	t=1754160832; cv=none; b=QqreOMsLrCF8+pgbNyFjVEsuXyrslv7enbjG/zhjSVvYT/isV/Eh7eL6MK1usEpc3d3sDc1MYfcDPL/vsSg2+CEZq6jj44hp8MrosCN78OwM7+s+8Nczxp/VVIle4s1pqo9DxvwU4uwsUhchUbbFMRiLrQCHCr1dnt94Kc3vb68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754159915; c=relaxed/simple;
-	bh=45wEDMcEM9Xp6bYHF7XrqXuBSuChVRDLBhexj4WA+xc=;
-	h=Date:To:From:Subject:Message-Id; b=TouNU+PGwtLS9Id47grOvYPmfcZ0XlgAbKd2N6ZsG6Myfe330gmAJhzkEXqNcswZLKq92FAkNXNXb/dEax1Z4QuQ062rKATBtomaig8WHHyT1D+HF6YuJZbyDTx3dUxVjIi7eLQLm2HG6ISjOh8/LNZ7/cW4vEHE3Z6Vk5B6viM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zZSryEHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79BCC4CEEF;
-	Sat,  2 Aug 2025 18:38:34 +0000 (UTC)
+	s=arc-20240116; t=1754160832; c=relaxed/simple;
+	bh=mMZ5X622/7jSHgAawijL9ZEUn7qzvfG0F1bAiAUiHPQ=;
+	h=Date:To:From:Subject:Message-Id; b=NmBfd1gME1BHv8rdE0wLogtwSlR4qDj04hSeALAQliPPQv82K1m5oWf7PxPuB6ZZrdPBiY8diRgGpKnbObCBVfsHINjVaY96yb53nysZyb55/45zpClNA5vK1VrUWDJAa6Z77RHb35L6IblGtXEXOdyWfzbzma9UKNC4aTKZ6Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ygJYGEAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645B3C4CEEF;
+	Sat,  2 Aug 2025 18:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754159914;
-	bh=45wEDMcEM9Xp6bYHF7XrqXuBSuChVRDLBhexj4WA+xc=;
+	s=korg; t=1754160831;
+	bh=mMZ5X622/7jSHgAawijL9ZEUn7qzvfG0F1bAiAUiHPQ=;
 	h=Date:To:From:Subject:From;
-	b=zZSryEHTdUBDfCC7eytHTWdldxQ+pdv6qjQLVjOaWkT0c8nw0kDTXwJmrQ+bBPipw
-	 gLUj4sHWsRoZ2xD+EEPXAHqQMud4vDLATHgAQlRfEDzKghZW1gfWS6hlLButVt6feu
-	 FP1UpxKN3Atg8p8r2zy78UzP7pGUnV2AYUvw4EvQ=
-Date: Sat, 02 Aug 2025 11:38:34 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jannh@google.com,surenb@google.com,akpm@linux-foundation.org
+	b=ygJYGEADlWsiUWUUtEAGiw9x4NyD7bZheMjbGqnW+NCshKKDHlDMIPxZal0C6fziP
+	 HREU1SbsDbps9KxALcm/8OETgh0jRs6Ugls8TrhHYUzSnq9t17/ZYjrwr/lqAfwDPD
+	 TW4MLTeBtX/vBa5p3rSLiuvjpIbe1usJAfHw0CMs=
+Date: Sat, 02 Aug 2025 11:53:50 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,hughd@google.com,dev.jain@arm.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [folded-merged] mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3.patch removed from -mm tree
-Message-Id: <20250802183834.B79BCC4CEEF@smtp.kernel.org>
+Subject: [merged mm-stable] mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch removed from -mm tree
+Message-Id: <20250802185351.645B3C4CEEF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,78 +50,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
+     Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hang
 has been removed from the -mm tree.  Its filename was
-     mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3.patch
+     mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch
 
-This patch was dropped because it was folded into mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped.patch
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
-Date: Tue, 29 Jul 2025 07:57:09 -0700
+From: Kairui Song <kasong@tencent.com>
+Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hang
+Date: Mon, 28 Jul 2025 15:52:59 +0800
 
-- Addressed Lorenzo's nits, per Lorenzo Stoakes
-- Added a warning comment for vma_start_read()
-- Added Reviewed-by and Acked-by, per Vlastimil Babka and Lorenzo Stoakes
+The current swap-in code assumes that, when a swap entry in shmem mapping
+is order 0, its cached folios (if present) must be order 0 too, which
+turns out not always correct.
 
-Link: https://lkml.kernel.org/r/20250729145709.2731370-1-surenb@google.com
-Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
-Reported-by: Jann Horn <jannh@google.com>
-Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
+The problem is shmem_split_large_entry is called before verifying the
+folio will eventually be swapped in, one possible race is:
+
+    CPU1                          CPU2
+shmem_swapin_folio
+/* swap in of order > 0 swap entry S1 */
+  folio = swap_cache_get_folio
+  /* folio = NULL */
+  order = xa_get_order
+  /* order > 0 */
+  folio = shmem_swap_alloc_folio
+  /* mTHP alloc failure, folio = NULL */
+  <... Interrupted ...>
+                                 shmem_swapin_folio
+                                 /* S1 is swapped in */
+                                 shmem_writeout
+                                 /* S1 is swapped out, folio cached */
+  shmem_split_large_entry(..., S1)
+  /* S1 is split, but the folio covering it has order > 0 now */
+
+Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
+folio lookup will return a folio with order > 0.  The
+`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
+return false causing swap-in to return -EEXIST.
+
+And this looks fragile.  So fix this up by allowing seeing a larger folio
+in swap cache, and check the whole shmem mapping range covered by the
+swapin have the right swap value upon inserting the folio.  And drop the
+redundant tree walks before the insertion.
+
+This will actually improve performance, as it avoids two redundant Xarray
+tree walks in the hot path, and the only side effect is that in the
+failure path, shmem may redundantly reallocate a few folios causing
+temporary slight memory pressure.
+
+And worth noting, it may seems the order and value check before inserting
+might help reducing the lock contention, which is not true.  The swap
+cache layer ensures raced swapin will either see a swap cache folio or
+failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
+bypassed), so holding the folio lock and checking the folio flag is
+already good enough for avoiding the lock contention.  The chance that a
+folio passes the swap entry value check but the shmem mapping slot has
+changed should be very low.
+
+Link: https://lkml.kernel.org/r/20250728075306.12704-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20250728075306.12704-2-ryncsn@gmail.com
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Dev Jain <dev.jain@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/mmap_lock.h |    7 +++++++
- mm/mmap_lock.c            |    2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ mm/shmem.c |   39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
---- a/include/linux/mmap_lock.h~mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
-+++ a/include/linux/mmap_lock.h
-@@ -155,6 +155,10 @@ static inline void vma_refcount_put(stru
-  * reused and attached to a different mm before we lock it.
-  * Returns the vma on success, NULL on failure to lock and EAGAIN if vma got
-  * detached.
-+ *
-+ * WARNING! The vma passed to this function cannot be used if the function
-+ * fails to lock it because in certain cases RCU lock is dropped and then
-+ * reacquired. Once RCU lock is dropped the vma can be concurently freed.
-  */
- static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
- 						    struct vm_area_struct *vma)
-@@ -194,9 +198,12 @@ static inline struct vm_area_struct *vma
- 	if (unlikely(vma->vm_mm != mm)) {
- 		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
- 		struct mm_struct *other_mm = vma->vm_mm;
-+
+--- a/mm/shmem.c~mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang
++++ a/mm/shmem.c
+@@ -891,7 +891,9 @@ static int shmem_add_to_page_cache(struc
+ 				   pgoff_t index, void *expected, gfp_t gfp)
+ {
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
+-	long nr = folio_nr_pages(folio);
++	unsigned long nr = folio_nr_pages(folio);
++	swp_entry_t iter, swap;
++	void *entry;
+ 
+ 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -903,14 +905,25 @@ static int shmem_add_to_page_cache(struc
+ 
+ 	gfp &= GFP_RECLAIM_MASK;
+ 	folio_throttle_swaprate(folio, gfp);
++	swap = radix_to_swp_entry(expected);
+ 
+ 	do {
++		iter = swap;
+ 		xas_lock_irq(&xas);
+-		if (expected != xas_find_conflict(&xas)) {
+-			xas_set_err(&xas, -EEXIST);
+-			goto unlock;
++		xas_for_each_conflict(&xas, entry) {
++			/*
++			 * The range must either be empty, or filled with
++			 * expected swap entries. Shmem swap entries are never
++			 * partially freed without split of both entry and
++			 * folio, so there shouldn't be any holes.
++			 */
++			if (!expected || entry != swp_to_radix_entry(iter)) {
++				xas_set_err(&xas, -EEXIST);
++				goto unlock;
++			}
++			iter.val += 1 << xas_get_order(&xas);
+ 		}
+-		if (expected && xas_find_conflict(&xas)) {
++		if (expected && iter.val - nr != swap.val) {
+ 			xas_set_err(&xas, -EEXIST);
+ 			goto unlock;
+ 		}
+@@ -2359,7 +2372,7 @@ static int shmem_swapin_folio(struct ino
+ 			error = -ENOMEM;
+ 			goto failed;
+ 		}
+-	} else if (order != folio_order(folio)) {
++	} else if (order > folio_order(folio)) {
  		/*
- 		 * __mmdrop() is a heavy operation and we don't need RCU
- 		 * protection here. Release RCU lock during these operations.
-+		 * We reinstate the RCU read lock as the caller expects it to
-+		 * be held when this function returns even on error.
- 		 */
- 		rcu_read_unlock();
- 		mmgrab(other_mm);
---- a/mm/mmap_lock.c~mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped-v3
-+++ a/mm/mmap_lock.c
-@@ -235,7 +235,7 @@ retry:
- 		goto fallback;
+ 		 * Swap readahead may swap in order 0 folios into swapcache
+ 		 * asynchronously, while the shmem mapping can still stores
+@@ -2384,15 +2397,23 @@ static int shmem_swapin_folio(struct ino
+ 
+ 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
+ 		}
++	} else if (order < folio_order(folio)) {
++		swap.val = round_down(swap.val, 1 << folio_order(folio));
++		index = round_down(index, 1 << folio_order(folio));
  	}
  
--	/* Verify the vma is not behind of the last search position. */
-+	/* Verify the vma is not behind the last search position. */
- 	if (unlikely(from_addr >= vma->vm_end))
- 		goto fallback_unlock;
- 
+ alloced:
+-	/* We have to do this with folio locked to prevent races */
++	/*
++	 * We have to do this with the folio locked to prevent races.
++	 * The shmem_confirm_swap below only checks if the first swap
++	 * entry matches the folio, that's enough to ensure the folio
++	 * is not used outside of shmem, as shmem swap entries
++	 * and swap cache folios are never partially freed.
++	 */
+ 	folio_lock(folio);
+ 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
+-	    folio->swap.val != swap.val ||
+ 	    !shmem_confirm_swap(mapping, index, swap) ||
+-	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
++	    folio->swap.val != swap.val) {
+ 		error = -EEXIST;
+ 		goto unlock;
+ 	}
 _
 
-Patches currently in -mm which might be from surenb@google.com are
+Patches currently in -mm which might be from kasong@tencent.com are
 
-mm-fix-a-uaf-when-vma-mm-is-freed-after-vma-vm_refcnt-got-dropped.patch
 
 
