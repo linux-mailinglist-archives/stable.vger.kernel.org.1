@@ -1,109 +1,108 @@
-Return-Path: <stable+bounces-165796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BF9B18E05
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 12:42:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CD2B18E10
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 12:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47CE6626F70
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 10:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C591AA332D
+	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 10:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08777221FC8;
-	Sat,  2 Aug 2025 10:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA2321B9E0;
+	Sat,  2 Aug 2025 10:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="0Amdm/9u"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="ZS8XKs7M"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071D221146C;
-	Sat,  2 Aug 2025 10:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6002DA920;
+	Sat,  2 Aug 2025 10:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754131346; cv=none; b=Wg/g0Qwwnmaoa45Lf40TwG5EFwFEYdSqA9PygDzRYFBygdL7KbnoR7vqxBUAAWBDk6uDczBq8HQz6IRJm6kcuuwFl29AKo/Ca4TBfGnCTCW167m7J2+iYCbvwGzM7zpjIBgfePYRqiikHPmkKJkpqeApsLI5ZxMtwHBzPqjxe5o=
+	t=1754131808; cv=none; b=gZ77QYLWyEEAuejvhVdDKP/Iup/0p9aQlfC6KGpaQ20Ez1GGCHfQlVdm8yG5+gzy9okMUg5K6+L3ovywiu6i4FQsDkmldJMhxu3EWx6MDvu+3uaSya/sfjnrUq58XYOjLxqEcF8FExbfInwqZ0TEo+n7lwFg4Gdt8CIXB6FLZfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754131346; c=relaxed/simple;
-	bh=D4SrjSCVF/QFFZGZ8db0byFl9K4OB6LkB7i7Fsk/Uh4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fsljsVqoQcZs4LO4/WhNt0moA1gkaQAtPljm26+qaYbjBQ8GqkhLUadBupCxxN0+zcYlVZ0rmd2db4YMt9g307Ama8hSgTxmEWiM5S+O8FBrTAa2H2eocgI1uQOvnYboF9p6ekbsK068PnW/JUzf5AUqMlmpE2ol3VUbamatCNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=0Amdm/9u; arc=none smtp.client-ip=213.160.73.56
+	s=arc-20240116; t=1754131808; c=relaxed/simple;
+	bh=YUUurxRGnIXQz3rjL/3WQEzUhPSVAVuFlF+NgvuRcs0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dPNtW/ElxgU8nu279CC/HP1l4iY9xhXiyzUU+6JIdHlrvVuPypQP7v4YzfFtX6FLMvolG7Lz2BiIwHrG0n57t0oUUE8ROIDR3FP45A37keGHEDRuHAdygACb08CnlUMrxDIZMffcQf7ssV7WERcZ2T63SZ0/yyCAIHg3qFpOHlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ZS8XKs7M; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: from sven-desktop.home.narfation.org (unknown [IPv6:2a00:1ca0:1d86:99fc::8c24])
-	by dvalin.narfation.org (Postfix) with UTF8SMTPSA id 274C421798;
-	Sat,  2 Aug 2025 10:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1754130743;
+	s=20121; t=1754131803;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vwQxvH0aQAdhk+KtdLO2G0fuUHwUbVgID2tMIZca1T4=;
-	b=0Amdm/9uQ7aI+HwC1GivSNN/uk5VKv33DBM4CkJNC8ztNC2v41suTaeUH5C5b7R7RIOanJ
-	wMrgq9KqDvtrNZ/ZuQD75EVlCRZSPsR7hJVk8p5jVV4iM27oXa+CrTZD2Y/t10zLCvYFdB
-	efANxJ6BpeHUvwTRKaTq8LMCl4JB8Nw=
+	bh=1k0gDJLahhbU/2Jeb16TrYN9Lr3gc1KUY7T6EHQVKQQ=;
+	b=ZS8XKs7MW0Y2GwzYOOMYnVupKRlQXBFAnF3uqaK0Qwj+S2Ill803wLzwo83wluhlursvb6
+	PVi+QgS1u/EihO8Rg8CO9dbQLGueVi0zexhdzdg0Nmm805GuU9QTVN5cfg5gzkqdeTba3Z
+	HlJXN/Lg68mgocgvufudVjrVgAHDg7I=
 From: Sven Eckelmann <sven@narfation.org>
-Date: Sat, 02 Aug 2025 12:32:02 +0200
-Subject: [PATCH 3/4] i2c: rtl9300: Add missing count byte for SMBus Block
- Write
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ Andi Shyti <andi.shyti@kernel.org>
+Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonas Jelonek <jelonek.jonas@gmail.com>,
+ Harshal Gohel <hg@simonwunderlich.de>,
+ Simon Wunderlich <sw@simonwunderlich.de>, stable@vger.kernel.org
+Subject:
+ Re: [PATCH 3/4] i2c: rtl9300: Add missing count byte for SMBus Block Write
+Date: Sat, 02 Aug 2025 12:50:01 +0200
+Message-ID: <6287928.DvuYhMxLoT@sven-desktop>
+In-Reply-To: <20250802-i2c-rtl9300-multi-byte-v1-3-5f687e0098e2@narfation.org>
+References:
+ <20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org>
+ <20250802-i2c-rtl9300-multi-byte-v1-3-5f687e0098e2@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250802-i2c-rtl9300-multi-byte-v1-3-5f687e0098e2@narfation.org>
-References: <20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org>
-In-Reply-To: <20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
- Andi Shyti <andi.shyti@kernel.org>
-Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonas Jelonek <jelonek.jonas@gmail.com>, 
- Harshal Gohel <hg@simonwunderlich.de>, 
- Simon Wunderlich <sw@simonwunderlich.de>, 
- Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1548; i=sven@narfation.org;
- h=from:subject:message-id; bh=D4SrjSCVF/QFFZGZ8db0byFl9K4OB6LkB7i7Fsk/Uh4=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDBm9L01e1j2XSuU/fs9NISvN8NYfbfNCR2/rtd8026NLu
- LWyfs3pKGVhEONikBVTZNlzJf/8Zva38p+nfTwKM4eVCWQIAxenAEwk8SPDP7OPL672f9xSeefo
- OWvlpOnBlz4nsGgdvl3j2q3zU+5q8neGf8qZwu9EG71k13Uu63sl0nfZxt1n18TWzmf2GW2qKkX
- tbAA=
-X-Developer-Key: i=sven@narfation.org; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
+Content-Type: multipart/signed; boundary="nextPart6558281.lOV4Wx5bFT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-The expected on-wire format of an SMBus Block Write is
+--nextPart6558281.lOV4Wx5bFT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Date: Sat, 02 Aug 2025 12:50:01 +0200
+Message-ID: <6287928.DvuYhMxLoT@sven-desktop>
+MIME-Version: 1.0
 
-  S Addr Wr [A] Comm [A] Count [A] Data [A] Data [A] ... [A] Data [A] P
+On Saturday, 2 August 2025 12:32:02 CEST Sven Eckelmann wrote:
+[...]
+> diff --git a/drivers/i2c/busses/i2c-rtl9300.c b/drivers/i2c/busses/i2c-rtl9300.c
+> index a10e5e6e00075fabb8906d56f09f5b9141fbc06e..ed82e6c21aaf46000a263740123ffba833578cc2 100644
+> --- a/drivers/i2c/busses/i2c-rtl9300.c
+> +++ b/drivers/i2c/busses/i2c-rtl9300.c
+> @@ -288,7 +288,7 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
+>  		if (ret)
+>  			goto out_unlock;
+>  		if (read_write == I2C_SMBUS_WRITE) {
+> -			ret = rtl9300_i2c_write(i2c, &data->block[1], data->block[0]);
+> +			ret = rtl9300_i2c_write(i2c, &data->block[0], data->block[0] + 1);
+>  			if (ret)
+>  				goto out_unlock;
+>  		}
+> 
+> 
 
-Everything starting from the Count byte is provided by the I2C subsystem in
-the array data->block. But the driver was skipping the Count byte
-(data->block[0]) when sending it to the RTL93xx I2C controller.
-
-Only the actual data could be seen on the wire:
-
-  S Addr Wr [A] Comm [A] Data [A] Data [A] ... [A] Data [A] P
-
-This wire format is not SMBus Block Write compatible but matches the format
-of an I2C Block Write. Simply adding the count byte to the buffer for the
-I2C controller enough to fix the transmission.
-
-Cc: <stable@vger.kernel.org>
-Fixes: c366be720235 ("i2c: Add driver for the RTL9300 I2C controller")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
- drivers/i2c/busses/i2c-rtl9300.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yes, there is as always this "2 seconds" after the send "wtf. were did the 
+line go" situation:
 
 diff --git a/drivers/i2c/busses/i2c-rtl9300.c b/drivers/i2c/busses/i2c-rtl9300.c
-index a10e5e6e00075fabb8906d56f09f5b9141fbc06e..ed82e6c21aaf46000a263740123ffba833578cc2 100644
+index a10e5e6e00075fabb8906d56f09f5b9141fbc06e..4d109ebd02f0cad86f50e4e148966b3fa68b0196 100644
 --- a/drivers/i2c/busses/i2c-rtl9300.c
 +++ b/drivers/i2c/busses/i2c-rtl9300.c
-@@ -288,7 +288,7 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
+@@ -284,11 +284,11 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
+ 		ret = rtl9300_i2c_reg_addr_set(i2c, command, 1);
+ 		if (ret)
+ 			goto out_unlock;
+-		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0]);
++		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0] + 1);
  		if (ret)
  			goto out_unlock;
  		if (read_write == I2C_SMBUS_WRITE) {
@@ -113,7 +112,25 @@ index a10e5e6e00075fabb8906d56f09f5b9141fbc06e..ed82e6c21aaf46000a263740123ffba8
  				goto out_unlock;
  		}
 
--- 
-2.47.2
+v2 will be send tomorrow. Sorry about the noise.
+
+Kind regards,
+	Sven
+--nextPart6558281.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaI3tWQAKCRBND3cr0xT1
+y1yLAQDpHoACCNv9cmMdjqYAeo8BBjvDYrtvwry3IP9NcejEkwEAhCsZ0+C61yig
+pr8UY3vGFdjWR0VZn7apffv2bWPVKgs=
+=ndCS
+-----END PGP SIGNATURE-----
+
+--nextPart6558281.lOV4Wx5bFT--
+
+
 
 
