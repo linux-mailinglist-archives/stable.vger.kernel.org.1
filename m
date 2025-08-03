@@ -1,126 +1,461 @@
-Return-Path: <stable+bounces-165823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13224B194D3
-	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 21:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEE6B19576
+	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 23:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFB3F3B48D8
-	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 19:05:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A73EA3A6634
+	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 21:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099FD1DE896;
-	Sun,  3 Aug 2025 19:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547DF1F5838;
+	Sun,  3 Aug 2025 21:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="iVrpSb8N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ri3XKQ6H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513135C96
-	for <stable@vger.kernel.org>; Sun,  3 Aug 2025 19:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085BCF9D6;
+	Sun,  3 Aug 2025 21:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754247935; cv=none; b=qb6Z+nC8c+eqY1+JS8vAkTjh89EOoNy+i2YLJU9u780qwFvIIPEetuQRIvnZjc9Y5HjyGiyE0PXZHBcTipN65nRnpmUQzu7jKnktu9IEXVBu0ZIVBR74/qJ8x3ut9/NQ9fjEVRPN4d7oy/mjx2y/GU94UhMk2j985h5If5goq7I=
+	t=1754255861; cv=none; b=M4qYQeW7/hk4mgh1qhbU5pZsfmxO7IFsTSuB7svdLUXYb3JHRnw4Qb9l1BvPrjdRCv4BwGy7nzZdv65Cw8RpUvVteeshMYkdcTgW78YjOwL0GzmzlNCAiLIszPnoxfVaNhEHr+sEdpgbjCCD5YN3wigPTUhV97FMxp/5OjWQcYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754247935; c=relaxed/simple;
-	bh=BwBmtnv/BpaSXrA8JVdt3hc6pH4difSzYPixxu8akJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hd3A2brmW520IibOZjw1FSlXfTgD6q+k0zUfQlMpo4Ttci0IxOYH1DMQgNUEpq6XKBUgQYlOQuwU5Juix26alozttPS3P3G7+tOkGL24OqAvmaPHRZ7nEq3S0vNree9sb7IkzzWg1u1KA2do31wpBH9Dvo1Z71nefeW6DlFhH6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=iVrpSb8N; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-458ba079338so8705315e9.1
-        for <stable@vger.kernel.org>; Sun, 03 Aug 2025 12:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1754247932; x=1754852732; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=up9M/4hUY4Zre3/HEDOm7wwnikDuaJtzpmpnD4b0pVk=;
-        b=iVrpSb8N8MvN6nWxkBBV1RyLLt/msq6AZbGDDPSm37ZtoB5X1Bj1S+IrFJY/5BjQ0A
-         xXsIYPB9dWjJdoYXeam88pybWUWBM2yz+zCZak/Fk7QJ/S6voaML2hky/y6ROPYcDWNV
-         XNTzLnSlJwXbpVXUGXdH/3pzLtUJ63B0Q7uljQ81vqwoZSqKHgB0cFDD4AcfDD2DkUG8
-         wLykUpqvlH7Hyzx7P67dC51qpWeBBok4N5Dsgtn2qVG1sBTttn4sSjl+YdOn0x+D8vge
-         BbEvf29AkYXFqIhZO7taAJITyAhJNXcD6Q4JNizTELfjztDB4I57o8r13ito31pCRX/t
-         UX/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754247932; x=1754852732;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=up9M/4hUY4Zre3/HEDOm7wwnikDuaJtzpmpnD4b0pVk=;
-        b=FuzSvwPkm5Os6V/EISZ++g2hR35vfBKuRaIjaxM5e5UtKbI8sZsCT9DXOeRn3iJUtH
-         TosBY5EFXbRJL6vzbgefDIeSeheTEfk+MKL8pGIhuxXmZ2++k8uBPbcwjcEpob4UoZIU
-         Li1hwaiY5Fk8A6t5d/GWhcmoPIe8qAXyTsbU+6P41xGeIL0JL1yZadWFV71LctUO7EVw
-         fxe1oKQH7eJrFV1XQnEi2ApNmWxUKTNHSmEIMaQoG4FK0jqKQAB+6NRswC5siXyVfCP+
-         ZKg6vpcapc/swxOCfHrLgEOOtX3TiXBQft0wXEs38WiJGexJ4FqFXF+wZeUihvjLdC83
-         9ncg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCtb+VSsx65Tjk4eoSPEsYad1GLT5nkCxxZKtYvOgP2kiErL565O1q5JmvwPF3WCYlOIa1Nvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywp0xWXZ8HOA7ZSivYbbf8IAp4rQXjB5LShYbAl/tZQ1zVPbAgN
-	Wh+WfVsh0z9zV2dcIwOGITREtRsOrn7bdkbrBLeby6ySr3kS0cpgU5iFXi4yG7jlSn0=
-X-Gm-Gg: ASbGnctz5AE+TEWQmKtVUp5o9tRvp6fl6n6baibZz1rAR6VqE8GbkcetnpibgHUkjiO
-	TZQVzO5RXGTPxZuTZEgjSYTN5WY36S4+ODfbwqOIuj55YRPI7J21k0OGBoCnSOveMbWxdrCY0CL
-	cpim6m46Ugam4FocqmrfVu+3TcohVMPaaqFZywgeajt8BCkfcNwDtXFXW+Om6xVW2qaPscZ8CvC
-	qC1M8kjIgFTPA4KycN0o+KJncdfEIYj/tSXNBGUOMz/W0oMT16WhnC2Nfv9WJ0LiZLBtJ3qWjzQ
-	veikr+g25TqaM0g3k+6ovXwYPgmRMn7RWHgEYKdjwLRh+8UrfHX1OG5dJeX8rD4fAzYb/SA14ma
-	caZ10o3rcvL8pNvIN8Usoy+Zu6NlobGcyg03UNkzhSYQkiAOtg6iquD83wm1WMZKehPI8IxkfNs
-	uK/xmzjw==
-X-Google-Smtp-Source: AGHT+IEZ0V8vkr0azlFyjnANX82PwFUs8FOonbF7UBmw34xohUJLsmAV3egOIPJEYGsTVHJlXcZaDg==
-X-Received: by 2002:a05:600c:1f88:b0:456:189e:223a with SMTP id 5b1f17b1804b1-458b5f0ac7amr52599785e9.10.1754247931531;
-        Sun, 03 Aug 2025 12:05:31 -0700 (PDT)
-Received: from brgl-pocket.. (2a02-8440-f501-a968-a175-e139-72e5-a366.rev.sfr.net. [2a02:8440:f501:a968:a175:e139:72e5:a366])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4534b3sm12948486f8f.47.2025.08.03.12.05.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Aug 2025 12:05:30 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	davem@davemloft.net,
-	asmaa@nvidia.com,
-	David Thompson <davthompson@nvidia.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shravan Kumar Ramani <shravankr@nvidia.com>
-Subject: Re: [PATCH v4] gpio-mlxbf2: use platform_get_irq_optional()
-Date: Sun,  3 Aug 2025 21:05:24 +0200
-Message-ID: <175424788066.7115.11334819523801488773.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250728144619.29894-1-davthompson@nvidia.com>
-References: <20250728144619.29894-1-davthompson@nvidia.com>
+	s=arc-20240116; t=1754255861; c=relaxed/simple;
+	bh=P4aI6WkE8WTDcnNa8bsV5CGbPMjZlFabXQyaxRm60Fc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fa6fDWG0VKwJM+U+4SHdLIVJ3K8m8qCnWEEhPCyr8sf2oKSj76X+vwkAVGWHw8xuJgoT5Z521PJzTJE9xVQBnJo8DUKIEcnDtUoLT105mtsBXPslP9grvEZXd2Wb/8S3yTc4hZ2nuEldy3a04hc5CXSr2FJC1ueCo77idwn+zB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ri3XKQ6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936E6C4CEEB;
+	Sun,  3 Aug 2025 21:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754255860;
+	bh=P4aI6WkE8WTDcnNa8bsV5CGbPMjZlFabXQyaxRm60Fc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ri3XKQ6HAiiHfu6Udt0tz26186H+wtTzWQUNhaOnXwGajsWfte2z5QgW8D/w9CYcn
+	 YGkccK1Gll1QHSOxyp3dWwMOiqNWBGHHaqotzrN1XKuwq40+51+cWg4fiADHNOmWjM
+	 DQ3QauGu96nWaetoNe2w/m9i8RCnPN7pkoKj4pbQYGwQ17xWyoL/MpJYJGOgmYzvTn
+	 ATQJMcVQQ2JRMGEfurPVRuvsdTQRdju0kybCGi9LXj1F/At/GX8fwMtNsj73ryOtM2
+	 CTlzax2L2kF9NO/JloO9pEVYj8ZR1RVByeQ9uTyQsPavtQJFIb9iv8Y7D0X5FU6GhK
+	 /5+h7MNG6KHlg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Viacheslav Dubeyko <slava@dubeyko.com>,
+	Wenzhi Wang <wenzhi.wang@uwaterloo.ca>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16 01/35] hfs: fix general protection fault in hfs_find_init()
+Date: Sun,  3 Aug 2025 17:17:01 -0400
+Message-Id: <20250803211736.3545028-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16
 Content-Transfer-Encoding: 8bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
+[ Upstream commit 736a0516a16268995f4898eded49bfef077af709 ]
 
-On Mon, 28 Jul 2025 10:46:19 -0400, David Thompson wrote:
-> The gpio-mlxbf2 driver interfaces with four GPIO controllers,
-> device instances 0-3. There are two IRQ resources shared between
-> the four controllers, and they are found in the ACPI table for
-> instances 0 and 3. The driver should not use platform_get_irq(),
-> otherwise this error is logged when probing instances 1 and 2:
->   mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
-> 
-> [...]
+The hfs_find_init() method can trigger the crash
+if tree pointer is NULL:
 
-Subject should have been: "gpio: mlxbf2: ..."
+[   45.746290][ T9787] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000008: 0000 [#1] SMP KAI
+[   45.747287][ T9787] KASAN: null-ptr-deref in range [0x0000000000000040-0x0000000000000047]
+[   45.748716][ T9787] CPU: 2 UID: 0 PID: 9787 Comm: repro Not tainted 6.16.0-rc3 #10 PREEMPT(full)
+[   45.750250][ T9787] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   45.751983][ T9787] RIP: 0010:hfs_find_init+0x86/0x230
+[   45.752834][ T9787] Code: c1 ea 03 80 3c 02 00 0f 85 9a 01 00 00 4c 8d 6b 40 48 c7 45 18 00 00 00 00 48 b8 00 00 00 00 00 fc
+[   45.755574][ T9787] RSP: 0018:ffffc90015157668 EFLAGS: 00010202
+[   45.756432][ T9787] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff819a4d09
+[   45.757457][ T9787] RDX: 0000000000000008 RSI: ffffffff819acd3a RDI: ffffc900151576e8
+[   45.758282][ T9787] RBP: ffffc900151576d0 R08: 0000000000000005 R09: 0000000000000000
+[   45.758943][ T9787] R10: 0000000080000000 R11: 0000000000000001 R12: 0000000000000004
+[   45.759619][ T9787] R13: 0000000000000040 R14: ffff88802c50814a R15: 0000000000000000
+[   45.760293][ T9787] FS:  00007ffb72734540(0000) GS:ffff8880cec64000(0000) knlGS:0000000000000000
+[   45.761050][ T9787] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   45.761606][ T9787] CR2: 00007f9bd8225000 CR3: 000000010979a000 CR4: 00000000000006f0
+[   45.762286][ T9787] Call Trace:
+[   45.762570][ T9787]  <TASK>
+[   45.762824][ T9787]  hfs_ext_read_extent+0x190/0x9d0
+[   45.763269][ T9787]  ? submit_bio_noacct_nocheck+0x2dd/0xce0
+[   45.763766][ T9787]  ? __pfx_hfs_ext_read_extent+0x10/0x10
+[   45.764250][ T9787]  hfs_get_block+0x55f/0x830
+[   45.764646][ T9787]  block_read_full_folio+0x36d/0x850
+[   45.765105][ T9787]  ? __pfx_hfs_get_block+0x10/0x10
+[   45.765541][ T9787]  ? const_folio_flags+0x5b/0x100
+[   45.765972][ T9787]  ? __pfx_hfs_read_folio+0x10/0x10
+[   45.766415][ T9787]  filemap_read_folio+0xbe/0x290
+[   45.766840][ T9787]  ? __pfx_filemap_read_folio+0x10/0x10
+[   45.767325][ T9787]  ? __filemap_get_folio+0x32b/0xbf0
+[   45.767780][ T9787]  do_read_cache_folio+0x263/0x5c0
+[   45.768223][ T9787]  ? __pfx_hfs_read_folio+0x10/0x10
+[   45.768666][ T9787]  read_cache_page+0x5b/0x160
+[   45.769070][ T9787]  hfs_btree_open+0x491/0x1740
+[   45.769481][ T9787]  hfs_mdb_get+0x15e2/0x1fb0
+[   45.769877][ T9787]  ? __pfx_hfs_mdb_get+0x10/0x10
+[   45.770316][ T9787]  ? find_held_lock+0x2b/0x80
+[   45.770731][ T9787]  ? lockdep_init_map_type+0x5c/0x280
+[   45.771200][ T9787]  ? lockdep_init_map_type+0x5c/0x280
+[   45.771674][ T9787]  hfs_fill_super+0x38e/0x720
+[   45.772092][ T9787]  ? __pfx_hfs_fill_super+0x10/0x10
+[   45.772549][ T9787]  ? snprintf+0xbe/0x100
+[   45.772931][ T9787]  ? __pfx_snprintf+0x10/0x10
+[   45.773350][ T9787]  ? do_raw_spin_lock+0x129/0x2b0
+[   45.773796][ T9787]  ? find_held_lock+0x2b/0x80
+[   45.774215][ T9787]  ? set_blocksize+0x40a/0x510
+[   45.774636][ T9787]  ? sb_set_blocksize+0x176/0x1d0
+[   45.775087][ T9787]  ? setup_bdev_super+0x369/0x730
+[   45.775533][ T9787]  get_tree_bdev_flags+0x384/0x620
+[   45.775985][ T9787]  ? __pfx_hfs_fill_super+0x10/0x10
+[   45.776453][ T9787]  ? __pfx_get_tree_bdev_flags+0x10/0x10
+[   45.776950][ T9787]  ? bpf_lsm_capable+0x9/0x10
+[   45.777365][ T9787]  ? security_capable+0x80/0x260
+[   45.777803][ T9787]  vfs_get_tree+0x8e/0x340
+[   45.778203][ T9787]  path_mount+0x13de/0x2010
+[   45.778604][ T9787]  ? kmem_cache_free+0x2b0/0x4c0
+[   45.779052][ T9787]  ? __pfx_path_mount+0x10/0x10
+[   45.779480][ T9787]  ? getname_flags.part.0+0x1c5/0x550
+[   45.779954][ T9787]  ? putname+0x154/0x1a0
+[   45.780335][ T9787]  __x64_sys_mount+0x27b/0x300
+[   45.780758][ T9787]  ? __pfx___x64_sys_mount+0x10/0x10
+[   45.781232][ T9787]  do_syscall_64+0xc9/0x480
+[   45.781631][ T9787]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[   45.782149][ T9787] RIP: 0033:0x7ffb7265b6ca
+[   45.782539][ T9787] Code: 48 8b 0d c9 17 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48
+[   45.784212][ T9787] RSP: 002b:00007ffc0c10cfb8 EFLAGS: 00000206 ORIG_RAX: 00000000000000a5
+[   45.784935][ T9787] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffb7265b6ca
+[   45.785626][ T9787] RDX: 0000200000000240 RSI: 0000200000000280 RDI: 00007ffc0c10d100
+[   45.786316][ T9787] RBP: 00007ffc0c10d190 R08: 00007ffc0c10d000 R09: 0000000000000000
+[   45.787011][ T9787] R10: 0000000000000048 R11: 0000000000000206 R12: 0000560246733250
+[   45.787697][ T9787] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[   45.788393][ T9787]  </TASK>
+[   45.788665][ T9787] Modules linked in:
+[   45.789058][ T9787] ---[ end trace 0000000000000000 ]---
+[   45.789554][ T9787] RIP: 0010:hfs_find_init+0x86/0x230
+[   45.790028][ T9787] Code: c1 ea 03 80 3c 02 00 0f 85 9a 01 00 00 4c 8d 6b 40 48 c7 45 18 00 00 00 00 48 b8 00 00 00 00 00 fc
+[   45.792364][ T9787] RSP: 0018:ffffc90015157668 EFLAGS: 00010202
+[   45.793155][ T9787] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff819a4d09
+[   45.794123][ T9787] RDX: 0000000000000008 RSI: ffffffff819acd3a RDI: ffffc900151576e8
+[   45.795105][ T9787] RBP: ffffc900151576d0 R08: 0000000000000005 R09: 0000000000000000
+[   45.796135][ T9787] R10: 0000000080000000 R11: 0000000000000001 R12: 0000000000000004
+[   45.797114][ T9787] R13: 0000000000000040 R14: ffff88802c50814a R15: 0000000000000000
+[   45.798024][ T9787] FS:  00007ffb72734540(0000) GS:ffff8880cec64000(0000) knlGS:0000000000000000
+[   45.799019][ T9787] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   45.799822][ T9787] CR2: 00007f9bd8225000 CR3: 000000010979a000 CR4: 00000000000006f0
+[   45.800747][ T9787] Kernel panic - not syncing: Fatal exception
 
-Applied, thanks!
+The hfs_fill_super() calls hfs_mdb_get() method that tries
+to construct Extents Tree and Catalog Tree:
 
-[1/1] gpio-mlxbf2: use platform_get_irq_optional()
-      https://git.kernel.org/brgl/linux/c/63c7bc53a35e785accdc2ceab8f72d94501931ab
+HFS_SB(sb)->ext_tree = hfs_btree_open(sb, HFS_EXT_CNID, hfs_ext_keycmp);
+if (!HFS_SB(sb)->ext_tree) {
+	pr_err("unable to open extent tree\n");
+	goto out;
+}
+HFS_SB(sb)->cat_tree = hfs_btree_open(sb, HFS_CAT_CNID, hfs_cat_keycmp);
+if (!HFS_SB(sb)->cat_tree) {
+	pr_err("unable to open catalog tree\n");
+	goto out;
+}
 
-Best regards,
+However, hfs_btree_open() calls read_mapping_page() that
+calls hfs_get_block(). And this method calls hfs_ext_read_extent():
+
+static int hfs_ext_read_extent(struct inode *inode, u16 block)
+{
+	struct hfs_find_data fd;
+	int res;
+
+	if (block >= HFS_I(inode)->cached_start &&
+	    block < HFS_I(inode)->cached_start + HFS_I(inode)->cached_blocks)
+		return 0;
+
+	res = hfs_find_init(HFS_SB(inode->i_sb)->ext_tree, &fd);
+	if (!res) {
+		res = __hfs_ext_cache_extent(&fd, inode, block);
+		hfs_find_exit(&fd);
+	}
+	return res;
+}
+
+The problem here that hfs_find_init() is trying to use
+HFS_SB(inode->i_sb)->ext_tree that is not initialized yet.
+It will be initailized when hfs_btree_open() finishes
+the execution.
+
+The patch adds checking of tree pointer in hfs_find_init()
+and it reworks the logic of hfs_btree_open() by reading
+the b-tree's header directly from the volume. The read_mapping_page()
+is exchanged on filemap_grab_folio() that grab the folio from
+mapping. Then, sb_bread() extracts the b-tree's header
+content and copy it into the folio.
+
+Reported-by: Wenzhi Wang <wenzhi.wang@uwaterloo.ca>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20250710213657.108285-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+**YES**
+
+This commit should be backported to stable kernel trees. Here's my
+extensive analysis:
+
+## Critical Bug Fix Analysis
+
+This commit fixes a **critical kernel panic** (general protection fault)
+that can be triggered during normal HFS filesystem operations. The bug
+represents a serious stability issue that meets stable kernel criteria.
+
+## Root Cause Analysis
+
+The crash occurs due to a **use-before-initialization bug** in the HFS
+filesystem code:
+
+1. **Initialization Order Issue**: When `hfs_fill_super()` is called, it
+   tries to construct the Extents Tree via:
+  ```c
+  HFS_SB(sb)->ext_tree = hfs_btree_open(sb, HFS_EXT_CNID,
+  hfs_ext_keycmp);
+  ```
+
+2. **Circular Dependency**: During `hfs_btree_open()` execution:
+   - It calls `read_mapping_page()` to read the btree header
+   - This triggers `hfs_get_block()`
+   - Which calls `hfs_ext_read_extent()`
+   - Which tries to use `HFS_SB(inode->i_sb)->ext_tree` via
+     `hfs_find_init()`
+   - But `ext_tree` is NULL because we're still in the process of
+     initializing it!
+
+3. **NULL Pointer Dereference**: The crash stack trace shows:
+  ```
+  KASAN: null-ptr-deref in range [0x0000000000000040-0x0000000000000047]
+  ```
+  This occurs when trying to access `tree->max_key_len` at offset 0x40
+  from a NULL tree pointer.
+
+## Fix Implementation
+
+The patch implements two key fixes:
+
+1. **Defensive Programming**: Adds NULL checks in `hfs_find_init()`:
+  ```c
+  +       if (!tree || !fd)
+  +               return -EINVAL;
+  ```
+
+2. **Breaking the Circular Dependency**: Reworks `hfs_btree_open()` to
+   avoid the problematic code path:
+   - Replaces `read_mapping_page()` with `filemap_grab_folio()`
+   - Uses `sb_bread()` to read the btree header directly from disk
+   - Avoids going through the extent management code during
+     initialization
+
+## Backport Justification
+
+This commit meets all stable kernel criteria:
+
+1. **Fixes a Real Bug**: Prevents a kernel panic that can be triggered
+   during normal filesystem operations
+2. **Small and Contained**: The changes are limited to HFS filesystem
+   code with no impact on other subsystems
+3. **Clear Fix**: The solution directly addresses the root cause without
+   architectural changes
+4. **No New Features**: Only fixes the existing bug without adding
+   functionality
+5. **High Impact**: Kernel panics are critical issues that affect system
+   stability
+6. **Minimal Risk**: Changes are confined to HFS subsystem with clear
+   boundaries
+
+## Additional Context
+
+- The commit includes a detailed crash trace showing this is a real-
+  world issue
+- Recent commit history shows HFS has had multiple similar stability
+  fixes (slab-out-of-bounds, OOB reads/writes)
+- The fix follows established patterns for handling initialization order
+  issues
+- The reporter is credited (Wenzhi Wang from University of Waterloo),
+  indicating this was found through testing/research
+
+This is exactly the type of bug fix that stable kernels exist to
+incorporate - preventing kernel crashes without introducing new risks.
+
+ fs/hfs/bfind.c  |  3 +++
+ fs/hfs/btree.c  | 57 +++++++++++++++++++++++++++++++++++++++----------
+ fs/hfs/extent.c |  2 +-
+ fs/hfs/hfs_fs.h |  1 +
+ 4 files changed, 51 insertions(+), 12 deletions(-)
+
+diff --git a/fs/hfs/bfind.c b/fs/hfs/bfind.c
+index ef9498a6e88a..34e9804e0f36 100644
+--- a/fs/hfs/bfind.c
++++ b/fs/hfs/bfind.c
+@@ -16,6 +16,9 @@ int hfs_find_init(struct hfs_btree *tree, struct hfs_find_data *fd)
+ {
+ 	void *ptr;
+ 
++	if (!tree || !fd)
++		return -EINVAL;
++
+ 	fd->tree = tree;
+ 	fd->bnode = NULL;
+ 	ptr = kmalloc(tree->max_key_len * 2 + 4, GFP_KERNEL);
+diff --git a/fs/hfs/btree.c b/fs/hfs/btree.c
+index 2fa4b1f8cc7f..e86e1e235658 100644
+--- a/fs/hfs/btree.c
++++ b/fs/hfs/btree.c
+@@ -21,8 +21,12 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 	struct hfs_btree *tree;
+ 	struct hfs_btree_header_rec *head;
+ 	struct address_space *mapping;
+-	struct page *page;
++	struct folio *folio;
++	struct buffer_head *bh;
+ 	unsigned int size;
++	u16 dblock;
++	sector_t start_block;
++	loff_t offset;
+ 
+ 	tree = kzalloc(sizeof(*tree), GFP_KERNEL);
+ 	if (!tree)
+@@ -75,12 +79,40 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 	unlock_new_inode(tree->inode);
+ 
+ 	mapping = tree->inode->i_mapping;
+-	page = read_mapping_page(mapping, 0, NULL);
+-	if (IS_ERR(page))
++	folio = filemap_grab_folio(mapping, 0);
++	if (IS_ERR(folio))
+ 		goto free_inode;
+ 
++	folio_zero_range(folio, 0, folio_size(folio));
++
++	dblock = hfs_ext_find_block(HFS_I(tree->inode)->first_extents, 0);
++	start_block = HFS_SB(sb)->fs_start + (dblock * HFS_SB(sb)->fs_div);
++
++	size = folio_size(folio);
++	offset = 0;
++	while (size > 0) {
++		size_t len;
++
++		bh = sb_bread(sb, start_block);
++		if (!bh) {
++			pr_err("unable to read tree header\n");
++			goto put_folio;
++		}
++
++		len = min_t(size_t, folio_size(folio), sb->s_blocksize);
++		memcpy_to_folio(folio, offset, bh->b_data, sb->s_blocksize);
++
++		brelse(bh);
++
++		start_block++;
++		offset += len;
++		size -= len;
++	}
++
++	folio_mark_uptodate(folio);
++
+ 	/* Load the header */
+-	head = (struct hfs_btree_header_rec *)(kmap_local_page(page) +
++	head = (struct hfs_btree_header_rec *)(kmap_local_folio(folio, 0) +
+ 					       sizeof(struct hfs_bnode_desc));
+ 	tree->root = be32_to_cpu(head->root);
+ 	tree->leaf_count = be32_to_cpu(head->leaf_count);
+@@ -95,22 +127,22 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 
+ 	size = tree->node_size;
+ 	if (!is_power_of_2(size))
+-		goto fail_page;
++		goto fail_folio;
+ 	if (!tree->node_count)
+-		goto fail_page;
++		goto fail_folio;
+ 	switch (id) {
+ 	case HFS_EXT_CNID:
+ 		if (tree->max_key_len != HFS_MAX_EXT_KEYLEN) {
+ 			pr_err("invalid extent max_key_len %d\n",
+ 			       tree->max_key_len);
+-			goto fail_page;
++			goto fail_folio;
+ 		}
+ 		break;
+ 	case HFS_CAT_CNID:
+ 		if (tree->max_key_len != HFS_MAX_CAT_KEYLEN) {
+ 			pr_err("invalid catalog max_key_len %d\n",
+ 			       tree->max_key_len);
+-			goto fail_page;
++			goto fail_folio;
+ 		}
+ 		break;
+ 	default:
+@@ -121,12 +153,15 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 	tree->pages_per_bnode = (tree->node_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+ 
+ 	kunmap_local(head);
+-	put_page(page);
++	folio_unlock(folio);
++	folio_put(folio);
+ 	return tree;
+ 
+-fail_page:
++fail_folio:
+ 	kunmap_local(head);
+-	put_page(page);
++put_folio:
++	folio_unlock(folio);
++	folio_put(folio);
+ free_inode:
+ 	tree->inode->i_mapping->a_ops = &hfs_aops;
+ 	iput(tree->inode);
+diff --git a/fs/hfs/extent.c b/fs/hfs/extent.c
+index 4a0ce131e233..580c62981dbd 100644
+--- a/fs/hfs/extent.c
++++ b/fs/hfs/extent.c
+@@ -71,7 +71,7 @@ int hfs_ext_keycmp(const btree_key *key1, const btree_key *key2)
+  *
+  * Find a block within an extent record
+  */
+-static u16 hfs_ext_find_block(struct hfs_extent *ext, u16 off)
++u16 hfs_ext_find_block(struct hfs_extent *ext, u16 off)
+ {
+ 	int i;
+ 	u16 count;
+diff --git a/fs/hfs/hfs_fs.h b/fs/hfs/hfs_fs.h
+index a0c7cb0f79fc..732c5c4c7545 100644
+--- a/fs/hfs/hfs_fs.h
++++ b/fs/hfs/hfs_fs.h
+@@ -190,6 +190,7 @@ extern const struct inode_operations hfs_dir_inode_operations;
+ 
+ /* extent.c */
+ extern int hfs_ext_keycmp(const btree_key *, const btree_key *);
++extern u16 hfs_ext_find_block(struct hfs_extent *ext, u16 off);
+ extern int hfs_free_fork(struct super_block *, struct hfs_cat_file *, int);
+ extern int hfs_ext_write_extent(struct inode *);
+ extern int hfs_extend_file(struct inode *);
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+2.39.5
+
 
