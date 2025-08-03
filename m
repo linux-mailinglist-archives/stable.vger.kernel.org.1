@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-165895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190BCB195EA
-	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 23:22:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0D2B195EC
+	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 23:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92FEA1893EB4
-	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 21:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E982917400A
+	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 21:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D71E224228;
-	Sun,  3 Aug 2025 21:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DCF22128B;
+	Sun,  3 Aug 2025 21:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czHGulkZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZxB3MPSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272FA2040A8;
-	Sun,  3 Aug 2025 21:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761762040A8;
+	Sun,  3 Aug 2025 21:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754256045; cv=none; b=C3FmezNXprqEqLszGMTvpfpyB5ZIdxkPwuW1dG+GzCHGtGF7XGDyN3bfiva+EB6gyez+RsPNJygGs8YSA17R/JygpgCVkrjQfWTSWhajNnmuIonnk5SOiWJN7Zj5lhNWZ7sVPKKBm2wg8JbAxoVLAqzdJ3bxENiT2Jj1SiYHS+U=
+	t=1754256047; cv=none; b=sw8+Vjgzyof9/uIswH/FWqDnWPnwFqpkHQCd8AN1uI4dmYjbdTJnQN4hTRFDT6vpmh07/gvQ/fhcpJEIukiVnoqHZZPxY/kyIUqT91gDMUjU4WSucLnXFsEWzwk3rv/2MpFFolRTrucdiBWWRAmQ2P4wQ4+Y7fb2tiMQGnf+0lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754256045; c=relaxed/simple;
-	bh=2LK/g5UpKAcQvdGs5mw3rovHeY79/5O62YuslKEy0lY=;
+	s=arc-20240116; t=1754256047; c=relaxed/simple;
+	bh=UBfCqoqkQyFC0IiMnxiGWu3jxj/5tEPPhUJZWmfOVR4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bV/N5z5qnM3VStCKE32144GrzZCUENmg2vZ1h4QIvZogRr/rWqI/3Fsm6r+/+u9rEnS1VdXfoNhMm3IOlUr4EtKB48tuF9xj4QgbnvXURyO3SsTHui70H/B6Rx1JyAUquG+u6/ep+wY9wU1p9FXmSzqElU6W014Pze+t9/lT4Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czHGulkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F626C4CEF8;
-	Sun,  3 Aug 2025 21:20:43 +0000 (UTC)
+	 MIME-Version; b=q2ZcQG2CjyzYNOxGtXK0AWWV/o3nqOfzZefmSKd2KTkk98BAEmzH+y6k087fyquLxk72S6kTybdSPvytM1ULUKw6QhdXH7Q0QwOC5iTffMDtVGitHoMaFhMQA78ua9UaWyBSaLR27VuNhzHzmcTx+Epq5GeHsSc+FTOl0rlCWPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZxB3MPSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCD6C4CEFF;
+	Sun,  3 Aug 2025 21:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754256045;
-	bh=2LK/g5UpKAcQvdGs5mw3rovHeY79/5O62YuslKEy0lY=;
+	s=k20201202; t=1754256047;
+	bh=UBfCqoqkQyFC0IiMnxiGWu3jxj/5tEPPhUJZWmfOVR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czHGulkZlI2Ow5T9AOhqD69SFd6EQA02fcuwu2960qeGueSdJas8fawXcsA7XXTnD
-	 f1JZLhssiiWdiTUPKfoOER1q0XhPCpc6h67+EALxv9fL88DL/FXRy1z28s+lwK9Gx4
-	 HdkmXb/gPn6um9ZsaOY7UvOqoU1Y+cc45/YX3c3vDQuNNkTyFhbKQ0tDUh1JYXdlgG
-	 VrN2YU7Rh+dOhOVqChg9BhOhksYtE/MFut2YCQteCbslftUQqsF+uZJC/CtZbTUQe0
-	 EaJtIxCU2dxT2kas1VAZtgjLBq8+K5PBi/bFr22tVwdirfZE+cVC8xKLNCZnS7cnYM
-	 TxfFG38UBQ6Tw==
+	b=ZxB3MPSyKM/Xpig0KwP4zoAF4Av6NrDNQZayBmnkp//wSiEVI0uCzKZxY0Lr/VDUO
+	 bxeJkaGFEdxEBPr/Mtfg3l/i5lMl7ZTioHSh1Tc609MSeflPbmK9Ar2AHOts3116gT
+	 CYWiXNUwJCjAuO8pD3mr8aUH4Yef9UKnT76fQoBZoSeyxvHmE1Y1cy3r/0gR0iSFyy
+	 L52e2mzmidk4jMfzWmarDY6toDGEK9Iv6dI92H5sWpYXIDjy/FzQdv/LT55KtalN6Z
+	 VQPhU9cvgV/tOwKeaA1oD9oWWKIvKhzVC6NxHFTVe9lIBUn1P3udrHJhaWmJFZ76Z9
+	 AI/nleX9YuQsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>,
-	frank.li@vivo.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 05/23] hfsplus: don't use BUG_ON() in hfsplus_create_attributes_file()
-Date: Sun,  3 Aug 2025 17:20:12 -0400
-Message-Id: <20250803212031.3547641-5-sashal@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 06/23] arm64: Handle KCOV __init vs inline mismatches
+Date: Sun,  3 Aug 2025 17:20:13 -0400
+Message-Id: <20250803212031.3547641-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250803212031.3547641-1-sashal@kernel.org>
 References: <20250803212031.3547641-1-sashal@kernel.org>
@@ -67,98 +63,97 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.101
 Content-Transfer-Encoding: 8bit
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit c7c6363ca186747ebc2df10c8a1a51e66e0e32d9 ]
+[ Upstream commit 65c430906efffee9bd7551d474f01a6b1197df90 ]
 
-When the volume header contains erroneous values that do not reflect
-the actual state of the filesystem, hfsplus_fill_super() assumes that
-the attributes file is not yet created, which later results in hitting
-BUG_ON() when hfsplus_create_attributes_file() is called. Replace this
-BUG_ON() with -EIO error with a message to suggest running fsck tool.
+GCC appears to have kind of fragile inlining heuristics, in the
+sense that it can change whether or not it inlines something based on
+optimizations. It looks like the kcov instrumentation being added (or in
+this case, removed) from a function changes the optimization results,
+and some functions marked "inline" are _not_ inlined. In that case,
+we end up with __init code calling a function not marked __init, and we
+get the build warnings I'm trying to eliminate in the coming patch that
+adds __no_sanitize_coverage to __init functions:
 
-Reported-by: syzbot <syzbot+1107451c16b9eb9d29e6@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=1107451c16b9eb9d29e6
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/7b587d24-c8a1-4413-9b9a-00a33fbd849f@I-love.SAKURA.ne.jp
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+WARNING: modpost: vmlinux: section mismatch in reference: acpi_get_enable_method+0x1c (section: .text.unlikely) -> acpi_psci_present (section: .init.text)
+
+This problem is somewhat fragile (though using either __always_inline
+or __init will deterministically solve it), but we've tripped over
+this before with GCC and the solution has usually been to just use
+__always_inline and move on.
+
+For arm64 this requires forcing one ACPI function to be inlined with
+__always_inline.
+
+Link: https://lore.kernel.org/r/20250724055029.3623499-1-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
+
+Based on my analysis, here is my determination:
 
 **Backport Status: YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Fixes a Critical Bug**: The commit replaces a `BUG_ON()` that could
-   crash the entire system with proper error handling. The original code
-   at line 175 had `BUG_ON(i_size_read(attr_file) != 0);` which would
-   trigger a kernel panic when the HFS+ filesystem metadata is corrupted
-   or inconsistent.
+1. **Fixes a real build warning/bug**: The commit addresses section
+   mismatch warnings that occur when GCC's inlining heuristics change
+   due to KCOV instrumentation. These warnings indicate potential
+   runtime issues where __init code (which gets discarded after boot)
+   calls non-__init functions, which could lead to crashes if those
+   functions are called after the __init sections are freed.
 
-2. **Real-World Issue**: This was reported by syzbot (a kernel fuzzer),
-   indicating it's a reachable code path that can be triggered with
-   malformed filesystem data. The bug report link confirms this is a
-   reproducible issue.
+2. **Minimal and contained change**: The fix is extremely simple - it
+   only changes one function declaration from `static inline` to `static
+   __always_inline` in arch/arm64/include/asm/acpi.h:153. This is a
+   minimal change with very low risk.
 
-3. **Simple and Contained Fix**: The change is minimal - it replaces the
-   BUG_ON with:
-  ```c
-  if (i_size_read(attr_file) != 0) {
-  err = -EIO;
-  pr_err("detected inconsistent attributes file, running fsck.hfsplus is
-  recommended.\n");
-  goto end_attr_file_creation;
-  }
-  ```
-  This is a straightforward conversion that maintains the same logic but
-  handles the error gracefully.
 
-4. **Prevents System Crashes**: BUG_ON() causes a kernel panic, which is
-   particularly severe. Converting it to return -EIO allows the system
-   to continue running and provides users with actionable guidance (run
-   fsck.hfsplus).
+4. **Prevents build regressions**: Without this fix, enabling KCOV
+   instrumentation could cause build failures or warnings in stable
+   kernels, which would be a regression for users who need to use KCOV
+   for testing.
 
-5. **Low Risk of Regression**: The change only affects error handling
-   when filesystem corruption is detected. It doesn't alter normal
-   operation paths and follows established error handling patterns in
-   the kernel.
+5. **Well-understood issue**: The commit message clearly explains the
+   root cause - GCC's fragile inlining heuristics that change based on
+   optimizations/instrumentation. The solution (__always_inline) is a
+   well-established pattern in the kernel for forcing inlining.
 
-6. **Follows Stable Tree Rules**: This is a classic example of a stable-
-   worthy fix:
-   - Fixes a real bug (system crash on corrupted filesystem)
-   - Small, easily reviewable change
-   - No new features or architectural changes
-   - High benefit (prevents crashes) with minimal risk
+6. **No functional change**: The change only affects compilation
+   behavior by forcing inlining. The actual runtime behavior remains
+   identical - `acpi_get_enable_method()` still calls
+   `acpi_psci_present()` (marked __init) and returns the same values.
 
-The commit message clearly indicates this addresses filesystem
-corruption scenarios where "the volume header contains erroneous values
-that do not reflect the actual state of the filesystem," making it an
-important robustness improvement for stable kernels.
+The specific code change shows `acpi_get_enable_method()` being changed
+from `static inline` to `static __always_inline`. This function calls
+`acpi_psci_present()`, which is marked `__init` (as seen in
+arch/arm64/kernel/acpi.c:110). Without forced inlining, GCC might not
+inline `acpi_get_enable_method()`, resulting in non-__init code calling
+__init code, triggering the section mismatch warning.
 
- fs/hfsplus/xattr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+This is exactly the type of targeted, low-risk fix that stable trees are
+meant to include.
 
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index f7f9d0889df3..d5fd8e068486 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -172,7 +172,11 @@ static int hfsplus_create_attributes_file(struct super_block *sb)
- 		return PTR_ERR(attr_file);
- 	}
+ arch/arm64/include/asm/acpi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+index a407f9cd549e..c07a58b96329 100644
+--- a/arch/arm64/include/asm/acpi.h
++++ b/arch/arm64/include/asm/acpi.h
+@@ -150,7 +150,7 @@ acpi_set_mailbox_entry(int cpu, struct acpi_madt_generic_interrupt *processor)
+ {}
+ #endif
  
--	BUG_ON(i_size_read(attr_file) != 0);
-+	if (i_size_read(attr_file) != 0) {
-+		err = -EIO;
-+		pr_err("detected inconsistent attributes file, running fsck.hfsplus is recommended.\n");
-+		goto end_attr_file_creation;
-+	}
- 
- 	hip = HFSPLUS_I(attr_file);
- 
+-static inline const char *acpi_get_enable_method(int cpu)
++static __always_inline const char *acpi_get_enable_method(int cpu)
+ {
+ 	if (acpi_psci_present())
+ 		return "psci";
 -- 
 2.39.5
 
