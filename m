@@ -1,157 +1,182 @@
-Return-Path: <stable+bounces-165811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB3AB1905F
-	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 00:55:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8338AB192F3
+	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 09:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F3F188F81B
-	for <lists+stable@lfdr.de>; Sat,  2 Aug 2025 22:56:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BABD17581D
+	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 07:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B2D2147EF;
-	Sat,  2 Aug 2025 22:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="T88hOOiW";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Xw9HYj9k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A976323D2A3;
+	Sun,  3 Aug 2025 07:21:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4847E1CD0C;
-	Sat,  2 Aug 2025 22:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869081D5ABA;
+	Sun,  3 Aug 2025 07:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754175351; cv=none; b=ZJPWwCGsVpHbE270eUueyFQUT5E3W62TpVxfAI3jhSjanelq/BG1kAXYdaT9opL7y4S9kKGj2nqEN7pQqAhHl6u4PRDviu4SlKAhwkl6lyJKU5byTWg2GWXukxpAd7UMpzEjNCSk5WDY6SLOd3nHlkASGGstT6XoCbnJ657ovS0=
+	t=1754205713; cv=none; b=Fymkp65blm+Z2//1BVmTQGcJr1DzzOT/zxrrIgIP2rl6p3laC2snmGQND8xAiQvnoYoKQNvX6OszxNnSlIUmfbWZ9ltljd8X9EOqNloqFXS7MPPQepP5lHOY0GIuCanPjvqsmJXp9cW87zULMLJz89AhR/RrFGuHXdcVICOt2EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754175351; c=relaxed/simple;
-	bh=mcoIeUhDbvv3rRGcTLHi9T32RBnZncjOp7HbE6nEJds=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IpI4ZlBduznkI2bsMqLpPqc6WB29YtoUsNLQrCQA0gqbpSU5ES46+y1990CWa18FbnWxjBqkwgDzezlIuGam0xuq/OrtpvdJRYm3rfRWyw3hpG/Px8MqcvTRg8PZCBzxoh7sCLBaB5+/KUmOYprLHqE75xDtUqiS5ds9lhePLfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=T88hOOiW; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Xw9HYj9k; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4bvdTH39p8z9sNw;
-	Sun,  3 Aug 2025 00:55:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1754175347;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2B/OQg3iHvjm61qBBm/qDHwD74+4PFBfEeYUWA+yqmw=;
-	b=T88hOOiWcUhMfWgmrwZ2G0s/qIfvr4rWc9uY3NuNy5NYNaBxKcRJ2OfCREICTL/Gn6xV4L
-	XJffPItBEgy5TduXobppqtouc/AogN3g6E4LFenJoEjYvFZnr1P54I/ocgk9UraN6bAIk6
-	EJJMQRXmt9jduWg3SK0S3/8m9StwEvs9kDtemz25Ocd06ai0TaGBPPLbgBiyKnvG213jhb
-	2x+Pp++/Y2L69mAyS2kO/y5axjUObUybvlHUvyCpSGtKhrGj9l64JbzhePJJE7q3NDX0jl
-	pX4CuH5DUSfhwB5FE6l5gLtgLgI+aYm/jZbjSaNuANBvEcfqgD9DxgT8zA72cA==
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1754175345;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2B/OQg3iHvjm61qBBm/qDHwD74+4PFBfEeYUWA+yqmw=;
-	b=Xw9HYj9kmhEWcmumOuBUXlhPeZHsPsev23vPJwdBfdvVAY4qIfy/6BCC/8CnnoUxNoOWOm
-	BRfw3KDJg39JR3x99RK76KuL5oUZI/T5z3kfZxpgmnWbXdLcBCkXQc7gTSIXgXYdZcMZxi
-	o9WN4Xxpa0Km/NvcQPnj+M9M1c1UJewdNS7JJ84Z9Hm0pW32Kclxf/Jq+vQlrfSc0VyAow
-	f4s9A05CZ2pp0m0VX6y4iP4XhNMVeE2s468TmtmKG3B7kfwSoMV9Tqzq20X6sgctJSeV+H
-	C3/6jjXLrBj6dWIzffxhC553JVb1e8lxkCFmyPcVwTVmLveE/KxxdpeZzKZwrA==
-To: linux-usb@vger.kernel.org
-Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	s=arc-20240116; t=1754205713; c=relaxed/simple;
+	bh=bcY2L+w2W3FD7OVys+ViD2p8bbkemX9jfFW7WXsVmns=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P6hCHvQnZO3MkVCOaROf70PR0SCVZavuTYo3NB+yNHcrK2v72liFJ59A64lZ/klR6pIdwd9ocsa5y05KTi7Ow5zyQDBft4aqjXVfvz4c/QCYMe7jDY8SlxWoV/fs/mKREpAT9+XcCbW4i8p3jDsJKr/+qJIsljN448vZmb0784o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-32130f6cfbbso39978a91.0;
+        Sun, 03 Aug 2025 00:21:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754205711; x=1754810511;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jFUScgwG+xBWsWyWWaKRGCTrL7i264F4pYGwsVBK3Co=;
+        b=FMCiEV3JI81pOdyT1TAddg4IeNdB3cQhijjyJLJtprQbLc8UhHstBjKFUA12CiZIlb
+         e0N9+P6C3/VmFfqVSapcYkpJZlooH3HNXPGqMgqHeaFkWLpnjTwRgeo8tlHQJjkueEIZ
+         8RlVc5056ZUQRPt21dX8gNtmLn0WW4HWKzJH7Rl8szBP2ar9P1moNB36E1R9C9aCMCCh
+         Qt+Kce4r6ocP0ZWL91XYt4vryPO8n8Vg7Pep8SwVqvRwp3ta3SvAFSlaEz93lCKHzlBt
+         K5352OpSooAR1/WdhjjWVFxPpv6txIrvxc6nWPZarllMlRaWDE2ZYQ21Gi7mRX3BYOxB
+         5FGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJW4xDBU+eyzETFy1i2tUqoB7dyJ4MWRv3W/S447lZw4ZvzoaPjsyCyw65aNjecpoH1iDdt4kKjAQ0hHc=@vger.kernel.org, AJvYcCX3Vbplg/71dBCZ4HLnaYeggzMptL5d5HqnyuLiN86kmaTlXK4ZlyIlMyn9NnxexSSC0Oyuhxo/@vger.kernel.org, AJvYcCXRSzBUHuKKMVgVgxKh15wYL1K9eERWVbfkJ6UZJs3UaVofVNfey58RRl3XTiK+ofCcAphINl51kQOU@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJCKo+5eYbGEfy3vmNlKm8hFcdB/INgycvfWIqgnQJ3TQImc4o
+	ZeNEmcfHOWOeR8093LxfFov5hAEA402FycbeN+3fSDHSAy7NgAfL4vp9
+X-Gm-Gg: ASbGncvvz9rHCd9GQenUlbeexyfPiaO1uPyEwWa+c823pD+CYVsXuYHRRD5jW+xAYa1
+	6kPGR+vUNZv9BLKRQZKAdUXifllPIWgDshxJ4t7H6iuBlbhzzEOf8ER1UYA7aIzJp0G865Ldr3m
+	zny2LzUzy2HgCKyPPvRIKY10w8FF37hbd6dRJGoR/qEQN//rIqgB8hbneB4Z5XKzWeuPa7VeyDK
+	37Nnm1oSjzk7n/L1lhEPIgsElFehHiO5tn/G4uJdFe7Ukj1VnZjqbrbrI6I4Ps8HsXPPxOOWeGu
+	fAEokTN2KoHYwS/szMTNMgWW4FuR7i2sC376ZyT9hUIXR/9RNXCgrDFRRogUjQLFPYo1nJCSrAh
+	baYQhbUv+ld6b
+X-Google-Smtp-Source: AGHT+IHAx1g1rmU3WmTPsV4DTQv66chU6qy6HWfVYFxspZDp1m7ON0mbZQ/tEfo0w0NjbV8mHzECfA==
+X-Received: by 2002:a05:6a20:5484:b0:203:cb2e:7a08 with SMTP id adf61e73a8af0-23df90a2a4bmr3470080637.5.1754205710800;
+        Sun, 03 Aug 2025 00:21:50 -0700 (PDT)
+Received: from localhost ([218.152.98.97])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b423d2f4fcesm4517004a12.33.2025.08.03.00.21.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Aug 2025 00:21:50 -0700 (PDT)
+From: Yunseong Kim <ysk@kzalloc.com>
+To: Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Byungchul Park <byungchul@sk.com>,
+	max.byungchul.park@gmail.com,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	ppbuk5246@gmail.com,
+	linux-usb@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	syzkaller@googlegroups.com,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v2] usb: renesas-xhci: Fix External ROM access timeouts
-Date: Sun,  3 Aug 2025 00:55:20 +0200
-Message-ID: <20250802225526.25431-1-marek.vasut+renesas@mailbox.org>
+	Yunseong Kim <ysk@kzalloc.com>
+Subject: [PATCH v3 0/4] kcov, usb: Fix invalid context sleep in softirq path on PREEMPT_RT
+Date: Sun,  3 Aug 2025 07:20:41 +0000
+Message-ID: <20250803072044.572733-2-ysk@kzalloc.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: bd15e82ba860b769c05
-X-MBO-RS-META: keskpoiuodqs9u55jk6iutuoijzn9ihr
 
-Increase the External ROM access timeouts to prevent failures during
-programming of External SPI EEPROM chips. The current timeouts are
-too short for some SPI EEPROMs used with uPD720201 controllers.
+This patch series resolves a sleeping function called from invalid context
+bug that occurs when fuzzing USB with syzkaller on a PREEMPT_RT kernel.
 
-The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
-the current timeout for Sector Erase issued by the controller before
-Page Program in renesas_fw_download_image() is also 100 ms. Neither
-timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+The regression was introduced by the interaction of two separate patches:
+one that made kcov's internal locks sleep on PREEMPT_RT for better latency
+(d5d2c51f1e5f), and another that wrapped a kcov call in the USB softirq
+path with local_irq_save() to prevent re-entrancy (f85d39dd7ed8).
+This combination resulted in an attempt to acquire a sleeping lock from
+within an atomic context, causing a kernel BUG.
 
-MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
-PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
-= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
-that the maximum time required for Chip Erase opcode to complete is 2 s,
-and for Sector Erase it is 300 ms .
+To resolve this, this series makes the kcov remote path fully compatible
+with atomic contexts by converting all its internal locking primitives to
+non-sleeping variants. This approach is more robust than conditional
+compilation as it creates a single, unified codebase that works correctly
+on both RT and non-RT kernels.
 
-MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
-PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
-(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
-"tCE" indicate that the maximum time required for Chip Erase opcode to
-complete is 3.2 s, and for Sector Erase it is 400 ms .
+The series is structured as follows:
 
-Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
-and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
-to be sufficient for majority of SPI EEPROM chips.
+Patch 1 converts the global kcov locks (kcov->lock and kcov_remote_lock)
+to use the non-sleeping raw_spinlock_t.
 
-[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
-[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
+Patch 2 replace the PREEMPT_RT-specific per-CPU local_lock_t back to the
+original local_irq_save/restore primitives, making the per-CPU protection
+non-sleeping as well.
 
-Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Patches 3 and 4 are preparatory refactoring. They move the memory
+allocation for remote handles out of the locked sections in the
+KCOV_REMOTE_ENABLE ioctl path, which is a prerequisite for safely
+using raw_spinlock_t as it forbids sleeping functions like kmalloc
+within its critical section.
+
+With these changes, I have been able to run syzkaller fuzzing on a
+PREEMPT_RT kernel for a full day with no issues reported.
+
+Reproduction details in here.
+Link: https://lore.kernel.org/all/20250725201400.1078395-2-ysk@kzalloc.com/t/#u
+
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
 ---
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mathias Nyman <mathias.nyman@intel.com>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: linux-renesas-soc@vger.kernel.org
-Cc: linux-usb@vger.kernel.org
----
-V2: Move Cc: stable above ---
----
- drivers/usb/host/xhci-pci-renesas.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-pci-renesas.c b/drivers/usb/host/xhci-pci-renesas.c
-index 620f8f0febb8..86df80399c9f 100644
---- a/drivers/usb/host/xhci-pci-renesas.c
-+++ b/drivers/usb/host/xhci-pci-renesas.c
-@@ -47,8 +47,9 @@
- #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
- #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
- 
--#define RENESAS_RETRY	10000
--#define RENESAS_DELAY	10
-+#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
-+#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
-+#define RENESAS_DELAY			10
- 
- #define RENESAS_FW_NAME	"renesas_usb_fw.mem"
- 
-@@ -407,7 +408,7 @@ static void renesas_rom_erase(struct pci_dev *pdev)
- 	/* sleep a bit while ROM is erased */
- 	msleep(20);
- 
--	for (i = 0; i < RENESAS_RETRY; i++) {
-+	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
- 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
- 					      &status);
- 		status &= RENESAS_ROM_STATUS_ERASE;
+Changes from v2:
+
+	1. Updated kcov_remote_reset() to use raw_spin_lock_irqsave() /
+	   raw_spin_unlock_irqrestore() instead of raw_spin_lock() /
+	   raw_spin_unlock(), following the interrupt disabling pattern
+	   used in the original function that guard kcov_remote_lock.
+
+Changes from v1:
+
+	1. Dropped the #ifdef-based PREEMPT_RT branching.
+
+	2. Convert kcov->lock and kcov_remote_lock from spinlock_t to
+	   raw_spinlock_t. This ensures they remain true, non-sleeping
+	   spinlocks even on PREEMPT_RT kernels.
+
+	3. Remove the local_lock_t protection for kcov_percpu_data in
+	   kcov_remote_start/stop(). Since local_lock_t can also sleep under
+	   RT, and the required protection is against local interrupts when
+	   accessing per-CPU data, it is replaced with explicit
+	   local_irq_save/restore().
+
+	4. Refactor the KCOV_REMOTE_ENABLE path to move memory allocations
+	   out of the critical section.
+
+	5. Modify the ioctl handling logic to utilize these pre-allocated
+	   structures within the critical section. kcov_remote_add() is
+	   modified to accept a pre-allocated structure instead of allocating
+	   one internally. All necessary struct kcov_remote structures are now
+	   pre-allocated individually in kcov_ioctl() using GFP_KERNEL
+	   (allowing sleep) before acquiring the raw spinlocks.
+
+Changes from v0:
+
+	1. On PREEMPT_RT, separated the handling of
+	   kcov_remote_start_usb_softirq() and kcov_remote_stop_usb_softirq()
+	   to allow sleeping when entering kcov_remote_start_usb() /
+	   kcov_remote_stop().
+
+Yunseong Kim (4):
+  kcov: Use raw_spinlock_t for kcov->lock and kcov_remote_lock
+  kcov: Replace per-CPU local_lock with local_irq_save/restore
+  kcov: Separate KCOV_REMOTE_ENABLE ioctl helper function
+  kcov: move remote handle allocation outside raw spinlock
+
+ kernel/kcov.c | 248 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 134 insertions(+), 114 deletions(-)
+
+base-commit: 186f3edfdd41f2ae87fc40a9ccba52a3bf930994
+
 -- 
-2.47.2
+2.50.0
 
 
