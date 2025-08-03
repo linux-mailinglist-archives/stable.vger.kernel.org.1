@@ -1,178 +1,151 @@
-Return-Path: <stable+bounces-165965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF05B19666
-	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 23:25:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC59B196B1
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 00:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5EB33B6B3B
-	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 21:25:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7C41893152
+	for <lists+stable@lfdr.de>; Sun,  3 Aug 2025 22:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969B72236E3;
-	Sun,  3 Aug 2025 21:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10BA1FF7BC;
+	Sun,  3 Aug 2025 22:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avkK870b"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="kdeFDcGP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522ED155CBD;
-	Sun,  3 Aug 2025 21:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716151A9B46
+	for <stable@vger.kernel.org>; Sun,  3 Aug 2025 22:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754256211; cv=none; b=r2Oo3nePr/XMo0acV/CqY5Vrc0mygtpkBRjRqrzvtKTh7D243Az6Ym9dHOAInumIy7Yqku1LR/qvt/w1hva8hDQNq4BupmgorB9E6I5HiwYJky70dJrzQdJGk9umN6ZKH/zduM2n5LAD/JE76TJzz4/207TbT1+2zEOFdjc8kSA=
+	t=1754259504; cv=none; b=OyNtaaf3qbDyU8arwQwWwzJY8hMVfRO2V5YVyNxvuFjxOL9Ia9ES0TaS0YJTeCD2amX05ZIhM0CYh4F0ksq4aeP+uW8Vh16eNJY0IApAhAeosczI7fI01klamGDtPURJ9A5HI6Zmqbfwxpbl4zF6KUM1orxtXaPUVzxR/bWehNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754256211; c=relaxed/simple;
-	bh=ypW0rxu6CPke5sHwiG6FaiHwUEHIiqglPxR7OI4ZONk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MfKK+EX6ulXX3KnL70eh26s8CTEVDJ69RJi3f3HlhujUmsWMGlyJ0hL22NHZ++o9kFjVJNQnpDNYqabz44Izij36Hw4aCguY3cZ1nOHrooY/HmMjofTzkl4FULGu+YWPRsWwxGlPadtV45XNxeMfrMd0ZEHj3XoTVpZYJoctn3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avkK870b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA22C4CEF0;
-	Sun,  3 Aug 2025 21:23:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754256210;
-	bh=ypW0rxu6CPke5sHwiG6FaiHwUEHIiqglPxR7OI4ZONk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avkK870bD3f7OG2qsyezVfMu4ZYZMj4UJuM/FGfNe/gpLyawlwiSdLIx4gKAXvyBn
-	 n1rz4ZpVcNE/pP/RmvKd2xE8kFvOZORw9jnHUz2IqpEyMfrgRt8726AYDEG+to4Wum
-	 w4d8oq5A/WiBLkWCqInDNOuG7DfwOMMrSOvpErc7NjX578hWeVPSy6vx0HLIjYwNpg
-	 7v0lyqkStGL49diCarbzsVDwFwLzLrZwryApN1CEX/P6kkZIIO4K0E8iSWgd6VODP9
-	 bgV+gbzvH4aq4CADy4COweofVIE/iLq6Nh3bD6U+Fqem/WaSUQQ68ff52Di2DIH3hH
-	 qTf/lMa5QdguA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 9/9] securityfs: don't pin dentries twice, once is enough...
-Date: Sun,  3 Aug 2025 17:23:09 -0400
-Message-Id: <20250803212309.3549683-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250803212309.3549683-1-sashal@kernel.org>
-References: <20250803212309.3549683-1-sashal@kernel.org>
+	s=arc-20240116; t=1754259504; c=relaxed/simple;
+	bh=6v3dSrUtxjSI6fSxHvul9rk5ElTh3XaGpO430BjOk6s=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=EuakJBzSyuItyef6e4EhRMol9tmRYUAwCSlMMiY5mDbdL0/5Ixl1o987Cy/fBQoA2fVrCyhYEDiTFMfOKRWk1vLsHyG5xERK/KFEyoteS53iy5PPqiPtTGqTnNm8mQfiTMT1PnJmhozOohtI8BhpHyDUYZNCwrEkWVBGnF7Y/zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=kdeFDcGP; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 5C7EA2C0132;
+	Mon,  4 Aug 2025 10:12:49 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1754259169;
+	bh=6v3dSrUtxjSI6fSxHvul9rk5ElTh3XaGpO430BjOk6s=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=kdeFDcGPqFal3YMmbfbl9sDYkk8KJYUjjpikYav4ERVgL60ftQEwOjg+LYELfrOmX
+	 0jtnjZkPLL8bnJRy9vySkKDs0KuOPVMaZeuXjfywWKxqOo6dv4yZbof+slV+8kVbR8
+	 TuU/PLMKyRhkN41DBGs9XYCg2OPbRzjk5GVEs2g6BLM3D4eQAB89i6TOJfkQxtkRRt
+	 N/N6w3f/FolGGZxJhct2ddM77viMUOVTPWyRxIM+I7rPtl+ja/Y0E4jztS6sTP6E2P
+	 ogDcB/bD/TYRE4m8n2My+PBrfP4U2qrjGLLb2ysecDuYIEw2TjPlURk5VBuLcxbApq
+	 RxW13qxz/kjag==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B688fdee10002>; Mon, 04 Aug 2025 10:12:49 +1200
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 4 Aug 2025 10:12:49 +1200
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1544.014; Mon, 4 Aug 2025 10:12:49 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Sven Eckelmann <sven@narfation.org>, Andi Shyti <andi.shyti@kernel.org>
+CC: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jonas Jelonek
+	<jelonek.jonas@gmail.com>, Harshal Gohel <hg@simonwunderlich.de>, "Simon
+ Wunderlich" <sw@simonwunderlich.de>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 0/4] i2c: rtl9300: Fix multi-byte I2C operations
+Thread-Topic: [PATCH 0/4] i2c: rtl9300: Fix multi-byte I2C operations
+Thread-Index: AQHcA5jAuVD1sLz1K0OZF7KtVWyQTbRQtyEA
+Date: Sun, 3 Aug 2025 22:12:49 +0000
+Message-ID: <cfa3e1c5-c6fc-4bab-87c0-58e857eea2ad@alliedtelesis.co.nz>
+References: <20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org>
+In-Reply-To: <20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A8A68D641B31824492ACEED1F6FB68C7@alliedtelesis.co.nz>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.296
-Content-Transfer-Encoding: 8bit
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=dtt4CEg4 c=1 sm=1 tr=0 ts=688fdee1 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=75chYTbOgJ0A:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=svCTMBYCAAAA:8 a=Jhrh_n8qSaZ8Rdda_fAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=lbQUARmhvTNeubMQCRFT:22
+X-SEG-SpamProfiler-Score: 0
 
-From: Al Viro <viro@zeniv.linux.org.uk>
-
-[ Upstream commit 27cd1bf1240d482e4f02ca4f9812e748f3106e4f ]
-
-incidentally, securityfs_recursive_remove() is broken without that -
-it leaks dentries, since simple_recursive_removal() does not expect
-anything of that sort.  It could be worked around by dput() in
-remove_one() callback, but it's easier to just drop that double-get
-stuff.
-
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Now I have a clear understanding of the issue. Let me analyze this:
-
-**YES**
-
-This commit should be backported to stable kernel trees. Here's the
-extensive analysis:
-
-## Analysis of the Double Dentry Reference Issue
-
-The commit fixes a clear bug in securityfs where dentries are being
-pinned twice:
-
-1. **The Bug**: In `securityfs_create_dentry()` at line 162, there's a
-   `dget(dentry)` call immediately after `d_instantiate(dentry, inode)`.
-   This creates an extra reference count on the dentry that is never
-   properly balanced.
-
-2. **Impact on `securityfs_remove()`**: The traditional
-   `securityfs_remove()` function does call `dput(dentry)` at line 309,
-   which would balance the extra `dget()`. However, this only happens
-   for the simple remove case.
-
-3. **Critical Impact on `securityfs_recursive_remove()`**: The newly
-   added `securityfs_recursive_remove()` function (added in commit
-   7138679ff2a2) uses `simple_recursive_removal()` which expects normal
-   dentry reference counting. The `simple_recursive_removal()` function
-   in fs/libfs.c:
-   - Takes its own reference with `dget(dentry)` at the beginning
-   - Properly releases references with `dput()` calls throughout its
-     execution
-   - Does NOT expect the dentries to have extra references
-
-4. **The Leak**: When `securityfs_recursive_remove()` is called, the
-   extra reference from the `dget()` in `securityfs_create_dentry()` is
-   never released because:
-   - `simple_recursive_removal()` only releases the references it takes
-   - The `remove_one()` callback only calls `simple_release_fs()` but
-     doesn't do any `dput()`
-   - This results in dentries being leaked with a refcount that never
-     reaches zero
-
-5. **Pattern Consistency**: Looking at similar filesystem
-   implementations like debugfs (fs/debugfs/inode.c), they do NOT add an
-   extra `dget()` after `d_instantiate()`. The pattern is simply:
-  ```c
-  d_instantiate(dentry, inode);
-  return end_creating(dentry);
-  ```
-  No extra reference is taken.
-
-6. **Backport Criteria Met**:
-   - **Fixes a real bug**: Memory leak of dentries when using
-     `securityfs_recursive_remove()`
-   - **Small and contained**: Single-line removal in two locations
-   - **No side effects**: Removing the extra `dget()` brings the code in
-     line with standard VFS patterns
-   - **Low regression risk**: The fix makes securityfs consistent with
-     other similar filesystems
-   - **Important for stability**: Memory leaks in kernel filesystem code
-     can accumulate over time
-
-The commit message clearly identifies this as a bug fix
-("securityfs_recursive_remove() is broken without that - it leaks
-dentries"), and the fix is minimal and correct. This makes it an ideal
-candidate for stable backporting.
-
- security/inode.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/security/inode.c b/security/inode.c
-index 6c326939750d..e6e07787eec9 100644
---- a/security/inode.c
-+++ b/security/inode.c
-@@ -159,7 +159,6 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
- 		inode->i_fop = fops;
- 	}
- 	d_instantiate(dentry, inode);
--	dget(dentry);
- 	inode_unlock(dir);
- 	return dentry;
- 
-@@ -306,7 +305,6 @@ void securityfs_remove(struct dentry *dentry)
- 			simple_rmdir(dir, dentry);
- 		else
- 			simple_unlink(dir, dentry);
--		dput(dentry);
- 	}
- 	inode_unlock(dir);
- 	simple_release_fs(&mount, &mount_count);
--- 
-2.39.5
-
+SGkgU3ZlbiwNCg0KT24gMDIvMDgvMjAyNSAyMjozMSwgU3ZlbiBFY2tlbG1hbm4gd3JvdGU6DQo+
+IER1cmluZyB0aGUgaW50ZWdyYXRpb24gb2YgdGhlIFJUTDgyMzkgUE9FIGNoaXAgKyBpdHMgZnJv
+bnRlbmQgTUNVLCBpdCB3YXMNCj4gbm90aWNlZCB0aGF0IG11bHRpLWJ5dGUgb3BlcmF0aW9ucyB3
+ZXJlIGJhc2ljYWxseSBicm9rZW4gaW4gdGhlIGN1cnJlbnQNCj4gZHJpdmVyLg0KPg0KPiBUZXN0
+cyB1c2luZyBTTUJ1cyBCbG9jayBXcml0ZXMgc2hvd2VkIHRoYXQgdGhlIGRhdGEgKGFmdGVyIHRo
+ZSBXciArIEFjaw0KPiBtYXJrZXIpIHdhcyBtaXhlZCB1cCBvbiB0aGUgd2lyZS4gQXQgZmlyc3Qg
+Z2xhbmNlLCBpdCBsb29rZWQgbGlrZSBhbg0KPiBlbmRpYW5uZXNzIHByb2JsZW0uIEJ1dCBmb3Ig
+dHJhbnNmZXJzIHdlcmUgdGhlIG51bWJlciBvZiBjb3VudCArIGRhdGEgYnl0ZXMNCj4gd2FzIG5v
+dCBkaXZpc2libGUgYnkgNCwgdGhlIGxhc3QgYnl0ZXMgd2VyZSBub3QgbG9va2luZyBsaWtlIGFu
+IGVuZGlhbm5lc3MNCj4gcHJvYmxlbSBiZWNhdXNlIHRoZXkgd2VyZSB3ZXJlIGluIHRoZSB3cm9u
+ZyBvcmRlciBidXQgbm90IGZvciBleGFtcGxlIDAgLQ0KPiB3aGljaCB3b3VsZCBiZSB0aGUgY2Fz
+ZSBmb3IgYW4gZW5kaWFubmVzcyBwcm9ibGVtIHdpdGggMzIgYml0IHJlZ2lzdGVycy4gQXQNCj4g
+dGhlIGVuZCwgaXQgdHVybmVkIG91dCB0byBiZSBhIHRoZSB3YXkgaG93IGkyY193cml0ZSB0cmll
+ZCB0byBhZGQgdGhlIGJ5dGVzDQo+IHRvIHRoZSBzZW5kIHJlZ2lzdGVycy4NCj4NCj4gRWFjaCAz
+MiBiaXQgcmVnaXN0ZXIgd2FzIHVzZWQgc2ltaWxhciB0byBhIHNoaWZ0IHJlZ2lzdGVyIC0gc2hp
+ZnRpbmcgdGhlDQo+IHZhcmlvdXMgYnl0ZXMgdXAgdGhlIHJlZ2lzdGVyIHdoaWxlIHRoZSBuZXh0
+IG9uZSBpcyBhZGRlZCB0byB0aGUgbGVhc3QNCj4gc2lnbmlmaWNhbnQgYnl0ZS4gQnV0IHRoZSBJ
+MkMgY29udHJvbGxlciBleHBlY3RzIHRoZSBmaXJzdCBieXRlIG9mIHRoZQ0KPiB0cmFubWlzc2lv
+biBpbiB0aGUgbGVhc3Qgc2lnbmlmaWNhbnQgYnl0ZSBvZiB0aGUgZmlyc3QgcmVnaXN0ZXIuIEFu
+ZCB0aGUNCj4gbGFzdCBieXRlIChhc3N1bWluZyBpdCBpcyBhIDE2IGJ5dGUgdHJhbnNmZXIpIGlu
+IHRoZSBtb3N0IHNpZ25pZmljYW50IGJ5dGUNCj4gb2YgdGhlIGZvdXJ0aCByZWdpc3Rlci4NCj4N
+Cj4gV2hpbGUgZG9pbmcgdGhlc2UgdGVzdHMsIGl0IHdhcyBhbHNvIG9ic2VydmVkIHRoYXQgdGhl
+IGNvdW50IGJ5dGUgd2FzDQo+IG1pc3NpbmcgZnJvbSB0aGUgU01CdXMgQmxvY2sgV3JpdGVzLiBU
+aGUgZHJpdmVyIGp1c3QgcmVtb3ZlZCB0aGVtIGZyb20gdGhlDQo+IGRhdGEtPmJsb2NrIChmcm9t
+IHRoZSBJMkMgc3Vic3lzdGVtKS4gQnV0IHRoZSBJMkMgY29udHJvbGxlciBET0VTIE5PVA0KPiBh
+dXRvbWF0aWNhbGx5IGFkZCB0aGlzIGJ5dGUgLSBmb3IgZXhhbXBsZSBieSB1c2luZyB0aGUgY29u
+ZmlndXJlZA0KPiB0cmFuc21pc3Npb24gbGVuZ3RoLg0KPg0KPiBUaGUgUlRMODIzOSBNQ1UgaXMg
+bm90IGFjdHVhbGx5IGFuIFNNQnVzIGNvbXBsaWFudCBkZXZpY2UuIEluc3RlYWQsIGl0DQo+IGV4
+cGVjdHMgSTJDIEJsb2NrIFJlYWRzICsgSTJDIEJsb2NrIFdyaXRlcy4gQnV0IGFjY29yZGluZyB0
+byB0aGUgYWxyZWFkeQ0KPiBpZGVudGlmaWVkIGJ1Z3MgaW4gdGhlIGRyaXZlciwgaXQgd2FzIGNs
+ZWFyIHRoYXQgdGhlIEkyQyBjb250cm9sbGVyIGNhbg0KPiBzaW1wbHkgYmUgbW9kaWZpZWQgdG8g
+bm90IHNlbmQgdGhlIGNvdW50IGJ5dGUgZm9yIEkyQ19TTUJVU19JMkNfQkxPQ0tfREFUQS4NCj4g
+VGhlIHJlY2VpdmUgcGFydCwganVzdCBuZWVkcyB0byB3cml0ZSB0aGUgY29udGVudCBvZiB0aGUg
+cmVjZWl2ZSBidWZmZXIgdG8NCj4gdGhlIGNvcnJlY3QgcG9zaXRpb24gaW4gZGF0YS0+YmxvY2su
+DQo+DQo+IFdoaWxlIHRoZSBvbi13aXJlIGZvcm13YXQgd2FzIG5vdyBjb3JyZWN0LCByZWFkcyB3
+ZXJlIHN0aWxsIG5vdCBwb3NzaWJsZQ0KPiBhZ2FpbnN0IHRoZSBNQ1UgKGZvciB0aGUgUlRMODIz
+OSBQT0UgY2hpcCkuIEl0IHdhcyBhbHdheXMgdGltaW5nIG91dA0KPiBiZWNhdXNlIHRoZSAybXMg
+d2VyZSBub3QgZW5vdWdoIGZvciBzZW5kaW5nIHRoZSByZWFkIHJlcXVlc3QgYW5kIHRoZW4NCj4g
+cmVjZWl2aW5nIHRoZSAxMiBieXRlIGFuc3dlci4NCj4NCj4gVGhlc2UgY2hhbmdlcyB3ZXJlIG9y
+aWdpbmFsbHkgc3VibWl0dGVkIHRvIE9wZW5XcnQuIEJ1dCB0aGVyZSBhcmUgcGxhbnMgdG8NCj4g
+bWlncmF0ZSBPcGVuV3J0IHRvIHRoZSB1cHN0cmVhbSBMaW51eCBkcml2ZXIuIEFzIHJlc3VsdCwg
+dGhlIHB1bGwgcmVxdWVzdA0KPiB3YXMgc3RvcHBlZCBhbmQgdGhlIGNoYW5nZXMgd2VyZSByZWRv
+bmUgYWdhaW5zdCB0aGlzIGRyaXZlci4NCg0KVGhhbmtzLiBJIHdhcyBvbmx5IHJlYWxseSBhYmxl
+IHRvIHRlc3Qgd2l0aCBiYXNpYyBlZXByb20gbGlrZSBkZXZpY2VzIHNvIA0KaXQncyBub3QgZW50
+aXJlbHkgc3VycHJpc2luZyB0aGF0IHRoZSBTTUJVUyBzdHVmZiB3YXMgd3JvbmcuDQoNCklzIHlv
+dSBzZXJpZXMgaW50ZW5kZWQgdG8gYXBwbHkgb24gdG9wIG9mIEpvbmFzJ3M/IEknbSB0cnlpbmcg
+dG8gYXBwbHkgDQp5b3VycyBhbG9uZSAoZm9yIHZhcmlvdXMgcmVhc29ucyBoYXBwZW5zIHRvIGJl
+IG9uIHRvcCBvZiBuZXQtbmV4dC9tYWluKSANCmFuZCBJJ20gZ2V0dGluZyBjb25mbGljdHMuDQoN
+CkF0IGEgY3Vyc29yeSBnbGFuY2UgeW91ciBjaGFuZ2VzIGFsbCBsb29rIHNlbnNpYmxlIEknbGwg
+cmVwbHkgd2l0aCBhIA0KcHJvcGVyIHItYnkgd2hlbiBJJ3ZlIGJlZW4gYWJsZSB0byB0ZXN0cyB0
+aGVtLg0KDQo+DQo+IFNpZ25lZC1vZmYtYnk6IFN2ZW4gRWNrZWxtYW5uIDxzdmVuQG5hcmZhdGlv
+bi5vcmc+DQo+IC0tLQ0KPiBIYXJzaGFsIEdvaGVsICgyKToNCj4gICAgICAgIGkyYzogcnRsOTMw
+MDogRml4IG11bHRpLWJ5dGUgSTJDIHdyaXRlDQo+ICAgICAgICBpMmM6IHJ0bDkzMDA6IEltcGxl
+bWVudCBJMkMgYmxvY2sgcmVhZCBhbmQgd3JpdGUNCj4NCj4gU3ZlbiBFY2tlbG1hbm4gKDIpOg0K
+PiAgICAgICAgaTJjOiBydGw5MzAwOiBJbmNyZWFzZSB0aW1lb3V0IGZvciB0cmFuc2ZlciBwb2xs
+aW5nDQo+ICAgICAgICBpMmM6IHJ0bDkzMDA6IEFkZCBtaXNzaW5nIGNvdW50IGJ5dGUgZm9yIFNN
+QnVzIEJsb2NrIFdyaXRlDQo+DQo+ICAgZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1ydGw5MzAwLmMg
+fCA0MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tDQo+ICAgMSBmaWxl
+IGNoYW5nZWQsIDM2IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pDQo+IC0tLQ0KPiBiYXNl
+LWNvbW1pdDogYjlkZGFhOTVmZDI4M2JjZTcwNDE1NTBkZGJiZTdlNzY0YzQ3NzExMA0KPiBjaGFu
+Z2UtaWQ6IDIwMjUwODAyLWkyYy1ydGw5MzAwLW11bHRpLWJ5dGUtZWRhYTFmYjA4NzJjDQo+DQo+
+IEJlc3QgcmVnYXJkcyw=
 
