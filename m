@@ -1,119 +1,138 @@
-Return-Path: <stable+bounces-166456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC66B19EDF
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 11:40:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAF4B19F2A
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 975494E0FEB
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 09:40:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0EC53B35FA
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD8E2417C5;
-	Mon,  4 Aug 2025 09:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840BB24676B;
+	Mon,  4 Aug 2025 10:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YsUTDOp4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYRfldFn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E971EA7CF;
-	Mon,  4 Aug 2025 09:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CA723D2B1;
+	Mon,  4 Aug 2025 10:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754300422; cv=none; b=NZgUQ2ZxD4gyt21Y9p8X3ZjMpdglWkKxJcm1ylBPTFLi5J+CTDUNMJyns+O1gNSFeygUmQrsuqY8agH0JTATKE5ZOMmpgZv6+GBagvt8mAyqZcgFOpTSlQeUzAOOg9cc9NUFVe7iTObyTq/zP23ek6+7LRQPQ6xgVJtRbRrnajk=
+	t=1754301656; cv=none; b=gf2IrscvV6GCPxbv5bbRNCHV0cSkmrD9tEyDSRuWSMe1iHOR2z8lEBDii7GfpKff8jZ43V8wjQ4stNnqF0HX5zU28/nwzTpE5Kf4mvO2KlUh+7NstGaIPwW+uL1x7WZutc19IaZPDRxbs/n2Zz20VcLQVY++12aoqWpOZiDC+10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754300422; c=relaxed/simple;
-	bh=za1PTKsWjFibSErq85AFsMvUwxohoDzwmMSpj4Q7Hog=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ai9Urdo4v6THbCri2AmkQSN9fJOdnYCghw7pcA8Ua28aT1ldgIENy23qGvO2kD7MHQAxnyfNnBuD2oOo55EmH+N1oT8+rqYOsRWc7/AR/mo3zk6v1KSkcflE8lMpXdo4+7KMBfY5jwEnMObSZZ9/fbu9819AO6Sgm9hFvmfaFeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YsUTDOp4; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754300421; x=1785836421;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=za1PTKsWjFibSErq85AFsMvUwxohoDzwmMSpj4Q7Hog=;
-  b=YsUTDOp4IfsO2nIkXxMt5wgurI0C64sXoFlJRWgZfOd4JkIoe0/kau1D
-   VmPkFOpBeADALZyJs3tXY5ko/s1EIwRpxzZVj5i4++2VobB8RTa7lyYRG
-   kc8y8xwLl1Pbd07lm0lGUZ3qA0jDh0u60nwd7Y/q26F8LV4LxtOex67KA
-   ZX1dbMJJTMo9J2tNew9LShzIXYAU1VkPo16khLJqIuD0W3TW9xqonQXEa
-   05SS75B6Iu3hHO1x1UZ9xItv0M0Tgu3K7zoOVaBBv/94gKLc1efoBiYii
-   Ec28F5OmdhgcoRWROC83McNRhNjsSQqViBcku5Xfm0Tdvyk6UqskD2+md
-   g==;
-X-CSE-ConnectionGUID: 2c5pNpAOTO+PjsrkeurmFQ==
-X-CSE-MsgGUID: 2TtQkNpMS3KmimQVO5Vb3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="74142327"
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="74142327"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 02:40:20 -0700
-X-CSE-ConnectionGUID: 7d6dt920SEexhKinLnnNRA==
-X-CSE-MsgGUID: EDZ/GzpIQ52XiYqiFjo+7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="163785264"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO [10.245.245.63]) ([10.245.245.63])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 02:40:18 -0700
-Message-ID: <ccf7c5b0494e46bbf86d45927e6bd130115c50fb.camel@linux.intel.com>
-Subject: Re: [PATCH v4] Mark xe driver as BROKEN if kernel page size is not
- 4kB
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Simon Richter <Simon.Richter@hogyros.de>,
- intel-xe@lists.freedesktop.org, 	dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Date: Mon, 04 Aug 2025 11:40:15 +0200
-In-Reply-To: <20250802024152.3021-1-Simon.Richter@hogyros.de>
-References: <37abb9a1a4fde174a54a9d7868d31b2615df0e47.camel@linux.intel.com>
-	 <20250802024152.3021-1-Simon.Richter@hogyros.de>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1754301656; c=relaxed/simple;
+	bh=C7mKQMp+GxD6RFGH57BJqOHlqmXj4BMLvSGcVzGnIiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gAgR7G0Gidhdf1vw5KxyULCIlHblJCli7Vi7aRuzpCb5J32Hy2+taHSH4A2KABiAiGMyQAc4GD4Nd54lysYT7AhyAkwi8EfZ8KNJb+iPv91pMKkEXIXtp3t+L2+MVFmsYoyVlQXNcQf67zt+3bfECHL6dG+Ov+WFCdxXgOfA8L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYRfldFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3A4C4CEE7;
+	Mon,  4 Aug 2025 10:00:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754301655;
+	bh=C7mKQMp+GxD6RFGH57BJqOHlqmXj4BMLvSGcVzGnIiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WYRfldFnCpEyxVWR6stxBNTdXR0Lp44/oxDX3k8AgGXC9whh0RIg/D0A4uIPzuiYZ
+	 gRQhwVZwyMXSKezqqTj2VpjXlJQZ7u/hxM7C0nwzg6LShAI1N1ppCHd7BmSHAC1qEy
+	 25unaysiin3XB2q+7t8y8dkiPthcCwdtequVbQu7pyKG8lFT9UuanidcOX7IjAeHQp
+	 c4DZ4DyDyvQo28BuOaCTjVyc019U+3zJ/7xMy01+I2foriMhkwk4EtliQWFqRG8Kri
+	 z68mVg72xHp8FZzQhHuqOPuUfwuSAI6sQf4XgxShRHl4tYpzL4FowjXU2usGjKOgEN
+	 JNZ9wJ3M9iMaA==
+Date: Mon, 4 Aug 2025 11:00:50 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linux Netdev Mailing List <netdev@vger.kernel.org>,
+	Linux USB Mailing List <linux-usb@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Armando Budianto <sprite@gnuweeb.org>, gwml@vger.gnuweeb.org,
+	stable@vger.kernel.org, John Ernberg <john.ernberg@actia.se>
+Subject: Re: [PATCH net v2] net: usbnet: Fix the wrong netif_carrier_on()
+ call placement
+Message-ID: <20250804100050.GQ8494@horms.kernel.org>
+References: <20250801190310.58443-1-ammarfaizi2@gnuweeb.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250801190310.58443-1-ammarfaizi2@gnuweeb.org>
 
-On Sat, 2025-08-02 at 11:40 +0900, Simon Richter wrote:
-> This driver, for the time being, assumes that the kernel page size is
-> 4kB,
-> so it fails on loong64 and aarch64 with 16kB pages, and ppc64el with
-> 64kB
-> pages.
->=20
-> Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
++ John Ernberg
+
+On Sat, Aug 02, 2025 at 02:03:10AM +0700, Ammar Faizi wrote:
+> The commit in the Fixes tag breaks my laptop (found by git bisect).
+> My home RJ45 LAN cable cannot connect after that commit.
+> 
+> The call to netif_carrier_on() should be done when netif_carrier_ok()
+> is false. Not when it's true. Because calling netif_carrier_on() when
+> __LINK_STATE_NOCARRIER is not set actually does nothing.
+> 
+> Cc: Armando Budianto <sprite@gnuweeb.org>
 > Cc: stable@vger.kernel.org
+> Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
+> Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
+> Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
 > ---
-> =C2=A0drivers/gpu/drm/xe/Kconfig | 1 +
-> =C2=A01 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
-> index 2bb2bc052120..714d5702dfd7 100644
-> --- a/drivers/gpu/drm/xe/Kconfig
-> +++ b/drivers/gpu/drm/xe/Kconfig
-> @@ -5,6 +5,7 @@ config DRM_XE
-> =C2=A0	depends on KUNIT || !KUNIT
-> =C2=A0	depends on INTEL_VSEC || !INTEL_VSEC
-> =C2=A0	depends on X86_PLATFORM_DEVICES || !(X86 && ACPI)
-> +	depends on PAGE_SIZE_4KB || COMPILE_TEST || BROKEN
-> =C2=A0	select INTERVAL_TREE
-> =C2=A0	# we need shmfs for the swappable backing store, and in
-> particular
-> =C2=A0	# the shmem_readpage() which depends upon tmpfs
-
-R-B still stands.
-
-I've pushed this to drm-xe-next with a Fixes: tag which means it will
-likely end up in Linus' tree the upcoming weekend.
-
-Thanks,
-Thomas
-
+> 
+> v2:
+>   - Rebase on top of the latest netdev/net tree. The previous patch was
+>     based on 0d9cfc9b8cb1. Line numbers have changed since then.
+> 
+>  drivers/net/usb/usbnet.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index a38ffbf4b3f0..a1827684b92c 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -1114,31 +1114,31 @@ static const struct ethtool_ops usbnet_ethtool_ops = {
+>  };
+>  
+>  /*-------------------------------------------------------------------------*/
+>  
+>  static void __handle_link_change(struct usbnet *dev)
+>  {
+>  	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
+>  		return;
+>  
+>  	if (!netif_carrier_ok(dev->net)) {
+> +		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
+> +			netif_carrier_on(dev->net);
+> +
+>  		/* kill URBs for reading packets to save bus bandwidth */
+>  		unlink_urbs(dev, &dev->rxq);
+>  
+>  		/*
+>  		 * tx_timeout will unlink URBs for sending packets and
+>  		 * tx queue is stopped by netcore after link becomes off
+>  		 */
+>  	} else {
+> -		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
+> -			netif_carrier_on(dev->net);
+> -
+>  		/* submitting URBs for reading packets */
+>  		queue_work(system_bh_wq, &dev->bh_work);
+>  	}
+>  
+>  	/* hard_mtu or rx_urb_size may change during link change */
+>  	usbnet_update_max_qlen(dev);
+>  
+>  	clear_bit(EVENT_LINK_CHANGE, &dev->flags);
+>  }
+>  
+> -- 
+> Ammar Faizi
+> 
+> 
 
