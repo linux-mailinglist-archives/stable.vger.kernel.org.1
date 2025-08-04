@@ -1,277 +1,218 @@
-Return-Path: <stable+bounces-166488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D50B1A44D
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:16:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B73B1A4D0
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B16147AFA41
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 14:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B73783AAB94
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 14:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27492701CC;
-	Mon,  4 Aug 2025 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63095272E51;
+	Mon,  4 Aug 2025 14:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jZ0IbITs"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="AtSK/4Xh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042131DED4A
-	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 14:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78993271A94
+	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 14:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754316985; cv=none; b=U+xhOUgtoK3RsoYRiUjCoL2prj7HKWibHUpTazHH+zi939AgwTzftAc7aLAw68uFKlbtVxOP7mtRZ2MTrAmlFEVx+HFyuR8+Slz3pIvCLzHwxSEirs6y2rWZytIpCEQqFUiU6GeifcGInegSU+HB3YnJGR6LGLq5P0uIXQ3oXaw=
+	t=1754317449; cv=none; b=cYRyz3b1gF19Knj6N39vcDQv4N+DNSBMs9Ugp/heqbRpashHDM7p8WzUOs1Q4uPmys6dwL/VK3ppJLn7GycZgEwgtdLnuEY/D3sherz1D2+qem9Hs+p1wWSh2cyDQoGlwv2+sbyGK+OVAkjXhw0BizSzpOkLquTjkvHP+EcLwBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754316985; c=relaxed/simple;
-	bh=bofZFfKMz0IK9tlZKzv5le7rnJSvhGXYGjWsicjlkTw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o9uXyT70VaNR0bAmFbZUM3CMQ6K7hoJbYq+gX1qa5/sKmtcrF2gDlyTHjpJ1Xk8dOnnOKLve7HkKpoO75YxAd3fzD+gU9AnVqyQClrFqyQT1wJgiXs7ZwejyxNkbE71C0yAl9CQA63kqAjEi/oda5lUriSIu7nzIDnlbwEQQ+rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jZ0IbITs; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-24050da1b9eso5218785ad.3
-        for <stable@vger.kernel.org>; Mon, 04 Aug 2025 07:16:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754316983; x=1754921783; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TmvTMUm/ICs/ahFcRTrwKfKZlA+J5p75DnclZMp8JVE=;
-        b=jZ0IbITsKtLyu81bmaM2IwE0hqHOlP9uHN8v6NIWo/D6/5cFKLjR5FUulJgkXLXQlq
-         V9F6ujEuFN0y6gEWRhwNkc+j/4fRigQArglXXRvZLAuqToFemraLaCkdHPY9RHsiubq7
-         mo3n917v60v6S68vgSZXRmlVwl+cukBPPYmCEzyJFn0Waqod5W0jIQ2JLZry6RUiNiT0
-         uI7cNawQOjUGMFMQS8DsvY4ZTI4D6gYfNNRmHMlqf9orcCe1QHHPg8euzl5NYvCoB5a1
-         v+Yg1kLaDT3U2t9099C7Biu1Jj8C5cFuIO6im+30A/wN61EfMF59cLQuwsG5mHK24+5l
-         L3Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754316983; x=1754921783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TmvTMUm/ICs/ahFcRTrwKfKZlA+J5p75DnclZMp8JVE=;
-        b=CjdWNcf/uT6dB/LZSLqw5ZBr7qIr3l3DgFNzpIf7GErn2e3NErRTrG7qXqJTiD6Ei/
-         CvVP4gOEI0pT1NJVbzuzats0fk0k/JvjL6tdDAdsPPXYf4HyJaPmt9/B81iXu+dF+Arq
-         sBt0yjrF42fXIuUliPDAcsgNBv+ZELIWhbAsx8e+g3zWAmYn6JjWn94BgG+wgZg6u7lQ
-         k1o+gqVZ06/HOUR5eLaxhwln1m51kELITiFnDjh/0sRoFXYwPfgMlRt5gIkw90f8AAcH
-         LjsCbOwnr8iX0UoiyuvSk3McMD1x8GCZS8PEmuqSOuU8HCbpGhzhHZSz7AuQr6cA49Cm
-         u8Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnWQrEMBNtMgoR1axT6ZcL+VP9933eIvOQ3mqANpZdNAMeUf4zl5M078i6chDIIPkpvpD8kNM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS2pyCqBiKCqeL1Pjk7HiQbLS5fGeb4zDEQKaOhZ2R9nndeOhP
-	6rkTUrLiQK4JA5Y0AFeIyU/k+KWhvDHVYg+RC+hxTcMmhjYvESbZhAmUG6x8ixqtnx9MjgQ8JaH
-	ZwRTjC355qQCDhHLyC5b0NAhM900+U/Y=
-X-Gm-Gg: ASbGnctrWLBCGs7UMawF4HNVhWd6GgU6tvJx8Ny7PHsWXgDhjbNenDmMbS6K7wCiaXo
-	K4IuscbPDT8XX2vgMa+HVVpcLpSgxDRzojEt+FaYRi5yRh/3fjnh9ToaZcCW4QZdF0OfYVZTi2Z
-	Ol+yXQpkfn5umJ5gjY39zaDopT1IToXfRz6yG+1S5oQJ9mSGdZZzL1D/x9zeANqOmxczuP6c332
-	W0PMHgf
-X-Google-Smtp-Source: AGHT+IEq9ico+45e/lWfZTSuRxPqOjzXQJMO2yAHWmdAa65USJLAotkgDCF+yqF+5AE4SZTACL6/e7N5WK72/jKfKNA=
-X-Received: by 2002:a17:902:ef4e:b0:240:729c:a022 with SMTP id
- d9443c01a7336-24246fef45bmr57133095ad.11.1754316983052; Mon, 04 Aug 2025
- 07:16:23 -0700 (PDT)
+	s=arc-20240116; t=1754317449; c=relaxed/simple;
+	bh=SFofe2Xv/bnOocDqkJFJ3ql2ivs8XBYgiF2wMjcRYHY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=PYJMvqFXo3Img7m0SG7evaq+SYufCiTIVz6fqEQWaUvL8e/rCvYmp3TtW0iiC/eu8UAypk/j1u0ttEdPc1xbNG972aSRFSBisBVo1u6hzqJLwJ2OvLOEhcl6EgxiOlis7L2M1RVQ9iSe+1v7bOZrYZOef466qUlj8R5yb/FlYpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=AtSK/4Xh; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250804142358epoutp021d6ca7e2190ae009c91c2b62a405d3cb~YlmpwSVqZ2833728337epoutp02h
+	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 14:23:58 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250804142358epoutp021d6ca7e2190ae009c91c2b62a405d3cb~YlmpwSVqZ2833728337epoutp02h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1754317438;
+	bh=nhQejfYSbWcLFtDmYYyds2rK7Uwbx0J3FeE7atKF+30=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=AtSK/4Xho0fm5IlEBZPq4qUYYT5OTRKtMXwbDlqgF+IiVnURqs4oI0qiU26wNdKUZ
+	 pKvfMrW5zQ+2+PBpuMUsPDhp4XXLxJeQU/E8v86A/ZIdjL79/IoCGILj6ykjFVlsAK
+	 Z8o9CC6+TjYvEud3FxbrhY9+TcHYCj31o3HZ5cOA=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20250804142358epcas5p3b6795af3e36bf318fc68515be2298bd0~YlmpQmJVV2902729027epcas5p3e;
+	Mon,  4 Aug 2025 14:23:58 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.88]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4bwf1n3l97z3hhT3; Mon,  4 Aug
+	2025 14:23:57 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e~YlmnnQJ-w2902729027epcas5p3b;
+	Mon,  4 Aug 2025 14:23:56 +0000 (GMT)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250804142354epsmtip1ed8617054c2b8e57fb2a39a0416d1865~YlmlW23w-1586315863epsmtip1E;
+	Mon,  4 Aug 2025 14:23:53 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	m.grzeschik@pengutronix.de, balbi@ti.com, bigeasy@linutronix.de,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, akash.m5@samsung.com,
+	hongpooh.kim@samsung.com, eomji.oh@samsung.com, shijie.cai@samsung.com,
+	alim.akhtar@samsung.com, muhammed.ali@samsung.com, thiagu.r@samsung.com,
+	stable@vger.kernel.org, Selvarasu Ganesan <selvarasu.g@samsung.com>
+Subject: [PATCH] usb: dwc3: Remove WARN_ON for device endpoint command
+ timeouts
+Date: Mon,  4 Aug 2025 19:52:55 +0530
+Message-ID: <20250804142258.1577-1-selvarasu.g@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730155900.22657-1-alexander.deucher@amd.com>
-In-Reply-To: <20250730155900.22657-1-alexander.deucher@amd.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 4 Aug 2025 10:16:11 -0400
-X-Gm-Features: Ac12FXwJy7sUb93YuMFGFJPMXM7DzaATuAsXfBApHodn4ZPc1FpuDIyjdvdjb4g
-Message-ID: <CADnq5_NtBWyQozzv2wih6cp7Ado+nBf7hd_N+oGXsd0H_JadKg@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu/discovery: fix fw based ip discovery
-To: Alex Deucher <alexander.deucher@amd.com>
-Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e
+References: <CGME20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e@epcas5p3.samsung.com>
 
-Ping?
+From: Akash M <akash.m5@samsung.com>
 
-Alex
+This commit addresses a rarely observed endpoint command timeout
+which causes kernel panic due to warn when 'panic_on_warn' is enabled
+and unnecessary call trace prints when 'panic_on_warn' is disabled.
+It is seen during fast software-controlled connect/disconnect testcases.
+The following is one such endpoint command timeout that we observed:
 
-On Wed, Jul 30, 2025 at 12:18=E2=80=AFPM Alex Deucher <alexander.deucher@am=
-d.com> wrote:
->
-> We only need the fw based discovery table for sysfs.  No
-> need to parse it.  Additionally parsing some of the board
-> specific tables may result in incorrect data on some boards.
-> just load the binary and don't parse it on those boards.
->
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4441
-> Fixes: 80a0e8282933 ("drm/amdgpu/discovery: optionally use fw based ip di=
-scovery")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    |  5 +-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 72 ++++++++++---------
->  2 files changed, 41 insertions(+), 36 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm=
-/amd/amdgpu/amdgpu_device.c
-> index efe98ffb679a4..b2538cff222ce 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -2570,9 +2570,6 @@ static int amdgpu_device_parse_gpu_info_fw(struct a=
-mdgpu_device *adev)
->
->         adev->firmware.gpu_info_fw =3D NULL;
->
-> -       if (adev->mman.discovery_bin)
-> -               return 0;
-> -
->         switch (adev->asic_type) {
->         default:
->                 return 0;
-> @@ -2594,6 +2591,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct a=
-mdgpu_device *adev)
->                 chip_name =3D "arcturus";
->                 break;
->         case CHIP_NAVI12:
-> +               if (adev->mman.discovery_bin)
-> +                       return 0;
->                 chip_name =3D "navi12";
->                 break;
->         }
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/=
-drm/amd/amdgpu/amdgpu_discovery.c
-> index 81b3443c8d7f4..27bd7659961e8 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-> @@ -2555,40 +2555,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_=
-device *adev)
->
->         switch (adev->asic_type) {
->         case CHIP_VEGA10:
-> -       case CHIP_VEGA12:
-> -       case CHIP_RAVEN:
-> -       case CHIP_VEGA20:
-> -       case CHIP_ARCTURUS:
-> -       case CHIP_ALDEBARAN:
-> -               /* this is not fatal.  We have a fallback below
-> -                * if the new firmwares are not present. some of
-> -                * this will be overridden below to keep things
-> -                * consistent with the current behavior.
-> +               /* This is not fatal.  We only need the discovery
-> +                * binary for sysfs.  We don't need it for a
-> +                * functional system.
->                  */
-> -               r =3D amdgpu_discovery_reg_base_init(adev);
-> -               if (!r) {
-> -                       amdgpu_discovery_harvest_ip(adev);
-> -                       amdgpu_discovery_get_gfx_info(adev);
-> -                       amdgpu_discovery_get_mall_info(adev);
-> -                       amdgpu_discovery_get_vcn_info(adev);
-> -               }
-> -               break;
-> -       default:
-> -               r =3D amdgpu_discovery_reg_base_init(adev);
-> -               if (r) {
-> -                       drm_err(&adev->ddev, "discovery failed: %d\n", r)=
-;
-> -                       return r;
-> -               }
-> -
-> -               amdgpu_discovery_harvest_ip(adev);
-> -               amdgpu_discovery_get_gfx_info(adev);
-> -               amdgpu_discovery_get_mall_info(adev);
-> -               amdgpu_discovery_get_vcn_info(adev);
-> -               break;
-> -       }
-> -
-> -       switch (adev->asic_type) {
-> -       case CHIP_VEGA10:
-> +               amdgpu_discovery_init(adev);
->                 vega10_reg_base_init(adev);
->                 adev->sdma.num_instances =3D 2;
->                 adev->gmc.num_umc =3D 4;
-> @@ -2611,6 +2582,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
-evice *adev)
->                 adev->ip_versions[DCI_HWIP][0] =3D IP_VERSION(12, 0, 0);
->                 break;
->         case CHIP_VEGA12:
-> +               /* This is not fatal.  We only need the discovery
-> +                * binary for sysfs.  We don't need it for a
-> +                * functional system.
-> +                */
-> +               amdgpu_discovery_init(adev);
->                 vega10_reg_base_init(adev);
->                 adev->sdma.num_instances =3D 2;
->                 adev->gmc.num_umc =3D 4;
-> @@ -2633,6 +2609,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
-evice *adev)
->                 adev->ip_versions[DCI_HWIP][0] =3D IP_VERSION(12, 0, 1);
->                 break;
->         case CHIP_RAVEN:
-> +               /* This is not fatal.  We only need the discovery
-> +                * binary for sysfs.  We don't need it for a
-> +                * functional system.
-> +                */
-> +               amdgpu_discovery_init(adev);
->                 vega10_reg_base_init(adev);
->                 adev->sdma.num_instances =3D 1;
->                 adev->vcn.num_vcn_inst =3D 1;
-> @@ -2674,6 +2655,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
-evice *adev)
->                 }
->                 break;
->         case CHIP_VEGA20:
-> +               /* This is not fatal.  We only need the discovery
-> +                * binary for sysfs.  We don't need it for a
-> +                * functional system.
-> +                */
-> +               amdgpu_discovery_init(adev);
->                 vega20_reg_base_init(adev);
->                 adev->sdma.num_instances =3D 2;
->                 adev->gmc.num_umc =3D 8;
-> @@ -2697,6 +2683,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
-evice *adev)
->                 adev->ip_versions[DCI_HWIP][0] =3D IP_VERSION(12, 1, 0);
->                 break;
->         case CHIP_ARCTURUS:
-> +               /* This is not fatal.  We only need the discovery
-> +                * binary for sysfs.  We don't need it for a
-> +                * functional system.
-> +                */
-> +               amdgpu_discovery_init(adev);
->                 arct_reg_base_init(adev);
->                 adev->sdma.num_instances =3D 8;
->                 adev->vcn.num_vcn_inst =3D 2;
-> @@ -2725,6 +2716,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
-evice *adev)
->                 adev->ip_versions[UVD_HWIP][1] =3D IP_VERSION(2, 5, 0);
->                 break;
->         case CHIP_ALDEBARAN:
-> +               /* This is not fatal.  We only need the discovery
-> +                * binary for sysfs.  We don't need it for a
-> +                * functional system.
-> +                */
-> +               amdgpu_discovery_init(adev);
->                 aldebaran_reg_base_init(adev);
->                 adev->sdma.num_instances =3D 5;
->                 adev->vcn.num_vcn_inst =3D 2;
-> @@ -2751,6 +2747,16 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
-evice *adev)
->                 adev->ip_versions[XGMI_HWIP][0] =3D IP_VERSION(6, 1, 0);
->                 break;
->         default:
-> +               r =3D amdgpu_discovery_reg_base_init(adev);
-> +               if (r) {
-> +                       drm_err(&adev->ddev, "discovery failed: %d\n", r)=
-;
-> +                       return r;
-> +               }
-> +
-> +               amdgpu_discovery_harvest_ip(adev);
-> +               amdgpu_discovery_get_gfx_info(adev);
-> +               amdgpu_discovery_get_mall_info(adev);
-> +               amdgpu_discovery_get_vcn_info(adev);
->                 break;
->         }
->
-> --
-> 2.50.1
->
+1. Connect
+   =======
+->dwc3_thread_interrupt
+ ->dwc3_ep0_interrupt
+  ->configfs_composite_setup
+   ->composite_setup
+    ->usb_ep_queue
+     ->dwc3_gadget_ep0_queue
+      ->__dwc3_gadget_ep0_queue
+       ->__dwc3_ep0_do_control_data
+        ->dwc3_send_gadget_ep_cmd
+
+2. Disconnect
+   ==========
+->dwc3_thread_interrupt
+ ->dwc3_gadget_disconnect_interrupt
+  ->dwc3_ep0_reset_state
+   ->dwc3_ep0_end_control_data
+    ->dwc3_send_gadget_ep_cmd
+
+In the issue scenario, in Exynos platforms, we observed that control
+transfers for the previous connect have not yet been completed and end
+transfer command sent as a part of the disconnect sequence and
+processing of USB_ENDPOINT_HALT feature request from the host timeout.
+This maybe an expected scenario since the controller is processing EP
+commands sent as a part of the previous connect. It maybe better to
+remove WARN_ON in all places where device endpoint commands are sent to
+avoid unnecessary kernel panic due to warn.
+
+Fixes: e192cc7b5239 ("usb: dwc3: gadget: move cmd_endtransfer to extra function")
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Fixes: c7fcdeb2627c ("usb: dwc3: ep0: simplify EP0 state machine")
+Fixes: f0f2b2a2db85 ("usb: dwc3: ep0: push ep0state into xfernotready processing")
+Fixes: 2e3db064855a ("usb: dwc3: ep0: drop XferNotReady(DATA) support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akash M <akash.m5@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index 666ac432f52d..7b313836f62b 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -288,7 +288,9 @@ void dwc3_ep0_out_start(struct dwc3 *dwc)
+ 	dwc3_ep0_prepare_one_trb(dep, dwc->ep0_trb_addr, 8,
+ 			DWC3_TRBCTL_CONTROL_SETUP, false);
+ 	ret = dwc3_ep0_start_trans(dep);
+-	WARN_ON(ret < 0);
++	if (ret < 0)
++		dev_warn(dwc->dev, "ep0 out start transfer failed: %d\n", ret);
++
+ 	for (i = 2; i < DWC3_ENDPOINTS_NUM; i++) {
+ 		struct dwc3_ep *dwc3_ep;
+ 
+@@ -1061,7 +1063,9 @@ static void __dwc3_ep0_do_control_data(struct dwc3 *dwc,
+ 		ret = dwc3_ep0_start_trans(dep);
+ 	}
+ 
+-	WARN_ON(ret < 0);
++	if (ret < 0)
++		dev_warn(dwc->dev, "ep0 data phase start transfer failed: %d\n",
++				ret);
+ }
+ 
+ static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
+@@ -1078,7 +1082,12 @@ static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
+ 
+ static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
+ {
+-	WARN_ON(dwc3_ep0_start_control_status(dep));
++	int	ret;
++
++	ret = dwc3_ep0_start_control_status(dep);
++	if (ret)
++		dev_warn(dwc->dev,
++			"ep0 status phase start transfer failed: %d\n", ret);
+ }
+ 
+ static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
+@@ -1121,7 +1130,10 @@ void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
+ 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
+ 	memset(&params, 0, sizeof(params));
+ 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
+-	WARN_ON_ONCE(ret);
++	if (ret)
++		dev_warn_ratelimited(dwc->dev,
++			"ep0 data phase end transfer failed: %d\n", ret);
++
+ 	dep->resource_index = 0;
+ }
+ 
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 321361288935..50e4f667b2f2 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1774,7 +1774,11 @@ static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool int
+ 		dep->flags |= DWC3_EP_DELAY_STOP;
+ 		return 0;
+ 	}
+-	WARN_ON_ONCE(ret);
++
++	if (ret)
++		dev_warn_ratelimited(dep->dwc->dev,
++				"end transfer failed: ret = %d\n", ret);
++
+ 	dep->resource_index = 0;
+ 
+ 	if (!interrupt)
+@@ -4041,7 +4045,9 @@ static void dwc3_clear_stall_all_ep(struct dwc3 *dwc)
+ 		dep->flags &= ~DWC3_EP_STALL;
+ 
+ 		ret = dwc3_send_clear_stall_ep_cmd(dep);
+-		WARN_ON_ONCE(ret);
++		if (ret)
++			dev_warn_ratelimited(dwc->dev,
++				"failed to clear STALL on %s\n", dep->name);
+ 	}
+ }
+ 
+-- 
+2.17.1
+
 
