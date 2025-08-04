@@ -1,138 +1,118 @@
-Return-Path: <stable+bounces-166457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAF4B19F2A
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:01:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E26B19F74
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0EC53B35FA
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:01:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22DC57ACDEF
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840BB24676B;
-	Mon,  4 Aug 2025 10:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBB424BBF0;
+	Mon,  4 Aug 2025 10:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYRfldFn"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cueDMIy8";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aE+VyAuq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CA723D2B1;
-	Mon,  4 Aug 2025 10:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DA0242D87;
+	Mon,  4 Aug 2025 10:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754301656; cv=none; b=gf2IrscvV6GCPxbv5bbRNCHV0cSkmrD9tEyDSRuWSMe1iHOR2z8lEBDii7GfpKff8jZ43V8wjQ4stNnqF0HX5zU28/nwzTpE5Kf4mvO2KlUh+7NstGaIPwW+uL1x7WZutc19IaZPDRxbs/n2Zz20VcLQVY++12aoqWpOZiDC+10=
+	t=1754302061; cv=none; b=Tmy6RBhVubOTVzkWn3YHLPy5eByoq8gZm13r4+VbYWE+i/lykz12fqoBDC7Zfrl0ZErRLJvenXwaz1HAcfTlSaKEQIGvbqkSrxbVR/fiCGRBx/F9oMyZ1XctjubN6Gvs4M5N/BW3Gc/6wQcT8lo0Irn2JdWUALe8ytjByWNlkaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754301656; c=relaxed/simple;
-	bh=C7mKQMp+GxD6RFGH57BJqOHlqmXj4BMLvSGcVzGnIiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gAgR7G0Gidhdf1vw5KxyULCIlHblJCli7Vi7aRuzpCb5J32Hy2+taHSH4A2KABiAiGMyQAc4GD4Nd54lysYT7AhyAkwi8EfZ8KNJb+iPv91pMKkEXIXtp3t+L2+MVFmsYoyVlQXNcQf67zt+3bfECHL6dG+Ov+WFCdxXgOfA8L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYRfldFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3A4C4CEE7;
-	Mon,  4 Aug 2025 10:00:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754301655;
-	bh=C7mKQMp+GxD6RFGH57BJqOHlqmXj4BMLvSGcVzGnIiU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WYRfldFnCpEyxVWR6stxBNTdXR0Lp44/oxDX3k8AgGXC9whh0RIg/D0A4uIPzuiYZ
-	 gRQhwVZwyMXSKezqqTj2VpjXlJQZ7u/hxM7C0nwzg6LShAI1N1ppCHd7BmSHAC1qEy
-	 25unaysiin3XB2q+7t8y8dkiPthcCwdtequVbQu7pyKG8lFT9UuanidcOX7IjAeHQp
-	 c4DZ4DyDyvQo28BuOaCTjVyc019U+3zJ/7xMy01+I2foriMhkwk4EtliQWFqRG8Kri
-	 z68mVg72xHp8FZzQhHuqOPuUfwuSAI6sQf4XgxShRHl4tYpzL4FowjXU2usGjKOgEN
-	 JNZ9wJ3M9iMaA==
-Date: Mon, 4 Aug 2025 11:00:50 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linux Netdev Mailing List <netdev@vger.kernel.org>,
-	Linux USB Mailing List <linux-usb@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Armando Budianto <sprite@gnuweeb.org>, gwml@vger.gnuweeb.org,
-	stable@vger.kernel.org, John Ernberg <john.ernberg@actia.se>
-Subject: Re: [PATCH net v2] net: usbnet: Fix the wrong netif_carrier_on()
- call placement
-Message-ID: <20250804100050.GQ8494@horms.kernel.org>
-References: <20250801190310.58443-1-ammarfaizi2@gnuweeb.org>
+	s=arc-20240116; t=1754302061; c=relaxed/simple;
+	bh=oiQMlkrXcO+aPEChRoO64pS6g7V1XkVmPaeAn8eRcc0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=VadhiJ8m+8PWuqa99/7g7VfcKhAdXStyV0utSlgKBjAQt4vPWlX+F89stF4i3Pua2JcrPX3pdN6rmH7/vauEIe/uuuPFuf1WejddoD9onJ0jZiqLvwePqsTAfSdFLhfK8O4HnbIMYwrPEtDh4jeeQcNfom/ImzCTo4xTg4K3Ls4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cueDMIy8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aE+VyAuq; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1754302057;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JjChbKi0Rx93+Tu2sjL4XTOUdNd3zTW9vbhD+j3CVZ8=;
+	b=cueDMIy8Ro5gB+R96xllpBtDUM3dcrqgXK1eWLGoTc32TJde0nm+5uCv4QV15DEf6rw7AN
+	uPs8MfcLhLB4KZeyb+wrt9XjlwQ06jl1Wwx75j7rO0q4KLuoQEReOEfJauBonnBwo2JIaH
+	HkFBwQhbnVn1aPMpt5RLieH3ICpXp+0p1gyweMpjjSTB07SL9VNfzH1weAChE2UPdGjhzs
+	8EEAL+F/wXQ9N3tGAt5h+S7mjxP9SF8Jo9NwdX4QXZS1B1vcpJ3ArlWk1hF1GyOdZxaDQf
+	V054yG6dj87ds1abhK3LOdwhMKVjXWBMhufJw98rMRJ+Xp3n1LgJ1oPqtMykBw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1754302057;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JjChbKi0Rx93+Tu2sjL4XTOUdNd3zTW9vbhD+j3CVZ8=;
+	b=aE+VyAuqBsX0dOcnYOYHE7uJKfAO3KB/0ng80qh9CmmL6D/7lmf9bpCRHMYm2VrgyMzAMa
+	y+OkvktQhtj3XBAw==
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] powerpc/pseries/msi: Fix potential underflow and leak issue
+Date: Mon,  4 Aug 2025 12:07:27 +0200
+Message-Id: <a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de>
+In-Reply-To: <cover.1754300646.git.namcao@linutronix.de>
+References: <cover.1754300646.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250801190310.58443-1-ammarfaizi2@gnuweeb.org>
+Content-Transfer-Encoding: quoted-printable
 
-+ John Ernberg
+pseries_irq_domain_alloc() allocates interrupts at parent's interrupt
+domain. If it fails in the progress, all allocated interrupts are
+freed.
 
-On Sat, Aug 02, 2025 at 02:03:10AM +0700, Ammar Faizi wrote:
-> The commit in the Fixes tag breaks my laptop (found by git bisect).
-> My home RJ45 LAN cable cannot connect after that commit.
-> 
-> The call to netif_carrier_on() should be done when netif_carrier_ok()
-> is false. Not when it's true. Because calling netif_carrier_on() when
-> __LINK_STATE_NOCARRIER is not set actually does nothing.
-> 
-> Cc: Armando Budianto <sprite@gnuweeb.org>
-> Cc: stable@vger.kernel.org
-> Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-> Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-> Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-> ---
-> 
-> v2:
->   - Rebase on top of the latest netdev/net tree. The previous patch was
->     based on 0d9cfc9b8cb1. Line numbers have changed since then.
-> 
->  drivers/net/usb/usbnet.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> index a38ffbf4b3f0..a1827684b92c 100644
-> --- a/drivers/net/usb/usbnet.c
-> +++ b/drivers/net/usb/usbnet.c
-> @@ -1114,31 +1114,31 @@ static const struct ethtool_ops usbnet_ethtool_ops = {
->  };
->  
->  /*-------------------------------------------------------------------------*/
->  
->  static void __handle_link_change(struct usbnet *dev)
->  {
->  	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
->  		return;
->  
->  	if (!netif_carrier_ok(dev->net)) {
-> +		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-> +			netif_carrier_on(dev->net);
-> +
->  		/* kill URBs for reading packets to save bus bandwidth */
->  		unlink_urbs(dev, &dev->rxq);
->  
->  		/*
->  		 * tx_timeout will unlink URBs for sending packets and
->  		 * tx queue is stopped by netcore after link becomes off
->  		 */
->  	} else {
-> -		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-> -			netif_carrier_on(dev->net);
-> -
->  		/* submitting URBs for reading packets */
->  		queue_work(system_bh_wq, &dev->bh_work);
->  	}
->  
->  	/* hard_mtu or rx_urb_size may change during link change */
->  	usbnet_update_max_qlen(dev);
->  
->  	clear_bit(EVENT_LINK_CHANGE, &dev->flags);
->  }
->  
-> -- 
-> Ammar Faizi
-> 
-> 
+The number of successfully allocated interrupts so far is stored
+"i". However, "i - 1" interrupts are freed. This is broken:
+
+  - One interrupt is not be freed
+
+  - If "i" is zero, "i - 1" wraps around
+
+Correct the number of freed interrupts to 'i'.
+
+Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+---
+ arch/powerpc/platforms/pseries/msi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/=
+pseries/msi.c
+index ee1c8c6898a3..9dc294de631f 100644
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -593,7 +593,7 @@ static int pseries_irq_domain_alloc(struct irq_domain *=
+domain, unsigned int virq
+=20
+ out:
+ 	/* TODO: handle RTAS cleanup in ->msi_finish() ? */
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 	return ret;
+ }
+=20
+--=20
+2.39.5
+
 
