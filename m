@@ -1,124 +1,117 @@
-Return-Path: <stable+bounces-166437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAF3B19B2A
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 07:49:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73010B19B41
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FED53B49AF
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 05:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3461E1897603
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 06:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5B2199939;
-	Mon,  4 Aug 2025 05:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EAE2248A8;
+	Mon,  4 Aug 2025 06:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qmmHUbDG"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="IkQ/cpdZ"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D6754774;
-	Mon,  4 Aug 2025 05:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C452C21ADCB;
+	Mon,  4 Aug 2025 06:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754286586; cv=none; b=GELxKhC+EUuJqYZ/UDCHv+IXPwmH+hD1mkKO4oFR0UbA+3gurHMGTCeFi3AqKyA5dMQGrj/XoZTYbFT+r/d2GRJwjgS6y0lrA1QNXjO0oovm3CfdtjoJXGW5FPTZLD6NxQqwZ+o8gffoio4kIVPd1Q/HL6hTeteaUfrei6aDSkk=
+	t=1754287381; cv=none; b=ESuj2FahMEtAhMXlpU9gWwqvHzuFJQY/o8q3KHiZA6stIr5SdLrvTHfKqVTcJvwrKUkfP0R+UiQs+1ElUArOV6VfsTKwFg0zwh+dJlgq0s8usXBm/QNdS5KHoZV0lAn35B15TCXhA5XQ0ItPCJdCci88yDfYDAsvwY4YYmWO7hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754286586; c=relaxed/simple;
-	bh=N0ifEoKADJ266dZ1TZEK7VwvwBuXGKpaWyjwuR91ViU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eAZpFFt6R1Gqz8SKI9yUkuyAkkZY5k7XxOWEoCn/ue4qL7yzjuXxpA+u7QsHpZqEtIXP5hN03NvjQmMP9nN2uXgN82PFtnOgEJQ8j8a3C3OGf9GYYWLRhVL3LmJDyv7pWbttV5zFxAXXU3+v7V9BkwTRVwwRHCxZCm77s1NkLBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qmmHUbDG; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.95.67.184] (unknown [167.220.238.152])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C0455201BC7B;
-	Sun,  3 Aug 2025 22:49:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C0455201BC7B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1754286579;
-	bh=A76h4RG1POnkmztMobKJragbYBbJ9FiCAa2P6uity8Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qmmHUbDGeypqffd0mWMQ93VcsqWlgN9ZjnGTrjathKinmLcjJ+XwXJLnMoWFoKMIY
-	 fOM30Tf8x9eUY9vx5bjsqCGDmRpzl+ZCW2RjRIMEYEIfQWxUbpRk4WvJ3tuIxmjWNc
-	 lie0YPQI6qorxBif1z3aVscrpstOdljShj5ZMC/4=
-Message-ID: <5e7f02ee-6007-417b-b234-a70cec30c385@linux.microsoft.com>
-Date: Mon, 4 Aug 2025 11:19:34 +0530
+	s=arc-20240116; t=1754287381; c=relaxed/simple;
+	bh=4rAQAgpCJjXS5Q5/2G4kkVyxN+NZyMEFiBFP7FYGaIA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oj/AwUlG995r5QIjEObG0hQcCE3SJkym7MpYYGm8dboOhhZVFDYONOtjyRU84wzl2i2ZrkQ1jFlzCcswWRj4UhxVUDBxNcljQoPfPrfTFIA60K6dKbj54TcW9dFcQf4eRvzfZW+lquNkkvUnZFKz86Dx1QRd7Tg4HJV6tCFfvaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=IkQ/cpdZ; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: a810b43c70f811f08871991801538c65-20250804
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=jYX1bSUuVoUfUgRyTX/Hgp4wHn5pumMUBcHWSkGuBHk=;
+	b=IkQ/cpdZzti+ncU2DBicbi+++nWJqqGuEM8CC9Ch4kN7l4ZJ+xe1dzISxjYFK923Mu3ultWbr8M3CYfLHEEExUciph/AVA3mGOXH10Endjht5rIlKUPpuzfXyN+2ysr78ZFZtXMffIFuMp1ULhjsaU8pyTtT+9KJpeAV7OdKFxQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.2,REQID:ec6b8906-0af9-4653-800f-6a92190f64a9,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-5
+X-CID-META: VersionHash:9eb4ff7,CLOUDID:32668d50-93b9-417a-b51d-915a29f1620f,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
+	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
+	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a810b43c70f811f08871991801538c65-20250804
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
+	(envelope-from <peter.wang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 492759898; Mon, 04 Aug 2025 14:02:52 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Mon, 4 Aug 2025 14:02:50 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Mon, 4 Aug 2025 14:02:50 +0800
+From: <peter.wang@mediatek.com>
+To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>
+CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
+	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
+	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
+	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
+	<yi-fan.peng@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
+	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
+	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
+	<dan.carpenter@linaro.org>, <stable@vger.kernel.org>
+Subject: [PATCH v1] ufs: host: mediatek: Fix out-of-bounds access in MCQ IRQ mapping
+Date: Mon, 4 Aug 2025 14:01:54 +0800
+Message-ID: <20250804060249.1387057-1-peter.wang@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12] Drivers: hv: Make the sysfs node size for the ring
- buffer dynamic
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Michael Kelley <mhklinux@outlook.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Long Li <longli@microsoft.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250723070200.2775-1-namjain@linux.microsoft.com>
- <SN6PR02MB41579080792040E166B5EB69D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
- <e1d394bd-93a6-4d8f-b7f9-fc01449df98a@t-8ch.de>
- <SN6PR02MB415792B00B021D4DB76A6014D425A@SN6PR02MB4157.namprd02.prod.outlook.com>
- <4abf15ac-de18-48d4-9420-19d40f26fdd2@linux.microsoft.com>
- <8f642ca2-04dc-4d87-b120-5d128ec3202e@t-8ch.de>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <8f642ca2-04dc-4d87-b120-5d128ec3202e@t-8ch.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
+From: Peter Wang <peter.wang@mediatek.com>
 
+This patch addresses a potential out-of-bounds access issue when
+accessing 'host->mcq_intr_info[q_index]'. The value of 'q_index'
+might exceed the valid array bounds if 'q_index == nr'.
+The condition is corrected to 'q_index >= nr' to prevent
+accessing invalid memory.
 
-On 8/1/2025 4:22 PM, Thomas Weißschuh wrote:
-> Hi Naman,
-> 
-> On 2025-07-31 21:13:27+0530, Naman Jain wrote:
->> On 7/30/2025 1:15 AM, Michael Kelley wrote:
->>> From: Thomas Weißschuh <linux@weissschuh.net> Sent: Tuesday, July 29, 2025 11:47 AM
->>>> On 2025-07-29 18:39:45+0000, Michael Kelley wrote:
->>>>> From: Naman Jain <namjain@linux.microsoft.com> Sent: Wednesday, July 23, 2025 12:02 AM
-> <snip>
-> 
->>>>> Unfortunately, I don't see a fix, short of backporting support for the
->>>>> .bin_size function, as this is exactly the problem that function solves.
->>>>
->>>> It should work out in practice. (I introduced the .bin_size function)
->>>
->>> The race I describe is unlikely, particularly if attribute groups are created
->>> once and then not disturbed. But note that the Hyper-V fcopy group can
->>> get updated in a running VM via update_sysfs_group(), which also calls
->>> create_files(). Such an update might marginally increase the potential for
->>> the race and for getting the wrong size. Still, I agree it should work out
->>> in practice.
->>>
->>> Michael
->>>
->>>>
->>>> Thomas
->>
->> hi Thomas,
->> Would it be possible to port your changes on 6.12 kernel, to avoid such
->> race conditions?
-> 
-> Possible, surely. But Greg has to accept it.
-> And you will need to do the backports.
-> 
->> Or if it has a lot of dependencies, or if you have a
->> follow-up advice, please let us us know.
-> 
-> Not more than mentioned before.
-> 
-> 
-> Thomas
+Fixes: 66e26a4b8a77 ("scsi: ufs: host: mediatek: Set IRQ affinity policy for MCQ mode")
+Cc: <stable@vger.kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+---
+ drivers/ufs/host/ufs-mediatek.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Acked. Thanks.
-
-Regards,
-Naman
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 86ae73b89d4d..f902ce08c95a 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -818,7 +818,7 @@ static u32 ufs_mtk_mcq_get_irq(struct ufs_hba *hba, unsigned int cpu)
+ 	unsigned int q_index;
+ 
+ 	q_index = map->mq_map[cpu];
+-	if (q_index > nr) {
++	if (q_index >= nr) {
+ 		dev_err(hba->dev, "hwq index %d exceed %d\n",
+ 			q_index, nr);
+ 		return MTK_MCQ_INVALID_IRQ;
+-- 
+2.45.2
 
 
