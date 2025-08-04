@@ -1,83 +1,83 @@
-Return-Path: <stable+bounces-166461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA9AB19F91
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:17:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B28B19F90
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 867057A7613
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:15:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E0F1897EEE
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A392246766;
-	Mon,  4 Aug 2025 10:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8542494F0;
+	Mon,  4 Aug 2025 10:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HcbtjkNq"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="d9LU+DXd"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FE822259D
-	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 10:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBA5248F6F
+	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 10:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754302641; cv=none; b=lJVBURPsmnMjNnfUeOeAG0yH1G67z/7Kpdmp2Mh/zp7AGnHyvPB/BcZ+RNmcvd14DnqyDuYEsXj4EsdqWRSFIDYI9M1BJi+WWY56zFWJJc3kByUZpSWt7mWe9asUOEMPPIKhuRVcnCVTJA5n51HB+zoQZK+X5H77l3OGzovhe8M=
+	t=1754302643; cv=none; b=M7dwFBzlo1yzZ3080QLICNgPh6P1x3XxeBEHt+Fj/oxUOKG1b6XtarBEcAnz7ifS/47lxL4mafwtKeZSpETBnQiGT2Osto4HuYV3/0KB5bEaALIBoOHcDdzV2nd3zhpOEvP1kOys9UWRzDaKthFx3wr+lAMoxmh1GKHw1Il65yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754302641; c=relaxed/simple;
-	bh=9EB99z//htr6I6ttL4rQBDNTDy1zNSH4442e4g+2/OA=;
+	s=arc-20240116; t=1754302643; c=relaxed/simple;
+	bh=XKypYcvpCZkHaEQ9Cn6lcz3HTb6aLEyTK/YbOq6/atY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sA9EoopOpfLhuq4RAn1nD2KvV0OEA4wu6kWL3k1OnUiOWOzKyY3tDlGrkhjxkjzUOhEy8I0QmJEdbts2NbGT9tQT2d+R0PAFpMbp4LfvZlsGVwj0Pe8Aj8wyYUMjX8j1KxcE5u/hzIZ+/8/zMSRVeE3MKsaepoKjiJAyC6tNc9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HcbtjkNq; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=DVNZxTdjnRuJY67HUbDBmpTTVZPDwwOS9/0ZhtAslmLrlqUQkxCTMfM7OZswhTBKWJFlnoWzKbTngrzVW9UTJMY/jKEmJVdVzLKPjr0yy7a4ilZxQWmSv3lUMconVVLsTGTknv1fM9OiOJn1oNuwzEjekdWUsI6+9YmZwwJ5xgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=d9LU+DXd; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-32117db952aso1406993a91.0
-        for <stable@vger.kernel.org>; Mon, 04 Aug 2025 03:17:19 -0700 (PDT)
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-32128c1bf32so1452135a91.2
+        for <stable@vger.kernel.org>; Mon, 04 Aug 2025 03:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1754302639; x=1754907439; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1754302641; x=1754907441; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cUDLsxXiD/VylUkDEBtoWAUjUDY+mInmp98SkOYqi9w=;
-        b=HcbtjkNq22I3LuqIqyG9XY/nEqRNzhtrVB1y2PeYYVO62DDHvDUtikUElYnfQfgWxv
-         GcD57Z0XvRWrDYI4VrkeiXXe7mseZDe4EnMzSusT1whhSRHE4kxInzWaBGbx1Dv/OUDh
-         GvuAWv8SBciwbxOy5mFwOwa9m8Dxs8stdKvng=
+        bh=HqEET19x8Tr7XYh5rZpfKl3Tkz58u/1qMUrTTSKvoI0=;
+        b=d9LU+DXd8dFTH7mbOB4YpkKfLBfLPIPzGuiLvoso2UlPlykT4pH8bbJHGG1WtG1RO2
+         acOHMbRjjaX29FLO3d4GMWGI5vXW0wAjkE8ioszN9yEGEXso/yz+/Cf4sr5UYNyi+L9y
+         F/xc+C3wHToMySXcKynmWumvQBqRzTybZY4uo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754302639; x=1754907439;
+        d=1e100.net; s=20230601; t=1754302641; x=1754907441;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cUDLsxXiD/VylUkDEBtoWAUjUDY+mInmp98SkOYqi9w=;
-        b=qQxULZZtWoPDijSuy0pvarVlr9ecIx5lmyGbeM2wQXli3uMIQxn4wdA78MvTv6quGQ
-         TMw9pAFISWSUDRmUx9xZLbtPNpYBfoA5RVgIiM5sPQAzI2JODPEOcx6a3sKw4HGmV3Eg
-         MPKx+MINbGcWTHQwzWK+Q7WRaf+0myZ6TeV7o51dLrYN894nwvc0QhVGmv1XrvMgl9aO
-         0AVfDyBPab99iiGeR4wKB2GxXR65dlO/nSqeZFhben8K0eG8Gbwu6S1DPbYs6VOfojzN
-         4spJ3lKGaQTBJD9rHZrqdn2Efdu6RDheXK+NRIVDeaRL5oVS1UmVtj/KDQJXrFRoK3yd
-         w/rQ==
-X-Gm-Message-State: AOJu0Ywdrxow+T12QQG5E+gIPha7SkGh4F57g7V5l7Z7HU3LpOPEN5Lz
-	kql4aVLMZEBwpzgpJMCa5q5EiMA9TXLPOt87eN98TKQUqLGeo1uE4cgsCRL6My4kkQI55HxNkFe
-	o/Z4=
-X-Gm-Gg: ASbGncvm8G/jw2GhXbLSVa8MCSzZUvczUbpt96D3Fw+j60q7r9OHx36Iyu7J7vlvTS5
-	8PwTC9mM8dhvyibbk6sBxVAxbI/xtwC0dkJX2t9YsDXaGLg34uyLPDDcsE7A9fNP/NeB9FDmpgo
-	1FQImBDkA2d6ZAdeso4DB6UEAnuuuwtUlJy/W5e4hy4+sjI7bjobBknHxy9kPUS/4m9/flOajQE
-	wYLjHSyQl9Jq/y+oVz8vtUMqm3kCxGs1ErG0JaZbIZhilcBbcBcvK60HEiU0RyWcXtSdY1pkHYU
-	Ut5P9IQcm79clgXBXXji6uAlWXlXuMxfbVvuOr5UGAYbNI0Xii4xFv3Q3RkiAAOvkLzfx905INp
-	sEgGAfWAjuHXZpFdGMUnLTBYtIQHqRYaMwgqiTNwMV03voT5r
-X-Google-Smtp-Source: AGHT+IF4j3hAlE3PAMGm17m3AIvdwyISzHyOYkZKH+tEosP2S+R/0+s9IavMVeMnMDPKNYmpJiJ7uw==
-X-Received: by 2002:a17:90b:4a02:b0:313:f6fa:5bca with SMTP id 98e67ed59e1d1-321162a25dbmr10605766a91.22.1754302639078;
-        Mon, 04 Aug 2025 03:17:19 -0700 (PDT)
+        bh=HqEET19x8Tr7XYh5rZpfKl3Tkz58u/1qMUrTTSKvoI0=;
+        b=cLgek5CYtp9XsHnxG5g89YuoCH/d7b7gFs5WwJriptqZZiVjFOjDFJ644E8+XfV9Zv
+         T0tk0+wtn9DJpP68QoNpetBZG2roxbvwkZtGxuk22dVbZKuOCfnpNvGtdzAWGGNOh7/q
+         RVZAjXflImTYd2UFFHqd9Rxcm6wAD1+UudHRD/PEoyJeEUDDrBySKMjIcS+gBWgZKvRr
+         j4YSvQjiVNMTh3+nDA4CW+lFk55bwgyBmJp9XJaFOIAP8xAUzCRTGXeVEIB4iyEyt8WK
+         JKW40b6fqhSfFdxLUNtY+82fVLhATD0Q4XFUmJVYCUa0QGz5eerSJWcltXADkPoukXOm
+         NdUg==
+X-Gm-Message-State: AOJu0YzqQk27KkRF3BNUjPvN0DUl4VwA+riaKb0h0qCgRZ4f2Wu5llVi
+	jCekKq5uN42/EVlmKf938z7imkPuvIrEpcvXwgvoRzT61JL/i9zyFT3K/McwP/ObIzKmVIKHGYr
+	11FI=
+X-Gm-Gg: ASbGnct4PScXVCQEl+TrF/EMCqvMAJp7S+qE8rs6bFIvdu+b2ndbJzQkRMPfQJGRloV
+	JJ985z2H2YzRd14rg2DyqBf+dwH0dmm8KI+oweSuE0meOmOt8SfOKZEjo67j+9EzZUoosZFGxZJ
+	aDVm23Y+1AI9msh83xlNNk+/OfitiPkOlh3rff8UDijcRuB9s4U7Okxdbwcw1RUw/SyL6uo30U2
+	RtLVz3cBm+bBOhs16PI9EvpDYYN4k5avoHlkEefKqOM/Xwut8S0hNKIl5WURLx4YRZXgujr05u1
+	tK+t6SM+SDlrwpwZl99ujxAYigJfypHJ1gx76TsP1eW7mIMOT+YBZfstvE4rv2Vf7A5C/e8bYCO
+	91G2v0tW0Yleyd+5A+94grDYaNku1RwF79ExQmvgwnt9tPwir
+X-Google-Smtp-Source: AGHT+IHiiAMfM1xOQXwKxeRQcveGoMeSUlJJmThSqyMjVim8kKs7k5JF0SSYn+scg3DtFZ2p3azKAw==
+X-Received: by 2002:a17:90b:3b45:b0:31e:ff94:3fa0 with SMTP id 98e67ed59e1d1-321161d6078mr12954999a91.6.1754302640750;
+        Mon, 04 Aug 2025 03:17:20 -0700 (PDT)
 Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:3668:3855:6e9a:a21e])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63dc1bb7sm14085261a91.10.2025.08.04.03.17.17
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63dc1bb7sm14085261a91.10.2025.08.04.03.17.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 03:17:18 -0700 (PDT)
+        Mon, 04 Aug 2025 03:17:20 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: stable@vger.kernel.org
 Cc: Jani Nikula <jani.nikula@intel.com>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.12 2/6] drm/i915/hdmi: propagate errors from intel_hdmi_init_connector()
-Date: Mon,  4 Aug 2025 19:16:40 +0900
-Message-ID: <938a984204146a4b6628030af87ff374cb41936c.1754302552.git.senozhatsky@chromium.org>
+Subject: [PATCH 6.12 3/6] drm/i915/hdmi: add error handling in g4x_hdmi_init()
+Date: Mon,  4 Aug 2025 19:16:41 +0900
+Message-ID: <ebf6995a6202f266badbec356c6b87a55cf478dc.1754302552.git.senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
 In-Reply-To: <e53d47b06b3ba07b4add2c6930ddafba91a49b41.1754302552.git.senozhatsky@chromium.org>
 References: <e53d47b06b3ba07b4add2c6930ddafba91a49b41.1754302552.git.senozhatsky@chromium.org>
@@ -91,79 +91,123 @@ Content-Transfer-Encoding: 8bit
 
 From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 7fb56536fa37e23bc291d31c10e575d500f4fda7 ]
+[ Upstream commit 7603ba81225c815d2ceb4ad52f13e8df4b9d03cc ]
 
-Propagate errors from intel_hdmi_init_connector() to be able to handle
-them at callers. This is similar to intel_dp_init_connector().
+Handle encoder and connector init failures in g4x_hdmi_init(). This is
+similar to g4x_dp_init().
 
 Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
 Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Closes: https://lore.kernel.org/r/20241031105145.2140590-1-senozhatsky@chromium.org
 Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/cdaf9e32cc4880c46e120933438c37b4d87be12e.1735568047.git.jani.nikula@intel.com
+Link: https://patchwork.freedesktop.org/patch/msgid/cafae7bf1f9ffb8f6a1d7a508cd2ce7dcf06fef7.1735568047.git.jani.nikula@intel.com
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- drivers/gpu/drm/i915/display/intel_hdmi.c | 10 ++++++----
- drivers/gpu/drm/i915/display/intel_hdmi.h |  2 +-
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/g4x_hdmi.c | 35 ++++++++++++++++---------
+ drivers/gpu/drm/i915/display/g4x_hdmi.h |  5 ++--
+ 2 files changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_hdmi.c b/drivers/gpu/drm/i915/display/intel_hdmi.c
-index cd9ee171e0df..c5b2fbaeff89 100644
---- a/drivers/gpu/drm/i915/display/intel_hdmi.c
-+++ b/drivers/gpu/drm/i915/display/intel_hdmi.c
-@@ -3015,7 +3015,7 @@ void intel_infoframe_init(struct intel_digital_port *dig_port)
- 	}
+diff --git a/drivers/gpu/drm/i915/display/g4x_hdmi.c b/drivers/gpu/drm/i915/display/g4x_hdmi.c
+index 46f23bdb4c17..b89a364a3924 100644
+--- a/drivers/gpu/drm/i915/display/g4x_hdmi.c
++++ b/drivers/gpu/drm/i915/display/g4x_hdmi.c
+@@ -683,7 +683,7 @@ static bool assert_hdmi_port_valid(struct drm_i915_private *i915, enum port port
+ 			 "Platform does not support HDMI %c\n", port_name(port));
  }
  
--void intel_hdmi_init_connector(struct intel_digital_port *dig_port,
-+bool intel_hdmi_init_connector(struct intel_digital_port *dig_port,
- 			       struct intel_connector *intel_connector)
+-void g4x_hdmi_init(struct drm_i915_private *dev_priv,
++bool g4x_hdmi_init(struct drm_i915_private *dev_priv,
+ 		   i915_reg_t hdmi_reg, enum port port)
  {
- 	struct intel_display *display = to_intel_display(dig_port);
-@@ -3033,17 +3033,17 @@ void intel_hdmi_init_connector(struct intel_digital_port *dig_port,
- 		    intel_encoder->base.base.id, intel_encoder->base.name);
+ 	struct intel_display *display = &dev_priv->display;
+@@ -693,10 +693,10 @@ void g4x_hdmi_init(struct drm_i915_private *dev_priv,
+ 	struct intel_connector *intel_connector;
  
- 	if (DISPLAY_VER(display) < 12 && drm_WARN_ON(dev, port == PORT_A))
+ 	if (!assert_port_valid(dev_priv, port))
 -		return;
 +		return false;
  
- 	if (drm_WARN(dev, dig_port->max_lanes < 4,
- 		     "Not enough lanes (%d) for HDMI on [ENCODER:%d:%s]\n",
- 		     dig_port->max_lanes, intel_encoder->base.base.id,
- 		     intel_encoder->base.name))
+ 	if (!assert_hdmi_port_valid(dev_priv, port))
 -		return;
 +		return false;
  
- 	ddc_pin = intel_hdmi_ddc_pin(intel_encoder);
- 	if (!ddc_pin)
+ 	devdata = intel_bios_encoder_data_lookup(display, port);
+ 
+@@ -707,15 +707,13 @@ void g4x_hdmi_init(struct drm_i915_private *dev_priv,
+ 
+ 	dig_port = kzalloc(sizeof(*dig_port), GFP_KERNEL);
+ 	if (!dig_port)
 -		return;
 +		return false;
  
- 	drm_connector_init_with_ddc(dev, connector,
- 				    &intel_hdmi_connector_funcs,
-@@ -3088,6 +3088,8 @@ void intel_hdmi_init_connector(struct intel_digital_port *dig_port,
- 					   &conn_info);
- 	if (!intel_hdmi->cec_notifier)
- 		drm_dbg_kms(display->drm, "CEC notifier get failed\n");
+ 	dig_port->aux_ch = AUX_CH_NONE;
+ 
+ 	intel_connector = intel_connector_alloc();
+-	if (!intel_connector) {
+-		kfree(dig_port);
+-		return;
+-	}
++	if (!intel_connector)
++		goto err_connector_alloc;
+ 
+ 	intel_encoder = &dig_port->base;
+ 
+@@ -723,9 +721,10 @@ void g4x_hdmi_init(struct drm_i915_private *dev_priv,
+ 
+ 	mutex_init(&dig_port->hdcp_mutex);
+ 
+-	drm_encoder_init(&dev_priv->drm, &intel_encoder->base,
+-			 &intel_hdmi_enc_funcs, DRM_MODE_ENCODER_TMDS,
+-			 "HDMI %c", port_name(port));
++	if (drm_encoder_init(&dev_priv->drm, &intel_encoder->base,
++			     &intel_hdmi_enc_funcs, DRM_MODE_ENCODER_TMDS,
++			     "HDMI %c", port_name(port)))
++		goto err_encoder_init;
+ 
+ 	intel_encoder->hotplug = intel_hdmi_hotplug;
+ 	intel_encoder->compute_config = g4x_hdmi_compute_config;
+@@ -788,5 +787,17 @@ void g4x_hdmi_init(struct drm_i915_private *dev_priv,
+ 
+ 	intel_infoframe_init(dig_port);
+ 
+-	intel_hdmi_init_connector(dig_port, intel_connector);
++	if (!intel_hdmi_init_connector(dig_port, intel_connector))
++		goto err_init_connector;
 +
 +	return true;
++
++err_init_connector:
++	drm_encoder_cleanup(&intel_encoder->base);
++err_encoder_init:
++	kfree(intel_connector);
++err_connector_alloc:
++	kfree(dig_port);
++
++	return false;
  }
+diff --git a/drivers/gpu/drm/i915/display/g4x_hdmi.h b/drivers/gpu/drm/i915/display/g4x_hdmi.h
+index 817f55c7a3a1..a52e8986ec7a 100644
+--- a/drivers/gpu/drm/i915/display/g4x_hdmi.h
++++ b/drivers/gpu/drm/i915/display/g4x_hdmi.h
+@@ -16,14 +16,15 @@ struct drm_connector;
+ struct drm_i915_private;
  
- /*
-diff --git a/drivers/gpu/drm/i915/display/intel_hdmi.h b/drivers/gpu/drm/i915/display/intel_hdmi.h
-index 9b97623665c5..fc64a3affc71 100644
---- a/drivers/gpu/drm/i915/display/intel_hdmi.h
-+++ b/drivers/gpu/drm/i915/display/intel_hdmi.h
-@@ -22,7 +22,7 @@ struct intel_encoder;
- struct intel_hdmi;
- union hdmi_infoframe;
- 
--void intel_hdmi_init_connector(struct intel_digital_port *dig_port,
-+bool intel_hdmi_init_connector(struct intel_digital_port *dig_port,
- 			       struct intel_connector *intel_connector);
- bool intel_hdmi_compute_has_hdmi_sink(struct intel_encoder *encoder,
- 				      const struct intel_crtc_state *crtc_state,
+ #ifdef I915
+-void g4x_hdmi_init(struct drm_i915_private *dev_priv,
++bool g4x_hdmi_init(struct drm_i915_private *dev_priv,
+ 		   i915_reg_t hdmi_reg, enum port port);
+ int g4x_hdmi_connector_atomic_check(struct drm_connector *connector,
+ 				    struct drm_atomic_state *state);
+ #else
+-static inline void g4x_hdmi_init(struct drm_i915_private *dev_priv,
++static inline bool g4x_hdmi_init(struct drm_i915_private *dev_priv,
+ 				 i915_reg_t hdmi_reg, int port)
+ {
++	return false;
+ }
+ static inline int g4x_hdmi_connector_atomic_check(struct drm_connector *connector,
+ 						  struct drm_atomic_state *state)
 -- 
 2.50.1.565.gc32cd1483b-goog
 
