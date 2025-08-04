@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-166466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC75B19F9A
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:19:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0575FB19F9C
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A133BD8B3
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 340D6179EC6
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9831D248F6F;
-	Mon,  4 Aug 2025 10:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0017B24BBF0;
+	Mon,  4 Aug 2025 10:19:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAFE1F30BB;
-	Mon,  4 Aug 2025 10:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F9A1F30BB;
+	Mon,  4 Aug 2025 10:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754302739; cv=none; b=YUWCMihIkqeyu8pNEyiZ8dqK0AnH0vqH/9aBs01+qJnw9Y3otVrGIJzO7HaMfQDKFkp9HXxWRPKCpmrqHYJ0LiA6CiBDs45HMl9NiR8TlzET+cCr5Vaoly+m7VGLfCnUPidJxfdzz0c7d02vwzFNxfjJJTOmLjlo9xiXJyOpuZk=
+	t=1754302745; cv=none; b=ObY9UJzashTxKTiWCIddCHPtyuOQ4sjIMwWYyDl2IbW1DTtVqIfG4CdNVoEY1mnWs7ODH216JBB3954OHDtjpauhuX5qAOiWp47nnIgaJQWhmftt1F5lhoH3MAVHQqQX/WiQEi6si1kJbqI+QUPVDEVhVDyvSEDNfiQJTr+arY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754302739; c=relaxed/simple;
-	bh=RpkALcoGLRwBJjl0hl/Fi/oBXdRdQCOMhOlE0DE9UbY=;
+	s=arc-20240116; t=1754302745; c=relaxed/simple;
+	bh=3lodwvN4e8b9X9PqF31Mnjr9gOcDb+qXvIdD+U1nUTA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VAVLmaxGg2t3PHy01Rduu/2dQ/beazmMW2TkZoQLhfCPewOJl2eo6oqb2oL/EBOV5m2zUaX7dupuzrJYptafozOZpuzo3v6TrWd3VUfX14Vp5KuY89Rqn02lRyUppHHRz1r5phZw87Swfx4xjvkKlsJwMLhLQOau5YhTd8sgm1w=
+	 In-Reply-To:Content-Type; b=nbn+lUVNQhm2rr9/VzZ0/emIbn7UZPWcnTt9EzMC924Iw0brKBbNWZWSn7uKEpYDXjLgBtq46dpH2jURGC4DdPBJeJ+1Fkx1eUmHBORJnbBjAN0vUMvGk272RHQ8NM/ivh9cOLFH3ubInZileFtn5LKtT+6pwjHKHPf4s60RPaA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaod.org; spf=pass smtp.mailfrom=ozlabs.org; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaod.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4bwXb22bZyz4wcd;
-	Mon,  4 Aug 2025 20:18:54 +1000 (AEST)
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4bwXb91Qz1z4x5K;
+	Mon,  4 Aug 2025 20:19:01 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bwXZz04tlz4wbp;
-	Mon,  4 Aug 2025 20:18:50 +1000 (AEST)
-Message-ID: <8028c596-d123-44f9-8ca4-5293d5436029@kaod.org>
-Date: Mon, 4 Aug 2025 12:18:47 +0200
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bwXb56nFkz4x3q;
+	Mon,  4 Aug 2025 20:18:57 +1000 (AEST)
+Message-ID: <0d0b203f-b753-41ee-97c5-fa4739f4915c@kaod.org>
+Date: Mon, 4 Aug 2025 12:18:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,8 +47,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/pseries/msi: Fix potential underflow and leak
- issue
+Subject: Re: [PATCH 2/2] powerpc/powernv/pci: Fix underflow and leak issue
 To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
  <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
@@ -57,7 +56,7 @@ To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
  linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
 References: <cover.1754300646.git.namcao@linutronix.de>
- <a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de>
+ <70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -102,37 +101,36 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de>
+In-Reply-To: <70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 On 8/4/25 12:07, Nam Cao wrote:
-> pseries_irq_domain_alloc() allocates interrupts at parent's interrupt
+> pnv_irq_domain_alloc() allocates interrupts at parent's interrupt
 > domain. If it fails in the progress, all allocated interrupts are
 > freed.
 > 
 > The number of successfully allocated interrupts so far is stored
 > "i". However, "i - 1" interrupts are freed. This is broken:
 > 
->    - One interrupt is not be freed
+>      - One interrupt is not be freed
 > 
->    - If "i" is zero, "i - 1" wraps around
+>      - If "i" is zero, "i - 1" wraps around
 > 
-> Correct the number of freed interrupts to 'i'.
+> Correct the number of freed interrupts to "i".
 > 
-> Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+> Fixes: 0fcfe2247e75 ("powerpc/powernv/pci: Add MSI domains")
 > Signed-off-by: Nam Cao <namcao@linutronix.de>
 > Cc: stable@vger.kernel.org
 > ---
->   arch/powerpc/platforms/pseries/msi.c | 2 +-
+>   arch/powerpc/platforms/powernv/pci-ioda.c | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
-
-
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
+
 
 
