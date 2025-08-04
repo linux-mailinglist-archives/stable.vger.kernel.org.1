@@ -1,158 +1,277 @@
-Return-Path: <stable+bounces-166487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A20B1A410
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:06:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D50B1A44D
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA7197A47BB
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 14:05:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B16147AFA41
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 14:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF8426E709;
-	Mon,  4 Aug 2025 14:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27492701CC;
+	Mon,  4 Aug 2025 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="mbW4S+UY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jZ0IbITs"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1051FF1AD;
-	Mon,  4 Aug 2025 14:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042131DED4A
+	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 14:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754316404; cv=none; b=OzdroKkSOyO34iRz6IH0EjS2jB2epAC29JBrSUA4H6cOHS+TpRzmWtll561NUsIAIeWcQ8rU7s7YqcbnEdxR2Sl1MvdyEK3vmluPmExfKOvxhCUNSM8rbUM7pNf2zW5gnuqBYckyXVDRaOgYQBUdpI6RZDFEcdrW2S2pE/jlqqk=
+	t=1754316985; cv=none; b=U+xhOUgtoK3RsoYRiUjCoL2prj7HKWibHUpTazHH+zi939AgwTzftAc7aLAw68uFKlbtVxOP7mtRZ2MTrAmlFEVx+HFyuR8+Slz3pIvCLzHwxSEirs6y2rWZytIpCEQqFUiU6GeifcGInegSU+HB3YnJGR6LGLq5P0uIXQ3oXaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754316404; c=relaxed/simple;
-	bh=24P3ex0rlJ3RqZJL9JxHuPi3XZQr76oFtlGvBq+NWpk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FIeOJamPy7V4KjLBQoTmtaPJHEt63PF3R0u/T/FPLqaCaSl6PSQJ6CSlor4hlO1BEUbxqSgWldr+PoMYXCi7e8GITm+bRDTZy+W6hNWbXnYdxjs30heHPOVNh9eOVQHD77hOtvizQNPNusGLBbDBh7g4VikBlIbOJ1ABqv6M+TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=mbW4S+UY; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1754316388; x=1754921188; i=markus.elfring@web.de;
-	bh=89+LSE4n1Nea1RoBnD5H2ZBhlSpidKRnCq5+0UpQHL0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=mbW4S+UYGWhP7oj5v4fPWEJnfGDhx9danPyRhp3Ov31fi+DVmIItPDSAU3qifu6q
-	 XFL6mthWX/wpvgaHxtdk2TRFx5jJbNprIptZhxokxeO2ObG62doeNcD2Fh9R6f8fu
-	 pnzsyQwUpIRiRSp+foP8YoplT0wHD7qBwbp7397FyyhKs7UGfKJ0Zh+tycUZeO9mh
-	 Ty5spTTSnDCO1K1KCe5Z+Di6ljd0WftUpYUVNKiSWdnN5woRBqfXE615CnQv8ADlI
-	 gc5hIudKG13b4055tsc3LyDYevvEFDneoEQuvETqFUL926Z5OkRBXE6K6u8EiON+1
-	 /4i7RJx7zQF8lr4zaw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.221]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MumJF-1uS5XL19yV-010sEW; Mon, 04
- Aug 2025 16:06:28 +0200
-Message-ID: <94f2cba6-a407-4a0f-bc66-be75b4dea190@web.de>
-Date: Mon, 4 Aug 2025 16:06:26 +0200
+	s=arc-20240116; t=1754316985; c=relaxed/simple;
+	bh=bofZFfKMz0IK9tlZKzv5le7rnJSvhGXYGjWsicjlkTw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o9uXyT70VaNR0bAmFbZUM3CMQ6K7hoJbYq+gX1qa5/sKmtcrF2gDlyTHjpJ1Xk8dOnnOKLve7HkKpoO75YxAd3fzD+gU9AnVqyQClrFqyQT1wJgiXs7ZwejyxNkbE71C0yAl9CQA63kqAjEi/oda5lUriSIu7nzIDnlbwEQQ+rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jZ0IbITs; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-24050da1b9eso5218785ad.3
+        for <stable@vger.kernel.org>; Mon, 04 Aug 2025 07:16:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754316983; x=1754921783; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TmvTMUm/ICs/ahFcRTrwKfKZlA+J5p75DnclZMp8JVE=;
+        b=jZ0IbITsKtLyu81bmaM2IwE0hqHOlP9uHN8v6NIWo/D6/5cFKLjR5FUulJgkXLXQlq
+         V9F6ujEuFN0y6gEWRhwNkc+j/4fRigQArglXXRvZLAuqToFemraLaCkdHPY9RHsiubq7
+         mo3n917v60v6S68vgSZXRmlVwl+cukBPPYmCEzyJFn0Waqod5W0jIQ2JLZry6RUiNiT0
+         uI7cNawQOjUGMFMQS8DsvY4ZTI4D6gYfNNRmHMlqf9orcCe1QHHPg8euzl5NYvCoB5a1
+         v+Yg1kLaDT3U2t9099C7Biu1Jj8C5cFuIO6im+30A/wN61EfMF59cLQuwsG5mHK24+5l
+         L3Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754316983; x=1754921783;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TmvTMUm/ICs/ahFcRTrwKfKZlA+J5p75DnclZMp8JVE=;
+        b=CjdWNcf/uT6dB/LZSLqw5ZBr7qIr3l3DgFNzpIf7GErn2e3NErRTrG7qXqJTiD6Ei/
+         CvVP4gOEI0pT1NJVbzuzats0fk0k/JvjL6tdDAdsPPXYf4HyJaPmt9/B81iXu+dF+Arq
+         sBt0yjrF42fXIuUliPDAcsgNBv+ZELIWhbAsx8e+g3zWAmYn6JjWn94BgG+wgZg6u7lQ
+         k1o+gqVZ06/HOUR5eLaxhwln1m51kELITiFnDjh/0sRoFXYwPfgMlRt5gIkw90f8AAcH
+         LjsCbOwnr8iX0UoiyuvSk3McMD1x8GCZS8PEmuqSOuU8HCbpGhzhHZSz7AuQr6cA49Cm
+         u8Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnWQrEMBNtMgoR1axT6ZcL+VP9933eIvOQ3mqANpZdNAMeUf4zl5M078i6chDIIPkpvpD8kNM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS2pyCqBiKCqeL1Pjk7HiQbLS5fGeb4zDEQKaOhZ2R9nndeOhP
+	6rkTUrLiQK4JA5Y0AFeIyU/k+KWhvDHVYg+RC+hxTcMmhjYvESbZhAmUG6x8ixqtnx9MjgQ8JaH
+	ZwRTjC355qQCDhHLyC5b0NAhM900+U/Y=
+X-Gm-Gg: ASbGnctrWLBCGs7UMawF4HNVhWd6GgU6tvJx8Ny7PHsWXgDhjbNenDmMbS6K7wCiaXo
+	K4IuscbPDT8XX2vgMa+HVVpcLpSgxDRzojEt+FaYRi5yRh/3fjnh9ToaZcCW4QZdF0OfYVZTi2Z
+	Ol+yXQpkfn5umJ5gjY39zaDopT1IToXfRz6yG+1S5oQJ9mSGdZZzL1D/x9zeANqOmxczuP6c332
+	W0PMHgf
+X-Google-Smtp-Source: AGHT+IEq9ico+45e/lWfZTSuRxPqOjzXQJMO2yAHWmdAa65USJLAotkgDCF+yqF+5AE4SZTACL6/e7N5WK72/jKfKNA=
+X-Received: by 2002:a17:902:ef4e:b0:240:729c:a022 with SMTP id
+ d9443c01a7336-24246fef45bmr57133095ad.11.1754316983052; Mon, 04 Aug 2025
+ 07:16:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mailbox: pcc: Add missed acpi_put_table() to fix
- memory leak
-To: Zhen Ni <zhen.ni@easystack.cn>, linux-acpi@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Jassi Brar <jassisinghbrar@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>
-References: <20250804074115.44573-1-zhen.ni@easystack.cn>
- <20250804121453.75525-1-zhen.ni@easystack.cn>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250804121453.75525-1-zhen.ni@easystack.cn>
-Content-Type: text/plain; charset=UTF-8
+References: <20250730155900.22657-1-alexander.deucher@amd.com>
+In-Reply-To: <20250730155900.22657-1-alexander.deucher@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 4 Aug 2025 10:16:11 -0400
+X-Gm-Features: Ac12FXwJy7sUb93YuMFGFJPMXM7DzaATuAsXfBApHodn4ZPc1FpuDIyjdvdjb4g
+Message-ID: <CADnq5_NtBWyQozzv2wih6cp7Ado+nBf7hd_N+oGXsd0H_JadKg@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdgpu/discovery: fix fw based ip discovery
+To: Alex Deucher <alexander.deucher@amd.com>
+Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fR4ggwEXWjZQnOoklEq+X1pMJCb8kVzv1HfvLxXhzf8wqS9VS2L
- mEwtoT9Oyl2RYPx3L5Sg8o/PS53Mn3E9ivJaOPpS43VLoZQGgFr6iLVKPej/buKIhXtKy9r
- oKpdL5h67jZuoWQxdNSbvlUl65nniWtlAO6kHBDMhQP/YW3cjEWjZxzstwY6KjPUpboCGLo
- 13qUfwEg/EB7MrjnKo72w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:q6qOsZNyH10=;NMV9S4VjBf/9es+yf08t7dhBsWI
- UZ1hC372bOCMfc8H2/COg+A1rqpMBqGtA/n9gkPdpXWHRKEAYxHPsIbnNMMYGlTC9K1htT9L3
- 18jqfW50DU+FAsgGjbpf4ewZjCUe0eKxisdsweP7ys74VB7ORVVNDheyRN/sEFF3vTFiqeTTK
- +B11ksqbTn1F+wEd8j9Zj5NBqDnXAcyHOoEcmglJ7oHl9BDwSgC6bbbsYmwyi+s+nqOjuFaBl
- hkFcMZ1UV6rI46L5bImZ4s4O5JufLTTaXoFpoz2zjXv9MBm5UYKrrsIwrWRwEmBkK04IQbgQH
- Ty3gtkZdfjAmObM1Oum6p+phTZIeg452qCosibCdTek3QllMa44TRSX9CKavxzRI1+e2i15X0
- 3g3scjQQABMf6nZc1c5hXLrzTjUhtnknK1Wr6VeSmlIYYWN5Bs1IhXmnsdU40uuavOxH5L8jg
- bE2qNXoZIOJ0Eq6Nzw9VBP1jWNWAJ3mex0Zjao40cJdE81860fHBIA6it7WsZyREMGhYysL3X
- eGI74rSQhX0zrO3526iziUPoNvExZumPwxvUvWfJmSBXmS/f0NF0ygo+btZTLYTgzgk6U9eeq
- MqcAp/dFt/mGbel1HEBoeP95fdCGXKKnp+uQEvV5LfBHj+se57vgKCqu+MdR9JerEF07kTRB5
- m5gGopNTDT2maPCWSsOhkeVY1yH3X9oE9WyIpzHvG1I/uSKEnfWnTz09XDyZdnsOIXAiiDK8m
- kyW5P+axWr7KZCotG2rm1LdLy12stvhRGxn5mmdba9vAeDS21sV91gYDfcx/o32xR9inSaVzK
- CWE3z+wi5jCXXgMKixixNMlSZWvEMbUaylBufKgZBLaKeaJX2kxvgZg1A76U9LWszzwxRweJq
- IvLZCOqEDmiIBNpZ5dLtUi7VtQSKoJrZ4zF4YIkBP0ibojuX5z/RrjvoI+ITyzmZT+TmHqNIh
- aamtGlRj2FeulqzRhlReBum/m6J7X88NVZjgQz9j/Q6ZdzGeTORYV0PzvzwwKh8AyXkoHM/Fg
- syDn5VtKor5bLF3MjyAR3zPlBxCtjLzuoGMFOB3rfuc+PwkiPW7ct0NE9EBoJ1UuD9+8xnvq1
- 0Slr/5j57r7Byc4AGHEPkhBYpDlEbVqDzKySr22f4cwDc5dEGyaq5XEboM5klIRVtT72MGd2Y
- dTtrGCyMxz/vPhetV9UWRIZXdS+iKlzUcvFC/a8dapciN9Jr6UQdku24So1f3lb/cpcJ5xvDB
- 1rbM0gP+W9hsumj2jp2wbtgYxegeqHMKIX5nlqhewXRcGGB2n8wihbEKnoujS6v9qfh1ro+o9
- oQZl6ZSuADwrEvnpffUjHDZNIEWmBZX6H0+LeuU3qubSLZxeICvcX+tA17FroaJWAKB42DJ4U
- R36TS5uH6cMyvjfXJWhYUPwYnxHqfO7gEMtfJNOacs6pezw41ko8YIcwKqVc6s+Jf5uNU7nSZ
- 0dFAHWpBA6TapFV+tVNAsfJoQRiOLq4so08QDv2UtTQKAQjw6RpVDeiLSidFzuqgXn68twSm6
- a24uP2iHLRHwoZ5+hYWTElL/i+RHka4lVQSNuPndHOjV8IqEjyi6gxtxL1IOBjeujA6IzyGMk
- 0Vaf+T2i4apWL3OmYBttC75QDClH9p0p0Gw0oJ2TnNeMIZdWJH7ALbUF6ADcINDcV2leKtUba
- Hm6OC/jnNWMbsGf3lk1UHRPexgDT+V9XdeYfNU/b+ZYfkd8VrdzPNdyn0s6PvzMYhLghu+BR3
- /TDccS2M9DDofsIvqoKYadM6JU5I7Wp5B2BnPJAv04djYRYxNhCp/hTYJyofeNdJh99P6J6G7
- hL9jo0guua0EHX1VMppkTdJX1nOarejNzgaJGdW2+NZD4Ris7lcS1mYRehOHovCbHPh9RUj0H
- 6xypFYHBiItopgjaMtcykyOj1pFLlSF7uf4HMSdH19yjU06taoUq6OF0gZefJnVgRESis8WXN
- p8ddRWIDRt9LARPoz7BvkK7gcwh28r+y95eWGg02gNgtBXjOCnc0MYhqZImMdaVuJcD+IX3zH
- eyoeualXa1GBumGVK/K/57/seUuTlE6JXHOYwidwIRSudO8LBwa/x0lLoqsMQ0be+wo7j42Sr
- TRd01jfaurylNYn11g5IXPa9PGsLwhWJVphcHJ5jRtjXm+b9XkDIHOPxfp6qgLwQ5W8gaXBqH
- aiOuLayxmXU4QSCvq6PTcHjeezFUVJM/GPTRYTkkV1wxLZF7AIwQryC29tYhwkTZAWYxwTPvn
- Pf8YbM9hNJmUolbbpt9Q31cwDw9Y2pKisv7R1D9wRhydYBa7XbxJFExxF9BI3SGx38Wajyene
- aXeLZa/GkY/JTGTKnyBQqJX9/2Tv6AH94lgiFELAEJ35QNSm+ymfP3YM2Kyo8vHrfhttukxls
- SZcyWyhpZBGsve4glZ3LH+ZEKdT4VN0nu6U/6pVNeqM0r3Hc7UFNp69ThZXSmN2oqeJvj9av1
- Gvb06wUsZDTRHmFluc82r+HGZmWlXITe2HBRwcc6AZ5DzObc9C+c6O9bc7roGuxQox+/vP7u3
- Ijuqhc8egJT9jxVzXVMy1n4z46XEiPsMCoCV/jRwf9YHn7M2XJLbiHXyZw16DI0jiu6+qt1WB
- 1axq74dRr9qaWmQNlMrb5NONTvXYZpFkWRerOS854R17EVVQXGgdlSBp9mvuhBRYObOWiE4Xw
- jM/wq6uT4H8z9IGh+FSV412bXoUopRMSzZadlWwnuBTj1dmjkL4d73Sg4EhcuqXtGSCt8Ayta
- RPL3OuShbqHUOk0lPhFz9QNbcDRtHZp0hUiZusI7XIqOc0NVVyiFCxOay5Ku1oNrCM/f/wBUf
- nmG4vQqW+FI57l/pRwjZ/BnqZTkb2PLZ6sGG5Eht8+TMXUU5zyNVhMYzNSTUypiqXl1lVTsxQ
- yoTZ+oLMHvpBCon2Re8vDoPbBt42LGgkudABM4uI7lRjoiRN+jjAPdIYmMbOwZLKdPnjyg6YA
- SaBBEzCDWik1230TRD0ZRrESZmYAvtjWFoGhg0yIbRZ7wSfnZxb5noIrxssyikGxp02wHnnpu
- JHBf36BS0iYeMd0+fa/YJftUScMGxHev24rpT6UpxGRfW3ho6SmDIS6eRTBzyW4rmL6maFT25
- TFU6kM4L/bt4jP+EPZw1ZJcovrXBlIyoSexP+aYPnad3v1Jbzip+avmGqOAe2yL2AFdbp09Qp
- HWFEwkilHKt1tongOR/JG6pU2UQTIKamUR2TLLGW0O+oH0xcU4mtTTF2VzmdIAYr7QKfrpMgi
- bl2o+Xcf1l6+/W/sgat5oUAyNrw1nT5lZBC6pSbk4XoX0R+dB3lKKde5wZScQKMTrLaJ1Zpq9
- cHri2o8N+ndA7cV9KkNWpSn6wTE+3hhBT/jglN2nIpuSgGgX1zhqDxiQAFPjqLqxx9pNwcDlk
- gzPmWsElIncgK++GF49hILUMSS1MZvH08uOYcx0yynPheC0U2crfVKWdE6IQwJfwNbo87lx6w
- 1+NEsopvHrSQDEAn43aZgo3hv1q1iKGYOi+R77yRU4aHnBZ9iLK9C
 
-> In pcc_mbox_probe(), the PCCT table acquired via acpi_get_table() is
-> only released in error paths but not in the success path. Fix a
-> permanent ACPI memory leak when the driver successfully initializes. Add
-> the goto label 'err_nomem'.
+Ping?
 
-You may use an enumeration for your change description.
+Alex
 
-* Fix =E2=80=A6
-
-* Add =E2=80=A6 so that a bit of exception handling can be refined.
-
-
-=E2=80=A6> +++ b/drivers/mailbox/pcc.c
-=E2=80=A6> @@ -827,8 +821,11 @@ static int pcc_mbox_probe(struct platform_=
-device *pdev)
-=E2=80=A6> +err_nomem:
-> +	rc =3D -ENOMEM;
-> +	goto err;
-
-Please omit such a redundant statement at this proposed place.
-
-
->  err:
->  	acpi_put_table(pcct_tbl);
->  	return rc;
-Would a label like =E2=80=9Cput_table=E2=80=9D become helpful here?
-
-Regards,
-Markus
+On Wed, Jul 30, 2025 at 12:18=E2=80=AFPM Alex Deucher <alexander.deucher@am=
+d.com> wrote:
+>
+> We only need the fw based discovery table for sysfs.  No
+> need to parse it.  Additionally parsing some of the board
+> specific tables may result in incorrect data on some boards.
+> just load the binary and don't parse it on those boards.
+>
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4441
+> Fixes: 80a0e8282933 ("drm/amdgpu/discovery: optionally use fw based ip di=
+scovery")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    |  5 +-
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 72 ++++++++++---------
+>  2 files changed, 41 insertions(+), 36 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm=
+/amd/amdgpu/amdgpu_device.c
+> index efe98ffb679a4..b2538cff222ce 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> @@ -2570,9 +2570,6 @@ static int amdgpu_device_parse_gpu_info_fw(struct a=
+mdgpu_device *adev)
+>
+>         adev->firmware.gpu_info_fw =3D NULL;
+>
+> -       if (adev->mman.discovery_bin)
+> -               return 0;
+> -
+>         switch (adev->asic_type) {
+>         default:
+>                 return 0;
+> @@ -2594,6 +2591,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct a=
+mdgpu_device *adev)
+>                 chip_name =3D "arcturus";
+>                 break;
+>         case CHIP_NAVI12:
+> +               if (adev->mman.discovery_bin)
+> +                       return 0;
+>                 chip_name =3D "navi12";
+>                 break;
+>         }
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/=
+drm/amd/amdgpu/amdgpu_discovery.c
+> index 81b3443c8d7f4..27bd7659961e8 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+> @@ -2555,40 +2555,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_=
+device *adev)
+>
+>         switch (adev->asic_type) {
+>         case CHIP_VEGA10:
+> -       case CHIP_VEGA12:
+> -       case CHIP_RAVEN:
+> -       case CHIP_VEGA20:
+> -       case CHIP_ARCTURUS:
+> -       case CHIP_ALDEBARAN:
+> -               /* this is not fatal.  We have a fallback below
+> -                * if the new firmwares are not present. some of
+> -                * this will be overridden below to keep things
+> -                * consistent with the current behavior.
+> +               /* This is not fatal.  We only need the discovery
+> +                * binary for sysfs.  We don't need it for a
+> +                * functional system.
+>                  */
+> -               r =3D amdgpu_discovery_reg_base_init(adev);
+> -               if (!r) {
+> -                       amdgpu_discovery_harvest_ip(adev);
+> -                       amdgpu_discovery_get_gfx_info(adev);
+> -                       amdgpu_discovery_get_mall_info(adev);
+> -                       amdgpu_discovery_get_vcn_info(adev);
+> -               }
+> -               break;
+> -       default:
+> -               r =3D amdgpu_discovery_reg_base_init(adev);
+> -               if (r) {
+> -                       drm_err(&adev->ddev, "discovery failed: %d\n", r)=
+;
+> -                       return r;
+> -               }
+> -
+> -               amdgpu_discovery_harvest_ip(adev);
+> -               amdgpu_discovery_get_gfx_info(adev);
+> -               amdgpu_discovery_get_mall_info(adev);
+> -               amdgpu_discovery_get_vcn_info(adev);
+> -               break;
+> -       }
+> -
+> -       switch (adev->asic_type) {
+> -       case CHIP_VEGA10:
+> +               amdgpu_discovery_init(adev);
+>                 vega10_reg_base_init(adev);
+>                 adev->sdma.num_instances =3D 2;
+>                 adev->gmc.num_umc =3D 4;
+> @@ -2611,6 +2582,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
+evice *adev)
+>                 adev->ip_versions[DCI_HWIP][0] =3D IP_VERSION(12, 0, 0);
+>                 break;
+>         case CHIP_VEGA12:
+> +               /* This is not fatal.  We only need the discovery
+> +                * binary for sysfs.  We don't need it for a
+> +                * functional system.
+> +                */
+> +               amdgpu_discovery_init(adev);
+>                 vega10_reg_base_init(adev);
+>                 adev->sdma.num_instances =3D 2;
+>                 adev->gmc.num_umc =3D 4;
+> @@ -2633,6 +2609,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
+evice *adev)
+>                 adev->ip_versions[DCI_HWIP][0] =3D IP_VERSION(12, 0, 1);
+>                 break;
+>         case CHIP_RAVEN:
+> +               /* This is not fatal.  We only need the discovery
+> +                * binary for sysfs.  We don't need it for a
+> +                * functional system.
+> +                */
+> +               amdgpu_discovery_init(adev);
+>                 vega10_reg_base_init(adev);
+>                 adev->sdma.num_instances =3D 1;
+>                 adev->vcn.num_vcn_inst =3D 1;
+> @@ -2674,6 +2655,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
+evice *adev)
+>                 }
+>                 break;
+>         case CHIP_VEGA20:
+> +               /* This is not fatal.  We only need the discovery
+> +                * binary for sysfs.  We don't need it for a
+> +                * functional system.
+> +                */
+> +               amdgpu_discovery_init(adev);
+>                 vega20_reg_base_init(adev);
+>                 adev->sdma.num_instances =3D 2;
+>                 adev->gmc.num_umc =3D 8;
+> @@ -2697,6 +2683,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
+evice *adev)
+>                 adev->ip_versions[DCI_HWIP][0] =3D IP_VERSION(12, 1, 0);
+>                 break;
+>         case CHIP_ARCTURUS:
+> +               /* This is not fatal.  We only need the discovery
+> +                * binary for sysfs.  We don't need it for a
+> +                * functional system.
+> +                */
+> +               amdgpu_discovery_init(adev);
+>                 arct_reg_base_init(adev);
+>                 adev->sdma.num_instances =3D 8;
+>                 adev->vcn.num_vcn_inst =3D 2;
+> @@ -2725,6 +2716,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
+evice *adev)
+>                 adev->ip_versions[UVD_HWIP][1] =3D IP_VERSION(2, 5, 0);
+>                 break;
+>         case CHIP_ALDEBARAN:
+> +               /* This is not fatal.  We only need the discovery
+> +                * binary for sysfs.  We don't need it for a
+> +                * functional system.
+> +                */
+> +               amdgpu_discovery_init(adev);
+>                 aldebaran_reg_base_init(adev);
+>                 adev->sdma.num_instances =3D 5;
+>                 adev->vcn.num_vcn_inst =3D 2;
+> @@ -2751,6 +2747,16 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_d=
+evice *adev)
+>                 adev->ip_versions[XGMI_HWIP][0] =3D IP_VERSION(6, 1, 0);
+>                 break;
+>         default:
+> +               r =3D amdgpu_discovery_reg_base_init(adev);
+> +               if (r) {
+> +                       drm_err(&adev->ddev, "discovery failed: %d\n", r)=
+;
+> +                       return r;
+> +               }
+> +
+> +               amdgpu_discovery_harvest_ip(adev);
+> +               amdgpu_discovery_get_gfx_info(adev);
+> +               amdgpu_discovery_get_mall_info(adev);
+> +               amdgpu_discovery_get_vcn_info(adev);
+>                 break;
+>         }
+>
+> --
+> 2.50.1
+>
 
