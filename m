@@ -1,134 +1,194 @@
-Return-Path: <stable+bounces-166450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE3DB19DCF
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:40:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB9AB19DE5
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8A7E179427
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:40:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B41974E06FB
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6572B242938;
-	Mon,  4 Aug 2025 08:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64B1242922;
+	Mon,  4 Aug 2025 08:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cH4+6Ecs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xzEOEukZ"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dv5z2YO8"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934A4241696;
-	Mon,  4 Aug 2025 08:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36A72F2D;
+	Mon,  4 Aug 2025 08:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754296828; cv=none; b=CQVwOPfmWVrFoHED9u8JU53IzCWwAqnoyt71XXrYPWZ9VJ3U6d8OodFq7loIqNsvgBTz7Nr7MHYmnaGhWltBy2LeeJO6eOVsN6Mf+THzV06xm09eumU26j00iokAF3bpUbB9UcnnVOUYmMXIc2gsoe4RBXfgV9Fjc3rZ0WDMg6c=
+	t=1754296969; cv=none; b=iAWPs3XC2LkRmjt+Tm7kfxd4JW8nEmHdhgzqJUy8qXh2JceU+KifaXhXt5haX8LpvoKTpr+py+TvzEcae54ujgUv9XmbQkxpczKkn0pw0M1alWlx3tu12xbn4cHHJCNcQsD513yxy43P0byROJPQ+rFlOoV1NA+shdja2zo2voo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754296828; c=relaxed/simple;
-	bh=BVj2K46i1P8TjN6ep5m470ptQamNf/FI5rrL3pHLAbY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qpj9DeZy1DA4OicZdaEG1Di8UQMCt18tDsk1s85oYO/IWaDUudYdRKAxE/nI6c15jOlHb57rHbcCQN3OEKggxJ4v7JhGlxCDRpr4605iuDOYuKYn1YYaYHazFkw8VdNg9Pq8xpvTRSx7776Wy1z6N/0oDuMbpL1+WDYXVSQSQ0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cH4+6Ecs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xzEOEukZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1754296824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Cwf0xBGF64OhO606sUPwEaX7nlasQOFI0s+srhYAOK0=;
-	b=cH4+6EcsXntrIwNvELdJaksa1ZJBUZc9iPdskQQYF7oIJcWRjRrDuOcyBRFMk5xAiV9kHI
-	CRsnOZRW3mJSH5NLpqA7enidl8Nzf7+ArQ2YE0Qb7tQb24fBrLba42y7YM0QIbD8UBFOQm
-	d+TQEu8LuCkhNBxMyYSR6Gk5YQ9X0FiJjYj2Ddx4hroGAeNQkTgV81QmOS7gmTwc/p5IHQ
-	DmgW0JinXAMKvP89HG6/7CA0n1Pm5PB6TS1A3RLo90rtGIYC6uoQt0RcXRs+8XOn+1O/8D
-	n/wR3XhphducfgSDhw1iNL4VCGENtGHyNwuHXWLZwNm6mj53Gep0YhdUIWpdEQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1754296824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Cwf0xBGF64OhO606sUPwEaX7nlasQOFI0s+srhYAOK0=;
-	b=xzEOEukZDKkiXJneWe5t3rELp1DjU/OGtqk9xq1BQDXJAIihWCKk4xdHEtexNdLbLvZhYk
-	SwAlOyMlg0LdgWBA==
-Date: Mon, 04 Aug 2025 10:40:17 +0200
-Subject: [PATCH v2] fs: always return zero on success from replace_fd()
+	s=arc-20240116; t=1754296969; c=relaxed/simple;
+	bh=L7T2peuzotcxh0WDpbjrWrh+4FLTWHQ/ToB/4BKx620=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k2Va8o6F13Q+24PX6GgUeOoipE0nv+0wqx3bVaCCcSHKMNK87DWOSJ1sRNl+/bUv6kpuAU0ol3CBnsc085WBtSee3fojEIm5w8dvctCDW1twpwzb23hY1InB87nQcEA36QDp/7URQTgB35NLRNE9kTG37degeWCffKjIJ2sMag0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dv5z2YO8; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1754296965; x=1754901765; i=markus.elfring@web.de;
+	bh=UASp2Q43xdTYdojg64rqUD6JEddZj16gpDHk948VxA8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=dv5z2YO8haLlKOlwNl3UMwlixDWATeNZdkNX1asyYWBvnzi86/AH7OOlmHnm6ClM
+	 vLSUDQPK7xEGYRQmCbzDQK1wMmksvre3ZImA/DC61U+fLtMh0heO8QzvTSEbiucBy
+	 AGrPhfojTf5LJVylOAMP1D/ywRQ0BnkAQslruvEuy26e2+GnI55MrhgfOyswX+rlc
+	 flKdaliwkoclJecdXT4zPyWPqVxLb+Pcn+3/KxXrQwRbVYVoWN0ukeoXGUyRfSPNa
+	 INTq2n7Smy6D7pNldWJP1icelyTKFjGZe+/ZwcZVMXj5x+HYA2MjdWApOXJWCC2Rq
+	 38WlBwoHwKlghaWoug==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.221]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MpCmZ-1uIH4l3BZn-00ch8v; Mon, 04
+ Aug 2025 10:42:44 +0200
+Message-ID: <43362d25-5be8-4158-bda2-2c8e9c4743f4@web.de>
+Date: Mon, 4 Aug 2025 10:42:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250804-fix-receive_fd_replace-v2-1-ecb28c7b9129@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIAPBxkGgC/4WNUQqDMBBEryL73ZQk1Vj65T2KiGTXuiBRNjZYx
- Ls39QL9fMPMmx0iCVOER7GDUOLIc8hgLwX4sQ8vUoyZwWpb6bs2auBNCXniRN2AndAy9Z5UPSB
- Wnlx1swh5vAjl5il+tplHjussn/MnmV/6V5mMMgpLh05rX5fomonDe5U58HZFgvY4ji9bgaF/w
- AAAAA==
-X-Change-ID: 20250801-fix-receive_fd_replace-7fdd5ce6532d
-To: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Sargun Dhillon <sargun@sargun.me>, Kees Cook <kees@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754296820; l=1840;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=BVj2K46i1P8TjN6ep5m470ptQamNf/FI5rrL3pHLAbY=;
- b=45K73s0Y6YV8fA2OCAJMAwAId01qWNo3p0vTqqz64u6yxrheS6UnXcxw5jJcaTKRAl8NQ19Ba
- 7+NFieiBjwyA693gJYwdzaIYOSvbpGmudpzodXgi/+LiH99JpkMvtJ8
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mailbox: pcc: Add missed acpi_put_table() to fix
+ memory leak
+To: Zhen Ni <zhen.ni@easystack.cn>, linux-acpi@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Jassi Brar <jassisinghbrar@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>
+References: <20250730124508.939257-1-zhen.ni@easystack.cn>
+ <20250804074115.44573-1-zhen.ni@easystack.cn>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250804074115.44573-1-zhen.ni@easystack.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:FG44XmFFueVGlehpQaLcXe7bSczvr7xOKVfQst+eEyCEVoQGekn
+ AN5fzG/8ePu+J65Vyws4IVDxxlL1FQjdj6bd0nKf1fkYRWtTbTW/9UVaNmn4vn9qNgK+DMY
+ KqX+SXR35IR9huFlf7Uk80ozhp0hH2ELc2vmGOlF4VdEbXWKCS/P+WQscMEgcTn24FggFir
+ 9JAye0ArBnV80p2dTdmBQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Mz2mULEYJTs=;xL0gWXWXFt1EM9oAeOgynXXjDbE
+ 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
+ 0w==
 
-replace_fd() returns the number of the new file descriptor through the
-return value of do_dup2(). However its callers never care about the
-specific number. In fact the caller in receive_fd_replace() treats any
-non-zero return value as an error and therefore never calls
-__receive_sock() for most file descriptors, which is a bug.
+> In pcc_mbox_probe(), the PCCT table acquired via acpi_get_table()
+> is only released in error paths but not in the success path. This
+> leads to a permanent ACPI memory leak when the driver successfully
+> initializes.
 
-To fix the bug in receive_fd_replace() and to avoid the same issue
-happening in future callers, signal success through a plain zero.
+* You may occasionally put more than 66 characters into text lines
+  of such a change description.
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv6.16#n658
 
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Link: https://lore.kernel.org/lkml/20250801220215.GS222315@ZenIV/
-Fixes: 173817151b15 ("fs: Expand __receive_fd() to accept existing fd")
-Fixes: 42eb0d54c08a ("fs: split receive_fd_replace from __receive_fd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
-Changes in v2:
-- Move the fix to replace_fd() (Al)
-- Link to v1: https://lore.kernel.org/r/20250801-fix-receive_fd_replace-v1-1-d46d600c74d6@linutronix.de
----
-Untested, it stuck out while reading the code.
----
- fs/file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+* See also once more:
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv6.16#n94
 
-diff --git a/fs/file.c b/fs/file.c
-index 6d2275c3be9c6967d16c75d1b6521f9b58980926..f8a271265913951d755a5db559938d589219c4f2 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1330,7 +1330,10 @@ int replace_fd(unsigned fd, struct file *file, unsigned flags)
- 	err = expand_files(files, fd);
- 	if (unlikely(err < 0))
- 		goto out_unlock;
--	return do_dup2(files, file, fd, flags);
-+	err = do_dup2(files, file, fd, flags);
-+	if (err < 0)
-+		goto out_unlock;
-+	err = 0;
- 
- out_unlock:
- 	spin_unlock(&files->file_lock);
 
----
-base-commit: d2eedaa3909be9102d648a4a0a50ccf64f96c54f
-change-id: 20250801-fix-receive_fd_replace-7fdd5ce6532d
+=E2=80=A6> ---
+> Changes in v2:
+> - Add tags of 'Fixes' and 'Cc'
+> - Change goto target from out_put_pcct to e_nomem
+=E2=80=A6> +++ b/drivers/mailbox/pcc.c
+> @@ -763,19 +763,19 @@ static int pcc_mbox_probe(struct platform_device *=
+pdev)
+>  					 GFP_KERNEL);
+>  	if (!pcc_mbox_channels) {
+>  		rc =3D -ENOMEM;
+> -		goto err;
+> +		goto e_nomem;
+>  	}
+=E2=80=A6
 
-Best regards,
--- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Why do you not move the assignment statement accordingly?
 
+
+=E2=80=A6> @@ -796,17 +796,17 @@ static int pcc_mbox_probe(struct platform=
+_device *pdev)
+>  		    !pcc_mbox_ctrl->txdone_irq) {
+>  			pr_err("Platform Interrupt flag must be set to 1");
+>  			rc =3D -EINVAL;
+> -			goto err;
+> +			goto e_nomem;
+>  		}
+=E2=80=A6
+
+You misunderstood one of my development suggestions.
+
+
+=E2=80=A6> @@ -827,9 +827,8 @@ static int pcc_mbox_probe(struct platform_d=
+evice *pdev)
+=E2=80=A6> -		return 0;
+> -err:
+> +
+> +e_nomem:
+>  	acpi_put_table(pcct_tbl);
+>  	return rc;
+>  }
+Would an other code variant be more reasonable?
+
+e_nomem:
+	rc =3D -ENOMEM;
+	goto err;
+
+
+Regards,
+Markus
 
