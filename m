@@ -1,188 +1,141 @@
-Return-Path: <stable+bounces-166441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C5DB19BDD
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B10A3B19CD6
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 09:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C33CC3B99E3
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 06:59:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E0BA3BB2A8
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 07:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D7C235044;
-	Mon,  4 Aug 2025 06:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="VYy8Z2n8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783D3238C1F;
+	Mon,  4 Aug 2025 07:41:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpcmd02101.aruba.it (smtpcmd02101.aruba.it [62.149.158.101])
+Received: from mail-m32105.qiye.163.com (mail-m32105.qiye.163.com [220.197.32.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DE92367CD
-	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 06:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728682E3705;
+	Mon,  4 Aug 2025 07:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754290749; cv=none; b=CagxOwIN5cOKEpVtOt8/MD3PoCmpfvYtmQqlYNdXHash7yPVSKU2MzdiIZgHspFsgtAmAy++helUewvPZTjHE/vQ16N0uGDPU+5lpiomTmS7V+UN/5fDQub2MPwsTko9zU0rIe1h6uuCQl5hqJkUSoEE0BAbmlVqUkmQfRg3gPQ=
+	t=1754293301; cv=none; b=gRSNXpjzD/7Ok0EoH3cfkQNob5t1iK3EykuvKMbq6AVuQkE6HIpTnr9bzxGwuaBQxjzJrMggtru97c2fhWvb9zwIcajCtPLCJ+BwfuDTuIWl8ISIoQcFpqkjFcmunMvVW+6EG0YsrBPZ4t/AfK+PKWfqKwihJuLho1yXjfwiFJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754290749; c=relaxed/simple;
-	bh=LSgysigogsq8Vu6IcegPLAJWwCo8lYdgNcydMlXMnL8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AME0ibL2rf2OVrdxi6Jaz0MPdlkZzANOT2PwOmoyU8tbAiGtU83iPXvRqnNpcjqpmRKHq4vw9sZ1Nv2Sz1YD8BHcIuOP4iVCskEUT2bD0c/u/aKn8YYusFwnT+YqoR/eoUE+IJS39bZHXAl0oejGe/KsshJJvxUgp3Re7jKv6mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=VYy8Z2n8; arc=none smtp.client-ip=62.149.158.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
-Received: from [192.168.1.57] ([79.0.204.227])
-	by Aruba SMTP with ESMTPSA
-	id ip78umBpeloieip78u0GqW; Mon, 04 Aug 2025 08:56:06 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1754290566; bh=LSgysigogsq8Vu6IcegPLAJWwCo8lYdgNcydMlXMnL8=;
-	h=Date:MIME-Version:Subject:To:From:Content-Type;
-	b=VYy8Z2n8jbbL7C6mzzLMa6VQwA2YtGgoeZJlwAUT0yz9Fn7Say2nLt//YESLQWRqS
-	 WiMRYAN+c0KmcxN3h4u0LN9xTP4z7gck8tIsZd12uXVaqe68HYDpbf3p8UXV2fxstH
-	 omxDLt+DkxHHc7vMkuq4H2bRb2S/NBXNRtWlng/pBniYnH1kjwxPfgfMXLXGJI4syd
-	 DNrlQCutHBe+nRx5pt2RPudgjWgC/69WWczBPkWuDcNMeOExlME4kriw8LZHTDpdG0
-	 1GwFyxHy0DmTDf7OXMsOAauRHeWmErTmnpzzONr3f71K+GF7D1PTFu7DEW2Ky23sVn
-	 qM0FrymblBvsg==
-Message-ID: <42f15255-9182-4c33-b41e-be7c9682d4e3@enneenne.com>
-Date: Mon, 4 Aug 2025 08:56:04 +0200
+	s=arc-20240116; t=1754293301; c=relaxed/simple;
+	bh=a4k+ImDSS1kwPzRCmxturSiTZ5nwOlX3mgptNTfnGRo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EB4VTUE7EPhpRQAtEgyFmDkeGzFCyfO/BXwQ0yFHKGzARDaxb9/xsICiufXlqFIefFJ5VaJEB91FNMGL3NFDhkBPy9v1NV7N22yuAdf+ZAqVAUYcDv4uYSPbK8q8VEwnMvZXla0yaD88MnHu0SAvPzYK6qrDF+MdFFmZoK59P+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=220.197.32.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id e1adb6a9;
+	Mon, 4 Aug 2025 15:41:24 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: Markus.Elfring@web.de,
+	sudeep.holla@arm.com,
+	jassisinghbrar@gmail.com
+Cc: linux-acpi@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mailbox: pcc: Add missed acpi_put_table() to fix memory leak
+Date: Mon,  4 Aug 2025 15:41:15 +0800
+Message-Id: <20250804074115.44573-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20250730124508.939257-1-zhen.ni@easystack.cn>
+References: <20250730124508.939257-1-zhen.ni@easystack.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.1 31/51] pps: clients: gpio: fix interrupt
- handling order in remove path
-Content-Language: en-US
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-Cc: Eliav Farber <farbere@amazon.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, tglx@linutronix.de,
- mingo@kernel.org, bastien.curutchet@bootlin.com, calvin@wbinvd.org
-References: <20250804003643.3625204-1-sashal@kernel.org>
- <20250804003643.3625204-31-sashal@kernel.org>
-From: Rodolfo Giometti <giometti@enneenne.com>
-In-Reply-To: <20250804003643.3625204-31-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfIiPnIGAED+sXC8HXBL3BWpNdGa56CCnOTvHkYHLVxhMZnXUBtPylEjWy4N7Y6TNtOaW9D01tpACnR7pH4mOLtyE8MlbDmKzBZkwAipFLIrwoSBuTjDl
- sIPrTAp2+gEyZnYWKg0/WHGjTf7rW+Uh2syxrOxMuUQ/qhivKslZvzrv8u/Nw6+B43tKXQbL4suQTyYymm7qetps6K5Q2J3losJjD9Acnw6+xFliiuRAn9n0
- hvLtGd5c39rlFC5Ae38BMKtj8EGN0owIwKktnd7n55bvGSDaPbzrU7gnhDMcnoLSasmVCucAgZ14hp2ceOjfvEZumDe6dDE9yD2lXI+RulwiVJWX+IRFQA+I
- YfEsyMUn1/Hw7h6HxoxKkREXBh2UqO3YoYJbMu9+BDoztwMpLK3ZFQtpZssISVj8Ef+/gTWQstoaDiz+EqiFKp5geHSp/FvXXz1hFiBJCi3wHA02HOQ=
+X-HM-Tid: 0a9874072fc50229kunme07da2d845a460
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGR5OVkgYT0weGE5KQhpDS1YVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
+	VKQktLWQY+
 
-On 04/08/25 02:36, Sasha Levin wrote:
-> From: Eliav Farber <farbere@amazon.com>
-> 
-> [ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
-> 
-> The interrupt handler in pps_gpio_probe() is registered after calling
-> pps_register_source() using devm_request_irq(). However, in the
-> corresponding remove function, pps_unregister_source() is called before
-> the IRQ is freed, since devm-managed resources are released after the
-> remove function completes.
-> 
-> This creates a potential race condition where an interrupt may occur
-> after the PPS source is unregistered but before the handler is removed,
-> possibly leading to a kernel panic.
-> 
-> To prevent this, switch from devm-managed IRQ registration to manual
-> management by using request_irq() and calling free_irq() explicitly in
-> the remove path before unregistering the PPS source. This ensures the
-> interrupt handler is safely removed before deactivating the PPS source.
-> 
-> Signed-off-by: Eliav Farber <farbere@amazon.com>
-> Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+In pcc_mbox_probe(), the PCCT table acquired via acpi_get_table()
+is only released in error paths but not in the success path. This
+leads to a permanent ACPI memory leak when the driver successfully
+initializes.
 
-Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+Changes in v2:
+- Add tags of 'Fixes' and 'Cc'
+- Change goto target from out_put_pcct to e_nomem
+---
+ drivers/mailbox/pcc.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-> ---
-> 
-> LLM Generated explanations, may be completely bogus:
-> 
-> Based on my analysis of the commit and the surrounding context, here is
-> my assessment:
-> 
-> **Backport Status: YES**
-> 
-> This commit should be backported to stable kernel trees for the
-> following reasons:
-> 
-> 1. **Fixes a Real Bug**: The commit addresses a genuine race condition
->     where an interrupt can occur after the PPS source is unregistered but
->     before the IRQ handler is freed. This can lead to a kernel panic - a
->     serious stability issue that affects users.
-> 
-> 2. **Clear Race Condition Pattern**: The code shows the problematic
->     ordering:
->     - In probe: `pps_register_source()` → `devm_request_irq()`
->     - In remove: `pps_unregister_source()` → (implicit devm cleanup frees
->       IRQ)
-> 
->     This creates a window where the hardware can generate an interrupt
-> after the PPS source is gone but before the handler is removed, causing
-> the handler to access freed memory.
-> 
-> 3. **Minimal and Contained Fix**: The change is small and focused:
->     - Changes `devm_request_irq()` to `request_irq()`
->     - Adds explicit `free_irq()` call before `pps_unregister_source()`
->     - Only 3 lines of functional code changes
->     - No new features or architectural changes
-> 
-> 4. **Similar to Other Stable Fixes**: This follows a common pattern seen
->     in other drivers where devm resource ordering causes issues in
->     removal paths. The kernel has many similar fixes for CAN drivers,
->     network drivers, and other subsystems that have been backported to
->     stable.
-> 
-> 5. **Low Risk of Regression**: The change is straightforward and doesn't
->     modify the driver's functionality - it only fixes the resource
->     cleanup ordering. The manual IRQ management is a well-established
->     pattern.
-> 
-> 6. **Affects User-Visible Stability**: A kernel panic during device
->     removal/module unload is a serious issue that can affect system
->     stability, especially in environments where PPS devices might be
->     dynamically added/removed or during system shutdown.
-> 
-> The commit message clearly describes the problem, the root cause, and
-> the solution. The fix is conservative and follows established kernel
-> patterns for fixing devm ordering issues. This is exactly the type of
-> bug fix that stable kernel rules recommend for backporting.
-> 
->   drivers/pps/clients/pps-gpio.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-> index bf3b6f1aa984..41e1fdbcda16 100644
-> --- a/drivers/pps/clients/pps-gpio.c
-> +++ b/drivers/pps/clients/pps-gpio.c
-> @@ -206,8 +206,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
->   	}
->   
->   	/* register IRQ interrupt handler */
-> -	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
-> -			get_irqf_trigger_flags(data), data->info.name, data);
-> +	ret = request_irq(data->irq, pps_gpio_irq_handler,
-> +			  get_irqf_trigger_flags(data), data->info.name, data);
->   	if (ret) {
->   		pps_unregister_source(data->pps);
->   		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
-> @@ -224,6 +224,7 @@ static int pps_gpio_remove(struct platform_device *pdev)
->   {
->   	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
->   
-> +	free_irq(data->irq, data);
->   	pps_unregister_source(data->pps);
->   	del_timer_sync(&data->echo_timer);
->   	/* reset echo pin in any case */
-
-
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index f6714c233f5a..b5b4e3665593 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -763,19 +763,19 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 					 GFP_KERNEL);
+ 	if (!pcc_mbox_channels) {
+ 		rc = -ENOMEM;
+-		goto err;
++		goto e_nomem;
+ 	}
+ 
+ 	chan_info = devm_kcalloc(dev, count, sizeof(*chan_info), GFP_KERNEL);
+ 	if (!chan_info) {
+ 		rc = -ENOMEM;
+-		goto err;
++		goto e_nomem;
+ 	}
+ 
+ 	pcc_mbox_ctrl = devm_kzalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL);
+ 	if (!pcc_mbox_ctrl) {
+ 		rc = -ENOMEM;
+-		goto err;
++		goto e_nomem;
+ 	}
+ 
+ 	/* Point to the first PCC subspace entry */
+@@ -796,17 +796,17 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 		    !pcc_mbox_ctrl->txdone_irq) {
+ 			pr_err("Platform Interrupt flag must be set to 1");
+ 			rc = -EINVAL;
+-			goto err;
++			goto e_nomem;
+ 		}
+ 
+ 		if (pcc_mbox_ctrl->txdone_irq) {
+ 			rc = pcc_parse_subspace_irq(pchan, pcct_entry);
+ 			if (rc < 0)
+-				goto err;
++				goto e_nomem;
+ 		}
+ 		rc = pcc_parse_subspace_db_reg(pchan, pcct_entry);
+ 		if (rc < 0)
+-			goto err;
++			goto e_nomem;
+ 
+ 		pcc_parse_subspace_shmem(pchan, pcct_entry);
+ 
+@@ -827,9 +827,8 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 	rc = mbox_controller_register(pcc_mbox_ctrl);
+ 	if (rc)
+ 		pr_err("Err registering PCC as Mailbox controller: %d\n", rc);
+-	else
+-		return 0;
+-err:
++
++e_nomem:
+ 	acpi_put_table(pcct_tbl);
+ 	return rc;
+ }
 -- 
-GNU/Linux Solutions                  e-mail: giometti@enneenne.com
-Linux Device Driver                          giometti@linux.it
-Embedded Systems                     phone:  +39 349 2432127
-UNIX programming
+2.20.1
+
 
