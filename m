@@ -1,102 +1,112 @@
-Return-Path: <stable+bounces-166473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90615B1A0A0
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 13:36:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE136B1A0D5
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 14:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFC23170B4A
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 11:36:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15B4175BEE
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7161E23FC54;
-	Mon,  4 Aug 2025 11:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNZX1GHY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A057248F7D;
+	Mon,  4 Aug 2025 12:08:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246BD1482E8;
-	Mon,  4 Aug 2025 11:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AAE1EF39E
+	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 12:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754307374; cv=none; b=hlG7fKrrsVmP9jDihj8fWGBpAWF4FdrEjs5JY8YpB4dWneY5oPDfMg5l+YlAEZ7dlnxy2Ottg9G16jTpIivP9dREWOYNrMXzwzfK6bBDngXc5s62oZ5yDbya7LuD9maaW5Mv0tndnhI2PHsDuerOtfQVsZV65j4QeNiZo68eZYs=
+	t=1754309300; cv=none; b=i4Kg5f2Qnsdawbopm1tzPBpLRxf6JKsotyeJ+kp15QoVESO5U6H9vgGxwGL9LfvJZGNwM7hTH5dxkscCG4P8UB2G6D3rK1inBngn/apyDpB8n6yMowp+sSjFH5wGTHTyN99Rteo0vl5pwSBikVYFZlpdbKjIuiivUbAVlg0ioyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754307374; c=relaxed/simple;
-	bh=ORG0wB/M4qMPDcT6cKOR1scPbgPHW2A9accXiG563rw=;
+	s=arc-20240116; t=1754309300; c=relaxed/simple;
+	bh=SyKcYzeHWn+awX3tWPW/C2hz6Bm5rrFSl3BpBZ0hj9k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JLbuYqDzTVy2JZ3hfHS7hmZgiLIQB8wzGJ7/u9wxSvoHe2er5aVMznKWi0DFTfooZeQZ+jxW1dD9oNyeR46kwcwVwZWl/aJgKXptmZ12kHwqj7RM3/cLxngy1FkAnNUZVdKbbrkVJyC8YroWTOgYIRx4r74CJLQaqZfrj+jTLEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNZX1GHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1118BC4CEE7;
-	Mon,  4 Aug 2025 11:36:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754307373;
-	bh=ORG0wB/M4qMPDcT6cKOR1scPbgPHW2A9accXiG563rw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FNZX1GHYkBkAHJyRfdcYtr2JK8aAVzMAuMZ4YDnMEz2mpkqa2+wYQSm/WwW+BnZQV
-	 riqmS99JoZr+TZh2mmbidswQPpH8V+lqsiCHx50R4ZgJ3hcbF0JPyWMEEM7DmX3UNA
-	 bYivMIkd++IfQQbmg/yUtXOPMQaKPrtPuqDqx9yGLO3zdzrnex/mFN1CsTeBIi2/gJ
-	 NIIMP9BCjvLEtGSYAmnTrIEqgLfLaUVRwiPjhu+EenUeAx8MHllYKVqn88JUywdsb7
-	 0ObusQVi8A4Q/oC2Po9584ydQxJ7Kkw75gmk9UEmDar+916p+sYHmgOrJdavRoqQXi
-	 m93GQ1UP2C0aA==
-Date: Mon, 4 Aug 2025 12:36:08 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Romain Gantois <romain.gantois@bootlin.com>, lgirdwood@gmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.16 09/85] regulator: core: repeat voltage
- setting request for stepped regulators
-Message-ID: <38852b6e-20b3-43fc-90d7-29d10fd90abe@sirena.org.uk>
-References: <20250804002335.3613254-1-sashal@kernel.org>
- <20250804002335.3613254-9-sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wb7KIGVRbvvRYU5QABLnGUQ3WlCfoQB5+oBqib9FSzWdN1yYiKYZFaD3HJtdijcO1+XaiNMD3LebEvHWa0Kbl2QoG0ptWR20LFNUlssv1boIPCpJ6DgjOeoPRCVO5wfEk7g4tanvkCNBWxSyBf/8CEPLl2lSltQ7cG5mt+t3nac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407B1C4CEE7;
+	Mon,  4 Aug 2025 12:08:18 +0000 (UTC)
+Date: Mon, 4 Aug 2025 13:08:15 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Waiman Long <llong@redhat.com>, Gu Bowen <gubowen5@huawei.com>,
+	stable@vger.kernel.org, linux-mm@kvack.org,
+	Lu Jialin <lujialin4@huawei.com>, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
+Message-ID: <aJCir5Wh362XzLSx@arm.com>
+References: <20250730094914.566582-1-gubowen5@huawei.com>
+ <20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
+ <5ca375cd-4a20-4807-b897-68b289626550@redhat.com>
+ <20250801205323.70c2fabe5f64d2fb7c64fd94@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="urprXkXJYhHv3HO9"
-Content-Disposition: inline
-In-Reply-To: <20250804002335.3613254-9-sashal@kernel.org>
-X-Cookie: Shading within a garment may occur.
-
-
---urprXkXJYhHv3HO9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250801205323.70c2fabe5f64d2fb7c64fd94@linux-foundation.org>
 
-On Sun, Aug 03, 2025 at 08:22:18PM -0400, Sasha Levin wrote:
-> From: Romain Gantois <romain.gantois@bootlin.com>
->=20
-> [ Upstream commit d511206dc7443120637efd9cfa3ab06a26da33dd ]
->=20
-> The regulator_set_voltage() function may exhibit unexpected behavior if t=
-he
-> target regulator has a maximum voltage step constraint. With such a
-> constraint, the regulator core may clamp the requested voltage to a lesser
-> value, to ensure that the voltage delta stays under the specified limit.
+On Fri, Aug 01, 2025 at 08:53:23PM -0700, Andrew Morton wrote:
+> On Fri, 1 Aug 2025 23:09:31 -0400 Waiman Long <llong@redhat.com> wrote:
+> > > There have been a few kmemleak locking fixes lately.
+> > >
+> > > I believe this fix is independent from the previous ones:
+> > >
+> > > https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
 
-This needs a followup fix which isn't in mainline yet.
+That's a similar bug in another part of the kmemleak code but fixed
+differently (which I actually prefer if feasible).
 
---urprXkXJYhHv3HO9
-Content-Type: application/pgp-signature; name="signature.asc"
+> > > https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
 
------BEGIN PGP SIGNATURE-----
+That's a soft lockup, unrelated to the printk deadlock.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiQmygACgkQJNaLcl1U
-h9BMIgf9HW0/kKMoykG2Dbv3Ea4j6lUxwMpw8a8fBsijjTqQTmBJgTCgleg9K0bJ
-mM5xErzQ8SgnxHI31KehY075h87gotpTsIavVahhjtaaLrNbHlbNymPK7uupw5Ot
-IekJw+pP2PyhOabVg5jPMEJVJ2XxN0Np5PVvLWr4Fk7tMdLOQtrA40/y7XptOG2u
-Mf4PzY2RXSIV9gvS3LUJmV7sT+IBSYGKXMCzIytu0b4sIgCQJsXURdtZa77JmhR6
-9K8/KWPgjDPIXhIVFzffJvuA/8IGMeQczrrZ5720tfwx2J9TK86q9qnMNjsd3byh
-WSTm2EpDgyNflhRA26O4DYCeQ53KKA==
-=DqHh
------END PGP SIGNATURE-----
+> > I believe that __printk_safe_enter()/_printk_safe_exit() are for printk 
+> > internal use only. The proper API to use should be 
+> > printk_deferred_enter()/printk_deferred_exit() if we want to deferred 
+> > the printing. Since kmemleak_lock will have been acquired with irq 
+> > disabled, it meets the condition that printk_deferred_*() APIs can be used.
+> 
+> Gotcha, thanks.
+> 
+> kmemleak;c:__lookup_object() has a lot of callers.  I hope you're
+> correct that all have local irqs enabled, but I'll ask Gu to verify
+> that then please send along a new patch which uses
+> printk_deferred_enter()?
 
---urprXkXJYhHv3HO9--
+__lookup_object() must be called with kmemleak_lock held (unless we have
+a bug in kmemleak).
+
+Using printk_deferred_enter() is more convenient, though I think some of
+these places can defer the printing with something similar to the first
+patch above from Breno.
+
+For __lookup_object(), we could move the warning outside the lock but
+this function would have to lock the respective object, return it and
+somehow inform the caller that it was an error and the object needs
+unlocking. Given that this is a very rare/never event (only happens if
+someone messes up the kmemleak_alloc/free calls), I'd say the
+printk_deferred_enter() works best.
+
+We have delete_object_part() which calls kmemleak_warn() with the
+kmemleak_lock held. The warning can be moved outside similar to Breno's
+patch.
+
+We have a kmemleak_stop() -> kmemleak_warn() called in __link_object()
+with the kmemleak_lock held. We could also use the printk deferring here
+as well. That's another rare corner case.
+
+The patch should add a code comment on why printk deferring is used in
+case others will wonder in the future.
+
+I'm surprised we haven't seen these until recently. Has printk always
+allocated memory?
+
+-- 
+Catalin
 
