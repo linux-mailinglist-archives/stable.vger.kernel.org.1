@@ -1,92 +1,137 @@
-Return-Path: <stable+bounces-166447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DF7B19DB2
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:34:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848B2B19DB6
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F1941884736
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:34:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A703188A2D8
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877D724061F;
-	Mon,  4 Aug 2025 08:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055D323D2A1;
+	Mon,  4 Aug 2025 08:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8Xi7I42"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="jB+7rTtY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4243A17D346;
-	Mon,  4 Aug 2025 08:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB1D1A727D;
+	Mon,  4 Aug 2025 08:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754296468; cv=none; b=olQdDCTqOqJ9JokVwMV/07O/1N+DwN7BsUTNXpZldSIfYJ56/ORvODKE/kOEjmVoxJQaNec94Mt2NEPJRHPiowU4DqxE9AcEBCwrbDrL5a7z9eZCO6D80q707+4w2mLDxZLDs6ifG1GAuqOFrS5VMC3tRFZc3eDWDBczsEGH5ug=
+	t=1754296542; cv=none; b=VL0iNz8aUYhs2YvAMO0xA2vjaFZRX/CfBnXyZjW/+aFG4XRqQrVnZErLJH3diZOiprznL0fHqaybpxYaZXEjerW5kqMTEhcMZT119DQBTtv3sL8zf3nivMlno3oLLa5j0pJiNwuVi1dZ1QIDK47tfivvtH2oRx9CLXXNYwVmpyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754296468; c=relaxed/simple;
-	bh=xGU8SrnP+viRjvp4iH3SDCyWJOmlYsrShYOR0Da0I44=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c4sCkxrkXFppTUFHqKSUtW7vTaCShqJyMvfZHvSM57gaaFKAxpk9t/3w/W+51nnc8wrtoP6bsUsmvRjzityajWFFJclY9gMDeVXtnG2lZgRib/Jy97MGJrfErwK1KoD3ryq+pw0MZP4VkXFBxHa2O3VdECsojch1sIF4BKZ2IHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8Xi7I42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880F5C4CEE7;
-	Mon,  4 Aug 2025 08:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754296467;
-	bh=xGU8SrnP+viRjvp4iH3SDCyWJOmlYsrShYOR0Da0I44=;
-	h=From:To:Cc:Subject:Date:From;
-	b=U8Xi7I42IPlKd3HMayHDfBvLdyhXUJSBP6S3O4stID7MJt5g5j88CnlW8veaGVIyi
-	 K6OQ/WjXDfGGeQg+ytzwV2CtX0AD5Qnzjb9MjdeBaRGfjXpVoJXOH7ThzHgGo81HZJ
-	 tLrxDSS1ulOAyLxeXscPlRXBdUwUt6ZEnkH63jjrLHYIsLa5GXa3/fmLVHusOKR8wJ
-	 xmphFGkXXUNu15sVhzx+ZckKQuBGLj3P3g6wszhnuGl8gCob4t7UxP7hsPhymHc7Lw
-	 aX/qkDkLqh+Cg+Aba4pGkivS6XfJCLI3CFtqp3F2tBXDZfGLMwwQU1CD6TGswMq8VI
-	 3X26WG1Joi8PA==
-From: Hans de Goede <hansg@kernel.org>
-To: Lee Jones <lee@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mfd: intel_soc_pmic_chtdc_ti: Set use_single_read regmap_config flag
-Date: Mon,  4 Aug 2025 10:34:19 +0200
-Message-ID: <20250804083419.205892-1-hansg@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1754296542; c=relaxed/simple;
+	bh=KJeshaXOoAQplubsSIpUpYLy4IncQrHXn8wz9Seb5WE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P8wTjh7SIou0bkxP46t0afn9sxe5B/qqZ5OC9xy7OqOAc4nHra/kNE0AvSobljKl7xKwCcGiy10/oE+cBZbAVL5Y91Q4K93YldyXN5Gb/W9c304VOsqvthNIOvjmCqPuvbFJe/MO0ZhscY0lqRyO+qF94Ibl0mF8EO3FmvbGd2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=jB+7rTtY; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1754296538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qXpu2T5TC0A7tI6IVx2VQOvPx18dKgYJpmJq26AzfwQ=;
+	b=jB+7rTtY9a+nNAhZ9xUtRD+4UiSyqCKNI74/YUb5OkKbWr1zRm3o3whQe6eZbpenKM6IsU
+	uqpHyp6+mcehVgOnJL4gUNFO6Et8ULSqIY8U7t4zTMGMiCDmgTdxhruHXYfzD8yed6PewA
+	5RdNyq/PKmQwELHMl8fx30bVoM60iNg=
+From: Sven Eckelmann <sven@narfation.org>
+To: Andi Shyti <andi.shyti@kernel.org>,
+ Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Cc: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Jonas Jelonek <jelonek.jonas@gmail.com>,
+ Harshal Gohel <hg@simonwunderlich.de>,
+ Simon Wunderlich <sw@simonwunderlich.de>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 0/4] i2c: rtl9300: Fix multi-byte I2C operations
+Date: Mon, 04 Aug 2025 10:35:35 +0200
+Message-ID: <10701742.nUPlyArG6x@ripper>
+In-Reply-To: <4152a424-13ea-4437-b9e9-f1b5561cca9e@alliedtelesis.co.nz>
+References:
+ <20250803-i2c-rtl9300-multi-byte-v2-0-9b7b759fe2b6@narfation.org>
+ <4152a424-13ea-4437-b9e9-f1b5561cca9e@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart2319187.iZASKD2KPV";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-Testing has shown that reading multiple registers at once (for 10 bit
-adc values) does not work. Set the use_single_read regmap_config flag
-to make regmap split these for is.
+--nextPart2319187.iZASKD2KPV
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Date: Mon, 04 Aug 2025 10:35:35 +0200
+Message-ID: <10701742.nUPlyArG6x@ripper>
+MIME-Version: 1.0
 
-This should fix temperature opregion accesses done by
-drivers/acpi/pmic/intel_pmic_chtdc_ti.c and is also necessary for
-the upcoming drivers for the ADC and battery MFD cells.
+On Monday, 4 August 2025 00:39:40 CEST Chris Packham wrote:
+> For the series
+> 
+> Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> Tested-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-Fixes: 6bac0606fdba ("mfd: Add support for Cherry Trail Dollar Cove TI PMIC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
----
- drivers/mfd/intel_soc_pmic_chtdc_ti.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thank you.
 
-diff --git a/drivers/mfd/intel_soc_pmic_chtdc_ti.c b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-index 4c1a68c9f575..a23bda8ddae8 100644
---- a/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-+++ b/drivers/mfd/intel_soc_pmic_chtdc_ti.c
-@@ -82,6 +82,8 @@ static const struct regmap_config chtdc_ti_regmap_config = {
- 	.reg_bits = 8,
- 	.val_bits = 8,
- 	.max_register = 0xff,
-+	/* Reading multiple registers at once is not supported */
-+	.use_single_read = true,
- };
- 
- static const struct regmap_irq chtdc_ti_irqs[] = {
--- 
-2.49.0
+> Note that I've only got the same simple eeprom devices that I did the 
+> initial development on so I don't think I've really exercised the block 
+> data paths but I can say the changes don't appear to have regressed 
+> anything.
+
+I can understand this problem quite well. We can all only try our best and 
+then hope that someone with the actual HW can figure out the specific parts 
+which we didn't had access to.
+
+
+> Is you series intended to apply on top of Jonas's? I'm trying to apply 
+> yours alone (for various reasons happens to be on top of net-next/main) 
+> and I'm getting conflicts.
+
+
+No, I prepare something for downstream testing (with Jonas' patch): 
+https://github.com/openwrt/openwrt/pull/19577#discussion_r2248520949
+
+> Conflict appears to be with 
+> https://lore.kernel.org/all/20250615235248.529019-1-alexguo1023@gmail.com/
+
+Thanks, I was not aware of this specific one. I don't exactly know the repo 
+structure for I2C Host drivers. But 
+git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
+i2c/i2c-host-fixes or i2c/i2c-host-next didn't had this patch. I've also 
+checked linux-next and couldn't find the patch at the moment. 
+
+I am guessing it is the best when I resent this patch as part of my patchset 
+and modify my patches accordingly. The resent will then be done this evening 
+(GMT+2). Preview can be found at
+https://git.open-mesh.org/linux-merge.git/log/?h=b4/i2c-rtl9300-multi-byte
+
+I've also checked linux-next and couldn't find the patch at the moment.
+
+Kind regards,
+	Sven
+--nextPart2319187.iZASKD2KPV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaJBw1wAKCRBND3cr0xT1
+yy6oAP9hBdk7tfOPnA9EvlD4gzBeRBG+RUSnHvWWMyzmNxAhawEA7E9Yn6hsRlWA
+ke+xS8IzJ0C11K6ritkLelvCob0tigk=
+=oXed
+-----END PGP SIGNATURE-----
+
+--nextPart2319187.iZASKD2KPV--
+
+
 
 
