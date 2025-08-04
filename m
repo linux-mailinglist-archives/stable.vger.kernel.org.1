@@ -1,117 +1,188 @@
-Return-Path: <stable+bounces-166438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73010B19B41
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031DEB19BD3
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3461E1897603
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 06:03:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84187189846C
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 06:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EAE2248A8;
-	Mon,  4 Aug 2025 06:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E2A230BD5;
+	Mon,  4 Aug 2025 06:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="IkQ/cpdZ"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="GLaJPQ00"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtpcmd02101.aruba.it (smtpcmd02101.aruba.it [62.149.158.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C452C21ADCB;
-	Mon,  4 Aug 2025 06:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B7D22A7F1
+	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 06:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754287381; cv=none; b=ESuj2FahMEtAhMXlpU9gWwqvHzuFJQY/o8q3KHiZA6stIr5SdLrvTHfKqVTcJvwrKUkfP0R+UiQs+1ElUArOV6VfsTKwFg0zwh+dJlgq0s8usXBm/QNdS5KHoZV0lAn35B15TCXhA5XQ0ItPCJdCci88yDfYDAsvwY4YYmWO7hY=
+	t=1754290716; cv=none; b=bUjpg+ZX4FrmQGSBLTb8kXRPHq201WHpqqOXEv/rDnIyp+mdKZ+P1XXf+LZPRPT1Le5upLHs/laW/0VayNwU6RxNriTk3Ab0b7Bthy/GhiZh+zAon9wNBN2iD1J+2FpJkkCrZyx/d/JGHzVSEvbL6ZR6m3pJkWnNt4ajQGa42yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754287381; c=relaxed/simple;
-	bh=4rAQAgpCJjXS5Q5/2G4kkVyxN+NZyMEFiBFP7FYGaIA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oj/AwUlG995r5QIjEObG0hQcCE3SJkym7MpYYGm8dboOhhZVFDYONOtjyRU84wzl2i2ZrkQ1jFlzCcswWRj4UhxVUDBxNcljQoPfPrfTFIA60K6dKbj54TcW9dFcQf4eRvzfZW+lquNkkvUnZFKz86Dx1QRd7Tg4HJV6tCFfvaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=IkQ/cpdZ; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: a810b43c70f811f08871991801538c65-20250804
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=jYX1bSUuVoUfUgRyTX/Hgp4wHn5pumMUBcHWSkGuBHk=;
-	b=IkQ/cpdZzti+ncU2DBicbi+++nWJqqGuEM8CC9Ch4kN7l4ZJ+xe1dzISxjYFK923Mu3ultWbr8M3CYfLHEEExUciph/AVA3mGOXH10Endjht5rIlKUPpuzfXyN+2ysr78ZFZtXMffIFuMp1ULhjsaU8pyTtT+9KJpeAV7OdKFxQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.2,REQID:ec6b8906-0af9-4653-800f-6a92190f64a9,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:9eb4ff7,CLOUDID:32668d50-93b9-417a-b51d-915a29f1620f,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
-	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
-	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: a810b43c70f811f08871991801538c65-20250804
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 492759898; Mon, 04 Aug 2025 14:02:52 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Mon, 4 Aug 2025 14:02:50 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Mon, 4 Aug 2025 14:02:50 +0800
-From: <peter.wang@mediatek.com>
-To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-	<yi-fan.peng@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-	<dan.carpenter@linaro.org>, <stable@vger.kernel.org>
-Subject: [PATCH v1] ufs: host: mediatek: Fix out-of-bounds access in MCQ IRQ mapping
-Date: Mon, 4 Aug 2025 14:01:54 +0800
-Message-ID: <20250804060249.1387057-1-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1754290716; c=relaxed/simple;
+	bh=k3YM9tQ2l2o1U6LBLDVZO2fu1leT0T+RaubNE/2o0vs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rYZQTeLBIMtyx7k3uejfpU39euPYd/Z4Co/RK4oqkv8ULvQ8FlX1z7guU7eAVQTW7iaNvVtrZBBgUAxcKosQ3Z/pBEXciWNiaTVtjmef2827lXcUxzj7laXTRwQ7T0+wT5eG9aJl/Aa+Yw/3ZYx1DU0IfTvXu3Qg7Op5CJ9Entw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=GLaJPQ00; arc=none smtp.client-ip=62.149.158.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
+Received: from [192.168.1.57] ([79.0.204.227])
+	by Aruba SMTP with ESMTPSA
+	id ip6RumBNeloieip6Ru0GWE; Mon, 04 Aug 2025 08:55:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1754290524; bh=k3YM9tQ2l2o1U6LBLDVZO2fu1leT0T+RaubNE/2o0vs=;
+	h=Date:MIME-Version:Subject:To:From:Content-Type;
+	b=GLaJPQ00hRZe9umbjapte10b4OILapAYyGPIWRm905I6cZW/4F4rxWJulMKYbmEl7
+	 lJiEc4jiRK9VHA/nUKCHMCnN2nM5mgvEz0/+rHAX+0j+fBJmTbE1blfIRttFRo4J/S
+	 TJxoIKT1CdSZGqxYLzax+2/6Bt8jXfa7+CjTrJAWbye3Q36fbXHPuumwJTGMuA14t7
+	 OclPymOwl2yX8owd0utAezr0/RLd7rsk7G4KglVfb7icBjJD18qtEmorU2yQ44ls5T
+	 TrhgaYoXka7b0N732zCc8bJMLoF/wvvQIi36ZvRTok0NDKPd17ripdvcGH+OY6zQwl
+	 zo4/75iInjmAA==
+Message-ID: <f6960b65-6c87-48e6-b7cb-6472f99ccfb4@enneenne.com>
+Date: Mon, 4 Aug 2025 08:55:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.16 51/85] pps: clients: gpio: fix interrupt
+ handling order in remove path
+Content-Language: en-US
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Cc: Eliav Farber <farbere@amazon.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mingo@kernel.org,
+ tglx@linutronix.de, calvin@wbinvd.org, bastien.curutchet@bootlin.com
+References: <20250804002335.3613254-1-sashal@kernel.org>
+ <20250804002335.3613254-51-sashal@kernel.org>
+From: Rodolfo Giometti <giometti@enneenne.com>
+In-Reply-To: <20250804002335.3613254-51-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+X-CMAE-Envelope: MS4xfFduN5NoswrjmZlAJKsmFntt/bfFVR5uxbEl9r2kHDnuDauZn8dxu1CkvEXra7IOzZQIf8mQVgAq+s2A4mQeSOhH38tqgG6UoT5DI70GM6rBNhyOC/2T
+ B1Hn/RIKfozwA2h//YxbLwuEF8lAoYIBApbvv1uEHtfq578AB0iKJK5Sq/HpUWR/VQGvlDGT8ajTPftn/6bvyzaj16FTBUNdWLwiyAIHmLyA60urbngoUOt/
+ w5Y7d+QbO0nRCB47WCtlcyFdt/J1TVfvFuQWCJmJwY5SXl3reFuhfNiApwKZPhe+nGsDetONFN2N2Qm9z3LR8s1hVauw+XEZ/UKdBjjlsHQBN+ZpuVSyoJkI
+ o0ONhW6epLI5Xf9P6HFAgkWWu85863wwNbEjZnpLjQaLPBYDeFrOYX4+G+7vEpLxRuyXrCLTr7yQfRR6X7hHxI9SuHdL+DFtefgpcbTYqS1tphPiMyk=
 
-From: Peter Wang <peter.wang@mediatek.com>
+On 04/08/25 02:23, Sasha Levin wrote:
+> From: Eliav Farber <farbere@amazon.com>
+> 
+> [ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
+> 
+> The interrupt handler in pps_gpio_probe() is registered after calling
+> pps_register_source() using devm_request_irq(). However, in the
+> corresponding remove function, pps_unregister_source() is called before
+> the IRQ is freed, since devm-managed resources are released after the
+> remove function completes.
+> 
+> This creates a potential race condition where an interrupt may occur
+> after the PPS source is unregistered but before the handler is removed,
+> possibly leading to a kernel panic.
+> 
+> To prevent this, switch from devm-managed IRQ registration to manual
+> management by using request_irq() and calling free_irq() explicitly in
+> the remove path before unregistering the PPS source. This ensures the
+> interrupt handler is safely removed before deactivating the PPS source.
+> 
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
+> Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-This patch addresses a potential out-of-bounds access issue when
-accessing 'host->mcq_intr_info[q_index]'. The value of 'q_index'
-might exceed the valid array bounds if 'q_index == nr'.
-The condition is corrected to 'q_index >= nr' to prevent
-accessing invalid memory.
+Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
 
-Fixes: 66e26a4b8a77 ("scsi: ufs: host: mediatek: Set IRQ affinity policy for MCQ mode")
-Cc: <stable@vger.kernel.org>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
----
- drivers/ufs/host/ufs-mediatek.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+> 
+> LLM Generated explanations, may be completely bogus:
+> 
+> Based on my analysis of the commit and the surrounding context, here is
+> my assessment:
+> 
+> **Backport Status: YES**
+> 
+> This commit should be backported to stable kernel trees for the
+> following reasons:
+> 
+> 1. **Fixes a Real Bug**: The commit addresses a genuine race condition
+>     where an interrupt can occur after the PPS source is unregistered but
+>     before the IRQ handler is freed. This can lead to a kernel panic - a
+>     serious stability issue that affects users.
+> 
+> 2. **Clear Race Condition Pattern**: The code shows the problematic
+>     ordering:
+>     - In probe: `pps_register_source()` → `devm_request_irq()`
+>     - In remove: `pps_unregister_source()` → (implicit devm cleanup frees
+>       IRQ)
+> 
+>     This creates a window where the hardware can generate an interrupt
+> after the PPS source is gone but before the handler is removed, causing
+> the handler to access freed memory.
+> 
+> 3. **Minimal and Contained Fix**: The change is small and focused:
+>     - Changes `devm_request_irq()` to `request_irq()`
+>     - Adds explicit `free_irq()` call before `pps_unregister_source()`
+>     - Only 3 lines of functional code changes
+>     - No new features or architectural changes
+> 
+> 4. **Similar to Other Stable Fixes**: This follows a common pattern seen
+>     in other drivers where devm resource ordering causes issues in
+>     removal paths. The kernel has many similar fixes for CAN drivers,
+>     network drivers, and other subsystems that have been backported to
+>     stable.
+> 
+> 5. **Low Risk of Regression**: The change is straightforward and doesn't
+>     modify the driver's functionality - it only fixes the resource
+>     cleanup ordering. The manual IRQ management is a well-established
+>     pattern.
+> 
+> 6. **Affects User-Visible Stability**: A kernel panic during device
+>     removal/module unload is a serious issue that can affect system
+>     stability, especially in environments where PPS devices might be
+>     dynamically added/removed or during system shutdown.
+> 
+> The commit message clearly describes the problem, the root cause, and
+> the solution. The fix is conservative and follows established kernel
+> patterns for fixing devm ordering issues. This is exactly the type of
+> bug fix that stable kernel rules recommend for backporting.
+> 
+>   drivers/pps/clients/pps-gpio.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
+> index 47d9891de368..935da68610c7 100644
+> --- a/drivers/pps/clients/pps-gpio.c
+> +++ b/drivers/pps/clients/pps-gpio.c
+> @@ -210,8 +210,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
+>   	}
+>   
+>   	/* register IRQ interrupt handler */
+> -	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
+> -			get_irqf_trigger_flags(data), data->info.name, data);
+> +	ret = request_irq(data->irq, pps_gpio_irq_handler,
+> +			  get_irqf_trigger_flags(data), data->info.name, data);
+>   	if (ret) {
+>   		pps_unregister_source(data->pps);
+>   		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
+> @@ -228,6 +228,7 @@ static void pps_gpio_remove(struct platform_device *pdev)
+>   {
+>   	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
+>   
+> +	free_irq(data->irq, data);
+>   	pps_unregister_source(data->pps);
+>   	timer_delete_sync(&data->echo_timer);
+>   	/* reset echo pin in any case */
 
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 86ae73b89d4d..f902ce08c95a 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -818,7 +818,7 @@ static u32 ufs_mtk_mcq_get_irq(struct ufs_hba *hba, unsigned int cpu)
- 	unsigned int q_index;
- 
- 	q_index = map->mq_map[cpu];
--	if (q_index > nr) {
-+	if (q_index >= nr) {
- 		dev_err(hba->dev, "hwq index %d exceed %d\n",
- 			q_index, nr);
- 		return MTK_MCQ_INVALID_IRQ;
+
 -- 
-2.45.2
-
+GNU/Linux Solutions                  e-mail: giometti@enneenne.com
+Linux Device Driver                          giometti@linux.it
+Embedded Systems                     phone:  +39 349 2432127
+UNIX programming
 
