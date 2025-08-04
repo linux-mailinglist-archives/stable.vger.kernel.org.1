@@ -1,194 +1,121 @@
-Return-Path: <stable+bounces-166451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB9AB19DE5
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:42:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6112B19DEB
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B41974E06FB
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:42:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 019D1166D5D
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 08:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64B1242922;
-	Mon,  4 Aug 2025 08:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5392B1E8836;
+	Mon,  4 Aug 2025 08:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dv5z2YO8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SYtdfNLG"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36A72F2D;
-	Mon,  4 Aug 2025 08:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEB02F30;
+	Mon,  4 Aug 2025 08:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754296969; cv=none; b=iAWPs3XC2LkRmjt+Tm7kfxd4JW8nEmHdhgzqJUy8qXh2JceU+KifaXhXt5haX8LpvoKTpr+py+TvzEcae54ujgUv9XmbQkxpczKkn0pw0M1alWlx3tu12xbn4cHHJCNcQsD513yxy43P0byROJPQ+rFlOoV1NA+shdja2zo2voo=
+	t=1754297263; cv=none; b=kvs8vKpLW92f2XUIx7/zzT6rNA3ntEGLatUSR412K+cHAKOuF+BfF2GDo/n63tbQPq3sW5QQL8372JAnNl0JVcRKRWd5U5tS3nnRgK/i8p5bA5rSIIr9vySIVPINiJjbUvslvPSA+34X9jmBOluEax1mAvP/4E5FaEp8UfJa/5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754296969; c=relaxed/simple;
-	bh=L7T2peuzotcxh0WDpbjrWrh+4FLTWHQ/ToB/4BKx620=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k2Va8o6F13Q+24PX6GgUeOoipE0nv+0wqx3bVaCCcSHKMNK87DWOSJ1sRNl+/bUv6kpuAU0ol3CBnsc085WBtSee3fojEIm5w8dvctCDW1twpwzb23hY1InB87nQcEA36QDp/7URQTgB35NLRNE9kTG37degeWCffKjIJ2sMag0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dv5z2YO8; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1754296965; x=1754901765; i=markus.elfring@web.de;
-	bh=UASp2Q43xdTYdojg64rqUD6JEddZj16gpDHk948VxA8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=dv5z2YO8haLlKOlwNl3UMwlixDWATeNZdkNX1asyYWBvnzi86/AH7OOlmHnm6ClM
-	 vLSUDQPK7xEGYRQmCbzDQK1wMmksvre3ZImA/DC61U+fLtMh0heO8QzvTSEbiucBy
-	 AGrPhfojTf5LJVylOAMP1D/ywRQ0BnkAQslruvEuy26e2+GnI55MrhgfOyswX+rlc
-	 flKdaliwkoclJecdXT4zPyWPqVxLb+Pcn+3/KxXrQwRbVYVoWN0ukeoXGUyRfSPNa
-	 INTq2n7Smy6D7pNldWJP1icelyTKFjGZe+/ZwcZVMXj5x+HYA2MjdWApOXJWCC2Rq
-	 38WlBwoHwKlghaWoug==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.221]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MpCmZ-1uIH4l3BZn-00ch8v; Mon, 04
- Aug 2025 10:42:44 +0200
-Message-ID: <43362d25-5be8-4158-bda2-2c8e9c4743f4@web.de>
-Date: Mon, 4 Aug 2025 10:42:34 +0200
+	s=arc-20240116; t=1754297263; c=relaxed/simple;
+	bh=t3IQI/j/o1NuYJLYS+UfsaYguP9UFoif38C6HTtvXN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=txIK7XHkhbZRZwjeJkhaZeVWS5eCe5K2TwpnFUPNQ72QDPl+OSMYsGoCANGTpxsPGso+AhRNbDs2boHGZsMI0sGHo+bwkUWakCWEfm0cbfVhSsezZJCNxcCjSyBO+qvoN/jFP0WJMyaMGQ4hfPCcqTSnjU8AaGk3zq7X9NWW89w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SYtdfNLG; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-615a115f0c0so6893113a12.0;
+        Mon, 04 Aug 2025 01:47:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754297260; x=1754902060; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PP95V0BUHP8GfpvVRHzFQCAfR5E80Z5oT/rWEPt87aE=;
+        b=SYtdfNLG2I7t5z6M4m/USlx4I2+pAm8yVvKAXTnAP6ESqc5TBnxypMOmSIR4c8H0qo
+         uqHWThSKi//ik/DZia0jaXXG5Zrw3PjPbi6y3drRbDoOqKsvILitd8VNrg2f1HuQPgzV
+         KA29URBiRvKq1+QsR9XCglBB453+4mDVxwr4reRFRl4NlsnCTQyQ/sTDVQnSVvQfUUwR
+         RYQ5YnIKykT0iGHp6LKm17G/B6jXNGe/bL7TlqfmbVeCuRHISPw3UAhxSTLuBQwMSn7C
+         uYIXebEP3sQIJoY5VTLvCNixuzW1l6C2z1fDE/N28UtQxroer9Y0eJo8XWuHWoy27nGc
+         TPdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754297260; x=1754902060;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PP95V0BUHP8GfpvVRHzFQCAfR5E80Z5oT/rWEPt87aE=;
+        b=AOaoT1/XDAxotPuImPA02IhKTJJ9fNDANHIGf7RsfJv0AGSdUwFyqxZGBw6X33AuhN
+         e/982tvqVuzvt49Bk1aZ0NgLWYADXaHNZoflB082YIqsS5kVmccbv7bMmu+IYTOfOMfm
+         c3+LUxTxAfQ9dMYGwz9q7pbNqf2T9HU8puO7dbpGhFzoTtnHLEN13y/t5+b3qVtTjOIt
+         uB2cbpZBBMjnfkXdRsxuc18vg1QnrRm4U/5fyUrOYWuPuVOWgMxn7VbQX+YQQkm70muc
+         WXWUnxy5Fn/JzvUjKJro9Z8T7v0aPMZWQH90UwZOnaPi2paCzAr6cvUI+ozHFe/ll6ET
+         Da2w==
+X-Forwarded-Encrypted: i=1; AJvYcCU4DeYNY9wWCc9pv8+oQ0bhqhn53tHsvXqeDGSw0b4gzS7vq0wTfIa9Y2zgRJq5LyThJGp4SM1sj5J5+vE=@vger.kernel.org, AJvYcCWbfGxtBuyHr1huZwe+xjJ4+bpyfHC5b1Af7CHLmms5aAn/PkSbQcDM2of06HcI6Ix7yD9kbIF5@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo6xeoZqKWfMr/LzEv4LoDZSqSNwcyyXetwZiKc1u8ZkF2RfFp
+	RhOOuwdOy5Lnicgb8xCMDy082j8Mx1OqSzmcZNuYNMGiRTVtNL6fvvyB6ZDbnkCQLFFH3q7o/Yf
+	W4QqMt9lN1jVtGjyFMIL9KSOkQrxipl+oCH9qz3enDw==
+X-Gm-Gg: ASbGnctbPcVjjTn1PXmh6qwmaRjGgxx9c2/N4B4axk1LPb0IIfWmLsmYen846tfEVoi
+	+50/lGotal18MlRLnVsvOZU/pDPXICN2h7HkxnD0/VHbfeGUKtXHhQdmKiW1g1D/XXjmozoAUyt
+	tx2ka61z6l9QbiM1rIKhH9XIeeHPnV9bPUeuoglW8fdDAsXiisWhWyTY3p7z1R5Sq8kGWDQ1YXU
+	tvQvaU1Yg==
+X-Google-Smtp-Source: AGHT+IGSo5A8HLbtMhNfbOQB5qnNLea1x4Wudz3qo3h/lutbHGYrG0B/jwsDYyx+UZrGK4zTgzGxXUYgbgXUVQZm2pU=
+X-Received: by 2002:a17:907:7b85:b0:ad5:2e5b:d16b with SMTP id
+ a640c23a62f3a-af94005a96cmr1047044066b.27.1754297259615; Mon, 04 Aug 2025
+ 01:47:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mailbox: pcc: Add missed acpi_put_table() to fix
- memory leak
-To: Zhen Ni <zhen.ni@easystack.cn>, linux-acpi@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Jassi Brar <jassisinghbrar@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>
-References: <20250730124508.939257-1-zhen.ni@easystack.cn>
- <20250804074115.44573-1-zhen.ni@easystack.cn>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250804074115.44573-1-zhen.ni@easystack.cn>
-Content-Type: text/plain; charset=UTF-8
+References: <20250804083419.205892-1-hansg@kernel.org>
+In-Reply-To: <20250804083419.205892-1-hansg@kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 4 Aug 2025 10:47:03 +0200
+X-Gm-Features: Ac12FXx9fXN05DYmz9AZYO2FBWPH5Tk6UiLhmrlSspr67q96BKF9Jn7FKX6z0M8
+Message-ID: <CAHp75VdfJvKb6VegNWCiiKoQkMBf0dQPs5yP3XfPM1icgtuyeg@mail.gmail.com>
+Subject: Re: [PATCH] mfd: intel_soc_pmic_chtdc_ti: Set use_single_read
+ regmap_config flag
+To: Hans de Goede <hansg@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, Andy Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FG44XmFFueVGlehpQaLcXe7bSczvr7xOKVfQst+eEyCEVoQGekn
- AN5fzG/8ePu+J65Vyws4IVDxxlL1FQjdj6bd0nKf1fkYRWtTbTW/9UVaNmn4vn9qNgK+DMY
- KqX+SXR35IR9huFlf7Uk80ozhp0hH2ELc2vmGOlF4VdEbXWKCS/P+WQscMEgcTn24FggFir
- 9JAye0ArBnV80p2dTdmBQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Mz2mULEYJTs=;xL0gWXWXFt1EM9oAeOgynXXjDbE
- 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
- 0w==
 
-> In pcc_mbox_probe(), the PCCT table acquired via acpi_get_table()
-> is only released in error paths but not in the success path. This
-> leads to a permanent ACPI memory leak when the driver successfully
-> initializes.
+On Mon, Aug 4, 2025 at 10:34=E2=80=AFAM Hans de Goede <hansg@kernel.org> wr=
+ote:
+>
+> Testing has shown that reading multiple registers at once (for 10 bit
+> adc values) does not work. Set the use_single_read regmap_config flag
+> to make regmap split these for is.
+>
+> This should fix temperature opregion accesses done by
+> drivers/acpi/pmic/intel_pmic_chtdc_ti.c and is also necessary for
+> the upcoming drivers for the ADC and battery MFD cells.
 
-* You may occasionally put more than 66 characters into text lines
-  of such a change description.
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?h=3Dv6.16#n658
+...
 
-* See also once more:
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?h=3Dv6.16#n94
+> +       /* Reading multiple registers at once is not supported */
+> +       .use_single_read =3D true,
 
+By HW or by problem in regmap as being suggested here:
+https://lore.kernel.org/linux-gpio/CALNFmy1ZRqHz6_DD_2qamm-iLQ51AOFQH=3DahC=
+WRN7SAk3pfZ_A@mail.gmail.com/
+?
+(OTOH it mentioned cache init and you seems referring to run-time,
+however it might be well related)
 
-=E2=80=A6> ---
-> Changes in v2:
-> - Add tags of 'Fixes' and 'Cc'
-> - Change goto target from out_put_pcct to e_nomem
-=E2=80=A6> +++ b/drivers/mailbox/pcc.c
-> @@ -763,19 +763,19 @@ static int pcc_mbox_probe(struct platform_device *=
-pdev)
->  					 GFP_KERNEL);
->  	if (!pcc_mbox_channels) {
->  		rc =3D -ENOMEM;
-> -		goto err;
-> +		goto e_nomem;
->  	}
-=E2=80=A6
+As a quick fix I am fine with this.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-Why do you not move the assignment statement accordingly?
-
-
-=E2=80=A6> @@ -796,17 +796,17 @@ static int pcc_mbox_probe(struct platform=
-_device *pdev)
->  		    !pcc_mbox_ctrl->txdone_irq) {
->  			pr_err("Platform Interrupt flag must be set to 1");
->  			rc =3D -EINVAL;
-> -			goto err;
-> +			goto e_nomem;
->  		}
-=E2=80=A6
-
-You misunderstood one of my development suggestions.
-
-
-=E2=80=A6> @@ -827,9 +827,8 @@ static int pcc_mbox_probe(struct platform_d=
-evice *pdev)
-=E2=80=A6> -		return 0;
-> -err:
-> +
-> +e_nomem:
->  	acpi_put_table(pcct_tbl);
->  	return rc;
->  }
-Would an other code variant be more reasonable?
-
-e_nomem:
-	rc =3D -ENOMEM;
-	goto err;
-
-
-Regards,
-Markus
+--=20
+With Best Regards,
+Andy Shevchenko
 
