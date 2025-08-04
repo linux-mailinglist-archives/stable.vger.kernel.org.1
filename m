@@ -1,136 +1,201 @@
-Return-Path: <stable+bounces-166467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0575FB19F9C
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:19:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B77B19FC8
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 340D6179EC6
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:19:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EBC534E1071
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0017B24BBF0;
-	Mon,  4 Aug 2025 10:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282EF2472AB;
+	Mon,  4 Aug 2025 10:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UW1lm50m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F9A1F30BB;
-	Mon,  4 Aug 2025 10:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE5815DBC1;
+	Mon,  4 Aug 2025 10:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754302745; cv=none; b=ObY9UJzashTxKTiWCIddCHPtyuOQ4sjIMwWYyDl2IbW1DTtVqIfG4CdNVoEY1mnWs7ODH216JBB3954OHDtjpauhuX5qAOiWp47nnIgaJQWhmftt1F5lhoH3MAVHQqQX/WiQEi6si1kJbqI+QUPVDEVhVDyvSEDNfiQJTr+arY0=
+	t=1754303898; cv=none; b=fiizblvlwdJ/eB/zpwvsWFF1dpNOBjjDEbZCBMXWzsuqj4QjOdtqJZVAOKaZhvNEs0AXU8Qu7F93f5YXfAlvHtA1DUA36QmxlnFnfyTRvzyGpkK7qCgJYRRpVDDFnjeOofzUxpQ34jnMlnpodnpebKQjo7k9KemAMJz8Ogyo7k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754302745; c=relaxed/simple;
-	bh=3lodwvN4e8b9X9PqF31Mnjr9gOcDb+qXvIdD+U1nUTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nbn+lUVNQhm2rr9/VzZ0/emIbn7UZPWcnTt9EzMC924Iw0brKBbNWZWSn7uKEpYDXjLgBtq46dpH2jURGC4DdPBJeJ+1Fkx1eUmHBORJnbBjAN0vUMvGk272RHQ8NM/ivh9cOLFH3ubInZileFtn5LKtT+6pwjHKHPf4s60RPaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaod.org; spf=pass smtp.mailfrom=ozlabs.org; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaod.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4bwXb91Qz1z4x5K;
-	Mon,  4 Aug 2025 20:19:01 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bwXb56nFkz4x3q;
-	Mon,  4 Aug 2025 20:18:57 +1000 (AEST)
-Message-ID: <0d0b203f-b753-41ee-97c5-fa4739f4915c@kaod.org>
-Date: Mon, 4 Aug 2025 12:18:57 +0200
+	s=arc-20240116; t=1754303898; c=relaxed/simple;
+	bh=IqtOYEY67cnFw38l0aA60iFvDRXwR+z0X41m7vP9EjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DZ1wYCNG4wNQA8RndEaxlST3AnA+Gn6d7s3znahibHLPllAev9m6PbfAw6Gk5h3o1p9SKxJJrq3GOkBYb3oHkFl+bTYIyQLmCxaNQSgiTbrPo6p5EVWRYOosB1F+uYHw8lRptXcrj2fuU9iBHGMfxC//PVWuKxMulBVJ3BM+idc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UW1lm50m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB150C4CEE7;
+	Mon,  4 Aug 2025 10:38:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754303898;
+	bh=IqtOYEY67cnFw38l0aA60iFvDRXwR+z0X41m7vP9EjM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UW1lm50mSYKT/tfvcbbBAGCiwc7WntZMM20TZIi2BpApiFiYIECaat6VZTV8PBehB
+	 lDGFW9un4oJ3hiVRKwkxOYsFbX0WiG8EGTJb38+1mOVrzC0qAKndC8t7RtPkH1a7dP
+	 vJB8TKC0Q7Tb5htbHp3n1mxS60SwBCBrkHD4isWRS4pIYpXDQfR/bMteWtQXgSmwiG
+	 wMu46Eiwg08TX024ixGM97h3Huga/IBIqExpFvSqwD+PVQyVHyjulpXH7FQgBSyuJ7
+	 BLp3MAtF/z8F+njhr0f6P3ycEez6WIciYGBxGftQOdmQYuVKNvr0/YPTNf/DUYicr1
+	 tY3sTcp1XEm8g==
+Date: Mon, 4 Aug 2025 12:38:15 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
+	Nylon Chen <nylon.chen@sifive.com>, Zong Li <zong.li@sifive.com>, 
+	Vincent Chen <vincent.chen@sifive.com>, paul.walmsley@sifive.com, samuel.holland@sifive.com, 
+	linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.1 24/51] pwm: sifive: Fix PWM algorithm and
+ clarify inverted compare behavior
+Message-ID: <52ycm5nf2jrxdmdmcijz57xhm2twspjmmiign6zq6rp3d5wt6t@tq5w47fmiwgg>
+References: <20250804003643.3625204-1-sashal@kernel.org>
+ <20250804003643.3625204-24-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] powerpc/powernv/pci: Fix underflow and leak issue
-To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <cover.1754300646.git.namcao@linutronix.de>
- <70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qfo5vfkivwrbc725"
+Content-Disposition: inline
+In-Reply-To: <20250804003643.3625204-24-sashal@kernel.org>
 
-On 8/4/25 12:07, Nam Cao wrote:
-> pnv_irq_domain_alloc() allocates interrupts at parent's interrupt
-> domain. If it fails in the progress, all allocated interrupts are
-> freed.
-> 
-> The number of successfully allocated interrupts so far is stored
-> "i". However, "i - 1" interrupts are freed. This is broken:
-> 
->      - One interrupt is not be freed
-> 
->      - If "i" is zero, "i - 1" wraps around
-> 
-> Correct the number of freed interrupts to "i".
-> 
-> Fixes: 0fcfe2247e75 ("powerpc/powernv/pci: Add MSI domains")
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: stable@vger.kernel.org
+
+--qfo5vfkivwrbc725
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH AUTOSEL 6.1 24/51] pwm: sifive: Fix PWM algorithm and
+ clarify inverted compare behavior
+MIME-Version: 1.0
+
+Hello,
+
+On Sun, Aug 03, 2025 at 08:36:16PM -0400, Sasha Levin wrote:
+> From: Nylon Chen <nylon.chen@sifive.com>
+>=20
+> [ Upstream commit 7dbc4432ea6bf9d709391eb57f1e9fb44e99845a ]
+>=20
+> The `frac` variable represents the pulse inactive time, and the result
+> of this algorithm is the pulse active time. Therefore, we must reverse
+> the result.
+>=20
+> Although the SiFive Reference Manual states "pwms >=3D pwmcmpX -> HIGH",
+> the hardware behavior is inverted due to a fixed XNOR with 0. As a result,
+> the pwmcmp register actually defines the low (inactive) portion of the pu=
+lse.
+>=20
+> The reference is SiFive FU740-C000 Manual[0]
+>=20
+> Link: https://sifive.cdn.prismic.io/sifive/1a82e600-1f93-4f41-b2d8-86ed8b=
+16acba_fu740-c000-manual-v1p6.pdf [0]
+>=20
+> Co-developed-by: Zong Li <zong.li@sifive.com>
+> Signed-off-by: Zong Li <zong.li@sifive.com>
+> Co-developed-by: Vincent Chen <vincent.chen@sifive.com>
+> Signed-off-by: Vincent Chen <vincent.chen@sifive.com>
+> Signed-off-by: Nylon Chen <nylon.chen@sifive.com>
+> Link: https://lore.kernel.org/r/20250529035341.51736-3-nylon.chen@sifive.=
+com
+> Signed-off-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->   arch/powerpc/platforms/powernv/pci-ioda.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> LLM Generated explanations, may be completely bogus:
+>=20
+> **Backport Status: YES**
+>=20
+> This commit should be backported to stable kernel trees. Here's my
+> extensive analysis:
+>=20
+> ## Critical Bug Fix Analysis
+>=20
+> 1. **The commit fixes a significant functional bug** - The PWM algorithm
+>    was fundamentally broken:
+>    - The `frac` variable was incorrectly used (lines 158-161 in
+>      original, now 168-171)
+>    - The driver was writing the duty cycle value directly to PWMCMP
+>      register (line 193), but the hardware actually expects the
+>      **inactive** (low) time
+>    - This results in inverted PWM output behavior where users get the
+>      opposite duty cycle from what they request
+>=20
+> 2. **Hardware behavior discrepancy** - The commit reveals and fixes a
+>    critical mismatch between documentation and actual hardware:
+>    - The documentation states "pwms >=3D pwmcmpX -> HIGH"
+>    - But the hardware has a hard-tied XNOR with 0 that inverts this
+>      behavior
+>    - The driver now correctly compensates for this hardware quirk
+>=20
+> 3. **User-visible impact**:
+>    - **In `pwm_sifive_get_state()`**: The driver now correctly inverts
+>      the value read from hardware (lines 115->122-126)
+>    - **In `pwm_sifive_apply()`**: The driver now inverts the duty cycle
+>      before writing to hardware (lines 162->171)
+>    - **Polarity change**: Changed from `PWM_POLARITY_INVERSED` to
+>      `PWM_POLARITY_NORMAL` (lines 126->137, 142->152)
+>    - **Documentation fix**: Updated comment from "cannot generate 100%
+>      duty" to "cannot generate 0% duty" (lines 11->27, 160->170)
+>=20
+> 4. **The fix is relatively small and contained**:
+>    - Changes are isolated to the PWM algorithm logic
+>    - No architectural changes or new features
+>    - Simple mathematical inversion: `duty =3D (1U << PWM_SIFIVE_CMPWIDTH)
+>      - 1 - inactive`
+>=20
+> 5. **No risky side effects**:
+>    - The change is straightforward and mathematically correct
+>    - Doesn't affect other subsystems
+>    - Maintains the same register interface
+>=20
+> 6. **Affects all SiFive PWM users**:
+>    - Any system using SiFive FU540 or FU740 SoCs would have incorrect
+>      PWM output
+>    - This includes various RISC-V development boards and embedded
+>      systems
+>    - Users would get inverted duty cycles, potentially breaking motor
+>      controls, LED dimming, etc.
+>=20
+> 7. **Clear documentation reference**:
+>    - The commit references the official SiFive FU740-C000 Manual
+>    - Provides clear explanation of the hardware behavior mismatch
+>=20
+> The bug causes PWM outputs to be inverted from user expectations, which
+> is a significant functional issue that would affect any system relying
+> on proper PWM behavior for motor control, LED dimming, or other PWM-
+> dependent functionality. The fix is clean, minimal, and addresses a
+> clear hardware/software mismatch that exists in production systems.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+What your LLM missed is that the device trees using this PWM relied on
+this "bug" and so this commit should be applied either together with
+f4bcf818e5d6 ("riscv: dts: sifive: unleashed/unmatched: Remove PWM
+controlled LED's active-low properties") or not at all.
 
-Thanks,
+Given that there might be device trees in use that are not in mainline
+and that break in the same way without a possiblity for us to fix that I
+tend to prefer not to backport this breaking change to stable.
 
-C.
+Best regards
+Uwe
 
+--qfo5vfkivwrbc725
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmiQjZQACgkQj4D7WH0S
+/k4P/Af9Es0+24qpGdgkAMPcr7a3SUM2X2+zjV+eo73yCNLcWS5ouW1qTVL+nVL8
+HlvFVt1Haf4FecuV3O4WuR00mJfnYsG1W6Nrf0+PGHUnlO+j5XBwdf9TmxWC018g
+BXrW8UDgMotiE5ybc7ySZtRVkCd8oCf0BkJNrS+wl40nTN2NZHZggQ9Q72P2slNY
+X6NObEAaJkZLoST2Wn70e1A5MarBNfTmmZUsURdrsCXdTx/rxncC7yxfYloKYxzr
+iC91hksP/r24EGgHS8x5s3E5KvKrqYfg+jvpQMlj2N33T4DohSKJarQDue5+YBr8
+7gTU73kN36h9lunrIfPfqQYJNBjqbQ==
+=TUM5
+-----END PGP SIGNATURE-----
+
+--qfo5vfkivwrbc725--
 
