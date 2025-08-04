@@ -1,103 +1,89 @@
-Return-Path: <stable+bounces-166496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE116B1A6F6
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 18:03:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D07DB1A71B
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 18:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58D963AC300
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:03:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47AFC1642FF
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147CC26B973;
-	Mon,  4 Aug 2025 16:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sa/NacXS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="z2OWHsxc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031BF252292;
+	Mon,  4 Aug 2025 16:23:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCC926B760;
-	Mon,  4 Aug 2025 16:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A32220698;
+	Mon,  4 Aug 2025 16:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754323367; cv=none; b=nyXc16wTLsFJ/7+AMenMDfWHJtbneTIqgDPwlNh6yVjl6IV+E04xlPrELj2bwrBJaJ+DZEAiK5DSc4QAV19U8SyVKGwkgq4WrIf42pTHYFbrRTre/kBogxyeo9OfOqISeAdPcZwCNpgVMKWXtmHXYnhS3Rl+Bmir96Yanr9clus=
+	t=1754324626; cv=none; b=JuZZ2SCdvoQOnDnsAU6fUTuMT8dXQoVxYqlRmdlbz98M2gtcggbMiAsHKw0VjYtn7OxApx88ydV9gaMIRrKeynDGjtQWMtzw2jVoj+48p+ognbfwlzXYymiD0CHEnHjPZRgmB2CVSAAzrTAX4y9g+wSJuyD/v9Vyz5yS+9IDLNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754323367; c=relaxed/simple;
-	bh=3upPUktO+09VnFtkDqW5LFxgZiwKK8ouU4yZc9vM3Vo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ugW9/7OskAlqbWy0Iil7omh9Yw7Jw7LfoUXrDRe4Fkcqpbjp5fZ6YoSKM89W8TvpUk383VOyzxhBVMKHSnViWdZfwL1lzO0sS5lbX4ldnS5Ql4e8JAty9EqEVqIlO0Cf/3xKNFfO/9wkqPthutHH/H4cU/l8ezxmvKgt3usPkyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sa/NacXS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=z2OWHsxc; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 4 Aug 2025 18:02:39 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1754323364;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1xjRfaGiRJyV9n1qkZp3LNENeNHzx2QQkGJp0VfPu04=;
-	b=sa/NacXSWKrozCvK1UW7n0KTpAzvD7igIwEoHaJqwal0ukzW1WHEG5VepZWrDK9Rjz0utB
-	WlwsaO2AhsH0y/hf3rhOLqO/8ChSmibvuDcBHU3A/8mn9izh4/oNreeo3eO2R8YpojAHNn
-	S6DbL+4NtM3X3CLLL/+lqvjALPLz5hFGJ/+xcu/Q5ZtQP36LuhChW9yGaKOPG1DsRzYt6g
-	cWv+Wv9Fm6+FgmFjra3XZ83I0kb7ZmeO39riaDYdVr7W+Ypb6kq7bi72RPBc5kjPfU9jKh
-	FT4oJOSF/jHBCchtdoUDazPEQqo53LlsDg7d5yL8qmESAVj5bOxryhdX/Mns2w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1754323364;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1xjRfaGiRJyV9n1qkZp3LNENeNHzx2QQkGJp0VfPu04=;
-	b=z2OWHsxcvSXgw8i4jF6W9XEoYROn9jF6P/fq6KRuaz8eIzpMBczmePRu9wBT3fFdCboM2o
-	lmvRdDLK7Zog4eAg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Sargun Dhillon <sargun@sargun.me>, Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] fs: always return zero on success from replace_fd()
-Message-ID: <20250804180046-e3025fef-b610-4e4f-8878-1162e0e8975c@linutronix.de>
-References: <20250804-fix-receive_fd_replace-v2-1-ecb28c7b9129@linutronix.de>
- <20250804-rundum-anwalt-10c3b9c11f8e@brauner>
- <20250804155229.GY222315@ZenIV>
+	s=arc-20240116; t=1754324626; c=relaxed/simple;
+	bh=rk4xUEUB/wIq3rGpYo/X86zERgOioWig38qKf1KFMf0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EU4ktppi0xWgUo7FrqvqNxjnxmtnVB/1+zMzkiET91egtlQMaXyjdS6lEcWy3izM1OM8mx3p8HPBZNOUrhuGdORJ3n2j5ypCxjHAjUS67On5e4tswiXS/VtKUBQ2htdma2l2JcvO+TuU9bvJV8mDfqXrMdBfwSzHNfbNTwIdfIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B4C5135D8E;
+	Mon,  4 Aug 2025 16:23:40 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf01.hostedemail.com (Postfix) with ESMTPA id ACB8660009;
+	Mon,  4 Aug 2025 16:23:37 +0000 (UTC)
+Date: Mon, 4 Aug 2025 12:24:05 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Yunseong Kim <ysk@kzalloc.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov
+ <andreyknvl@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Byungchul Park <byungchul@sk.com>, max.byungchul.park@gmail.com, Yeoreum
+ Yun <yeoreum.yun@arm.com>, ppbuk5246@gmail.com, linux-usb@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, syzkaller@googlegroups.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] kcov, usb: Fix invalid context sleep in softirq
+ path on PREEMPT_RT
+Message-ID: <20250804122405.3e9d83ed@gandalf.local.home>
+In-Reply-To: <20250803072044.572733-2-ysk@kzalloc.com>
+References: <20250803072044.572733-2-ysk@kzalloc.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250804155229.GY222315@ZenIV>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: t4rc55o635fhjg6rz696cwy6myxzyf3y
+X-Rspamd-Server: rspamout08
+X-Rspamd-Queue-Id: ACB8660009
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/5paMWW+Juq1mvbDF1JmMs9aEsrc8/mso=
+X-HE-Tag: 1754324617-978494
+X-HE-Meta: U2FsdGVkX1/z49nm5dzW8e07888n5rsRBE2V/oUx2Wl6piu/14hL6/w8DL10lbyE3UFHkmPyulIsjIUmaGozK8UEdkZDyOHw7gz8er+9MUQRQVu+iwbf5AOLYiYMR0+x1hKInbnzLa3L+u0CzxbvudUIH/Z405Z9xiVyMla0Tp75b1hiaalPT7NE9SyWPz9uz+MxC7mYxaXoscVV+pt1yUHQweUIcQcXLW1a5/CptZVbH2mqhCeqAFBfomtM5A1UUnb1xcTq6ssw0mL0MJYI6AYpZx/fuWEcAP8oraJpj0Y6c98jmomDvzvYE3MPWJwE4sl0y19HBizQ5cWMMQfiCMyKeQtpMPWv8vrTB5Lm8WKBjQSYd/ktIdR6ENGGhzHA
 
-On Mon, Aug 04, 2025 at 04:52:29PM +0100, Al Viro wrote:
-> On Mon, Aug 04, 2025 at 02:33:13PM +0200, Christian Brauner wrote:
+On Sun,  3 Aug 2025 07:20:41 +0000
+Yunseong Kim <ysk@kzalloc.com> wrote:
+
+> This patch series resolves a sleeping function called from invalid context
+> bug that occurs when fuzzing USB with syzkaller on a PREEMPT_RT kernel.
 > 
-> > +       guard(spinlock)(&files->file_lock);
-> >         err = expand_files(files, fd);
-> >         if (unlikely(err < 0))
-> > -               goto out_unlock;
-> > -       return do_dup2(files, file, fd, flags);
-> > +               return err;
-> > +       err = do_dup2(files, file, fd, flags);
-> > +       if (err < 0)
-> > +               return err;
-> > 
-> > -out_unlock:
-> > -       spin_unlock(&files->file_lock);
-> > -       return err;
-> > +       return 0;
-> >  }
-> 
-> NAK.  This is broken - do_dup2() drops ->file_lock.  And that's why I
-> loathe the guard() - it's too easy to get confused *and* assume that
-> it will DTRT, no need to check carefully.
+> The regression was introduced by the interaction of two separate patches:
+> one that made kcov's internal locks sleep on PREEMPT_RT for better latency
 
-To be fair I also got this wrong in my original v2 patch not using guard().
-I'll send a fixed version tomorrow.
+Just so I fully understand this change. It is basically reverting the
+"better latency" changes? That is, with KCOV anyone running with PREEMPT_RT
+can expect non deterministic latency behavior?
+
+This should be fully documented. I assume this will not be a problem as
+kcov is more for debugging and should not be enabled in production.
+
+-- Steve
 
 
-Thomas
 
