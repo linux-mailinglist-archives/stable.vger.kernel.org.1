@@ -1,134 +1,138 @@
-Return-Path: <stable+bounces-166465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AB4B19F94
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:17:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC75B19F9A
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 12:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40C3E189A4F4
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A133BD8B3
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 10:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E6422259D;
-	Mon,  4 Aug 2025 10:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HJHJUzNq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9831D248F6F;
+	Mon,  4 Aug 2025 10:18:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015EC2417D1
-	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 10:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAFE1F30BB;
+	Mon,  4 Aug 2025 10:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754302651; cv=none; b=moJZF8gC+V8HedHg/mJC8jOmbKSi7ZIBGzIz1UVzB7BmA5/qePEmcbokOn477NhPU9R+3wJlKYCclir4Ejndhlhd2tSnbJlsXKX49mPQE7Upd8EVp82adY9XM6EZVFGXH8DxIEPrnhxs3AshXODFmpI61Z7j6+qzXLyK2/mqLU8=
+	t=1754302739; cv=none; b=YUWCMihIkqeyu8pNEyiZ8dqK0AnH0vqH/9aBs01+qJnw9Y3otVrGIJzO7HaMfQDKFkp9HXxWRPKCpmrqHYJ0LiA6CiBDs45HMl9NiR8TlzET+cCr5Vaoly+m7VGLfCnUPidJxfdzz0c7d02vwzFNxfjJJTOmLjlo9xiXJyOpuZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754302651; c=relaxed/simple;
-	bh=GxvB9kZlljAyCtaStYtXCyb0d/Fpu0HoUgG5dlIsVdY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwgvTJh8T8mjL6oeZa0LpySGX6+z7TzKefCi7pcytbbDSrkhu1QyefUvuPh9zTIFYnxhpuqTr/BKZhnx9I6xsXuyq4t5hN5Fg/PBiWP5ToMItzfKMCaA2IOQX1vsbgEenRLn1pEYqvNzPO874yxTdnBx4Yf17E03qXfIB/uzqgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HJHJUzNq; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b421b70f986so3255605a12.1
-        for <stable@vger.kernel.org>; Mon, 04 Aug 2025 03:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1754302646; x=1754907446; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2wzIxW+E5bIxOX7QdsVgfjxRZdWss8FghhfLm9ZACD8=;
-        b=HJHJUzNqO+xDgv8Ls1HKCvd85mqjChYI/8sXkV+sh+4vr+QQSCYFKtf9LySiCgDlMg
-         1ALLkl9KuU0CW/8pjWfZbxqt6xuejEyfvk1O8gXNVHO5IrXFYnORX148TAgkt/FMP/aX
-         28jErFRLo8CKQvmNT83SsQIHFzbyK+OVcK5Ao=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754302646; x=1754907446;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2wzIxW+E5bIxOX7QdsVgfjxRZdWss8FghhfLm9ZACD8=;
-        b=JzBJgv5sbGM/VA+EA+UNHmFQW46YUjKGqCrMTdajZJLDEzOleb8UXccHwvQkQ4OGhJ
-         /L3YkxLMb1qo4rtI2yl2ky6YKgwlp/r0o1GSx9iqV4KKl85ZgVOrYSChb2u0b59OFpbQ
-         a0h8LPwmC0B9bm8UkphT2D24Zmrpl6m27V0J0WYoeagx9zSRDZZrzc6QJiH5XYfhKYHi
-         Q9DdZTKyAAYxs2TMObPZlaZdUGjjCtiwSpKY57q5lrEhkwRY0UDm3eIfElLM1iqO1suR
-         q7NcoTdaqkcAZcX8yz1jafNoIBVQARyLABfwbM23s1N7rVnUfrHTDwhGiRgjgimkNipT
-         ki3Q==
-X-Gm-Message-State: AOJu0YzoNs5ci30JpvuVJyslbGuJTGJSnEhhWrGsFzBH7DlSzav1dYzs
-	ir0z2cosB/0q3DNhkvpW7rELP7nXlZP+gB57gclF9Qap9mpmaxNHFy+GYIAZH9x2EXoqlDfkat+
-	bkHQ=
-X-Gm-Gg: ASbGncvR7/BIULCsAWeo8rZFrOIn93yEHrN61Jj9G4Zvxz84Jt9SZOD/vak+/4T4QPC
-	r81dIz5iUiEu3giMe//euBKEc5TbJgQ4hQ5gJFfSdOE2Bi6sXzf9Xcx1sJ0DjVHqhf16oijhh0B
-	A+REVHf7fOXCo7JCGkl8ouHQl6wGL3m1YOgFMcxbCDe7LyJYjb02AhwIC3sHu6BAfx6ZuBMz3dq
-	vxjMemFQIXaEO05F7hpfa1gglFZCgxgquYYvjE1qh7XvTTRLDC2NssFGAKdKvuHcrd7l4zhpmHa
-	cwKazBhjUM3J3fbGn+vPLAodK1SJQsJupWlEkFP2IFUnLuRTo1UYQmjJnOkUYhhcVlpNuPFNXHR
-	aFMLMAKoNXvFp0uBmEdXW1ZGXs2xLDbkjPhN3lCJJWh4k84aM6LXCsm8Spyg=
-X-Google-Smtp-Source: AGHT+IG9al9MEq3hdCDNW4lnTknT3dhuQqMgxnX6nogIBuN2uBuxCYMNENn7CaSOYuyEyASpMFmV0Q==
-X-Received: by 2002:a17:90b:38c1:b0:31e:d9f0:9b92 with SMTP id 98e67ed59e1d1-3211620ad4dmr13154667a91.14.1754302646155;
-        Mon, 04 Aug 2025 03:17:26 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:3668:3855:6e9a:a21e])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63dc1bb7sm14085261a91.10.2025.08.04.03.17.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 03:17:25 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: stable@vger.kernel.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH 6.12 6/6] drm/i915/ddi: only call shutdown hooks for valid encoders
-Date: Mon,  4 Aug 2025 19:16:44 +0900
-Message-ID: <ff10c20ae7a05ef436366e71b609374709f1c517.1754302552.git.senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
-In-Reply-To: <e53d47b06b3ba07b4add2c6930ddafba91a49b41.1754302552.git.senozhatsky@chromium.org>
-References: <e53d47b06b3ba07b4add2c6930ddafba91a49b41.1754302552.git.senozhatsky@chromium.org>
+	s=arc-20240116; t=1754302739; c=relaxed/simple;
+	bh=RpkALcoGLRwBJjl0hl/Fi/oBXdRdQCOMhOlE0DE9UbY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VAVLmaxGg2t3PHy01Rduu/2dQ/beazmMW2TkZoQLhfCPewOJl2eo6oqb2oL/EBOV5m2zUaX7dupuzrJYptafozOZpuzo3v6TrWd3VUfX14Vp5KuY89Rqn02lRyUppHHRz1r5phZw87Swfx4xjvkKlsJwMLhLQOau5YhTd8sgm1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaod.org; spf=pass smtp.mailfrom=ozlabs.org; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaod.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4bwXb22bZyz4wcd;
+	Mon,  4 Aug 2025 20:18:54 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bwXZz04tlz4wbp;
+	Mon,  4 Aug 2025 20:18:50 +1000 (AEST)
+Message-ID: <8028c596-d123-44f9-8ca4-5293d5436029@kaod.org>
+Date: Mon, 4 Aug 2025 12:18:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] powerpc/pseries/msi: Fix potential underflow and leak
+ issue
+To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <cover.1754300646.git.namcao@linutronix.de>
+ <a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <a980067f2b256bf716b4cd713bc1095966eed8cd.1754300646.git.namcao@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Jani Nikula <jani.nikula@intel.com>
+On 8/4/25 12:07, Nam Cao wrote:
+> pseries_irq_domain_alloc() allocates interrupts at parent's interrupt
+> domain. If it fails in the progress, all allocated interrupts are
+> freed.
+> 
+> The number of successfully allocated interrupts so far is stored
+> "i". However, "i - 1" interrupts are freed. This is broken:
+> 
+>    - One interrupt is not be freed
+> 
+>    - If "i" is zero, "i - 1" wraps around
+> 
+> Correct the number of freed interrupts to 'i'.
+> 
+> Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Cc: stable@vger.kernel.org
+> ---
+>   arch/powerpc/platforms/pseries/msi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-[ Upstream commit 60a43ecbd59decb77b31c09a73f09e1d4f4d1c4c ]
 
-DDI might be HDMI or DP only, leaving the other encoder
-uninitialized. Calling the shutdown hook on an uninitialized encoder may
-lead to a NULL pointer dereference. Check the encoder types (and thus
-validity via the DP output_reg or HDMI hdmi_reg checks) before calling
-the hooks.
 
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Closes: https://lore.kernel.org/r/20241031105145.2140590-1-senozhatsky@chromium.org
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/8b197c50e7f3be2bbc07e3935b21e919815015d5.1735568047.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/gpu/drm/i915/display/intel_ddi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index 9e42f0836989..5b24460c0134 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -4798,8 +4798,10 @@ static void intel_ddi_tc_encoder_suspend_complete(struct intel_encoder *encoder)
- 
- static void intel_ddi_encoder_shutdown(struct intel_encoder *encoder)
- {
--	intel_dp_encoder_shutdown(encoder);
--	intel_hdmi_encoder_shutdown(encoder);
-+	if (intel_encoder_is_dp(encoder))
-+		intel_dp_encoder_shutdown(encoder);
-+	if (intel_encoder_is_hdmi(encoder))
-+		intel_hdmi_encoder_shutdown(encoder);
- }
- 
- static void intel_ddi_tc_encoder_shutdown_complete(struct intel_encoder *encoder)
--- 
-2.50.1.565.gc32cd1483b-goog
+Thanks,
+
+C.
 
 
