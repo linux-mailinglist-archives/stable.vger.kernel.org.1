@@ -1,218 +1,233 @@
-Return-Path: <stable+bounces-166489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B73B1A4D0
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:24:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D782B1A553
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 16:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B73783AAB94
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 14:24:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DBA018A22E7
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 14:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63095272E51;
-	Mon,  4 Aug 2025 14:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971D4212B1E;
+	Mon,  4 Aug 2025 14:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="AtSK/4Xh"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AhOxv0Hy"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78993271A94
-	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 14:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECA9205513
+	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 14:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754317449; cv=none; b=cYRyz3b1gF19Knj6N39vcDQv4N+DNSBMs9Ugp/heqbRpashHDM7p8WzUOs1Q4uPmys6dwL/VK3ppJLn7GycZgEwgtdLnuEY/D3sherz1D2+qem9Hs+p1wWSh2cyDQoGlwv2+sbyGK+OVAkjXhw0BizSzpOkLquTjkvHP+EcLwBA=
+	t=1754319376; cv=none; b=mXsW20RqcV24w316ajoIjegstgb1AauogGPnf4KJcolLoFYt2h6QCZNNDVpYqTaBmMenl/T3weVXYXBlxXJXSyKD5LbCRXjziXN17K/v08Jy20r7kQU7kJK+oEwiBTtWmEmCV7ECQVCSa+nnKMHhHcVsFpixj2Th9GHUD5EwZ00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754317449; c=relaxed/simple;
-	bh=SFofe2Xv/bnOocDqkJFJ3ql2ivs8XBYgiF2wMjcRYHY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 References; b=PYJMvqFXo3Img7m0SG7evaq+SYufCiTIVz6fqEQWaUvL8e/rCvYmp3TtW0iiC/eu8UAypk/j1u0ttEdPc1xbNG972aSRFSBisBVo1u6hzqJLwJ2OvLOEhcl6EgxiOlis7L2M1RVQ9iSe+1v7bOZrYZOef466qUlj8R5yb/FlYpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=AtSK/4Xh; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250804142358epoutp021d6ca7e2190ae009c91c2b62a405d3cb~YlmpwSVqZ2833728337epoutp02h
-	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 14:23:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250804142358epoutp021d6ca7e2190ae009c91c2b62a405d3cb~YlmpwSVqZ2833728337epoutp02h
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1754317438;
-	bh=nhQejfYSbWcLFtDmYYyds2rK7Uwbx0J3FeE7atKF+30=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=AtSK/4Xho0fm5IlEBZPq4qUYYT5OTRKtMXwbDlqgF+IiVnURqs4oI0qiU26wNdKUZ
-	 pKvfMrW5zQ+2+PBpuMUsPDhp4XXLxJeQU/E8v86A/ZIdjL79/IoCGILj6ykjFVlsAK
-	 Z8o9CC6+TjYvEud3FxbrhY9+TcHYCj31o3HZ5cOA=
-Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
-	20250804142358epcas5p3b6795af3e36bf318fc68515be2298bd0~YlmpQmJVV2902729027epcas5p3e;
-	Mon,  4 Aug 2025 14:23:58 +0000 (GMT)
-Received: from epcas5p3.samsung.com (unknown [182.195.38.88]) by
-	epsnrtp03.localdomain (Postfix) with ESMTP id 4bwf1n3l97z3hhT3; Mon,  4 Aug
-	2025 14:23:57 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e~YlmnnQJ-w2902729027epcas5p3b;
-	Mon,  4 Aug 2025 14:23:56 +0000 (GMT)
-Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250804142354epsmtip1ed8617054c2b8e57fb2a39a0416d1865~YlmlW23w-1586315863epsmtip1E;
-	Mon,  4 Aug 2025 14:23:53 +0000 (GMT)
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
-	m.grzeschik@pengutronix.de, balbi@ti.com, bigeasy@linutronix.de,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, akash.m5@samsung.com,
-	hongpooh.kim@samsung.com, eomji.oh@samsung.com, shijie.cai@samsung.com,
-	alim.akhtar@samsung.com, muhammed.ali@samsung.com, thiagu.r@samsung.com,
-	stable@vger.kernel.org, Selvarasu Ganesan <selvarasu.g@samsung.com>
-Subject: [PATCH] usb: dwc3: Remove WARN_ON for device endpoint command
- timeouts
-Date: Mon,  4 Aug 2025 19:52:55 +0530
-Message-ID: <20250804142258.1577-1-selvarasu.g@samsung.com>
-X-Mailer: git-send-email 2.46.0.windows.1
+	s=arc-20240116; t=1754319376; c=relaxed/simple;
+	bh=dVdTAN2x6P43907+J1kuyQHg6fpi47cOZkiklqMG5+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BYMed3L32blqOsvAx1GCkERHhx/LJTeXKX6mIjBcdPsUcfk/WLh/hFVhO8K+4bgkzmcI1vXACcYc066TPQ/JCJP1d+rCdP+EIawdzdZ2ld/0cdsoTZLlFij5BYSxL0+RHOFT6HXnX1OzgolSMT/x6lpcWJorRso81EXmye3GcuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AhOxv0Hy; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso16260a12.1
+        for <stable@vger.kernel.org>; Mon, 04 Aug 2025 07:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754319373; x=1754924173; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yG7q4AtpIF13Ztwzp94d6pI4f+GNZwbRUugDPX70tPo=;
+        b=AhOxv0HydbCl+HiPXNoKA1sVimGheONMaXGSmr0tAtJtQdtZPR0pb/+bCdJNDZm5LV
+         +hk/3/kQLFhRyed9K7/vAnvOBVoR6QSa9XyLp6lyuxwaoB7fJUAEuLx7ndOEW8RPUHuE
+         uatvcVlUJJ3/ujvZg0B0IzVtL9zigEsuusyZgnitOjxxHFcdKhTqH8OjPJx0icZ6HoBf
+         t8RVirrltbbEmTygc8qik076qPt4WIH7eMLfYd7WTKRJXVMPpdU3YXelerXIXmtllji5
+         v6uav6G07WlmGex2YVLMqPQlj7kd1rEcoCHhbZBhgS6J3W/KyB3Ypo87WnZQ9eBJJV+g
+         X5WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754319373; x=1754924173;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yG7q4AtpIF13Ztwzp94d6pI4f+GNZwbRUugDPX70tPo=;
+        b=IvHPltmQ72tp/rw9NXMSfsK9k6RyQBH89Yuc69P4xwXP72wEVhAYr+yaS7cN2mDM/s
+         EAkZg6J0MXisrbgAnyNKU1i0YfQEzp+GMTBWXP1ic/8yMff/nDSzIAMeg0QWwQtr6sPg
+         PzsGJ4ObPYn4/UJqHz8Tj0A6VVfou5Y2m5963Gp4S7R4vmRQ7HG41b8ZzSVQn9YmWT1J
+         eiZ5oLL6xsZTA3V9626E6CQzpggXxF2YiJC9OjgFJ72u5Bj5qbb6BHvxlUYBrCVM58Un
+         qUuJ4ZOBD4Uaem5RQI3PoEMTVnh5AYxILfo4aT1Kmhi/QIBKu6jVD4p+Ujqt6t2qanta
+         p2SA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrG2hhayK9IJjDACIfHkFDQWiArhX4UlxEupA0dPRLi5nJKB4vu0+iyt5gmNcHnNpdLJxg6Nw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzT/ys+wl50dZ/M5URCTIRS0gWtj9WO/IVpSyA+SUPjgR6JuS2g
+	Wq+Ud6EN/S8+tIc3oYD60pKp1PwaWfEK0edY6JVUjVH8L9jvBC0Fy5oWbJeRAL5YG6DRiVnMFNY
+	G1AydKLwGnnoq7cidJZ2cMbSxOlKYcV181cSg233k
+X-Gm-Gg: ASbGncsFzdfUxnsXQtYx5ya0ZD35da+Mzv5PlOM6ra9tD0+eX/xQyGtQC8E0M3DFXtN
+	swsW1hKkIxKhEmH5Yq/rrLSPC5AK96/H6Tkds1StrarxG1fLbTsnCIQ38TIQ4KtLVkyeapjdONF
+	do9BpTpRh+wm7MOL3SP2rm83DkVcMgRod9lkQkE86pq9WMBmULuTueH1JX0JG5GcbMo2X0ntkgs
+	mXPdRiRcYulFK31e/K9GyWC/mWFzBifVufG
+X-Google-Smtp-Source: AGHT+IFcOjuCnbYQZwvlG5KyfYqyjzSOQr9Nwb/TB0qh9/KM5LnDN1rLp3TAHQFhp0YRSrHDXnlOUyIJakH1n20Rlg4=
+X-Received: by 2002:a05:6402:221b:b0:607:d206:7657 with SMTP id
+ 4fb4d7f45d1cf-615e7bcec79mr123893a12.2.1754319372415; Mon, 04 Aug 2025
+ 07:56:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e
-References: <CGME20250804142356epcas5p3aa0566fb78e44a37467ac088aa387f5e@epcas5p3.samsung.com>
+References: <20250711-epoll-recursion-fix-v1-1-fb2457c33292@google.com> <aIvusYlauznxttGc@google.com>
+In-Reply-To: <aIvusYlauznxttGc@google.com>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 4 Aug 2025 16:55:36 +0200
+X-Gm-Features: Ac12FXzGdw8VlISssOEsTsIwyDft5BIvfr4SPTIVHbJ3HmW4ozwT00KZBfHMOJU
+Message-ID: <CAG48ez3mzb=qTQ9H3qwYaRc3aVtnA0pu=eB8JFHgqv1YUNYTrw@mail.gmail.com>
+Subject: Re: [PATCH] eventpoll: Fix semi-unbounded recursion
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Akash M <akash.m5@samsung.com>
+On Fri, Aug 1, 2025 at 12:31=E2=80=AFAM Carlos Llamas <cmllamas@google.com>=
+ wrote:
+> On Fri, Jul 11, 2025 at 06:33:36PM +0200, Jann Horn wrote:
+> > Ensure that epoll instances can never form a graph deeper than
+> > EP_MAX_NESTS+1 links.
+> >
+> > Currently, ep_loop_check_proc() ensures that the graph is loop-free and
+> > does some recursion depth checks, but those recursion depth checks don'=
+t
+> > limit the depth of the resulting tree for two reasons:
+> >
+> >  - They don't look upwards in the tree.
+> >  - If there are multiple downwards paths of different lengths, only one=
+ of
+> >    the paths is actually considered for the depth check since commit
+> >    28d82dc1c4ed ("epoll: limit paths").
+> >
+> > Essentially, the current recursion depth check in ep_loop_check_proc() =
+just
+> > serves to prevent it from recursing too deeply while checking for loops=
+.
+> >
+> > A more thorough check is done in reverse_path_check() after the new gra=
+ph
+> > edge has already been created; this checks, among other things, that no
+> > paths going upwards from any non-epoll file with a length of more than =
+5
+> > edges exist. However, this check does not apply to non-epoll files.
+> >
+> > As a result, it is possible to recurse to a depth of at least roughly 5=
+00,
+> > tested on v6.15. (I am unsure if deeper recursion is possible; and this=
+ may
+> > have changed with commit 8c44dac8add7 ("eventpoll: Fix priority inversi=
+on
+> > problem").)
+> >
+> > To fix it:
+> >
+> > 1. In ep_loop_check_proc(), note the subtree depth of each visited node=
+,
+> > and use subtree depths for the total depth calculation even when a subt=
+ree
+> > has already been visited.
+> > 2. Add ep_get_upwards_depth_proc() for similarly determining the maximu=
+m
+> > depth of an upwards walk.
+> > 3. In ep_loop_check(), use these values to limit the total path length
+> > between epoll nodes to EP_MAX_NESTS edges.
+> >
+> > Fixes: 22bacca48a17 ("epoll: prevent creating circular epoll structures=
+")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > ---
+>
+> Hey Jann,
+>
+> I've bisected an LTP test failure to this commit and I can't find any
+> reports of this. The test is epoll_ctl04:
+>
+> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/sy=
+scalls/epoll_ctl/epoll_ctl04.c
+>
+> This is what I get:
+>   ####################################################################3
+>   root@debian:~# ./epoll_ctl04
+>   tst_test.c:2004: TINFO: LTP version: 20250530-116-g91e6272fe
+>   tst_test.c:2007: TINFO: Tested kernel: 6.16.0-rc1-00017-gf2e467a48287 #=
+28 SMP PREEMPT Thu Jul 31 21:12:22 UTC 2025 aarch64
+>   tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+>   tst_test.c:1825: TINFO: Overall timeout per run is 0h 00m 30s
+>   epoll_ctl04.c:59: TFAIL: epoll_ctl(..., EPOLL_CTL_ADD, ...) with number=
+ of nesting is 5 expected EINVAL: ELOOP (40)
+>
+>   Summary:
+>   passed   0
+>   failed   1
+>   broken   0
+>   skipped  0
+>   warnings 0
+>   ####################################################################3
+>
+>
+> I haven't looked much into this but it seems the test expects EINVAL at
+> nesting depth 5 and is instead getting ELOOP. Any chance there is an
+> off-by-one error in ep_loop_check() as it fails with depth=3D4 and
+> upwards_depth=3D0, which isn't correct?
 
-This commit addresses a rarely observed endpoint command timeout
-which causes kernel panic due to warn when 'panic_on_warn' is enabled
-and unnecessary call trace prints when 'panic_on_warn' is disabled.
-It is seen during fast software-controlled connect/disconnect testcases.
-The following is one such endpoint command timeout that we observed:
+This is an area where the existing code is very inconsistent in how it
+reports errors; limits on the structure of the epoll graph (in
+particular limits on the graph depth) are enforced by both
+ep_loop_check() (which fails with ELOOP) and reverse_path_check()
+(which fails with EINVAL). The comments suggest that ep_loop_check()
+is supposed to be doing depth checks, and reverse_path_check() is
+mostly supposed to count wakeup paths, but reverse_path_check()
+happens to be what you hit in that LTP testcase.
 
-1. Connect
-   =======
-->dwc3_thread_interrupt
- ->dwc3_ep0_interrupt
-  ->configfs_composite_setup
-   ->composite_setup
-    ->usb_ep_queue
-     ->dwc3_gadget_ep0_queue
-      ->__dwc3_gadget_ep0_queue
-       ->__dwc3_ep0_do_control_data
-        ->dwc3_send_gadget_ep_cmd
+The manpage also says that ELOOP is for too-deep nesting, and does not
+mention this case of EINVAL at all. (It doesn't even mention the
+wakeup path count restriction in the ERRORS section...)
 
-2. Disconnect
-   ==========
-->dwc3_thread_interrupt
- ->dwc3_gadget_disconnect_interrupt
-  ->dwc3_ep0_reset_state
-   ->dwc3_ep0_end_control_data
-    ->dwc3_send_gadget_ep_cmd
+I think this is one of those cases where the existing semantics are
+too convoluted and tainted with kernel implementation details for
+userspace to have handled the existing error cases well enough to be
+broken by this change; the existing behavior was something like (not
+sure if I'm getting it exactly right) "ELOOP is for loops; EINVAL is
+for hitting a depth limit when constructing a chain of epoll instances
+with a file at the bottom; ELOOP is for hitting a depth limit when
+constructing a chain of epoll instances with no file at the bottom and
+you'd only get it depending on which way around you build the chain
+and, for more complex structures, in what order the addresses of
+kernel objects are"; and the implementation was different from what
+the manpage says.
 
-In the issue scenario, in Exynos platforms, we observed that control
-transfers for the previous connect have not yet been completed and end
-transfer command sent as a part of the disconnect sequence and
-processing of USB_ENDPOINT_HALT feature request from the host timeout.
-This maybe an expected scenario since the controller is processing EP
-commands sent as a part of the previous connect. It maybe better to
-remove WARN_ON in all places where device endpoint commands are sent to
-avoid unnecessary kernel panic due to warn.
+So my opinion is that the right fix is to change the testcase to also
+accept ELOOP, though I can see how a bugfix that breaks a unit test is
+going to raise eyebrows.
 
-Fixes: e192cc7b5239 ("usb: dwc3: gadget: move cmd_endtransfer to extra function")
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Fixes: c7fcdeb2627c ("usb: dwc3: ep0: simplify EP0 state machine")
-Fixes: f0f2b2a2db85 ("usb: dwc3: ep0: push ep0state into xfernotready processing")
-Fixes: 2e3db064855a ("usb: dwc3: ep0: drop XferNotReady(DATA) support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Akash M <akash.m5@samsung.com>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+> ---
+> diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+> index 44648cc09250..811960b2a74c 100644
+> --- a/fs/eventpoll.c
+> +++ b/fs/eventpoll.c
+> @@ -2237,7 +2237,7 @@ static int ep_loop_check(struct eventpoll *ep, stru=
+ct eventpoll *to)
+>         upwards_depth =3D ep_get_upwards_depth_proc(ep, 0);
+>         rcu_read_unlock();
+>
+> -       return (depth+1+upwards_depth > EP_MAX_NESTS) ? -1 : 0;
+> +       return (depth+upwards_depth > EP_MAX_NESTS) ? -1 : 0;
 
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index 666ac432f52d..7b313836f62b 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -288,7 +288,9 @@ void dwc3_ep0_out_start(struct dwc3 *dwc)
- 	dwc3_ep0_prepare_one_trb(dep, dwc->ep0_trb_addr, 8,
- 			DWC3_TRBCTL_CONTROL_SETUP, false);
- 	ret = dwc3_ep0_start_trans(dep);
--	WARN_ON(ret < 0);
-+	if (ret < 0)
-+		dev_warn(dwc->dev, "ep0 out start transfer failed: %d\n", ret);
-+
- 	for (i = 2; i < DWC3_ENDPOINTS_NUM; i++) {
- 		struct dwc3_ep *dwc3_ep;
- 
-@@ -1061,7 +1063,9 @@ static void __dwc3_ep0_do_control_data(struct dwc3 *dwc,
- 		ret = dwc3_ep0_start_trans(dep);
- 	}
- 
--	WARN_ON(ret < 0);
-+	if (ret < 0)
-+		dev_warn(dwc->dev, "ep0 data phase start transfer failed: %d\n",
-+				ret);
- }
- 
- static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
-@@ -1078,7 +1082,12 @@ static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
- 
- static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
- {
--	WARN_ON(dwc3_ep0_start_control_status(dep));
-+	int	ret;
-+
-+	ret = dwc3_ep0_start_control_status(dep);
-+	if (ret)
-+		dev_warn(dwc->dev,
-+			"ep0 status phase start transfer failed: %d\n", ret);
- }
- 
- static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
-@@ -1121,7 +1130,10 @@ void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
- 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
- 	memset(&params, 0, sizeof(params));
- 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
--	WARN_ON_ONCE(ret);
-+	if (ret)
-+		dev_warn_ratelimited(dwc->dev,
-+			"ep0 data phase end transfer failed: %d\n", ret);
-+
- 	dep->resource_index = 0;
- }
- 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 321361288935..50e4f667b2f2 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1774,7 +1774,11 @@ static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool int
- 		dep->flags |= DWC3_EP_DELAY_STOP;
- 		return 0;
- 	}
--	WARN_ON_ONCE(ret);
-+
-+	if (ret)
-+		dev_warn_ratelimited(dep->dwc->dev,
-+				"end transfer failed: ret = %d\n", ret);
-+
- 	dep->resource_index = 0;
- 
- 	if (!interrupt)
-@@ -4041,7 +4045,9 @@ static void dwc3_clear_stall_all_ep(struct dwc3 *dwc)
- 		dep->flags &= ~DWC3_EP_STALL;
- 
- 		ret = dwc3_send_clear_stall_ep_cmd(dep);
--		WARN_ON_ONCE(ret);
-+		if (ret)
-+			dev_warn_ratelimited(dwc->dev,
-+				"failed to clear STALL on %s\n", dep->name);
- 	}
- }
- 
--- 
-2.17.1
+Here I am calculating: We want to create a new link between two nodes,
+and want to know how long the longest resulting chain of epoll
+instances will be. For that, I add the following numbers of links:
 
+ - The number of links going upwards from "ep".
+ - One for the new link we're adding.
+ - The number of links going downward from "to".
+
+So I think this is correct.
 
