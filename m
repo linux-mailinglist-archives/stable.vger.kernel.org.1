@@ -1,36 +1,37 @@
-Return-Path: <stable+bounces-166428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A13AB199DA
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 03:31:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026F5B199E2
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 03:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 097883B362C
-	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 01:31:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B48383A689B
+	for <lists+stable@lfdr.de>; Mon,  4 Aug 2025 01:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA573BBC9;
-	Mon,  4 Aug 2025 01:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314BA1E9B3F;
+	Mon,  4 Aug 2025 01:36:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDFB2E36EB
-	for <stable@vger.kernel.org>; Mon,  4 Aug 2025 01:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD157173;
+	Mon,  4 Aug 2025 01:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754271062; cv=none; b=qQ1uEm0popOgVgWxnMqVGSxILM/pqsTDAbT4+wFuaaomVeQ++6L6kNOVw82BUQMOxXyqxJO9Bbss/Rm48likuGQPhR+oo7jI0JS5g/712PMko73deHEUlT7yDuVHTgP8rrmipOLyWaRvO3uoGI4knQHxQ3jyUNvOc6n3WPdPu9A=
+	t=1754271382; cv=none; b=WLXNro0DjTp7c3Sb1rgP+Qqp0hOxA8ys2dWB/2etap77jWwJpp4sdwuq1DSCWev3rjY5ee2nbWYzjIagwoZ0oyjkYL16EkKEIChm3f62fXMjlferSJov6hkzQjloqNkVBerSIkEQiwI9dUsaTzAub3DL34Klab6rAJDxmhd6ZvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754271062; c=relaxed/simple;
+	s=arc-20240116; t=1754271382; c=relaxed/simple;
 	bh=/Keh7XwihFhkH7/p1VNnfhrg98Ok167PyVFtl/lP6qk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KoICffBezT78ZnPMYm+YHsgaJAxKj1CWCGSTLRPmQR5jhI8PWa0vztzOi9hIKISmSB0acJ+3J0CUIDZYBniRReWlb+XNmiKiFgRpvbeq62ey+4hM4jXHlhYU3ki4aPaQt9anOs64cNPmZmNaGVCdpRKc4WN+yD6LAzw9IOyAecM=
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Snqu5mQBbbPCxaBOY8IjLETj111uG7g8iaROybEYvIbUPM1D499f0zsmy7pMuEpF8IU2XYeBuOZKuvdC9Jr+xpQ6U1Z1M5yGvEvnP+wGBT7IMvcZa33C+bFJIKw1GSGk10avdLakvOmJYgm7HWh1lRE8DnBV6yl1heBSzwrxGCc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: a5cbf61c70d211f0b29709d653e92f7d-20250804
+X-UUID: 67ddb0b070d311f0b29709d653e92f7d-20250804
+X-CID-CACHE: Type:Local,Time:202508040930+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:0bc2870f-0fb4-4dcc-89b4-57d8da313663,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:19f2735c-2a6f-4e51-8ffe-2ea9f6d9a637,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
 X-CID-META: VersionHash:6493067,CLOUDID:a23135678690de963462a8cb6c5c13f3,BulkI
@@ -40,25 +41,34 @@ X-CID-META: VersionHash:6493067,CLOUDID:a23135678690de963462a8cb6c5c13f3,BulkI
 X-CID-BVR: 0,NGT
 X-CID-BAS: 0,NGT,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: a5cbf61c70d211f0b29709d653e92f7d-20250804
+X-UUID: 67ddb0b070d311f0b29709d653e92f7d-20250804
 Received: from node4.com.cn [(10.44.16.170)] by mailgw.kylinos.cn
 	(envelope-from <lijiayi@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1316494218; Mon, 04 Aug 2025 09:30:47 +0800
+	with ESMTP id 258496427; Mon, 04 Aug 2025 09:36:13 +0800
 Received: from node4.com.cn (localhost [127.0.0.1])
-	by node4.com.cn (NSMail) with SMTP id 6283716001A03;
-	Mon,  4 Aug 2025 09:30:47 +0800 (CST)
-X-ns-mid: postfix-68900D47-239135188
+	by node4.com.cn (NSMail) with SMTP id E304416001A03;
+	Mon,  4 Aug 2025 09:36:12 +0800 (CST)
+X-ns-mid: postfix-68900E8C-734670263
 Received: from kylin-pc.. (unknown [172.25.130.133])
-	by node4.com.cn (NSMail) with ESMTPA id 0F0EB16001A01;
-	Mon,  4 Aug 2025 01:30:46 +0000 (UTC)
+	by node4.com.cn (NSMail) with ESMTPA id 172B616001A01;
+	Mon,  4 Aug 2025 01:36:10 +0000 (UTC)
 From: Jiayi Li <lijiayi@kylinos.cn>
-To: jiayi_dec@163.com
-Cc: Jiayi Li <lijiayi@kylinos.cn>,
+To: maximlevitsky@gmail.com
+Cc: gregkh@linuxfoundation.org,
+	kai.heng.feng@canonical.com,
+	oakad@yahoo.com,
+	ulf.hansson@linaro.org,
+	luoqiu@kylinsec.com.cn,
+	viro@zeniv.linux.org.uk,
+	linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jiayi_dec@163.com,
+	Jiayi Li <lijiayi@kylinos.cn>,
 	stable@vger.kernel.org
 Subject: [PATCH v2] memstick: Fix deadlock by moving removing flag earlier
-Date: Mon,  4 Aug 2025 09:30:30 +0800
-Message-ID: <20250804013030.1309783-1-lijiayi@kylinos.cn>
+Date: Mon,  4 Aug 2025 09:36:04 +0800
+Message-ID: <20250804013604.1311218-1-lijiayi@kylinos.cn>
 X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
