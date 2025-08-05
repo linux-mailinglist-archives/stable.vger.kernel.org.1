@@ -1,140 +1,113 @@
-Return-Path: <stable+bounces-166630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A074BB1B52D
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 15:44:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAAAB1B5E1
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 16:09:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40FE83ACD95
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 13:44:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7BD4160FC5
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 14:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA07C275847;
-	Tue,  5 Aug 2025 13:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186B8279907;
+	Tue,  5 Aug 2025 13:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5qLHjIA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+msLCQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988A319AD5C;
-	Tue,  5 Aug 2025 13:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15CC277011;
+	Tue,  5 Aug 2025 13:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754401471; cv=none; b=Y7oQgalhQVq50PinfzGDcDL5ltPVkhxAe4bHkf8O3bwhx4TbaunqsahSJAqV+lGtQn72LVlV7oYEeMJOD72CxKys0mhgw1zTAXtu7e3Ej1BwyFMQdQjJ/C3v1Omfx/NkS9fE9G5lcqLzctyBSLC7UQJxcXtwKV8QWZMUk5nYZKI=
+	t=1754402370; cv=none; b=Ti1ZysyA7TVZbHvklq6OW5GN6GhSuTjW1fm+Fa0BTWFKtyWVAc98KyzfKGXeU70ijDKVHll/qA8HIo7I2yWfp3qvpM2VuSY0be9nN/i00RyP+0zwQt9KDgUPdCPCf+dzIXZE6PNkXoyhKSO0z5LjjJuoN1+4xNbMGj9bHKfnvwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754401471; c=relaxed/simple;
-	bh=Tgfc5N5x4IALIXfPpF8RYrr8YlZcr/jNVW7vUdrC7KI=;
+	s=arc-20240116; t=1754402370; c=relaxed/simple;
+	bh=4V5dBQ+eBPCJ1smNjnAgZUg0T+QL4DB32r+LUoylzy0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xfj5DgFkVjXQwSvV2Lf3adqgyC+h3jIAxBsLWkxi3SWWhrR8s+L/d5LuSUv+qaHiX3DStFR5LZzF1PrfUumjNufTq9efGyhhj4hXbRvb0eCUsJQAy13n0To9nF1HgR2cDUI6foZP+uGigd7Gt7auRqpFLFRIBxydT20QaH3PH2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5qLHjIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC59C4CEF0;
-	Tue,  5 Aug 2025 13:44:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=eg95L7L/gyiiFisnU5GT9MuB/FMyAqojUy4pYQngJRYQEjL1OEMGwoeMTJt9NPad3eCHHfjTBFrIocJbn6fbQdEvpsmfHOe6ES9uqgcsSXDJp4vad+kXgKBWN9a4PrWDqHNd9YngREeKh6Yi0BkIS1eKGbuiw8z45VD0qlq8j5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+msLCQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6031C4CEF0;
+	Tue,  5 Aug 2025 13:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754401471;
-	bh=Tgfc5N5x4IALIXfPpF8RYrr8YlZcr/jNVW7vUdrC7KI=;
+	s=k20201202; t=1754402370;
+	bh=4V5dBQ+eBPCJ1smNjnAgZUg0T+QL4DB32r+LUoylzy0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c5qLHjIAWWYNh0blUwbyxBS2VUwWqYi59h0nIJiaKbPOOLclO7BlnsmB/ZLZf+NK8
-	 jG8+8YJPlDSzkMeH3yqMeBEUxZErDPsvP0G1eJ8p1pNkSWnzJOg/3P5WNgC0lWhOW8
-	 6b2yHS75fF00hkmD19DxOa4D9UshuPOEdpGQVfqQgam9p7Ep6QWRxUCSJO4NcycgBX
-	 sgaZc1T33ePPiudQmFI096c1givrQnBxRYLkXrVjM6nm8Jt5Tg1xdGjbE+4LJCIoPB
-	 Do3LIXP/lSj72gW8OX85xG6ty0WomfJz/H1sJg8CUQ9Nne4wPBF/dUZAFM8Tdpr3/Z
-	 r1BkMfuE2Cf9g==
-Date: Tue, 5 Aug 2025 16:44:27 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	linux-integrity@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] KEYS: trusted_tpm1: Compare HMAC values in constant
- time
-Message-ID: <aJIKu7uD-nYQERKW@kernel.org>
-References: <20250731212354.105044-1-ebiggers@kernel.org>
- <20250731212354.105044-2-ebiggers@kernel.org>
+	b=C+msLCQbJWncbbFJjxOGuHXbektWQ58Zvp45zhgaQzMpnkHSZ2xCeZuWcw1DzgacE
+	 D6vkoQycXuMJZrNOS8IZH+cGe6O6m5hOEVEinLUVzNNwCFqvdclDd/ztaH6f5NzFLe
+	 xKIwv5Tk5jsQyAontMhaPkrHI2TCLgRo776taGXBe+Elqu0bbqXDr6WhAg85KpyJcY
+	 Oi+Y6VS8rFsoRQTqtGwfsOd1pA+g+ME+x0yWYakW5uDjczwXMMQLIUSBGH9DbtvH1D
+	 Tgn7bYwqbrJPd6NP5qK0n34074NDyHK5/3VMpDXFvbigSWZefKkFeWNHUVXQlXwaAV
+	 HQj3URE/YfcIA==
+Date: Tue, 5 Aug 2025 09:59:27 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, toan@os.amperecomputing.com,
+	kwilczynski@kernel.org, mani@kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.16-6.6] PCI: xgene-msi: Resend an MSI racing
+ with itself on a different CPU
+Message-ID: <aJIOP1GO8LumDZOJ@lappy>
+References: <20250805130945.471732-1-sashal@kernel.org>
+ <20250805130945.471732-59-sashal@kernel.org>
+ <86fre5aoqz.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250731212354.105044-2-ebiggers@kernel.org>
+In-Reply-To: <86fre5aoqz.wl-maz@kernel.org>
 
-On Thu, Jul 31, 2025 at 02:23:52PM -0700, Eric Biggers wrote:
-> To prevent timing attacks, HMAC value comparison needs to be constant
-> time.  Replace the memcmp() with the correct function, crypto_memneq().
-> 
-> Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+On Tue, Aug 05, 2025 at 02:20:52PM +0100, Marc Zyngier wrote:
+>On Tue, 05 Aug 2025 14:09:34 +0100,
+>Sasha Levin <sashal@kernel.org> wrote:
+>>
+>> From: Marc Zyngier <maz@kernel.org>
+>>
+>> [ Upstream commit 3cc8f625e4c6a0e9f936da6b94166e62e387fe1d ]
+>>
+>> Since changing the affinity of an MSI really is about changing
+>> the target address and that it isn't possible to mask an individual
+>> MSI, it is completely possible for an interrupt to race with itself,
+>> usually resulting in a lost interrupt.
+>>
+>> Paper over the design blunder by informing the core code of this
+>> sad state of affairs.
+>>
+>> Signed-off-by: Marc Zyngier <maz@kernel.org>
+>> Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+>> Link: https://lore.kernel.org/r/20250708173404.1278635-11-maz@kernel.org
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>
+>> LLM Generated explanations, may be completely bogus:
+>
+>s/may be//. It is an amusing read though, specially when quoting
+>totally unrelated patches, so thumbs up for the comical value.
 
-Was crypto_memneq() available at the time?
+Yeah, it's still very much at the "junior engineer" level, but honestly
+I think that just the boolean yes/no answers out of it provides a better
+noise to signal ratio than the older AUTOSEL.
 
-> ---
->  security/keys/trusted-keys/trusted_tpm1.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-> index 89c9798d18007..e73f2c6c817a0 100644
-> --- a/security/keys/trusted-keys/trusted_tpm1.c
-> +++ b/security/keys/trusted-keys/trusted_tpm1.c
-> @@ -5,10 +5,11 @@
->   *
->   * See Documentation/security/keys/trusted-encrypted.rst
->   */
->  
->  #include <crypto/hash_info.h>
-> +#include <crypto/utils.h>
->  #include <linux/init.h>
->  #include <linux/slab.h>
->  #include <linux/parser.h>
->  #include <linux/string.h>
->  #include <linux/err.h>
-> @@ -239,11 +240,11 @@ int TSS_checkhmac1(unsigned char *buffer,
->  			  TPM_NONCE_SIZE, enonce, TPM_NONCE_SIZE, ononce,
->  			  1, continueflag, 0, 0);
->  	if (ret < 0)
->  		goto out;
->  
-> -	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
-> +	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
->  		ret = -EINVAL;
->  out:
->  	kfree_sensitive(sdesc);
->  	return ret;
->  }
-> @@ -332,20 +333,20 @@ static int TSS_checkhmac2(unsigned char *buffer,
->  	ret = TSS_rawhmac(testhmac1, key1, keylen1, SHA1_DIGEST_SIZE,
->  			  paramdigest, TPM_NONCE_SIZE, enonce1,
->  			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
->  	if (ret < 0)
->  		goto out;
-> -	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
-> +	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
->  		ret = -EINVAL;
->  		goto out;
->  	}
->  	ret = TSS_rawhmac(testhmac2, key2, keylen2, SHA1_DIGEST_SIZE,
->  			  paramdigest, TPM_NONCE_SIZE, enonce2,
->  			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
->  	if (ret < 0)
->  		goto out;
-> -	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
-> +	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
->  		ret = -EINVAL;
->  out:
->  	kfree_sensitive(sdesc);
->  	return ret;
->  }
-> 
-> base-commit: d6084bb815c453de27af8071a23163a711586a6c
-> -- 
-> 2.50.1
-> 
+>But I'm not even going to entertain explaining *why* backporting this
+>patch on its own is nonsense. Reading the original series should be
+>enlightening enough.
 
-BR, Jarkko
+Sadly it doesn't have the context to understand that that specific
+conmit is part of a larger series. That information just disappears when
+patches are applied into git.
+
+I'll drop it, thanks!
+
+-- 
+Thanks,
+Sasha
 
