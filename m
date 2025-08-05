@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-166516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74441B1ABE1
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 03:06:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DF5B1ABE3
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 03:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5BCB7AA2D4
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 01:05:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFE3717E7BD
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 01:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDD1145B3F;
-	Tue,  5 Aug 2025 01:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4551149C7B;
+	Tue,  5 Aug 2025 01:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPzFWgi+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1HzakaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255514086A
-	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 01:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B65518A6DB
+	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 01:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754356002; cv=none; b=k11iaqqdkxOtuw/bFmM5KNiS/XueNs9LNwAVHPoBnGFOL4O0RQl575SPZpYIJasBAJYn9mO2Cv5L8A0CVKElrcBMH3fsFg2f32MR35RlObGaoYZiFUwBTc5Wvj1cC5bys63pzVAgKZDfKHLvL35vqnIJwPnOTr+l1+ey3z17Na0=
+	t=1754356004; cv=none; b=cnczyfkF1hlaKXhoObIGxpqfukmYTlVBL0oqKvsj/0CS7etPqc3RTEB6OqaneMMbHVgbbjkp2A2vSQoJE2id9Kto2YJQY+zKvrRXle3h4e9jaW1VObC1lnUuDeu0wdNPQDtWnosVNbe8PdQ+QmDMawOYbrs55eElPsGHcOqGYHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754356002; c=relaxed/simple;
-	bh=kRoy0i2YW+B46MY1eYrTiWt3xNJ4W7w1vn6jbpN8fO4=;
+	s=arc-20240116; t=1754356004; c=relaxed/simple;
+	bh=owNPkWXjsWAtft0OpEiQI/MGcyTPLiSRSdOjl/KHSZc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d+G0KMdJYMRbrZAFU+JYW7rKpvnz1a1SQYfH14k8iVLRPmuqOy+IfJxeTkO1arfbNBdpWY9VH5cPqfIxMDAbPRsY8MMiQaXjcotXVt+LQimGPMaysyTm0TvsDjBGxa8nJfKVt5vThtB9wqZlpf08PH0Ba3uBX1+CInlCGvtvMIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPzFWgi+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20379C4CEE7;
-	Tue,  5 Aug 2025 01:06:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qiDzH58NtlSg4OrBOgKJ2aYNU3LKvK/SSVBmX70e3Ctsa5IrJdFfc8kepP3qQOIlI2DjD0y1TlJMXqN9JdEtrpqNLxFZA47b8UGAkq0hv6DLx8T+05jRptXJs0Rb+Uz/4D3TpJ4bH6MCSVHpsJov/NdRRhmTPMTmmUy6rRkChlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1HzakaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED46C4CEF0;
+	Tue,  5 Aug 2025 01:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754356001;
-	bh=kRoy0i2YW+B46MY1eYrTiWt3xNJ4W7w1vn6jbpN8fO4=;
+	s=k20201202; t=1754356004;
+	bh=owNPkWXjsWAtft0OpEiQI/MGcyTPLiSRSdOjl/KHSZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPzFWgi+Vc/HNf0GRCbp4ZsmGUed9Bi3HHznAIuSBHuTGY3p3UiluhUW4CVFMGhv/
-	 pZNbQQsvO8kz8pzMV+6tvg44Gu1fYpwsUNlzEtpOuWHDL3elLx3dW+asSmgAlWhQ1e
-	 vHdyDJqvvgyt+Nai+r92Z9/3Q4wC3QUInU28MD4SC2W0s0zS0YNNa7c4s2QC1eT9C0
-	 I64HJud0zWjlQtFck1RAtIFyVMYndGq9GxyaY+SgbDlMANCIiPn35dLd9tawD5qB+3
-	 p3/5WfJlHOYfuNmCu0H3vO1HUMFgKXMyWL3ByLwVpK+19EJTglAN80ifky1VyP87D+
-	 ePi8DgsWjXW3w==
+	b=Y1HzakaSN9qFAk/56IqeFct6xc5EkzRHAvrtS3LXfAf0bP9gR9WmzSTr9OsrL8HyC
+	 iDS9zwh3pvzsizE6TICldKp/IeoFAhoXgFhDAu6Nh3Wozykeo4U9HPPmM9d6iklO5H
+	 IgX5L0+iJcWjrpCOEZzccm3VGjcXVPW1oeHr1WJS9etEgyAEHXefSCBvIEhrkAfLc1
+	 zD9pTflM9v/COIELchlkmO8nec/7yvJm0mc9zAlg45q3v8pziYkBwbQ6HPg23Cd4kE
+	 GLgHFVZ0yNS9gZIUZw31cBdOe2MfEfFymCQU13DFKZo0BEuQHAUo7fSoloCzxCun5Y
+	 BSRSr2v52u0eg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 6/6] drm/i915/ddi: only call shutdown hooks for valid encoders
-Date: Mon,  4 Aug 2025 21:06:39 -0400
-Message-Id: <1754321762-29609c86@stable.kernel.org>
+Subject: Re: [PATCH 6.12 2/6] drm/i915/hdmi: propagate errors from intel_hdmi_init_connector()
+Date: Mon,  4 Aug 2025 21:06:42 -0400
+Message-Id: <1754321418-c7885570@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <ff10c20ae7a05ef436366e71b609374709f1c517.1754302552.git.senozhatsky@chromium.org>
+In-Reply-To: <938a984204146a4b6628030af87ff374cb41936c.1754302552.git.senozhatsky@chromium.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 60a43ecbd59decb77b31c09a73f09e1d4f4d1c4c
+The upstream commit SHA1 provided is correct: 7fb56536fa37e23bc291d31c10e575d500f4fda7
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Sergey Senozhatsky <senozhatsky@chromium.org>
@@ -77,16 +77,16 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  60a43ecbd59d ! 1:  8009a63e9d86 drm/i915/ddi: only call shutdown hooks for valid encoders
+1:  7fb56536fa37 ! 1:  d8185aaf6ffa drm/i915/hdmi: propagate errors from intel_hdmi_init_connector()
     @@ Metadata
       ## Commit message ##
-         drm/i915/ddi: only call shutdown hooks for valid encoders
+         drm/i915/hdmi: propagate errors from intel_hdmi_init_connector()
      
-    +    [ Upstream commit 60a43ecbd59decb77b31c09a73f09e1d4f4d1c4c ]
+    +    [ Upstream commit 7fb56536fa37e23bc291d31c10e575d500f4fda7 ]
     +
-         DDI might be HDMI or DP only, leaving the other encoder
-         uninitialized. Calling the shutdown hook on an uninitialized encoder may
-         lead to a NULL pointer dereference. Check the encoder types (and thus
+         Propagate errors from intel_hdmi_init_connector() to be able to handle
+         them at callers. This is similar to intel_dp_init_connector().
+     
 
 ---
 
