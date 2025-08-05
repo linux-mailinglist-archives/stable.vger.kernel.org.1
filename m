@@ -1,100 +1,272 @@
-Return-Path: <stable+bounces-166541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A66B1B05E
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 10:46:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF63B1AF5B
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 09:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B2717A7E7
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 08:46:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 435B4189C7F3
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 07:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BACA238176;
-	Tue,  5 Aug 2025 08:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CE5219A95;
+	Tue,  5 Aug 2025 07:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SawRNtXk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m32100.qiye.163.com (mail-m32100.qiye.163.com [220.197.32.100])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139781991CA;
-	Tue,  5 Aug 2025 08:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.100
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754383600; cv=none; b=Nf1h12glMKW3S2OqkcwscKzEYrrsENfQYf3jg1l3NEVnrtdvW27bB7Mjc22ZUewH9bOJt8cSr0CmthAuARrGDlPGaXIv1LOllMg1i7AXHrxy6Bo9HmM4zOMVTHhvvQL7dThD41T2V9dT+0UcCuc4t+tR5/ueuFecxctPcS5ECfM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754383600; c=relaxed/simple;
-	bh=8+mnIs3SVQARHbtATo2pOwtW5bUbAsS2w/imde7zygY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nfRU00J+/5ahrusd8DQpAb9zZnhWEp1v3jk/HDmbjs/2TwADtqCsToB2FoJXFaE2NorC0pSMpnCHiY7Prdo8qZTx2aX+a2enzQ09ddqYMZ/bgFeuzDLnlrMdTWLmASSmLKGa9pL+tjGd8QE6WSM7or33R0RxppH+J4P+40EgoNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=220.197.32.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id e29cf60e;
-	Tue, 5 Aug 2025 15:30:49 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: Markus.Elfring@web.de,
-	viro@zeniv.linux.org.uk,
-	linux@armlinux.org.uk,
-	rmk+kernel@armlinux.org.uk
-Cc: linux-kernel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fs/adfs: bigdir: Restore EIO errno return when checkbyte mismatch
-Date: Tue,  5 Aug 2025 15:30:40 +0800
-Message-Id: <20250805073040.192968-1-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250801093806.1223287-1-zhen.ni@easystack.cn>
-References: <20250801093806.1223287-1-zhen.ni@easystack.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B75F3234
+	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 07:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754379434; cv=fail; b=IotHxzpiM/s1RSSLPUCJwarPudQpHubX1pPuubxEid5OhnXu7Sc/BXNa6jb9QFQMUyN223CZw42anl++u53O4EXnDdcADAopkdoXRydoXQ+5VuMSwC85OEtG+64ECXk30I7jZLf8NwVI4WXlxq6B10cc5WUwxFbtIp7iu0+0zvA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754379434; c=relaxed/simple;
+	bh=JAkj6zwUHUxBIwSmebmOWFYp7P6dS02rpA2n5peUvsk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZWuCy5WxjDWsZuRQJEyrrEEqzrCJATwJI79YxlBjpV3GFINSqei5El0gWU+ww9yjIM4icIMbSQDsgs5OTWT31MRjX7OQcltYrwPtyl9qyevKQLbgQFFQsoj586c2yPWzNk4xAUbnpdzRYuoF4Otua5Am9LwJv2epIMIrzdl8Lyo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SawRNtXk; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754379432; x=1785915432;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=JAkj6zwUHUxBIwSmebmOWFYp7P6dS02rpA2n5peUvsk=;
+  b=SawRNtXkD1F8rIbOmooFFtXHduiaAFglE8Xg/gyelKUl+hJErUnoHvUt
+   wN22Z9PbnmcLtWMalah1T/uu0QOusfuLER4/KBSOxt9vBuNRjq8H8bTxu
+   tdsuayqecFH+0Ypov388Q9at0wQCULxuwDT0UBWekMWsGGFWTskxe3wmM
+   KY5F8AKCIiEMInjC5UjchGlFsDpDs53Va1mkG9mqxbZzfEdkE+r3mAkm6
+   aqrluzHwviCiUCIz1r/fIzm/I6Cl2Dv7tyG6Kl5kMnzlQIBnY84bmljac
+   pM6SzaIbXQEeKGsvBggiaU0/LlDIpESx+dUlfyt6DBeHHnAg4OvQc94ai
+   A==;
+X-CSE-ConnectionGUID: tQ/ZcIxdRhOr/sZ88nIgdQ==
+X-CSE-MsgGUID: a7LVBEotTDq9Zzhlk358SA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11512"; a="60493168"
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="60493168"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 00:37:11 -0700
+X-CSE-ConnectionGUID: EjW7PqGBTOC6fzA/P+3W8g==
+X-CSE-MsgGUID: hYIDk4ZXTuiJ10n4f1Tn/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="163657819"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 00:37:11 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 5 Aug 2025 00:37:10 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Tue, 5 Aug 2025 00:37:10 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.82)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 5 Aug 2025 00:37:09 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nKdbA/qu74RwRYH3Xb0GJhRP5ZdNkOQxoYTp2pqYAGvFx7dbQNjbplSgjQDWWQldUIc6WDAZp+BljvRX/dPSQQRVkW/eIL92MabaXKPS6AA/czlFYAUE77nPp0vKDn3S3Sq+I2lR6wIpeVWyx3LKxX5SYtxjBJnrnsiDMcQwuGCXYS9PUKR4Jc0NhWj6Mte6yyYCiMvthD1n/ylicpPKa1yMwlv7MeVO4Oy9Nu3TbHJCsYrrp7Wvl9oNS89/bopWWECuudMA5eLpjPJrFWdcVeJDb/jyQ3JkkhEIknsYHHg0ypi3r3+IwRWVkOMUaRtOnk2w6LMxcDI2sDTQzjkPqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zsuos0fdJrmDh+Jb2Mbb9c8404jiHA0JneO/6zfM0go=;
+ b=Voa83VsQXf3yl5K8u2mq4DBpjk12uQcr5mao+HEj/7UoTyVdDJr9y1jZFWl7zyQ6Bhth/lmmkucnuDf6VwbwX6aHsE/suWSIn/eTHZFJWxCzlv7eHJTibxSlFILsvL9qTwFwVQGlZcXshvhO0s1a5pVryVI0VxcHfaYOFTs0P/1zct5/LneESlWUebvFpOf+wdJgnDS8FXhUC/yyP77kR9vNeDw5Q2hUnziB+J2gxxruonifAns8zrTuv1Roo53JvMOiOHtaIyQ6jw0b1LaPCpBLiTvuxeYqFgkpzxIP+vB3HhsG9ZzQFVLkDycSErutzDw6+8w4iIVeEY6gu+R4hg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
+ by DS0PR11MB8161.namprd11.prod.outlook.com (2603:10b6:8:164::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Tue, 5 Aug
+ 2025 07:37:08 +0000
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f%5]) with mapi id 15.20.9009.013; Tue, 5 Aug 2025
+ 07:37:08 +0000
+From: Imre Deak <imre.deak@intel.com>
+To: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
+CC: <stable@vger.kernel.org>, Charlton Lin <charlton.lin@intel.com>, "Khaled
+ Almahallawy" <khaled.almahallawy@intel.com>
+Subject: [PATCH 01/19] drm/i915/lnl+/tc: Fix handling of an enabled/disconnected dp-alt sink
+Date: Tue, 5 Aug 2025 10:36:42 +0300
+Message-ID: <20250805073700.642107-2-imre.deak@intel.com>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250805073700.642107-1-imre.deak@intel.com>
+References: <20250805073700.642107-1-imre.deak@intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: DUZP191CA0024.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:4f9::21) To SJ0PR11MB4845.namprd11.prod.outlook.com
+ (2603:10b6:a03:2d1::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a987923d7f80229kunm0b0815b455eeb2
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaGBoZVhoZS0JOTkpKGhkYT1YVFAkWGhdVGRETFh
-	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
-	VKQktLWQY+
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|DS0PR11MB8161:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c6a437c-7f94-4c34-01ef-08ddd3f2e1ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Wrg9XUZeXJCYCb9NE5V+PV1CP7PmRoUi33gYe4A+cVbKxRmEl/N7Hc3AvHGh?=
+ =?us-ascii?Q?/NacgJy8r7nykLoqDF5OId/djXKl8e9I+Vc4ZT2FQzh+45IWw57X335sE6MX?=
+ =?us-ascii?Q?F1KpVX6KHx0daZKUeRsHavIqusWwH0m4BLx0p5Ob/QD62/XNdAd5nGjijsH4?=
+ =?us-ascii?Q?3FtTJOAabj7RqLdgHfnR6nKTW2hTJaCxBYeQc4xJONK/I73Q+d7p0tIXAziv?=
+ =?us-ascii?Q?eEkrwwdV/6pM5VI/ft9k9l3TvdDB43Q9iCBrBTDkZ0GKudEXizg0QhkuO3+w?=
+ =?us-ascii?Q?lwbkK+8W6dZQckVa8EfljN9N70fkcnhIrE0SD3FyriUc0Uzcqi6bYLXD2PF9?=
+ =?us-ascii?Q?WjbLk+Y6ClWKWysvUxGouo3yUJPB96L3DQ0H6/hfT+CQuNa7hEac9gYmbMdg?=
+ =?us-ascii?Q?8IxkGn0BiTRp7DUJZmflaWcwU0w6CVwEyFOw81+pABqjoM7Qf2We9Jkp/Jky?=
+ =?us-ascii?Q?WvO2bHtMHeNsGJvBF3Jn+fi5Z0jmPGfoyWmhFJhgeAI7w8WLwkOXke+BGImc?=
+ =?us-ascii?Q?/qKjszHQAyPiApltoRx/Kok0fHkJqT61IadRxVB/deetkoFmuUGBDJtxSGS/?=
+ =?us-ascii?Q?OYDwGlJrvc2N5cSEsKxt2aVjZq0hpqCPMabDIjlHLsxIjZfvSB04Cd3W4M7m?=
+ =?us-ascii?Q?gt6zF0w+xGVls8t4xg+4lRz4+cww87f80POgWTPoF2w9++wll8nG3AKBAn3b?=
+ =?us-ascii?Q?hXJJHOwWM+v/u2U9+fs2Suz1WkJRpThmU7wF/SqjicT09dGdf1yn65ALClLP?=
+ =?us-ascii?Q?RG590oTb0GEK6cRoWaC2RaKvBHhctdK14DlLNg8RbxCBk94kVkLUr+WoJizB?=
+ =?us-ascii?Q?N+OXRDyO/9UMCKpDswc0H24uKYefmJMKcuGbNX/WNNyfLks4W4ryd5ZXbqK+?=
+ =?us-ascii?Q?a0bdlyfJ7vB0mOzw4TDehpMgtGxmy0cPvpJJL1yzt+jni2FUZR3jxQL5vAHA?=
+ =?us-ascii?Q?GUdN4+5g8VQlyP1vOqvvORd0HX7HfvH5ZW7bIeqpe+GPvWiuY9/ZYGcubxcc?=
+ =?us-ascii?Q?N9seG5DUDVXvSY2t9cjDZ8icv8jIhFyzZ562e/693EpEqJmCd3S//vUc6x3F?=
+ =?us-ascii?Q?WLhyKF8EXKiZw0ulht1qTYGHCBfEr0MpMRk5LxP9r1DRPLLysKOGZa7cFiR6?=
+ =?us-ascii?Q?IroVmBv2TQDUfz7pWDeqJdFwWYkKZ3EeLilEzAT0QKWRaF/Eqodr6Cpe5Vwb?=
+ =?us-ascii?Q?F4Swasukp9TkX0wEnuj8dtgGrWDW3PDUkQ2tp1cZ2ePA98HwLuHRiMvMG/er?=
+ =?us-ascii?Q?dV7+0zrbhkYsCVDslDIziABJjEET5pvi+T35PFGffdJDwGEi2tZuvyrmo7Zc?=
+ =?us-ascii?Q?Q/gkU3FSkFzF38JpA6+WF07mjvoGMysL8SrGbr9gAAYrZlZey2sNOTG+Bbrz?=
+ =?us-ascii?Q?+h6ErQghQybZxMgnyE80oHT30n+9lgf7Ei98beQo+tQHahb6dI1ja+XjSaAk?=
+ =?us-ascii?Q?NqCNpf1Idv0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?T/JbjOd4fI1eSf2EYwy9vVcgFzH1oCHFpKNuOSCBDd+ZqVWTojHGOAeaXF/p?=
+ =?us-ascii?Q?Qh7OgmvZ4spvSfmIMrkMwfvePt/Zso31LZniZAkVYQLx9MUpCXVnl5FYeuFH?=
+ =?us-ascii?Q?CstYn+qWM/0JUoBEQMm8sv8dmYUv30smpeYZ6+2nFklcAOp+F/PXRUcaeQN2?=
+ =?us-ascii?Q?jkU4mDl/V3wT/7Onz5LBrk6dx6Z6E7fkrtc6TkjVlZmwnO4J0oP6RgQfD6sN?=
+ =?us-ascii?Q?Q8HaRAKBaGUjpqQSlcuHcI0QbiAtKaKv5nvs5b3lt+hB+S0G1IK1SRdzLcUO?=
+ =?us-ascii?Q?+QwQAQaZbw4NUhsrU2q/qCaDr+dpIJBHY7vLSgG4dfKRhW1Ov5pywpaOPHNJ?=
+ =?us-ascii?Q?tdeC3G8+hzvn7RYh3GseNrjxYIICwxjqSgHCv13PkmrYuKbkMoZ3CtNF10Qf?=
+ =?us-ascii?Q?LQiQRsp6aGflfMRq/E9tfxEVC50lXv3wR5zGk4mASzMiEDODuD1hAMuFtecC?=
+ =?us-ascii?Q?nOA/JZ2eW9dXuFRWc9oSPnab9VtKyyyqxtGa139PkuRPDkJ+e4R+2OC/YVo2?=
+ =?us-ascii?Q?f2hhejlnsXMPRnAGQxya28GFdhcTGa9eK3G241va1VUh3Qn3cYCigA4gsB1Y?=
+ =?us-ascii?Q?9oYXu+B8rRCFkoqnOlWcQuq0PtyWGZspeB/aH/yYzVlNaPY1wXdLi5f7Z5w9?=
+ =?us-ascii?Q?I1sGblxBurd+eq8SQzepXB0kG4Ss4uD80I7PCoRO3dP0NBDHrGstFrA/fwc7?=
+ =?us-ascii?Q?o3nSo7RcB1DtDsIcuJXvYYglac2J/lNJVQ0RRK6sXmqhMNIFxn8x90uwH8ot?=
+ =?us-ascii?Q?cssiqBGF5UAQ5lbI/CJk3WSWk7u0NeZFO+Z6amVo474CgFnitCOohuGkvfT1?=
+ =?us-ascii?Q?8J7dQvAFWG0r3KeJ9yqvA9DTuq4J8lB9H9CHrHa2D8WsxfeHdwv5i1tY+0Ko?=
+ =?us-ascii?Q?0gxCsPx5ZevJH8l4gwlINhBg0CsI6adpW4/YTxRzH83WDk0lbNE2mgLLi8tJ?=
+ =?us-ascii?Q?wxgS3K/tiNmdY4rRO1R8dVAOMuYxI0ampK2Nvz1fR5F5dNIRsusOEudMMu69?=
+ =?us-ascii?Q?I/iI9zvZpLZIgqKcgIfkxI+KG9I0WzR4IYrenI8x6yX8cLSQ1TAaVo0KPuVv?=
+ =?us-ascii?Q?UlKbRs3ovCDFI0lqpJNIesbete1VWd1klr9OMRAkE7ank0V4B0cUVAh6onnF?=
+ =?us-ascii?Q?KfxwxwawC2XikkOD8uObh9jExH1WyKqulbGTzH5rFmF6/JfZie2G104wPjsL?=
+ =?us-ascii?Q?GoRmQjMw0nnVDVZFeFH61Fe+hCMS1Vqd5da6M2xaJjivBtIX1yYJ2WKSCjh5?=
+ =?us-ascii?Q?EUGrJvOfsY+eADJpUf2WmOztuzJCCRkPG6YB3oVBRil1WihiY45zs0CJya2C?=
+ =?us-ascii?Q?9Spj0jLseG9jhZemV4FNiSDkBq0fXsqjhTM2l6L3Ld9DqCN6MR0cCGl9pC7L?=
+ =?us-ascii?Q?IYcvSOe5lUOUo22Mc4COkrjAzxsyQ7U3e5iLEuUuT8A28SY41a+Qxe8oxBNW?=
+ =?us-ascii?Q?oZmcH0TGZ/V7+f58EEuX1Ir1xmV3e7bnlDlUx3sx0LCVfssVDjaZznYS3PFf?=
+ =?us-ascii?Q?4Yc2HZ26Y5bQ3isJ2SvqyEu2ZFPUte0NTglT4Vf4AEPPGo9LS83NiL2SHkzA?=
+ =?us-ascii?Q?EURAjqziGvkVuqiU5ALgcTn2Uql7K1wu3K9OB3IPvHI9dx2ZwXFmExBIxt+V?=
+ =?us-ascii?Q?peMdf9n+gV9nMAM+mCpv/AiJldCQCYrh6EIPuPksugOc?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c6a437c-7f94-4c34-01ef-08ddd3f2e1ad
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 07:37:07.9662
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oXsyDuWavcIH4HCgrcCl6rvY5lyzP0qkVGrb0vh7kYZOBOZAuzCubUHdFBsnf8N9VRd4q8ksa3EW0nhezV0mOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8161
+X-OriginatorOrg: intel.com
 
-The error path in adfs_fplus_read() prints an error message via
-adfs_error() but incorrectly returns success (0) to the caller.
-This occurs because the 'ret' variable remains set to 0 from the earlier
-successful call to adfs_fplus_validate_tail().
+The TypeC PHY HW readout during driver loading and system resume
+determines which TypeC mode the PHY is in (legacy/DP-alt/TBT-alt) and
+whether the PHY is connected, based on the PHY's Owned and Ready flags.
+For the PHY to be in DP-alt or legacy mode and for the PHY to be in the
+connected state in these modes, both the Owned (set by the BIOS/driver)
+and the Ready (set by the HW) flags should be set.
 
-Fix by setting 'ret = -EIO' before jumping to the error exit.
+On ICL-MTL the HW kept the PHY's Ready flag set after the driver
+connected the PHY by acquiring the PHY ownership (by setting the Owned
+flag), until the driver disconnected the PHY by releasing the PHY
+ownership (by clearing the Owned flag). On LNL+ this has changed, in
+that the HW clears the Ready flag as soon as the sink gets disconnected,
+even if the PHY ownership was acquired already and hence the PHY is
+being used by the display.
 
-This issue was detected by smatch static analysis:
-warning: fs/adfs/dir_fplus.c:146: adfs_fplus_read() warn: missing error
-code 'ret'.
+When inheriting the HW state from BIOS for a PHY connected in DP-alt
+mode on which the sink got disconnected - i.e. in a case where the sink
+was connected while BIOS/GOP was running and so the sink got enabled
+connecting the PHY, but the user disconnected the sink by the time the
+driver loaded - the PHY Owned but not Ready state must be accounted for
+on LNL+ according to the above. Do that by assuming on LNL+ that the PHY
+is connected in DP-alt mode whenever the PHY Owned flag is set,
+regardless of the PHY Ready flag.
 
-Fixes: d79288b4f61b ("fs/adfs: bigdir: calculate and validate directory checkbyte")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+This fixes a problem on LNL+, where the PHY TypeC mode / connected state
+was detected incorrectly for a DP-alt sink, which got connected and then
+disconnected by the user in the above way.
+
+Cc: stable@vger.kernel.org # v6.8+
+Reported-by: Charlton Lin <charlton.lin@intel.com>
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
-Changes in v2:
-- Add tags of 'Fixes' and 'Cc' in commit message
-- Added error description and the corresponding fix in commit message
----
- fs/adfs/dir_fplus.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_tc.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/adfs/dir_fplus.c b/fs/adfs/dir_fplus.c
-index 4a15924014da..4334279409b2 100644
---- a/fs/adfs/dir_fplus.c
-+++ b/fs/adfs/dir_fplus.c
-@@ -143,6 +143,7 @@ static int adfs_fplus_read(struct super_block *sb, u32 indaddr,
+diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
+index 3bc57579fe53e..73a08bd84a70a 100644
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -1226,14 +1226,18 @@ static void tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	tc->phy_ops->get_hw_state(tc);
+ }
  
- 	if (adfs_fplus_checkbyte(dir) != t->bigdircheckbyte) {
- 		adfs_error(sb, "dir %06x checkbyte mismatch\n", indaddr);
-+		ret = -EIO;
- 		goto out;
- 	}
+-static bool tc_phy_is_ready_and_owned(struct intel_tc_port *tc,
+-				      bool phy_is_ready, bool phy_is_owned)
++static bool tc_phy_in_legacy_or_dp_alt_mode(struct intel_tc_port *tc,
++					    bool phy_is_ready, bool phy_is_owned)
+ {
+ 	struct intel_display *display = to_intel_display(tc->dig_port);
  
+-	drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
++	if (DISPLAY_VER(display) < 20) {
++		drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
+ 
+-	return phy_is_ready && phy_is_owned;
++		return phy_is_ready && phy_is_owned;
++	} else {
++		return phy_is_owned;
++	}
+ }
+ 
+ static bool tc_phy_is_connected(struct intel_tc_port *tc,
+@@ -1244,7 +1248,7 @@ static bool tc_phy_is_connected(struct intel_tc_port *tc,
+ 	bool phy_is_owned = tc_phy_is_owned(tc);
+ 	bool is_connected;
+ 
+-	if (tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned))
++	if (tc_phy_in_legacy_or_dp_alt_mode(tc, phy_is_ready, phy_is_owned))
+ 		is_connected = port_pll_type == ICL_PORT_DPLL_MG_PHY;
+ 	else
+ 		is_connected = port_pll_type == ICL_PORT_DPLL_DEFAULT;
+@@ -1352,7 +1356,7 @@ tc_phy_get_current_mode(struct intel_tc_port *tc)
+ 	phy_is_ready = tc_phy_is_ready(tc);
+ 	phy_is_owned = tc_phy_is_owned(tc);
+ 
+-	if (!tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned)) {
++	if (!tc_phy_in_legacy_or_dp_alt_mode(tc, phy_is_ready, phy_is_owned)) {
+ 		mode = get_tc_mode_in_phy_not_owned_state(tc, live_mode);
+ 	} else {
+ 		drm_WARN_ON(display->drm, live_mode == TC_PORT_TBT_ALT);
 -- 
-2.20.1
+2.49.1
 
 
