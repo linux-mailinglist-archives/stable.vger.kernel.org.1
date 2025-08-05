@@ -1,132 +1,92 @@
-Return-Path: <stable+bounces-166643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8784B1B9D8
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 20:09:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67451B1B9FC
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 20:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8325F189966F
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 18:10:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3456D18A3AD1
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 18:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B6B29993B;
-	Tue,  5 Aug 2025 18:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5183299A9A;
+	Tue,  5 Aug 2025 18:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfJbvBnS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpeiWJkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D51529899A;
-	Tue,  5 Aug 2025 18:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7944A279351;
+	Tue,  5 Aug 2025 18:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754417384; cv=none; b=EcdwcDZpKgk7+KuRs+ltUrxUc7mrXOAwLuOogqYQ32Y5bNQdErUS42/DLP+QvAao01NKfCaTl119xZ2ULDOOVdZZn8vKYLcuZe+xUqbHD9CZNTUo11gFfT0LX20FghK6Md4z3sNB5rNSOj3iAxue6M4wkjw/xGkafUw5ULQAdrU=
+	t=1754418290; cv=none; b=uIynPsiTmLstWAEIJNZDMNPfv/yyg3cLbQsxyXifO1bqUQpsJRJQVHuXRLyMJHDXB4N6PYjkM4QO/SZLXqY/ObnxO+VlvVTGEdJUI2Z9TSQe+QFYArkdOAw9Lh7SXOBmgnRkW7MtkgCLbG0g9fYKfpyUMr/JYJC57z8TmczzZzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754417384; c=relaxed/simple;
-	bh=CQ4211YH7bOUvS0w3ZcUchCGKPBUdDufL+8k2O3J26k=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mJ8xEjGaXMjd751+aezD1SprIUdNCcTIpno656PAdFvMXB3HwXWkg2Ivt3Ahnl2JfYq92ALkqRUbGHQa3BVBL5YIN4H3Pja5g7dXQaIwhSruzGohMdzdxSdGvAuQVmOvwJPoD4yk/a/kzC/aWVUbGpUXFydyaGx/jgAKkUH9AsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfJbvBnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A345CC4CEF8;
-	Tue,  5 Aug 2025 18:09:43 +0000 (UTC)
+	s=arc-20240116; t=1754418290; c=relaxed/simple;
+	bh=wdgBQozZ60WLJYIcMgQbxIcGH6ubWs7rnf10YYOzuJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rWD5dJ2RB0oKfgU0r0TYBGe/UDzvDuef1EQUeCplJvS6mMcvJ0esZ4nWhQw8BBKe9ny0af6gYtagStMOP2ZOypz07mRyM8TOanDdaBJg+Dku570GF7iNrOkDecX+PxBtGGCKoru84Tj2PjpNwxQPuqsOqVRYPXPhRQhj2NlKpHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpeiWJkf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB04C4CEF6;
+	Tue,  5 Aug 2025 18:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754417383;
-	bh=CQ4211YH7bOUvS0w3ZcUchCGKPBUdDufL+8k2O3J26k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PfJbvBnSrP5rOAkboOaaCIsUhWoV2w3ZmgbTYzuyYvGKrfuhgJIoo50Gx+cc1oL9U
-	 FlDWCTmPg6Jm42XZSHPH8e27kD/PfauwNQgWdfebDDsYpd2CqWYoJkWUUFvbpoNvgZ
-	 4bcmb0IBl9juSVM5ROKJCHJVlm9FPLL9ljpRsDRnYzbTphx+WHT5RxwzCgE3YIo+j8
-	 fZOJeXcP605ltX3o2lYkwqWdonu83Ot+uygxLMjwke3FhxZUoYCCEXL4vo486VFreF
-	 pHesL1ye5xlTSUcqynUsqv9XCxk4xdiZVc66sieGUmmfkurfr7X4FMLywR4qAQwpMo
-	 X/Z+Z1cacIl0w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1ujM6X-004F3q-5r;
-	Tue, 05 Aug 2025 19:09:41 +0100
-Date: Tue, 05 Aug 2025 19:09:40 +0100
-Message-ID: <877bzhtzbv.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev,
+	s=k20201202; t=1754418290;
+	bh=wdgBQozZ60WLJYIcMgQbxIcGH6ubWs7rnf10YYOzuJI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BpeiWJkfSQHzmGAthohW2xwN3y7+/wQO9ufan/IUf+y+JWxEUZKdjKlgOsVHiqjJ3
+	 w0l7/IAGVDA7tSNHCvKDcqNWVmxF4zteASusRrvGmUbHVy668n/sKPvtDxouJqUcev
+	 qnu9Ww5XW/z4llTT1NRl7aMlyiwFuC2tOuhG2Ct0OhqyYvm7rSTSoUZwkoNJ7vZi3T
+	 XhKXHVfZEBxlGnQwMalIKah+V/3WSIshJ9LGQRonue4qTu3CRPfP12LC69MXA77mTO
+	 fX1Il3zf7FSo1rxXHY9A+an2eglLc5hqzd5OuuruZmFStkh+D8OzSo8yETM+xexVVT
+	 xjAWbnAIgv+LA==
+From: Chuck Lever <cel@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Chuck Lever <chuck.lever@oracle.com>,
 	stable@vger.kernel.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	toan@os.amperecomputing.com,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.16-6.6] PCI: xgene-msi: Resend an MSI racing with itself on a different CPU
-In-Reply-To: <aJIOP1GO8LumDZOJ@lappy>
-References: <20250805130945.471732-1-sashal@kernel.org>
-	<20250805130945.471732-59-sashal@kernel.org>
-	<86fre5aoqz.wl-maz@kernel.org>
-	<aJIOP1GO8LumDZOJ@lappy>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+Date: Tue,  5 Aug 2025 14:24:45 -0400
+Message-ID: <175441827954.101751.4073328601137228327.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250805175302.29386-2-thorsten.blum@linux.dev>
+References: <20250805175302.29386-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashal@kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, lpieralisi@kernel.org, bhelgaas@google.com, toan@os.amperecomputing.com, kwilczynski@kernel.org, mani@kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, 05 Aug 2025 14:59:27 +0100,
-Sasha Levin <sashal@kernel.org> wrote:
+From: Chuck Lever <chuck.lever@oracle.com>
+
+On Tue, 05 Aug 2025 19:53:02 +0200, Thorsten Blum wrote:
+> Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
+> strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
+> already guaranteed NUL-termination of the destination buffer and
+> subtracting one byte potentially truncated the source string.
 > 
-> On Tue, Aug 05, 2025 at 02:20:52PM +0100, Marc Zyngier wrote:
-> > On Tue, 05 Aug 2025 14:09:34 +0100,
-> > Sasha Levin <sashal@kernel.org> wrote:
-> >> 
-> >> From: Marc Zyngier <maz@kernel.org>
-> >> 
-> >> [ Upstream commit 3cc8f625e4c6a0e9f936da6b94166e62e387fe1d ]
-> >> 
-> >> Since changing the affinity of an MSI really is about changing
-> >> the target address and that it isn't possible to mask an individual
-> >> MSI, it is completely possible for an interrupt to race with itself,
-> >> usually resulting in a lost interrupt.
-> >> 
-> >> Paper over the design blunder by informing the core code of this
-> >> sad state of affairs.
-> >> 
-> >> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> >> Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> >> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> >> Link: https://lore.kernel.org/r/20250708173404.1278635-11-maz@kernel.org
-> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >> ---
-> >> 
-> >> LLM Generated explanations, may be completely bogus:
-> > 
-> > s/may be//. It is an amusing read though, specially when quoting
-> > totally unrelated patches, so thumbs up for the comical value.
+> The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
+> move from strlcpy with unused retval to strscpy") when switching from
+> strlcpy() to strscpy().
 > 
-> Yeah, it's still very much at the "junior engineer" level
+> [...]
 
-It's not, and that's the main issue. A junior engineer would get into
-the rabbit hole of backporting too much, as they would be unable to
-separate the essential logic from the surrounding fluff. There would
-be a lot of noise, but it would be OK.
+Applied to nfsd-testing, thanks!
 
-Your "thing" is very much at the "Senior Marketroid" level, in the
-sense that it manages to drag some semi-relevant information from
-various sources, and condenses it into an advertisement for snake oil.
+[1/1] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
+      commit: 5486ae619bff16a8c885afab7f40b10c69030344
 
-I think I know who which of the two I want to work with.
+--
+Chuck Lever
 
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
 
