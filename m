@@ -1,162 +1,113 @@
-Return-Path: <stable+bounces-166649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD47B1BB6A
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 22:29:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC005B1BB6D
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 22:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BDD17EB16
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 20:29:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2109C7A3403
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 20:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C07524293C;
-	Tue,  5 Aug 2025 20:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C5C23D291;
+	Tue,  5 Aug 2025 20:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWTaRXwr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yx5gcBGl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD232288EE;
-	Tue,  5 Aug 2025 20:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE501401B;
+	Tue,  5 Aug 2025 20:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754425734; cv=none; b=pKtClcoTpetuvTU1x7x5g+T1WcXA0VbFcLVmSaPkU/zkHzE/EPWYPFahypUC4D6orX1nxqqWvxTIG+wJ7rmrALpPi2wEvWOf2CQd7InNeMHnnag8kNlhLl6MlN6B/doAakf/2ayi7fKCDP8eU18gCcbqoh7z4BWUDR1D/sUfixs=
+	t=1754425773; cv=none; b=H0hR6p0N13gAA47vQHU0OCvyjhlu76vCHieEybP7ChfVeLA0qZwpgi4x+zu8x9q5gQ9smfCMBnMT7yQ23GGVqu6cRYaoLrAZL0T63zYXA7HwohX8cyr67d5G9P0MmmqEh8RisvF6ALAn3nmmFvqdSG8CGRIWhR1B10JQ6/r6RBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754425734; c=relaxed/simple;
-	bh=YUMbxHcRNoIfqwQxljcPeXk9kSyXJnB46QcCKO9sHAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RfuOS4tsm/MNq0EKW5f/cHhvdUa1kBRy3TRpbttnvvyai4HoaVJVcrF5UVtl54Pdc4nZ6ygkwlr2P/AcoN9AXciT4cch0BTEnpkk+87frAmxd4ziJVV4nV8Kk6YyJabwHNTDRCePPH7O60s5DViJ8MD5+12NmN3JOVaWOnm65A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWTaRXwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD93C4CEF0;
-	Tue,  5 Aug 2025 20:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754425733;
-	bh=YUMbxHcRNoIfqwQxljcPeXk9kSyXJnB46QcCKO9sHAg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TWTaRXwrgo9ImyO1w340UuQ8einL4MAGC7EV2ZcHyQBxZ2HnR+HsXX0TiZfbaP5rl
-	 iCpBBu3ybnBIxJBmUHpLy06tLPPwTrzomFLD847y+P2+hdQn4xwlapy44r5KOpF+J/
-	 JdPf6EpAcSN5AF2UvhKi3xlyrxirAF7BPJf6kRHpmhI1XvWrXboss032P9Ug7KyHpS
-	 p9u3rn8j4p0xJtPCF4Y2sWAA+w6IJ0NGPtsD5kj9jf5tLJagv/2+vw0QtAaQzY9vH1
-	 N6jglhmyaXjAfECeNhz0NQRB+exQwBA5BtQQXo58/fsl+At6eXnoRh0tR8PToqJ74P
-	 avX6r5bzQBIWg==
-Date: Tue, 5 Aug 2025 21:28:48 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linux Netdev Mailing List <netdev@vger.kernel.org>,
-	Linux USB Mailing List <linux-usb@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Armando Budianto <sprite@gnuweeb.org>, gwml@vger.gnuweeb.org,
-	stable@vger.kernel.org, John Ernberg <john.ernberg@actia.se>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH net v2] net: usbnet: Fix the wrong netif_carrier_on()
- call placement
-Message-ID: <20250805202848.GC61519@horms.kernel.org>
-References: <20250801190310.58443-1-ammarfaizi2@gnuweeb.org>
- <20250804100050.GQ8494@horms.kernel.org>
+	s=arc-20240116; t=1754425773; c=relaxed/simple;
+	bh=3gpW9CyhHojneix+fgNw+WV8FuIaeJgT5eTfjFUht8g=;
+	h=Date:To:From:Subject:Message-Id; b=nbxFbKB7Og5oz3AMlcOQKVUz4I3UgNCBBIw1ngbXiZLLrnPZBhZFCxneXUOgGv9Q5KoI2kDYUSo14SDx4KxLNAPnLhplzrgVHXelizg6aTCQaNExl8b+wcNXSs1A6ciTGitASgsZh76f/x2PhfWmbnvE+s3zxXf3cej4UXhq2kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yx5gcBGl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B1AC4CEF0;
+	Tue,  5 Aug 2025 20:29:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754425772;
+	bh=3gpW9CyhHojneix+fgNw+WV8FuIaeJgT5eTfjFUht8g=;
+	h=Date:To:From:Subject:From;
+	b=yx5gcBGlz9BbjGEUrJsFCA3Z4yTD55JHnfiK/Sv0CwI7slN6qBsZXI6aC5eHHWCzS
+	 3/Hhx/vPoS2S/qGIcLPTLsWknWN2A91IAABalOQ3t3KQ4FBbfX6sUznN59vRUuLLbV
+	 mWDtFxAL7iqrB2Sc7HLfjg5NavUOZ3A0H+tiGpFM=
+Date: Tue, 05 Aug 2025 13:29:32 -0700
+To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,niharchaithanya@gmail.com,glider@google.com,dvyukov@google.com,andreyknvl@gmail.com,jannh@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] kasan-test-fix-protection-against-compiler-elision.patch removed from -mm tree
+Message-Id: <20250805202932.B9B1AC4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250804100050.GQ8494@horms.kernel.org>
 
-+ Linus
 
-On Mon, Aug 04, 2025 at 11:00:50AM +0100, Simon Horman wrote:
-> + John Ernberg
-> 
-> On Sat, Aug 02, 2025 at 02:03:10AM +0700, Ammar Faizi wrote:
-> > The commit in the Fixes tag breaks my laptop (found by git bisect).
-> > My home RJ45 LAN cable cannot connect after that commit.
-> > 
-> > The call to netif_carrier_on() should be done when netif_carrier_ok()
-> > is false. Not when it's true. Because calling netif_carrier_on() when
-> > __LINK_STATE_NOCARRIER is not set actually does nothing.
-> > 
-> > Cc: Armando Budianto <sprite@gnuweeb.org>
-> > Cc: stable@vger.kernel.org
-> > Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-> > Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-> > Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-> > ---
-> > 
-> > v2:
-> >   - Rebase on top of the latest netdev/net tree. The previous patch was
-> >     based on 0d9cfc9b8cb1. Line numbers have changed since then.
-> > 
-> >  drivers/net/usb/usbnet.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
+The quilt patch titled
+     Subject: kasan/test: fix protection against compiler elision
+has been removed from the -mm tree.  Its filename was
+     kasan-test-fix-protection-against-compiler-elision.patch
 
-It seems this has escalated a bit as it broke things for Linus while
-he was travelling. He tested this patch and it resolved the problem.
-Which I think counts for something.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-https://lore.kernel.org/netdev/CAHk-=wgkvNuGCDUMMs9bW9Mz5o=LcMhcDK_b2ThO6_T7cquoEQ@mail.gmail.com/
+------------------------------------------------------
+From: Jann Horn <jannh@google.com>
+Subject: kasan/test: fix protection against compiler elision
+Date: Mon, 28 Jul 2025 22:11:54 +0200
 
-I have looked over the patch and it appears to me that it addresses a
-straightforward logic error: a check was added to turn the carrier on only
-if it is already on. Which seems a bit nonsensical. And presumably the
-intention was to add the check for the opposite case.
+The kunit test is using assignments to
+"static volatile void *kasan_ptr_result" to prevent elision of memory
+loads, but that's not working:
+In this variable definition, the "volatile" applies to the "void", not to
+the pointer.
+To make "volatile" apply to the pointer as intended, it must follow
+after the "*".
 
-This patch addresses that problem.
+This makes the kasan_memchr test pass again on my system.  The
+kasan_strings test is still failing because all the definitions of
+load_unaligned_zeropad() are lacking explicit instrumentation hooks and
+ASAN does not instrument asm() memory operands.
 
-So let me try and nudge this on a bit by providing a tag.
+Link: https://lkml.kernel.org/r/20250728-kasan-kunit-fix-volatile-v1-1-e7157c9af82d@google.com
+Fixes: 5f1c8108e7ad ("mm:kasan: fix sparse warnings: Should it be static?")
+Signed-off-by: Jann Horn <jannh@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Nihar Chaithanya <niharchaithanya@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+ mm/kasan/kasan_test_c.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > 
-> > diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> > index a38ffbf4b3f0..a1827684b92c 100644
-> > --- a/drivers/net/usb/usbnet.c
-> > +++ b/drivers/net/usb/usbnet.c
-> > @@ -1114,31 +1114,31 @@ static const struct ethtool_ops usbnet_ethtool_ops = {
-> >  };
-> >  
-> >  /*-------------------------------------------------------------------------*/
-> >  
-> >  static void __handle_link_change(struct usbnet *dev)
-> >  {
-> >  	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
-> >  		return;
-> >  
-> >  	if (!netif_carrier_ok(dev->net)) {
-> > +		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-> > +			netif_carrier_on(dev->net);
-> > +
-> >  		/* kill URBs for reading packets to save bus bandwidth */
-> >  		unlink_urbs(dev, &dev->rxq);
-> >  
-> >  		/*
-> >  		 * tx_timeout will unlink URBs for sending packets and
-> >  		 * tx queue is stopped by netcore after link becomes off
-> >  		 */
-> >  	} else {
-> > -		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-> > -			netif_carrier_on(dev->net);
-> > -
-> >  		/* submitting URBs for reading packets */
-> >  		queue_work(system_bh_wq, &dev->bh_work);
-> >  	}
-> >  
-> >  	/* hard_mtu or rx_urb_size may change during link change */
-> >  	usbnet_update_max_qlen(dev);
-> >  
-> >  	clear_bit(EVENT_LINK_CHANGE, &dev->flags);
-> >  }
-> >  
-> > -- 
-> > Ammar Faizi
-> > 
-> > 
-> 
+--- a/mm/kasan/kasan_test_c.c~kasan-test-fix-protection-against-compiler-elision
++++ a/mm/kasan/kasan_test_c.c
+@@ -47,7 +47,7 @@ static struct {
+  * Some tests use these global variables to store return values from function
+  * calls that could otherwise be eliminated by the compiler as dead code.
+  */
+-static volatile void *kasan_ptr_result;
++static void *volatile kasan_ptr_result;
+ static volatile int kasan_int_result;
+ 
+ /* Probe for console output: obtains test_status lines of interest. */
+_
+
+Patches currently in -mm which might be from jannh@google.com are
+
+kasan-add-test-for-slab_typesafe_by_rcu-quarantine-skipping.patch
+kasan-add-test-for-slab_typesafe_by_rcu-quarantine-skipping-v2.patch
+
 
