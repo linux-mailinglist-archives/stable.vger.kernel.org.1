@@ -1,92 +1,98 @@
-Return-Path: <stable+bounces-166644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67451B1B9FC
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 20:25:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B042DB1BAC1
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 21:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3456D18A3AD1
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 18:25:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFC576272D4
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 19:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5183299A9A;
-	Tue,  5 Aug 2025 18:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC65029ACC2;
+	Tue,  5 Aug 2025 19:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpeiWJkf"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uZ2D7Eb6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7944A279351;
-	Tue,  5 Aug 2025 18:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9181029AB0E
+	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 19:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754418290; cv=none; b=uIynPsiTmLstWAEIJNZDMNPfv/yyg3cLbQsxyXifO1bqUQpsJRJQVHuXRLyMJHDXB4N6PYjkM4QO/SZLXqY/ObnxO+VlvVTGEdJUI2Z9TSQe+QFYArkdOAw9Lh7SXOBmgnRkW7MtkgCLbG0g9fYKfpyUMr/JYJC57z8TmczzZzM=
+	t=1754420923; cv=none; b=aF2hQKgotTYlyByebv7LMZwTIBxyzLx7U8CPQMMhz8LNh7g/dsl1xfNFfmq97op2tJb53aoKM9a/dCJgwdwm/h49HCbljlRqoi1/uK66oE9Buf8PVM4/Ra9GrfYfSYk+A0IvxE4gymozkzziDZ9Wg8VSmGZN/yECBtjFvkxewEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754418290; c=relaxed/simple;
-	bh=wdgBQozZ60WLJYIcMgQbxIcGH6ubWs7rnf10YYOzuJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rWD5dJ2RB0oKfgU0r0TYBGe/UDzvDuef1EQUeCplJvS6mMcvJ0esZ4nWhQw8BBKe9ny0af6gYtagStMOP2ZOypz07mRyM8TOanDdaBJg+Dku570GF7iNrOkDecX+PxBtGGCKoru84Tj2PjpNwxQPuqsOqVRYPXPhRQhj2NlKpHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpeiWJkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB04C4CEF6;
-	Tue,  5 Aug 2025 18:24:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754418290;
-	bh=wdgBQozZ60WLJYIcMgQbxIcGH6ubWs7rnf10YYOzuJI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BpeiWJkfSQHzmGAthohW2xwN3y7+/wQO9ufan/IUf+y+JWxEUZKdjKlgOsVHiqjJ3
-	 w0l7/IAGVDA7tSNHCvKDcqNWVmxF4zteASusRrvGmUbHVy668n/sKPvtDxouJqUcev
-	 qnu9Ww5XW/z4llTT1NRl7aMlyiwFuC2tOuhG2Ct0OhqyYvm7rSTSoUZwkoNJ7vZi3T
-	 XhKXHVfZEBxlGnQwMalIKah+V/3WSIshJ9LGQRonue4qTu3CRPfP12LC69MXA77mTO
-	 fX1Il3zf7FSo1rxXHY9A+an2eglLc5hqzd5OuuruZmFStkh+D8OzSo8yETM+xexVVT
-	 xjAWbnAIgv+LA==
-From: Chuck Lever <cel@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	stable@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
+	s=arc-20240116; t=1754420923; c=relaxed/simple;
+	bh=1G/p2V5tlFGL5QUKvVznyqDeicxAg5ho7UcilI4OmCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kfV5OI9wn9dfS7K9gGc38Mw7kJZ8XZkZ0dQzIWeuddBweOGIcQQaf4YTKojGx4tLpPat1nits+NmATbaL3MBujc7JzSUN0km3uQVvmNYPhG/X3B9OuQnPfkZh+UhvJpwhbF+n6YylgP5S9YNXLjGnRnqgGBRFtoVX4J0EL+MQrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uZ2D7Eb6; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1754420909;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iww/0GG+VqqZokX+rrsjlR73+9XBUylwsVCP+JJtueM=;
+	b=uZ2D7Eb6ZxbWTNfwVI3hckDaobrI5N5eO1Kq5PzhcaT+i36jC24RUAi6oHStuh5BujOe5t
+	5YKxa0dV9RIlVo3LzFES3KSZ+0vQFMaYIEM2YhO8AuM1gICLF2I4OnrIyDDF73S2Xono66
+	cfxZIJ54wwaRwK2igMQxP1kfdHqwiQ8=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Joe Perches <joe@perches.com>
+Cc: stable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
-Date: Tue,  5 Aug 2025 14:24:45 -0400
-Message-ID: <175441827954.101751.4073328601137228327.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250805175302.29386-2-thorsten.blum@linux.dev>
-References: <20250805175302.29386-2-thorsten.blum@linux.dev>
+Subject: [PATCH] ALSA: intel_hdmi: Fix off-by-one error in __hdmi_lpe_audio_probe()
+Date: Tue,  5 Aug 2025 21:08:06 +0200
+Message-ID: <20250805190809.31150-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Chuck Lever <chuck.lever@oracle.com>
+In __hdmi_lpe_audio_probe(), strscpy() is incorrectly called with the
+length of the source string (excluding the NUL terminator) rather than
+the size of the destination buffer. This results in one character less
+being copied from 'card->shortname' to 'pcm->name'.
 
-On Tue, 05 Aug 2025 19:53:02 +0200, Thorsten Blum wrote:
-> Commit 5304877936c0 ("NFSD: Fix strncpy() fortify warning") replaced
-> strncpy(,, sizeof(..)) with strlcpy(,, sizeof(..) - 1), but strlcpy()
-> already guaranteed NUL-termination of the destination buffer and
-> subtracting one byte potentially truncated the source string.
-> 
-> The incorrect size was then carried over in commit 72f78ae00a8e ("NFSD:
-> move from strlcpy with unused retval to strscpy") when switching from
-> strlcpy() to strscpy().
-> 
-> [...]
+Since 'pcm->name' is a fixed-size buffer, we can safely omit the size
+argument and let strscpy() infer it using sizeof(). This ensures the
+card name is copied correctly.
 
-Applied to nfsd-testing, thanks!
+Cc: stable@vger.kernel.org
+Fixes: 75b1a8f9d62e ("ALSA: Convert strlcpy to strscpy when return value is unused")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ sound/x86/intel_hdmi_audio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[1/1] NFSD: Fix destination buffer size in nfsd4_ssc_setup_dul()
-      commit: 5486ae619bff16a8c885afab7f40b10c69030344
-
---
-Chuck Lever
+diff --git a/sound/x86/intel_hdmi_audio.c b/sound/x86/intel_hdmi_audio.c
+index cc54539c6030..fbef0cbe8f1a 100644
+--- a/sound/x86/intel_hdmi_audio.c
++++ b/sound/x86/intel_hdmi_audio.c
+@@ -1765,7 +1765,7 @@ static int __hdmi_lpe_audio_probe(struct platform_device *pdev)
+ 		/* setup private data which can be retrieved when required */
+ 		pcm->private_data = ctx;
+ 		pcm->info_flags = 0;
+-		strscpy(pcm->name, card->shortname, strlen(card->shortname));
++		strscpy(pcm->name, card->shortname);
+ 		/* setup the ops for playback */
+ 		snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &had_pcm_ops);
+ 
+-- 
+2.50.1
 
 
