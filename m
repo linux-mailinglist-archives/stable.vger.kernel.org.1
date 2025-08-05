@@ -1,102 +1,87 @@
-Return-Path: <stable+bounces-166661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8476B1BD74
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 01:42:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D72B1BD82
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 01:47:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED61A17D57B
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 23:42:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E25A57AFA6C
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 23:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8AB1D61AA;
-	Tue,  5 Aug 2025 23:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6EF291C1B;
+	Tue,  5 Aug 2025 23:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m5uxXU3f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xji4qPCu"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7064315E
-	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 23:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C79235364;
+	Tue,  5 Aug 2025 23:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754437336; cv=none; b=C17d+scXAZoVxvI19YQcxP3En8FOF1q3VcMK2C8PjH/Urfbp8L/pMhrhOjq3LZoGyL6AGwOV77wz9ZRt76Esi7VRqlzclO7CXxY99opI9dX7wL9DFLPPeA7YZk2A1yuCSEuKLNxgJQlOA0oVrjJvVMr4SESvKe0fhvbTalNvSPs=
+	t=1754437670; cv=none; b=CNytp4WQ0vngKzKOzCUCJ1YFHorPrMwE9n6blNrJVZuM03JTM1YpempHqOnBjdC1G+gRUKJeDXu2+fWKNhoTbqoORKZPSUskB2UlssHmdqAY9fRbWHm+k572y3niY+3671EY30H7FBEw+FO/slDo1TrXBcJ+AFu6ma1kMUU6FZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754437336; c=relaxed/simple;
-	bh=/jtN9awwVbOPVWc3dr62v/y502n3rqHyUG1C8pKVe0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ejq+Gf016290QfK1qtIbBGo+6WP4A+kKXBxIZB7bPpqHhZLcjDi/UZkgQASCfMtvnRTGAkZRsC+CnemFR3fcmm2r1J6JwHZVd1oLlbNsQ7hi67EChtzjP01cQZALM4VwSPSKjnfAlrCA12Kj9D4hPPjZkjH42A7hZuH0VcwhKEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=m5uxXU3f; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754437330;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Nkx09rJ+LEyAgM4BQY44PNDPxqhQRPaCfDjd4zu2Xf0=;
-	b=m5uxXU3fLsHGhx8s2GlaFlkQRKJE2HkCeNroSmNnBZSpr47LznJZTRumGsLl6c2/9/Cexc
-	/vI69E4MozuYi+fWBbXtHUjJd27c4Rk3KfIxQXKiGpye67RIXmBmyQ7OUmBxCjPOjjsTr0
-	AR5GK8T226I36K6H3ZTcr1Pkvuv0TEY=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Joe Perches <joe@perches.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ALSA: intel_hdmi: Fix off-by-one error in __hdmi_lpe_audio_probe()
-Date: Wed,  6 Aug 2025 01:41:53 +0200
-Message-ID: <20250805234156.60294-1-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1754437670; c=relaxed/simple;
+	bh=T+TQB9L6nkRD5oCLbLR5cryrKU8+F1aWEUgdRNPnQw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MDSfflcJGje8mikcDjRDeH5f5TmfDqekXK4qKeEy0uGjOK2HpYzuhU62x0MpQ7i0A8ZaBI6pBkiWWsMV6p3Kf3KaN5LgwTHFnjXbgcwQtzr/yQ9nDz4UcQ40D86mHtgE15jYxDBySXzjH68eVazbdsYQuOE8TtQLj5Pq/f8aSBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xji4qPCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B34C4CEF0;
+	Tue,  5 Aug 2025 23:47:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754437669;
+	bh=T+TQB9L6nkRD5oCLbLR5cryrKU8+F1aWEUgdRNPnQw0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Xji4qPCu3qnlfabkVpSBksej6fDAS4kX5md1OfqcrAiLJdQnDqqZsumjw/OXZpxFz
+	 RGtoGyJFbL1xwnKB4fTMEk3iPS2cocKvhkQXRoAb5PIzkz2OyEejSgeZg2lG+fhgVC
+	 GR/5gkdcPjkEUESPItt0CBA+GkO2uXi/oHK/kpLR8lVvPDtU3BY1LRT8J/M5tgyscN
+	 Lt34wXvZJ9zr0gtmdIVye5BtWnmqv6k6Fsv1vtpCUxAkdpYUOBYIhgGtPai6JlIYqp
+	 bU3VjiypbFoDw2FgOuX31rb1MehFi+iAjqno/GHnqCKzEUGDQdXWfOOw6k83U5DMwC
+	 IYM5zyaXSgNTA==
+Date: Tue, 5 Aug 2025 16:47:47 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>, Ammar Faizi
+ <ammarfaizi2@gnuweeb.org>
+Cc: Simon Horman <horms@kernel.org>, Oliver Neukum <oneukum@suse.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux
+ Netdev Mailing List <netdev@vger.kernel.org>, Linux USB Mailing List
+ <linux-usb@vger.kernel.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Armando Budianto <sprite@gnuweeb.org>,
+ gwml@vger.gnuweeb.org, stable@vger.kernel.org, John Ernberg
+ <john.ernberg@actia.se>
+Subject: Re: [PATCH net v2] net: usbnet: Fix the wrong netif_carrier_on()
+ call placement
+Message-ID: <20250805164747.40e63f6d@kernel.org>
+In-Reply-To: <CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com>
+References: <20250801190310.58443-1-ammarfaizi2@gnuweeb.org>
+	<20250804100050.GQ8494@horms.kernel.org>
+	<20250805202848.GC61519@horms.kernel.org>
+	<CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In __hdmi_lpe_audio_probe(), strscpy() is incorrectly called with the
-length of the source string (excluding the NUL terminator) rather than
-the size of the destination buffer. This results in one character less
-being copied from 'card->shortname' to 'pcm->name'.
+On Wed, 6 Aug 2025 01:40:37 +0300 Linus Torvalds wrote:
+> So my gut feel is that the
+> 
+>                 if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
+>                         netif_carrier_on(dev->net);
+> 
+> should actually be done outside that if-statement entirely, because it
+> literally ends up changing the thing that if-statement is testing.
 
-Use the destination buffer size instead to ensure the card name is
-copied correctly.
+Right. I think it should be before the if (!netif_carrier_ok(dev->net))
 
-Cc: stable@vger.kernel.org
-Fixes: 75b1a8f9d62e ("ALSA: Convert strlcpy to strscpy when return value is unused")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
-Changes in v2:
-- Use three parameter variant of strscpy() for backporting as suggested
-  by Sakari Ailus <sakari.ailus@linux.intel.com>
-- Link to v1: https://lore.kernel.org/lkml/20250805190809.31150-1-thorsten.blum@linux.dev/
----
- sound/x86/intel_hdmi_audio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/sound/x86/intel_hdmi_audio.c b/sound/x86/intel_hdmi_audio.c
-index cc54539c6030..01f49555c5f6 100644
---- a/sound/x86/intel_hdmi_audio.c
-+++ b/sound/x86/intel_hdmi_audio.c
-@@ -1765,7 +1765,7 @@ static int __hdmi_lpe_audio_probe(struct platform_device *pdev)
- 		/* setup private data which can be retrieved when required */
- 		pcm->private_data = ctx;
- 		pcm->info_flags = 0;
--		strscpy(pcm->name, card->shortname, strlen(card->shortname));
-+		strscpy(pcm->name, card->shortname, sizeof(pcm->name));
- 		/* setup the ops for playback */
- 		snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &had_pcm_ops);
- 
--- 
-2.50.1
-
+Ammar, could you retest and repost that, since we haven't heard from
+John?
 
