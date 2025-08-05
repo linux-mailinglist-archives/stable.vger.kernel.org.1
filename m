@@ -1,253 +1,126 @@
-Return-Path: <stable+bounces-166547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0A8B1B1C9
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 12:16:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87769B1B250
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 12:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791113BFFAB
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 10:16:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5A3817F02D
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 10:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B7C238C16;
-	Tue,  5 Aug 2025 10:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0D1242925;
+	Tue,  5 Aug 2025 10:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bVS3lkS0"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="MfB/95/X"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2043.outbound.protection.outlook.com [40.107.236.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD9BB652;
-	Tue,  5 Aug 2025 10:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754388985; cv=fail; b=Hu4fo+4ZCdrJ52XJKPWUmaaclhBN4DpPJPh5g2sG0MKfAYWffHN0VoyyknQynRpvt/HCLbIHHPlhHWrs6kQZHiVYmM/c2BayTHCw1E4+47o2N9Eu2BYnW3D/9L5g9cE++QoutTWYrYwOuEI39HzUd9QGrhUvZ2naLHog2G4EKBQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754388985; c=relaxed/simple;
-	bh=PW59P5wIYwHzIFT2AXs17a9EtF4lYgtVbRqmTUhIuWM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ImJIwI4ltf/1EzhWwQJMrshMnt9NDM94+RMLXctsSjxu2xNBXkU4cEC1Oc9inz7God2afuYCnE8fxYdp7K4aIsC3THKGv3WIPiAPY8j1d68roi14dmCm1GUWJF6wBUXLkYFYlJtxJbDjwfK5zTGYMjYFhnQ1Ra4k3JbY41AhJcM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bVS3lkS0; arc=fail smtp.client-ip=40.107.236.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Cw8AwhsQuuSjgXW/88RigwsW1mGY+q3d8HW1guR4KllrO0J3goGNAHvVKMGG467tLRt5e+AE3wRHNNDOqv+nZISCSXBZM2NttYSn0VkWDPXOD51RrUFUmZt3d7zsfTORSbhmJzDyNrRAjzJdhVyYmeyZ6yrhrAFkQbpGuDRmw17bUZptl/2lT+YAWjN6jQp4w8quxf7pwnWPlbIsIPgyP0tN+ZIL0mXvApF6pRKLIhSO10Xo+J5sWmsHoKJLDeZcjOV95zrUdqFZrpMA4vIEZh9MKNKCEh64hGP+5QM2JlNIAyQvcN9f/E+kImcHl+VjOE2P1wPaM6ABatog1ykw8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=coAcsydaM6XL1EevNgJrQFXlAi8rNtANfsU+MuhazDM=;
- b=gaI1bUaXx80s/9mMlvzsw8DS+vwfqjpoZaDTjZkfQ0uNAJGd29Chjlc8/IEi6ceZ7B+HS+t9NKO33xZ5T222jxJFGWMV1hk7dF21kDAOZD3QVVq5DNCZAbkpWHD5xjYE/FefuULVp1aXKNekaJEpL7lsIxPkAdbPXouOaLLKchfLw0ZqzJAa9QoQG//S2QuuT/V3v9D8cJ5d6/TBYYRqa++sf21BHmrUaojQUegy00kltRBaDbFW7FlOZsK1C0JDjf0osxlc8dmWnPT9gZlxNRiX/COlb9+KtoupU4Yu62teuF2KW7WG6VY48jckowU6h1EU747mAxGFFiI+RL2QJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=coAcsydaM6XL1EevNgJrQFXlAi8rNtANfsU+MuhazDM=;
- b=bVS3lkS0DmjCSApoxW1KuUqzgb6MuacEP1JZ0tv9VPB/2vr7rbPB5zD1wyoC4cRO4rWfV2c1owvcN/MFkr3vmBl/xjxEOS56P9aA5EZMqTdt1MXgYe+U7wOXULPD/WHGvvSq6x/SCuIZbsFB+5beEDVyYBmld/GYEIMI84gHqMk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS5PPF5C5D42165.namprd12.prod.outlook.com (2603:10b6:f:fc00::64f) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.22; Tue, 5 Aug
- 2025 10:16:20 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.8989.018; Tue, 5 Aug 2025
- 10:16:20 +0000
-Message-ID: <4c7ab068-ec38-432f-81c7-860792408e62@amd.com>
-Date: Tue, 5 Aug 2025 12:16:13 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amdgpu: Raven: don't allow mixing GTT and VRAM
-To: Alex Deucher <alexdeucher@gmail.com>, Leo Li <sunpeng.li@amd.com>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- Brian Geffon <bgeffon@google.com>, "Wentland, Harry"
- <Harry.Wentland@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Yunxiang Li
- <Yunxiang.Li@amd.com>, Lijo Lazar <lijo.lazar@amd.com>,
- Prike Liang <Prike.Liang@amd.com>, Pratap Nirujogi
- <pratap.nirujogi@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Garrick Evans <garrick@google.com>,
- stable@vger.kernel.org
-References: <CADyq12zB7+opz0vUgyAQSdbHcYMwbZrZp+qxKdYcqaeCeRVbCw@mail.gmail.com>
- <CADnq5_OeTJqzg0DgV06b-u_AmgaqXL5XWdQ6h40zcgGj1mCE_A@mail.gmail.com>
- <CADyq12ysC9C2tsQ3GrQJB3x6aZPzM1o8pyTW8z4bxjGPsfEZvw@mail.gmail.com>
- <CADnq5_PnktmP+0Hw0T04VkrkKoF_TGz5HOzRd1UZq6XOE0Rm1g@mail.gmail.com>
- <CADyq12x1f0VLjHKWEmfmis8oLncqSWxeTGs5wL0Xj2hua+onOQ@mail.gmail.com>
- <CADnq5_OhHpZDmV5J_5kA+avOdLrexnoRVCCCRddLQ=PPVAJsPQ@mail.gmail.com>
- <46bdb101-11c6-46d4-8224-b17d1d356504@amd.com>
- <CADnq5_PwyUwqdv1QG_O2XgvNnax+FNskuppBaKx8d0Kp582wXg@mail.gmail.com>
- <eff0ef03-d054-487e-b3bf-96bf394a3bf5@amd.com>
- <CADnq5_NvPsxmm8j0URD_B8a5gg9NQNX8VY0d93AqUDis46cdXA@mail.gmail.com>
- <aH90O93xJhD8PXWL@quatroqueijos.cascardo.eti.br>
- <c4f9dbe8-d224-478f-a91f-03a420333fde@amd.com>
- <CADnq5_PFLuoe2fqn1YL984YPy2FU8SdJ0yWS5nmKFfsNwc324Q@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CADnq5_PFLuoe2fqn1YL984YPy2FU8SdJ0yWS5nmKFfsNwc324Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0450.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c6::11) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DF8241691
+	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 10:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754391248; cv=none; b=Cpa221+PFVfCO9PeZ1y1hTleBwJgE3PI0hjGKOZnfNsqcZC+J+rn9Xptm5i939VYTadRtMC6T0f0WKXUxJsy2LpUIFJtyg8hQjG47dTiwu3dXrX4iyCVfhmkN1KsmM+IEB6s7DzQucWJSNgEDrIxYrCRWBb7Jj9Lc2c/wNbTeRk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754391248; c=relaxed/simple;
+	bh=j6njE58QFD+zg3/0GPbXJiFfWjG2rF0iiy1yUJKDjrI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bMSFbbbkv412MKEaXDAFD/tDAs6MfRfhgCq6NCXf/cnYhvdFC9DurhvAjrzBZuCy/RQ6JiIkPXlHhtuHLoFWG37MIpc2NAP06AMOStZPyqA4QodyBpCHn18zKFAAPyk0g69ZjyA9Inf15nlzeHC2UZpOZzT7Lgs3MRXO1ml/T+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=MfB/95/X; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3b77dece52eso563517f8f.2
+        for <stable@vger.kernel.org>; Tue, 05 Aug 2025 03:54:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1754391245; x=1754996045; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WUiodtQBvKBTA/iKS7oNMgVKazgBWdic3Ly/8SfR7xc=;
+        b=MfB/95/X6j7hyi4c7mQpUHSGHCFQ+iwVMOhVU76zaZu1/ti6Q7Fsddwq90v7WAby9Z
+         bpQrNgHRQOapowQzdW2rKJND/CykUwh0CHt7OC6y16oXCsqauOJ6Iv+Q+dCZkBRD9TB/
+         ESbOFd/jij75oNWIsHZbATIku4rL7puYnZWQKDwCT9OZSWGKtpVz+4QfrgpGJYkkX2Ns
+         9HGPug2CVmlfubL7YgWML764DvueOgAsDvN2zAn282lf4EuuTU4mX/eDTC67Dnmq2r7e
+         SlANsfpi7uwMevgl1FI631eJEjgOtuMz6XnJKReJp3mdRah9u2Ik5NF6s5Y/vXwPCfgR
+         D06Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754391245; x=1754996045;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WUiodtQBvKBTA/iKS7oNMgVKazgBWdic3Ly/8SfR7xc=;
+        b=B0OIgu9sBmILiD7Sf/cM6pr324Waf5Q2nNFqetkB4yfjrfiaGvmHenePm3OlOEkjig
+         mrLoAW1P9dFTqrv7iul9ZUK9M6TviHcEQoju9EP9IiTPUxsSpLY848OoblZZsbrkK4pS
+         VHQ7havIEF4fWbVvspLiLZMcbKfar8VB7nm2oteWgZFvtMW4xfu/zMUjRofPGfC+dTaR
+         F/DyNcKl67sz0xDGp3PrY9CrYHmMdkxHF2G3cYxX16ylODgtyC20E+ruuF2bIu/2b0F2
+         IaqiklsHbpUmLMriP5ni7JNE5/Bq1HATEce6lO1OHppPxLHtjVVs/GzGhRWra2z9KdnV
+         Usdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXoQqjowJPuyyCywY5kotLHYQFLianuiW3HoxtwZPwi14GfbdUrlrnRktlsC4APaNeFWBlpE7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC3dEUdc3Z80G9z2sCjGz0SRdNK31VKRcotyh/UKhMhwMgJm0n
+	FX/KOvmIydnzc+7225qFDPpGm+dYJU9BxPhdE7N9vMk2JFiRaJ2ox4CwIkgj3LXR+TU=
+X-Gm-Gg: ASbGnct3aEUMUjes7PIMBMkFs87imTc+vCCkmhX1Fym9knBBcVEMvUSJsZ3w3PbX7ID
+	Qp28rCs5MZnq6yfWFCrQsAmGNOmuXkrfB4RHlz6sAzkpYGUFpKy4eHaykl20GNzC3X6vNS03nkj
+	n0l57i4qbzzGMmD7yeZR/QvnlBw2qiN6rPciLNi66r47OFQbTIqwnOSo5a7vWOCmf+jJ9G9Figf
+	WDH9hGf32QqkU2wg2akiXlT0/+fxiLi2YzvirYDX2HlsbGA3VrNDvDCMtVAbp8uxEKYkMGyE8/A
+	/FZyhDsgRAzF07fQbJdefAGo9fODJAKEqZImXZN1MEVBdqhRyTY8VCpbPgcfl1ohbF3hNCdvWTe
+	XozrR+IMxSCYrMVXzF0N2fPeXlEI3/whnDyyqfAQ=
+X-Google-Smtp-Source: AGHT+IEpOsq0FAVja98/mlRReMdSEb+xPNZ7ZEoi0EN4dXoUtDCJVpNHURSd1y/tvYFRXGJZtratYw==
+X-Received: by 2002:a05:6000:1a86:b0:3b7:99a8:bf6d with SMTP id ffacd0b85a97d-3b8d94b6fa0mr3885890f8f.11.1754391245272;
+        Tue, 05 Aug 2025 03:54:05 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200:d884:b809:d57:1ad7])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3abf0csm18344450f8f.14.2025.08.05.03.54.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 03:54:04 -0700 (PDT)
+From: =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+To: kvm-riscv@lists.infradead.org
+Cc: kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atishp@atishpatra.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] RISC-V: KVM: fix stack overrun when loading vlenb
+Date: Tue,  5 Aug 2025 12:44:21 +0200
+Message-ID: <20250805104418.196023-4-rkrcmar@ventanamicro.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS5PPF5C5D42165:EE_
-X-MS-Office365-Filtering-Correlation-Id: b8fbe19d-5c36-4383-88fd-08ddd4091f1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WkFVTXR5RnBCcWtuRHUrMTlsdk13OGxadmlIdXJpTElvWm1YYUhBNGs5Smth?=
- =?utf-8?B?cytmNExQSXFIUE5GRndGSTZ5Mjg4N0IrYWVIWVhPQlBwc1N2YW50UnEvQzk4?=
- =?utf-8?B?bnRnQ2tXczUyR050RWpIajU3Vmt5YjRVNFlFK3IxNkRPOURudUZpb21sSjZ0?=
- =?utf-8?B?dnRtL0JBWWptK3NvMm5meDZueUxQQ0F0cElqaVlZYUtUVUNqNThUa3FTUUtn?=
- =?utf-8?B?cEVCUVhvOStITjhlZExuUWxwYnphN0hSdnZ3QU0wSUNuVjNoN1A2WkkxVGRR?=
- =?utf-8?B?WCtEOUVhbFJUNVZTei9IMURxNEVYbkY0Ukl6c1paaUZzYkVNRzJpOStUcy9F?=
- =?utf-8?B?K0JvZTJsb1VDU1Y3WlpvWjY0VkY4azIyQ3ZRNU1NQzhjSDhvcU5zeWVMaGQ5?=
- =?utf-8?B?ODZTcU8rT1QyaWRoQ0JSZWFNenZQMndRbDJkejNrUzhDc3pDN21CbHBDY0NR?=
- =?utf-8?B?ZHRlK1dnZ1RPRG10eGd1dnhCcnBQU3ROV1BCWlNwN1pMQlFKWTBZK0tGWVVx?=
- =?utf-8?B?OG9mTHlFSy9uODBVWkRVRkdaL2l5bFJ5Y0NrRFVMQzRkMjh1TUJWN2FHakxT?=
- =?utf-8?B?OUNvSmFlSWNNL0JTdnZ2MVpGWkNTc0J0T0c0NFd6RjQza0RHcDdsak1rNHZM?=
- =?utf-8?B?NFdPWnhxdUxxZmZiank5QkI0QldkZmF6ZkQwQmRoUDZ3c0ZPVDQ5UHo0a2U4?=
- =?utf-8?B?bkNPbi9xS2QrUWxhU2RpRTJKcnJhUGNvMThkR3NHZXRPaitJTkl1a1QwMzU5?=
- =?utf-8?B?ajlZQkNsUTcwb2tLMkxPSWI1VWpOMWxJUkdiRTB2T1BIcjhON3JmdVhTT001?=
- =?utf-8?B?Y29YenhZRlNHVDRXcFZvOHN6YlljcnNQc04zcEN2dTVQRWIybDR3N0YvcU5x?=
- =?utf-8?B?YnhjVnpIS3VFZEFaSXBMWVJ0aFU2NnBPYVJWaU5JTTVWdUxJRWJHeVI0dXR4?=
- =?utf-8?B?Rm4xVlFkVUVNWnJNcE91bHJQdGQ2L3hNZVIzeVJJTEQ0akRjY0NpVll1V1RS?=
- =?utf-8?B?YTVXaHU3eGo2VFRyWmJMS2JSY21uNEx2NFZVdFpCRDhHTDg4ZkJIRUxKZzZm?=
- =?utf-8?B?c29ZTEEzSU9qbjdYU2kycGpnL3Z3ZDFYdE8va0crczBxYllVcEVtVXVaZk5W?=
- =?utf-8?B?RzVjZnEzTWpQL3dVZlRZaDRFTXJIbzBpdEFVMENrREprMDZFQjNzZmVzS0I5?=
- =?utf-8?B?cm5qaVBnU3lMZ3BuRkdQbStkc09wd0JqTUIwZjFVc1N3RjJiMUJ6YjYyWC83?=
- =?utf-8?B?NVRtZ2dtMjYxQUViODVhZjNnbGd4dmFWZTVlb21jTmY4eld6d29wc0VmRnBV?=
- =?utf-8?B?N1J6Wi9DRFIyNVRaeGtVeFp4VUZNbjhNR0VLd21YZXZibjVVZDBjWGlEMmM1?=
- =?utf-8?B?dmRCdDVIZGp2SkxBRnNVUjNYTE0vcWJadXIyenQxTkY5Z1pDK2hHZ200ZFFq?=
- =?utf-8?B?T2NLQnJlNG40VWFVWTBXQ1dJMDNKSmRaUFZINm1LTHJJN2REazVvRkQyWW1o?=
- =?utf-8?B?VmhPV2pTeFo1ejcrVytKQndGQkZxbGpHVUJ1dlc5WDVCYWdUSzVxQndialI2?=
- =?utf-8?B?bUo4azU5Lzd6UkZRVnYwelVsa3VUN3BYOHphU1NKTTlyaWgzclBLQ2dkWTNl?=
- =?utf-8?B?dWNIUENZbEF3cW1pYkVFY2lTb09IeTcxQU9xTE9WbWVmaWorbWE5Q3B0MldU?=
- =?utf-8?B?V2ZISWtYQUNLWG1tdlF2bXVIUkJ2dDVoaGlvVmtjRXlMdDE3aWt0MlFzcHBN?=
- =?utf-8?B?eDRySWpUd0IrQ0FLZG9oanpiK0ZFRW1yUzlHWk4wdnlkQlc2ZkRINm1aNXI3?=
- =?utf-8?B?Ukk4NXJRN1ZQQWJoWlNrNXZSQUc0UnpjZVpndElyb0ljN1lGRzhkbm5URWNI?=
- =?utf-8?B?MzBTNkhjbm1ObFF2WWEvdUIxQ0prcGJzRlBRRys1N296c2Q5SEsvMGdLZk5K?=
- =?utf-8?Q?LvK/MQE8wUo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VkJuL0ZmV2xrRGhEZDV4WGFxQW52Z2ZOSi8yRmZJRTdrUGJlMWhLNFpuZ0I1?=
- =?utf-8?B?eG5uRWpab3ZsbGxraVpCTjhnbDduYUxKbDFxUWI4UHFlbXpOY0J1QnFldEJ5?=
- =?utf-8?B?Y2dxYklCR1NKNGZoZk9rOUNJVTZMOGZuemlraGVwQUNoVFQvSW1jRTFGdjNS?=
- =?utf-8?B?OTNnU0gzSWR2cWxnNkRGdHo4YW52STh0TXBKeWh5dDNlQXRtYllGZXZBTWda?=
- =?utf-8?B?WXdOekNsYVMwRHNyYkMyaHlLbktpSzVVeitHN3g4ZnNnV2Y1N1A3RnIzaXN3?=
- =?utf-8?B?dlR6akR1dmNMRVMrd2hjTDVDWTkzM2d6cXNRckd3NklUYjZ6QVRoU240TE9S?=
- =?utf-8?B?bXlaaUd5NTVrdFJ0UHdxTnI1WURucTVFU0tsRHptQkJiU2NwVEVPdEw2TWlC?=
- =?utf-8?B?YVJqb3NZRVE1YW5lczJZMFF1cGQvUjlmSmYwTDUwOGpIcXBaY3NpNnlOc3VU?=
- =?utf-8?B?aHdHQlFkelNKSEFCcFNDNXd3NlFDWThub3RrQmpQRW1uYVBFVEVITG91OUN3?=
- =?utf-8?B?YlRvUVZxK1hkM3BMcWdrTHdjbDFhTFhORFVMUHY4bnAvcVVzYTRwSzU3cVZk?=
- =?utf-8?B?N0tMRGZUTmY5Z3p4WXh0MTNFeDJtWHJyZkFURkdBbXQvQXN0ODJPQ0JudU41?=
- =?utf-8?B?Vm56UU9zaTA0ZUtNYktGRHd3MkJGN04rT1FDVjIvak5xcGU2alNhK1dISTBQ?=
- =?utf-8?B?UkRyeFhLTWlkbHJYOXNhTVRSTm10VkxqYXdKZVdEcmc3UmQ4WEtmYWxTMUlv?=
- =?utf-8?B?VG9UMURaYTAzNS9EV202Zlk5WFhtZ3FUWWFsVHUwT1g2UWlHZnRRSkVCakk0?=
- =?utf-8?B?M3Bod3JHVk9KaDZITEs4RDMzZm1GZEcwTUdyem1DaUtIbmdKd0g2TklmbXcx?=
- =?utf-8?B?R1pMZDl3bVdSSkFKMko5MG9aVVpwTWVmOW1ZMU8yZEhadUlyQ0RiNmJuWjVj?=
- =?utf-8?B?VllWTGs1U3NOeDQ3Z1JGajhXek1UUmRzTFp0RmIwNGV6NnBPVDdPMUlBbWtx?=
- =?utf-8?B?VVJtSEt6M2VvK0pRR2l5WDBrYllHYUlQdDF5emhFS1FTL2ZLZldtOW9jRVhE?=
- =?utf-8?B?aTlLZUhPVGd0aWwva3UvZ0h1T1pmeFVkbGwwbDIvY1o5LzJxY3J2N0ZHSDc2?=
- =?utf-8?B?UWNhK1luR0pHVDR0czRETGRTaGpiTlROOVBJZURXSUltVTJrR09SRng1enpC?=
- =?utf-8?B?ZWJ6dXNrRWRHc1VvbDNrUzJsRXZ0TzZFcEFnQ0p2SnUzWjl2aVlYRXd3NTFD?=
- =?utf-8?B?YnJtN2svaDFjOGk5YUJJWXc5MEZEb1F4ZFhrM0c0WUk1OGVpY1JMb0thUWJI?=
- =?utf-8?B?NnpoNk01bkJGeGU4MjVpRzJneDhDUFh4UGtTdjV1UkhFYzRiSlpVSWdvSG01?=
- =?utf-8?B?OXNIN1R5VnVlMnRTei9qZS9pRFlvdlJ1ZE5QTEhSNWsybC9IVFBac1hHOTNl?=
- =?utf-8?B?S3RuZmh4OFQ4dW4zWkZrUUU1MUlGV1RTVkVmc0VZSWFCclNDQ3JXMlA5WVhQ?=
- =?utf-8?B?blFDeGNxNWdJNkdoVEJ6cVE0cGF2eTNtV1dueGF6Y3RNQUwxSEJZMlowVnpl?=
- =?utf-8?B?cmxBSnpDMDlZcGdxUEFtbzVkK2psTTBJcjVodTZWOXNUUDNReWxXZ2JRUVZa?=
- =?utf-8?B?Z1RUSythQjkxNGpQUUZTZFZ6TWcwVW5tc3E3SWZnUzVsTldSR3Q2WEpFeFo3?=
- =?utf-8?B?eVorY0VtNmFwTllOalpsblhGSjJNSE1UckpGRm5adEdFNU5rd25WWitsSE1D?=
- =?utf-8?B?UlFsVnhOcTZoRElLVWlIanBsN2ZYWDN2cG85c3JrOTEvcWkxM2Fla1lIWlNI?=
- =?utf-8?B?T2ZsNGRJMG96eVhXN3cyei8wOXhzMVZ3amZ4ZVQvS0VaSWM3WkM3M2pjelpV?=
- =?utf-8?B?UE9jNlhEYnExTFQwRmFQN3pGODNtRU1yWWszMWR1UEkzSW1qZU1GY1FHdnM4?=
- =?utf-8?B?eEtiakNpQzUzb0RXRGdjV3BjenBiZlJsUnBCS1JJYU1uODlyWFBnN0RVSEtP?=
- =?utf-8?B?RXM1eGFvbWJ5VnhuZXMwRTRFUnVsTk5lbUIzWFZ0YWdXaGNPU29rTW5mYngy?=
- =?utf-8?B?cUl5VStCWk1SV29ZbmRQN0p3eVdETnE1UHR6ZFBqTnRTNGVQdkdUTVpoUzNj?=
- =?utf-8?Q?k95zpTuLssqmXeoarRGaNHKkp?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8fbe19d-5c36-4383-88fd-08ddd4091f1c
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 10:16:20.0452
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rd/xSKmL4o043b772bdEcTTEw3QPBLZVfteqGj6sqZnUbMGZunSQ9HhpdlzoHWsD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF5C5D42165
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 28.07.25 18:38, Alex Deucher wrote:
->>>> Anyway, back to your suggestion, I think we can probably drop the
->>>> checks as you should always get a compatible memory buffer due to
->>>> amdgpu_bo_get_preferred_domain(). Pinning should fail if we can't pin
->>>> in the required domain.  amdgpu_display_supported_domains() will
->>>> ensure you always get VRAM or GTT or VRAM | GTT depending on what the
->>>> chip supports.  Then amdgpu_bo_get_preferred_domain() will either
->>>> leave that as is, or force VRAM or GTT for the STONEY/CARRIZO case.
->>>> On the off chance we do get incompatible memory, something like the
->>>> attached patch should do the trick.
->>
->> Thanks for the patch, this makes sense to me.
->>
->> Somewhat unrelated: I wonder if setting AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS is necessary before
->> bo_pin(). FWIU from chatting with our DCN experts, DCN doesn't really care if the fb is
->> contiguous or not.
-> 
-> Is this a APU statement or dGPU statement?  At least on older dGPUs,
-> they required contiguous VRAM.  This may not be an issue on newer
-> chips with DCHUB. At the moment, we use the FB aperture to access VRAM
-> directly in the kernel driver, so we do not set up page tables for
-> VRAM.  We'd need to do that to support linear mappings of
-> non-contiguous VRAM buffers in the kernel driver.  We do support it on
-> some MI chips, so it's doable, but it adds overhead.
-> 
->>
->> Which begs the question -- what exactly does AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS mean? From git
->> history, it seems setting this flag doesn't necessarily move the bo to be congiguous. But
->> rather:
->>
->>     When we set AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS
->>     - This means contiguous is not mandatory.
->>     - we will try to allocate the contiguous buffer. Say if the
->>       allocation fails, we fallback to allocate the individual pages.
->>
->> https://github.com/torvalds/linux/commit/e362b7c8f8c7af00d06f0ab609629101aebae993
->>
->> Does that mean -- if the buffer is already in the required domain -- that bo_pin() will also
->> attempt to make it contiguous? Or will it just pin it from being moved and leave it at that?
->>
-> 
-> It means that the VRAM backing for the buffer will be physically contiguous.
-> 
->> I guess in any case, it sounds like VRAM_CONTIGUOUS is not necessary for DCN scanout.
->> I can give dropping it a spin and see if IGT complains.
-> 
-> That won't work unless we change how we manage VRAM in vmid0.  Right
-> now we use the FB aperture to directly access it, if we wanted to use
-> non-contiguous pages, we'd need to use page tables for VRAM as well.
+The userspace load can put up to 2048 bits into an xlen bit stack
+buffer.  We want only xlen bits, so check the size beforehand.
 
-Yeah, that isn't easily doable. We looked into that when on first HW generation with DCHUB.
+Fixes: 2fa290372dfe ("RISC-V: KVM: add 'vlenb' Vector CSR")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+---
+ arch/riscv/kvm/vcpu_vector.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-In the end it was more trouble managing the page tables for VRAM than allocating VRAM contiguously.
+diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
+index a5f88cb717f3..05f3cc2d8e31 100644
+--- a/arch/riscv/kvm/vcpu_vector.c
++++ b/arch/riscv/kvm/vcpu_vector.c
+@@ -182,6 +182,8 @@ int kvm_riscv_vcpu_set_reg_vector(struct kvm_vcpu *vcpu,
+ 		struct kvm_cpu_context *cntx = &vcpu->arch.guest_context;
+ 		unsigned long reg_val;
+ 
++		if (reg_size != sizeof(reg_val))
++			return -EINVAL;
+ 		if (copy_from_user(&reg_val, uaddr, reg_size))
+ 			return -EFAULT;
+ 		if (reg_val != cntx->vector.vlenb)
+-- 
+2.50.0
 
-Regards,
-Christian.
-
-> 
-> Alex
 
