@@ -1,173 +1,155 @@
-Return-Path: <stable+bounces-166597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07890B1B461
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 15:12:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F723B1B47C
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 15:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C38AC18A44E5
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 13:13:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FFD13AC674
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 13:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B97C2749C8;
-	Tue,  5 Aug 2025 13:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11520279794;
+	Tue,  5 Aug 2025 13:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPiPLX6C"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="1UGnYPFj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58583271A9A;
-	Tue,  5 Aug 2025 13:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAE2275B0B;
+	Tue,  5 Aug 2025 13:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754399476; cv=none; b=edlrWMN7W2yfn91N3dMkTkEQqTmJseheDuuzWvyRYLWdCQ4ozzAkTI3C8a5afilur18PfQKwJ5LYS/rm9icPO76UkgNTKA/6vpN6iLcyze3q9dwuH8WlT/uOe0D6LRYKYVg79bltkjicdcRaraMnfAc69Pi6brSlelCegzWDkQc=
+	t=1754399505; cv=none; b=tTTxkm3rApqFBrGey+3J0WxAICkHXlsEiC/QWSU02bY4CXr5oge1g1K4fkTt9WYBOV02ylLsa97DM2sqPQQVqf7cAH+j4/ACVdYcEMSB3HsTgtfSzWCG8j61DqkOSrgje+arvCjTZ72egY+XUEYrO5VFoxpimUFKEQQL7/vAx98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754399476; c=relaxed/simple;
-	bh=fzM22NNYKBHcQXd2Lt8k68FlPhKjT9XZzR42GkvN4+U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UF/xksm8TbEG/2PzkHNPZjKk8LymDPlSL5VwCE/VHZ43Wg4YTywSC0xDV2XTbSsX3X/S5auY7SVoNt+hHxtZWEupdWDQKiyN4C8SRfOeH/0W1UuF3uAq8YlKeZqfDrmWVaE1yPujlI/diMGx25BhDDSQBIAbS24D3I+ixt/s6XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPiPLX6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2D3C4CEF7;
-	Tue,  5 Aug 2025 13:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754399475;
-	bh=fzM22NNYKBHcQXd2Lt8k68FlPhKjT9XZzR42GkvN4+U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPiPLX6CKsQZEnvX/altmzt+ve9KLD873FiPESG6mbN/BzGUbtkzVUkzQl4dzeAb2
-	 x6zATDASSlg0IYZz3VMwrG0op7vfIWI/SiRPZUc8yADyVfloA01MpYGpEcRTIAGTRF
-	 WVUdhF0LezCUG9bI3FK9leK5EF3NVO1ooSjUXUH/MXh6Rg1AXx5sZ2zIICyMrfQlTV
-	 thV93py1Gbv88+EjOFJEJ380BuCSCyFLw0k3pHvbXQrUuBgZLzx49rCnv489bseu4y
-	 n7pIEcHqE7nooq/AxjXSpYuCG3hIKKgpbdjug1PlIdilt111PD1Jb4BYc4EGC+023u
-	 5nj7sE0/uvOGQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.16-6.12] clk: renesas: rzg2l: Postpone updating priv->clks[]
-Date: Tue,  5 Aug 2025 09:09:16 -0400
-Message-Id: <20250805130945.471732-41-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250805130945.471732-1-sashal@kernel.org>
-References: <20250805130945.471732-1-sashal@kernel.org>
+	s=arc-20240116; t=1754399505; c=relaxed/simple;
+	bh=YLBQDy6eQNpuqYJmBuJHbdvk6W3dpGmVOLhbuzAjcJU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TTFSBvkJENWaUz/S69TWJHGe76mrBdi+XXxszLjeBBVk5HzkbptY5KZ3BFNp1Vb2d3pXOpLoTwRxB2xOICpRfXiy4W7AUDiLZXIT/wa0k9Hlhdf28EXMi0Ed37Epx0VH/si63qj0oapzcENH/g+SY4F9ZAAmr6XNQRH1rmavwbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=1UGnYPFj; arc=none smtp.client-ip=178.154.239.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:29a1:0:640:5fbc:0])
+	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id B5EF080627;
+	Tue, 05 Aug 2025 16:10:23 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:849::1:3b])
+	by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id 6AgoJU9GpKo0-4ePcQdmN;
+	Tue, 05 Aug 2025 16:10:22 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1754399422;
+	bh=1fhMX3tvH9apZXuDu7nTQnIUMtDysNPzl2m86b8poH0=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=1UGnYPFjO7Zh2vLJEXLFw6uSfIpf/6yERIuID+XBynFeIndBMTP9ZIQV8adLQCrYi
+	 lRenxXGknUS3kKJKSv+I6l0afbWZSX0c5Q7xrrvWC5xdnyWSlWI87G8RcF3PsSSCRy
+	 fJbLHsR1l/ZhQSlyPSCnsDVbIp/secb0ROJWvGUc=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Hillf Danton <hdanton@sina.com>,
+	kniv@yandex-team.ru,
+	stable@vger.kernel.org,
+	Andrey Ryabinin <arbn@yandex-team.com>
+Subject: [PATCH v3] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
+Date: Tue,  5 Aug 2025 16:09:17 +0300
+Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.16
 Content-Transfer-Encoding: 8bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-[ Upstream commit 2f96afdffad4ef74e3c511207058c41c54a2d014 ]
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
 
-Since the sibling data is filled after the priv->clks[] array entry is
-populated, the first clock that is probed and has a sibling will
-temporarily behave as its own sibling until its actual sibling is
-populated. To avoid any issues, postpone updating priv->clks[] until after
-the sibling is populated.
+To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
+as suggested by Hillf Danton. For this lock to take effect, free ubufs with
+kfree_rcu().
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250514090415.4098534-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Hillf Danton <hdanton@sina.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 ---
+v2:
+* move reinit_completion() into vhost_net_flush(), thanks
+  to Hillf Danton
+* add Tested-by: Lei Yang
+* check that usages of put_and_wait() are consistent across
+  LTS kernels
+v3:
+* use rcu_read_lock() with kfree_rcu() instead of completion,
+  as suggested by Hillf Danton
 
-LLM Generated explanations, may be completely bogus:
+ drivers/vhost/net.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-**Backport Status: YES**
-
-This commit fixes a legitimate race condition bug in the Renesas RZ/G2L
-clock driver that affects coupled clock handling. Here's my detailed
-analysis:
-
-## Bug Description
-The commit fixes a timing issue where `priv->clks[id]` was being
-populated BEFORE the sibling relationship was established for coupled
-clocks. This creates a race condition window where:
-
-1. When the first coupled clock is registered, it gets added to
-   `priv->clks[]` immediately
-2. The `rzg2l_mod_clock_get_sibling()` function iterates through
-   registered clocks looking for siblings
-3. If the first clock looks for its sibling before the sibling is
-   registered, it will find itself (since it's already in
-   `priv->clks[]`)
-4. This causes the clock to temporarily act as its own sibling until the
-   actual sibling is registered
-
-## Impact Analysis
-- **User-visible bug**: Yes - This can cause incorrect clock behavior
-  for coupled clocks (e.g., AXI and CHI clocks that share control bits)
-- **Data corruption potential**: Possible - Incorrect clock handling
-  could lead to hardware state inconsistencies
-- **Security impact**: Low - No direct security implications
-- **Regression risk**: Minimal - The fix simply reorders operations
-  without changing logic
-
-## Fix Characteristics
-The fix is:
-- **Small and contained**: Only 4 lines moved within the same function
-- **Low risk**: Simply postpones updating `priv->clks[id]` until after
-  sibling setup
-- **Clear improvement**: Eliminates a race condition window
-- **No new features**: Pure bugfix
-- **No architectural changes**: Just reordering of operations
-
-## Stable Kernel Criteria
-This commit meets stable kernel backporting criteria because it:
-1. Fixes a real bug that affects users (coupled clock handling race
-   condition)
-2. Is minimal and self-contained (4-line change)
-3. Has low regression risk (simple reordering)
-4. Fixes incorrect hardware state handling
-5. Has been reviewed by subsystem maintainer (Geert Uytterhoeven)
-
-The coupled clocks feature was introduced in commit 32897e6fff19 (Sep
-2021), so this fix would be relevant for any stable kernel that includes
-that feature. The bug has existed since the coupled clocks support was
-added, making this an important fix for stable kernels using RZ/G2L
-SoCs.
-
- drivers/clk/renesas/rzg2l-cpg.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index a8628f64a03b..c87ad5a972b7 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -1389,10 +1389,6 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
- 		goto fail;
- 	}
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 6edac0c1ba9b..c6508fe0d5c8 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -99,6 +99,7 @@ struct vhost_net_ubuf_ref {
+ 	atomic_t refcount;
+ 	wait_queue_head_t wait;
+ 	struct vhost_virtqueue *vq;
++	struct rcu_head rcu;
+ };
  
--	clk = clock->hw.clk;
--	dev_dbg(dev, "Module clock %pC at %lu Hz\n", clk, clk_get_rate(clk));
--	priv->clks[id] = clk;
--
- 	if (mod->is_coupled) {
- 		struct mstp_clock *sibling;
+ #define VHOST_NET_BATCH 64
+@@ -250,9 +251,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
  
-@@ -1404,6 +1400,10 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
- 		}
- 	}
- 
-+	clk = clock->hw.clk;
-+	dev_dbg(dev, "Module clock %pC at %lu Hz\n", clk, clk_get_rate(clk));
-+	priv->clks[id] = clk;
+ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
+ {
+-	int r = atomic_sub_return(1, &ubufs->refcount);
++	int r;
 +
- 	return;
++	rcu_read_lock();
++	r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+ 		wake_up(&ubufs->wait);
++	rcu_read_unlock();
+ 	return r;
+ }
  
- fail:
+@@ -265,7 +270,7 @@ static void vhost_net_ubuf_put_and_wait(struct vhost_net_ubuf_ref *ubufs)
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	vhost_net_ubuf_put_and_wait(ubufs);
+-	kfree(ubufs);
++	kfree_rcu(ubufs, rcu);
+ }
+ 
+ static void vhost_net_clear_ubuf_info(struct vhost_net *n)
 -- 
-2.39.5
+2.34.1
 
 
