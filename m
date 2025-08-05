@@ -1,245 +1,159 @@
-Return-Path: <stable+bounces-166636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1247EB1B761
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 17:20:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7871B1B775
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 17:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A03E6269F2
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 15:20:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B15DB17B75F
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 15:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8A1279327;
-	Tue,  5 Aug 2025 15:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z8N+aMoV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E927279DB2;
+	Tue,  5 Aug 2025 15:27:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0939C2797AD
-	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 15:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754407208; cv=fail; b=dGkWcTrzqRvTOTxeP/IXudVX0SxjSJwvsr3LGrObrqeY4RhbQl6E5f1Oe3F/RZxDsICphpjAYj8PDKJDxGkNQoDBoEWp0YozMjgmaKfvBbybyZbRKICU8zpt905ol2SpebxkeECwba5hXlHunh1v1IsB8N5s/fIa1mQwkpCZ5/A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754407208; c=relaxed/simple;
-	bh=RVtJzwN6ds3SakRR4PDIi06I30cHeHAUl3SycxWE9EQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pPZX1w1zJR9PQ7ytxSJUn51VFp8Tv0/7t6AL7yfs3QzkGk6h1aHklw1UhG6eHMJkV/0yUr7oCYTFEUBeC07bjI9DQRHFJVFzawgoHC6bjKwORMZO/RfgF3v00ndWGWPuXEJ8vKERdpjkHPeU93ML2V+h+PQHO3yqrXxHbJfXpQA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z8N+aMoV; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754407206; x=1785943206;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=RVtJzwN6ds3SakRR4PDIi06I30cHeHAUl3SycxWE9EQ=;
-  b=Z8N+aMoV8IRQn9i1hmRGoLcceXp3hMwrZ9Ml3hUYB6I1A7J93U8xVlqg
-   T/x0cRsUCXKbMvrowXBAw0ScWPGTRi5+EIrvMxtQzAMxcByG3tl4gnbTB
-   EpVx6YE96mnYvv327qfWzL/N3TDOLFoeMG+Bm8wDhEe8yjM0Lla0x3cvh
-   QtgRMXTWNX9uBpbWATy8QXEeq0NkzOK9GFgF0Dj6Vzy7S/JuVRjNGXYYo
-   a/zZFW4G6j4A7kJIuOZQFLnqHYwU5DWNGkIjvPJF/fxOdS8YTCC7sIXpI
-   vp4xVwRMVGSOC06TLLhx4EtHt4bK8CpT3R3ow2I0k2u+aTsdOzymSZouz
-   w==;
-X-CSE-ConnectionGUID: cd0Eu7uBSLGMyOm6xMJaYQ==
-X-CSE-MsgGUID: b4oAwFLrQGWX1Bhbrco3FA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="60519235"
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="60519235"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 08:20:03 -0700
-X-CSE-ConnectionGUID: kgvJYUAHS6CtBuetoNh9JQ==
-X-CSE-MsgGUID: k7L1dAGZS4CGnftrihln/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="165282695"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 08:19:57 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Tue, 5 Aug 2025 08:19:56 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Tue, 5 Aug 2025 08:19:56 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.74) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Tue, 5 Aug 2025 08:19:55 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ayaj/GgxlBC2ZnxJqpZ3esERVOzxAo8IuFF3sQTL0D552AofnmRieLGFljSiXI6pTZwXdXOjOKTxdDYRnGUN19wiT14VNjh/dQA1/2/a/tcZcKcyI7tYkEWLJ+pgMeXrMi8S/oYNjcTrWJHiMGzRZ/j2NkNEln2ciK3hRzUTLZOuGPmRLr1nFQHrKyhVhWozUtJd2Bw8HL0COR2IT853FhYDexPU+s00eXdg3ddlaXHgF2eVHnws5hNmFTKo8wd+P8kJqwSGYL6TCIDPyhueh6NE83DCokn7Pz2GKM7K9kr70qOee2FzGywjSm9AywF+u9ZfKJY4hTZ9qt53bnoRmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QatqgQ8PcDxpyKiOhYLNEMsG+RaVpZ2IAi2zQeVDDqw=;
- b=RYYlTb30WnMjeEv5EcY+nSbLMYixFtRl5gtWxlzCh6H34flhotphhkwcDeDfkrGAOAHYis/fyXFN+snJ+YwrYNTQR0bQfzmm0Vi6m44PgJ/5vywqLdwaf2RZ/NoV9G4iGIJOJX1V1K3DOPmjo32tBZG3aXZu9YgbvaFClFyvZbuxCbor43MclF73th3wKDel8+0lZhn+zyHF8651vvDvRymvmqmMZp1AGZ67qxuUOrUHQXGFmXNtgfub+A2ptZif3qLHnQnhRpLpl1IoXgbf8gfRj30W1GTVA9ZQj5LngIwk7iFSCESq3h3DjTMrBtput1K5HKsaNkOLZVHUoRfcMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by SA2PR11MB4987.namprd11.prod.outlook.com (2603:10b6:806:113::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.21; Tue, 5 Aug
- 2025 15:19:50 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%5]) with mapi id 15.20.9009.013; Tue, 5 Aug 2025
- 15:19:50 +0000
-Date: Tue, 5 Aug 2025 18:19:39 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-CC: Nicusor Huhulea <nicusor.huhulea@siemens.com>, <stable@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
-	<cip-dev@lists.cip-project.org>, <shradhagupta@linux.microsoft.com>,
-	<jouni.hogander@intel.com>, <neil.armstrong@linaro.org>,
-	<jani.nikula@linux.intel.com>, <maarten.lankhorst@linux.intel.com>,
-	<mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
-	<daniel@ffwll.ch>, <joonas.lahtinen@linux.intel.com>,
-	<rodrigo.vivi@intel.com>, <laurentiu.palcu@oss.nxp.com>,
-	<cedric.hombourger@siemens.com>, <shrikant.bobade@siemens.com>
-Subject: Re: [PATCH] drm/probe-helper: fix output polling not resuming after
- HPD IRQ storm
-Message-ID: <aJIhCyP2mwaaiS22@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20250804201359.112764-1-nicusor.huhulea@siemens.com>
- <z4jxkrseavbeblgji4cnbyeohkjv4ar3mbbdvothao6abfu6nf@nqlhcegwtwzf>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <z4jxkrseavbeblgji4cnbyeohkjv4ar3mbbdvothao6abfu6nf@nqlhcegwtwzf>
-X-ClientProxiedBy: LO4P123CA0237.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a7::8) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B562777F9;
+	Tue,  5 Aug 2025 15:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754407630; cv=none; b=WJ+7TjbgMKgoIAsQvA4dZ1Ewb+cyQnRkpD2lkjyTw/tmSnTYAAmnXEv7waNh5gfpdYOYFI/2N8PXGQp2D7kR+UhMIVKlW+dUvtWwdi/iNqLVUTt1VipKu9CgP/ACxv9pXTXTN8XfJoYz3lGqn0GiFc7+k19PpDD/MD2OySk1oU8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754407630; c=relaxed/simple;
+	bh=lbWIMGmXSfPP8qxW81xC9fWF8J70sLsBiiZS09J+PqM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M/dKltzKLdsZjb6TdeuVM62cHmKydoBmrJbd/cx8iqjqN2R+9XXaayPsjYUAhLT6krFx6waJgYO0ZEk33MAwdPMSKeVJXwqgIlnmRbRREFl+gLWQ6UI2MUII1oTezEalG3+e+73o/exwE+iFO1UMT912enFVmj4OzUonV9K/EgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76624ecc7efso535153b3a.0;
+        Tue, 05 Aug 2025 08:27:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754407628; x=1755012428;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6pr6DrCEDv+a0jbLHVvBac89tThXy65vIV2bUWnsRig=;
+        b=r8a24T3kf7Rauef88rUFmmFNdhW3EbzKFK4gK5YldTb019Cn0pvRN1npJ9XoWXAaxI
+         hKIFrH0RsUljAKn5euSdamn6fpXej7XqiUFEJxs3llpzDJhvblYFxub4dcoSlmYhlZwg
+         U1zWZT6TRxxQs33t5P8mA42MXgTzZgLiT+sys9137+7XMb/PBYL2Fwh78IGY3WfoKFeK
+         cXGqES75StKyWtjnhd8DsR9kGb/3zDfr7Je2CTILCIrahM4bh4dIh8sGAbT0pOSK8xcC
+         GqdoAZqGCJdf/gHZlDIdcw2uixYQinlKN4sdyv5m9Nbhhs2u6HzRaCaClfbaGrYBcXEA
+         QnDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXKtYaqN5hYWmuCD/scUiL8+z16sV8+1O1uBXARlSvfByCL7cIQSVGSdYB1xcjd229CllfU8bYsFsp@vger.kernel.org, AJvYcCW49rEQW0lGEqTvtWLydWkISWQMX1WBZJdsOPCC7IZpoV1B0LdaCOIRvTyZoSWQU3BzwNqA5IOi@vger.kernel.org, AJvYcCW5tclj9NLJ2VZUKcJEIJ7R/w15eQpTrN2GRyrdNsUWOuw62qdi03tVvcx+w15aQVitBqN2ddQ7+kZXMVk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8YO1BoWjuZSF5KoYlj0DTEr2mjFb/26NKwBkZZvH4duoooJo4
+	aLy+2PLXoMpYD7IKAeX/KhUcks05lIGY41x/mgCn/9EEcx6F5RtRCRtK
+X-Gm-Gg: ASbGncs9wrWp4gW7f8GFZ6jvJTAeipwUWpCOnM7Slcw4V58sd8sL1RMe86cqHaw5BLr
+	P/vG54+tVFr1/mE+iSSDcpx89ySStC9X8M7hxAhGy+11knKx5rAr7QKY9Ez/77rMR3iO66gJ5qp
+	0YO6DWQIlOWi97xBFK2l0h4QWqpmJZVJOaUdgZr0D3S21YPevTJOJNUmvOr5ZmA9rVXuXqJr3JY
+	lcuaPXjyVfJ15PqtyL1bh2aFBcZuNIiG9lL7tfO7uOl3CSvXv8cIVUyJruBo5htDU2li+nyynTZ
+	X/AJDs1Gu8TyyHeBx3B0EFw1u4aKVSBLIHu5D7V4voANN/Fi/j5ptQrL6gAEj1wXlKM7qddH/6p
+	QOWMV6LREdGhS5JhC7Pa09CTHoZ6KNWjv
+X-Google-Smtp-Source: AGHT+IEsKFfKhbmomJLvjN9Tv+WNDm8mFlc7vYZxJMukrVF3+0b0N+h3Y50ODx8JttQHR39Cg6w5ow==
+X-Received: by 2002:a05:6a00:856:b0:747:ae55:12e with SMTP id d2e1a72fcca58-76bec2ee69amr7829469b3a.1.1754407627955;
+        Tue, 05 Aug 2025 08:27:07 -0700 (PDT)
+Received: from [192.168.50.136] ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce929aesm13090519b3a.49.2025.08.05.08.27.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Aug 2025 08:27:07 -0700 (PDT)
+Message-ID: <ddd14f62-b6c9-4984-84be-6c999ea92e30@kzalloc.com>
+Date: Wed, 6 Aug 2025 00:27:01 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|SA2PR11MB4987:EE_
-X-MS-Office365-Filtering-Correlation-Id: d4b24fed-ceb8-494d-6dc9-08ddd4338548
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?dclDaOzWsW5SxOGVuU6gk7AATWDyrf+qaS32l+bWrZxGqn62HSD7bGH/gCnU?=
- =?us-ascii?Q?MkQVfPpZ0qP4WhzYhmEYVNWRjV/6379UVT0tBVqvCsrrln9UaM87fmn5CTqA?=
- =?us-ascii?Q?1zl7djB956ToSzHDUoTJ6nCnFhCuPOK8CGx3+iEADzQEpzUrzAmrkD8/7tLp?=
- =?us-ascii?Q?sQaIEBpjk+XloaFiINaXRxXYgvQeLtxywzxAvnJ6hQTve+9MVQvgqZ8a9kBF?=
- =?us-ascii?Q?mA++W6Uxj/G+KbGx+EZXjL+TatPm3QUPFPYvQXBslaXxGeXlupol7JXnDgcL?=
- =?us-ascii?Q?cjrPdGHHaNFfQGc20/v37TvgmplGq//cAGrbYc4m9PlFqxo4/DgI5mOEkaWs?=
- =?us-ascii?Q?z91igVgKEefHT8qtS/ZbVBQ2JI9FwgyEG8bY1AuSouuf2sA5iASj3uCH6+5/?=
- =?us-ascii?Q?sfoThRr0UYp95q1uh7Sr/BRgKnYfBU9A+h9iIn8t9d7pcj/XssfqrVFKCqWe?=
- =?us-ascii?Q?9TfNRqUcT9R3mQOKOuVD0+dLqBs3GfLPICgU+p7FntGOMGLkQzd1pIjVNpNc?=
- =?us-ascii?Q?7DLa5szZaJY1AwBoMUr6VVb5i0Ak7Z5uJ/EOMhnmBobqJCTquILv0YWVRR7F?=
- =?us-ascii?Q?RcOWsIG435QRQ9YFZOp9iOycoNXXCxawXA0yk3ZLzKKXfFxjgiQrp9hA8hnk?=
- =?us-ascii?Q?jVmFizhlJS9BNXmlTgZfdmJg3LrKB9/4+iysU5M9ZvaET78jftcWkp/klKTL?=
- =?us-ascii?Q?tM+Y3UetyDNbiJbHIPsRwhDyDUaDdzdiah/+NVjw4xWsxINcKsTc3eWA2kSV?=
- =?us-ascii?Q?B5NdtOJS/lziyElPFzHuDquXBlUMruSrTUWpvanrKV4BMQnHcOTWX8YcP0PN?=
- =?us-ascii?Q?XlRsCgO6t6IPVokBRrt5/u2WEj/Ab3E6TvldNyeFiQdi0R6gYizRyCzyvxqZ?=
- =?us-ascii?Q?u/ytmuXKXsVHMeeaAIMjIvGHtKh4YU9R3PS3XzYtVw1iG5RCQMBwouROr7eq?=
- =?us-ascii?Q?7Q55m/RQihFnJ96JV7LIiklzdzWDspgp3Ne6lKK1F0K67DXUZaAY/8MH6+hr?=
- =?us-ascii?Q?v+Dm7J4d738GsV8VUwSKKktdyK+aPtEMM4D9/9dKfa7iRRDJysCXrSXYwgG+?=
- =?us-ascii?Q?DO2akS8q3ESxSyBRxWPynczxfB0QIkd9TwV/5Q36oBmjgcZ3n3XBBCaxkcI8?=
- =?us-ascii?Q?dhn10Tv+g7RjQDS9XUVpVGjs0bhTYWn9LxKrtmtKxqwk4o3kIJnuDqtCtFJU?=
- =?us-ascii?Q?/SE8Bz6ZKW0/XV8+ULRdOOqSoxP5khHnYRymREgphMh1P+GNGlEN9CLfM1F4?=
- =?us-ascii?Q?KzzFAOKwcECr4PhZGshjiFG62Uy3O79Q1YNFq+YjprLd0Zieq9bQVEndsdmk?=
- =?us-ascii?Q?mSi7cZUt/vRg+KWHZCU2gHd6QevQ1SLa8QFECxTYe54TOdgIw8JRLPNucKWg?=
- =?us-ascii?Q?MSh172qQa8vRYEXNWgtIbENPpGHA04IyhUQ8frAgd8zinRiS1vP2MUIsRtU3?=
- =?us-ascii?Q?aIemQdeDy2E=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9EuBEnLaZTMULBCuBYWHJBKmzZaaHqmL+bj0ZVVdIRpJ3hpvQatrEHBdVqYC?=
- =?us-ascii?Q?TCunsBOcLEbw9G0Hmo0RyjXsJkEvrsIslQJV09b0osgdUVApk5zK6+7Is9La?=
- =?us-ascii?Q?ePUr+ltpfRGPRXTTN30iXRensT26NihaA0/G/V2y8Kn3+HHyFWpJLLwFJIgz?=
- =?us-ascii?Q?bMlcPee9C1cJyT4J2iuFQVVhxslArosnuXTK7hdgByYlrDhxPMb4TNj8dUlq?=
- =?us-ascii?Q?o5UN5aCkiqbU9WOfgw/6V/AQn6mQ8ZKUmah0BX7gsypvOBgmyTsxix4J1+hB?=
- =?us-ascii?Q?386DteAn5P7YrX7gOhmp1mAKqAfY9y9PM9ZPDpPeyeg/4JY4CLzetnxDHmaP?=
- =?us-ascii?Q?fivj2y3HG/JQmLfy+LLgq8fdQ4uucBaw9jP11O9L71RZ6zlwxYTNwxnTcNMK?=
- =?us-ascii?Q?dG5ptRFGJxxEs0EjA00YTLMVuwIMjA0H0wJvFnCg2jx/LOfnNb6bB3yKQAFn?=
- =?us-ascii?Q?O7UD2NijxTrCC4XMyQ7U7CwQMqMzMXxgHEnY1S0Wbnv1fPNkQn4iSEHcHqFJ?=
- =?us-ascii?Q?lk+2A6i08ok+Vs8I7U2c+J/sZ/Cqqgwr+QZIsfHKV39P5LkWqqv8XjD10BH2?=
- =?us-ascii?Q?MA73dFrd/LbtTFe7tpydoM8uJ4vVP5EHhMnE0cEdd52WaNcOgb18cr6kxgyZ?=
- =?us-ascii?Q?RCwjxWZZFMFPK6SCHhl9Lzg49kOvNTzpdsHg2sfmbV3AQrTOXzasllnUgthE?=
- =?us-ascii?Q?MyxWZ/OzdrtXyIPo7vBFbYFUzyYuBYZo1pDt/BeDbSSi5ymWjilIC/5I0Q2d?=
- =?us-ascii?Q?3kE5dCYWCoUkwP9e2lXfgULmK9y6cFrmxbwFbenAaLltW4jU4D/UMAMza9Go?=
- =?us-ascii?Q?FUDSop0YnwruHyr6wKEudGIyalkjd7RvMWnnnM9wG5RIE4EouGfqO0Su98M/?=
- =?us-ascii?Q?XWTxZDKVCeWe2E1BKokeuLUKvPIH/peVBQvWrM7UfgBUm05fdDz4PBu/lbc2?=
- =?us-ascii?Q?bv3mZ7d44L0a6UubGTS6ZKe7lsopO33HBXF5KFdB6VV7wzl3FfSueCHXbNrN?=
- =?us-ascii?Q?NHV+U7TghKtVcwsGoJhVqkVRk0unY559ZoUjX/ZYObhGoTvI7hDbL4v8ViUQ?=
- =?us-ascii?Q?hlS8JqJkdAfHDKEmetiNUv/NXEB+6mdCnAxD2PZayuThAcwzQ8QSSw9qQGlw?=
- =?us-ascii?Q?lHDCSSov9SfmMZzRqM5Lykd4Wxe5EApDuu7bl8nx/UHFBZZQhmeaRwm3t+1U?=
- =?us-ascii?Q?bj1AEBUoQE8yjDz2RlyxQlP8dp5JwkQvq0gHwVe+yQ/0gK7cv4EUbKVhhVUY?=
- =?us-ascii?Q?Yys0s/bE0lzSCYOevtQ4992uhwv/B95jLc8/4lDnWx2FqhjUutrxQNr/905H?=
- =?us-ascii?Q?GPbvL1aHB6z9Al0QQTjDomc1UkYFpazr6NlaKE7vDQ9EuJ8GPVdF5w6ijgvD?=
- =?us-ascii?Q?H3JAu1uLlymJUNHGQLQfA3hCdWum/lSHhKJJ0W3I2Y8LArrOx6ALz4liuDUp?=
- =?us-ascii?Q?ZrZfXE5UiSYRyC3ZWrwlvLHOS/0cMeEvyMWnuASkX5iI/Cp5GfsTp7Ig9xfb?=
- =?us-ascii?Q?C3RE+biUC1vb61m3L7fsnxp2Q2pCM+qfae3ooeTXZHeW9o8WRwr/LbQIhwQW?=
- =?us-ascii?Q?pS+UrrKoHXAtD80ihh6SO879SzWmiAWjsla+sy2oJun30nfwxOd/wTVTCeEv?=
- =?us-ascii?Q?pwjJH/dftdLBN7xQ2jk6w5CixgpzTCHfB44t3FNph7rs?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4b24fed-ceb8-494d-6dc9-08ddd4338548
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 15:19:50.2565
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CVu21GuJe52RJn09jDFZzAM/hBR49lRVKbbl9DgyigAVwQnWisHpCk712GPUKSMdEfqsXMkmT5P2EdhhDk4ilg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4987
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] kcov, usb: Fix invalid context sleep in softirq
+ path on PREEMPT_RT
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Dmitry Vyukov <dvyukov@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Byungchul Park <byungchul@sk.com>, max.byungchul.park@gmail.com,
+ Yeoreum Yun <yeoreum.yun@arm.com>, ppbuk5246@gmail.com,
+ linux-usb@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ syzkaller@googlegroups.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250803072044.572733-2-ysk@kzalloc.com>
+ <20250804122405.3e9d83ed@gandalf.local.home>
+Content-Language: en-US
+From: Yunseong Kim <ysk@kzalloc.com>
+Organization: kzalloc
+In-Reply-To: <20250804122405.3e9d83ed@gandalf.local.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 05, 2025 at 01:46:51PM +0300, Dmitry Baryshkov wrote:
-> On Mon, Aug 04, 2025 at 11:13:59PM +0300, Nicusor Huhulea wrote:
-> > A regression in output polling was introduced by commit 4ad8d57d902fbc7c82507cfc1b031f3a07c3de6e
-> > ("drm: Check output polling initialized before disabling") in the 6.1.y stable tree.
-> > As a result, when the i915 driver detects an HPD IRQ storm and attempts to switch
-> > from IRQ-based hotplug detection to polling, output polling fails to resume.
-> > 
-> > The root cause is the use of dev->mode_config.poll_running. Once poll_running is set
-> > (during the first connector detection) the calls to drm_kms_helper_poll_enable(), such as
-> > intel_hpd_irq_storm_switch_to_polling() fails to schedule output_poll_work as expected.
-> > Therefore, after an IRQ storm disables HPD IRQs, polling does not start, breaking hotplug detection.
+Hi Steve,
+
+You're absolutely right to ask for clarification, and I now realize that
+I didn’t explain the background clearly enough in my cover letter.
+
+On 8/5/25 1:24 오전, Steven Rostedt wrote:
+> On Sun,  3 Aug 2025 07:20:41 +0000
+> Yunseong Kim <ysk@kzalloc.com> wrote:
 > 
-> Why doesn't disable path use drm_kms_helper_poll_disable() ?
-
-In general i915 doesn't disable polling as a whole after an IRQ storm
-and a 2 minute delay (or runtime resuming), since on some other
-connectors the polling may be still required.
-
-Also, in the 6.1.y stable tree drm_kms_helper_poll_disable() is:
-
-        if (drm_WARN_ON(dev, !dev->mode_config.poll_enabled))
-                return;
-
-        cancel_delayed_work_sync(&dev->mode_config.output_poll_work);
-
-so calling that wouldn't really fix the problem, which is clearly just
-an incorrect backport of the upstream commit 5abffb66d12bcac8 ("drm:
-Check output polling initialized before disabling") to the v6.1.y stable
-tree by commit 4ad8d57d902f ("drm: Check output polling initialized
-before disabling") in v6.1.y.
-
-The upstream commit did not add the check for
-dev->mode_config.poll_running in drm_kms_helper_poll_enable(), the
-condition was only part of the diff context in the commit. Hence adding
-the condition in the 4ad8d57d902f backport commit was incorrect.
-
-> > The fix is to remove the dev->mode_config.poll_running in the check condition, ensuring polling
-> > is always scheduled as requested.
-> > 
-> > Notes:
-> >  Initial analysis, assumptions, device testing details, the correct fix and detailed rationale
-> >  were discussed here https://lore.kernel.org/stable/aI32HUzrT95nS_H9@ideak-desk/
-> > 
+>> This patch series resolves a sleeping function called from invalid context
+>> bug that occurs when fuzzing USB with syzkaller on a PREEMPT_RT kernel.
+>>
+>> The regression was introduced by the interaction of two separate patches:
+>> one that made kcov's internal locks sleep on PREEMPT_RT for better latency
 > 
-> -- 
-> With best wishes
-> Dmitry
+> Just so I fully understand this change. It is basically reverting the
+> "better latency" changes? That is, with KCOV anyone running with PREEMPT_RT
+> can expect non deterministic latency behavior?
+
+The regression results from the interaction of two changes — and in my original
+description, I inaccurately characterized one of them as being 
+"for better latency." That was misleading.
+
+The first change d5d2c51 replaced spin_lock_irqsave() with local_lock_irqsave()
+in KCOV to ensure compatibility with PREEMPT_RT. This avoided using a
+potentially sleeping lock with interrupts disabled.
+At the time, as Sebastian noted:
+
+ "There is no compelling reason to change the lock type to raw_spin_lock_t...
+  Changing it would require to move memory allocation and deallocation outside
+  of the locked section."
+
+However, the situation changed after another patch 8fea0c8 converted the USB
+HCD tasklet to a BH workqueue. As a result, usb_giveback_urb_bh() began running
+with interrupts enabled, and the KCOV remote coverage collection section in
+this path became re-entrant. To prevent nested coverage sections — which KCOV
+doesn’t support — kcov_remote_start_usb_softirq() was updated to explicitly
+disable interrupts during coverage collection f85d39d.
+
+This combination — using a local_lock (which can sleep on RT) alongside
+local_irq_save() — inadvertently created a scenario where a sleeping lock was
+acquired in atomic context, triggering a kernel BUG on PREEMPT_RT.
+
+So while the original KCOV locking change didn't require raw spinlocks at
+the time, it became effectively incompatible with the USB softirq use case once
+that path began relying on interrupt disabling for correctness. In this sense,
+the "no compelling reason" eventually turned into a "necessary compromise."
+
+To clarify: this patch series doesn't revert the previous change entirely.
+It keeps the local_lock behavior for task context (where it's safe and
+appropriate), but ensures atomic safety in interrupt/softirq contexts by
+using raw spinlocks selectively where needed.
+
+> This should be fully documented. I assume this will not be a problem as
+> kcov is more for debugging and should not be enabled in production.
+> 
+> -- Steve
+> 
+
+Thanks again for raising this — I’ll make sure the changelog documents this
+interaction more clearly.
+
+Best regards,
+Yunseong Kim
 
