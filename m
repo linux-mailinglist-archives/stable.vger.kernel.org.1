@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-166519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA77B1ABE6
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 03:06:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0C9B1ABE5
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 03:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92CCF7AAA14
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 01:05:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB7818A1D96
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 01:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D41C17C21C;
-	Tue,  5 Aug 2025 01:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D948A149C7B;
+	Tue,  5 Aug 2025 01:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umJJaODZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/ij74As"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F172E4086A
-	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 01:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB974086A
+	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 01:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754356010; cv=none; b=SEYzxeUkfovqU6hny3b3zDUyw0+SftgA0T8N+2c9JZCfVBGt8CpyktkVvMBSbqm+F2iUtdqOhKYoOoOy/shUb7EXirhv5ij//5gfrPU6izBHUcoKUtmL5n3LdXXRvH8pkD0xW5wYkqFAbXdtSkmKorixH031iKl7zvy0MxfOUmk=
+	t=1754356012; cv=none; b=HMRiGEmZDuUCCMJ00eNFNpnMqk3+jaL2FEcTwEMoX95CmYlhIJ1hA3lcBJSM2KQxSRK4UX0i9fHvbeZOLJTzRMsABoHB9VmlMTFXA5+StELn7LYKOYVNn+3kLgkjOshAOp8qVbx3UcNULLPrvSxxD8Q5DmnvHx4db/7q/HeVSK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754356010; c=relaxed/simple;
-	bh=ExqD0/qFP5EirWeJ2icPFB3/gy3ha9hC5O5ruuoamt4=;
+	s=arc-20240116; t=1754356012; c=relaxed/simple;
+	bh=7o9AowWvoz1Lb9Eszidu5x8+VjKTNqy4JHtsxk0wF3I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Men0D/3Doe5ztQQ+CRW6s8b7UtzyqvuBgvynxzo995ynGGRKwuji2zo2qRil+0sCd6vmBVbqt7RiVJwcbhcp1K4C+ffeV9w/UVoo6ClxKD+CnleS3L8wJhYGDaGNgkel1RwSU1LV75Zl4D6+al+4HfU/Sozx5DjLRV8IvSKWo4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umJJaODZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57347C4CEE7;
-	Tue,  5 Aug 2025 01:06:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P4k5rDHB1JJZYt+lTofkl1yuxxLPzejtOtl9/i4zdW2CzMyN01i5Ctvoam+f/Paw/t6F/TTMbGY5QKeTGkhlEcQ41FUYPSXviNyL4mfhxgDnLqIf8L3iEBS1ttsloUpQcqSXXOPQ0O6ir2LIgqX6aw+nhzW8KKRQmmG9wlNOvpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/ij74As; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1282C4CEE7;
+	Tue,  5 Aug 2025 01:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754356009;
-	bh=ExqD0/qFP5EirWeJ2icPFB3/gy3ha9hC5O5ruuoamt4=;
+	s=k20201202; t=1754356012;
+	bh=7o9AowWvoz1Lb9Eszidu5x8+VjKTNqy4JHtsxk0wF3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umJJaODZCTlaR0bfNG1JghARgfrbXeERM1Xxgj9zMvPpbaCetA5GfXBKGU/L5faac
-	 Lom/nuzAtaFoJjW3TUW4KvmjALcOcIzlVpYZC6z07o+Cc8JxUuAeKebqO0qek1w19a
-	 9ihsckuU5sUcdekk/qCb88XwrEYsxHBg5X8ScJCxBraQ6uHceqOXGBWar9UrnqjUrK
-	 q67bwWH15nQs/QswSNJbi6+OGpOmBZSERx3H0qo8VP4yUk1+5SmrYkrS1HdF+txL9O
-	 2x4yXUm3woAzl0j/KVDYpMLOBgI4YFIN+VUpAbHrOy6Z83x9YLkEdPd0MdQIp8cKt9
-	 COOQFblRqHB5Q==
+	b=B/ij74AsUfkmaZ1FsVnPVcQO9Q/L9NCLN3W9Vlphg4KS0RSDUc2Pi56KLCjFMo/JR
+	 rwguxTSVo46Npr3Fco4dZm/tGfT/ZFzN7tv/6kcfJD3VOS5x1/irsz7o//+dVjkEmr
+	 SQ36vVZDI6wywfaJ/bVnIPHQnK2rRC9R+iAcxH2wgk0PkGroYWfdrWJl1NO5wmUfz8
+	 /OZEfSf1G/AouBO/hQbTk5auHOdzKbQsoBacL5QtUdUCHlrR6fqAl9OgQciA3358lj
+	 ekRs7IF6lQJtV8WErsHBshWIY6hCm72FG5U5ShMd1oVws3kMjzc0MFgM16lJeMHuSL
+	 uae/n34R3Q3FA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 1/6] drm/i915/ddi: change intel_ddi_init_{dp, hdmi}_connector() return type
-Date: Mon,  4 Aug 2025 21:06:47 -0400
-Message-Id: <1754321341-a5195975@stable.kernel.org>
+Subject: Re: [PATCH 6.12 3/6] drm/i915/hdmi: add error handling in g4x_hdmi_init()
+Date: Mon,  4 Aug 2025 21:06:50 -0400
+Message-Id: <1754321505-88edfed8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <e53d47b06b3ba07b4add2c6930ddafba91a49b41.1754302552.git.senozhatsky@chromium.org>
+In-Reply-To: <ebf6995a6202f266badbec356c6b87a55cf478dc.1754302552.git.senozhatsky@chromium.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: e1980a977686d46dbf45687f7750f1c50d1d6cf8
+The upstream commit SHA1 provided is correct: 7603ba81225c815d2ceb4ad52f13e8df4b9d03cc
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Sergey Senozhatsky <senozhatsky@chromium.org>
@@ -77,16 +77,16 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e1980a977686 ! 1:  c9dc9718ce79 drm/i915/ddi: change intel_ddi_init_{dp, hdmi}_connector() return type
+1:  7603ba81225c ! 1:  6e1bc5a45972 drm/i915/hdmi: add error handling in g4x_hdmi_init()
     @@ Metadata
       ## Commit message ##
-         drm/i915/ddi: change intel_ddi_init_{dp, hdmi}_connector() return type
+         drm/i915/hdmi: add error handling in g4x_hdmi_init()
      
-    +    [ Upstream commit e1980a977686d46dbf45687f7750f1c50d1d6cf8 ]
+    +    [ Upstream commit 7603ba81225c815d2ceb4ad52f13e8df4b9d03cc ]
     +
-         The caller doesn't actually need the returned struct intel_connector;
-         it's stored in the ->attached_connector of intel_dp and
-         intel_hdmi. Switch to returning an int with 0 for success and negative
+         Handle encoder and connector init failures in g4x_hdmi_init(). This is
+         similar to g4x_dp_init().
+     
 
 ---
 
