@@ -1,94 +1,98 @@
-Return-Path: <stable+bounces-166515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B24B1ABBE
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 02:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74441B1ABE1
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 03:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 417307A7C2E
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 00:29:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5BCB7AA2D4
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 01:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603F81AA782;
-	Tue,  5 Aug 2025 00:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDD1145B3F;
+	Tue,  5 Aug 2025 01:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J11oGXkC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPzFWgi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0377080D;
-	Tue,  5 Aug 2025 00:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255514086A
+	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 01:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754353809; cv=none; b=G2NwhmKwYj9kk5ofO4TK2mPi5cFKbhv8u3jxXXuN3AjDDwYQdyVj2E3MxevKtwBh+d5NV1OgxByHOe32IoPjAfANQU0Ltu9sMMtnsmpJAqjERCVM2qbDyI6LqZtAWoXQWZ00h5V2stRNarmCrl3U6w5fuD8XDf3hHu9xyssFbsQ=
+	t=1754356002; cv=none; b=k11iaqqdkxOtuw/bFmM5KNiS/XueNs9LNwAVHPoBnGFOL4O0RQl575SPZpYIJasBAJYn9mO2Cv5L8A0CVKElrcBMH3fsFg2f32MR35RlObGaoYZiFUwBTc5Wvj1cC5bys63pzVAgKZDfKHLvL35vqnIJwPnOTr+l1+ey3z17Na0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754353809; c=relaxed/simple;
-	bh=2V+bEXmMe2bJS3myCfudLocU+8udxvXfrm75O0IvY0g=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IidmU6CJH3Oby6ejHc39kFUGx+afwT6Pr1T7N3i+fgSPUJhBzkgjLP4OtvwaNxTyXdvaGd6Q5Z1mqY0vEpYZgiHJW9c5cmRImDRe1B5Hjb4NY87rFphrkbQ9KkiTgwQuX1W7uvjkUP+oDYfGxXqPKvRJ+lSvzdEMwkiLTCH0ZdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J11oGXkC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BB6C4CEF8;
-	Tue,  5 Aug 2025 00:30:07 +0000 (UTC)
+	s=arc-20240116; t=1754356002; c=relaxed/simple;
+	bh=kRoy0i2YW+B46MY1eYrTiWt3xNJ4W7w1vn6jbpN8fO4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d+G0KMdJYMRbrZAFU+JYW7rKpvnz1a1SQYfH14k8iVLRPmuqOy+IfJxeTkO1arfbNBdpWY9VH5cPqfIxMDAbPRsY8MMiQaXjcotXVt+LQimGPMaysyTm0TvsDjBGxa8nJfKVt5vThtB9wqZlpf08PH0Ba3uBX1+CInlCGvtvMIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPzFWgi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20379C4CEE7;
+	Tue,  5 Aug 2025 01:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754353808;
-	bh=2V+bEXmMe2bJS3myCfudLocU+8udxvXfrm75O0IvY0g=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=J11oGXkCyfCiXvjyIA4osd6I/JVLwX6pCyuxzVCPg0x+zIelNgbKeUQ3oWePqo9oW
-	 HJxIpkaPcGYI46U0SIbyQKCTA9znQe2+De5lHms+cFfXmqZ/MUGwj/LkEl1uYFI6P0
-	 xIwqZZcVybFEBPjJpDAZ9jSZfXxQbWoeR9cks7aqs3JDGGQEAooQlDi5MucKbUQROM
-	 ak2pAk+CD4kfhSVzF3deuWj05g6Z5GaKanPELckvDQjoa78N+ipRAXTjVS8k6LBNWE
-	 YFxEGFuDcHmdaJdRQHkpmL8zERQY3jUnCFlbECs5OTdugjREQ3et/cS0koipVGgBaV
-	 3dms9L5deLqMA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E05383BF62;
-	Tue,  5 Aug 2025 00:30:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1754356001;
+	bh=kRoy0i2YW+B46MY1eYrTiWt3xNJ4W7w1vn6jbpN8fO4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hPzFWgi+Vc/HNf0GRCbp4ZsmGUed9Bi3HHznAIuSBHuTGY3p3UiluhUW4CVFMGhv/
+	 pZNbQQsvO8kz8pzMV+6tvg44Gu1fYpwsUNlzEtpOuWHDL3elLx3dW+asSmgAlWhQ1e
+	 vHdyDJqvvgyt+Nai+r92Z9/3Q4wC3QUInU28MD4SC2W0s0zS0YNNa7c4s2QC1eT9C0
+	 I64HJud0zWjlQtFck1RAtIFyVMYndGq9GxyaY+SgbDlMANCIiPn35dLd9tawD5qB+3
+	 p3/5WfJlHOYfuNmCu0H3vO1HUMFgKXMyWL3ByLwVpK+19EJTglAN80ifky1VyP87D+
+	 ePi8DgsWjXW3w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 6/6] drm/i915/ddi: only call shutdown hooks for valid encoders
+Date: Mon,  4 Aug 2025 21:06:39 -0400
+Message-Id: <1754321762-29609c86@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <ff10c20ae7a05ef436366e71b609374709f1c517.1754302552.git.senozhatsky@chromium.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/packet: fix a race in packet_set_ring() and
- packet_notifier()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175435382199.1400451.4567191514698404323.git-patchwork-notify@kernel.org>
-Date: Tue, 05 Aug 2025 00:30:21 +0000
-References: <20250801175423.2970334-1-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20250801175423.2970334-1-willemdebruijn.kernel@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- quanglex97@gmail.com, stable@vger.kernel.org, willemb@google.com
 
-Hello:
+[ Sasha's backport helper bot ]
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hi,
 
-On Fri,  1 Aug 2025 13:54:16 -0400 you wrote:
-> From: Quang Le <quanglex97@gmail.com>
-> 
-> When packet_set_ring() releases po->bind_lock, another thread can
-> run packet_notifier() and process an NETDEV_UP event.
-> 
-> This race and the fix are both similar to that of commit 15fe076edea7
-> ("net/packet: fix a race in packet_bind() and packet_notifier()").
-> 
-> [...]
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Here is the summary with links:
-  - [net,v2] net/packet: fix a race in packet_set_ring() and packet_notifier()
-    https://git.kernel.org/netdev/net/c/01d3c8417b9c
+The upstream commit SHA1 provided is correct: 60a43ecbd59decb77b31c09a73f09e1d4f4d1c4c
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Sergey Senozhatsky <senozhatsky@chromium.org>
+Commit author: Jani Nikula <jani.nikula@intel.com>
 
+Status in newer kernel trees:
+6.15.y | Present (exact SHA1)
 
+Note: The patch differs from the upstream commit:
+---
+1:  60a43ecbd59d ! 1:  8009a63e9d86 drm/i915/ddi: only call shutdown hooks for valid encoders
+    @@ Metadata
+      ## Commit message ##
+         drm/i915/ddi: only call shutdown hooks for valid encoders
+     
+    +    [ Upstream commit 60a43ecbd59decb77b31c09a73f09e1d4f4d1c4c ]
+    +
+         DDI might be HDMI or DP only, leaving the other encoder
+         uninitialized. Calling the shutdown hook on an uninitialized encoder may
+         lead to a NULL pointer dereference. Check the encoder types (and thus
+
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| 6.12                      | Success     | Success    |
 
