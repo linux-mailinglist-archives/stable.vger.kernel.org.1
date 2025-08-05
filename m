@@ -1,288 +1,369 @@
-Return-Path: <stable+bounces-166544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38669B1B142
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 11:37:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027F7B1B144
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 11:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E22917AE797
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 09:36:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCE0116E676
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 09:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834FB26D4DD;
-	Tue,  5 Aug 2025 09:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D032701A4;
+	Tue,  5 Aug 2025 09:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="GJ2ytIwv";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="aVVZmfBJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OaQcVbMJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347B8134AC;
-	Tue,  5 Aug 2025 09:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D3B26E17D
+	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 09:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754386510; cv=pass; b=XItjcH+YSs+O/EVMy3YJAR5BwbXTaAAHiOV35vPjEdIPDVxiUbz2kdnr64JsVYc2CTRkA1kYjppjSFVZi8I0+RoDQWE7uJi9LsSMbYrobWX75/X9EnDCcHtuLbRpVRMBkZeil/8HePABh3Wgx+3RWEuXRGx9sSPQAHiy+Sa7j1A=
+	t=1754386516; cv=fail; b=PEEosHQbeM9Xnb6+Vb4sRRHCdEMUwGaknzN0r9R9cFKIkHAwAbUUWvpqbUmqAMLufmxhq/QiFkVWopRJmqDa1SmQxokqHdG3Xf4DnqkT05i2EIvwRAoA9ZU+jLFs4u+/s+ZznHmpihd9PPM1geZz9o019A6MAI2wwyIC4HjsfZY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754386510; c=relaxed/simple;
-	bh=9MfVy+lxDrD75Ox5ECCp+msLJBjzC81QBDPWn23C6JQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=FfltaG73A5G/ljMZqC4t4lvolIphz9LaglCHfv4ygxyMba/IgFsc8Qyx2uaRfj55yb0p2C9olmjGZnsxB/+YxXah43FyBB2WULGnXq/VfHVdLLavkhUEuFCSPobzYWDoR2nYk8BPzIuNtf4XugpgUJ9XV5tdei+H5oCpJAzunkY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=GJ2ytIwv; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=aVVZmfBJ; arc=pass smtp.client-ip=85.215.255.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1754386137; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=l/w6KcKOuIS7LUdG4Ix/jF/a9zUEXzHZ92ukmnfKVNfuR3hxpFm5BarUNBkdxb6ta8
-    YSBioEWKSRDg7cY7mhnDRo+GdXrzao8vX6OClB+d8I7MkCZOkji1lM2Qwyi2AY5XD99b
-    pxl0zkk8jz8IOF/2UaY0qfKHI2Gc3vpfw+gDsR5MEC2NMi6Wo2UaK28WXC5QukBjqwHn
-    TltYClzZnWNppw603e5mPopOxL1TEx/Cv66pUXamlhpcNvOuYXf8ETLz51Rx9d5Dr4+m
-    hg1IZ3pTMPAZX7XsqnelQx6ES99UvTASqe/yTn7aoZMG5Zce2h3N8QsuZ84zcBSQ7jgu
-    xuYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754386137;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=8G8/k+nPGic7BC3JBra8A7ttqgGnR4V1hT1DFa/NooQ=;
-    b=Zp2kUXyNc/4Tb4Je1p9zrxn/JqIwarui7zyNVPO10rTPAi2jdLZzRloUws4g0Whrfd
-    xwdHQV09h2JbKD13uClEfH34B80DDwQu3qWGIjfImplEXTmfcCeUYPPxdCMWkjtniXJw
-    Pkxm06rHK+9dnhWu1QUJpnedu1gXpBnTgJ//zQ5UuU+d9tgNhgdbH3xIF9AzY2nbmP9U
-    TyLdpeiFgW2wPlzqBCVy2whG+75xrr1BQ1pLmlT6bobZMIcSkvFVlxbfyJ7lH35mjAaH
-    Z5KiUVfg5csf/m13nyMrvvKmXH86hmOOJZSFn8x6JNb7O05uwmQKQAcq77uahmz6DMeD
-    ScBg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754386137;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=8G8/k+nPGic7BC3JBra8A7ttqgGnR4V1hT1DFa/NooQ=;
-    b=GJ2ytIwv2wtppNHHYkPqi8gJ8cz3f6xR4iQH6OlvNRL9+4v3Oun2ORtbMtYwEgCCY2
-    KJMemsk6VMjkq5f4rzV6y7xTCVhVhwJmBdlNw5NtigJYCQUHl1Z0rkm6RZ5qdnKJ1mkb
-    P5T0NyKPgxjvbxSghYnVdtrfx7w12USQ+cqceUEXT5j8A4uIEmtq6tIkus2taVkugisG
-    9y7usO2m3BTYBG9fjdoHy9jav4Yw5jisna9Z2p9+xpIOc7yq/YtGDSMf9OPD2YgoABEC
-    8wg2l2UnKyqlXY8O9YPF5sWyOU9t0U63OQlyEPAhcxOqfp5dNI45y1vUGnLY3i6U69oH
-    kblA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754386137;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=8G8/k+nPGic7BC3JBra8A7ttqgGnR4V1hT1DFa/NooQ=;
-    b=aVVZmfBJYcCxals6j19JWh2TdATsM+QGnx3sH9asI8m0YdeytJJ2C5uYfMItOkLJFI
-    fogqAp5X4Avngv4OlmDw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yfjEZ"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 DYNA|AUTH)
-    with ESMTPSA id Q307a41759Sujl3
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Tue, 5 Aug 2025 11:28:56 +0200 (CEST)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1754386516; c=relaxed/simple;
+	bh=gPNUsVyLAiirbNl2lnIkzz/SzdxC9zZfBI2ORwWJMOk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ttrcDoKN6H8tsGGowFCZwo4mvYU3W+JodCeoNDC+qgSDPUy1I8m/gpZ7pZQcyV6hZBJB5nksTNeC/iL4yN+lHtUo+1M71CTzvqWw7ZUL1W0JlGD2UkUwnlsD0SX3KUqINilOykG36mLHZU7WEGQ6xZxqRsx2PSDZ66RD+ZF25Qk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OaQcVbMJ; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754386515; x=1785922515;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=gPNUsVyLAiirbNl2lnIkzz/SzdxC9zZfBI2ORwWJMOk=;
+  b=OaQcVbMJPgcy+Z3R51bSGb0gs3YYTtXt61zHeGfBpWNsAfYN1FdMBB9O
+   wqXGza5uBKNt+T1JS9nN6TaKhNEPrkRx+9XaaUUr4h/zMfjS45saXHCG8
+   mirBlOjdJ+1eTXh9pTMeAg60LZ9KEXD2wXlqT51e0vOWjcjP9fp7rkcgq
+   UCTmjvtPNwTbzjhHSc3OXouNylaCw8ismQniplR4yzcPR7Yu3dblohCtZ
+   5qhknCnAKqU7Lsl2U+vdHIy5P3aA4uhDQfm78f2SlNRz5ElrVFbeuMsc6
+   mYR3rxsYynatfzeOqTkLu/qgXM0XqM1+6nkl03Iie9tzdqCRTaVDPbrI8
+   Q==;
+X-CSE-ConnectionGUID: db7RiZB3SP6ADV/mUZJX1g==
+X-CSE-MsgGUID: CJ5GABzuSGeL5rhfo4b87w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11512"; a="74132019"
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="74132019"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 02:35:14 -0700
+X-CSE-ConnectionGUID: 5RKdlGvUTzKlZfhUCwMZ/g==
+X-CSE-MsgGUID: AJdNTXSmQuu5d0tafU2SBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="188112740"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 02:35:14 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 5 Aug 2025 02:34:32 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Tue, 5 Aug 2025 02:34:32 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.78) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 5 Aug 2025 02:33:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LsQUn6wNIo4pNpjX8rzAdbDlzKbaBINj1H/nF/L076y9NlYIjURNZChlM1aT2Vbd7hnCKDGMSqXyPQo1vYQ/IAjIrnLfA9aNZgJ2hb+Gqb0aY4gaJu2V/13ebJql8A/Vy3qRUobd7E2uXZxYSX8V0e3MbCcdAHQ1c24yitLljm69WY0nNyF+2iLlLGa6L50pLSRKqleWOd9/mezVHPCitYrvEus/FQhT1i5Cit6LlzhnbXkp1EkR+mlIp3oplXvF17x0J1nt0qzt01xEistNUZbtTecyugiS0WSILlD41rO2spnDtgjh4qp20W0aXZrxGjxWy26FlWaKjw3rmQ5ryQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1mjlX2IXvEjhVa8LOhmVlE/2uDvn2R0RemsSeiisPa4=;
+ b=AaLgb135DrZ4nbnQo2Rt5zKxdvM2GAdLzuyxhnDo2NfpXcGgi9dfyGHCk6bkESDary3IGrVQs6KBIYYOk6I/kGtWQ7Jzhd+N6SrO+HXV/EAFCVFwyjKE0hgT9cmFZJy1NEFlXYdeUwSoTrwqd8rbh0a6J0ugmh+sS2mBD62LiEmeWwBuBD1DsNStHWDOYsrI/08ZtUl3rGfRsRe2vl7FEiZ5RLUz6T+wRFRrD9jTvUKREn0rjaxpiNAr/UPELwhg6jNUc/r02I2/5QOKx8ROwfwFR/MfDsqM0uWo1oAnBruqXzC0rIotedj/FrULNTOLxzfSVtpEVMEhg6ZgeK+LOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
+ by CY5PR11MB6257.namprd11.prod.outlook.com (2603:10b6:930:26::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Tue, 5 Aug
+ 2025 09:33:56 +0000
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f%5]) with mapi id 15.20.9009.013; Tue, 5 Aug 2025
+ 09:33:56 +0000
+From: Imre Deak <imre.deak@intel.com>
+To: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
+CC: <stable@vger.kernel.org>, Charlton Lin <charlton.lin@intel.com>, "Khaled
+ Almahallawy" <khaled.almahallawy@intel.com>
+Subject: [PATCH v2 02/19] drm/i915/icl+/tc: Cache the max lane count value
+Date: Tue, 5 Aug 2025 12:33:48 +0300
+Message-ID: <20250805093349.679158-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250805073700.642107-3-imre.deak@intel.com>
+References: <20250805073700.642107-3-imre.deak@intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO3P265CA0025.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:387::6) To SJ0PR11MB4845.namprd11.prod.outlook.com
+ (2603:10b6:a03:2d1::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH] power: supply: bq27xxx: fix error return in case of no
- bq27000 hdq battery
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <VI1PR02MB10076D58D8B86F8FB50E59AADF422A@VI1PR02MB10076.eurprd02.prod.outlook.com>
-Date: Tue, 5 Aug 2025 11:28:46 +0200
-Cc: Sebastian Reichel <sre@kernel.org>,
- =?utf-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "letux-kernel@openphoenux.org" <letux-kernel@openphoenux.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "kernel@pyra-handheld.com" <kernel@pyra-handheld.com>,
- "andreas@kemnade.info" <andreas@kemnade.info>,
- Hermes Zhang <Hermes.Zhang@axis.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2437B077-0F51-4724-8861-7E0BEE9DB5F0@goldelico.com>
-References: <bc405a6f782792dc41e01f9ddf9eadca3589fcdc.1753101969.git.hns@goldelico.com>
- <VI1PR02MB10076D58D8B86F8FB50E59AADF422A@VI1PR02MB10076.eurprd02.prod.outlook.com>
-To: Jerry Lv <Jerry.Lv@axis.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|CY5PR11MB6257:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea6a01a2-f78e-436c-c943-08ddd4033290
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6ZSfrgxkaLNhL5X5n5xJKvRJtNxgMtTYnbewU5+5FzFKDhvQKCM0WqLoPXy5?=
+ =?us-ascii?Q?mbLSgqCuOQDzF510CIzZP481nmYYYNn9ZRS71/Y+LkH3v/oVQs6bcYYzJvT3?=
+ =?us-ascii?Q?pqXRSaEC4Pv1i8zTFxEIHjaC0Op247wuZT2qW8/2vI5kXzmq1flDBldKDx1C?=
+ =?us-ascii?Q?e41DTLk+Xn1+9Q9KnG6WLMpwGPIAevj2ntJaIS6myaqRmHTt7GErhXu2/J8l?=
+ =?us-ascii?Q?MHCGfECUVjof5TITZytRNWAqwFLke/tDKD7JMyy6uYJOx1QRwoHw1l+DGaxS?=
+ =?us-ascii?Q?8Z232ktE6KrCkri52AXo5vd3LWPv2P0j7lzmsk4THH4OkgdKnBjDVza4Uh8/?=
+ =?us-ascii?Q?vk1Aw9+Cjukpo1oH9dH4rS4f+qDaEZFYUVIIub5HiO9ktNOgsePGLM7fJpvQ?=
+ =?us-ascii?Q?Y0AJRRyDRkq70Ghsiu53Q8mpZUmNmBmdtU6cR5HbXpF1S9pIR0/srOtadvsi?=
+ =?us-ascii?Q?JyhVGgO9n5O+f2ED0YB2LjgRE3/BI+SafINPgx2oxY9q8U2ZL9PWpksI/1yl?=
+ =?us-ascii?Q?TBsNecaYErjM1jwuVp+mE9piKFXoq01X5m0DOPz5mvWQv/eDEUXuVatMOwM6?=
+ =?us-ascii?Q?wfUnS0s3GZpEUB6qSoswYBoFMQKM/R1SHqRxxSlOr5n9flyWM3GI87YqlDxe?=
+ =?us-ascii?Q?v/QS5e1lrIH57fJBWkuNdCxJWW+x1k8NwIYaUXrkA1rSY7cQoEbNCxWMjUb0?=
+ =?us-ascii?Q?EKTWtCYff5RZAwXBeqgMw4I+Irj7G5A7Hq1BQjodYWIy+G01K/e8vmcKOXMy?=
+ =?us-ascii?Q?uW7agYEmPCr10HdeV+vFTdeP1gStrK/fhUsWNi6RAqFxLOMJTMg4ktEAXoPS?=
+ =?us-ascii?Q?50Dco41oHHC4xHykPIijtVd57qS9PlDWtVLqNwg9FlQdXO72fYjbEq5fO793?=
+ =?us-ascii?Q?bDHOwlpJY8eIPgRcZ1Lhne12AKuCjqOWn708/0b83fulR+ypw5n2f1pTc0Og?=
+ =?us-ascii?Q?96px4N/bLPMu7wkmQ4sazl4r7QDDZqc+bvhnVIrjY36PM52rJ9FcAlBslp2a?=
+ =?us-ascii?Q?R989EAy9tzry02sfZ2Gpc2nDOOu0p5d2EskIyfhEmHkUqoN1xC/LeAxRGRPW?=
+ =?us-ascii?Q?Rfgm7A7FBtfmYp3lQjdxiYhOAFbSxmUvjHPDe2GYWYikPoaYX00WkLa69Dbz?=
+ =?us-ascii?Q?Z2S4gYMkk58cfRRXinjQiLCYv+IQ/9PBtdaXmb7zMGOq7S0r88rBBv0z2rbM?=
+ =?us-ascii?Q?T+jLl0wan+N+f0o7zdIC0vsREeWuPnnQuj0Ztceq/cKzpGJANuu1+bfzf3+O?=
+ =?us-ascii?Q?LOvEfdThOdoip0E+VjVX+Sd4O1ct18BPyCC83FksB+OB0Wg8M+HXv25EacL+?=
+ =?us-ascii?Q?k1iYf7Q3x4UA2I5rF5xVePEy9X6tz+5RQJ/ulHGMA/wOduf82AwNf2BcO4I0?=
+ =?us-ascii?Q?fSY+31mS+2tDEZYNyTZFnR7o9bTYZtvZnNqsN5btcaFWFNw4EKYwT1tqOCQt?=
+ =?us-ascii?Q?edKfe8tM6Uo=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?v6WKOOc86tmEEEuabCJ8jU/BcWdJYE5ucvEjPiWK1J0L5oKippAefv6hNIJ1?=
+ =?us-ascii?Q?LbLgPmXme682VqjTudFj/ZZGUTI30N2DGkNcJocP/9OQuRr1y96Qqfrq9uVK?=
+ =?us-ascii?Q?L3aExV+NaYaF+wMhprrLs//6qtZa+Zb5aNtCoDThegtUd6c5FmOEHSRdjLuy?=
+ =?us-ascii?Q?+qYCemFZQyY2YYfXQmYZ447bm2TwBM+5wMQG2IbDTIGx6K7vOMxSyA+27UqN?=
+ =?us-ascii?Q?n4r9l1ENUAGoYnl9RvwjP77iYz4WgNU5aPrVujX3UM9Bh4kVuS8pg3L40pk+?=
+ =?us-ascii?Q?K9935vxurHJZKB8r2aYOmupJ/7gz9fmO9lB/+s0JHB7CxsOd8d/QCIO+mR6c?=
+ =?us-ascii?Q?4bbfO1eqVyAx3LbmBf93+zh+hajmW2Vv8Czki7d0MV3whTuVFTS0NmU2bMAy?=
+ =?us-ascii?Q?r1Nsn8wnUzPoky1Ya1OtqskLEyL59utP6ZcU6YdNNEWxTur4unEqAynPjP5L?=
+ =?us-ascii?Q?kgRodjzWcuAoYT7tl9Vdf1eoZjOTQSJo1wwEfi4h/k6t6MADx/VVuBEWheDC?=
+ =?us-ascii?Q?MT+j/KniPWLWZuMSKB+FkNDUDJ6QOk0rpSVatsxKvY0VxXv5oP4k5CcqtSJ9?=
+ =?us-ascii?Q?9KDXjZ6q3xOSgeBLgd5FWxdH1sxkqteWL/gtJnKOW2JBbaltDYBELzF0USyZ?=
+ =?us-ascii?Q?neqqQDYs2EQsG5dfHfXmy/U3H9R0gQIU+ARkGvzOuGRUn6GNaNgIVu0Sqp6O?=
+ =?us-ascii?Q?ynxA8UltS5eHog6Nfxj0QfRlIbbkDxkCuQcU1txg7wHOHwmUo4Niq8PfesMK?=
+ =?us-ascii?Q?zRZLFCaLJzNuQVBNfYMZD6wWntjVxSyXUV4UoBb8Aahcfs52guRvjwJ6Vk4/?=
+ =?us-ascii?Q?hoepP+qxWx7wF1gsg+XKg37ehPd6pHF74tocKQ6YNnNFFM8oU0s3nfyNjqBg?=
+ =?us-ascii?Q?8QVZc8YexGresy+tKfRLiWM9ZTgGx+AsdqCfv9KDvD4/zTbsHAMz22GwxMz7?=
+ =?us-ascii?Q?5Lc3sFBrk7d5q3MYBOoK8v0r4PBipaVAnn66AZ6KomKxjOY2UQQRxzqMPUai?=
+ =?us-ascii?Q?I3CD7p3GLOMmFm01iVZvKWwJuNMHdIOPRwV+H/8ixe8YdW+MLSnhlwuBX6m7?=
+ =?us-ascii?Q?Ko5EJxZXqDfhbSxgUNdqTYQ8ORFmFYLWO7hwAzkTXQpUbXO/SJ3o/8u7ykPI?=
+ =?us-ascii?Q?FUmpqGbxK0sby2hO6fJwG3lcfGC/xChFA9TLEuvmJiMuJE0cdHzJOAjI9QPy?=
+ =?us-ascii?Q?D1+rO3sLsDzdLQX2H4/z1T3CeOX+yi294PtTvZJ1bxwQlyoJzuPIVhRFO0cn?=
+ =?us-ascii?Q?rk0b0SnNkAbg5mW7Y6HcmmOqTVMf2z9pVhfplf4u5XiOG8zTxuXnrsRrfA5Q?=
+ =?us-ascii?Q?uoOnMoCQPGPfUYfVM/ZKBGmMDGRgep9qtMwowUccJ4b6ayzGrtk90jMVPR5W?=
+ =?us-ascii?Q?pJL25HSx224ew1ILlHcYD2SN212Vpb8aW6oJ3/kmpimrN5vcJFzln1KrzzOU?=
+ =?us-ascii?Q?nLFSGFKE2T4h/wVo7RloYAVbA4SQHudIczYrWq+f5q0M3uqQtitfXnkqkGtb?=
+ =?us-ascii?Q?9YfkkpnxQgREoz3gjg+ZHX5DLIQxsk7dVrHajD7bf7dgZo6+3m5d3LM4URot?=
+ =?us-ascii?Q?qm1Zve6Np6nDDQuqAEhNj7r1M4Z6tJH4qB6jvzo8UEVVBEZlKlCZp6+0u20L?=
+ =?us-ascii?Q?w4mdu0u/NAX1/41a5sZ21jPP7B4yx+NVWkt7DWw2qMbO?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea6a01a2-f78e-436c-c943-08ddd4033290
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 09:33:56.0135
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qa83ZFW0uO0iOLQg2cjQjedtbx7KxE7BOlGmbUqpHqYByntXhp4qCOyZESeY0utnKWMY0O17uBeSZ7g37Dj2Tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6257
+X-OriginatorOrg: intel.com
 
-Hi Jerry,
+The PHY's pin assignment value in the TCSS_DDI_STATUS register - as set
+by the HW/FW based on the connected DP-alt sink's TypeC/PD pin
+assignment negotiation - gets cleared by the HW/FW on LNL+ as soon as
+the sink gets disconnected, even if the PHY ownership got acquired
+already by the driver (and hence the PHY itself is still connected and
+used by the display). This is similar to how the PHY Ready flag gets
+cleared on LNL+ in the same register.
 
-> Am 05.08.2025 um 10:53 schrieb Jerry Lv <Jerry.Lv@axis.com>:
->=20
->=20
->=20
->=20
-> ________________________________________
-> From: H. Nikolaus Schaller <hns@goldelico.com>
-> Sent: Monday, July 21, 2025 8:46 PM
-> To: Sebastian Reichel; Jerry Lv
-> Cc: Pali Roh=C3=A1r; linux-pm@vger.kernel.org; =
-linux-kernel@vger.kernel.org; letux-kernel@openphoenux.org; =
-stable@vger.kernel.org; kernel@pyra-handheld.com; andreas@kemnade.info; =
-H. Nikolaus Schaller
-> Subject: [PATCH] power: supply: bq27xxx: fix error return in case of =
-no bq27000 hdq battery
->=20
-> [You don't often get email from hns@goldelico.com. Learn why this is =
-important at https://aka.ms/LearnAboutSenderIdentification ]
->=20
-> Since commit
->=20
-> commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when =
-busy")
->=20
-> the console log of some devices with hdq but no bq27000 battery
-> (like the Pandaboard) is flooded with messages like:
->=20
-> [   34.247833] power_supply bq27000-battery: driver failed to report =
-'status' property: -1
->=20
-> as soon as user-space is finding a /sys entry and trying to read the
-> "status" property.
->=20
-> It turns out that the offending commit changes the logic to now return =
-the
-> value of cache.flags if it is <0. This is likely under the assumption =
-that
-> it is an error number. In normal errors from bq27xxx_read() this is =
-indeed
-> the case.
->=20
-> But there is special code to detect if no bq27000 is installed or =
-accessible
-> through hdq/1wire and wants to report this. In that case, the =
-cache.flags
-> are set (historically) to constant -1 which did make reading =
-properties
-> return -ENODEV. So everything appeared to be fine before the return =
-value was
-> fixed. Now the -1 is returned as -ENOPERM instead of -ENODEV, =
-triggering the
-> error condition in power_supply_format_property() which then floods =
-the
-> console log.
->=20
-> So we change the detection of missing bq27000 battery to simply set
->=20
->        cache.flags =3D -ENODEV
->=20
-> instead of -1.
->=20
-> Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when =
-busy")
-> Cc: Jerry Lv <Jerry.Lv@axis.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
-> drivers/power/supply/bq27xxx_battery.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/bq27xxx_battery.c =
-b/drivers/power/supply/bq27xxx_battery.c
-> index 93dcebbe11417..efe02ad695a62 100644
-> --- a/drivers/power/supply/bq27xxx_battery.c
-> +++ b/drivers/power/supply/bq27xxx_battery.c
-> @@ -1920,7 +1920,7 @@ static void =
-bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
->=20
->        cache.flags =3D bq27xxx_read(di, BQ27XXX_REG_FLAGS, =
-has_singe_flag);
->        if ((cache.flags & 0xff) =3D=3D 0xff)
-> -               cache.flags =3D -1; /* read error */
-> +               cache.flags =3D -ENODEV; /* read error */
->        if (cache.flags >=3D 0) {
->                cache.capacity =3D bq27xxx_battery_read_soc(di);
->=20
-> --
-> 2.50.0
->=20
->=20
->=20
-> In our device, we use the I2C to get data from the gauge bq27z561.=20
-> During our test, when try to get the status register by bq27xxx_read() =
-in the bq27xxx_battery_update_unlocked(),=20
-> we found sometimes the returned value is 0xFFFF, but it will update to =
-some other value very quickly.
+To be able to query the max lane count value on LNL+ - which is based on
+the above pin assignment - at all times even after the sink gets
+disconnected, the max lane count must be determined and cached during
+the PHY's HW readout and connect sequences. Do that here, leaving the
+actual use of the cached value to a follow-up change.
 
-Strange. Do you have an idea if this is an I2C communication effect or =
-really reported from the bq27z561 chip?
+v2: Don't read out the pin configuration if the PHY is disconnected.
 
-> So the returned 0xFFFF does not indicate "No such device", if we force =
-to set the cache.flags to "-ENODEV" or "-1" manually in this case,=20
-> the bq27xxx_battery_get_property() will just return the cache.flags =
-until it is updated at lease 5 seconds later,
-> it means we cannot get any property in these 5 seconds.
+Cc: stable@vger.kernel.org # v6.8+
+Reported-by: Charlton Lin <charlton.lin@intel.com>
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_tc.c | 57 +++++++++++++++++++++----
+ 1 file changed, 48 insertions(+), 9 deletions(-)
 
-Ok I see. So there should be a different rule for the bq27z561.
-
->=20
-> In fact, for the I2C driver, if no bq27000 is installed or accessible,=20=
-
-> the bq27xxx_battery_i2c_read() will return "-ENODEV" directly when no =
-device,
-> or the i2c_transfer() will return the negative error according to real =
-case.
-
-Yes, that is what I2C can easily report. But for AFAIK for HDQ there is =
-no -ENODEV
-detection in the protocol. So the bq27000 has this special check.
-
->=20
->        bq27xxx_battery_i2c_read() {
->                ...
->        if (!client->adapter)
->         return -ENODEV;
->                ...
->                ret =3D i2c_transfer(client->adapter, msg, =
-ARRAY_SIZE(msg));
->                ...
->                if (ret < 0)
->        return ret;
->                ...
->        }
->=20
-> But there is no similar check in the bq27xxx_battery_hdq_read() for =
-the HDQ/1-wire driver.
->=20
-> Could we do the same check in the bq27xxx_battery_hdq_read(),
-> instead of changing the cache.flags manually when the last byte in the =
-returned data is 0xFF?
-
-So your suggestion is to modify bq27xxx_battery_hdq_read to check for =
-BQ27XXX_REG_FLAGS and
-value 0xff and convert to -ENODEV?
-
-Well, it depends on the data that has been successfully reported. So =
-making bq27xxx_battery_hdq_read()
-have some logic to evaluate the data seems to just move the problem to a =
-different place.
-Especially as this is a generic function that can read any register it =
-is counter-intuitive to
-analyse the data.
-
-> Or could we just force to set the returned value to "-ENODEV" only =
-when the last byte get from bq27xxx_battery_hdq_read() is 0xFF?
-
-In summary I am not sure if that improves anything. It just makes the =
-existing code more difficult=20
-to understand.
-
-What about checking bq27xxx_battery_update_unlocked() for
-
-       if (!(di->opts & BQ27Z561_O_BITS) && (cache.flags & 0xff) =3D=3D =
-0xff)
-
-to protect your driver from this logic?
-
-This would not touch or break the well tested bq27000 logic and prevent =
-the new bq27z561
-driver to trigger a false positive?
-
-BR and thanks,
-Nikolaus
+diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
+index 73a08bd84a70a..b8453fc3ab688 100644
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -66,6 +66,7 @@ struct intel_tc_port {
+ 	enum tc_port_mode init_mode;
+ 	enum phy_fia phy_fia;
+ 	u8 phy_fia_idx;
++	u8 max_lane_count;
+ };
+ 
+ static enum intel_display_power_domain
+@@ -365,12 +366,12 @@ static int intel_tc_port_get_max_lane_count(struct intel_digital_port *dig_port)
+ 	}
+ }
+ 
+-int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
++static int get_max_lane_count(struct intel_tc_port *tc)
+ {
+-	struct intel_display *display = to_intel_display(dig_port);
+-	struct intel_tc_port *tc = to_tc_port(dig_port);
++	struct intel_display *display = to_intel_display(tc->dig_port);
++	struct intel_digital_port *dig_port = tc->dig_port;
+ 
+-	if (!intel_encoder_is_tc(&dig_port->base) || tc->mode != TC_PORT_DP_ALT)
++	if (tc->mode != TC_PORT_DP_ALT)
+ 		return 4;
+ 
+ 	assert_tc_cold_blocked(tc);
+@@ -384,6 +385,21 @@ int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
+ 	return intel_tc_port_get_max_lane_count(dig_port);
+ }
+ 
++static void read_pin_configuration(struct intel_tc_port *tc)
++{
++	tc->max_lane_count = get_max_lane_count(tc);
++}
++
++int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
++{
++	struct intel_tc_port *tc = to_tc_port(dig_port);
++
++	if (!intel_encoder_is_tc(&dig_port->base))
++		return 4;
++
++	return get_max_lane_count(tc);
++}
++
+ void intel_tc_port_set_fia_lane_count(struct intel_digital_port *dig_port,
+ 				      int required_lanes)
+ {
+@@ -596,9 +612,12 @@ static void icl_tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	tc_cold_wref = __tc_cold_block(tc, &domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	__tc_cold_unblock(tc, domain, tc_cold_wref);
+ }
+ 
+@@ -656,8 +675,11 @@ static bool icl_tc_phy_connect(struct intel_tc_port *tc,
+ 
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
+-	if (tc->mode == TC_PORT_TBT_ALT)
++	if (tc->mode == TC_PORT_TBT_ALT) {
++		read_pin_configuration(tc);
++
+ 		return true;
++	}
+ 
+ 	if ((!tc_phy_is_ready(tc) ||
+ 	     !icl_tc_phy_take_ownership(tc, true)) &&
+@@ -668,6 +690,7 @@ static bool icl_tc_phy_connect(struct intel_tc_port *tc,
+ 		goto out_unblock_tc_cold;
+ 	}
+ 
++	read_pin_configuration(tc);
+ 
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_release_phy;
+@@ -858,9 +881,12 @@ static void adlp_tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	port_wakeref = intel_display_power_get(display, port_power_domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	intel_display_power_put(display, port_power_domain, port_wakeref);
+ }
+ 
+@@ -873,6 +899,9 @@ static bool adlp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
+ 
+ 	if (tc->mode == TC_PORT_TBT_ALT) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
++
++		read_pin_configuration(tc);
++
+ 		return true;
+ 	}
+ 
+@@ -894,6 +923,8 @@ static bool adlp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
+ 
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
++	read_pin_configuration(tc);
++
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_unblock_tc_cold;
+ 
+@@ -1124,9 +1155,12 @@ static void xelpdp_tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	tc_cold_wref = __tc_cold_block(tc, &domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	drm_WARN_ON(display->drm,
+ 		    (tc->mode == TC_PORT_DP_ALT || tc->mode == TC_PORT_LEGACY) &&
+ 		    !xelpdp_tc_phy_tcss_power_is_enabled(tc));
+@@ -1138,14 +1172,19 @@ static bool xelpdp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
+ {
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
+-	if (tc->mode == TC_PORT_TBT_ALT)
++	if (tc->mode == TC_PORT_TBT_ALT) {
++		read_pin_configuration(tc);
++
+ 		return true;
++	}
+ 
+ 	if (!xelpdp_tc_phy_enable_tcss_power(tc, true))
+ 		goto out_unblock_tccold;
+ 
+ 	xelpdp_tc_phy_take_ownership(tc, true);
+ 
++	read_pin_configuration(tc);
++
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_release_phy;
+ 
+-- 
+2.49.1
 
 
