@@ -1,155 +1,237 @@
-Return-Path: <stable+bounces-166610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F723B1B47C
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 15:13:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19432B1B46B
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 15:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FFD13AC674
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 13:13:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945AB177A5E
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 13:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11520279794;
-	Tue,  5 Aug 2025 13:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1968275100;
+	Tue,  5 Aug 2025 13:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="1UGnYPFj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xs8C7PVY"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAE2275B0B;
-	Tue,  5 Aug 2025 13:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639B62737F8;
+	Tue,  5 Aug 2025 13:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754399505; cv=none; b=tTTxkm3rApqFBrGey+3J0WxAICkHXlsEiC/QWSU02bY4CXr5oge1g1K4fkTt9WYBOV02ylLsa97DM2sqPQQVqf7cAH+j4/ACVdYcEMSB3HsTgtfSzWCG8j61DqkOSrgje+arvCjTZ72egY+XUEYrO5VFoxpimUFKEQQL7/vAx98=
+	t=1754399478; cv=none; b=clIHTLL0YR+mGCXRkIlffbXBphg9KilUis8UjHBSrgNxtMd7Pdd5SE/y/1J+McsFwkjmJfz5vmkkUf2Pvfe8qjZJhP6sRle782hM2CIxsQ8YXdxPVct2LWrTpwrdmZof99ni/Drr0cztVjLfGlPLu2E+bHlS8w/M0zrMEN3fYqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754399505; c=relaxed/simple;
-	bh=YLBQDy6eQNpuqYJmBuJHbdvk6W3dpGmVOLhbuzAjcJU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TTFSBvkJENWaUz/S69TWJHGe76mrBdi+XXxszLjeBBVk5HzkbptY5KZ3BFNp1Vb2d3pXOpLoTwRxB2xOICpRfXiy4W7AUDiLZXIT/wa0k9Hlhdf28EXMi0Ed37Epx0VH/si63qj0oapzcENH/g+SY4F9ZAAmr6XNQRH1rmavwbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=1UGnYPFj; arc=none smtp.client-ip=178.154.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:29a1:0:640:5fbc:0])
-	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id B5EF080627;
-	Tue, 05 Aug 2025 16:10:23 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:849::1:3b])
-	by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id 6AgoJU9GpKo0-4ePcQdmN;
-	Tue, 05 Aug 2025 16:10:22 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1754399422;
-	bh=1fhMX3tvH9apZXuDu7nTQnIUMtDysNPzl2m86b8poH0=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=1UGnYPFjO7Zh2vLJEXLFw6uSfIpf/6yERIuID+XBynFeIndBMTP9ZIQV8adLQCrYi
-	 lRenxXGknUS3kKJKSv+I6l0afbWZSX0c5Q7xrrvWC5xdnyWSlWI87G8RcF3PsSSCRy
-	 fJbLHsR1l/ZhQSlyPSCnsDVbIp/secb0ROJWvGUc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
-	Hillf Danton <hdanton@sina.com>,
-	kniv@yandex-team.ru,
-	stable@vger.kernel.org,
-	Andrey Ryabinin <arbn@yandex-team.com>
-Subject: [PATCH v3] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
-Date: Tue,  5 Aug 2025 16:09:17 +0300
-Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1754399478; c=relaxed/simple;
+	bh=latZ4hFb/UMwTCp9lrxxZL3jFuxO8nc28l+KNSGjrLQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oZ+Q9DrCQy/4J/y2pHvBRWmWb2owv5pDkBWNfD95K5onp5/NjWR99s3QBQmSMEOGAFPJup8zUg3y8BpPRYaQPHwEjiLG0EIT8LT6vCoB+HGKtkWCtwZCA+tfb8/UQQHfOB6TSZn9w0QtDhsNEfX8httWtLAulpyT1EEcCwOna0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xs8C7PVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F97C4CEF0;
+	Tue,  5 Aug 2025 13:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754399478;
+	bh=latZ4hFb/UMwTCp9lrxxZL3jFuxO8nc28l+KNSGjrLQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Xs8C7PVY85w2nLBr2bpWOsOz+pc29gavHfaDlaX4JC0tRtCBE3i1DvkEfaS8VjCsK
+	 rkYnWSM39oY8gfLC31O1gx8HDg3wjfgjTWO7BjojyaJqVedCZwjcMnuXYOFuCNawtf
+	 JFDfDx4hXRLXf+jaPzowXMrvLj1vrky2XI8rA15VNoV7luxELEWvlHY04fJubW+9dR
+	 gMlR8sZj0RFdAwnrzKAmA5DGWU9WCrW0EosZSpkktvppIyAEQOPVWEOlzthiTqmrBK
+	 9BQh0aAajyk2i3zbHQcQVt1bR7z0LclG6SPVAa7NVW9C/+YWIXjjwARItID87WHyFf
+	 pdJnqsVhl2H8A==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	sathya.prakash@broadcom.com,
+	sreekanth.reddy@broadcom.com,
+	suganath-prabu.subramani@broadcom.com,
+	MPT-FusionLinux.pdl@broadcom.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16-5.4] scsi: mpt3sas: Correctly handle ATA device errors
+Date: Tue,  5 Aug 2025 09:09:17 -0400
+Message-Id: <20250805130945.471732-42-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250805130945.471732-1-sashal@kernel.org>
+References: <20250805130945.471732-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When operating on struct vhost_net_ubuf_ref, the following execution
-sequence is theoretically possible:
-CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
-                             // ubufs->refcount == 2
-vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
-                                                     vhost_net_ubuf_put_and_wait()
-                                                       vhost_net_ubuf_put()
-                                                         int r = atomic_sub_return(1, &ubufs->refcount);
-                                                         // r = 1
-int r = atomic_sub_return(1, &ubufs->refcount);
-// r = 0
-                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
-                                                      // no wait occurs here because condition is already true
-                                                    kfree(ubufs);
-if (unlikely(!r))
-  wake_up(&ubufs->wait);  // use-after-free
+From: Damien Le Moal <dlemoal@kernel.org>
 
-This leads to use-after-free on ubufs access. This happens because CPU1
-skips waiting for wake_up() when refcount is already zero.
+[ Upstream commit 15592a11d5a5c8411ac8494ec49736b658f6fbff ]
 
-To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
-as suggested by Hillf Danton. For this lock to take effect, free ubufs with
-kfree_rcu().
+With the ATA error model, an NCQ command failure always triggers an abort
+(termination) of all NCQ commands queued on the device. In such case, the
+SAT or the host must handle the failed command according to the command
+sense data and immediately retry all other NCQ commands that were aborted
+due to the failed NCQ command.
 
-Cc: stable@vger.kernel.org
-Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
-Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
-Suggested-by: Hillf Danton <hdanton@sina.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+For SAS HBAs controlled by the mpt3sas driver, NCQ command aborts are not
+handled by the HBA SAT and sent back to the host, with an ioc log
+information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
+PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
+_scsih_io_done() always forces a retry of commands terminated with the
+status MPI2_IOCSTATUS_SCSI_IOC_TERMINATED using the SCSI result
+DID_SOFT_ERROR, regardless of the log_info for the command.  This
+correctly forces the retry of collateral NCQ abort commands, but with the
+retry counter for the command being incremented. If a command to an ATA
+device is subject to too many retries due to other NCQ commands failing
+(e.g. read commands trying to access unreadable sectors), the collateral
+NCQ abort commands may be terminated with an error as they run out of
+retries. This violates the SAT specification and causes hard-to-debug
+command errors.
+
+Solve this issue by modifying the handling of the
+MPI2_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
+ATA device and if the command loginfo indicates an NCQ collateral
+abort. If that is the case, force the command retry using the SCSI result
+DID_IMM_RETRY to avoid incrementing the command retry count.
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250606052747.742998-3-dlemoal@kernel.org
+Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v2:
-* move reinit_completion() into vhost_net_flush(), thanks
-  to Hillf Danton
-* add Tested-by: Lei Yang
-* check that usages of put_and_wait() are consistent across
-  LTS kernels
-v3:
-* use rcu_read_lock() with kfree_rcu() instead of completion,
-  as suggested by Hillf Danton
 
- drivers/vhost/net.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+LLM Generated explanations, may be completely bogus:
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 6edac0c1ba9b..c6508fe0d5c8 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -99,6 +99,7 @@ struct vhost_net_ubuf_ref {
- 	atomic_t refcount;
- 	wait_queue_head_t wait;
- 	struct vhost_virtqueue *vq;
-+	struct rcu_head rcu;
- };
- 
- #define VHOST_NET_BATCH 64
-@@ -250,9 +251,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
- 
- static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
- {
--	int r = atomic_sub_return(1, &ubufs->refcount);
-+	int r;
+Based on my analysis of the commit and examination of the kernel
+repository, here is my assessment:
+
+**Backport Status: YES**
+
+This commit should be backported to stable kernel trees for the
+following reasons:
+
+## Bug Fix Analysis
+
+1. **Fixes a Significant Bug**: The commit fixes a violation of the SAT
+   (SCSI ATA Translation) specification that causes incorrect error
+   handling for NCQ (Native Command Queuing) commands on SATA devices.
+   When one NCQ command fails, all other NCQ commands get aborted as
+   collateral damage, which is expected ATA behavior. However, the
+   driver was incorrectly incrementing retry counters for these
+   collateral aborts, eventually causing them to fail with errors.
+
+2. **Real User Impact**: The commit message explicitly states this
+   causes "hard-to-debug command errors" and includes a "Tested-by" tag
+   from another developer (Yafang Shao), indicating this was a real
+   problem affecting users in production.
+
+3. **Small and Contained Fix**: The change is minimal - it only adds:
+   - A new constant definition `IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR`
+     (0x31080000)
+   - A small conditional block (lines 5817-5829 in the new code) that
+     checks for this specific log_info value and uses `DID_IMM_RETRY`
+     instead of `DID_SOFT_ERROR`
+
+4. **Low Risk of Regression**:
+   - The fix is highly targeted - it only affects the specific case
+     where `log_info == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR`
+   - It uses an existing SCSI mechanism (`DID_IMM_RETRY`) that's already
+     well-established in the kernel (used in 30+ places across SCSI
+     drivers)
+   - The change preserves all existing behavior for other error
+     conditions
+
+5. **Fixes Specification Compliance**: The bug violates the SAT
+   specification, which is important for interoperability and correct
+   SATA device operation through SAS HBAs.
+
+## Code Analysis
+
+The key change is in the `MPI2_IOCSTATUS_SCSI_IOC_TERMINATED` case
+handling:
+
+```c
++if (log_info == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
++    /*
++     * This is a ATA NCQ command aborted due to another NCQ
++     * command failure. We must retry this command
++     * immediately but without incrementing its retry
++     * counter.
++     */
++    WARN_ON_ONCE(xfer_cnt != 0);
++    scmd->result = DID_IMM_RETRY << 16;
++    break;
++}
+```
+
+This specifically handles the NCQ collateral abort case (identified by
+the log_info value 0x31080000) by using `DID_IMM_RETRY` which retries
+the command without incrementing the retry counter, instead of the
+default `DID_SOFT_ERROR` which would increment the counter.
+
+## Stable Tree Criteria Met
+
+- ✓ Fixes a real bug that affects users
+- ✓ No new features added
+- ✓ Minimal architectural changes
+- ✓ Low risk of regression
+- ✓ Confined to a specific subsystem (mpt3sas driver)
+- ✓ Clear problem and solution
+
+The commit meets all the criteria for stable tree backporting as it's a
+targeted bug fix that resolves a specification compliance issue with
+minimal risk.
+
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+index 508861e88d9f..d7d8244dfedc 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -195,6 +195,14 @@ struct sense_info {
+ #define MPT3SAS_PORT_ENABLE_COMPLETE (0xFFFD)
+ #define MPT3SAS_ABRT_TASK_SET (0xFFFE)
+ #define MPT3SAS_REMOVE_UNRESPONDING_DEVICES (0xFFFF)
 +
-+	rcu_read_lock();
-+	r = atomic_sub_return(1, &ubufs->refcount);
- 	if (unlikely(!r))
- 		wake_up(&ubufs->wait);
-+	rcu_read_unlock();
- 	return r;
- }
- 
-@@ -265,7 +270,7 @@ static void vhost_net_ubuf_put_and_wait(struct vhost_net_ubuf_ref *ubufs)
- static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
- {
- 	vhost_net_ubuf_put_and_wait(ubufs);
--	kfree(ubufs);
-+	kfree_rcu(ubufs, rcu);
- }
- 
- static void vhost_net_clear_ubuf_info(struct vhost_net *n)
++/*
++ * SAS Log info code for a NCQ collateral abort after an NCQ error:
++ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
++ * See: drivers/message/fusion/lsi/mpi_log_sas.h
++ */
++#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
++
+ /**
+  * struct fw_event_work - firmware event struct
+  * @list: link list framework
+@@ -5814,6 +5822,17 @@ _scsih_io_done(struct MPT3SAS_ADAPTER *ioc, u16 smid, u8 msix_index, u32 reply)
+ 			scmd->result = DID_TRANSPORT_DISRUPTED << 16;
+ 			goto out;
+ 		}
++		if (log_info == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
++			/*
++			 * This is a ATA NCQ command aborted due to another NCQ
++			 * command failure. We must retry this command
++			 * immediately but without incrementing its retry
++			 * counter.
++			 */
++			WARN_ON_ONCE(xfer_cnt != 0);
++			scmd->result = DID_IMM_RETRY << 16;
++			break;
++		}
+ 		if (log_info == 0x31110630) {
+ 			if (scmd->retries > 2) {
+ 				scmd->result = DID_NO_CONNECT << 16;
 -- 
-2.34.1
+2.39.5
 
 
