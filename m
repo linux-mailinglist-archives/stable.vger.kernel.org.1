@@ -1,154 +1,129 @@
-Return-Path: <stable+bounces-166657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF46B1BCBD
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 00:41:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9134B1BCFA
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 01:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B94C818A4F0A
-	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 22:41:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AB6E17E492
+	for <lists+stable@lfdr.de>; Tue,  5 Aug 2025 23:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F39275852;
-	Tue,  5 Aug 2025 22:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08492566F5;
+	Tue,  5 Aug 2025 23:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FT0LqtIU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lr94qVKg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BA92609CC
-	for <stable@vger.kernel.org>; Tue,  5 Aug 2025 22:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0561B960;
+	Tue,  5 Aug 2025 23:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754433659; cv=none; b=pOVE8uFCLGSwX3PcIBk5x8Q+Fl5R3RSxn3lSMSufeergCTtOQ3R65uP/w7za8A/ot4TeBgBRUwgOFZwKyE/bWRVkcW/tsjB/JBt7ydfN2KP/lAWwqv98XjM+M4Q2HdjRjAuL31jv/YEROgPHPk7btHZ1oZ7Vyp//3t+O5XUbSTg=
+	t=1754435844; cv=none; b=j83QXXX+46e9hSaT1x1rpQtY1odifOrhDtqj2NhNzW1Opo20Kt6+YbgAsPY37SCCnlQ2iwtaY6PRouQ65hHkiWT4yVwqpaleQ9CEXhPBtmDdMwyMPrqpizbFSUKkT+nGvt16gfdblw9VtjmN83x8QhiVzd1/59ervhRsf6RjlSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754433659; c=relaxed/simple;
-	bh=zS1zWvhTT+IcSshTBcgi0LvYfFbo8Wss63zrFGwEmv8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u1s3/X+TfX8WcVEFo/iCEzCqMbyb/af1Kzk6hDe0emsqNzn2T9JwAQ43PvsIkIbl4Rbp7+PDLr03/Uq9utQeAd1aQAWrN/P2Q3c5rnRZyjrfUdFMwxBjNueevYkxteyQOGLQNCO0adWneKTjWOfk8ROC7gqyMTWzLBez4bqhVM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FT0LqtIU; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-61576e33ce9so666075a12.1
-        for <stable@vger.kernel.org>; Tue, 05 Aug 2025 15:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1754433656; x=1755038456; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=X3m+xXB2nDYY2FTeCIps+Dx8G8ytYsYqX18zczPNIoE=;
-        b=FT0LqtIUmBcx446lNQHnigCVXEuppgMjgyAHhm0xKfIODHzlJ1ZA2vx8cTIt94Tcn9
-         /7zYGXOsCw/PEMUhqx+DxUlqX0Pabt1h3fSA0DAb1O+s2IdwWz7s0cXNxs6f5gMJ2mha
-         nReCwSkkILNSjCp9b0PdsE8eXTz2j141nqJcQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754433656; x=1755038456;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X3m+xXB2nDYY2FTeCIps+Dx8G8ytYsYqX18zczPNIoE=;
-        b=S5bJjdMoye/I9vgZWJXVk/C3b0wpZHbkDnWiSf7EdedpFs/CEVsIWO9fUzuKOBakmE
-         CQHm6aq6S4MTu9zWPvZEJbV/zCxfH2ySsXnf9HpLtEb3ETWyLwVvZ3TNvhSDJzpsKsvE
-         tdMBq+pI02WsGb8oPJILAAY9/yBtwD3JQAPlEcWbpAVyLujaUJjL0jj3Ct4MlabEGAJB
-         PgLqs5gsO56L1saBiQkG0IERY2D2CzkF3eZefC03oIvRjqvWjiDDFpNuKPuRam29PEB5
-         IxfunfWvXFzN9JFsc2VR5glYLO5JaTjsIlBmiJGRW4k5kXpWN1B1EdAiq+MCjM25s9Z+
-         LadA==
-X-Forwarded-Encrypted: i=1; AJvYcCXaVPmC9MbB44aEOeMzS8mxxYiWcfrLFKW4BEQW+PTjWAxgA8CzHSMmbvgk+YmqodRwIyFOwuI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL2ogGN7COpecvkH4bNvspxHClioeJPxlIMwNrsxytJKQbWugN
-	3RcBeZxhj8TilmHpr6iTNaNxjdIl+AH3ySOFPqt3s2k/am16SYwgkP+Zmj1JlJAus02HdvCmdWR
-	NMeKXUQJmEA==
-X-Gm-Gg: ASbGncvTU2FwvyP9f1hFHa9uZjSMfrkf6UjUDmfktjM6xKuJSzp7KIaZ8KqWYd/C6gB
-	4BJmuZ159eXM6b3DMMisltLdHDjAWw4qxDWOAzAGGQuvdVkl7l7f6tGLxRQpIlWjWtDis+nEF03
-	IMKw8xMRXjExbCw80S2A/ta8QOQyZda4HKCGonz1iErLc3PQXAzahBLBdmhHn1KSXvJlLRC2ytO
-	OR/+3c2R8E2TxjNbfZj0JHQrGLkg9bji/DpVXra+ejKsL7yjhMj6/gBDbS7HKbB3IfCithJ23hZ
-	NgtX3y1pPr56/GRYq2eViHphM8T7oam0xBp7A4Y6DvD5BXJQYk7zjvz/aw8Dsppjf1PkLI4s8SN
-	1hzibJC+AJTw72wRI1VJQxnc6ThDMzKdyt+UeacOpaskoTbUxNdljF4DPweInT9+Z7tGmjZBKq3
-	/uzcUfWFs=
-X-Google-Smtp-Source: AGHT+IF07y4w+xndVB15bL0rlNGvgjpN3d0DENF1HqrKzfu/W2pNPNxyN9Dr1epVqru/Iwz8TE4Xuw==
-X-Received: by 2002:a17:907:3d8f:b0:ae2:3544:8121 with SMTP id a640c23a62f3a-af9907ac82amr48969166b.9.1754433655735;
-        Tue, 05 Aug 2025 15:40:55 -0700 (PDT)
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af938aa8275sm744715766b.57.2025.08.05.15.40.53
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 15:40:54 -0700 (PDT)
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61576e33ce9so666016a12.1
-        for <stable@vger.kernel.org>; Tue, 05 Aug 2025 15:40:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU4dKAdoGvIiH3uMtFV1/MCQAZYT5K1XWH6ZHplvrzyuyPBX6adKOq++wPpBdKWsS8jdEfKS/s=@vger.kernel.org
-X-Received: by 2002:a50:d6da:0:b0:615:1ffe:7e13 with SMTP id
- 4fb4d7f45d1cf-61796e84ddamr347112a12.16.1754433653535; Tue, 05 Aug 2025
- 15:40:53 -0700 (PDT)
+	s=arc-20240116; t=1754435844; c=relaxed/simple;
+	bh=hFv0BFfQpD8fW/Ro7OufaFPfvSDTPCQd+a6r37erHiw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A4Qwfg5gSBCaBqgF640s3xoXzsIhCNGYYQ4MI8rxKQtBpkACJlmaD1ye6M3CXhPEfCQ3JY6CyKr729dHXNPDwD+kIDXfSzsk04wOT1+06i1/0Y3gQxPSBifLvaOTbeX5YQr/89q3BZBNArsA8tsbbxJPm4/RVR10jUlioPAvUWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lr94qVKg; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754435843; x=1785971843;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hFv0BFfQpD8fW/Ro7OufaFPfvSDTPCQd+a6r37erHiw=;
+  b=lr94qVKgu9nTYfZh8c7dWpNl2jYg6nokiaGguo1Ap2cnNCMfjzPMs8ew
+   6UElJrW1deo4iQ4ur84u/MDU7YMLWvYykvSDakFWZyIm0KB20nlGyKEhs
+   R9wcxf0j8KI1GaGJDpPD/zB2h7bxK2EwZHY9omEVKScb2SeGExOR/c5u5
+   JfS0fvh+51DHvbYo29e1n4ur+LL8ycPQRLdNC/+hJ9+uoCRMb6zGtydEY
+   Ypn+dyyOWOFkGgnB60Xt/betTXVm5AhPMNVn1s7LB6d6BzxLqSxJVIDup
+   7lQKLGIO43+LI3LOMPQHzecySb1bvmlXm1E/NNuTIuN8FcyKDgPFVneRn
+   w==;
+X-CSE-ConnectionGUID: V4wQspNsRWGcwb2y1a0KpQ==
+X-CSE-MsgGUID: P5fs8LhQTZKrcb+wsvVJvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="56707329"
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="56707329"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 16:17:23 -0700
+X-CSE-ConnectionGUID: RmKcMRfzQcC1IvGdBZ3U1w==
+X-CSE-MsgGUID: 3S9X//btS6GG3Q9IqNsOZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="195584817"
+Received: from sschumil-mobl2.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.87])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 16:17:21 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 7D6D711FC4D;
+	Wed,  6 Aug 2025 02:17:17 +0300 (EEST)
+Date: Tue, 5 Aug 2025 23:17:17 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Mark Brown <broonie@kernel.org>, Joe Perches <joe@perches.com>,
+	stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ALSA: intel_hdmi: Fix off-by-one error in
+ __hdmi_lpe_audio_probe()
+Message-ID: <aJKQ_WhAfjKvfB6U@kekkonen.localdomain>
+References: <20250805190809.31150-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250801190310.58443-1-ammarfaizi2@gnuweeb.org>
- <20250804100050.GQ8494@horms.kernel.org> <20250805202848.GC61519@horms.kernel.org>
-In-Reply-To: <20250805202848.GC61519@horms.kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 6 Aug 2025 01:40:37 +0300
-X-Gmail-Original-Message-ID: <CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com>
-X-Gm-Features: Ac12FXzn6xC3GEWZwV8GpsWb-o1g1X9WA5sVZ0frXqURB1sH9fEGM06GbVjXWic
-Message-ID: <CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: usbnet: Fix the wrong netif_carrier_on() call placement
-To: Simon Horman <horms@kernel.org>
-Cc: Ammar Faizi <ammarfaizi2@gnuweeb.org>, Oliver Neukum <oneukum@suse.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Linux Netdev Mailing List <netdev@vger.kernel.org>, Linux USB Mailing List <linux-usb@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Armando Budianto <sprite@gnuweeb.org>, gwml@vger.gnuweeb.org, 
-	stable@vger.kernel.org, John Ernberg <john.ernberg@actia.se>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250805190809.31150-1-thorsten.blum@linux.dev>
 
-On Tue, 5 Aug 2025 at 23:28, Simon Horman <horms@kernel.org> wrote:
->
-> I have looked over the patch and it appears to me that it addresses a
-> straightforward logic error: a check was added to turn the carrier on only
-> if it is already on. Which seems a bit nonsensical. And presumably the
-> intention was to add the check for the opposite case.
->
-> This patch addresses that problem.
+Hi Thorsten,
 
-So I agree that there was a logic error.
+Thanks for the patch. 
 
-I'm not 100% sure about the "straightforward" part.
+On Tue, Aug 05, 2025 at 09:08:06PM +0200, Thorsten Blum wrote:
+> In __hdmi_lpe_audio_probe(), strscpy() is incorrectly called with the
+> length of the source string (excluding the NUL terminator) rather than
+> the size of the destination buffer. This results in one character less
+> being copied from 'card->shortname' to 'pcm->name'.
+> 
+> Since 'pcm->name' is a fixed-size buffer, we can safely omit the size
+> argument and let strscpy() infer it using sizeof(). This ensures the
+> card name is copied correctly.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 75b1a8f9d62e ("ALSA: Convert strlcpy to strscpy when return value is unused")
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  sound/x86/intel_hdmi_audio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/sound/x86/intel_hdmi_audio.c b/sound/x86/intel_hdmi_audio.c
+> index cc54539c6030..fbef0cbe8f1a 100644
+> --- a/sound/x86/intel_hdmi_audio.c
+> +++ b/sound/x86/intel_hdmi_audio.c
+> @@ -1765,7 +1765,7 @@ static int __hdmi_lpe_audio_probe(struct platform_device *pdev)
+>  		/* setup private data which can be retrieved when required */
+>  		pcm->private_data = ctx;
+>  		pcm->info_flags = 0;
+> -		strscpy(pcm->name, card->shortname, strlen(card->shortname));
+> +		strscpy(pcm->name, card->shortname);
 
-In particular, the whole *rest* of the code in that
+Could you use three arguments here for backporting -- the two-argument
+variant is a rather new addition and looks like 75b1a8f9d62e precedes it.
 
-        if (!netif_carrier_ok(dev->net)) {
+>  		/* setup the ops for playback */
+>  		snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &had_pcm_ops);
+>  
 
-no longer makes sense after we've turned the link on with that
+-- 
+Regards,
 
-                if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-                        netif_carrier_on(dev->net);
-
-sequence.
-
-Put another way - once we've turned the carrier on, now that whole
-
-                /* kill URBs for reading packets to save bus bandwidth */
-                unlink_urbs(dev, &dev->rxq);
-
-                /*
-                 * tx_timeout will unlink URBs for sending packets and
-                 * tx queue is stopped by netcore after link becomes off
-                 */
-
-thing makes no sense.
-
-So my gut feel is that the
-
-                if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-                        netif_carrier_on(dev->net);
-
-should actually be done outside that if-statement entirely, because it
-literally ends up changing the thing that if-statement is testing.
-
-And no, I didn't actually test that version, because I was hoping that
-somebody who actually knows this code better would pipe up.
-
-                Linus
+Sakari Ailus
 
