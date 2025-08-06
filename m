@@ -1,48 +1,83 @@
-Return-Path: <stable+bounces-166703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7D5B1C79A
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 16:27:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF686B1C7A8
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 16:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FCBA7A83DE
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 14:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8865E3BF800
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 14:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C5F28C5BF;
-	Wed,  6 Aug 2025 14:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4FE28BAAB;
+	Wed,  6 Aug 2025 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoW9t/8L"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hC5Iu8gx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E0B38FB9
-	for <stable@vger.kernel.org>; Wed,  6 Aug 2025 14:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123672AE74
+	for <stable@vger.kernel.org>; Wed,  6 Aug 2025 14:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754490442; cv=none; b=BdUutVA3QNw6+6vmP6xeNzBt+Cin2hBz+uxyp/A+LvU1sm5lqWjnIY8VuFOZplSqb2xShrvTmtF8Hm1e3mcuHuEwtaLJwpQRGm2GYntSAKCwd7cjMzkDvXS1U5aAggXIvFrqu8UIxCNWDAnVz2RBmAoyhzwTpCVtoK++dCPlrbM=
+	t=1754490913; cv=none; b=tBtaAYXijxNESl0URB7VNmz1/5RYhpu18wX6QfL8T4KemSJ83iEDSXSK3oHR3x5fNytxc8EFHLKxbzQVRYuViTqFAWOk2OcCWvhY1mZ8JfMIuv2T2eWmN+7Sdd2CWvdxN3VkvneX1c6DFqLIYbk18Q9jp3uG5Nidm3tScOcUbuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754490442; c=relaxed/simple;
-	bh=ZGr+jEv9FRCKPkg7vaCKkIT4md9W6Y7/qdO1PFFaA64=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ntzA3hkLkXE+vLS/E1Er0ESr5X+3LzHgTl9cmNOybv3XW/1lx8SiYCYoubhtD8IR37H+QymgfnNikFKGbAtlr1bZqg0aPnK2W1cf0EcfIo4je3CzrT00dTqOqSMFTrbCnvFIsG8PA1q05hUnI7KU9rd22ZJZgHk2zOYMvGZKfXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoW9t/8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC61AC4CEEB;
-	Wed,  6 Aug 2025 14:27:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754490442;
-	bh=ZGr+jEv9FRCKPkg7vaCKkIT4md9W6Y7/qdO1PFFaA64=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eoW9t/8LTvJ8Ynl4Cj7n71g99gF4xCXqB9fgJQvztXANA91WhOoAnu7d/x6iPmK3D
-	 DDihwnWoy0EQVyLcEJW5xFLS2lEOj7oVbDj4u4qQ7PzIHfubabJOP0IteuLpwKZkIP
-	 ee2f49JVPYmNbPrZubvDnpLGjeI4OZRFx44he4NNMgw+LewwN/7oHuEIPs6Z8J40Oo
-	 8KNKCbVUw/Ph7Grnr5rRXS3FVQ1DL55mjFVpwFJnBTXrPLf4dELLMaya/htXE2r3Qn
-	 eehedp/0jgdix50nBgfa5muzYe7qqv+0ElPBplMXmyYshr46XheJzyANeJW0Fx59ku
-	 AbafmDwlU4TdA==
-Message-ID: <08d968d7-66e6-415c-91fe-9ea6c8e60c67@kernel.org>
-Date: Wed, 6 Aug 2025 09:27:20 -0500
+	s=arc-20240116; t=1754490913; c=relaxed/simple;
+	bh=Gdg2q0nO1eUnubIvR9x26EdENHNoUnaK4hFB9EMutvc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ofFpuNYwFbvSNVHcwVY2mNqZdTpfZI0QNiHKwOPNytkIT6+cspT1ymod//mB+gd5rtvPf77um3w+sVK+ked1G4pVayp4QXw0rp4ps4HvfX8Q2ZVJxUAbqkmxo5IvQY5n3poR62WpkYv40q890f+7t/d20UsZt3dn6G4UUMZ2OJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hC5Iu8gx; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b792b0b829so5555091f8f.3
+        for <stable@vger.kernel.org>; Wed, 06 Aug 2025 07:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1754490910; x=1755095710; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AJzc1Ie8ZeRZJLHRDEZNI9VK1kwQWGby17uL65M37Dc=;
+        b=hC5Iu8gxttB+BuPyFgYCyEKyrWctUBPWBZDTApPMmgJBNp19H0I1BT1wZ+tX1Cd18S
+         nNzY4IPOwj5fMHJUX0J/H+wvHOw02N8t8N99yaBu5/oK3aKW9o3jU76Y3ZdGbW2dUtu6
+         BXWqe7i2bU2XnsKwetmVIP8OH0ALpDUDsVS5p3xVRhYQ6vMKRnZBM733Z6FJM371myHt
+         23p6rkduRb0z2ToQ79QyIRXkseL58de8njvavnJNgpuJ73nMH9bGqHc6AGrHwXbOkkZC
+         VXpCOD76GVVDjGMN/JZv5JEBoHIYIt+dX+fnmQqgKUtHOta0YUMpIAcL10dSzZIid7j/
+         D25w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754490910; x=1755095710;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AJzc1Ie8ZeRZJLHRDEZNI9VK1kwQWGby17uL65M37Dc=;
+        b=Xneu/wkjGgZ6mGnn0o1/5VIDSDgxJqqNRNYob4lIb6CAgY30ZyArFmLHdMSulY9JzC
+         i6vg1WVDB7ribYyPipCmcDxPVZ6Sc3Ut9lLQB79ckftP1gx0p8LtOdKpZKFzTI8pXzYo
+         B5nk19YPo0aWka9vNJb6JW4IPIrkXDU50GSbKe2cZf5R8ZKEXWOhHoY4jWDQV3t3j15C
+         nAnvzegrkFa0VXR4g3uyJuJIYqoJQwfbUL8/DDHEFQJkxboJ6zg77EDD9+ro31qxw946
+         CvHCWYHQTglIWsCbbqWD1m1+HPBObFt40UBwxuZCCPgYgNkdkDyPpHQ7AARQBtfe9GFj
+         Qq1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXcezK5NjHO+1DkAKuNJvACEfI/oAwqJ8aVoIPFbrbDYYOxn4RFyM1wIf8ERvqzx4epAk3GKn0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQJbtniDfmltdi1FEpwFuxd1TOMp97LxEwSMPvy8EEKxoc9L7q
+	jGwweeHjLziywTQHJFbdkhMRzXDGE3ZkyHgG4OzvkXH84ut3mJtleN9xH4QspR7BRX0=
+X-Gm-Gg: ASbGnctLCT7OVmKVZEjE/SlbIH7RsVmfA6e/og3cPWf0YZF0XexEtKvDwlEERM0vHMj
+	GwFYye8R+0V66lBSC78DvZ3Bl0EJ273QGLxsXPVESbcUxG0XX5zM0aDPvnQZKPRNrlcbcvkn+Dd
+	V5GYCFzXab0U30sM4LShd4+gQXSsPlPGeDaoip8vxroHJ6oqkwX7Vyx+VExdx4Cy881Kpib9h70
+	xpMt79VBDGrJQ3thzQ/S4Gktaeu8yqyCVkliAnevnnZuee/KCFga+8I0RXYYWpbe+J4lcnDBuga
+	93HLg1voopkhi/EAzfynJxguedpL1e7evW1hlqKIJPzpUuUY9y2I1S/lcT+QtwhpYOvOKiRonX8
+	17GEKXm1iUn/PoM9PJbUAu4wr5i2B0ynV9n0J4hA74lZYHxrlyM5JxlsJVqHUjO1VgvIdCuJXtX
+	P+o710Gkd47g==
+X-Google-Smtp-Source: AGHT+IEAXyxlI41OWv3pHMxNrEhn7RvnN6KDG2HHhhaewkU7OtAxqdP/oKZJiYzIeHj2LhKOZvR3QQ==
+X-Received: by 2002:a05:6000:144b:b0:3b7:78c8:9380 with SMTP id ffacd0b85a97d-3b8f492ff2cmr2300715f8f.59.1754490910337;
+        Wed, 06 Aug 2025 07:35:10 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:3d9:2080:96df:e381:55b8:1990? ([2a01:e0a:3d9:2080:96df:e381:55b8:1990])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459dc7e1ddesm126681535e9.27.2025.08.06.07.35.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Aug 2025 07:35:09 -0700 (PDT)
+Message-ID: <92042af6-e498-460e-be88-8c1f1b4d74f9@linaro.org>
+Date: Wed, 6 Aug 2025 16:35:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,182 +85,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amdgpu/discovery: fix fw based ip discovery
-To: Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-References: <20250730155900.22657-1-alexander.deucher@amd.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <20250730155900.22657-1-alexander.deucher@amd.com>
+From: neil.armstrong@linaro.org
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 1/3] phy: tegra: xusb: fix device and OF node leak at
+ probe
+To: Johan Hovold <johan@kernel.org>, Vinod Koul <vkoul@kernel.org>
+Cc: JC Kuo <jckuo@nvidia.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-phy@lists.infradead.org,
+ linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250724131206.2211-1-johan@kernel.org>
+ <20250724131206.2211-2-johan@kernel.org>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20250724131206.2211-2-johan@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 7/30/2025 10:59 AM, Alex Deucher wrote:
-> We only need the fw based discovery table for sysfs.  No
-> need to parse it.  Additionally parsing some of the board
-> specific tables may result in incorrect data on some boards.
-> just load the binary and don't parse it on those boards.
+On 24/07/2025 15:12, Johan Hovold wrote:
+> Make sure to drop the references taken to the PMC OF node and device by
+> of_parse_phandle() and of_find_device_by_node() during probe.
 > 
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4441
-> Fixes: 80a0e8282933 ("drm/amdgpu/discovery: optionally use fw based ip discovery")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-
+> Note the holding a reference to the PMC device does not prevent the
+> PMC regmap from going away (e.g. if the PMC driver is unbound) so there
+> is no need to keep the reference.
+> 
+> Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
+> Cc: stable@vger.kernel.org	# 5.14
+> Cc: JC Kuo <jckuo@nvidia.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 > ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    |  5 +-
->   drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 72 ++++++++++---------
->   2 files changed, 41 insertions(+), 36 deletions(-)
+>   drivers/phy/tegra/xusb-tegra210.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> index efe98ffb679a4..b2538cff222ce 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -2570,9 +2570,6 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
->   
->   	adev->firmware.gpu_info_fw = NULL;
->   
-> -	if (adev->mman.discovery_bin)
-> -		return 0;
-> -
->   	switch (adev->asic_type) {
->   	default:
->   		return 0;
-> @@ -2594,6 +2591,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
->   		chip_name = "arcturus";
->   		break;
->   	case CHIP_NAVI12:
-> +		if (adev->mman.discovery_bin)
-> +			return 0;
->   		chip_name = "navi12";
->   		break;
->   	}
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-> index 81b3443c8d7f4..27bd7659961e8 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-> @@ -2555,40 +2555,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
->   
->   	switch (adev->asic_type) {
->   	case CHIP_VEGA10:
-> -	case CHIP_VEGA12:
-> -	case CHIP_RAVEN:
-> -	case CHIP_VEGA20:
-> -	case CHIP_ARCTURUS:
-> -	case CHIP_ALDEBARAN:
-> -		/* this is not fatal.  We have a fallback below
-> -		 * if the new firmwares are not present. some of
-> -		 * this will be overridden below to keep things
-> -		 * consistent with the current behavior.
-> +		/* This is not fatal.  We only need the discovery
-> +		 * binary for sysfs.  We don't need it for a
-> +		 * functional system.
->   		 */
-> -		r = amdgpu_discovery_reg_base_init(adev);
-> -		if (!r) {
-> -			amdgpu_discovery_harvest_ip(adev);
-> -			amdgpu_discovery_get_gfx_info(adev);
-> -			amdgpu_discovery_get_mall_info(adev);
-> -			amdgpu_discovery_get_vcn_info(adev);
-> -		}
-> -		break;
-> -	default:
-> -		r = amdgpu_discovery_reg_base_init(adev);
-> -		if (r) {
-> -			drm_err(&adev->ddev, "discovery failed: %d\n", r);
-> -			return r;
-> -		}
-> -
-> -		amdgpu_discovery_harvest_ip(adev);
-> -		amdgpu_discovery_get_gfx_info(adev);
-> -		amdgpu_discovery_get_mall_info(adev);
-> -		amdgpu_discovery_get_vcn_info(adev);
-> -		break;
-> -	}
-> -
-> -	switch (adev->asic_type) {
-> -	case CHIP_VEGA10:
-> +		amdgpu_discovery_init(adev);
->   		vega10_reg_base_init(adev);
->   		adev->sdma.num_instances = 2;
->   		adev->gmc.num_umc = 4;
-> @@ -2611,6 +2582,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
->   		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 0);
->   		break;
->   	case CHIP_VEGA12:
-> +		/* This is not fatal.  We only need the discovery
-> +		 * binary for sysfs.  We don't need it for a
-> +		 * functional system.
-> +		 */
-> +		amdgpu_discovery_init(adev);
->   		vega10_reg_base_init(adev);
->   		adev->sdma.num_instances = 2;
->   		adev->gmc.num_umc = 4;
-> @@ -2633,6 +2609,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
->   		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 0, 1);
->   		break;
->   	case CHIP_RAVEN:
-> +		/* This is not fatal.  We only need the discovery
-> +		 * binary for sysfs.  We don't need it for a
-> +		 * functional system.
-> +		 */
-> +		amdgpu_discovery_init(adev);
->   		vega10_reg_base_init(adev);
->   		adev->sdma.num_instances = 1;
->   		adev->vcn.num_vcn_inst = 1;
-> @@ -2674,6 +2655,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
->   		}
->   		break;
->   	case CHIP_VEGA20:
-> +		/* This is not fatal.  We only need the discovery
-> +		 * binary for sysfs.  We don't need it for a
-> +		 * functional system.
-> +		 */
-> +		amdgpu_discovery_init(adev);
->   		vega20_reg_base_init(adev);
->   		adev->sdma.num_instances = 2;
->   		adev->gmc.num_umc = 8;
-> @@ -2697,6 +2683,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
->   		adev->ip_versions[DCI_HWIP][0] = IP_VERSION(12, 1, 0);
->   		break;
->   	case CHIP_ARCTURUS:
-> +		/* This is not fatal.  We only need the discovery
-> +		 * binary for sysfs.  We don't need it for a
-> +		 * functional system.
-> +		 */
-> +		amdgpu_discovery_init(adev);
->   		arct_reg_base_init(adev);
->   		adev->sdma.num_instances = 8;
->   		adev->vcn.num_vcn_inst = 2;
-> @@ -2725,6 +2716,11 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
->   		adev->ip_versions[UVD_HWIP][1] = IP_VERSION(2, 5, 0);
->   		break;
->   	case CHIP_ALDEBARAN:
-> +		/* This is not fatal.  We only need the discovery
-> +		 * binary for sysfs.  We don't need it for a
-> +		 * functional system.
-> +		 */
-> +		amdgpu_discovery_init(adev);
->   		aldebaran_reg_base_init(adev);
->   		adev->sdma.num_instances = 5;
->   		adev->vcn.num_vcn_inst = 2;
-> @@ -2751,6 +2747,16 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
->   		adev->ip_versions[XGMI_HWIP][0] = IP_VERSION(6, 1, 0);
->   		break;
->   	default:
-> +		r = amdgpu_discovery_reg_base_init(adev);
-> +		if (r) {
-> +			drm_err(&adev->ddev, "discovery failed: %d\n", r);
-> +			return r;
-> +		}
-> +
-> +		amdgpu_discovery_harvest_ip(adev);
-> +		amdgpu_discovery_get_gfx_info(adev);
-> +		amdgpu_discovery_get_mall_info(adev);
-> +		amdgpu_discovery_get_vcn_info(adev);
->   		break;
->   	}
->   
 
+<snip>
+
+
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
