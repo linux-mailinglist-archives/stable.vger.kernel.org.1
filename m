@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-166725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83A8B1C9AD
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 18:20:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6FC6B1C9AE
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 18:20:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90E7B189BD0E
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 16:20:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AFD27AE542
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 16:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE5428CF64;
-	Wed,  6 Aug 2025 16:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4B822541B;
+	Wed,  6 Aug 2025 16:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V2fx6Ehr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yLB1tz7H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D6C28C2D8
-	for <stable@vger.kernel.org>; Wed,  6 Aug 2025 16:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB9B289808
+	for <stable@vger.kernel.org>; Wed,  6 Aug 2025 16:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754497220; cv=none; b=bwGyIULEOwJP7FH0nuxS9QnhNWL97gCf9KLTn7CxEZpIVDFkCDLqOmDJ11moz8kwS0qz0R7LWa+J5HNlt2AdrxTy5gGFiBMsEhxzkReLsguS92mxKIKWrpispTiDPheZ6RgpNPkVY0BEDL6yZX68sWGcoIAkmwdi4Xx3057gfiI=
+	t=1754497222; cv=none; b=s0rfjz0Jgq3/rijX4m/BTjUP8iu41ejz2iBRu3RDQGmufhXP+tWsB+N6iAgE5GxEPg8Yu2BN8wcRoxraiMvt7B05pQB7SU86AvDr8um4JqwUMtaLJd9EIqwpP5VF9uHmyATqaA46AmP/CU36XNh9pd9kY7uJ+YG7Z5rrlYVv4xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754497220; c=relaxed/simple;
-	bh=NXmKqGeoqW0HROS2Srv/PiJAePy64j/hjzIPyARiHJU=;
+	s=arc-20240116; t=1754497222; c=relaxed/simple;
+	bh=Igymf+wo2cKjoancO07p07/mpVPMA5Hf68yAso8scZc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NKJwBXKSxCEeygAMTqwIMI/60ldq23cokkoMUH9opXYikAsjF59JnprIQpdAnJI0KRfAwW72e+KG59pRJa7x4bCSfJ+/V290S9bK00okxWVKkuFaP0+AOZHEPgNrA8jYkNc/bQUGDDOESFbPaUFHb3UkpMIHjhhQHVirAZcpJk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V2fx6Ehr; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=VB0J6fVXP5tezLw6MJHSAeNxjhrOy7oM3nh1QXhfLOHDCuXokTHWIHC78x+Pk73XF4XSAKYVi2ip74uCLVc/Dka9EHgiUZKr50J2WLDKSHiLD+IPgcm4vJ2Pxl3w6WFLD8i0y2pY57V4CpeJilr6y+ITvoPb+R0s1uqTPie1ny0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yLB1tz7H; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jtoantran.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b3beafa8d60so9437913a12.3
-        for <stable@vger.kernel.org>; Wed, 06 Aug 2025 09:20:18 -0700 (PDT)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b115fb801bcso9500599a12.3
+        for <stable@vger.kernel.org>; Wed, 06 Aug 2025 09:20:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754497218; x=1755102018; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1754497219; x=1755102019; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Mx8DvbGzit5IZkHXHj0j5BlFANu3M7t2Ru4Wnf2fZVo=;
-        b=V2fx6EhrhX+TI397UAuktBF189hwmHAryhPk6I1gXSD5ui8BG/1X78LUhho0OhG0ai
-         ZFxLj3OxQ7LGwTVgDoiBTAXes1qlRnHI5OnorqNmb9AqXbp79CYf9qDl0xutLnqb7JNb
-         dFvJmdXPK8dJLyGtSPEJiRYIt96KVDqfEoO7OlwOrF1CC9BBxkLXRkJ+nPgebH3bvIjW
-         jy0kJxNx8+ELJfPU9yp7Y7jbZOS3HjuR4fcxkUK22+PBtoDE5s1sCwGHqDXddmkMOBL/
-         AxqIzNFwBd1uA66cu7DvdhpgrLZ7uq7Zw32ICBppuX58n8LyLUldE3rxoi/8vIfnsCLx
-         hdYQ==
+        bh=SgvyoWXE6pqkV9EGc/q1G6vaEqjOxNVRB2tBqLmp7E8=;
+        b=yLB1tz7HNK8z4xXFvf/5psIrrXo6iFFQWDV3onFJX3jWwaaxTZKjG35lYTIOyb55eD
+         1ulRNOkFiqE5P5FWHuFgsQDhIrXVA/gBmNEK9ZBQmKd+m+jcVyy7T+j13JtSlxdrWaTC
+         p10SzFDkHV6IccoAqb+rBdq/f8BskmOrfeNrz80LHb49BTuyXqU3HWHYOm9/+APWHi3S
+         NDzqSxYiRsfswqJSbxBCCtElrLyxWaJif96XsGk7JBFf5B/p0D97C7WZYCSkJr/cdOAj
+         XC8DhtMCoPYWMzQo4RKbey50TyiS03450QT3yvhlyJGP3JQOvHiCzgmXA72Ibcz97iHa
+         +gbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754497218; x=1755102018;
+        d=1e100.net; s=20230601; t=1754497219; x=1755102019;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Mx8DvbGzit5IZkHXHj0j5BlFANu3M7t2Ru4Wnf2fZVo=;
-        b=ctfOV74+OqoTAebjZqAO9vFhqlqZMg8yB9H/OXzczmbzDp2WkVT4THu3GZ8NAgw0AA
-         4Z3y1OOU2k8w89WCMnZzvJ3iCqLdHOAS+ndQsEQYef4O2DnWd5J3SaBchN92Mo9vQB9e
-         9WZ+GjPbTNpoo7i2Rz8WmQuAX4h9m4SZ7zFVE4ma2Gm6m1Y+4vh7wutXQHldp5PZy0si
-         ThYja6ifdopkF4TBnhN43BTlRU6n3xzQKba4bYn3y6i3msnMRkgecBEBuRhAwq/8n9Lc
-         u+ORi9BkEcqE3ftLCfSXtN6tN2/LspPcU6O9jHDnX0U0h5XXwLSi/Eizbb48N1wRCqXR
-         MvyQ==
-X-Gm-Message-State: AOJu0YxJXMaZwmP5XShPzIRFzac6CMLMtKDo5ap/WHQar9CV0YxzBuqb
-	I4Dq3Kp7aJChK/uMZyivhxFi+RaAm2lN6u0vS08om2UGwiteo7IikRqFLpXBiWKoHqTGlip3C3l
-	ubjNk9w5HU3H/0pEUv/B/YF6bKfuNy7/JtdsOu9JOqkQn/KrsWVZOx0vVpJHXMCN3wt8wHSxEK4
-	P8PxQAzJvqr2UqsaZfEwaZt05aXwDKxj3lhX1mcq9+QxOPpCYCCw4J
-X-Google-Smtp-Source: AGHT+IFUMvMDMn2+QLQGjlVJhKsnW1g7OJqu+dcVjwQwTIrnOsx+D13MmlXxp7o+hh6KiCex6jag73zOaqQJ3so=
-X-Received: from pjbqi10.prod.google.com ([2002:a17:90b:274a:b0:311:c5d3:c7d0])
+        bh=SgvyoWXE6pqkV9EGc/q1G6vaEqjOxNVRB2tBqLmp7E8=;
+        b=k0gmr2Ca1TOuETgyfOUxh+9vP+lABWvLVv1qAvFhpA4WOru4r1GRT9PxZFDFdwvFKA
+         f++hW4Fbg2u7iWl3DaeWQPDZ+o8NVtEp27AzbxSKVEfOrQ5JiFHfeYDumvzdYJ99Ef88
+         LD89y7os2oPFm270PhXqq0O4NnMl6TL8h4vqfF0EJEqNRAAqgf659IpvSy1NSpg8Jfwq
+         Pi/sMotKLasEKSJ0RU6NQLjjtaXFPdNAE/EtpBlm23p2JlIMdHAvAbK1F+jq7gV9C+1q
+         CsOt/q6SdcRLQ9LOD0Rb/AnoN/2Q6OxDHrXn9Hnxma4qZIpP21oOMMeZw9OCIrA68zBY
+         T2/A==
+X-Gm-Message-State: AOJu0YyqmlsuFrz7Bj1eDp1U7iUma2/4lTZ3zuDeBExKzrnYNl7idFPP
+	ngOW8MmrOpNuyj77PCCZUIr0K42ZkTIk5o6+TtaJeWl/LAAQrYmp+zALWabwu84l5o/VEOXFNO4
+	SuEBKHJTxdhrfs+/Dv/vOhIk0tcmI5yDHjqwGoX0yzjMEYHKMcdhOM2KqkLAblqM9QM+ivDT0PE
+	yIDvwgY5xI4oFA5ksTMJDZ3dPaKSTcOjC1siGsPBm8AUQKXawVKYnB
+X-Google-Smtp-Source: AGHT+IFAoIkyDi2Ox1tLn2mY07dTs+hlmjWCImx0B3iB1FB9JNrZXo2HPTuf6wqf8oVTSjvtOWztfYa7HQlNtCU=
+X-Received: from plblh11.prod.google.com ([2002:a17:903:290b:b0:240:39eb:1e8c])
  (user=jtoantran job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:950:b0:242:9bca:863c with SMTP id d9443c01a7336-2429f583a0cmr49689405ad.54.1754497217939;
- Wed, 06 Aug 2025 09:20:17 -0700 (PDT)
-Date: Wed,  6 Aug 2025 16:20:02 +0000
+ 2002:a17:902:ccce:b0:240:96c1:e860 with SMTP id d9443c01a7336-2429f5338famr41935935ad.28.1754497219251;
+ Wed, 06 Aug 2025 09:20:19 -0700 (PDT)
+Date: Wed,  6 Aug 2025 16:20:03 +0000
 In-Reply-To: <20250806162003.1134886-1-jtoantran@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250806162003.1134886-1-jtoantran@google.com>
 X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
-Message-ID: <20250806162003.1134886-7-jtoantran@google.com>
-Subject: [PATCH v2 6/7] x86: fix off-by-one in access_ok()
+Message-ID: <20250806162003.1134886-8-jtoantran@google.com>
+Subject: [PATCH v2 7/7] x86: use cmov for user address masking
 From: Jimmy Tran <jtoantran@google.com>
 To: stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
 	Borislav Petkov <bp@alien8.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -86,63 +86,100 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.
 	Dave Hansen <dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Will Deacon <will@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
 	David Laight <david.laight@aculab.com>, Andrei Vagin <avagin@gmail.com>, 
-	David Laight <David.Laight@ACULAB.COM>, Jimmy Tran <jtoantran@google.com>
+	David Laight <David.Laight@aculab.com>, Jimmy Tran <jtoantran@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 573f45a9f9a47fed4c7957609689b772121b33d7 upstream.
+commit 91309a70829d94c735c8bb1cc383e78c96127a16 upstream
 
-When the size isn't a small constant, __access_ok() will call
-valid_user_address() with the address after the last byte of the user
-buffer.
+This was a suggestion by David Laight, and while I was slightly worried
+that some micro-architecture would predict cmov like a conditional
+branch, there is little reason to actually believe any core would be
+that broken.
 
-It is valid for a buffer to end with the last valid user address so
-valid_user_address() must allow accesses to the base of the guard page.
+Intel documents that their existing cores treat CMOVcc as a data
+dependency that will constrain speculation in their "Speculative
+Execution Side Channel Mitigations" whitepaper:
 
-[ This introduces an off-by-one in the other direction for the plain
-  non-sized accesses, but since we have that guard region that is a
-  whole page, those checks "allowing" accesses to that guard region
-  don't really matter. The access will fault anyway, whether to the
-  guard page or if the address has been masked to all ones - Linus ]
+  "Other instructions such as CMOVcc, AND, ADC, SBB and SETcc can also
+   be used to prevent bounds check bypass by constraining speculative
+   execution on current family 6 processors (Intel=C2=AE Core=E2=84=A2, Int=
+el=C2=AE Atom=E2=84=A2,
+   Intel=C2=AE Xeon=C2=AE and Intel=C2=AE Xeon Phi=E2=84=A2 processors)"
 
+and while that leaves the future uarch issues open, that's certainly
+true of our traditional SBB usage too.
+
+Any core that predicts CMOV will be unusable for various crypto
+algorithms that need data-independent timing stability, so let's just
+treat CMOV as the safe choice that simplifies the address masking by
+avoiding an extra instruction and doesn't need a temporary register.
+
+Cc: <stable@vger.kernel.org> # 6.12.x: 573f45a: x86: x86: fix off-by-one in=
+ access_ok()
 Cc: <stable@vger.kernel.org> # 6.12.x: 86e6b15: x86: fix user address maski=
 ng non-canonical speculation issue
 Cc: <stable@vger.kernel.org> # 6.10.x: e60cc61: vfs: dcache: move hashlen_h=
 ash() from callers into d_hash()
-Cc: <stable@vger.kernel.org> # 6.10.x: e782985: runtime constants:=C2=A0add=
- default dummy infrastructure
+Cc: <stable@vger.kernel.org> # 6.10.x: e782985: runtime constants: add defa=
+ult dummy infrastructure
 Cc: <stable@vger.kernel.org> # 6.10.x: e3c92e8: runtime constants: add x86 =
 architecture support
-Fixes: 86e6b1547b3d0 ("x86: fix user address masking non-canonical speculat=
-ion issue")
-Signed-off-by: David Laight <david.laight@aculab.com>
+Suggested-by: David Laight <David.Laight@aculab.com>
+Link: https://www.intel.com/content/dam/develop/external/us/en/documents/33=
+6996-speculative-execution-side-channel-mitigations.pdf
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Jimmy Tran <jtoantran@google.com>
 ---
- arch/x86/kernel/cpu/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/uaccess_64.h | 13 ++++++-------
+ arch/x86/lib/getuser.S            |  5 ++---
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 2369e85055c0e..6c69dea644ffc 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2491,12 +2491,12 @@ void __init arch_cpu_finalize_init(void)
- 	alternative_instructions();
+diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uacce=
+ss_64.h
+index e68eded5ee490..123d36c89722f 100644
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -66,14 +66,13 @@ static inline unsigned long __untagged_addr_remote(stru=
+ct mm_struct *mm,
+  */
+ static inline void __user *mask_user_address(const void __user *ptr)
+ {
+-	unsigned long mask;
+-
++	void __user *ret;
+ 	asm("cmp %1,%0\n\t"
+-	    "sbb %0,%0"
+-		 : "=3Dr" (mask)
+-		 : "r" (ptr),
+-		 "0" (runtime_const_ptr(USER_PTR_MAX)));
+-	return (__force void __user *)(mask | (__force unsigned long)ptr);
++	    "cmova %1,%0"
++		:"=3Dr" (ret)
++		:"r" (runtime_const_ptr(USER_PTR_MAX)),
++		 "0" (ptr));
++	return ret;
+ }
 =20
- 	if (IS_ENABLED(CONFIG_X86_64)) {
--		unsigned long USER_PTR_MAX =3D TASK_SIZE_MAX-1;
-+		unsigned long USER_PTR_MAX =3D TASK_SIZE_MAX;
-=20
- 		/*
- 		 * Enable this when LAM is gated on LASS support
- 		if (cpu_feature_enabled(X86_FEATURE_LAM))
--			USER_PTR_MAX =3D (1ul << 63) - PAGE_SIZE - 1;
-+			USER_PTR_MAX =3D (1ul << 63) - PAGE_SIZE;
- 		 */
- 		runtime_const_init(ptr, USER_PTR_MAX);
-=20
+ /*
+diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
+index ffa3fff259578..0f7f58f20b068 100644
+--- a/arch/x86/lib/getuser.S
++++ b/arch/x86/lib/getuser.S
+@@ -44,9 +44,8 @@
+   .pushsection runtime_ptr_USER_PTR_MAX,"a"
+ 	.long 1b - 8 - .
+   .popsection
+-	cmp %rax, %rdx
+-	sbb %rdx, %rdx
+-	or %rdx, %rax
++	cmp %rdx, %rax
++	cmova %rdx, %rax
+ .else
+ 	cmp $TASK_SIZE_MAX-\size+1, %eax
+ .if \size !=3D 8
 --=20
 2.50.1.470.g6ba607880d-goog
 
