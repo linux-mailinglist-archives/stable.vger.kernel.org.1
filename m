@@ -1,116 +1,152 @@
-Return-Path: <stable+bounces-166734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D558FB1CB94
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 20:03:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C29AB1CBB4
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 20:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E030217D355
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 18:03:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41E563BE5C1
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 18:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B29A5CDF1;
-	Wed,  6 Aug 2025 18:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2A41FF5EC;
+	Wed,  6 Aug 2025 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aRdL/JCe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NhQjEvVt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78351B960
-	for <stable@vger.kernel.org>; Wed,  6 Aug 2025 18:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC1210E4
+	for <stable@vger.kernel.org>; Wed,  6 Aug 2025 18:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754503392; cv=none; b=K6fbzo9nAwNOgD6CdyFxpFxw6TCUt4WnKbq9L0fNJ2ZvlSUZVCoAKOQbHrqhgKpThVy2DBN+GTbF9jBSynDr3huLtY7viq2zbInAk9bDBtQK+xe/1fj4k8uCwCqCDn9MUa6r1HBk10+gLSsxL6WbQBQPGDK5GiOo7Nvd9+4Gg/s=
+	t=1754503781; cv=none; b=ATB6XZJvfF4XxRI1l08FxiLaihTg6h2frVqbpNWQBgKawDdqKtTeD6FUKsox64YA1sDI8H5KgbRHNB/AoAdBgRmvTgIzfV/ipiYoginD9Pf8dAyzpXfPOESuGmf6xNOdVacPb54NVXR46K9Kgr3YryTBpkygdKdPyJ6gVLwzJ2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754503392; c=relaxed/simple;
-	bh=E5n12EFC4Vs1rlUtBdBREXHzy56Zf6VwAt95CHcrKUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JGJe83FhaLf1uWIj0nN/szUZoW1ac7B/j4Ecwr/xBFGgSv/5jnUftkNoyqNXDH/L48CxYB3pY6dQk9r7cDnskbSwstUYgqeZmr1RbVcvNoWrAtS2BT+dGqb65B/3zIM+LcuvYwVK1COpfXgIFgsH1u19GRmQTnMrXki2raYZThI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aRdL/JCe; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-615c29fc31eso347877a12.0
-        for <stable@vger.kernel.org>; Wed, 06 Aug 2025 11:03:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1754503387; x=1755108187; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3RnG4sPLAep3hOZrSLQRmIeRs3v2sTb621dP3wMjE08=;
-        b=aRdL/JCeMHZbmG9ALHEdcOjjlCGfcJDJcswFD5ooNMVjhPUeavUzikYpqGL6oukI22
-         jo6pGC7Qyuv5FgFlML+RUQlbgXQkbi6vslJybNHAZ+CAu5CLP6eInErE11BeDJEZcPDe
-         8LAgN5y2fyFH6iSPBmgFiS9FJprzEzgnAV/wc=
+	s=arc-20240116; t=1754503781; c=relaxed/simple;
+	bh=XW4fJQKhpVWtLLRbURa2n6uS1OoOotVI/AulaQSKDw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U9H9bgaMC/FujRJ9dNppTFd6JFyGrEQZMAQ2YlO3lY/I+QU4J0hSH2HB0V2gHIH9ZO/s7cdAExMBhWbUq4ea7Y2c7tOmkrtgF3vNEDlckFj1RKSJghHH1wWPpCniKt8DXuz7Ynqm3BzUXjOO+nrueILDlWZZBqKF7hqFdhbO8fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NhQjEvVt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754503778;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lp/xzAZFz2QzCUmaidxOhS/oOucGpdCu8iObUTLz2sI=;
+	b=NhQjEvVtUDelv1HZkaP5yzM2xlBgW8hgsI+9tJW8jzEuMyy5gIEA8W4B9gw2jNKq6CsOjz
+	6ejNkYPGkUudJC5VDDZTeo3DcqvxrlZ0oHvBpAf2q7//W22bXCAkoFmKyWMtPOWS3oid0R
+	wX5nin7lh5/quWWjLpBsDP9v1h3gDPY=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-384-FKHMMNKAO--klKHrI8HPcA-1; Wed, 06 Aug 2025 14:09:36 -0400
+X-MC-Unique: FKHMMNKAO--klKHrI8HPcA-1
+X-Mimecast-MFC-AGG-ID: FKHMMNKAO--klKHrI8HPcA_1754503776
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7e65340b626so32468785a.2
+        for <stable@vger.kernel.org>; Wed, 06 Aug 2025 11:09:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754503387; x=1755108187;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3RnG4sPLAep3hOZrSLQRmIeRs3v2sTb621dP3wMjE08=;
-        b=aXQ8R4boZXWrnNaffd5HyPpNrMATrEGtiz6H0g/Ek4j3JugU6lebNvQz72YyHkHP2v
-         2m3blCMWfeQZVnYJeXMvftodxnexX90a3XfB8ZGAq/M58qZh5xN3A7NtTyKAvLUnaIqQ
-         9lhVLv2KR0wwI4HT+mTm7fV7J12fRkOwT0CyByOBAgSAC+qhITXmzJuyFb3Ooy3ZCdB9
-         /0Eg9E4HP24kIhuVY7mMOdLfW0IbsBoMYbQzBb8+lq4Co3u8xazb1R4C3+em3l65x4tb
-         OYRmYSk7rNsJt7h69DMmfeTV9ueNAPgMgie1dDHUEY1R5hsYd2t5iwmyVrZNwW12e7hU
-         4THA==
-X-Gm-Message-State: AOJu0YxYhkav1NZaYSGJ2jKrIeomBFZaK/sumqC+EfCWW8a71QSLEKuq
-	5OWP+Hl219yY1dM94nAGo37syNBhbgSguBHESPyGfpliQlBFQT26LTD95+bgxzSVZPc5b0hA9zh
-	8tAU4YysyEw==
-X-Gm-Gg: ASbGncvRwcbeRX5ycVQk7ixjEeHU5XUhYsv/KBpp7HmVEuTwaj272ogbQ9v70qaxHmA
-	UIoI3L9Xg9uVqOD9/ov2RJ32r+0/nligj0GNMZzVnZgyyOSk3DSf9X8/XjQRsPK7eXsB5Xrj7Hj
-	uFJqUopKfb1aASzrT2X0ZL/kE2sLhk55DbKLhhZ7my9sWp9xlzm0coEZ1RkQMzfA8xBXVRBuXzU
-	0v/EmEW6XKmKttBypsDm+kk+uow0q+/IOeD9wchb4i3QJHCZTjXr5g7fbG2OhkXpG7R+00UhR/Y
-	VIv948TOaimqZU5TV7vFnSl4LYhXLjMYKll4CT1m0h6aa+TofUuXLdzY37zWKOPSqfVvwyZYJ3M
-	m6Awbecj84I39+qNIxfQUVy/Ow3djLtA6yjp0ZXQY9iuRo0dF4F+Grc3bLuObqrrRj1unQv+C
-X-Google-Smtp-Source: AGHT+IFnJiFVQ/nmClkQIRkRVJz9EYj4owgliYBA7kdvpyu3rjttfARhqUSKDxV0yrIrgGNtIB36TA==
-X-Received: by 2002:a05:6402:2695:b0:612:a77e:1816 with SMTP id 4fb4d7f45d1cf-61795fb56b2mr2711340a12.0.1754503387054;
-        Wed, 06 Aug 2025 11:03:07 -0700 (PDT)
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8fe79a0sm10547722a12.39.2025.08.06.11.03.05
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Aug 2025 11:03:05 -0700 (PDT)
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-61557997574so215156a12.3
-        for <stable@vger.kernel.org>; Wed, 06 Aug 2025 11:03:05 -0700 (PDT)
-X-Received: by 2002:a05:6402:84a:b0:617:6472:3a41 with SMTP id
- 4fb4d7f45d1cf-617afbe8680mr791439a12.10.1754503384585; Wed, 06 Aug 2025
- 11:03:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754503776; x=1755108576;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lp/xzAZFz2QzCUmaidxOhS/oOucGpdCu8iObUTLz2sI=;
+        b=m5vIsbefs8/v8Y6IB1yKFCBgDYSWFR3LzZ/wZLKrN4ZDAO2nZ4uZIbTC8Ai1zyt4Eb
+         G0ysMrFvXYxwHifP3IFXzza/UdAFxTQankUW3cJIelSN9TLYJLUBLk6KhQyMp+e9h+Ii
+         55MSIAcSZeEktS7DVi4dflFDAeuQis8iQV3bVzJFMWScQQoFln7BzkNPmuw0lEycRfFw
+         e1xYsAyaC9uugFOv9rwngQ5oYbIFA/2EJBn/A43Hg+maebhvp5wnlmUZaF6cjBrUHc+8
+         kqTsGrHG3tGjmSedgRsGAFIvTYrGiJbD1MHCe+LKyM7druTmQ79D1su4sGCrer8yT+AZ
+         s41w==
+X-Forwarded-Encrypted: i=1; AJvYcCXKcZTKvhl6P/uYPm8MNgx+ASYHWJvtw15D6ty3IKSQMZdMido/JvUlZvZDkYzYnu34WaXB1YM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywxh4/wdFoKq5iEjooE49QzV4oaPLKk5Z6el9NtUsgxgaQeTNqk
+	zUDY1BJQlNYnBGPFIBUtgIBvN7TfLCMKSPvFUwZEyDeQpPc0nztLN4RMsJyq3oWakQM4l69+Ca0
+	lC20s8VbeBKCIxpzvifsgezisHXPNQjn+zvMRcaT7B4Z6RY8+ZcEFH3Laog==
+X-Gm-Gg: ASbGncvLDNNMEpepJkf+REpGWdJ9iEUnKEJ8sKevRxQqAYMWP3+dFZdh/B6SPwy99eH
+	HHNY5yQW7dsaJhhRo8tIJxsOAh07SLbLcq6endR7fGRzMb+PLZXOvMlf2JDJOwz2jYTtFMi588W
+	Y41lfmsORVom4w4IKbwrPWNC1moQM/p7aPUeKv0H+jxxLvB54jSL+8jM3c4C3OSiKLKXrgRc8Ap
+	3YLpePsWkC/Q0kHP3rUnBiimaDCR4gd98ksRlMapX1hZ6COG7YUJI6cNYTLGonXAdCbwlCUUOCw
+	ybjDYTnrms0PHfYxxhh3XvpAxaIPhiaSIyFCu+X7bG0OGk+cTitDnDS4/lDKzqIz1S6BpHWdYk4
+	/CmvjTnzThnS7DKnSVhn9Sw==
+X-Received: by 2002:a37:f506:0:b0:7e6:4fc9:6457 with SMTP id af79cd13be357-7e820b11efdmr25046485a.54.1754503776303;
+        Wed, 06 Aug 2025 11:09:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZUienyzEiTH73cCxQzcvtLeEUdg0Wbv5ywibHSA1otSIptcZDf2H9J5vbyp5qib/Hnxqflw==
+X-Received: by 2002:a37:f506:0:b0:7e6:4fc9:6457 with SMTP id af79cd13be357-7e820b11efdmr25042985a.54.1754503775800;
+        Wed, 06 Aug 2025 11:09:35 -0700 (PDT)
+Received: from x1.local (bras-base-aurron9134w-grc-11-174-89-135-171.dsl.bell.ca. [174.89.135.171])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e81542b0d3sm145980085a.21.2025.08.06.11.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 11:09:35 -0700 (PDT)
+Date: Wed, 6 Aug 2025 14:09:32 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, aarcange@redhat.com,
+	lokeshgidra@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] userfaultfd: fix a crash in UFFDIO_MOVE with some
+ non-present PMDs
+Message-ID: <aJOaXPhFry_LTlfI@x1.local>
+References: <20250806154015.769024-1-surenb@google.com>
+ <aJOJI-YZ0TTxEzV9@x1.local>
+ <CAJuCfpGGGJfnvzzdhOEwsXRWPm1nJoPcm2FcrYnkcJtc9W96gA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250806162003.1134886-1-jtoantran@google.com>
-In-Reply-To: <20250806162003.1134886-1-jtoantran@google.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 6 Aug 2025 21:02:47 +0300
-X-Gmail-Original-Message-ID: <CAHk-=wgW5WRN_Ar9hC_TVTxg=hh=1T0gW27ecPtOFORCWb4ffw@mail.gmail.com>
-X-Gm-Features: Ac12FXzKtNzvkT9iuWSmZFDGpYaH4tg4MAuFwlQT1vYLkYg4zh4eYKvh2YaiolM
-Message-ID: <CAHk-=wgW5WRN_Ar9hC_TVTxg=hh=1T0gW27ecPtOFORCWb4ffw@mail.gmail.com>
-Subject: Re: [PATCH 6.6 v2 0/7] x86: fix user address masking non-canonical
-To: Jimmy Tran <jtoantran@google.com>
-Cc: stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, David Laight <david.laight@aculab.com>, 
-	Andrei Vagin <avagin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpGGGJfnvzzdhOEwsXRWPm1nJoPcm2FcrYnkcJtc9W96gA@mail.gmail.com>
 
-On Wed, 6 Aug 2025 at 19:20, Jimmy Tran <jtoantran@google.com> wrote:
->
-> This is v2 of my series to backport the critical security fix,
-> identified as CVE-2020-12965 ("Transient Execution of Non-Canonical Accesses"),
-> to the 6.6.y stable kernel tree.
->  [...]
-> I am ready to implement the second proposed solution if the
-> maintainers wish to move forward in that direction, understanding the
-> testing implications. Please let me know your preference.
+On Wed, Aug 06, 2025 at 10:09:30AM -0700, Suren Baghdasaryan wrote:
+> On Wed, Aug 6, 2025 at 9:56 AM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Wed, Aug 06, 2025 at 08:40:15AM -0700, Suren Baghdasaryan wrote:
+> > > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+> >
+> > The migration entry can appear with/without ALLOW_SRC_HOLES, right?  Maybe
+> > drop this line?
+> 
+> Yes, you are right. I'll update.
+> 
+> >
+> > If we need another repost, the subject can further be tailored to mention
+> > migration entry too rather than non-present.  IMHO that's clearer on
+> > explaining the issue this patch is fixing (e.g. a valid transhuge THP can
+> > also have present bit cleared).
+> >
+> > > encounters a non-present PMD (migration entry), it proceeds with folio
+> > > access even though the folio is not present. Add the missing check and
+> >
+> > IMHO "... even though folio is not present" is pretty vague.  Maybe
+> > "... even though it's a swap entry"?  Fundamentally it's because of the
+> > different layouts of normal THP v.s. a swap entry, hence pmd_folio() should
+> > not be used on top of swap entries.
+> 
+> Well, technically a migration entry is a non_swap_entry(), so calling
+> migration entries "swap entries" is confusing to me. Any better
+> wording we can use or do you think that's ok?
 
-I do think this bigger - but more straightforward - backport is likely
-the simplest and safest thing, and it looks fine to me.
+The more general definition of "swap entry" should follow what swp_entry_t
+is defined, where, for example, is_migration_entry() itself takes
+swp_entry_t as input.  So it should be fine, but I agree it's indeed
+confusing.
 
-          Linus
+If we want to make it clearer, IMHO we could rename non_swap_entry()
+instead to is_swapfile_entry() / is_real_swap_entry() / ... but that can be
+discussed separately.  Here, if we want to make it super accurate, we could
+also use "swp_entry_t" instead of "swap entry", that'll be 100% accurate.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
