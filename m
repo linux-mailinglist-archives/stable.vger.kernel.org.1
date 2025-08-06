@@ -1,157 +1,156 @@
-Return-Path: <stable+bounces-166666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83812B1BDE8
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 02:31:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F39B1BDFA
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 02:41:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54E6B184300
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 00:31:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFB1C18A6343
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 00:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFFE145A1F;
-	Wed,  6 Aug 2025 00:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4987D49620;
+	Wed,  6 Aug 2025 00:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gnuweeb.org header.i=@gnuweeb.org header.b="CvzrkSwz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YOUipjNE"
 X-Original-To: stable@vger.kernel.org
-Received: from server-vie001.gnuweeb.org (server-vie001.gnuweeb.org [89.58.62.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B969A1E49F;
-	Wed,  6 Aug 2025 00:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.62.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F374E64A8F
+	for <stable@vger.kernel.org>; Wed,  6 Aug 2025 00:41:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754440276; cv=none; b=tHJzmBTfethottoqTpIplsO8oKQUW5TYbF49g0Tdgj2NW6v0CNVCniLgkb58FC9l6yTzCvAdAol5wWD6WYNZGaIVhKXbA2Pu2DVUOrDEjYdPUzIafsr7/m6EYxEuzjdRhLzpuzeWQ+YeZmm836SJn9oBt30/7W2ZFvtzZ0SQN98=
+	t=1754440863; cv=none; b=cu58UFN1/uPf03hiFPdmlxI/Ud2aDPhIrQvI3FuajyOPs3AlxNo5THcFB+a8Q97UGfwt+P78674gjd4Sbis1rNu0b4p5kAdqbuUhQAvqE+GrJcjEuyumwYSUQo7NpKQjfOmuUb7Bmt1S7UjElz3dpehH5BwAKxTxLWl/mN5CSUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754440276; c=relaxed/simple;
-	bh=mihGPIF3tSl1RqP6MaT1Lb5zWUmmcthYhUU66yuams8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C7FdVXOVXNFmLoMi+94jpqIYiFkAgoLt+2QEFyJtuG7YcXmmykLDeup6gSAcwaD1QvyOdd79/hKUZtLxVf2NFRfFg9NtNO50Q+7jpskFIc5AUav2on5ZI3htTr3scui0YYyJT2n4cF7bG7mCh8TXTglk3T2TYxWvdJyZDW4fq7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gnuweeb.org; spf=pass smtp.mailfrom=gnuweeb.org; dkim=pass (2048-bit key) header.d=gnuweeb.org header.i=@gnuweeb.org header.b=CvzrkSwz; arc=none smtp.client-ip=89.58.62.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gnuweeb.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnuweeb.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gnuweeb.org;
-	s=new2025; t=1754440272;
-	bh=mihGPIF3tSl1RqP6MaT1Lb5zWUmmcthYhUU66yuams8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:
-	 Content-Transfer-Encoding:Message-ID:Date:From:Reply-To:Subject:To:
-	 Cc:In-Reply-To:References:Resent-Date:Resent-From:Resent-To:
-	 Resent-Cc:User-Agent:Content-Type:Content-Transfer-Encoding;
-	b=CvzrkSwzubECXmQl/qdFVQMQoxcPmPeR6MJkbiC7npIzSnfwrllrCtdc/2lX1Aoio
-	 Yj8E38ldIiBUS7w5lVDP1vs7SBga0iEIYV1Uwbm/9VEOgNi3VJko9xOxLOz72J3np5
-	 AwUxXe5DiV23QbJoG0f4XFbrvwA96s4WhDsweXRUsMEDgQ7HbkIhjv7p5Z9Ti3CRsb
-	 qS6bb6dmykgz0Gvnv/prJ7UezLIOnumIdIwbBYqpL+uAcW6XbzjCdZkyvfR2LJuDYv
-	 UhbHl2FOL3e8KFPPHmM5oKpI0sU5MlRzcUcZvoBT1pgJv5E7O+5e+UMjEvAL1xnjlO
-	 86jw/7qmlkh7w==
-Received: from integral2.. (unknown [182.253.126.229])
-	by server-vie001.gnuweeb.org (Postfix) with ESMTPSA id 393BD3127C24;
-	Wed,  6 Aug 2025 00:31:09 +0000 (UTC)
-From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-To: Oliver Neukum <oneukum@suse.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Ammar Faizi <ammarfaizi2@gnuweeb.org>,
-	Simon Horman <horms@kernel.org>,
-	John Ernberg <john.ernberg@actia.se>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linux Netdev Mailing List <netdev@vger.kernel.org>,
-	Linux USB Mailing List <linux-usb@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Armando Budianto <sprite@gnuweeb.org>,
-	gwml@vger.gnuweeb.org,
+	s=arc-20240116; t=1754440863; c=relaxed/simple;
+	bh=Nj+D3V+ErQiuBO/LLfcd2WNVdOoKV+K45DhEivVfaTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qf8rKyfUba4PMe6PvEBVptdIxdiIAcvOjmyeA9j2TjmlqeGFNoJT/olXGH2EQVjuOY/m+PdMoRoJgQ8MK9Wi80Veb57mQZtWoQARSHKXIEQZXR9OG7ohVIxJLs41M4sCQV0m5Y2XN/pyLzUOjxx4lcBZ8+gGy9JQZ6FMFVhFYD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YOUipjNE; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754440859;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kFOUKfyF9eht2Uz3lQBAC39G9bdYnu6PboLaGAsorNE=;
+	b=YOUipjNEZec5ZOE34yF6jLD9oywOAoyBjei/A2iox0O0QEXTinhyMQ9IoF31/ZPAU5mve9
+	33VvHFTzWIgHixY3UgmA3+dkI2ps4Wpys+pKZ8JTwNfHNYgk7baDbA+oRhtXEbNy6A2dcO
+	2BW34HCfJcVOrpNPK8d1EI5kzRnmC1c=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-Fn6d56p6M5qNy51EExaAyg-1; Tue, 05 Aug 2025 20:40:58 -0400
+X-MC-Unique: Fn6d56p6M5qNy51EExaAyg-1
+X-Mimecast-MFC-AGG-ID: Fn6d56p6M5qNy51EExaAyg_1754440858
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-70e5e6ab756so71872897b3.2
+        for <stable@vger.kernel.org>; Tue, 05 Aug 2025 17:40:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754440858; x=1755045658;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kFOUKfyF9eht2Uz3lQBAC39G9bdYnu6PboLaGAsorNE=;
+        b=MFxahN+LHXNWWD6gqLBVAhFkUHUzxKbUttnYlkWvXA08sKykleYt9rl7p04lmFKd+l
+         PYMA/2sb9OhRkEaa0Pet2eV7tRm7akqxm2kWMVyfriXRnzthX5tQm25itaYgfGlLMtuU
+         JAIPxqO5OpK6JWBjo0c0NH/Curi1/B04BVrrAmE3OVjxCbeYGrJuIkNhYFJT7SEhSuVx
+         nFhSQwQLFR95hI4XIt0H17wVML6OPhid9nJXeljAJ55NVnKpc0Yqbar0GgBqAqYJ10/R
+         okaNUdel/u4uqnYigPw+4gOQyZ81h+A6iDXWSODtgZzgY7UAcod9NzZbnFyBm6vWECNz
+         kOEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUowAly+FrlXdSjB91mapgmfhpMgZ01ISrQmSPWttBHIvVZq3E2+0NFKJn4Tq9Xe0o01RXL4Hw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOgelAtBjUQ3k6toywlquUqhfTF7tN9YBFUXaBKlRxhwOhBCqY
+	qqFTccuPYfNtWZooYJCWkGnoaIEtCYHh/rDzpJ9By7xgj/x0mKjugUpfBQX7/Mzu6DWhyHkared
+	ioeLqnmbN8iP42VactILwo3n/64z4oMuTraPkWTfYDubLjmK+saZ7n1dNEg==
+X-Gm-Gg: ASbGncs0CN6bPHZ3pFyvf8iHCDTDEGYO3BqY2pd8cUM3ixdqLnt6jmcs38gt8LVzZtS
+	UpxNIHKIVEQsmuYWlb3RQlJ+UzRKJ1d/K1uRAwjbvDuPwfj9G8WumVqnIoUWnmOXAzo8DmJ7Xab
+	8lafVQwO7M1/hrUuOOTKn40KEVnGpmS8g8s8RXNg0PVICW5LS2MUlWC0IIwVBsXRqS769gL5r0Q
+	Ob7AIq9p44izPRJJcFgRNVZHy3Z0X3hjh+MUEEERVsKKpohWV9afvCAQDMAkwftcvRlXQZpl0Zh
+	dD1RgIum4qMIasSCidA+2wn46szAyRjO
+X-Received: by 2002:a05:690c:6186:b0:71b:4739:9d67 with SMTP id 00721157ae682-71bc96f338amr15082507b3.4.1754440857863;
+        Tue, 05 Aug 2025 17:40:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHku4dtclIuv1XK8QUtmPlV8XuTKcYcnt2F/++IvmdFem+YdSw119Wr+7uOLta+er71F1OKg==
+X-Received: by 2002:a05:690c:6186:b0:71b:4739:9d67 with SMTP id 00721157ae682-71bc96f338amr15082337b3.4.1754440857503;
+        Tue, 05 Aug 2025 17:40:57 -0700 (PDT)
+Received: from x1.local ([174.89.135.171])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71b5a5cc2fesm35969157b3.72.2025.08.05.17.40.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 17:40:56 -0700 (PDT)
+Date: Tue, 5 Aug 2025 20:40:44 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+	aarcange@redhat.com, lokeshgidra@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH net v3] net: usbnet: Fix the wrong netif_carrier_on() call
-X-Gw-Bpl: wU/cy49Bu1yAPm0bW2qiliFUIEVf+EkEatAboK6pk2H2LSy2bfWlPAiP3YIeQ5aElNkQEhTV9Q==
-Date: Wed,  6 Aug 2025 07:31:05 +0700
-Message-Id: <20250806003105.15172-1-ammarfaizi2@gnuweeb.org>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
+ a THP hole
+Message-ID: <aJKkjEYmeq93w35-@x1.local>
+References: <aIz1xrzBc2Spa2OH@x1.local>
+ <CAJuCfpFJGaDaFyNLa3JsVh19NWLGNGo1ebC_ijGTgPGNyfUFig@mail.gmail.com>
+ <aI0Ffc9WXeU2X71O@x1.local>
+ <CAJuCfpFSY3fDH36dabS=nGzasZJ6FtQ_jv79eFWVZrEWRMMTiQ@mail.gmail.com>
+ <aI1ckD3KhNvoMtlv@x1.local>
+ <CAJuCfpHcScutgGi3imYTJVXBqs=jcqZ5CkKKe=sfVHjUg0Y6RQ@mail.gmail.com>
+ <aJIXlN-ZD_soWdP0@x1.local>
+ <CAJuCfpFzP_W8i8pwL+-Uv-n+2LixgFrzqn2HsY_h-1kbP=g3JQ@mail.gmail.com>
+ <CAJuCfpFEf92gTR+Jw+1wcCcT0fEt-SP193NHzpyxVXJA=VAwng@mail.gmail.com>
+ <CAJuCfpFeSVq+hq4JRJStLgFfQgmS6SQ7zoFsj4=SeQT89r3TTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJuCfpFeSVq+hq4JRJStLgFfQgmS6SQ7zoFsj4=SeQT89r3TTw@mail.gmail.com>
 
-The commit referenced in the Fixes tag causes usbnet to malfunction
-(identified via git bisect). Post-commit, my external RJ45 LAN cable
-fails to connect. Linus also reported the same issue after pulling that
-commit.
+On Tue, Aug 05, 2025 at 04:41:18PM -0700, Suren Baghdasaryan wrote:
+> Ok, I let the reproducer run for half a day and it did not hit this
+> case, so I must have done something wrong during my initial
+> investigation. Sorry for the confusion. I could have sworn that I saw
+> this case but now it just does not happen.
 
-The code has a logic error: netif_carrier_on() is only called when the
-link is already on. Fix this by moving the netif_carrier_on() call
-outside the if-statement entirely. This ensures it is always called
-when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
-of the link state.
+I'm wildly guessing you might have hit the numa balancing bug I mentioned,
+that might explain what you mentioned previously on the testing results.
+It might just be tricky to reproduce:
 
-Cc: stable@vger.kernel.org
-Cc: Armando Budianto <sprite@gnuweeb.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
----
+  - We'll need a valid THP (pmd) first in the MOVE source region
 
-v3:
-  - Move the netif_carrier_on() call outside of the if-statement
-    entirely (Linus).
+  - THP needs to be selected by numa balancing for a check (marking
+    prot_none)
 
-v2:
-  - Rebase on top of the latest netdev/net tree. The previous patch was
-    based on 0d9cfc9b8cb1. Line numbers have changed since then.
-  Link: https://lore.gnuweeb.org/gwml/20250801190310.58443-1-ammarfaizi2@gnuweeb.org
+  - (before any further access..) UFFDIO_MOVE needs to happen on top trying
+    to move the whole THP being marked as prot_none.
 
- drivers/net/usb/usbnet.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+AFAICT, task_numa_work() is the only place that can mark the THP, and when
+it happens, should see change_huge_pmd(cp_flags=MM_CP_PROT_NUMA) and then
+returns with HPAGE_PMD_NR.
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index a38ffbf4b3f0..511c4154cf74 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1113,32 +1113,32 @@ static const struct ethtool_ops usbnet_ethtool_ops = {
- 	.set_link_ksettings	= usbnet_set_link_ksettings_mii,
- };
- 
- /*-------------------------------------------------------------------------*/
- 
- static void __handle_link_change(struct usbnet *dev)
- {
- 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
- 		return;
- 
-+	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+		netif_carrier_on(dev->net);
-+
- 	if (!netif_carrier_ok(dev->net)) {
- 		/* kill URBs for reading packets to save bus bandwidth */
- 		unlink_urbs(dev, &dev->rxq);
- 
- 		/*
- 		 * tx_timeout will unlink URBs for sending packets and
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
--		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
--			netif_carrier_on(dev->net);
--
- 		/* submitting URBs for reading packets */
- 		queue_work(system_bh_wq, &dev->bh_work);
- 	}
- 
- 	/* hard_mtu or rx_urb_size may change during link change */
- 	usbnet_update_max_qlen(dev);
- 
- 	clear_bit(EVENT_LINK_CHANGE, &dev->flags);
- }
- 
+[sorry I am still pretty occupied with other things.  I can try to reproduce
+ together with you after I get more time back]
+
+> With migration entry being the only case that leads to that
+> pmd_folio(), the only check we need to add is the "if
+> (pmd_present(*src_pmd))" before pmd_folio(). Would you like me to
+> check anything else or should I go ahead and post that fix?
+
+We could fix the migration entry first, then if any of us can reproduce the
+above numa balancing issue then it can be a 2nd patch on top.
+
+After all, so far we didn't yet prove it, either some unreproduceable test,
+or pure code analysis.  Meanwhile it might also be cleaner if we have one
+patch fix one issue, rather than having one patch fix two bugs.
+
+What do you think?
+
+Thanks,
+
 -- 
-Ammar Faizi
+Peter Xu
 
 
