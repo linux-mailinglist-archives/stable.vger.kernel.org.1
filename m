@@ -1,133 +1,125 @@
-Return-Path: <stable+bounces-166745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B59FB1CF04
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 00:19:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39678B1CF0D
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 00:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58C4E18C3815
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 22:19:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64D3B17047E
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 22:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBCD21E082;
-	Wed,  6 Aug 2025 22:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E263122FE11;
+	Wed,  6 Aug 2025 22:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="T8Xg04QE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZVZtpHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E664E27470;
-	Wed,  6 Aug 2025 22:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D8835898;
+	Wed,  6 Aug 2025 22:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754518749; cv=none; b=pUq4k0XmEePrVOj8XvtaLn7JBxOsgFbMH3Ae7jTshYFTI7IJjQw8A30Q0KOS//87dp70fyEteRNoNf4/ZgoCG7QTumKcoJPUWlOyOyxdPPdX6zLRg5C5nvidobBIJyEELrQ/mZdOcFMq7oZpHX1qvx03tJPNz7ZCCREUyaw0SkU=
+	t=1754519163; cv=none; b=OQ8HwK9JdAADoV69Nje8XTJacFXpclfAEaMj8Ct19OcGTZiFD+NPznK4xqV4GrhldKjMh7AsX8uzkdlZN+osgpNPNakgYDUHzjem96MqLKDXSPreFDo6NmIYInvKQgWtCNM4K55pmqtuadEwa5DdITO1yRM4p/rgbGIJX0VmY8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754518749; c=relaxed/simple;
-	bh=0m1tghLmX6WNM0Yd8oXQ/+Crn7eUyCxjE9pVcNF36ec=;
-	h=Date:To:From:Subject:Message-Id; b=aNTjjdT0LmOvcfS1OnZsJSMGJQFVLqpXLCAiJp6Ne2bvSWbPHMnJHVHdzN/tGvz/D9wbJu9EENXoS1PlRTe8rec094z7f/agKh5XC6XbVVu7ZG4rAt7pU5xC3+egGMNeMPz+uW1TP4ojHWpLIVXAwHGGiv/XvTGmBfR7M0j1qIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=T8Xg04QE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50836C4CEE7;
-	Wed,  6 Aug 2025 22:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754518748;
-	bh=0m1tghLmX6WNM0Yd8oXQ/+Crn7eUyCxjE9pVcNF36ec=;
-	h=Date:To:From:Subject:From;
-	b=T8Xg04QEGFLh6oQMLpHiX2cLCFMfoitp/iz2c0VHz+FQdUH53tHZdBeqP7i8mhaVi
-	 e7v/PDbGRL3NZyAGluhhtH92+GA9H5obHZF8Yqem/DGh9huuJhVLlxuLWlbokKenKt
-	 F1rSAU1dYpV5BFcmpXBS7RqslaoUAvNiidLdjj9U=
-Date: Wed, 06 Aug 2025 15:19:07 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,lokeshgidra@google.com,david@redhat.com,aarcange@redhat.com,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250806221908.50836C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1754519163; c=relaxed/simple;
+	bh=wSP/FnjATYBkD9tjSijm87GKcLGQ9Dv8hJCzfo90h/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BbbPQJwcc2cAWRYMqvaOFjhP1PlLsQCwMv2f7xABJE/7t4C4cIOF4dU/Y2p8nje5lXcz0oFSafZZLBEngAix3h1QeX7ljfkucagZ5SFkhmpOulxjM4LrSS2BMTevY4ZqOK/Y1oGz265ljcdwzqyGtNUBozayk6JqENMTq3BgRJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZVZtpHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487F9C4CEE7;
+	Wed,  6 Aug 2025 22:26:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754519163;
+	bh=wSP/FnjATYBkD9tjSijm87GKcLGQ9Dv8hJCzfo90h/s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iZVZtpHcJ84kPEusQRbGh0yw0RjPpg0xx99EEBSWIBT7fatVExcSR13RCFr0P/Am9
+	 f2rvIpIy9szjA5QOgilFY47ledEhI6DZBUnBeVsHIa6foNSKny7oPvL/byTHW/fhTr
+	 UnwXixzezWxz5XRhtEWzuk1Ypp9tdH5bYTc9opJToSJ/fx2bbRqIebIzkKbNENvG1W
+	 NJsvHnXcqdajLfRfpjWXrBzmSSTm5hIwNg4NCzwwUmkZyCA8zHEis15KZ4E///gMeC
+	 XEO+0WBvsRRHw7PazG7Z22ryiE+ERSdb085I8LV78NiNdQmClZ/9uAxCOAHac92DHo
+	 97Th+tup2Yegw==
+Date: Wed, 6 Aug 2025 15:25:57 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Justin Stitt <justinstitt@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Tom Rix <trix@redhat.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] KVM: arm64: sys_regs: disable
+ -Wuninitialized-const-pointer warning
+Message-ID: <20250806222557.GA1654483@ax162>
+References: <20250728-stable-disable-unit-ptr-warn-v1-1-958be9b66520@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250728-stable-disable-unit-ptr-warn-v1-1-958be9b66520@google.com>
 
+On Mon, Jul 28, 2025 at 02:07:36PM -0700, Justin Stitt wrote:
+> A new warning in Clang 22 [1] complains that @clidr passed to
+> get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
+> doesn't really care since it casts away the const-ness anyways -- it is
+> a false positive.
+> 
+> |  ../arch/arm64/kvm/sys_regs.c:2978:23: warning: variable 'clidr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+> |   2978 |         get_clidr_el1(NULL, &clidr); /* Ugly... */
+> |        |                              ^~~~~
+> 
+> Disable this warning for sys_regs.o with an iron fist as it doesn't make
+> sense to waste maintainer's time or potentially break builds by
+> backporting large changelists from 6.2+.
+> 
+> This patch isn't needed for anything past 6.1 as this code section was
+> reworked in Commit 7af0c2534f4c ("KVM: arm64: Normalize cache
+> configuration").
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7c8c5e6a9101e ("arm64: KVM: system register handling")
+> Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
+> ---
 
-The patch titled
-     Subject: userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a migration entry
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry.patch
+Yes, I think this is an appropriate way to address this for stable.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry.patch
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a migration entry
-Date: Wed, 6 Aug 2025 15:00:22 -0700
-
-When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
-obtaining a folio and accessing it even though the entry is swp_entry_t. 
-Add the missing check and let split_huge_pmd() handle migration entries.
-
-Link: https://lkml.kernel.org/r/20250806220022.926763-1-surenb@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/userfaultfd.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
---- a/mm/userfaultfd.c~userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry
-+++ a/mm/userfaultfd.c
-@@ -1821,13 +1821,16 @@ ssize_t move_pages(struct userfaultfd_ct
- 			/* Check if we can move the pmd without splitting it. */
- 			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
- 			    !pmd_none(dst_pmdval)) {
--				struct folio *folio = pmd_folio(*src_pmd);
-+				/* Can be a migration entry */
-+				if (pmd_present(*src_pmd)) {
-+					struct folio *folio = pmd_folio(*src_pmd);
- 
--				if (!folio || (!is_huge_zero_folio(folio) &&
--					       !PageAnonExclusive(&folio->page))) {
--					spin_unlock(ptl);
--					err = -EBUSY;
--					break;
-+					if (!folio || (!is_huge_zero_folio(folio) &&
-+						       !PageAnonExclusive(&folio->page))) {
-+						spin_unlock(ptl);
-+						err = -EBUSY;
-+						break;
-+					}
- 				}
- 
- 				spin_unlock(ptl);
-_
-
-Patches currently in -mm which might be from surenb@google.com are
-
-userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry.patch
-mm-limit-the-scope-of-vma_start_read.patch
-mm-change-vma_start_read-to-drop-rcu-lock-on-failure.patch
-
+> ---
+>  arch/arm64/kvm/Makefile | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+> index 5e33c2d4645a..5fdb5331bfad 100644
+> --- a/arch/arm64/kvm/Makefile
+> +++ b/arch/arm64/kvm/Makefile
+> @@ -24,6 +24,9 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>  
+>  kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
+>  
+> +# Work around a false positive Clang 22 -Wuninitialized-const-pointer warning
+> +CFLAGS_sys_regs.o := $(call cc-disable-warning, uninitialized-const-pointer)
+> +
+>  always-y := hyp_constants.h hyp-constants.s
+>  
+>  define rule_gen_hyp_constants
+> 
+> ---
+> base-commit: 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
+> change-id: 20250728-stable-disable-unit-ptr-warn-281fee82539c
+> 
+> Best regards,
+> --
+> Justin Stitt <justinstitt@google.com>
+> 
 
