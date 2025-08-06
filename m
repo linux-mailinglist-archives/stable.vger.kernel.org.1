@@ -1,124 +1,148 @@
-Return-Path: <stable+bounces-166710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E20B1C8CC
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 17:34:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFECB1C8D3
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 17:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E52F188EEA9
-	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 15:34:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064C218C470E
+	for <lists+stable@lfdr.de>; Wed,  6 Aug 2025 15:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C061290BAB;
-	Wed,  6 Aug 2025 15:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2509F292912;
+	Wed,  6 Aug 2025 15:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="skleuETo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jf6thGFV"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97756AD5A;
-	Wed,  6 Aug 2025 15:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755AA28DB4C;
+	Wed,  6 Aug 2025 15:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754494467; cv=none; b=oKmit+y5L26yOXK7OhA8vK++ZH7IKVrqUm8XsoClxsqqT4neETmk9pC/FHs1kFngip0tBr3+ICeTtM5/XG+sGKblAe2L6Hcom3tr+YzRveN8hGcj0lSz3sQ+5Wzv2HZhFqLWkLGaWg5M2uxFp7S+gmDS4mXfc9HBzXnonnOopL4=
+	t=1754494485; cv=none; b=sj7hPJSi/zLOn6qzQOLtlyXs19Fo/8ltrsIuuYMug1cvYaYHt/rSUHkX70q/j80T3K0/Us6R2CAWw/tH+i3N8DDa1sIzfbuvXo5qqR9FmMS2xxHVMWEuuWSykUaCc3pZTA9W1PNXhjsLFgnaVYro+MadRt9ZeM6hhSCPs2wKlN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754494467; c=relaxed/simple;
-	bh=Jit/bnNHlQMDo9ewLxqU4Bc5KKfUzRCxyJ/cLnh1YNo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=eBZLXAyWPtmMvwC9f/FNO11/rOVCxxCEr2eICtMFXCgsBZFYL1EgE7DNxOP0zhbL49LPOFmFkIeEJ98iybWDieAzD+byryTamsIZBMJY0Vsx9jX9aPFZ+5ohHyJGbdv2MQTmOAIoolq+TRi4jamkNFnK8AXXJCMAVs2egGSxkp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=skleuETo; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 576FTZjq001991;
-	Wed, 6 Aug 2025 17:34:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=selector1; bh=VGM4i/YY8L3GxVbjbzZ+E1
-	wPLPAJDd6KHMtwpJhsXpg=; b=skleuEToU7r5Casj+OZTYun99QOB8DFNTFQ4gF
-	yLZwcardz6CLAhXNpoFWCTjttw94meQyIvM0uUQQLkFzq0RLYX7Eh2QldUct1v1U
-	LH5M7mMW7AUO2ceaRvyXOTuQmZsPChxoKmryoh5QA1okx2yKksGkG2Tx3oDVJItv
-	SBxhNnvMiMKvUhecO0siRRIm4A9jcFl6+EGhd5Hdy8g+ufpHewostoxOEaaimwT9
-	EDCVS3EApwDVWtrv3Sr7PwcF7J/RHT9MApWwNcl8QPilLpumde8stW2lxMSKsP5L
-	apKUvkID04kAmGSIijAdsB47yYTqP6d8B447BtSxoVP8defg==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48bpx8c1b1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Aug 2025 17:34:12 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 551D240053;
-	Wed,  6 Aug 2025 17:33:13 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1A45D7385C3;
-	Wed,  6 Aug 2025 17:32:43 +0200 (CEST)
-Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 6 Aug
- 2025 17:32:42 +0200
-From: Patrice Chotard <patrice.chotard@foss.st.com>
-Date: Wed, 6 Aug 2025 17:32:42 +0200
-Subject: [PATCH] memory: stm32_omm: Fix req2ack update test
+	s=arc-20240116; t=1754494485; c=relaxed/simple;
+	bh=l+BjPJugvSX1xnYBlRpydXaOEpnLR9ZZrGzevonqp/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CU56+WseVeiQbSNTjXEs0NyCCNsn8RHo2U2Rg+aId0rGgh3xOxIRaK7LGd2zkuJuPK1VRSGtm7MsxGfhY7K4bnAySIeO9NU+EMuxyo3LRMzbGnBinuO3qH+xTvUWl4nRfv1cWBhJsFnW33wRBovOhJwyAruNHNH+66DaubCj3bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jf6thGFV; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76bc61152d8so86726b3a.2;
+        Wed, 06 Aug 2025 08:34:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754494484; x=1755099284; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G8FWAmyygJI9ykU3sqCpkELXQA+zPUabO2nOc+Pr1Qc=;
+        b=jf6thGFVBifiZUJSAEomMO+PzWyNB7+bv1iXfgiYQ0thdET1AIKB53KIkfZ3VEO4t0
+         pJDLTZX/v6bFJiwNKSNxzgwcF6+t6oVCy18WXphInTNX7jKCJ+4pjwdZ8gu0oxzc3s68
+         Mr+UGxgGqaaoxkfM/Vit2KOk1uM2toWbn3KlhvPlPCgC9dQaDRQ9Z9NJUYU1DiCAQBcU
+         PXkY6+T88CCWq/3q7yj1zbJKOKc4J7YRXykSznJtbTpqVe6VQmIaa2zU2QFn84b7ndFD
+         53eJ80Vd34GNFRWv9JdhwPHGazBlNuwzWU4zmRsE0bu6cUsb0432sGa0GTDdY2A4CXg4
+         X1Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754494484; x=1755099284;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G8FWAmyygJI9ykU3sqCpkELXQA+zPUabO2nOc+Pr1Qc=;
+        b=ezIz6kA/i7Nu8S3Hxax2pu2Q5jEVncA00VCvNFYbehsT7eqFElS9r25P8Q4xvQkclA
+         TgOXxpjo0UzIwH0MmbSlYeKMqfAmITxKmxlnLt24abNjvFtjqfVExGWKqCoa4/EZF/dQ
+         wouUFDtj/NRxEED5pNSHO2u8fMFuikOL2vsDRH5PO5I1BOTewRE7NCvJJM/+NN/vbSLZ
+         xvbosr/ATWa/6p7vnnbDPIVFuPRlAPGDKM0kq2PI7SQoEccd5o6/33ttlEUHzxY1O8v/
+         U1AA3IFvkR+C4p8LfzKYoexoRoKpnZQo7/ZsEMjfPGH2lqGqUOaVJhqDxPtuAWFXAaoG
+         274g==
+X-Forwarded-Encrypted: i=1; AJvYcCUGaDRJwkzKtZ7DPMUk9IHVJ+1aHSiTFNAdJIoWRV+b7nK0GrS9uy0fP7VNh6x6C2Bwn+QpgqZo@vger.kernel.org, AJvYcCV5kBiE4VgjEONnzAE5xPE51U8oHlgXwCy3qJ1Xlq99vFxFZ9i8R//n+oqI4nlZZU10e2WgDIOc1zURTQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyYc72FUpl8qeIsyhOCxpRieb6lqDQK8Ikd18vbTURouF5GgTJ
+	cG3diC8Xfwkpn4L/xWGIvPv6zVnd0gstPVPuyMbpRsgo79y9363kj1W+kKWFTHFpVbM=
+X-Gm-Gg: ASbGncusFdU133LfyJHlomPB8rJSiv4DJuqf2x229zcOOlIqCcstNP23GSfhm+pQEb1
+	PPrdEgb0UXrTioykcnj0Iq6qoBPqn5qSF59aA6OeF56BUO6DfHvwkCAHHUd3k9rUScQNl+gJoOF
+	nA7b3BxeQ92KWu3ZHHlkCplAQMPyTaM4VIcoUVgjWFBBTruAJOC/MqU/ozgWn0oQh8Mzhs9HiWu
+	rSRYN4D8ROLveJEmH3Mwe4hczRL4S2lS7XQ5Sj/D2sEHp+AdOkRVmY2aElORyaXmuOnPqoqcP5m
+	pku+er5+1cmhkC8gcH/30yMtTeb1v5e1UdKwFuPPwAoojJch5CjbgQQq7s0vvwWy3rHbOo7pGZJ
+	7zm+pZGuBatr3ZZUJDizwKtU6o7ieVpO1vnRnABb6
+X-Google-Smtp-Source: AGHT+IE1mEFPS1/GYteQGs7cvs/+9c5s9KgpQScsfzp5Wld/S4EMQoGCuFw6NzbPwLhiL7WdxjTiFw==
+X-Received: by 2002:a17:903:2445:b0:240:99e6:6bc3 with SMTP id d9443c01a7336-2429ee8b919mr47219875ad.20.1754494483441;
+        Wed, 06 Aug 2025 08:34:43 -0700 (PDT)
+Received: from archlinux ([205.254.163.46])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899d28asm161899175ad.142.2025.08.06.08.34.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 08:34:43 -0700 (PDT)
+From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	darwi@linutronix.de,
+	sohil.mehta@intel.com,
+	peterz@infradead.org,
+	ravi.bangoria@amd.com
+Cc: skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Suchit Karunakaran <suchitkarunakaran@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5] x86/cpu/intel: Fix the constant_tsc model check for Pentium 4
+Date: Wed,  6 Aug 2025 21:04:33 +0530
+Message-ID: <20250806153433.9070-1-suchitkarunakaran@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250806-upstream_omm_fix_req2ack_test_condition-v1-1-4879a1d7f794@foss.st.com>
-X-B4-Tracking: v=1; b=H4sIAJl1k2gC/x2N0QrCMAwAf2Xk2UJX0RV/RSTUNtMgbWfSiTD27
- xYfD467DZSESeEybCD0YeVaOoyHAeIzlAcZTp3BWXey3p7NumgTChlrzjjzF4XeLsQXNtKGsZb
- ErTfMNJGf7zaNx+Sh1xahbv9P19u+/wBG27kLeQAAAA==
-X-Change-ID: 20250806-upstream_omm_fix_req2ack_test_condition-77e8fb0d13d8
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>
-CC: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <stable@vger.kernel.org>,
-        Patrice
- Chotard <patrice.chotard@foss.st.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-06_04,2025-08-06_01,2025-03-28_01
+Content-Transfer-Encoding: 8bit
 
-Fix test which allows to compute req2ack value.
+Pentium 4's which are INTEL_P4_PRESCOTT (model 0x03) and later have
+a constant TSC. This was correctly captured until commit fadb6f569b10
+("x86/cpu/intel: Limit the non-architectural constant_tsc model checks").
 
-Cc: stable@vger.kernel.org
-Fixes: 8181d061dcff ("memory: Add STM32 Octo Memory Manager driver")
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+In that commit, an error was introduced while selecting the last P4
+model (0x06) as the upper bound. Model 0x06 was transposed to
+INTEL_P4_WILLAMETTE, which is just plain wrong. That was presumably a
+simple typo, probably just copying and pasting the wrong P4 model.
+
+Fix the constant TSC logic to cover all later P4 models. End at
+INTEL_P4_CEDARMILL which accurately corresponds to the last P4 model.
+
+Fixes: fadb6f569b10 ("x86/cpu/intel: Limit the non-architectural constant_tsc model checks")
+Cc: <stable@vger.kernel.org> # v6.15
+Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
 ---
- drivers/memory/stm32_omm.c | 2 +-
+Changes since v4:
+- Updated the patch based on review suggestions
+
+Changes since v3:
+- Refined changelog
+
+Changes since v2:
+- Improved commit message
+
+Changes since v1:
+- Fixed incorrect logic
+
+ arch/x86/kernel/cpu/intel.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/memory/stm32_omm.c b/drivers/memory/stm32_omm.c
-index 79ceb1635698f6bc8bd4a39fdeaced1ec318e1f6..9efc56a85b5ecca49eb6dfc0ef83880f89591cd1 100644
---- a/drivers/memory/stm32_omm.c
-+++ b/drivers/memory/stm32_omm.c
-@@ -247,7 +247,7 @@ static int stm32_omm_configure(struct device *dev)
- 		if (mux & CR_MUXEN) {
- 			ret = of_property_read_u32(dev->of_node, "st,omm-req2ack-ns",
- 						   &req2ack);
--			if (!ret && !req2ack) {
-+			if (!ret && req2ack) {
- 				req2ack = DIV_ROUND_UP(req2ack, NSEC_PER_SEC / clk_rate_max) - 1;
- 
- 				if (req2ack > 256)
-
----
-base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
-change-id: 20250806-upstream_omm_fix_req2ack_test_condition-77e8fb0d13d8
-
-Best regards,
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 076eaa41b8c8..98ae4c37c93e 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -262,7 +262,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 	if (c->x86_power & (1 << 8)) {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
+-	} else if ((c->x86_vfm >= INTEL_P4_PRESCOTT && c->x86_vfm <= INTEL_P4_WILLAMETTE) ||
++	} else if ((c->x86_vfm >= INTEL_P4_PRESCOTT && c->x86_vfm <= INTEL_P4_CEDARMILL) ||
+ 		   (c->x86_vfm >= INTEL_CORE_YONAH  && c->x86_vfm <= INTEL_IVYBRIDGE)) {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 	}
 -- 
-Patrice Chotard <patrice.chotard@foss.st.com>
+2.50.1
 
 
