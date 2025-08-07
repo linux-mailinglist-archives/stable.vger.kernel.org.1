@@ -1,112 +1,119 @@
-Return-Path: <stable+bounces-166797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73435B1DC99
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 19:44:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EBBB1DCB0
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 19:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1639582D5C
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 17:44:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C8951886F23
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 17:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D55273D80;
-	Thu,  7 Aug 2025 17:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DC61FF1C4;
+	Thu,  7 Aug 2025 17:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="Wj+po/Bh"
+	dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b="h4n7VQwP"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878D625B2FA;
-	Thu,  7 Aug 2025 17:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C253D1F4192;
+	Thu,  7 Aug 2025 17:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754588680; cv=none; b=PpRqcRugoCcY0Nzpa448uF1yzezwn/6B8+KtZ9Ez2eIpV9r/V0w8Y/o9BfOku32siB2nV059cx1XXLQYm6ehLwyYvDkYYymsH88wm8LOGaP4ILGlZLOslEd+hAnIDOHQvE+n5GgCezNCHtouKDs1/oq2LajFpPf7CQP6jSMo+6I=
+	t=1754589325; cv=none; b=qt4pSiqlQSlZpuiTtNWTLwWc5vPmsC7qJfp7bsb0CILjNstZoPeMTjZksMEyc86YNMtouUIR0I61oBsK9kL8W5N+K1d6ldWQp1Zh5thMVudTI3e1OyHe5OwEgh9IiEwC235ltN7/L3ioJVB1x1E/S9Hvvb66x6u7MFRrZgXDRH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754588680; c=relaxed/simple;
-	bh=S1QZjuhVpwv3KYWPm8Fi9kdkQj/q/2U1/cDy6IH0b7Y=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=g5h+Aom6CYuBHuGmPjOHp/96n3qk9Dj1K5xkuYZCnNDDZ9ibjw95was2YIwVBvPA4Qi+xvynrWzby8P8eKW0k7oY+LvrPSP53TWGaLjshfwOQ7I2ld5iIQr1sp/mtzUtWlIdgItJXdWjuM0iToUn/A0RLZLYKGuJmWcZBOyZpjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=Wj+po/Bh; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
+	s=arc-20240116; t=1754589325; c=relaxed/simple;
+	bh=UQBjd7oTQ++xKM4gsFbaCmOR0brFLzErTPP56dbXe5Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EQMiSIDzBAI9uA8hxpOGAOE4NDUpbd/RpEHGNN0Y4c0yGsKj1zZvEqlsjKF24+0D49YcAyej1jjlfl1fTAJG76c/2N3R3NJRtOa4cro6pFGQ97AidvELdXtoLfHUMV2Rcwx2nmLMLBWfGBJ1LHiIo80iyuPF+h8yAWa0/+orXOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com; spf=pass smtp.mailfrom=cyphar.com; dkim=pass (2048-bit key) header.d=cyphar.com header.i=@cyphar.com header.b=h4n7VQwP; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cyphar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyphar.com
 Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4byZKs1rt7z9shw;
-	Thu,  7 Aug 2025 19:44:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1754588673;
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4byZZJ0x87z9sTR;
+	Thu,  7 Aug 2025 19:55:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1754589320;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=l+438XYLoGKPC0jROIgVas6tBKICrKaix6D4/2BPOe0=;
-	b=Wj+po/BhakOc5O87beddYp4o7i9ekUSLHxYCXccrStZoTX0KyH3mFoF9klbiN7/SJ0djlP
-	SNeUqRI1YfcTlshp9cbvlC6lW+WrMSyXxTBUBu58nm12DQ4A3t1XVKqFd1+nVuUPVeliGX
-	TkCA7MSkauU/Xw1ZCM53lNglGB3qdsmNTDn3XVkAOVEofek6JMDEf1efa3CTmRgWReBAXr
-	bGaTxj257CRuLHN1EL052I+bz4mVhLNpjAFui30HRJknhP+HVqoSc02Sv0mWpVxdqjeicV
-	AehlUfrCMvf49cOmJKfJVApSlkW4thn+WFZ/HFONz71MRHl2fg/JIWqqYepVlw==
-Message-ID: <87960e35-5b7b-4b7e-9bba-50db6292cd5b@hauke-m.de>
-Date: Thu, 7 Aug 2025 19:44:29 +0200
+	bh=YsPsa0bzvSKbHR6viJA+n9YQMrDTXPcEJKFy94H+8uI=;
+	b=h4n7VQwPjju8fULKvEP82k60PP97PW3gHg9m9K4dRgB5aOHPjkE494qT6B2NCcNxt6kk1B
+	Xb08jIeaMgwFh3xYGjziex+Ll3QbA7znWMkpSuEcNa0lWgBDGaBp5pKLBZj+qcv9DEJ4ie
+	KBRAk5Tp21mX6jD9FIjA7Vt0+hgWegP+zQJ72BXgpvQPTo6W5mES6uSiGGRvyrKEUlVYDW
+	1RCV16Le/OKExNqQk9sXQJbbHwDaZiV8jCu2+XrMe8xwAhu6dgVmr3uvV7d+bkZFClxs/L
+	J3D/B6w2g3Np4vUBc1CZflgNXRKRAvfP4XuIpAjVRgzgZ8mpBn9jQG+ucBX40g==
+From: Aleksa Sarai <cyphar@cyphar.com>
+Subject: [PATCH 0/2] open_tree_attr: do not allow id-mapping changes
+ without OPEN_TREE_CLONE
+Date: Fri, 08 Aug 2025 03:55:04 +1000
+Message-Id: <20250808-open_tree_attr-bugfix-idmap-v1-0-0ec7bc05646c@cyphar.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Cc: Lion Ackermann <nnamrec@gmail.com>, Jamal Hadi Salim <jhs@mojatatu.com>,
- netdev@vger.kernel.org
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Subject: stable 5.15 backport: sch_*: make *_qlen_notify() idempotent
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHnolGgC/x2MSQqAMAwAvyI5W2jFDb8iIq1GzcFa0iqC+HeDx
+ 2GGeSAiE0bosgcYL4p0eAGTZzBt1q+oaBaGQheVbnWrjoB+TIw42pRYuXNd6JZot0E515TG1PU
+ 86RLkEBhF/vd+eN8PC5d7Dm0AAAA=
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>, 
+ stable@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1702; i=cyphar@cyphar.com;
+ h=from:subject:message-id; bh=UQBjd7oTQ++xKM4gsFbaCmOR0brFLzErTPP56dbXe5Y=;
+ b=owGbwMvMwCWmMf3Xpe0vXfIZT6slMWRMedHA2ttmuj4wgvv3beEorXfLul7Ep5hxKDjv/R/6L
+ t92uXttRykLgxgXg6yYIss2P8/QTfMXX0n+tJINZg4rE8gQBi5OAZjINwOG/6URf4tL5/tceui3
+ jGd3kcJ3vgrRXYE/ZS76aQn/ebHx0hdGhne84W3v3i3LrpW+HtW+/7jzzjJ+k3iPm0ket6QerEu
+ rYgAA
+X-Developer-Key: i=cyphar@cyphar.com; a=openpgp;
+ fpr=C9C370B246B09F6DBCFC744C34401015D1D2D386
 
-Hi,
+As described in commit 7a54947e727b ('Merge patch series "fs: allow
+changing idmappings"'), open_tree_attr(2) was necessary in order to
+allow for a detached mount to be created and have its idmappings changed
+without the risk of any racing threads operating on it. For this reason,
+mount_setattr(2) still does not allow for id-mappings to be changed.
 
-Kernel 5.15.189 is showing a warning caused by:
-commit e269f29e9395527bc00c213c6b15da04ebb35070
-Author: Lion Ackermann <nnamrec@gmail.com>
-Date:   Mon Jun 30 15:27:30 2025 +0200
-      net/sched: Always pass notifications when child class becomes empty
-      [ Upstream commit 103406b38c600fec1fe375a77b27d87e314aea09 ]
+However, there was a bug in commit 2462651ffa76 ("fs: allow changing
+idmappings") which allowed users to bypass this restriction by calling
+open_tree_attr(2) *without* OPEN_TREE_CLONE.
 
-See here for details: https://www.spinics.net/lists/netdev/msg1113109.html
+can_idmap_mount() prevented this bug from allowing an attached
+mountpoint's id-mapping from being modified (thanks to an is_anon_ns()
+check), but this still allows for detached (but visible) mounts to have
+their be id-mapping changed. This risks the same UAF and locking issues
+as described in the merge commit, and was likely unintentional.
 
-To fix this please backport the following 4 commits to 5.15 stable:
+For what it's worth, I found this while working on the open_tree_attr(2)
+man page, and was trying to figure out what open_tree_attr(2)'s
+behaviour was in the (slightly fruity) ~OPEN_TREE_CLONE case.
 
-commit 5ba8b837b522d7051ef81bacf3d95383ff8edce5
-Author: Cong Wang <xiyou.wangcong@gmail.com>
-Date:   Thu Apr 3 14:10:23 2025 -0700
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+---
+Aleksa Sarai (2):
+      open_tree_attr: do not allow id-mapping changes without OPEN_TREE_CLONE
+      selftests/mount_setattr: add smoke tests for open_tree_attr(2) bug
 
-     sch_htb: make htb_qlen_notify() idempotent
+ fs/namespace.c                                     |  3 +-
+ .../selftests/mount_setattr/mount_setattr_test.c   | 77 ++++++++++++++++++----
+ 2 files changed, 66 insertions(+), 14 deletions(-)
+---
+base-commit: 66639db858112bf6b0f76677f7517643d586e575
+change-id: 20250808-open_tree_attr-bugfix-idmap-bb741166dc04
 
+Best regards,
+-- 
+Aleksa Sarai <cyphar@cyphar.com>
 
-commit df008598b3a00be02a8051fde89ca0fbc416bd55
-Author: Cong Wang <xiyou.wangcong@gmail.com>
-Date:   Thu Apr 3 14:10:24 2025 -0700
-
-     sch_drr: make drr_qlen_notify() idempotent
-
-
-commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb
-Author: Cong Wang <xiyou.wangcong@gmail.com>
-Date:   Thu Apr 3 14:10:25 2025 -0700
-
-     sch_hfsc: make hfsc_qlen_notify() idempotent
-
-
-commit 55f9eca4bfe30a15d8656f915922e8c98b7f0728
-Author: Cong Wang <xiyou.wangcong@gmail.com>
-Date:   Thu Apr 3 14:10:26 2025 -0700
-
-     sch_qfq: make qfq_qlen_notify() idempotent
-
-
-Kernel 6.1 stable already contains them. Kernel 5.10 stable does not 
-contain the patch which causes problems.
-
-Hauke
 
