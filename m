@@ -1,82 +1,125 @@
-Return-Path: <stable+bounces-166755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C7CB1D124
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 05:08:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FC3B1D130
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 05:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB9D724AC1
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 03:08:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82A5583D7B
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 03:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8181DFE26;
-	Thu,  7 Aug 2025 03:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Ss16KIfq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC27E18BBB9;
+	Thu,  7 Aug 2025 03:18:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from mail-m49218.qiye.163.com (mail-m49218.qiye.163.com [45.254.49.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E393C1D5ABF;
-	Thu,  7 Aug 2025 03:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635EF189;
+	Thu,  7 Aug 2025 03:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754536103; cv=none; b=WXmYqfeiNg7Ns32WvKyHwNKNDVYitxO/92vYzDXPKMYdHBgGIkd0VCZKHb6vvJEdYfH7f+qohzlOD7KFZmjl17dEO2ileqTuWe7VvCOn3zQfseVq4dg0LkPN9y3jgJoFiQUGE/YJhMLq5Oo1BRKGbVcJ4rCL//S4ognQhTDzz0Y=
+	t=1754536680; cv=none; b=Gea0Mc/8b2ghmBfxdX6OzWh6CaVpSYFgVxMVxeNSFNs1qFMN79vuwZiwX/YV+p37DDA5sS0VD0bpUkmkgD49/dU52MAeRtaTwIWbAr/Jz2Jcke6G5G+rSzh6LRSOiuAM/tqKQQQ04UvBzZ9egZbRDYdWDfJfQS4iFCiquM2/HuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754536103; c=relaxed/simple;
-	bh=WY2EhGfiUl1uE0qy34wSO3JErruJR865/J+qREdKGmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U71OMeOZJlu5nA/h8v2hDGYKTKPnljI9l7BTcDzJl3gtof01UoDd5nQVI9tnxi7QnkOZti5EtDX6F4HmBsS674xDW8lmUV6Pv75SBk3Ac2Mc4XSwm64CkB+mOwMX+QFQMeZKZB6NJHnj3t1YwxTw4pNMCb8aIeLSUisTmUDHysQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Ss16KIfq; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=WY2EhGfiUl1uE0qy34wSO3JErruJR865/J+qREdKGmk=; b=Ss16KIfqBX1jUo0C5UJegCeOJt
-	xveApjcQWUE9xwvjhf3PyJVlcG7R9r2I0iCHn+wwDNrV+Cqedn26vxiIYK8Sfge6tZckj7wnSwSbV
-	e3hab71djSuq88isAjLjIdReOW06/RHGdSvfO//RyPpzUKf9h3ud87KJpXbopb0jYooBT/7uEIajx
-	QLKDyI5Xb9I6ugB6WUb4H1KyFMLmb144fQLZcIDq5b08lcKyMv9vEHIZ8D+OGGp7Y2KpdGuabopxz
-	TKZu/fTPh8pseDEzCjTbwrqj4BJlXRQa8fnDtAoudMn+Gsg/Su9O46uCO6GS0JTbXs1FYBgJaGTVc
-	Q3KZsBNg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujqzJ-00000000JSt-2hut;
-	Thu, 07 Aug 2025 03:08:17 +0000
-Date: Thu, 7 Aug 2025 04:08:17 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] fscontext: do not consume log entries when
- returning -EMSGSIZE
-Message-ID: <20250807030817.GH222315@ZenIV>
-References: <20250807-fscontext-log-cleanups-v3-0-8d91d6242dc3@cyphar.com>
- <20250807-fscontext-log-cleanups-v3-1-8d91d6242dc3@cyphar.com>
- <20250806190751.GG222315@ZenIV>
- <2025-08-07.1754534735-core-snowplow-plaid-exiles-anemic-gulls-v9Da77@cyphar.com>
+	s=arc-20240116; t=1754536680; c=relaxed/simple;
+	bh=NrAAULTbUGrcBeLEENrwD2qDSx9oCRI/90MAU0LbqUE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WTB/HUDvMAM/XWuYU+vzJh5er4k8MaKtvJfWd3BkYTHgon+9w1aJiNDgKQqFjDdVwWSSdau0+BeZTfF5NP3tnkpY4b4wJUqrBFJA50tOYFMX5RYUcDLd67wUUs69KZ5fUxSQutX1KQzLBftpHK0ykTQBb14poC/GxA7vqiURcLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=45.254.49.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id e438fb18;
+	Thu, 7 Aug 2025 11:12:37 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] ACPI: tables: FPDT: Fix memory leak in acpi_init_fpdt()
+Date: Thu,  7 Aug 2025 11:12:29 +0800
+Message-Id: <20250807031229.449657-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025-08-07.1754534735-core-snowplow-plaid-exiles-anemic-gulls-v9Da77@cyphar.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9882842cc20229kunmd5671b45730dd0
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaHkhCVhodH0kYSkkZHUIfQ1YVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
+	VKQktLWQY+
 
-On Thu, Aug 07, 2025 at 12:46:17PM +1000, Aleksa Sarai wrote:
+acpi_put_table() is only called when kobject_create_and_add() or
+fpdt_process_subtable() fails, but not on the success path. This causes
+a memory leak if initialization succeeds.
 
-> It felt odd to use "return ret;" at the start and switch to "return n;"
-> at the end, but feel free to change it when applying.
+Ensure acpi_put_table() is called in all cases by adding a put_table
+label and routing both success and failure paths through it. Drop the
+err_subtable label since kobject_put() is only needed when
+fpdt_process_subtable() fails.
 
-s/ret/err/ would take care of that, as well as clarifying the intent -
-not that "mutex_lock_interruptible() returns 0 or error" hadn't been
-the basic common knowledge...
+Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+ drivers/acpi/acpi_fpdt.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-Anyway, that's really nitpicking at this point.
+diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+index 271092f2700a..c8aea5bb187c 100644
+--- a/drivers/acpi/acpi_fpdt.c
++++ b/drivers/acpi/acpi_fpdt.c
+@@ -275,7 +275,7 @@ static int __init acpi_init_fpdt(void)
+ 	struct acpi_table_header *header;
+ 	struct fpdt_subtable_entry *subtable;
+ 	u32 offset = sizeof(*header);
+-	int result;
++	int result = 0;
+ 
+ 	status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
+ 
+@@ -285,7 +285,7 @@ static int __init acpi_init_fpdt(void)
+ 	fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
+ 	if (!fpdt_kobj) {
+ 		result = -ENOMEM;
+-		goto err_nomem;
++		goto put_table;
+ 	}
+ 
+ 	while (offset < header->length) {
+@@ -295,8 +295,10 @@ static int __init acpi_init_fpdt(void)
+ 		case SUBTABLE_S3PT:
+ 			result = fpdt_process_subtable(subtable->address,
+ 					      subtable->type);
+-			if (result)
+-				goto err_subtable;
++			if (result) {
++				kobject_put(fpdt_kobj);
++				goto put_table;
++			}
+ 			break;
+ 		default:
+ 			/* Other types are reserved in ACPI 6.4 spec. */
+@@ -304,11 +306,8 @@ static int __init acpi_init_fpdt(void)
+ 		}
+ 		offset += sizeof(*subtable);
+ 	}
+-	return 0;
+-err_subtable:
+-	kobject_put(fpdt_kobj);
+ 
+-err_nomem:
++put_table:
+ 	acpi_put_table(header);
+ 	return result;
+ }
+-- 
+2.20.1
+
 
