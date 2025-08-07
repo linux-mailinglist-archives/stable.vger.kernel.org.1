@@ -1,135 +1,164 @@
-Return-Path: <stable+bounces-166790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC20B1DA98
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 17:11:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27FCB1DAC5
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 17:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D9583ADF6D
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 15:11:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF52C563462
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 15:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB02625CC4D;
-	Thu,  7 Aug 2025 15:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBB4264A9D;
+	Thu,  7 Aug 2025 15:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PHmbndFI"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAFD14884C
-	for <stable@vger.kernel.org>; Thu,  7 Aug 2025 15:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444B7267B89
+	for <stable@vger.kernel.org>; Thu,  7 Aug 2025 15:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754579490; cv=none; b=oBSKsrnErCrS8gul/nORtQdGimIZ/5bJ5r1VoDLl7bFT582Wo/xaOSgrpaI2zSEGOgLLuHaxSl+VOcPj+AoohesP93pRqjdxkxUO6eX39OzAphpfm/OhyM2g+1muqROqJQlENUed/NPPkYocgQ8SEv5rynF2E04QBfTfyN43iSA=
+	t=1754580443; cv=none; b=BZbXQs7H5Kvye6v/aZKC40pt8hVmw00tI8H1rOxEfEV84jMKwYAOqJyZmzme32p40bKhTG5Hph6hwdsKSv45tbnOvlxo8xDhPlgVirREtN2K2mAS66bbljc9d6E4aNWxUrLf/uU0lK1BFUsJhznjC8R1Nf9P6xJKuEkxnPHJtlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754579490; c=relaxed/simple;
-	bh=QzhMySKuuSkey3yzlilATGr/aMw8wCt/kptf6UfgzXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YPo9TkAMPNI7BLo1ifNMqfR/Nw8dfh3jjZnO1lGAA4cMsGmcMU3LpL+oDxig0ZYvQ/aYP218YeETQuRdXxYOnpNa5PONvE5qoDZ3eFG9R84eSglYgdgXOHw1LRPoJf3IGtMcuJzse/mhzBkDOwpG38+74qmbVfP0nc3Mfn+JDoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8390C16F2;
-	Thu,  7 Aug 2025 08:11:19 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B139D3F5A1;
-	Thu,  7 Aug 2025 08:11:25 -0700 (PDT)
-Date: Thu, 7 Aug 2025 16:11:22 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Gu Bowen <gubowen5@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	linux-mm@kvack.org, Waiman Long <llong@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH v2] mm: Fix possible deadlock in console_trylock_spinning
-Message-ID: <aJTCGrkg69Ytg-CC@arm.com>
-References: <20250807091444.1999938-1-gubowen5@huawei.com>
+	s=arc-20240116; t=1754580443; c=relaxed/simple;
+	bh=mL1pBirMJzEme72kKHRF2wr+5TBxmQNWIHDsAk3E3ic=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iu+n50EbZ0YwfptgEipVwycLlQTkwTM8jaRcpBGR0E/7O3CoVqb1Tc+X7gIOkTRF/uCCipHWoVo5jHoIoE4dKzJ3dpRUHIWuyweUCn9+rtGLNRzO7Ogl7wgsapps/Jn42reKVNktMTcb0IBiS6gEgiIQ5A+ZuyUZXSLUUVxK9LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PHmbndFI; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4b0673b0a7cso342601cf.0
+        for <stable@vger.kernel.org>; Thu, 07 Aug 2025 08:27:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754580440; x=1755185240; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xioyC2IWw8hko9lVkldYv22q6OUtLq1NUecRh4m4n4o=;
+        b=PHmbndFIDSUTUf4WhUbdxhBmexysSjqB8/Z5jnubC+HbH09kJYe5yhENPI9XvvtIEd
+         D/rv1OyTXi/9FQ8mHlt+RWGgwa8c1tsTKhu8VbK+k+DOF9wbEw1TlFKNcd7fS0VwJiQg
+         rvNA2OpL9s3NyUOAc43xqZoU/QygIiqT5SNcSUssKBlV4u61tNJ0t1ytxdZ/Nt7u6F4H
+         bP4yP7U8zyXO2nxQiqM22an/+sDb1UwG9Xs4b2dOYJy/qZcL3MQkYrwIt7tr32iQXEQF
+         saytPcvWSqv03P6unxcjGK7dKsp8FhLYBuIeQ/87l+d/VRtD5BwS7gr4KlMtNLlI1hTR
+         hYCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754580440; x=1755185240;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xioyC2IWw8hko9lVkldYv22q6OUtLq1NUecRh4m4n4o=;
+        b=siKmZ8VGB5gdrjRe9YywTCRKi2uM65BTXPiQ3tG9TbLGfWxFwLlBeox1dRtAGR+sy/
+         WD/tfOMy7E5/RVmIpl8lGrGY/gOYws7YvYTb/CbU1j3csSjk/AQ8AlKdbZ3jviodmUuN
+         YrV432ZE0HcBnx7xuCFs09tO2Sg3AKHEhPvVcD/IsV1u9TzRAijGWtGw5uGiOatLjvrI
+         qYjgr/8OF1sf96FMmwMHOXl097giNjhniAB6vCsADPiIB0LJafHTU0XlqbizuPN3Du3q
+         labNI7ZB01NhyxyfIrQRNEOir8EnOKsTF/S1N7Vl9cWdTrYCDyV67DyowlP7cjxvP1Ca
+         kkSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTvQJ3StZhrOSv8bHR23WjEYTHOOHfhgnUJ0s60lNOLUZPUgdasQiByCH19NQQZZZKHstqNC0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXSMF12xAxjZw9urTQ5Rfu/Ku11NiSkkw4J9TXgtHU7YEf98KJ
+	7Yv13Rae3Wf4kmH+cjM2kF8/PQd1LqVNBbBf2LBrknaa/PyPkrOqpXEnuLLInygVrm6XLOZVXo2
+	CnDHXeuP0H8Y2i3kWhfwLjsktGHT8HZzGra6cH0X1BA1OsDdhQwhopQb8
+X-Gm-Gg: ASbGncsaWOEwHbhYAPxjVt+lHo84BjfpVwEWiUn/tUMDr10fhDBu9uyaDDnWnboM3bi
+	DM8phS9oOEZ/GVgmBb5rbeLpqMG9Lz5WHs2UyAHCIv4vwGccrByVNvpSL8EZl/X08Q+hDBR5M5o
+	cr9Aof2La2lyunEAbo9EMthkZueDLIAXGIxnijcT+Kzz31zwWNsLoDVFiOuAtAjEt2bzLJ/ZlfZ
+	wsPROV7qU/JHVE7jK96u+qAznOMI5+sJ8k1YAWQNQWq7xPR
+X-Google-Smtp-Source: AGHT+IGqSzXAmTUh3Qi2CUJgK4pgM8gORIxm8uH+FHAhS4VzwkyY6xnxbuHT0p3P7PQwzevNQcRG65DrMC35ALNZ2Dk=
+X-Received: by 2002:a05:622a:41:b0:4a9:a4ef:35d3 with SMTP id
+ d75a77b69052e-4b0a6dd90f8mr4013581cf.7.1754580439612; Thu, 07 Aug 2025
+ 08:27:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250807091444.1999938-1-gubowen5@huawei.com>
+References: <20250806220022.926763-1-surenb@google.com> <3eba855a-740c-4423-b2ed-24d622af29a5@redhat.com>
+In-Reply-To: <3eba855a-740c-4423-b2ed-24d622af29a5@redhat.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 7 Aug 2025 08:27:07 -0700
+X-Gm-Features: Ac12FXw0D7Y6MNnLaNuzRlNa7wyKoBPDReSLik-x4NPnGAkXfZmI9tMKxVv_LLY
+Message-ID: <CAJuCfpExxYOtsWZo6r0FncA0TMeuhpe3SdhLbF+udtbqQ+B_Qg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/1] userfaultfd: fix a crash in UFFDIO_MOVE when PMD
+ is a migration entry
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, aarcange@redhat.com, 
+	lokeshgidra@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 07, 2025 at 05:14:44PM +0800, Gu Bowen wrote:
-> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-> index 4801751cb6b6..381145dde54f 100644
-> --- a/mm/kmemleak.c
-> +++ b/mm/kmemleak.c
-> @@ -390,9 +390,15 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
->  		else if (object->pointer == ptr || alias)
->  			return object;
->  		else {
-> +			/*
-> +			 * Printk deferring due to the kmemleak_lock held.
-> +			 * This is done to avoid deadlock.
-> +			 */
-> +			printk_deferred_enter();
->  			kmemleak_warn("Found object by alias at 0x%08lx\n",
->  				      ptr);
->  			dump_object_info(object);
-> +			printk_deferred_exit();
->  			break;
->  		}
->  	}
+On Thu, Aug 7, 2025 at 3:31=E2=80=AFAM David Hildenbrand <david@redhat.com>=
+ wrote:
+>
+> On 07.08.25 00:00, Suren Baghdasaryan wrote:
+> > When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
+> > obtaining a folio and accessing it even though the entry is swp_entry_t=
+.
+> > Add the missing check and let split_huge_pmd() handle migration entries=
+.
+> >
+> > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@go=
+ogle.com/
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Reviewed-by: Peter Xu <peterx@redhat.com>
+> > Cc: stable@vger.kernel.org
+> > ---
+> > Changes since v3 [1]
+> > - Updated the title and changelog, per Peter Xu
+> > - Added Reviewed-by: per Peter Xu
+> >
+> > [1] https://lore.kernel.org/all/20250806154015.769024-1-surenb@google.c=
+om/
+> >
+> >   mm/userfaultfd.c | 17 ++++++++++-------
+> >   1 file changed, 10 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > index 5431c9dd7fd7..116481606be8 100644
+> > --- a/mm/userfaultfd.c
+> > +++ b/mm/userfaultfd.c
+> > @@ -1826,13 +1826,16 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx,=
+ unsigned long dst_start,
+> >                       /* Check if we can move the pmd without splitting=
+ it. */
+> >                       if (move_splits_huge_pmd(dst_addr, src_addr, src_=
+start + len) ||
+> >                           !pmd_none(dst_pmdval)) {
+> > -                             struct folio *folio =3D pmd_folio(*src_pm=
+d);
+> > -
+> > -                             if (!folio || (!is_huge_zero_folio(folio)=
+ &&
+> > -                                            !PageAnonExclusive(&folio-=
+>page))) {
+> > -                                     spin_unlock(ptl);
+> > -                                     err =3D -EBUSY;
+> > -                                     break;
+> > +                             /* Can be a migration entry */
+> > +                             if (pmd_present(*src_pmd)) {
+> > +                                     struct folio *folio =3D pmd_folio=
+(*src_pmd);
+> > +
+> > +                                     if (!folio
+>
+>
+> How could you get !folio here? That only makes sense when calling
+> vm_normal_folio_pmd(), no?
 
-This hunk is fine.
+Yes, I think you are right, this check is not needed. I can fold it
+into this fix or post a separate cleanup patch. I'm guessing a
+separate patch would be better?
 
-> @@ -433,8 +439,15 @@ static struct kmemleak_object *mem_pool_alloc(gfp_t gfp)
->  		list_del(&object->object_list);
->  	else if (mem_pool_free_count)
->  		object = &mem_pool[--mem_pool_free_count];
-> -	else
-> +	else {
-> +		/*
-> +		 * Printk deferring due to the kmemleak_lock held.
-> +		 * This is done to avoid deadlock.
-> +		 */
-> +		printk_deferred_enter();
->  		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
-> +		printk_deferred_exit();
-> +	}
->  	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-
-I wouldn't bother with printk deferring here, just set a bool warn
-variable and report it after unlocking. We recently merged another patch
-that does this.
-
->  
->  	return object;
-> @@ -632,6 +645,11 @@ static struct kmemleak_object *create_object(unsigned long ptr, size_t size,
->  		else if (parent->pointer + parent->size <= ptr)
->  			link = &parent->rb_node.rb_right;
->  		else {
-> +			/*
-> +			 * Printk deferring due to the kmemleak_lock held.
-> +			 * This is done to avoid deadlock.
-> +			 */
-> +			printk_deferred_enter();
->  			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
->  				      ptr);
->  			/*
-> @@ -639,6 +657,7 @@ static struct kmemleak_object *create_object(unsigned long ptr, size_t size,
->  			 * be freed while the kmemleak_lock is held.
->  			 */
->  			dump_object_info(parent);
-> +			printk_deferred_exit();
-
-This is part of __link_object(), called with the lock held, so easier to
-defer the printing as above.
-
-BTW, the function names in the diff don't match mainline. Which kernel
-version is this patch based on?
-
-With the second change above using a bool warn, feel free to add:
-
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-
-Thanks.
-
--- 
-Catalin
+>
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
 
