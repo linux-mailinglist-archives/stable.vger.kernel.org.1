@@ -1,168 +1,259 @@
-Return-Path: <stable+bounces-166788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F142CB1D9E4
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 16:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD439B1DA08
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 16:41:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2766C581EBD
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 14:22:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C37E162FB5
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 14:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5FE25C82D;
-	Thu,  7 Aug 2025 14:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE51B263892;
+	Thu,  7 Aug 2025 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndMOndCF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N0R0QUrk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246A583A14;
-	Thu,  7 Aug 2025 14:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7179B227EA7;
+	Thu,  7 Aug 2025 14:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754576523; cv=none; b=MnF9k7fmmV63mQR4PAgRbXaC7PXeltwztvjqzIVS2FBjjhGdmHsifGpxhj/YeeVqg6LChGeLcHb3OHrPa+o0BTL0Ysxs9GjzS4YJly/ANrpQyUBW9Awi+Kk2aFYagm4J8hjIJxOWaI3aguoWlvL+TzHp2qNCQ6tZ/U1nwktiWNs=
+	t=1754577648; cv=none; b=MmbWF2KMpuuC4f0fZAKGg4QxIkxb054GgKlRneFNZFI1LuLBbdeTCGmdTD/m4k6gafHoLz4XDcg55KDrZos2Fj4g3UkMsL/9pE/ASMCU8hx194GOBYWAjU0GCjrc4webNFoSSx15DQX5QTNEtq/BKbsP4YnAxEuCgUwrvbBBD4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754576523; c=relaxed/simple;
-	bh=dNa1Bny7iZ1EGEiI7VWML96Y5Ny6rNbeqmObEt5JvqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bs2JZNb7lrsIa3DLq9cC+3a9iK1GYuX7bDcp4WGg9RNLYVKl4rzqM0vnYuFEUKLtHJgigly2UFRgls7IF35pK69tdkNWPtnlN2d/ewbWA1BP6cHOdlAd9/rbU3RAsLUsJGLxohTlm4hOjJn1cJd6JU+OboTFt1YozZBs7PL/OJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndMOndCF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF8AC4CEEB;
-	Thu,  7 Aug 2025 14:21:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754576522;
-	bh=dNa1Bny7iZ1EGEiI7VWML96Y5Ny6rNbeqmObEt5JvqI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ndMOndCF1jWP98uGYI8uwuZTPvoRBUGkNZ7MJlthypDVWbWaqD5Ip3/YaqNZWdAi7
-	 pAsrS3bgW/rVTdXma/79ooLYOWfZbfDlsDNkv8XCu8GV4hGPbt6mEEteV39XiwNX2u
-	 Qu5dPMxB3o5zYz0j/A61bNdXH9vACHIuoqKl7iE6bW3Zx7yQy2L/OuKdMTfjtLwyXQ
-	 FLdRK19bQXSF3It/rkgVriZZN6d9jqGDsPouuDP5U1I76H7Qh1fO5vyuhRAfDAsOxO
-	 M1FA8Ob3fSmaIQiwaUd7jFzEPcIUy9cOZhbJG24PLa2ozjqOy6PojcrMAWxdMtsm42
-	 1XlBXSaYXpJ9w==
-Message-ID: <da46ad00-910f-4eb1-9b74-14bd76fc8910@kernel.org>
-Date: Thu, 7 Aug 2025 16:21:53 +0200
+	s=arc-20240116; t=1754577648; c=relaxed/simple;
+	bh=8rfAJxFmF2Pd+SoMjgyhcZjBC7s22/gkPAdrVPBV4AI=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=LDmKhvuxa+kW208DOHXWcmxLoxuLVOcYYpAFaPruqT2MEKx0cMRb+YSGpj/O2HlaK/6rNncQUndVFPLieq7Rfks6ZHvK+GNHTrphXr1UEgUDPyD7vfOFbSz0BCLtYKDMBnj0W3U33lCiC4aE5FU1O/9GAG5RRrc5cDhP+6b9yu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N0R0QUrk; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754577646; x=1786113646;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=8rfAJxFmF2Pd+SoMjgyhcZjBC7s22/gkPAdrVPBV4AI=;
+  b=N0R0QUrkJe09W4VFINvQcEBBL1PI8s/pH27A84YVYK28Qm86dWH+D61U
+   MtwoeZH+7de8YkOva6HW7ceUVbep5thygJP+U/dx7m3laYq1tzMdpI6fj
+   3w2To8I7AnsqQCcf2S+NLpBrejL9UGlKl3frXdOPDpmpyW4CkMT/7Ho8g
+   2HM3q63QsrmVtb8mU4r0fars94jAdmKLZrBV9bfEsi8eTdkdd3Yh8zosk
+   0RjTfirNhEjmFpsmPlOwCl6W1aBG+FoH+u08YJLrM8XnNDrs8bHdTqoJ0
+   Yq2vqyM9R5eI6YPw0M68SpG4qVliUApt/UMmbNVC9IEYI6BMg3HQ5TXPC
+   g==;
+X-CSE-ConnectionGUID: iMHY/kpsQi67y0AjaC0oBg==
+X-CSE-MsgGUID: f43SNLgSS9+hiaO1YqMwqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67505970"
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; 
+   d="scan'208";a="67505970"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 07:40:45 -0700
+X-CSE-ConnectionGUID: fsp0lPuhQciDk60mZELapQ==
+X-CSE-MsgGUID: e/4uHLauQsuQAqNJE225sA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; 
+   d="scan'208";a="170340530"
+Received: from xlan-mobl1.ccr.corp.intel.com (HELO [10.124.240.185]) ([10.124.240.185])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 07:40:41 -0700
+Message-ID: <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+Date: Thu, 7 Aug 2025 22:40:39 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: BPF selftest: mptcp subtest failing
-Content-Language: en-GB, fr-BE
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
- Mat Martineau <martineau@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>
-Cc: Geliang Tang <geliang@kernel.org>, Mykola Lysenko <mykolal@fb.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- mptcp@lists.linux.dev, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-References: <b1f933f6-545d-4f2e-a006-4e5568656c38@oracle.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <b1f933f6-545d-4f2e-a006-4e5568656c38@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Dave Hansen <dave.hansen@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Harshvardhan,
-
-On 07/08/2025 05:50, Harshvardhan Jha wrote:
-> Hi there,
-> I have explicitly disabled mptpcp by default on my custom kernel and
-> this seems to be causing the test case to fail. Even after enabling
-> mtpcp via sysctl command or adding an entry to /etc/sysctl.conf this
-> fails. I don't think this test should be failing and should account for
-> cases where mptcp has not been enabled by default?
-
-It looks like the test is failing because it expects MPTCP to be enabled
-by default. Or, said differently, it doesn't expect the kernel to be
-modified without adapting the corresponding tests :)
-
-> This is the custom patch I had applied on the LTS v6.12.36 kernel and
-> tested it:
+On 8/7/2025 12:34 AM, Dave Hansen wrote:
+> On 8/6/25 09:09, Jason Gunthorpe wrote:
+>>>>
+>>>> You can't do this approach without also pushing the pages to freed on
+>>>> a list and defering the free till the work. This is broadly what the
+>>>> normal mm user flow is doing..
+>>> FWIW, I think the simplest way to do this is to plop an unconditional
+>>> schedule_work() in pte_free_kernel(). The work function will invalidate
+>>> the IOTLBs and then free the page.
+>>>
+>>> Keep the schedule_work() unconditional to keep it simple. The
+>>> schedule_work() is way cheaper than all the system-wide TLB invalidation
+>>> IPIs that have to get sent as well. No need to add complexity to
+>>> optimize out something that's in the noise already.
+>> That works also, but now you have to allocate memory or you are
+>> dead.. Is it OK these days, and safe in this code which seems a little
+>> bit linked to memory management?
+>>
+>> The MM side avoided this by putting the list and the rcu_head in the
+>> struct page.
 > 
-> diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-> index dd595d9b5e50c..bdcc4136e92ef 100644
-> --- a/net/mptcp/ctrl.c
-> +++ b/net/mptcp/ctrl.c
-> @@ -89,7 +89,7 @@ const char *mptcp_get_scheduler(const struct net *net)
->  
->  static void mptcp_pernet_set_defaults(struct mptcp_pernet *pernet)
->  {
-> -	pernet->mptcp_enabled = 1;
-> +	pernet->mptcp_enabled = 0;
->  	pernet->add_addr_timeout = TCP_RTO_MAX;
->  	pernet->blackhole_timeout = 3600;
->  	atomic_set(&pernet->active_disable_times, 0);
+> I don't think you need to allocate memory. A little static structure
+> that uses the page->list and has a lock should do. Logically something
+> like this:
+> 
+> struct kernel_pgtable_work
+> {
+> 	struct list_head list;
+> 	spinlock_t lock;
+> 	struct work_struct work;
+> } kernel_pte_work;
+> 
+> pte_free_kernel()
+> {
+> 	struct page *page = ptdesc_magic();
+> 
+> 	guard(spinlock)(&kernel_pte_work.lock);
+> 	
+> 	list_add(&page->list, &kernel_pte_work.list);
+> 	schedule_work(&kernel_pte_work.work);
+> }
+> 
+> work_func()
+> {
+> 	iommu_sva_invalidate_kva();
+> 
+> 	guard(spinlock)(&kernel_pte_work.lock);
+> 
+> 	list_for_each_safe() {
+> 		page = container_of(...);
+> 		free_whatever(page);
+> 	}
+> }
+> 
+> The only wrinkle is that pte_free_kernel() itself still has a pte and
+> 'ptdesc', not a 'struct page'. But there is ptdesc->pt_list, which
+> should be unused at this point, especially for non-pgd pages on x86.
+> 
+> So, either go over to the 'struct page' earlier (maybe by open-coding
+> pagetable_dtor_free()?), or just use the ptdesc.
 
-First, I have the same question as the one I asked to RedHat devs: do
-you still need to keep MPTCP disabled by default? If I remember well, on
-RHEL side, they started to do that when they backported MPTCP on a
-previous stable version, as an experimental feature. They left it like
-that later mostly for internal process reasons I think. But honestly,
-today, it no longer makes sense to do that and annoys users: all other
-Linux distributions enable MPTCP by default without patching the kernel
-like you did.
+I refactored the code above as follows. It compiles but hasn't been
+tested yet. Does it look good to you?
 
-If you don't want to revert this patch, I guess you can modify the BPF
-selftests in 'prog_tests/mptcp.c' to set 'sysctl net.mptcp.enabled=1' in
-each netns created by the test. But again, not changing the default
-kernel behaviour sounds like a better solution.
+diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
+index c88691b15f3c..d9307dd09f67 100644
+--- a/arch/x86/include/asm/pgalloc.h
++++ b/arch/x86/include/asm/pgalloc.h
+@@ -10,9 +10,11 @@
 
-Cheers,
-Matt
+  #define __HAVE_ARCH_PTE_ALLOC_ONE
+  #define __HAVE_ARCH_PGD_FREE
++#define __HAVE_ARCH_PTE_FREE_KERNEL
+  #include <asm-generic/pgalloc.h>
+
+  static inline int  __paravirt_pgd_alloc(struct mm_struct *mm) { return 
+0; }
++void pte_free_kernel(struct mm_struct *mm, pte_t *pte);
+
+  #ifdef CONFIG_PARAVIRT_XXL
+  #include <asm/paravirt.h>
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index ddf248c3ee7d..f9f6738dd3cc 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -2,6 +2,7 @@
+  #include <linux/mm.h>
+  #include <linux/gfp.h>
+  #include <linux/hugetlb.h>
++#include <linux/iommu.h>
+  #include <asm/pgalloc.h>
+  #include <asm/tlb.h>
+  #include <asm/fixmap.h>
+@@ -844,3 +845,42 @@ void arch_check_zapped_pud(struct vm_area_struct 
+*vma, pud_t pud)
+  	/* See note in arch_check_zapped_pte() */
+  	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) && pud_shstk(pud));
+  }
++
++static void kernel_pte_work_func(struct work_struct *work);
++
++static struct {
++	struct list_head list;
++	spinlock_t lock;
++	struct work_struct work;
++} kernel_pte_work = {
++	.list = LIST_HEAD_INIT(kernel_pte_work.list),
++	.lock = __SPIN_LOCK_UNLOCKED(kernel_pte_work.lock),
++	.work = __WORK_INITIALIZER(kernel_pte_work.work, kernel_pte_work_func),
++};
++
++static void kernel_pte_work_func(struct work_struct *work)
++{
++	struct page *page, *next;
++
++	iommu_sva_invalidate_kva_range(0, TLB_FLUSH_ALL);
++
++	guard(spinlock)(&kernel_pte_work.lock);
++	list_for_each_entry_safe(page, next, &kernel_pte_work.list, lru) {
++		list_del_init(&page->lru);
++		pagetable_dtor_free(page_ptdesc(page));
++	}
++}
++
++/**
++ * pte_free_kernel - free PTE-level kernel page table memory
++ * @mm: the mm_struct of the current context
++ * @pte: pointer to the memory containing the page table
++ */
++void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
++{
++	struct page *page = virt_to_page(pte);
++
++	guard(spinlock)(&kernel_pte_work.lock);
++	list_add(&page->lru, &kernel_pte_work.list);
++	schedule_work(&kernel_pte_work.work);
++}
+diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
+index 3c8ec3bfea44..716ebab67636 100644
+--- a/include/asm-generic/pgalloc.h
++++ b/include/asm-generic/pgalloc.h
+@@ -46,6 +46,7 @@ static inline pte_t 
+*pte_alloc_one_kernel_noprof(struct mm_struct *mm)
+  #define pte_alloc_one_kernel(...) 
+alloc_hooks(pte_alloc_one_kernel_noprof(__VA_ARGS__))
+  #endif
+
++#ifndef __HAVE_ARCH_PTE_FREE_KERNEL
+  /**
+   * pte_free_kernel - free PTE-level kernel page table memory
+   * @mm: the mm_struct of the current context
+@@ -55,6 +56,7 @@ static inline void pte_free_kernel(struct mm_struct 
+*mm, pte_t *pte)
+  {
+  	pagetable_dtor_free(virt_to_ptdesc(pte));
+  }
++#endif
+
+  /**
+   * __pte_alloc_one - allocate memory for a PTE-level user page table
 -- 
-Sponsored by the NGI0 Core fund.
+2.43.0
 
+Thanks,
+baolu
 
