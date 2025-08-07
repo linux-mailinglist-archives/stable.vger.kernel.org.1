@@ -1,318 +1,114 @@
-Return-Path: <stable+bounces-166774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9297CB1D7F1
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 14:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A25B1D829
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 14:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99EB55643E1
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 12:33:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53782583DD5
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 12:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2001C2472B0;
-	Thu,  7 Aug 2025 12:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b4nIYSBx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E7A24728B;
+	Thu,  7 Aug 2025 12:44:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.blochl.de (mail.blochl.de [151.80.40.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E17C2EAE3
-	for <stable@vger.kernel.org>; Thu,  7 Aug 2025 12:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754569989; cv=fail; b=GYqOdWId7bX0xUSlJta9bQFOc33+MQSorIk9szoUS/wYqcUTDZWf5bwP/nxbWPKucg86/OFL5uklYEjySQs+Q63tNP9K8GDXDkPXqFH2Kee2G8gkblH0k2sM95X6VxAPQ1NTHpsPsYc5AcqvGG0OfBLebEZ2pp9EQ1LDz/f/nio=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754569989; c=relaxed/simple;
-	bh=6jACGKCH0nFkR5SxsZleziQjw8a4cTJn9NCF44PNobI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=s2XEId8muPfP0ZTtOdTZF+4HvJRld18VeDenpl4CthBReVwTTjvKzn00GalDsITiKCHnesz6Q01qpPalG4koGzOxJsyTRF5Fqb1g3OkxbRWsX1Fwg7Jp9Sz/lBpLdD07Dd0XIKomu8QL/pmeFpKkJS6VBJcJxjCfUPo99zYHBVs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b4nIYSBx; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754569988; x=1786105988;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=6jACGKCH0nFkR5SxsZleziQjw8a4cTJn9NCF44PNobI=;
-  b=b4nIYSBx3yw9/kFMrxT/qa5L2bvS4CI5aETFPOqChV7PRz+3bhCWPV25
-   7FlT0h7uA/CIDgS0kGL2QjXU0jmroyPDcn8PuSRzQWRnsw8hEnXwlUPsF
-   zjkpn2Sgyq6JnRYLmLjehRj+UeIr3H/5ElyBNtePJdKA4MZrWl3MlBjdB
-   6XO+msbql/qtsGtg7Tm6zi8XEupqVfDKf/hULhYJbJwpLm3WjfCSCuQL3
-   cgHfurwPTEKF4rDMR6Z+3Ns7Wbzsu7Q+Ia1BtD0m96pfN9ANw6pCUrcwo
-   qqNHd/VxCYnTcrHNlP/Me8ZioY4XHO9bxdtsqRpa69+R1zt9AViJ4oPeW
-   Q==;
-X-CSE-ConnectionGUID: P5Gh9gdCSvu+0Z6hHjNv1w==
-X-CSE-MsgGUID: HW4ryzyrT5GJYQrevJ3eZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="59517869"
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; 
-   d="scan'208";a="59517869"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 05:33:07 -0700
-X-CSE-ConnectionGUID: ZiTceJs0Q2CCTwh3ZnOfTA==
-X-CSE-MsgGUID: Fm0yy5QtQbWe9SXW0gE3dQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; 
-   d="scan'208";a="169173211"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 05:33:07 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 7 Aug 2025 05:33:07 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Thu, 7 Aug 2025 05:33:07 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.75)
- by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 7 Aug 2025 05:33:06 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DmFIXUMfgXwo0rBokulGc69BlUgQbTLnJCYlPr+0DMyg6YP6vARq8aLnMX+cr4OTSz2WtZWwRZ18dEeeYIm77CCVt++GTQ03iwzzIwga5plpLqSC2eQo5geYaVKmbp6gQEzeQZYsohVp7y5BL840iPE4HXFdQlwMzIJJzLNghEV0RXWHZ1xjGr2J2sXfnZmeQe9AkCPzm3z3LaMg7iqAr2IDCGA1uqk/Pqbl+RAr0oivbI+uxPejAveWj/qZZ6rJFVz+gU0ws8SJ9SNJd0icihUDuVKZJPfmEBB4QR4R/6hleywJcIciQ4T9jaAh1vWwQU/oENel1OMYXR9JTnGPow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xs8ZkQ+0zsR123om62gxMIbL4bA2lhDmMoN6ctR3hI0=;
- b=VOdi9ZEp4EAz9OXxPLOm9BJIghR8Szyl2Sw90XVNbpuE6Fc9qi+/IM9P6jWGR/HfM1RAIfDXs2QP/DnRb46qHFDusGuz0crkp3AvQw/W2KmA3rIzf2TZv0qTZJPOnqJjS/Y4ssA/2TG804dMldq4Hds3cbWOEpxFooyigdlEKDvzsRH3SWiNPJYZmGEY4evl/ynPLOfXJUraiOdjkmARodOef6/xEy6mOsAdTLkW4e6ZWie9K/Pxi7PAzTTKtf9NFOHcJXWFGQc7jg3l04BYdSItgukSfTgGKBUBQaM3YFlChNtKH73w3Hb+uS16DRQTSdY/KepqIxCHp65QLjmm+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB4840.namprd11.prod.outlook.com (2603:10b6:510:43::16)
- by DM4PR11MB6311.namprd11.prod.outlook.com (2603:10b6:8:a6::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Thu, 7 Aug
- 2025 12:33:03 +0000
-Received: from PH0PR11MB4840.namprd11.prod.outlook.com
- ([fe80::7044:24a0:758a:4bfd]) by PH0PR11MB4840.namprd11.prod.outlook.com
- ([fe80::7044:24a0:758a:4bfd%5]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
- 12:33:03 +0000
-Date: Thu, 7 Aug 2025 15:32:53 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-CC: Luca Coelho <luca@coelho.fi>, <intel-gfx@lists.freedesktop.org>,
-	<intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>, Charlton Lin
-	<charlton.lin@intel.com>, Khaled Almahallawy <khaled.almahallawy@intel.com>
-Subject: Re: [PATCH 01/19] drm/i915/lnl+/tc: Fix handling of an
- enabled/disconnected dp-alt sink
-Message-ID: <aJSc9UaVwn132FqX@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20250805073700.642107-1-imre.deak@intel.com>
- <20250805073700.642107-2-imre.deak@intel.com>
- <95999d2602067f556dc2e5739758deef7c462e17.camel@coelho.fi>
- <aJSQKu72vVYmUd4Y@ideak-desk>
- <d8e9cabb243cd8bbe7ac942d117146bf7f68b631@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <d8e9cabb243cd8bbe7ac942d117146bf7f68b631@intel.com>
-X-ClientProxiedBy: DUZPR01CA0191.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b6::20) To CO1PR11MB4834.namprd11.prod.outlook.com
- (2603:10b6:303:90::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DF61E48A
+	for <stable@vger.kernel.org>; Thu,  7 Aug 2025 12:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.40.192
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754570662; cv=none; b=sWFuXPbF2caGaqtXD2WI50MeHzUZ0lKbly+uLtl3RyTgcNdl2ysn8Q/Lq/7I6Jt+198VOSh3NcscS9+TnGu+gOe/PmXGHCK/UZqqXvSF7DiR6lCcJBiw1QBcd0VlAmZ1a5i0Ccomeq6k2hOom8hAktmpHqlZiupTFpcglgNebhs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754570662; c=relaxed/simple;
+	bh=XMyS0YC+kP5/HLvQeccevcgfsS//ASxJ6hYjPyaDYcM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iuBP9fh3378CJlXwn/05uKX/01WDJpnQ1YzlMKO4p4+huWPmwIxACqYHKFeanHDqbqR3rPO0iPshg5qKy566JDp4jcAtSTj5G3AEoq5HRiM5RJ1Cy8YtHl6Htj6Q2XwzECwN9Nuykcbp0Npbmk6rvG6OIYp/wa3icfkkKh/PlhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blochl.de; spf=pass smtp.mailfrom=blochl.de; arc=none smtp.client-ip=151.80.40.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blochl.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blochl.de
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.blochl.de 277014466439
+Authentication-Results: mail.blochl.de; dmarc=none (p=none dis=none) header.from=blochl.de
+Authentication-Results: mail.blochl.de; spf=fail smtp.mailfrom=blochl.de
+Received: from WorkKnecht (ppp-93-104-0-143.dynamic.mnet-online.de [93.104.0.143])
+	by smtp.blochl.de (Postfix) with ESMTPSA id 277014466439;
+	Thu, 07 Aug 2025 12:34:25 +0000 (UTC)
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 1.4.2 at 472b552e6fe8
+Date: Thu, 7 Aug 2025 14:34:10 +0200
+From: Markus =?utf-8?Q?Bl=C3=B6chl?= <markus@blochl.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, markus@blochl.de
+Subject: Re: [PATCH] ice/ptp: fix crosstimestamp reporting
+Message-ID: <ngpaxbcoagu6uiusrnqds7i62qv3c3nk6ppqv4eovrltnnlvqs@opvhzljlgpib>
+References: <20250725-ice_crosstimestamp_reporting-v1-1-3d0473bb7b57@blochl.de>
+ <1753492278-e3830ff7@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB4840:EE_|DM4PR11MB6311:EE_
-X-MS-Office365-Filtering-Correlation-Id: 926130c7-d90a-4e4b-1dcd-08ddd5ae8d0a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|10070799003|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/6Oq/kSNJj4Byxw1bGto26sxMQdA1nN1Xp9MGBdNPvrPw6UOGQs2O8iYDGxp?=
- =?us-ascii?Q?INVT/4yiyFP2V+HOuISIop+JdySFyHM9EzFlOJ1eszxT8JWqlFsD/Vyhgz1z?=
- =?us-ascii?Q?ocVMKLF2GUM2dZKin/gFCoxJFtYNfavyROp6yKO3APmHbnuqt7vo/8B7MJat?=
- =?us-ascii?Q?p5syb8cVW0SQu1WoO0ML9UJv8T3WiZvB7TpnaukjkYqd4BXy9gRs9K6s8WZP?=
- =?us-ascii?Q?i1OqSJ7uMRJc0XG3tyQFxUoegi1MgSxHYn5zUjpZD84oz+24JLZ+FBVva9PJ?=
- =?us-ascii?Q?F9005MqlZEyOh2OnzzuwyzZNPXWqrYAMZuk99reXwTtIHoeFZ06CvDv91PfC?=
- =?us-ascii?Q?Qdvzz6fAA3U8MQIIxkeUDx+j0iO20coYCaOJBYCOPTketNGRwK23juWY1Mhm?=
- =?us-ascii?Q?TLHRJUIZwn519FlFdqh0xUwuoRo+Op3a4h24G9DPpwrG6VGua/vzprVL+gun?=
- =?us-ascii?Q?24SOX19jSD2iN20izcijbBRuBfeSJQvuYeDI4U5+uYLlb9xMz9fOrvauI+hJ?=
- =?us-ascii?Q?KaUGdSDWzAmKSBDGtYG1CwmN17dSdFPUXXdghKWff2wO4vz81l36+AMCmoPl?=
- =?us-ascii?Q?0XELMpuE3cDWxX64djlAmC4wlfPNL0GU6oQuIRGq0mLk0fXvAXX61rYTKndu?=
- =?us-ascii?Q?+AVEZVSh8fB/rLF+n5rV1nOvvdC/ffbMmgLgzv1LHH6YisI64KXxbyCyIe1Z?=
- =?us-ascii?Q?/zqPtA8x61fbHQ5m5ydoEwf9/OZIyV1J/fjEaHmmez5FHFlHoDhKfmoEMemd?=
- =?us-ascii?Q?UyQ2MN5qYdLql0cgaqRuGYEI4Vu6WoOLw8fyV/M/yir9F2OqZtNqGbzx+2Vu?=
- =?us-ascii?Q?E4RlZH+YGVqhP4OCKMtWAVh7oQmnMTXJf3pjL73gfEaSlGYdPHMu6Sb8r27H?=
- =?us-ascii?Q?R/gOBTVlpfv18qjEvh65Q0Qf4FX7SV/NsAxAGgKlxhWKLYAVak2da55uouvc?=
- =?us-ascii?Q?lf+0P7cAcvXOUqrG0wsBirh7VCFFGRp1DtkMScY+ZeU3Rhh+daIf06fLofZa?=
- =?us-ascii?Q?EmUtG2WLhtTdL7bQxsgu1ETm3LnCl1O2PN6wVGCixKEQ/1Y7wFpYzKd1TwLa?=
- =?us-ascii?Q?iPW/ra9LId/MANeCV578zxsTU+n/yPrJwbSgWD6NJ3fcr2JY2tnTl8+FQgCH?=
- =?us-ascii?Q?nxzDBCUeJLg8PJd1WOLV2ubRfVUD6K/Vs1hCsi/Qh6yGASqs7d1RQtgcwiMW?=
- =?us-ascii?Q?YtpFm984mtqGDaC/bM9cRYRPiuwCzOtbrTMJ1eDTuzdHqLwDeMN355o+uEN0?=
- =?us-ascii?Q?06Cp7ZmqUxAPeNwP34OlYiwa0ZSNRC5GU/Yu2tqvLSZeBrJCLPy7Ya5KteGB?=
- =?us-ascii?Q?jo7KqIzlC1mvjOIdX5zPfHkbopscTAOE07mqnbUam2DCCp26xup+cIlCMTB/?=
- =?us-ascii?Q?DYGzKZEeuOTQJxsslxRyeFlnZErZ7h5x0taTHJaNgoFYlYpB6QWV7W7ebQjY?=
- =?us-ascii?Q?oqeQtuFUYs0=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB4840.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?obwIkwNBKRmGarNUnFOcQeKmw2uPrC2CqkZu/OewZsrO9e58nLqjA2LWbgpk?=
- =?us-ascii?Q?OqMldQHDZmYY3mE9m39jHBXLXbItYGq5PDY8wAqu0kNdpPRj2pAd9uIX+M4S?=
- =?us-ascii?Q?UJvALBXeOPb/GDiOXzwyv8TMM70vbqWbWasKzvdUTbQyQieogWsj2tWimE+d?=
- =?us-ascii?Q?jaSnYEeF4WZHw04dPM7+8nU1YqPS2sIu2nnzdBBWO8u6FUatT8ZF+W8/AqsW?=
- =?us-ascii?Q?VINJuhYaMg/l63BDPddB+wrNgmaPH779V/QkZvDjyv4N36sabWuFb/gjdS9z?=
- =?us-ascii?Q?XOKKwBZLXwR9GHH8MBgU2jzCsiq00VNdTwuugkBeHjPbblsEzFgFvav4PN5W?=
- =?us-ascii?Q?Y7ol/26eMpAtgVOqDLEfA8O323xwMtulw5+TgBAjWIa1LQB+vc7NtBXNAQC2?=
- =?us-ascii?Q?2bmmiQVTw6scAj32jfrqQ8YG2XUrUociu603I9Ld6ZteOfXacKnreaWqyv9s?=
- =?us-ascii?Q?MGdOCbb75+naJdgbhN29PnB0SXcpNNHGfwMA9DBHY9GE9XMfCgftCDhFfubQ?=
- =?us-ascii?Q?DlP88/tCLSR3CkxAGnHuIx5gjyCuNp3S/UJlTkoqaA3q3Hi7p6fnGAuKz4fg?=
- =?us-ascii?Q?XujttR47/n3immSF7zj1VTmJdj/UE86WVJjXX7vpaBFRXUty+YPunw8nsZuC?=
- =?us-ascii?Q?qFU+TWjI/NT93fWxr05ICeM7Ja2hXSbj6pZ+41bamqjZQTzXiFuRM4wqOljl?=
- =?us-ascii?Q?QQqm/+m5FnAlmpm0FgPSLfczN7SquvLWwyecfNBpxnMXqI9IVrw3KNUZa89A?=
- =?us-ascii?Q?4GE9vmrneG0Or1yH2AifyWp/1cLY74uURn5vJJTQUFOR3pE2wgBw8xM1abtF?=
- =?us-ascii?Q?xx7cbKQxSh86JCyzznlhX9mWuK97QUU2riAeLOR7MJcV+1jjUhFu+vZ57RfI?=
- =?us-ascii?Q?FDNBgC4zLPKU+b4iYSIcWiym5ddeZDJw+xK+k2jOBg3bGFQCBMi/+dBvaVgM?=
- =?us-ascii?Q?l175h1bNq0VvRXCj22v2ZGfr1NroqKxQospPLfk28bWx7PGXkk/KXbBwTb37?=
- =?us-ascii?Q?K3ADOmqVEQN4FygZkCgqJV7SRmCPYea0KYc4tKGMALdjXp+ggTcK3A0THAeo?=
- =?us-ascii?Q?xkGzU80pFKMOBkEruCevFGT0JGYLfemWtQukfqU8jiOGeE5+8sokVF70s8XI?=
- =?us-ascii?Q?l2LEdchcl4Xu2FpYC2qKjyXSLs4gzAyxVaoY+7FYkjP/cU8FHbnP3QL0Alvd?=
- =?us-ascii?Q?ej0BMoSSTLaKxtmH/235yTmpIBhEC9ytgirmss5N5rPi9OTQBqbSJBnhL7OR?=
- =?us-ascii?Q?ZNVjvPaaGRklPvUU9iz7NIUfEAYJRl2KxryYztZv8cwnv8SqiITjjOhyxBXY?=
- =?us-ascii?Q?fO/2j/Xm7EIJPfesjoWPcDLzY363Kq9aOKkBn2wabmanUJZb9LDyBzxVpmzA?=
- =?us-ascii?Q?uHB6DmfeoTQxaM3z9q5qqQgj/2jdvdl0EkP+QUCqQA7xHnPso8IPv/VXQ4oT?=
- =?us-ascii?Q?CXpzPZiQONr9NYrARhofzMUcHQaQVMEP4yt0E/cXhTCDIRBLlNKrEQGBrZ9M?=
- =?us-ascii?Q?sHeREKVJWZcLBEuI4nMuMmREqRb0GtiqU8IXy5CpGIDs4xNLSCfPV1B+N540?=
- =?us-ascii?Q?62x7O+PfprBar7IRYCiIZwfQJKOQNwafTZsXadFcCSGq0+cFK5eqjXcdMmfq?=
- =?us-ascii?Q?kAW74Qfan9A30F4kJCMRBn4iH1aP49usa5Ztu+IdmVdp?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 926130c7-d90a-4e4b-1dcd-08ddd5ae8d0a
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4834.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 12:33:03.4167
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0tpBZXpKcPq+9SLaUf3eaHhf/k9aKqF7fJ22UAXCYKQvsbKfiflAenAOcuFw8XD90NP6S7/O9BLGBrs2jYz5bg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6311
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1753492278-e3830ff7@stable.kernel.org>
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (smtp.blochl.de [0.0.0.0]); Thu, 07 Aug 2025 12:34:25 +0000 (UTC)
 
-On Thu, Aug 07, 2025 at 03:19:17PM +0300, Jani Nikula wrote:
-> On Thu, 07 Aug 2025, Imre Deak <imre.deak@intel.com> wrote:
-> > On Thu, Aug 07, 2025 at 01:59:21PM +0300, Luca Coelho wrote:
-> >> On Tue, 2025-08-05 at 10:36 +0300, Imre Deak wrote:
-> >> > The TypeC PHY HW readout during driver loading and system resume
-> >> > determines which TypeC mode the PHY is in (legacy/DP-alt/TBT-alt) and
-> >> > whether the PHY is connected, based on the PHY's Owned and Ready flags.
-> >> > For the PHY to be in DP-alt or legacy mode and for the PHY to be in the
-> >> > connected state in these modes, both the Owned (set by the BIOS/driver)
-> >> > and the Ready (set by the HW) flags should be set.
-> >> > 
-> >> > On ICL-MTL the HW kept the PHY's Ready flag set after the driver
-> >> > connected the PHY by acquiring the PHY ownership (by setting the Owned
-> >> > flag), until the driver disconnected the PHY by releasing the PHY
-> >> > ownership (by clearing the Owned flag). On LNL+ this has changed, in
-> >> > that the HW clears the Ready flag as soon as the sink gets disconnected,
-> >> > even if the PHY ownership was acquired already and hence the PHY is
-> >> > being used by the display.
-> >> > 
-> >> > When inheriting the HW state from BIOS for a PHY connected in DP-alt
-> >> > mode on which the sink got disconnected - i.e. in a case where the sink
-> >> > was connected while BIOS/GOP was running and so the sink got enabled
-> >> > connecting the PHY, but the user disconnected the sink by the time the
-> >> > driver loaded - the PHY Owned but not Ready state must be accounted for
-> >> > on LNL+ according to the above. Do that by assuming on LNL+ that the PHY
-> >> > is connected in DP-alt mode whenever the PHY Owned flag is set,
-> >> > regardless of the PHY Ready flag.
-> >> > 
-> >> > This fixes a problem on LNL+, where the PHY TypeC mode / connected state
-> >> > was detected incorrectly for a DP-alt sink, which got connected and then
-> >> > disconnected by the user in the above way.
-> >> > 
-> >> > Cc: stable@vger.kernel.org # v6.8+
-> >> > Reported-by: Charlton Lin <charlton.lin@intel.com>
-> >> > Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-> >> > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> >> > ---
-> >> >  drivers/gpu/drm/i915/display/intel_tc.c | 16 ++++++++++------
-> >> >  1 file changed, 10 insertions(+), 6 deletions(-)
-> >> > 
-> >> > diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
-> >> > index 3bc57579fe53e..73a08bd84a70a 100644
-> >> > --- a/drivers/gpu/drm/i915/display/intel_tc.c
-> >> > +++ b/drivers/gpu/drm/i915/display/intel_tc.c
-> >> > @@ -1226,14 +1226,18 @@ static void tc_phy_get_hw_state(struct intel_tc_port *tc)
-> >> >  	tc->phy_ops->get_hw_state(tc);
-> >> >  }
-> >> >  
-> >> > -static bool tc_phy_is_ready_and_owned(struct intel_tc_port *tc,
-> >> > -				      bool phy_is_ready, bool phy_is_owned)
-> >> > +static bool tc_phy_in_legacy_or_dp_alt_mode(struct intel_tc_port *tc,
-> >> > +					    bool phy_is_ready, bool phy_is_owned)
-> >> 
-> >> Personally I don't like the "or" in the function name.  You're
-> >> returning a boolean which is true or false.  The return value is akin
-> >> to answering "Yes/No" to the question "Is it black or white".
-> >
-> > The question the function is meant to answer is "Is the PHY in legacy or
-> > DP-alt mode?". The return value is true (yes) if the PHY is in either
-> > legacy or DP-alt mode, false (no) if the PHY is neither in legacy or
-> > DP-alt mode. There are many other uses of "or" in function names in this
-> > sense, so not sure how else I'd name this one. Simply leaving out "or"
-> > would make it less clear that the legacy and DP-alt modes are two
-> > separate modes.
-> 
-> What's the opposite of "Is the PHY in legacy or DP-alt mode"?
->
-> Would that lead to a simpler name, with the reversed return value?
+Hi Sasha,
 
-The opposite is either TBT-alt or disconnected mode, so the reversal
-would result in the same function name format.
+Sorry, I don't really know how to handle this response from your bot:
 
-> BR,
-> Jani.
+On Fri, Jul 25, 2025 at 09:37:11PM -0400, Sasha Levin wrote:
+> [ Sasha's backport helper bot ]
 > 
+> Hi,
 > 
+> Summary of potential issues:
+> ❌ Patch application failures detected
+> ⚠️ Found matching upstream commit but patch is missing proper reference to it
+
+The patch clearly mentions `commit a5a441ae283d upstream.` to me.
+Am I too blind to spot a typo or similar?
+
 > 
-> >
-> >> This is a nitpick, obviously, so I'll leave it up to you.
-> >> 
-> >> Regardless:
-> >> 
-> >> Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
-> >> 
-> >> --
-> >> Cheers,
-> >> Luca.
-> >> 
-> >> >  {
-> >> >  	struct intel_display *display = to_intel_display(tc->dig_port);
-> >> >  
-> >> > -	drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
-> >> > +	if (DISPLAY_VER(display) < 20) {
-> >> > +		drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
-> >> >  
-> >> > -	return phy_is_ready && phy_is_owned;
-> >> > +		return phy_is_ready && phy_is_owned;
-> >> > +	} else {
-> >> > +		return phy_is_owned;
-> >> > +	}
-> >> >  }
-> >> >  
-> >> >  static bool tc_phy_is_connected(struct intel_tc_port *tc,
-> >> > @@ -1244,7 +1248,7 @@ static bool tc_phy_is_connected(struct intel_tc_port *tc,
-> >> >  	bool phy_is_owned = tc_phy_is_owned(tc);
-> >> >  	bool is_connected;
-> >> >  
-> >> > -	if (tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned))
-> >> > +	if (tc_phy_in_legacy_or_dp_alt_mode(tc, phy_is_ready, phy_is_owned))
-> >> >  		is_connected = port_pll_type == ICL_PORT_DPLL_MG_PHY;
-> >> >  	else
-> >> >  		is_connected = port_pll_type == ICL_PORT_DPLL_DEFAULT;
-> >> > @@ -1352,7 +1356,7 @@ tc_phy_get_current_mode(struct intel_tc_port *tc)
-> >> >  	phy_is_ready = tc_phy_is_ready(tc);
-> >> >  	phy_is_owned = tc_phy_is_owned(tc);
-> >> >  
-> >> > -	if (!tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned)) {
-> >> > +	if (!tc_phy_in_legacy_or_dp_alt_mode(tc, phy_is_ready, phy_is_owned)) {
-> >> >  		mode = get_tc_mode_in_phy_not_owned_state(tc, live_mode);
-> >> >  	} else {
-> >> >  		drm_WARN_ON(display->drm, live_mode == TC_PORT_TBT_ALT);
+> Found matching upstream commit: a5a441ae283d54ec329aadc7426991dc32786d52
 > 
-> -- 
-> Jani Nikula, Intel
+> WARNING: Author mismatch between patch and found commit:
+> Backport author: Markus Blöchl <markus@blochl.de>
+> Commit author: Anton Nadezhdin <anton.nadezhdin@intel.com>
+
+This mismatch is intentional.
+I did not author the original fix. I merely backported it to 6.12.y.
+So I kept the original author when cherry-picking.
+
+> 
+> Note: Could not generate a diff with upstream commit:
+> ---
+> Note: Could not generate diff - patch failed to apply for comparison
+> ---
+> 
+> Results of testing on various branches:
+> 
+> | Branch                    | Patch Apply | Build Test |
+> |---------------------------|-------------|------------|
+> | origin/linux-6.15.y       | Failed      | N/A        |
+> | origin/linux-6.12.y       | Success     | Success    |
+> | origin/linux-6.6.y        | Failed      | N/A        |
+> | origin/linux-6.1.y        | Failed      | N/A        |
+> | origin/linux-5.15.y       | Failed      | N/A        |
+> | origin/linux-5.10.y       | Failed      | N/A        |
+> | origin/linux-5.4.y        | Failed      | N/A        |
+
+As written, the backport is for 6.12.y only.
+
+If there is anything I should do or change, please let me know.
+
+Thanks,
+Markus
+
+
+-- 
 
