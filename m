@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-166812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8FCB1DF61
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 00:36:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DAFB1DF70
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 00:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D7F05665CB
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 22:36:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F1918C6FBC
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 22:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF2B235BEE;
-	Thu,  7 Aug 2025 22:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC14227E83;
+	Thu,  7 Aug 2025 22:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iVLsbKUr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QIEEbaLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D06122370A;
-	Thu,  7 Aug 2025 22:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79742219A79;
+	Thu,  7 Aug 2025 22:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754606199; cv=none; b=ndiwxPli+Up2RdZg11vZgn1Efi4ozl9KQfBk0z0dzMZ7yJac11cc1zwwuVNCZsdO9AwPL0oVWUL07f+AQBJ+9W1a+kCLbVUiA9LKZC5R+moIhIdsrdZU1tYoY5oOyuS9SCwZhKzWy6caxpPt4SDSmAfrn8VtUpE2480ASjo44Eg=
+	t=1754606861; cv=none; b=GUv1alPsZ+ptlPRrfbCBC83vQH/eqZEBdpriXwY0Bd5YPxhS5iL3zVvFMHflFYeWF4aZFlAHMPI7ussdjasda/RgH2XwG4woMcGpfE0GsL09h8o5Vc0/3vaITRgx6hoctDpV53JavFDg2seVT5x9a177D31pG1FTQNey9wKnI58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754606199; c=relaxed/simple;
-	bh=gqDJBdGGnri81C9JYYvriLcCIss6kinKURJkmA8Lhbk=;
-	h=Date:To:From:Subject:Message-Id; b=BFZ8zFMO3W7O2A4BWB/xNeCRnFZkAYsSJ7wdXYV6NE/UpuSlTOLGCrgzXP7DnBFGYPZn5YPwlRpJyia2J/RAsiYwqdwrnJptaBvhrAXqQV4q9l2jiyGn+nDpCqi763F0J81pgRXCSvCQ/IYfqGkddXYdID/ADYhF6PWZ7Zfgr1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iVLsbKUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8F5C4CEEB;
-	Thu,  7 Aug 2025 22:36:38 +0000 (UTC)
+	s=arc-20240116; t=1754606861; c=relaxed/simple;
+	bh=AFdbj0skQYjMg5havIsFj3cVBQZpyVUMrBwCBen6SFA=;
+	h=Date:To:From:Subject:Message-Id; b=X9u9lJmSrggtvqgdTUEAgepSu9X4PaniaSh02RmHgJvhKKu9ikRdaSn3h23m9XQxm/+hvdqyTbpkVlviJbFRX/mQLTEsJcEM2DcHBBWEUyyrMpWbAzNEOoVotLTSk6qwUrEPNrDfmZ2T+hfkk6nk1RIwXdyEmAPA0qh/odRPr6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QIEEbaLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1939C4CEEB;
+	Thu,  7 Aug 2025 22:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754606199;
-	bh=gqDJBdGGnri81C9JYYvriLcCIss6kinKURJkmA8Lhbk=;
+	s=korg; t=1754606861;
+	bh=AFdbj0skQYjMg5havIsFj3cVBQZpyVUMrBwCBen6SFA=;
 	h=Date:To:From:Subject:From;
-	b=iVLsbKUrMYzEZYqJHeT2Wf6fh7sXO8PwZvrkXrw5I46ynSEkQNgOW93eCarv9d4F5
-	 DQjG9JAkdAE3UOgcU7kAVPoB5aWqYb68rgtAQD9n/JUIwks4Kq/yl3Qm0TR5SI9GGv
-	 74bGQpJXDQhdX8EAyciWDmLW5+23TMq+0aeROlBQ=
-Date: Thu, 07 Aug 2025 15:36:38 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,souravpanda@google.com,rientjes@google.com,pasha.tatashin@soleen.com,hca@linux.ibm.com,gor@linux.ibm.com,gerald.schaefer@linux.ibm.com,david@redhat.com,agordeev@linux.ibm.com,sumanthk@linux.ibm.com,akpm@linux-foundation.org
+	b=QIEEbaLwR4StjZEYxljESYwx+a1z0LXQNB8B+YqpNkth6hz7s/cxSHADTUrN1ru1N
+	 F2f9XnGEe5RdDKP/140oVbmXLmAc/sT3aNzt97cPM2NvF4p4Ddk/EIc6Onq1aBmETo
+	 SgkxKT9KcNV/nJw9OZLF8Nl9KvPoEOhdsr3hd8+Q=
+Date: Thu, 07 Aug 2025 15:47:40 -0700
+To: mm-commits@vger.kernel.org,superman.xpt@gmail.com,stable@vger.kernel.org,wjl.linux@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-fix-accounting-of-memmap-pages-for-early-sections.patch removed from -mm tree
-Message-Id: <20250807223638.DF8F5C4CEEB@smtp.kernel.org>
+Subject: + proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250807224740.E1939C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,69 +49,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The quilt patch titled
-     Subject: mm: fix accounting of memmap pages for early sections
-has been removed from the -mm tree.  Its filename was
-     mm-fix-accounting-of-memmap-pages-for-early-sections.patch
+The patch titled
+     Subject: proc: proc_maps_open allow proc_mem_open to return NULL
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch
 
-This patch was dropped because an updated version will be issued
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Subject: mm: fix accounting of memmap pages for early sections
-Date: Mon, 4 Aug 2025 10:40:15 +0200
+From: Jialin Wang <wjl.linux@gmail.com>
+Subject: proc: proc_maps_open allow proc_mem_open to return NULL
+Date: Fri, 8 Aug 2025 00:54:55 +0800
 
-memmap pages can be allocated either from the memblock (boot) allocator
-during early boot or from the buddy allocator.
+commit 65c66047259f ("proc: fix the issue of proc_mem_open returning
+NULL") breaks `perf record -g -p PID` when profiling a kernel thread.
 
-When these memmap pages are removed via arch_remove_memory(), the
-deallocation path depends on their source:
+The strace of `perf record -g -p $(pgrep kswapd0)` shows:
 
-* For pages from the buddy allocator, depopulate_section_memmap() is
-  called, which also decrements the count of nr_memmap_pages.
+  openat(AT_FDCWD, "/proc/65/task/65/maps", O_RDONLY) = -1 ESRCH (No such process)
 
-* For pages from the boot allocator, free_map_bootmem() is called. But
-  it currently does not adjust the nr_memmap_boot_pages.
+This patch partially reverts the commit to fix it.
 
-To fix this inconsistency, update free_map_bootmem() to also decrement the
-nr_memmap_boot_pages count by invoking memmap_boot_pages_add(), mirroring
-how free_vmemmap_page() handles this for boot-allocated pages.
-
-This ensures correct tracking of memmap pages regardless of allocation
-source.
-
-Link: https://lkml.kernel.org/r/20250804084015.270570-1-sumanthk@linux.ibm.com
-Fixes: 15995a352474 ("mm: report per-page metadata information")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
+Link: https://lkml.kernel.org/r/20250807165455.73656-1-wjl.linux@gmail.com
+Fixes: 65c66047259f ("proc: fix the issue of proc_mem_open returning NULL")
+Signed-off-by: Jialin Wang <wjl.linux@gmail.com>
+Cc: Penglei Jiang <superman.xpt@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/sparse.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/proc/task_mmu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/sparse.c~mm-fix-accounting-of-memmap-pages-for-early-sections
-+++ a/mm/sparse.c
-@@ -688,6 +688,7 @@ static void free_map_bootmem(struct page
- 	unsigned long start = (unsigned long)memmap;
- 	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
+--- a/fs/proc/task_mmu.c~proc-proc_maps_open-allow-proc_mem_open-to-return-null
++++ a/fs/proc/task_mmu.c
+@@ -340,8 +340,8 @@ static int proc_maps_open(struct inode *
  
-+	memmap_boot_pages_add(-1L * (DIV_ROUND_UP(end - start, PAGE_SIZE)));
- 	vmemmap_free(start, end, NULL);
- }
+ 	priv->inode = inode;
+ 	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
+-	if (IS_ERR_OR_NULL(priv->mm)) {
+-		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
++	if (IS_ERR(priv->mm)) {
++		int err = PTR_ERR(priv->mm);
  
+ 		seq_release_private(inode, file);
+ 		return err;
 _
 
-Patches currently in -mm which might be from sumanthk@linux.ibm.com are
+Patches currently in -mm which might be from wjl.linux@gmail.com are
 
-mm-fix-accounting-of-memmap-pages.patch
+proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch
 
 
