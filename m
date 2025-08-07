@@ -1,102 +1,187 @@
-Return-Path: <stable+bounces-166785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB98B1D9AC
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 16:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4DFB1D9B1
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 16:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CCB118922BE
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 14:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E88A9188DAED
+	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 14:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DEB262FF8;
-	Thu,  7 Aug 2025 14:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D613262FE4;
+	Thu,  7 Aug 2025 14:10:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629C81F4625;
-	Thu,  7 Aug 2025 14:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from coelho.fi (coelho.fi [88.99.146.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7EC1400C
+	for <stable@vger.kernel.org>; Thu,  7 Aug 2025 14:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.99.146.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754575724; cv=none; b=ISOeX71JPB5gVh35g+VFH5aR4U0NefqOVb/YcbegcLjjtYswDcp58XmhldxzAncNfDZB0xVPg/0wx3Ry667b9aDkmXnaaDv8Lg1K3HP3fsGLrP6BqDGn/V7XSWKdrLtOqBP7EasJLujnSOsFhR83mldsyhDTRpZwjJSn+QPpx2I=
+	t=1754575822; cv=none; b=so8p9RzL5XbUZFsdbC+uZwNdWjkReev1AYJhNZNVUl4jZAxY3LKse9/u1Eok4tbgUFlgoxFiwoWRbyyUcIBk5ADElvZlYUPWenUizYqJa1OYsherXV/Q0yPY9NI1laiAHA2KLo5qaz4asrbJ7pilIaNCpeyOlq/isMVLeJ6/YEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754575724; c=relaxed/simple;
-	bh=JOMXt7Dp00eXlXvY7ODv3ajXGYgyfV5NqudHZFP99tY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRD9M4UBDJ1FHBkGrijKHKHe3XMdGi0HPZVaJVlXjIX/QpNfH61G7+MCJH/I6kvtA9fZENB/oU/VaRkQwX8rHBtFY9DvMKNCJF7+ChBw5j9GzOVa+ngBXXVBCmD7t2bWZgIC4J392C2LPrbPniW3jukuZ29do39ji1QG/b7dhzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 624CD1756;
-	Thu,  7 Aug 2025 07:08:31 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F3A373F738;
-	Thu,  7 Aug 2025 07:08:37 -0700 (PDT)
-Date: Thu, 7 Aug 2025 15:08:35 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: "Aithal, Srikanth" <sraithal@amd.com>
-Cc: Zhen Ni <zhen.ni@easystack.cn>, <Markus.Elfring@web.de>,
-	<jassisinghbrar@gmail.com>, <linux-acpi@vger.kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>, <stable@vger.kernel.org>,
-	"Linux-Next Mailing List" <linux-next@vger.kernel.org>
-Subject: Re: [PATCH v4] mailbox: pcc: Add missed acpi_put_table() to fix
- memory leak
-Message-ID: <20250807-rampant-otter-of-persistence-b4436d@sudeepholla>
-References: <20250804121453.75525-1-zhen.ni@easystack.cn>
- <20250805034829.168187-1-zhen.ni@easystack.cn>
- <88a0618f-121f-4752-ad65-e9724403cc16@amd.com>
+	s=arc-20240116; t=1754575822; c=relaxed/simple;
+	bh=z2PBxvQZ5FsK+MdQiVoPD/aJrBqxpI9wl0w4ENfCCG8=;
+	h=Message-ID:From:To:Date:In-Reply-To:References:Content-Type:
+	 MIME-Version:Subject; b=LxQYf2LdJXzKTBZz+rEiyCxbo5UfnZLahnpkffyn8hFWGA1WDpKCjUylANNMAXLSiphunF/1DnEJatUw6+gXiF7gS1zzpL44W4HWi7jj57EV23m5r0dZ72XADzC0btNfZd3WTc1Jz8c3c/xvneVXMq0SJ27dZRXJwMrQPcYwkpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=coelho.fi; spf=pass smtp.mailfrom=coelho.fi; arc=none smtp.client-ip=88.99.146.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=coelho.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelho.fi
+Received: from 91-155-254-205.elisa-laajakaista.fi ([91.155.254.205] helo=[192.168.100.137])
+	by coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97)
+	(envelope-from <luca@coelho.fi>)
+	id 1uk1Jt-00000009X6s-0XuX;
+	Thu, 07 Aug 2025 17:10:15 +0300
+Message-ID: <1e1a3f0db25d4487a3b10522404ea004139ce8e7.camel@coelho.fi>
+From: Luca Coelho <luca@coelho.fi>
+To: imre.deak@intel.com, Jani Nikula <jani.nikula@linux.intel.com>, 
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	stable@vger.kernel.org, Charlton Lin <charlton.lin@intel.com>, Khaled
+ Almahallawy <khaled.almahallawy@intel.com>
+Date: Thu, 07 Aug 2025 17:10:11 +0300
+In-Reply-To: <aJShB9ufOBH9AWLY@ideak-desk>
+References: <20250805073700.642107-1-imre.deak@intel.com>
+	 <20250805073700.642107-2-imre.deak@intel.com>
+	 <95999d2602067f556dc2e5739758deef7c462e17.camel@coelho.fi>
+	 <aJSQKu72vVYmUd4Y@ideak-desk>
+	 <d8e9cabb243cd8bbe7ac942d117146bf7f68b631@intel.com>
+	 <aJSc9UaVwn132FqX@ideak-desk> <aJShB9ufOBH9AWLY@ideak-desk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <88a0618f-121f-4752-ad65-e9724403cc16@amd.com>
+X-Spam-Level: 
+Subject: Re: [PATCH 01/19] drm/i915/lnl+/tc: Fix handling of an
+ enabled/disconnected dp-alt sink
 
-On Thu, Aug 07, 2025 at 07:10:35PM +0530, Aithal, Srikanth wrote:
-> Hello,
-> 
-> This commit, now part of next-20250807[1], is causing kernel boot crash on
-> AMD EPYC Milan platform.
-> 
-> commit c3f772c384c8ec0796a73c80f89a31ff862c1295 (HEAD)
-> Author: Zhen Ni <zhen.ni@easystack.cn>
-> Date:   Tue Aug 5 11:48:29 2025 +0800
-> 
->     mailbox: pcc: Add missed acpi_put_table() to fix memory leak
-> 
->     Fixes a permanent ACPI memory leak in the success path by adding
->     acpi_put_table().
->     Renaming generic 'err' label to 'put_table' for clarity.
-> 
->     Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into
-> pcc_mbox_probe")
->     Cc: stable@vger.kernel.org
->     Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
->     Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-> 
-> 
-> Attaching both the dmesg and kernel config here.
-> 
-> If I go back 1 commit [i.e 75f1fbc9fd409a0c232dc78871ee7df186da9d57], things
-> work fine.
-> 
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tag/?h=next-20250807
-> 
->
+On Thu, 2025-08-07 at 15:50 +0300, Imre Deak wrote:
+> On Thu, Aug 07, 2025 at 03:33:04PM +0300, Imre Deak wrote:
+> > On Thu, Aug 07, 2025 at 03:19:17PM +0300, Jani Nikula wrote:
+> > > On Thu, 07 Aug 2025, Imre Deak <imre.deak@intel.com> wrote:
+> > > > On Thu, Aug 07, 2025 at 01:59:21PM +0300, Luca Coelho wrote:
+> > > > > On Tue, 2025-08-05 at 10:36 +0300, Imre Deak wrote:
+> > > > > > The TypeC PHY HW readout during driver loading and system resum=
+e
+> > > > > > determines which TypeC mode the PHY is in (legacy/DP-alt/TBT-al=
+t) and
+> > > > > > whether the PHY is connected, based on the PHY's Owned and Read=
+y flags.
+> > > > > > For the PHY to be in DP-alt or legacy mode and for the PHY to b=
+e in the
+> > > > > > connected state in these modes, both the Owned (set by the BIOS=
+/driver)
+> > > > > > and the Ready (set by the HW) flags should be set.
+> > > > > >=20
+> > > > > > On ICL-MTL the HW kept the PHY's Ready flag set after the drive=
+r
+> > > > > > connected the PHY by acquiring the PHY ownership (by setting th=
+e Owned
+> > > > > > flag), until the driver disconnected the PHY by releasing the P=
+HY
+> > > > > > ownership (by clearing the Owned flag). On LNL+ this has change=
+d, in
+> > > > > > that the HW clears the Ready flag as soon as the sink gets disc=
+onnected,
+> > > > > > even if the PHY ownership was acquired already and hence the PH=
+Y is
+> > > > > > being used by the display.
+> > > > > >=20
+> > > > > > When inheriting the HW state from BIOS for a PHY connected in D=
+P-alt
+> > > > > > mode on which the sink got disconnected - i.e. in a case where =
+the sink
+> > > > > > was connected while BIOS/GOP was running and so the sink got en=
+abled
+> > > > > > connecting the PHY, but the user disconnected the sink by the t=
+ime the
+> > > > > > driver loaded - the PHY Owned but not Ready state must be accou=
+nted for
+> > > > > > on LNL+ according to the above. Do that by assuming on LNL+ tha=
+t the PHY
+> > > > > > is connected in DP-alt mode whenever the PHY Owned flag is set,
+> > > > > > regardless of the PHY Ready flag.
+> > > > > >=20
+> > > > > > This fixes a problem on LNL+, where the PHY TypeC mode / connec=
+ted state
+> > > > > > was detected incorrectly for a DP-alt sink, which got connected=
+ and then
+> > > > > > disconnected by the user in the above way.
+> > > > > >=20
+> > > > > > Cc: stable@vger.kernel.org # v6.8+
+> > > > > > Reported-by: Charlton Lin <charlton.lin@intel.com>
+> > > > > > Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+> > > > > > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > > > > > ---
+> > > > > >  drivers/gpu/drm/i915/display/intel_tc.c | 16 ++++++++++------
+> > > > > >  1 file changed, 10 insertions(+), 6 deletions(-)
+> > > > > >=20
+> > > > > > diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/=
+gpu/drm/i915/display/intel_tc.c
+> > > > > > index 3bc57579fe53e..73a08bd84a70a 100644
+> > > > > > --- a/drivers/gpu/drm/i915/display/intel_tc.c
+> > > > > > +++ b/drivers/gpu/drm/i915/display/intel_tc.c
+> > > > > > @@ -1226,14 +1226,18 @@ static void tc_phy_get_hw_state(struct =
+intel_tc_port *tc)
+> > > > > >  	tc->phy_ops->get_hw_state(tc);
+> > > > > >  }
+> > > > > > =20
+> > > > > > -static bool tc_phy_is_ready_and_owned(struct intel_tc_port *tc=
+,
+> > > > > > -				      bool phy_is_ready, bool phy_is_owned)
+> > > > > > +static bool tc_phy_in_legacy_or_dp_alt_mode(struct intel_tc_po=
+rt *tc,
+> > > > > > +					    bool phy_is_ready, bool phy_is_owned)
+> > > > >=20
+> > > > > Personally I don't like the "or" in the function name.  You're
+> > > > > returning a boolean which is true or false.  The return value is =
+akin
+> > > > > to answering "Yes/No" to the question "Is it black or white".
+> > > >=20
+> > > > The question the function is meant to answer is "Is the PHY in lega=
+cy or
+> > > > DP-alt mode?". The return value is true (yes) if the PHY is in eith=
+er
+> > > > legacy or DP-alt mode, false (no) if the PHY is neither in legacy o=
+r
+> > > > DP-alt mode. There are many other uses of "or" in function names in=
+ this
+> > > > sense, so not sure how else I'd name this one. Simply leaving out "=
+or"
+> > > > would make it less clear that the legacy and DP-alt modes are two
+> > > > separate modes.
 
-Thanks for the report. I analysed the report and concluded that we can't
-drop the reference to the table unless we may a copy of some GAS registers
-as we access them at runtime.
+Right, I missed that.  But one shouldn't have to go read the function
+implementation to know what it's doing.
 
-Zhen,
 
-Sorry, I must withdraw my Reviewed-by.
+> > >=20
+> > > What's the opposite of "Is the PHY in legacy or DP-alt mode"?
+> > >=20
+> > > Would that lead to a simpler name, with the reversed return value?
+> >=20
+> > The opposite is either TBT-alt or disconnected mode, so the reversal
+> > would result in the same function name format.
+>=20
+> Would you be ok with
+>=20
+> tc_phy_owned_by_display()
+>=20
+> ?
 
--- 
-Regards,
-Sudeep
+This sounds much better! And it's indeed what you're looking for.  It
+doesn't matter if it's legacy DP-alt, TBT-alt or whatever.  What you're
+checking is actually whether display owns the PHY.  So this is a much
+better choice IMHO. :)
+
+--
+Cheers,
+Luca.
 
