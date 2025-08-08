@@ -1,131 +1,130 @@
-Return-Path: <stable+bounces-166832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57398B1E6FE
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 13:11:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5A6B1E758
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 13:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D741895E9E
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 11:11:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011CB5A05C2
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 11:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B2621B19D;
-	Fri,  8 Aug 2025 11:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021C52749DB;
+	Fri,  8 Aug 2025 11:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fHY0WzZS"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="nhwTd2ed"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546BB145329
-	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 11:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD30826463B
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 11:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754651485; cv=none; b=RNcXFNunlcl3yk3PIeZ//7m5wQOtzBlsJAvUW/Ef3PrygxjbseO63VCPdWtCNQ2LFovvb3kVFZSCgFyBIOoETaCGO8zUCgM32x1RsfdI9w1vX3ZwvW9BO3J23qlZJCyhvWLZUVM/tujogy0632wN7T7SgaohMFsh16bNoUldORg=
+	t=1754652558; cv=none; b=HZ0WF3eCrClvcyaE1szeSMfyCeovLfNmJT929kVTyjZZI+XdMEKu1O193FBfKfpyCRlKSiFpVcEYAYEcuKQ1J4xlR0m+oedS3DtboS+b2yP+QT4+UGNOeOalsVdCDiXxelpABamLemNkWp4Bo44wA4Hk32GnOjDjv9g4mFpsU5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754651485; c=relaxed/simple;
-	bh=purJkrY6cjSNtJ1exYHy5qtfoWVMg/9NNlLuGBLP1Po=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WetPLxam+7ZBPqq1jyeqF+4OoNyVDqbx73he3PU9kcmkCmkjpf5kfK3kUCU7gOB0SpWDb03oqs+xsGf5m/7mx0Fb/czC2Cgibo5T0BxB2YjU4jFhxZQ2YwzBH7cI5Xec01J872g+pR7TXhkczzDUZAS2125S0L1ij1+4N8avccI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fHY0WzZS; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754651485; x=1786187485;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=purJkrY6cjSNtJ1exYHy5qtfoWVMg/9NNlLuGBLP1Po=;
-  b=fHY0WzZSPObkbLXlLob2hcIig/tmwnN/UH2jAt5Flb+ydyxUAoqKLfUr
-   ym0ERH/aBuCfYT98AspN+Ge0AzxBO0oCTL1dXnpMRZLPs3PGjdMiFpZ3s
-   vv4M/jv0NpJO2nA49PgPReq9v6y9U4gDOA/yBieWfVvX88b7RukmdaLNk
-   ulMLdmryJznsOLCANYbTNXqKJDgvwEA4dGJAp/sbzaHa5k5RyaaLKWBRU
-   CrMJlutQmOGTo4UVDXzI6QQi8F67al/xMpQDSwkarq9XOsAprh2S2/5pS
-   2kmsxYW6jexjWcCU1zdl11KaDFshGdRXVy2gGSnc8qCGV5uR9bx7FXaE4
-   Q==;
-X-CSE-ConnectionGUID: VG2qRDaHSmqBKmfbcvWv2A==
-X-CSE-MsgGUID: 752cY+LxTiym+PjQQuUpbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="60623300"
-X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
-   d="scan'208";a="60623300"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 04:11:24 -0700
-X-CSE-ConnectionGUID: CVoyPoFfRNeUaFQjyN2uRg==
-X-CSE-MsgGUID: mswnhxYUR86BhJsAwjTeAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
-   d="scan'208";a="169764961"
-Received: from unknown (HELO jlawryno.igk.intel.com) ([10.91.220.59])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 04:11:22 -0700
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: jeff.hugo@oss.qualcomm.com,
-	lizhi.hou@amd.com,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] accel/ivpu: Fix potential Spectre issue in debugfs
-Date: Fri,  8 Aug 2025 13:11:20 +0200
-Message-ID: <20250808111120.329022-1-jacek.lawrynowicz@linux.intel.com>
-X-Mailer: git-send-email 2.45.1
+	s=arc-20240116; t=1754652558; c=relaxed/simple;
+	bh=TBJ59euEFZvE5z9IZ8MPSF77dcNwPaN6yTb2xeo5BJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=JnnbN6fNILKnUAgmUE4yUsEScI0zNIjcbgLZ4tX4ew/prh+WoTZKmHTRH4378Y08OMJ2yvfEmoBBUaGcU5k7Xu6LBu2bpv4zuDcNL/cK64gv10aQwYCmBR50VToWBtgs5y5pxSZR3iVpXbVKAv5Yrde0tD7kstCoqXfAOwb675w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=nhwTd2ed; arc=none smtp.client-ip=203.254.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250808112913epoutp0427d0e0c2dc7c4e33140ddfe23ddaebb4~ZxzN9BIVz1596915969epoutp04f
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 11:29:13 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250808112913epoutp0427d0e0c2dc7c4e33140ddfe23ddaebb4~ZxzN9BIVz1596915969epoutp04f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1754652553;
+	bh=TBJ59euEFZvE5z9IZ8MPSF77dcNwPaN6yTb2xeo5BJc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=nhwTd2edMbLxPe+E5gCk6fUsXyN52PmqUMpPwRyryDyoXhiMWJDEmOh1VfphwxrWk
+	 YS/TwHqM0TFbnal5t8BcDo47azeCnm6OFZ6fOLa+lL70Feef8VAFhKiXnZL1qbKE/E
+	 3eP7v1Amvf+va5Ddqk9QY1pQaGyP8qOuQxcu5d1I=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20250808112913epcas5p4abe581c8ef0c10c7a5cdad9e31e31035~ZxzNcwFlt1928619286epcas5p4N;
+	Fri,  8 Aug 2025 11:29:13 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.90]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4bz1yJ26BQz6B9m5; Fri,  8 Aug
+	2025 11:29:12 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250808112911epcas5p19e8d412d90d69c2bbac4fe1b7347343e~ZxzMDNaNF0130801308epcas5p1u;
+	Fri,  8 Aug 2025 11:29:11 +0000 (GMT)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250808112909epsmtip1c5cc52df52ec72f61267b3ccbfd0e1d8~ZxzJ1UsIh2461024610epsmtip1t;
+	Fri,  8 Aug 2025 11:29:09 +0000 (GMT)
+Message-ID: <03f1ab21-3fa7-41b1-a59e-91f1d9dca2f1@samsung.com>
+Date: Fri, 8 Aug 2025 16:59:08 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: dwc3: Remove WARN_ON for device endpoint
+ command timeouts
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	m.grzeschik@pengutronix.de, balbi@ti.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, akash.m5@samsung.com, hongpooh.kim@samsung.com,
+	eomji.oh@samsung.com, shijie.cai@samsung.com, alim.akhtar@samsung.com,
+	muhammed.ali@samsung.com, thiagu.r@samsung.com, stable@vger.kernel.org
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <20250808105218.WmVk--eM@linutronix.de>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250808112911epcas5p19e8d412d90d69c2bbac4fe1b7347343e
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250807014905epcas5p13f7d4ae515619e1e4d7a998ab2096c32
+References: <CGME20250807014905epcas5p13f7d4ae515619e1e4d7a998ab2096c32@epcas5p1.samsung.com>
+	<20250807014639.1596-1-selvarasu.g@samsung.com>
+	<20250808090104.RL_xTSvh@linutronix.de>
+	<20c46529-b531-494a-9746-2084a968639e@samsung.com>
+	<20250808105218.WmVk--eM@linutronix.de>
 
-Fix potential Spectre vulnerability in repoted by smatch:
-warn: potential spectre issue 'vdev->hw->hws.grace_period' [w] (local cap)
-warn: potential spectre issue 'vdev->hw->hws.process_grace_period' [w] (local cap)
-warn: potential spectre issue 'vdev->hw->hws.process_quantum' [w] (local cap)
 
-The priority_bands_fops_write() function in ivpu_debugfs.c uses an
-index 'band' derived from user input. This index is used to write to
-the vdev->hw->hws.grace_period, vdev->hw->hws.process_grace_period,
-and vdev->hw->hws.process_quantum arrays.
+On 8/8/2025 4:22 PM, Sebastian Andrzej Siewior wrote:
+> On 2025-08-08 16:07:25 [+0530], Selvarasu Ganesan wrote:
+>> Thank you for pointing out the discrepancy. We will ensure that the
+>> patch submission accurately reflects the authorship.
+>>
+>> Since I, "Selvarasu Ganesan" am the author, I will reorder the sign-offs
+>> to reflect the correct authorship.
+>>
+>> Here is the corrected patch submission:
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+>> Signed-off-by: Akash M <akash.m5@samsung.com>
+>>
+>> Regarding the next steps, I will post a new patchset with the reordered
+>> sign-offs.
+> Your sign-off (as the poster) should come last.
+> What is Akash' role in this?
 
-This pattern presented a potential Spectre Variant 1 (Bounds Check
-Bypass) vulnerability. An attacker-controlled 'band' value could
-theoretically lead to speculative out-of-bounds array writes if the
-CPU speculatively executed these assignments before the bounds check
-on 'band' was fully resolved.
 
-This commit mitigates this potential vulnerability by sanitizing the
-'band' index using array_index_nospec() before it is used in the
-array assignments. The array_index_nospec() function ensures that
-'band' is constrained to the valid range
-[0, VPU_JOB_SCHEDULING_PRIORITY_BAND_COUNT - 1], even during
-speculative execution.
+Akash M's role in the patch as a co-contributor.
+Shall i add tag as Co-developed-by: Akash M <akash.m5@samsung.com>?
 
-Fixes: 320323d2e545 ("accel/ivpu: Add debugfs interface for setting HWS priority bands")
-Cc: <stable@vger.kernel.org> # v6.15+
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
----
- drivers/accel/ivpu/ivpu_debugfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+Cc: stable@vger.kernel.org
+Co-developed-by: Akash M <akash.m5@samsung.com>
+Signed-off-by: Akash M <akash.m5@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-diff --git a/drivers/accel/ivpu/ivpu_debugfs.c b/drivers/accel/ivpu/ivpu_debugfs.c
-index cd24ccd20ba6c..2ffe5bf8f1fab 100644
---- a/drivers/accel/ivpu/ivpu_debugfs.c
-+++ b/drivers/accel/ivpu/ivpu_debugfs.c
-@@ -5,6 +5,7 @@
- 
- #include <linux/debugfs.h>
- #include <linux/fault-inject.h>
-+#include <linux/nospec.h>
- 
- #include <drm/drm_debugfs.h>
- #include <drm/drm_file.h>
-@@ -464,6 +465,7 @@ priority_bands_fops_write(struct file *file, const char __user *user_buf, size_t
- 	if (band >= VPU_JOB_SCHEDULING_PRIORITY_BAND_COUNT)
- 		return -EINVAL;
- 
-+	band = array_index_nospec(band, VPU_JOB_SCHEDULING_PRIORITY_BAND_COUNT);
- 	vdev->hw->hws.grace_period[band] = grace_period;
- 	vdev->hw->hws.process_grace_period[band] = process_grace_period;
- 	vdev->hw->hws.process_quantum[band] = process_quantum;
--- 
-2.45.1
 
+>> Thanks,
+>> Selva
+> Sebastian
+>
+>
 
