@@ -1,104 +1,177 @@
-Return-Path: <stable+bounces-166841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74677B1E96D
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 15:46:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 519ACB1E97A
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 15:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35CCDA04C96
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 13:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083F63BD47A
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 13:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EB528691;
-	Fri,  8 Aug 2025 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7145835958;
+	Fri,  8 Aug 2025 13:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8Mxavto"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OB73HsHa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC152E36EC;
-	Fri,  8 Aug 2025 13:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D70825634;
+	Fri,  8 Aug 2025 13:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754660786; cv=none; b=gjwYlgnRb6mU7W/HnPZ0Hm1xRH7H/Tj3DOlb168MkOHM+RxD7juu6Xr85ptAQgcSaKNdmtG+A12UTfPlp31J3dgsFt2v5WiIrGuVNKQ4YPRSqREZco8Fmr0vx2Mvr66YDAqklZhTZapE+swU2l6SHUz+QF1aHaCKILS0fUsIY9A=
+	t=1754660847; cv=none; b=lM0UBBjgduheKgWY5aXEGHwg8ebhxCPzqrIHZqHfs/LA0zelnr1aQvB/VlDst4qelf8p6Q7Fcv4md+roYN9USsWJugU5BqPyb9w1IdDhjQmzSZv+soMBV66YpMYsiWMIc8VJmCqN8O5J20FAhIbwniOClg1a2qvdslYAXhXB8pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754660786; c=relaxed/simple;
-	bh=0NyBks0euPBbl5FE+OFtNWamyzTbrv0aGE1Hvv6fMpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NQPQlu3XewOrFajo2fVA6yl50ZhEKq8IVD5NCOdb+Bhr3iCDtrrn06wfDcyH9pbjTvnOvoxasqeTZzVyfVgqyCKAM6nugkcUmkCfUOMsQOqsWk7YLb5C/T37yJJRzNZ5k0YKyzkIMnHkA5/jRq9UFCTQXtzcKaTzBldSCjLeUEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8Mxavto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF399C4CEED;
-	Fri,  8 Aug 2025 13:46:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754660786;
-	bh=0NyBks0euPBbl5FE+OFtNWamyzTbrv0aGE1Hvv6fMpg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8Mxavtoo51Fl8Y3e9TCdfA7cDIi/PzPhsrchdxYBqhJYLb5JT6myy+gEXP7Hg6rB
-	 HMT7r+IWmyovFDjqnhBA9BepdXHZMnAb1UANgDTdlebDBCEiqqfZix0EcER8xHuBN2
-	 rC+goxDeuRTDjCtuZo5CT98GgSSRBfpMQUIIM7Ou3urwzu+r5Zan/S7G7vmAFDUHNx
-	 G7ttl5nHqJsnV5qksmMScoalfxYvAjO6loJUmW8v5GNGZvgwGopyoyKJDv8VeP7uWO
-	 jE5PG8yCHsmemfPURdWRfgKa2kzAcrNjTzXBkLmfP45jEYCYcNU3eg8odUyzpc2VLD
-	 KUIB1MN6zhDQA==
-From: Christian Brauner <brauner@kernel.org>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	stable@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	"Seth Forshee (DigitalOcean)" <sforshee@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH 0/2] open_tree_attr: do not allow id-mapping changes without OPEN_TREE_CLONE
-Date: Fri,  8 Aug 2025 15:46:15 +0200
-Message-ID: <20250808-duett-gelenk-03cbce02469e@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250808-open_tree_attr-bugfix-idmap-v1-0-0ec7bc05646c@cyphar.com>
-References: <20250808-open_tree_attr-bugfix-idmap-v1-0-0ec7bc05646c@cyphar.com>
+	s=arc-20240116; t=1754660847; c=relaxed/simple;
+	bh=qV78hq9Pk6FzTiJPiSy8qLL8t6D8jRO15HvkwrTr+0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CNlqlOwYbodLmfZ0Sls4Dg0afB2n0puqHPgmyaQ7v0dLx/EGcAMR/3sOuucSGT0JbgfPAurAjiGshlviWuzbt5YYbX/DhK0/NXr9KvhO4UE7yrkiS+lnJGebsGswfTpmy2M58I5iyWf22WR43IcrM5lITclCCroXCYV6uuK9wKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OB73HsHa; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 578DkmqU992990;
+	Fri, 8 Aug 2025 08:46:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1754660808;
+	bh=wTg4kG3CjTwaBrWnll3HIQP/TPmGxsMNV/xOfqXmXO4=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=OB73HsHaP6lFvlDJMOV878MmQImc69xq7hPwAt38IUYsPc0sY5JAZ2pS7fIOzJli0
+	 68Z9aSSAvpIsxPBswgyVeotyVfr6xAgG2hvSg6HDHjgmyPoqvkGawc1/fkzQI7OLvl
+	 D/JsSjsN2Q+hBN4evRtAB8ofmriX8qTOMcW5tFY8=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 578DklxT1623098
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Fri, 8 Aug 2025 08:46:47 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 8
+ Aug 2025 08:46:46 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Fri, 8 Aug 2025 08:46:46 -0500
+Received: from [10.249.145.16] ([10.249.145.16])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 578DkXb43128040;
+	Fri, 8 Aug 2025 08:46:35 -0500
+Message-ID: <71ef3203-e11d-4244-8d2d-8e47e8ba6140@ti.com>
+Date: Fri, 8 Aug 2025 19:16:31 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1547; i=brauner@kernel.org; h=from:subject:message-id; bh=0NyBks0euPBbl5FE+OFtNWamyzTbrv0aGE1Hvv6fMpg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRM/b9m15tH/owP+f7FGX/qL1v+v7Jz7gSel86cBQcYJ DmrGuW7OkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZy7i3DX1GW7Hj2pRYVUfv7 szM/bYn/zbT0z6+4aXp+e6ewxVWazGNkeDktNeb6moysuK6cpB2m66aEsOxLc4vTkP8SrBf+fh0 DKwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] drm/tidss: Fix sampling edge configuration
+To: Louis Chauvet <louis.chauvet@bootlin.com>, Jyri Sarha <jyri.sarha@iki.fi>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Rob Herring <robh@kernel.org>,
+        "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, "Sam
+ Ravnborg" <sam@ravnborg.org>,
+        Benoit Parrot <bparrot@ti.com>, Lee Jones
+	<lee@kernel.org>,
+        Nishanth Menon <nm@ti.com>, Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>
+CC: <thomas.petazzoni@bootlin.com>, Jyri Sarha <jsarha@ti.com>,
+        Tomi Valkeinen
+	<tomi.valkeinen@ti.com>,
+        <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>, <s-jain1@ti.com>
+References: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
+ <20250730-fix-edge-handling-v1-4-1bdfb3fe7922@bootlin.com>
+Content-Language: en-US
+From: devarsh <devarsht@ti.com>
+In-Reply-To: <20250730-fix-edge-handling-v1-4-1bdfb3fe7922@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Fri, 08 Aug 2025 03:55:04 +1000, Aleksa Sarai wrote:
-> As described in commit 7a54947e727b ('Merge patch series "fs: allow
-> changing idmappings"'), open_tree_attr(2) was necessary in order to
-> allow for a detached mount to be created and have its idmappings changed
-> without the risk of any racing threads operating on it. For this reason,
-> mount_setattr(2) still does not allow for id-mappings to be changed.
+Hi Louis,
+
+Thanks for the patch.
+
+On 30/07/25 22:32, Louis Chauvet wrote:
+> As stated in the AM62x Technical Reference Manual (SPRUIV7B), the data
+> sampling edge needs to be configured in two distinct registers: one in the
+> TIDSS IP and another in the memory-mapped control register modules.
+
+I don't think AM62x is thee only one which requires this and on the
+contrary not all SoCs require this extra setting. We had been waiting on
+confirmations from hardware team and very recently they gave a list of
+SoCs which require this, as per that I think we need to limit this to
+AM62x and AM62A per current supported SoCs.
+
+Swamil,
+Please confirm on this and share if any additional details required here.
+
+Regards
+Devarsh
+
+ Since
+> the latter is not within the same address range, a phandle to a syscon
+> device is used to access the regmap.
 > 
-> However, there was a bug in commit 2462651ffa76 ("fs: allow changing
-> idmappings") which allowed users to bypass this restriction by calling
-> open_tree_attr(2) *without* OPEN_TREE_CLONE.
+> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > 
-> [...]
+> ---
+> 
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/gpu/drm/tidss/tidss_dispc.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+> index c0277fa36425ee1f966dccecf2b69a2d01794899..65ca7629a2e75437023bf58f8a1bddc24db5e3da 100644
+> --- a/drivers/gpu/drm/tidss/tidss_dispc.c
+> +++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+> @@ -498,6 +498,7 @@ struct dispc_device {
+>  	const struct dispc_features *feat;
+>  
+>  	struct clk *fclk;
+> +	struct regmap *clk_ctrl;
+>  
+>  	bool is_enabled;
+>  
+> @@ -1267,6 +1268,11 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+>  		       FLD_VAL(mode->vdisplay - 1, 27, 16));
+>  
+>  	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
+> +
+> +	if (dispc->clk_ctrl) {
+> +		regmap_update_bits(dispc->clk_ctrl, 0, 0x100, ipc ? 0x100 : 0x000);
+> +		regmap_update_bits(dispc->clk_ctrl, 0, 0x200, rf ? 0x200 : 0x000);
+> +	}
+>  }
+>  
+>  void dispc_vp_disable(struct dispc_device *dispc, u32 hw_videoport)
+> @@ -3012,6 +3018,14 @@ int dispc_init(struct tidss_device *tidss)
+>  
+>  	dispc_init_errata(dispc);
+>  
+> +	dispc->clk_ctrl = syscon_regmap_lookup_by_phandle_optional(tidss->dev->of_node,
+> +								   "ti,clk-ctrl");
+> +	if (IS_ERR(dispc->clk_ctrl)) {
+> +		r = dev_err_probe(dispc->dev, PTR_ERR(dispc->clk_ctrl),
+> +				  "DISPC: syscon_regmap_lookup_by_phandle failed.\n");
+> +		return r;
+> +	}
+> +
+>  	dispc->fourccs = devm_kcalloc(dev, ARRAY_SIZE(dispc_color_formats),
+>  				      sizeof(*dispc->fourccs), GFP_KERNEL);
+>  	if (!dispc->fourccs)
+> 
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/2] open_tree_attr: do not allow id-mapping changes without OPEN_TREE_CLONE
-      https://git.kernel.org/vfs/vfs/c/75a7ed5ce861
-[2/2] selftests/mount_setattr: add smoke tests for open_tree_attr(2) bug
-      https://git.kernel.org/vfs/vfs/c/a597ba0a020b
 
