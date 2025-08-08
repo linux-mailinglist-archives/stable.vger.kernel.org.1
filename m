@@ -1,354 +1,234 @@
-Return-Path: <stable+bounces-166826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6ECAB1E571
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 11:14:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A51CB1E584
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 11:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7861B7A68EA
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 09:12:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA54616752D
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 09:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7BD26C3A0;
-	Fri,  8 Aug 2025 09:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ADE26C3A0;
+	Fri,  8 Aug 2025 09:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="aqFUNBLt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDNNwmSz"
 X-Original-To: stable@vger.kernel.org
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013013.outbound.protection.outlook.com [52.101.83.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3632F268C73;
-	Fri,  8 Aug 2025 09:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754644451; cv=fail; b=OguGJksYD9I8jXiJ0z2Zz+MJa9UgoWOkCH49zf8ljKZ5yJ8+Txc823sREoSLaQPICOQzr/sbBduEWv3BpYrEAeXSNjnig5DC1zsRuq3pbxX6iuKdWstxUr/w/e+pQPTCabItN7UnAjPEALWjEVA+zOlz/vvs8P6ixNwxVwfF4zM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754644451; c=relaxed/simple;
-	bh=DaKKynti8A6ES0bLSnhq+2iNxQ/we/r4mteI6gwNVn8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Q5v3XcBkGMDodX4iNoxkJ/LLritZPOHh2oWsO5GOsvoTIJFvP+u/ZtE0P2bj5VAoaefBUowZDVu0sI3CKXkWTPunUP6FAs2RvR2mfn22XaiQsX1iMV9LLXQDSr4yNyuDpbhrYf+Ytgn6/AS2a6r9BV4s8vmsxjw8InkAmkH4PTc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=aqFUNBLt; arc=fail smtp.client-ip=52.101.83.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jGswqXq1IFwQmXlW9xRj6jwdNavXxa1JbFg39KBrswo93TkgVz0CqUOgRxU/9hyW30meI+Gvv2yZUgJ7dbfbuv+hpmhaI+pB16z/c8EhwFsNsuMpCDHvbMQRK6Xgcl/h1NYO0WKRQpFHh+uBuFXnOvn5J4K3rG9Fc3CqqeklyhOCE9prOeU+kOokkjKC75jTXfbqjMgUnHL8RS1EPFNxew+Mvvmog9dOPtZoKtrKe2Ah2/kNlhrNVlFIZyjx8fCnK3Q9VGeZKtqyt7lMxqX0h5DGb8N1oFBCkQwzHPfsMdW844RwSv/xBzBc4OFwm6mw+MpduxqBp/E1fDXmRIzRlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=er6xrq5GCC9/OyJ3Z6QAreldlhsmFbwI09W/GWIaiZA=;
- b=KSfnMUW8GxOXOkTeRmAMh7bvbgm8p9KU6E1/VP/oqhOKPD5SstSe59bPfoP28fTXfyzsblhu/UVdAKt4gSsugHT3dGyKtvnVgFT+FzRSwaH0pqZLPwx5UOXeBWjdDsAYQIF6rpTAoyLB+ocV1YoBeFfSP/CR9tGMVLB65NEZUedJH2WdF4T27ErybJy73uYlsqTumelxi/B9IkErHrs8l8l5prAUbnhYlcfazbljSfKYpL1mYnNCXOG5EfD+EIBIafPkvc6vj6/nHNXkfokxAzo6QqI/2yu3tTFSkZjDbxKAtq20d22hNE80dzDGKNhZLyvt9iCNhByPioiDuQ4h4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
- dkim=pass header.d=axis.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=er6xrq5GCC9/OyJ3Z6QAreldlhsmFbwI09W/GWIaiZA=;
- b=aqFUNBLt/znhNZI1dvdK8iBck5hU86Uo0PfS/9MN20nL+jsXF5ma7LMD7frrAdEs/3aAE4kNzBX8yTLcqxnfYDM9A8OVvA5oa/Gw3OU3v3f/MpAf/Ttvn4CSJpA6Q5zIK1bFaq3br/5NGdqPQnC0UyoPZYnFrIRZmrGzsqzHQAw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axis.com;
-Received: from VI1PR02MB10076.eurprd02.prod.outlook.com
- (2603:10a6:800:1c2::19) by GV4PR02MB11326.eurprd02.prod.outlook.com
- (2603:10a6:150:296::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Fri, 8 Aug
- 2025 09:14:06 +0000
-Received: from VI1PR02MB10076.eurprd02.prod.outlook.com
- ([fe80::869a:7318:e349:822d]) by VI1PR02MB10076.eurprd02.prod.outlook.com
- ([fe80::869a:7318:e349:822d%5]) with mapi id 15.20.9009.013; Fri, 8 Aug 2025
- 09:14:05 +0000
-Message-ID: <1aec872a-f1fb-4302-b346-08992ab19276@axis.com>
-Date: Fri, 8 Aug 2025 17:13:55 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] power: supply: bq27xxx: fix error return in case of no
- bq27000 hdq battery
-To: "H. Nikolaus Schaller" <hns@goldelico.com>, Jerry Lv <Jerry.Lv@axis.com>
-Cc: Sebastian Reichel <sre@kernel.org>, =?UTF-8?Q?Pali_Roh=C3=A1r?=
- <pali@kernel.org>, "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "letux-kernel@openphoenux.org" <letux-kernel@openphoenux.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "kernel@pyra-handheld.com" <kernel@pyra-handheld.com>,
- "andreas@kemnade.info" <andreas@kemnade.info>,
- Hermes Zhang <Hermes.Zhang@axis.com>
-References: <bc405a6f782792dc41e01f9ddf9eadca3589fcdc.1753101969.git.hns@goldelico.com>
- <VI1PR02MB10076D58D8B86F8FB50E59AADF422A@VI1PR02MB10076.eurprd02.prod.outlook.com>
- <2437B077-0F51-4724-8861-7E0BEE9DB5F0@goldelico.com>
-Content-Language: en-US
-From: Jerry Lv <jerrylv@axis.com>
-In-Reply-To: <2437B077-0F51-4724-8861-7E0BEE9DB5F0@goldelico.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TYCP286CA0201.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:385::15) To VI1PR02MB10076.eurprd02.prod.outlook.com
- (2603:10a6:800:1c2::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C772AE74;
+	Fri,  8 Aug 2025 09:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754644772; cv=none; b=lX7FpA1jIg+llP4HikmzKgn5BjtEVvx4lWJKEcVWi339qqG8nT4XXFoF+WLDBFwzeahJCAGbMuCEw/oedNNBV2J7n7O40MQ1XFX9fzi2W0d2RNW6nOnDr2TGRRfdaGDGKYZBWmaxNq1UEbV4gl5VnQTMJliEW62PY4GH7ocHmcY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754644772; c=relaxed/simple;
+	bh=UNGRcrHpudJn0w1urLqBMR5FBKNY7aoHD0a4DiJoAxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BftaOc3j+Cc632tTQx8EWqlV4Hw5J+6Qu+RhmWN/HuVcbCWcgU6eNBHot93G5nx5EY+ufyXpqHeBNV7PenX9AE7gR9vY0OB08pZwzQWjeszrfCTktVoW4flsAHiAfVGqw8yivOalOH0wRVrHyDkqNp+R3gehAZNnFUxVDshXbnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDNNwmSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DACC4CEED;
+	Fri,  8 Aug 2025 09:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754644771;
+	bh=UNGRcrHpudJn0w1urLqBMR5FBKNY7aoHD0a4DiJoAxo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sDNNwmSzuV6K6E49l6/7w4x04nxM8m2PFrSfClS/AKcLclw41aWIzJeT6INSUiv4P
+	 kDl9RhCjOmWJ4EzxRuwRe2IGBGYrAGOvj+vEpV3gloJdycaCgkIqw83wf729wcUPjj
+	 OQ7hAsJ3REkLl3SqY6EAIg0l6W7sibBMmOWyHMNuj3ZA8Z12zjDljCvu4Nt8SV1jui
+	 ke6aHNILH2np4asSUv7VBMd9XceFW4OZYdFlYVdnQ0DujaMyo0To8ZK2vFlFDFhDl2
+	 P3kyYXdEZQB91ROboSPaoyzcU2Y0XgJmdH7Gn/mgKlVPFku8dRurU1AAK7VrIjhxOp
+	 AaSn0a9hSAVFQ==
+Message-ID: <af73992f-e683-4ccd-9ff5-28f6147ea43e@kernel.org>
+Date: Fri, 8 Aug 2025 11:19:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR02MB10076:EE_|GV4PR02MB11326:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6dcd1a62-571b-439a-dd33-08ddd65bec6c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|42112799006|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TnRmb3JtM0hxckFlRHpSZXBtOWo1Sld1K09OV0oyQ1JKSnUxODhmbEJ1VDRR?=
- =?utf-8?B?V0IrOEw1cm1hWm9VdFJ6WFNHT1NWR3lZSDdUS25QT1daQi92UTc4UEhPaUNZ?=
- =?utf-8?B?RE82UXhqajlQdUV0REZEUFZRVnhpQ3pTTzl6UzlDSys4aTdlenZXUGxqdW9M?=
- =?utf-8?B?bXZpell4MW1Gd2RDbDBEa0RqRTM0TE1SbFB0aUhCdGZGT0hCaHFGUGZFNGVz?=
- =?utf-8?B?Sjl4QmVzbVFIaXdvOG4wQW50RDd0RmlqdGtwTVFKNGZYTkpjWEpLRVlzeGhp?=
- =?utf-8?B?Z2dOekhBZEhKQWhSSkx4Q29BbHRBbVdkcW13RlRIRVJVUmtHTUd1MWF3UDBP?=
- =?utf-8?B?b2ZxbFRMbVpBbHpHTzVSNG1uYy9QVGRLYlJyNXFRVlFCSHdKb25rUVp0b0gz?=
- =?utf-8?B?SyszZzVGMWxkVE9ZRDlhL2JxQmxVN2lOelRxa1dYR24rRTFCdUJGazdFdWM1?=
- =?utf-8?B?MnlHN2l5NGVRUTBLVlZsY01MaWVLaXZ2QjIvaWpkUWhZOWQra1kyNmhscUlB?=
- =?utf-8?B?NXR5WXFQUmtCVGV6Y0d4UXI0cTlNZVZnbFJLbW9YZTFiL2F3anpQRnA5YW5I?=
- =?utf-8?B?eisxbm1YNmNCMW9LMFVUN0RJSjlJR2VjVkZLV3RyODRlMkl5dkQzU3F2Tktx?=
- =?utf-8?B?NTNsbUtIT0ttaERwZnpyeFU4U0ZoSHhlZzNJazAxRW1VRUpybllndHR4TVRv?=
- =?utf-8?B?YkR3SnFHaHF2SjlwMGtibkpEYjRMUXhrZUhZNVhnK0tkS1VyM2loVmErZ01M?=
- =?utf-8?B?aHlpdVNlRDBmR0dQMDJtd3l4YmV4WlI3TXdxc1VOTW5MYThmeU5jcWtMaitG?=
- =?utf-8?B?Rk5NakVONldERWxvL3ZUN284S3RwWU80M1Jsamc5eTV1VldTd0cybnloMVhV?=
- =?utf-8?B?L3Irb29mVTdyR08zUXd4ZjUvbm9vNkVLa2Q3cDhWZjFVR1ViMGZJZHFaNVZT?=
- =?utf-8?B?c0FGeWJHTllYREFCK2FTeXYzaEcrS2ZQQ0YrTUp4WnZSWVNqaDI2UUt6Q0NZ?=
- =?utf-8?B?emtRQzc1aXBCUWJDamxxdyt3NkhRSWUweVRBdldYMGhJUnNtbXZKMUcrQjA3?=
- =?utf-8?B?RzBlN1hORlIwNDd1bGVVQU96Yi9URTV1TWZYL2VQWWNzMmVQd0ZCTndUTk9Q?=
- =?utf-8?B?NUtXdmFxRXVYWU9nNTZsK25hdVFUWTczMStSMlFPUER1cStETjVzaFkzTkhL?=
- =?utf-8?B?MGdpeEdIQnYyenZaS2d6Y3pYT0xNc0ppMkFiWDd3WjkwSVp4UXIrR3krdEFG?=
- =?utf-8?B?ckk3WFlERzVEcFJZY2pTM3VycmhRQlRELzd6SkVEYUlWYklrclEzZ2ZGUFZu?=
- =?utf-8?B?SFRDZVdFc0NRNzN3eFluVG54Zk83TkRnaGh6MCtEUmRYZEN1WVIwVWVHMURZ?=
- =?utf-8?B?S2tUQzMvMUtZaU5Ha3NIK21HMi9XdHBVUDQ5Q1pBclVVOERmQ3VzSkNXRXR0?=
- =?utf-8?B?bDZLaTBiWUpTUnp4QjNOVEFJSVNNbnUxNWJQOHArWWhKNmRiUG50Lzd5c2xO?=
- =?utf-8?B?NXUrREZVMHhIWlZvY2UzcjR1SzBMOHVhUWhaTGVoYWZwUHZPS1VlOVZHVEpn?=
- =?utf-8?B?cFRaZ1V2a2g0M1JPcGRDWEQ1NmVwemwxQTRDcmZmR3d0VGU2d2JDOU0rSEtl?=
- =?utf-8?B?U0twbEsxZnp6RStBRG9hUXVwQ1MrN0txT3d4VmthM0VPUW9ZNm4ybUJyZVZj?=
- =?utf-8?B?c1FQSmZmWDBkZU5Jc05CblRNem8zQzdBanMzZndBdnAydVpDTXpaSk5meFJt?=
- =?utf-8?B?KzR6WVpVK29sSVBRNmZYOVRpTmRNNytxUXpHZVlHeEdvdzlJSFVPRk5KcEhH?=
- =?utf-8?B?OVpQOEhFdmlOb0tNZitzK2NJWEpmeUpydUZKdmlQdlB3UlVKcVNNQktZY3F2?=
- =?utf-8?B?Tks4aE52OHhFOXFOYUwxOE9jaHFURFJoY2UwRzk0NXhlV2o5QldnME1FYlhq?=
- =?utf-8?Q?iM11fYVpWcY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR02MB10076.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(42112799006)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YTZmRWpkckVadkFCL053aU1DYmRUYW9BWWNiZzl6QUNuMDBtZ0pwOG1HVlkw?=
- =?utf-8?B?bXZ1SEdTd1JCTGZUNGYyVVd2LzdhZ0Q5OFBBWkhZWEwrUWkxMWRxYTc3dFVC?=
- =?utf-8?B?eEhUM3Z0Nnd4dlNSdmJuRmhVSk9NNzlkSFZ3bzhrZTd5Uy8yb3dHZllmeTM4?=
- =?utf-8?B?eTF0YWtNQVM0OFJsRE1ZS0NyalE3ZnlVZHBZY2lZSitBYnZQWGttVTdGZ1Fx?=
- =?utf-8?B?WTJ2Q3dSVWRvTmVVVHZzeEJ1TEQ2ZzdhWFJpQlF3ZTVTVnY5UUcvZytFKzU3?=
- =?utf-8?B?VkllOE9ENThoYU5CWTVyUk1pWUJxRzUyQzNmTnU0Y3FVcm1telpqV3kzUit0?=
- =?utf-8?B?M2M3Z0FKb1U3V3VqZ1Bma0haYjB5b2FwRUw3MGdQKzQvcGJlem1Id3RGdkk5?=
- =?utf-8?B?V0h4NWhSM0tPbWRUV0Nqb2FYWFJmMnlOZExHRzZnZ0d3TG1hZE5BbFg5N3ZK?=
- =?utf-8?B?UVhNMVRVNnNPTjNNVGpTZmJRRGsyVHVoNUVsS0c2YXYvVXJibGl3QkxkMjBY?=
- =?utf-8?B?T0s5VzkzOHVteVZSVXMrdUtDV1dSVVRCK2diRWRHSHZNUWowU2JJZU1BVUx1?=
- =?utf-8?B?SGJRQ2pKMHNNYmJzUVh0VjVDWTlJUk9VaWFwckZjcmRkNUJXZ0dLS1kzUlhQ?=
- =?utf-8?B?U3R6czhYV1YrZU4yR2NUSnVFcjB3YUZrK3U2eHc2Vm8xbW5TdnBNVW5udm5R?=
- =?utf-8?B?L2JySzFZOWZiRm9tQW5zY253RVo5SWpOMWw2ZUxFdVY5OW1qYXhrN3Y3ZDIz?=
- =?utf-8?B?VzRpdCtpZUp2eEtqc29yNmhBL3hVVmtLQzVCdlA4QzM1cGF1bEYzMzMwNWhM?=
- =?utf-8?B?MTFGL0VzeU16THdvd1VEbkZab2wwN0JjbWY5Rjk2RHkrb3RVTmllYkV2eWpv?=
- =?utf-8?B?WFJpUUd4Q3c4c3dHa0xHaEI2MVJtSWJwejBVZ0xwNk5DdDVXaUQxc2xNOW0r?=
- =?utf-8?B?QXBUd3hhLzJ5VWVXZ29zMkFhbWJwQTJCVFJYWVZMNEVtUEkrWkRnYlJrd09r?=
- =?utf-8?B?SkxWUjV1YlFDQlArMWlZTXpzSUZ0cElMZE5rTWV0MVZIbUttNFJ1RkZ0SEFS?=
- =?utf-8?B?dEFzNElLYURjcGlUbE15Mm9RL2JxWnZGYmFZdmkwOGIzZmhXMFh4UUN2dFdx?=
- =?utf-8?B?VTdzVUg4c2prRjhxYmFIZkdxN1lJUE9QNW9YUWtXbjRuYUVkNHY0N2FYWTB6?=
- =?utf-8?B?SGF5MysxUWlOT3hjOTJSTXpIYkMzeVI1clhxZTdvVVpjZk5YMnM2UXJxd1ZC?=
- =?utf-8?B?a2RwQWdZSTFkOTJtZDBpakdLQjRuRGhDU0owRXBMNHg1cVpseE1ZcmU3ZzBK?=
- =?utf-8?B?Y25NSmFuS2lmZXh1YU5saUtNWHJaUmgwR2l6QWhrWnhCbWhCaHYyYU9jMDRy?=
- =?utf-8?B?R1hteDNQQ0F1QmZiWHV0dmxqRGY5SzlxQnpRMnM5Y1VVVHA4aUYxVzdDUVRR?=
- =?utf-8?B?WWJzNThpajFLQWg5NklCRUw2dE5LMDFSSmlTaGNQU1BYMHkxclg4RVhLczJo?=
- =?utf-8?B?QjFYblRJVDJycFdqNVNmT1Fyelg0WkZQTHNDeThnanhSQmxzRlFCalpwR0Fs?=
- =?utf-8?B?R2ZiZnppZUJjUjNXVDMzRXpTR3FHMzZMY1NXRnZDc2NYZmowSzYzeEpacnht?=
- =?utf-8?B?THBmMUZVenA3R3loa000eUJ4SUpPNmFqb0w3ZjQ5ZG1ESXNlaWpTdEdZZk1Y?=
- =?utf-8?B?K0tJblZuOCt6NkEySy90d2E2eVR1aks3YTBDWDVENkNMaXMreVBCMGZ2SHVN?=
- =?utf-8?B?KzBwMWVURTErK2cya05XZ0UwdkdhZU1Qek1EWWQyamtxK0FmS0RjOWJxZHds?=
- =?utf-8?B?MVo4UFdBT1QzYVl6elBTOUlZaDNXUVUydmJHNXkxN2F6UGVnNGN5WnJ6Zkp2?=
- =?utf-8?B?N0Q5Kzg0MXVNMFFUdmZ2S3VWV3Z4SG0ya0FJSTdNTHZ5ZU5nS2FtQ0M1YWky?=
- =?utf-8?B?bzRTUDhXK2ZCeWZmczBzbmx5aVBMNUtRQmJUSzYwa1ZZVTR5bEVXeVVKY25D?=
- =?utf-8?B?WmcvV0JoMWtHY0VEV2JEdnR0VzdHYWRjazlxdnZvUFVlbWlzbTRGNkVBU1RV?=
- =?utf-8?B?QWx0aTA0U2NFVkVvay9TNVo2ZFQ3MDFocGxwQUpQZVpBdXltTUk3SUh0R0Zp?=
- =?utf-8?Q?1aJPPKwbZHr5DXcQemH/LHXiq?=
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6dcd1a62-571b-439a-dd33-08ddd65bec6c
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR02MB10076.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 09:14:05.7152
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pK4+9bIeB+5ZxIHnjUBlEwbdEbgaKBikIEESd4S0bf6rYR79PbzE1H8FaezEvj6XLngIWgi2F2PKaYyyPSuJgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR02MB11326
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: BPF selftest: mptcp subtest failing
+Content-Language: en-GB, fr-BE
+To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+ Mat Martineau <martineau@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>
+Cc: Geliang Tang <geliang@kernel.org>, Mykola Lysenko <mykolal@fb.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ mptcp@lists.linux.dev, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ stable@vger.kernel.org
+References: <b1f933f6-545d-4f2e-a006-4e5568656c38@oracle.com>
+ <da46ad00-910f-4eb1-9b74-14bd76fc8910@kernel.org>
+ <84125c5e-ed99-4158-9a59-e1a97435c626@oracle.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
+ YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
+ c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
+ WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
+ CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
+ nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
+ TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
+ nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
+ VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
+ 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
+ YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
+ AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
+ EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
+ /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
+ MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
+ cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
+ iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
+ jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
+ 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
+ VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
+ BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
+ ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
+ 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
+ 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
+ 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
+ mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
+ Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
+ Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
+ Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
+ x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
+ V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
+ Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
+ HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
+ 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
+ Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
+ voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
+ KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
+ UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
+ vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
+ mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
+ JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <84125c5e-ed99-4158-9a59-e1a97435c626@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Nikolaus,
+Hi Harshvardhan,
 
-On 8/5/2025 5:28 PM, H. Nikolaus Schaller wrote:
-> Hi Jerry,
->
->> Am 05.08.2025 um 10:53 schrieb Jerry Lv <Jerry.Lv@axis.com>:
+On 08/08/2025 09:00, Harshvardhan Jha wrote:
+> Hi Matthieu,
+> 
+> On 07/08/25 7:51 PM, Matthieu Baerts wrote:
+>> Hi Harshvardhan,
 >>
+>> On 07/08/2025 05:50, Harshvardhan Jha wrote:
+>>> Hi there,
+>>> I have explicitly disabled mptpcp by default on my custom kernel and
+>>> this seems to be causing the test case to fail. Even after enabling
+>>> mtpcp via sysctl command or adding an entry to /etc/sysctl.conf this
+>>> fails. I don't think this test should be failing and should account for
+>>> cases where mptcp has not been enabled by default?
+>> It looks like the test is failing because it expects MPTCP to be enabled
+>> by default. Or, said differently, it doesn't expect the kernel to be
+>> modified without adapting the corresponding tests :)
 >>
->>
->>
->> ________________________________________
->> From: H. Nikolaus Schaller <hns@goldelico.com>
->> Sent: Monday, July 21, 2025 8:46 PM
->> To: Sebastian Reichel; Jerry Lv
->> Cc: Pali Rohár; linux-pm@vger.kernel.org; linux-kernel@vger.kernel.org; letux-kernel@openphoenux.org; stable@vger.kernel.org; kernel@pyra-handheld.com; andreas@kemnade.info; H. Nikolaus Schaller
->> Subject: [PATCH] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
->>
->> [You don't often get email from hns@goldelico.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->>
->> Since commit
->>
->> commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
->>
->> the console log of some devices with hdq but no bq27000 battery
->> (like the Pandaboard) is flooded with messages like:
->>
->> [   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
->>
->> as soon as user-space is finding a /sys entry and trying to read the
->> "status" property.
->>
->> It turns out that the offending commit changes the logic to now return the
->> value of cache.flags if it is <0. This is likely under the assumption that
->> it is an error number. In normal errors from bq27xxx_read() this is indeed
->> the case.
->>
->> But there is special code to detect if no bq27000 is installed or accessible
->> through hdq/1wire and wants to report this. In that case, the cache.flags
->> are set (historically) to constant -1 which did make reading properties
->> return -ENODEV. So everything appeared to be fine before the return value was
->> fixed. Now the -1 is returned as -ENOPERM instead of -ENODEV, triggering the
->> error condition in power_supply_format_property() which then floods the
->> console log.
->>
->> So we change the detection of missing bq27000 battery to simply set
->>
->>         cache.flags = -ENODEV
->>
->> instead of -1.
->>
->> Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
->> Cc: Jerry Lv <Jerry.Lv@axis.com>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
->> ---
->> drivers/power/supply/bq27xxx_battery.c | 2 +-
->> 1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
->> index 93dcebbe11417..efe02ad695a62 100644
->> --- a/drivers/power/supply/bq27xxx_battery.c
->> +++ b/drivers/power/supply/bq27xxx_battery.c
->> @@ -1920,7 +1920,7 @@ static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
->>
->>         cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
->>         if ((cache.flags & 0xff) == 0xff)
->> -               cache.flags = -1; /* read error */
->> +               cache.flags = -ENODEV; /* read error */
->>         if (cache.flags >= 0) {
->>                 cache.capacity = bq27xxx_battery_read_soc(di);
->>
->> --
->> 2.50.0
->>
->>
->>
->> In our device, we use the I2C to get data from the gauge bq27z561.
->> During our test, when try to get the status register by bq27xxx_read() in the bq27xxx_battery_update_unlocked(),
->> we found sometimes the returned value is 0xFFFF, but it will update to some other value very quickly.
-> Strange. Do you have an idea if this is an I2C communication effect or really reported from the bq27z561 chip?
-It's the data returned by i2c_transfer(). I have reported this issue to 
-TI, and wait for their further investigation.
-Not sure whether other gauges behave like this or not.
->> So the returned 0xFFFF does not indicate "No such device", if we force to set the cache.flags to "-ENODEV" or "-1" manually in this case,
->> the bq27xxx_battery_get_property() will just return the cache.flags until it is updated at lease 5 seconds later,
->> it means we cannot get any property in these 5 seconds.
-> Ok I see. So there should be a different rule for the bq27z561.
-This is not only for bq27z561, it's the general mechanism in the driver 
-bq27xxx_battery.c for all gauges:
+>>> This is the custom patch I had applied on the LTS v6.12.36 kernel and
+>>> tested it:
+>>>
+>>> diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
+>>> index dd595d9b5e50c..bdcc4136e92ef 100644
+>>> --- a/net/mptcp/ctrl.c
+>>> +++ b/net/mptcp/ctrl.c
+>>> @@ -89,7 +89,7 @@ const char *mptcp_get_scheduler(const struct net *net)
+>>>  
+>>>  static void mptcp_pernet_set_defaults(struct mptcp_pernet *pernet)
+>>>  {
+>>> -	pernet->mptcp_enabled = 1;
+>>> +	pernet->mptcp_enabled = 0;
+>>>  	pernet->add_addr_timeout = TCP_RTO_MAX;
+>>>  	pernet->blackhole_timeout = 3600;
+>>>  	atomic_set(&pernet->active_disable_times, 0);
+>> First, I have the same question as the one I asked to RedHat devs: do
+>> you still need to keep MPTCP disabled by default? If I remember well, on
+>> RHEL side, they started to do that when they backported MPTCP on a
+>> previous stable version, as an experimental feature. They left it like
+>> that later mostly for internal process reasons I think. But honestly,
+>> today, it no longer makes sense to do that and annoys users: all other
+>> Linux distributions enable MPTCP by default without patching the kernel
+>> like you did.
+> 
+> We had observed issues with mptcpd daemon failing before when we had
+> this enabled by default. The mtpcpd userspace fix is yet to be integrated.
 
-        static int bq27xxx_battery_get_property() {
+If net.mptcp.enabled is set to 0 by default, I guess most mptcpd unit
+tests will be skipped. If you have issues when MPTCP is enabled by
+default, there might be real issues in mptcpd that would need to be
+fixed (or more likely, RHEL devs didn't noticed most tests were skipped,
+and there are probably some dependences missing for these tests).
 
-       ...
+But that's a different topic.
 
-       if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+> However, shouldn't the testcase be robust enough to handle that scenario
+> regardless?
 
-             return di->cache.flags;
+It should not be needed: these tests run in a dedicated netns where it
+expects the kernel to have MPTCP enabled by default. If this behaviour
+is changed without adapting the tests, that's normal to have issues.
+This is not an issue with the upstream kernel.
 
-       }
+>> If you don't want to revert this patch, I guess you can modify the BPF
+>> selftests in 'prog_tests/mptcp.c' to set 'sysctl net.mptcp.enabled=1' in
+>> each netns created by the test. But again, not changing the default
+>> kernel behaviour sounds like a better solution.
+> 
+> Even after changing /etc/sysctl.conf which is supposed to keep mptcp
+> enabled across reboots this issue occurs.
 
->> In fact, for the I2C driver, if no bq27000 is installed or accessible,
->> the bq27xxx_battery_i2c_read() will return "-ENODEV" directly when no device,
->> or the i2c_transfer() will return the negative error according to real case.
-> Yes, that is what I2C can easily report. But for AFAIK for HDQ there is no -ENODEV
-> detection in the protocol. So the bq27000 has this special check.
-Since this is the special check only needed for bq27000,
+/etc/sysctl.conf needs a userspace daemon to load it and apply the
+changes. In these tests, dedicated netns are created, and this file is
+not read. That's the whole purpose of using netns: not to have to handle
+default config changed on the host, just use the default values from the
+kernel. Plus, it is cleaner to use netns: no need to revert changes
+after, tests can be executed in parallel without impacting others, etc.
 
-suggest to check the chip type before changing the cache.flags to 
--ENODEV manually, see my comments in later part.
+> I agree with what you have stated, mptcp should be enabled by default
+> and the userspace fix should be incorporated ideally, however I still
+> believe that the test case shouldn't be giving a false negative as it is
+> in this case.
 
->
->>         bq27xxx_battery_i2c_read() {
->>                 ...
->>         if (!client->adapter)
->>          return -ENODEV;
->>                 ...
->>                 ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
->>                 ...
->>                 if (ret < 0)
->>         return ret;
->>                 ...
->>         }
->>
->> But there is no similar check in the bq27xxx_battery_hdq_read() for the HDQ/1-wire driver.
->>
->> Could we do the same check in the bq27xxx_battery_hdq_read(),
->> instead of changing the cache.flags manually when the last byte in the returned data is 0xFF?
-> So your suggestion is to modify bq27xxx_battery_hdq_read to check for BQ27XXX_REG_FLAGS and
-> value 0xff and convert to -ENODEV?
->
-> Well, it depends on the data that has been successfully reported. So making bq27xxx_battery_hdq_read()
-> have some logic to evaluate the data seems to just move the problem to a different place.
-> Especially as this is a generic function that can read any register it is counter-intuitive to
-> analyse the data.
->
->> Or could we just force to set the returned value to "-ENODEV" only when the last byte get from bq27xxx_battery_hdq_read() is 0xFF?
-> In summary I am not sure if that improves anything. It just makes the existing code more difficult
-> to understand.
->
-> What about checking bq27xxx_battery_update_unlocked() for
->
->         if (!(di->opts & BQ27Z561_O_BITS) && (cache.flags & 0xff) == 0xff)
->
-> to protect your driver from this logic?
->
-> This would not touch or break the well tested bq27000 logic and prevent the new bq27z561
-> driver to trigger a false positive?
-This change works for my device, but just as you said, this change makes 
-the existing code more difficult to understand.
+I don't think these tests have to handle every possible modifications
+done by a custom kernel. If you have to modify the behaviour, then you
+also need to adapt everything related to that. That's why I don't
+recommend to change the behaviour.
 
-Since changing the cache.flags to -ENODEV manually is only needed for 
-the bq27000 with the HDQ driver,
+> The false negatives seem to be occurring since this commit I believe:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=df8d3ba55b4fa1d6aed8449971ee50757cb0732f
 
-suggest to check the chip type first like below:
+I don't think so, this commit changes MPTCP selftests, not the BPF ones
+you have issues with. I guess you wanted to refer to this commit:
 
-        if ((di->chip == BQ27000) && (cache.flags & 0xff) == 0xff)
+  02d6a057c7be ("selftests/bpf: run mptcp in a dedicated netns")
 
-              cache.flags = -ENODEV; /* read error */
+> This does the opposite of you have mentioned in certain functions.
 
+The MPTCP selftests are setting net.mptcp.enabled=1, because RHEL devs
+added them a while ago, while it was making sense, and we lefted them
+there, even after the refactoring you mentioned. But we should probably
+remove them indeed, because it is not needed.
+> I suppose adding all these lines back might do the trick:
+> 
+> ip netns exec $netns sysctl -q net.mptcp.enabled=1
 
-This will not break the well tested bq27000 logic, and also works fine 
-with other gauges, and it's more easy to understand.
-What's your opinion?
->
-> BR and thanks,
-> Nikolaus
->
-Best Regards,
+For your issue, yes. But again, not changing the default kernel
+behaviour sounds like a better solution.
 
-Jerry Lv
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
 
