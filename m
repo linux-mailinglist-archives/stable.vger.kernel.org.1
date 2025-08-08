@@ -1,72 +1,71 @@
-Return-Path: <stable+bounces-166831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FFFB1E6F8
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 13:09:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57398B1E6FE
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 13:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0684D580DCC
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 11:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D741895E9E
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 11:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BC61FF5E3;
-	Fri,  8 Aug 2025 11:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B2621B19D;
+	Fri,  8 Aug 2025 11:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZLCrTY/r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fHY0WzZS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB66F145329
-	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 11:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546BB145329
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 11:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754651385; cv=none; b=hnsg9CbnDD5pwY5onZgEwQtCceatwFfl5CdqSP4yPuA2EYMi9zPHuTbRh8Wq+ltJZ6fc9+a7qbOyiCCWQxTN69NoIA0sFLVO6NTXM60XzQqinr2JYg3g5Gi7gz6VV7i5COn77UAS2wpwCy8oy49thrbwPS3nN77OnL9zSTCrWkk=
+	t=1754651485; cv=none; b=RNcXFNunlcl3yk3PIeZ//7m5wQOtzBlsJAvUW/Ef3PrygxjbseO63VCPdWtCNQ2LFovvb3kVFZSCgFyBIOoETaCGO8zUCgM32x1RsfdI9w1vX3ZwvW9BO3J23qlZJCyhvWLZUVM/tujogy0632wN7T7SgaohMFsh16bNoUldORg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754651385; c=relaxed/simple;
-	bh=oDN8mNmri0NIELuh1yHunw0u7lcm6gCsrRT07Xgm6zo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TV75Vqub/FUuBD9468iIUnevaw8cn3p5kSw+i9iqChszHbGi26I/D3p0uoDZXFkLvr7b57/RXzmm01PiJU57twQpLB2IpA+sb84brmNeABjuFAgFFrtWv5OD3vafp4HNQFC4/dQ91/wsTSOC52lAdF9M6/+S+5Soj2QuZSZwRTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZLCrTY/r; arc=none smtp.client-ip=198.175.65.11
+	s=arc-20240116; t=1754651485; c=relaxed/simple;
+	bh=purJkrY6cjSNtJ1exYHy5qtfoWVMg/9NNlLuGBLP1Po=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WetPLxam+7ZBPqq1jyeqF+4OoNyVDqbx73he3PU9kcmkCmkjpf5kfK3kUCU7gOB0SpWDb03oqs+xsGf5m/7mx0Fb/czC2Cgibo5T0BxB2YjU4jFhxZQ2YwzBH7cI5Xec01J872g+pR7TXhkczzDUZAS2125S0L1ij1+4N8avccI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fHY0WzZS; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754651384; x=1786187384;
+  t=1754651485; x=1786187485;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=oDN8mNmri0NIELuh1yHunw0u7lcm6gCsrRT07Xgm6zo=;
-  b=ZLCrTY/ryaSrD04HJYFvVEByRNVp6VXofvTtlMcKq3vfzALqWNolKFTm
-   hXQmsQj/0Fi+NdSacIxvHm/gKjSsebqavWSk43lV8PzUswlFYwXLnKID7
-   j2HcOw4k2Vd5kVz9FaYHwL1W2SPtVAFpAStvbC2cW9fqBCuEBKKi9ADX5
-   zIj7Aomh0HfNrSbxRlLXoRGLjX58WkJz/6pbVuejSPVTCDx0UI5M2FfMt
-   LiSTl6Fr51mTAvYHXJGuX0rnZ3mRwfDSqeGVvnU/n8R2IeUupjsKgJsg/
-   hPQ20up3B7yRKbZskWO+mYvEZpRGfjh+Pucg8jMrWveLiMhmrWEiLF84z
+  bh=purJkrY6cjSNtJ1exYHy5qtfoWVMg/9NNlLuGBLP1Po=;
+  b=fHY0WzZSPObkbLXlLob2hcIig/tmwnN/UH2jAt5Flb+ydyxUAoqKLfUr
+   ym0ERH/aBuCfYT98AspN+Ge0AzxBO0oCTL1dXnpMRZLPs3PGjdMiFpZ3s
+   vv4M/jv0NpJO2nA49PgPReq9v6y9U4gDOA/yBieWfVvX88b7RukmdaLNk
+   ulMLdmryJznsOLCANYbTNXqKJDgvwEA4dGJAp/sbzaHa5k5RyaaLKWBRU
+   CrMJlutQmOGTo4UVDXzI6QQi8F67al/xMpQDSwkarq9XOsAprh2S2/5pS
+   2kmsxYW6jexjWcCU1zdl11KaDFshGdRXVy2gGSnc8qCGV5uR9bx7FXaE4
    Q==;
-X-CSE-ConnectionGUID: lwstSHAwS7i6oQvTbEIMHw==
-X-CSE-MsgGUID: wrgfGoOrTHeSmBpLI20szw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67267511"
+X-CSE-ConnectionGUID: VG2qRDaHSmqBKmfbcvWv2A==
+X-CSE-MsgGUID: 752cY+LxTiym+PjQQuUpbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="60623300"
 X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
-   d="scan'208";a="67267511"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 04:09:44 -0700
-X-CSE-ConnectionGUID: il22XxceT4CJq2Zg1Q8WSQ==
-X-CSE-MsgGUID: 1UAFZIYLSQSN8UE0534YPQ==
+   d="scan'208";a="60623300"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 04:11:24 -0700
+X-CSE-ConnectionGUID: CVoyPoFfRNeUaFQjyN2uRg==
+X-CSE-MsgGUID: mswnhxYUR86BhJsAwjTeAg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
-   d="scan'208";a="170682507"
+   d="scan'208";a="169764961"
 Received: from unknown (HELO jlawryno.igk.intel.com) ([10.91.220.59])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 04:09:42 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 04:11:22 -0700
 From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 To: dri-devel@lists.freedesktop.org
 Cc: jeff.hugo@oss.qualcomm.com,
 	lizhi.hou@amd.com,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	stable@vger.kernel.org,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH] accel/ivpu: Prevent recovery work from being queued during device removal
-Date: Fri,  8 Aug 2025 13:09:39 +0200
-Message-ID: <20250808110939.328366-1-jacek.lawrynowicz@linux.intel.com>
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] accel/ivpu: Fix potential Spectre issue in debugfs
+Date: Fri,  8 Aug 2025 13:11:20 +0200
+Message-ID: <20250808111120.329022-1-jacek.lawrynowicz@linux.intel.com>
 X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,70 +75,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+Fix potential Spectre vulnerability in repoted by smatch:
+warn: potential spectre issue 'vdev->hw->hws.grace_period' [w] (local cap)
+warn: potential spectre issue 'vdev->hw->hws.process_grace_period' [w] (local cap)
+warn: potential spectre issue 'vdev->hw->hws.process_quantum' [w] (local cap)
 
-Use disable_work_sync() instead of cancel_work_sync() in ivpu_dev_fini()
-to ensure that no new recovery work items can be queued after device
-removal has started. Previously, recovery work could be scheduled even
-after canceling existing work, potentially leading to use-after-free
-bugs if recovery accessed freed resources.
+The priority_bands_fops_write() function in ivpu_debugfs.c uses an
+index 'band' derived from user input. This index is used to write to
+the vdev->hw->hws.grace_period, vdev->hw->hws.process_grace_period,
+and vdev->hw->hws.process_quantum arrays.
 
-Rename ivpu_pm_cancel_recovery() to ivpu_pm_disable_recovery() to better
-reflect its new behavior.
+This pattern presented a potential Spectre Variant 1 (Bounds Check
+Bypass) vulnerability. An attacker-controlled 'band' value could
+theoretically lead to speculative out-of-bounds array writes if the
+CPU speculatively executed these assignments before the bounds check
+on 'band' was fully resolved.
 
-Fixes: 58cde80f45a2 ("accel/ivpu: Use dedicated work for job timeout detection")
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+This commit mitigates this potential vulnerability by sanitizing the
+'band' index using array_index_nospec() before it is used in the
+array assignments. The array_index_nospec() function ensures that
+'band' is constrained to the valid range
+[0, VPU_JOB_SCHEDULING_PRIORITY_BAND_COUNT - 1], even during
+speculative execution.
+
+Fixes: 320323d2e545 ("accel/ivpu: Add debugfs interface for setting HWS priority bands")
+Cc: <stable@vger.kernel.org> # v6.15+
 Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 ---
- drivers/accel/ivpu/ivpu_drv.c | 2 +-
- drivers/accel/ivpu/ivpu_pm.c  | 4 ++--
- drivers/accel/ivpu/ivpu_pm.h  | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/accel/ivpu/ivpu_debugfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
-index 3d6d52492536a..3289751b47573 100644
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -677,7 +677,7 @@ static void ivpu_bo_unbind_all_user_contexts(struct ivpu_device *vdev)
- static void ivpu_dev_fini(struct ivpu_device *vdev)
- {
- 	ivpu_jobs_abort_all(vdev);
--	ivpu_pm_cancel_recovery(vdev);
-+	ivpu_pm_disable_recovery(vdev);
- 	ivpu_pm_disable(vdev);
- 	ivpu_prepare_for_reset(vdev);
- 	ivpu_shutdown(vdev);
-diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
-index eacda1dbe8405..475ddc94f1cfe 100644
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -417,10 +417,10 @@ void ivpu_pm_init(struct ivpu_device *vdev)
- 	ivpu_dbg(vdev, PM, "Autosuspend delay = %d\n", delay);
- }
+diff --git a/drivers/accel/ivpu/ivpu_debugfs.c b/drivers/accel/ivpu/ivpu_debugfs.c
+index cd24ccd20ba6c..2ffe5bf8f1fab 100644
+--- a/drivers/accel/ivpu/ivpu_debugfs.c
++++ b/drivers/accel/ivpu/ivpu_debugfs.c
+@@ -5,6 +5,7 @@
  
--void ivpu_pm_cancel_recovery(struct ivpu_device *vdev)
-+void ivpu_pm_disable_recovery(struct ivpu_device *vdev)
- {
- 	drm_WARN_ON(&vdev->drm, delayed_work_pending(&vdev->pm->job_timeout_work));
--	cancel_work_sync(&vdev->pm->recovery_work);
-+	disable_work_sync(&vdev->pm->recovery_work);
- }
+ #include <linux/debugfs.h>
+ #include <linux/fault-inject.h>
++#include <linux/nospec.h>
  
- void ivpu_pm_enable(struct ivpu_device *vdev)
-diff --git a/drivers/accel/ivpu/ivpu_pm.h b/drivers/accel/ivpu/ivpu_pm.h
-index 89b264cc0e3e7..a2aa7a27f32ef 100644
---- a/drivers/accel/ivpu/ivpu_pm.h
-+++ b/drivers/accel/ivpu/ivpu_pm.h
-@@ -25,7 +25,7 @@ struct ivpu_pm_info {
- void ivpu_pm_init(struct ivpu_device *vdev);
- void ivpu_pm_enable(struct ivpu_device *vdev);
- void ivpu_pm_disable(struct ivpu_device *vdev);
--void ivpu_pm_cancel_recovery(struct ivpu_device *vdev);
-+void ivpu_pm_disable_recovery(struct ivpu_device *vdev);
+ #include <drm/drm_debugfs.h>
+ #include <drm/drm_file.h>
+@@ -464,6 +465,7 @@ priority_bands_fops_write(struct file *file, const char __user *user_buf, size_t
+ 	if (band >= VPU_JOB_SCHEDULING_PRIORITY_BAND_COUNT)
+ 		return -EINVAL;
  
- int ivpu_pm_suspend_cb(struct device *dev);
- int ivpu_pm_resume_cb(struct device *dev);
++	band = array_index_nospec(band, VPU_JOB_SCHEDULING_PRIORITY_BAND_COUNT);
+ 	vdev->hw->hws.grace_period[band] = grace_period;
+ 	vdev->hw->hws.process_grace_period[band] = process_grace_period;
+ 	vdev->hw->hws.process_quantum[band] = process_quantum;
 -- 
 2.45.1
 
