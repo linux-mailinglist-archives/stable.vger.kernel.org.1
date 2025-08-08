@@ -1,141 +1,111 @@
-Return-Path: <stable+bounces-166834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E15BB1E875
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 14:36:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24302B1E891
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 14:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EADD1C2082F
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 12:36:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1ADF6245CF
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 12:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64722277CBB;
-	Fri,  8 Aug 2025 12:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1CA27990A;
+	Fri,  8 Aug 2025 12:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/8chpXv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R/cY0/gx";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eMzECyh+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC041FBEB6;
-	Fri,  8 Aug 2025 12:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5F12797AC;
+	Fri,  8 Aug 2025 12:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754656541; cv=none; b=WOK7fn794v74ttpmN7edktqxct0f7c0iu6RigmPiB8gJVUam3UfluCzmaZ5MIZLGUuNcPmzxrwDpnW22OXWclnpbJeZGfCJUWmkISa+rhmqPren64cxrvaGNn7GHh9y+wG+7XlhfGsHUgQjnOLt3CodZMfPQkC229Al7pRYZiJs=
+	t=1754657032; cv=none; b=AuCZdUvw4I4DTF8mVAkgAge01U6qELXWecf+IioLCkeH9NUeuOa1RoPxqlgnMVpOpjccdFcvYYt5frwgtjlAKEtAZt4H6k2hg/lQ7cy4cKKog7E0pTTlrtvmbuerpuDpQfz0eyzR0u19I3Jp5hGKYZRwRSmI4T6nCVbElAXaY0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754656541; c=relaxed/simple;
-	bh=DBUrRohCnAaDgN3a8rl0rDSbV3emnKD9qv2m8fLMOZY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kFW70538TWxdutokY/CzIJwQB5IWql5ipSxtW3qUQD1RaOwAN5mgwBEWE8oePr7hg9FLoGQFfRFynAXlLOeqaaGoFdOgij4mLpZtLa3AePEoKjgmBURh6i2o8pdUklTDuE2Eb+X8wCmgtdS8xrY83lgnGu6ox0w6BWoaIoUAb4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/8chpXv; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6156463fae9so5062637a12.0;
-        Fri, 08 Aug 2025 05:35:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754656538; x=1755261338; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fDSYh5lya2y6QD4ijxMsZsR33rbgiCTEcFPK31qmRrs=;
-        b=J/8chpXv6fJQmaRLLZS5L+wrE3ctf88r7aIyGxXwyJN+Uu+QD2ForxkF4LeHJJJUeF
-         guxZOrZld8I8SHNaTssLVYxoMEgbo3H00w0AkqoKRUjbeurMsi9BLofnJPM4B1hHhtI+
-         hcZN2ydOaS5vgBYORjJAhlmyfx09FGzOsHt4zAtn8nKL0nAv6qX8cS5HdI4u0yjR4/Wl
-         2H5MAudHKbVpIwtubQWaSoAfpK9N7f0He08Sepd56UmByR9t7IGdCNka9CzihY6EpDgj
-         UpuS4PPVg/W59jtChiecHP8mODKzq6QqEWan4VB1fjE4apLnOFqswAqUsZPRjFZKZxOD
-         UtSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754656538; x=1755261338;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fDSYh5lya2y6QD4ijxMsZsR33rbgiCTEcFPK31qmRrs=;
-        b=sTaPT23nlxrhhW1LrbDOS7ZyxWWzWPppZGolEBAf1nCsBJC8h9j+I5xjcceugvpxDT
-         O1srwMWJVnSrt3MQTqVV0x5I7KG9n45nwNg1mIl+MERvMpfXkaXzKCwcZegjzX5Zym1k
-         IQjzccWj9bpB7E9fsN5L3KtVjVLFihx5rqCJF/dZqsm9TrEcq4NGJO7XGOrlnqf/Pin0
-         inK4C37JvZ14MolEpKSfKg2yAMOe5F1gIMZV6jt2VoF+HGwpV2fUZHX+TUQjWqZJjzp6
-         q5SnJZimRkEJJa7Cmj68W2QVkCDZnw6SzE5pTc/FigwICFHSZSTJF4iCuw6gEZmC7iHH
-         Zpbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXEC8SwXzWG6TXxCrTcZ+3+jZXWOtmJx/8tLoN5N8FJOVUMmNvXJa/s1ASVJ5vTIFql/uAJInY5iDmF6mLe@vger.kernel.org, AJvYcCXKxM/TdVU05HwDl02KsxQdlGI+Gs7gugze5+FapCBbS/YhgljPL40RLhjU3uiraTr0hWB15kmS4Qo=@vger.kernel.org, AJvYcCXLwWtT25X0wb3oAPSyrZ5eOU5wncTHuHqkzJrNNG7KFu1XQhSw9nl7bPSmOcFDtwybLlPlIOQh@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgkFwE2CW8mlpw0OJJJsQGwu9LF4TI/LUY+V8Us+fTDXf4hu5B
-	zRn7utn4eG3f3WBF7nl7MC1EMfNZoA9GvK2ebkLmaBPIDSVnxdtTt/DKUOlw8ck+6P+Cxv01A2l
-	dHgVGG3Rvp4+ztlaoQmD7oWTZzvJ04r4=
-X-Gm-Gg: ASbGnctJ4OwRfHxbXsCQmrCAYjM01IvshKIl93UXrCgjB5f8d2XLdbsUbb6AmoRysFL
-	mBQy6VU0URfWJmv7FvIc3fzvzNklJFOHQVyd6PBDWcjQZBmKdgVSYVQuZIBje2omkePTDEC0u9s
-	jA9kaUIni6A13NLTsjSFMDZr7hFU9p0r2HRJOaR4V3GpcWinmPJsxNy2iiWNPe7Orkco20wq28d
-	AqpMJxpRQ==
-X-Google-Smtp-Source: AGHT+IH32kHNPZMnPqhCs9ebrCdy5MTCTTWaqqRa76UGtZ3/T38hE/+4EwwwkIQ1oM6LDdnK/9b2jIKB3o5mmZTsJf8=
-X-Received: by 2002:a17:907:1c28:b0:ae3:ee3a:56ee with SMTP id
- a640c23a62f3a-af9c6e2731dmr277972366b.3.1754656537579; Fri, 08 Aug 2025
- 05:35:37 -0700 (PDT)
+	s=arc-20240116; t=1754657032; c=relaxed/simple;
+	bh=/z2YjLOciPl+9umgiRRA8s3FvvuMbwucT1pgvC4lh6c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XqerkzZCfjIGrkriydSxWAjXodNROp2SCLIOGWy9etfjt+lB52z0VjcKkOu626wNzWuzYxU8TCAiy+uy8T28T9uGIkuYtRxESZH0MYGXzsGwj8hs6dH7CEP+IrfjTNta5VNUb3jKRbW9nN2HdlwjMWVjd6UQ+yume8ElXHzB3KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R/cY0/gx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eMzECyh+; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 8 Aug 2025 14:43:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1754657028;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=upHZ6ikXZvk61fIczNyLhwKfdfn3DW4J/lUTfCMvi2U=;
+	b=R/cY0/gxvGxcP6o7RDpxgxYPKeymBdnlcHxMZfbQW5SaSUJexuHzgWtc/UPPEfl9LAABhq
+	meRz4yKQq8qnv3XJ4TqedNTjiZWX3ZkX+d3YMpxlgjlN2Vayjpm/+Sg1GdzVxsr0ju8t5w
+	s57fbSDhlI2XvhgXrfYx03IXYh+Eo3szVcN8SPlusGOWziLCf4AJN3zSAdDdzddoP4ucCf
+	v9YgLlvCmiqdaGH1xeHI6F0hcNCkF6r/g568Ty2UZzZ6AGgi0+BB9XHyJvySyqTR4Z03oL
+	NiWOdXqL4yorpekvVYj9hVx9PAj+AImxLaxdhnWP6x346om4Rt/QScvx0+labw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1754657028;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=upHZ6ikXZvk61fIczNyLhwKfdfn3DW4J/lUTfCMvi2U=;
+	b=eMzECyh+ef/W1yY2krbzpEudY+Ag9cCPeGw4fcadileBXR3oRK8b9+xLSRhPB0d7OypWzs
+	zWhKeUTjPW/PrLAw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	m.grzeschik@pengutronix.de, balbi@ti.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, akash.m5@samsung.com,
+	hongpooh.kim@samsung.com, eomji.oh@samsung.com,
+	shijie.cai@samsung.com, alim.akhtar@samsung.com,
+	muhammed.ali@samsung.com, thiagu.r@samsung.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: dwc3: Remove WARN_ON for device endpoint command
+ timeouts
+Message-ID: <20250808124346.ynoPIlpX@linutronix.de>
+References: <CGME20250807014905epcas5p13f7d4ae515619e1e4d7a998ab2096c32@epcas5p1.samsung.com>
+ <20250807014639.1596-1-selvarasu.g@samsung.com>
+ <20250808090104.RL_xTSvh@linutronix.de>
+ <20c46529-b531-494a-9746-2084a968639e@samsung.com>
+ <20250808105218.WmVk--eM@linutronix.de>
+ <03f1ab21-3fa7-41b1-a59e-91f1d9dca2f1@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com>
-In-Reply-To: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 8 Aug 2025 14:35:00 +0200
-X-Gm-Features: Ac12FXyUIPj4_cHk-J2g6XoI9XXAOYyAwh9-yx6DvxsNiVg9fEZXdZq1W3bA-mM
-Message-ID: <CAHp75Vcw5Q_ENzEJvH2+xHmPD-DUPAEaOOD2QoiCXoh7UiQJxQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: imu: inv_icm42600: change invalid data error to EBUSY
-To: jean-baptiste.maneyrol@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <03f1ab21-3fa7-41b1-a59e-91f1d9dca2f1@samsung.com>
 
-On Fri, Aug 8, 2025 at 9:40=E2=80=AFAM Jean-Baptiste Maneyrol via B4 Relay
-<devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
->
-> Temperature sensor returns the temperature of the mechanical parts
-> of the chip. If both accel and gyro are off, temperature sensor is
+On 2025-08-08 16:59:08 [+0530], Selvarasu Ganesan wrote:
+> >> Here is the corrected patch submission:
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+> >> Signed-off-by: Akash M <akash.m5@samsung.com>
+> >>
+> >> Regarding the next steps, I will post a new patchset with the reordered
+> >> sign-offs.
+> > Your sign-off (as the poster) should come last.
+> > What is Akash' role in this?
+> 
+> 
+> Akash M's role in the patch as a co-contributor.
+> Shall i add tag as Co-developed-by: Akash M <akash.m5@samsung.com>?
+> 
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Akash M <akash.m5@samsung.com>
+> Signed-off-by: Akash M <akash.m5@samsung.com>
+> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-the temperature
+Yes. This looks good now.
 
-> also automatically turned off and return invalid data.
+> >> Thanks,
+> >> Selva
 
-returns
-
-> In this case, returning EBUSY error code is better then EINVAL and
-
--EBUSY
-than
--EINVAL
-
-> indicates userspace that it needs to retry reading temperature in
-> another context.
-
-...
-
-> +       /*
-> +        * Temperature data is invalid if both accel and gyro are off.
-> +        * Return EBUSY in this case.
-
--EBUSY
-
-> +        */
->         if (*temp =3D=3D INV_ICM42600_DATA_INVALID)
-> -               ret =3D -EINVAL;
-> +               ret =3D -EBUSY;
->
->  exit:
->         mutex_unlock(&st->lock);
-
-...
-
-No need to resend just for the above, I hope Jonathan tweaks this
-whilst applying.
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-(assuming typos and signs are fixed)
-
---=20
-With Best Regards,
-Andy Shevchenko
+Sebastian
 
