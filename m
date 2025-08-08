@@ -1,282 +1,352 @@
-Return-Path: <stable+bounces-166880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D727B1EDDA
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 19:36:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F620B1EDF5
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 19:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02B191AA851C
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 17:36:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15440725725
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 17:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959EB1DE4EC;
-	Fri,  8 Aug 2025 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302CA1F791C;
+	Fri,  8 Aug 2025 17:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdR31kP5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39D319D065;
-	Fri,  8 Aug 2025 17:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7AB1F3FC8;
+	Fri,  8 Aug 2025 17:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754674557; cv=none; b=EYxAAPEpzaXmUAGuISMX7cRFTYOAXil0+T43GmJWV6gSlmo5F68Vn/JB0Nx+pVzjR3onLNE1xUIawJ5Sl/QVBjxd17l4XGEDS4SAASx9BzacDHuYXNtillZ9JPx1WMTkjgRLynB5jcIvJymXYWwETWlb/KifneKN3azpqjPV23A=
+	t=1754674909; cv=none; b=mcdcIm0fAZOJm61OhJ4xUFsWfYwNDhT66knfFN4rxsU6oe5K2Rd6U7tnI4UfdCQgzj6CyYZRZqIG7TFv4XqJkEhsCkFv85ruM2gedC6xFgQB8xUhgsETMIRO8ahZORgmb2TBOaSfoNDAZ9eSeWhE2nnlEx8i8SbCayA51NaimLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754674557; c=relaxed/simple;
-	bh=UjKufUcDVuFCnbrLs4c4ZVltA4RZDogjR2wEue1jEZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dn4RtTjEbBZCrZClkHHTKPAK9wSXCdcpRnwdgP2GB3u2Q2J70ZAWFHFvrjxfgXtmezHAM8UShZb33Z7nIwyrKGHgXP3T7EGJ0QmxBgEFp4jHOICLJUhhDCZ1PQDIL1ZsVmoYPusonVVstHCxy5kgwyar3nZyjhhuQdZfjzs8owU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76624ecc7efso302344b3a.0;
-        Fri, 08 Aug 2025 10:35:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754674555; x=1755279355;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cWQx0Bz2e4dgqP38uiBm8lwh1j15JZqgNFOPKY08noI=;
-        b=rRck1110TAxHpQI6zy/D4eUFEET+qjULFP0kn942o431wWHIJ7dp8Zi4zbmE2QxlSU
-         xhJJEUOoVUBSQyvw8lk2PLX2TbBRRDnH+P3/ElL0DKEuy6ZrM64LCpp5iIfIXwo+m4bE
-         mh1TF9R3ZS9nQ5HVIyigccrXeh/fcT7BwArnzdRJONIO/4uIcJVUbzENmrCVWhqN3yEM
-         tbGn5KfjXDZn1pcanjdZSVZ7ptpKUgAa9CTvPOvTZOe6A+ZW+I+BGQ3U6myQpTIYodjZ
-         NH8JMBTexCfLzn3LPgyhyRsiTT5idjOkaSWYCic9yfqk2U4JvpD/Yjb9IoEw1nyhbPrf
-         dzLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVdxMZp0Cfh+NOK4hPNvi1NPYRicyDF1X4J+xDHauSprwQknThAGN/0F384ReZVUOQt0Zpqb0znLrTF@vger.kernel.org, AJvYcCXgCAXOg9+5yGsleoaeaq6yQcviP0sbg7KwxxFE2y1XQnoFUAS9HU84mYzR4DMocCRA2SbwUOj7@vger.kernel.org, AJvYcCXrRxLmrdupEAUY0yAWTPGt8OhWmGOO+lDteo/9QZQ6u8zgCvz3z11wpLsrG9mrg/ylVHQGcvQlP26/fN8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2tUotMmgMz2ZhwJBVbf3EhuAZi6njF96XFy2zhV4MFhTyC+ea
-	jkaa6I/AYeG7zVDfRXDZECnaAS7NSG8Ag33o7XA3b5QcqK5BZ/TTcSihYK3xxoE6
-X-Gm-Gg: ASbGncu3d53Sy/De5zuKRqwqAGT/ES/78iTDdN8vQ8O9GSm+RLYis2cqsUTNKet60D+
-	6d7O8yr/5w6zkmbcRajCxHZ9B1kMlzO8cAhdRJ3XIDPwq+hnUgpvlnCsAkHH933cNZ4dm+fGN4Z
-	0NgYKuBK/ola5mjoPRybVk+c2pl5oC6LL47WVb88wEMMBNwuyWlD6GVYBr+xawJQvMRemm17ysg
-	JYwwxyor+HKkPZpM35Gawa95a67w+ZY1fRCAnfBOfwvX0E7eObAs5m7G9Xfmz1598SD78piUKh4
-	OUuZsGq5t4VadMeSOYJo+MD7fQ5Dtkfn8Cna/isvOb/xauFqmGDPKjIvcB4jQvpkYhh/jLnAjKT
-	iK5MGK44WJpUUuguUdO3Su03sfpA+52nP
-X-Google-Smtp-Source: AGHT+IGfVl1ea8AUcfTPqFwGJwVmNGBWGoGwyWKPj4G+UWJHWkqCmbzR7KEypHCaHjfwbMseBlx5MQ==
-X-Received: by 2002:a05:6a00:2d85:b0:755:2c5d:482c with SMTP id d2e1a72fcca58-76c46135279mr2391297b3a.4.1754674554720;
-        Fri, 08 Aug 2025 10:35:54 -0700 (PDT)
-Received: from [192.168.50.136] ([118.32.98.101])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce8de34sm20851670b3a.30.2025.08.08.10.35.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Aug 2025 10:35:54 -0700 (PDT)
-Message-ID: <ee26e7b2-80dd-49b1-bca2-61e460f73c2d@kzalloc.com>
-Date: Sat, 9 Aug 2025 02:35:48 +0900
+	s=arc-20240116; t=1754674909; c=relaxed/simple;
+	bh=7KZi11aOcWzah1MMGc2QhuWnuga7pRdJlsHIWcTdCls=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Iwt5UlO0WT8fe4N57v7mODaDPjxL6D3uUoYbA1e9aMVnkstWAaUxoEXsZel9rQU9Qlv1VxFCNRB69sC+P2G+ElXuDfxrfD7HgWsX51a0okVxhFIr5PELub/1X2E5oIiI4bJZwe0YBHU3j6go6YVv1K+SyWDK5rqCf+uJ7WvlqMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdR31kP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DFDFC4CEF0;
+	Fri,  8 Aug 2025 17:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754674909;
+	bh=7KZi11aOcWzah1MMGc2QhuWnuga7pRdJlsHIWcTdCls=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pdR31kP5xLcFhX0sGDC4pSFPyGm1hcosbtCYCO+pOl1R5q5nrEkf51LYZtJA01Vym
+	 2q6m7qvzhq1MTRmMrpRCQYJ8ZrtkoGPRbXyrJfAl6EugkOthUSIF7+ceYHSNvsMC/V
+	 UY1LcJlRmZKwN4AnNIdoQg/TuXaJJv5zlxE+Ty+L3l0pMVSe9No0oWndGW5uYAkvLz
+	 flWFpHMHTL/wPJ9n/F0/RBFU5S/rz/bYA0Ol3xkCwVFwzedNSGiyITDay/bViE5nHL
+	 2qEPRvlAWyyXA0rc5guhWVJcuPpCfpcf0ETECAZgz/hClxKBdbTq32+zAfIG1pbzmF
+	 QQCZuSJMUa2Sw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	sj1557.seo@samsung.com,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16-6.6] exfat: add cluster chain loop check for dir
+Date: Fri,  8 Aug 2025 13:41:41 -0400
+Message-Id: <20250808174146.1272242-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kcov, usb: Fix invalid context sleep in softirq path on
- PREEMPT_RT
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Dmitry Vyukov <dvyukov@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Byungchul Park <byungchul@sk.com>,
- max.byungchul.park@gmail.com, Yeoreum Yun <yeoreum.yun@arm.com>,
- Michelle Jin <shjy180909@gmail.com>, linux-kernel@vger.kernel.org,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Alan Stern <stern@rowland.harvard.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
- kasan-dev@googlegroups.com, syzkaller@googlegroups.com,
- linux-usb@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- Austin Kim <austindh.kim@gmail.com>
-References: <20250725201400.1078395-2-ysk@kzalloc.com>
- <20250808163345.PPfA_T3F@linutronix.de>
-Content-Language: en-US
-From: Yunseong Kim <ysk@kzalloc.com>
-Organization: kzalloc
-In-Reply-To: <20250808163345.PPfA_T3F@linutronix.de>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Sebastian,
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-I was waiting for your review — thanks!
+[ Upstream commit 99f9a97dce39ad413c39b92c90393bbd6778f3fd ]
 
-On 8/9/25 1:33 오전, Sebastian Andrzej Siewior wrote:
-> On 2025-07-25 20:14:01 [+0000], Yunseong Kim wrote:
->> When fuzzing USB with syzkaller on a PREEMPT_RT enabled kernel, following
->> bug is triggered in the ksoftirqd context.
->>
-> …
->> This issue was introduced by commit
->> f85d39dd7ed8 ("kcov, usb: disable interrupts in kcov_remote_start_usb_softirq").
->>
->> However, this creates a conflict on PREEMPT_RT kernels. The local_irq_save()
->> call establishes an atomic context where sleeping is forbidden. Inside this
->> context, kcov_remote_start() is called, which on PREEMPT_RT uses sleeping
->> locks (spinlock_t and local_lock_t are mapped to rt_mutex). This results in
->> a sleeping function called from invalid context.
->>
->> On PREEMPT_RT, interrupt handlers are threaded, so the re-entrancy scenario
->> is already safely handled by the existing local_lock_t and the global
->> kcov_remote_lock within kcov_remote_start(). Therefore, the outer
->> local_irq_save() is not necessary.
->>
->> This preserves the intended re-entrancy protection for non-RT kernels while
->> resolving the locking violation on PREEMPT_RT kernels.
->>
->> After making this modification and testing it, syzkaller fuzzing the
->> PREEMPT_RT kernel is now running without stopping on latest announced
->> Real-time Linux.
-> 
-> This looks oddly familiar because I removed the irq-disable bits while
-> adding local-locks.
-> 
-> Commit f85d39dd7ed8 looks wrong not that it shouldn't disable
-> interrupts. The statement in the added comment
-> 
-> | + * 2. Disables interrupts for the duration of the coverage collection section.
-> | + *    This allows avoiding nested remote coverage collection sections in the
-> | + *    softirq context (a softirq might occur during the execution of a work in
-> | + *    the BH workqueue, which runs with in_serving_softirq() > 0).
-> 
-> is wrong. Softirqs are never nesting. While the BH workqueue is
-> running another softirq does not occur. The softirq is raised (again)
-> and will be handled _after_ BH workqueue is done. So this is already
-> serialised.
-> 
-> The issue is __usb_hcd_giveback_urb() always invokes
-> kcov_remote_start_usb_softirq(). __usb_hcd_giveback_urb() itself is
-> invoked from BH context (for the majority of HCDs) and from hardirq
-> context for the root-HUB. This gets us to the scenario that that we are
-> in the give-back path in softirq context and then invoke the function
-> once again in hardirq context.
-> 
-> I have no idea how kcov works but reverting the original commit and
-> avoiding the false nesting due to hardirq context should do the trick,
-> an untested patch follows.
-> 
-> This isn't any different than the tasklet handling that was used before
-> so I am not sure why it is now a problem.
+An infinite loop may occur if the following conditions occur due to
+file system corruption.
 
-Thank you for the detailed analysis and the patch. Your explanation about
-the real re-entrancy issue being "softirq vs. hardirq" and the faulty
-premise in the original commit makes perfect sense.
+(1) Condition for exfat_count_dir_entries() to loop infinitely.
+    - The cluster chain includes a loop.
+    - There is no UNUSED entry in the cluster chain.
 
-> Could someone maybe test this?
+(2) Condition for exfat_create_upcase_table() to loop infinitely.
+    - The cluster chain of the root directory includes a loop.
+    - There are no UNUSED entry and up-case table entry in the cluster
+      chain of the root directory.
 
-As you requested, I have tested your patch on my setup.
+(3) Condition for exfat_load_bitmap() to loop infinitely.
+    - The cluster chain of the root directory includes a loop.
+    - There are no UNUSED entry and bitmap entry in the cluster chain
+      of the root directory.
 
-I can check that your patch resolves the issue. I have been running
-the syzkaller for several hours, and the "sleeping function called
-from invalid context" bug is no longer triggered.
+(4) Condition for exfat_find_dir_entry() to loop infinitely.
+    - The cluster chain includes a loop.
+    - The unused directory entries were exhausted by some operation.
 
-> --- a/drivers/usb/core/hcd.c
-> +++ b/drivers/usb/core/hcd.c
-> @@ -1636,7 +1636,6 @@ static void __usb_hcd_giveback_urb(struct urb *urb)
->  	struct usb_hcd *hcd = bus_to_hcd(urb->dev->bus);
->  	struct usb_anchor *anchor = urb->anchor;
->  	int status = urb->unlinked;
-> -	unsigned long flags;
->  
->  	urb->hcpriv = NULL;
->  	if (unlikely((urb->transfer_flags & URB_SHORT_NOT_OK) &&
-> @@ -1654,14 +1653,13 @@ static void __usb_hcd_giveback_urb(struct urb *urb)
->  	/* pass ownership to the completion handler */
->  	urb->status = status;
->  	/*
-> -	 * Only collect coverage in the softirq context and disable interrupts
-> -	 * to avoid scenarios with nested remote coverage collection sections
-> -	 * that KCOV does not support.
-> -	 * See the comment next to kcov_remote_start_usb_softirq() for details.
-> +	 * This function can be called in task context inside another remote
-> +	 * coverage collection section, but kcov doesn't support that kind of
-> +	 * recursion yet. Only collect coverage in softirq context for now.
->  	 */
-> -	flags = kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
-> +	kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
->  	urb->complete(urb);
-> -	kcov_remote_stop_softirq(flags);
-> +	kcov_remote_stop_softirq();
->  
->  	usb_anchor_resume_wakeups(anchor);
->  	atomic_dec(&urb->use_count);
-> diff --git a/include/linux/kcov.h b/include/linux/kcov.h
-> index 75a2fb8b16c32..0143358874b07 100644
-> --- a/include/linux/kcov.h
-> +++ b/include/linux/kcov.h
-> @@ -57,47 +57,21 @@ static inline void kcov_remote_start_usb(u64 id)
->  
->  /*
->   * The softirq flavor of kcov_remote_*() functions is introduced as a temporary
-> - * workaround for KCOV's lack of nested remote coverage sections support.
-> - *
-> - * Adding support is tracked in https://bugzilla.kernel.org/show_bug.cgi?id=210337.
-> - *
-> - * kcov_remote_start_usb_softirq():
-> - *
-> - * 1. Only collects coverage when called in the softirq context. This allows
-> - *    avoiding nested remote coverage collection sections in the task context.
-> - *    For example, USB/IP calls usb_hcd_giveback_urb() in the task context
-> - *    within an existing remote coverage collection section. Thus, KCOV should
-> - *    not attempt to start collecting coverage within the coverage collection
-> - *    section in __usb_hcd_giveback_urb() in this case.
-> - *
-> - * 2. Disables interrupts for the duration of the coverage collection section.
-> - *    This allows avoiding nested remote coverage collection sections in the
-> - *    softirq context (a softirq might occur during the execution of a work in
-> - *    the BH workqueue, which runs with in_serving_softirq() > 0).
-> - *    For example, usb_giveback_urb_bh() runs in the BH workqueue with
-> - *    interrupts enabled, so __usb_hcd_giveback_urb() might be interrupted in
-> - *    the middle of its remote coverage collection section, and the interrupt
-> - *    handler might invoke __usb_hcd_giveback_urb() again.
-> + * work around for kcov's lack of nested remote coverage sections support in
-> + * task context. Adding support for nested sections is tracked in:
-> + * https://bugzilla.kernel.org/show_bug.cgi?id=210337
->   */
->  
-> -static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
-> +static inline void kcov_remote_start_usb_softirq(u64 id)
->  {
-> -	unsigned long flags = 0;
-> -
-> -	if (in_serving_softirq()) {
-> -		local_irq_save(flags);
-> +	if (in_serving_softirq() && !in_hardirq())
->  		kcov_remote_start_usb(id);
-> -	}
-> -
-> -	return flags;
->  }
->  
-> -static inline void kcov_remote_stop_softirq(unsigned long flags)
-> +static inline void kcov_remote_stop_softirq(void)
->  {
-> -	if (in_serving_softirq()) {
-> +	if (in_serving_softirq() && !in_hardirq())
->  		kcov_remote_stop();
-> -		local_irq_restore(flags);
-> -	}
->  }
->  
->  #ifdef CONFIG_64BIT
-> @@ -131,11 +105,8 @@ static inline u64 kcov_common_handle(void)
->  }
->  static inline void kcov_remote_start_common(u64 id) {}
->  static inline void kcov_remote_start_usb(u64 id) {}
-> -static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
-> -{
-> -	return 0;
-> -}
-> -static inline void kcov_remote_stop_softirq(unsigned long flags) {}
-> +static inline void kcov_remote_start_usb_softirq(u64 id) {}
-> +static inline void kcov_remote_stop_softirq(void) {}
->  
->  #endif /* CONFIG_KCOV */
->  #endif /* _LINUX_KCOV_H */
+(5) Condition for exfat_check_dir_empty() to loop infinitely.
+    - The cluster chain includes a loop.
+    - The unused directory entries were exhausted by some operation.
+    - All files and sub-directories under the directory are deleted.
 
+This commit adds checks to break the above infinite loop.
 
-I really impressed your "How to Not Break PREEMPT_RT" talk at LPC 22.
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
+LLM Generated explanations, may be completely bogus:
 
-Tested-by: Yunseong Kim <ysk@kzalloc.com>
+**YES**
 
+This commit should be backported to stable kernel trees for the
+following critical reasons:
 
-Thanks,
+## Security Impact - Prevents Multiple Infinite Loop Vulnerabilities
 
-Yunseong Kim
+The commit fixes **five distinct infinite loop conditions** that can
+occur due to filesystem corruption, each representing a potential
+denial-of-service vulnerability:
+
+1. **exfat_count_dir_entries()** - Adds loop detection using
+   `sbi->used_clusters` as a bound
+2. **exfat_create_upcase_table()** - Addressed through root directory
+   chain validation
+3. **exfat_load_bitmap()** - Addressed through root directory chain
+   validation
+4. **exfat_find_dir_entry()** - Adds loop detection using
+   `EXFAT_DATA_CLUSTER_COUNT(sbi)`
+5. **exfat_check_dir_empty()** - Adds loop detection using
+   `EXFAT_DATA_CLUSTER_COUNT(sbi)`
+
+## Critical Bug Fix Characteristics
+
+1. **Fixes Real Security Issues**: The infinite loops can cause system
+   hangs and DoS conditions when mounting corrupted/malicious exFAT
+   filesystems
+2. **Small, Contained Changes**: The fix adds simple counter checks (4-5
+   lines per location) without architectural changes
+3. **Clear Root Cause**: Addresses missing validation of cluster chain
+   loops in directory traversal
+4. **Pattern of Similar Fixes**: This follows three previous infinite
+   loop fixes in the same subsystem (commits b0522303f672, a5324b3a488d,
+   fee873761bd9), all of which fix similar issues dating back to the
+   original exfat implementation
+
+## Code Analysis Shows Low Risk
+
+The changes are minimal and safe:
+- Adds `unsigned int clu_count = 0` declarations
+- Increments counter when following cluster chains
+- Breaks traversal if counter exceeds valid cluster count
+- In `exfat_count_num_clusters()`: adds explicit loop detection with
+  error message
+
+## Follows Stable Kernel Rules
+
+✓ Fixes critical bugs (infinite loops/DoS)
+✓ Minimal code changes (~50 lines total)
+✓ No new features or API changes
+✓ Similar fixes already backported (the three previous infinite loop
+fixes)
+✓ Clear error conditions with proper error returns (-EIO)
+
+The commit message explicitly states these are corruption-triggered
+infinite loops, and the pattern matches previous fixes that have
+"Fixes:" tags pointing to the original exfat implementation. This is a
+critical reliability and security fix that prevents system hangs when
+handling corrupted exFAT filesystems.
+
+ fs/exfat/dir.c    | 12 ++++++++++++
+ fs/exfat/fatent.c | 10 ++++++++++
+ fs/exfat/namei.c  |  5 +++++
+ fs/exfat/super.c  | 32 +++++++++++++++++++++-----------
+ 4 files changed, 48 insertions(+), 11 deletions(-)
+
+diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
+index 3103b932b674..ee060e26f51d 100644
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -996,6 +996,7 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
+ 	struct exfat_hint_femp candi_empty;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	int num_entries = exfat_calc_num_entries(p_uniname);
++	unsigned int clu_count = 0;
+ 
+ 	if (num_entries < 0)
+ 		return num_entries;
+@@ -1133,6 +1134,10 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &clu.dir))
+ 				return -EIO;
++
++			/* break if the cluster chain includes a loop */
++			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
++				goto not_found;
+ 		}
+ 	}
+ 
+@@ -1195,6 +1200,7 @@ int exfat_count_dir_entries(struct super_block *sb, struct exfat_chain *p_dir)
+ 	int i, count = 0;
+ 	int dentries_per_clu;
+ 	unsigned int entry_type;
++	unsigned int clu_count = 0;
+ 	struct exfat_chain clu;
+ 	struct exfat_dentry *ep;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -1227,6 +1233,12 @@ int exfat_count_dir_entries(struct super_block *sb, struct exfat_chain *p_dir)
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &(clu.dir)))
+ 				return -EIO;
++
++			if (unlikely(++clu_count > sbi->used_clusters)) {
++				exfat_fs_error(sb, "FAT or bitmap is corrupted");
++				return -EIO;
++			}
++
+ 		}
+ 	}
+ 
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 23065f948ae7..232cc7f8ab92 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -490,5 +490,15 @@ int exfat_count_num_clusters(struct super_block *sb,
+ 	}
+ 
+ 	*ret_count = count;
++
++	/*
++	 * since exfat_count_used_clusters() is not called, sbi->used_clusters
++	 * cannot be used here.
++	 */
++	if (unlikely(i == sbi->num_clusters && clu != EXFAT_EOF_CLUSTER)) {
++		exfat_fs_error(sb, "The cluster chain has a loop");
++		return -EIO;
++	}
++
+ 	return 0;
+ }
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index fede0283d6e2..f5f1c4e8a29f 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -890,6 +890,7 @@ static int exfat_check_dir_empty(struct super_block *sb,
+ {
+ 	int i, dentries_per_clu;
+ 	unsigned int type;
++	unsigned int clu_count = 0;
+ 	struct exfat_chain clu;
+ 	struct exfat_dentry *ep;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -926,6 +927,10 @@ static int exfat_check_dir_empty(struct super_block *sb,
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &(clu.dir)))
+ 				return -EIO;
++
++			/* break if the cluster chain includes a loop */
++			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
++				break;
+ 		}
+ 	}
+ 
+diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+index 7ed858937d45..3a9ec75ab452 100644
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -341,13 +341,12 @@ static void exfat_hash_init(struct super_block *sb)
+ 		INIT_HLIST_HEAD(&sbi->inode_hashtable[i]);
+ }
+ 
+-static int exfat_read_root(struct inode *inode)
++static int exfat_read_root(struct inode *inode, struct exfat_chain *root_clu)
+ {
+ 	struct super_block *sb = inode->i_sb;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	struct exfat_inode_info *ei = EXFAT_I(inode);
+-	struct exfat_chain cdir;
+-	int num_subdirs, num_clu = 0;
++	int num_subdirs;
+ 
+ 	exfat_chain_set(&ei->dir, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
+ 	ei->entry = -1;
+@@ -360,12 +359,9 @@ static int exfat_read_root(struct inode *inode)
+ 	ei->hint_stat.clu = sbi->root_dir;
+ 	ei->hint_femp.eidx = EXFAT_HINT_NONE;
+ 
+-	exfat_chain_set(&cdir, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
+-	if (exfat_count_num_clusters(sb, &cdir, &num_clu))
+-		return -EIO;
+-	i_size_write(inode, num_clu << sbi->cluster_size_bits);
++	i_size_write(inode, EXFAT_CLU_TO_B(root_clu->size, sbi));
+ 
+-	num_subdirs = exfat_count_dir_entries(sb, &cdir);
++	num_subdirs = exfat_count_dir_entries(sb, root_clu);
+ 	if (num_subdirs < 0)
+ 		return -EIO;
+ 	set_nlink(inode, num_subdirs + EXFAT_MIN_SUBDIR);
+@@ -578,7 +574,8 @@ static int exfat_verify_boot_region(struct super_block *sb)
+ }
+ 
+ /* mount the file system volume */
+-static int __exfat_fill_super(struct super_block *sb)
++static int __exfat_fill_super(struct super_block *sb,
++		struct exfat_chain *root_clu)
+ {
+ 	int ret;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -595,6 +592,18 @@ static int __exfat_fill_super(struct super_block *sb)
+ 		goto free_bh;
+ 	}
+ 
++	/*
++	 * Call exfat_count_num_cluster() before searching for up-case and
++	 * bitmap directory entries to avoid infinite loop if they are missing
++	 * and the cluster chain includes a loop.
++	 */
++	exfat_chain_set(root_clu, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
++	ret = exfat_count_num_clusters(sb, root_clu, &root_clu->size);
++	if (ret) {
++		exfat_err(sb, "failed to count the number of clusters in root");
++		goto free_bh;
++	}
++
+ 	ret = exfat_create_upcase_table(sb);
+ 	if (ret) {
+ 		exfat_err(sb, "failed to load upcase table");
+@@ -627,6 +636,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	struct exfat_sb_info *sbi = sb->s_fs_info;
+ 	struct exfat_mount_options *opts = &sbi->options;
+ 	struct inode *root_inode;
++	struct exfat_chain root_clu;
+ 	int err;
+ 
+ 	if (opts->allow_utime == (unsigned short)-1)
+@@ -645,7 +655,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_time_min = EXFAT_MIN_TIMESTAMP_SECS;
+ 	sb->s_time_max = EXFAT_MAX_TIMESTAMP_SECS;
+ 
+-	err = __exfat_fill_super(sb);
++	err = __exfat_fill_super(sb, &root_clu);
+ 	if (err) {
+ 		exfat_err(sb, "failed to recognize exfat type");
+ 		goto check_nls_io;
+@@ -680,7 +690,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	root_inode->i_ino = EXFAT_ROOT_INO;
+ 	inode_set_iversion(root_inode, 1);
+-	err = exfat_read_root(root_inode);
++	err = exfat_read_root(root_inode, &root_clu);
+ 	if (err) {
+ 		exfat_err(sb, "failed to initialize root inode");
+ 		goto put_inode;
+-- 
+2.39.5
+
 
