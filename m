@@ -1,50 +1,65 @@
-Return-Path: <stable+bounces-166817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47B8B1E150
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 06:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DE9B1E191
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 07:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 118B74E10BC
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 04:40:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9ABD1897B43
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 05:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A4E1B413D;
-	Fri,  8 Aug 2025 04:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3A11DED42;
+	Fri,  8 Aug 2025 05:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=plan9.rocks header.i=@plan9.rocks header.b="LS7YUvi6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jbq910QD"
 X-Original-To: stable@vger.kernel.org
-Received: from plan9.rocks (vmi607075.contaboserver.net [207.244.235.165])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD2A290F
-	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 04:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.244.235.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FBB2E36E2;
+	Fri,  8 Aug 2025 05:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754628043; cv=none; b=oyDwUHKWJeyYJD8VEGnEPzKUdufu1/ltGpWygB11TyXxxHfAoIGzRwXSixr88D7BBCv9uRgMw/HUrLwzE6ZqSGZ5SRFyROlu53jAcYmgfCrLfg0i5kSV6xcnGTlzl6H7YlSjIzKxz9yMoiDCVD90shtE8Dlvi+J6pEEToSYwSFU=
+	t=1754629845; cv=none; b=jonWuhEbjEyv8caxP0IQ2eNDySHlwaZ/R0wfXpJ5+kXwmI9R3O5BiH0iz3O0qjD9Nn7rL2XijdipN7JHAuMXYSGct1jAcxe5Od6haK2YBoNUp09V76dNzgIdYzByhSwXT4HzRUKyuaWevQGmdmivVpG0wK7JxHJogSoSrI6nPRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754628043; c=relaxed/simple;
-	bh=ttHgjjFD+AMF9OawyiURTxPghu7g998cqV0vh4AYg1Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=GUbCkmTp1FhsgY6ns01z971MGTWmcuaDsvPiS+pYe9yM3qG5pM3gai3Vf0IqGQyJ7b5AxYwgu89u9jllLmGjZUIc9VAW+iy0JA/Z5TAiXYPu2+thNBfVaocegn1ouRhRDCYY4yz3QWmYL0kSstMVtySWdjoGTtnYnSgpTjPk45M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=plan9.rocks; spf=pass smtp.mailfrom=plan9.rocks; dkim=pass (2048-bit key) header.d=plan9.rocks header.i=@plan9.rocks header.b=LS7YUvi6; arc=none smtp.client-ip=207.244.235.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=plan9.rocks
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plan9.rocks
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=plan9.rocks; s=mail;
-	t=1754628040; bh=ttHgjjFD+AMF9OawyiURTxPghu7g998cqV0vh4AYg1Q=;
-	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-	b=LS7YUvi6YhT5s4x3PfNTbGbxBoRc9nLXL+uLg4YEibihojbT9FgfZZqhfSv89lpFM
-	 klWgMKqBaF1tfM4AjtFyEE6K0Q+oTKR4hwN+A1G8fC690pw8Dmh+TfdOXVIHu9E6aw
-	 +hEeIu/nDvs6CwfmNwJ+HZz3DqcqdzkBCwufKEnj3qT0eP1Y8msDqsgnkIp6m/U/Jn
-	 S8hyj4oOmOIw8Hf+93tJl53jJrWiPAPUTByHh7VnGjOMoubvZrrg7uLB2Fw0AGZUmU
-	 Izh338e3iyndO7W8ZS2AI/iXK2oxq0tfSqHdDHVtJ8JnCIp6/W8xmwpzBlsb3xxoLm
-	 i1LS6Fq9kCv8Q==
-Received: from [192.168.58.180] (syn-035-139-136-005.res.spectrum.com [35.139.136.5])
-	by plan9.rocks (Postfix) with ESMTPSA id 0026D1200865;
-	Thu,  7 Aug 2025 23:40:39 -0500 (CDT)
-Message-ID: <b30b2f11-0245-4d73-b589-f3a5574ddd00@plan9.rocks>
-Date: Fri, 8 Aug 2025 04:40:39 +0000
+	s=arc-20240116; t=1754629845; c=relaxed/simple;
+	bh=uNw/OYoOb46HSc9atpLRRzTZoGRK6zgt66qjXQVDJ5o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kKpLdJSHlpLCmUIC7+xRCOw/GeQqfqQJUm1YJgFC08BVLw4DNABh59M5EM1ZxFfupOQ8ZEUTS77vezgPk25O5SRJj6TXRqNNuOs2+4cEo/m3VJDJk9c836eMQd0PDaB6I20l00nocGX5hphXmVWdd8zd3KlGZcy+Ypo38cKar4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jbq910QD; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754629844; x=1786165844;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uNw/OYoOb46HSc9atpLRRzTZoGRK6zgt66qjXQVDJ5o=;
+  b=jbq910QDyKzh0J1Xs8+41ONTYjNAdjwdHTGmxUkLBAe2T7BwjR7wc0w7
+   dNf/UL5xP5qOiu17GxzbsL0XE7sLHx85p/X797aHovxKarEIptTtcjgxr
+   yOL+0IrneFPUcFWvdG8xyOLGMKg7rlDcCkCZBDpQFTNRwt10MXmx2bEoy
+   bQ5NaP7moxPXO8tfairiXqBFLbbn7zlF95bms/6jJ4JBW0mF5PlRhpmOm
+   Y10fVWJW6fpF/+/L/d/kkmoGQnjrmmd4aAFPYR5L1VfYWPrdiKvNKihA5
+   KgOIaLNEVRMuPQuZqA8bj3JOlIvX3QbA3tC9Xu5CbN08JcrYV4UT4mVbZ
+   A==;
+X-CSE-ConnectionGUID: obBRA/1BSVuG7QraTpozqQ==
+X-CSE-MsgGUID: 9iAk2sDoS9qzkp31VUgf8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="79531198"
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="79531198"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 22:10:43 -0700
+X-CSE-ConnectionGUID: rKySfyU8QPqHoTFM0Uo4ew==
+X-CSE-MsgGUID: cjgfi0dCRTWDpnjcWBq+MQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="169363203"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 22:10:39 -0700
+Message-ID: <51ac107b-a1fa-4847-9f54-65194024462c@linux.intel.com>
+Date: Fri, 8 Aug 2025 13:08:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,43 +67,49 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] vfio gpu passthrough stopped working
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <718C209F-22BD-4AF3-9B6F-E87E98B5239E@plan9.rocks>
- <2025080724-sage-subplot-3d0f@gregkh>
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <20250807195154.GO184255@nvidia.com>
 Content-Language: en-US
-Cc: regressions@lists.linux.dev, stable@vger.kernel.org
-From: cat <cat@plan9.rocks>
-In-Reply-To: <2025080724-sage-subplot-3d0f@gregkh>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250807195154.GO184255@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-I will perform bisection, yes.
+On 8/8/25 03:51, Jason Gunthorpe wrote:
+> On Thu, Aug 07, 2025 at 10:40:39PM +0800, Baolu Lu wrote:
+>> +static void kernel_pte_work_func(struct work_struct *work)
+>> +{
+>> +	struct page *page, *next;
+>> +
+>> +	iommu_sva_invalidate_kva_range(0, TLB_FLUSH_ALL);
+>> +
+>> +	guard(spinlock)(&kernel_pte_work.lock);
+>> +	list_for_each_entry_safe(page, next, &kernel_pte_work.list, lru) {
+>> +		list_del_init(&page->lru);
+> Please don't add new usages of lru, we are trying to get rid of this. 🙁
+> 
+> I think the memory should be struct ptdesc, use that..
 
-On 8/7/25 3:52 PM, Greg KH wrote:
-> On Thu, Aug 07, 2025 at 03:31:17PM +0000, cat wrote:
->> #regzbot introduced: v6.12.34..v6.12.35
->>
->> After upgrade to kernel 6.12.35, vfio passthrough for my GPU has stopped working within a windows VM, it sees device in device manager but reports that it did not start correctly. I compared lspci logs in the vm before and after upgrade to 6.12.35, and here are the changes I noticed:
->>
->> - the reported link speed for the passthrough GPU has changed from 2.5 to 16GT/s
->> - the passthrough GPU has lost it's 'BusMaster' and MSI enable flags
->> - latency measurement feature appeared
->>
->> These entries also began appearing within the vm in dmesg when host kernel is 6.12.35 or above:
->>
->> [    1.963177] nouveau 0000:01:00.0: sec2(gsp): mbox 1c503000 00000001
->> [    1.963296] nouveau 0000:01:00.0: sec2(gsp):booter-load: boot failed: -5
->> ...
->> [    1.964580] nouveau 0000:01:00.0: gsp: init failed, -5
->> [    1.964641] nouveau 0000:01:00.0: init failed with -5
->> [    1.964681] nouveau: drm:00000000:00000080: init failed with -5
->> [    1.964721] nouveau 0000:01:00.0: drm: Device allocation failed: -5
->> [    1.966318] nouveau 0000:01:00.0: probe with driver nouveau failed with error -5
->>
->>
->> 6.12.34 worked fine, and latest 6.12 LTS does not work either. I am using intel CPU and nvidia GPU (for passthrough, and as my GPU on linux system).
-> Can you use git bisect to find the offending commit?
->
->
+Yes, sure.
+
+Thanks,
+baolu
 
