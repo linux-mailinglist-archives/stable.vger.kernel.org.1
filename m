@@ -1,113 +1,94 @@
-Return-Path: <stable+bounces-166816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F523B1E14E
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 06:34:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47B8B1E150
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 06:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 015284E2EEC
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 04:34:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 118B74E10BC
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 04:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486AD1E008B;
-	Fri,  8 Aug 2025 04:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A4E1B413D;
+	Fri,  8 Aug 2025 04:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mp8sg8CE"
+	dkim=pass (2048-bit key) header.d=plan9.rocks header.i=@plan9.rocks header.b="LS7YUvi6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from plan9.rocks (vmi607075.contaboserver.net [207.244.235.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9B81DF987;
-	Fri,  8 Aug 2025 04:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD2A290F
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 04:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.244.235.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754627632; cv=none; b=asm97a5167BCmatxaT/TCsZMXDtj6jU0VU9f29y38RHuAPpzQH6RPVxBoU2pmCMTf1+MevdsMH4peAmXS6A5ohyqUkCrxs2qgWtpfhdYmXEUr11oC71vuzLwopbqFdhZ3BCGkYZnBppGd3Dpn757aHSO8uX1v0g36HCetw7MZm0=
+	t=1754628043; cv=none; b=oyDwUHKWJeyYJD8VEGnEPzKUdufu1/ltGpWygB11TyXxxHfAoIGzRwXSixr88D7BBCv9uRgMw/HUrLwzE6ZqSGZ5SRFyROlu53jAcYmgfCrLfg0i5kSV6xcnGTlzl6H7YlSjIzKxz9yMoiDCVD90shtE8Dlvi+J6pEEToSYwSFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754627632; c=relaxed/simple;
-	bh=BUXbEIAcI0mgMCyhzs+8QJqtWeRRAW19GZvjYklvJ5g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rvbwub9iUBmDK1m9ZRglxVrfcV0VbXwc+ufHHOToHsCpC1BiJNJ+qCMR2FIzwvTfFLYJkf0XyMi3oWwLUrZBT+a6Mz8up3ShKNkGCbvtK0qKs7/XBXwuc1kiiIuReN+85/F5l7z/y1NwyIyHR9+bY4RlXbktzCw8BrTOBIihvug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mp8sg8CE; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-741c0d47aadso1186879a34.3;
-        Thu, 07 Aug 2025 21:33:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754627629; x=1755232429; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BUXbEIAcI0mgMCyhzs+8QJqtWeRRAW19GZvjYklvJ5g=;
-        b=mp8sg8CEpofmevv6kDdo4hnCg+I7xopsd8rRcjY85Ct1EYEZ60v9YX6k6mlaE1CM8O
-         RHtnmJC7J7rzK75K8uYiSXRzoO4StCQEUFvfZuCxwbVeoMcEdVk9zOk6m0lst6jr0cxY
-         uw8aelCogeu4vrUve36T6vwxqzsDTAvL3vES/buO8w+83HgQTEJHYEAMC77pRxi8eNNn
-         SXf4ycA/RO8s9wC6i2zPzPWnJmW/iGM+JUTHD65oMAy8yF6Y/hn2bs68vGKh+JG0HGPr
-         f5WoWUIeL1v5vJvrX8IL8WdvK6QFc/9i1HHSO8o1sAYPCSSodPcIXcjmt5qf81UtWva/
-         s04Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754627629; x=1755232429;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BUXbEIAcI0mgMCyhzs+8QJqtWeRRAW19GZvjYklvJ5g=;
-        b=SXzTz0KGDIElsHGgzv7SmZTvCS9/LthMpc9q/6v1HBHWbDB5WzRgdCg0aqW+6WmMVj
-         P6JRD8/HLoqS7pcp1jVgwOp2lJG1xea+wXr+nRycfVk9Wu2amA1+4UhU6wpG9PR+36FJ
-         DUvQdd0vxBR67PBIGunh2SeHoi1KiSo9JUog0c6FhfBtRcbgY8PDpgiAuWppvG5z0Hoa
-         xiFaF7MwLnYcvbMbyDBOyJ79scLrAIntr1jbtJeVj7W8HEVITVX/eeG8aLdLdVUHx5XH
-         JzE4LmqQHmDjP0NNfryuEHFHG604zsngafZK3Thfjak8z26cSSPnBQDiTQTR9TQWTesZ
-         NhVA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIWtiy4xSkLVoRIwVAj5tq06WV6/HI486oESkAOXL9tyEHdLJpd85eKCXgrBYlOWWo/f+OWgdi@vger.kernel.org, AJvYcCWft5fP6XKzGkkLtT3VtDZmFLZ3PpA00bWdcd4x2ebcPEtswcFrlMYjDXosMRNlH1Kl7XFlZwcbIJJs@vger.kernel.org, AJvYcCX0qHK83mLreKhsviFXw1RC+eCOwu2POzYeN1jb7bindfoW0WHj/ASzsWAobyL7mwsj9mrB/aFS2lQrWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YziSfiEbCiYGx2JgsTCzQbJ5McPDtACupGbvad7GfWK/ekA9Tni
-	3FBKStmNGA03V944aK21vfa3CPd8ZaWAw3EQMOYYbGbYQreTEU2Ujwcc3iOmYRR0/sb1oznykiR
-	1HanR4c71BjZ9UfYJVj/M+F6NSXxjk3E=
-X-Gm-Gg: ASbGnctpZLqR6PaLzNaq6JJnvBXEl7xNx52YxXJJ3wizmtiuWFRDcuAPgV+1uD84REx
-	LwCoHBcZ13ZCFmDfqdDR+Fg/Id+4XbXvJ+h+FwHVF8B8VsiBf50RScENQt7XOXfZ+4loR7n4Jy5
-	03AgRKip4XWyOa46Ijt/2rgwk5X0a9iT/Y5PLs2vbRjuguanpXwwGCnUmVsTQBdc75OuJMWRN1F
-	ZZ0R+qu
-X-Google-Smtp-Source: AGHT+IGO8tBbLeDZJoOjPhjnLk7dam86S6oTeXOoWzdDRYSZMgXG6O6c64oJbVKVE5zxCVpAe/NGfGE9LIIMJrKGh/M=
-X-Received: by 2002:a05:6808:bc9:b0:435:6bfe:255e with SMTP id
- 5614622812f47-43597db9825mr814500b6e.29.1754627628938; Thu, 07 Aug 2025
- 21:33:48 -0700 (PDT)
+	s=arc-20240116; t=1754628043; c=relaxed/simple;
+	bh=ttHgjjFD+AMF9OawyiURTxPghu7g998cqV0vh4AYg1Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=GUbCkmTp1FhsgY6ns01z971MGTWmcuaDsvPiS+pYe9yM3qG5pM3gai3Vf0IqGQyJ7b5AxYwgu89u9jllLmGjZUIc9VAW+iy0JA/Z5TAiXYPu2+thNBfVaocegn1ouRhRDCYY4yz3QWmYL0kSstMVtySWdjoGTtnYnSgpTjPk45M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=plan9.rocks; spf=pass smtp.mailfrom=plan9.rocks; dkim=pass (2048-bit key) header.d=plan9.rocks header.i=@plan9.rocks header.b=LS7YUvi6; arc=none smtp.client-ip=207.244.235.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=plan9.rocks
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plan9.rocks
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=plan9.rocks; s=mail;
+	t=1754628040; bh=ttHgjjFD+AMF9OawyiURTxPghu7g998cqV0vh4AYg1Q=;
+	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
+	b=LS7YUvi6YhT5s4x3PfNTbGbxBoRc9nLXL+uLg4YEibihojbT9FgfZZqhfSv89lpFM
+	 klWgMKqBaF1tfM4AjtFyEE6K0Q+oTKR4hwN+A1G8fC690pw8Dmh+TfdOXVIHu9E6aw
+	 +hEeIu/nDvs6CwfmNwJ+HZz3DqcqdzkBCwufKEnj3qT0eP1Y8msDqsgnkIp6m/U/Jn
+	 S8hyj4oOmOIw8Hf+93tJl53jJrWiPAPUTByHh7VnGjOMoubvZrrg7uLB2Fw0AGZUmU
+	 Izh338e3iyndO7W8ZS2AI/iXK2oxq0tfSqHdDHVtJ8JnCIp6/W8xmwpzBlsb3xxoLm
+	 i1LS6Fq9kCv8Q==
+Received: from [192.168.58.180] (syn-035-139-136-005.res.spectrum.com [35.139.136.5])
+	by plan9.rocks (Postfix) with ESMTPSA id 0026D1200865;
+	Thu,  7 Aug 2025 23:40:39 -0500 (CDT)
+Message-ID: <b30b2f11-0245-4d73-b589-f3a5574ddd00@plan9.rocks>
+Date: Fri, 8 Aug 2025 04:40:39 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250804121453.75525-1-zhen.ni@easystack.cn> <20250805034829.168187-1-zhen.ni@easystack.cn>
- <88a0618f-121f-4752-ad65-e9724403cc16@amd.com>
-In-Reply-To: <88a0618f-121f-4752-ad65-e9724403cc16@amd.com>
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Date: Thu, 7 Aug 2025 23:33:37 -0500
-X-Gm-Features: Ac12FXxq6MvWRflUTXQgkW7F5goFhJhZMp3Bgggac3m1ChGNnCIYgBjrDzjC70E
-Message-ID: <CABb+yY3o0v_g=0+A82+9b+jS20fusnw3up7gS7_Z910CDKM=4A@mail.gmail.com>
-Subject: Re: [PATCH v4] mailbox: pcc: Add missed acpi_put_table() to fix
- memory leak
-To: "Aithal, Srikanth" <sraithal@amd.com>
-Cc: Zhen Ni <zhen.ni@easystack.cn>, Markus.Elfring@web.de, sudeep.holla@arm.com, 
-	linux-acpi@vger.kernel.org, stable@vger.kernel.org, 
-	Linux-Next Mailing List <linux-next@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] vfio gpu passthrough stopped working
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <718C209F-22BD-4AF3-9B6F-E87E98B5239E@plan9.rocks>
+ <2025080724-sage-subplot-3d0f@gregkh>
+Content-Language: en-US
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org
+From: cat <cat@plan9.rocks>
+In-Reply-To: <2025080724-sage-subplot-3d0f@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 7, 2025 at 8:40=E2=80=AFAM Aithal, Srikanth <sraithal@amd.com> =
-wrote:
->
-> Hello,
->
-> This commit, now part of next-20250807[1], is causing kernel boot crash
-> on AMD EPYC Milan platform.
->
-> commit c3f772c384c8ec0796a73c80f89a31ff862c1295 (HEAD)
-> Author: Zhen Ni <zhen.ni@easystack.cn>
+I will perform bisection, yes.
 
-Zhen, while it looked reasonable to have a corresponding
-acpi_put_table() , I also see the documentation of acpi_get_table()
-talks about early vs late stage calls.
-I don't know enough about it to be sure that doesn't apply here. So I
-am going to drop the patch until it gets reviewed by acpi/pcc folks.
-
-Thanks,
-Jassi
+On 8/7/25 3:52 PM, Greg KH wrote:
+> On Thu, Aug 07, 2025 at 03:31:17PM +0000, cat wrote:
+>> #regzbot introduced: v6.12.34..v6.12.35
+>>
+>> After upgrade to kernel 6.12.35, vfio passthrough for my GPU has stopped working within a windows VM, it sees device in device manager but reports that it did not start correctly. I compared lspci logs in the vm before and after upgrade to 6.12.35, and here are the changes I noticed:
+>>
+>> - the reported link speed for the passthrough GPU has changed from 2.5 to 16GT/s
+>> - the passthrough GPU has lost it's 'BusMaster' and MSI enable flags
+>> - latency measurement feature appeared
+>>
+>> These entries also began appearing within the vm in dmesg when host kernel is 6.12.35 or above:
+>>
+>> [    1.963177] nouveau 0000:01:00.0: sec2(gsp): mbox 1c503000 00000001
+>> [    1.963296] nouveau 0000:01:00.0: sec2(gsp):booter-load: boot failed: -5
+>> ...
+>> [    1.964580] nouveau 0000:01:00.0: gsp: init failed, -5
+>> [    1.964641] nouveau 0000:01:00.0: init failed with -5
+>> [    1.964681] nouveau: drm:00000000:00000080: init failed with -5
+>> [    1.964721] nouveau 0000:01:00.0: drm: Device allocation failed: -5
+>> [    1.966318] nouveau 0000:01:00.0: probe with driver nouveau failed with error -5
+>>
+>>
+>> 6.12.34 worked fine, and latest 6.12 LTS does not work either. I am using intel CPU and nvidia GPU (for passthrough, and as my GPU on linux system).
+> Can you use git bisect to find the offending commit?
+>
+>
 
