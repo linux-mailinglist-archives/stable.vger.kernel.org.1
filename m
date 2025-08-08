@@ -1,271 +1,227 @@
-Return-Path: <stable+bounces-166876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0916B1ED0B
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 18:33:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE6DB1ED82
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 18:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D8C3A8A38
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 16:33:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85AA35A373C
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 16:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B458286D74;
-	Fri,  8 Aug 2025 16:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D17D28851D;
+	Fri,  8 Aug 2025 16:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RVeye/4p";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yKo9boRD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="emlaOJjJ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2070.outbound.protection.outlook.com [40.107.96.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC385285044;
-	Fri,  8 Aug 2025 16:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754670832; cv=none; b=pyQzGfAe1HjHoaXAqjmgbl0ilu/fvmtgjnFEScHZ8gtVFz4o6OlbT7D6WJsZrkXyMTBVmuAGYLdp3Wcrb4dUUGKLrN09JaDL+SGKN9duoBPCBsEKhsCzAiL92b6Vkhf9L1gG9I14f50cAzvv+ioSD4YvKIUKNEld8Sklu2pwm9I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754670832; c=relaxed/simple;
-	bh=Pwdx/Tk5p4zqxvPam2CPyrJ36ROrTDvlqkdX+YdUIkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g81wmqgL8QKBmLbf+JeFHqNJTHzdfVtAiPV4vqJXFdqeLsC3MJ6422qBsSkthzSPCuWlXcsl8B71xzEypCgwbWVzPCQh7McIySptRA6gM7CKJwG53o6EPkpgdoLhGPE003ycpv5kx2D3qJ1nboYof1b1KBPcNIX9AGffUG0aaec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RVeye/4p; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yKo9boRD; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 8 Aug 2025 18:33:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1754670827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JfkgxAstW/grwEhYFrNwo+E5fvmu5YawBnjm5gjeKEk=;
-	b=RVeye/4pqNL2Rxrp4JBr2Wp2ohhSaHCMyzNxVgG/9/7HGPigWp462OiTwF6vHVcrNpbow4
-	7wJkqa21ZP0mippivOz8YAtRyYxkhRuQoubHDzkE7nkMGDOzysQJZJ6GuggbDyo/iEXjvt
-	MIaWoSAL+nhJxyh5JqZmQjP1zRnJ/XlN/DCx2HXJK8+strGVM0pn+xidutZCla8Wlbwo+c
-	iwoGKNWR3rWkqFsN9frsYfPpJq3KmJEFo5bwkkwDnAdbqDfEgsi8l8YBiQ9dOkpIcRYN1F
-	i45zjDg/DIjJcGaGtrKLyDh56EKSEkpSjspVbdcgVfgguHLThjvs/cjlvK0GCg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1754670827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JfkgxAstW/grwEhYFrNwo+E5fvmu5YawBnjm5gjeKEk=;
-	b=yKo9boRDg7VkANZpRsdijWOQ+20lswktBfxzUY+LnXAzwElkHvWO+C+9kq+P/A1b/myyUo
-	hVMWnerjXL/uPHAQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Yunseong Kim <ysk@kzalloc.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Byungchul Park <byungchul@sk.com>, max.byungchul.park@gmail.com,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Michelle Jin <shjy180909@gmail.com>, linux-kernel@vger.kernel.org,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-	kasan-dev@googlegroups.com, syzkaller@googlegroups.com,
-	linux-usb@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH] kcov, usb: Fix invalid context sleep in softirq path on
- PREEMPT_RT
-Message-ID: <20250808163345.PPfA_T3F@linutronix.de>
-References: <20250725201400.1078395-2-ysk@kzalloc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902E12882DE
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 16:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754672204; cv=fail; b=N6JHZs5PhVfiAb9NRGLGq+vJ6Nt4f82jdj9UD3VNByLdn7jdyw8aEKiAoIwnKRdvBIr0O39Rq0BC/twKChO+8F0fAPwfNAY/M1tnBJffGcriRza9xyDE6koWjo/tYbIYOu55RgjXJtk7qD1ECfyRNtnCIplcpyGMIFDRN7+3xWk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754672204; c=relaxed/simple;
+	bh=1p5e8C108PhTTwgZ9/OPFLUGxWWebHapKp70GpcbOkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CcObb6ZdPmBB00c6uIZ+LTfTWalig9UtKfY+OzLm/rvxPJagykOjtl3+s3xsll//FUcMpT43HO72/K4I1VPRnb6PoaqqUQ/nMGkLVZhTFdM8Bo2KI7bpUy+Iy1vB9n6kEG4Mk8a05nXlCNcgRlqsKMJ12D6zfbMRVkqjLPrAvnM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=emlaOJjJ; arc=fail smtp.client-ip=40.107.96.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ty53RomnwrmC+K4c4sk8X9kNYYmwueutk10PDIrZxkJYTF9UStf/n4o4g+TuvTL9UgoMGZ0X0ZEGYrIZOSvBdjS5XPkTagk7ba8YzBqClefDZbSZvInuSJ2mV9kRnHjLMdpCmRLzQGz/PHy99QpdyWOonNw43uSYWU3F28PiDbxGWtHgjNwSQDGhZn7WXf+XR4scGO+wjZOh5qZli8pMVodaTHLCvigmS6ClWRx6zdCaK7EGH98ghZCllr/eNcWXlKKP4tGoBcik4So/Rg1zJOVRFH0fCNjiQ5lNxDdGCgGteGJbUyk7YRy+aNaGqbMgRpOvPUGf7fdyiKN9Sruk9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O2dczc2OY40buaQXOi4gguAIV0G0c65YthFQpWMCjX8=;
+ b=PqwNERf4FmGzz46lJR8kNWGPsQJ+IOmXruu5963VzWyq86QWQL/BpbZFoH1L66dGxmXXl/QnoLcMpWdN3wo1YHCULMFs1bjkCpwl5ulfNbnoii0vmZjHbhItkTOwWtL0rVz/MfMAYipTwYgxKjOc7WPMj/XfXd6yfZIasTxvHBBoVgQApAbGcgZVZRYAbPUM45akMyI1DIQqkN4bTk+rhAdNAdAmAa8Q69yPW9xcbJ6KXu1rF/heGKa7+hV6Ur0M+fq5c2hGyDy+oQUhqxcS421EGUg7XVzQiHaP/tGeKBLabgoHMzNX6Ya0kzkHM4hm73/qsLym3UUZG6EgpHx+qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O2dczc2OY40buaQXOi4gguAIV0G0c65YthFQpWMCjX8=;
+ b=emlaOJjJYdXCFT4F8afk/bDVwugektM+UA+aGPlCinsbJnPyyPN+s4HgqAoJkkSo5FlMTsbqN/CaEZIoRiBTjma5sOnJxUhSuMiTF8VkvRuqEbvV6p0MZ15TXdHqT6cy0X5qy2fYVlMo2xu3XFozZSyb9uOqNM3VYMRg7W7qsdM=
+Received: from SJ0PR05CA0011.namprd05.prod.outlook.com (2603:10b6:a03:33b::16)
+ by LV3PR12MB9265.namprd12.prod.outlook.com (2603:10b6:408:215::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Fri, 8 Aug
+ 2025 16:56:39 +0000
+Received: from SJ5PEPF000001F7.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b:cafe::70) by SJ0PR05CA0011.outlook.office365.com
+ (2603:10b6:a03:33b::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.9 via Frontend Transport; Fri, 8
+ Aug 2025 16:56:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ5PEPF000001F7.mail.protection.outlook.com (10.167.242.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9009.8 via Frontend Transport; Fri, 8 Aug 2025 16:56:38 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 8 Aug
+ 2025 11:56:38 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 8 Aug
+ 2025 11:56:38 -0500
+Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Fri, 8 Aug 2025 11:56:37 -0500
+Message-ID: <5ab495e1-9d86-fede-acd1-ae78a9dfcd94@amd.com>
+Date: Fri, 8 Aug 2025 09:56:37 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250725201400.1078395-2-ysk@kzalloc.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] accel/ivpu: Prevent recovery work from being queued
+ during device removal
+Content-Language: en-US
+To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	<dri-devel@lists.freedesktop.org>
+CC: <jeff.hugo@oss.qualcomm.com>, Karol Wachowski <karol.wachowski@intel.com>,
+	<stable@vger.kernel.org>
+References: <20250808110939.328366-1-jacek.lawrynowicz@linux.intel.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
+In-Reply-To: <20250808110939.328366-1-jacek.lawrynowicz@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F7:EE_|LV3PR12MB9265:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25afb2d6-93d1-49de-82cd-08ddd69c8ab0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ckJleHR2T3lVSk41a2k5TU1wRnZIeHFUa0lZaEM1aGxtb1ptdGpybkdHaDlO?=
+ =?utf-8?B?dkVHUFF1RjErYVZWY2Zselhlc0F2cGVKcWYra1hCZFY5QUdtaDIrbE1LRVg5?=
+ =?utf-8?B?Q3J3Tmp4ckFhRnl6L0Fha0lYTEZQSWdqbkxUcWlPclE4VmRLSk9FNzk3R3pJ?=
+ =?utf-8?B?UWhNaS9oREkrRFJVSkdpOEprbHBqRVdGTjhsRksrVWVZRGhucDh2a1BPN3Bu?=
+ =?utf-8?B?YkdqK2Uvcm95dDByYXA4Tks5YWlKc2J3UXVYbFYxeFpmQkZia0pRMENIN1V1?=
+ =?utf-8?B?ZnhXN2JWTnA1aExnRFQrZWE3QTE4QUVjNGtmWGhpTTE2VU9NSnpnTkdmNWh1?=
+ =?utf-8?B?ZGtVZzVTSmRQbXRLeVFWdHpscForRjNPMHBGN2creU1ZTTk4K0ZXQUtobkxU?=
+ =?utf-8?B?RDZmRG90a3E1TTV6ZXk5SGd1M3pPQS8rU3JITytkK2k3elBrbDliMmFqNy9W?=
+ =?utf-8?B?a2hWamxuNG05ZTNiM2dQalhySW1ydWFYRTRpdFIxN1hyQlpraUVyWGlucUMv?=
+ =?utf-8?B?eHlIQ3J1VEdTM1ZEUzhjSjhzYjNTbE1LRjhhUFFlRlc4YklRMWIwR21obUdk?=
+ =?utf-8?B?dWc2elovWksyV25Hcm1hdDRNYUgrRC9mV3AySE9yZHgzRmQzOVMvOVRMVHln?=
+ =?utf-8?B?UmFMMXNBcXJVMzU0ZnJJL0QzRUNVUURpbnlJYWJRMk5wTStyeS9RSkcwNHhn?=
+ =?utf-8?B?cWQ5ZlVuYmRUZEpvT3N3SHRCZkFxdHBYTStzdFQvSU0rVkZGTEpSVnluVlFI?=
+ =?utf-8?B?bktpYXNDSnA1MEZYN3NXYVpESjB0MldRMWJNcDNVaXlxU0tuZDVJeUQ4MGNw?=
+ =?utf-8?B?ZUJpT0dOWnk3SEhEam9vK3laNGxMeGJkSjc3aGRJL3MvZStsMTdFa2Q2Ly9w?=
+ =?utf-8?B?c0VTaU85NjVwOXFUKzVwcTdjdVI3RWF5UmZWbXNOQUxkL3VCaFpNb0lyN21G?=
+ =?utf-8?B?K2t0TDZ2dTRXSkQvcUlvalNVQlI0d2xmTytVTUpKUWNQWTA5ZDFFZTVxNDcy?=
+ =?utf-8?B?ZWh6SHYzRzVONVBUNUdLWUJnenYzQW0zKzB0dWRDKy94ZnFKS1cyT2pQYWxi?=
+ =?utf-8?B?dHlKMmdna3pnamZURGVoSEM3blpETjVmY1IxTWRJM3VsNkg4TGZrdjd4b2s0?=
+ =?utf-8?B?bERaOUUxZ2oyNWZXVzZlUmdZWlZlaENGOUJlc3Y0TnhmMGVjTHBuWnRmQklY?=
+ =?utf-8?B?ZjUvSno4ejhRaG1kOXJWczZyWWpwZDcrWXdIVHNNc291UkhZd1lTanFOSm95?=
+ =?utf-8?B?d09pVytzQVREYXNaSTdCRXhoWVFqS0VoL1A1NVFkNDc0RUhac29uVUw0SG4v?=
+ =?utf-8?B?clBDTGpoWkkyMGEvOUpLK0kzZ2Z0S21ybWg3dXdNb0ZTa2J3MThxOGg2RlhE?=
+ =?utf-8?B?aE5JaDI4SW5VTjVOV1JoViszeHFaaGZSM2duak9BT00ycSsxVStmK3RXUGpE?=
+ =?utf-8?B?dzdydVcwYm83VUJmSDl1T2hOSCtyWWgwV3gvZkNVZFpQMWZhckNlbllHREFn?=
+ =?utf-8?B?WkxBSU9EUnM4bzRBVHBBWGwyVGtBR2lqVEtIeE1wOG1Cb25EOU9zMWJFKzNh?=
+ =?utf-8?B?Wk1lUXpTZlhlSVhzQm9pcXkzZ2tBalZxOXVPcUx2b01ua2tFUXh4SEx0aklo?=
+ =?utf-8?B?eGhYS3QybXE5ZXNFVzVlMElTbjlwdlNyb00vdDh4VXF5czlGdXRWMkt6SzNT?=
+ =?utf-8?B?V2Z1RXArcERQRU5lZjZaUUR4M0drNll2MmRkV0hrMDcrbUFWWEJVc3lRRDBu?=
+ =?utf-8?B?RDFMdDRqVnBTcW1GY3NXSkN0aGtyMmd2Rk5qTDdlb0ZTMGloamxhbGpOdkVV?=
+ =?utf-8?B?S0NCWU5yNDJQT1dKaVExQVBEYzQ4V0hEKzVoeFBTdkt4UzJicldtQ09BUnM2?=
+ =?utf-8?B?c2EvTldFVm9MSmlCY2wxbzYzUWFWUXdhSUhZclRqSFRtdkoyNUFIRGd0THdW?=
+ =?utf-8?B?VFZSczlBdTRUellMSFo5a2dzNEd5ZU9RSU95VmRxUFl4WXJyZktodEhJRXcr?=
+ =?utf-8?B?UVNiMWFoZFd6a3BwQndaQ0ppdE1pTTJibUFVZGcvK1k1TUlDU2hEV1AzWFlJ?=
+ =?utf-8?Q?UWe0TR?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 16:56:38.5200
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25afb2d6-93d1-49de-82cd-08ddd69c8ab0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001F7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9265
 
-On 2025-07-25 20:14:01 [+0000], Yunseong Kim wrote:
-> When fuzzing USB with syzkaller on a PREEMPT_RT enabled kernel, following
-> bug is triggered in the ksoftirqd context.
->=20
-=E2=80=A6
-> This issue was introduced by commit
-> f85d39dd7ed8 ("kcov, usb: disable interrupts in kcov_remote_start_usb_sof=
-tirq").
->=20
-> However, this creates a conflict on PREEMPT_RT kernels. The local_irq_sav=
-e()
-> call establishes an atomic context where sleeping is forbidden. Inside th=
-is
-> context, kcov_remote_start() is called, which on PREEMPT_RT uses sleeping
-> locks (spinlock_t and local_lock_t are mapped to rt_mutex). This results =
-in
-> a sleeping function called from invalid context.
->=20
-> On PREEMPT_RT, interrupt handlers are threaded, so the re-entrancy scenar=
-io
-> is already safely handled by the existing local_lock_t and the global
-> kcov_remote_lock within kcov_remote_start(). Therefore, the outer
-> local_irq_save() is not necessary.
->=20
-> This preserves the intended re-entrancy protection for non-RT kernels whi=
-le
-> resolving the locking violation on PREEMPT_RT kernels.
->=20
-> After making this modification and testing it, syzkaller fuzzing the
-> PREEMPT_RT kernel is now running without stopping on latest announced
-> Real-time Linux.
 
-This looks oddly familiar because I removed the irq-disable bits while
-adding local-locks.
-
-Commit f85d39dd7ed8 looks wrong not that it shouldn't disable
-interrupts. The statement in the added comment
-
-| + * 2. Disables interrupts for the duration of the coverage collection se=
-ction.
-| + *    This allows avoiding nested remote coverage collection sections in=
- the
-| + *    softirq context (a softirq might occur during the execution of a w=
-ork in
-| + *    the BH workqueue, which runs with in_serving_softirq() > 0).
-
-is wrong. Softirqs are never nesting. While the BH workqueue is
-running another softirq does not occur. The softirq is raised (again)
-and will be handled _after_ BH workqueue is done. So this is already
-serialised.
-
-The issue is __usb_hcd_giveback_urb() always invokes
-kcov_remote_start_usb_softirq(). __usb_hcd_giveback_urb() itself is
-invoked from BH context (for the majority of HCDs) and from hardirq
-context for the root-HUB. This gets us to the scenario that that we are
-in the give-back path in softirq context and then invoke the function
-once again in hardirq context.
-
-I have no idea how kcov works but reverting the original commit and
-avoiding the false nesting due to hardirq context should do the trick,
-an untested patch follows.
-
-This isn't any different than the tasklet handling that was used before
-so I am not sure why it is now a problem.
-
-Could someone maybe test this?
-
---- a/drivers/usb/core/hcd.c
-+++ b/drivers/usb/core/hcd.c
-@@ -1636,7 +1636,6 @@ static void __usb_hcd_giveback_urb(struct urb *urb)
- 	struct usb_hcd *hcd =3D bus_to_hcd(urb->dev->bus);
- 	struct usb_anchor *anchor =3D urb->anchor;
- 	int status =3D urb->unlinked;
--	unsigned long flags;
-=20
- 	urb->hcpriv =3D NULL;
- 	if (unlikely((urb->transfer_flags & URB_SHORT_NOT_OK) &&
-@@ -1654,14 +1653,13 @@ static void __usb_hcd_giveback_urb(struct urb *urb)
- 	/* pass ownership to the completion handler */
- 	urb->status =3D status;
- 	/*
--	 * Only collect coverage in the softirq context and disable interrupts
--	 * to avoid scenarios with nested remote coverage collection sections
--	 * that KCOV does not support.
--	 * See the comment next to kcov_remote_start_usb_softirq() for details.
-+	 * This function can be called in task context inside another remote
-+	 * coverage collection section, but kcov doesn't support that kind of
-+	 * recursion yet. Only collect coverage in softirq context for now.
- 	 */
--	flags =3D kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
-+	kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
- 	urb->complete(urb);
--	kcov_remote_stop_softirq(flags);
-+	kcov_remote_stop_softirq();
-=20
- 	usb_anchor_resume_wakeups(anchor);
- 	atomic_dec(&urb->use_count);
-diff --git a/include/linux/kcov.h b/include/linux/kcov.h
-index 75a2fb8b16c32..0143358874b07 100644
---- a/include/linux/kcov.h
-+++ b/include/linux/kcov.h
-@@ -57,47 +57,21 @@ static inline void kcov_remote_start_usb(u64 id)
-=20
- /*
-  * The softirq flavor of kcov_remote_*() functions is introduced as a temp=
-orary
-- * workaround for KCOV's lack of nested remote coverage sections support.
-- *
-- * Adding support is tracked in https://bugzilla.kernel.org/show_bug.cgi?i=
-d=3D210337.
-- *
-- * kcov_remote_start_usb_softirq():
-- *
-- * 1. Only collects coverage when called in the softirq context. This allo=
-ws
-- *    avoiding nested remote coverage collection sections in the task cont=
-ext.
-- *    For example, USB/IP calls usb_hcd_giveback_urb() in the task context
-- *    within an existing remote coverage collection section. Thus, KCOV sh=
-ould
-- *    not attempt to start collecting coverage within the coverage collect=
-ion
-- *    section in __usb_hcd_giveback_urb() in this case.
-- *
-- * 2. Disables interrupts for the duration of the coverage collection sect=
-ion.
-- *    This allows avoiding nested remote coverage collection sections in t=
-he
-- *    softirq context (a softirq might occur during the execution of a wor=
-k in
-- *    the BH workqueue, which runs with in_serving_softirq() > 0).
-- *    For example, usb_giveback_urb_bh() runs in the BH workqueue with
-- *    interrupts enabled, so __usb_hcd_giveback_urb() might be interrupted=
- in
-- *    the middle of its remote coverage collection section, and the interr=
-upt
-- *    handler might invoke __usb_hcd_giveback_urb() again.
-+ * work around for kcov's lack of nested remote coverage sections support =
-in
-+ * task context. Adding support for nested sections is tracked in:
-+ * https://bugzilla.kernel.org/show_bug.cgi?id=3D210337
-  */
-=20
--static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
-+static inline void kcov_remote_start_usb_softirq(u64 id)
- {
--	unsigned long flags =3D 0;
--
--	if (in_serving_softirq()) {
--		local_irq_save(flags);
-+	if (in_serving_softirq() && !in_hardirq())
- 		kcov_remote_start_usb(id);
--	}
--
--	return flags;
- }
-=20
--static inline void kcov_remote_stop_softirq(unsigned long flags)
-+static inline void kcov_remote_stop_softirq(void)
- {
--	if (in_serving_softirq()) {
-+	if (in_serving_softirq() && !in_hardirq())
- 		kcov_remote_stop();
--		local_irq_restore(flags);
--	}
- }
-=20
- #ifdef CONFIG_64BIT
-@@ -131,11 +105,8 @@ static inline u64 kcov_common_handle(void)
- }
- static inline void kcov_remote_start_common(u64 id) {}
- static inline void kcov_remote_start_usb(u64 id) {}
--static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
--{
--	return 0;
--}
--static inline void kcov_remote_stop_softirq(unsigned long flags) {}
-+static inline void kcov_remote_start_usb_softirq(u64 id) {}
-+static inline void kcov_remote_stop_softirq(void) {}
-=20
- #endif /* CONFIG_KCOV */
- #endif /* _LINUX_KCOV_H */
---=20
-2.50.1
-
-Sebastian
+On 8/8/25 04:09, Jacek Lawrynowicz wrote:
+> From: Karol Wachowski <karol.wachowski@intel.com>
+>
+> Use disable_work_sync() instead of cancel_work_sync() in ivpu_dev_fini()
+> to ensure that no new recovery work items can be queued after device
+> removal has started. Previously, recovery work could be scheduled even
+> after canceling existing work, potentially leading to use-after-free
+> bugs if recovery accessed freed resources.
+>
+> Rename ivpu_pm_cancel_recovery() to ivpu_pm_disable_recovery() to better
+> reflect its new behavior.
+>
+> Fixes: 58cde80f45a2 ("accel/ivpu: Use dedicated work for job timeout detection")
+> Cc: <stable@vger.kernel.org> # v6.8+
+> Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> ---
+>   drivers/accel/ivpu/ivpu_drv.c | 2 +-
+>   drivers/accel/ivpu/ivpu_pm.c  | 4 ++--
+>   drivers/accel/ivpu/ivpu_pm.h  | 2 +-
+>   3 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
+> index 3d6d52492536a..3289751b47573 100644
+> --- a/drivers/accel/ivpu/ivpu_drv.c
+> +++ b/drivers/accel/ivpu/ivpu_drv.c
+> @@ -677,7 +677,7 @@ static void ivpu_bo_unbind_all_user_contexts(struct ivpu_device *vdev)
+>   static void ivpu_dev_fini(struct ivpu_device *vdev)
+>   {
+>   	ivpu_jobs_abort_all(vdev);
+> -	ivpu_pm_cancel_recovery(vdev);
+> +	ivpu_pm_disable_recovery(vdev);
+>   	ivpu_pm_disable(vdev);
+>   	ivpu_prepare_for_reset(vdev);
+>   	ivpu_shutdown(vdev);
+> diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
+> index eacda1dbe8405..475ddc94f1cfe 100644
+> --- a/drivers/accel/ivpu/ivpu_pm.c
+> +++ b/drivers/accel/ivpu/ivpu_pm.c
+> @@ -417,10 +417,10 @@ void ivpu_pm_init(struct ivpu_device *vdev)
+>   	ivpu_dbg(vdev, PM, "Autosuspend delay = %d\n", delay);
+>   }
+>   
+> -void ivpu_pm_cancel_recovery(struct ivpu_device *vdev)
+> +void ivpu_pm_disable_recovery(struct ivpu_device *vdev)
+>   {
+>   	drm_WARN_ON(&vdev->drm, delayed_work_pending(&vdev->pm->job_timeout_work));
+> -	cancel_work_sync(&vdev->pm->recovery_work);
+> +	disable_work_sync(&vdev->pm->recovery_work);
+>   }
+>   
+>   void ivpu_pm_enable(struct ivpu_device *vdev)
+> diff --git a/drivers/accel/ivpu/ivpu_pm.h b/drivers/accel/ivpu/ivpu_pm.h
+> index 89b264cc0e3e7..a2aa7a27f32ef 100644
+> --- a/drivers/accel/ivpu/ivpu_pm.h
+> +++ b/drivers/accel/ivpu/ivpu_pm.h
+> @@ -25,7 +25,7 @@ struct ivpu_pm_info {
+>   void ivpu_pm_init(struct ivpu_device *vdev);
+>   void ivpu_pm_enable(struct ivpu_device *vdev);
+>   void ivpu_pm_disable(struct ivpu_device *vdev);
+> -void ivpu_pm_cancel_recovery(struct ivpu_device *vdev);
+> +void ivpu_pm_disable_recovery(struct ivpu_device *vdev);
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+>   
+>   int ivpu_pm_suspend_cb(struct device *dev);
+>   int ivpu_pm_resume_cb(struct device *dev);
 
