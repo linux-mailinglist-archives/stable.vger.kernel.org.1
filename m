@@ -1,87 +1,83 @@
-Return-Path: <stable+bounces-166878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F3BB1ED9C
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 19:04:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C661CB1EDBE
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 19:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8133A7D19
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 17:04:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385993BE883
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 17:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963421D5141;
-	Fri,  8 Aug 2025 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1C91E2606;
+	Fri,  8 Aug 2025 17:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VsKW5hA8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKBYKVMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5222E182D3;
-	Fri,  8 Aug 2025 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC191E00B4
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 17:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754672646; cv=none; b=KhXXizS2ANDbI36JsIgdopWbszV++WfdMamQTBBZS9nnsNh3VouHoGppdG8zYsIqmQq00XZiElD/N0d8s7z1O75gOmo0imuUvP2eNX4Ltlzo5rFq31yXoZkSY9TQ53eTVczjTCnOq2flvAU6U4+I37m11s6PjsNybSI59Nwr80Y=
+	t=1754673671; cv=none; b=bkptgHoxpQBDBLuZl04fuRNGWq4PVeWpA/yrBs/r00JfrxVahqkQQC1KjpGV9TcLf5NjHwQftwW9t9vbiWwBhxMAGfWLQycTBgzfxLcXN4bBygTjo1NzfD8IS50ycmkDZUlwNDO0RPSHknSxvQt0tfHvCauKUlCEnJa38f2gFlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754672646; c=relaxed/simple;
-	bh=1x1qHlFBl7yOrv3dMBvgEuOQ3c4yYXP9OfIu5ljyKq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lyq5S5OJcfA413L0BlyrduBE1tQmg/RN3hSh2NuJJ1IZRcmSaeYlT1bGx52NTuiDweTR2R3pTmz/GaR7OPQkV/uCR56hAtnavh9qVq7bvgeX1QE9phAiAb5hrsvCXwqjTKZfOMcc21MmIINAa5uK4NwuxehH6KBbnxsOTIGXQUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VsKW5hA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8392FC4CEED;
-	Fri,  8 Aug 2025 17:04:05 +0000 (UTC)
+	s=arc-20240116; t=1754673671; c=relaxed/simple;
+	bh=V64WQAfHjyP580LdGYzip4UsKdzR75tym+XhLSmS7X8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VSYN3UjF4O8Il6O+zQ36e2nS4xnTxwczBHFnCfELBgkzkiY8mPieXVj3uXxc8XVkgBYpylQCVqSAE5dfS7DEqcA3ArisW8CZI9sgQFYTJm/7dbbXWxTvmDpSFS1OqkF2NWB/mSDwl8GD9//MVvTG5W9EEIqLm64r6rIyLEmpiOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKBYKVMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB05C4CEED;
+	Fri,  8 Aug 2025 17:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754672645;
-	bh=1x1qHlFBl7yOrv3dMBvgEuOQ3c4yYXP9OfIu5ljyKq4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VsKW5hA8wPmgp8sy7LkNtPiwfpcKqVsfIawuPDnGBM8zhJivEtTWBPKQ3Vl/ql4S1
-	 eH1ySNTFEueCtU/Rj62cy7ETAcreEwhqktphO4asIbYH59DwUzlwQakxNN6daHQ+TB
-	 fDlwYaqACF1QvoCTlUUR9luecJHrADGYNzldSbzSlA2vLKTHrmDjyqDPiEWa2M2dly
-	 knr9f1m6fDbb0gRsZeDZmAx7Zbu5esVDFQE/mX+kNs1kBj5EBrJhEluB6dOGJ9F2Zs
-	 fa43D9b7G04BBCEdmwAvzLLakuDyKD4sCrgtTg/FkIHGh/KEr0QYFIYWzO8cmDzTVr
-	 G5EKGmcpdvQNA==
-Date: Fri, 8 Aug 2025 13:04:02 -0400
+	s=k20201202; t=1754673671;
+	bh=V64WQAfHjyP580LdGYzip4UsKdzR75tym+XhLSmS7X8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CKBYKVMg7YlLB+G5th+hLkQdcVlIHDAeRv5sUVGAkEnm82OSzf5EuaYlndeU1Kbs2
+	 mVes5tEeppKBntR9EoKEspKhZvi8CWebDgMcz2mWMFiD8C513pBYmruDYbgyve5XO+
+	 eepy7MY4pmNpi2Q5PH8XCaHUQ/fhCJHIXy9mUdfachxdT5Edb682ifoz0/kdxnT6ID
+	 9cH1ngYZkFPC7NIjheOruCF3YFQ+ERJ+VX50zY+nhLgXPt6ATsYDkDejyJr477m88f
+	 ZoES10kzFXkE/2D/ykiA42/2HuxRKRaAeL32Ysjefrt0YJStB1hmBuYKFEWThpulOd
+	 n4J+Mv13p3lqA==
 From: Sasha Levin <sashal@kernel.org>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH AUTOSEL 6.16-5.10] PCI: pnv_php: Clean up allocated IRQs
- on unplug
-Message-ID: <aJYuAoqFT206dYwI@lappy>
-References: <20250808153054.1250675-1-sashal@kernel.org>
- <20250808153054.1250675-14-sashal@kernel.org>
- <1852420641.1614920.1754668740466.JavaMail.zimbra@raptorengineeringinc.com>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 v2] ice/ptp: fix crosstimestamp reporting
+Date: Fri,  8 Aug 2025 13:21:08 -0400
+Message-Id: <1754608665-d0efc2d5@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250807-ice_crosstimestamp_reporting-v2-1-85746f1cf9f8@blochl.de>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <1852420641.1614920.1754668740466.JavaMail.zimbra@raptorengineeringinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 08, 2025 at 10:59:00AM -0500, Timothy Pearson wrote:
->While the autoselector has the right idea, in that this is critical functionality that currently induces panics on older stable kernels, this entire patch series should be backported, not just these two isolated patches.
->
->The correct series for backport would be:
->
-> PCI: pnv_php: Fix surprise plug detection and recovery
-> powerpc/eeh: Make EEH driver device hotplug safe
-> powerpc/eeh: Export eeh_unfreeze_pe()
-> PCI: pnv_php: Work around switches with broken presence detection
-> PCI: pnv_php: Clean up allocated IRQs on unplug
->
->Backport is especially critical for Debian, so that we don't ship a broken kernel with the soon to be released Trixie version.
+[ Sasha's backport helper bot ]
 
-Okay, I'll just queue these up directly. Thanks!
+Hi,
 
--- 
-Thanks,
-Sasha
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
+
+The upstream commit SHA1 provided is correct: a5a441ae283d54ec329aadc7426991dc32786d52
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Markus Blöchl <markus@blochl.de>
+Commit author: Anton Nadezhdin <anton.nadezhdin@intel.com>
+
+Status in newer kernel trees:
+6.15.y | Present (different SHA1: f20899b1a877)
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| origin/linux-6.12.y       | Success     | Success    |
 
