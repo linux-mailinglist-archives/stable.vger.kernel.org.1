@@ -1,130 +1,141 @@
-Return-Path: <stable+bounces-166833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5A6B1E758
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 13:30:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E15BB1E875
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 14:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011CB5A05C2
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 11:29:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EADD1C2082F
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 12:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021C52749DB;
-	Fri,  8 Aug 2025 11:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64722277CBB;
+	Fri,  8 Aug 2025 12:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="nhwTd2ed"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/8chpXv"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD30826463B
-	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 11:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC041FBEB6;
+	Fri,  8 Aug 2025 12:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754652558; cv=none; b=HZ0WF3eCrClvcyaE1szeSMfyCeovLfNmJT929kVTyjZZI+XdMEKu1O193FBfKfpyCRlKSiFpVcEYAYEcuKQ1J4xlR0m+oedS3DtboS+b2yP+QT4+UGNOeOalsVdCDiXxelpABamLemNkWp4Bo44wA4Hk32GnOjDjv9g4mFpsU5k=
+	t=1754656541; cv=none; b=WOK7fn794v74ttpmN7edktqxct0f7c0iu6RigmPiB8gJVUam3UfluCzmaZ5MIZLGUuNcPmzxrwDpnW22OXWclnpbJeZGfCJUWmkISa+rhmqPren64cxrvaGNn7GHh9y+wG+7XlhfGsHUgQjnOLt3CodZMfPQkC229Al7pRYZiJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754652558; c=relaxed/simple;
-	bh=TBJ59euEFZvE5z9IZ8MPSF77dcNwPaN6yTb2xeo5BJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=JnnbN6fNILKnUAgmUE4yUsEScI0zNIjcbgLZ4tX4ew/prh+WoTZKmHTRH4378Y08OMJ2yvfEmoBBUaGcU5k7Xu6LBu2bpv4zuDcNL/cK64gv10aQwYCmBR50VToWBtgs5y5pxSZR3iVpXbVKAv5Yrde0tD7kstCoqXfAOwb675w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=nhwTd2ed; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250808112913epoutp0427d0e0c2dc7c4e33140ddfe23ddaebb4~ZxzN9BIVz1596915969epoutp04f
-	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 11:29:13 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250808112913epoutp0427d0e0c2dc7c4e33140ddfe23ddaebb4~ZxzN9BIVz1596915969epoutp04f
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1754652553;
-	bh=TBJ59euEFZvE5z9IZ8MPSF77dcNwPaN6yTb2xeo5BJc=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=nhwTd2edMbLxPe+E5gCk6fUsXyN52PmqUMpPwRyryDyoXhiMWJDEmOh1VfphwxrWk
-	 YS/TwHqM0TFbnal5t8BcDo47azeCnm6OFZ6fOLa+lL70Feef8VAFhKiXnZL1qbKE/E
-	 3eP7v1Amvf+va5Ddqk9QY1pQaGyP8qOuQxcu5d1I=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
-	20250808112913epcas5p4abe581c8ef0c10c7a5cdad9e31e31035~ZxzNcwFlt1928619286epcas5p4N;
-	Fri,  8 Aug 2025 11:29:13 +0000 (GMT)
-Received: from epcas5p1.samsung.com (unknown [182.195.38.90]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4bz1yJ26BQz6B9m5; Fri,  8 Aug
-	2025 11:29:12 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250808112911epcas5p19e8d412d90d69c2bbac4fe1b7347343e~ZxzMDNaNF0130801308epcas5p1u;
-	Fri,  8 Aug 2025 11:29:11 +0000 (GMT)
-Received: from [107.122.5.126] (unknown [107.122.5.126]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250808112909epsmtip1c5cc52df52ec72f61267b3ccbfd0e1d8~ZxzJ1UsIh2461024610epsmtip1t;
-	Fri,  8 Aug 2025 11:29:09 +0000 (GMT)
-Message-ID: <03f1ab21-3fa7-41b1-a59e-91f1d9dca2f1@samsung.com>
-Date: Fri, 8 Aug 2025 16:59:08 +0530
+	s=arc-20240116; t=1754656541; c=relaxed/simple;
+	bh=DBUrRohCnAaDgN3a8rl0rDSbV3emnKD9qv2m8fLMOZY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kFW70538TWxdutokY/CzIJwQB5IWql5ipSxtW3qUQD1RaOwAN5mgwBEWE8oePr7hg9FLoGQFfRFynAXlLOeqaaGoFdOgij4mLpZtLa3AePEoKjgmBURh6i2o8pdUklTDuE2Eb+X8wCmgtdS8xrY83lgnGu6ox0w6BWoaIoUAb4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/8chpXv; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6156463fae9so5062637a12.0;
+        Fri, 08 Aug 2025 05:35:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754656538; x=1755261338; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fDSYh5lya2y6QD4ijxMsZsR33rbgiCTEcFPK31qmRrs=;
+        b=J/8chpXv6fJQmaRLLZS5L+wrE3ctf88r7aIyGxXwyJN+Uu+QD2ForxkF4LeHJJJUeF
+         guxZOrZld8I8SHNaTssLVYxoMEgbo3H00w0AkqoKRUjbeurMsi9BLofnJPM4B1hHhtI+
+         hcZN2ydOaS5vgBYORjJAhlmyfx09FGzOsHt4zAtn8nKL0nAv6qX8cS5HdI4u0yjR4/Wl
+         2H5MAudHKbVpIwtubQWaSoAfpK9N7f0He08Sepd56UmByR9t7IGdCNka9CzihY6EpDgj
+         UpuS4PPVg/W59jtChiecHP8mODKzq6QqEWan4VB1fjE4apLnOFqswAqUsZPRjFZKZxOD
+         UtSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754656538; x=1755261338;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fDSYh5lya2y6QD4ijxMsZsR33rbgiCTEcFPK31qmRrs=;
+        b=sTaPT23nlxrhhW1LrbDOS7ZyxWWzWPppZGolEBAf1nCsBJC8h9j+I5xjcceugvpxDT
+         O1srwMWJVnSrt3MQTqVV0x5I7KG9n45nwNg1mIl+MERvMpfXkaXzKCwcZegjzX5Zym1k
+         IQjzccWj9bpB7E9fsN5L3KtVjVLFihx5rqCJF/dZqsm9TrEcq4NGJO7XGOrlnqf/Pin0
+         inK4C37JvZ14MolEpKSfKg2yAMOe5F1gIMZV6jt2VoF+HGwpV2fUZHX+TUQjWqZJjzp6
+         q5SnJZimRkEJJa7Cmj68W2QVkCDZnw6SzE5pTc/FigwICFHSZSTJF4iCuw6gEZmC7iHH
+         Zpbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXEC8SwXzWG6TXxCrTcZ+3+jZXWOtmJx/8tLoN5N8FJOVUMmNvXJa/s1ASVJ5vTIFql/uAJInY5iDmF6mLe@vger.kernel.org, AJvYcCXKxM/TdVU05HwDl02KsxQdlGI+Gs7gugze5+FapCBbS/YhgljPL40RLhjU3uiraTr0hWB15kmS4Qo=@vger.kernel.org, AJvYcCXLwWtT25X0wb3oAPSyrZ5eOU5wncTHuHqkzJrNNG7KFu1XQhSw9nl7bPSmOcFDtwybLlPlIOQh@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgkFwE2CW8mlpw0OJJJsQGwu9LF4TI/LUY+V8Us+fTDXf4hu5B
+	zRn7utn4eG3f3WBF7nl7MC1EMfNZoA9GvK2ebkLmaBPIDSVnxdtTt/DKUOlw8ck+6P+Cxv01A2l
+	dHgVGG3Rvp4+ztlaoQmD7oWTZzvJ04r4=
+X-Gm-Gg: ASbGnctJ4OwRfHxbXsCQmrCAYjM01IvshKIl93UXrCgjB5f8d2XLdbsUbb6AmoRysFL
+	mBQy6VU0URfWJmv7FvIc3fzvzNklJFOHQVyd6PBDWcjQZBmKdgVSYVQuZIBje2omkePTDEC0u9s
+	jA9kaUIni6A13NLTsjSFMDZr7hFU9p0r2HRJOaR4V3GpcWinmPJsxNy2iiWNPe7Orkco20wq28d
+	AqpMJxpRQ==
+X-Google-Smtp-Source: AGHT+IH32kHNPZMnPqhCs9ebrCdy5MTCTTWaqqRa76UGtZ3/T38hE/+4EwwwkIQ1oM6LDdnK/9b2jIKB3o5mmZTsJf8=
+X-Received: by 2002:a17:907:1c28:b0:ae3:ee3a:56ee with SMTP id
+ a640c23a62f3a-af9c6e2731dmr277972366b.3.1754656537579; Fri, 08 Aug 2025
+ 05:35:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] usb: dwc3: Remove WARN_ON for device endpoint
- command timeouts
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
-	m.grzeschik@pengutronix.de, balbi@ti.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
-	dh10.jung@samsung.com, akash.m5@samsung.com, hongpooh.kim@samsung.com,
-	eomji.oh@samsung.com, shijie.cai@samsung.com, alim.akhtar@samsung.com,
-	muhammed.ali@samsung.com, thiagu.r@samsung.com, stable@vger.kernel.org
-Content-Language: en-US
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-In-Reply-To: <20250808105218.WmVk--eM@linutronix.de>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250808112911epcas5p19e8d412d90d69c2bbac4fe1b7347343e
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250807014905epcas5p13f7d4ae515619e1e4d7a998ab2096c32
-References: <CGME20250807014905epcas5p13f7d4ae515619e1e4d7a998ab2096c32@epcas5p1.samsung.com>
-	<20250807014639.1596-1-selvarasu.g@samsung.com>
-	<20250808090104.RL_xTSvh@linutronix.de>
-	<20c46529-b531-494a-9746-2084a968639e@samsung.com>
-	<20250808105218.WmVk--eM@linutronix.de>
+References: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com>
+In-Reply-To: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 8 Aug 2025 14:35:00 +0200
+X-Gm-Features: Ac12FXyUIPj4_cHk-J2g6XoI9XXAOYyAwh9-yx6DvxsNiVg9fEZXdZq1W3bA-mM
+Message-ID: <CAHp75Vcw5Q_ENzEJvH2+xHmPD-DUPAEaOOD2QoiCXoh7UiQJxQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: imu: inv_icm42600: change invalid data error to EBUSY
+To: jean-baptiste.maneyrol@tdk.com
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 8/8/2025 4:22 PM, Sebastian Andrzej Siewior wrote:
-> On 2025-08-08 16:07:25 [+0530], Selvarasu Ganesan wrote:
->> Thank you for pointing out the discrepancy. We will ensure that the
->> patch submission accurately reflects the authorship.
->>
->> Since I, "Selvarasu Ganesan" am the author, I will reorder the sign-offs
->> to reflect the correct authorship.
->>
->> Here is the corrected patch submission:
->>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
->> Signed-off-by: Akash M <akash.m5@samsung.com>
->>
->> Regarding the next steps, I will post a new patchset with the reordered
->> sign-offs.
-> Your sign-off (as the poster) should come last.
-> What is Akash' role in this?
-
-
-Akash M's role in the patch as a co-contributor.
-Shall i add tag as Co-developed-by: Akash M <akash.m5@samsung.com>?
-
-Cc: stable@vger.kernel.org
-Co-developed-by: Akash M <akash.m5@samsung.com>
-Signed-off-by: Akash M <akash.m5@samsung.com>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-
-
->> Thanks,
->> Selva
-> Sebastian
+On Fri, Aug 8, 2025 at 9:40=E2=80=AFAM Jean-Baptiste Maneyrol via B4 Relay
+<devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 >
+> Temperature sensor returns the temperature of the mechanical parts
+> of the chip. If both accel and gyro are off, temperature sensor is
+
+the temperature
+
+> also automatically turned off and return invalid data.
+
+returns
+
+> In this case, returning EBUSY error code is better then EINVAL and
+
+-EBUSY
+than
+-EINVAL
+
+> indicates userspace that it needs to retry reading temperature in
+> another context.
+
+...
+
+> +       /*
+> +        * Temperature data is invalid if both accel and gyro are off.
+> +        * Return EBUSY in this case.
+
+-EBUSY
+
+> +        */
+>         if (*temp =3D=3D INV_ICM42600_DATA_INVALID)
+> -               ret =3D -EINVAL;
+> +               ret =3D -EBUSY;
 >
+>  exit:
+>         mutex_unlock(&st->lock);
+
+...
+
+No need to resend just for the above, I hope Jonathan tweaks this
+whilst applying.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+(assuming typos and signs are fixed)
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
