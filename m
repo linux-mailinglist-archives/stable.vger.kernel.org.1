@@ -1,343 +1,207 @@
-Return-Path: <stable+bounces-166871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481B7B1EC33
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 17:36:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFE1B1EC47
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 17:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2831B18922A2
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 15:31:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AA05A03238
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 15:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D17D284B3A;
-	Fri,  8 Aug 2025 15:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B011A283CBE;
+	Fri,  8 Aug 2025 15:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RHdhpt+g"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W6fXrM0s"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0BA2820D1;
-	Fri,  8 Aug 2025 15:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4E0277016
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 15:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754667087; cv=none; b=kW6l80LXwY4flH65sw49lTXJiem/D1dUHDP61pQX2WoRF2Igu4BDhCJprEtQuY5+iZmLTM/+lKt8PpMT7nd0/cdLLHIw3aohlFqvQdlq+EZOWx30ANz3ZQW9l/8a/+qmF6zno5ev2CxiuBWlWGcDJiXXe331oG/d9baQ2ZUVImI=
+	t=1754667636; cv=none; b=VfbfazmlnfT7c+9RkRTTCNM/q2DHEX4u6sK8vSNS6zoqVXj5ieWmCQjxsLTbZBmD40Dd89OTmnHYhuwbkouJF4Gf+DNm57/HDCuAh+BCWrh/fEHypReahRjpaGE/jaFoNtxoaDpwUSJ0kDLadAYOEApNvbV9szSHUjhOpA+Xr6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754667087; c=relaxed/simple;
-	bh=8Iej5uQHq7Y2Cnb+h8iyLE18Z+x8JbvqwRaBoFb61fs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PJLhJO1D5dc9FMC3lqgQGCvNFmCi1gK7SyfmjikgvMEYwQjuozQB7PXUE2rQLUeuU1uUyQkRNTY+Md3VK2O6WVrbSKTQRja9A5h/ekOth6AaWNRQRxpCE1tGSzQBoa5ooNdeatjJZLMG2a6Y2gdpl5uxk64GtizXjTcpMSeJ+As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RHdhpt+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2074BC4CEF6;
-	Fri,  8 Aug 2025 15:31:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754667086;
-	bh=8Iej5uQHq7Y2Cnb+h8iyLE18Z+x8JbvqwRaBoFb61fs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHdhpt+gopgkSP0XLxV1Demn+maLZOl2nxsMUHkgFrnn2/ok8EdkBSV4G4QCfgWq2
-	 YANwyipbmZqsXwzUdsnooTqPXmX9bndG9Jdrcvi+5IkhiM048QukVwjLhfxSiW+CMa
-	 MYViN/dJPHLYtLe9YWbU3CnmG7PO0EtW8cCD2s6GP8SUBwGnFZHmVrQuzre5/rG3td
-	 NnenUGQynTp8LmDMToaQ2sxCbHLKdcQqZq1mTp9zSFtcuMRYC/CMPsC7ansXTh3tqu
-	 RWZ25Vsnwkh5Cs0FUTAJZtq3OF1VlogIAC588AEQ+wHfZoOIkuIPXSeXKIXDic+GzZ
-	 tvkOA9NAHQL3g==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Timothy Pearson <tpearson@raptorengineering.com>,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	mpe@ellerman.id.au,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.16-5.10] PCI: pnv_php: Clean up allocated IRQs on unplug
-Date: Fri,  8 Aug 2025 11:30:54 -0400
-Message-Id: <20250808153054.1250675-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250808153054.1250675-1-sashal@kernel.org>
-References: <20250808153054.1250675-1-sashal@kernel.org>
+	s=arc-20240116; t=1754667636; c=relaxed/simple;
+	bh=KAYm5kEGfZAD53g1Vmi3FWm1tyyNkUkP4NurVrjrxHs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xe6Cs5Xu7yyJNt1U0tLGbZvpiqa8Bb4HNuQd456Y40lvZqcYa7mZkKXvYmTLDeg9YNFisioAYYpb8JsINdzY7GvY00aYhDLywt96Jpb606y+w/z8UFT0+LijYMAcvwIEGCwskNe57QF0S+zzOR9ZSiUoJt0Ms8/aZFjImER21ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W6fXrM0s; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754667633;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nV2THAhy31Q+K4giF8sVO2GD93KEd5+dTPyv2cww754=;
+	b=W6fXrM0sPRtiqYW055+2E9DR7nr3sKOmRPdLJCJSBsJvKl7mMvq7DCMJ2kAc4guynx5du5
+	QoFwxXaOMtMPE8zuTF+8aDQKqfh548LW6j508+6e46ssQt8Z0DJaX9zTvHiUBOIt9vlPjN
+	nmBnYOhCUdfzhPknAwAcGUJFUzFum7E=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-381-y-xaDRI3PTm4VqkK6MkeNg-1; Fri, 08 Aug 2025 11:40:31 -0400
+X-MC-Unique: y-xaDRI3PTm4VqkK6MkeNg-1
+X-Mimecast-MFC-AGG-ID: y-xaDRI3PTm4VqkK6MkeNg_1754667630
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3b7886bfc16so1372213f8f.1
+        for <stable@vger.kernel.org>; Fri, 08 Aug 2025 08:40:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754667630; x=1755272430;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nV2THAhy31Q+K4giF8sVO2GD93KEd5+dTPyv2cww754=;
+        b=i2no1NCnkFqGQJoK/6atpKF8wDNtspHHYME9oQ85bXl40jhdsh5MsD62Jo5SFxrMbo
+         ciOwoo5WEEpDeVzG2X5tN0P9vyiZTHdAkl9aQg+DpbO0jmksiNQyCDdcYwiuwTRGDzt8
+         Wtq6uqxBTnrKuEQX8YDHCVb0uzCC5EB13kNg0AEyvwuuSJqdDkSBdWCajUes3Gz9Sfjb
+         XNoJUPXn+cb1o4uf2K9hpAcPKzo+sesTeVjj09TX9kQGiviwmt0wMjIpArcwbHx+9GuT
+         scmf3YuWKCoB6ogQ+RfvkyViX/Y0CVMZLm9c+Z/JqMx/z8q2eoNaZJ38kRrLcvqITZSo
+         YWWw==
+X-Forwarded-Encrypted: i=1; AJvYcCWAp+7i2pLptzyCVAGG9/HWF/MJNGZBodqhIONJQakCdp76P+phHyJjhASVD85/yMxgQwBkPjY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG0ZXon0PIKNTR/R/SqltBCAIG8iLCkX8cHW+9OVKRRZWQpBEi
+	EvvArMoNRpCTcyoEFA1GO9dgIOVjW8wYuNHFnxAVKu13fuHiAlp97cFC2DUsnhbGeDC2QozVW69
+	F7S/u6X+nJmlgRsPq5GK65rxia1F3M14LQTLumaqP1dM8SqZzIIKd9LOLIVY1DBLeVhv5
+X-Gm-Gg: ASbGncurYXYsZDUjHYwSbkgYzfbXPzEs8HB96n6qVgYT31oaNnC3RyawEcerSklcRkN
+	/LlUBdZKqJWhYIPYpKzyrTBeP06L2L2J48/e63sbtmSTwr8z0fdyhhfN+J+X+tycgE3uzgUtXF+
+	K/Yrmw9R4j0kn6iptcZKv0wUfd/XIsxBmumVz/5H10UJrWZ6WFjYjNND7VDr1GiOD6umVquIx4v
+	TNmyz+R/qAKNadKDdY1KbEEsfU9FzPZx+ryy4jOBgyKXXsKuKtpJTnUdDPWeTanLBofGcZTc/FN
+	/t+X2UppQEPGQdFW0M0Zd/qF2OGFITkp0psax2fWS51hQSkJvhk+/fEEauZw19BG/Zxoii/QH6B
+	PhJXXF1CWXpZ1apZbnB9XB8wbfqC2F9NOhP6wp3f3rIQJ7LBX6r1F0hziWTpjPOK5
+X-Received: by 2002:a05:6000:1445:b0:3b7:8412:4540 with SMTP id ffacd0b85a97d-3b900b72d33mr2337797f8f.27.1754667630459;
+        Fri, 08 Aug 2025 08:40:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKTxiJV2FPuPGMFcDLKL8AQfqKKwG29vC2FbgES/WiGrUMMRdjd3ayWesLeL8KISsx4PxMEQ==
+X-Received: by 2002:a05:6000:1445:b0:3b7:8412:4540 with SMTP id ffacd0b85a97d-3b900b72d33mr2337775f8f.27.1754667630025;
+        Fri, 08 Aug 2025 08:40:30 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:900:2e1e:d717:2543:c4d6? (p200300d82f2509002e1ed7172543c4d6.dip0.t-ipconnect.de. [2003:d8:2f25:900:2e1e:d717:2543:c4d6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e5e99e04sm137942595e9.11.2025.08.08.08.40.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Aug 2025 08:40:29 -0700 (PDT)
+Message-ID: <311404a6-d0d5-4b5b-8e6c-be284abbf319@redhat.com>
+Date: Fri, 8 Aug 2025 17:40:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.16
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/1] userfaultfd: fix a crash in UFFDIO_MOVE when PMD
+ is a migration entry
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: peterx@redhat.com, aarcange@redhat.com, lokeshgidra@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20250807200418.1963585-1-surenb@google.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <20250807200418.1963585-1-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+On 07.08.25 22:04, Suren Baghdasaryan wrote:
+> When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
+> obtaining a folio and accessing it even though the entry is swp_entry_t.
+> Add the missing check and let split_huge_pmd() handle migration entries.
+> While at it also remove unnecessary folio check.
+> 
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Cc: stable@vger.kernel.org
+> ---
+> Applies to mm-unstable after reverting older v4 [1] version.
+> 
+> Changes since v4 [1]
+> - Removed extra folio check, per David Hildenbrand
+> 
+> [1] https://lore.kernel.org/all/20250806220022.926763-1-surenb@google.com/
+> 
+>   mm/userfaultfd.c | 17 ++++++++++-------
+>   1 file changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 5431c9dd7fd7..aefdf3a812a1 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1826,13 +1826,16 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+>   			/* Check if we can move the pmd without splitting it. */
+>   			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+>   			    !pmd_none(dst_pmdval)) {
+> -				struct folio *folio = pmd_folio(*src_pmd);
+> -
+> -				if (!folio || (!is_huge_zero_folio(folio) &&
+> -					       !PageAnonExclusive(&folio->page))) {
+> -					spin_unlock(ptl);
+> -					err = -EBUSY;
+> -					break;
+> +				/* Can be a migration entry */
+> +				if (pmd_present(*src_pmd)) {
+> +					struct folio *folio = pmd_folio(*src_pmd);
+> +
+> +					if (!is_huge_zero_folio(folio) &&
+> +					    !PageAnonExclusive(&folio->page)) {
+> +						spin_unlock(ptl);
+> +						err = -EBUSY;
+> +						break;
+> +					}
 
-[ Upstream commit 4668619092554e1b95c9a5ac2941ca47ba6d548a ]
+Acked-by: David Hildenbrand <david@redhat.com>
 
-When the root of a nested PCIe bridge configuration is unplugged, the
-pnv_php driver leaked the allocated IRQ resources for the child bridges'
-hotplug event notifications, resulting in a panic.
-
-Fix this by walking all child buses and deallocating all its IRQ resources
-before calling pci_hp_remove_devices().
-
-Also modify the lifetime of the workqueue at struct pnv_php_slot::wq so
-that it is only destroyed in pnv_php_free_slot(), instead of
-pnv_php_disable_irq(). This is required since pnv_php_disable_irq() will
-now be called by workers triggered by hot unplug interrupts, so the
-workqueue needs to stay allocated.
-
-The abridged kernel panic that occurs without this patch is as follows:
-
-  WARNING: CPU: 0 PID: 687 at kernel/irq/msi.c:292 msi_device_data_release+0x6c/0x9c
-  CPU: 0 UID: 0 PID: 687 Comm: bash Not tainted 6.14.0-rc5+ #2
-  Call Trace:
-   msi_device_data_release+0x34/0x9c (unreliable)
-   release_nodes+0x64/0x13c
-   devres_release_all+0xc0/0x140
-   device_del+0x2d4/0x46c
-   pci_destroy_dev+0x5c/0x194
-   pci_hp_remove_devices+0x90/0x128
-   pci_hp_remove_devices+0x44/0x128
-   pnv_php_disable_slot+0x54/0xd4
-   power_write_file+0xf8/0x18c
-   pci_slot_attr_store+0x40/0x5c
-   sysfs_kf_write+0x64/0x78
-   kernfs_fop_write_iter+0x1b0/0x290
-   vfs_write+0x3bc/0x50c
-   ksys_write+0x84/0x140
-   system_call_exception+0x124/0x230
-   system_call_vectored_common+0x15c/0x2ec
-
-Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-[bhelgaas: tidy comments]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/2013845045.1359852.1752615367790.JavaMail.zimbra@raptorengineeringinc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Based on my analysis of the commit, here is my assessment:
-
-**Backport Status: YES**
-
-This commit should be backported to stable kernel trees for the
-following reasons:
-
-1. **Fixes a Real Bug with Kernel Panic**: The commit explicitly fixes a
-   kernel panic (WARNING and crash) that occurs when unplugging nested
-   PCIe bridge configurations. The panic trace shows it happens in
-   `msi_device_data_release()` during hotplug operations, which is a
-   serious stability issue.
-
-2. **Clear Resource Leak Fix**: The commit addresses a specific IRQ
-   resource leak where child bridge IRQ resources were not being
-   properly cleaned up during hot unplug operations. This is a real bug
-   that affects system stability and resource management.
-
-3. **Small and Contained Fix**: The changes are well-contained within
-   the PowerNV PHP (PCI Hotplug) driver. The modifications include:
-   - Adding a new `disable_msi` parameter to `pnv_php_disable_irq()`
-   - Moving workqueue destruction to `pnv_php_free_slot()`
-   - Adding functions to recursively disable IRQs for child slots
-   - Re-enabling IRQ on slot enable for surprise hotplug support
-
-4. **Meets Stable Criteria**:
-   - Fixes a real bug (kernel panic/crash)
-   - Is obviously correct - properly cleans up resources
-   - Has clear testing evidence (fixes the described panic)
-   - Size is reasonable (under 100 lines of actual changes)
-   - Doesn't introduce new features or architectural changes
-
-5. **Critical for PowerNV Platform Users**: This affects IBM PowerNV
-   platforms using PCIe hotplug functionality, where nested bridge
-   configurations can cause system crashes without this fix.
-
-6. **Well-Documented Problem**: The commit message provides a clear
-   description of the issue, including the kernel panic trace, making it
-   easy to verify the problem and solution.
-
-The fix follows proper cleanup patterns by ensuring IRQ resources are
-freed before removing devices, and properly manages the lifetime of the
-workqueue to avoid use-after-free scenarios. This is exactly the type of
-bug fix that stable kernels should include to maintain system stability.
-
- drivers/pci/hotplug/pnv_php.c | 96 ++++++++++++++++++++++++++++-------
- 1 file changed, 77 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index aaa8e0a2a893..5476c9e7760d 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -3,6 +3,7 @@
-  * PCI Hotplug Driver for PowerPC PowerNV platform.
-  *
-  * Copyright Gavin Shan, IBM Corporation 2016.
-+ * Copyright (C) 2025 Raptor Engineering, LLC
-  */
- 
- #include <linux/bitfield.h>
-@@ -36,8 +37,10 @@ static void pnv_php_register(struct device_node *dn);
- static void pnv_php_unregister_one(struct device_node *dn);
- static void pnv_php_unregister(struct device_node *dn);
- 
-+static void pnv_php_enable_irq(struct pnv_php_slot *php_slot);
-+
- static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
--				bool disable_device)
-+				bool disable_device, bool disable_msi)
- {
- 	struct pci_dev *pdev = php_slot->pdev;
- 	u16 ctrl;
-@@ -53,19 +56,15 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
- 		php_slot->irq = 0;
- 	}
- 
--	if (php_slot->wq) {
--		destroy_workqueue(php_slot->wq);
--		php_slot->wq = NULL;
--	}
--
--	if (disable_device) {
-+	if (disable_device || disable_msi) {
- 		if (pdev->msix_enabled)
- 			pci_disable_msix(pdev);
- 		else if (pdev->msi_enabled)
- 			pci_disable_msi(pdev);
-+	}
- 
-+	if (disable_device)
- 		pci_disable_device(pdev);
--	}
- }
- 
- static void pnv_php_free_slot(struct kref *kref)
-@@ -74,7 +73,8 @@ static void pnv_php_free_slot(struct kref *kref)
- 					struct pnv_php_slot, kref);
- 
- 	WARN_ON(!list_empty(&php_slot->children));
--	pnv_php_disable_irq(php_slot, false);
-+	pnv_php_disable_irq(php_slot, false, false);
-+	destroy_workqueue(php_slot->wq);
- 	kfree(php_slot->name);
- 	kfree(php_slot);
- }
-@@ -588,8 +588,58 @@ static int pnv_php_reset_slot(struct hotplug_slot *slot, bool probe)
- static int pnv_php_enable_slot(struct hotplug_slot *slot)
- {
- 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
-+	u32 prop32;
-+	int ret;
-+
-+	ret = pnv_php_enable(php_slot, true);
-+	if (ret)
-+		return ret;
-+
-+	/* (Re-)enable interrupt if the slot supports surprise hotplug */
-+	ret = of_property_read_u32(php_slot->dn, "ibm,slot-surprise-pluggable",
-+				   &prop32);
-+	if (!ret && prop32)
-+		pnv_php_enable_irq(php_slot);
- 
--	return pnv_php_enable(php_slot, true);
-+	return 0;
-+}
-+
-+/*
-+ * Disable any hotplug interrupts for all slots on the provided bus, as well as
-+ * all downstream slots in preparation for a hot unplug.
-+ */
-+static int pnv_php_disable_all_irqs(struct pci_bus *bus)
-+{
-+	struct pci_bus *child_bus;
-+	struct pci_slot *slot;
-+
-+	/* First go down child buses */
-+	list_for_each_entry(child_bus, &bus->children, node)
-+		pnv_php_disable_all_irqs(child_bus);
-+
-+	/* Disable IRQs for all pnv_php slots on this bus */
-+	list_for_each_entry(slot, &bus->slots, list) {
-+		struct pnv_php_slot *php_slot = to_pnv_php_slot(slot->hotplug);
-+
-+		pnv_php_disable_irq(php_slot, false, true);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Disable any hotplug interrupts for all downstream slots on the provided
-+ * bus in preparation for a hot unplug.
-+ */
-+static int pnv_php_disable_all_downstream_irqs(struct pci_bus *bus)
-+{
-+	struct pci_bus *child_bus;
-+
-+	/* Go down child buses, recursively deactivating their IRQs */
-+	list_for_each_entry(child_bus, &bus->children, node)
-+		pnv_php_disable_all_irqs(child_bus);
-+
-+	return 0;
- }
- 
- static int pnv_php_disable_slot(struct hotplug_slot *slot)
-@@ -606,6 +656,13 @@ static int pnv_php_disable_slot(struct hotplug_slot *slot)
- 	    php_slot->state != PNV_PHP_STATE_REGISTERED)
- 		return 0;
- 
-+	/*
-+	 * Free all IRQ resources from all child slots before remove.
-+	 * Note that we do not disable the root slot IRQ here as that
-+	 * would also deactivate the slot hot (re)plug interrupt!
-+	 */
-+	pnv_php_disable_all_downstream_irqs(php_slot->bus);
-+
- 	/* Remove all devices behind the slot */
- 	pci_lock_rescan_remove();
- 	pci_hp_remove_devices(php_slot->bus);
-@@ -674,6 +731,15 @@ static struct pnv_php_slot *pnv_php_alloc_slot(struct device_node *dn)
- 		return NULL;
- 	}
- 
-+	/* Allocate workqueue for this slot's interrupt handling */
-+	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
-+	if (!php_slot->wq) {
-+		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
-+		kfree(php_slot->name);
-+		kfree(php_slot);
-+		return NULL;
-+	}
-+
- 	if (dn->child && PCI_DN(dn->child))
- 		php_slot->slot_no = PCI_SLOT(PCI_DN(dn->child)->devfn);
- 	else
-@@ -870,14 +936,6 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
- 	u16 sts, ctrl;
- 	int ret;
- 
--	/* Allocate workqueue */
--	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
--	if (!php_slot->wq) {
--		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
--		pnv_php_disable_irq(php_slot, true);
--		return;
--	}
--
- 	/* Check PDC (Presence Detection Change) is broken or not */
- 	ret = of_property_read_u32(php_slot->dn, "ibm,slot-broken-pdc",
- 				   &broken_pdc);
-@@ -896,7 +954,7 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
- 	ret = request_irq(irq, pnv_php_interrupt, IRQF_SHARED,
- 			  php_slot->name, php_slot);
- 	if (ret) {
--		pnv_php_disable_irq(php_slot, true);
-+		pnv_php_disable_irq(php_slot, true, true);
- 		SLOT_WARN(php_slot, "Error %d enabling IRQ %d\n", ret, irq);
- 		return;
- 	}
 -- 
-2.39.5
+Cheers,
+
+David / dhildenb
 
 
