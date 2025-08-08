@@ -1,119 +1,120 @@
-Return-Path: <stable+bounces-166813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7DAFB1DF70
-	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 00:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7222FB1E007
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 02:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F1918C6FBC
-	for <lists+stable@lfdr.de>; Thu,  7 Aug 2025 22:48:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68884189EC4E
+	for <lists+stable@lfdr.de>; Fri,  8 Aug 2025 00:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC14227E83;
-	Thu,  7 Aug 2025 22:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QIEEbaLw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6870111A8;
+	Fri,  8 Aug 2025 00:56:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79742219A79;
-	Thu,  7 Aug 2025 22:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C008C8C0B
+	for <stable@vger.kernel.org>; Fri,  8 Aug 2025 00:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754606861; cv=none; b=GUv1alPsZ+ptlPRrfbCBC83vQH/eqZEBdpriXwY0Bd5YPxhS5iL3zVvFMHflFYeWF4aZFlAHMPI7ussdjasda/RgH2XwG4woMcGpfE0GsL09h8o5Vc0/3vaITRgx6hoctDpV53JavFDg2seVT5x9a177D31pG1FTQNey9wKnI58=
+	t=1754614598; cv=none; b=n8Nn0XVlohAJh9EAs6+/0Z8Ieo78l8xesfuRucPbSMrxhZwgfJysTj3SvAHisasn0Q8OxdOhF/zmNq94+BZ+v4FRtCE4n1QolE88xkIBDoUx6NVUc7ZrY2hSSlSSlxu15RWokFnEhl8gi4abU2IE3l6x2Jn9eDf92cZfbR3Np3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754606861; c=relaxed/simple;
-	bh=AFdbj0skQYjMg5havIsFj3cVBQZpyVUMrBwCBen6SFA=;
-	h=Date:To:From:Subject:Message-Id; b=X9u9lJmSrggtvqgdTUEAgepSu9X4PaniaSh02RmHgJvhKKu9ikRdaSn3h23m9XQxm/+hvdqyTbpkVlviJbFRX/mQLTEsJcEM2DcHBBWEUyyrMpWbAzNEOoVotLTSk6qwUrEPNrDfmZ2T+hfkk6nk1RIwXdyEmAPA0qh/odRPr6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QIEEbaLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1939C4CEEB;
-	Thu,  7 Aug 2025 22:47:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754606861;
-	bh=AFdbj0skQYjMg5havIsFj3cVBQZpyVUMrBwCBen6SFA=;
-	h=Date:To:From:Subject:From;
-	b=QIEEbaLwR4StjZEYxljESYwx+a1z0LXQNB8B+YqpNkth6hz7s/cxSHADTUrN1ru1N
-	 F2f9XnGEe5RdDKP/140oVbmXLmAc/sT3aNzt97cPM2NvF4p4Ddk/EIc6Onq1aBmETo
-	 SgkxKT9KcNV/nJw9OZLF8Nl9KvPoEOhdsr3hd8+Q=
-Date: Thu, 07 Aug 2025 15:47:40 -0700
-To: mm-commits@vger.kernel.org,superman.xpt@gmail.com,stable@vger.kernel.org,wjl.linux@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250807224740.E1939C4CEEB@smtp.kernel.org>
+	s=arc-20240116; t=1754614598; c=relaxed/simple;
+	bh=r6SbXK4ArB0MmEJtzQKqQd2ZuyRHh5oycp/t3JnbyB4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YB4MEONiR1j4t42HzXH+E3XOMKAI7J3NNkrZp3uvq/TC8BtVw+f5ARgzPtz4rz0l1CkJLHBI1X+OO3W2q5iM6gtI2t1RQmbGa/6GgJXpanQ630j9gemcgTcFrxtXt2ASkfC4IYUO3putNJsnY1UDheSoMyRoZHtsBKisoi+3SJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bylqD4gz4zLpqS;
+	Fri,  8 Aug 2025 08:52:08 +0800 (CST)
+Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
+	by mail.maildlp.com (Postfix) with ESMTPS id 18378180080;
+	Fri,  8 Aug 2025 08:56:26 +0800 (CST)
+Received: from [10.67.111.31] (10.67.111.31) by kwepemh100007.china.huawei.com
+ (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 8 Aug
+ 2025 08:56:25 +0800
+Message-ID: <eacf887c-7259-4827-8bdb-8a938f01dc0c@huawei.com>
+Date: Fri, 8 Aug 2025 08:56:25 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: Fix possible deadlock in console_trylock_spinning
+To: Catalin Marinas <catalin.marinas@arm.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, <stable@vger.kernel.org>,
+	<linux-mm@kvack.org>, Waiman Long <llong@redhat.com>, Breno Leitao
+	<leitao@debian.org>, John Ogness <john.ogness@linutronix.de>, Lu Jialin
+	<lujialin4@huawei.com>
+References: <20250807091444.1999938-1-gubowen5@huawei.com>
+ <aJTCGrkg69Ytg-CC@arm.com>
+Content-Language: en-US
+From: Gu Bowen <gubowen5@huawei.com>
+In-Reply-To: <aJTCGrkg69Ytg-CC@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemh100007.china.huawei.com (7.202.181.92)
 
+On 8/7/2025 11:11 PM, Catalin Marinas wrote:
+> 
+>> @@ -433,8 +439,15 @@ static struct kmemleak_object *mem_pool_alloc(gfp_t gfp)
+>>   		list_del(&object->object_list);
+>>   	else if (mem_pool_free_count)
+>>   		object = &mem_pool[--mem_pool_free_count];
+>> -	else
+>> +	else {
+>> +		/*
+>> +		 * Printk deferring due to the kmemleak_lock held.
+>> +		 * This is done to avoid deadlock.
+>> +		 */
+>> +		printk_deferred_enter();
+>>   		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
+>> +		printk_deferred_exit();
+>> +	}
+>>   	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
+> 
+> I wouldn't bother with printk deferring here, just set a bool warn
+> variable and report it after unlocking. We recently merged another patch
+> that does this.
+> 
 
-The patch titled
-     Subject: proc: proc_maps_open allow proc_mem_open to return NULL
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch
+That's fine, I will send another patch that does not include this part.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jialin Wang <wjl.linux@gmail.com>
-Subject: proc: proc_maps_open allow proc_mem_open to return NULL
-Date: Fri, 8 Aug 2025 00:54:55 +0800
-
-commit 65c66047259f ("proc: fix the issue of proc_mem_open returning
-NULL") breaks `perf record -g -p PID` when profiling a kernel thread.
-
-The strace of `perf record -g -p $(pgrep kswapd0)` shows:
-
-  openat(AT_FDCWD, "/proc/65/task/65/maps", O_RDONLY) = -1 ESRCH (No such process)
-
-This patch partially reverts the commit to fix it.
-
-Link: https://lkml.kernel.org/r/20250807165455.73656-1-wjl.linux@gmail.com
-Fixes: 65c66047259f ("proc: fix the issue of proc_mem_open returning NULL")
-Signed-off-by: Jialin Wang <wjl.linux@gmail.com>
-Cc: Penglei Jiang <superman.xpt@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/proc/task_mmu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/fs/proc/task_mmu.c~proc-proc_maps_open-allow-proc_mem_open-to-return-null
-+++ a/fs/proc/task_mmu.c
-@@ -340,8 +340,8 @@ static int proc_maps_open(struct inode *
- 
- 	priv->inode = inode;
- 	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
--	if (IS_ERR_OR_NULL(priv->mm)) {
--		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-+	if (IS_ERR(priv->mm)) {
-+		int err = PTR_ERR(priv->mm);
- 
- 		seq_release_private(inode, file);
- 		return err;
-_
-
-Patches currently in -mm which might be from wjl.linux@gmail.com are
-
-proc-proc_maps_open-allow-proc_mem_open-to-return-null.patch
-
+>>   
+>>   	return object;
+>> @@ -632,6 +645,11 @@ static struct kmemleak_object *create_object(unsigned long ptr, size_t size,
+>>   		else if (parent->pointer + parent->size <= ptr)
+>>   			link = &parent->rb_node.rb_right;
+>>   		else {
+>> +			/*
+>> +			 * Printk deferring due to the kmemleak_lock held.
+>> +			 * This is done to avoid deadlock.
+>> +			 */
+>> +			printk_deferred_enter();
+>>   			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
+>>   				      ptr);
+>>   			/*
+>> @@ -639,6 +657,7 @@ static struct kmemleak_object *create_object(unsigned long ptr, size_t size,
+>>   			 * be freed while the kmemleak_lock is held.
+>>   			 */
+>>   			dump_object_info(parent);
+>> +			printk_deferred_exit();
+> 
+> This is part of __link_object(), called with the lock held, so easier to
+> defer the printing as above.
+> 
+> BTW, the function names in the diff don't match mainline. Which kernel
+> version is this patch based on?
+> 
+The kernel version of this patch is stable-5.10. This part of the code 
+exists in function __link_object() in the mainline.
 
