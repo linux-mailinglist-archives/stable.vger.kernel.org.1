@@ -1,102 +1,116 @@
-Return-Path: <stable+bounces-166923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DCDB1F5D4
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 20:38:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62896B1F601
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 21:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F5017A28C3
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 18:37:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24E903B44C5
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 19:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139D927701E;
-	Sat,  9 Aug 2025 18:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82AD28505E;
+	Sat,  9 Aug 2025 19:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WZSbJMZM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b//ybEci"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71D81E5B60
-	for <stable@vger.kernel.org>; Sat,  9 Aug 2025 18:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7002A1B423B;
+	Sat,  9 Aug 2025 19:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754764713; cv=none; b=bHya7OLmaRdKzOkaqyvGly32puj0RQf7QfQCDKc/rvL3isX5BjigzFEaiZUevVt7D/YHcIl4YpzUFavdForsm4zyuTJ2Ms2E8VCsZZ5TZdmdMlrorg5JERvq/E5QMf5+JyyMTWZH61uld9PHAaWCZfRAShB0gceVW+04Lb81rmo=
+	t=1754767490; cv=none; b=XgzPFf/FrSHddLRrp+yBnZyjPwbGMJR6/LmCkB9wp7VXdYgd+wImFb/T3wF2P0jBc8fT0MD0Is390Gx5z7ym56ABv7y0FXT+oD1m8qfzfowdg6G1zTEnr5lx+Y6IMRoaUVOF94Lo7FlB6N8m/1UmFJZunLPsf8hWsyMCJo6JFks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754764713; c=relaxed/simple;
-	bh=Pg7cw1XLjS2Nh21PSgWKG2Aoc3IYRQzlw5Lbmzk0rk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=d3APo+j8PGZCHA/KwR9Fxa3sU2TlYjtmG61ZMEDHMi7dtZ+8Ob7rUkFomYh2HFIyau5lE/gKG1/j5dSi8GgYeqsUroep7kz3nfvjVa8uaxX8O+3TkOxznzw9sp2MTHgfcScytao5ZT9KqY4Jv+9g9QXPld0ECDkAal/GNYBuOJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WZSbJMZM; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754764712; x=1786300712;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Pg7cw1XLjS2Nh21PSgWKG2Aoc3IYRQzlw5Lbmzk0rk8=;
-  b=WZSbJMZMlyr1IMqpgTRMgANCQv+AoCceW0D0spKgXQI+pRzk5Ic/kjWo
-   wvW+J4FYjurI1IqzbhyuTdligG0U4XOLlO7hZyv93P0gcYD3k/JxZXCWX
-   IvPZ1NSQU9szqJ+IGe1FPKyApD8Q7JU6ueBYArTphxoOxXmIXiNKHbom7
-   JNhLl6EmV2rR4Vq3eTyVpbcYFYoUU6zZhAmxXLXFeVBS/G8gI6Gw3RMrh
-   oofsyp08N0/DfPy/eJ3TI+5Z4eK6ex/cD4scVz6DJadJRoJ3Odt1WGuF6
-   7iGclP0i/HNxV1OP8WK7RKNags/X7M0QJlb/diOMW3c1UHqAk9m2UXk+Q
-   w==;
-X-CSE-ConnectionGUID: vIicLV3IR6WS8JScsGwF9Q==
-X-CSE-MsgGUID: xe7yZfv8RKmMlp0DT+M4Sg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11516"; a="59689589"
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="59689589"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2025 11:38:31 -0700
-X-CSE-ConnectionGUID: HXBgOSi2TNm7IFMA8+T9Vw==
-X-CSE-MsgGUID: Tazj4xElRxCxo0NCE676tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="165463994"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 09 Aug 2025 11:38:30 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ukoSa-00050K-1Q;
-	Sat, 09 Aug 2025 18:38:28 +0000
-Date: Sun, 10 Aug 2025 02:38:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sumanth Gavini <sumanth.gavini@yahoo.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 6.6] io_uring/rw: ensure reissue path is correctly
- handled for IOPOLL
-Message-ID: <aJeVj4yXt4F01nPb@f5c43a121a53>
+	s=arc-20240116; t=1754767490; c=relaxed/simple;
+	bh=6rM9hp+bSRD2mwv60+hmG1MxHKfkDAAW7aTvWln7Awg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DbvPbtnJl9GmUmG6fR4sevvE0AyLVZB9JI3DodAfvEZ++6mNRBqPL1rvvNFpm5dey2riWrZw1ess8LNaQiofnDl4cp2vrUOmJw7VCXUh5C1RPjfqY/K3u3hL7ro4dUReYFSNLBn+S3eLhYdx+f4YCPVwoYbcoteUE4+9huoaE8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b//ybEci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97028C4CEF4;
+	Sat,  9 Aug 2025 19:24:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754767489;
+	bh=6rM9hp+bSRD2mwv60+hmG1MxHKfkDAAW7aTvWln7Awg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=b//ybEci7JFKbabO21PK45u8GrXWd01sebu24qH9EFYgr5Wg0nA6LOqSJ6PAJ95Cr
+	 r5SwxH/U7LLEf10ivwRk92B+NDQ7CU9jCiNiNikH/p3xHHEsmJsiAssYHqAGdR4p0m
+	 B8xUCkF76vcJruWN4zYXYnEIQlUzFyudZeGxoptjzCF3YVrerTL5d70V92Kh7bH6qC
+	 9r0EnTc7EKnmH+LRZ3ZMuxIInfVUMO4D6Gb8M/qv4KJ9OPWFt6rnYXw1euEfVOjRLF
+	 f/eAixhRuoSoqr+egdgn4n027icTfpeOlNxRm8S1uH53vrNgBC4KHfMATEQTC9dvkn
+	 GSGkRKHGMYK/A==
+Date: Sat, 9 Aug 2025 20:24:40 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, David Lechner <dlechner@baylibre.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Sean Nyekjaer
+ <sean@geanix.com>
+Subject: Re: [PATCH] iio: imu: inv_icm42600: change invalid data error to
+ EBUSY
+Message-ID: <20250809202440.552e1cdf@jic23-huawei>
+In-Reply-To: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com>
+References: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250809182636.209767-1-sumanth.gavini@yahoo.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On Fri, 08 Aug 2025 09:40:10 +0200
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 
-Thanks for your patch.
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> Temperature sensor returns the temperature of the mechanical parts
+> of the chip. If both accel and gyro are off, temperature sensor is
+> also automatically turned off and return invalid data.
+> 
+> In this case, returning EBUSY error code is better then EINVAL and
+> indicates userspace that it needs to retry reading temperature in
+> another context.
+> 
+> Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Cc: stable@vger.kernel.org
++CC Sean who raised the issue.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 6.6] io_uring/rw: ensure reissue path is correctly handled for IOPOLL
-Link: https://lore.kernel.org/stable/20250809182636.209767-1-sumanth.gavini%40yahoo.com
-
-Please ignore this mail if the patch is not relevant for upstream.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+> ---
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+> index 8b15afca498cb5dfa7e056a60d3c78e419f11b29..1756f3d07049a26038776a35d9242f3dd1320354 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+> @@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct inv_icm42600_state *st, s16 *temp)
+>  		goto exit;
+>  
+>  	*temp = (s16)be16_to_cpup(raw);
+> +	/*
+> +	 * Temperature data is invalid if both accel and gyro are off.
+> +	 * Return EBUSY in this case.
+> +	 */
+>  	if (*temp == INV_ICM42600_DATA_INVALID)
+> -		ret = -EINVAL;
+> +		ret = -EBUSY;
+>  
+>  exit:
+>  	mutex_unlock(&st->lock);
+> 
+> ---
+> base-commit: 6408dba154079656d069a6a25fb3a8954959474c
+> change-id: 20250807-inv-icm42600-change-temperature-error-code-65d16a98c6e1
+> 
+> Best regards,
 
 
