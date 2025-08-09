@@ -1,59 +1,88 @@
-Return-Path: <stable+bounces-166921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D75EB1F5B8
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 19:48:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3CAEB1F5D1
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 20:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 743F6189D1BF
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 17:49:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2D4D189EF04
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 18:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161DA277CA0;
-	Sat,  9 Aug 2025 17:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0FB27CCCD;
+	Sat,  9 Aug 2025 18:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8nbYeg1"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="e5yTUTeL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic314-20.consmr.mail.sg3.yahoo.com (sonic314-20.consmr.mail.sg3.yahoo.com [106.10.240.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81741D618C;
-	Sat,  9 Aug 2025 17:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B6C2777F3
+	for <stable@vger.kernel.org>; Sat,  9 Aug 2025 18:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.240.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754761721; cv=none; b=mXN89AK+SJyuHqSfywBL/FUqBrUEAFhpVJg29uCWgVsAiYRj7bSqQWYs14FGXJHpoT/E6UQL4DPkFPvvsiVkBF1fCeWphpb566+h3Tnn7fwfbGki0nLNd48UzPdpfxGz6ebZGUERbEWjAVC65VJXHukJhgBLsN5JQu0U2eDzySc=
+	t=1754764621; cv=none; b=NtJJjCu7KpGxwjCypdQKSct5higycFkViwUQVt+HQuGMeW35opRJ0Tj6TkNmW5zYspCBwhFhn7wnKn2HAXY3+BKACiJ3H56jAbfuyDw1n2F2r1fcFb5o2Ll9J8UHfsHk7TRuCv0nDwM24vUUvmK/bNRoVIucv1NleBFmD6pJBoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754761721; c=relaxed/simple;
-	bh=aKDkF5RSgXGbhrjBrkjvDv3sHb1LUhd6gxPgYdPrLoY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=drqQ2JdFnOVdyTb+K8U4W1tkBJDYavfNRFb5LA1kX4NB0oq8cISmytMmfZfXO1B6p2XSKIYn9oHBrPMxRwTEAWXmYPfXnv+MspHaybemUCiolLlUcAz8f3mhG+Hmn/lHprJP62wyRjm75YfoYOYXOqicRJUvPFbx2vUntKArTqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8nbYeg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B059C4CEE7;
-	Sat,  9 Aug 2025 17:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754761721;
-	bh=aKDkF5RSgXGbhrjBrkjvDv3sHb1LUhd6gxPgYdPrLoY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8nbYeg1V3Bj9tiIH2hWtnSPho7Srv+KMTxfn8pnWyK6hdtiMxPK++yQ1KeQzD8eQ
-	 a5piVkWP0R/tTqmdZvX1FRART50cKQqY+k4aaFndhzGuiooUZ5AEC0/UPqG1aBQhy3
-	 IrizXo+tBDtE50v3H01dpCeW5NDq8x9ZYYk+GF3QsId5hMsTSjA9Lj9qt8M/ebSm9H
-	 tvkKqiLd3e60qwo0HfrYiXBEHt/6q5vc776usWnQx3iSbKMLQSqq2KttmIOrQ1X/0z
-	 ufPH6tli8Nb4LqKCQ4aWzu69tqHVpFozRoDsnbiaGFgZ8ZX/e+ZMvnZJQoJEHFoofl
-	 eRucwiUvXLBoA==
-From: SeongJae Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/core: fix commit_ops_filters by using correct nth function
-Date: Sat,  9 Aug 2025 10:48:38 -0700
-Message-Id: <20250809174838.71485-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250809130756.637304-1-ekffu200098@gmail.com>
-References: 
+	s=arc-20240116; t=1754764621; c=relaxed/simple;
+	bh=LDjkT1zwXIRkMra4k9nZUSPZ4E8ndCV1PzaRhePEstI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=prDRw9c8cHuoDXntxUoUW6m8rDIB7cMcZLpXAJVeq1v9VL1RcIqu9IKz3sj9YbwnuzXIUz0uFgeXATZdFgB3c5z+BY0g0RnXI4hYEMh1+BHxYawBhJt56l5DFO2FTo+M7P4QWLRyA9Yz0axi0j2JThTwlBPlbNHztWfX46U19DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=e5yTUTeL; arc=none smtp.client-ip=106.10.240.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754764611; bh=RSTd33FBgXJ3khA8jcI1u6Fz9T/+9TZQ+RFk4Bta1ZI=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=e5yTUTeL75RWyHCzD+SNJDDwj5pE5EupjRCvFztfW8ddvSEigxXxldWuR/T1tDY/xPclyw4Dwpv0ahORt89hyv5YnkpT6wr1G1qTdnmFYUOKLRUDSNHSMj054KWwdUK43E/uJ0YICphr02x8Yxh++pUshV367BKYWFh+ysqVsfhoOb1UV9/b6eF5fFeKBS28uuHnrsdBJl8CRQEDwPw+ghJnoDL+/+QlYq6z4gyWwgHq+K1KcSfYMBuFFgO7ZqixVi+1zAzmrUMM83s7rnU0KSXbu2BKt/6wQKDF4VmGQ5UNU39/Chok4dTY5ZSchaBAR8nhrfM0fCixdfbzXIKhjg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754764611; bh=WUawJjyspohl6HygYBJMzwqd1KfcbmedRP7KGiz7kJ3=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=pF5J77K55qGdEdHUHeDfUTzZHCKEUcNtzU8Bs6MwXi2fASuUPdvjlpdLDRRofbY13KbUHkBF7cPC/8ALrXiAWsJp1vmetyxngh2e8eNJroBkBWCWwUqbglDvV2db5khHKuOYjfvhmbSMXBcYooTiJbDTE5RXH6hZbSB9Mmi4BpGNFVFoRdpffFo6IFCPP84l2G2tXQ0fVQ5QY7rC8heq+qrGvljRN6811ojxaIfg80fNBXl4UQnvMxdd7iyVkBKkMv8HPZ3aQoRKghdfEQXhZEqIHEDsc4gtRvvoZoUGVMZMtI/DyzU2s6alrRvs+TB/JBLEoDTWDz6tdUwr9VDviA==
+X-YMail-OSG: UQDvST8VM1nKCjwsPQu7806zJw04TsWNuN8kSDOrRnMTe_HgaoyNFe8lIjHrdtH
+ 5oLsFtOBJ69D75cB_.V6t2uH723PQ9IMBWHd9BEDfOIHuGUBJBKf1nZZJwYenkdNJkfn9hP2Hqn8
+ Wor9MPRtmjw8rYhddCMfba3ZUzTbcBKDbUGfaJsGpDdeF4KIeNvEakHXSNzh8Vj58qlg4Aput3OG
+ LJvBxmTZGFI7NX.mir.Kk287G9v5OakAwzeft3gqbRF5tB4TZTMuhYip6CosFxw62ipxBaiUy8Fu
+ XAVfiAE1_leIQPlEBHNODiuFI.bsgDdTvX.I8g_nzC9lNKYL..S7SoJTpBSQSc0I.lNsJA4Rp9TY
+ CFfG.4LrmxTE2mbDXYVS2S1QPru7vh5QuuPPgB8QbGDW4gWexCS5liRUDx_RPO3fW8wLX4LNzT3U
+ Cnkjh83hYPWTLO543CeFfQgQmhUpl07JlzBYYOGGDivQSrfzet.sWtHODkH5Nhhs1u9Kw96.V9Pe
+ BvRls9a5LZmddr62CcrcTyFqjZwP8wUqda89TsdTUlBASVftSekQLlg.9rCJM25uRgj.jODTUEN6
+ qdJPXrnKS2A98yz.sWs28yxMOnn39iJXNdiK1McRgLqZrbWtz4tvRLjPxx8UvOEi.zT6EDbkfUBY
+ ERZUPB2vokthsggEd9dulZArXR7iho_DefGPPqBg1SAXLmq23LNql3tgzOGBthzrkU0guLtOu1Ze
+ iM1br7s63d05MAk8GBiGYdim5szPLtUChWarFFHWt8SeEMYABuvF9XRJ2CDgoi9DtlnGOll8DOVg
+ 6Yayus8IK4qNBsz6ItktRkw965mDZ2m371hzDV3nDtfkapolIBVxaGbrttJdj96v7FHblbkRSiY.
+ PK05moYOAsRBBuKnSI44ptlnpd7SRhJENLjDUTl93uWAhyfm9Uyw3uvK.T86mWFIq1c_xwm7xysW
+ U9lDRbFHOpFfbUZ8aM1pUo6BHjlhBazxkKunf06yCIQniOdrD45M3ohMP6iFEHJjdsgY2Hh3JRky
+ CpHbqnJO4lYJjPjTroNM_DoSN5LtFF1VDLxTp2R2.c.EgOGiZlQRp7pwgyj12T3fuTmbuq.uUgAi
+ nQzRhLo_CVnob0Wmcxayq7Sdc87DrtLRz202Bu4MLmrkQoTvB1QWTzgp2VIoqDPEK_QbK8urV.B4
+ 7cIwPXdLQ908_bWSS3HBYJPkVbO4_fmfXdWvVyMrx2fAtTzf49X0OGvvGgrhco2I_AQXwiefwAm4
+ 64.NxCqte2dL2Z5UGQRNlUjKa76W3bz6PZZiwA4sTeZlC8bkC.RaLeqHmPYt_ED82l8O7ABFQ0Kd
+ kiVW865fjK13UvKBtoBsxC5xmLYQO75o.DzpadkDqQLWfGJplHhhHtCt7tA6gZPHieehZmVvAasJ
+ gwOGD5SS_BryYVQx_Rbl0rAVhQc_CZmFEcIYAN9EqWrOUIY91GgzyeouEh1MWju.21toYR.5H7vG
+ dPUjsCBpGGyFGp7QkWeKreADCSnrN0OivEhydf4QwM_nTfo9CkjLMSn6RHMy4ft_KsmZgaqiIF0a
+ tSgbnuCpkY_2M0IIhQtvtRzhsKpnHaVeHQiUiE4KXSIb6awX0RGpvX3nLMBygdSweorJrWWOfwRa
+ OTwiakNPicYPz51LHZAEwF2kbZZsx0nIkGqxwqYUXVf3r4Y.MHd4bFKD7HaY.Rx8MK2HmlAs9kJK
+ JJ5Vaxjz.S0grm0MBehLr4t5Zyzs.rhy0aqBubsJ7..ICGg.sVOb9FbtfIib3FW_28oZXpFmGKfe
+ FMzXUMZmDYefmNdXoZ.mdMZnKBMylc_LErjTK9m6pEZYcRkEDITkBdmX9sYyCQ.GdFUqM4HDG_Kf
+ PNwASxQVq1I15BLH2L6mtfFbY6hgXBmOSUbpWDyh0ZFQvSFpnLb5Ln8hME9Z0czlSuejIFrCwl7p
+ ObA71m5l2AD3rLjstPtXb4ORr949WXRySQYfJOfpFPZz_vMBYn.kZvWa_9bQHwpUz_edZXyfdS9t
+ UgXSfuLJ_HbIeQKQqWcvKRgu..M1sbZVRYDkJBcR5i2.7ttQW96DtSnZcoZX56KRt7O.WocOC29x
+ bFpBKoYJktHfK1pkXifX4THg6dRmLsek9Cgk1rmavyUFArV0eWtZsSKvmeAMHVcmWt_HzQdmqCAu
+ 2_8hVH3jYEvZtz9URf3nPXHEk3APeHcmmmniQN5.4m9Vv70PKSi5iKU9XM75mmOFJgjYpFAlNNjg
+ TjTlxw2tTfdQBdk1_ovSgDtdHxh3TKq3ZbLodyga2vbwcdPv7inTTcIPaXAapBJI.EPZmjLOI0Dx
+ kDN.O8JqCqUYG11f1m0Vgw.A46AvZw6ZGur0-
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: a4a2046e-5582-4fe6-9124-bbf98711291d
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.sg3.yahoo.com with HTTP; Sat, 9 Aug 2025 18:36:51 +0000
+Received: by hermes--production-ne1-9495dc4d7-jrxzs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5c010f19b0315d31cd33bbeceec8f515;
+          Sat, 09 Aug 2025 18:26:40 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: axboe@kernel.dk,
+	asml.silence@gmail.com
+Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
+	io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	John Garry <john.g.garry@oracle.com>
+Subject: [PATCH 6.6] io_uring/rw: ensure reissue path is correctly handled for IOPOLL
+Date: Sat,  9 Aug 2025 13:26:35 -0500
+Message-ID: <20250809182636.209767-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,182 +90,47 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+References: <20250809182636.209767-1-sumanth.gavini.ref@yahoo.com>
 
-On Sat,  9 Aug 2025 22:07:56 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+commit 	bcb0fda3c2da9fe4721d3e73d80e778c038e7d27 upstream.
 
-> damos_commit_ops_filters() incorrectly uses damos_nth_filter() which
-> iterates core_filters. As a result, performing a commit unintentionally
-> corrupts ops_filters.
-> 
-> Add damos_nth_ops_filter() which iterates ops_filters. Use this function
-> to fix issues caused by wrong iteration.
-> 
-> Also, add test to verify that modification is right way.
+The IOPOLL path posts CQEs when the io_kiocb is marked as completed,
+so it cannot rely on the usual retry that non-IOPOLL requests do for
+read/write requests.
 
-As I mentioned on v1 thread, please drop the test part, for ease of
-backporting.
+If -EAGAIN is received and the request should be retried, go through
+the normal completion path and let the normal flush logic catch it and
+reissue it, like what is done for !IOPOLL reads or writes.
 
-> 
-> Fixes: 3607cc590f18 ("mm/damon/core: support committing ops_filters") # 6.15.x
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> ---
-> Changes from v1 [1]:
-> 1. Fix code and commit message style.
-> 2. Merge patch set into one patch.
-> 3. Add fixes and cc section for backporting.
-> 
-> [1] https://lore.kernel.org/damon/20250808195518.563053-1-ekffu200098@gmail.com/
-> 
-> ---
-> I tried to fix your all comments, but maybe i miss something. Then
-> please let me know; I'll fix it as soon as possible.
-> 
-> ---
->  mm/damon/core.c                               | 14 +++-
->  tools/testing/selftests/damon/Makefile        |  1 +
->  .../damon/sysfs_no_op_commit_break.py         | 72 +++++++++++++++++++
->  3 files changed, 86 insertions(+), 1 deletion(-)
->  create mode 100755 tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 883d791a10e5..19c8f01fc81a 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -862,6 +862,18 @@ static struct damos_filter *damos_nth_filter(int n, struct damos *s)
->  	return NULL;
->  }
->  
-> +static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
-> +{
-> +	struct damos_filter *filter;
-> +	int i = 0;
-> +
-> +	damos_for_each_ops_filter(filter, s) {
-> +		if (i++ == n)
-> +			return filter;
-> +	}
-> +	return NULL;
-> +}
-> +
->  static void damos_commit_filter_arg(
->  		struct damos_filter *dst, struct damos_filter *src)
->  {
-> @@ -925,7 +937,7 @@ static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
->  	int i = 0, j = 0;
->  
->  	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
-> -		src_filter = damos_nth_filter(i++, src);
-> +		src_filter = damos_nth_ops_filter(i++, src);
->  		if (src_filter)
->  			damos_commit_filter(dst_filter, src_filter);
->  		else
-> diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
-> index 5b230deb19e8..44a4a819df55 100644
-> --- a/tools/testing/selftests/damon/Makefile
-> +++ b/tools/testing/selftests/damon/Makefile
-> @@ -17,6 +17,7 @@ TEST_PROGS += reclaim.sh lru_sort.sh
->  TEST_PROGS += sysfs_update_removed_scheme_dir.sh
->  TEST_PROGS += sysfs_update_schemes_tried_regions_hang.py
->  TEST_PROGS += sysfs_memcg_path_leak.sh
-> +TEST_PROGS += sysfs_no_op_commit_break.py
->  
->  EXTRA_CLEAN = __pycache__
->  
-> diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-> new file mode 100755
-> index 000000000000..fbefb1c83045
-> --- /dev/null
-> +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-> @@ -0,0 +1,72 @@
-> +#!/usr/bin/env python3
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +import json
-> +import os
-> +import subprocess
-> +import sys
-> +
-> +import _damon_sysfs
-> +
-> +def dump_damon_status_dict(pid):
-> +    try:
-> +        subprocess.check_output(['which', 'drgn'], stderr=subprocess.DEVNULL)
-> +    except:
-> +        return None, 'drgn not found'
-> +    file_dir = os.path.dirname(os.path.abspath(__file__))
-> +    dump_script = os.path.join(file_dir, 'drgn_dump_damon_status.py')
-> +    rc = subprocess.call(['drgn', dump_script, pid, 'damon_dump_output'],
-> +        stderr=subprocess.DEVNULL)
-> +
-> +    if rc != 0:
-> +        return None, f'drgn fail: return code({rc})'
-> +    try:
-> +        with open('damon_dump_output', 'r') as f:
-> +            return json.load(f), None
-> +    except Exception as e:
-> +        return None, 'json.load fail (%s)' % e
-> +
-> +def main():
-> +    kdamonds = _damon_sysfs.Kdamonds(
-> +        [_damon_sysfs.Kdamond(
-> +            contexts=[_damon_sysfs.DamonCtx(
-> +                schemes=[_damon_sysfs.Damos(
-> +                    ops_filters=[
-> +                        _damon_sysfs.DamosFilter(
-> +                            type_='anon',
-> +                            matching=True,
-> +                            allow=True,
-> +                        )
-> +                    ]
-> +                )],
-> +            )])]
-> +    )
-> +
-> +    err = kdamonds.start()
-> +    if err is not None:
-> +        print('kdamond start failed: %s' % err)
-> +        exit(1)
-> +
-> +    before_commit_status, err = \
-> +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-> +    if err is not None:
-> +        print(err)
+Fixes: d803d123948f ("io_uring/rw: handle -EAGAIN retry at IO completion time")
+Reported-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/io-uring/2b43ccfa-644d-4a09-8f8f-39ad71810f41@oracle.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
+---
+ io_uring/rw.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Adding more context would be nice, e.g.,
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index 4ff3442ac2ee..6a84c4a39ce9 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -326,11 +326,10 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
+ 	if (kiocb->ki_flags & IOCB_WRITE)
+ 		io_req_end_write(req);
+ 	if (unlikely(res != req->cqe.res)) {
+-		if (res == -EAGAIN && io_rw_should_reissue(req)) {
++		if (res == -EAGAIN && io_rw_should_reissue(req))
+ 			req->flags |= REQ_F_REISSUE | REQ_F_PARTIAL_IO;
+-			return;
+-		}
+-		req->cqe.res = res;
++		else
++			req->cqe.res = res;
+ 	}
+ 
+ 	/* order with io_iopoll_complete() checking ->iopoll_completed */
+-- 
+2.43.0
 
-    print('before-commit status dump failed: %s' % err)
-
-> +        exit(1)
-> +
-> +    kdamonds.kdamonds[0].commit()
-> +
-> +    after_commit_status, err = \
-> +        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-> +    if err is not None:
-> +        print(err)
-
-Adding more context would be nice, e.g.,
-
-    print('after-commit status dump failed: %s' % err)
-
-> +        exit(1)
-> +
-> +    if before_commit_status != after_commit_status:
-> +        print(f'before: {json.dump(before_commit_status, indent=2)}')
-> +        print(f'after: {json.dump(after_commit_status, indent=2)}')
-> +        exit(1)
-> +
-> +    kdamonds.stop()
-> +
-> +if __name__ == '__main__':
-> +    main()
-> -- 
-> 2.43.0
-
-Other than above two trivial comments, nothing stands out to me.
-
-
-Thanks,
-SJ
 
