@@ -1,136 +1,102 @@
-Return-Path: <stable+bounces-166922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CAEB1F5D1
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 20:37:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DCDB1F5D4
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 20:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2D4D189EF04
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 18:37:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F5017A28C3
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 18:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0FB27CCCD;
-	Sat,  9 Aug 2025 18:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139D927701E;
+	Sat,  9 Aug 2025 18:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="e5yTUTeL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WZSbJMZM"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic314-20.consmr.mail.sg3.yahoo.com (sonic314-20.consmr.mail.sg3.yahoo.com [106.10.240.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B6C2777F3
-	for <stable@vger.kernel.org>; Sat,  9 Aug 2025 18:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.240.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71D81E5B60
+	for <stable@vger.kernel.org>; Sat,  9 Aug 2025 18:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754764621; cv=none; b=NtJJjCu7KpGxwjCypdQKSct5higycFkViwUQVt+HQuGMeW35opRJ0Tj6TkNmW5zYspCBwhFhn7wnKn2HAXY3+BKACiJ3H56jAbfuyDw1n2F2r1fcFb5o2Ll9J8UHfsHk7TRuCv0nDwM24vUUvmK/bNRoVIucv1NleBFmD6pJBoA=
+	t=1754764713; cv=none; b=bHya7OLmaRdKzOkaqyvGly32puj0RQf7QfQCDKc/rvL3isX5BjigzFEaiZUevVt7D/YHcIl4YpzUFavdForsm4zyuTJ2Ms2E8VCsZZ5TZdmdMlrorg5JERvq/E5QMf5+JyyMTWZH61uld9PHAaWCZfRAShB0gceVW+04Lb81rmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754764621; c=relaxed/simple;
-	bh=LDjkT1zwXIRkMra4k9nZUSPZ4E8ndCV1PzaRhePEstI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=prDRw9c8cHuoDXntxUoUW6m8rDIB7cMcZLpXAJVeq1v9VL1RcIqu9IKz3sj9YbwnuzXIUz0uFgeXATZdFgB3c5z+BY0g0RnXI4hYEMh1+BHxYawBhJt56l5DFO2FTo+M7P4QWLRyA9Yz0axi0j2JThTwlBPlbNHztWfX46U19DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=e5yTUTeL; arc=none smtp.client-ip=106.10.240.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754764611; bh=RSTd33FBgXJ3khA8jcI1u6Fz9T/+9TZQ+RFk4Bta1ZI=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=e5yTUTeL75RWyHCzD+SNJDDwj5pE5EupjRCvFztfW8ddvSEigxXxldWuR/T1tDY/xPclyw4Dwpv0ahORt89hyv5YnkpT6wr1G1qTdnmFYUOKLRUDSNHSMj054KWwdUK43E/uJ0YICphr02x8Yxh++pUshV367BKYWFh+ysqVsfhoOb1UV9/b6eF5fFeKBS28uuHnrsdBJl8CRQEDwPw+ghJnoDL+/+QlYq6z4gyWwgHq+K1KcSfYMBuFFgO7ZqixVi+1zAzmrUMM83s7rnU0KSXbu2BKt/6wQKDF4VmGQ5UNU39/Chok4dTY5ZSchaBAR8nhrfM0fCixdfbzXIKhjg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754764611; bh=WUawJjyspohl6HygYBJMzwqd1KfcbmedRP7KGiz7kJ3=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=pF5J77K55qGdEdHUHeDfUTzZHCKEUcNtzU8Bs6MwXi2fASuUPdvjlpdLDRRofbY13KbUHkBF7cPC/8ALrXiAWsJp1vmetyxngh2e8eNJroBkBWCWwUqbglDvV2db5khHKuOYjfvhmbSMXBcYooTiJbDTE5RXH6hZbSB9Mmi4BpGNFVFoRdpffFo6IFCPP84l2G2tXQ0fVQ5QY7rC8heq+qrGvljRN6811ojxaIfg80fNBXl4UQnvMxdd7iyVkBKkMv8HPZ3aQoRKghdfEQXhZEqIHEDsc4gtRvvoZoUGVMZMtI/DyzU2s6alrRvs+TB/JBLEoDTWDz6tdUwr9VDviA==
-X-YMail-OSG: UQDvST8VM1nKCjwsPQu7806zJw04TsWNuN8kSDOrRnMTe_HgaoyNFe8lIjHrdtH
- 5oLsFtOBJ69D75cB_.V6t2uH723PQ9IMBWHd9BEDfOIHuGUBJBKf1nZZJwYenkdNJkfn9hP2Hqn8
- Wor9MPRtmjw8rYhddCMfba3ZUzTbcBKDbUGfaJsGpDdeF4KIeNvEakHXSNzh8Vj58qlg4Aput3OG
- LJvBxmTZGFI7NX.mir.Kk287G9v5OakAwzeft3gqbRF5tB4TZTMuhYip6CosFxw62ipxBaiUy8Fu
- XAVfiAE1_leIQPlEBHNODiuFI.bsgDdTvX.I8g_nzC9lNKYL..S7SoJTpBSQSc0I.lNsJA4Rp9TY
- CFfG.4LrmxTE2mbDXYVS2S1QPru7vh5QuuPPgB8QbGDW4gWexCS5liRUDx_RPO3fW8wLX4LNzT3U
- Cnkjh83hYPWTLO543CeFfQgQmhUpl07JlzBYYOGGDivQSrfzet.sWtHODkH5Nhhs1u9Kw96.V9Pe
- BvRls9a5LZmddr62CcrcTyFqjZwP8wUqda89TsdTUlBASVftSekQLlg.9rCJM25uRgj.jODTUEN6
- qdJPXrnKS2A98yz.sWs28yxMOnn39iJXNdiK1McRgLqZrbWtz4tvRLjPxx8UvOEi.zT6EDbkfUBY
- ERZUPB2vokthsggEd9dulZArXR7iho_DefGPPqBg1SAXLmq23LNql3tgzOGBthzrkU0guLtOu1Ze
- iM1br7s63d05MAk8GBiGYdim5szPLtUChWarFFHWt8SeEMYABuvF9XRJ2CDgoi9DtlnGOll8DOVg
- 6Yayus8IK4qNBsz6ItktRkw965mDZ2m371hzDV3nDtfkapolIBVxaGbrttJdj96v7FHblbkRSiY.
- PK05moYOAsRBBuKnSI44ptlnpd7SRhJENLjDUTl93uWAhyfm9Uyw3uvK.T86mWFIq1c_xwm7xysW
- U9lDRbFHOpFfbUZ8aM1pUo6BHjlhBazxkKunf06yCIQniOdrD45M3ohMP6iFEHJjdsgY2Hh3JRky
- CpHbqnJO4lYJjPjTroNM_DoSN5LtFF1VDLxTp2R2.c.EgOGiZlQRp7pwgyj12T3fuTmbuq.uUgAi
- nQzRhLo_CVnob0Wmcxayq7Sdc87DrtLRz202Bu4MLmrkQoTvB1QWTzgp2VIoqDPEK_QbK8urV.B4
- 7cIwPXdLQ908_bWSS3HBYJPkVbO4_fmfXdWvVyMrx2fAtTzf49X0OGvvGgrhco2I_AQXwiefwAm4
- 64.NxCqte2dL2Z5UGQRNlUjKa76W3bz6PZZiwA4sTeZlC8bkC.RaLeqHmPYt_ED82l8O7ABFQ0Kd
- kiVW865fjK13UvKBtoBsxC5xmLYQO75o.DzpadkDqQLWfGJplHhhHtCt7tA6gZPHieehZmVvAasJ
- gwOGD5SS_BryYVQx_Rbl0rAVhQc_CZmFEcIYAN9EqWrOUIY91GgzyeouEh1MWju.21toYR.5H7vG
- dPUjsCBpGGyFGp7QkWeKreADCSnrN0OivEhydf4QwM_nTfo9CkjLMSn6RHMy4ft_KsmZgaqiIF0a
- tSgbnuCpkY_2M0IIhQtvtRzhsKpnHaVeHQiUiE4KXSIb6awX0RGpvX3nLMBygdSweorJrWWOfwRa
- OTwiakNPicYPz51LHZAEwF2kbZZsx0nIkGqxwqYUXVf3r4Y.MHd4bFKD7HaY.Rx8MK2HmlAs9kJK
- JJ5Vaxjz.S0grm0MBehLr4t5Zyzs.rhy0aqBubsJ7..ICGg.sVOb9FbtfIib3FW_28oZXpFmGKfe
- FMzXUMZmDYefmNdXoZ.mdMZnKBMylc_LErjTK9m6pEZYcRkEDITkBdmX9sYyCQ.GdFUqM4HDG_Kf
- PNwASxQVq1I15BLH2L6mtfFbY6hgXBmOSUbpWDyh0ZFQvSFpnLb5Ln8hME9Z0czlSuejIFrCwl7p
- ObA71m5l2AD3rLjstPtXb4ORr949WXRySQYfJOfpFPZz_vMBYn.kZvWa_9bQHwpUz_edZXyfdS9t
- UgXSfuLJ_HbIeQKQqWcvKRgu..M1sbZVRYDkJBcR5i2.7ttQW96DtSnZcoZX56KRt7O.WocOC29x
- bFpBKoYJktHfK1pkXifX4THg6dRmLsek9Cgk1rmavyUFArV0eWtZsSKvmeAMHVcmWt_HzQdmqCAu
- 2_8hVH3jYEvZtz9URf3nPXHEk3APeHcmmmniQN5.4m9Vv70PKSi5iKU9XM75mmOFJgjYpFAlNNjg
- TjTlxw2tTfdQBdk1_ovSgDtdHxh3TKq3ZbLodyga2vbwcdPv7inTTcIPaXAapBJI.EPZmjLOI0Dx
- kDN.O8JqCqUYG11f1m0Vgw.A46AvZw6ZGur0-
-X-Sonic-MF: <sumanth.gavini@yahoo.com>
-X-Sonic-ID: a4a2046e-5582-4fe6-9124-bbf98711291d
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.sg3.yahoo.com with HTTP; Sat, 9 Aug 2025 18:36:51 +0000
-Received: by hermes--production-ne1-9495dc4d7-jrxzs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5c010f19b0315d31cd33bbeceec8f515;
-          Sat, 09 Aug 2025 18:26:40 +0000 (UTC)
-From: Sumanth Gavini <sumanth.gavini@yahoo.com>
-To: axboe@kernel.dk,
-	asml.silence@gmail.com
-Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
-	io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	John Garry <john.g.garry@oracle.com>
-Subject: [PATCH 6.6] io_uring/rw: ensure reissue path is correctly handled for IOPOLL
-Date: Sat,  9 Aug 2025 13:26:35 -0500
-Message-ID: <20250809182636.209767-1-sumanth.gavini@yahoo.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1754764713; c=relaxed/simple;
+	bh=Pg7cw1XLjS2Nh21PSgWKG2Aoc3IYRQzlw5Lbmzk0rk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=d3APo+j8PGZCHA/KwR9Fxa3sU2TlYjtmG61ZMEDHMi7dtZ+8Ob7rUkFomYh2HFIyau5lE/gKG1/j5dSi8GgYeqsUroep7kz3nfvjVa8uaxX8O+3TkOxznzw9sp2MTHgfcScytao5ZT9KqY4Jv+9g9QXPld0ECDkAal/GNYBuOJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WZSbJMZM; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754764712; x=1786300712;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Pg7cw1XLjS2Nh21PSgWKG2Aoc3IYRQzlw5Lbmzk0rk8=;
+  b=WZSbJMZMlyr1IMqpgTRMgANCQv+AoCceW0D0spKgXQI+pRzk5Ic/kjWo
+   wvW+J4FYjurI1IqzbhyuTdligG0U4XOLlO7hZyv93P0gcYD3k/JxZXCWX
+   IvPZ1NSQU9szqJ+IGe1FPKyApD8Q7JU6ueBYArTphxoOxXmIXiNKHbom7
+   JNhLl6EmV2rR4Vq3eTyVpbcYFYoUU6zZhAmxXLXFeVBS/G8gI6Gw3RMrh
+   oofsyp08N0/DfPy/eJ3TI+5Z4eK6ex/cD4scVz6DJadJRoJ3Odt1WGuF6
+   7iGclP0i/HNxV1OP8WK7RKNags/X7M0QJlb/diOMW3c1UHqAk9m2UXk+Q
+   w==;
+X-CSE-ConnectionGUID: vIicLV3IR6WS8JScsGwF9Q==
+X-CSE-MsgGUID: xe7yZfv8RKmMlp0DT+M4Sg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11516"; a="59689589"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="59689589"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2025 11:38:31 -0700
+X-CSE-ConnectionGUID: HXBgOSi2TNm7IFMA8+T9Vw==
+X-CSE-MsgGUID: Tazj4xElRxCxo0NCE676tA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="165463994"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 09 Aug 2025 11:38:30 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ukoSa-00050K-1Q;
+	Sat, 09 Aug 2025 18:38:28 +0000
+Date: Sun, 10 Aug 2025 02:38:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sumanth Gavini <sumanth.gavini@yahoo.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 6.6] io_uring/rw: ensure reissue path is correctly
+ handled for IOPOLL
+Message-ID: <aJeVj4yXt4F01nPb@f5c43a121a53>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20250809182636.209767-1-sumanth.gavini.ref@yahoo.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250809182636.209767-1-sumanth.gavini@yahoo.com>
 
-commit 	bcb0fda3c2da9fe4721d3e73d80e778c038e7d27 upstream.
+Hi,
 
-The IOPOLL path posts CQEs when the io_kiocb is marked as completed,
-so it cannot rely on the usual retry that non-IOPOLL requests do for
-read/write requests.
+Thanks for your patch.
 
-If -EAGAIN is received and the request should be retried, go through
-the normal completion path and let the normal flush logic catch it and
-reissue it, like what is done for !IOPOLL reads or writes.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: d803d123948f ("io_uring/rw: handle -EAGAIN retry at IO completion time")
-Reported-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/io-uring/2b43ccfa-644d-4a09-8f8f-39ad71810f41@oracle.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
----
- io_uring/rw.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 4ff3442ac2ee..6a84c4a39ce9 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -326,11 +326,10 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
- 	if (kiocb->ki_flags & IOCB_WRITE)
- 		io_req_end_write(req);
- 	if (unlikely(res != req->cqe.res)) {
--		if (res == -EAGAIN && io_rw_should_reissue(req)) {
-+		if (res == -EAGAIN && io_rw_should_reissue(req))
- 			req->flags |= REQ_F_REISSUE | REQ_F_PARTIAL_IO;
--			return;
--		}
--		req->cqe.res = res;
-+		else
-+			req->cqe.res = res;
- 	}
- 
- 	/* order with io_iopoll_complete() checking ->iopoll_completed */
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 6.6] io_uring/rw: ensure reissue path is correctly handled for IOPOLL
+Link: https://lore.kernel.org/stable/20250809182636.209767-1-sumanth.gavini%40yahoo.com
+
+Please ignore this mail if the patch is not relevant for upstream.
+
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
