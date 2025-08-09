@@ -1,206 +1,180 @@
-Return-Path: <stable+bounces-166900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AA9B1F1CD
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 03:05:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6777BB1F295
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 08:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94C49727ED0
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 01:05:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8501AA6759
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 06:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34ADD24729A;
-	Sat,  9 Aug 2025 01:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B66274B26;
+	Sat,  9 Aug 2025 06:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b="hB+iJ0h7"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="xg2YsxeL"
 X-Original-To: stable@vger.kernel.org
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020097.outbound.protection.outlook.com [52.101.84.97])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D198726AC3
-	for <stable@vger.kernel.org>; Sat,  9 Aug 2025 01:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.97
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754701533; cv=fail; b=kWOqUMlfGFLSCiwZxuDEB9M/4G1WvKQZuFQokh1GAyRHKCccIR7BSRb2lqq3Usp7pOUAMjJH2Nx+N5LiAK8QfemEhJas+kg3XCeJVekl6yjUIVPzaVv7WhDNtXpDJ2njz4jz8Jft44/CWABHepV8uz3MUDNaXUhxpMOzDyU5W+4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754701533; c=relaxed/simple;
-	bh=2YIhKBJ3doDQTaVyjfw5yYYzqlCagh4mxu3zOdX+Z3c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eh6F5eOf7tFi7PNFVO+fpXsV/xocl/yIh4iCu86RIu/Xezn3Fo0i/vKY4VTC87wv4cX3LHVuXG2QA3a+mMMzKafPAiHlwYsqjO3Fi06O2dAVHCwgQ8A4ZmyPKxbJMydIbGgpHq8I8S7eufTsgkmrf9H/uDUwjRBpp54SFeYud+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu; spf=pass smtp.mailfrom=genexis.eu; dkim=pass (2048-bit key) header.d=iopsys.eu header.i=@iopsys.eu header.b=hB+iJ0h7; arc=fail smtp.client-ip=52.101.84.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iopsys.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=genexis.eu
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=juxk6YraWyHL7DbhSUu2lQFeiisu38EZwBEUP5QQY3DDwT6VJiW9iFTdUbxl96yubEEIkc38XSEc5J0pC6LcWz/izWBeJJiiHzyPVhsFy6ZL5twtfn7Rbu9pDXa1ifVvfIRCe7+blEr9G8Kbh2Ega1+qte6JCYxyv/e33WLI9timlhWNHIMLh7Wbq9jRX91+pRxHtf/1Jb+UgvhS5y2J0YXOgGFqnFX10P/Ol8Fi2aSamovU9nhrUX3f8Z7plzBcQvXypN1ySnseWA/HwQfWaMLB6lD/5+JLXpa+Oz1w6v1h1OwnSj+AoT2geYIynHCuKl2Sq3HrfLUVFjuSPcwMng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A1wUx/a0jn9m5CKUkwGSW63CS507JM2FkMcG2DTeb0A=;
- b=HAIf+1Qfa6pcTpph6zWZ9G94B+hGR1CkrJNHmROWmiJDmlc4/aso0x0uKfAmiViLk5O0TeSssxMG0V0qfSv2LrGvwBwGuWE3T9DgwxmLk7aY8irKrLFHUNhSan+czQhMF1eJRR1W4lJNZpDAu3YmVIvPp8HfNm+LmSrG788koNIKS1Qos4F5raW1tF4QaQ/zIB1yX6HGBstssOA57VOzL3L7bdLdAbOaK22BsH2t4GlunumfSVdzzwzZ4M1OTDsCE0mbe2u0JWMqcKj/EAHMmcxLJ8xgI0UGZzQEkos/NcZ4kCjNumFtx3s53COrDj+wHNSEo3GFRUwmjrY64hp/5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=genexis.eu; dmarc=pass action=none header.from=iopsys.eu;
- dkim=pass header.d=iopsys.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iopsys.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A1wUx/a0jn9m5CKUkwGSW63CS507JM2FkMcG2DTeb0A=;
- b=hB+iJ0h7Zs7Um7sVbMXXAHZk2uBBuWGgxED6stpJ6+j0Sg/LK3ndu1Icwsxls5Fc1uRYbNm4fv7/4d88ejCzmbmFPftuKghizGTz0FjqV01kVBDsjFG8akgIyX6QjxpKyFvgJioopJbEGTPrUoajT2axLNUdEx0Ykhg2p650K9KRT4CQIVuCpd4QJd+K/IH82iw3sOlp7dLsheuBgCJh6cGpUBeemC33RX/I6P8PLkLvaF+5QTTvmN07115f313rlKkF8xaTN8oTU5dFOlzQo5IxIlWOX9V7isKfrc+mJRhfT1FRYQeWzd6Nh8/38tdnzhVMGo1C2DW9AV1M77jHaQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=iopsys.eu;
-Received: from GV2PR08MB8121.eurprd08.prod.outlook.com (2603:10a6:150:7d::22)
- by DU0PR08MB9582.eurprd08.prod.outlook.com (2603:10a6:10:44a::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Sat, 9 Aug
- 2025 01:05:29 +0000
-Received: from GV2PR08MB8121.eurprd08.prod.outlook.com
- ([fe80::4cd3:da80:2532:daa0]) by GV2PR08MB8121.eurprd08.prod.outlook.com
- ([fe80::4cd3:da80:2532:daa0%4]) with mapi id 15.20.8989.018; Sat, 9 Aug 2025
- 01:05:29 +0000
-From: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>
-To: Tom Rini <trini@konsulko.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Cheng Ming Lin <chengminglin@mxic.com.tw>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Chuanhong Guo <gch981213@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Alexander Dahl <ada@thorsis.com>,
-	u-boot@lists.denx.de
-Cc: Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 19/24] mtd: spinand: propagate spinand_wait() errors from spinand_write_page()
-Date: Sat,  9 Aug 2025 04:04:51 +0300
-Message-ID: <20250809010457.3125925-20-mikhail.kshevetskiy@iopsys.eu>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250809010457.3125925-1-mikhail.kshevetskiy@iopsys.eu>
-References: <11f6f79e-0622-42e2-901e-16335ad73409@kontron.de>
- <20250809010457.3125925-1-mikhail.kshevetskiy@iopsys.eu>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HE1PR0102CA0016.eurprd01.prod.exchangelabs.com
- (2603:10a6:7:14::29) To GV2PR08MB8121.eurprd08.prod.outlook.com
- (2603:10a6:150:7d::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEDA3C17;
+	Sat,  9 Aug 2025 06:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754721723; cv=none; b=QOz5/gsQPn8S5jL9fQCt3OkzDDkViyNdnmTV3ZkYlcgrT7coDp/vXZlr46QLVlskm3HmCDhmd+9skzXqsM1cwByayCEqpgp9Me7B1JQsqjkAMqSdCsQZracrpPaZHNQacaupN+ZxFOfHVYsuLjTxZ+XDXLD1HZGfyBz9k5lM4lw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754721723; c=relaxed/simple;
+	bh=w0bAJq5+bavDrPNAcZYjfd9NL/kT4jBqERkwWyppw40=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bM8J3XIe2TShYWNQdVJtjpBH3vNtrCbWlNiHnh2r4j1+FTS5GXVGnDEEPOJ+fM/zuJgl/zQ2/l4uMQvwwE6B3KlZwoiyVeTyNxItgstQHjIvp/aL6FR5cYlzVpHaYC3TuZO5Q+0dD4Fh/E5lsekNWW59lKh/Y0Cerj1QcdeC1Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=xg2YsxeL; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: from sven-desktop.home.narfation.org (unknown [IPv6:2a00:1ca0:1d86:99fc::8c24])
+	by dvalin.narfation.org (Postfix) with UTF8SMTPSA id 74ADC1FDC2;
+	Sat,  9 Aug 2025 06:41:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1754721718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=anUgaJrif1hKwagIinlhUBG3/VFhPvsbRt5mMq8WGrQ=;
+	b=xg2YsxeLkiyR9RHO2cc1BeoM8nrYT5ce8RrRNtFT626nSEh+MhG5MlB0B04AklAeDTIo2g
+	AQLcEDZ9TMDtWIu9BUqjuXlBi4MFCR/bWkv4jQCoS+IAc6BOQ2x16PrD6Ax5h3AepACiJA
+	UtCoO3iiisyZC+5WI3HnLxIR/hVj1X0=
+From: Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH i2c-host-fixes v4 0/5] i2c: rtl9300: Fix multi-byte I2C
+ operations
+Date: Sat, 09 Aug 2025 08:40:53 +0200
+Message-Id: <20250809-i2c-rtl9300-multi-byte-v4-0-d71dd5eb6121@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR08MB8121:EE_|DU0PR08MB9582:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae98965a-6de4-4403-ed7a-08ddd6e0d4f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?NhhpuTUkYSPpRJ5HmO5yavFWO84HXB6Pp2Sfxp0KBEm/wnboFXVFh7qPd2rx?=
- =?us-ascii?Q?7g9RdN9LDAXSbGz1SC4C7CpWfmr6o9diUXXzE5cDpONeh5l9SyDMV3bPf2IK?=
- =?us-ascii?Q?pJXWDMZ5gsK5MA2LTxRUkDTvSRkgz3mEnAD98ks92fJE/x9x3wq9xpyegkM2?=
- =?us-ascii?Q?rjvw0JOI+mG5igBghnSQ972qBN8s/HSiAMzpDROrEHxlejM9vITtv4+9uESt?=
- =?us-ascii?Q?fxNSnFYP8WHoM49Gkr/c5KX/iF5z90OOsMcbTlF7dmaLMjXztI+GP5dLMTe2?=
- =?us-ascii?Q?dKetpeaQG5rn25Q1bRvp73vWBXtaerDpdQ7aHrYx+5YvUmD8xoRhSrneqoe4?=
- =?us-ascii?Q?vudaVUsw7KZDiKVWCsbxk2p2WwRhOGc9ABc6dT5IDl1x0h5Ok3glbXpKA5ne?=
- =?us-ascii?Q?lDQ5Z5AJ6F4iQuG+KFmm8PuouDC+G7HSFNNxEzXyuErxr3Y3QlZ3yVSKp4tf?=
- =?us-ascii?Q?EUfKWS8vtLI4LHwVtXbmvhA4FCZMlBR7Nc0/xxf/FkRBsIM5Knus8w4MAgop?=
- =?us-ascii?Q?q95sotwRiMz4oAw0YoWmFU4f1SE4bI+KW7nPvJOQfooybbNstDD7EkCBD0py?=
- =?us-ascii?Q?i3ABEylgtW7IOv6VMoyH2/BHtThMkcyZ+Hk3zN6/EyGDiibi2oewfohy8cYW?=
- =?us-ascii?Q?/Vd/ZKKssA6YDtnlpyhlELrlRbX5WffOSRxtBq3+pQhkWXwA5PHTrrtZS6qj?=
- =?us-ascii?Q?8+n0oMCDizjpPUrXo7aqe5CpZTbYDxOJnqt72n5aLoy98zbgJZtVIITdtyq7?=
- =?us-ascii?Q?uWHfCyyCCRE3WqzgPAKX8ezua/aW5BP+bSGG3jRN3NWUnJ4kSDGF1rqe4R4D?=
- =?us-ascii?Q?zWXI8wydhyoSXqe37ZjeAZuJbaoruSUOBWuoGRt6tF7opdqFt6a58xcjjBAZ?=
- =?us-ascii?Q?0xEU95wjaxFvcS69U3hKV5qPf3Aq0f2NH44phCtjaYCSQ++BOo0heREIliNg?=
- =?us-ascii?Q?A7V5sK0FI+9VoUv3L2L2aiGwY081L9RMM+pDMTMT199HbsjIDLzH7qJq6P4C?=
- =?us-ascii?Q?+1R/4da+DIYsOYWAPGtSZ3uoGc+oPLT3xu4UXi6zGDBTSEi3WtpkicwYZ2l0?=
- =?us-ascii?Q?DzT/7DlkJ3AyM1/ZyjXmyrGHUzGa333swYl1NewWy0BfarXETz2c44UjcB0h?=
- =?us-ascii?Q?Sp7OqwVHMh5I/Txf9IvNrnqYMDUz9UZAcA9BQHq2MlS9umvzVRWaov+5uES2?=
- =?us-ascii?Q?ATRArofzoEw+60dFhXRL40gK4ppynlnynAyOOpz2c7Yi7/XP/DKr6Md0O+q3?=
- =?us-ascii?Q?sNBz4N8fwrRfkSElhhNGicrg8HWTSBejKykjfsqkgdfqs8+R48cmguVR9ZUQ?=
- =?us-ascii?Q?qg3axjA2IxmIAwaVsvBTf5cnpitvBEQ6vKbGA9+GGFWv/EPsM+Yoezttr1CB?=
- =?us-ascii?Q?X57gLjIjRSOrleNp+o6i4HH36E7VlvvWRtEfHztIbzzUDcrfrjT1pZgtaEo9?=
- =?us-ascii?Q?SS0A4oob5rAZ+QBlgkoQpJal/UpcbTrCHP4u4l9CRophNn5+tZcqyAyfVwym?=
- =?us-ascii?Q?90BvuGj0H/XkI1E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR08MB8121.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GglbQxWfAxKYhFNSMWw2kFHLxCgO8DVwtY8aXgol7lFxRX9k8p8QLBQ3Ue8u?=
- =?us-ascii?Q?itF+z7xqYYIr0oKtsQN7QDYO/5gKzVkY4ke7WVAO9Al0kWlqYZgGu68up5Nv?=
- =?us-ascii?Q?Tol+aOAju8MGVc3dU899PGbXBf5uqRHnAd8fHLrwl/wl9W1ITaiiibtVe+0T?=
- =?us-ascii?Q?RKOT8z5RfEZgMPxdVLBx328KDhXMypG9tu2DK3aB9oxooNTHq7MtmVcRqRi1?=
- =?us-ascii?Q?Qy+ZjTwVWtzNhZPgj1H5B/KVg5piCkJbHQwNAVBPrFBu+/bSYa5zSPNbccVJ?=
- =?us-ascii?Q?kPjaZJE4poxV4b1HglcE7W75R0rJeNMfu21hMSHyo2ln26/4aKJR05ealVJQ?=
- =?us-ascii?Q?ii9Z4EhTpNXrNA1wmrTMKyd66zEI3ugtZujAInwqSVJyStyW0hC3CaReGRP0?=
- =?us-ascii?Q?rfucObLPrXtfnEHrMSEQDCBhkY4i07O38x9hUuhc7KHQx1PrM5OAMRbWzzfK?=
- =?us-ascii?Q?aL3C3+Pyijx/1D5tYzfwCzTF4Ryn9g+GI6Ez7Vf/PLRiuWMqn3E/kCvCwsiq?=
- =?us-ascii?Q?UAzM18jKA5syyWmb8X79Dl+0fYvD1TCd40yJ5SxeGMrsCY4JnhCl9V37QKQ9?=
- =?us-ascii?Q?gzQOq4iaqFO8g0e1SaJicbIlcpEKmgM1z3uCqlrFzBg2F7HFvh/moU2FVKrI?=
- =?us-ascii?Q?1RZ0AQBQEcpHZg7jIBWv8CnPA6V28PCQ7gIiwW9N3IvSZjGIIyzrsKHRTWIs?=
- =?us-ascii?Q?RhY0MW/EXOQMAhlpGBR3jsUkAzxTRw/FSmFclHxL5jRd3cMPxERttqM7vUIU?=
- =?us-ascii?Q?lpXZ2k1QsOYKm5BF560Njf/+qGbIDKoXMTr9Zwsv9K9DMpy+3Lo/X00oADNC?=
- =?us-ascii?Q?xJUlGEw+C6w/havqfmJN6n9ROnULt6CerAQ09ImEScNpyM+aEFp4i/ASH3ai?=
- =?us-ascii?Q?23YGSllGROemrlR690CQ4KFgxB+Gj0yfAYfsRYwigbtnvrAORVHARwFlgCLd?=
- =?us-ascii?Q?WzY2Jb6tSOEAZJcUZDXSnBCCcBmpT44cgW2owx8HqxWAlS5foa777lisbN3l?=
- =?us-ascii?Q?IxNK+1bD36ZGLrkQM8ZNhdDBuufDJkWQvVUciPV1VliDqVo6ZXj9ErsZDfUw?=
- =?us-ascii?Q?SLsq2hawFVarDBc7a6Mt0+DfEfwIu3EuUwzbu1ULhQbUoQCWwSxDycrbHQXz?=
- =?us-ascii?Q?TlWmIQNGyV5NkVYK69O7ZzRQDGivi2wz12RhesyKTyThNbISfuZ8CvC7fKH8?=
- =?us-ascii?Q?hdGRll5ya1fzuwlngG5UDPdmTSD4+XXnh8P3UyYG1UESqPq9CTi2dGgCdJj7?=
- =?us-ascii?Q?pPLeTENauRl+Ey0JaieWCHJlcypuaPbQ8fsANL4eAqp8ThCRlkNyQpppDTKh?=
- =?us-ascii?Q?RIJo1QbtzBMt44psjAmSz4V6mjWzSZwn6Z6taYF5kmuF0RrCSxzvKfAeTyL4?=
- =?us-ascii?Q?Bbey8WKq1KMGPnV6oF/QbQ6btjLxx8sayYLSmN5qivVxjIEBZyuvEgRinKOf?=
- =?us-ascii?Q?1kgCujxMRi/FZHOf4BSjbxNooT2LclBoeHfVy2CqNlRQu5AShTKupD0ETB9C?=
- =?us-ascii?Q?SUV9CfzwYjTWziu6uGv16QMTBhUbLhKI5FxudZ1HentNGcBGwpF2bcip2Cwz?=
- =?us-ascii?Q?ETbo1b7jjwmdeERCty8jubxXfsJmN+A2G5c1UL/kOHMZqhFIJUjFXI2k+DF2?=
- =?us-ascii?Q?4Q=3D=3D?=
-X-OriginatorOrg: iopsys.eu
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae98965a-6de4-4403-ed7a-08ddd6e0d4f4
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR08MB8121.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2025 01:05:29.1843
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8d891be1-7bce-4216-9a99-bee9de02ba58
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: env6rCzG9oOYcKp9ETq8sIQbMl7jElPcdP2gVSfqIa5k9Lg1c1Ymj+deQlAoD0vCtyhUcpnzM9E1TuIn+zCPWwgtvxpZxH2Y+nubhkfLCmg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB9582
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHXtlmgC/4XOzQ6CMAzA8VchOztTyseGJ9/DeNiggyUIZkwiI
+ by7gxMxEo//Jv21MxvIWRrYJZqZo9EOtu9CpKeIlY3qauK2Cs0QMAMJyC2W3Pm2SAD449V6y/X
+ kiVOlVGw0SIElC8tPR8a+N/h2D93Ywfdu2u6M8Tr9S44xB56ZXAoCKCThtVPOKB8+PPeuZis74
+ p5KDikMVKGFFllhCHX+i0r2VHpIJYEihBwExRpl+U0ty/IBAX/PdlYBAAA=
+X-Change-ID: 20250802-i2c-rtl9300-multi-byte-edaa1fb0872c
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+ Andi Shyti <andi.shyti@kernel.org>
+Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonas Jelonek <jelonek.jonas@gmail.com>, 
+ Harshal Gohel <hg@simonwunderlich.de>, 
+ Simon Wunderlich <sw@simonwunderlich.de>, 
+ Sven Eckelmann <sven@narfation.org>, Alex Guo <alexguo1023@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4707; i=sven@narfation.org;
+ h=from:subject:message-id; bh=w0bAJq5+bavDrPNAcZYjfd9NL/kT4jBqERkwWyppw40=;
+ b=owGbwMvMwCXmy1+ufVnk62nG02pJDBnT3m44rWfjcfKQT9VE26BAK+Y+k8zXkiFXWCQr+k5KR
+ 51Yc8C+o4SFQYyLQVZMkWXPlfzzm9nfyn+e9vEozBxWJpAhDFycAjCRPfYMPx4obQmVUnkpVvZU
+ pnl2s3S6uLfU0o4fT17Oya9dxFyWzsiwRNBcunKP1R8d00nbWTquhi04zXRqosF3XatTkxlX/zT
+ lBwA=
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+During the integration of the RTL8239 POE chip + its frontend MCU, it was
+noticed that multi-byte operations were basically broken in the current
+driver.
 
-Since commit 3d1f08b032dc ("mtd: spinand: Use the external ECC engine
-logic") the spinand_write_page() function ignores the errors returned
-by spinand_wait(). Change the code to propagate those up to the stack
-as it was done before the offending change.
+Tests using SMBus Block Writes showed that the data (after the Wr maker +
+Ack) was mixed up on the wire. At first glance, it looked like an
+endianness problem. But for transfers where the number of count + data
+bytes was not divisible by 4, the last bytes were not looking like an
+endianness problem because they were in the wrong order but not for example
+0 - which would be the case for an endianness problem with 32 bit
+registers. At the end, it turned out to be the way how i2c_write tried to
+add the bytes to the send registers.
 
-Cc: stable@vger.kernel.org
-Fixes: 3d1f08b032dc ("mtd: spinand: Use the external ECC engine logic")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Each 32 bit register was used similar to a shift register - shifting the
+various bytes up the register while the next one is added to the least
+significant byte. But the I2C controller expects the first byte of the
+transmission in the least significant byte of the first register. And the
+last byte (assuming it is a 16 byte transfer) is expected in the most
+significant byte of the fourth register.
+
+While doing these tests, it was also observed that the count byte was
+missing from the SMBus Block Writes. The driver just removed them from the
+data->block (from the I2C subsystem). But the I2C controller DOES NOT
+automatically add this byte - for example by using the configured
+transmission length.
+
+The RTL8239 MCU is not actually an SMBus compliant device. Instead, it
+expects I2C Block Reads + I2C Block Writes. But according to the already
+identified bugs in the driver, it was clear that the I2C controller can
+simply be modified to not send the count byte for I2C_SMBUS_I2C_BLOCK_DATA.
+The receive part just needs to write the content of the receive buffer to
+the correct position in data->block.
+
+While the on-wire format was now correct, reads were still not possible
+against the MCU (for the RTL8239 POE chip). It was always timing out
+because the 2ms were not enough for sending the read request and then
+receiving the 12 byte answer.
+
+These changes were originally submitted to OpenWrt. But there are plans to
+migrate OpenWrt to the upstream Linux driver. As a result, the pull request
+was stopped and the changes were redone against this driver.
+
+For reasons of transparency: The work on I2C_SMBUS_I2C_BLOCK_DATA support
+for the RTL8239-MCU was done on RTL931xx. All problems were therefore
+detected with the patches from Jonas Jelonek [1] and not the vanilla Linux
+driver. But looking through the code, it seems like these are NOT
+regressions introduced by the RTL931x patchset.
+
+I've picked up Alex Guo's patch [2] to reduce conflicts between pending
+fixes.
+
+[1] https://patchwork.ozlabs.org/project/linux-i2c/cover/20250727114800.3046-1-jelonek.jonas@gmail.com/
+[2] https://lore.kernel.org/r/20250615235248.529019-1-alexguo1023@gmail.com
+
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- drivers/mtd/nand/spi/core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes in v4:
+- Provide only "write" examples for "i2c: rtl9300: Fix multi-byte I2C write"
+- drop the second initialization of vals in rtl9300_i2c_write() directly in
+  the "Fix multi-byte I2C write" fix
+- indicate in target branch for each patch in PATCH prefix
+- minor commit message cleanups
+- Link to v3: https://lore.kernel.org/r/20250804-i2c-rtl9300-multi-byte-v3-0-e20607e1b28c@narfation.org
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index daf6efb87d8..3e21a06dd0f 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -691,7 +691,10 @@ int spinand_write_page(struct spinand_device *spinand,
- 			   SPINAND_WRITE_INITIAL_DELAY_US,
- 			   SPINAND_WRITE_POLL_DELAY_US,
- 			   &status);
--	if (!ret && (status & STATUS_PROG_FAILED))
-+	if (ret)
-+		return ret;
-+
-+	if (status & STATUS_PROG_FAILED)
- 		return -EIO;
- 
- 	return spinand_ondie_ecc_finish_io_req(nand, (struct nand_page_io_req *)req);
+Changes in v3:
+- integrated patch
+  https://lore.kernel.org/r/20250615235248.529019-1-alexguo1023@gmail.com
+  to avoid conflicts in the I2C_SMBUS_BLOCK_DATA code
+- added Fixes and stable@vger.kernel.org to Alex Guo's patch
+- added Chris Packham's Reviewed-by/Acked-by
+- Link to v2: https://lore.kernel.org/r/20250803-i2c-rtl9300-multi-byte-v2-0-9b7b759fe2b6@narfation.org
+
+Changes in v2:
+- add the missing transfer width and read length increase for the SMBus
+  Write/Read
+- Link to v1: https://lore.kernel.org/r/20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org
+
+---
+Alex Guo (1):
+      [i2c-host-fixes] i2c: rtl9300: Fix out-of-bounds bug in rtl9300_i2c_smbus_xfer
+
+Harshal Gohel (2):
+      [i2c-host-fixes] i2c: rtl9300: Fix multi-byte I2C write
+      [i2c-host] i2c: rtl9300: Implement I2C block read and write
+
+Sven Eckelmann (2):
+      [i2c-host-fixes] i2c: rtl9300: Increase timeout for transfer polling
+      [i2c-host-fixes] i2c: rtl9300: Add missing count byte for SMBus Block Ops
+
+ drivers/i2c/busses/i2c-rtl9300.c | 50 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 8 deletions(-)
+---
+base-commit: 09eaa2a604ed1bfda7e6fb10488127ce8fdc8048
+change-id: 20250802-i2c-rtl9300-multi-byte-edaa1fb0872c
+
+Best regards,
 -- 
-2.47.2
+Sven Eckelmann <sven@narfation.org>
 
 
