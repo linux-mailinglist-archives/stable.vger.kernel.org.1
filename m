@@ -1,134 +1,154 @@
-Return-Path: <stable+bounces-166905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10780B1F2A9
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 08:55:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B559AB1F3D4
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 11:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F18635681F1
-	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 06:55:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6A304E0593
+	for <lists+stable@lfdr.de>; Sat,  9 Aug 2025 09:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF1A27A914;
-	Sat,  9 Aug 2025 06:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA6C1EB1AA;
+	Sat,  9 Aug 2025 09:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="tGXI4Y+0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ju4mBHJj"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64023277CB8;
-	Sat,  9 Aug 2025 06:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AEE2475C3;
+	Sat,  9 Aug 2025 09:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754722482; cv=none; b=C4uJbYeVfJOtkj1itj2dSjtm2BMuuI+kkor9RlybfHaEO0YQizuypuxwjAIX7lZZqBDz3ndV+hfoq8YKAZkWQyX/dplwc62UbW+N1VxT3S2icvJPvzfD2IyRUZRdfqFhWPgvpKC9oJkUjuqQTxqYKS/eya0t65bYb7JvujrMX3A=
+	t=1754732727; cv=none; b=d8UaExrhYvOQGmF8IMRSd7n4EtBqMn6Q5G21P/m0oWEd1OR+R/KSqcN7foSVY0exBNq7vhWEzDfvplt4HGMD7JMH/Nbi0DrgqHVlyIW80njbjxp4iM+vwrkdwNxxMdvopDEtulKlrbjdaIPiqYjGCr+4Hb5MGyfexnKnkin0lGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754722482; c=relaxed/simple;
-	bh=BHNXsv6JbtDlzsvtQDJK95gj4z98l8CStiP1HYWY6xY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NSDCOEcGEVQjyhp+M4p1mPAS/LubECCdf836eN+d4GOiZBJ4y+KswPc6WYKiOmsa5XthPDpKBVHiHOC/GqczhYllz7fEMJ+FBF47yyqJ2/eX7Ar/b5jXvDfwV+5CSRDBrXgY9lOm9bmgOIBqwHm1JDAluO5DasQXEbJv1YYumPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=tGXI4Y+0; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: from sven-desktop.home.narfation.org (unknown [IPv6:2a00:1ca0:1d86:99fc::8c24])
-	by dvalin.narfation.org (Postfix) with UTF8SMTPSA id 989972034F;
-	Sat,  9 Aug 2025 06:54:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1754722478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qp1mdvDUuZytnfOwpewyXGRbiR2bfJOyoqCmLTNrquQ=;
-	b=tGXI4Y+0PXCwgC7d3nNi7HZcEub+SpbmxdW/xD4W7eD+znQMManS+UY0/DXNWC8atYgmNp
-	WQT1ZAnwDpK47T+Fu2sHjLL7FfQl1jP+ZJ7ckpDVw9i+dWda3+GvNqoJnl4oKz1o5KYsBK
-	edFrOfqHClHSmiduqhWGAx6bWWgtcFk=
-From: Sven Eckelmann <sven@narfation.org>
-Date: Sat, 09 Aug 2025 08:40:57 +0200
-Subject: [PATCH i2c-host-fixes v4 4/5] i2c: rtl9300: Add missing count byte
- for SMBus Block Ops
+	s=arc-20240116; t=1754732727; c=relaxed/simple;
+	bh=/Vl83yoKnuPARw45R+Y9vfw3LJkmk1HmLQW4Ee12BGU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfEU/l9iaThgpvr9LI1Xy/yWdxYon1BGfAOwerdeZESeS+2p0qvThoML7nZRHcolZV3VFUu3HxYtHFLfP2o9O2uUNi/YqRuRo8NozQJ1uZbX9J7zvY895pYkh/+EsGcKS6IYsMcX4+3PeCG6SK9VJQQedkhS9I22Q+EkBkM1R+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ju4mBHJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32CAC4CEE7;
+	Sat,  9 Aug 2025 09:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754732727;
+	bh=/Vl83yoKnuPARw45R+Y9vfw3LJkmk1HmLQW4Ee12BGU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ju4mBHJjyH6oXbzKRHbKSoBxFSXHyUrYEy+0d9Lp/FyStBfsuyMdwjWsXmatwRoO4
+	 rjHNWtBnGH5ur2UimAt+2sir35xAI8FEh125T50waESZ+GB8HqaVWtgy622YhZRyPi
+	 2We74GkRqYyprGriC3+ymrjEQ18ikGRQ7ztcDGMEzElPc3zPgd0o2hzMsUgEHfqAcq
+	 UdBYi1X0ifv5jl2Nvl4MeC5WkznD6HU2QStBUtvOeGtIAO06BYNR+XvSxjR/Zn0EnD
+	 csHqt0LGpkboqR8sIJiBqAIerJ/teJ1n9SkrJ1JvJiT8UhqCDIZwwgvCKSSEGrk2GY
+	 4wKsOv21MCj0w==
+Date: Sat, 9 Aug 2025 11:45:23 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, nicolas.frattaroli@collabora.com, 
+	Heiko Stuebner <heiko@sntech.de>
+Subject: Re: Patch "pwm: rockchip: Round period/duty down on apply, up on
+ get" has been added to the 6.16-stable tree
+Message-ID: <c5s7efnva5gluplw65g6qqxjqpmcgprgtm6tsajkbdqibe73lb@lw5afb6b725i>
+References: <20250808223033.1417018-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250809-i2c-rtl9300-multi-byte-v4-4-d71dd5eb6121@narfation.org>
-References: <20250809-i2c-rtl9300-multi-byte-v4-0-d71dd5eb6121@narfation.org>
-In-Reply-To: <20250809-i2c-rtl9300-multi-byte-v4-0-d71dd5eb6121@narfation.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
- Andi Shyti <andi.shyti@kernel.org>
-Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonas Jelonek <jelonek.jonas@gmail.com>, 
- Harshal Gohel <hg@simonwunderlich.de>, 
- Simon Wunderlich <sw@simonwunderlich.de>, 
- Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2060; i=sven@narfation.org;
- h=from:subject:message-id; bh=BHNXsv6JbtDlzsvtQDJK95gj4z98l8CStiP1HYWY6xY=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDBnT3m7YcYVXZbvWb//DC1XnL9r9VuHJyeIl5/ud/JXC/
- rjwy6zO7yhlYRDjYpAVU2TZcyX//Gb2t/Kfp308CjOHlQlkCAMXpwBMRGI6w/8ozkZGkX89J5Ns
- tLL9TvKcYNLgZJDzdlh2KP3lAzl9/SKG/yXB7ucn6p+cpvKlY+vL+GCXB2cnJgYpt9qJfVLoev7
- /KzcA
-X-Developer-Key: i=sven@narfation.org; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uglxw76tpyknamt3"
+Content-Disposition: inline
+In-Reply-To: <20250808223033.1417018-1-sashal@kernel.org>
 
-The expected on-wire format of an SMBus Block Write is
 
-  S Addr Wr [A] Comm [A] Count [A] Data [A] Data [A] ... [A] Data [A] P
+--uglxw76tpyknamt3
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Patch "pwm: rockchip: Round period/duty down on apply, up on
+ get" has been added to the 6.16-stable tree
+MIME-Version: 1.0
 
-Everything starting from the Count byte is provided by the I2C subsystem in
-the array data->block. But the driver was skipping the Count byte
-(data->block[0]) when sending it to the RTL93xx I2C controller.
+Hello Sasha,
 
-Only the actual data could be seen on the wire:
+On Fri, Aug 08, 2025 at 06:30:33PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>=20
+>     pwm: rockchip: Round period/duty down on apply, up on get
+>=20
+> to the 6.16-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>=20
+> The filename of the patch is:
+>      pwm-rockchip-round-period-duty-down-on-apply-up-on-g.patch
+> and it can be found in the queue-6.16 subdirectory.
+>=20
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>=20
+>=20
+>=20
+> commit 51144efa3159cd95ab37e786c982822a060d7d1a
+> Author: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+> Date:   Mon Jun 16 17:14:17 2025 +0200
+>=20
+>     pwm: rockchip: Round period/duty down on apply, up on get
+>    =20
+>     [ Upstream commit 0b4d1abe5ca568c5b7f667345ec2b5ad0fb2e54b ]
+>    =20
+>     With CONFIG_PWM_DEBUG=3Dy, the rockchip PWM driver produces warnings =
+like
+>     this:
+>    =20
+>       rockchip-pwm fd8b0010.pwm: .apply is supposed to round down
+>       duty_cycle (requested: 23529/50000, applied: 23542/50000)
+>    =20
+>     This is because the driver chooses ROUND_CLOSEST for purported
+>     idempotency reasons. However, it's possible to keep idempotency while
+>     always rounding down in .apply().
+>    =20
+>     Do this by making .get_state() always round up, and making .apply()
+>     always round down. This is done with u64 maths, and setting both peri=
+od
+>     and duty to U32_MAX (the biggest the hardware can support) if they wo=
+uld
+>     exceed their 32 bits confines.
+>    =20
+>     Fixes: 12f9ce4a5198 ("pwm: rockchip: Fix period and duty cycle approx=
+imation")
+>     Fixes: 1ebb74cf3537 ("pwm: rockchip: Add support for hardware readout=
+")
+>     Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+>     Link: https://lore.kernel.org/r/20250616-rockchip-pwm-rounding-fix-v2=
+-1-a9c65acad7b6@collabora.com
+>     Signed-off-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-  S Addr Wr [A] Comm [A] Data [A] Data [A] ... [A] Data [A] P
+while the new code makes the driver match the PWM rules now, I'd be
+conservative and not backport that patch because while I consider it a
+(very minor) fix that's a change in behaviour and maybe people depend on
+that old behaviour. So let's not break our user's workflows and reserve
+that for a major release. Please drop this patch from your queue.
 
-This wire format is not SMBus Block Write compatible but matches the format
-of an I2C Block Write. Simply adding the count byte to the buffer for the
-I2C controller is enough to fix the transmission.
+Best regards
+Uwe
 
-This also affects read because the I2C controller must receive the count
-byte + $count * data bytes.
+--uglxw76tpyknamt3
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cc: <stable@vger.kernel.org>
-Fixes: c366be720235 ("i2c: Add driver for the RTL9300 I2C controller")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Tested-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
- drivers/i2c/busses/i2c-rtl9300.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/i2c/busses/i2c-rtl9300.c b/drivers/i2c/busses/i2c-rtl9300.c
-index 4a282d57e2c1a72c95bdabdd9eb348a73df28c44..cfafe089102aa208dde37096d5105d4140278ca9 100644
---- a/drivers/i2c/busses/i2c-rtl9300.c
-+++ b/drivers/i2c/busses/i2c-rtl9300.c
-@@ -285,15 +285,15 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
- 			ret = -EINVAL;
- 			goto out_unlock;
- 		}
--		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0]);
-+		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, data->block[0] + 1);
- 		if (ret)
- 			goto out_unlock;
- 		if (read_write == I2C_SMBUS_WRITE) {
--			ret = rtl9300_i2c_write(i2c, &data->block[1], data->block[0]);
-+			ret = rtl9300_i2c_write(i2c, &data->block[0], data->block[0] + 1);
- 			if (ret)
- 				goto out_unlock;
- 		}
--		len = data->block[0];
-+		len = data->block[0] + 1;
- 		break;
- 
- 	default:
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmiXGK8ACgkQj4D7WH0S
+/k4naggAuTzi3BeVxpnkloLgqqqi9PN6USc4hfP1vsI6QfVCNhMWEWKcIzCJ4qcs
+VEMAIxEcqom+2WAqB3C6ff+XQGkP36OwLllt58itJ2owfN9ViTKtLTLd0f6yDryM
+F6BpOTYMPh1KMBMigVkzqK2+a7wjSbhXYCDzJDODr7IyfY7puV2LxwF2ES7MImXP
+xHXQAuNOUfQGkffECvPtHCrlt3RgmIdvn4SFesMHPRD+EPNmFSipt9Jy4ruUAIrV
+vg+9oykiCywLGPctGZGFYuOz0Bpr79EQtMjUnyZxWWR7ZNnsd/paP4JaosBvdqN6
+rT3uvJ5V7LZgDscTHZDBvdRuVNz7ag==
+=L/P2
+-----END PGP SIGNATURE-----
 
--- 
-2.47.2
-
+--uglxw76tpyknamt3--
 
