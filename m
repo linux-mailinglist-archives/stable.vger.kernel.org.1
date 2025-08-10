@@ -1,165 +1,99 @@
-Return-Path: <stable+bounces-166939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E303CB1F769
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 02:21:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6C0B1F76E
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 02:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BEF6420223
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 00:21:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44671420854
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 00:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8321B95B;
-	Sun, 10 Aug 2025 00:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285654C92;
+	Sun, 10 Aug 2025 00:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sSez/7yU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nr/I2LrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7B68F40;
-	Sun, 10 Aug 2025 00:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74164690;
+	Sun, 10 Aug 2025 00:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754785296; cv=none; b=IhJYsOsLeCmiw7i7HUhnVziaKf0ndWP/XxEwYmbKP9A/3vjp9I1n0Ud14Yr092wMy03ge0Q3xG5O7T/9kezfMpfLI7/RdtiUB1r2Q96kc9BEEG6KOIVMFrikwzwRA5CKytBJ8vcEJkyEzjaAZI4nPjLGd3DJjL76g24JJBXJSqw=
+	t=1754785489; cv=none; b=EubuwVHAgTexqm4rOVNDAydGLO13m32mbkTEoQkP3GW1HXfk5FRQxJYMck8r/Vmi1a/Z2p6zl+JMabc020lSkDe480Xl6oXvaWC5TR/3M3SmNGotW+YhZne6UvWusUfk480ub+Q7sDaKEGtpBq/tjxxhIVrXuwRzSMhjts/9Uhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754785296; c=relaxed/simple;
-	bh=oxbFC8LpeOtA7fHqzIDtkJBaA/dia+1GofAqcvEpL8o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Kk7UHu2pHh1OnUoq/R4S+1HDWU6AewtYbR5gwezMuuZmD37+M/5bISiOHZxnrAdAXmcTlvNMfTDAwBxj6mSnSy4zyqvJ562YEOOZ6hMrvXYyis5w6xQZ6fea3k3i19AIf2bPevbNC5v1aB3PqTaAGH0YRrks4HLoJI410CX/AuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sSez/7yU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03514C4CEE7;
-	Sun, 10 Aug 2025 00:21:34 +0000 (UTC)
+	s=arc-20240116; t=1754785489; c=relaxed/simple;
+	bh=+MYyrWF1r3HnrTCnEF6LLafDGHfYpJXCAD2vrMbxPI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s2ztKHVZGpU7a3cua69IzOnbKuKKlDIvs4WyITpUOWN4Tv8qNvx+GyxUgX73+T7or4I60MoGubFBVgsh1Mu3wbwLHLUWGlGOHRMd+OJW91cFwWZGcskbOSaaVtrhs3E8LVMHVbxXuWbvzyhDsFdmJ7Aepvoihw/9tlowWCOpars=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nr/I2LrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC53FC4CEE7;
+	Sun, 10 Aug 2025 00:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754785296;
-	bh=oxbFC8LpeOtA7fHqzIDtkJBaA/dia+1GofAqcvEpL8o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSez/7yU8bXOeMwMYXDYpCPguSdYR+krOp0FUnPi2586/vJgTDx3BLsytNczSxfD/
-	 hDoRqN26JsKUVdves38CJi+i0SjdyeJ3KiCM6qn/SZUsYANl0H9bxiV56eN6Y5QjYh
-	 LoF72yLG6HpOrNAoQP0hbIBVoPHXCV1T921vaxtqTuARA0qsUMD9A+L3UpOjxA5loQ
-	 2lhBjGhQOpr1Pdxv47q5O5GNtSf14aEJ2smGESyo6P9UVNNCLzzNp6DgSNkyoH6vla
-	 fMsdh+T+zY2k5lOrvVK8toRTIwbo80nRmVZiLNuYW2JEBu2DijTcWZoWchMlgZiDrx
-	 8Tx1g9k8GIUDw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>,
-	openipmi-developer@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.16-5.4] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
-Date: Sat,  9 Aug 2025 20:21:02 -0400
-Message-Id: <20250810002104.1545396-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250810002104.1545396-1-sashal@kernel.org>
-References: <20250810002104.1545396-1-sashal@kernel.org>
+	s=k20201202; t=1754785489;
+	bh=+MYyrWF1r3HnrTCnEF6LLafDGHfYpJXCAD2vrMbxPI8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Nr/I2LrCiwDb7fyWlOHGguMAQznvJg6Z+RWIAdSuzijsI27B9WJAcgByQ16XpJoBv
+	 0vxJAVAqyB4nwj0i/po6ICSYOgi0YdToj6v07Gio7CytCd3ddueTxcaZB4nYhGBoDs
+	 mbg3nTtKZd0SYxTid/RItEMokgxH4m1Eg4dtt/8hp7J8owXZB6Qy5hmQnL6lOphk0P
+	 uNVXffdM09RPT+ks9tFPVS3vgfM5O0Sqe9pjMfHRwaDlnxVjsUJ5qJ2QU+hIRRv0YT
+	 Di8HofxzUY3ZVyJGUuRatJrxh4F95PQ++zM3K3xmfW26NrykOCXcPgyZ0hl3ki+v+f
+	 kcsN52c1BgF1Q==
+Date: Sat, 9 Aug 2025 17:24:45 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Conor Dooley <conor@kernel.org>,
+	linux-riscv@lists.infradead.org, llvm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] riscv: Only allow LTO with CMODEL_MEDANY
+Message-ID: <20250810002445.GB1726533@ax162>
+References: <20250710-riscv-restrict-lto-to-medany-v1-1-b1dac9871ecf@kernel.org>
+ <20250808215303.GA3695089@ax162>
+ <b0fdcb23-4d68-4d0f-a8ac-2b389a0ce856@ghiti.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.16
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b0fdcb23-4d68-4d0f-a8ac-2b389a0ce856@ghiti.fr>
 
-From: Breno Leitao <leitao@debian.org>
+On Sat, Aug 09, 2025 at 12:45:59PM +0200, Alexandre Ghiti wrote:
+> Hi Nathan,
+> 
+> On 8/8/25 23:53, Nathan Chancellor wrote:
+> > Ping? This is still getting hit.
+> 
+> 
+> This is the second time your patches do not reach the linux-riscv mailing
+> list [1] [2], not even my personal mailbox.
+> 
+> [1] https://lore.kernel.org/linux-riscv/?q=riscv%3A+Only+allow+LTO+with+CMODEL_MEDANY
+> 
+> [2] https://lore.kernel.org/linux-riscv/?q=riscv%3A+uaccess%3A+Fix+-Wuninitialized+and+-Wshadow+in+__put_user_nocheck
+> 
+> I don't know what's going on, do you have any idea?
 
-[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
+Huh, not sure :/ I only use my kernel.org address and nothing about my
+configuration or usage has changed plus it seems to have made it to
+every other mailing list I sent it to?
 
-During BMC firmware upgrades on live systems, the ipmi_msghandler
-generates excessive "BMC returned incorrect response" warnings
-while the BMC is temporarily offline. This can flood system logs
-in large deployments.
+https://lore.kernel.org/lkml/20250710-riscv-restrict-lto-to-medany-v1-1-b1dac9871ecf@kernel.org/
+https://lore.kernel.org/llvm/20250710-riscv-restrict-lto-to-medany-v1-1-b1dac9871ecf@kernel.org/
+https://lore.kernel.org/stable/20250710-riscv-restrict-lto-to-medany-v1-1-b1dac9871ecf@kernel.org/
 
-Replace dev_warn() with dev_warn_ratelimited() to throttle these
-warnings and prevent log spam during BMC maintenance operations.
+Next time I have to send a RISC-V patch, I'll look at the archives to
+see if it made it there and follow up if not.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+> I'll pick this up in my fixes branch.
 
-LLM Generated explanations, may be completely bogus:
+Great, thanks a lot!
 
-**Backport Status: YES**
-
-This commit is an excellent candidate for backporting to stable kernel
-trees for the following reasons:
-
-1. **Fixes a Real User-Impacting Bug**: The commit addresses log
-   flooding during BMC firmware upgrades or when BMC is temporarily
-   offline. This is a practical operational issue that affects
-   production systems, especially in large deployments where BMC
-   maintenance is routine.
-
-2. **Minimal and Safe Change**: The change is trivial - simply replacing
-   `dev_warn()` with `dev_warn_ratelimited()`. This is:
-   - A single-line change
-   - Uses well-established kernel infrastructure (ratelimited logging)
-   - Has no functional impact on the IPMI driver's operation
-   - Cannot introduce regressions in driver functionality
-
-3. **Clear Problem Statement**: The commit message clearly describes a
-   specific scenario (BMC firmware upgrades) where excessive "BMC
-   returned incorrect response" warnings flood system logs. This is a
-   documented, reproducible issue.
-
-4. **Follows Established Pattern**: The kernel already has precedent for
-   this type of fix. Commit ca8c1c53b03b ("ipmi: rate limit ipmi
-   smi_event failure message") from kernel v5.15 made similar changes to
-   address log flooding in the same subsystem, and that was successfully
-   integrated into stable trees.
-
-5. **Low Risk**: The change only affects logging behavior, not the
-   actual handling of IPMI messages. The error path (goto
-   return_unspecified) remains unchanged, maintaining the same error
-   handling logic.
-
-6. **Addresses Operational Concerns**: In production environments with
-   many servers, BMC maintenance is common. Without rate limiting, logs
-   can grow excessively, potentially:
-   - Filling up disk space
-   - Making real issues harder to spot
-   - Degrading system performance due to excessive logging I/O
-
-7. **Code Context Shows Repeated Condition**: Looking at the code path
-   (lines 4604-4615), this warning triggers when the BMC response
-   doesn't match the expected NetFN and Command. During BMC firmware
-   updates or reboots, this mismatch can occur repeatedly until the BMC
-   comes back online, making rate limiting essential.
-
-The change meets all criteria for stable backporting: it fixes a bug
-affecting users, is small and contained, has minimal risk of regression,
-and addresses a clear operational problem without introducing new
-features or architectural changes.
-
- drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 064944ae9fdc..8e9050f99e9e 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4607,10 +4607,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
- 		 * The NetFN and Command in the response is not even
- 		 * marginally correct.
- 		 */
--		dev_warn(intf->si_dev,
--			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
--			 (msg->data[0] >> 2) | 1, msg->data[1],
--			 msg->rsp[0] >> 2, msg->rsp[1]);
-+		dev_warn_ratelimited(intf->si_dev,
-+				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
-+				     (msg->data[0] >> 2) | 1, msg->data[1],
-+				     msg->rsp[0] >> 2, msg->rsp[1]);
- 
- 		goto return_unspecified;
- 	}
--- 
-2.39.5
-
+Cheers,
+Nathan
 
