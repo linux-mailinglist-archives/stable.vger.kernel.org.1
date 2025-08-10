@@ -1,134 +1,185 @@
-Return-Path: <stable+bounces-166972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8E7B1FB5C
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 19:31:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F313CB1FB8A
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 20:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 662623AA7CB
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 17:31:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0096C18973A8
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 18:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73B823816C;
-	Sun, 10 Aug 2025 17:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB24B230996;
+	Sun, 10 Aug 2025 18:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XS110JeH"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="yYDUKHcd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA68FC0B;
-	Sun, 10 Aug 2025 17:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0008F66;
+	Sun, 10 Aug 2025 18:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754847105; cv=none; b=F944olMrv7BrF7YN0QVzLCPoISKr9lpyk+gy9QqElyDjNl+NQg35LiLv+70HAxUQdDfQ7ZL3NnIyfgOiS0M1SBsdtU1sMYC6tVNCuc8sE/18hTLQuMMV2dBWGmzGIi7q9CFaxk1z7oF/ZivnUI34p+a8BYdCeJNPwfQQcXkGLfE=
+	t=1754849172; cv=none; b=RPRDhB/a/zrJIGV/fw8smgDcP4eZgGcpmPMLFMnGWAwizk8cv4opUe17PBBRksSi9rM71Kh7ZUpGk42BzjeRk6i9yaTvOuB9Ji+7Z7bCUA3iBwaG1S4CL/DC/fLt1d3/fr6xl/pmw4zRM2iiDbFlpoRnHz8BRGcwwOBUKfsGJqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754847105; c=relaxed/simple;
-	bh=aGs02sc6LESggoW37yomq+DDwZ03g4IwHFGzac0j87I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WPWBPvh7WykkHIBaju4JTe43wQ5GX6hevwG6oI62heeFfmlGMVBidNelkdhSy7z8zmBJ/sWmssQxOnAf2Mgj4LUe+yijQ6OtjV9cs6u4hCSp3NYx7E8YEi6O59iy3HOXz+QjqF7xzr6dvfoGeyh5AAdDepAWLh9UbPZBnUTTzUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XS110JeH; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3322d10e29dso29533171fa.0;
-        Sun, 10 Aug 2025 10:31:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754847102; x=1755451902; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yTaJLRTtqeXWxdYr5rgLHJrchc4OZe1+0HwTL62xei4=;
-        b=XS110JeHZN3RcOCy+Rc3aYk97Xk5vPvYzrSl/csOl9QMt6pEH3Sxcnxv0QhGg9FERX
-         UnNftXGirX1nBmBQg+CgTmt7eWI7BedoXZ75rZzl3CaBpdRv08Ol82Fyd+odujz4OIhF
-         zKabsglU+jXqjfm8by4DyVVn2vkHQcK+thJKvPhyxryH1y7tH6WsyRCiGYrV/ET7gDiI
-         Ayw1Dltcj/lcnbLVopgjlAj80pbJduW0ImoFjWzmNyQ0Lp0aLUi0+s7XC37J+Tn3JhEq
-         0eNO8d7/DBICF12Ngis7YEYRN4vNtRkBJbeG9yKalzIynSbiGjm9Tq9KZUHBCs7tT+QZ
-         qrMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754847102; x=1755451902;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yTaJLRTtqeXWxdYr5rgLHJrchc4OZe1+0HwTL62xei4=;
-        b=w2A+GLKOd6QQi4JQhQ2dbt6qrcwGaYe0Qs89XhYRN+qLEYDmimRnQE+ndiLNpFFMkt
-         NBNCgap12RSiGswfVUTpVF6Dyn6JKJWff+xoPhAC0OomPuPB4j82w7riejwlHUm7ee+R
-         PqE+CMOSl6IsEwtDzOWDLGWBDuD4zSoS0kk3/vDTI6Um1p7s+ZepoQNmwTspzZEm9i2m
-         /iiiOA7LYqalcP/UucD5+XywyaoZic4pgbsBFcHQWh+thnK1QOHz9XH0yMNhLf5v7hWu
-         v83zcJqvS/Hh79uDL85B0PDLSFqIZXuAMwq9EjBmyvfEquiFbtjoDnY5V+G7U+DfkdhO
-         WY+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUj0oCU7xRmGoQyk0knci9cTQhw5nIP+ZcwmQBffkwaLCWsTdR3/PeR7L9og2qp54DqF3B9E2jufKx2M5oR@vger.kernel.org, AJvYcCUnz09/5Yyow7yan8gPak/Pwog/poj6/7zKxfpD2AGvPlsixULAMIC6RaF3Bfa9B4YuTnhAQleU@vger.kernel.org, AJvYcCVkY5i6hHjVP0Q2OMz8ZCMmp0NCxvnbJsNqtdq1+N5JL4pE1B/FGU10JcvGsGL/NqomIpeDFRgo90bvDA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBGvgEDML5krzZMK+iDc1N7DVGjU8Q7U0O5e+P4rDLSJkV0k9+
-	SUXNxoY17Ygr5+v35gji7hcMG5BMWc/qk9Ykox8AHaEf2EZDNWUXjovKVzkdqg==
-X-Gm-Gg: ASbGncuHVMvhneBY6kAi+amMFn38UaGVQInrnd481jOEb1G04q+JAQ2HrF1IEpz8gWO
-	aGP6ZZ+lADFDvm8IeeE71kP8cndjbleMtbh+ra5hn7BSXJbylD5H6sSzeBc5ub0G/xP3y4Hanc5
-	/H2FxQFMtAm+v7J2/FEU2LxcdWzKDvjd+ABBJQkL4EAuQtA+mTFDb5sDql0ieebR8Sb3oTzHqDC
-	MTmjmtYcUmPUIwNdaLu6Ts+OR1QwktXXMVwtdl8KvHg676GL2Qg8SsJUNnglw6ZXG0xv6ytnGz0
-	Fk6d247lnMG84LHGvZSMuFBmaRECCFPnJDNWITmvXQ2zb5KOFkQiOlf9ph+RTdqbfY67OVkG8n1
-	GuynLSkB6ZS8FWYFl2g==
-X-Google-Smtp-Source: AGHT+IGexTDKokp9rk/e6fsbCXImxJu0jdE/ahX4LI8fjziTk042QG5GF6IUPrE69FOI/cc07tS3Pg==
-X-Received: by 2002:a05:6512:2391:b0:55b:9376:5318 with SMTP id 2adb3069b0e04-55cc011b322mr2088594e87.40.1754847101748;
-        Sun, 10 Aug 2025 10:31:41 -0700 (PDT)
-Received: from gmail.com ([185.209.199.97])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b8898bf90sm3956911e87.26.2025.08.10.10.31.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Aug 2025 10:31:41 -0700 (PDT)
-Date: Sun, 10 Aug 2025 18:31:35 +0100
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: jikos@kernel.org, bentiss@kernel.org, linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] HID: multitouch: fix integer overflow in set_abs()
-Message-ID: <aJjXacCgSk-aNyTh@gmail.com>
-References: <20250723173659.59327-1-qasdev00@gmail.com>
- <914ff45b-2260-42c0-9ccf-a3efd667d4f5@kernel.org>
- <aIJXqs-U8vDpYv0S@gmail.com>
- <f7257221-cbfa-4f51-8ac4-38060bfaf2f4@kernel.org>
+	s=arc-20240116; t=1754849172; c=relaxed/simple;
+	bh=WHLRLsBfg7O/OTRHI9Qnnlt41lC3msVVIdYXbhNrpMU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qIzRRnDv1JLLZemwPLq8i9y48W2MBT+2W+UZa2OnxA3OOgZwjeEdrsSvtnVR3czu9JRjLUz/eLnaMfBGOFZbMcv0NwEl3OzuItgQoXtHaf241KwmZUGO63yZsU3ZfEFRg/QwcCaFoJ42VGfNiBaULYIrjb0BgqeiaDJLrr7cUjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=yYDUKHcd; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: from sven-desktop.home.narfation.org (unknown [IPv6:2a00:1ca0:1d86:99fc::8c24])
+	by dvalin.narfation.org (Postfix) with UTF8SMTPSA id 0855420019;
+	Sun, 10 Aug 2025 18:06:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1754849167;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Rh5O527zCk/QwVMc59etmyG7fXrzsTjPC0RIuT5k2UQ=;
+	b=yYDUKHcdyqaana9p65+oJVma0TdDreA7IjWCU+d3nt+wZ7XYaT1uITqpQv2p+0pdgvBsP+
+	O55/NxuQ9atLDSdpc/gLSml8fObcond65yLYTxoG+82xQfPQf39/3p2TlHHfDKhLgqlJ5Z
+	2wXrxADVh5TKGplmqQFxu5BOElm8gVc=
+From: Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH v5 0/5] i2c: rtl9300: Fix multi-byte I2C operations
+Date: Sun, 10 Aug 2025 20:05:12 +0200
+Message-Id: <20250810-i2c-rtl9300-multi-byte-v5-0-cd9dca0db722@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f7257221-cbfa-4f51-8ac4-38060bfaf2f4@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFjfmGgC/4XOwQ7CIAyA4VcxnMWUbgzw5HsYDzCKkuhmGC4as
+ 3cXPS3GxePfpF/7ZAOlSAPbrp4s0RiH2Hcl5HrF2pPtjsSjL80QUIIG5BFbnvLZVAD8cjvnyN0
+ jEydvrQgOtMKWleVrohDvH3h/KH2KQ+7T43NnFO/pX3IUHLgMjVYEYDThrrMp2Fw+3PTpyN7si
+ HOqWqSwUMYpp6QJhK75RVVzql6kqkIRQgOKhEPd/qLqOWUWqbpQXgnvJblGoPimpml6AZKIQbq
+ hAQAA
+X-Change-ID: 20250802-i2c-rtl9300-multi-byte-edaa1fb0872c
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+ Andi Shyti <andi.shyti@kernel.org>
+Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonas Jelonek <jelonek.jonas@gmail.com>, 
+ Harshal Gohel <hg@simonwunderlich.de>, 
+ Simon Wunderlich <sw@simonwunderlich.de>, 
+ Sven Eckelmann <sven@narfation.org>, Alex Guo <alexguo1023@gmail.com>, 
+ stable@vger.kernel.org, Wolfram Sang <wsa+renesas@sang-engineering.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4917; i=sven@narfation.org;
+ h=from:subject:message-id; bh=WHLRLsBfg7O/OTRHI9Qnnlt41lC3msVVIdYXbhNrpMU=;
+ b=owGbwMvMwCXmy1+ufVnk62nG02pJDBkz7rfP7gpMyuwSM5DgCGz9F3qC6ec22VnO3+5H/+f2S
+ FuvGdTZUcrCIMbFICumyLLnSv75zexv5T9P+3gUZg4rE8gQBi5OAZhI3SeGf8aOGR4el9VjFO5U
+ PLneIvzloknKrifdn48/kjt9dy3Hsn2MDH1xX14kyhdvn/w2Nvi++bOopJAfBdqtYfL/quSVjp+
+ 7wQUA
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-On Thu, Jul 31, 2025 at 09:43:38AM +0200, Jiri Slaby wrote:
-> On 24. 07. 25, 17:56, Qasim Ijaz wrote:
-> > On Thu, Jul 24, 2025 at 08:58:40AM +0200, Jiri Slaby wrote:
-> > > On 23. 07. 25, 19:36, Qasim Ijaz wrote:
-> > > > It is possible for a malicious HID device to trigger a signed integer
-> > > > overflow (undefined behaviour) in set_abs() in the following expression
-> > > > by supplying bogus logical maximum and minimum values:
-> > > > 	
-> > > > 	int fuzz = snratio ? (fmax - fmin) / snratio : 0;
-> > > > 
-> > > > For example, if the logical_maximum is INT_MAX and logical_minimum is -1
-> > > > then (fmax - fmin) resolves to INT_MAX + 1, which does not fit in a 32-bit
-> > > > signed int, so the subtraction overflows.
-> > > 
-> > > The question is if it matters with -fwrapv?
-> > 
-> > Ah yea thanks for bringing this up Jiri. I think you might be correct,
-> > after doing some research it looks like the kernel enables -fno‑strict‑overflow
-> > which implies -fwrapv which leads to wrap around instead of UB If I undestand
-> > correctly. So with that in mind this patch probably doesn't do anything
-> > useful, do you agree?
-> 
-> Yes, it correctly wraps around. But the question remains :). Does it matter
-> or not?
-> 
+During the integration of the RTL8239 POE chip + its frontend MCU, it was
+noticed that multi-byte operations were basically broken in the current
+driver.
 
-probably not. From what I can tell it doesn't look like any further security
-issues occur as a result of the wrap around behaviour so i think its
-probably best to drop this patch.
+Tests using SMBus Block Writes showed that the data (after the Wr maker +
+Ack) was mixed up on the wire. At first glance, it looked like an
+endianness problem. But for transfers where the number of count + data
+bytes was not divisible by 4, the last bytes were not looking like an
+endianness problem because they were in the wrong order but not for example
+0 - which would be the case for an endianness problem with 32 bit
+registers. At the end, it turned out to be the way how i2c_write tried to
+add the bytes to the send registers.
 
-thanks,
-qasim
-> thanks,
-> -- 
-> js
-> suse labs
+Each 32 bit register was used similar to a shift register - shifting the
+various bytes up the register while the next one is added to the least
+significant byte. But the I2C controller expects the first byte of the
+transmission in the least significant byte of the first register. And the
+last byte (assuming it is a 16 byte transfer) is expected in the most
+significant byte of the fourth register.
+
+While doing these tests, it was also observed that the count byte was
+missing from the SMBus Block Writes. The driver just removed them from the
+data->block (from the I2C subsystem). But the I2C controller DOES NOT
+automatically add this byte - for example by using the configured
+transmission length.
+
+The RTL8239 MCU is not actually an SMBus compliant device. Instead, it
+expects I2C Block Reads + I2C Block Writes. But according to the already
+identified bugs in the driver, it was clear that the I2C controller can
+simply be modified to not send the count byte for I2C_SMBUS_I2C_BLOCK_DATA.
+The receive part just needs to write the content of the receive buffer to
+the correct position in data->block.
+
+While the on-wire format was now correct, reads were still not possible
+against the MCU (for the RTL8239 POE chip). It was always timing out
+because the 2ms were not enough for sending the read request and then
+receiving the 12 byte answer.
+
+These changes were originally submitted to OpenWrt. But there are plans to
+migrate OpenWrt to the upstream Linux driver. As a result, the pull request
+was stopped and the changes were redone against this driver.
+
+For reasons of transparency: The work on I2C_SMBUS_I2C_BLOCK_DATA support
+for the RTL8239-MCU was done on RTL931xx. All problems were therefore
+detected with the patches from Jonas Jelonek [1] and not the vanilla Linux
+driver. But looking through the code, it seems like these are NOT
+regressions introduced by the RTL931x patchset.
+
+I've picked up Alex Guo's patch [2] to reduce conflicts between pending
+fixes.
+
+[1] https://patchwork.ozlabs.org/project/linux-i2c/cover/20250727114800.3046-1-jelonek.jonas@gmail.com/
+[2] https://lore.kernel.org/r/20250615235248.529019-1-alexguo1023@gmail.com
+
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+---
+Changes in v5:
+- Simplify function/capability registration by using
+  I2C_FUNC_SMBUS_I2C_BLOCK, thanks Jonas Jelonek
+- Link to v4: https://lore.kernel.org/r/20250809-i2c-rtl9300-multi-byte-v4-0-d71dd5eb6121@narfation.org
+
+Changes in v4:
+- Provide only "write" examples for "i2c: rtl9300: Fix multi-byte I2C write"
+- drop the second initialization of vals in rtl9300_i2c_write() directly in
+  the "Fix multi-byte I2C write" fix
+- indicate in target branch for each patch in PATCH prefix
+- minor commit message cleanups
+- Link to v3: https://lore.kernel.org/r/20250804-i2c-rtl9300-multi-byte-v3-0-e20607e1b28c@narfation.org
+
+Changes in v3:
+- integrated patch
+  https://lore.kernel.org/r/20250615235248.529019-1-alexguo1023@gmail.com
+  to avoid conflicts in the I2C_SMBUS_BLOCK_DATA code
+- added Fixes and stable@vger.kernel.org to Alex Guo's patch
+- added Chris Packham's Reviewed-by/Acked-by
+- Link to v2: https://lore.kernel.org/r/20250803-i2c-rtl9300-multi-byte-v2-0-9b7b759fe2b6@narfation.org
+
+Changes in v2:
+- add the missing transfer width and read length increase for the SMBus
+  Write/Read
+- Link to v1: https://lore.kernel.org/r/20250802-i2c-rtl9300-multi-byte-v1-0-5f687e0098e2@narfation.org
+
+---
+Alex Guo (1):
+      i2c: rtl9300: Fix out-of-bounds bug in rtl9300_i2c_smbus_xfer
+
+Harshal Gohel (2):
+      [i2c-host-fixes] i2c: rtl9300: Fix multi-byte I2C write
+      [i2c-host] i2c: rtl9300: Implement I2C block read and write
+
+Sven Eckelmann (2):
+      [i2c-host-fixes] i2c: rtl9300: Increase timeout for transfer polling
+      [i2c-host-fixes] i2c: rtl9300: Add missing count byte for SMBus Block Ops
+
+ drivers/i2c/busses/i2c-rtl9300.c | 51 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 9 deletions(-)
+---
+base-commit: 7e161a991ea71e6ec526abc8f40c6852ebe3d946
+change-id: 20250802-i2c-rtl9300-multi-byte-edaa1fb0872c
+
+Best regards,
+-- 
+Sven Eckelmann <sven@narfation.org>
+
 
