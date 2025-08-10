@@ -1,213 +1,134 @@
-Return-Path: <stable+bounces-166971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D796B1FB2C
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 18:53:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8E7B1FB5C
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 19:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4FC53BABEA
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 16:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 662623AA7CB
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 17:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F76275AFC;
-	Sun, 10 Aug 2025 16:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73B823816C;
+	Sun, 10 Aug 2025 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zt4oKy1g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XS110JeH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9DA270EC3;
-	Sun, 10 Aug 2025 16:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA68FC0B;
+	Sun, 10 Aug 2025 17:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754844767; cv=none; b=Q3+AlyDxcdKihY/Y4sdPlFDEVLEu7C2kN+NraKMSkED5oYdIReXDbB1COvWjYzbyfLjXC5TbdWNx6L1RRpVCuOQlM8hZz/Em+A/tC8D5Veb8M5Vm+jL09mwlV4w1ygG7qUWWn56xHetL9SAJF4dG7fivf8gdkRnLm8XFbeiSfbo=
+	t=1754847105; cv=none; b=F944olMrv7BrF7YN0QVzLCPoISKr9lpyk+gy9QqElyDjNl+NQg35LiLv+70HAxUQdDfQ7ZL3NnIyfgOiS0M1SBsdtU1sMYC6tVNCuc8sE/18hTLQuMMV2dBWGmzGIi7q9CFaxk1z7oF/ZivnUI34p+a8BYdCeJNPwfQQcXkGLfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754844767; c=relaxed/simple;
-	bh=/u7bOTJ+LWek+TXWDS8OOGKgGktLR2EFyiF3GmA7XlA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RLCmSm9cO824F65yyhIVf/2H44EuBkSxalqLm91ZG/jwzQLo2Q5H2ixuqLdGH0Z35a87S2hloNE/kEDIrF5zzqwy+Lr8q86Ub+IylknZtzB7OILw5l8sriVCGmxxEofC+ql0cRubVc402omaKOQ211gFfXr1YsZNFBs/mLL5ZJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zt4oKy1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DFCC4CEF0;
-	Sun, 10 Aug 2025 16:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754844766;
-	bh=/u7bOTJ+LWek+TXWDS8OOGKgGktLR2EFyiF3GmA7XlA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zt4oKy1gqhl/J2zwW6/ZiQXzLx4mzxkEkTZm2gq5q77oLE0A2dyd3bM4tNEFl8MiN
-	 MgW+ixKfB/wANnb0Dn1bIFNCKPhgXfp/12EFlVyxr5YM8SpaWfzghV5qkSdMihkenD
-	 eLG2DjZOQs9LwlqgFCr00H5k0FAOzlNG2UCESULHLmWZ/VyziM4k+lZK8/di++Ttau
-	 dq11yjfFU+7TEiTLAcQ3ZuG4+C8Xu6sYkoX2C6ZzkSz9y7b0Gerfqf1uEo/xwh9o8L
-	 vsEcwjWFcgC06N+eVhE7QGQEkhC5/sdTW8YoHcHi2Gbp2Z+Fof6bPV3e8bo4UMYSWS
-	 pon5Tz0Y0t3kw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Sergey Bashirov <sergeybashirov@gmail.com>,
-	Konstantin Evtushenko <koevtushenko@yandex.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.16-5.4] pNFS: Handle RPC size limit for layoutcommits
-Date: Sun, 10 Aug 2025 12:51:58 -0400
-Message-Id: <20250810165158.1888206-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250810165158.1888206-1-sashal@kernel.org>
-References: <20250810165158.1888206-1-sashal@kernel.org>
+	s=arc-20240116; t=1754847105; c=relaxed/simple;
+	bh=aGs02sc6LESggoW37yomq+DDwZ03g4IwHFGzac0j87I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WPWBPvh7WykkHIBaju4JTe43wQ5GX6hevwG6oI62heeFfmlGMVBidNelkdhSy7z8zmBJ/sWmssQxOnAf2Mgj4LUe+yijQ6OtjV9cs6u4hCSp3NYx7E8YEi6O59iy3HOXz+QjqF7xzr6dvfoGeyh5AAdDepAWLh9UbPZBnUTTzUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XS110JeH; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3322d10e29dso29533171fa.0;
+        Sun, 10 Aug 2025 10:31:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754847102; x=1755451902; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=yTaJLRTtqeXWxdYr5rgLHJrchc4OZe1+0HwTL62xei4=;
+        b=XS110JeHZN3RcOCy+Rc3aYk97Xk5vPvYzrSl/csOl9QMt6pEH3Sxcnxv0QhGg9FERX
+         UnNftXGirX1nBmBQg+CgTmt7eWI7BedoXZ75rZzl3CaBpdRv08Ol82Fyd+odujz4OIhF
+         zKabsglU+jXqjfm8by4DyVVn2vkHQcK+thJKvPhyxryH1y7tH6WsyRCiGYrV/ET7gDiI
+         Ayw1Dltcj/lcnbLVopgjlAj80pbJduW0ImoFjWzmNyQ0Lp0aLUi0+s7XC37J+Tn3JhEq
+         0eNO8d7/DBICF12Ngis7YEYRN4vNtRkBJbeG9yKalzIynSbiGjm9Tq9KZUHBCs7tT+QZ
+         qrMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754847102; x=1755451902;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yTaJLRTtqeXWxdYr5rgLHJrchc4OZe1+0HwTL62xei4=;
+        b=w2A+GLKOd6QQi4JQhQ2dbt6qrcwGaYe0Qs89XhYRN+qLEYDmimRnQE+ndiLNpFFMkt
+         NBNCgap12RSiGswfVUTpVF6Dyn6JKJWff+xoPhAC0OomPuPB4j82w7riejwlHUm7ee+R
+         PqE+CMOSl6IsEwtDzOWDLGWBDuD4zSoS0kk3/vDTI6Um1p7s+ZepoQNmwTspzZEm9i2m
+         /iiiOA7LYqalcP/UucD5+XywyaoZic4pgbsBFcHQWh+thnK1QOHz9XH0yMNhLf5v7hWu
+         v83zcJqvS/Hh79uDL85B0PDLSFqIZXuAMwq9EjBmyvfEquiFbtjoDnY5V+G7U+DfkdhO
+         WY+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUj0oCU7xRmGoQyk0knci9cTQhw5nIP+ZcwmQBffkwaLCWsTdR3/PeR7L9og2qp54DqF3B9E2jufKx2M5oR@vger.kernel.org, AJvYcCUnz09/5Yyow7yan8gPak/Pwog/poj6/7zKxfpD2AGvPlsixULAMIC6RaF3Bfa9B4YuTnhAQleU@vger.kernel.org, AJvYcCVkY5i6hHjVP0Q2OMz8ZCMmp0NCxvnbJsNqtdq1+N5JL4pE1B/FGU10JcvGsGL/NqomIpeDFRgo90bvDA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBGvgEDML5krzZMK+iDc1N7DVGjU8Q7U0O5e+P4rDLSJkV0k9+
+	SUXNxoY17Ygr5+v35gji7hcMG5BMWc/qk9Ykox8AHaEf2EZDNWUXjovKVzkdqg==
+X-Gm-Gg: ASbGncuHVMvhneBY6kAi+amMFn38UaGVQInrnd481jOEb1G04q+JAQ2HrF1IEpz8gWO
+	aGP6ZZ+lADFDvm8IeeE71kP8cndjbleMtbh+ra5hn7BSXJbylD5H6sSzeBc5ub0G/xP3y4Hanc5
+	/H2FxQFMtAm+v7J2/FEU2LxcdWzKDvjd+ABBJQkL4EAuQtA+mTFDb5sDql0ieebR8Sb3oTzHqDC
+	MTmjmtYcUmPUIwNdaLu6Ts+OR1QwktXXMVwtdl8KvHg676GL2Qg8SsJUNnglw6ZXG0xv6ytnGz0
+	Fk6d247lnMG84LHGvZSMuFBmaRECCFPnJDNWITmvXQ2zb5KOFkQiOlf9ph+RTdqbfY67OVkG8n1
+	GuynLSkB6ZS8FWYFl2g==
+X-Google-Smtp-Source: AGHT+IGexTDKokp9rk/e6fsbCXImxJu0jdE/ahX4LI8fjziTk042QG5GF6IUPrE69FOI/cc07tS3Pg==
+X-Received: by 2002:a05:6512:2391:b0:55b:9376:5318 with SMTP id 2adb3069b0e04-55cc011b322mr2088594e87.40.1754847101748;
+        Sun, 10 Aug 2025 10:31:41 -0700 (PDT)
+Received: from gmail.com ([185.209.199.97])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b8898bf90sm3956911e87.26.2025.08.10.10.31.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Aug 2025 10:31:41 -0700 (PDT)
+Date: Sun, 10 Aug 2025 18:31:35 +0100
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: jikos@kernel.org, bentiss@kernel.org, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] HID: multitouch: fix integer overflow in set_abs()
+Message-ID: <aJjXacCgSk-aNyTh@gmail.com>
+References: <20250723173659.59327-1-qasdev00@gmail.com>
+ <914ff45b-2260-42c0-9ccf-a3efd667d4f5@kernel.org>
+ <aIJXqs-U8vDpYv0S@gmail.com>
+ <f7257221-cbfa-4f51-8ac4-38060bfaf2f4@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.16
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <f7257221-cbfa-4f51-8ac4-38060bfaf2f4@kernel.org>
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+On Thu, Jul 31, 2025 at 09:43:38AM +0200, Jiri Slaby wrote:
+> On 24. 07. 25, 17:56, Qasim Ijaz wrote:
+> > On Thu, Jul 24, 2025 at 08:58:40AM +0200, Jiri Slaby wrote:
+> > > On 23. 07. 25, 19:36, Qasim Ijaz wrote:
+> > > > It is possible for a malicious HID device to trigger a signed integer
+> > > > overflow (undefined behaviour) in set_abs() in the following expression
+> > > > by supplying bogus logical maximum and minimum values:
+> > > > 	
+> > > > 	int fuzz = snratio ? (fmax - fmin) / snratio : 0;
+> > > > 
+> > > > For example, if the logical_maximum is INT_MAX and logical_minimum is -1
+> > > > then (fmax - fmin) resolves to INT_MAX + 1, which does not fit in a 32-bit
+> > > > signed int, so the subtraction overflows.
+> > > 
+> > > The question is if it matters with -fwrapv?
+> > 
+> > Ah yea thanks for bringing this up Jiri. I think you might be correct,
+> > after doing some research it looks like the kernel enables -fno‑strict‑overflow
+> > which implies -fwrapv which leads to wrap around instead of UB If I undestand
+> > correctly. So with that in mind this patch probably doesn't do anything
+> > useful, do you agree?
+> 
+> Yes, it correctly wraps around. But the question remains :). Does it matter
+> or not?
+> 
 
-[ Upstream commit d897d81671bc4615c80f4f3bd5e6b218f59df50c ]
+probably not. From what I can tell it doesn't look like any further security
+issues occur as a result of the wrap around behaviour so i think its
+probably best to drop this patch.
 
-When there are too many block extents for a layoutcommit, they may not
-all fit into the maximum-sized RPC. This patch allows the generic pnfs
-code to properly handle -ENOSPC returned by the block/scsi layout driver
-and trigger additional layoutcommits if necessary.
-
-Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250630183537.196479-5-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-**Backport Status: YES**
-
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
-
-## Bug Fix Nature
-
-This commit fixes a clear bug in the pNFS (parallel NFS) layoutcommit
-handling where the code didn't properly handle the `-ENOSPC` error
-returned when there are too many block extents to fit in a single RPC
-(Remote Procedure Call). Looking at the code changes:
-
-1. **The Problem**: In `ext_tree_encode_commit()`
-   (fs/nfs/blocklayout/extent_tree.c:536-539), when there are too many
-   extents, the function returns `-ENOSPC` but continues counting. The
-   original `pnfs_layoutcommit_inode()` function didn't handle this
-   error properly.
-
-2. **The Fix**: The patch adds specific handling for the `-ENOSPC` error
-   case:
-   - Line 3394 → 3396: Changed to only `put_cred()` if status is NOT
-     `-ENOSPC`
-   - Line 3399 → 3401-3403: Added special handling to check for
-     `-ENOSPC` and set `mark_as_dirty = true`
-   - Line 3409: Changed condition to mark inode dirty if either `status`
-     is set OR `mark_as_dirty` is true
-
-## Impact Analysis
-
-1. **User-Visible Bug**: Without this fix, when users have workloads
-   that generate many block extents (common in database or large file
-   operations), layoutcommits would fail silently, potentially leading
-   to data inconsistency or loss.
-
-2. **Contained Fix**: The changes are minimal and localized to the
-   layoutcommit path:
-   - Only affects the error handling path
-   - Doesn't change the normal operation flow
-   - Doesn't introduce new features or APIs
-
-3. **Clear Regression Risk Assessment**:
-   - Low risk - the patch only adds proper error handling for a specific
-     error code
-   - Doesn't change fundamental data structures or algorithms
-   - The `-ENOSPC` handling triggers additional layoutcommits as needed,
-     which is the correct behavior
-
-## Stable Criteria Compliance
-
-The commit meets stable kernel criteria:
-- **Fixes a real bug**: Handles RPC size limit overflow that can occur
-  in production
-- **Small and targeted**: Only ~15 lines of actual logic changes
-- **No new features**: Pure bug fix, no feature additions
-- **Tested**: Has review from Christoph Hellwig (a well-known filesystem
-  maintainer)
-- **Important for users**: Prevents potential data consistency issues in
-  pNFS deployments
-
-## Code Analysis Details
-
-The specific code flow shows:
-1. `ext_tree_encode_commit()` returns `-ENOSPC` when buffer is too small
-   (line 538 in extent_tree.c)
-2. The old code would incorrectly release credentials and fail the
-   entire operation
-3. The new code:
-   - Preserves the credentials when `-ENOSPC` occurs
-   - Sets the inode as dirty to trigger another layoutcommit attempt
-   - Allows the operation to be retried with proper handling
-
-This is a classic case of missing error handling that should be
-backported to ensure data integrity in stable kernels running pNFS
-workloads.
-
- fs/nfs/pnfs.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 1a7ec68bde15..3fd0971bf16f 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -3340,6 +3340,7 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	struct nfs_inode *nfsi = NFS_I(inode);
- 	loff_t end_pos;
- 	int status;
-+	bool mark_as_dirty = false;
- 
- 	if (!pnfs_layoutcommit_outstanding(inode))
- 		return 0;
-@@ -3391,19 +3392,23 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	if (ld->prepare_layoutcommit) {
- 		status = ld->prepare_layoutcommit(&data->args);
- 		if (status) {
--			put_cred(data->cred);
-+			if (status != -ENOSPC)
-+				put_cred(data->cred);
- 			spin_lock(&inode->i_lock);
- 			set_bit(NFS_INO_LAYOUTCOMMIT, &nfsi->flags);
- 			if (end_pos > nfsi->layout->plh_lwb)
- 				nfsi->layout->plh_lwb = end_pos;
--			goto out_unlock;
-+			if (status != -ENOSPC)
-+				goto out_unlock;
-+			spin_unlock(&inode->i_lock);
-+			mark_as_dirty = true;
- 		}
- 	}
- 
- 
- 	status = nfs4_proc_layoutcommit(data, sync);
- out:
--	if (status)
-+	if (status || mark_as_dirty)
- 		mark_inode_dirty_sync(inode);
- 	dprintk("<-- %s status %d\n", __func__, status);
- 	return status;
--- 
-2.39.5
-
+thanks,
+qasim
+> thanks,
+> -- 
+> js
+> suse labs
 
