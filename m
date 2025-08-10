@@ -1,88 +1,174 @@
-Return-Path: <stable+bounces-166955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F024EB1FB09
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 18:37:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B1AB1FB13
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 18:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B490189349A
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 16:38:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85BC63A76E3
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 16:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB20F42049;
-	Sun, 10 Aug 2025 16:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8E625D535;
+	Sun, 10 Aug 2025 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVIfroHM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlQYaWMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3BF10F2;
-	Sun, 10 Aug 2025 16:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630E318C933;
+	Sun, 10 Aug 2025 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754843855; cv=none; b=jc2fLg9AfZUIddF45bgvQugVEnc+B2p4UtcG3QwrUXoEDa/zpehnCLqskQq6LLM8Nl1syddo401BMMA3DedHZbDx4dm2GWYyBseRrOJrAVFLXa/Ifu58hyyd7OD65VfL8ePQ/8IpFsRvKDSn58SxclnC7mpBX0c4eDdWjy0o6wA=
+	t=1754844722; cv=none; b=YT6jpJtbJY+p8ay63QwlVRo2/cGQofXaqNVAAad+ph4D/lDwFyChhkbuEiD09T00d1/aaqxM1N1ENMqs/93XnJrFDAqU791aqityLhRaeqVmHuvkLUATm0+lwJPcZkVKVShv6Ft+jGcZN+PLARamA3hJqWgVn6yJgUkGQJRB7t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754843855; c=relaxed/simple;
-	bh=mU1CU6QSs1t+ZnPN5+7CkO8QO1LKiTJxVkyoIEy/7DA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Riz26Ibu9PzarjO3S8Yt7dFecrkoWd+g2U7XopbtinzU2NcbsvI9D+yIxun/jSdKkaDcn57skwx0GPG2NDzSXJ02n/s7G9l2cRoGTALK1uZ3XyEKs3LbX/1IcLWsJp1+4/y/wwUsfp2umoMy30y3u18j+liDbUNtjh1Ba8oa4JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVIfroHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F58C4CEEB;
-	Sun, 10 Aug 2025 16:37:34 +0000 (UTC)
+	s=arc-20240116; t=1754844722; c=relaxed/simple;
+	bh=5+1OgXBWikGfNfHsB4wmJv6tgGDqZu9/PnzXxMeunkQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=unuq+xR3BhdpZiitIeZZoEbVfBtfjF9xc/7vAr/aCO2+WrgvTQj35t9OTcsTLFCqL+nZMVilh3yn5f2Mk+JvMmix30ZwaIVavWRSb91PjpbdfnIqYNRhCGRhVxtMRisiuTKb7hzJbacDtuiOFR/eDFb7OFwrVnln/UCh6a5CIDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlQYaWMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9445C4CEEB;
+	Sun, 10 Aug 2025 16:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754843854;
-	bh=mU1CU6QSs1t+ZnPN5+7CkO8QO1LKiTJxVkyoIEy/7DA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVIfroHMubMtqvBRBUD1Q+6yobVn31zakpY8QNNodPCB/8XjGjKL835sRY4waCrrr
-	 q0rr6VT9V8Gzh1UMUNuoBP6HKF1OmWyjEp+Csb/cXnD2+fB6bR9t2ufD6t84EpBeju
-	 HiKe6SJ7xBC0HFXTTpQzjLlQIeHCV++zWwddomokddZiJnGCIm4zK0M/nIqRbgAE9a
-	 57Hz+2qNjrnoEUi+SSBLq4XjHeMKB1xLlYmT5TQlDB4wwAG//HdMQOZtRScS9w8uIL
-	 P1K7f8diiZ65c3NcRhuS5xgUztipEmQFwrHf9/3PdBRuU7qa8TEd/rrhqGB3FJm5Ec
-	 TYQLafZ4buYOw==
-From: SeongJae Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3] mm/damon/core: fix commit_ops_filters by using correct nth function
-Date: Sun, 10 Aug 2025 09:37:32 -0700
-Message-Id: <20250810163732.45668-1-sj@kernel.org>
+	s=k20201202; t=1754844722;
+	bh=5+1OgXBWikGfNfHsB4wmJv6tgGDqZu9/PnzXxMeunkQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NlQYaWMlmFpolWHrnZ1R2FFoqoRoIb6qh7OqItMjD5vlwKa1B6FFdZXRsueEULYT5
+	 VOHHs3+8zKeW6dsigo7A3T1l3Mj5bz2D8hooI6qKMFq9d3P5f8W5pgTYzHwBL/Nssh
+	 HaSU7Pr1F28ARpsTaoisjDKCtiSpGo3SlpLDFkT+gd2+o5N9qEwurZ/9hF8qCw8/Wl
+	 WFkwpY9kEUCUl/QGapnJC2AWyPqXzF9GToBdu6aMW8YiHroxctIg9bnm3jtSAaD+ge
+	 DeUMrioaw/MLMDTKP9l/zDLK2NWWE6zuw1R5TBWsELJCoq2h33OuF+l8pVQbVO+DHk
+	 A2PoAGpnEDjNA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: John Garry <john.g.garry@oracle.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16-5.10] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
+Date: Sun, 10 Aug 2025 12:51:43 -0400
+Message-Id: <20250810165158.1888206-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250810124201.15743-1-ekffu200098@gmail.com>
-References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16
 Content-Transfer-Encoding: 8bit
 
-+ Andrew
+From: John Garry <john.g.garry@oracle.com>
 
-On Sun, 10 Aug 2025 21:42:01 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
 
-> damos_commit_ops_filters() incorrectly uses damos_nth_filter() which
-> iterates core_filters. As a result, performing a commit unintentionally
-> corrupts ops_filters.
-> 
-> Add damos_nth_ops_filter() which iterates ops_filters. Use this function
-> to fix issues caused by wrong iteration.
-> 
-> Fixes: 3607cc590f18 ("mm/damon/core: support committing ops_filters") # 6.15.x
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+In blk_stack_limits(), we check that the t->chunk_sectors value is a
+multiple of the t->physical_block_size value.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+However, by finding the chunk_sectors value in bytes, we may overflow
+the unsigned int which holds chunk_sectors, so change the check to be
+based on sectors.
 
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-Thanks,
-SJ
+LLM Generated explanations, may be completely bogus:
 
-[...]
+**Backport Status: YES**
+
+## Extensive Analysis
+
+This commit should be backported to stable kernel trees for the
+following reasons:
+
+### 1. **It fixes a real integer overflow bug**
+The original code performs `(t->chunk_sectors << 9)` which can cause an
+integer overflow. Since both `chunk_sectors` and `physical_block_size`
+are `unsigned int` (32-bit), when `chunk_sectors` is larger than
+8,388,607 (2^23 - 1), shifting it left by 9 bits (multiplying by 512)
+will overflow the 32-bit unsigned integer. This overflow can lead to
+incorrect alignment checks.
+
+### 2. **The fix is minimal and contained**
+The change is a single-line modification that replaces:
+```c
+if ((t->chunk_sectors << 9) & (t->physical_block_size - 1))
+```
+with:
+```c
+if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT))
+```
+
+This mathematically equivalent check avoids the overflow by dividing
+`physical_block_size` by the sector size (512 bytes) instead of
+multiplying `chunk_sectors` by 512.
+
+### 3. **It's a correctness issue in critical block layer code**
+The `blk_stack_limits()` function is fundamental to the block layer's
+device stacking functionality, used by MD, DM, and other stacked block
+devices. An overflow here could lead to:
+- Incorrect alignment detection
+- Improper chunk_sectors being cleared when it shouldn't be
+- Potential data corruption or I/O errors in stacked block devices
+
+### 4. **The fix has low regression risk**
+- The new calculation is mathematically equivalent to the intended check
+- It only changes how the comparison is performed, not the logic
+- The fix has been reviewed by multiple maintainers (Hannes Reinecke,
+  Martin K. Petersen, Damien Le Moal)
+- No new features or architectural changes are introduced
+
+### 5. **Real-world impact potential**
+Modern storage devices can have large chunk sizes. For example:
+- NVMe devices with large zones could have chunk_sectors approaching or
+  exceeding the overflow threshold
+- RAID configurations with large stripe sizes
+- This becomes more likely as storage devices grow in capacity and
+  complexity
+
+### 6. **Follows stable kernel criteria**
+According to stable kernel rules, this qualifies because it:
+- Fixes a bug that users can potentially hit
+- Is obviously correct and tested
+- Is small (single line change)
+- Fixes only one thing
+- Has no dependencies on other patches
+
+The commit message clearly describes the problem (overflow in unsigned
+int) and the solution (changing the check to avoid overflow). The fix
+maintains the same semantic meaning while being overflow-safe, making it
+an ideal candidate for stable backporting.
+
+ block/blk-settings.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index a000daafbfb4..88890e904320 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -779,7 +779,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 	}
+ 
+ 	/* chunk_sectors a multiple of the physical block size? */
+-	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
++	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
+ 		t->chunk_sectors = 0;
+ 		t->flags |= BLK_FLAG_MISALIGNED;
+ 		ret = -1;
+-- 
+2.39.5
+
 
