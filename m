@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-166947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060D9B1F776
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 02:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D458B1F777
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 02:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C72F17BBF2
-	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 00:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5983517BB12
+	for <lists+stable@lfdr.de>; Sun, 10 Aug 2025 00:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40455FC0B;
-	Sun, 10 Aug 2025 00:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B533BE555;
+	Sun, 10 Aug 2025 00:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqpUePYt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBWb2u+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0098FEC4
-	for <stable@vger.kernel.org>; Sun, 10 Aug 2025 00:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77538EC4
+	for <stable@vger.kernel.org>; Sun, 10 Aug 2025 00:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754786540; cv=none; b=QFbym811zTNrlbrCjqcThXl6FbGPz+KlMy+Ahk4VoAvHMJog4tyGoiv4y2+8e94N1cp+K1PrDx3TFgR5Ob8AmfRP/xt4zdnF+73Y/vKR4VyQSTx/wuDfJp6HjlX8k5ysZ5RDLPgg1U6bhrwR+rpqj5btqqiyJ+IRt3WiC6JgndI=
+	t=1754786542; cv=none; b=RQX15w5UEU62+KoA1cv+RdM4EBPnh61XakNSDAeU1LZl6VFrcQFRiaHFdlyPcvyzob2cTkYWlZSqupJfwyfAMDpAvPTS6yoOVrdREXI9RO8k3jYvT21wGvsED9iXuycbRy1aM6hvNQCBN/ulmabX+vt9T1d8D4TcXsE6VsS/1tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754786540; c=relaxed/simple;
-	bh=wBe6t8JWdOQb8+80/Q6j1O1K8lmE9bajqbxgDCNGV1E=;
+	s=arc-20240116; t=1754786542; c=relaxed/simple;
+	bh=ml+vkH5ShBfOY3jBOWp0sj+mW1A3YtV+MTo8f3dolbs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PG5du6L5hsRTbqWoh93RpN48812MalMEQtVm5cAgIxM3KPqiou/8gH5AJo3cwQ3WlnBIIxYto6Gq4NLjoWOf5IpoTOfOm5cCRGstu9QCFh4UwF0qlVdP/CNrAS7eENWHTF+gugScS00Yu1pRFzxQn1AlboH6QmNZ4CoIOVSrTDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqpUePYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB86C4CEE7;
-	Sun, 10 Aug 2025 00:42:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=grF55gUTw9QbccO0eAg2jmdxsZ2JDMZ3w04DCP139zHYAS50HRfz6FJHXu1D91xgQkRB1BmuBJj36xRhxL7FiPVN1Mu4ak6fQWhXB+WdBs2ooigrOXSwp1ZiBqXRdAP7Bgezfz5efdvSY3uGq74Fk1KB5/Hy3NzZeCsNPrzWtZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBWb2u+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F82C4CEE7;
+	Sun, 10 Aug 2025 00:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754786539;
-	bh=wBe6t8JWdOQb8+80/Q6j1O1K8lmE9bajqbxgDCNGV1E=;
+	s=k20201202; t=1754786541;
+	bh=ml+vkH5ShBfOY3jBOWp0sj+mW1A3YtV+MTo8f3dolbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqpUePYtAvilhWsLqL4BSA++buT2q4DZSawiDjTpmJEptPdqVie/t8UcTpEnNLDNN
-	 uQ+GhvAVOgezXuP/0qrwyJHdfrG/pkbINLBu9gn1BzgojKlbcXw3eYAeXom0MviVf4
-	 Y3Nyc0Baqm/jsVozkzBXnYree19FDdwz4MdXlsa6t6TyU0t8+r28l1HgFrh+COVXnr
-	 bgLOzwd9b1+tgh58FzjuiCwuOr5qFm9ZSCfSSJrxiV0kvTu67b/hGV8/AZU/bC9ozv
-	 6ZNLTGGS2BBRVpVkg/JSoqHpo5fWuZRgjlzS3xITyIBTY26/OsLL+9NtuXak5nj1X/
-	 SjKyfUnzYIYAg==
+	b=TBWb2u+DI8IR9qYElQ+BZjPqKmQ1e4LAzv9w6ZcaYEyEizbqW/EAFM9ZrYuqK5JB3
+	 MOQtdeXHnLHL3uNQe75gQrr27zhVgFIq5VQ7kKqb3M6Jte23k3uEmjALkWYhBK7tsx
+	 7AWsT/K1PE1J1S8LJOSYCHbgCSlips15svw+r9tRFvfuyp5N9tFUd24VKsMjUNHCe/
+	 /iz0ls23T7Jb4alcDSb3PCfEXvuv/QTNukC4waeojQdG82+Nm08im6kgl+Mr31oJ6b
+	 Wu4QV3Uz51wuXnsAiuHurR5WGjh2CKc6dzgVp3GtoY/DnghFSFwKmlJcFtx8Lexi1Q
+	 PxKvkXshBI86w==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	siddh.raman.pant@oracle.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6] io_uring/rw: ensure reissue path is correctly handled for IOPOLL
-Date: Sat,  9 Aug 2025 20:42:17 -0400
-Message-Id: <1754783538-5c8b45e3@stable.kernel.org>
+Subject: Re: [PATCH 5.15, 5.10 1/6] sch_htb: make htb_qlen_notify() idempotent
+Date: Sat,  9 Aug 2025 20:42:19 -0400
+Message-Id: <1754784887-d65854f8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250809182636.209767-1-sumanth.gavini@yahoo.com>
+In-Reply-To: <d8d3e034c967229486ef198ca4660f0d8bf9cdbe.1754751592.git.siddh.raman.pant@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,52 +64,36 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found follow-up fixes in mainline
 
-Found matching upstream commit: bcb0fda3c2da9fe4721d3e73d80e778c038e7d27
+The upstream commit SHA1 provided is correct: 5ba8b837b522d7051ef81bacf3d95383ff8edce5
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Sumanth Gavini <sumanth.gavini@yahoo.com>
-Commit author: Jens Axboe <axboe@kernel.dk>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Commit author: Cong Wang <xiyou.wangcong@gmail.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
 6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+
+Found fixes commits:
+376947861013 sch_htb: make htb_deactivate() idempotent
 
 Note: The patch differs from the upstream commit:
 ---
-1:  bcb0fda3c2da ! 1:  9067ba27246b io_uring/rw: ensure reissue path is correctly handled for IOPOLL
-    @@
-      ## Metadata ##
-    -Author: Jens Axboe <axboe@kernel.dk>
-    +Author: Sumanth Gavini <sumanth.gavini@yahoo.com>
-     
-      ## Commit message ##
-         io_uring/rw: ensure reissue path is correctly handled for IOPOLL
-     
-    +    commit  bcb0fda3c2da9fe4721d3e73d80e778c038e7d27 upstream.
-    +
-         The IOPOLL path posts CQEs when the io_kiocb is marked as completed,
-         so it cannot rely on the usual retry that non-IOPOLL requests do for
-         read/write requests.
+1:  5ba8b837b522 ! 1:  2a0a35e37372 sch_htb: make htb_qlen_notify() idempotent
     @@ Commit message
-         Reported-by: John Garry <john.g.garry@oracle.com>
-         Link: https://lore.kernel.org/io-uring/2b43ccfa-644d-4a09-8f8f-39ad71810f41@oracle.com/
-         Signed-off-by: Jens Axboe <axboe@kernel.dk>
-    +    Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
+         Link: https://patch.msgid.link/20250403211033.166059-2-xiyou.wangcong@gmail.com
+         Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+         Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    +    (cherry picked from commit 5ba8b837b522d7051ef81bacf3d95383ff8edce5)
+    +    Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
      
-      ## io_uring/rw.c ##
-     @@ io_uring/rw.c: static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
-    @@ io_uring/rw.c: static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
-      	if (unlikely(res != req->cqe.res)) {
-     -		if (res == -EAGAIN && io_rw_should_reissue(req)) {
-     +		if (res == -EAGAIN && io_rw_should_reissue(req))
-    - 			req->flags |= REQ_F_REISSUE | REQ_F_BL_NO_RECYCLE;
-    + 			req->flags |= REQ_F_REISSUE | REQ_F_PARTIAL_IO;
-     -			return;
-     -		}
-     -		req->cqe.res = res;
+      ## net/sched/sch_htb.c ##
+     @@ net/sched/sch_htb.c: static void htb_qlen_notify(struct Qdisc *sch, unsigned long arg)
 
 ---
 
@@ -116,5 +101,6 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-6.6.y        | Success     | Success    |
+| 5.15                      | Success     | Success    |
+| 5.10                      | Success     | Success    |
 
