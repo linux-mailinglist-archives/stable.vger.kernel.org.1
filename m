@@ -1,152 +1,183 @@
-Return-Path: <stable+bounces-166994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6557AB20077
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 09:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2074B200F4
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 09:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B48C189C0DF
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 07:39:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A577189A1CE
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 07:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74EC2D9EE7;
-	Mon, 11 Aug 2025 07:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FE22D9EE6;
+	Mon, 11 Aug 2025 07:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJDS7pZ3"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="rFoAuifd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A3B18CC13;
-	Mon, 11 Aug 2025 07:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DAE1F428C;
+	Mon, 11 Aug 2025 07:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754897957; cv=none; b=oOfAGTurCypt6p9u86CBeAW4dtM198OoddkwvIasoSkB6wzL3E8q2Ez4F81GVRu6ZXbaDd4TIYBNfqpPwer3USoMNOR5pjTTVX2vNgNlvzKwaPaz1mP55sxqZpPeMit+ubvsAoWkweGpWRdc1b08TDDCYt76nQ2v5KFvDr6MglI=
+	t=1754898995; cv=none; b=HLIemBSfH387jRaKRwvjmrbYoEWww5no64HiQIJsV1kTq2Kx+LbHkcGlU6W+uIyeLV+W0LatNixgrQ528SItDu5ieHv3KCl1oGITmV5iVc+cO9MTwX1gbZzAZOZ+Lt7AYwwC5zqmpqV1jvJMY5UL6vVkH1K1qnp2I1ZW2VxgFU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754897957; c=relaxed/simple;
-	bh=mK6CJP6wXPdl6rvaIqsW3gkQFt5wVL75TLgzg9n7BVw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=K64yoBcPHZLsnHUHc0/GVWUopPPaPnc4S4ten6f+MVS9qNoNoN03HLGJfVsbW8/yvsQe+6AMXYKbsKHBdpVQxIDgEGMj5z1sknUBINv9Ted+nlkuctRrx4CyEE/ZzRpp0vJyX0pvsrd6/s+K03NC6fsakJ17UKcAseW8wcm7Ewc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJDS7pZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F196C4CEF6;
-	Mon, 11 Aug 2025 07:39:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754897957;
-	bh=mK6CJP6wXPdl6rvaIqsW3gkQFt5wVL75TLgzg9n7BVw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=FJDS7pZ3Dd5o9CzfSfgqeMXjCSuQ2XZOV7FZZkXXawW8tlZBAIUjcavmwXs0RHRkK
-	 Vp0NSL/rL/iaHiQnGJKdu6YEHnB+IzCrThYQO1JLpxyicFbieoTb8Sl/l0q5BegKtP
-	 9kk/XIAO/GAgrOlxC9H+DcWUts5jRddWkGMa9W1LjDMXppv9z0qeTPAgvM8tZYDFPC
-	 hQrDrYr1Y10xwkliknEo1OA3PYDzpwHfkmVlBosRhnKSCWVlYwfqyusnyqXZ/EyOfg
-	 YkLGurowGAejqtM53pom18mgBp5lfNsmN/GpT/yFqwT8a1s4erDqa0+WyZ22iPuK2m
-	 kg4ZfOQPzElQw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10EE2C87FD2;
-	Mon, 11 Aug 2025 07:39:17 +0000 (UTC)
-From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
-Date: Mon, 11 Aug 2025 16:39:05 +0900
-Subject: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
+	s=arc-20240116; t=1754898995; c=relaxed/simple;
+	bh=Us9A02rAfeWiFHHEg4K6xC2IqA5Evy6GkingApnfNlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CAGocrZMOPLZ/dE/6lUPyB+RDL4aDQcwoRsDndutS64itsNPQ2Zi2yDUUPLdoNWekP3Q/+R0s5njzzAQMFWNgoLWV0WIiB5JOXbgGpH/kKN0kMyAfUA5NXuzP+SD8sVOCwdLUuILdAZ5L/XPjiqeJ7qn0n6ySkX+yVhUtAyet0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=rFoAuifd; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7A2C3379;
+	Mon, 11 Aug 2025 09:55:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1754898931;
+	bh=Us9A02rAfeWiFHHEg4K6xC2IqA5Evy6GkingApnfNlM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rFoAuifd0sJhbR96hiXqxC/n9dntL5Twzb1c9AbhkNgzA11a36PGDQPkBQnwklBR7
+	 ugKaBk2ryyWFHMrbpCFm0lRyRi0QE3s3mOe8uVsZlAxof1FY//UiCRawdocpMmbNF7
+	 pGmgHqhjuQieQfhBl7wbu81ThEsXDX2qjMIFWke4=
+Message-ID: <a3973fac-7ed9-444e-864b-5cfabf8f795f@ideasonboard.com>
+Date: Mon, 11 Aug 2025 10:56:19 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] drm/tidss: Fixes data edge sampling
+To: devarsh <devarsht@ti.com>, Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: thomas.petazzoni@bootlin.com, Jyri Sarha <jsarha@ti.com>,
+ Tomi Valkeinen <tomi.valkeinen@ti.com>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+ Jyri Sarha <jyri.sarha@iki.fi>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+ Benoit Parrot <bparrot@ti.com>, Lee Jones <lee@kernel.org>,
+ Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Tero Kristo <kristo@kernel.org>, s-jain1@ti.com
+References: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
+ <1951ecfe-d080-464c-8441-f5400f535495@ideasonboard.com>
+ <19dd9aa9-43c6-4483-9cdf-f297e41ecdec@ti.com>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <19dd9aa9-43c6-4483-9cdf-f297e41ecdec@ti.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
-References: <20250811-iot_iter_folio-v1-0-d9c223adf93c@codewreck.org>
-In-Reply-To: <20250811-iot_iter_folio-v1-0-d9c223adf93c@codewreck.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Maximilian Bosch <maximilian@mbosch.me>, Ryan Lahfa <ryan@lahfa.xyz>, 
- Christian Theune <ct@flyingcircus.io>, Arnout Engelen <arnout@bzzt.net>, 
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, Dominique Martinet <asmadeus@codewreck.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-7be4f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2365;
- i=asmadeus@codewreck.org; h=from:subject:message-id;
- bh=hZDuTLSkBIrbNvtG2nBE30QLrkf6x/91sVi7wfIoY/8=;
- b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBomZ4jPlqojv6vaPt93ZlypZLQsy3yk2wT3tyj6
- icWFXgHg5yJAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaJmeIwAKCRCrTpvsapjm
- cPRkD/99SV5Af6iDJv4P7JOhmn3VChlwphgIm3/B/MNnzBf1jXsBZaCdyxliuJ0wzqyv5XM1hOR
- Bx0XvLSU8abfTNwB6m92a/wDMVm/VJzJe4LJ7XeRA9fZacSaBjs5xo9481418Y56j9ARNerELQA
- KMy8ktpDAoCcbw/a0PitGs+4lULLGNd4pXEj+iJ6TTndo/CFsza73PKqjCC7XCgD6KQZX+O80Vc
- 3Y7Fq8YbToVUbq18aS+AvNyRbvS72bg4VlPodHSMxPGl/POs/vFPMobKnz3iDu9A0bkUuXDq58E
- QHFDNlnqrm8yOnXyD0rfsq1mvqpGIN2bY4NHqeBT1x9DNDQ6KDWwukj1AHdwJM13nxAgXgTR8gP
- SAjIDJ0pJEz7PFfmVvMWX8Hdg9DGuPNqDcuujs8hnKraPkBqv4UJe3d4I8+IE5qqnhKhIDrUTBs
- t/3zyXGLFdfrhpam3zxuxA5LdrX4HDF/sDiZ5PHb7fDHBlszz5oHW/5QAWzvEqymp6tgPowx0FV
- 4jCRRMpNB11If1y9KJM1QyD9g6dcYgi0EZ5GOOGR/vealtNi1U5iENhsBvXNu+fVcOC6YAKtUhU
- 9m0fuUJF7//Vdia6rl0SiLs4Cxtlaw2EhKJL49XOqpwro6uGWUfxDDlMnR713LMOxihT1MVFPXS
- SpzJgfLbIpBRWhw==
-X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
- fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
-X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
- auth_id=435
-X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
-Reply-To: asmadeus@codewreck.org
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+Hi,
 
-It's apparently possible to get an iov forwarded all the way up to the
-end of the current page we're looking at, e.g.
+On 08/08/2025 16:24, devarsh wrote:
+> Hi Tomi, Louis,
+> 
+> On 07/08/25 18:51, Tomi Valkeinen wrote:
+>> Hi,
+>>
+>> On 30/07/2025 20:02, Louis Chauvet wrote:
+>>> Currently the driver only configure the data edge sampling partially. The 
+>>> AM62 require it to be configured in two distincts registers: one in tidss 
+>>> and one in the general device registers.
+>>>
+>>> Introduce a new dt property to link the proper syscon node from the main 
+>>> device registers into the tidss driver.
+>>>
+>>> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+>>> ---
+>>> Cc: stable@vger.kernel.org
+>>>
+>>> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+>>
+>> I understand why you call this a fix, but I think this is not really a
+>> fix. From looking at the patches, my understanding is that for DPI
+>> outputs we have always only supported certain clock/data edge.
+> 
+> I don't think driver makes a distinction between supported/unsupported
+> or errors out in case it is run with "different" clock/data edge panel
+> (for e.g  DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE is set per the panel
+> configuration). Instead it tries to program the VP registers per the
+> DRM_BUS_FLAG* getting passed by framework per the connected panel and
+> gives an incorrect behavior if those are different than defaults since
+> those settings are not sufficient for these displays and instead extra
+> MMR register settings are also required.
 
-(gdb) p *iter
-$24 = {iter_type = 4 '\004', nofault = false, data_source = false, iov_offset = 4096, {__ubuf_iovec = {
-      iov_base = 0xffff88800f5bc000, iov_len = 655}, {{__iov = 0xffff88800f5bc000, kvec = 0xffff88800f5bc000,
-        bvec = 0xffff88800f5bc000, folioq = 0xffff88800f5bc000, xarray = 0xffff88800f5bc000,
-        ubuf = 0xffff88800f5bc000}, count = 655}}, {nr_segs = 2, folioq_slot = 2 '\002', xarray_start = 2}}
+Well, this gets into the meaning of "fix". I didn't right away see an
+explicit definition in the kernel docs.
 
-Where iov_offset is 4k with 4k-sized folios
+When the tidss driver was added, neither AM62x nor AM62A existed. Yet
+this series "fixes" the original tidss commit for AM62x and AM62A? And
+the patch proposes that this series is to be backported to stable
+kernels going back to the original tidss commit?
 
-This should have been because we're only in the 2nd slot and there's
-another one after this, but iterate_folioq should not try to map a
-folio that skips the whole size, and more importantly part here does
-not end up zero (because 'PAGE_SIZE - skip % PAGE_SIZE' ends up
-PAGE_SIZE and not zero..), so skip forward to the "advance to next
-folio" code.
+When AM62x and AM62A support was added to the tidss, this feature was
+not in the driver. So this is clearly also not a regression. Missing
+this feature causes no crashes or other system level misbehavior. It
+only causes the panels (that have never been supported with tidss on
+AM62x and AM62A) to show garbage.
 
-Reported-by: Maximilian Bosch <maximilian@mbosch.me>
-Reported-by: Ryan Lahfa <ryan@lahfa.xyz>
-Reported-by: Christian Theune <ct@flyingcircus.io>
-Reported-by: Arnout Engelen <arnout@bzzt.net>
-Link: https://lkml.kernel.org/r/D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me/
-Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
----
- include/linux/iov_iter.h | 3 +++
- 1 file changed, 3 insertions(+)
+So we have a driver, to which support for new SoCs was added at some
+later point, and at that point we did not add support for all kinds of
+panels. Is adding support for those panels a new feature or a bug fix?
+Should it be backported to stable kernels?
 
-diff --git a/include/linux/iov_iter.h b/include/linux/iov_iter.h
-index c4aa58032faf874ee5b29bd37f9e23c479741bef..7988a0fc94ad0525b475196035dc5d754fd3d117 100644
---- a/include/linux/iov_iter.h
-+++ b/include/linux/iov_iter.h
-@@ -168,6 +168,8 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
- 			break;
- 
- 		fsize = folioq_folio_size(folioq, slot);
-+		if (skip >= fsize)
-+			goto next;
- 		base = kmap_local_folio(folio, skip);
- 		part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
- 		remain = step(base, progress, part, priv, priv2);
-@@ -177,6 +179,7 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
- 		progress += consumed;
- 		skip += consumed;
- 		if (skip >= fsize) {
-+next:
- 			skip = 0;
- 			slot++;
- 			if (slot == folioq_nr_slots(folioq) && folioq->next) {
+Documentation/process/stable-kernel-rules.rst has some guidelines. Maybe
+one could argue that this is a "hardware quirk" mentioned there, or
+perhaps "add a device ID" (of sorts). I might agree, if this was an
+easily backportable, totally non-controversial, one-liner style patch
+with no chance of regressions. Maybe the next version will be, but this
+one is not.
 
--- 
-2.50.1
-
+ Tomi
 
 
