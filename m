@@ -1,93 +1,123 @@
-Return-Path: <stable+bounces-167023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F87BB20512
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 12:17:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB1AB20473
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 11:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50F4D17A165
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 10:17:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF0C642509B
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 09:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E40F23ED5E;
-	Mon, 11 Aug 2025 10:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C380D1F09B3;
+	Mon, 11 Aug 2025 09:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="LymLS/9A"
 X-Original-To: stable@vger.kernel.org
-Received: from lgeamrelo11.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+Received: from mail-10627.protonmail.ch (mail-10627.protonmail.ch [79.135.106.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB92230D1E
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 10:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797A21EF0B0;
+	Mon, 11 Aug 2025 09:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754907436; cv=none; b=CAqJvuTlo8I6rDZcD/YUz1vKNr/uG6AZuJj1oMPTPJav3xWddapqZ0x0t7iJ+KGtlwet63U6gXy/mUtQptBaXIDLor6z3WmNKikWMd+o3uwgXIfT6mLSepc62lhqbIp1VJZd7xd1lIzkY5B3u6TzQH+bf8223HB9uPGY73VHhl4=
+	t=1754905803; cv=none; b=At42vlyk5x4Pb7CfYzv7ApLP5sEiHw4hZdrgKGFmS8QbhZ4B2tH/ucl2pig4y11T+WVIoep7IkeyrDsqDNs4QGYujUsmLafcSmOfVEuatAk0CDLo+MUEJE+pei6qhdUksLy97AJ/UEglBzQKH/8nsw3qo5kLwf5+xcVoJJdEW6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754907436; c=relaxed/simple;
-	bh=r9tXkFCKd3yPOLffy2yeY3OwJMYq9y0SXOXHLnhdWFQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=GUt5u9kO+wrijKy3+VstONfhYsrnn5fH5/Bs0sQ7Ko8Vm4OAu7nRK0qeqzY67vTk5i0Fxdasp3H9NtyCBGHvl19v5juwcpls1UD7TF5ZecfKMCu6RTXOt9oYGYjBb+/ew01SnMyWCOfHNyr1ZQUnmQy3VeNkU95r1mlu8cYTM2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
-	by 156.147.23.52 with ESMTP; 11 Aug 2025 18:47:13 +0900
-X-Original-SENDERIP: 156.147.1.121
-X-Original-MAILFROM: chanho.min@lge.com
-Received: from unknown (HELO localhost.localdomain) (10.178.31.96)
-	by 156.147.1.121 with ESMTP; 11 Aug 2025 18:47:13 +0900
-X-Original-SENDERIP: 10.178.31.96
-X-Original-MAILFROM: chanho.min@lge.com
-From: Chanho Min <chanho.min@lge.com>
-To: Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org,
-	linux-kernel@vger.kernel.org,
-	gunho.lee@lge.com,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	Paulo Alcantara <pc@manguebit.com>,
-	stable@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Chanho Min <chanho.min@lge.com>
-Subject: [PATCH 4/4] smb: client: fix potential UAF in cifs_stats_proc_write()
-Date: Mon, 11 Aug 2025 18:46:39 +0900
-Message-Id: <20250811094639.37446-5-chanho.min@lge.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250811094639.37446-1-chanho.min@lge.com>
-References: <20250811094639.37446-1-chanho.min@lge.com>
+	s=arc-20240116; t=1754905803; c=relaxed/simple;
+	bh=+IYKCD0nOJYn6yRnTmu3JVuBWFyDouOFfYOc8XfdO40=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fgDJ5SUu8/nAvxURRFwLVqe+mf4i4oX8xWjfL7HtoNHNlgPoHH6kg2k86NJgmCFLBHK3vQa4TFA78dHOLwD6u3feE3ofszbdMuJebt8qreKtJBWaZxWz4GXqOfjfz28LMwZpMYw5oWKEVXabUE9b0dUWp0vrVeQMgVVV8HSfc9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=LymLS/9A; arc=none smtp.client-ip=79.135.106.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail2; t=1754905795; x=1755164995;
+	bh=+PMplA1rCZ5dgg5MkoqVzFnRYmdaxtuR8d/bb3ek6y4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LymLS/9AfzD/Wlf1SaWPfAuzDiRI+bk4LmcY+Au0QJutZOVfqnHqc4cSdtqpqaBKr
+	 UMg417pOsWxsZcEr8PqslseE94aiQXFqcG4JeXZUtryRqg97okEjLxt8YpHT/TIXsC
+	 4Ay9dNwaDwO5OIkLYzv09V+9KgDT40v9TKPvRj9S/HY3aC/46vbX8H2pJp3btAcruq
+	 CSGpGcB/19IV+cJtjSuRtkI2LHR5W5HqL19VkgvcSlrb3IQ7u+PGGVQNNntOrhRNCo
+	 Qr2ccZ3VI9DlJ+pvj9gVS17jLeE9rkoGh9vO1TM9eUB3dee9+00+KHlfNMT4cjF5ZZ
+	 FwWfSps551hWQ==
+Date: Mon, 11 Aug 2025 09:49:49 +0000
+To: Jonathan Cameron <jic23@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>, jean-baptiste.maneyrol@tdk.com, David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: inv_icm42600: change invalid data error to EBUSY
+Message-ID: <xfhhfw75w5pqvzhcujrszzom43mzejllqnvh5ulcnj22ifp4fs@q5zohi6c2vxv>
+In-Reply-To: <20250809202440.552e1cdf@jic23-huawei>
+References: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com> <20250809202440.552e1cdf@jic23-huawei>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: 3766b6357cc8ef568932d723a6bcb7c1339773d6
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Paulo Alcantara <pc@manguebit.com>
+On Sat, Aug 09, 2025 at 08:24:40PM +0100, Jonathan Cameron wrote:
+> On Fri, 08 Aug 2025 09:40:10 +0200
+> Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.c=
+om@kernel.org> wrote:
+>=20
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> >
+> > Temperature sensor returns the temperature of the mechanical parts
+> > of the chip. If both accel and gyro are off, temperature sensor is
+> > also automatically turned off and return invalid data.
+> >
+> > In this case, returning EBUSY error code is better then EINVAL and
+> > indicates userspace that it needs to retry reading temperature in
+> > another context.
+> >
+> > Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor su=
+pport")
+> > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> > Cc: stable@vger.kernel.org
+> +CC Sean who raised the issue.
 
-commit d3da25c5ac84430f89875ca7485a3828150a7e0a upstream.
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+>=20
+> > ---
+> >  drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers=
+/iio/imu/inv_icm42600/inv_icm42600_temp.c
+> > index 8b15afca498cb5dfa7e056a60d3c78e419f11b29..1756f3d07049a26038776a3=
+5d9242f3dd1320354 100644
+> > --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+> > +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+> > @@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct inv_icm4260=
+0_state *st, s16 *temp)
+> >  =09=09goto exit;
+> >
+> >  =09*temp =3D (s16)be16_to_cpup(raw);
+> > +=09/*
+> > +=09 * Temperature data is invalid if both accel and gyro are off.
+> > +=09 * Return EBUSY in this case.
+> > +=09 */
+> >  =09if (*temp =3D=3D INV_ICM42600_DATA_INVALID)
+> > -=09=09ret =3D -EINVAL;
+> > +=09=09ret =3D -EBUSY;
+> >
+> >  exit:
+> >  =09mutex_unlock(&st->lock);
+> >
+> > ---
+> > base-commit: 6408dba154079656d069a6a25fb3a8954959474c
+> > change-id: 20250807-inv-icm42600-change-temperature-error-code-65d16a98=
+c6e1
+> >
+> > Best regards,
+>=20
 
-Cc: stable@vger.kernel.org # 5.4
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ chanho: Backported to v5.4.y, cifs_debug.c was moved from fs/cifs to fs/smb/client ]
-Signed-off-by: Chanho Min <chanho.min@lge.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/cifs/cifs_debug.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/fs/cifs/cifs_debug.c b/fs/cifs/cifs_debug.c
-index df3dfa611c352..47190e676aa25 100644
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -470,6 +470,8 @@ static ssize_t cifs_stats_proc_write(struct file *file,
- 			}
- #endif /* CONFIG_CIFS_STATS2 */
- 			list_for_each(tmp2, &server->smb_ses_list) {
-+				if (cifs_ses_exiting(ses))
-+					continue;
- 				ses = list_entry(tmp2, struct cifs_ses,
- 						 smb_ses_list);
- 				list_for_each(tmp3, &ses->tcon_list) {
 
