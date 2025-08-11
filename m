@@ -1,87 +1,91 @@
-Return-Path: <stable+bounces-167048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A73B20CB9
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 16:58:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E8BB20D21
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 17:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B56D1895AD9
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 14:58:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE36C179EFE
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 15:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412E32DEA73;
-	Mon, 11 Aug 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09452DEA7B;
+	Mon, 11 Aug 2025 15:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIPq813X"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LiTX9A5d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFD6E555;
-	Mon, 11 Aug 2025 14:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F24A42048
+	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 15:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754924246; cv=none; b=GRrXeg7F4xNYzAaqH7PRr3jtt6mNGmEj8mCJBC2TZMLb/eGrG8qhdjcbmMRoYf935OkPr1Hvr+L+QXJpUOd8CUkxIvReNY54ppyYXyjY5fS76+hUi5OhDm1bTwHk12SRAkdsjSUYbNYXFa5RX3HE1UlabXcgJkRIP4ba6aRZhuU=
+	t=1754924915; cv=none; b=lP9IYShqL/rgkuDkpsvANKefUxKp0IceernxTNARRduH9F5NcdvvG84W56xmGcR7MGKhAZ2/2uke8+Jno6k4HiZt4PRUpkcGfS70QfvP0rsm9KwlY3AYv0fu0eWLQXZz0/5Bp8MH4c8Y09OCX6POROwuecBxL9Ali/yPt4jWtSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754924246; c=relaxed/simple;
-	bh=oq38uB5DipW7YdbYA9bax6TfPFx48orh8SsizKxB+Cw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=blPTuOGOa61EYkDk93vJdFbwDz1coP6jPSYg0oMwuMeVnjW9fwQT8io16rGtekXnqQn4VVsCY50meWcsq/SSMYYMfkrIUACiSXKuwUObxQZ5BcnhhgVt0tnGjl4Ty+c4XUGaAX30O1rf/uzfMzWwzxWQfdAbd21qmwibsCV0YcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIPq813X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E46C4CEED;
-	Mon, 11 Aug 2025 14:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754924245;
-	bh=oq38uB5DipW7YdbYA9bax6TfPFx48orh8SsizKxB+Cw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIPq813XUUyhs82FhUW1Q29vxS4cds9p+x4zIuyg6q0og//0E25eqZ/KrC2noDQvA
-	 S/ymYaL6E9bsP9dQYjYZi9AVV+UoEqS1OZnPzO0lYFgTT2lWlHt3x9XSPGooARQh0n
-	 rKBpI+L4LY82WfYT0673Y8KKG4iV0YU4DfJS+0MPkx1XOISDr13Zerw/VX7HnOAtBa
-	 BM6imsXYb4KjDuXto83XErdfPNHR7JcvK533E4GJc2MVO+tKJrAuQMQJ5cDerIJX7o
-	 0wFKvTsDGHzn/R6z2b9WVhC6XX+dD+7rei3UX+Bmnhig7OSGXZ15EyHnoZUq6Sz3ac
-	 QtCpvBlfcjqZw==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>
-Cc: Johan Hovold <johan@kernel.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] clk: qcom: tcsrcc-x1e80100: Set the bi_tcxo as parent to eDP refclk
-Date: Mon, 11 Aug 2025 09:57:19 -0500
-Message-ID: <175492423749.121102.7449698379457693030.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250730-clk-qcom-tcsrcc-x1e80100-parent-edp-refclk-v1-1-7a36ef06e045@linaro.org>
-References: <20250730-clk-qcom-tcsrcc-x1e80100-parent-edp-refclk-v1-1-7a36ef06e045@linaro.org>
+	s=arc-20240116; t=1754924915; c=relaxed/simple;
+	bh=9mcIvw8TnqTafyJ+8Oq/Hi3wC4RkWVvI3M4CG1Gk+uA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=rKiamEupROdnlBKRpWWi7QLXxhe2m9VTljt57zXPSTR4ztMz4L1qrQhCjqiWGQjjiRfcBs51J71IPRzvsL/68FWOocjUT26NJw4GGAO9YwWmkXYWNM40p+EiHcMPl1/KXMQDQ8cW4v88rs+1E8qMNSQ8yD95k7hNnciwA/22Keg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LiTX9A5d; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1754924901;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IcFl3Ghkjin7WsXXZp+/nVY4juF8ODjjvZjAsODy3wQ=;
+	b=LiTX9A5db/1wkUONRwIhSnRFawSE+w4zT4gdYF+5FON9ACzziuBTKR0KgeyUWetAb2npy5
+	9FZ2wuJXpdKLYhOiRGa4faaCAO36qbXwPtYXGWz+h6rUj0wg2Re9McG2fhkxPTuHZUXfey
+	GV1XrTsYfn+QWjKodRuNHYVjWJBIJzQ=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] kconfig: nconf: NUL-terminate 'line' correctly in
+ fill_window()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <98b4d33c-24eb-4034-82ce-e88e85f8e6f2@gmail.com>
+Date: Mon, 11 Aug 2025 17:08:07 +0200
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Nicolas Schier <nicolas.schier@linux.dev>,
+ Shankari Anand <shankari.ak0208@gmail.com>,
+ "nir.tzachar@gmail.com" <nir.tzachar@gmail.com>,
+ Michal Marek <mmarek@suse.cz>,
+ stable@vger.kernel.org,
+ linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <4B3C8558-81F3-4965-A09C-CE07D6A5FF4A@linux.dev>
+References: <20250810142239.120294-2-thorsten.blum@linux.dev>
+ <98b4d33c-24eb-4034-82ce-e88e85f8e6f2@gmail.com>
+To: Franco Martelli <martellif67@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
+On 11. Aug 2025, at 14:51, Franco Martelli wrote:
+> Is there a rationale behind the choice to avoid to use snprintf()
+> in these circumstance?
+> Preferring snprintf() you will not have to take care to
+> compute the position of the NULL terminating character of the
+> string, it's done automatically by this function.
 
-On Wed, 30 Jul 2025 19:11:12 +0300, Abel Vesa wrote:
-> All the other ref clocks provided by this driver have the bi_tcxo
-> as parent. The eDP refclk is the only one without a parent, leading
-> to reporting its rate as 0. So set its parent to bi_tcxo, just like
-> the rest of the refclks.
-> 
-> 
+I looked into it a bit more and I think we need neither strncpy() nor
+snprintf() (and no temporary buffer) because this should be sufficient:
 
-Applied, thanks!
+	mvwprintw(win, i, 0, "%.*s", len, line);
 
-[1/1] clk: qcom: tcsrcc-x1e80100: Set the bi_tcxo as parent to eDP refclk
-      commit: 039cfa2cee7e02f6d89772ac6104e5327d4619cb
+Unless I'm missing something, I'm happy to send a v2.
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Thanks,
+Thorsten
+
 
