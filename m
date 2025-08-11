@@ -1,97 +1,190 @@
-Return-Path: <stable+bounces-167051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44513B211F3
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 18:30:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BDE3B21282
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 18:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEB841905B1A
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 16:23:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B39393B3707
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 16:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774DA296BB3;
-	Mon, 11 Aug 2025 16:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2CE296BCA;
+	Mon, 11 Aug 2025 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OUagfL/7"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="IzINKJcA"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836C2311C02
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 16:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD0033D8;
+	Mon, 11 Aug 2025 16:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754929215; cv=none; b=VLug58clCBx2ul4xu/vIwCCYjhq74P83/ngrtLb9D8FyRmO+uTi91wMpHCPbaGD3csHa0aUqGNQai9RHA8beSgtYREovcU1WhClw7WNcNvnKffmT6n8DFn9AIGySI2qmReN20rANKgwY8s6qnSUcTypMHnp+yOeW2152hXc8QVM=
+	t=1754930773; cv=none; b=jLlwVX12mKV18tSe1gAIdT/q99NHUsZDol0EuYxBm3iZi9cmgS9vO0eZbs0LOJj5pSWBg8qZXYPDmFYoV88UaKh8vCv+edvSCuH2qnGIG7TFxPq4YxJe0PkE/w1/YD3x/Ive3fn+WKNhkaH0DlL0KkL8u+9bQ+2vTefGJVDRJ+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754929215; c=relaxed/simple;
-	bh=zabansxPhYnoj7w2vg2VzK37/rJZROr7lswm4ad8Sk0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Piv7hNukAG2qW7ezIrW/ltdp5C9pRusYzBkb7nYXWXKqxB7vj3Ct2JbbObWNmj4MfT3cFh0KBRRNNm+UUvwAF/XRsRw7WxHIFu8mGPwcrTNZEfnm2jD4CU6lz8Zl0GpTNsL7N+1ATzOyIhpEWiVMXwRPscJzTdYF0fN3R6Xon4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OUagfL/7; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754929211;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vj6dOdTXrXnPZ0bJXLh/iJrSEfu0GL8+vxSQDSGqTlU=;
-	b=OUagfL/7GSWr20gP9So9fRsfiAGy0BtEbzQzbAQ9Pe3Zc6QqmOujN+C+dJzwySYxwgLhI7
-	gWU4r72PUmoy7umKokrDaMdfBbMRdDckyhKusy/XwyJvZulURPfAliKiYqHMCtnDVC9a9l
-	Dj37eHaX730NiglGbe8MPYwNeUAH1n0=
+	s=arc-20240116; t=1754930773; c=relaxed/simple;
+	bh=TojhoG5KQm0Zil3KXj/3MOaNIR3JBkiN+pJfmevoilM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lm0T5vngvbInYmdlwNWodTDMzQPiSPM3EOmeHZJ7c4zSLrkXng+CUqf0PTG7bZur01GYAkGx0KBeUuLTj7h7XR2/OWzXBzt1QFZ0f22XGgTlNe7PPTlZ4erYDNWpqIcaQQv7SCIgWFFI9yyGrZtoqq1gScRwMdsb7AodGvOgzWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=IzINKJcA; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.65.64.136] (unknown [20.236.11.69])
+	by linux.microsoft.com (Postfix) with ESMTPSA id D2938211826D;
+	Mon, 11 Aug 2025 09:46:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D2938211826D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1754930768;
+	bh=5t1P3VptPd0i00bkc3V2cUTaDzWFAwGZvBlqZNNm6/E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IzINKJcA+veFAgczYNDsuMmCg/WXyQU8ibzIkFmrqHx4oBH7KHea9Jocl85CohfTu
+	 lBOQ4BOzX2v3V/TnM6ws1tfXQX7VRvjJDX7UfUQd9MIcrCVF41MYpq7RQErNd1N7TM
+	 0i4G/li+2rCMZnS2hxMtaA7iATJt4yNJlofCTzks=
+Message-ID: <51eda58a-0c5e-4e0f-ae1f-87147fd8453c@linux.microsoft.com>
+Date: Mon, 11 Aug 2025 09:46:07 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] kconfig: nconf: NUL-terminate 'line' correctly in
- fill_window()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-In-Reply-To: <4B3C8558-81F3-4965-A09C-CE07D6A5FF4A@linux.dev>
-Date: Mon, 11 Aug 2025 18:19:56 +0200
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Nicolas Schier <nicolas.schier@linux.dev>,
- Shankari Anand <shankari.ak0208@gmail.com>,
- "nir.tzachar@gmail.com" <nir.tzachar@gmail.com>,
- Michal Marek <mmarek@suse.cz>,
- stable@vger.kernel.org,
- linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.16-5.10] rtc: ds1307: handle oscillator stop
+ flag (OSF) for ds1341
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Cc: Tyler Hicks <code@tyhicks.com>, Rodolfo Giometti <giometti@enneenne.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-rtc@vger.kernel.org
+References: <20250808153054.1250675-1-sashal@kernel.org>
+ <20250808153054.1250675-5-sashal@kernel.org>
+Content-Language: en-US
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+In-Reply-To: <20250808153054.1250675-5-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <C491DBC5-8891-4ED5-9869-A91A60978AFB@linux.dev>
-References: <20250810142239.120294-2-thorsten.blum@linux.dev>
- <98b4d33c-24eb-4034-82ce-e88e85f8e6f2@gmail.com>
- <4B3C8558-81F3-4965-A09C-CE07D6A5FF4A@linux.dev>
-To: Franco Martelli <martellif67@gmail.com>
-X-Migadu-Flow: FLOW_OUT
 
-On 11. Aug 2025, at 17:08, Thorsten Blum wrote:
-> On 11. Aug 2025, at 14:51, Franco Martelli wrote:
->> Is there a rationale behind the choice to avoid to use snprintf()
->> in these circumstance?
->> Preferring snprintf() you will not have to take care to
->> compute the position of the NULL terminating character of the
->> string, it's done automatically by this function.
-> 
-> I looked into it a bit more and I think we need neither strncpy() nor
-> snprintf() (and no temporary buffer) because this should be sufficient:
-> 
-> 	mvwprintw(win, i, 0, "%.*s", len, line);
-> 
-> Unless I'm missing something, I'm happy to send a v2.
+On 8/8/2025 8:30 AM, Sasha Levin wrote:
+> From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+>
+> [ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
 
-I submitted this as a new patch instead of a v2:
+Hi Sasha,
 
-https://lore.kernel.org/lkml/20250811161650.37428-2-thorsten.blum@linux.dev/
+Without the first patch of the series, the OSF bit will get cleared in probe, so for it to meaningfully handle an invalid RTC, we'll need to take the first patch too.
 
-Thanks,
-Thorsten
+The upstream commit is 48458654659c9c2e149c211d86637f1592470da5
 
+https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
+
+It removes the clear of the OSF status flag in probe in the shared ds_1337, ds_1339, ds_1341, ds_3231 switch case block.
+
+Thank you,
+
+Meagan
+
+>
+> In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
+> kernel time as long as rtc_read_time() succeeds. In some power loss
+> situations, our supercapacitor-backed DS1342 RTC comes up with either an
+> unpredictable future time or the default 01/01/00 from the datasheet.
+> The oscillator stop flag (OSF) is set in these scenarios due to the
+> power loss and can be used to determine the validity of the RTC data.
+>
+> This change expands the oscillator stop flag (OSF) handling that has
+> already been implemented for some chips to the ds1341 chip (DS1341 and
+> DS1342 share a datasheet). This handling manages the validity of the RTC
+> data in .read_time and .set_time based on the OSF.
+>
+> Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+> Reviewed-by: Tyler Hicks <code@tyhicks.com>
+> Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+> Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>
+> LLM Generated explanations, may be completely bogus:
+>
+> **Backport Status: YES**
+>
+> This commit should be backported to stable kernel trees for the
+> following reasons:
+>
+> 1. **Bug Fix**: This commit fixes a real bug where the DS1341/DS1342 RTC
+>    can report invalid time data after power loss without properly
+>    checking the oscillator stop flag (OSF). The commit message clearly
+>    describes the problem: "In some power loss situations, our
+>    supercapacitor-backed DS1342 RTC comes up with either an
+>    unpredictable future time or the default 01/01/00."
+>
+> 2. **Data Corruption Prevention**: Without this fix, systems using
+>    DS1341/DS1342 RTCs can have incorrect system time after power loss,
+>    which could lead to data corruption, incorrect timestamps, or system
+>    malfunction. This is particularly critical for systems using
+>    CONFIG_RTC_HCTOSYS.
+>
+> 3. **Minimal Risk**: The change is very small and contained - it only
+>    adds OSF handling for the ds1341 chip type in two switch statements
+>    (ds1307_get_time:282-287 and ds1307_set_time:380-383). The pattern
+>    exactly follows the existing OSF handling already implemented for
+>    ds_1338, ds_1340, and ds_1388 chips.
+>
+> 4. **Established Pattern**: The commit follows an established pattern in
+>    the driver. Looking at the code, OSF handling is already implemented
+>    for:
+>    - ds_1338: Uses DS1338_BIT_OSF in DS1307_REG_CONTROL
+>    - ds_1340: Uses DS1340_BIT_OSF in DS1340_REG_FLAG
+>    - ds_1388: Uses DS1388_BIT_OSF in DS1388_REG_FLAG
+>    - And now ds_1341: Uses DS1337_BIT_OSF in DS1337_REG_STATUS
+>
+> 5. **No New Features**: This is purely a bug fix - it doesn't add any
+>    new functionality, just ensures existing functionality (reading valid
+>    time) works correctly after power loss.
+>
+> 6. **Previous Similar Fixes**: The git history shows similar OSF fixes
+>    have been made before, such as commit f471b05f76e4 ("rtc: ds1307:
+>    Clear OSF flag on DS1388 when setting time"), indicating this is a
+>    known class of issues that needs fixing.
+>
+> 7. **Hardware-Specific Fix**: This only affects systems with
+>    DS1341/DS1342 RTCs, so there's no risk to systems using other RTC
+>    chips. The change is guarded by the chip type check.
+>
+> The commit meets all the criteria for stable backporting: it fixes a
+> real bug that affects users, the fix is small and self-contained, it
+> doesn't introduce new features or architectural changes, and follows
+> established patterns in the codebase.
+>
+>  drivers/rtc/rtc-ds1307.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+> index 5efbe69bf5ca..7a60e5ca2b8a 100644
+> --- a/drivers/rtc/rtc-ds1307.c
+> +++ b/drivers/rtc/rtc-ds1307.c
+> @@ -279,6 +279,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
+>  		if (tmp & DS1340_BIT_OSF)
+>  			return -EINVAL;
+>  		break;
+> +	case ds_1341:
+> +		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
+> +		if (ret)
+> +			return ret;
+> +		if (tmp & DS1337_BIT_OSF)
+> +			return -EINVAL;
+> +		break;
+>  	case ds_1388:
+>  		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
+>  		if (ret)
+> @@ -377,6 +384,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
+>  		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
+>  				   DS1340_BIT_OSF, 0);
+>  		break;
+> +	case ds_1341:
+> +		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
+> +				   DS1337_BIT_OSF, 0);
+> +		break;
+>  	case ds_1388:
+>  		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
+>  				   DS1388_BIT_OSF, 0);
 
