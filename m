@@ -1,198 +1,132 @@
-Return-Path: <stable+bounces-167057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179EDB214FF
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 20:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F72B21550
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 21:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 189301A2336D
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 18:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3E9B1A22440
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 19:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9D52E2DE4;
-	Mon, 11 Aug 2025 18:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BB2149C51;
+	Mon, 11 Aug 2025 19:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pnnj7TI2"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="A6I1Yb0P"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B915C72600;
-	Mon, 11 Aug 2025 18:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102772D8393
+	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 19:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754938620; cv=none; b=kDN58pbFM48wD6WFVXCb9dGfyYX5GTAGWLOGFuO3nBpRPTq5O3hjSgpV8w4VAtKVsEVXGqlzeYHOiI93Ty6gkFtiG67TEcZn8YhAUw68Cylck/weQPS965r17aHVz5Rpx7iMyWrQK35WoKV0O6dEfKGi59xjKB67lh4AORrrrPY=
+	t=1754940288; cv=none; b=LEHXUaTyllTrTn+CQIgTfyhroyaY5P2ZlEMGr5l7f7gUytw4J1SowKcgVpvSM3uSZcHsZqqQrquE0EYXN7X2ZZ2+gg4y3oH2ZBuNad01spbh+lI/85xrwWR2ZX3Zyp0oqjmxyf9w2HVHJU6z+3ouFcdphKPxiywqwG+MLw9PgFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754938620; c=relaxed/simple;
-	bh=/1h1FXQ8wlbSgFHXbQzagekP6WBsykBAbMExF88232A=;
+	s=arc-20240116; t=1754940288; c=relaxed/simple;
+	bh=puiPMvRLC0fsCgBP3I9XxgD+HqX4Ja3xWQpNrCXy5lk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M8kdyZtotZhaNpaVc6UvjFN2dqzgn0PXkO2Z3BOAOSbpE4nXrgGOG3GozpvkaTpV+cXh5FJuVLtbLAAE/zov2I52N4fZ9Rs87HgArJYwCg1/dxgTvpXgTab31W5f7XeywycUWqTzqZN2JmUGkmIABFu7PKpnjQSyRtOnnFdW9/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pnnj7TI2; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754938619; x=1786474619;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/1h1FXQ8wlbSgFHXbQzagekP6WBsykBAbMExF88232A=;
-  b=Pnnj7TI22M/wvUQDA78sBsJeug6tdbnzc6tMcoEMXCDeXuZ+/1PX66TL
-   nt95+jNkA1Cpq9bO3VPBo8c6nSHglAJfv9ynUxQ2x0SL+lGfZeH1+ClFZ
-   WH1Y+mJEuF+AVYPA94khQZJSKKDHdj42M+3Z+gHdhHFBYQTLfNYzch+zA
-   lL7GsI2mjIHmk3Gk8ItKBa1ZGF48M5dQt3sNCryzJebeaEC10dYrs9ld9
-   CQNDL6WG0bIY4JQ0pEk+tv69Xwwr4CytfMXEE0gDjbE0KgPAI7fW0WFUU
-   gMSKZ6INDw43vm6bl8Hy8G6GX2Ljik8ejShDnWjNaHGD9yJJPbLzyhhAF
-   Q==;
-X-CSE-ConnectionGUID: Je30W+SHQEu6DShDcy1vkQ==
-X-CSE-MsgGUID: GMyWzhJfQsC7si7eDViI3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="57344995"
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="57344995"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 11:56:58 -0700
-X-CSE-ConnectionGUID: vpWZx5ZjTIuthikuHuwiLg==
-X-CSE-MsgGUID: gJZTJWVSR5qvoV1h6E7NgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="165192786"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 11 Aug 2025 11:56:53 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ulXhL-00069Y-0y;
-	Mon, 11 Aug 2025 18:56:44 +0000
-Date: Tue, 12 Aug 2025 02:55:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
-	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Dominique Martinet <asmadeus@codewreck.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
-Message-ID: <202508120250.Eooq2ydr-lkp@intel.com>
-References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nfxFxveqmKY5s8WvJTMUrD2kSSxJ760IifPU/zt0Aq/Nk3VnfmL8dfUk8t2/jojmFXYNbmM6gbIn9KeMQNnZ0vCDTaDQgDAvuzDpJVEASBBUqmo+x2MuEaPjRC7rl7xT0H16HpdmP+C7opWnweCAUjqrW6dEOi471o3QGCFb2+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=A6I1Yb0P; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-70740598a9dso43527136d6.0
+        for <stable@vger.kernel.org>; Mon, 11 Aug 2025 12:24:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1754940286; x=1755545086; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QUZTA6GtaA7czamtY3xPr8PgEMTZeItGL8BIt7Y0OZY=;
+        b=A6I1Yb0Pa1HhuV8UxmL3P10fGSibiEgkmYjEVAQ7d4MBABhskclsc7o6Kuq3xH5QkI
+         s/Wsa6wUJliqubXpYP5zK7nxZGqudVdb7WudmZZKu7uR2pB/YPGdwoPSzjnCxej4AcEk
+         WBerTvwBl3DAXsfIX9+XBkotIqBlEtpxKNQn0ParZQI+nYeaqtyvVPAfeNjA9FKmkm3x
+         8W37aFksodEBRkfclnPnETRmF7M43afZC9nQ5/9GQGsaIThOf5AmISQ0SMYePk6iZXq/
+         x4On5zduuwBP8pGHdgif8vG/UidTyOuZY+CdL2qDQFvflwIYZ+F+54q2VsJ0h8js9/vn
+         Ftdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754940286; x=1755545086;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QUZTA6GtaA7czamtY3xPr8PgEMTZeItGL8BIt7Y0OZY=;
+        b=rqJDh8cp0mSIxV4PJdl7kVQS/QCKV8rv4gIKQVQSe23lhIwcL8LmBUgW9qa+EH68dY
+         kmnXQpOXnzz4KEi147YQGRFPYi2KvoYWMkwb/jtpkrLnO7U3pdQlRCsZnhwMBZNe+B7l
+         k2gQNWD6VQY9c9NrqHNQx51lf+JMDIq+Atrn29y3V1/oXi/Ca7a8C0T4+ZLCPBIMglKQ
+         QDj7+U/CgAwWWHsRokNBG2AEjeKa6FtFPg9F2CUSqz0mT/Bqt2yCDmLMtR21NYhgcOQU
+         pBFXaGuSluD/oIZ66jJJpUpg6qVPJFkQ38bCgK3q2aelokOwx9A6jtbTW07pocwNaT/a
+         LIyg==
+X-Forwarded-Encrypted: i=1; AJvYcCXFE39ayU8A4E0Eo3U+VY+/FnNiJ3b2iHHPVksj8E/hv1UCOBMRDHYGUntLzDev940k8Vj7NlQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWHtJxFwhMcFm5Y87M5s4ATznNaTlyoyZbQH97Cqmumv0rrZgR
+	5cSbD0x5bWdTQSoJPMuvJeWybQBkU/oQ0v7MyDAd9V4+Lu7JaBGILVFoyl9IqeUHjQ==
+X-Gm-Gg: ASbGncs+BlJJ+XWzWv4ocbir4D0iZ48+Rtv9NJgymJVdYmBHVqi/e9VCL2Sf+20kwmu
+	h2Od0+chAuvuAvzEeVDQ3RWK5GrqVtHmC2QxsGahzgZn0pERoZp5q4AMLzoChd3NYLH46d9DZFd
+	C8DpuE/G82HcWXMo2gsQPqCFS/7TjL0LhdhVDLKPcZxcZNDW1Ud7yA12gnbpA1R5DKzZwwnD8XB
+	vnxMNiF6VNX+iH9XWWX2D3mD5JP7ZH26ZYjxXNmw1OtSd+A7FnzrvT+wwX90uUOTq50k3kLxJbf
+	B6snibaFN0AgcdVnmTKWjzs8zwO7HVaaeJ8SSSYZlL8Qpk7xfW5ELUomltQAx1fcjjk9Cc9eZX4
+	ZPeQGh4Y37/kkvw+Cf0y/C+pegvA4UuK7+CRaLuSY5lx3jmT+MlnEgg+Ud7yZKjIcdA==
+X-Google-Smtp-Source: AGHT+IFt/3YKTBCSbCpS49sRmaeAcew9QCxCqdPIrUP1a6uOv4+01cnhkX80mFQqiyFrAfNyAT7OZg==
+X-Received: by 2002:ad4:5fce:0:b0:6ff:1665:44ef with SMTP id 6a1803df08f44-7099a260910mr177522336d6.22.1754940283507;
+        Mon, 11 Aug 2025 12:24:43 -0700 (PDT)
+Received: from rowland.harvard.edu ([2607:fb60:1011:2006:349c:f507:d5eb:5d9e])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077ce44849sm160795546d6.84.2025.08.11.12.24.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 12:24:42 -0700 (PDT)
+Date: Mon, 11 Aug 2025 15:24:40 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	stable@vger.kernel.org,
+	=?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
+ reset.
+Message-ID: <f442fe21-64bf-4669-8def-e1bf9259a6b8@rowland.harvard.edu>
+References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
+ <fc3e5cf5-a346-4329-a66e-5d28cb4fe763@kernel.org>
+ <1c1b5552-0b43-49fb-98f0-8d2477709160@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1c1b5552-0b43-49fb-98f0-8d2477709160@kernel.org>
 
-Hi Dominique,
+On Mon, Aug 11, 2025 at 01:06:03PM +0200, Jiri Slaby wrote:
+> On 11. 08. 25, 8:16, Jiri Slaby wrote:
+> > > @@ -5850,8 +5851,11 @@ static void port_event(struct usb_hub *hub,
+> > > int port1)
+> > >           } else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
+> > >                   || udev->state == USB_STATE_NOTATTACHED) {
+> > >               dev_dbg(&port_dev->dev, "do warm reset, port only\n");
+> > > -            if (hub_port_reset(hub, port1, NULL,
+> > > -                    HUB_BH_RESET_TIME, true) < 0)
+> > > +            err = hub_port_reset(hub, port1, NULL,
+> > > +                         HUB_BH_RESET_TIME, true);
+> > > +            if (!udev && err == -ENOTCONN)
+> > > +                connect_change = 0;
+> > > +            else if (err < 0)
+> > >                   hub_port_disable(hub, port1, 1);
+> 
+> FTR this is now tracked downstream as:
+> https://bugzilla.suse.com/show_bug.cgi?id=1247895
+> 
+> > This was reported to break the USB on one box:
+> > > [Wed Aug  6 16:51:33 2025] [ T355745] usb 1-2: reset full-speed USB
+> > > device number 12 using xhci_hcd
+> > > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: device descriptor
+> > > read/64, error -71
+> > > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: device descriptor
+> > > read/64, error -71
 
-kernel test robot noticed the following build warnings:
+What shows up in the kernel log (with usbcore dynamic debugging enabled) 
+if the commit is present and if the commit is reverted?
 
-[auto build test WARNING on 8f5ae30d69d7543eee0d70083daf4de8fe15d585]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Dominique-Martinet-via-B4-Relay/iov_iter-iterate_folioq-fix-handling-of-offset-folio-size/20250811-154319
-base:   8f5ae30d69d7543eee0d70083daf4de8fe15d585
-patch link:    https://lore.kernel.org/r/20250811-iot_iter_folio-v1-1-d9c223adf93c%40codewreck.org
-patch subject: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >= folio size
-config: i386-buildonly-randconfig-002-20250811 (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508120250.Eooq2ydr-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from lib/iov_iter.c:14:
->> include/linux/iov_iter.h:171:7: warning: variable 'remain' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-     171 |                 if (skip >= fsize)
-         |                     ^~~~~~~~~~~~~
-   include/linux/iov_iter.h:190:7: note: uninitialized use occurs here
-     190 |                 if (remain)
-         |                     ^~~~~~
-   include/linux/iov_iter.h:171:3: note: remove the 'if' if its condition is always false
-     171 |                 if (skip >= fsize)
-         |                 ^~~~~~~~~~~~~~~~~~
-     172 |                         goto next;
-         |                         ~~~~~~~~~
-   include/linux/iov_iter.h:163:22: note: initialize the variable 'remain' to silence this warning
-     163 |                 size_t part, remain, consumed;
-         |                                    ^
-         |                                     = 0
-   1 warning generated.
-
-
-vim +171 include/linux/iov_iter.h
-
-   143	
-   144	/*
-   145	 * Handle ITER_FOLIOQ.
-   146	 */
-   147	static __always_inline
-   148	size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2,
-   149			      iov_step_f step)
-   150	{
-   151		const struct folio_queue *folioq = iter->folioq;
-   152		unsigned int slot = iter->folioq_slot;
-   153		size_t progress = 0, skip = iter->iov_offset;
-   154	
-   155		if (slot == folioq_nr_slots(folioq)) {
-   156			/* The iterator may have been extended. */
-   157			folioq = folioq->next;
-   158			slot = 0;
-   159		}
-   160	
-   161		do {
-   162			struct folio *folio = folioq_folio(folioq, slot);
-   163			size_t part, remain, consumed;
-   164			size_t fsize;
-   165			void *base;
-   166	
-   167			if (!folio)
-   168				break;
-   169	
-   170			fsize = folioq_folio_size(folioq, slot);
- > 171			if (skip >= fsize)
-   172				goto next;
-   173			base = kmap_local_folio(folio, skip);
-   174			part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
-   175			remain = step(base, progress, part, priv, priv2);
-   176			kunmap_local(base);
-   177			consumed = part - remain;
-   178			len -= consumed;
-   179			progress += consumed;
-   180			skip += consumed;
-   181			if (skip >= fsize) {
-   182	next:
-   183				skip = 0;
-   184				slot++;
-   185				if (slot == folioq_nr_slots(folioq) && folioq->next) {
-   186					folioq = folioq->next;
-   187					slot = 0;
-   188				}
-   189			}
-   190			if (remain)
-   191				break;
-   192		} while (len);
-   193	
-   194		iter->folioq_slot = slot;
-   195		iter->folioq = folioq;
-   196		iter->iov_offset = skip;
-   197		iter->count -= progress;
-   198		return progress;
-   199	}
-   200	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Alan Stern
 
