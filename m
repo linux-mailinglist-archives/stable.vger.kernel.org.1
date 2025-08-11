@@ -1,162 +1,146 @@
-Return-Path: <stable+bounces-167070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC369B2175E
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 23:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B082FB21768
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 23:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54321A24A5A
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 21:29:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB571A24EB3
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 21:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEFE2E424A;
-	Mon, 11 Aug 2025 21:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4A42E2DCB;
+	Mon, 11 Aug 2025 21:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nt44w8R1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TWeluUKP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884E42E3373;
-	Mon, 11 Aug 2025 21:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59F02E5431;
+	Mon, 11 Aug 2025 21:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754947703; cv=none; b=TkHtcHh0FI244p1IyPer/azcmQ3B8i4I4c4nJL+4/eK7NXYtV1fe43VqsQpEsbouzi/gR+I0QhGO1YP+B87fysNPyZG8QqpmRSpkF6AHIPKSasnPxGjsfdPW3Hp5/u9cRej2RI3ThoJyieUun/3QcVujltxT8KyOJRueuv4tcFk=
+	t=1754947707; cv=none; b=Z1qAl1ciPCoHum8ttvzddf0fWE06T9seqw0oSFFAz5eaqapHm3bq7qpaWQgZI61ddcOZsij5TGxPKk7BTPfGw2NUHROhe66YIbgexOdAlLksHoHo880lvBZ/jyuJCppKTas+q3KuEhTLTZbtv1wMVEJ7F0Y5y+F5eQj/E78ffXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754947703; c=relaxed/simple;
-	bh=aGj3XqwjGdLu6r33y+ZNJAPZgl6QITxzkri3NhqeYk8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hb6NElHSjbFtjo8jy9cQbOEO2Z0VFpsRcRW0S1ic0M4Pf8ogeq5NP6fpk2fGUygFOmYPCW4dUtsz5nkhBKYeY6liEhP/KtLass2PpHbWtjRPCTtc/PjJF/nfHZBixb17/KY+7mCs7LrrjyfkukGPC6xgiLaoGxoFO2re/Dw8eM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nt44w8R1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 17461C4CEF7;
-	Mon, 11 Aug 2025 21:28:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754947703;
-	bh=aGj3XqwjGdLu6r33y+ZNJAPZgl6QITxzkri3NhqeYk8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Nt44w8R1G9aDCuse92f8mFJkc6v+Obn0hmVtbzjPqb6cnAv2V/PDStRi4MCgZbhOl
-	 1nevmN2eogGnxRDJZYg/tFg7KbUlTpW8A7l+DrpAMBc5W8PWvazNb/Wnoq3dXuQrBK
-	 bdqG68KeB1Cp1XXSEwPnn+4WAkSG6YckTNAJ+a5DBbkIBehTExkL4OnbteSdRZjePS
-	 dyN8ct4RpMa+H3+iOdpCN/VG8vpQwqPYsL+emo2b7y9IcrVP4QXMQyzubYd+FhGN67
-	 OxH7I6UGvo4zNLDG5GYBZ8N3E/yK6sdGf1ymKM8dVtwjeWaGq+WY4mEDd1zOWnhPR/
-	 rZJMFUbtvRP4g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 039D1CA0EC4;
-	Mon, 11 Aug 2025 21:28:23 +0000 (UTC)
-From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
-Date: Tue, 12 Aug 2025 06:28:01 +0900
-Subject: [PATCH v2 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
+	s=arc-20240116; t=1754947707; c=relaxed/simple;
+	bh=mpk27qrn0f9RHS7XKFScEMTU8qgUMeWZcJ6TqKsDXAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LutXb2H6HDgDBv80LjSma8Rc/B/CwbVQqOyQ2oh3pfeJFbo55SMaH9N6M7OmZj8u9HCGnAVYZrp1bW7A6AgpFU+60v15qQYp8v9C9pUZe6pRUF+ZQ/6eihYl6SA0tl23eofPFm7Q8nYXQrrEMkKHCqgcGLvFgeBi/glaIMk534g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TWeluUKP; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55b8a0f36fcso5174453e87.1;
+        Mon, 11 Aug 2025 14:28:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754947704; x=1755552504; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bpjIpzAPB0v7NxDZwwT0mjO9aLWv5i/E2Osu7tXQZqE=;
+        b=TWeluUKP8yku/5f0YcFA76/18p8aTYwxUceWYPjU8lG6GvcXOkb2CBnOSganU9hLLQ
+         wQsErbdXK/0tUeP9k6dLFvNShmqqcn7AZRy0NjsOhuEoIEazt7Lr8WnXg/pmompDNTQl
+         ZplfGKOhj/gJH4pijD3jZkwFnl0TmOjmQ2A+k/fChpImWIlDqLuLeScefr+2fDTduR3R
+         GFfzzmtBpaAroFB0DoU0UetJ1i3JoLaEFzBb80cbe8pHsOcbN2g+72JzUssQyUuwqOqA
+         j5AwkN3Gpw8VJjJ4DS3S1nVkeyhsHnU5edm+Yiy9JlRQy5KNUFYJ0DQYnADhVtp/56oH
+         OISg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754947704; x=1755552504;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bpjIpzAPB0v7NxDZwwT0mjO9aLWv5i/E2Osu7tXQZqE=;
+        b=hSClbcTzjDcTL/Rp6BrbjFp7zM0x4jjtSwpewIys7bOm04ufBc4rwO2yl/o8Nph3VT
+         hg5dU7itcPVHZakfy4a1oKXGDQILCKSrmeA/FBWwUXeMTzu8Y01osK7a3DgKKlw2AHTR
+         APluOJKRB4QEZGJ4O3cJ2/pOpdxQVeLgFp92WzlTVXsWr/uSsODU42fWTaCq1o+6NCBF
+         Rac9GBitgO1EqzJOHrLj+L2FbtNbs4ClSLpIox92sHVKXbfUCO/b5Ui9q4YnvIZhcxN9
+         7tV7ZUcyR7LPvAgz3n10TC/tESBVsA1UTFEmFM5wVa/GU//qFqJNXA4e+7752GGxTsC8
+         ddzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIkAIQakjZW4FtTZvF/W4FJvxGDCcxhDMl7vl6YupDZz0RiBvJXrqjA8WvYIUwcNhjSkFBAQcqD1w=@vger.kernel.org, AJvYcCWVwnfvTpztMlwdeLtT9oyVpePHZ9VOsm5vfBRKe1rjKoAokGO4Q0zunANTC6wHYYmKbvTwmgcB@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzn5RHZTeliJgE4Q7KABupiEuT2zJFnVOlepXMSQPyoqrrwvTmo
+	ln9d9ZnzVT3VfxfXToCgte1otyLwOuhHH+zM0WV5BvF76w5UH2Nu61lX
+X-Gm-Gg: ASbGncvl2vRR6TsydNORmMQVZ9ZzY1T+LaNQOwyA3MPXaTVHTm2nBp/zWcdgEPWL24G
+	l0S6Z4BG7nzSba/oLKWvbLSVNC/nL/ya5P0ijFG89nzZsr8Wzrh0Diqvg9SBDjT8dKCZHbAy8aG
+	79uRFBbRliqe2yTjdkOfhmNRcIt74XAortNf866tzIei0tSsuSW341p0GUYp4LKEym9FZ+4difA
+	/KzWzT/A6x4tAN8ahr9X6qJJf5rZWE53/Oxz6qtVZqeyEnXgVaj/YxxxZPRGFSV1haY/VDEMCkk
+	XmO6+ErTdJTrBbLhIZaKLuUNIGfW8PoEccZIpCO8LR8cZHjVdScNIJDHdn1fCjKEF5BJHQU+4De
+	94VmWs5qoAd0qqwPqiFfsGfXDOSGmU0QdcRc=
+X-Google-Smtp-Source: AGHT+IGk+VTPIrnjQuog4v7TbkCyB00WQoWvYsPlYTExmUr1HajhxEL9dzSdsIBYJf8YaraRPtuZYw==
+X-Received: by 2002:a05:6512:ea8:b0:55c:d617:a132 with SMTP id 2adb3069b0e04-55cd75b25f6mr383568e87.6.1754947703662;
+        Mon, 11 Aug 2025 14:28:23 -0700 (PDT)
+Received: from foxbook (bfd208.neoplus.adsl.tpnet.pl. [83.28.41.208])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cce15c650sm1083440e87.103.2025.08.11.14.28.21
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 11 Aug 2025 14:28:23 -0700 (PDT)
+Date: Mon, 11 Aug 2025 23:28:15 +0200
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+ gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+ stern@rowland.harvard.edu, stable@vger.kernel.org, =?UTF-8?B?xYF1a2Fzeg==?=
+ Bartosik <ukaszb@chromium.org>, Oliver Neukum <oneukum@suse.com>
+Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
+ reset.
+Message-ID: <20250811232815.393c7bb9@foxbook>
+In-Reply-To: <fc3e5cf5-a346-4329-a66e-5d28cb4fe763@kernel.org>
+References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
+	<fc3e5cf5-a346-4329-a66e-5d28cb4fe763@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250812-iot_iter_folio-v2-1-f99423309478@codewreck.org>
-References: <20250812-iot_iter_folio-v2-0-f99423309478@codewreck.org>
-In-Reply-To: <20250812-iot_iter_folio-v2-0-f99423309478@codewreck.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Maximilian Bosch <maximilian@mbosch.me>, Ryan Lahfa <ryan@lahfa.xyz>, 
- Christian Theune <ct@flyingcircus.io>, Arnout Engelen <arnout@bzzt.net>, 
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, Dominique Martinet <asmadeus@codewreck.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-7be4f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2705;
- i=asmadeus@codewreck.org; h=from:subject:message-id;
- bh=3BbpsQC1gAY33hqHbW6Vvzvllp5rOUEkHQ1XHsiSrr8=;
- b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBommB10IN5egx+Rr8UloHGfJcqXTMA8D0uoVhkF
- e1c6hRMWz6JAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaJpgdQAKCRCrTpvsapjm
- cMHPEACEFnAwm1R1HodQQdkzlwTFQ0MGKBvJAeqjwOiixo9963tY8KbCdqavltbusRuAQCRxR7t
- CWweWhzyqDJz0RIinEgkliq4HsEq9QG4CuzHGR1uPTUL2/wB7ZnQeAjBdyRfJPtZadoF35etC+e
- TyW73BUxYYr+gS8PN9Tr71Hf5bFsg3hXOSIeg+o5wthn1vQYbW9LVhGs878pOqSSeoUdUbr1xTD
- Ng0A+tTGvRp4BSPbcIucPBcPJT3nSkNEvoeDN+ol37BhVQZJEUrvh33jy+DOLTRBKUynysZIAzP
- m+DbjdGS05D/Slb+WXlA0TRfaLmpUV7+y0odcRLI7cLv+Qu7XLwsxhTXpcsWZ8LqnTq09AIPj3N
- PBpVGO/r1ItRRFLA8MTv04/pbwP68j+I1a2NuMqHeq+Ohm+P0Uvv7pj4z37FmolaNhcZe3huzgH
- 034yobtZnIMzmAjQmspsFbKbAACHa+Ix+rWx3GKi1LEPo2vsV50q80Mf9PD8qfhNAgUUNteVxPB
- 2EziFjTgVy1eNobf4zu9EdPhQuU80KzpwRABysmq3FT43ZjwGhsh4UUIzcHS8rFIMcZE6LOuL/J
- GAfdXuWnmRW/lFuLqJSI31r8+x1xezz8m4yvBJB2H13ol0c/QtjIZFzSTBmAcJsrYoO0bXUZqJp
- sp+Qn7+lV3IFD/w==
-X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
- fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
-X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
- auth_id=435
-X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
-Reply-To: asmadeus@codewreck.org
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+On Mon, 11 Aug 2025 08:16:06 +0200, Jiri Slaby wrote:
+> This was reported to break the USB on one box:
+> > [Wed Aug  6 16:51:33 2025] [ T355745] usb 1-2: reset full-speed USB device number 12 using xhci_hcd
+> > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: device descriptor read/64, error -71
+> > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: device descriptor read/64, error -71
+> > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: reset full-speed USB device number 12 using xhci_hcd
+> > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: device descriptor read/64, error -71
+> > [Wed Aug  6 16:51:35 2025] [ T355745] usb 1-2: device descriptor read/64, error -71
+> > [Wed Aug  6 16:51:35 2025] [ T355745] usb 1-2: reset full-speed USB device number 12 using xhci_hcd
+> > [Wed Aug  6 16:51:35 2025] [ T355745] usb 1-2: Device not responding to setup address.
+> > [Wed Aug  6 16:51:35 2025] [ T355745] usb 1-2: Device not responding to setup address.
+> > [Wed Aug  6 16:51:35 2025] [ T355745] usb 1-2: device not accepting address 12, error -71
+> > [Wed Aug  6 16:51:35 2025] [ T355745] usb 1-2: WARN: invalid context state for evaluate context command.
+> > [Wed Aug  6 16:51:36 2025] [ T355745] usb 1-2: reset full-speed USB device number 12 using xhci_hcd
+> > [Wed Aug  6 16:51:36 2025] [     C10] xhci_hcd 0000:0e:00.0: ERROR unknown event type 2
+> > [Wed Aug  6 16:51:36 2025] [ T355745] usb 1-2: Device not responding to setup address.
+> > [Wed Aug  6 16:51:37 2025] [     C10] xhci_hcd 0000:0e:00.0: ERROR unknown event type 2
+> > [Wed Aug  6 16:52:50 2025] [ T362645] xhci_hcd 0000:0e:00.0: Abort failed to stop command ring: -110
+> > [Wed Aug  6 16:52:50 2025] [ T362645] xhci_hcd 0000:0e:00.0: xHCI host controller not responding, assume dead
+> > [Wed Aug  6 16:52:50 2025] [ T362645] xhci_hcd 0000:0e:00.0: HC died; cleaning up
+> > [Wed Aug  6 16:52:50 2025] [ T359046] usb 1-1: USB disconnect, device number 13
+> > [Wed Aug  6 16:52:50 2025] [ T355745] xhci_hcd 0000:0e:00.0: Timeout while waiting for setup device command
+> > [Wed Aug  6 16:52:50 2025] [ T362645] usb 2-3: USB disconnect, device number 2
+> > [Wed Aug  6 16:52:50 2025] [ T362839] cdc_acm 1-5:1.5: acm_port_activate - usb_submit_urb(ctrl irq) failed
+> > [Wed Aug  6 16:52:50 2025] [ T355745] usb 1-2: device not accepting address 12, error -62
+> > [Wed Aug  6 16:52:50 2025] [ T359046] usb 1-2: USB disconnect, device number 12
+> > [Wed Aug  6 16:52:50 2025] [ T359046] usb 1-3: USB disconnect, device number 4
+> > [Wed Aug  6 16:52:50 2025] [ T359046] usb 1-3.1: USB disconnect, device number 6
+> > [Wed Aug  6 16:52:50 2025] [ T359046] usb 1-4: USB disconnect, device number 16
+> > [Wed Aug  6 16:52:50 2025] [ T359046] usb 1-5: USB disconnect, device number 15
+> > [Wed Aug  6 16:52:50 2025] [ T359046] usb 1-7: USB disconnect, device number 8  
 
-It's apparently possible to get an iov advanced all the way up to the
-end of the current page we're looking at, e.g.
+Is the problem that this USB device fails to work, or that it takes
+down the whole bus while failing to work as usual?
 
-(gdb) p *iter
-$24 = {iter_type = 4 '\004', nofault = false, data_source = false, iov_offset = 4096, {__ubuf_iovec = {
-      iov_base = 0xffff88800f5bc000, iov_len = 655}, {{__iov = 0xffff88800f5bc000, kvec = 0xffff88800f5bc000,
-        bvec = 0xffff88800f5bc000, folioq = 0xffff88800f5bc000, xarray = 0xffff88800f5bc000,
-        ubuf = 0xffff88800f5bc000}, count = 655}}, {nr_segs = 2, folioq_slot = 2 '\002', xarray_start = 2}}
+The latter issue looks like some ASMedia xHCI controller being unhappy
+about something. What does 'lspci' say about this 0e:00.0?
 
-Where iov_offset is 4k with 4k-sized folios
+So far I failed to repro this on v6.16.0 with a few of my ASMedias and
+a dummy device which never responds to any packet.
 
-This should have been because we're only in the 2nd slot and there's
-another one after this, but iterate_folioq should not try to map a
-folio that skips the whole size, and more importantly part here does
-not end up zero (because 'PAGE_SIZE - skip % PAGE_SIZE' ends up
-PAGE_SIZE and not zero..), so skip forward to the "advance to next
-folio" code
+Can you mount debugfs and get these two files after the HC goes dead?
 
-Reported-by: Maximilian Bosch <maximilian@mbosch.me>
-Reported-by: Ryan Lahfa <ryan@lahfa.xyz>
-Reported-by: Christian Theune <ct@flyingcircus.io>
-Reported-by: Arnout Engelen <arnout@bzzt.net>
-Link: https://lkml.kernel.org/r/D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me/
-Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios")
-Cc: stable@vger.kernel.org # v6.12+
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
----
- include/linux/iov_iter.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+/sys/kernel/debug/usb/xhci/0000:0e:00.0/command-ring/trbs 
+/sys/kernel/debug/usb/xhci/0000:0e:00.0/event-ring/trbs
 
-diff --git a/include/linux/iov_iter.h b/include/linux/iov_iter.h
-index c4aa58032faf874ee5b29bd37f9e23c479741bef..a77ff9c7e4b21eacd166adb506b79e7ddd723aa1 100644
---- a/include/linux/iov_iter.h
-+++ b/include/linux/iov_iter.h
-@@ -160,7 +160,7 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
- 
- 	do {
- 		struct folio *folio = folioq_folio(folioq, slot);
--		size_t part, remain, consumed;
-+		size_t part, remain = 0, consumed;
- 		size_t fsize;
- 		void *base;
- 
-@@ -168,6 +168,8 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
- 			break;
- 
- 		fsize = folioq_folio_size(folioq, slot);
-+		if (skip >= fsize)
-+			goto next;
- 		base = kmap_local_folio(folio, skip);
- 		part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
- 		remain = step(base, progress, part, priv, priv2);
-@@ -177,6 +179,7 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
- 		progress += consumed;
- 		skip += consumed;
- 		if (skip >= fsize) {
-+next:
- 			skip = 0;
- 			slot++;
- 			if (slot == folioq_nr_slots(folioq) && folioq->next) {
-
--- 
-2.50.1
-
-
+Regards,
+Michal
 
