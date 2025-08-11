@@ -1,346 +1,177 @@
-Return-Path: <stable+bounces-167044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86481B20BC2
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 16:25:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE48B20C06
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 16:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F959167355
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 14:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCABB1887AA4
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 14:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351E922DFB6;
-	Mon, 11 Aug 2025 14:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F057C255F2C;
+	Mon, 11 Aug 2025 14:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LEobG1zZ"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6945B22DFA6
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 14:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D1F2459EA
+	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 14:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754922146; cv=none; b=LSqaL5PAhr5+WoAnipd+hNpSCAPenRguPXoYyHpAUNLhBCGnGf6eiKU3r8xay3Sp9aD+pdsyOXx42dGxhBs7lEMBJ+sPw8BgnH0pIGBI6I2IcGjjpMyyWG5MWazc0Ja81mUOZSLVQ8rvej5oplMx1fcl5NYUTg/IAAC+CaAobt4=
+	t=1754922819; cv=none; b=RcJSK41+Ucx2fmsQit/uHqu91Jx+6FexbW6AQffBTUZbB7h702mWwDBIQ3++Sk6NUW6d9GhTnDQmevnpNcuUcy2A71MFh84ElqPuCZzQZlYdLpel9dfE9srWk161k8p3WeDCQ4PgqJxMrqG+9aVLglo1EHvywFKwlGEuuKwVcS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754922146; c=relaxed/simple;
-	bh=yXeKgYAA8gb4UKWGQ0DYx/R4/HbuqJJIr1ypHV77L7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HsuLwwzYmPp4aLMGSpr/35Ax1dAGDUWK/65CzI5rciwa27vpb5etUyzzVotUYS4oTA3nk3jDH6a0h19LpyzASQetttrYCKRODvhM4FnuZi3KIm9RPBfd5JIhgK/kCJWX0v318tuuH0PtMyyFL7LT7BRAroUY6WeiedIfoxiqyPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dev-suse (unknown [210.73.43.2])
-	by APP-05 (Coremail) with SMTP id zQCowAD3ilt5_JloVGvrCg--.50264S2;
-	Mon, 11 Aug 2025 22:21:46 +0800 (CST)
-From: Jingwei Wang <wangjingwei@iscas.ac.cn>
-To: linux-riscv@lists.infradead.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Jesse Taube <jesse@rivosinc.com>,
-	Olof Johansson <olof@lixom.net>,
-	Yixun Lan <dlan@gentoo.org>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Tsukasa OI <research_trasio@irq.a4lg.com>,
-	stable@vger.kernel.org,
-	Jingwei Wang <wangjingwei@iscas.ac.cn>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v8] riscv: hwprobe: Fix stale vDSO data for late-initialized keys at boot
-Date: Mon, 11 Aug 2025 22:20:06 +0800
-Message-ID: <20250811142035.105820-1-wangjingwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1754922819; c=relaxed/simple;
+	bh=o+skJLf15lCzmm7XuyVHgI9UTU99H4wOljAnL9vR+Lc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kv1Li47Rn3vBIcFoGQDkjVaB+zW8atmLkubGwuPGSQ4zn6VutPxFpdhxZZTXpfdoes93lddqwOmlh4RfRb8qwJnNdw6A+NsUOUS64U4dDW9bQ4UsHiyNPAOXdqDooFNOusH69VkAkBGU+hEQaDCYgxfCarxK2DedxlgyzEVPpcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LEobG1zZ; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-af95b919093so652507066b.2
+        for <stable@vger.kernel.org>; Mon, 11 Aug 2025 07:33:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1754922814; x=1755527614; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xzG9dwly6/ybnLqAtX/TNi8ZiyF2hyfrYYfwn4/D8JE=;
+        b=LEobG1zZqL5Bbz4RFw9xrNnc1w343nHJ6cMHadK9hcoK6uHSEQfaj+cODuS2YFF7Y1
+         EJoEu0wcr1OXefpct9tLLaVYrAdKNCnbeffJIZntFbyLJ1ion7lvlNGAHEPJTyWAC27u
+         1S/ykQV96lhg4hERTlZ3lN5L9aUTgGMibP0nFh6vVf8gFjt8h/ePLniiSIRG/KHPCk9b
+         L0+Dy86GKY2x1d9D1jeQ5b+lsZPOU6Tja61Jgz4EVIG+kxyF3dSd4YmDFxeOs/NzQ2UQ
+         yswhRyI7RhE3K/CRzNlbkchz1msTvOvTGVRhYfu0U2XTvFUdM4/+wIrn88H6F9M/lU2D
+         jPnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754922814; x=1755527614;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xzG9dwly6/ybnLqAtX/TNi8ZiyF2hyfrYYfwn4/D8JE=;
+        b=wBLNigB11UBagWI8/yH+ov++LxF2VucM3QZG/5RzbZePr6q1tXrY3YfHV1OyJ1Kl3f
+         atHZDVoTNITXJUtbBkbjexkbdTXU7OYmzwZhHxg+RUNNxyoQwVls1dhHR6o5ppx9gysP
+         gldKNXOw8sNg8vMQSLMvm0Xv1hKWK6SZN9LjEfl1jU8EkFa8qXL5LogdVfkhLTPLuV2u
+         z7RO1X1dBSAZ/ZiSG1aZIDqvbIwamzpm88guNE57g3ofe9IwxphUTvHraiIsUvdF7K/r
+         A/dLVNYgUYiGm1uBZ5BCdCFws+QaOA3t/0lFteSl/XbH8LogneQQxIhovA+Fk8QHS0xt
+         P/pA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaG+lrHWsardMtezMfwBEXyOtlRI5iVCn8kYU+eaaTprFQ9oYlW0pG02rcrOqRSptrLDvZSLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcTW/gIZxuctt935tRyM8Sxm81XE09cCkEoh5i4y0knQsilWT7
+	o4PifQ61BG/THrvHNSfeRJ/MxnvvxCpIkdDLlx/6Dt1I63e6A0a6Dn5zjm1MvXhAUNA=
+X-Gm-Gg: ASbGncs6g0PMN/0HZmevzA0iRP1emYrgrF+DuMCr6iVIqODH1YTMDu26zeCe3z/gqTE
+	v0fr9pgCJZ5/u3yLzbwZIGhxJoH7318cgdgVVKgO1d365m1aHI79ElAaira5sMedgQAnly/sGR/
+	msIt9Fx3KfCRh5VN2vIXUxI9tUSK+sTV0wcz0zC8VwlIJ9SgyawKLR8tm231jGlCnKmFaJG79XN
+	4sniPAs3boPGpsjygJgIgZ/yX54fz7YtGoUIbIMF/akaPFb2fxwrh2IrEXOG1+WlWuCiKdO7hdl
+	+ZBVNfogj76igjUNCl6Fxdrh+S5l7V2L61PaaILhu40bjte2pCosIl8thG89++vX654ZSGh14Ei
+	GmoBwGWi3+WnWf38SkqIO24F2
+X-Google-Smtp-Source: AGHT+IExNC0c11zH/jGKM9+upItApkmYT9MY+l7zqDj6ODiv5e4/pyThgUPae5xjJdom1CpErhETJA==
+X-Received: by 2002:a17:907:980f:b0:ae0:c943:785c with SMTP id a640c23a62f3a-af9c655d858mr1246144366b.35.1754922813819;
+        Mon, 11 Aug 2025 07:33:33 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0a1bf9sm2037944566b.31.2025.08.11.07.33.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 07:33:33 -0700 (PDT)
+Date: Mon, 11 Aug 2025 16:33:31 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Gu Bowen <gubowen5@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, stable@vger.kernel.org,
+	linux-mm@kvack.org, Lu Jialin <lujialin4@huawei.com>,
+	Waiman Long <longman@redhat.com>, Breno Leitao <leitao@debian.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
+Message-ID: <aJn_Oxp3kKUF-fuR@pathway.suse.cz>
+References: <20250730094914.566582-1-gubowen5@huawei.com>
+ <20250801165228.6c2a009c0fe439ddc438217e@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAD3ilt5_JloVGvrCg--.50264S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Kr17Wr1ktw4DGFWrAF45trb_yoWDXw4rpF
-	Wqkrs5XFZ5JryxCaykKw1kZF10g3Z5Gw13tF4DKry5Zr47Jr13A3sagrsxAr4qyrWv93W0
-	vFs0gFWak39rAr7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwVW5XwCF04k20xvY0x0EwIxGrw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRFkskUUUUU=
-X-CM-SenderInfo: pzdqwy5lqj4v3l6l2u1dvotugofq/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250801165228.6c2a009c0fe439ddc438217e@linux-foundation.org>
 
-The hwprobe vDSO data for some keys, like MISALIGNED_VECTOR_PERF,
-is determined by an asynchronous kthread. This can create a race
-condition where the kthread finishes after the vDSO data has
-already been populated, causing userspace to read stale values.
+On Fri 2025-08-01 16:52:28, Andrew Morton wrote:
+> On Wed, 30 Jul 2025 17:49:14 +0800 Gu Bowen <gubowen5@huawei.com> wrote:
+> 
+> > kmemleak_scan_thread() invokes scan_block() which may invoke a nomal
+> > printk() to print warning message. This can cause a deadlock in the
+> > scenario reported below:
+> > 
+> >        CPU0                    CPU1
+> >        ----                    ----
+> >   lock(kmemleak_lock);
+> >                                lock(&port->lock);
+> >                                lock(kmemleak_lock);
+> >   lock(console_owner);
+> > 
+> > To solve this problem, switch to printk_safe mode before printing warning
+> > message, this will redirect all printk()-s to a special per-CPU buffer,
+> > which will be flushed later from a safe context (irq work), and this
+> > deadlock problem can be avoided.
+> > 
+> > Our syztester report the following lockdep error:
+> > 
+> > ======================================================
+> > WARNING: possible circular locking dependency detected
+> > 5.10.0-22221-gca646a51dd00 #16 Not tainted
+> > ------------------------------------------------------
+> > 
+> > ...
+> >
+> > Chain exists of:
+> >   console_owner --> &port->lock --> kmemleak_lock
+> > 
+> > Cc: stable@vger.kernel.org # 5.10
+> > Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+> > ---
+> >  mm/kmemleak.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+> > index 4801751cb6b6..d322897a1de1 100644
+> > --- a/mm/kmemleak.c
+> > +++ b/mm/kmemleak.c
+> > @@ -390,9 +390,11 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
+> >  		else if (object->pointer == ptr || alias)
+> >  			return object;
+> >  		else {
+> > +			__printk_safe_enter();
+> >  			kmemleak_warn("Found object by alias at 0x%08lx\n",
+> >  				      ptr);
+> >  			dump_object_info(object);
+> > +			__printk_safe_exit();
+> >  			break;
+> >  		}
+> >  	}
+> 
+> umm,
+> 
+> --- a/mm/kmemleak.c~a
+> +++ a/mm/kmemleak.c
+> @@ -103,6 +103,8 @@
+>  #include <linux/kmemleak.h>
+>  #include <linux/memory_hotplug.h>
+>  
+> +#include "../kernel/printk/internal.h"		/* __printk_safe_enter */
+> +
+>  /*
+>   * Kmemleak configuration and common defines.
+>   */
+> 
+> 
+> I'm not sure we're allowed to do that.  Is there an official way?
 
-To fix this race, a new 'ready' flag is added to the vDSO data,
-initialized to 'false' during arch_initcall_sync. This flag is
-checked by both the vDSO's user-space code and the riscv_hwprobe
-syscall. The syscall serves as a one-time gate, using a completion
-to wait for any pending probes before populating the data and
-setting the flag to 'true', thus ensuring userspace reads fresh
-values on its first request.
+The official way is to use printk_deferred_enter()/exit().
 
-Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: Olof Johansson <olof@lixom.net>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Co-developed-by: Palmer Dabbelt <palmer@dabbelt.com>
-Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
-Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
----
-Changes in v8:
-	- Based on feedback from Alexandre, reverted the initcall back to
-	  arch_initcall_sync since the DO_ONCE logic makes a late init redundant.
-	- Added the required Reviewed-by and Signed-off-by tags and fixed minor 
-	  formatting nits.
+Note that the API is using a per-CPU variable. It must be called
+with CPU migration disabled. The comment suggests disabling IRQs.
+But it should be enough to disable preemption.
 
-Changes in v7:
-	- Refined the on-demand synchronization by using the DO_ONCE_SLEEPABLE
-	  macro.
-	- Fixed a build error for nommu configs and addressed several coding
-	  style issues reported by the CI.
-
-Changes in v6:
-	- Based on Palmer's feedback, reworked the synchronization to be on-demand,
-	  deferring the wait until the first hwprobe syscall via a 'ready' flag.
-	  This avoids the boot-time regression from v5's approach.
-
-Changes in v5:
-	- Reworked the synchronization logic to a robust "sentinel-count"
-	  pattern based on feedback from Alexandre.
-	- Fixed a "multiple definition" linker error for nommu builds by changing
-	  the header-file stub functions to `static inline`, as pointed out by Olof.
-	- Updated the commit message to better explain the rationale for moving
-	  the vDSO initialization to `late_initcall`.
-
-Changes in v4:
-	- Reworked the synchronization mechanism based on feedback from Palmer
-	  and Alexandre.
-	- Instead of a post-hoc refresh, this version introduces a robust
-	  completion-based framework using an atomic counter to ensure async
-	  probes are finished before populating the vDSO.
-	- Moved the vdso data initialization to a late_initcall to avoid
-	  impacting boot time.
-
-Changes in v3:
-	- Retained existing blank line.
-
-Changes in v2:
-	- Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
-	- Updated commit message to provide a high-level summary.
-	- Added Fixes tag for commit e7c9d66e313b.
-
-v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
-
- arch/riscv/include/asm/hwprobe.h           |  7 +++
- arch/riscv/include/asm/vdso/arch_data.h    |  6 ++
- arch/riscv/kernel/sys_hwprobe.c            | 70 ++++++++++++++++++----
- arch/riscv/kernel/unaligned_access_speed.c |  9 ++-
- arch/riscv/kernel/vdso/hwprobe.c           |  2 +-
- 5 files changed, 79 insertions(+), 15 deletions(-)
-
-diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
-index 7fe0a379474ae2c6..5fe10724d307dc99 100644
---- a/arch/riscv/include/asm/hwprobe.h
-+++ b/arch/riscv/include/asm/hwprobe.h
-@@ -41,4 +41,11 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
- 	return pair->value == other_pair->value;
- }
- 
-+#ifdef CONFIG_MMU
-+void riscv_hwprobe_register_async_probe(void);
-+void riscv_hwprobe_complete_async_probe(void);
-+#else
-+static inline void riscv_hwprobe_register_async_probe(void) {}
-+static inline void riscv_hwprobe_complete_async_probe(void) {}
-+#endif
- #endif
-diff --git a/arch/riscv/include/asm/vdso/arch_data.h b/arch/riscv/include/asm/vdso/arch_data.h
-index da57a3786f7a53c8..88b37af55175129b 100644
---- a/arch/riscv/include/asm/vdso/arch_data.h
-+++ b/arch/riscv/include/asm/vdso/arch_data.h
-@@ -12,6 +12,12 @@ struct vdso_arch_data {
- 
- 	/* Boolean indicating all CPUs have the same static hwprobe values. */
- 	__u8 homogeneous_cpus;
-+
-+	/*
-+	 * A gate to check and see if the hwprobe data is actually ready, as
-+	 * probing is deferred to avoid boot slowdowns.
-+	 */
-+	__u8 ready;
- };
- 
- #endif /* __RISCV_ASM_VDSO_ARCH_DATA_H */
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 0b170e18a2beba57..44201160b9c43177 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -5,6 +5,9 @@
-  * more details.
-  */
- #include <linux/syscalls.h>
-+#include <linux/completion.h>
-+#include <linux/atomic.h>
-+#include <linux/once.h>
- #include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
- #include <asm/hwprobe.h>
-@@ -452,28 +455,32 @@ static int hwprobe_get_cpus(struct riscv_hwprobe __user *pairs,
- 	return 0;
- }
- 
--static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
--			    size_t pair_count, size_t cpusetsize,
--			    unsigned long __user *cpus_user,
--			    unsigned int flags)
--{
--	if (flags & RISCV_HWPROBE_WHICH_CPUS)
--		return hwprobe_get_cpus(pairs, pair_count, cpusetsize,
--					cpus_user, flags);
-+#ifdef CONFIG_MMU
- 
--	return hwprobe_get_values(pairs, pair_count, cpusetsize,
--				  cpus_user, flags);
-+static DECLARE_COMPLETION(boot_probes_done);
-+static atomic_t pending_boot_probes = ATOMIC_INIT(1);
-+
-+void riscv_hwprobe_register_async_probe(void)
-+{
-+	atomic_inc(&pending_boot_probes);
- }
- 
--#ifdef CONFIG_MMU
-+void riscv_hwprobe_complete_async_probe(void)
-+{
-+	if (atomic_dec_and_test(&pending_boot_probes))
-+		complete(&boot_probes_done);
-+}
- 
--static int __init init_hwprobe_vdso_data(void)
-+static int complete_hwprobe_vdso_data(void)
- {
- 	struct vdso_arch_data *avd = vdso_k_arch_data;
- 	u64 id_bitsmash = 0;
- 	struct riscv_hwprobe pair;
- 	int key;
- 
-+	if (unlikely(!atomic_dec_and_test(&pending_boot_probes)))
-+		wait_for_completion(&boot_probes_done);
-+
- 	/*
- 	 * Initialize vDSO data with the answers for the "all CPUs" case, to
- 	 * save a syscall in the common case.
-@@ -501,13 +508,52 @@ static int __init init_hwprobe_vdso_data(void)
- 	 * vDSO should defer to the kernel for exotic cpu masks.
- 	 */
- 	avd->homogeneous_cpus = id_bitsmash != 0 && id_bitsmash != -1;
-+
-+	/*
-+	 * Make sure all the VDSO values are visible before we look at them.
-+	 * This pairs with the implicit "no speculativly visible accesses"
-+	 * barrier in the VDSO hwprobe code.
-+	 */
-+	smp_wmb();
-+	avd->ready = true;
-+	return 0;
-+}
-+
-+static int __init init_hwprobe_vdso_data(void)
-+{
-+	struct vdso_arch_data *avd = vdso_k_arch_data;
-+
-+	/*
-+	 * Prevent the vDSO cached values from being used, as they're not ready
-+	 * yet.
-+	 */
-+	avd->ready = false;
- 	return 0;
- }
- 
- arch_initcall_sync(init_hwprobe_vdso_data);
- 
-+#else
-+
-+static int complete_hwprobe_vdso_data(void) { return 0; }
-+
- #endif /* CONFIG_MMU */
- 
-+static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
-+			    size_t pair_count, size_t cpusetsize,
-+			    unsigned long __user *cpus_user,
-+			    unsigned int flags)
-+{
-+	DO_ONCE_SLEEPABLE(complete_hwprobe_vdso_data);
-+
-+	if (flags & RISCV_HWPROBE_WHICH_CPUS)
-+		return hwprobe_get_cpus(pairs, pair_count, cpusetsize,
-+					cpus_user, flags);
-+
-+	return hwprobe_get_values(pairs, pair_count, cpusetsize,
-+				cpus_user, flags);
-+}
-+
- SYSCALL_DEFINE5(riscv_hwprobe, struct riscv_hwprobe __user *, pairs,
- 		size_t, pair_count, size_t, cpusetsize, unsigned long __user *,
- 		cpus, unsigned int, flags)
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index ae2068425fbcd207..aa912c62fb70ba0e 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -379,6 +379,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
- {
- 	schedule_on_each_cpu(check_vector_unaligned_access);
-+	riscv_hwprobe_complete_async_probe();
- 
- 	return 0;
- }
-@@ -473,8 +474,12 @@ static int __init check_unaligned_access_all_cpus(void)
- 			per_cpu(vector_misaligned_access, cpu) = unaligned_vector_speed_param;
- 	} else if (!check_vector_unaligned_access_emulated_all_cpus() &&
- 		   IS_ENABLED(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)) {
--		kthread_run(vec_check_unaligned_access_speed_all_cpus,
--			    NULL, "vec_check_unaligned_access_speed_all_cpus");
-+		riscv_hwprobe_register_async_probe();
-+		if (IS_ERR(kthread_run(vec_check_unaligned_access_speed_all_cpus,
-+			   NULL, "vec_check_unaligned_access_speed_all_cpus"))) {
-+			pr_warn("Failed to create vec_unalign_check kthread\n");
-+			riscv_hwprobe_complete_async_probe();
-+		}
- 	}
- 
- 	/*
-diff --git a/arch/riscv/kernel/vdso/hwprobe.c b/arch/riscv/kernel/vdso/hwprobe.c
-index 2ddeba6c68dda09b..bf77b4c1d2d8e803 100644
---- a/arch/riscv/kernel/vdso/hwprobe.c
-+++ b/arch/riscv/kernel/vdso/hwprobe.c
-@@ -27,7 +27,7 @@ static int riscv_vdso_get_values(struct riscv_hwprobe *pairs, size_t pair_count,
- 	 * homogeneous, then this function can handle requests for arbitrary
- 	 * masks.
- 	 */
--	if ((flags != 0) || (!all_cpus && !avd->homogeneous_cpus))
-+	if ((flags != 0) || (!all_cpus && !avd->homogeneous_cpus) || unlikely(!avd->ready))
- 		return riscv_hwprobe(pairs, pair_count, cpusetsize, cpus, flags);
- 
- 	/* This is something we can handle, fill out the pairs. */
--- 
-2.50.1
-
+Best Regards,
+Petr
 
