@@ -1,128 +1,137 @@
-Return-Path: <stable+bounces-167050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF667B210B0
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 18:02:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8F3B21311
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 19:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 559363E794B
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 15:52:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C25504E3A1A
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 17:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CC12E6131;
-	Mon, 11 Aug 2025 15:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20ABD2D3EC2;
+	Mon, 11 Aug 2025 17:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVnT9QbA"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ll2i+Ebo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q9+7FIYv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916D12E6134
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 15:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6652929BDB8;
+	Mon, 11 Aug 2025 17:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754926292; cv=none; b=UAje3EuuXk9tkkv53gcvcTk+z/jRDStLLm3kSYkR1K9N6ZT/pODJHcA/ad55CPN4kRLMGWBwQSjuLd7+CEwR6HsbYqY7x009evE0oU5yTxdMVpSX5hb/FBt5DpoX9w/AjHwz+E+yYakP3w2rmgqIQrzJghf0Ct5yP896FOzkF2k=
+	t=1754933114; cv=none; b=jV8f4+wNWc78enIhYCJod/1ODDyk+zPibjnMCmEWQz2CYO1innAlLWu2irnHyMjuf0sV8DSWI7DBWBn5kZ1A1/4z6hehfqawy4PZLAuTUnjVXC4lZKkfzBHlUpXnH3dHYbzdQNmBstmM6VneYF9+ZQZdZLgaJhezh3JmAOW31Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754926292; c=relaxed/simple;
-	bh=PpnQIX9Kg2x3jykNkGXI86lw0SusGSG519cPWSoxcK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vBOSzydTg/JPf8fN2JFQBqTiAAvPPa6PVVufuH28bKFpwzKX1Cb6cX1pEc+/+ke1ONhKX/rJpBhQr0TMP0SA3w6AaJ/cf5O9NEfra2yHvzFecze8WhO8ZE+1ClyPOkO3Hs973fq9XRQ//uTvJfKSVQoe0yyss5N+g+DP2iR3zC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVnT9QbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D42C4CEED;
-	Mon, 11 Aug 2025 15:31:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754926292;
-	bh=PpnQIX9Kg2x3jykNkGXI86lw0SusGSG519cPWSoxcK8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HVnT9QbAjqLu3LIeM3cMb1e24skYFm4/Ww5EU+LfBoaXR7qGmEyuggAi+6HMUOHV2
-	 p2xWRu1f0neWY4gQFp3C1eT42fEtWkv9oORSPrnf0crr66Nd9opj55P1i0ZSCZKD21
-	 AdJTpIzJ1f+A76hX/cMgNMEXvDGVc/3DYgVZxoEs=
-Date: Mon, 11 Aug 2025 17:31:29 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Qingfeng Hao <Qingfeng.Hao@windriver.com>
-Cc: "cve@kernel.org" <cve@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"He, Zhe" <Zhe.He@windriver.com>
-Subject: Re: [PATCH vulns 0/1] change the sha1 for CVE-2024-26661
-Message-ID: <2025081122-mobility-facsimile-abb2@gregkh>
-References: <20250801040635.4190980-1-qingfeng.hao@windriver.com>
- <2025080132-landlady-stilt-e9f2@gregkh>
- <DS0PR11MB79597F9B511913D0EF4DDA458826A@DS0PR11MB7959.namprd11.prod.outlook.com>
- <2025080251-outright-lubricant-1e05@gregkh>
- <4be58827-6794-401b-9a9e-e1ffd66a6a89@windriver.com>
+	s=arc-20240116; t=1754933114; c=relaxed/simple;
+	bh=lvhkMu0W1b5OC5e9sXMMahIDxfFt5PSt4ywN015JGAo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Ju5HAEXEFVs8QJHegO/vejNm5aGUd2S3ZqYuTY2NpEUKbLmg6YVRMiel1GFEVt4PnfNiMsDdBH62AaT+CTo4vQKmRJtZTZZiSJRuzJxs7593mGy3NoKo4AS5pRDTHiG2q23LudtZpxrzIyAyXLgYBybxHLPxUyMh+Q4qdQSZYUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ll2i+Ebo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q9+7FIYv; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 11 Aug 2025 15:58:01 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1754933111;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eicc9bv7E8hw8eiH/Xiu7qBfBTipp6bu/QoYdC/hMDU=;
+	b=Ll2i+Ebo2Lb5AOqf/R12xnnuYKrfQIn0U14py/nhpLCWtL+pmdPS7CGllxcSDbBk/kmUOR
+	NCq/dOmp5gZi8iTUbL9uFfUHYQH83V5GQvNF1tVdNVFGVC/+oWkicumCD92tEEjNBaHwBr
+	HqQkVSlhd7WTodiNlfwkKRAlVqLc380BAkkHQ/NYErmlv2ZpvHI8OWZ4MTbvlVmV3c3LYT
+	dGFgteDaxh4CVf3XcaJedAg8z6BEkLr4FmLCO6YF3BIzs6Vl5WD0vUpwr7k58ZBbcFJN5G
+	vzu9Dw6uQVhLeIn/ykCNXhaPYSLoceW2bOadhA7dqnsdq3dbUzpgOGk8iIyLKw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1754933111;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eicc9bv7E8hw8eiH/Xiu7qBfBTipp6bu/QoYdC/hMDU=;
+	b=q9+7FIYvqWxZNaL3T+Eak4sUeZNlVfK4n4bU6jMtw1adDE02TIpjrve75IW0zrSd/YKaEV
+	6QZ5aFRZClw9gTCw==
+From: "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/urgent] futex: Use user_write_access_begin/_end() in
+ futex_put_value()
+Cc: Waiman Long <longman@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250811141147.322261-1-longman@redhat.com>
+References: <20250811141147.322261-1-longman@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4be58827-6794-401b-9a9e-e1ffd66a6a89@windriver.com>
+Message-ID: <175492788185.1420.501184708577751287.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 04, 2025 at 03:47:16PM +0800, Qingfeng Hao wrote:
-> 
-> On 8/2/25 16:19, Greg KH wrote:
-> > CAUTION: This email comes from a non Wind River email account!
-> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> > 
-> > On Fri, Aug 01, 2025 at 12:04:54PM +0000, Hao, Qingfeng wrote:
-> > > Hi Greg,
-> > > Thanks for your check and comments. Sorry that I mistakenly changed
-> > > the files of .dyad and .json. I'll pay attention next time.
-> > > The original fix 66951d98d9bf ("drm/amd/display: Add NULL test for 'timing generator' in 'dcn21_set_pipe()'")
-> > > or fb5a3d037082 for CVE-2024-26661 didn't fix the CVE (or even made it worse) because the key change
-> > > is to check if “tg” is NULL before referencing it, but the fix does NOT do that correctly:
-> > > +       if (!abm && !tg && !panel_cntl)
-> > > +               return;
-> > > Here "&&" should have been "||".
-> > > The follow-up commit 17ba9cde11c2 fixes this by:
-> > > -       if (!abm && !tg && !panel_cntl)
-> > > +       if (!abm || !tg || !panel_cntl)
-> > >                  return;
-> > > So we consider that 66951d98d9bf is not a complete fix. It actually made things worse.
-> > > 66951d98d9bf and 17ba9cde11c2 together fix CVE-2024-26661.
-> > > The same problem happened to CVE-2024-26662.
-> > > If you agree with the above analysis, should I append 17ba9cde11c2bfebbd70867b0a2ac4a22e573379 to CVE-2024-26661.sha1 ?
-> > I think that the original CVE should just be rejected and a new one
-> > added for the other sha1 you have pointed out that actually fixes the
-> > issue because the first one does not do anything.  Is that ok?
-> Thanks Greg.
-> Just to be clear, 66951d98d9bf was supposed to fix CVE-2024-26661 but it
-> failed
-> to do that. Then 17ba9cde11c2 was added, together with 66951d98d9bf, finally
-> fixing CVE-2024-26661.
-> 
-> 1) I'm OK with rejecting CVE-2024-26661 and creating a new CVE.
-> BTW, since I'm new to kernel CVE management, why do we reject a valid CVE
-> just
-> because the initial fix doesn't work ?
+The following commit has been merged into the locking/urgent branch of tip:
 
-Because almost all CVEs are tied to the commits that resolve them.  But,
-we do have a way to have multiple commit ids for a single CVE, as you
-point out, so we should probably just do that here as well.
+Commit-ID:     dfb36e4a8db0cd56f92d4cb445f54e85a9b40897
+Gitweb:        https://git.kernel.org/tip/dfb36e4a8db0cd56f92d4cb445f54e85a9b=
+40897
+Author:        Waiman Long <longman@redhat.com>
+AuthorDate:    Mon, 11 Aug 2025 10:11:47 -04:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 11 Aug 2025 17:53:21 +02:00
 
-> 2) If we do need to reject CVE-2024-26661 and create a new CVE, is there
-> anything I should do ?
+futex: Use user_write_access_begin/_end() in futex_put_value()
 
-Nope!
+Commit cec199c5e39b ("futex: Implement FUTEX2_NUMA") introduced the
+futex_put_value() helper to write a value to the given user
+address.
 
-> 3) I just did some search and found that some sha1 files contain multiple
-> commit ids. The sha1 file should contain all of the commits that fix the CVE
-> ?
-> Or just the last commit of the commits that fix the CVE ?
+However, it uses user_read_access_begin() before the write. For
+architectures that differentiate between read and write accesses, like
+PowerPC, futex_put_value() fails with -EFAULT.
 
-Let me just go and add this id to the CVE itself, as it makes more sense
-as you point out, both commits need to be present here to resolve the
-issue.
+Fix that by using the user_write_access_begin/user_write_access_end() pair
+instead.
 
-I've now done that, but note, it didn't change anything here, the fixes
-and vulnerable entries still all remain the same, so no one really will
-notice this :)
+Fixes: cec199c5e39b ("futex: Implement FUTEX2_NUMA")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250811141147.322261-1-longman@redhat.com
+---
+ kernel/futex/futex.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-thanks,
-
-greg k-h
+diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
+index c74eac5..2cd5709 100644
+--- a/kernel/futex/futex.h
++++ b/kernel/futex/futex.h
+@@ -319,13 +319,13 @@ static __always_inline int futex_put_value(u32 val, u32=
+ __user *to)
+ {
+ 	if (can_do_masked_user_access())
+ 		to =3D masked_user_access_begin(to);
+-	else if (!user_read_access_begin(to, sizeof(*to)))
++	else if (!user_write_access_begin(to, sizeof(*to)))
+ 		return -EFAULT;
+ 	unsafe_put_user(val, to, Efault);
+-	user_read_access_end();
++	user_write_access_end();
+ 	return 0;
+ Efault:
+-	user_read_access_end();
++	user_write_access_end();
+ 	return -EFAULT;
+ }
+=20
 
