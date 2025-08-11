@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-167006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8F0B201A3
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 10:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB194B201A9
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 10:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD280169B3D
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 08:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0811B164190
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 08:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BB42DAFCB;
-	Mon, 11 Aug 2025 08:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10DC2DCBF4;
+	Mon, 11 Aug 2025 08:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="seF3dSQo"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WKtDHaf0"
 X-Original-To: stable@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B462DAFA4;
-	Mon, 11 Aug 2025 08:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FF62DAFB1;
+	Mon, 11 Aug 2025 08:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754900470; cv=none; b=uMFC7vE1As1mHxuYylA/vybwn0gSdvTpBufd/y9aQiFkHaJxg3XIHjAFqOsQHbfWR9PT9PoPtnYUmFdc1ktelVCuSbRmwtm9qlaxMT0FXKI9zoF6IXxSCZyv8Om6v0YipdWzSY/0rLKEWTTdz0ui1IFVWZkP4W/9Adb5lhn5cX4=
+	t=1754900497; cv=none; b=r0bLpXjp7X/x2tPDOd9iSNloDw3G8WCzMyfWumWqwrBSnCS4dpkfPplZUgLAITO27d8l9JqdDB30XpMAAt3DFZ6Jh2v7X88D52w7KPqCA7RpyCinWtY3eTvAbrwH0/GXojZhLFjuOQkN454GLkLvtq6PY/8tHbUkDCU2XXf/ggI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754900470; c=relaxed/simple;
-	bh=lSS0pVF3EOA0nBZI3FcDMTVEXoMTYUKovgqydt6TVsI=;
+	s=arc-20240116; t=1754900497; c=relaxed/simple;
+	bh=LkrAuDMyLBPzFqnNHQvajGJmFRMtYG6UoIo++14XmsI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=p8Ux6ifUaSPLnJOSO55h48tHPCfNGETDUEkKkp0sokIqGNOyMSHoGv1aJg0gnQ5oJDQ0M6GMHvy8pGEk5YThrZnBLLS0HBhscUoF+3qNbz0YblUSh00/XgvEmooZYDz7OVBaATRPoNosQz+/ssK+VaIA4no0HJVeO1jySL8Qwgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=seF3dSQo; arc=none smtp.client-ip=213.167.242.64
+	 In-Reply-To:To:Cc; b=V1SSv8gFXpxeD+L9V8YOhpCTKB6qGj+hp/a/CGSwE64A5MQ9+vOk/r87p6sVHind6DfkIiqMa5Xmavfs39ROCIiF/IwVCR/3Voob8BnOOTDVoDSlcS11V6CFEz3p9EZI05cbTnoQCue+Dms114PknrXr9GAd/88Kvn/qMi4ky+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WKtDHaf0; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from mail.ideasonboard.com (unknown [223.190.81.143])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7FABA82A;
-	Mon, 11 Aug 2025 10:20:14 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D6CC482A;
+	Mon, 11 Aug 2025 10:20:41 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1754900414;
-	bh=lSS0pVF3EOA0nBZI3FcDMTVEXoMTYUKovgqydt6TVsI=;
+	s=mail; t=1754900442;
+	bh=LkrAuDMyLBPzFqnNHQvajGJmFRMtYG6UoIo++14XmsI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=seF3dSQoBjX74vy5mVKNoLvyrTTHsNrwH8baVzg5n1KbrciSRA0EJW7/06ure09vl
-	 5UEVKFClT/kyPSwpqKxvsIBD/7dPY/+uhPwPPBLr6KL1Klvev/0guKAzzIE35W4t7z
-	 eyZTXZ9Gd9kND2pVWu4CHmJZVzCmf7URSV4Z89zQ=
+	b=WKtDHaf0stEuaAqVyPiuT5OfzLiyLT+qURVjciOFiA6lmlYfBY4PazIKHGMEBT9v+
+	 xa7DIDJmWfO/MAKddmG/nIdgAFp5iHeSGN/mqomVE90t/cIDSrqTOM2yGmEa5WUtYl
+	 8ZPpr4xd5fJV7/enjlxJ0FhZ/GdOg2NW/gC0aKrM=
 From: Jai Luthra <jai.luthra@ideasonboard.com>
-Date: Mon, 11 Aug 2025 13:50:13 +0530
-Subject: [PATCH v4 1/6] media: ti: j721e-csi2rx: Use
- devm_of_platform_populate
+Date: Mon, 11 Aug 2025 13:50:15 +0530
+Subject: [PATCH v4 3/6] media: ti: j721e-csi2rx: Fix source subdev link
+ creation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250811-probe_fixes-v4-1-aae22290f1d0@ideasonboard.com>
+Message-Id: <20250811-probe_fixes-v4-3-aae22290f1d0@ideasonboard.com>
 References: <20250811-probe_fixes-v4-0-aae22290f1d0@ideasonboard.com>
 In-Reply-To: <20250811-probe_fixes-v4-0-aae22290f1d0@ideasonboard.com>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
@@ -66,28 +66,35 @@ Cc: Devarsh Thakkar <devarsht@ti.com>,
  linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jai Luthra <jai.luthra@ideasonboard.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1261;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2038;
  i=jai.luthra@ideasonboard.com; h=from:subject:message-id;
- bh=lSS0pVF3EOA0nBZI3FcDMTVEXoMTYUKovgqydt6TVsI=;
- b=owEBbQKS/ZANAwAKAUPekfkkmnFFAcsmYgBomafR5kZMz2l1bibxR7ZCJc3WSGz4jeaAjPKYw
- hEv81mtcIeJAjMEAAEKAB0WIQRN4NgY5dV16NRar8VD3pH5JJpxRQUCaJmn0QAKCRBD3pH5JJpx
- Re3UD/95lkZpTM0yyJyxS4R63XtIQgq7aTl1uuqpYLqo8zDP6OOU1qfyelyqYS3qwNGPxcuUd5u
- Bqc4AJrmRewTHOxlz2tez9bbxrGmsXPmjrI4wMB8SHWmye9ldR1kReSUc0hL1zUKTJvFMUxJOXd
- Unid4/gxXuCBCWuNso/Nyk+HhT6UI9qYAjxoKAQ2kE8z/FcSzah4vLpHb1uKxAyznKNHZD3p0tk
- gk3+ZW8rfdP3r/AbskOGfRmYKy1db4bzVurRFcatojAp2wtfn/oZ496jPI1lHbB/uV3GLOthio8
- 6BFJEooLLnlw4caSbYa+Zm8ZdS4m0kuDPfPCOpigtNqIh7EN0wAipOYlKq7NpXtsvqnrf25d0kc
- uDrmFOBJVK1SLHFogGU/FEuYkruBT+LkXiMKsyDkjBpl9tOHlyHZxevXTxwtpMycIXc2z3MFqDu
- MKuO79sJ3Iscq9qGQ43wlVTLg1acAHVpzGPcO5n/+h6/kCNoHqktFoYgJvTsEyV0TBGiyoLVe+0
- e8o3SYObOE5ccCZDIPApAGnyae+oCgYh8nBx38y2ZCRxaFly9mODznRM3HCepUM7bQ+N+uzcu1m
- 4+W2bstNzvAmZFFVtxX1KSr7hOzOHup2tPOg5+pnfKbayc4JqNBZTYDx9P+2INQYbOf0bCi8DZ2
- PSpYm7KWc4L4WmQ==
+ bh=LkrAuDMyLBPzFqnNHQvajGJmFRMtYG6UoIo++14XmsI=;
+ b=owEBbQKS/ZANAwAKAUPekfkkmnFFAcsmYgBomafTSPL37suDBn1Tg7wE8UkBPskzQUhqLdHCN
+ 8cZOP6zxC+JAjMEAAEKAB0WIQRN4NgY5dV16NRar8VD3pH5JJpxRQUCaJmn0wAKCRBD3pH5JJpx
+ RSioD/9YmcsezCHjvreA9MCRvzf3a08Yu+93FIm1kZaH2YPzVWkg88C9pzFTGBKjUM2zrYMCwBd
+ hx20WMgO7XE9uc+khQibag40FCkP3Hhds7sAPm62B4zhFRfT3fWrIcxEjjQZ4ib61sEdpkQrfBA
+ wqug+elMB1vZWSQhWrGNC8Gh6YvznkVQLR/yfUzW6Vht6w0vE9mCeCJn6EjFx+zAAKTr+GqWFE6
+ 2DibZiPvcpkyc12nKVwoxPz0Rs8sJgvX38EbO+KvkflKUs+T/WNwpO6izitgNU9axHGW7FucItk
+ pkd3mDzmGE+8kPhG6D7YnFO3uroMCiu3hfHuFBsPf+eUPlFUUojeGdUgH0moaK3f4liUS3ixYAK
+ DmQmNzf5vQ7/EYD1USCQ68mRji/GiMLOohbNVE28fAq3eOdT8Q8dCU8uGVeXRrqasYdEh9Q0H9S
+ Bh2Lw4u+T0HMD72jZl+Z524PCiUsT3YTN9NrDKNByKHjgrxLK7nYkk6bG6TYjWOAt11ooZt1Amu
+ o07jEEpZz/XC9Fwx6wVi+RKosE049WY5obc0zQOqNN7BffxPgI1lA6DSCfGGKX+iiWyf0AKkgBN
+ W/EFJ5BFp0hmfvIc/2RUVkXN2wFqQKly5WuP+JVSHqGsbIAF37jTECUIDmR7a213IwlEp7/tdVy
+ fvyXabw026pjw8Q==
 X-Developer-Key: i=jai.luthra@ideasonboard.com; a=openpgp;
  fpr=4DE0D818E5D575E8D45AAFC543DE91F9249A7145
 
-Ensure that we clean up the platform bus when we remove this driver.
+We don't use OF ports and remote-endpoints to connect the CSI2RX bridge
+and this device in the device tree, thus it is wrong to use
+v4l2_create_fwnode_links_to_pad() to create the media graph link between
+the two.
 
-This fixes a crash seen when reloading the module for the child device
-with the parent not yet reloaded.
+It works out on accident, as neither the source nor the sink implement
+the .get_fwnode_pad() callback, and the framework helper falls back on
+using the first source and sink pads to create the link between them.
+
+Instead, manually create the media link from the first source pad of the
+bridge to the first sink pad of the J721E CSI2RX.
 
 Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
 Cc: stable@vger.kernel.org
@@ -95,22 +102,34 @@ Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
 Tested-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com> (on SK-AM68)
 Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
 ---
- drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-index b628d6e081dbcb4dae06a236455228c168945660..6d4cccbe1fdea11f6aefd63a985a9a3c16a7a9fe 100644
+index daadb870514602bd59519d6cd2966a9ff56794fe..09e5618de7dd0cdd5bf42083804ff7ca53f0973b 100644
 --- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
 +++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-@@ -1120,7 +1120,7 @@ static int ti_csi2rx_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_vb2q;
+@@ -53,6 +53,8 @@
+ #define DRAIN_TIMEOUT_MS		50
+ #define DRAIN_BUFFER_SIZE		SZ_32K
  
--	ret = of_platform_populate(csi->dev->of_node, NULL, NULL, csi->dev);
-+	ret = devm_of_platform_populate(csi->dev);
++#define CSI2RX_BRIDGE_SOURCE_PAD	1
++
+ struct ti_csi2rx_fmt {
+ 	u32				fourcc;	/* Four character code. */
+ 	u32				code;	/* Mbus code. */
+@@ -427,8 +429,9 @@ static int csi_async_notifier_complete(struct v4l2_async_notifier *notifier)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = v4l2_create_fwnode_links_to_pad(csi->source, &csi->pad,
+-					      MEDIA_LNK_FL_IMMUTABLE | MEDIA_LNK_FL_ENABLED);
++	ret = media_create_pad_link(&csi->source->entity, CSI2RX_BRIDGE_SOURCE_PAD,
++				    &vdev->entity, csi->pad.index,
++				    MEDIA_LNK_FL_IMMUTABLE | MEDIA_LNK_FL_ENABLED);
+ 
  	if (ret) {
- 		dev_err(csi->dev, "Failed to create children: %d\n", ret);
- 		goto err_subdev;
+ 		video_unregister_device(vdev);
 
 -- 
 2.50.1
