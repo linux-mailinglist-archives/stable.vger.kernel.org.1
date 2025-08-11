@@ -1,194 +1,198 @@
-Return-Path: <stable+bounces-167056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE4DB21425
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 20:24:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179EDB214FF
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 20:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5626D1A21019
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 18:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 189301A2336D
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 18:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044C72E1C65;
-	Mon, 11 Aug 2025 18:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9D52E2DE4;
+	Mon, 11 Aug 2025 18:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="q+79YMxY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pnnj7TI2"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2084.outbound.protection.outlook.com [40.107.220.84])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDA72E1C50;
-	Mon, 11 Aug 2025 18:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754936312; cv=fail; b=iOuWep6xC5jPognsoXvMIQ1Pg4XtrnIIbisjbEVx2C0OS/x97ZyqAsgsJPMlg5zvwmedIhxnHoEwmemsv1hsCtnffypP3gneblgWZymQ4FyHUGPxZVTfPQsyn8k30vZ4jO7j9SI0PLSGr8cJPFiWjdJBdv5ibvRJHpLn1bPp0+s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754936312; c=relaxed/simple;
-	bh=s6XJMFVNiB23kdCNinKsSgjsnYRQ+MNeckRf2jrOsRs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QkFguaCJzI6ZqzP/hAr7nmCYiDmOYsOv8n/ciItHU6TutwuxyJfczIJMrFHEu1V/Qmy1H5PhI2LfvlVx8MYW3jK/LzV/NpZ/RynnUkNLxjzx7q9TP7K5Cg8DZAPmkBbbIHKO7UHWfMxYeTadcz9bxnsUlYmX35VhZVRjo2ZbuZU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=q+79YMxY; arc=fail smtp.client-ip=40.107.220.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ed5bOvcJwxytCZLIU01DnsDxko6QvwkL4EIknq2zLZ1EcMY4d47KjGMadzQul3WL3o/lMSDmKHkmL8jNGErGqUyR+FiAwCJjs9YCb4U1Fimj0Jl0uWUhxgownTtCk7TLnvxuG1nMkmMdFM43jC2yM9CyRab9cAmvUmibaL7X5FQNIskKG26rDVIAHaUCN58+ULYhBNFstwq6m1Cn1MOn8yTIr61hYzLNG/qsxEy9lHBl4XMe2bvsC6GvfvHSmzCL0nm0TyTeDFYUOfGxMSyscn35Kzaof+C/KsdJOS2JJXSAMdbrbeBF5Z1tC7EUo/Sh81mK1jPEuBEgV0W5FUszsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L9gmiu9GdCmNl1PKB8vQ7X/jijLW7P06yyJPrAUqBug=;
- b=EBtZG1jr6GMRB3T1slZelWD0BnOGxYudEgmC0qjqiaoGwKA6zvAVsw3UrThS8NqkaPMBxSLCrRymrsodSjxdIWy9HvrAWLCZwFDxSr5YCFzyIHCdiobc+wmvnHDYtDfhrhhqJA4zPs1PzLSNB4WD7cHHJAFDPUkAOauJMvILomD1nJnn2lgTrESwIQHfETQeQP59fk0Plqxl+ENzMb50WiYLVk8eFrdJFbehxqTFDouc2mDUdPMCE5W252snVjpwtJhJyLwQbUgET3B6tstfH7hOkjJYY95rnUCbS/8euLODipw6vrCZ7lIhn7HcUfOyqkY/XoofKb85Ptlxibq3Tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L9gmiu9GdCmNl1PKB8vQ7X/jijLW7P06yyJPrAUqBug=;
- b=q+79YMxYrOLSuUTbTI0VKHdGWEbJH9Rv8526EeUeFTe2V7sbVVSwdHp2RObEFM6eMZgrD14cF3EujOoFrakhkUzQLSCsfJyohvNR/er9z7AQJN7JYuT/6URMlCebcMgHQ3bHxuy4XyQut4FmfXTzeb2NFM8Qbc43kXu4y2UfrMeZ8+KfSc2bER0ZETmaHVjSSjMCweYg4XqCPVWQ6A3TwJP+8YdHhKIdj/T3Fj3urx0SbmbiyE8EbMzhViNYII85sBvGJwXFsnP8JssHrKhk7hPBmP2N9A9b4r4inqUa7jpYjrx9HCkDHiNQAXC+ZNK7MVhz4nbL6B9lugx/2Pu5MA==
-Received: from SA9PR13CA0042.namprd13.prod.outlook.com (2603:10b6:806:22::17)
- by SN7PR12MB8770.namprd12.prod.outlook.com (2603:10b6:806:34b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Mon, 11 Aug
- 2025 18:18:26 +0000
-Received: from SN1PEPF000397B4.namprd05.prod.outlook.com
- (2603:10b6:806:22:cafe::33) by SA9PR13CA0042.outlook.office365.com
- (2603:10b6:806:22::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.12 via Frontend Transport; Mon,
- 11 Aug 2025 18:18:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SN1PEPF000397B4.mail.protection.outlook.com (10.167.248.58) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.11 via Frontend Transport; Mon, 11 Aug 2025 18:18:25 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 11 Aug
- 2025 11:18:08 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 11 Aug 2025 11:18:08 -0700
-Received: from SDONTHINENI-DESKTOP.nvidia.com (10.127.8.12) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
- Transport; Mon, 11 Aug 2025 11:18:07 -0700
-From: Shanker Donthineni <sdonthineni@nvidia.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, Suzuki K Poulose
-	<suzuki.poulose@arm.com>, Steven Price <steven.price@arm.com>,
-	<linux-arm-kernel@lists.infradead.org>
-CC: Robin Murphy <robin.murphy@arm.com>, Gavin Shan <gshan@redhat.com>, "Mike
- Rapoport" <rppt@kernel.org>, Shanker Donthineni <sdonthineni@nvidia.com>,
-	Vikram Sethi <vsethi@nvidia.com>, Jason Sequeira <jsequeira@nvidia.com>, "Dev
- Jain" <dev.jain@arm.com>, David Rientjes <rientjes@google.com>,
-	<linux-kernel@vger.kernel.org>, <iommu@lists.linux.dev>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v2] dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
-Date: Mon, 11 Aug 2025 13:17:59 -0500
-Message-ID: <20250811181759.998805-1-sdonthineni@nvidia.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B915C72600;
+	Mon, 11 Aug 2025 18:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754938620; cv=none; b=kDN58pbFM48wD6WFVXCb9dGfyYX5GTAGWLOGFuO3nBpRPTq5O3hjSgpV8w4VAtKVsEVXGqlzeYHOiI93Ty6gkFtiG67TEcZn8YhAUw68Cylck/weQPS965r17aHVz5Rpx7iMyWrQK35WoKV0O6dEfKGi59xjKB67lh4AORrrrPY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754938620; c=relaxed/simple;
+	bh=/1h1FXQ8wlbSgFHXbQzagekP6WBsykBAbMExF88232A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M8kdyZtotZhaNpaVc6UvjFN2dqzgn0PXkO2Z3BOAOSbpE4nXrgGOG3GozpvkaTpV+cXh5FJuVLtbLAAE/zov2I52N4fZ9Rs87HgArJYwCg1/dxgTvpXgTab31W5f7XeywycUWqTzqZN2JmUGkmIABFu7PKpnjQSyRtOnnFdW9/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pnnj7TI2; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754938619; x=1786474619;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/1h1FXQ8wlbSgFHXbQzagekP6WBsykBAbMExF88232A=;
+  b=Pnnj7TI22M/wvUQDA78sBsJeug6tdbnzc6tMcoEMXCDeXuZ+/1PX66TL
+   nt95+jNkA1Cpq9bO3VPBo8c6nSHglAJfv9ynUxQ2x0SL+lGfZeH1+ClFZ
+   WH1Y+mJEuF+AVYPA94khQZJSKKDHdj42M+3Z+gHdhHFBYQTLfNYzch+zA
+   lL7GsI2mjIHmk3Gk8ItKBa1ZGF48M5dQt3sNCryzJebeaEC10dYrs9ld9
+   CQNDL6WG0bIY4JQ0pEk+tv69Xwwr4CytfMXEE0gDjbE0KgPAI7fW0WFUU
+   gMSKZ6INDw43vm6bl8Hy8G6GX2Ljik8ejShDnWjNaHGD9yJJPbLzyhhAF
+   Q==;
+X-CSE-ConnectionGUID: Je30W+SHQEu6DShDcy1vkQ==
+X-CSE-MsgGUID: GMyWzhJfQsC7si7eDViI3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="57344995"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="57344995"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 11:56:58 -0700
+X-CSE-ConnectionGUID: vpWZx5ZjTIuthikuHuwiLg==
+X-CSE-MsgGUID: gJZTJWVSR5qvoV1h6E7NgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="165192786"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa006.jf.intel.com with ESMTP; 11 Aug 2025 11:56:53 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ulXhL-00069Y-0y;
+	Mon, 11 Aug 2025 18:56:44 +0000
+Date: Tue, 12 Aug 2025 02:55:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	Dominique Martinet <asmadeus@codewreck.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <202508120250.Eooq2ydr-lkp@intel.com>
+References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B4:EE_|SN7PR12MB8770:EE_
-X-MS-Office365-Filtering-Correlation-Id: cff6cffb-0de7-49aa-401f-08ddd90376d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Dd3JUamCYBzQY4wzZuwgeXBuACQW04eqO3n67omVXud4YpUFYh/yB5qTNb9Y?=
- =?us-ascii?Q?7K8H7l7M/f73x0dG023HTA8PzFTYpFCbdcwPlW6jwBypAu25yiwZp/9qhOaS?=
- =?us-ascii?Q?h/rveAid/S0vC6yjpn9nznq5oSRFoEyOgwtq2P35qpfpGrJfM058/kniQ3Sj?=
- =?us-ascii?Q?bohJ2qSo7mRN6/VHT2w6KqE2zkGFKRCMRDL66kjRCkqZX3hxZ/k16rqkKFU5?=
- =?us-ascii?Q?0WHlap8/JV7wy1IkncVN7gOwNjbOJiMUJotVLly4fDCDbBGZQihUOcNzUzQk?=
- =?us-ascii?Q?LsyBfb081fywzoZf3UPCyk1KC2MbcFsvHL9OEJzdSKQCuJucPHf0nDcgM2xm?=
- =?us-ascii?Q?iGQF6FzXap2DVcvAGzo51y5nxHJE7tVRIDkDpMJ/IzAddiEaxUThdSlXTddp?=
- =?us-ascii?Q?QpDTVbtNdyvxYOPtnOcHftU0+JbQa4pMhSKnfsnL8Uvp0VIpXdLCPQmb++tn?=
- =?us-ascii?Q?OUgDFGKn0pa37YwVs6l0qWCbjNpH7Mdu5FhFNFGaqXgR0ABAHpmElxuUngx2?=
- =?us-ascii?Q?kqcrubNBd+rPAcVC+57f9MadkORskmmeSIgfEGgcCKkAamcLio8Vp7czYTVe?=
- =?us-ascii?Q?fjNMQ7iXE7QT0Z8/NiiQVC843OpZ2l1EFkp6g45VPehPKy6wyEb+9pUDCawl?=
- =?us-ascii?Q?/AlxDKBNFHI6sO7SyrqYMiqB4uU+OcanI1wcqIshmRWpvffFDE7jt+HyXRSa?=
- =?us-ascii?Q?hByYrlWpl6zLSEUm1o0ECgTP8yeaeegwdXKP/7a3H4oOS6LqS04BU9NO/i45?=
- =?us-ascii?Q?QRgkJZiMU3Gjz9VhSBpLak95+/GFgCK6nTFLpAgmBf03DfDLWtZl/8wLGq85?=
- =?us-ascii?Q?C8bSmmYHa02IJY0aSyFT1Nx8/lPLKx/uER5WQ3QsgHSQF82z0pA1mttu/2gx?=
- =?us-ascii?Q?wnXOKC8gGAISDDMaAemdpe8wK2vj+7spNAlprNDQ+B6fZRiIXe3S+JKaCqRU?=
- =?us-ascii?Q?G+WW+0QPKT8hi84JZo0x/AvBJzDX2Iiuh2biyBXEqkKfP9zD+BsFgX4v1kQF?=
- =?us-ascii?Q?MDdn3hMFP8B/iVDIduimxcaxtV0/Nmg7ztNGhcoZzV4NEpN1074CjvU8D8vG?=
- =?us-ascii?Q?wNUdWzHNK5E+a+h8QjXENdWKYeQOBxYi/KlLscFqdOSQzI8QVgdMF7l0XqBq?=
- =?us-ascii?Q?N/Qa/23n7sUCTz7IGes7wyfiGh1R7YNeGQlWgEKj8AebP+Gp+Pmmx0n8c6wj?=
- =?us-ascii?Q?rU0p18GdG/wopt+2+avPwKM7cwn2mbKsOaME6xos3/w8wfvKuSdEl0uTc0Ev?=
- =?us-ascii?Q?Sdpbjd6DyB1AEgWTxA5/4VsctGwWO9vmsAmk/XhFY38I+gQ1U+F5L8PkXnEy?=
- =?us-ascii?Q?LIzAnpnIp+xA6D/KJtm/YYPrQm7B5VUES9X1lIaRMyzDhP24e57GPKJ6+BVG?=
- =?us-ascii?Q?BlROS2JDuTAsfVHWeb2nG2J2twtkSgPnWdgyFM+zQpcu28sauWW63xPW266Q?=
- =?us-ascii?Q?xHyBenXGeiUvXOPj6irRLswNtLhjJTSJrjQHhukxCXAtgB6ESR5NuNKtTBxR?=
- =?us-ascii?Q?ToT9gvVJoP2K6xIc/0gpPROCWal/FF193s8e?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 18:18:25.6936
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cff6cffb-0de7-49aa-401f-08ddd90376d7
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B4.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8770
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
 
-When CONFIG_DMA_DIRECT_REMAP is enabled, atomic pool pages are
-remapped via dma_common_contiguous_remap() using the supplied
-pgprot. Currently, the mapping uses
-pgprot_dmacoherent(PAGE_KERNEL), which leaves the memory encrypted
-on systems with memory encryption enabled (e.g., ARM CCA Realms).
+Hi Dominique,
 
-This can cause the DMA layer to fail or crash when accessing the
-memory, as the underlying physical pages are not configured as
-expected.
+kernel test robot noticed the following build warnings:
 
-Fix this by requesting a decrypted mapping in the vmap() call:
-pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL))
+[auto build test WARNING on 8f5ae30d69d7543eee0d70083daf4de8fe15d585]
 
-This ensures that atomic pool memory is consistently mapped
-unencrypted.
+url:    https://github.com/intel-lab-lkp/linux/commits/Dominique-Martinet-via-B4-Relay/iov_iter-iterate_folioq-fix-handling-of-offset-folio-size/20250811-154319
+base:   8f5ae30d69d7543eee0d70083daf4de8fe15d585
+patch link:    https://lore.kernel.org/r/20250811-iot_iter_folio-v1-1-d9c223adf93c%40codewreck.org
+patch subject: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >= folio size
+config: i386-buildonly-randconfig-002-20250811 (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250812/202508120250.Eooq2ydr-lkp@intel.com/reproduce)
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
----
- kernel/dma/pool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508120250.Eooq2ydr-lkp@intel.com/
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 7b04f7575796b..ee45dee33d491 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -102,8 +102,8 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
- 
- #ifdef CONFIG_DMA_DIRECT_REMAP
- 	addr = dma_common_contiguous_remap(page, pool_size,
--					   pgprot_dmacoherent(PAGE_KERNEL),
--					   __builtin_return_address(0));
-+			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
-+			__builtin_return_address(0));
- 	if (!addr)
- 		goto free_page;
- #else
+All warnings (new ones prefixed by >>):
+
+   In file included from lib/iov_iter.c:14:
+>> include/linux/iov_iter.h:171:7: warning: variable 'remain' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+     171 |                 if (skip >= fsize)
+         |                     ^~~~~~~~~~~~~
+   include/linux/iov_iter.h:190:7: note: uninitialized use occurs here
+     190 |                 if (remain)
+         |                     ^~~~~~
+   include/linux/iov_iter.h:171:3: note: remove the 'if' if its condition is always false
+     171 |                 if (skip >= fsize)
+         |                 ^~~~~~~~~~~~~~~~~~
+     172 |                         goto next;
+         |                         ~~~~~~~~~
+   include/linux/iov_iter.h:163:22: note: initialize the variable 'remain' to silence this warning
+     163 |                 size_t part, remain, consumed;
+         |                                    ^
+         |                                     = 0
+   1 warning generated.
+
+
+vim +171 include/linux/iov_iter.h
+
+   143	
+   144	/*
+   145	 * Handle ITER_FOLIOQ.
+   146	 */
+   147	static __always_inline
+   148	size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2,
+   149			      iov_step_f step)
+   150	{
+   151		const struct folio_queue *folioq = iter->folioq;
+   152		unsigned int slot = iter->folioq_slot;
+   153		size_t progress = 0, skip = iter->iov_offset;
+   154	
+   155		if (slot == folioq_nr_slots(folioq)) {
+   156			/* The iterator may have been extended. */
+   157			folioq = folioq->next;
+   158			slot = 0;
+   159		}
+   160	
+   161		do {
+   162			struct folio *folio = folioq_folio(folioq, slot);
+   163			size_t part, remain, consumed;
+   164			size_t fsize;
+   165			void *base;
+   166	
+   167			if (!folio)
+   168				break;
+   169	
+   170			fsize = folioq_folio_size(folioq, slot);
+ > 171			if (skip >= fsize)
+   172				goto next;
+   173			base = kmap_local_folio(folio, skip);
+   174			part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
+   175			remain = step(base, progress, part, priv, priv2);
+   176			kunmap_local(base);
+   177			consumed = part - remain;
+   178			len -= consumed;
+   179			progress += consumed;
+   180			skip += consumed;
+   181			if (skip >= fsize) {
+   182	next:
+   183				skip = 0;
+   184				slot++;
+   185				if (slot == folioq_nr_slots(folioq) && folioq->next) {
+   186					folioq = folioq->next;
+   187					slot = 0;
+   188				}
+   189			}
+   190			if (remain)
+   191				break;
+   192		} while (len);
+   193	
+   194		iter->folioq_slot = slot;
+   195		iter->folioq = folioq;
+   196		iter->iov_offset = skip;
+   197		iter->count -= progress;
+   198		return progress;
+   199	}
+   200	
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
