@@ -1,132 +1,135 @@
-Return-Path: <stable+bounces-167058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F72B21550
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 21:25:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE04B215E8
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 21:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3E9B1A22440
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 19:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5AEF624EA2
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 19:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BB2149C51;
-	Mon, 11 Aug 2025 19:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D64B2D8DA9;
+	Mon, 11 Aug 2025 19:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="A6I1Yb0P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XcYNZ14G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102772D8393
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 19:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FAC27F724;
+	Mon, 11 Aug 2025 19:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754940288; cv=none; b=LEHXUaTyllTrTn+CQIgTfyhroyaY5P2ZlEMGr5l7f7gUytw4J1SowKcgVpvSM3uSZcHsZqqQrquE0EYXN7X2ZZ2+gg4y3oH2ZBuNad01spbh+lI/85xrwWR2ZX3Zyp0oqjmxyf9w2HVHJU6z+3ouFcdphKPxiywqwG+MLw9PgFA=
+	t=1754941809; cv=none; b=DA3OIJqKszxwU5xv9HbMdIaiQc7TT9m+b1msKfBfzTQjLOGqRfJhHBjpD3pOicNoRYmc7LMgtFyzOt03E0vi5GOJ9ye5wc7Wh+yM5ZHrzzBEL1IjCNtd4yZWMYWaD40+Zi5OJAC/DrRixxoNqqC0q8x35MtW4uLZg9/36W31gl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754940288; c=relaxed/simple;
-	bh=puiPMvRLC0fsCgBP3I9XxgD+HqX4Ja3xWQpNrCXy5lk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nfxFxveqmKY5s8WvJTMUrD2kSSxJ760IifPU/zt0Aq/Nk3VnfmL8dfUk8t2/jojmFXYNbmM6gbIn9KeMQNnZ0vCDTaDQgDAvuzDpJVEASBBUqmo+x2MuEaPjRC7rl7xT0H16HpdmP+C7opWnweCAUjqrW6dEOi471o3QGCFb2+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=A6I1Yb0P; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-70740598a9dso43527136d6.0
-        for <stable@vger.kernel.org>; Mon, 11 Aug 2025 12:24:46 -0700 (PDT)
+	s=arc-20240116; t=1754941809; c=relaxed/simple;
+	bh=Fk8Bw6MA9OkJVdq47gc5L3v+FCeIAny4QBYM5xUaMaM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uq/tNMRAl5DI7Ll5U62+JQYTBL8+3McsU2bU6jZVlHy5+bCExduDbulpL2f4blKFXbbYNOAJqXDxPZ6AqwlmyNzG1+VbiSINGFremaD5zzaxwdhRwZZfhpmF+badk3bzof3McNfQht5Muo348+mgRSDYW3d2qSlD72MhBDa6X6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XcYNZ14G; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3b78315ff04so4054145f8f.0;
+        Mon, 11 Aug 2025 12:50:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1754940286; x=1755545086; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QUZTA6GtaA7czamtY3xPr8PgEMTZeItGL8BIt7Y0OZY=;
-        b=A6I1Yb0Pa1HhuV8UxmL3P10fGSibiEgkmYjEVAQ7d4MBABhskclsc7o6Kuq3xH5QkI
-         s/Wsa6wUJliqubXpYP5zK7nxZGqudVdb7WudmZZKu7uR2pB/YPGdwoPSzjnCxej4AcEk
-         WBerTvwBl3DAXsfIX9+XBkotIqBlEtpxKNQn0ParZQI+nYeaqtyvVPAfeNjA9FKmkm3x
-         8W37aFksodEBRkfclnPnETRmF7M43afZC9nQ5/9GQGsaIThOf5AmISQ0SMYePk6iZXq/
-         x4On5zduuwBP8pGHdgif8vG/UidTyOuZY+CdL2qDQFvflwIYZ+F+54q2VsJ0h8js9/vn
-         Ftdw==
+        d=gmail.com; s=20230601; t=1754941806; x=1755546606; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FNKfzHYbB1ZIWLHm8XS7VDzFjrBi6oFDR5W7bTakxwI=;
+        b=XcYNZ14GdlliYCqwjnujhEWh09HLuK+jJW6FFGuVxhfU1o/kV210U8P4B5gEwV59YL
+         veJ9ZweL8VBO7FIfoVnO8wGq15/KLPVAIZRCWzHbnVdnnPi8YnTyrqUIekGFio25dF5i
+         AzzL5gjyJtfSFZtGlxR3Ej6NSlVnJeAVuF+8qlhfKrSRV/eR137539hfTjmf+hyCmiON
+         +oTn4NADcN7Dy9e2b82xufJQ1c2Vnli1DaYO4Xol6xHmid5UsrSIC9vF7Jm42azyr+EG
+         FdwS3nxlmEo2hzpatWYa3cgDsjet9CAI41o6JCao0s/YT0gJPX/JO/wkvSlf5mzS9KOu
+         eOCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754940286; x=1755545086;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUZTA6GtaA7czamtY3xPr8PgEMTZeItGL8BIt7Y0OZY=;
-        b=rqJDh8cp0mSIxV4PJdl7kVQS/QCKV8rv4gIKQVQSe23lhIwcL8LmBUgW9qa+EH68dY
-         kmnXQpOXnzz4KEi147YQGRFPYi2KvoYWMkwb/jtpkrLnO7U3pdQlRCsZnhwMBZNe+B7l
-         k2gQNWD6VQY9c9NrqHNQx51lf+JMDIq+Atrn29y3V1/oXi/Ca7a8C0T4+ZLCPBIMglKQ
-         QDj7+U/CgAwWWHsRokNBG2AEjeKa6FtFPg9F2CUSqz0mT/Bqt2yCDmLMtR21NYhgcOQU
-         pBFXaGuSluD/oIZ66jJJpUpg6qVPJFkQ38bCgK3q2aelokOwx9A6jtbTW07pocwNaT/a
-         LIyg==
-X-Forwarded-Encrypted: i=1; AJvYcCXFE39ayU8A4E0Eo3U+VY+/FnNiJ3b2iHHPVksj8E/hv1UCOBMRDHYGUntLzDev940k8Vj7NlQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWHtJxFwhMcFm5Y87M5s4ATznNaTlyoyZbQH97Cqmumv0rrZgR
-	5cSbD0x5bWdTQSoJPMuvJeWybQBkU/oQ0v7MyDAd9V4+Lu7JaBGILVFoyl9IqeUHjQ==
-X-Gm-Gg: ASbGncs+BlJJ+XWzWv4ocbir4D0iZ48+Rtv9NJgymJVdYmBHVqi/e9VCL2Sf+20kwmu
-	h2Od0+chAuvuAvzEeVDQ3RWK5GrqVtHmC2QxsGahzgZn0pERoZp5q4AMLzoChd3NYLH46d9DZFd
-	C8DpuE/G82HcWXMo2gsQPqCFS/7TjL0LhdhVDLKPcZxcZNDW1Ud7yA12gnbpA1R5DKzZwwnD8XB
-	vnxMNiF6VNX+iH9XWWX2D3mD5JP7ZH26ZYjxXNmw1OtSd+A7FnzrvT+wwX90uUOTq50k3kLxJbf
-	B6snibaFN0AgcdVnmTKWjzs8zwO7HVaaeJ8SSSYZlL8Qpk7xfW5ELUomltQAx1fcjjk9Cc9eZX4
-	ZPeQGh4Y37/kkvw+Cf0y/C+pegvA4UuK7+CRaLuSY5lx3jmT+MlnEgg+Ud7yZKjIcdA==
-X-Google-Smtp-Source: AGHT+IFt/3YKTBCSbCpS49sRmaeAcew9QCxCqdPIrUP1a6uOv4+01cnhkX80mFQqiyFrAfNyAT7OZg==
-X-Received: by 2002:ad4:5fce:0:b0:6ff:1665:44ef with SMTP id 6a1803df08f44-7099a260910mr177522336d6.22.1754940283507;
-        Mon, 11 Aug 2025 12:24:43 -0700 (PDT)
-Received: from rowland.harvard.edu ([2607:fb60:1011:2006:349c:f507:d5eb:5d9e])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077ce44849sm160795546d6.84.2025.08.11.12.24.42
+        d=1e100.net; s=20230601; t=1754941806; x=1755546606;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FNKfzHYbB1ZIWLHm8XS7VDzFjrBi6oFDR5W7bTakxwI=;
+        b=MpiEBcJc7kuHeR+/8orRRv6so1GLuvdD/zDeyU0InSSll35UvEIUYXbZnNXEwmPEdF
+         SRIe8L/RNyX4T3cZrOLkdohkr6VdXy9YXJFJ1cgpXf3HzsTcNy2aT5YRU6vBFo0MD/vL
+         abUAPjnG87DCKfqrQPUN9YcqmNxVWCUyrNtI8kr3zfA9cKhjRokTpUWwIptOzIwU64Er
+         g3B6YFTAk126MTFf/hgFJRbs5DgJC0ai7rs2d+/7gBEJ5h/cFykXhdn0Y7KCWQlg7FJl
+         iKL9qeT78kc8VZ32ewIyWOcwHBwfRDsYMt4nnjgj5Qh3pbGjYYap+awJBxckHihj5Kcm
+         H8zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVO42Wg0C+hEyWFGxPZdXYH4bzN6JvZ5JeGNBC/wqpM5ucMqSRMz+s7n3EzwF2KzdeOIniXOVB@vger.kernel.org, AJvYcCX7yrAFiH1xBXrJ5bw37axMBzhu6cytRxW78Vd+z+d7iIFeY+k12YiYux4zbiSjil8OTezr6pgTqcU=@vger.kernel.org, AJvYcCXWZ6Ys83SRummF4HbEhCkGBBf9Y/A+W2rnvnlHTOManDVcgLjCt0GspkaaDUNlhRxCV0pUWcextXN/jyk4@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6rmSNR77KwAthGdgXVM6U4AGUbkE2NXiBwNhymarVKF8KHNPW
+	3PGGGdFpHR8UIDlF2uvMhDbZGv4fT4zSyzBOqdcQAEPcIziDaEU0UJ9DQf3zDw==
+X-Gm-Gg: ASbGncv5swKfvLZrknDEQkC1dDw7PxLr8EO3ADbZHaGqjwMNbfgQ9+wlnt0o6wT7SXn
+	8AWObgKr0BUo1LfJm+Rh5hfHztK3q5k6aTVRBUONYqsCiq3K6bqHJ960TR71Uu4Lbu5ItvFDLGv
+	X3BR3Iu4H6r9yCzpxAPSJYX8xcId9N4k8h4CGrMmAM3M8lft+CzKN+jv4w3Ryv1aIRk1hTsTst8
+	iPcoy6uwJxGgBZlEhFIUyOeyZsvuNyF4fjT7CheWhW9lEUXW1A4nelKAsUH9Bq/en9HkPFLGey0
+	TOzR7m0Ro4EN/EeClKJaC//TI5CMsZ9wfEke8WSBjmgYJIA1P9dveB06RQD57WB20WLTsqCO9F1
+	T0sUGBBSs7uNVjkCzqwQGMWkMGB3hZq9CljkHyHdj6owmHyRdNAH2uidQ6ntKxQ==
+X-Google-Smtp-Source: AGHT+IFHbn4y9hfGTMN6NHymhuhRV3bgWXUmWSsnPpSR+XutWW+nNtL9qKWYLtipZOMJQNrXZXOc6A==
+X-Received: by 2002:a05:6000:26c9:b0:3a4:e7d3:bd9c with SMTP id ffacd0b85a97d-3b910fd1214mr707538f8f.17.1754941805587;
+        Mon, 11 Aug 2025 12:50:05 -0700 (PDT)
+Received: from [192.168.0.253] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3b79c3b9eddsm41709246f8f.22.2025.08.11.12.50.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 12:24:42 -0700 (PDT)
-Date: Mon, 11 Aug 2025 15:24:40 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org,
-	=?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
- reset.
-Message-ID: <f442fe21-64bf-4669-8def-e1bf9259a6b8@rowland.harvard.edu>
-References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
- <fc3e5cf5-a346-4329-a66e-5d28cb4fe763@kernel.org>
- <1c1b5552-0b43-49fb-98f0-8d2477709160@kernel.org>
+        Mon, 11 Aug 2025 12:50:05 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Subject: [PATCH v2 0/3] i2c: pxa: fix I2C communication on Armada 3700
+Date: Mon, 11 Aug 2025 21:49:54 +0200
+Message-Id: <20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1c1b5552-0b43-49fb-98f0-8d2477709160@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGJJmmgC/4WNSwrDMAxErxK0rorskJR01XuULIytJoLmg52al
+ JC7Vw103Z3eMPO0QeIonOBabBA5S5JpVLCnAnzvxo5RgjJYshVVhlCsx3l1+JD1uP00DK9RvFt
+ 0iSXXgQ2XgXwN6pgja/Hw31vlXtIyxffxLptv+jObP+ZskJAbai6BGkemunWDk+dZW9Du+/4B1
+ 5RsgsoAAAA=
+X-Change-ID: 20250510-i2c-pxa-fix-i2c-communication-3e6de1e3d0c6
+To: Wolfram Sang <wsa@kernel.org>, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Russell King <rmk+kernel@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Hanna Hawa <hhhawa@amazon.com>
+Cc: Robert Marko <robert.marko@sartura.hr>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Russell King <rmk+kernel@armlinux.org.uk>, linux-i2c@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Imre Kaloz <kaloz@openwrt.org>, Gabor Juhos <j4g8y7@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On Mon, Aug 11, 2025 at 01:06:03PM +0200, Jiri Slaby wrote:
-> On 11. 08. 25, 8:16, Jiri Slaby wrote:
-> > > @@ -5850,8 +5851,11 @@ static void port_event(struct usb_hub *hub,
-> > > int port1)
-> > >           } else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
-> > >                   || udev->state == USB_STATE_NOTATTACHED) {
-> > >               dev_dbg(&port_dev->dev, "do warm reset, port only\n");
-> > > -            if (hub_port_reset(hub, port1, NULL,
-> > > -                    HUB_BH_RESET_TIME, true) < 0)
-> > > +            err = hub_port_reset(hub, port1, NULL,
-> > > +                         HUB_BH_RESET_TIME, true);
-> > > +            if (!udev && err == -ENOTCONN)
-> > > +                connect_change = 0;
-> > > +            else if (err < 0)
-> > >                   hub_port_disable(hub, port1, 1);
-> 
-> FTR this is now tracked downstream as:
-> https://bugzilla.suse.com/show_bug.cgi?id=1247895
-> 
-> > This was reported to break the USB on one box:
-> > > [Wed Aug  6 16:51:33 2025] [ T355745] usb 1-2: reset full-speed USB
-> > > device number 12 using xhci_hcd
-> > > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: device descriptor
-> > > read/64, error -71
-> > > [Wed Aug  6 16:51:34 2025] [ T355745] usb 1-2: device descriptor
-> > > read/64, error -71
+There is a long standing bug which causes I2C communication not to
+work on the Armada 3700 based boards. This small series restores
+that functionality.
 
-What shows up in the kernel log (with usbcore dynamic debugging enabled) 
-if the commit is present and if the commit is reverted?
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+Changes in v2:
+  - collect offered tags
+  - rebase and retest on tip of i2c/for-current
+  - Link to v1: https://lore.kernel.org/r/20250511-i2c-pxa-fix-i2c-communication-v1-0-e9097d09a015@gmail.com
 
-Alan Stern
+---
+Gabor Juhos (3):
+      i2c: add init_recovery() callback
+      i2c: pxa: prevent calling of the generic recovery init code
+      i2c: pxa: handle 'Early Bus Busy' condition on Armada 3700
+
+ drivers/i2c/busses/i2c-pxa.c | 25 +++++++++++++++++++------
+ drivers/i2c/i2c-core-base.c  |  8 +++++++-
+ include/linux/i2c.h          |  4 ++++
+ 3 files changed, 30 insertions(+), 7 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250510-i2c-pxa-fix-i2c-communication-3e6de1e3d0c6
+
+Best regards,
+-- 
+Gabor Juhos <j4g8y7@gmail.com>
+
 
