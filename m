@@ -1,122 +1,164 @@
-Return-Path: <stable+bounces-167067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7802B21693
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 22:36:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19BFAB216A2
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 22:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2138C1A2414D
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 20:36:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 319E42A0D40
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 20:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0882DAFBE;
-	Mon, 11 Aug 2025 20:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709982D949F;
+	Mon, 11 Aug 2025 20:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EL4oCX7r"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a72cdbaK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h2Ar8NoK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6E54EB38;
-	Mon, 11 Aug 2025 20:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F13F4EB38;
+	Mon, 11 Aug 2025 20:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754944577; cv=none; b=ZSaoZetNdPcq6EbgLZjPYO8J0s0pNZNvxqLqsxrgtDHlmrR9+bvXLhIsEqDy3IEDqse1b3n4XksW1ZCjLrD+3F8VPNZaEQ+otDOXSwsQnZU6IS8DLB6jb+wIas7qzCKmQkZBuXoYniIB4rrYBs5zQ8itEZfo/jB01yC6txQ8Vkg=
+	t=1754944825; cv=none; b=bRtAXVSZ3Y/oSUx2pTN8Ab3YeCaPXnNA+8WX8P+w/0LaBpYJQqUg/dQO96puFVVPCTAH1Y5HdHmvmyxhKSELM+DtoBbs8dL8AtZT7gq0G3y3qg7l8R6s5G5LtfIyj+kabI4O+LNJGg/p4ngRHiSKa0Hfh+mO56yM78ClAtXowTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754944577; c=relaxed/simple;
-	bh=MGbXEJllcmiA1o9/olIkysp980KeZrJPHmr5Txjw5k8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=REFsE9FYMTt+0En6aSygq/a6DtJNsZSlEudvTQWDYnqyJ9wqQBp9k7oKR3Ajzy7HYtSf9RtnNN5UUKyqGsC3/7zcKrIAGEkT+GnWXmyKd++yjY7KLSgONht+NUXJY5gh5kLXph/99G7lhQOS2KC1eh48ZZTLrnKlrXOQG5jnqes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EL4oCX7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A05C4CEED;
-	Mon, 11 Aug 2025 20:36:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754944576;
-	bh=MGbXEJllcmiA1o9/olIkysp980KeZrJPHmr5Txjw5k8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EL4oCX7rtG5UihKG9SQ5sqFlv77mUXIz6Rehh0p3+ZYjCeMdAq+bHS+rxRaGe72Mz
-	 /NVmSHN8CxxPsmvMSv87WcxQO3mChyr3+Me2G+EuePC2odJioPnawuK2hZQ3gy4M7S
-	 QAi6REtuzVzsQVz7JcthYlLgHcGgzDm6PAmP+Z5gmLoMTaNRbFWECmsgLVLyRXSpP3
-	 2m9lzhMMFjpnG7B5ZjUHU1lbJWepJXdXrkuitFlx6EmLwdgXhuwE1WhQreDTY9ZZ52
-	 4bn6lrvKQ8FpjmBJfdj1L4DnLYVLjfEABuJ1PbT0rrZiEcIKbHwfOFrXtp2z9/zVUA
-	 uucV5V4fPmy7Q==
-Date: Mon, 11 Aug 2025 21:36:07 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: jean-baptiste.maneyrol@tdk.com, David Lechner <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm42600: change invalid data error to
- EBUSY
-Message-ID: <20250811213607.7bf4b91c@jic23-huawei>
-In-Reply-To: <CAHp75Vcw5Q_ENzEJvH2+xHmPD-DUPAEaOOD2QoiCXoh7UiQJxQ@mail.gmail.com>
-References: <20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com>
-	<CAHp75Vcw5Q_ENzEJvH2+xHmPD-DUPAEaOOD2QoiCXoh7UiQJxQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1754944825; c=relaxed/simple;
+	bh=4yIQRxdr5LK+GyTABnsJhF50za0tC4FBDtqXTzYbio4=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=NJIHo+IUZpQR5hJbKh77NSMuS4g5uB9RbokmRkGMYZhDgjjJhL8TTKTHapMjTZkaEuBY6K87LBV1vr2y+uZxf0SBqwMg/eMyPjL9HvFJ4PiTWynKRzE++lXSdkdv0Y1klei6dorLBsuzvaiht59rAcWUBkZFKkGatUlP6xajhhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a72cdbaK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h2Ar8NoK; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 11 Aug 2025 20:40:18 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1754944820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=YSaeji+ngrHjZZCopR4Eapy73qXsXyF5LS4tG0kO0Ac=;
+	b=a72cdbaKS0TgTdc9/r9Cs9e/38ABXAt/cqqyrXgO1sRN0IEfKo+x6PntTqNemXydsY8PSZ
+	FJvAlRN0svYMjyjJ3N5kuErzh2pnspHwa0hAbSswT0xd+0owKGi5qHOWY/lZJrSisYnNbz
+	O96Sa5FEYN1rmA4oL4XuHJr6X+IaTA+CDlVnkiNo83Dbf6YxFKB+VT3qYmyu4ntG8u4Z7y
+	K25aeovcn4FHwnXGzOO9iMFbqT4ju8plJY4Nd062H0o4xzsg5i0NojFA4KXhXf6cJPRefu
+	K6xOvg8hkc3gZQoA1HBSsWoqww5dY/BKddwWY3NGTaVHoIXpc4QOIVtI87ozvA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1754944820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=YSaeji+ngrHjZZCopR4Eapy73qXsXyF5LS4tG0kO0Ac=;
+	b=h2Ar8NoK+/JA2TVox3ySIZLJfm5NYYcLBgyktvLHL0A5LAvuLa2x8A58ngkKZmbKcxK8xg
+	hJV8UEK/oZ/LeECw==
+From: "tip-bot2 for Fushuai Wang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/fpu: Fix NULL dereference in avx512_status()
+Cc: Sohil Mehta <sohil.mehta@intel.com>, Fushuai Wang <wangfushuai@baidu.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <175494481915.1420.11907322564960386974.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 8 Aug 2025 14:35:00 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+The following commit has been merged into the x86/urgent branch of tip:
 
-> On Fri, Aug 8, 2025 at 9:40=E2=80=AFAM Jean-Baptiste Maneyrol via B4 Relay
-> <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
-> >
-> > Temperature sensor returns the temperature of the mechanical parts
-> > of the chip. If both accel and gyro are off, temperature sensor is =20
->=20
-> the temperature
->=20
-> > also automatically turned off and return invalid data. =20
->=20
-> returns
->=20
-> > In this case, returning EBUSY error code is better then EINVAL and =20
->=20
-> -EBUSY
-> than
-> -EINVAL
->=20
-> > indicates userspace that it needs to retry reading temperature in
-> > another context. =20
->=20
-> ...
->=20
-> > +       /*
-> > +        * Temperature data is invalid if both accel and gyro are off.
-> > +        * Return EBUSY in this case. =20
->=20
-> -EBUSY
->=20
-> > +        */
-> >         if (*temp =3D=3D INV_ICM42600_DATA_INVALID)
-> > -               ret =3D -EINVAL;
-> > +               ret =3D -EBUSY;
-> >
-> >  exit:
-> >         mutex_unlock(&st->lock); =20
->=20
-> ...
->=20
-> No need to resend just for the above, I hope Jonathan tweaks this
-> whilst applying.
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> (assuming typos and signs are fixed)
->=20
+Commit-ID:     31cd31c9e17ece125aad27259501a2af69ccb020
+Gitweb:        https://git.kernel.org/tip/31cd31c9e17ece125aad27259501a2af69c=
+cb020
+Author:        Fushuai Wang <wangfushuai@baidu.com>
+AuthorDate:    Mon, 11 Aug 2025 11:50:44 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 11 Aug 2025 13:28:07 -07:00
 
-Tweaked an applied to the fixes-togreg branch of iio.git.
-I've not marked this explicitly for stable as it's a kind of weird
-sort of 'fix'.  If anyone wants is backported, then maybe we can consider
-that once it's upstream
+x86/fpu: Fix NULL dereference in avx512_status()
 
-Jonathan
+Problem
+-------
+With CONFIG_X86_DEBUG_FPU enabled, reading /proc/[kthread]/arch_status
+causes a warning and a NULL pointer dereference.
+
+This is because the AVX-512 timestamp code uses x86_task_fpu() but
+doesn't check it for NULL. CONFIG_X86_DEBUG_FPU addles that function
+for kernel threads (PF_KTHREAD specifically), making it return NULL.
+
+The point of the warning was to ensure that kernel threads only access
+task->fpu after going through kernel_fpu_begin()/_end(). Note: all
+kernel tasks exposed in /proc have a valid task->fpu.
+
+Solution
+--------
+One option is to silence the warning and check for NULL from
+x86_task_fpu(). However, that warning is fairly fresh and seems like a
+defense against misuse of the FPU state in kernel threads.
+
+Instead, stop outputting AVX-512_elapsed_ms for kernel threads
+altogether. The data was garbage anyway because avx512_timestamp is
+only updated for user threads, not kernel threads.
+
+If anyone ever wants to track kernel thread AVX-512 use, they can come
+back later and do it properly, separate from this bug fix.
+
+[ dhansen: mostly rewrite changelog ]
+
+Fixes: 22aafe3bcb67 ("x86/fpu: Remove init_task FPU state dependencies, add d=
+ebugging warning for PF_KTHREAD tasks")
+Co-developed-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250811185044.2227268-1-sohil.mehta%40inte=
+l.com
+---
+ arch/x86/kernel/fpu/xstate.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 12ed75c..28e4fd6 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1881,19 +1881,20 @@ long fpu_xstate_prctl(int option, unsigned long arg2)
+ #ifdef CONFIG_PROC_PID_ARCH_STATUS
+ /*
+  * Report the amount of time elapsed in millisecond since last AVX512
+- * use in the task.
++ * use in the task. Report -1 if no AVX-512 usage.
+  */
+ static void avx512_status(struct seq_file *m, struct task_struct *task)
+ {
+-	unsigned long timestamp =3D READ_ONCE(x86_task_fpu(task)->avx512_timestamp);
+-	long delta;
++	unsigned long timestamp;
++	long delta =3D -1;
+=20
+-	if (!timestamp) {
+-		/*
+-		 * Report -1 if no AVX512 usage
+-		 */
+-		delta =3D -1;
+-	} else {
++	/* AVX-512 usage is not tracked for kernel threads. Don't report anything. =
+*/
++	if (task->flags & (PF_KTHREAD | PF_USER_WORKER))
++		return;
++
++	timestamp =3D READ_ONCE(x86_task_fpu(task)->avx512_timestamp);
++
++	if (timestamp) {
+ 		delta =3D (long)(jiffies - timestamp);
+ 		/*
+ 		 * Cap to LONG_MAX if time difference > LONG_MAX
 
