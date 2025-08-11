@@ -1,160 +1,167 @@
-Return-Path: <stable+bounces-167041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D55B20A6C
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 15:36:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B6FB20AF4
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 15:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08293188C385
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 13:37:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2751644A0
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 13:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8379E2DEA71;
-	Mon, 11 Aug 2025 13:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9BF2DCF44;
+	Mon, 11 Aug 2025 13:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="06MRoUc3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FxM0M+Pi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF521B2186
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 13:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94362D320E;
+	Mon, 11 Aug 2025 13:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754919390; cv=none; b=IsmKtwKHVBcBEy37Bz+RJ1sDv7AhkYye+oiC4ujLp6o8gHnEjoFybtdU68CnvfRxf8rp1MrUsV1M1jxCcV/STIj2odu/3lXnbxJBvz8wRgAR/5qTqWyJ/LKVHsyNuA4YoUD8e2j7UxiptEUglXGDrwdHk1ZscztdUp3sn4lVIrM=
+	t=1754920556; cv=none; b=HAbbJcmawD27cUb9V+BPGsJBwjzgrjwH7UhFXfpwNmXLdxLQxM4MEJDz+9Jn+xWJ7cNF5bcz55UnaXIKv4QDSy+1X9qJDgZ4q916XZJLTj+vG+oV+xYoBTOwlCIHz7F4EDsiZjDWAQ76AczKaSUJ0YC07c3oVTHL1P0CB6MOJ2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754919390; c=relaxed/simple;
-	bh=Cvm3UxwZaIvytNrW2R0gZcHjx1lcF6maKDX+XWI55dE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OqMWAgXykN7RgLPWC2MYzYglsUv51p/VXzwNdxLFQ418D8m819RVB7Jy7QxL9/WRU/FLbnAc0Y15lOniYFhqh2cByIJYu6zaeSSIT8TxTnYHfN+Sc6EZpqlKsKNdNSpFWJnPn9Kgl9vUmuNBD0lENHONOiPYf9vvrdnZ+uT75TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=06MRoUc3; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-455b00339c8so27499105e9.3
-        for <stable@vger.kernel.org>; Mon, 11 Aug 2025 06:36:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1754919387; x=1755524187; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rPC9QjkdXxMejFY4x5ok5uLAPYyJClZcqMLBbaZ87b0=;
-        b=06MRoUc3RQriqaf5H6kL/Y6jSC33ZYGZp00YIvwqCD3ZGa21dvuigyDEDkUCnUl14O
-         5gyUvRwHgXOoykQjzVoVk8sCJlqzaUSPBer1Mu2EXsSrrE323Lj+jIkNGoJ9WAQuAi86
-         m9Z15/nOTfftBhV1nW7i1Xk5IQF+TaBYLdwwku88NiHTe1NECedG9raEg+jrqu6PCo8V
-         9DpCy8s3CHKdwO71Wtj9UIxYdZS6pZLbGuBr1oQGscfeLMngmgllIN5qubZF4bztp+T0
-         GHJ2bScHYOClmisekLM5Vx18V4rUxQX5JUIeckpS8YXITcfZ3pijrRnE9j7Ysnfai8F5
-         x8AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754919387; x=1755524187;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rPC9QjkdXxMejFY4x5ok5uLAPYyJClZcqMLBbaZ87b0=;
-        b=C/wMommj3X7qnl+4cOPYn+fDoQlCnxWgDNlArFVwLhM9WQKVQ9v2M1Uz1dlx79FbJL
-         VRxuwjd+xt+6Ak43VIJ8x416KfAEMdxG4NVyaiEYz6adF902rSc6LXxEZhccyBM2WV8G
-         hOqqRDR6NLs2/qGUN2pJ3juadDjWfwIT9Vr9FsbgBlsja5k6qqX0qijyC4Y7vA+L64FW
-         0L9X3t9XE9qD5hnID0JiSksO4lQ/5TuMancYl/NEP8495wQtf9o2BXecKhZ2T1yXwxAL
-         PR+6Kuy9EVse7Ls6IjVoI4tSPYScSeFDQWzl/+fshelvXSA3y3+kQ/5/Ygu44TTUEKan
-         rQMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjaNYDV5f6ajrQWilQWMKTj/BoLiL3NlaysUkL3iLOcPXcejyvwegKCdTjHnojoDv3lWdX4hU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywv/tKc5viHh0k6sLLQSkPab1DnG5ewxp8ZAUUoLay1w9ip9v6C
-	oYTbqwUxs8EyL3gZP1+uqcwV7UMkHrtA9j1ePxRmiTM3AA5aT+IDus8tN/mQpYAfWgogFVhDHlJ
-	OVfny
-X-Gm-Gg: ASbGncu0d0kf7yDvtyFcrheenIh2ddu8shiIfQX8LXdaDRgvAEutJbaqM9QkmY1GIWm
-	qPfvOnzDEuHK0fb5Pypr9h6jbFUv7G2/hbPMNeZVUhBKMU7ENTBENs1lni9IsLlmBgUdfVtOR4e
-	MIUjaOa/MuvMhqW9989/zmAhvIs6te4FMtQQtJbC3AHAQ6rUgRkGyaA49MESNlKmDVue9MWlmwx
-	+X5G9bXzO0AHd870dnt98Q+FZNiek9cc/nAOyP3dVZRJiTLNV/sJkwGsvExllpROoVHhyHV+Y6s
-	BpsywSBgOvruBO8o7wMV2Nh+W3h8lUQuyslFmc/iTOpXNI/0cwXKwLvwhmX5tCjrK88CIVwa48L
-	60xSlkxghPpZ1BFGvQg==
-X-Google-Smtp-Source: AGHT+IGO8tGE6CmpRp8d7Dv8oPbrNyboejFtiyDhBBX2/eeF8sA7SMGla8jnfhdxvPUYVbbA5Sca3Q==
-X-Received: by 2002:a05:600c:1c18:b0:459:443e:b180 with SMTP id 5b1f17b1804b1-459f4f3e153mr120440835e9.8.1754919386578;
-        Mon, 11 Aug 2025 06:36:26 -0700 (PDT)
-Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:6841:8926:4410:c880])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e587d378sm253045105e9.23.2025.08.11.06.36.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 06:36:25 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 11 Aug 2025 15:36:16 +0200
-Subject: [PATCH 1/2] mfd: vexpress-sysreg: check the return value of
- devm_gpiochip_add_data()
+	s=arc-20240116; t=1754920556; c=relaxed/simple;
+	bh=yej6e9OZG68bgcEUtPzsRHtRSs/NFty8E/AqSyO+rN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DzqpVScuzjjkab7RGUp9kCpu3PCXvuhCAgTfrhLtZT3hnEICa659kC+MaOAX14KhyZ/a7BNoTeqOhpatJsccu8L92Ee0x//dtpW3UiKuYK83it6bQejjQx0Jof4VggE5miHGEHBOtHXBxhqil3tJfuoxnpjVuu5XhFZGQ8IpYfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FxM0M+Pi; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754920555; x=1786456555;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=yej6e9OZG68bgcEUtPzsRHtRSs/NFty8E/AqSyO+rN4=;
+  b=FxM0M+Pi4ghcsZrR0xp3MLFr8yyU3yP/c0/NV+tKSeb3toIE5Ki9q7Tl
+   TL7DJP9+zX3UwkxQZTV6z8Odg0616gFpuN81DMGu+GCTPfNM2WcFQIr4s
+   LjBy+XEljkL3MRLN26dBT8m1li8RC8PbTV4fAgbtXmTu+ZxpsVsf8Fkli
+   oYXioJzh4VbiBut+1R6RdsXCfjwCWLty6mCyXH/u0wJdBEoKKwHAYcWNU
+   TjipHhdwPrwt2b/Cy9wh6zl5CFzbJNXGRyvgpC8mcfiG30RllWNhkEciG
+   Noi0XsfapMIgoeD0xS5muE+K3Mm1MwbIsniOlfrB/VeL120zblySabrp5
+   A==;
+X-CSE-ConnectionGUID: 6yd8/aAnRrq/j6ABBwrs1g==
+X-CSE-MsgGUID: lBpy6vZ+TLi1w9U7ElUdJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="61016765"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="61016765"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 06:55:54 -0700
+X-CSE-ConnectionGUID: C08Q9FYCSM6nVurQEU1rUA==
+X-CSE-MsgGUID: 0UUoKXwIQdqEQIhB8E5XDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="196765115"
+Received: from dwesterg-mobl1.amr.corp.intel.com (HELO [10.125.111.51]) ([10.125.111.51])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 06:55:53 -0700
+Message-ID: <83c47939-7366-4b97-9368-02d432ddc24a@intel.com>
+Date: Mon, 11 Aug 2025 06:55:52 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org>
-References: <20250811-gpio-mmio-mfd-conv-v1-0-68c5c958cf80@linaro.org>
-In-Reply-To: <20250811-gpio-mmio-mfd-conv-v1-0-68c5c958cf80@linaro.org>
-To: Lee Jones <lee@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Pawel Moll <pawel.moll@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Uladzislau Rezki <urezki@gmail.com>, Ethan Zhao <etzhao1900@gmail.com>,
+ Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1563;
- i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=npVo4x9jWTs/C5oZ+18P177rzmdj25fbWuss0PN0sgc=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBomfHY3wi3JBmgBHiBE2qvpEWlJzPK24kglGeUX
- xNZz9M+CuKJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaJnx2AAKCRARpy6gFHHX
- ck4YD/9c0CqewiZHWF6/YFXoIqPUFIkHmddOhFieqmRdmF/yNc5waGN9erdg30PR/wywPs+kh2M
- PjWfHrs1tOet67Q/bfY9F2IqNibNOE9bxDVK+qs+uQZHj4z5f69AdGlLuAhNym++2ff4zHg0lTV
- ZkaSOLnVLDJVP2sLKAyCYxrViDNfbEhZnY2Uu8i5rbtHewxH+ZFDmxHX1ikemAk5Hi9e2HuUIMo
- rnaN5L9J2P4w1GwQTIDn++ml9Ew/BjhUZm+cQt9A91n22y/lWvdzHhnG4GqVTMBiuh8Yx1tRCZW
- dNQK08q2kM+JphEbuSkwEOwYa+CNIeGQ38q1gQpgTwDEQp9Kx0xs796lFX+xMr1sYretdbFiXaL
- 4HksGf74zJAwsI5xRnkqLdb0QpAs8D78JNoaAtnMFhbMvwwEd/mWUlMhrmgx7YfY31JytU5teTb
- tW/3BdG+yz7M2Oww16f4xylTWevar1CUxrXfpDSYmmQ+fbO9/YcN5uHt9m3RXVnqsvbOxG0ugAM
- h/UUQy1fha5KHs4hANSsR+ezcPEd1uT0EIxDcHh6dGfcLCO9FkA3yktahT0OvJ7c8DNl6kYxD2M
- v/ZwWMfYppyp30Po+U4Tu1OfAuaQRnlcowPcUL9pisVN03koxnAzPyXJcyq/lN1bkWhIuTBquAz
- WYRMxHmxYqDtGQg==
-X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <4ce79c80-1fc8-4684-920a-c8d82c4c3dc8@intel.com>
+ <b6defa2a-164e-4c2f-ac55-fef5b4a9ba0f@linux.intel.com>
+ <2611981e-3678-4619-b2ab-d9daace5a68a@gmail.com> <aJm0znaAqBRWqOCT@pc636>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aJm0znaAqBRWqOCT@pc636>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On 8/11/25 02:15, Uladzislau Rezki wrote:
+>> kernel_pte_work.list is global shared var, it would make the producer
+>> pte_free_kernel() and the consumer kernel_pte_work_func() to operate in
+>> serialized timing. In a large system, I don't think you design this
+>> deliberately 🙂
+>>
+> Sorry for jumping.
+> 
+> Agree, unless it is never considered as a hot path or something that can
+> be really contented. It looks like you can use just a per-cpu llist to drain
+> thinks.
 
-Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
-removed the return value check from the call to gpiochip_add_data() (or
-rather gpiochip_add() back then and later converted to devres) with no
-explanation. This function however can still fail, so check the return
-value and bail-out if it does.
+Remember, the code that has to run just before all this sent an IPI to
+every single CPU on the system to have them do a (on x86 at least)
+pretty expensive TLB flush.
 
-Cc: stable@vger.kernel.org
-Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/mfd/vexpress-sysreg.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+If this is a hot path, we have bigger problems on our hands: the full
+TLB flush on every CPU.
 
-diff --git a/drivers/mfd/vexpress-sysreg.c b/drivers/mfd/vexpress-sysreg.c
-index fc2daffc4352cca763cefbf6e17bdd5242290198..77245c1e5d7df497fda2f6dd8cfb08b5fbcee719 100644
---- a/drivers/mfd/vexpress-sysreg.c
-+++ b/drivers/mfd/vexpress-sysreg.c
-@@ -99,6 +99,7 @@ static int vexpress_sysreg_probe(struct platform_device *pdev)
- 	struct resource *mem;
- 	void __iomem *base;
- 	struct gpio_chip *mmc_gpio_chip;
-+	int ret;
- 
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!mem)
-@@ -119,7 +120,10 @@ static int vexpress_sysreg_probe(struct platform_device *pdev)
- 	bgpio_init(mmc_gpio_chip, &pdev->dev, 0x4, base + SYS_MCI,
- 			NULL, NULL, NULL, NULL, 0);
- 	mmc_gpio_chip->ngpio = 2;
--	devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
-+
-+	ret = devm_gpiochip_add_data(&pdev->dev, mmc_gpio_chip, NULL);
-+	if (ret)
-+		return ret;
- 
- 	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
- 			vexpress_sysreg_cells,
+So, sure, there are a million ways to make this deferred freeing more
+scalable. But the code that's here is dirt simple and self contained. If
+someone has some ideas for something that's simpler and more scalable,
+then I'm totally open to it.
 
--- 
-2.48.1
-
+But this is _not_ the place to add complexity to get scalability.
 
