@@ -1,126 +1,131 @@
-Return-Path: <stable+bounces-167072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05644B21785
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 23:38:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B753EB217A2
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 23:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CBFC2A0B87
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 21:38:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6386B621468
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 21:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E6C2E3386;
-	Mon, 11 Aug 2025 21:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992462D8773;
+	Mon, 11 Aug 2025 21:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="EKqL0vot"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="peD6+P6N"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482C6311C0E;
-	Mon, 11 Aug 2025 21:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F31C311C2E;
+	Mon, 11 Aug 2025 21:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754948287; cv=none; b=tbP+JMCWRt8lJvaUSZjcFVqHcB9un5A2mzXtXT2gkjPvDS/pgtaZVr46fnNv4Sq62wX6VATqKV0e/X+Uya6Ra+ueEeEgjJQAWFQ4Q7oqF3KK/3WT10pzM1OTqN9C7n/ez40YGZ0SV7JMX3mLRw5MMsTUtHlxKNv77LIkDs4MAaU=
+	t=1754948791; cv=none; b=dfxjnPDxkXfQyVNpYOIYMh/T5pm8qZY5PNI1C59ETnD4ih7MNsxBFy63gAQQsdspf6/K7QYi9srCXxNnF82wrRAWUDAwXC9AwrZQLFg+IMtlHsSOedpaQOxTO4Wc8usdTua3/M5S45fSmiwMvjiklTgSKYNJWEzsWy2cgjwgxEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754948287; c=relaxed/simple;
-	bh=HjyGdOGLYqC7ab18LfpaxPJTKS3Yx7XdT8RLH/XbFKM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nnUUPoNM2xe02Oir28hVAyzH8t/J1MvDCBYkVFnGcAdRHyR2umATI7McRVPqCfYLOALx29xxqKxyvH+t6dCniEXTph0RyHp/dWlH0Mm2uZxECBR3AtLeCTpo4QKcxZ1Id0e9cRiM14zS18Q1LEcNRYpWOPczRbKEL6YThZ4hE+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=EKqL0vot; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 3155F14C2D3;
-	Mon, 11 Aug 2025 23:37:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1754948282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0KuxWLbpcJT3VlmZVqc2OQpXyttswEbc/sHxkepGM9E=;
-	b=EKqL0votUNnCF6qo5E8bBmNRyJd+MBtp61wniZY0+tazDObV62wwWmH7rAgLJoxoE9WJ2Q
-	Dx5sKNQt+YN3xbunO809CS4xhHpBVgyleAbiZQNf7sDAu/gPw2SuovDGaPfE4sH4R0kEgE
-	z9O8O4DK1BvosELxyLVFIfg3k8fjtCtjz1yrmeIsV5uJ2Af6E+xI/ZtW3t9otjeOQqLXIY
-	Bxx3zU8mn9CG9ZCh/xkA0hH0EcgFGpqqbwvKA8/LPo4MHv9szIIN7bVyLRK+lETWgUhJjU
-	CT5gZ7YnwA6Lla+5S/CswMDOOTp06yPMjzf6DL6Es13PnP/xdcqkZTZUP2Iy2A==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id d8bc4c7b;
-	Mon, 11 Aug 2025 21:37:57 +0000 (UTC)
-Date: Tue, 12 Aug 2025 06:37:42 +0900
-From: asmadeus@codewreck.org
-To: David Howells <dhowells@redhat.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
-	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	s=arc-20240116; t=1754948791; c=relaxed/simple;
+	bh=dwbcE24piVFzyakWr4kDnlPp4I+GUC8EOGb+5b4S2ls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Faz2IOFXM2MT1reVq3xlMVdQvBtgedwkxKDvTLMwNTLOlJQVKNTjZBfq+Wk4/XwA/o9Hgzyf+xCxNM1SQzfEka0TFYkU9yZdWclbOqTs14SO6rvws95rtBDqoIVxTrrrHKfvl2ZhWFGx/CxYbrP6q54eDc6Ks0rCGCABJ3D6lkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=peD6+P6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64DFC4CEED;
+	Mon, 11 Aug 2025 21:46:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754948790;
+	bh=dwbcE24piVFzyakWr4kDnlPp4I+GUC8EOGb+5b4S2ls=;
+	h=From:To:Cc:Subject:Date:From;
+	b=peD6+P6NOdX+quFRZFGfJcy+UTFln/T8CaW5z5o6u0WK/keFsvMabpux+ms9t9Hqk
+	 Ff8twsoxxO8hiv3dy6SS8lwT1Jf+6YcZsPG0E8kqhCP1Pu7PhUXa4LcmlxTc9NB2Ra
+	 8WC/EpHZIKDNlPg1lM5i+Osswg2Vk8GMxnYF4CwKOvfCvJOXvJLYhPVItWF0Ms1Mau
+	 U70HSNIkP5PWpN/FuA24yYVki+Qg7dLmSdjP/u9jOm3YiwELuVXzq6ST1W3btkBFu6
+	 1obCJrQFF5j4aK8gFBvqnu/a0Src9iNMmhuPRfFtYjvRI1G/wZ1RyQ/abSjje0aDq3
+	 +1iduKRA/X8Dw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
-Message-ID: <aJpipiVk0zneTxXl@codewreck.org>
-References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
- <20250811-iot_iter_folio-v1-0-d9c223adf93c@codewreck.org>
- <385673.1754923063@warthog.procyon.org.uk>
+Subject: [PATCH] rust: devres: fix leaking call to devm_add_action()
+Date: Mon, 11 Aug 2025 23:44:48 +0200
+Message-ID: <20250811214619.29166-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <385673.1754923063@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8bit
 
-David Howells wrote on Mon, Aug 11, 2025 at 03:37:43PM +0100:
-> Dominique Martinet via B4 Relay wrote:
-> > It's apparently possible to get an iov forwarded all the way up to the
-> 
-> By "forwarded" I presume you mean "advanced"?
+When the data argument of Devres::new() is Err(), we leak the preceding
+call to devm_add_action().
 
-Thanks, swapped words in v2
+In order to fix this, call devm_add_action() in a unit type initializer in
+try_pin_init!() after the initializers of all other fields.
 
-> > This should have been because we're only in the 2nd slot and there's
-> > another one after this, but iterate_folioq should not try to map a
-> > folio that skips the whole size, and more importantly part here does
-> > not end up zero (because 'PAGE_SIZE - skip % PAGE_SIZE' ends up
-> > PAGE_SIZE and not zero..), so skip forward to the "advance to next
-> > folio" code.
-> 
-> Note that things get complicated because folioqs form a segmented list that
-> can be under construction as it advances.  So if there's no next folioq
-> segment at the time you advance to the end of the current one, it will end up
-> parked at the end of the last folio or with slot==nr_slots because there's
-> nowhere for it to advance to.
+Cc: stable@vger.kernel.org
+Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/devres.rs | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-Hmm, I've already sent a v2 with other things fixed but now you made me
-look at the "we're at the end of the iov_iter" case I think this won't
-work well either?
-folioq_folio() always returns something, and the advance code only
-advances if folioq->next is set and doesn't bail out if it's unset.
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index da18091143a6..bfccf4177644 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -119,6 +119,7 @@ pub struct Devres<T: Send> {
+     // impls can be removed.
+     #[pin]
+     inner: Opaque<Inner<T>>,
++    _add_action: (),
+ }
+ 
+ impl<T: Send> Devres<T> {
+@@ -140,7 +141,15 @@ pub fn new<'a, E>(
+             dev: dev.into(),
+             callback,
+             // INVARIANT: `inner` is properly initialized.
+-            inner <- {
++            inner <- Opaque::pin_init(try_pin_init!(Inner {
++                    devm <- Completion::new(),
++                    revoke <- Completion::new(),
++                    data <- Revocable::new(data),
++            })),
++            // TODO: Replace with "initializer code blocks" [1] once available.
++            //
++            // [1] https://github.com/Rust-for-Linux/pin-init/pull/69
++            _add_action: {
+                 // SAFETY: `this` is a valid pointer to uninitialized memory.
+                 let inner = unsafe { &raw mut (*this.as_ptr()).inner };
+ 
+@@ -153,12 +162,6 @@ pub fn new<'a, E>(
+                 to_result(unsafe {
+                     bindings::devm_add_action(dev.as_raw(), Some(callback), inner.cast())
+                 })?;
+-
+-                Opaque::pin_init(try_pin_init!(Inner {
+-                    devm <- Completion::new(),
+-                    revoke <- Completion::new(),
+-                    data <- Revocable::new(data),
+-                }))
+             },
+         })
+     }
 
-There should be a `if (slot == folioq_nr_slots(folioq)) break` check
-somewhere as well? Or is the iov_iter guaranteed to always 1/ have some
-data and 2/ either be big enough or have remaining data in a step?
-
-I can believe the former but wouldn't trust the later...
-
-> Note that extract_folioq_to_sg() already does this as does
-> iov_iter_extract_folioq_pages().
-
-Yes we're not quite consistent here, some functions like the plain
-iov_iter_advance will get you on an invalid slot to check for
-folioq->next on next invocations while others point at the end of the
-last folio in the queue (like iov_iter_extract_folioq_pages(), and
-iov_folioq_get_pages() before patch 2);
-I think either pattern is valid; I've changed iov_folioq_get_pages()
-because it was a bit weird to have an iov_iter with offset > count and
-iov_iter_advance wouldn't do this, but I agree either should work, we
-just probably want to be more consistent.
-
-Thanks,
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 -- 
-Dominique Martinet | Asmadeus
+2.50.1
+
 
