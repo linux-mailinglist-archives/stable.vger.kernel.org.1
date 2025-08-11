@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-167076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B80B21862
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 00:30:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05D8B21861
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 00:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7CAB7B1CA6
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 22:29:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8074C68035A
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 22:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A109222425B;
-	Mon, 11 Aug 2025 22:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A2C21C9F1;
+	Mon, 11 Aug 2025 22:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Co6Gtmvv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOMmzEmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF19222591
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 22:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437FA1F948
+	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 22:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754951430; cv=none; b=sdXTebBW7va731jtnnsl1q33ek//HkW8x4MvTE67XaH+rLnGy3mDtbTx9Lb4XD8DhX1csIc6DMq3K3zMBSnZYZMAEvaUOpI9IcMlZeriC74wz6Nwo50CdjJ091lnCoNMBj/NIPyjH1Yp0Y2hTkCyy/ljBTIjte6t5/EpEMwq8qM=
+	t=1754951433; cv=none; b=ikzXJpgViAuPoZKqNzCDamX4TRPBjfgWkIjnhp1e4jSsbuiub2mdffJwb9DseWftWfBGDuPvKFR3psPgRQk23xzDIQy3/FyPohlNay+xtaFZLMIcstDLwLMHdbnOP36+WtjKuA22EeqcjffavGQvXXSfx5jhKgK1dbuapD8arNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754951430; c=relaxed/simple;
-	bh=jZnQk/+DI/W/cu7TAJrRr7X1GxzdQamI06MP1GAqt2Q=;
+	s=arc-20240116; t=1754951433; c=relaxed/simple;
+	bh=v6vNdLwZ84s8iZFUZso/qs50zK2bkeaHX8LgqyBs7pA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GtmexCfYffWuasq+xx2KR8YDewqBTQJ6nAiI8OUn3zAWha5QdYy0QfthkFfDBoBgzmQjjZzAmTbdVFaJ1DjMOCgJYgvUgkKgmjlAxKPj9Hpdh9VCMq8pQQErmcg+i+vDhcniWWBSpdHpMq29bXZkLS+ei3Mt/X+RVkTiBfc6Izg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Co6Gtmvv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE073C4CEED;
-	Mon, 11 Aug 2025 22:30:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l7R+uHw9jYpyZfZgjzv90F3zNS523dOxFd2R2t8+88O6MdWtrwNEkNTZ9eyOwl2vYSeA5CZEI+m1qdzgEtmL8ygEUGdpPOKsceMogaXqR/sbfbKTHGIHykeQX55kQjZShAWxCHeiD31T+JG9L35sF/FeMXobIaK2X9DxQC6p4Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOMmzEmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CE6C4CEED;
+	Mon, 11 Aug 2025 22:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754951430;
-	bh=jZnQk/+DI/W/cu7TAJrRr7X1GxzdQamI06MP1GAqt2Q=;
+	s=k20201202; t=1754951433;
+	bh=v6vNdLwZ84s8iZFUZso/qs50zK2bkeaHX8LgqyBs7pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Co6Gtmvvtf1y5tuKj+HaQfxBj+kpO1dRNDo+8VWvwNA2IvdX1im1z9twEXq8C1KnU
-	 4WFBQkM5eMBZ6VBnkAAuwWpj+HETia28yGlr+kQQF/hAF4k1S/3g3GJLmMLSxCd3SX
-	 YwMxcNjYgBLGccKRtdDwnQLwKGdQc3AUV8CwkI6qm2gz4/Gm3ZLdk+sAKjrBxTMKM4
-	 YeX6PTCqngpQKUAbbRxVKGu1IDM8Aap+PtyMTO+JGnhkl3C7BDUEpj8VrJBRmPByMI
-	 JjokswNmkyAGnvISEihFSx/SryzvaispFudU0D8/NqaIadRTvO4ah4S2YIMZ8uCxNd
-	 q1CwQdEG13V3Q==
+	b=VOMmzEmPZojAvvl9RE/4k/VXeeDMswV+D+vF8h6HW9eKAv/ov0Hzy6Ri9mpg7TeoM
+	 JjYmB6iTLCebtggb8hY/0wgGpz7pwxii6ECfKGSdxR5J55x9Y7kp1FRfdq91LQ/OGX
+	 GSzGF0VCRs0QI4t0XUuzqeX/rZnv6NrdYL4mpCFgSQwZOyKBjz2VUI6x4k3bSWs9LW
+	 Aq9uWUSnuTzFsEHxqIifNDcCXxLhF1wHGqatkdoZFgqdOAgAmC2IhSrWDJAZN8g13D
+	 ZivujKH8ZLzLzAqy+KMa7j4sx86EBwbfz2rbc/Rgdut7jisugLFIqt7fTGmvgy3jP6
+	 ApP7ehClswA9g==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	shivani.agarwal@broadcom.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v5.10] scsi: pm80xx: Fix memory leak during rmmod
-Date: Mon, 11 Aug 2025 18:30:27 -0400
-Message-Id: <1754925250-783d021d@stable.kernel.org>
+Subject: Re: [PATCH 2/2 v5.10] dm rq: don't queue request to blk-mq during DM suspend
+Date: Mon, 11 Aug 2025 18:30:30 -0400
+Message-Id: <1754925507-8563750b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250811052035.145021-1-shivani.agarwal@broadcom.com>
+In-Reply-To: <20250811052702.145189-3-shivani.agarwal@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,53 +64,50 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+❌ Build failures detected
 
-The upstream commit SHA1 provided is correct: 51e6ed83bb4ade7c360551fa4ae55c4eacea354b
+The upstream commit SHA1 provided is correct: b4459b11e84092658fa195a2587aff3b9637f0e7
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Commit author: Ajish Koshy <Ajish.Koshy@microchip.com>
+Commit author: Ming Lei <ming.lei@redhat.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
 6.6.y | Present (exact SHA1)
 6.1.y | Present (exact SHA1)
-5.15.y | Present (different SHA1: 269a4311b15f)
+5.15.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  51e6ed83bb4a ! 1:  1652f92390bb scsi: pm80xx: Fix memory leak during rmmod
+1:  b4459b11e840 ! 1:  d0cf570e337e dm rq: don't queue request to blk-mq during DM suspend
     @@ Metadata
       ## Commit message ##
-         scsi: pm80xx: Fix memory leak during rmmod
+         dm rq: don't queue request to blk-mq during DM suspend
      
-    +    [ Upstream commit 51e6ed83bb4ade7c360551fa4ae55c4eacea354b ]
+    +    commit b4459b11e84092658fa195a2587aff3b9637f0e7 upstream.
     +
-         Driver failed to release all memory allocated. This would lead to memory
-         leak during driver removal.
+         DM uses blk-mq's quiesce/unquiesce to stop/start device mapper queue.
      
+         But blk-mq's unquiesce may come from outside events, such as elevator
     @@ Commit message
-         Signed-off-by: Ajish Koshy <Ajish.Koshy@microchip.com>
-         Signed-off-by: Viswas G <Viswas.G@microchip.com>
-         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+         Cc: stable@vger.kernel.org
+         Signed-off-by: Ming Lei <ming.lei@redhat.com>
+         Signed-off-by: Mike Snitzer <snitzer@redhat.com>
+    +    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
     +    [Shivani: Modified to apply on 5.10.y]
     +    Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
      
-      ## drivers/scsi/pm8001/pm8001_init.c ##
-     @@ drivers/scsi/pm8001/pm8001_init.c: pm8001_init_ccb_tag(struct pm8001_hba_info *pm8001_ha, struct Scsi_Host *shost,
-    @@ drivers/scsi/pm8001/pm8001_init.c: pm8001_init_ccb_tag(struct pm8001_hba_info *p
-      
-      	/* Memory region for ccb_info*/
-     +	pm8001_ha->ccb_count = ccb_count;
-    - 	pm8001_ha->ccb_info =
-    + 	pm8001_ha->ccb_info = (struct pm8001_ccb_info *)
-      		kcalloc(ccb_count, sizeof(struct pm8001_ccb_info), GFP_KERNEL);
-      	if (!pm8001_ha->ccb_info) {
-     @@ drivers/scsi/pm8001/pm8001_init.c: static void pm8001_pci_remove(struct pci_dev *pdev)
+      ## drivers/md/dm-rq.c ##
+     @@ drivers/md/dm-rq.c: static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+    @@ drivers/md/dm-rq.c: static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hct
+     +
+      	if (unlikely(!ti)) {
+      		int srcu_idx;
+    - 		struct dm_table *map = dm_get_live_table(md, &srcu_idx);
+    + 		struct dm_table *map;
 
 ---
 
@@ -117,5 +115,15 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| origin/linux-5.10.y       | Success     | Success    |
+| origin/linux-5.10.y       | Success     | Failed     |
+
+Build Errors:
+origin/linux-5.10.y:
+    Build error: Building current HEAD with log output
+    Build x86: exited with code 2
+    Cleaning up worktrees...
+    Cleaning up worktrees...
+    Cleaning up worktrees...
+    Cleaning up worktrees...
+
 
