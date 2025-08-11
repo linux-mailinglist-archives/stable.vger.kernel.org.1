@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-167085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E81B21990
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 01:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C60DB21992
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 01:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7151F1890934
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 23:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 983121A24013
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 23:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60127285079;
-	Mon, 11 Aug 2025 23:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DF5286411;
+	Mon, 11 Aug 2025 23:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBOIuzHD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4DraMQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFFE285C85;
-	Mon, 11 Aug 2025 23:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA22285CBD;
+	Mon, 11 Aug 2025 23:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754956343; cv=none; b=UTjTrHlz7cHW06akCxzWecGaf+ur5iVpDz+6RVfjLu/qEE3c56+O0rDHt5TLVAKKGJSXzzIp8nHOS0ixdNq8nZzEtCXfZRJEVUYx1+ZfNyn6dVZQuAxiC0yIzZdx6gpzhZLqm2NPTv4wrmB8/WCA6NuDoY5n/ql1yIx0ysSPES4=
+	t=1754956345; cv=none; b=YWtRastWHWQG463PiQQV3+AAR+bLPwVVaCX9pIgPOKfzyI6tLlHVaKe0Pp62iKowi9QhI7/X5ITZBbRomrYWbdq85mo4i60cCdNNrE0T+8xgNAXCgEmsUrFpvJ4fpuJzlC62INmrClYBZnzsIR3sAPVwr53bH5tS4Hma26QcyTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754956343; c=relaxed/simple;
-	bh=tFW7xAFCsBDZ9EJ2Une7mqEt2FB05XsC3D8WsL/Sa6U=;
+	s=arc-20240116; t=1754956345; c=relaxed/simple;
+	bh=ixTVEja8nuZcKnLD4jQDARKlZDlmffITVD5GgOh07VA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3jUwsf2jS69wEJk99LR4IVwEClPn97iuj4ycVBlkPst4W6dOKmZJ9C7AvMJT71FJkqrT9ba/MPrOkT017V6ReNgOg1tKIE/IY4ezzvYG7gNHSTfDGhYHTNT2NCFGkFEZTVjQEAFLzvvr3B5gJr5yTK+hoRp5kuVbHqHlJhQcGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBOIuzHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EDFC4CEED;
-	Mon, 11 Aug 2025 23:52:21 +0000 (UTC)
+	 MIME-Version; b=Hk1nu+OxWnutKoMVCBVURBJO+1mW1ouvIXIZ7PJu7QvwFsD7pfL+PAHZz4L1x0ACW/ck5hFCjj7o75FvhEq5zc158P+4f341zHTbh1sOnDSATE+kOgowd6qUlqq4ZELsZRoCO3hrcZxn7mWu3iSSHxhuSAfoOXDiFl8A7me50XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4DraMQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0CBC4CEED;
+	Mon, 11 Aug 2025 23:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754956342;
-	bh=tFW7xAFCsBDZ9EJ2Une7mqEt2FB05XsC3D8WsL/Sa6U=;
+	s=k20201202; t=1754956345;
+	bh=ixTVEja8nuZcKnLD4jQDARKlZDlmffITVD5GgOh07VA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBOIuzHDPnS7Qum8aaoOAKQFQN+2qZjbvYtMilYgyhtjTuFqpSuNKvSUo9BWTLZVh
-	 eHP6HhYNf/dxQlyGyA84gBtOZiR4+ScXPt5Ef2izBG3MR7g3u73k0PNijbVs/3qrH4
-	 z9qtLngjgGKvPdw4aA+xr2Lful31h4PFK3egfkP/r+thsgOKYETdGjScgb30pUGxEQ
-	 2UasbYwnC0IfwUQtHf9EO435asrLXoeWcff1it+A+aLFBGdB698NK78mlIRQ5xhUP4
-	 37PudMwTMEOXRyC1oQZQGKAjuMNEU+ydY6gRVQGSuM2ZqBh3cUnsthg5lQsinZfPOF
-	 f350FUwd0lAzA==
+	b=J4DraMQJ3gsoHkW1UFss7dsCSP7gVs0Z/Pa6BssfszWh0fDtAtffE7Hyqk1wRW8TP
+	 WhdXUGcKkpQWtCAl+gGdI8SzmQ/vy8u7uHr6vYpg/ety+z3OZqn4ImYJjQpjRyCw+8
+	 uAXfxL46DJQWY3n+Xi10hWLtRYNHGgsQYqg2jEhRLLWi7lddHYhtYkq8NtbjZzzXVK
+	 wI4FTfNBG1TDGgufZC6loX/939wjo7FZSf0Sc3Hr0mQgREzq+CJWibDXCnp6OU4H0d
+	 jcLkQPhnWckGgfSM/kXEov+8Suu3ul4LgoVExx+1HwbsQy871S1YGCCkHMVmKGwtaa
+	 VgBe9xXjDujqA==
 From: Nathan Chancellor <nathan@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
 Cc: stable@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH 5.4 4/6] kbuild: Add CLANG_FLAGS to as-instr
-Date: Mon, 11 Aug 2025 16:51:49 -0700
-Message-ID: <20250811235151.1108688-5-nathan@kernel.org>
+Subject: [PATCH 5.4 5/6] kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS
+Date: Mon, 11 Aug 2025 16:51:50 -0700
+Message-ID: <20250811235151.1108688-6-nathan@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250811235151.1108688-1-nathan@kernel.org>
 References: <20250811235151.1108688-1-nathan@kernel.org>
@@ -60,43 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit cff6e7f50bd315e5b39c4e46c704ac587ceb965f upstream.
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
-KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
-When that occurs, the following errors appear multiple times when
-building ARCH=powerpc powernv_defconfig:
+commit feb843a469fb0ab00d2d23cfb9bcc379791011bb upstream.
 
-  ld.lld: error: vmlinux.a(arch/powerpc/kernel/head_64.o):(.text+0x12d4): relocation R_PPC64_ADDR16_HI out of range: -4611686018409717520 is not in [-2147483648, 2147483647]; references '__start___soft_mask_table'
-  ld.lld: error: vmlinux.a(arch/powerpc/kernel/head_64.o):(.text+0x12e8): relocation R_PPC64_ADDR16_HI out of range: -4611686018409717392 is not in [-2147483648, 2147483647]; references '__stop___soft_mask_table'
+When preprocessing arch/*/kernel/vmlinux.lds.S, the target triple is
+not passed to $(CPP) because we add it only to KBUILD_{C,A}FLAGS.
 
-Diffing the .o.cmd files reveals that -DHAVE_AS_ATHIGH=1 is not present
-anymore, because as-instr only uses KBUILD_AFLAGS, which will no longer
-contain '--target'.
+As a result, the linker script is preprocessed with predefined macros
+for the build host instead of the target.
 
-Mirror Kconfig's as-instr and add CLANG_FLAGS explicitly to the
-invocation to ensure the target information is always present.
+Assuming you use an x86 build machine, compare the following:
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+ $ clang -dM -E -x c /dev/null
+ $ clang -dM -E -x c /dev/null -target aarch64-linux-gnu
+
+There is no actual problem presumably because our linker scripts do not
+rely on such predefined macros, but it is better to define correct ones.
+
+Move $(CLANG_FLAGS) to KBUILD_CPPFLAGS, so that all *.c, *.S, *.lds.S
+will be processed with the proper target triple.
+
+[Note]
+After the patch submission, we got an actual problem that needs this
+commit. (CBL issue 1859)
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1859
+Reported-by: Tom Rini <trini@konsulko.com>
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- scripts/Kbuild.include | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
-index 11f905b95e65..b01d3108596b 100644
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -108,7 +108,7 @@ as-option = $(call try-run,\
- # Usage: aflags-y += $(call as-instr,instr,option1,option2)
+diff --git a/Makefile b/Makefile
+index f65e282f4a3f..16a23aaaa547 100644
+--- a/Makefile
++++ b/Makefile
+@@ -568,8 +568,7 @@ ifneq ($(LLVM_IAS),1)
+ CLANG_FLAGS	+= -no-integrated-as
+ endif
+ CLANG_FLAGS	+= -Werror=unknown-warning-option
+-KBUILD_CFLAGS	+= $(CLANG_FLAGS)
+-KBUILD_AFLAGS	+= $(CLANG_FLAGS)
++KBUILD_CPPFLAGS	+= $(CLANG_FLAGS)
+ export CLANG_FLAGS
+ endif
  
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(CLANG_FLAGS) $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
- 
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
 -- 
 2.50.1
 
