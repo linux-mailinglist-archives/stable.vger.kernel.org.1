@@ -1,162 +1,272 @@
-Return-Path: <stable+bounces-167010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28928B20260
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 10:53:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C676B202B2
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 11:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90803B5407
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 08:53:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8AD18C0B7E
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 09:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8172DCF6F;
-	Mon, 11 Aug 2025 08:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC84B2DEA93;
+	Mon, 11 Aug 2025 09:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKswWXSD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ytq+9a/a"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69942DCBF4;
-	Mon, 11 Aug 2025 08:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6953E2DEA87
+	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 09:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754902360; cv=none; b=bNazRd80hNxxONAmXfeX3J+YZcxIuzoT1auGPqP3JOAcQKrd0d5eDVAXtm+WNtS9O15l/TuPhxJwB/YVnDIBGqSqF16BPxzkb4T3tstawSeMxCd/Kb+CeiM/yMh/xsy2dzhSE5nMxaiH2q1no2ShHs72qlwDrqP+I+PZ50ybEzY=
+	t=1754903317; cv=none; b=FoFCDbUTiQVTIJ7qwCRWP+A+gfY2DeHnfEg2bMabyMfdZ38w8EKHi82Aq5SN4Oun3hSy2LYPUBTMJe6OsDRBxF/QZsJ8zrKBcRgbPrnsOxRhB/A3kgzn3PLOCVJvHxSgymuGOgb/5VJrWxGLsOZnhhK+xuGQQmUzJXe9JUNl0o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754902360; c=relaxed/simple;
-	bh=3W7y2DSI+b+/NU/9fMvMcZ7Git3/YhU7rwsTKEuKhak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mFukI4w3WbZlRERN/bEWCQdGjt/juAw75D/zUCaqkiyqGZAuNeXShUm+8HOyHwHO9IQ/6oSz3ZdacKZxvtuTxGlkQbU9T7JuWVdnM7zBMe79B8UFMf9hRKpDxeZMAGkODg/0B9J63SX78V6Uqb+zg7ZgvHt4RafO7a4b2DzpmnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKswWXSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B104C4CEED;
-	Mon, 11 Aug 2025 08:52:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754902360;
-	bh=3W7y2DSI+b+/NU/9fMvMcZ7Git3/YhU7rwsTKEuKhak=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fKswWXSDs8HligSv6I7X8TlRBaJTUYhj/n7fHdG1oe59j5so4v1z+qlk8ZCDJb4ud
-	 NCWPA/ImWhMlfbMQ9eRX2/DISkTjV7vnmjihTP9atKiP0wPf4RsGvcszZ5od76OhgO
-	 Scx4BYZWgcbI8ikoVLb5QZsRdd9nz6qRZXO/99WPYxnwgrNgvJMQOb56vJhUE3hCs3
-	 xKaUqK1Ys+FCYEQ9k7jCV9uY1waWLHTRugMVYYKFfeMjbpoJn2j0ARIeWnBEPqDZVS
-	 gXNPey55jmq0CWrZEL3jHhweH3xtUr+QegSdaQZe1gk4lyTS/L1JrEQdHlXOpG/Umn
-	 mQHBS+oPTamRw==
-Date: Mon, 11 Aug 2025 11:52:23 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Dennis Zhou <dennis@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, x86@kernel.org,
-	Borislav Petkov <bp@alien8.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, kasan-dev@googlegroups.com,
-	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Huth <thuth@redhat.com>, John Hubbard <jhubbard@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Jane Chu <jane.chu@oracle.com>,
-	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	linux-arch@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH V4 mm-hotfixes 1/3] mm: move page table sync declarations
- to linux/pgtable.h
-Message-ID: <aJmvR5mRJ2htKoss@kernel.org>
-References: <20250811053420.10721-1-harry.yoo@oracle.com>
- <20250811053420.10721-2-harry.yoo@oracle.com>
- <aJmkX3JBhH3F0PEC@kernel.org>
- <aJmrpaeKKeNCV3G_@hyeyoo>
+	s=arc-20240116; t=1754903317; c=relaxed/simple;
+	bh=GxSBTCNgd4eJENpfjoGCAFFcGIxRfntdX/fQersbJVI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BF+pwEuQC7SCiR7Vgnr5sdfGbUFTD7K4JUeM9qJ+gbFfJCJo8Mw6Ce80ciF0Yaw7FWQAboxqRXHumcTVEqoOK+EPo8WfEiB5VAjAU1t1BjxdaP+RiFQW15IqBUpU4VXA6Ymcni2rBc0KZ3dhXb8uhANwbsr13p9z7FKe9vhlCWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ytq+9a/a; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-af93c3bac8fso581732566b.2
+        for <stable@vger.kernel.org>; Mon, 11 Aug 2025 02:08:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754903314; x=1755508114; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VwHawNcF/JQ8X+Uy0Ve0MFsO6tqiI9dn3acsx3kJnRQ=;
+        b=Ytq+9a/afd/vK1e8EQX2jCt3A+m9Ejm3s5V50WYnyZNV29UVEO2tiNjBaM8K4uSMT9
+         w/9dZz2eIOambyjOAsfy+xyqUjfIxBBWMkUONNV+Bn12SF6ohnvzWLunS8coWNEx/zsj
+         mTggzK182/jFKyNGsWK8ERZtxiC2qwx5DuZ56wNAcdn1qa3/ML/D+yrO/aoRtx/IOWiO
+         65YSkPvSkwYBhJFJjPt47eALG9CpTP+rwVlM1XSaAUJkkJC3gS44x+u6kjhsfg75vg1i
+         8nCtnagOzu94SzVj6ONG8Dmy9n/jcXbZH7K+bIYmtcmYHF42J9AFjpqL2Rx+T6C43p8/
+         lq/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754903314; x=1755508114;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VwHawNcF/JQ8X+Uy0Ve0MFsO6tqiI9dn3acsx3kJnRQ=;
+        b=wvcQd6+X/7d3fZyvu2DUlL7UjLF2FRvnNh5D+sMj4l8ClO0ruMiPXmAsHVq8lkVM8U
+         X8ZDuFzTro7pq1OyMaBGvnctT53XjEVRWk5g/uU9kXQ8hi6czQA/jwqzjMsfW5lvdZ0i
+         CK2dU5QgcBGaFQItgDVaswG7hZ7XftVSZgMkXNFMtnoDlABv+WUbBTpZKfDWlH8PGidi
+         vQvOBqpya+YHtV3bDoYRheBiL/wblGGUL1LjHfoOi1WnOcCBmvXrrAfQL0MRKFGs9kJV
+         MJw+Uqf2aUnsVIrhXRfh5VDU1OML1IMHXCR5Kri7Dm1UCNBDlS1kOvqE9ZO1fl/MeHvF
+         Kq3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXCKvfBQJxV5wecYTnneHXfmIb9SJSAhMBuc78Wov+WTAI06cLaucHH+fMFHjZulTvLDQT66z8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6gnFTKfMiTDxMqRJwiPg7URlRMLZdTKTJlgNoJ72K0jNtcEZy
+	mvhqTvFEsCRGLkXrZO+GLAgZ0zIqTKb5mbcsXi64kQwuZRqvafYp1+QW0mA6Xb1zydnclh9xTpr
+	+KAjx2asiu2ej32SQE2KCki0dDhzFWig=
+X-Gm-Gg: ASbGnctSp4YgC3fklnNRhlxiVsoGxDz5ieWxyx4VPGulSeA0BdKEygzqqxLP33JwXXh
+	13YpmFFLDj52fvxKYu0TsOBObc0C4ep5cbsChw3EGcFnzDpA95oq5LtBnE3K68EfeIPizw1MwoK
+	k5JYXcNXyjIAtdlpWEhhHC49hcPklsPIW3vxLCnKGv2eyRq1JV05DeCEjP3igQG/FpX7xnKrz2W
+	DKY6MEkng==
+X-Google-Smtp-Source: AGHT+IGdt733GvWY5lAGoK+XbGYb2hLaYemZnckhDKBvkh4Fb3S8ppPlbLEYEw1YiRpusRegIQ+oXaTyXeg6ZsGhcWk=
+X-Received: by 2002:a17:907:d89:b0:aec:6600:dbe3 with SMTP id
+ a640c23a62f3a-af9c6544634mr1151954766b.56.1754903313414; Mon, 11 Aug 2025
+ 02:08:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJmrpaeKKeNCV3G_@hyeyoo>
+References: <CAJmAMMyOk7AVqQRrtK4Oum2uVKreGeLJ943-kkRCTspoGApZ8w@mail.gmail.com>
+ <CAJmAMMyt5QQQOavVy+Gytf00Y0F6G+GCLYhj0E9RZ8cV85gwCw@mail.gmail.com> <10850475be9302b5b397173c1d4554335c0df966.camel@mediatek.com>
+In-Reply-To: <10850475be9302b5b397173c1d4554335c0df966.camel@mediatek.com>
+From: Tal Inbar <inbartdev@gmail.com>
+Date: Mon, 11 Aug 2025 12:08:22 +0300
+X-Gm-Features: Ac12FXxpDyTwSrfAbNsg-NT2mwV9frv3BhLyjLgyjeTQ1rashWaHY-G52WOJkz4
+Message-ID: <CAJmAMMxtH+WnJfU2tcHRxP472cnyM4cZ7vaTcZN0NSxQ6U5HCg@mail.gmail.com>
+Subject: Re: [REGRESSION] [BISECTED] MT7925 wireless speed drops to zero since
+ kernel 6.14.3 - wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd
+To: =?UTF-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?= <Mingyen.Hsieh@mediatek.com>
+Cc: Sean Wang <Sean.Wang@mediatek.com>, 
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, =?UTF-8?B?QWxsYW4gV2FuZyAo546L5a625YGJKQ==?= <Allan.Wang@mediatek.com>, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, 
+	=?UTF-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 11, 2025 at 05:36:53PM +0900, Harry Yoo wrote:
-> On Mon, Aug 11, 2025 at 11:05:51AM +0300, Mike Rapoport wrote:
-> > On Mon, Aug 11, 2025 at 02:34:18PM +0900, Harry Yoo wrote:
-> > > Move ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to
-> > > linux/pgtable.h so that they can be used outside of vmalloc and ioremap.
-> > > 
-> > > Cc: <stable@vger.kernel.org>
-> > > Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > > ---
-> > >  include/linux/pgtable.h | 16 ++++++++++++++++
-> > >  include/linux/vmalloc.h | 16 ----------------
-> > >  2 files changed, 16 insertions(+), 16 deletions(-)
-> > > 
-> > > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > > index 4c035637eeb7..ba699df6ef69 100644
-> > > --- a/include/linux/pgtable.h
-> > > +++ b/include/linux/pgtable.h
-> > > @@ -1467,6 +1467,22 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
-> > >  }
-> > >  #endif
-> > >  
-> > > +/*
-> > > + * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-> > > + * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-> > 
-> > If ARCH_PAGE_TABLE_SYNC_MASK can be used outside vmalloc(), the comment
-> > needs an update, maybe
-> > 
-> > ... and let the generic code that modifies kernel page tables
-> 
-> Right, and patch 2 updates the comment as it uses it outside vmalloc():
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index ba699df6ef69..0cf5c6c3e483 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1469,8 +1469,8 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
-> 
->  /*
->   * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-> - * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-> - * needs to be called.
-> + * and let generic vmalloc, ioremap and page table update code know when
-> + * arch_sync_kernel_mappings() needs to be called.
->   */
->  #ifndef ARCH_PAGE_TABLE_SYNC_MASK
->  #define ARCH_PAGE_TABLE_SYNC_MASK 0
-> 
-> Or if you think "page table update code" is unclear, please let me know.
+Hi Mingyen,
 
-It's fine :)
- 
-> > Other than that
-> > 
-> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> Thanks a lot for all the reviews, Mike!
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+I'll see what I can gather and I'll let you know.
 
--- 
-Sincerely yours,
-Mike.
+Tal
+
+On Mon, Aug 11, 2025 at 4:47=E2=80=AFAM Mingyen Hsieh (=E8=AC=9D=E6=98=8E=
+=E8=AB=BA)
+<Mingyen.Hsieh@mediatek.com> wrote:
+>
+> On Fri, 2025-08-08 at 17:37 +0300, Tal Inbar wrote:
+> >
+> > External email : Please do not click links or open attachments until
+> > you have verified the sender or the content.
+> >
+> >
+> > typo, laptop model is:
+> > Lenovo IdeaPad Slim 5 16AKP10
+> >
+> > On Fri, Aug 8, 2025 at 4:14=E2=80=AFPM Tal Inbar <inbartdev@gmail.com> =
+wrote:
+> > >
+> > > Hi,
+> > >
+> > > Since kernel v6.14.3, when using wireless to connect to my home
+> > > router
+> > > on my laptop, my wireless connection slows down to unusable speeds.
+> > >
+> > >
+> > > More specifically, since kernel 6.14.3, when connecting to the
+> > > wireless networks of my OpenWRT Router on my Lenovo IdeaPad Slim 15
+> > > 16AKP10 laptop,
+> > > either a 2.4ghz or a 5ghz network, the connection speed drops down
+> > > to
+> > > 0.1-0.2 Mbps download and 0 Mbps upload when measured using
+> > > speedtest-cli.
+> > > My laptop uses an mt7925 chip according to the loaded driver and
+> > > firmware.
+> > >
+> > >
+> > > Detailed Description:
+> > >
+> > > As mentioned above, my wireless connection becomes unusable when
+> > > using
+> > > linux 6.14.3 and above, dropping speeds to almost 0 Mbps,
+> > > even when standing next to my router. Further, pinging
+> > > archlinux.org
+> > > results in "Temporary failure in name resolution".
+> > > Any other wireless device in my house can successfully connect to
+> > > my
+> > > router and properly use the internet with good speeds, eg. iphones,
+> > > ipads, raspberry pi and a windows laptop.
+> > > When using my Lenovo laptop on a kernel 6.14.3 or higher to connect
+> > > to
+> > > other access points, such as my iPhone's hotspot and some TPLink
+> > > and
+> > > Zyxel routers - the connection speed is good, and there are no
+> > > issues,
+> > > which makes me believe there's something going on with my OpenWRT
+> > > configuration in conjunction with a commit introduced on kernel
+> > > 6.14.3
+> > > for the mt7925e module as detailed below.
+> > >
+> > > I have followed a related issue previously reported on the mailing
+> > > list regarding a problem with the same wifi chip on kernel 6.14.3,
+> > > but
+> > > the merged fix doesn't seem to fix my problem:
+> > > https://lore.kernel.org/linux-mediatek/EmWnO5b-acRH1TXbGnkx41eJw654vm=
+CR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vf=
+dg=3D@pm.me/
+> > >
+> > > I've tested stable builds of 6.15 as well up to 6.15.9 in the last
+> > > month, which also do not fix the problem.
+> > > I've also built and bisected v6.14 on june using guides on the Arch
+> > > Linux wiki, for the following bad commit, same as the previously
+> > > mentioned reported issue:
+> > >
+> > > [80007d3f92fd018d0a052a706400e976b36e3c87] wifi: mt76: mt7925:
+> > > integrate *mlo_sta_cmd and *sta_cmd
+> > >
+> > > Testing further this week, I cloned mainline after 6.16 was
+> > > released,
+> > > built and tested it, and the issue still persists.
+> > > I reverted the following commits on mainline and retested, to
+> > > successfully see good wireless speeds:
+> > >
+> > > [0aa8496adda570c2005410a30df963a16643a3dc] wifi: mt76: mt7925: fix
+> > > missing hdr_trans_tlv command for broadcast wtbl
+> > > [cb1353ef34735ec1e5d9efa1fe966f05ff1dc1e1] wifi: mt76: mt7925:
+> > > integrate *mlo_sta_cmd and *sta_cmd
+> > >
+> > > Then, reverting *only* 0aa8496adda570c2005410a30df963a16643a3dc
+> > > causes
+> > > the issue to reproduce, which confirms the issue is caused by
+> > > commit
+> > > cb1353ef34735ec1e5d9efa1fe966f05ff1dc1e1 on mainline.
+> > >
+> > > I've attached the following files to a bugzilla ticket:
+> > >
+> > > - lspci -nnk output:
+> > > https://urldefense.com/v3/__https://bugzilla.kernel.org/attachment.cg=
+i?id=3D308466__;!!CTRNKA9wMg0ARbw!gTAaJeIN6s3eF_Kp6U3iwfv0wCCO_BVcRkNVpJYnw=
+R8qeqIIh134mEJ5dxdeNqzuWSPF2ocLAt43LxaBTIY-7w$
+> > >
+> > > - dmesg output:
+> > > https://urldefense.com/v3/__https://bugzilla.kernel.org/attachment.cg=
+i?id=3D308465__;!!CTRNKA9wMg0ARbw!gTAaJeIN6s3eF_Kp6U3iwfv0wCCO_BVcRkNVpJYnw=
+R8qeqIIh134mEJ5dxdeNqzuWSPF2ocLAt43LxY1pkjZCA$
+> > >
+> > > - .config for the built mainline kernel:
+> > > https://urldefense.com/v3/__https://bugzilla.kernel.org/attachment.cg=
+i?id=3D308467__;!!CTRNKA9wMg0ARbw!gTAaJeIN6s3eF_Kp6U3iwfv0wCCO_BVcRkNVpJYnw=
+R8qeqIIh134mEJ5dxdeNqzuWSPF2ocLAt43LxYcu-Db2g$
+> > >
+> > >
+> > > More information:
+> > >
+> > > OS Distribution: Arch Linux
+> > >
+> > > Linux build information from /proc/version:
+> > > Linux version 6.16.0linux-mainline-11853-g21be711c0235
+> > > (tal@arch-debug) (gcc (GCC) 15.1.1 20250729, GNU ld (GNU Binutils)
+> > > 2.45.0) #3 SMP PREEMPT_DYNAMIC
+> > >
+> > > OpenWRT Version on my Router: 24.10.2
+> > >
+> > > Laptop Hardware:
+> > > - Lenovo IdeaPad Slim 15 16AKP10 laptop (x86_64 Ryzen AI 350 CPU)
+> > > - Network device as reported by lscpi: 14c3:7925
+> > > - Network modules and driver in use: mt7925e
+> > > - mediatek chip firmware as of dmesg:
+> > >   HW/SW Version: 0x8a108a10, Build Time: 20250526152947a
+> > >   WM Firmware Version: ____000000, Build Time: 20250526153043
+> > >
+> > >
+> > > Referencing regzbot:
+> > >
+> > > #regzbot introduced: 80007d3f92fd018d0a052a706400e976b36e3c87
+> > >
+> > >
+> > > Please let me know if any other information is needed, or if there
+> > > is
+> > > anything else that I can test on my end.
+> > >
+> > > Thanks,
+> > > Tal Inbar
+>
+> Hi,
+>
+> Can you capture a sniffer log? There should be some configuration
+> differences that we can identify from the packet frames during the
+> connection process. So please provide the sniffer logs when connecting
+> to your OpenWRT, TPLink, and Zyxel.
+>
+> Or you can check for any configuration differences between OpenWRT and
+> the other routers, which might also help with debugging.
+>
+> Thanks~
+>
+> Yen.
+>
+>
+> *********** MEDIATEK Confidentiality Notice
+>  ***********
+> The information contained in this e-mail message (including any
+> attachments) may be confidential, proprietary, privileged, or
+> otherwise exempt from disclosure under applicable laws. It is
+> intended to be conveyed only to the designated recipient(s). Any
+> use, dissemination, distribution, printing, retaining or copying
+> of this e-mail (including its attachments) by unintended recipient(s)
+> is strictly prohibited and may be unlawful. If you are not an
+> intended recipient of this e-mail, or believe that you have received
+> this e-mail in error, please notify the sender immediately
+> (by replying to this e-mail), delete any and all copies of this
+> e-mail (including any attachments) from your system, and do not
+> disclose the content of this e-mail to any other person. Thank you!
 
