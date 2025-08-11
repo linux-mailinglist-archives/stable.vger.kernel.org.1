@@ -1,129 +1,148 @@
-Return-Path: <stable+bounces-167077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05D8B21861
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 00:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29046B2188A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 00:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8074C68035A
-	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 22:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8876B3B4981
+	for <lists+stable@lfdr.de>; Mon, 11 Aug 2025 22:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A2C21C9F1;
-	Mon, 11 Aug 2025 22:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0963819D082;
+	Mon, 11 Aug 2025 22:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOMmzEmP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bndVqZO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437FA1F948
-	for <stable@vger.kernel.org>; Mon, 11 Aug 2025 22:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B722F1F948;
+	Mon, 11 Aug 2025 22:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754951433; cv=none; b=ikzXJpgViAuPoZKqNzCDamX4TRPBjfgWkIjnhp1e4jSsbuiub2mdffJwb9DseWftWfBGDuPvKFR3psPgRQk23xzDIQy3/FyPohlNay+xtaFZLMIcstDLwLMHdbnOP36+WtjKuA22EeqcjffavGQvXXSfx5jhKgK1dbuapD8arNk=
+	t=1754952313; cv=none; b=qsNalOWeofWXWkzl6EF1gFv5JLMSK1seFygmjlxx/tCi5fQzrPb1NPL7iqW2/syejCMCBlV8HYKpsSUR/4DafM3zycDZkiPhKvj5FSLGZ6nW2nMFRVoHNfa39psvQtjp/RjtZoDNTcBBP4+bHMsSbwhssZKQDZ9chFxqRdPqfZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754951433; c=relaxed/simple;
-	bh=v6vNdLwZ84s8iZFUZso/qs50zK2bkeaHX8LgqyBs7pA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l7R+uHw9jYpyZfZgjzv90F3zNS523dOxFd2R2t8+88O6MdWtrwNEkNTZ9eyOwl2vYSeA5CZEI+m1qdzgEtmL8ygEUGdpPOKsceMogaXqR/sbfbKTHGIHykeQX55kQjZShAWxCHeiD31T+JG9L35sF/FeMXobIaK2X9DxQC6p4Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOMmzEmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CE6C4CEED;
-	Mon, 11 Aug 2025 22:30:32 +0000 (UTC)
+	s=arc-20240116; t=1754952313; c=relaxed/simple;
+	bh=i4h8G1OYpYeLJk6avTosK176BkneaD6DUhNIdsA8UUM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=i8fKW0E6ZIS/eqh5ePWwbHJkPisnxrNO2577pksX/ZnOc/3c+iOBH6ytUou/Sl/+mGFzcKmuG8xoOsx0c380lzQKDZGtzbIs7z7MPcKFOld3MxwvNGOrK7ScWlwnbodhIBBq9dHO7kVivKUZWLhVVBNmoMkBSUtNF1ARy0T5UUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bndVqZO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A64BC4CEED;
+	Mon, 11 Aug 2025 22:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754951433;
-	bh=v6vNdLwZ84s8iZFUZso/qs50zK2bkeaHX8LgqyBs7pA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOMmzEmPZojAvvl9RE/4k/VXeeDMswV+D+vF8h6HW9eKAv/ov0Hzy6Ri9mpg7TeoM
-	 JjYmB6iTLCebtggb8hY/0wgGpz7pwxii6ECfKGSdxR5J55x9Y7kp1FRfdq91LQ/OGX
-	 GSzGF0VCRs0QI4t0XUuzqeX/rZnv6NrdYL4mpCFgSQwZOyKBjz2VUI6x4k3bSWs9LW
-	 Aq9uWUSnuTzFsEHxqIifNDcCXxLhF1wHGqatkdoZFgqdOAgAmC2IhSrWDJAZN8g13D
-	 ZivujKH8ZLzLzAqy+KMa7j4sx86EBwbfz2rbc/Rgdut7jisugLFIqt7fTGmvgy3jP6
-	 ApP7ehClswA9g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	shivani.agarwal@broadcom.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 2/2 v5.10] dm rq: don't queue request to blk-mq during DM suspend
-Date: Mon, 11 Aug 2025 18:30:30 -0400
-Message-Id: <1754925507-8563750b@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250811052702.145189-3-shivani.agarwal@broadcom.com>
-References: 
+	s=k20201202; t=1754952313;
+	bh=i4h8G1OYpYeLJk6avTosK176BkneaD6DUhNIdsA8UUM=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=bndVqZO70lO664Lt0MZI6NYsKGzTI6/JLUM7zB8FY4MMoDFDC4obS6j3p4OkJXIti
+	 CKbMQZ7J0nzqtZfCzRS5cHrkTXA+KGhO4OMAu0J0AY3MK+azLGTFl+rkHGgel6yDqi
+	 D8AlREm0/OEMvFSCi5aMLfVIIu58p+4x3nsn6K//5MQMwRdL6qVf6KWB9bKqHb77Ol
+	 /PVePyHfxnpM7rRmhgFvtGoJUqAVxDsngTcUJaDtcNcO4Xsm03rTs4iGk8InxP0QI3
+	 ZXGEgc33QFpTVz489Bw4ujkzDznIFc5/Loj1IjHoguoLeBxvb0KyUd8PXxSn/lo+kO
+	 sq/vNDDe5RDMA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 12 Aug 2025 00:45:08 +0200
+Message-Id: <DBZYO8O9YTO3.10MKWPYN8YEOB@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] rust: devres: fix leaking call to devm_add_action()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
+ <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>
+X-Mailer: aerc 0.20.1
+References: <20250811214619.29166-1-dakr@kernel.org>
+In-Reply-To: <20250811214619.29166-1-dakr@kernel.org>
 
-[ Sasha's backport helper bot ]
+On Mon Aug 11, 2025 at 11:44 PM CEST, Danilo Krummrich wrote:
+> When the data argument of Devres::new() is Err(), we leak the preceding
+> call to devm_add_action().
+>
+> In order to fix this, call devm_add_action() in a unit type initializer i=
+n
+> try_pin_init!() after the initializers of all other fields.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/devres.rs | 17 ++++++++++-------
+>  1 file changed, 10 insertions(+), 7 deletions(-)
+>
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index da18091143a6..bfccf4177644 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -119,6 +119,7 @@ pub struct Devres<T: Send> {
+>      // impls can be removed.
+>      #[pin]
+>      inner: Opaque<Inner<T>>,
+> +    _add_action: (),
+>  }
+> =20
+>  impl<T: Send> Devres<T> {
+> @@ -140,7 +141,15 @@ pub fn new<'a, E>(
+>              dev: dev.into(),
+>              callback,
+>              // INVARIANT: `inner` is properly initialized.
+> -            inner <- {
+> +            inner <- Opaque::pin_init(try_pin_init!(Inner {
+> +                    devm <- Completion::new(),
+> +                    revoke <- Completion::new(),
+> +                    data <- Revocable::new(data),
+> +            })),
+> +            // TODO: Replace with "initializer code blocks" [1] once ava=
+ilable.
+> +            //
+> +            // [1] https://github.com/Rust-for-Linux/pin-init/pull/69
+> +            _add_action: {
+>                  // SAFETY: `this` is a valid pointer to uninitialized me=
+mory.
+>                  let inner =3D unsafe { &raw mut (*this.as_ptr()).inner }=
+;
+> =20
+> @@ -153,12 +162,6 @@ pub fn new<'a, E>(
+>                  to_result(unsafe {
+>                      bindings::devm_add_action(dev.as_raw(), Some(callbac=
+k), inner.cast())
+>                  })?;
 
-Hi,
+I have some bad news, I think this is also wrong: if the
+`devm_add_action` fails, we never drop the contents of `inner`, since
+the destructor of `Opaque` does nothing and we never finished
+construction of `Devres`, so its `Drop` will never be called.
 
-Summary of potential issues:
-❌ Build failures detected
+One solution would be to use `pin_chain` on the initializer for `Inner`
+(not opaque). Another one would be to not use opaque, `UnsafePinned`
+actually looks like the better fit for this use-case.
 
-The upstream commit SHA1 provided is correct: b4459b11e84092658fa195a2587aff3b9637f0e7
+This also made me re-think `Opaque::pin_init`. It seems wrong and
+probably shouldn't exist, as `Opaque` violates the drop guarantee
+required by pinned data. So it cannot structurally pin the data inside.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Commit author: Ming Lei <ming.lei@redhat.com>
-
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (exact SHA1)
-
-Note: The patch differs from the upstream commit:
 ---
-1:  b4459b11e840 ! 1:  d0cf570e337e dm rq: don't queue request to blk-mq during DM suspend
-    @@ Metadata
-      ## Commit message ##
-         dm rq: don't queue request to blk-mq during DM suspend
-     
-    +    commit b4459b11e84092658fa195a2587aff3b9637f0e7 upstream.
-    +
-         DM uses blk-mq's quiesce/unquiesce to stop/start device mapper queue.
-     
-         But blk-mq's unquiesce may come from outside events, such as elevator
-    @@ Commit message
-         Cc: stable@vger.kernel.org
-         Signed-off-by: Ming Lei <ming.lei@redhat.com>
-         Signed-off-by: Mike Snitzer <snitzer@redhat.com>
-    +    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    [Shivani: Modified to apply on 5.10.y]
-    +    Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-     
-      ## drivers/md/dm-rq.c ##
-     @@ drivers/md/dm-rq.c: static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
-    @@ drivers/md/dm-rq.c: static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hct
-     +
-      	if (unlikely(!ti)) {
-      		int srcu_idx;
-    - 		struct dm_table *map = dm_get_live_table(md, &srcu_idx);
-    + 		struct dm_table *map;
+Cheers,
+Benno
 
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| origin/linux-5.10.y       | Success     | Failed     |
-
-Build Errors:
-origin/linux-5.10.y:
-    Build error: Building current HEAD with log output
-    Build x86: exited with code 2
-    Cleaning up worktrees...
-    Cleaning up worktrees...
-    Cleaning up worktrees...
-    Cleaning up worktrees...
+> -
+> -                Opaque::pin_init(try_pin_init!(Inner {
+> -                    devm <- Completion::new(),
+> -                    revoke <- Completion::new(),
+> -                    data <- Revocable::new(data),
+> -                }))
+>              },
+>          })
+>      }
+>
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 
 
