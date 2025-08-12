@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-168375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665E6B234CE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C38BB23106
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053381884B3C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 210155682A1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FAF2FDC55;
-	Tue, 12 Aug 2025 18:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F75C2FE56A;
+	Tue, 12 Aug 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRdPgGR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaH6z6Jw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B9521ABD0;
-	Tue, 12 Aug 2025 18:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E125C2FDC25;
+	Tue, 12 Aug 2025 17:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023968; cv=none; b=mIA10O95+7874sGbrE0+RByCfBQlT6Thwdr0+jDpLRBj4I1ZUIP/7zddNPmC/FtLmBcxEpA4Le9wTTNSt3Thag2aRX8MzquAnIGsMZKLNfSGdb15LOgdmeo+gV35pND76/fFlVUrjrLSbw+T60aG+TWkpe6HTcWe23jtH4BZgRw=
+	t=1755021499; cv=none; b=m57OVCprWdtMFHDvwKKqgIJkyadZ4IdaBiD9WnLlptgTsNCIeKQaYNOZmTtwfIl0S5vSy6+VKMkEyV0rHNe2pR6CEvFsJNscTKgpi8DZE3cxw+VIVHW4R0wjEMuqBiwoZ0Ta/NXuPFV4hE5pXur92egcbguGwFs9IGvjXQOt48s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023968; c=relaxed/simple;
-	bh=RlWfVVCLGz68z8cYiH++68UWewCEvIHZQpM/dRmyWnE=;
+	s=arc-20240116; t=1755021499; c=relaxed/simple;
+	bh=OVQqARKx6ZDtd1kLGkTMLApCTYPSyv37BKP1AQFL20c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GTLnrbQgMpn43jPM5BDQ6xy1QGUnXS9IlDvrgjo8CPVMwX/lLCcc4xSsi6cTUHIMXn+LCyVLbx5SSkdFrkUndjbzdGrE5kLcyS35nNQYVN76Y0T0Ugl2m2I2jNlGBDnnNScBtXTCApMigEfDkThDvW5UlOdRU5hAeFmNvyhtm9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRdPgGR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D252C4CEF0;
-	Tue, 12 Aug 2025 18:39:26 +0000 (UTC)
+	 MIME-Version; b=nhLy48irh1x17x1tSq42e1jLmHrLuKYAGmFf2EcvfDJOpvRuTTQWODnEmLACdd86g21TxgG5Vcf1sGNgLQBpPP6KCfem55UGzwnCU7UUfWSThE1kh1lI0+pvDiEyoN0aIrLPcs5saaMOgSmCFprN56M+vHQw6FZpkq2UEHerelw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaH6z6Jw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0F4C4CEF0;
+	Tue, 12 Aug 2025 17:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023967;
-	bh=RlWfVVCLGz68z8cYiH++68UWewCEvIHZQpM/dRmyWnE=;
+	s=korg; t=1755021498;
+	bh=OVQqARKx6ZDtd1kLGkTMLApCTYPSyv37BKP1AQFL20c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRdPgGR3u6Tz4B1T0qYq4uUroMetIHbFSjB223m5JDSUjfnyYjZgnx2OJkOYtmUV/
-	 yoIg1o3EpXAHRsr7LLahR9yUf063MpTorzFGDUrrio6288q9OFXGcN4hlnahT9Cyc/
-	 WBMuccKZXjato1zbJpnnlORHIpC9I70T0hR2VkpQ=
+	b=IaH6z6JwycjCsEbA7GCeB3n6GTdqqfJyCy2OGMe2B4HBz2efF+urw9/RQ5h3ymLuW
+	 wao2EdNZhPeKMX4qbBBU+xbYalRgrm7QAdOOTf6QHo9UAOvZvjgrDuMJBMHv80HLzz
+	 s9aidRM8R57C0UrOTk3upksg4R1LCxKytIwbLCpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng-jui Wang <cheng-jui.wang@mediatek.com>,
-	Lorry.Luo@mediatek.com,
-	weiyangyang@vivo.com,
-	Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 233/627] rcu: Fix delayed execution of hurry callbacks
+Subject: [PATCH 6.6 140/262] watchdog: ziirave_wdt: check record length in ziirave_firm_verify()
 Date: Tue, 12 Aug 2025 19:28:48 +0200
-Message-ID: <20250812173428.163136554@linuxfoundation.org>
+Message-ID: <20250812172959.055808603@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 463d46044f04013306a4893242f65788b8a16b2e ]
+[ Upstream commit 8b61d8ca751bc15875b50e0ff6ac3ba0cf95a529 ]
 
-We observed a regression in our customer’s environment after enabling
-CONFIG_LAZY_RCU. In the Android Update Engine scenario, where ioctl() is
-used heavily, we found that callbacks queued via call_rcu_hurry (such as
-percpu_ref_switch_to_atomic_rcu) can sometimes be delayed by up to 5
-seconds before execution. This occurs because the new grace period does
-not start immediately after the previous one completes.
+The "rec->len" value comes from the firmware.  We generally do
+trust firmware, but it's always better to double check.  If
+the length value is too large it would lead to memory corruption
+when we set "data[i] = ret;"
 
-The root cause is that the wake_nocb_gp_defer() function now checks
-"rdp->nocb_defer_wakeup" instead of "rdp_gp->nocb_defer_wakeup". On CPUs
-that are not rcuog, "rdp->nocb_defer_wakeup" may always be
-RCU_NOCB_WAKE_NOT. This can cause "rdp_gp->nocb_defer_wakeup" to be
-downgraded and the "rdp_gp->nocb_timer" to be postponed by up to 10
-seconds, delaying the execution of hurry RCU callbacks.
-
-The trace log of one scenario we encountered is as follow:
-  // previous GP ends at this point
-  rcu_preempt   [000] d..1.   137.240210: rcu_grace_period: rcu_preempt 8369 end
-  rcu_preempt   [000] .....   137.240212: rcu_grace_period: rcu_preempt 8372 reqwait
-  // call_rcu_hurry enqueues "percpu_ref_switch_to_atomic_rcu", the callback waited on by UpdateEngine
-  update_engine [002] d..1.   137.301593: __call_rcu_common: wyy: unlikely p_ref = 00000000********. lazy = 0
-  // FirstQ on cpu 2 rdp_gp->nocb_timer is set to fire after 1 jiffy (4ms)
-  // and the rdp_gp->nocb_defer_wakeup is set to RCU_NOCB_WAKE
-  update_engine [002] d..2.   137.301595: rcu_nocb_wake: rcu_preempt 2 FirstQ on cpu2 with rdp_gp (cpu0).
-  // FirstBQ event on cpu2 during the 1 jiffy, make the timer postpond 10 seconds later.
-  // also, the rdp_gp->nocb_defer_wakeup is overwrite to RCU_NOCB_WAKE_LAZY
-  update_engine [002] d..1.   137.301601: rcu_nocb_wake: rcu_preempt 2 WakeEmptyIsDeferred
-  ...
-  ...
-  ...
-  // before the 10 seconds timeout, cpu0 received another call_rcu_hurry
-  // reset the timer to jiffies+1 and set the waketype = RCU_NOCB_WAKE.
-  kworker/u32:0 [000] d..2.   142.557564: rcu_nocb_wake: rcu_preempt 0 FirstQ
-  kworker/u32:0 [000] d..1.   142.557576: rcu_nocb_wake: rcu_preempt 0 WakeEmptyIsDeferred
-  kworker/u32:0 [000] d..1.   142.558296: rcu_nocb_wake: rcu_preempt 0 WakeNot
-  kworker/u32:0 [000] d..1.   142.558562: rcu_nocb_wake: rcu_preempt 0 WakeNot
-  // idle(do_nocb_deferred_wakeup) wake rcuog due to waketype == RCU_NOCB_WAKE
-  <idle>        [000] d..1.   142.558786: rcu_nocb_wake: rcu_preempt 0 DoWake
-  <idle>        [000] dN.1.   142.558839: rcu_nocb_wake: rcu_preempt 0 DeferredWake
-  rcuog/0       [000] .....   142.558871: rcu_nocb_wake: rcu_preempt 0 EndSleep
-  rcuog/0       [000] .....   142.558877: rcu_nocb_wake: rcu_preempt 0 Check
-  // finally rcuog request a new GP at this point (5 seconds after the FirstQ event)
-  rcuog/0       [000] d..2.   142.558886: rcu_grace_period: rcu_preempt 8372 newreq
-  rcu_preempt   [001] d..1.   142.559458: rcu_grace_period: rcu_preempt 8373 start
-  ...
-  rcu_preempt   [000] d..1.   142.564258: rcu_grace_period: rcu_preempt 8373 end
-  rcuop/2       [000] D..1.   142.566337: rcu_batch_start: rcu_preempt CBs=219 bl=10
-  // the hurry CB is invoked at this point
-  rcuop/2       [000] b....   142.566352: blk_queue_usage_counter_release: wyy: wakeup. p_ref = 00000000********.
-
-This patch changes the condition to check "rdp_gp->nocb_defer_wakeup" in
-the lazy path. This prevents an already scheduled "rdp_gp->nocb_timer"
-from being postponed and avoids overwriting "rdp_gp->nocb_defer_wakeup"
-when it is not RCU_NOCB_WAKE_NOT.
-
-Fixes: 3cb278e73be5 ("rcu: Make call_rcu() lazy to save power")
-Co-developed-by: Cheng-jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Cheng-jui Wang <cheng-jui.wang@mediatek.com>
-Co-developed-by: Lorry.Luo@mediatek.com
-Signed-off-by: Lorry.Luo@mediatek.com
-Tested-by: weiyangyang@vivo.com
-Signed-off-by: weiyangyang@vivo.com
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Fixes: 217209db0204 ("watchdog: ziirave_wdt: Add support to upload the firmware.")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/3b58b453f0faa8b968c90523f52c11908b56c346.1748463049.git.dan.carpenter@linaro.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_nocb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/ziirave_wdt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index b473ff056f49..711043e4eb54 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -276,7 +276,7 @@ static void wake_nocb_gp_defer(struct rcu_data *rdp, int waketype,
- 	 * callback storms, no need to wake up too early.
- 	 */
- 	if (waketype == RCU_NOCB_WAKE_LAZY &&
--	    rdp->nocb_defer_wakeup == RCU_NOCB_WAKE_NOT) {
-+	    rdp_gp->nocb_defer_wakeup == RCU_NOCB_WAKE_NOT) {
- 		mod_timer(&rdp_gp->nocb_timer, jiffies + rcu_get_jiffies_lazy_flush());
- 		WRITE_ONCE(rdp_gp->nocb_defer_wakeup, waketype);
- 	} else if (waketype == RCU_NOCB_WAKE_BYPASS) {
+diff --git a/drivers/watchdog/ziirave_wdt.c b/drivers/watchdog/ziirave_wdt.c
+index 5ed33df68e9a..e611d60316c6 100644
+--- a/drivers/watchdog/ziirave_wdt.c
++++ b/drivers/watchdog/ziirave_wdt.c
+@@ -302,6 +302,9 @@ static int ziirave_firm_verify(struct watchdog_device *wdd,
+ 		const u16 len = be16_to_cpu(rec->len);
+ 		const u32 addr = be32_to_cpu(rec->addr);
+ 
++		if (len > sizeof(data))
++			return -EINVAL;
++
+ 		if (ziirave_firm_addr_readonly(addr))
+ 			continue;
+ 
 -- 
 2.39.5
 
