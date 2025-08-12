@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-168296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED88B23456
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE11B22FB9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C0C616F286
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C1961AA0CF0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01A92EF652;
-	Tue, 12 Aug 2025 18:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F18D2FDC31;
+	Tue, 12 Aug 2025 17:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBEi9zU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttW1ymK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E02B1DB92A;
-	Tue, 12 Aug 2025 18:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC852FA0FD;
+	Tue, 12 Aug 2025 17:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023700; cv=none; b=tEBTMdqY1ecZwcmNwpbq6fI32LQ9913W07U7n58HyDsE9krhIPTZMoqEyYm2mBJ1OyJ5GOsvYT4AGiQ3pL0dA21dhgIkOR7vCEp2+QLX16ivCgvbZGGhlk8GhGB5IYve176h5XlX/isc2K04dAnmYYQutJQqoSc8h0LwH3mU5PE=
+	t=1755020495; cv=none; b=gkddr1iYfcu6ywM+AUXrVfS7UoWS7C6PDy1O5HhHgv1yn25rlfWk5/ytFncmNDZwnmWKmSoadGBBPV/QXHqNwx3rgE4lJFhHyIG5mpD8WkxgOySP64Pj2gaq5AStzFbzQPheU9hfDIdCQ+OQ/cs5SqNI9vwUDFzKdlilKduRCXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023700; c=relaxed/simple;
-	bh=Q67NjmQUs3mRaA2qSsHEC7O7S+Rvf4fmuQEEYo+jBL0=;
+	s=arc-20240116; t=1755020495; c=relaxed/simple;
+	bh=mQQRcfFVy8TEr9ouEiF5jJHnTe+Ubca4bQcSmv6hmCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hF3oltL9N+ouDJdYhM/9KrhOyFy3BIkWwuVXoZp5mhPBtZKq/uoShzusb7dKBEWdMnlx/OvxUoy3LVVs1i+yymICSneqzZuoqawBrgaTvA/UHkBGxkiSB7gaNXSlAL+11L6gHbf/2gJK/3g2CdBZkIm9n1rCDpQ11+9TBOIiV3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBEi9zU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B604DC4CEF0;
-	Tue, 12 Aug 2025 18:34:59 +0000 (UTC)
+	 MIME-Version; b=ZGupRXOFKuWjh6uRY69YiBzmcnlVONrjh+hfiRJz1f+yFg9rFlpfmfFCRcN7oktE6lrDWlIzI0jns6QHrrf0GDIKxqpn1Ww2NiY1DovJxEG1kclp71RtDjxE0p5xHwD0eXN6RJ37yJSDusFNFXPREW9MwsVCNmbccbbnPQIGuCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttW1ymK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F07C4CEF0;
+	Tue, 12 Aug 2025 17:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023700;
-	bh=Q67NjmQUs3mRaA2qSsHEC7O7S+Rvf4fmuQEEYo+jBL0=;
+	s=korg; t=1755020495;
+	bh=mQQRcfFVy8TEr9ouEiF5jJHnTe+Ubca4bQcSmv6hmCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBEi9zU6ymV5zgMUXyIjp5kaGN2qi9g02tqiCrVTkZOdz033tvRAl6spbR+DtcGsE
-	 LJ5k9Vsoh3+i8sTKfIaIAb7ZK23siJ6I24TTeRWzX33e6kgk8L9J4m+s9O5yeUGgDZ
-	 TgYof30amAPkaWZzwXXRuRvX6nK4Jj34jVqC69mM=
+	b=ttW1ymK6+0VvNdw4iiWhidasdXDYWf2dBRjSnZ7/3XnWBZdSgrtnjvUqZzStKgn9O
+	 vdAa0X/i85aF57BNQicuV1I9DpiTu7YvFnmgpmAJFDWqg3bjrAEUNL1LK0PuP0PILn
+	 CoPomUrNhn8RAhvlV3HmfW0fhN2ElrdL74Z/48W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kowshik Jois <kowsjois@linux.ibm.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Tyrel Datwyler <tyreld@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 156/627] powerpc/pseries/dlpar: Search DRC index from ibm,drc-indexes for IO add
+Subject: [PATCH 6.1 063/253] ASoC: Intel: fix SND_SOC_SOF dependencies
 Date: Tue, 12 Aug 2025 19:27:31 +0200
-Message-ID: <20250812173425.220370471@linuxfoundation.org>
+Message-ID: <20250812172951.407668752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 41a1452759a8b1121df9cf7310acf31d766ba70b ]
+[ Upstream commit e837b59f8b411b5baf5e3de7a5aea10b1c545a63 ]
 
-IO hotplug add event is handled in the user space with drmgr tool.
-After the device is enabled, the user space uses /sys/kernel/dlpar
-interface with “dt add index <drc_index>” to update the device tree.
-The kernel interface (dlpar_hp_dt_add()) finds the parent node for
-the specified ‘drc_index’ from ibm,drc-info property. The recent FW
-provides this property from 2017 onwards. But KVM guest code in
-some releases is still using the older SLOF firmware which has
-ibm,drc-indexes property instead of ibm,drc-info.
+It is currently possible to configure a kernel with all Intel SoC
+configs as loadable modules, but the board config as built-in. This
+causes a link failure in the reference to the snd_soc_sof.ko module:
 
-If the ibm,drc-info is not available, this patch adds changes to
-search ‘drc_index’ from the indexes array in ibm,drc-indexes
-property to support old FW.
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_hw_params':
+sof_rt5682.c:(.text+0x1f9): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sof_rt5682.c:(.text+0x234): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_codec_init':
+sof_rt5682.c:(.text+0x3e0): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cs42l42.o: in function `sof_cs42l42_hw_params':
+sof_cs42l42.c:(.text+0x2a): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_nau8825.o: in function `sof_nau8825_hw_params':
+sof_nau8825.c:(.text+0x7f): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_da7219.o: in function `da7219_codec_init':
+sof_da7219.c:(.text+0xbf): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_maxim_common.o: in function `max_98373_hw_params':
+sof_maxim_common.c:(.text+0x6f9): undefined reference to `sof_dai_get_tdm_slots'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1015_hw_params':
+sof_realtek_common.c:(.text+0x54c): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1308_hw_params':
+sof_realtek_common.c:(.text+0x702): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cirrus_common.o: in function `cs35l41_hw_params':
+sof_cirrus_common.c:(.text+0x2f): undefined reference to `sof_dai_get_bclk'
 
-Fixes: 02b98ff44a57 ("powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add")
-Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250531235002.239213-1-haren@linux.ibm.com
+Add an optional dependency on SND_SOC_SOF_INTEL_COMMON, to ensure that whenever
+the SOF support is in a loadable module, none of the board code can be built-in.
+
+This may be be a little heavy-handed, but I also don't see a reason why one would
+want the boards to be built-in but not the SoC, so it shouldn't actually cause
+any usability problems.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250709145626.64125-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/dlpar.c | 52 +++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ sound/soc/intel/boards/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 213aa26dc8b3..979487da6522 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -404,6 +404,45 @@ get_device_node_with_drc_info(u32 index)
- 	return NULL;
- }
+diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
+index ca49cc49c378..109efda305bf 100644
+--- a/sound/soc/intel/boards/Kconfig
++++ b/sound/soc/intel/boards/Kconfig
+@@ -11,7 +11,7 @@ menuconfig SND_SOC_INTEL_MACH
+ 	 kernel: saying N will just cause the configurator to skip all
+ 	 the questions about Intel ASoC machine drivers.
  
-+static struct device_node *
-+get_device_node_with_drc_indexes(u32 drc_index)
-+{
-+	struct device_node *np = NULL;
-+	u32 nr_indexes, index;
-+	int i, rc;
-+
-+	for_each_node_with_property(np, "ibm,drc-indexes") {
-+		/*
-+		 * First element in the array is the total number of
-+		 * DRC indexes returned.
-+		 */
-+		rc = of_property_read_u32_index(np, "ibm,drc-indexes",
-+				0, &nr_indexes);
-+		if (rc)
-+			goto out_put_np;
-+
-+		/*
-+		 * Retrieve DRC index from the list and return the
-+		 * device node if matched with the specified index.
-+		 */
-+		for (i = 0; i < nr_indexes; i++) {
-+			rc = of_property_read_u32_index(np, "ibm,drc-indexes",
-+							i+1, &index);
-+			if (rc)
-+				goto out_put_np;
-+
-+			if (drc_index == index)
-+				return np;
-+		}
-+	}
-+
-+	return NULL;
-+
-+out_put_np:
-+	of_node_put(np);
-+	return NULL;
-+}
-+
- static int dlpar_hp_dt_add(u32 index)
- {
- 	struct device_node *np, *nodes;
-@@ -423,10 +462,19 @@ static int dlpar_hp_dt_add(u32 index)
- 		goto out;
- 	}
+-if SND_SOC_INTEL_MACH
++if SND_SOC_INTEL_MACH && (SND_SOC_SOF_INTEL_COMMON || !SND_SOC_SOF_INTEL_COMMON)
  
-+	/*
-+	 * Recent FW provides ibm,drc-info property. So search
-+	 * for the user specified DRC index from ibm,drc-info
-+	 * property. If this property is not available, search
-+	 * in the indexes array from ibm,drc-indexes property.
-+	 */
- 	np = get_device_node_with_drc_info(index);
- 
--	if (!np)
--		return -EIO;
-+	if (!np) {
-+		np = get_device_node_with_drc_indexes(index);
-+		if (!np)
-+			return -EIO;
-+	}
- 
- 	/* Next, configure the connector. */
- 	nodes = dlpar_configure_connector(cpu_to_be32(index), np);
+ config SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
+ 	bool "Use more user friendly long card names"
 -- 
 2.39.5
 
