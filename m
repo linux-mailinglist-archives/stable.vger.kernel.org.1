@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C246B23529
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5A0B23344
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2332188F842
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 307B23B9207
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2E02FDC33;
-	Tue, 12 Aug 2025 18:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658402FA0DB;
+	Tue, 12 Aug 2025 18:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAvZM4GZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbD7VfMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5402F291B;
-	Tue, 12 Aug 2025 18:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2578B280037;
+	Tue, 12 Aug 2025 18:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024286; cv=none; b=TM+8nowu8teSgs3dFe7RFdQ0eQngjtOCSJnY8YcU8EwJEerL1aFg4Pt6hOddk+tbEpQh2GCvEQouqzy+6BBsp8U9k2dzZywZ3uMoz0w7zwrtrtG+B9vXuFM3N5Tk38Bqt4G9e4c7FfRvyqbz00y2i60uOqsDxCj+BshDRgoXJ4U=
+	t=1755022963; cv=none; b=hNjYPbkl1oCPnumnWj+asIGljUV9FQzoaCPB68PDuz/myH7fFAdQFm8j1L3fVWp1ONbNJTczvBdVdR0iB+rfQ1DJi8c0HgAHDgl+h2iGsunz5U8PzVOW5n1n6k6Xe5rNJRFs2mmSN7ARRhjfBQcYywPDkjE9roRXjCGYXaN1GHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024286; c=relaxed/simple;
-	bh=qMZVtVyq3X/AV+eqwjZbigx9gtFQNV1A0svROlJhqrI=;
+	s=arc-20240116; t=1755022963; c=relaxed/simple;
+	bh=inrgngWLQnnS52ThQAJkxw1GPVOUNyEQN2JBS180k34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmWgryYIYaY3Y2xcCGwSm4+uMwt7RxEN1KtJ4IHUbsqDCNEwMolv6DNo9QOs3bQX6NkJz/CdQ+4jEDGktXlOeJN2iHQrJVMpuhsofNENOzDxa3AROUSpjDf7ZJNB9z6/op0VxOPfsk8yZDgtOlUonGUtkk60gnvmYRP5pVzNSq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAvZM4GZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1743BC4CEF0;
-	Tue, 12 Aug 2025 18:44:45 +0000 (UTC)
+	 MIME-Version; b=hD5QzRxkGqfZfMmkb8k7z4nHgmUUQATJBKHZmdNtGP9o3sQW53aMzPFNAn9hpFFyhxrq1Z5wNSjq3E8tHXhBKDZacGhm2QHPn5tEYLLp6VMwZm4MutqTNGYkeHD1nAlUA68FdiXwlr1exqgV0oHAdOMA9j95mGAi9AMTFIw4G4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbD7VfMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8831CC4CEF8;
+	Tue, 12 Aug 2025 18:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024286;
-	bh=qMZVtVyq3X/AV+eqwjZbigx9gtFQNV1A0svROlJhqrI=;
+	s=korg; t=1755022963;
+	bh=inrgngWLQnnS52ThQAJkxw1GPVOUNyEQN2JBS180k34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VAvZM4GZ1TT1sIw2IefyTCUBVUViyHVW9tC3SnmHhUaHcgJNsKaOvomZxXiHsYw1t
-	 Mp6KT+6QvoWsyCTqsZvd0LvLSXEaBwqsajneEu2QPZJAuhtxrwLthMBzO2LIx50eG+
-	 kqtBZtewhNbeZ0lKZipAPE87K31IodHHmDtDRUG4=
+	b=gbD7VfMwQf+M0ywpIs4dAt0l4jK25+qQPiqDlZmmeU80S8fT6qfq2tVjU1I4vlZJQ
+	 B3wHuTlgHdRlouFYeYI/XGJtxf5Tu8GGuG87OjxshSHDU9AJ0UGOrQH6iHj97gSUAI
+	 Ib2zwXdASGmb/U5V1SriteOK5pzPhGy1Kd5ky4mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 311/627] mtd: fix possible integer overflow in erase_xfer()
+Subject: [PATCH 6.12 309/369] irqchip: Build IMX_MU_MSI only on ARM
 Date: Tue, 12 Aug 2025 19:30:06 +0200
-Message-ID: <20250812173431.135194665@linuxfoundation.org>
+Message-ID: <20250812173028.353643632@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9358bdb9f9f54d94ceafc650deffefd737d19fdd ]
+[ Upstream commit 3b6a18f0da8720d612d8a682ea5c55870da068e0 ]
 
-The expression '1 << EraseUnitSize' is evaluated in int, which causes
-a negative result when shifting by 31 - the upper bound of the valid
-range [10, 31], enforced by scan_header(). This leads to incorrect
-extension when storing the result in 'erase->len' (uint64_t), producing
-a large unexpected value.
+Compile-testing IMX_MU_MSI on x86 without PCI_MSI support results in a
+build failure:
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+drivers/gpio/gpio-sprd.c:8:
+include/linux/gpio/driver.h:41:33: error: field 'msiinfo' has incomplete type
+drivers/iommu/iommufd/viommu.c:4:
+include/linux/msi.h:528:33: error: field 'alloc_info' has incomplete type
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tighten the dependency further to only allow compile testing on Arm.
+This could be refined further to allow certain x86 configs.
+
+This was submitted before to address a different build failure, which was
+fixed differently, but the problem has now returned in a different form.
+
+Fixes: 70afdab904d2d1e6 ("irqchip: Add IMX MU MSI controller driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250805160952.4006075-1-arnd@kernel.org
+Link: https://lore.kernel.org/all/20221215164109.761427-1-arnd@kernel.org/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ftl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/ftl.c b/drivers/mtd/ftl.c
-index 8c22064ead38..f2bd1984609c 100644
---- a/drivers/mtd/ftl.c
-+++ b/drivers/mtd/ftl.c
-@@ -344,7 +344,7 @@ static int erase_xfer(partition_t *part,
-             return -ENOMEM;
- 
-     erase->addr = xfer->Offset;
--    erase->len = 1 << part->header.EraseUnitSize;
-+    erase->len = 1ULL << part->header.EraseUnitSize;
- 
-     ret = mtd_erase(part->mbd.mtd, erase);
-     if (!ret) {
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index a799a89195c5..5d5b3cf381b9 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -506,6 +506,7 @@ config IMX_MU_MSI
+ 	tristate "i.MX MU used as MSI controller"
+ 	depends on OF && HAS_IOMEM
+ 	depends on ARCH_MXC || COMPILE_TEST
++	depends on ARM || ARM64
+ 	default m if ARCH_MXC
+ 	select IRQ_DOMAIN
+ 	select IRQ_DOMAIN_HIERARCHY
 -- 
 2.39.5
 
