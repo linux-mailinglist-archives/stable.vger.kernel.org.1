@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37E0B22FB7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23C6B230E3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAF201A25BA4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A3D53A4E87
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55782FDC31;
-	Tue, 12 Aug 2025 17:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D61A2FDC34;
+	Tue, 12 Aug 2025 17:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyuADsni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxiuW0hw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A972FD1D1;
-	Tue, 12 Aug 2025 17:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF51B2F8BE7;
+	Tue, 12 Aug 2025 17:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020475; cv=none; b=de2blm1vQLZ1NxgMR8m7KzAqZbm+rQmqTML/Dl96jdC+voioeGJa3WXxIFNjX4g+7CMVb0GYc8PXOWV7MuDQNTjtopXuxqqwtQhN1zrlszJzxaENcmJ9kVQGLFxVLccR75RFcigDRjl3cockT7gqpLqu1gFuA6RWf8hmEw67Pcc=
+	t=1755021429; cv=none; b=XQgIzWP8rhpzBru8CdZDQL4NacRQlNZpu/GW8jXnHNUMOcyvHH+5fEkcTMGtpxTNidvuaZvSRuvBBpokH2YHh2lai2y3JLvVCBtBGMicmBep94zdKc3cJkoDQALVBHatT/71hITxoUn5EtIogtfM3i1VGmNHUjrW0w5s79yLyqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020475; c=relaxed/simple;
-	bh=iU6ntrNK5285kYkdj/Cmf0JUPq2XasCHb88TkoAEHwA=;
+	s=arc-20240116; t=1755021429; c=relaxed/simple;
+	bh=JG+72NUfh9k8b4PsVfA/4HuIuKYfmi0MmjwDUF23ir8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSI9DvVXCeTPXaAJ7ynfQy1d+vP8uTU/BV0++9Dx0JsnaSxPByZzEH3VbrJuqZgPxybMYsnT9rI+8YrPpHKLOkn9H+EgV94nzSwd+JgijBndKUqtDHCFeWg/9RCows1DyOzj1mZKxLzNMymb5jko7w2c0ayT92PA+OATMpvYI10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyuADsni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26693C4CEF0;
-	Tue, 12 Aug 2025 17:41:14 +0000 (UTC)
+	 MIME-Version; b=mq9edRXYg0YSvz4AcwbbLgckPrJrmmwS2OdDCN9GCaoxFDVixvjSVgwe2AcBtDFvkwCohFs7TPuAxJSCg34ou8nUPxmlqgOSBslDY8IvxJxmlNO3x/3aS8cx0V20dF6UFoTZ7V6cvlsbbOeo/IFsK1AKvnFtFqQN56BpChnNPGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxiuW0hw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15350C4CEF7;
+	Tue, 12 Aug 2025 17:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020475;
-	bh=iU6ntrNK5285kYkdj/Cmf0JUPq2XasCHb88TkoAEHwA=;
+	s=korg; t=1755021429;
+	bh=JG+72NUfh9k8b4PsVfA/4HuIuKYfmi0MmjwDUF23ir8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyuADsni7YJM5GMrF9BivEEfO74at9CEIxb/tdOC+U2WFPBlrAL5jYsMTdWaHri+B
-	 jPUkJ6Z4Le1CABmQJGEZJu9/VZDqlcHdIMUnFq0fYYDln9CxqXQE31uwGI7ChSy6Qm
-	 03ownUtu01JjNYeSHUZ+iDxy2AEs1Qt/xPkQkf0A=
+	b=SxiuW0hwNSevmY4pb2cVYvZ+2MF34cz4bhAjo9pp/n20euPn+Vxl4ECLPptL940f1
+	 +Ig1MLT+aOOLMDgVzGEz3JCtkTCrK88Uz55imI/aYuEr05Bcu0IzuQNwKhNJKCNfEq
+	 MJh/EMJ0gRr5U+Jpmom6gc0EU9xYSSRrPiPQu0uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/253] cpufreq: Initialize cpufreq-based frequency-invariance later
-Date: Tue, 12 Aug 2025 19:27:58 +0200
-Message-ID: <20250812172952.565155060@linuxfoundation.org>
+Subject: [PATCH 6.6 091/262] kcsan: test: Initialize dummy variable
+Date: Tue, 12 Aug 2025 19:27:59 +0200
+Message-ID: <20250812172956.942592120@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
+[ Upstream commit 9872916ad1a1a5e7d089e05166c85dbd65e5b0e8 ]
 
-The cpufreq-based invariance is enabled in cpufreq_register_driver(),
-but never disabled after registration fails. Move the invariance
-initialization to where all other initializations have been successfully
-done to solve this problem.
+Newer compiler versions rightfully point out:
 
-Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ kernel/kcsan/kcsan_test.c:591:41: error: variable 'dummy' is
+ uninitialized when passed as a const pointer argument here
+ [-Werror,-Wuninitialized-const-pointer]
+   591 |         KCSAN_EXPECT_READ_BARRIER(atomic_read(&dummy), false);
+       |                                                ^~~~~
+ 1 error generated.
+
+Although this particular test does not care about the value stored in
+the dummy atomic variable, let's silence the warning.
+
+Link: https://lkml.kernel.org/r/CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com
+Fixes: 8bc32b348178 ("kcsan: test: Add test cases for memory barrier instrumentation")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/kcsan/kcsan_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 3f35ce19c7b6..1d18a56dccab 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2882,15 +2882,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	cpufreq_driver = driver_data;
- 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index 0ddbdab5903d..9d8c95defdd6 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -530,7 +530,7 @@ static void test_barrier_nothreads(struct kunit *test)
+ 	struct kcsan_scoped_access *reorder_access = NULL;
+ #endif
+ 	arch_spinlock_t arch_spinlock = __ARCH_SPIN_LOCK_UNLOCKED;
+-	atomic_t dummy;
++	atomic_t dummy = ATOMIC_INIT(0);
  
--	/*
--	 * Mark support for the scheduler's frequency invariance engine for
--	 * drivers that implement target(), target_index() or fast_switch().
--	 */
--	if (!cpufreq_driver->setpolicy) {
--		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
--		pr_debug("supports frequency invariance");
--	}
--
- 	if (driver_data->setpolicy)
- 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
- 
-@@ -2921,6 +2912,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	hp_online = ret;
- 	ret = 0;
- 
-+	/*
-+	 * Mark support for the scheduler's frequency invariance engine for
-+	 * drivers that implement target(), target_index() or fast_switch().
-+	 */
-+	if (!cpufreq_driver->setpolicy) {
-+		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
-+		pr_debug("supports frequency invariance");
-+	}
-+
- 	pr_debug("driver %s up and running\n", driver_data->name);
- 	goto out;
- 
+ 	KCSAN_TEST_REQUIRES(test, reorder_access != NULL);
+ 	KCSAN_TEST_REQUIRES(test, IS_ENABLED(CONFIG_SMP));
 -- 
 2.39.5
 
