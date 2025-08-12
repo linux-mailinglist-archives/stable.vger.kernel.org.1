@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-168138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63511B233A0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C1FB23597
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3613F2A4781
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B433B616A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7CF1D416C;
-	Tue, 12 Aug 2025 18:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1581A01BF;
+	Tue, 12 Aug 2025 18:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DH0zhcEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmvpeEx6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC2621ABD0;
-	Tue, 12 Aug 2025 18:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C621A9F89;
+	Tue, 12 Aug 2025 18:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023173; cv=none; b=WCe34DQOtHb4TV0Q3hIR09OJb8zY8NUxE18Fgov9PrAZpkR1//2hJvjJTjbT3oK5LwCSz6QGbc3MUoi7QX7cUr7wZdY5zjWEG+a1a3ZZY5hgg8Jad1YHnno9h3aA15fxqpMKqlBM41ah6tsigLtZ1GBnEB2lhMqNXu6ZiuJygsg=
+	t=1755024388; cv=none; b=DczcNhNbHzLvyGHp6L4/V/3uX9dsyCIMBkcSWTC9YpqzPEaxCEikyX8KeWWkyqixldaWJ0n2rfnPnGMklg9aurA4kQeRZF7oxy03sUEmQ1rwFlAEvB+6Ii2hGUMra/3RKGQOv82AtPO91d92qBGUZ0jl7bo7eKx3Ccj+Xs3HVss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023173; c=relaxed/simple;
-	bh=n2e5PWQEMy3mfXuVcM7LrLxrTHfF/PuPlBym1lIIa2c=;
+	s=arc-20240116; t=1755024388; c=relaxed/simple;
+	bh=6pUWw1bZq+FzutqoQAX2uk8KBZkQrECNTFA6Tbgme4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJk32mH5B93uPMgsO1yGzpzbInf6I2wizgA5POPMMEb75DcAa7LWQwT69iPuK1/J2oRUY6QjzqNCDYRh9U7tSOx3dt6cT/Xcpmkwnbu6wLkGbaP9TkIpfq91rqginVLf2wM+8fE8lKrqUK0fdboHD1Qnjxcq/r8e6ePMnbQs5OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DH0zhcEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2275C4CEF0;
-	Tue, 12 Aug 2025 18:26:12 +0000 (UTC)
+	 MIME-Version; b=chcyi1kvDvoUopsmTjVxsfxOwjCy+njseKoNhpk5wQFKO/uTW3WNidV8mz0s3p1CE37X/hHGFaH0fmuwotC54XkGyPWRwNGf0wfTkq8ZiTpY8YvVf0w/r78CgjpAquz+SCdPt0yD93Pmpc3ki9GnRALkwmNEWGEw6ridcT1KK64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmvpeEx6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65914C4CEF0;
+	Tue, 12 Aug 2025 18:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023173;
-	bh=n2e5PWQEMy3mfXuVcM7LrLxrTHfF/PuPlBym1lIIa2c=;
+	s=korg; t=1755024387;
+	bh=6pUWw1bZq+FzutqoQAX2uk8KBZkQrECNTFA6Tbgme4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DH0zhcErDpcHx4GC/i+vMV6iLfmOncCwnwDX0TL1rsaNOc3n9JH4KLhCEz1GZXeBK
-	 7v7CsTwUgyyfcWhuafm4hSk+uZFwoBHb2+dehEw0QBxDT5DaHXoN0gc6ysL9rD9ZtM
-	 Qqu0is/I4pqKSXrkRdbS2bA5iZQJKJBG/RU0T/AM=
+	b=mmvpeEx6yjmGI2aXK84Vc00zLImbq5rs+6S7uzYeguggZyjK1dG0WLxIgN4LTH1y5
+	 vMajd0wojPH+YM0rtkrHkwV4v6PwKqP32nrBeiv4YNqBQJGDMpxcDhfNCvUUBTYUuG
+	 z/M+Y96Nf9pQ90hM+QWhkk63Y7Tg6+U0c3JiEg/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edip Hazuri <edip@medip.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 357/369] ALSA: hda/realtek - Fix mute LED for HP Victus 16-d1xxx (MB 8A26)
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 359/627] perf sched: Fix memory leaks in perf sched map
 Date: Tue, 12 Aug 2025 19:30:54 +0200
-Message-ID: <20250812173030.121572244@linuxfoundation.org>
+Message-ID: <20250812173432.952954502@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edip Hazuri <edip@medip.dev>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit a9dec0963187d05725369156a5e0e14cd3487bfb upstream.
+[ Upstream commit dc3a80c98884d86389b3b572c50ccc7f502cd41b ]
 
-My friend have Victus 16-d1xxx with board ID 8A26, the existing quirk
-for Victus 16-d1xxx wasn't working because of different board ID
+It maintains per-cpu pointers for the current thread but it doesn't
+release the refcounts.
 
-Tested on Victus 16-d1015nt Laptop. The LED behaviour works
-as intended.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
-Link: https://patch.msgid.link/20250729181848.24432-4-edip@medip.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e895278697c014e ("perf sched: Move curr_thread initialization to perf_sched__map()")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-4-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-sched.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10678,6 +10678,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
-+	SND_PCI_QUIRK(0x103c, 0x8a26, "HP Victus 16-d1xxx (MB 8A26)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a28, "HP Envy 13", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a29, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a2a, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index fa4052e04020..b73989fb6ace 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -1634,6 +1634,7 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
+ 	const char *color = PERF_COLOR_NORMAL;
+ 	char stimestamp[32];
+ 	const char *str;
++	int ret = -1;
+ 
+ 	BUG_ON(this_cpu.cpu >= MAX_CPUS || this_cpu.cpu < 0);
+ 
+@@ -1664,17 +1665,20 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
+ 	sched_in = map__findnew_thread(sched, machine, -1, next_pid);
+ 	sched_out = map__findnew_thread(sched, machine, -1, prev_pid);
+ 	if (sched_in == NULL || sched_out == NULL)
+-		return -1;
++		goto out;
+ 
+ 	tr = thread__get_runtime(sched_in);
+-	if (tr == NULL) {
+-		thread__put(sched_in);
+-		return -1;
+-	}
++	if (tr == NULL)
++		goto out;
++
++	thread__put(sched->curr_thread[this_cpu.cpu]);
++	thread__put(sched->curr_out_thread[this_cpu.cpu]);
+ 
+ 	sched->curr_thread[this_cpu.cpu] = thread__get(sched_in);
+ 	sched->curr_out_thread[this_cpu.cpu] = thread__get(sched_out);
+ 
++	ret = 0;
++
+ 	str = thread__comm_str(sched_in);
+ 	new_shortname = 0;
+ 	if (!tr->shortname[0]) {
+@@ -1769,12 +1773,10 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
+ 	color_fprintf(stdout, color, "\n");
+ 
+ out:
+-	if (sched->map.task_name)
+-		thread__put(sched_out);
+-
++	thread__put(sched_out);
+ 	thread__put(sched_in);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int process_sched_switch_event(const struct perf_tool *tool,
+@@ -3556,10 +3558,10 @@ static int perf_sched__map(struct perf_sched *sched)
+ 
+ 	sched->curr_out_thread = calloc(MAX_CPUS, sizeof(*(sched->curr_out_thread)));
+ 	if (!sched->curr_out_thread)
+-		return rc;
++		goto out_free_curr_thread;
+ 
+ 	if (setup_cpus_switch_event(sched))
+-		goto out_free_curr_thread;
++		goto out_free_curr_out_thread;
+ 
+ 	if (setup_map_cpus(sched))
+ 		goto out_free_cpus_switch_event;
+@@ -3590,7 +3592,14 @@ static int perf_sched__map(struct perf_sched *sched)
+ out_free_cpus_switch_event:
+ 	free_cpus_switch_event(sched);
+ 
++out_free_curr_out_thread:
++	for (int i = 0; i < MAX_CPUS; i++)
++		thread__put(sched->curr_out_thread[i]);
++	zfree(&sched->curr_out_thread);
++
+ out_free_curr_thread:
++	for (int i = 0; i < MAX_CPUS; i++)
++		thread__put(sched->curr_thread[i]);
+ 	zfree(&sched->curr_thread);
+ 	return rc;
+ }
+-- 
+2.39.5
+
 
 
 
