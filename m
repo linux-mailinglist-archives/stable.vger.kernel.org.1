@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F84FB23373
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5425FB23501
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C19518854FD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 027C316B8B9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C471FF7C5;
-	Tue, 12 Aug 2025 18:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4FB2FF14C;
+	Tue, 12 Aug 2025 18:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPZLwj7/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="di+ENN8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178DA3F9D2;
-	Tue, 12 Aug 2025 18:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693002C21D4;
+	Tue, 12 Aug 2025 18:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023066; cv=none; b=D4ho+7BkwHlA0Kg5T6E8yKGZkcI31NXzNF8T3ezbIRfkpsPTQkZxc8z73WRJpJaNON8r+112sl2dLF4aD+jJQM+/9CReCS1VIF/Y0BUKhCT/hS9XB+a7nND6nJ6yh3PxBUyHhcTl7xWvEiPL/UyJHgPJXMgDFdLczZMcQ6Fbu14=
+	t=1755024335; cv=none; b=IhMVnGWuJ6aPfg8SCO6ibW9fSJtz8EgVx7yrO7IHkSr1FRFGI/dLxwYdrVYRRSInFvokRswlor2dh41Xa0p7h3oSxLIwGfVsYJF9FaxSk+wVuZG6TqjMlNw0dSdeJnKolaSmvkaJfhYXQcSuAtOK0QZrJQ1yKTlJYTLKSy3DuxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023066; c=relaxed/simple;
-	bh=udNBCj6hJfy1X9AXh2ZVuES/1+WeHenp7XHURgUMVsk=;
+	s=arc-20240116; t=1755024335; c=relaxed/simple;
+	bh=j279tONBKdKHtObIst/rozWWZ2CdEY9Zwu3xqotee3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4fxreutlz65UG3VfC5AyG0cWuZhfT3Wiq7b28HaFDJZgv0Pm4FXnbKGervFirWOlei9fSGx4Pcp3fbPrPA+Ce/SgdaQ06rGyYYgHpTVxB3pn+kcFtKN/qNVm0YA1ZVsZEnKeAqDyXrwR5M6xZIfb0X43cbW+/uNDpd8WViem/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPZLwj7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2751FC4CEF0;
-	Tue, 12 Aug 2025 18:24:24 +0000 (UTC)
+	 MIME-Version; b=iE3v44POrIaNZcR9vU640aaPIyGbtJgHvKZzRFERU+3BUGpscExm7Bj4nDyVEvhYdfoGEClLPrGlrAu5YfhVZhdRUoPVf/HLnAbvHOG5MAXVeireuIYn/UvakXRzu83UGTTn8QuWjqBkwkAPORgrE4quxJznAPzUoA6MoOL+oFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=di+ENN8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD76EC4CEF0;
+	Tue, 12 Aug 2025 18:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023065;
-	bh=udNBCj6hJfy1X9AXh2ZVuES/1+WeHenp7XHURgUMVsk=;
+	s=korg; t=1755024335;
+	bh=j279tONBKdKHtObIst/rozWWZ2CdEY9Zwu3xqotee3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPZLwj7/0eR9f73++tt0Qj51Qvhggmsoxuc98YqhMhHzBAQ144VKc5C28y58YMDZx
-	 olzA/XKb3dcWLmLccoYfd3TGMtNRkUqmBpa4D4Utz/Hdy9ebQAFl7wRR6ks47dfc8a
-	 JfAO4y1+eJhGCL9BfGFSCqK20n0BaMiHFUk6JFIQ=
+	b=di+ENN8P5nriqXSZdNV0zODLmsv62iJ6jkTtCzYi2uRxKJ6FDZO3Ip9Xuk+jkPsHU
+	 3G77JQg3ak7BArvaCE+NKQhVWT1tqy23NmKL0dIxeV6vhmyVkULCwpOQdlcPDVySgW
+	 7JNam7bDXHAOwOpAH+6ZWuIZMpCnd99/FFOfQX8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 339/369] drm/i915/display: add intel_encoder_is_hdmi()
+	Parav Pandit <parav@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 341/627] RDMA/ipoib: Use parent rdma device net namespace
 Date: Tue, 12 Aug 2025 19:30:36 +0200
-Message-ID: <20250812173029.452309605@linuxfoundation.org>
+Message-ID: <20250812173432.256100073@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Mark Bloch <mbloch@nvidia.com>
 
-commit efa43b751637c0e16a92e1787f1d8baaf56dafba upstream.
+[ Upstream commit f1208b05574f63c52e88109d8c75afdf4fc6bf42 ]
 
-Similar to intel_encoder_is_dp() and friends.
+Use the net namespace of the underlying rdma device.
+After honoring the rdma device's namespace, the ipoib
+netdev now also runs in the same net namespace of the
+rdma device.
 
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/e6bf9e01deb5d0d8b566af128a762d1313638847.1735568047.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add an API to read the net namespace of the rdma device
+so that ULP such as IPoIB can use it to initialize its
+netdev.
+
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Stable-dep-of: f458ccd2aa2c ("RDMA/uverbs: Check CAP_NET_RAW in user namespace for flow create")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_types.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/infiniband/ulp/ipoib/ipoib_main.c | 2 ++
+ include/rdma/ib_verbs.h                   | 5 +++++
+ 2 files changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -2075,6 +2075,19 @@ static inline bool intel_encoder_is_dp(s
- 	}
- }
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_main.c b/drivers/infiniband/ulp/ipoib/ipoib_main.c
+index f2f5465f2a90..7acafc5c0e09 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_main.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_main.c
+@@ -2577,6 +2577,8 @@ static struct net_device *ipoib_add_port(const char *format,
  
-+static inline bool intel_encoder_is_hdmi(struct intel_encoder *encoder)
+ 	ndev->rtnl_link_ops = ipoib_get_link_ops();
+ 
++	dev_net_set(ndev, rdma_dev_net(hca));
++
+ 	result = register_netdev(ndev);
+ 	if (result) {
+ 		pr_warn("%s: couldn't register ipoib port %d; error %d\n",
+diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
+index af43a8d2a74a..c83e5a375cd6 100644
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -4855,6 +4855,11 @@ static inline int ibdev_to_node(struct ib_device *ibdev)
+ bool rdma_dev_access_netns(const struct ib_device *device,
+ 			   const struct net *net);
+ 
++static inline struct net *rdma_dev_net(struct ib_device *device)
 +{
-+	switch (encoder->type) {
-+	case INTEL_OUTPUT_HDMI:
-+		return true;
-+	case INTEL_OUTPUT_DDI:
-+		/* See if the HDMI encoder is valid. */
-+		return i915_mmio_reg_valid(enc_to_intel_hdmi(encoder)->hdmi_reg);
-+	default:
-+		return false;
-+	}
++	return read_pnet(&device->coredev.rdma_net);
 +}
 +
- static inline struct intel_lspcon *
- enc_to_intel_lspcon(struct intel_encoder *encoder)
- {
+ #define IB_ROCE_UDP_ENCAP_VALID_PORT_MIN (0xC000)
+ #define IB_ROCE_UDP_ENCAP_VALID_PORT_MAX (0xFFFF)
+ #define IB_GRH_FLOWLABEL_MASK (0x000FFFFF)
+-- 
+2.39.5
+
 
 
 
