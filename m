@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BDCB230DE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1C3B232D2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CED2B188D6D5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 120B76E49C9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB8C2FD1D7;
-	Tue, 12 Aug 2025 17:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6437B2FD1DC;
+	Tue, 12 Aug 2025 18:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xf/SMVlC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2P6v9L19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAAD2F8BE7;
-	Tue, 12 Aug 2025 17:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B5A2FD1C2;
+	Tue, 12 Aug 2025 18:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021396; cv=none; b=C5Xt09bvCnvfTdbkkUCTQwz+4qo+FzlJtz+Q53vPZW5tHpxMk3rP9nrNZ95aGKmtPohRRYUj7OvHohydCHYr43F6AsAj79AvNJepX/kyKqGcAZsluzihPef0p75zejXKTBIcJIeaNNJnVT8jxdEr74VA23raiSKyS6GKvMmAlAs=
+	t=1755022592; cv=none; b=aUsZny70qZI+X6Tin0Hsx4VmvbnQez0skHPNwqZIqEAAxaWw4DvEgi3y3uEfPWIJT54vMBSS/gP+4/bsf8j+yT42SpV13Eef6B4wnbPQODAiADxv62ixqDS1V3WtPJO8SqvpAYU/QwZ4wxwfSfhTvMaXbQrcrC1k/z4wMEKnffw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021396; c=relaxed/simple;
-	bh=OUulELiT+f0XcEB4dKu8X3VMv5lOFHb6YurjRvgU/6A=;
+	s=arc-20240116; t=1755022592; c=relaxed/simple;
+	bh=mOWV82AqbfyaqSKCcnCUXJTYeQIe6BGO5qkyI9lHXUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOvFXmb2Ba0j5JiXbvF3gT10BRXqLrJOGMi9YXMNkJ8p3AU/mQvorofsiby0Vd4MSSBt9TcpJhl/+uGTvcsLA0qRqoAmcFG5zJfdH0nJ1Rec56IzDTVXx0QjFIK8ifd31J9AHW09RdR0VxOpnSsc+d86GG1X9VER/VJf0mbmfbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xf/SMVlC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6B1C4CEF0;
-	Tue, 12 Aug 2025 17:56:35 +0000 (UTC)
+	 MIME-Version; b=EZqPASzozTBGNGT2ePhWDXBghoWWAFQ+/YjmyoCmF6M2MH8iqvUKRvUPKfT2YFPDNApIjokKh1OdM9/3r1peKsB3kHU3fLvsefm8braf/eUBDYqjiiGpKbvIqsyIcCoQTxqNMDF33bKS8FOsRc4ZasXHiCRyv4zi/lJ2l4IyyPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2P6v9L19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942A6C4CEF1;
+	Tue, 12 Aug 2025 18:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021396;
-	bh=OUulELiT+f0XcEB4dKu8X3VMv5lOFHb6YurjRvgU/6A=;
+	s=korg; t=1755022592;
+	bh=mOWV82AqbfyaqSKCcnCUXJTYeQIe6BGO5qkyI9lHXUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xf/SMVlCtam7Zr2Ev0uGJBYxtl82PXL3RbI0r2tnt+2CiuRTosiUHb2y53vnbmD3a
-	 zdglo+5g9niXr1T3BbHMhA+1fatNiJezu5ltiQ8vG1UqbrIuVIiZ9zDWvaNPuuycoA
-	 XXMnu/nCtm21Oqn9zWAuobiY1VjYNE5Y0w8bU3O4=
+	b=2P6v9L19cZeQlaS4Kd8/G40gSNw8qE2TGhNKWYarPqsCkw8eQe7wwOOx+t/t0dGF2
+	 Qx8vqIp4IvrlnQyg+htW0TVNDdSb+dw9rtDcXWNjQ7FBMiRBvwil55F4Yyw/QcZKm3
+	 4i2JdEpU4D5OD8H0caUik1aymNHjnjjU8LqUfxLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/262] crypto: qat - use unmanaged allocation for dc_data
+Subject: [PATCH 6.12 200/369] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:17 +0200
-Message-ID: <20250812172957.729555885@linuxfoundation.org>
+Message-ID: <20250812173022.287536683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 4cc871ad0173e8bc22f80e3609e34d546d30ef1a ]
+[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
 
-The dc_data structure holds data required for handling compression
-operations, such as overflow buffers. In this context, the use of
-managed memory allocation APIs (devm_kzalloc() and devm_kfree())
-is not necessary, as these data structures are freed and
-re-allocated when a device is restarted in adf_dev_down() and
-adf_dev_up().
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Additionally, managed APIs automatically handle memory cleanup when the
-device is detached, which can lead to conflicts with manual cleanup
-processes. Specifically, if a device driver invokes the adf_dev_down()
-function as part of the cleanup registered with
-devm_add_action_or_reset(), it may attempt to free memory that is also
-managed by the device's resource management system, potentially leading
-to a double-free.
-
-This might result in a warning similar to the following when unloading
-the device specific driver, for example qat_6xxx.ko:
-
-    qat_free_dc_data+0x4f/0x60 [intel_qat]
-    qat_compression_event_handler+0x3d/0x1d0 [intel_qat]
-    adf_dev_shutdown+0x6d/0x1a0 [intel_qat]
-    adf_dev_down+0x32/0x50 [intel_qat]
-    devres_release_all+0xb8/0x110
-    device_unbind_cleanup+0xe/0x70
-    device_release_driver_internal+0x1c1/0x200
-    driver_detach+0x48/0x90
-    bus_remove_driver+0x74/0xf0
-    pci_unregister_driver+0x2e/0xb0
-
-Use unmanaged memory allocation APIs (kzalloc_node() and kfree()) for
-the dc_data structure. This ensures that memory is explicitly allocated
-and freed under the control of the driver code, preventing manual
-deallocation from interfering with automatic cleanup.
-
-Fixes: 1198ae56c9a5 ("crypto: qat - expose deflate through acomp api for QAT GEN2")
-Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_compression.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_compression.c b/drivers/crypto/intel/qat/qat_common/qat_compression.c
-index 7842a9f22178..2c3aa89b316a 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_compression.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_compression.c
-@@ -197,7 +197,7 @@ static int qat_compression_alloc_dc_data(struct adf_accel_dev *accel_dev)
- 	struct adf_dc_data *dc_data = NULL;
- 	u8 *obuff = NULL;
+diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+index 8a0e28aec928..0ecad398ed3d 100644
+--- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
++++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
+ 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
  
--	dc_data = devm_kzalloc(dev, sizeof(*dc_data), GFP_KERNEL);
-+	dc_data = kzalloc_node(sizeof(*dc_data), GFP_KERNEL, dev_to_node(dev));
- 	if (!dc_data)
- 		goto err;
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
  
-@@ -235,7 +235,7 @@ static void qat_free_dc_data(struct adf_accel_dev *accel_dev)
- 	dma_unmap_single(dev, dc_data->ovf_buff_p, dc_data->ovf_buff_sz,
- 			 DMA_FROM_DEVICE);
- 	kfree_sensitive(dc_data->ovf_buff);
--	devm_kfree(dev, dc_data);
-+	kfree(dc_data);
- 	accel_dev->dc_data = NULL;
+ 	return err;
  }
+@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
+ 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
  
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
+ 
+ free_mem:
+ 	if (token && dma_map) {
 -- 
 2.39.5
 
