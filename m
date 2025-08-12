@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EBDB23310
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2696B234CD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9B311635A7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53EE168628
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374782EAB97;
-	Tue, 12 Aug 2025 18:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C152FDC55;
+	Tue, 12 Aug 2025 18:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCeMUdLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGR+8Xzd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5923F9D2;
-	Tue, 12 Aug 2025 18:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D1E188715;
+	Tue, 12 Aug 2025 18:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022814; cv=none; b=ITLaGsZfV4yTS8xCgCTsagFaT9TwFMlLwoYnaMSQckLRvmdntIuDX4Gye1GMnHkKJOm/plsu1HRFoox9bhDhP3HZ8aVQlgy3icAB93Szl4D3aojGJZyqVJnE+qVJpy8cxzD1blAq0hafLsD3fszqPj42JDHQjYulsOywm2Brl+U=
+	t=1755024086; cv=none; b=s73+9MfIeJrPrAkjiUq3qCS5R03DVsL40KT0ETol5wqUoh3yMWhN0AfUWC0iDIWwqDtNyzVMpR0Aa5ml6iPZdhREKMEK+5212z6cTpP2b1f2LlJNf6h2ZkH6oKsKDezM6ScFs+4TYsVVErYnrMhtnungn74vb6dVVzsq23qq1/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022814; c=relaxed/simple;
-	bh=FSlUOI+6tlcKr7f7o2Gj00KCcUd6jNCw6fS5JqnI83g=;
+	s=arc-20240116; t=1755024086; c=relaxed/simple;
+	bh=yH3OVp/U67u6gubwKibqBBwzlCZrHEuDqnTVi/q68Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmgQTqnE8acQqyZ4S13NOmG0vtsso5xkHb2EDe+yOPaBQX8Pd0CVuBoGdl/abnPBNjg+eD1lK78IGDIk/1++GCYrroYiTvYUlkj2llQy9s7nVJ006XAtUllH58leqTBYoA+g4mt78L18iCsvx0B4zbbSzlzkP4pXfUEN2i6G/hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCeMUdLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57309C4CEF6;
-	Tue, 12 Aug 2025 18:20:13 +0000 (UTC)
+	 MIME-Version; b=nZzCTQzJS0f9VYOzStzNgWLHO0y8ga8U7+WoR7wUCrvabG+KNBKdb2JzvACMin8MEvUoTJbWlloZSr3L0XEovCwioKukbCIvmBiXkj7mNPcrlHfx7DSAMhKIUPc24r/Av/QyA1Qt32T/n3eEt/ZZ+FSOC8E1Wj9ihQEzqiLgjog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGR+8Xzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA509C4CEF0;
+	Tue, 12 Aug 2025 18:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022813;
-	bh=FSlUOI+6tlcKr7f7o2Gj00KCcUd6jNCw6fS5JqnI83g=;
+	s=korg; t=1755024086;
+	bh=yH3OVp/U67u6gubwKibqBBwzlCZrHEuDqnTVi/q68Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCeMUdLq72UJ9S8sFo/49M+f8SI7GIb6D3g7NOX0HvNx0YP6xv8DtZ/F+AicQcPbB
-	 /2ChCTqLCSDxjCNRoIxRizJ3DTcp9awAhV3SckGej483Pp+vTCOZ0jPZvD1QXYh3TI
-	 sG1S6znAKMipl0SMbB1uAImxsp3rdM1jVS51JD74=
+	b=LGR+8XzdY54azy2e1JwOhtI6fltKT1WbGhRVX8BFSa8hn0CFHyyo6V3HD8HoY8aJf
+	 2GNVIM4qOvIvulpwooc/hQQkkYl3Uz12//jm2dWN7JK69m9xw0ui4sam+cOL9UohFo
+	 4qBf+Z03sAEjXTmeJnEtgv/wHeWcH+SdnQdDrMz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Stephane Grosjean <stephane.grosjean@hms-networks.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/369] vfio: Prevent open_count decrement to negative
+Subject: [PATCH 6.16 268/627] can: peak_usb: fix USB FD devices potential malfunction
 Date: Tue, 12 Aug 2025 19:29:23 +0200
-Message-ID: <20250812173024.769128027@linuxfoundation.org>
+Message-ID: <20250812173429.506012090@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
+From: Stephane Grosjean <stephane.grosjean@hms-networks.com>
 
-[ Upstream commit 982ddd59ed97dc7e63efd97ed50273ffb817bd41 ]
+[ Upstream commit 788199b73b6efe4ee2ade4d7457b50bb45493488 ]
 
-When vfio_df_close() is called with open_count=0, it triggers a warning in
-vfio_assert_device_open() but still decrements open_count to -1. This allows
-a subsequent open to incorrectly pass the open_count == 0 check, leading to
-unintended behavior, such as setting df->access_granted = true.
+The latest firmware versions of USB CAN FD interfaces export the EP numbers
+to be used to dialog with the device via the "type" field of a response to
+a vendor request structure, particularly when its value is greater than or
+equal to 2.
 
-For example, running an IOMMUFD compat no-IOMMU device with VFIO tests
-(https://github.com/awilliam/tests/blob/master/vfio-noiommu-pci-device-open.c)
-results in a warning and a failed VFIO_GROUP_GET_DEVICE_FD ioctl on the first
-run, but the second run succeeds incorrectly.
+Correct the driver's test of this field.
 
-Add checks to avoid decrementing open_count below zero.
-
-Fixes: 05f37e1c03b6 ("vfio: Pass struct vfio_device_file * to vfio_device_open/close()")
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250618234618.1910456-2-jacob.pan@linux.microsoft.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 4f232482467a ("can: peak_usb: include support for a new MCU")
+Signed-off-by: Stephane Grosjean <stephane.grosjean@hms-networks.com>
+Link: https://patch.msgid.link/20250724081550.11694-1-stephane.grosjean@free.fr
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+[mkl: rephrase commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index a5a62d9d963f..ae78822f2d71 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -583,7 +583,8 @@ void vfio_df_close(struct vfio_device_file *df)
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+index 4d85b29a17b7..ebefc274b50a 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+@@ -49,7 +49,7 @@ struct __packed pcan_ufd_fw_info {
+ 	__le32	ser_no;		/* S/N */
+ 	__le32	flags;		/* special functions */
  
- 	lockdep_assert_held(&device->dev_set->lock);
+-	/* extended data when type == PCAN_USBFD_TYPE_EXT */
++	/* extended data when type >= PCAN_USBFD_TYPE_EXT */
+ 	u8	cmd_out_ep;	/* ep for cmd */
+ 	u8	cmd_in_ep;	/* ep for replies */
+ 	u8	data_out_ep[2];	/* ep for CANx TX */
+@@ -982,10 +982,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 			dev->can.ctrlmode |= CAN_CTRLMODE_FD_NON_ISO;
+ 		}
  
--	vfio_assert_device_open(device);
-+	if (!vfio_assert_device_open(device))
-+		return;
- 	if (device->open_count == 1)
- 		vfio_df_device_last_close(df);
- 	device->open_count--;
+-		/* if vendor rsp is of type 2, then it contains EP numbers to
+-		 * use for cmds pipes. If not, then default EP should be used.
++		/* if vendor rsp type is greater than or equal to 2, then it
++		 * contains EP numbers to use for cmds pipes. If not, then
++		 * default EP should be used.
+ 		 */
+-		if (fw_info->type != cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++		if (le16_to_cpu(fw_info->type) < PCAN_USBFD_TYPE_EXT) {
+ 			fw_info->cmd_out_ep = PCAN_USBPRO_EP_CMDOUT;
+ 			fw_info->cmd_in_ep = PCAN_USBPRO_EP_CMDIN;
+ 		}
+@@ -1018,11 +1019,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 	dev->can_channel_id =
+ 		le32_to_cpu(pdev->usb_if->fw_info.dev_id[dev->ctrl_idx]);
+ 
+-	/* if vendor rsp is of type 2, then it contains EP numbers to
+-	 * use for data pipes. If not, then statically defined EP are used
+-	 * (see peak_usb_create_dev()).
++	/* if vendor rsp type is greater than or equal to 2, then it contains EP
++	 * numbers to use for data pipes. If not, then statically defined EP are
++	 * used (see peak_usb_create_dev()).
+ 	 */
+-	if (fw_info->type == cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++	if (le16_to_cpu(fw_info->type) >= PCAN_USBFD_TYPE_EXT) {
+ 		dev->ep_msg_in = fw_info->data_in_ep;
+ 		dev->ep_msg_out = fw_info->data_out_ep[dev->ctrl_idx];
+ 	}
 -- 
 2.39.5
 
