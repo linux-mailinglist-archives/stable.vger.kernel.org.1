@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-167256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452C9B22F36
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:36:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 625CFB2343D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0364C621D45
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:36:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02E70166FB3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578EA2F90F9;
-	Tue, 12 Aug 2025 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189E82F90DF;
+	Tue, 12 Aug 2025 18:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgyOy7Xz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isLidWQ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1453A2F7461;
-	Tue, 12 Aug 2025 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7FE61FFE;
+	Tue, 12 Aug 2025 18:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020209; cv=none; b=c9NSXgPBMus9y0k+CDEwi6CkOaSwvTvat9o2E/lVbmDOwHmYCAEq+F21VI73uhYRIrkEtN1H1htcn0XMUVMH4xc6WurdvW77NdN+RWnAKQRHsgkWcHSZWBLxNR0tLJ84eOqWbU1B7mNhwPScOVta4weEI2BQrHnlSooksxNLrZI=
+	t=1755023635; cv=none; b=BFVQJvwOrheCxFKZjXRqXSCiFMZF8CL3sdszENdYIV0rBl/wbh4TJgboSg+IZcfvsVCSkjgvFU83V9dGfsjc4tsCbOOESUHdDJ4dwioyHNcNT088FRCTGeU9rsA6Ej1aBFXGzhH8l0mQcts/4Oyw7jKrIn8a6tEagHvzwypy1H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020209; c=relaxed/simple;
-	bh=Bo7BJSoAcIdaeV8/8LTWKdnEFWhik4Ie/wAgADto+1E=;
+	s=arc-20240116; t=1755023635; c=relaxed/simple;
+	bh=l0NRyTUd9b3hF+D8+06USVkkLbPE5IzoQuYZ+52TuG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGDXF/H5oT5Wk9EY2XHMyJP29bsEQMxbZ3CexiBZ4IyRvjW+g+ewIRw+cGvK1IUOxl/Q+ssB3h74H/W4T6SPlQe2g6U83a1a00QvSmt3R8ai3vRtuqZcTmcUXmVD5PMix72AVTMV1/zb8iVy+O0PLCVnii/JghyJGs51eIfy+Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgyOy7Xz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEE2C4CEF0;
-	Tue, 12 Aug 2025 17:36:48 +0000 (UTC)
+	 MIME-Version; b=UjGrZxGjeQOfX7ngKQBV2j/zQjaNLEFL4NrhegamnwEGddlvCK3pAL3sgqjP8raVG/+cf1/2RW+VkFUcwhG+Zjeu5c+1EctrcR5ku1DW9qfkq5I2XvvCMyREGNpaeq2v9vaSL848CChb3RwqDME++Wn6A7N2ylvPhZUEtdmm+X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isLidWQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3852BC4CEF1;
+	Tue, 12 Aug 2025 18:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020208;
-	bh=Bo7BJSoAcIdaeV8/8LTWKdnEFWhik4Ie/wAgADto+1E=;
+	s=korg; t=1755023635;
+	bh=l0NRyTUd9b3hF+D8+06USVkkLbPE5IzoQuYZ+52TuG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgyOy7XzPJ/ANQls9qVEBuYCAStU1Ph5TQiASVKuLfllxVv9eDEdTbIDdZnkRRTAx
-	 kebxea3ooczZHiqrgiBpkWoMrVgbNZnUvqZ3pdWqZHnGWNC2bcC+BZnIeaR2fwU10l
-	 7nIrsHhGZL8ZVUEQZbbxYbK5jN7CFG21sLl+HTwk=
+	b=isLidWQ9HYT6KDv2aNNoT5lWdn0W7ZAUMUZajhwbByMh/zLz/pxEAVc/naik2YliS
+	 iK7gesulrPxWgwG+RAs8tjXxvM7v6kQL90u8jkPFIIkCm2/2SB+abGjnuMXjs6cwLa
+	 jOG/U2Y80TerpM69Td1sZ1s4h9uD4s3jgOD51qsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/253] staging: vchiq_arm: Make vchiq_shutdown never fail
+Subject: [PATCH 6.16 104/627] arm64: dts: freescale: imx8mp-toradex-smarc: fix lvds dsi mux gpio
 Date: Tue, 12 Aug 2025 19:26:39 +0200
-Message-ID: <20250812172949.182892749@linuxfoundation.org>
+Message-ID: <20250812173423.272434500@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-[ Upstream commit f2b8ebfb867011ddbefbdf7b04ad62626cbc2afd ]
+[ Upstream commit 29d34c678cf82341cb0bedb3179d59c56856a80f ]
 
-Most of the users of vchiq_shutdown ignore the return value,
-which is bad because this could lead to resource leaks.
-So instead of changing all calls to vchiq_shutdown, it's easier
-to make vchiq_shutdown never fail.
+The MUX which either outputs DSI or 2nd channel LVDS signals is part of
+the SoM. Move the pinmuxing of the GPIO used for controlling the MUX
+to the SoM dtsi file.
 
-Fixes: 71bad7f08641 ("staging: add bcm2708 vchiq driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250715161108.3411-4-wahrenst@gmx.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 97dc91c04558 ("arm64: dts: freescale: add Toradex SMARC iMX8MP")
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts | 5 -----
+ arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi    | 2 ++
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index 44ab7ea42fc85..3fafc94deb476 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -714,8 +714,7 @@ enum vchiq_status vchiq_shutdown(struct vchiq_instance *instance)
- 	int status = 0;
- 	struct vchiq_state *state = instance->state;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
+index 55b8c5c14fb4..d5fa9a8d414e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
+@@ -102,11 +102,6 @@ &gpio1 {
+ 		    <&pinctrl_gpio13>;
+ };
  
--	if (mutex_lock_killable(&state->mutex))
--		return -EAGAIN;
-+	mutex_lock(&state->mutex);
+-&gpio3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_lvds_dsi_sel>;
+-};
+-
+ &gpio4 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_gpio4>, <&pinctrl_gpio6>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
+index 22f6daabdb90..11fd5360ab90 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
+@@ -320,6 +320,8 @@ &gpio2 {
+ };
  
- 	/* Remove all services */
- 	vchiq_shutdown_internal(state, instance);
+ &gpio3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lvds_dsi_sel>;
+ 	gpio-line-names = "ETH_0_INT#", /* 0 */
+ 			  "SLEEP#",
+ 			  "",
 -- 
 2.39.5
 
