@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-167872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA991B23257
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE31B23220
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7893A5C09
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 996CC16A803
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923501EF38C;
-	Tue, 12 Aug 2025 18:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218402882CE;
+	Tue, 12 Aug 2025 18:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMTkfGb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FH0WVIhb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51596282E1;
-	Tue, 12 Aug 2025 18:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12F7305E08;
+	Tue, 12 Aug 2025 18:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022276; cv=none; b=SudCM5Phjz0/o5yjwB+VTot5U29ht+ktkMiEHMjbiJ2YKRy6Cf8Pv7cKn4KAkwqr7MUnVxAiIUbPnmxndbgoLhCMo+VOR4f9Y+eUMX8jFdQhuO9DjN/xqzUY2vWjvMriRPrzm4eFLRBSf7+z+6ws2AfF8ma7v5aQPPwQO9of16o=
+	t=1755022164; cv=none; b=UoWvr0IME2XNmbQBh2++fSPrv1gQixbFMAeUKjDFS2eEFf1eP7WRxVVbyYQzMuQqIapntivncmlSPxTKTlhzpmfL9pfsaFgZTSQkiIORP9sf20MT49LFRNzFNHevAYd+jLhqU59Uc73sh7oXxQokbSEP7yypu6kcuIP6s4iXDg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022276; c=relaxed/simple;
-	bh=rfdm8pBdpFY+qCcu8P8ryTDH7zTwwzgwHHkD+t0i3uo=;
+	s=arc-20240116; t=1755022164; c=relaxed/simple;
+	bh=LSDBGEoHTAt+3ePqn7hrPGl5dbUKGSZ1qxEobKmDfoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgQyhyl2MlD1jiw7BRWdzgb0emJYP6oTyyhd5eftdqo95l0FTg/0OzLSzk8/Ap3YvGYz2d5f/uPIXDhx0gVbZxSd4C3DNGkVyyoJFHZ1ZKYWxPWN7W93VNGPOkCb6VBgfQzdOh2N3zL/Az5ZEPTLBII6h3GwLqb+91m+dnyIhuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMTkfGb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DBCC4CEF9;
-	Tue, 12 Aug 2025 18:11:15 +0000 (UTC)
+	 MIME-Version; b=L0wMxi0BpazZZgjO4UWXQJUyihc/9dU7beaRj2daSbXL6pDzcXonRO3PD7bGqwHMfRH9jJCmyVLETA6+V+kzcpI9w8ejUlXClr5x2ZekThb0PBXPonfuEmintnF529BRzXGUNKWUMG4yvwIQRFUdZmpx0PTa7yp6vtiby4HoKQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FH0WVIhb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD99C4CEF0;
+	Tue, 12 Aug 2025 18:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022276;
-	bh=rfdm8pBdpFY+qCcu8P8ryTDH7zTwwzgwHHkD+t0i3uo=;
+	s=korg; t=1755022164;
+	bh=LSDBGEoHTAt+3ePqn7hrPGl5dbUKGSZ1qxEobKmDfoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMTkfGb1c9wUelVG2EV2aenjwOtF7jevF6eGwyP2bPS+89TZxQ2+lChhpvoheP4uv
-	 74Kq4g53Ztpq4+xR3p/v5N1HTZT2kFuAgiDRAqFt0vUpkp8ukR5aPTfAdU7KjDy+6F
-	 7hQO4URy8mH9AfG3oMclptYURVli6rlo0XZrnjpw=
+	b=FH0WVIhbf11c2qnbUbj2YvJzyRyU9TAoLr1FTAIYhIAS4s08EZvZHofGqrvyNl5Lj
+	 rkB+05Fr/12jpHN4Zpmja2E9U/XD7mg39BzVQCVhkEBMYNhK4OmINExNjEofqTDrhH
+	 3wtjj+/d6d+GVSikmGNM1Fl3H897m63jKzhN3rU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/369] selftests/bpf: Fix unintentional switch case fall through
-Date: Tue, 12 Aug 2025 19:26:11 +0200
-Message-ID: <20250812173017.563205825@linuxfoundation.org>
+Subject: [PATCH 6.12 075/369] net: ipv6: ip6mr: Fix in/out netdev to pass to the FORWARD chain
+Date: Tue, 12 Aug 2025 19:26:12 +0200
+Message-ID: <20250812173017.597849010@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
 References: <20250812173014.736537091@linuxfoundation.org>
@@ -67,35 +68,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mykyta Yatsenko <yatsenko@meta.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 66ab68c9de89672366fdc474f4f185bb58cecf2d ]
+[ Upstream commit 3365afd3abda5f6a54f4a822dad5c9314e94c3fc ]
 
-Break from switch expression after parsing -n CLI argument in veristat,
-instead of falling through and enabling comparison mode.
+The netfilter hook is invoked with skb->dev for input netdevice, and
+vif_dev for output netdevice. However at the point of invocation, skb->dev
+is already set to vif_dev, and MR-forwarded packets are reported with
+in=out:
 
-Fixes: a5c57f81eb2b ("veristat: add ability to set BPF_F_TEST_SANITY_STRICT flag with -r flag")
-Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20250617121536.1320074-1-mykyta.yatsenko5@gmail.com
+ # ip6tables -A FORWARD -j LOG --log-prefix '[forw]'
+ # cd tools/testing/selftests/net/forwarding
+ # ./router_multicast.sh
+ # dmesg | fgrep '[forw]'
+ [ 1670.248245] [forw]IN=v5 OUT=v5 [...]
+
+For reference, IPv4 MR code shows in and out as appropriate.
+Fix by caching skb->dev and using the updated value for output netdev.
+
+Fixes: 7bc570c8b4f7 ("[IPV6] MROUTE: Support multicast forwarding.")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/3141ae8386fbe13fef4b793faa75e6bae58d798a.1750113335.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/veristat.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/ip6mr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
-index 1ec5c4c47235..7b6b9c4cadb5 100644
---- a/tools/testing/selftests/bpf/veristat.c
-+++ b/tools/testing/selftests/bpf/veristat.c
-@@ -309,6 +309,7 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
- 			fprintf(stderr, "invalid top N specifier: %s\n", arg);
- 			argp_usage(state);
- 		}
-+		break;
- 	case 'C':
- 		env.comparison_mode = true;
- 		break;
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 440048d609c3..68bc518500f9 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -2032,6 +2032,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
+ 			  struct sk_buff *skb, int vifi)
+ {
+ 	struct vif_device *vif = &mrt->vif_table[vifi];
++	struct net_device *indev = skb->dev;
+ 	struct net_device *vif_dev;
+ 	struct ipv6hdr *ipv6h;
+ 	struct dst_entry *dst;
+@@ -2094,7 +2095,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
+ 	IP6CB(skb)->flags |= IP6SKB_FORWARDED;
+ 
+ 	return NF_HOOK(NFPROTO_IPV6, NF_INET_FORWARD,
+-		       net, NULL, skb, skb->dev, vif_dev,
++		       net, NULL, skb, indev, skb->dev,
+ 		       ip6mr_forward2_finish);
+ 
+ out_free:
 -- 
 2.39.5
 
