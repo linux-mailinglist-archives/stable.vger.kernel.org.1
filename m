@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C030EB22F9E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EF8B23080
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CDF12A354E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0D81885BAC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589102FD1D1;
-	Tue, 12 Aug 2025 17:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14912FDC2C;
+	Tue, 12 Aug 2025 17:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Vx3kY3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbENgoOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183302F7461;
-	Tue, 12 Aug 2025 17:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E762868AF;
+	Tue, 12 Aug 2025 17:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020492; cv=none; b=pQmfE/bnQdQfWNPBCrjXFOw3pI6bh2CpTZZus8JWbPhNnfMvRMpT5p1+uguTOkgYJLu3M6/cJY/WCxtOvW9DoNkQnOtnO69GsHB7mBanQpLs06ZH9Ph/z5deVHf8IJhXB0gqp6QyfFpeYb+dB19U5/lK2NskQsiAFQaz8k+TmQk=
+	t=1755021105; cv=none; b=uSSepG5pnFV/9ZQ2jYlp0piW7JOI/y478gZq7bgaMXZ+YehL/EmkGEHq36Oz2NYLWSGoi9iAyDTUAeBJEy+/P82mW6n3tbzDNn6s0nQHiO7E7AmkTEwyvnRU7KGlBtts+LTcrhbt5UTN/Xu5dWdNVwblLp5YlKTNOE0S5UhHvtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020492; c=relaxed/simple;
-	bh=4k+i45f0sBPrZ4NRfRtnNsyeCgOqKKP//j+DhyrMExg=;
+	s=arc-20240116; t=1755021105; c=relaxed/simple;
+	bh=75idTpOlEDqhyYG2F7ggGHbE9OEw9kPqlPfEkBTduPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2BKHaUFPVA2pkMRWp3y6ka0P42rYvb2AgNFmkCyxldnmGw5z+/Uwzo5DGgguE4AtgYjfPPM9WvbOs17YvAOiCc2NB6h2ta93X0GNFjqeYIcbF8y+RLuzT1ZfyLzfBN7Yv0u9vWjZKp6hxUwdIKhMiRQN7ptslLaKFE7xlxaFdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Vx3kY3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5E2C4CEF7;
-	Tue, 12 Aug 2025 17:41:31 +0000 (UTC)
+	 MIME-Version; b=F2j3q/9hYuWPbntyAUZ9RrHxAWVckNlMgKsR3nkiCxQ65fTpj2pZQMuNN6+GM6prQLYY81l6tIr2Se+SExYcnauE1pE+8+uSOGU51vUsSLcK2951eqnxCL2sK0UYXT2cLpS7bw44sssehgpFYl6HPhnBeo68bLUSTj+OdiJpiOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbENgoOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA66C4CEF0;
+	Tue, 12 Aug 2025 17:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020492;
-	bh=4k+i45f0sBPrZ4NRfRtnNsyeCgOqKKP//j+DhyrMExg=;
+	s=korg; t=1755021105;
+	bh=75idTpOlEDqhyYG2F7ggGHbE9OEw9kPqlPfEkBTduPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Vx3kY3J8a93TCnrYv88vaUReA5/5vHjZ4tdUuNVmPaA2b7137iEbSW3iTNmyCBBb
-	 o3g+u7OKErpvm1NcNPssWPvv6qqganUJrvvq6IjNVL7bRgM2ALE3VQd6B/sa/KT51K
-	 sp7zJq4NAZ8VCPuE+WZulHRNzbuCbtjwDC+AfxFc=
+	b=sbENgoOJzMPuwnOBIidvt6Q3ba5usfQn3EK4n7RGwJtn9XySGNDE6XEMcibFfBA6P
+	 E7VF/WZwbdfMTY/8Ez3onc8HACuCinhvMzNrkI8YAIeOx46A/cyyt8eb8GTB8KIREY
+	 4D67a3fZvyCvyCrzg1NieKS8FbWKAxLpqnnxsbEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Queler <queler+k@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Stav Aviram <saviram@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/253] ASoC: amd: yc: Add DMI entries to support HP 15-fb1xxx
+Subject: [PATCH 6.6 062/262] net/mlx5: Check device memory pointer before usage
 Date: Tue, 12 Aug 2025 19:27:30 +0200
-Message-ID: <20250812172951.364371620@linuxfoundation.org>
+Message-ID: <20250812172955.628686050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Queler <queler@gmail.com>
+From: Stav Aviram <saviram@nvidia.com>
 
-[ Upstream commit 949ddec3728f3a793a13c1c9003028b9b159aefc ]
+[ Upstream commit 70f238c902b8c0461ae6fbb8d1a0bbddc4350eea ]
 
-This model requires an additional detection quirk to
-enable the internal microphone.
+Add a NULL check before accessing device memory to prevent a crash if
+dev->dm allocation in mlx5_init_once() fails.
 
-Signed-off-by: Adam Queler <queler+k@gmail.com>
-Link: https://patch.msgid.link/20250715031434.222062-1-queler+k@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c9b9dcb430b3 ("net/mlx5: Move device memory management to mlx5_core")
+Signed-off-by: Stav Aviram <saviram@nvidia.com>
+Link: https://patch.msgid.link/c88711327f4d74d5cebc730dc629607e989ca187.1751370035.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/infiniband/hw/mlx5/dm.c                  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c | 4 ++--
+ drivers/net/ethernet/mellanox/mlx5/core/main.c   | 3 ---
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 1f4c43bf817e..fce918a089e3 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -458,6 +458,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16z-n000"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Victus by HP Gaming Laptop 15-fb1xxx"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/infiniband/hw/mlx5/dm.c b/drivers/infiniband/hw/mlx5/dm.c
+index 3669c90b2dad..672e5cfd2fca 100644
+--- a/drivers/infiniband/hw/mlx5/dm.c
++++ b/drivers/infiniband/hw/mlx5/dm.c
+@@ -282,7 +282,7 @@ static struct ib_dm *handle_alloc_dm_memic(struct ib_ucontext *ctx,
+ 	int err;
+ 	u64 address;
+ 
+-	if (!MLX5_CAP_DEV_MEM(dm_db->dev, memic))
++	if (!dm_db || !MLX5_CAP_DEV_MEM(dm_db->dev, memic))
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+index 9482e51ac82a..bdbbfaf504d9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+@@ -28,7 +28,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ 
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+ 	if (!dm)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	spin_lock_init(&dm->lock);
+ 
+@@ -80,7 +80,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ err_steering:
+ 	kfree(dm);
+ 
+-	return ERR_PTR(-ENOMEM);
++	return NULL;
+ }
+ 
+ void mlx5_dm_cleanup(struct mlx5_core_dev *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 32fa789a6960..62a85f09b52f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1055,9 +1055,6 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
+ 	}
+ 
+ 	dev->dm = mlx5_dm_create(dev);
+-	if (IS_ERR(dev->dm))
+-		mlx5_core_warn(dev, "Failed to init device memory %ld\n", PTR_ERR(dev->dm));
+-
+ 	dev->tracer = mlx5_fw_tracer_create(dev);
+ 	dev->hv_vhca = mlx5_hv_vhca_create(dev);
+ 	dev->rsc_dump = mlx5_rsc_dump_create(dev);
 -- 
 2.39.5
 
