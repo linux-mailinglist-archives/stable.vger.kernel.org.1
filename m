@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1FCB23582
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 530C6B2336A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C72D91883AA5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 307E92A7D03
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BF42FD1B6;
-	Tue, 12 Aug 2025 18:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7C221ABD0;
+	Tue, 12 Aug 2025 18:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5dP06ZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6UqJKwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8932F2C21F6;
-	Tue, 12 Aug 2025 18:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7E13F9D2;
+	Tue, 12 Aug 2025 18:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024485; cv=none; b=ZlzVxttkKfrm4DAibEpKDyQghS5TP38BjKZFIXQfdqvLKVXWU+xAzzhq0CULOg/B4oafW73upS6+xkcNDRSbkQ8RWX6JITHcQ9brcz5N+Tg/vqvN9dhUIOEBfRRa63tciBlZnIToo2pGAByZLLaMr7EuLnejYR0brktY/mBerxk=
+	t=1755023076; cv=none; b=KslrunPscD3QZDONYdggN92pk0dM/d0Dyfk5mF1i1fuqttAzfq47qI/E4diXEdHS+Fw6WAG/b9ivgJaisbozmvimdquVHyX/3XLPKd/SXRh6jyIm8hCWPOtPNmmlf73DkPYBQuyf80BprF3Qh9Aaoj0c4qU8a9339XvFoZUZHlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024485; c=relaxed/simple;
-	bh=3IOnPuYEwQ1+mdwC0mErO8wqSyzzpEmsylPtKeA7aF4=;
+	s=arc-20240116; t=1755023076; c=relaxed/simple;
+	bh=efufjF+bi5sGrdDfe5DxoNspvPkQtw5xfEaJqu8UPc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utGleFNP2T4afNzRcMMLCuax1W+BPYL+2hKhJtZYnOfeu9T7TGZV3aa+2Ih1VckeF4vIXngeivL/01GkI+3Nnw2ZFU6O1lECYUijf12lE0PL/CbvhKNp2MCc2hjk9hEsoZu0p9qAfFBcoFAm7AVFV9yP3FNyLqfvyTBbBEdC8Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5dP06ZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8ACC4CEF0;
-	Tue, 12 Aug 2025 18:48:04 +0000 (UTC)
+	 MIME-Version; b=W2PIpDpO76PRzKnyNobiYa21poPGbUNpCyxb71gZ3xzfyPAACptdB4P6gRHnp5sqPhtRwBbyUyOBb7Xj/6CWSxwiV5KNxfaFfiMX7Y+fs5ssG7V083r9UDAGTcVKXQ2/hzX1HV2e13BJvOhJAKe2b3eCaxH4Ku+BzZRm6yMgDqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6UqJKwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B718C4CEF6;
+	Tue, 12 Aug 2025 18:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024485;
-	bh=3IOnPuYEwQ1+mdwC0mErO8wqSyzzpEmsylPtKeA7aF4=;
+	s=korg; t=1755023076;
+	bh=efufjF+bi5sGrdDfe5DxoNspvPkQtw5xfEaJqu8UPc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5dP06ZOdEpNhXkmn+6ZJaUpDToNPjD4sIqXsVfE3tUwW+zalrLsCMYpQueB+TVrQ
-	 EApdw/t18I9pucaKFSVpOUeTx5ejnZa/SNvWtlAgoHbxCXz9imsyBrHWP7TbtIyUpX
-	 HXBX7gugAutgCaWToTNZd6youSPB8uWf1nHwktAc=
+	b=k6UqJKwrjVcu1RDy0VAgkRxSC90mhGQRT/XeiYjdqcJc5CkUVBk+dxMW2mfWJj9Lt
+	 WuhM0Uk5Vp7t8UdU3RGEZj4xPgiDAUFjqXDKYf0YSK8qxeih9du/iAfLNSUv0d99uI
+	 oq2Bc7j1BUWy0u6q69OWzI5QfJKDS1iYJjlX3beI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 344/627] RDMA/mlx5: Check CAP_NET_RAW in user namespace for anchor create
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.12 342/369] ksmbd: fix Preauh_HashValue race condition
 Date: Tue, 12 Aug 2025 19:30:39 +0200
-Message-ID: <20250812173432.369412273@linuxfoundation.org>
+Message-ID: <20250812173029.565801622@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 14957e8125e767bfd40a3ac61b1d6b8e62ee0a98 ]
+commit 44a3059c4c8cc635a1fb2afd692d0730ca1ba4b6 upstream.
 
-Currently, the capability check is done in the default
-init_user_ns user namespace. When a process runs in a
-non default user namespace, such check fails. Due to this
-when a process is running using Podman, it fails to create
-the anchor.
+If client send multiple session setup requests to ksmbd,
+Preauh_HashValue race condition could happen.
+There is no need to free sess->Preauh_HashValue at session setup phase.
+It can be freed together with session at connection termination phase.
 
-Since the RDMA device is a resource within a network namespace,
-use the network namespace associated with the RDMA device to
-determine its owning user namespace.
-
-Fixes: 0c6ab0ca9a66 ("RDMA/mlx5: Expose steering anchor to userspace")
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Link: https://patch.msgid.link/c2376ca75e7658e2cbd1f619cf28fbe98c906419.1750963874.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27661
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/fs.c b/drivers/infiniband/hw/mlx5/fs.c
-index de8114ba9c1f..eabc37f2ac19 100644
---- a/drivers/infiniband/hw/mlx5/fs.c
-+++ b/drivers/infiniband/hw/mlx5/fs.c
-@@ -2989,7 +2989,7 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_STEERING_ANCHOR_CREATE)(
- 	u32 ft_id;
- 	int err;
- 
--	if (!capable(CAP_NET_RAW))
-+	if (!rdma_dev_has_raw_cap(&dev->ib_dev))
- 		return -EPERM;
- 
- 	err = uverbs_get_const(&ib_uapi_ft_type, attrs,
--- 
-2.39.5
-
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1845,8 +1845,6 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 				ksmbd_conn_set_good(conn);
+ 				sess->state = SMB2_SESSION_VALID;
+ 			}
+-			kfree(sess->Preauth_HashValue);
+-			sess->Preauth_HashValue = NULL;
+ 		} else if (conn->preferred_auth_mech == KSMBD_AUTH_NTLMSSP) {
+ 			if (negblob->MessageType == NtLmNegotiate) {
+ 				rc = ntlm_negotiate(work, negblob, negblob_len, rsp);
+@@ -1873,8 +1871,6 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 						kfree(preauth_sess);
+ 					}
+ 				}
+-				kfree(sess->Preauth_HashValue);
+-				sess->Preauth_HashValue = NULL;
+ 			} else {
+ 				pr_info_ratelimited("Unknown NTLMSSP message type : 0x%x\n",
+ 						le32_to_cpu(negblob->MessageType));
 
 
 
