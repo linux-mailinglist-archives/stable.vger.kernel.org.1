@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263BAB23436
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E90B22FBB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81B4D7B4037
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05781AA1074
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8372FD1C2;
-	Tue, 12 Aug 2025 18:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08E22F7461;
+	Tue, 12 Aug 2025 17:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZIsjVdK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWYoJacN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB1A1DB92A;
-	Tue, 12 Aug 2025 18:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2312F7477;
+	Tue, 12 Aug 2025 17:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023836; cv=none; b=lG1QNT0yDuCg7+UOKGRZriSYOk+A4X2nWnf2xEVKzMfAueog0tVhFqedS1C8YnREBn4ICvNmBY+aAxTmmBfx6NWkWohhEP3hC31xNdZCvfrVP8lwrQLCN/VSAA1HRaOv14rvuEGowf2bx4hDbXi7bDlSOtq87VDM+ln1fHR+qtk=
+	t=1755020512; cv=none; b=LLIULuI4CJmuTR1AyAbg6Yu+iBF9wRlpPMjNTGkReUJQGTjWIaqJ7PIqcasc0qwyrcMP0HzEUpvOzRFa3c0DzgIsUmTP6aJY1I972RO9BD68zgnCeSeEeU4Nj8EPo3tJ/X579Xk060jH5l82gpos06pemr07N4nvujONe3pRGis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023836; c=relaxed/simple;
-	bh=8wCYxCQ3Gjq3cKLCXbEpCsc/HDcBuHVoYPsZS2J+yDg=;
+	s=arc-20240116; t=1755020512; c=relaxed/simple;
+	bh=8MeweJwOu49CZAHpyqjqhGRPikEFk5mBdN0p7B6Eyx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCWHNX3Z7ovW7RztiPUE8/8AHE4YulgFrYjJgaLFfOO2UrGsCjpZ5aIgcBSYfWZfMIta75ucerJwGoI88plNAbDMLY63W8Pra32v86IjPFqS3MDvKR+f56Qz3L6G3Jk5K+oekw5s2s0mRMLQgDZ0DTB9yrzzdWsbVOPLFl5RXrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZIsjVdK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09799C4CEF0;
-	Tue, 12 Aug 2025 18:37:15 +0000 (UTC)
+	 MIME-Version; b=oWiIB0rfGjKadVGOYwoZ5LXitNysAJCJ9DLhvJdT/MY8cQu4B+jm3lp/dvERNIXZO/S6EX2piA+OyeZHMrDV00NDrQodqv2Vh+4rF1g+wJ9RudFOXNHZGJwY8ORxb/ATxtBcrZcR6nMy249FGjcPi37ruXOeDs1TzxTXPJgOUQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWYoJacN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F39C4CEF0;
+	Tue, 12 Aug 2025 17:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023836;
-	bh=8wCYxCQ3Gjq3cKLCXbEpCsc/HDcBuHVoYPsZS2J+yDg=;
+	s=korg; t=1755020512;
+	bh=8MeweJwOu49CZAHpyqjqhGRPikEFk5mBdN0p7B6Eyx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ZIsjVdK7pbkqfTR7sWyXrViivpaLTBnZNMYTyIul7XhdE4tv+iTjxIgncHP/cerh
-	 vd8IHv1BpMm7oAu3122+y7EilX6wjbvIgLdplX4y5egePMS0XWkJ3KhxS6E0SEZfJT
-	 5Wp5TKmUfT1DNmFd611CPJB6sdpXQk50euMpgWrc=
+	b=JWYoJacNEWd9GwVVWnl/jYC09mYi8lYeLHnr5ItnDx7kalN64jaNz1l/Mb3a0slYN
+	 x3tTw1gpTaeUYawPVdEmnnSvA27B3Qo4yhbzRll7jmzjr8hq8EHTnpyHBVH0MEf7eE
+	 BWARbi0YsQIWqGySnU7vzF/WjdiiTOkHQsUmmZnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 196/627] drm/rockchip: vop2: fail cleanly if missing a primary plane for a video-port
+Subject: [PATCH 6.1 103/253] wifi: rtl818x: Kill URBs before clearing tx status queue
 Date: Tue, 12 Aug 2025 19:28:11 +0200
-Message-ID: <20250812173426.730941018@linuxfoundation.org>
+Message-ID: <20250812172953.111275652@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit f9f68bf1d0efeadb6c427c9dbb30f307a7def19b ]
+[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
 
-Each window of a vop2 is usable by a specific set of video ports, so while
-binding the vop2, we look through the list of available windows trying to
-find one designated as primary-plane and usable by that specific port.
+In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
+b_tx_status.queue. This change prevents callbacks from using already freed
+skb due to anchor was not killed before freeing such skb.
 
-The code later wants to use drm_crtc_init_with_planes with that found
-primary plane, but nothing has checked so far if a primary plane was
-actually found.
+ BUG: kernel NULL pointer dereference, address: 0000000000000080
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
+ Call Trace:
+  <IRQ>
+  rtl8187_tx_cb+0x116/0x150 [rtl8187]
+  __usb_hcd_giveback_urb+0x9d/0x120
+  usb_giveback_urb_bh+0xbb/0x140
+  process_one_work+0x19b/0x3c0
+  bh_worker+0x1a7/0x210
+  tasklet_action+0x10/0x30
+  handle_softirqs+0xf0/0x340
+  __irq_exit_rcu+0xcd/0xf0
+  common_interrupt+0x85/0xa0
+  </IRQ>
 
-For whatever reason, the rk3576 vp2 does not have a usable primary window
-(if vp0 is also in use) which brought the issue to light and ended in a
-null-pointer dereference further down.
+Tested on RTL8187BvE device.
 
-As we expect a primary-plane to exist for a video-port, add a check at
-the end of the window-iteration and fail probing if none was found.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Reviewed-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250610212748.1062375-1-heiko@sntech.de
+Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index d0f5fea15e21..6b37ce3ee60b 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -2422,6 +2422,10 @@ static int vop2_create_crtcs(struct vop2 *vop2)
- 				break;
- 			}
- 		}
-+
-+		if (!vp->primary_plane)
-+			return dev_err_probe(drm->dev, -ENOENT,
-+					     "no primary plane for vp %d\n", i);
- 	}
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+index c0f6e9c6d03e..fa3fb93f4485 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev)
+ 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
+ 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
  
- 	/* Register all unused window as overlay plane */
++	usb_kill_anchored_urbs(&priv->anchored);
++
+ 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
+ 		dev_kfree_skb_any(skb);
+ 
+-	usb_kill_anchored_urbs(&priv->anchored);
+ 	mutex_unlock(&priv->conf_mutex);
+ 
+ 	if (!priv->is_rtl8187b)
 -- 
 2.39.5
 
