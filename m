@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F36B23084
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1EBB2326F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCA23B07DF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B771AA77F9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924772E4248;
-	Tue, 12 Aug 2025 17:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0072E3B06;
+	Tue, 12 Aug 2025 18:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP3qKRxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lty3mfo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE55268C73;
-	Tue, 12 Aug 2025 17:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A28C3F9D2;
+	Tue, 12 Aug 2025 18:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021128; cv=none; b=HC2Pqg1Efq2GAbeShbLVhRCz+AtcKv60Lc0xi+rSOlp6bRFI0ijddE5Hlh0rzuAdEixEBehmv918302+5ocxHwq4OyhLxz2+ZJsXNa0dbfaxP2Lb5Gt06DV858pBGjZRNyBCaQ1/xTbcWW+lxwVVtfDxOntleORzHQ5qThPN8Z4=
+	t=1755022339; cv=none; b=QsLZEBTQYvxjQhXPej9RO6mQHAiwMQXO2V6ypORdz5R8jyi85U4DZ448H7Cl7GUVdURwtLKNMXj0TQB1oSy5y4AIIdYSYG6Fry/K4O6Ls3NjJBfwNQ4U5B/2EwbyQSI93T3oxtbutLNi7O0t24uILb1wjzMh4wAgIebP/+KOwm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021128; c=relaxed/simple;
-	bh=Jtsx6gmSkNH8xgflY5xI3kxLBkV2I9xxQz610LiATCk=;
+	s=arc-20240116; t=1755022339; c=relaxed/simple;
+	bh=a9xPuAXRrM38jt4+YR+FwsmBuVUeXTlZIGjJz1QcJho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbfdMhtiBvphrXRjXQHoCXi7Lu7aNhFj08XO8D+ERuqDk9HJ5MXGQ8EiqvSvzUfMk1i8NaWi25uoOXn3j1pW7wpw7e+72G6UGiD6GEH/UHs5mmxiic3p2Vms9Mcw6vgTXw0A1xaHfzjeR0EY4z0LXK3kBglpxhlcxNLIAjgAdmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP3qKRxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4671C4CEF0;
-	Tue, 12 Aug 2025 17:52:07 +0000 (UTC)
+	 MIME-Version; b=dXeO/glxeyqjn7j8yPMpYJSFqq5iAauDEY5SPyH5CY9vfLDQyeb+Xg+pWkn8BaeHvNqrROGK6s+JBzLUBTOei2sMy8szvHlOQhEFK6AD7nzuCe+jH5KWdNAjmfrKFDsMekOYlZdQj4eyeEPpItshzlF5eEe1PQ0d54tO9gYS97Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lty3mfo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B5DC4CEF0;
+	Tue, 12 Aug 2025 18:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021128;
-	bh=Jtsx6gmSkNH8xgflY5xI3kxLBkV2I9xxQz610LiATCk=;
+	s=korg; t=1755022339;
+	bh=a9xPuAXRrM38jt4+YR+FwsmBuVUeXTlZIGjJz1QcJho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nP3qKRxLjO9u21DOmhcbe0Pu0vPABkZ+NZD0Qnu7SGNznXm94nH5YNMN1AgD+hPxR
-	 bdMgV53yS836sppJozlDhnZm0hhJGgDH9yBQ4nqihklOUEBzlz99YJnIyowxIfoUlt
-	 6LR8moWC1yjRv34Zf3aUAUIvH2xhtAEDSZzSJ8tQ=
+	b=Lty3mfo0oMZSzIH9HYBwPnn0fKF1Oh54Qg9gGQYV2HVCE7HcxcI0tqoVL1cXJDXIx
+	 qxoNwWzK4DRjP8cswejvaKG5nxMY5Px40a+yd2YwiBCSRtKF/EqT4YGwLcVDa3Fr5w
+	 5qkEwnZfyFxbh0vZKPd71BBbzFTl22OhHkPnfHX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Annette Kobou <annette.kobou@kontron.de>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/262] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
+Subject: [PATCH 6.12 126/369] wifi: mac80211: Write cnt before copying in ieee80211_copy_rnr_beacon()
 Date: Tue, 12 Aug 2025 19:27:03 +0200
-Message-ID: <20250812172954.458885573@linuxfoundation.org>
+Message-ID: <20250812173019.512151398@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Annette Kobou <annette.kobou@kontron.de>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
+[ Upstream commit a37192c432adaec9e8ef29e4ddb319ea2f443aa6 ]
 
-The polarity of the DE signal of the transceiver is active-high for
-sending. Therefore rs485-rts-active-low is wrong and needs to be
-removed to make RS485 transmissions work.
+While I caught the need for setting cnt early in nl80211_parse_rnr_elems()
+in the original annotation of struct cfg80211_rnr_elems with __counted_by,
+I missed a similar pattern in ieee80211_copy_rnr_beacon(). Fix this by
+moving the cnt assignment to before the loop.
 
-Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 7b6d7087031b ("wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://patch.msgid.link/20250721182521.work.540-kees@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ net/mac80211/cfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-index 33d5f27285a4..9ece280d163a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-@@ -169,7 +169,6 @@ &uart2 {
- 	pinctrl-0 = <&pinctrl_uart2>;
- 	linux,rs485-enabled-at-boot-time;
- 	rs485-rx-during-tx;
--	rs485-rts-active-low;
- 	uart-has-rtscts;
- 	status = "okay";
- };
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index cf2b8a05c338..a72c1d9edb4a 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1078,13 +1078,13 @@ ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
+ {
+ 	int i, offset = 0;
+ 
++	dst->cnt = src->cnt;
+ 	for (i = 0; i < src->cnt; i++) {
+ 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
+ 		dst->elem[i].len = src->elem[i].len;
+ 		dst->elem[i].data = pos + offset;
+ 		offset += dst->elem[i].len;
+ 	}
+-	dst->cnt = src->cnt;
+ 
+ 	return offset;
+ }
 -- 
 2.39.5
 
