@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AB1B230C5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6721B232AA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 230FE564357
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6160F2A0E89
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F53A2FDC2F;
-	Tue, 12 Aug 2025 17:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8CA2E3B06;
+	Tue, 12 Aug 2025 18:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6LOB1zt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGc953yj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB712F83CB;
-	Tue, 12 Aug 2025 17:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B1C61FFE;
+	Tue, 12 Aug 2025 18:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021353; cv=none; b=iEumixra43JWOh+LwzpfyDt2BSQQJpxV66ufno22UKYbCs52rnphVP6A42w1GA08wUWVJOwBX5ya5moS5hIhgTCtOUnTZAi2y8wp3XETQaLtFt23Z1GqDzVL9HOZLczGwFrwRrt1mQPR1hlsL+99fK++m85aXxOVx9To9CvQi+8=
+	t=1755022555; cv=none; b=b/bKDEIQfxqISC02JmlILNP+/D8v7EKIdiv2xpgDbTfOyiYFgxDGQ2Bhp9czHAL6aKLrT/zmiFIeih+9f/PBmdcNRsxrbdVy0KqHTY3mlABNBTIWYSEgAV5d/MZl12dFplUA7jn4eSWZ6P7zfRiYisgkGayJOK7DGXX7NSSnSCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021353; c=relaxed/simple;
-	bh=Ykv7PJ/WewdvA2jZB2f859xgAbFeLabP4VqT+nWnPxo=;
+	s=arc-20240116; t=1755022555; c=relaxed/simple;
+	bh=O5fcJqewp8pouwYB/2xl9UQECQ+9m/c/qXVx/gqsZfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6Vs8fcjizH93u2fuoxBnJZeE/rnptffthGid9fQq9zKWW/ajUfqEMx0Jb6b0gNdB8RQlvTuUDN5GcBUsH6IkTDM2b1970796rqa2v8nzGEJteXkGEiNlk5zqGmPDla7vbK1gPb8+5yLAVuuSVFhqGlmc/hY4VCtlVCQeyb1wmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6LOB1zt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AEDC4CEF1;
-	Tue, 12 Aug 2025 17:55:52 +0000 (UTC)
+	 MIME-Version; b=PpGUhEiBspXc8lyDKzdbKzdtsJFT5ChCNAomlMYq5gJJmx9HM7+VHIUu20ybB/tPtldSi7nxvawamJ0BtM/XQji8/FmK9CQiM5He+j2E/g2vSVt5VkUbtxa5PqXogGzmy2zudVPG7l36LdaJK4Drem5Ssdej+fDGnSZ/4SPn3Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGc953yj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D17C4CEF0;
+	Tue, 12 Aug 2025 18:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021353;
-	bh=Ykv7PJ/WewdvA2jZB2f859xgAbFeLabP4VqT+nWnPxo=;
+	s=korg; t=1755022554;
+	bh=O5fcJqewp8pouwYB/2xl9UQECQ+9m/c/qXVx/gqsZfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6LOB1ztQH1ZqJa1Qmx2o628tGOFp4/Kgf4rZiGIorCv7gAxmQ0HNj6QU6sM7Sq8z
-	 o7Jp5cDo0CJGr7gJz5lgvJ1hpsA8LnYcRJt4Afy6+ArW7ZKxwlMe46VdumBn0TcEzW
-	 pr4YEGIfnjGW57vG+6jpSmwdpmrbsylLUHxEW3Y0=
+	b=DGc953yjINT8PZqB5LlswJoql+YEKiTu58KtwBT8fypsqkwcrGr9sPtA6vPdXPYyF
+	 zuA5EFtxkA2+YyVfil0R1NcrHGk0SfkdxJgLTN694QaW78w6mRxR0tiGL09Jbw1WVF
+	 mr55mbr3ZjXOYYwFG2UoB2vvqhbL2DIxL524ym3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/262] net/mlx5e: Clear Read-Only port buffer size in PBMC before update
+Subject: [PATCH 6.12 190/369] RDMA/hns: Fix accessing uninitialized resources
 Date: Tue, 12 Aug 2025 19:28:07 +0200
-Message-ID: <20250812172957.304130944@linuxfoundation.org>
+Message-ID: <20250812173021.915503442@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit fd4b97246a23c1149479b88490946bcfbd28de63 ]
+[ Upstream commit 278c18a4a78a9a6bf529ef45ccde512a5686ea9d ]
 
-When updating the PBMC register, we read its current value,
-modify desired fields, then write it back.
+hr_dev->pgdir_list and hr_dev->pgdir_mutex won't be initialized if
+CQ/QP record db are not enabled, but they are also needed when using
+SRQ with SRQ record db enabled. Simplified the logic by always
+initailizing the reosurces.
 
-The port_buffer_size field within PBMC is Read-Only (RO).
-If this RO field contains a non-zero value when read,
-attempting to write it back will cause the entire PBMC
-register update to fail.
-
-This commit ensures port_buffer_size is explicitly cleared
-to zero after reading the PBMC register but before writing
-back the modified value.
-This allows updates to other fields in the PBMC register to succeed.
-
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1753256672-337784-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c9813b0b9992 ("RDMA/hns: Support SRQ record doorbell")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250703113905.3597124-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 8e25f4ef5ccc..5ae787656a7c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -331,6 +331,9 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 	if (err)
- 		goto out;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 623610b3e2ec..11fa64044a8d 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -947,10 +947,7 @@ static int hns_roce_init_hem(struct hns_roce_dev *hr_dev)
+ static void hns_roce_teardown_hca(struct hns_roce_dev *hr_dev)
+ {
+ 	hns_roce_cleanup_bitmap(hr_dev);
+-
+-	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
+-	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB)
+-		mutex_destroy(&hr_dev->pgdir_mutex);
++	mutex_destroy(&hr_dev->pgdir_mutex);
+ }
  
-+	/* RO bits should be set to 0 on write */
-+	MLX5_SET(pbmc_reg, in, port_buffer_size, 0);
-+
- 	err = mlx5e_port_set_pbmc(mdev, in);
- out:
- 	kfree(in);
+ /**
+@@ -968,11 +965,8 @@ static int hns_roce_setup_hca(struct hns_roce_dev *hr_dev)
+ 	INIT_LIST_HEAD(&hr_dev->qp_list);
+ 	spin_lock_init(&hr_dev->qp_list_lock);
+ 
+-	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
+-	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB) {
+-		INIT_LIST_HEAD(&hr_dev->pgdir_list);
+-		mutex_init(&hr_dev->pgdir_mutex);
+-	}
++	INIT_LIST_HEAD(&hr_dev->pgdir_list);
++	mutex_init(&hr_dev->pgdir_mutex);
+ 
+ 	hns_roce_init_uar_table(hr_dev);
+ 
+@@ -1004,9 +998,7 @@ static int hns_roce_setup_hca(struct hns_roce_dev *hr_dev)
+ 
+ err_uar_table_free:
+ 	ida_destroy(&hr_dev->uar_ida.ida);
+-	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
+-	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB)
+-		mutex_destroy(&hr_dev->pgdir_mutex);
++	mutex_destroy(&hr_dev->pgdir_mutex);
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
