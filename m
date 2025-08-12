@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-168259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B388FB23441
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 089FEB22F63
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E75C189076A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2AB394E1045
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B48C2FA0F9;
-	Tue, 12 Aug 2025 18:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C202FDC4A;
+	Tue, 12 Aug 2025 17:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2DM6hVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U69PYBWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD17961FFE;
-	Tue, 12 Aug 2025 18:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02312FDC32;
+	Tue, 12 Aug 2025 17:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023573; cv=none; b=CWMOTG/EcVdlgqlpH+o9UMHGO+8ds52UsTaeKfEDb9SxrybLpIaTwzhgYT7atkJkWng5xSZ6HWgjaiXXH1Cv3cXJbqtgmpHLurtoW74/WgFRuE/FCDiR9RfeTK87LPIWGFQhPr6w4sinEIlr1ecgOCo1QHBmGorJUMdfPhN0f0A=
+	t=1755020368; cv=none; b=rU3MvtQ5mGjQBRx9EQGjvowUjtqXv5hpqOJn/TPgSsM+ichMmK6B2TdoOT73VWda/68OJVpNujYqhcfRjeMgk88eWGFVN8F0hmv4f+B08b/0kHc5otNIbAhvIFsJsmh9giOVs9IRe89AOVGo5KJp/GV5jCNCGz56Ga+bb0Sbdyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023573; c=relaxed/simple;
-	bh=k7mHwNv5KPMdfnqOWqkPcuezkh7xaeXRPuSFS8xirIk=;
+	s=arc-20240116; t=1755020368; c=relaxed/simple;
+	bh=s0KOFgOb9eNtAL5CKVbfXZli2fYic9cwzkV5SjaO1fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sz87C5m0GsIHwh9525XlX+T4S5FBBl6YXZlB6Re8ZWw9OW3R3Hqq6KzcM7dtM1/RcVNnrUSz4TSNzAMl4ppjWRTgiE/29ZFg7hIt5OTT9Ak8ANTFlBfOFRcvb/2XUcuVXCJgK2lhiPWge+iQoRsg5Ry/LkQMCI7SlAm/HWnzCWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2DM6hVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED841C4CEF0;
-	Tue, 12 Aug 2025 18:32:52 +0000 (UTC)
+	 MIME-Version; b=I54lJN4CM2VO+05nr91g9Xg5Ex3OkL71F4V3/XM3P8jK1xWvyNgHbSQIko9VXulhyFR5qOpTNhzBtfRwesjWXsdGOLKjU5ICt+3cM7vZ2b9jY/+R88GLSI3Par2ZutgST55KyBi20tf8DSPYF/y1NIy5JD473EQTzysfkkKAq+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U69PYBWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300EEC4CEF0;
+	Tue, 12 Aug 2025 17:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023573;
-	bh=k7mHwNv5KPMdfnqOWqkPcuezkh7xaeXRPuSFS8xirIk=;
+	s=korg; t=1755020367;
+	bh=s0KOFgOb9eNtAL5CKVbfXZli2fYic9cwzkV5SjaO1fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2DM6hVjUor6JsQZGnlNF80CkgLbr7ygXo2s5K06a60z+3vK7ciZlZ8liE56yxtMy
-	 jQFPxuerGSnyw/J1yUwyiCqLVcMpdrXR/9B9O3dgQa3Sr5t7B0e699buNzNTRzLBPv
-	 6MOh5PhjjJep9gBNlqzYM/Snz1Z/VBDKpQ0Rj5LU=
+	b=U69PYBWdp+9lZpRKFPIbzloKT/uR+oZ6BXB0NgAMAhK6FLKINoJjLnH6LWtgiqeQZ
+	 p1U8KY0SD7BtnTSy8w99G6jIgPMc48LW/F53B9LENHAhd+lw/mupXnQ47dWp37Fqgc
+	 YaSDA8SomRL7hsgA2FIYEshC09lcxIcB6qIwCqbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 119/627] interconnect: qcom: sc8280xp: specify num_links for qnm_a1noc_cfg
-Date: Tue, 12 Aug 2025 19:26:54 +0200
-Message-ID: <20250812173423.852331289@linuxfoundation.org>
+	Yang Xiwen <forbidden405@outlook.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 027/253] i2c: qup: jump out of the loop in case of timeout
+Date: Tue, 12 Aug 2025 19:26:55 +0200
+Message-ID: <20250812172949.886047043@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Yang Xiwen <forbidden405@outlook.com>
 
-[ Upstream commit 02ee375506dceb7d32007821a2bff31504d64b99 ]
+commit a7982a14b3012527a9583d12525cd0dc9f8d8934 upstream.
 
-The qnm_a1noc_cfg declaration didn't include .num_links definition, fix
-it.
+Original logic only sets the return value but doesn't jump out of the
+loop if the bus is kept active by a client. This is not expected. A
+malicious or buggy i2c client can hang the kernel in this case and
+should be avoided. This is observed during a long time test with a
+PCA953x GPIO extender.
 
-Fixes: f29dabda7917 ("interconnect: qcom: Add SC8280XP interconnect provider")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250704-rework-icc-v2-1-875fac996ef5@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by changing the logic to not only sets the return value, but also
+jumps out of the loop and return to the caller with -ETIMEDOUT.
+
+Fixes: fbfab1ab0658 ("i2c: qup: reorganization of driver code to remove polling for qup v1")
+Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+Cc: <stable@vger.kernel.org> # v4.17+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/sc8280xp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-qup.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/qcom/sc8280xp.c b/drivers/interconnect/qcom/sc8280xp.c
-index 0270f6c64481..c646cdf8a19b 100644
---- a/drivers/interconnect/qcom/sc8280xp.c
-+++ b/drivers/interconnect/qcom/sc8280xp.c
-@@ -48,6 +48,7 @@ static struct qcom_icc_node qnm_a1noc_cfg = {
- 	.id = SC8280XP_MASTER_A1NOC_CFG,
- 	.channels = 1,
- 	.buswidth = 4,
-+	.num_links = 1,
- 	.links = { SC8280XP_SLAVE_SERVICE_A1NOC },
- };
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -452,8 +452,10 @@ static int qup_i2c_bus_active(struct qup
+ 		if (!(status & I2C_STATUS_BUS_ACTIVE))
+ 			break;
  
--- 
-2.39.5
-
+-		if (time_after(jiffies, timeout))
++		if (time_after(jiffies, timeout)) {
+ 			ret = -ETIMEDOUT;
++			break;
++		}
+ 
+ 		usleep_range(len, len * 2);
+ 	}
 
 
 
