@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8DDB22FEE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B16B234F6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C9984E2D0B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D876E37BA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E2C1F09AD;
-	Tue, 12 Aug 2025 17:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787C02FF15D;
+	Tue, 12 Aug 2025 18:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trflfNPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2/W0QLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0456A221FAC;
-	Tue, 12 Aug 2025 17:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F3E6BB5B;
+	Tue, 12 Aug 2025 18:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020753; cv=none; b=O2eQTmaq8R/x23btRoTARtDxfy3doc3lFJykxXwYydU3Xesgpo3VLG7ckKvQzUfRUldD5nb7BqSWsTEOB+guHohNCTTzCpSrydcTR8AdWpRbhUugwQxV6YjKajxEJR+uxObVZ+oDQYXKboYloKhqH6IRWcmuMMUQSOwosw4Pzyk=
+	t=1755024040; cv=none; b=Km8wTg/MhIitNZ+BoP/JV598Hz8Ktweg1Ra+Uji0hYSuxwhTSPI72/kZNX7+3tUoPRrM8+OwP01jtoe7Cjt9fTMpHQKGobpn7IS0Y4rGg16PtvTvXkaVbkVgQR5Fx+MKRAkqSXztjrAnXT66mJNLCpNuxgqeTJGn8ZpjfcYlkeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020753; c=relaxed/simple;
-	bh=UAafxf2msfNueEgSa1mzdq9hBfoLrz6ACDp2P5SvIZA=;
+	s=arc-20240116; t=1755024040; c=relaxed/simple;
+	bh=6Zb6s1IkoAiY89HJxipSwT8qAwaqFBEIvmSp0iQgBZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=illpjXOqSVDlDUDEbHzQkvs9ArcTOVeXomZGGrSIfvJTX0BWnsXJevs3IuOgp9usHKhqFq61VomnN+iTo3dBuZJLVRvwpIpDU9dJcoXa2gsGv1ljq4irYeWxhGPJOTQ3JviY1OAP+DZejYuhjP6fWdKM6OY7lrhqXfS/90IXhlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trflfNPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D01C4CEF0;
-	Tue, 12 Aug 2025 17:45:52 +0000 (UTC)
+	 MIME-Version; b=MZosAx3J4zwUzZ3b9asxZNzRtLqKMPgMjLxh9Ug3UUbwhteu+ljpeDp+FuRALQhioNyP+7TEtGm2EgcyIbKe7DUFspalTLR1IqrldHHIxXOf+kvP3vaFwzvyDxmuqxVMZpOyEj+qUmnJE3YEZfX51Y4py672PBCkfBbLh4eN/yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2/W0QLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D9CC4CEF0;
+	Tue, 12 Aug 2025 18:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020752;
-	bh=UAafxf2msfNueEgSa1mzdq9hBfoLrz6ACDp2P5SvIZA=;
+	s=korg; t=1755024036;
+	bh=6Zb6s1IkoAiY89HJxipSwT8qAwaqFBEIvmSp0iQgBZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trflfNPCGYidVXvEulmOAj15OMTQxQ9t4rPDojm76bRbRG0JWkvjKy2vvQ7AXu/cI
-	 WK9ngiEJM9M5OWMSkVXGbEU2c/RPHQtAfWnp5L+TsZ2D3Hl9H0mF8vLS0/dK9zn0hg
-	 7KJzpFUulYRmVWwgKx3KcMpyvyHhEFchpasGAlzw=
+	b=B2/W0QLAwn3GN/mDMHb9q9NrOfL6AR3fIR4LU980Mz5Y+8dwcSyu3BQduHiZppctZ
+	 T6P5NkXnD4t8gC/dPRhi8lPn2fpuqBNsPi0MOAC3lhMeWvvHI5SMS/zPZdvvAAMLvd
+	 4/l0ZwaK8vIy22T0+tjuy9H2yQoUcbXx2bJcssbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/253] scsi: elx: efct: Fix dma_unmap_sg() nents value
+Subject: [PATCH 6.16 255/627] Bluetooth: btusb: Fix potential NULL dereference on kmalloc failure
 Date: Tue, 12 Aug 2025 19:29:10 +0200
-Message-ID: <20250812172955.610049359@linuxfoundation.org>
+Message-ID: <20250812173429.020280991@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 3a988d0b65d7d1713ce7596eae288a293f3b938e ]
+[ Upstream commit b505902c66a282dcb01bcdc015aa1fdfaaa075db ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Avoid potential NULL pointer dereference by checking the return value of
+kmalloc and handling allocation failure properly.
 
-Fixes: 692e5d73a811 ("scsi: elx: efct: LIO backend interface routines")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627114117.188480-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 7d70989fcea7 ("Bluetooth: btusb: Add HCI Drv commands for configuring altsetting")
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/elx/efct/efct_lio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/elx/efct/efct_lio.c b/drivers/scsi/elx/efct/efct_lio.c
-index be4b5c1ee32d..150d059e51ac 100644
---- a/drivers/scsi/elx/efct/efct_lio.c
-+++ b/drivers/scsi/elx/efct/efct_lio.c
-@@ -396,7 +396,7 @@ efct_lio_sg_unmap(struct efct_io *io)
- 		return;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index f9eeec0aed57..db27d28e8a7e 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3802,6 +3802,8 @@ static int btusb_hci_drv_supported_altsettings(struct hci_dev *hdev, void *data,
  
- 	dma_unmap_sg(&io->efct->pci->dev, cmd->t_data_sg,
--		     ocp->seg_map_cnt, cmd->data_direction);
-+		     cmd->t_data_nents, cmd->data_direction);
- 	ocp->seg_map_cnt = 0;
- }
+ 	/* There are at most 7 alt (0 - 6) */
+ 	rp = kmalloc(sizeof(*rp) + 7, GFP_KERNEL);
++	if (!rp)
++		return -ENOMEM;
  
+ 	rp->num = 0;
+ 	if (!drvdata->isoc)
 -- 
 2.39.5
 
