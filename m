@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-169223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5660B238D8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:29:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FC9B238AE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC701894B7D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECE7E7236F8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1BC2D3A94;
-	Tue, 12 Aug 2025 19:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A9E2FF164;
+	Tue, 12 Aug 2025 19:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2WPfPGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpztVwsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5DF217F35;
-	Tue, 12 Aug 2025 19:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDEB29BDB7;
+	Tue, 12 Aug 2025 19:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026794; cv=none; b=DjL+2CsSVJcwt27WvE8ejVOqvANFcD7rW2MmM7yr+0GPuZfVGdmyp5cUL17oUd0q57k5HwpKsCLi+91SU2X+JqcKE/TQjoo1WPQwSaWcXD2DRuNl17NO3py2Ot+4xAD3ItABvUFE0TFsQAnE20Lx68uuG4kB7Iz4zk7rGivmbUI=
+	t=1755026679; cv=none; b=e7hoWf0X2GIeJkaMkypXTBSESK6QPDHel/V3axNpmzBwe1vlzkUxegw3iQS4Pcm3aYaiP0LzES5FIhWn81U1ukqm643f+MZ2/d3cmNGCgc5SmkQGHgDQn/CnteyN3cph1TGQYS37FpIsvT37mdFf/tOoKIKjAqbNOjMnT+VkWf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026794; c=relaxed/simple;
-	bh=1LLKemOqK+SAeVLrlwsYYbGoFF+JS/ZjNBgLnoXE/Wk=;
+	s=arc-20240116; t=1755026679; c=relaxed/simple;
+	bh=xGb386hBwdsZGU75mbPPTjl6vUXRndq4yJebMlV+8Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xvdu+oIaaaWeRM2nZciqEEsXUPgkRAF9+tGKHrWojFegPPy0XIOBm+BCoKMzYtAjmX8Cl6QrowW2TZfDvaZg87zgekPch8mfiMIGPBd2cfShLkYbflOewfCRP6czxZZWj3ZCinjsYJI1VA+l3p7M2rpNK5ZTHXUev7PFxuNRXd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2WPfPGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEE2C4CEF0;
-	Tue, 12 Aug 2025 19:26:32 +0000 (UTC)
+	 MIME-Version; b=V9FwBVws729C5tWt84aIGU2pI3iMoAIAGRu3TyiyuMwjJwynhHazN6hKqtRq0Q28ZUKz70XxbuUUu+WWC11tMSgE11KlxIQjh4uAW2O6UjcLt/PYWNITJ4px30SwumOQV9oT8jExct3cv7QhLaz0IsCb/4EkabCeKEeBS78mDB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpztVwsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A262C4CEF1;
+	Tue, 12 Aug 2025 19:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026793;
-	bh=1LLKemOqK+SAeVLrlwsYYbGoFF+JS/ZjNBgLnoXE/Wk=;
+	s=korg; t=1755026679;
+	bh=xGb386hBwdsZGU75mbPPTjl6vUXRndq4yJebMlV+8Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2WPfPGe9tOZdV3zwouqPlTrUwPvTmAlLVQpEYRxl2ZmaAHFogCwRuZQjnllq6Gf/
-	 GTwDUOzHAT+NIxk6wLtQ+GpB6Qe5PjiHCh/iv2UuL9/ZuYgSaD8wLHxG7X2HIXDYtU
-	 CDvkYPg/NUGYheJvrYIxKsQYGs9gpAuizI3v8Nms=
+	b=gpztVwsPnH5Dx+1Tvn9PecTNG41LoH48QpusAZbqs2Ntt2/G8EPmBaXY69Nwk8z7R
+	 Bz+CfqhhyDv4rLKdzDn00RdZSwtL0lSaoEXGPR8DhLOqWFT9g4lfNgrX0ZqKsyK68/
+	 dAx5qjx0/4l5XIsErIGWEGvrDIlvAW0CUEu8AApU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Wang Liang <wangliang74@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 400/480] net: mdio: mdio-bcm-unimac: Correct rate fallback logic
-Date: Tue, 12 Aug 2025 19:50:08 +0200
-Message-ID: <20250812174413.932311830@linuxfoundation.org>
+Subject: [PATCH 6.15 401/480] net: drop UFO packets in udp_rcv_segment()
+Date: Tue, 12 Aug 2025 19:50:09 +0200
+Message-ID: <20250812174413.972116151@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -68,52 +68,120 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit a81649a4efd382497bf3d34a623360263adc6993 ]
+[ Upstream commit d46e51f1c78b9ab9323610feb14238d06d46d519 ]
 
-When the parent clock is a gated clock which has multiple parents, the
-clock provider (clk-scmi typically) might return a rate of 0 since there
-is not one of those particular parent clocks that should be chosen for
-returning a rate. Prior to ee975351cf0c ("net: mdio: mdio-bcm-unimac:
-Manage clock around I/O accesses"), we would not always be passing a
-clock reference depending upon how mdio-bcm-unimac was instantiated. In
-that case, we would take the fallback path where the rate is hard coded
-to 250MHz.
+When sending a packet with virtio_net_hdr to tun device, if the gso_type
+in virtio_net_hdr is SKB_GSO_UDP and the gso_size is less than udphdr
+size, below crash may happen.
 
-Make sure that we still fallback to using a fixed rate for the divider
-calculation, otherwise we simply ignore the desired MDIO bus clock
-frequency which can prevent us from interfacing with Ethernet PHYs
-properly.
+  ------------[ cut here ]------------
+  kernel BUG at net/core/skbuff.c:4572!
+  Oops: invalid opcode: 0000 [#1] SMP NOPTI
+  CPU: 0 UID: 0 PID: 62 Comm: mytest Not tainted 6.16.0-rc7 #203 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  RIP: 0010:skb_pull_rcsum+0x8e/0xa0
+  Code: 00 00 5b c3 cc cc cc cc 8b 93 88 00 00 00 f7 da e8 37 44 38 00 f7 d8 89 83 88 00 00 00 48 8b 83 c8 00 00 00 5b c3 cc cc cc cc <0f> 0b 0f 0b 66 66 2e 0f 1f 84 00 000
+  RSP: 0018:ffffc900001fba38 EFLAGS: 00000297
+  RAX: 0000000000000004 RBX: ffff8880040c1000 RCX: ffffc900001fb948
+  RDX: ffff888003e6d700 RSI: 0000000000000008 RDI: ffff88800411a062
+  RBP: ffff8880040c1000 R08: 0000000000000000 R09: 0000000000000001
+  R10: ffff888003606c00 R11: 0000000000000001 R12: 0000000000000000
+  R13: ffff888004060900 R14: ffff888004050000 R15: ffff888004060900
+  FS:  000000002406d3c0(0000) GS:ffff888084a19000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000020000040 CR3: 0000000004007000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   udp_queue_rcv_one_skb+0x176/0x4b0 net/ipv4/udp.c:2445
+   udp_queue_rcv_skb+0x155/0x1f0 net/ipv4/udp.c:2475
+   udp_unicast_rcv_skb+0x71/0x90 net/ipv4/udp.c:2626
+   __udp4_lib_rcv+0x433/0xb00 net/ipv4/udp.c:2690
+   ip_protocol_deliver_rcu+0xa6/0x160 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x72/0x90 net/ipv4/ip_input.c:233
+   ip_sublist_rcv_finish+0x5f/0x70 net/ipv4/ip_input.c:579
+   ip_sublist_rcv+0x122/0x1b0 net/ipv4/ip_input.c:636
+   ip_list_rcv+0xf7/0x130 net/ipv4/ip_input.c:670
+   __netif_receive_skb_list_core+0x21d/0x240 net/core/dev.c:6067
+   netif_receive_skb_list_internal+0x186/0x2b0 net/core/dev.c:6210
+   napi_complete_done+0x78/0x180 net/core/dev.c:6580
+   tun_get_user+0xa63/0x1120 drivers/net/tun.c:1909
+   tun_chr_write_iter+0x65/0xb0 drivers/net/tun.c:1984
+   vfs_write+0x300/0x420 fs/read_write.c:593
+   ksys_write+0x60/0xd0 fs/read_write.c:686
+   do_syscall_64+0x50/0x1c0 arch/x86/entry/syscall_64.c:63
+   </TASK>
 
-Fixes: ee975351cf0c ("net: mdio: mdio-bcm-unimac: Manage clock around I/O accesses")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250730202533.3463529-1-florian.fainelli@broadcom.com
+To trigger gso segment in udp_queue_rcv_skb(), we should also set option
+UDP_ENCAP_ESPINUDP to enable udp_sk(sk)->encap_rcv. When the encap_rcv
+hook return 1 in udp_queue_rcv_one_skb(), udp_csum_pull_header() will try
+to pull udphdr, but the skb size has been segmented to gso size, which
+leads to this crash.
+
+Previous commit cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
+introduces segmentation in UDP receive path only for GRO, which was never
+intended to be used for UFO, so drop UFO packets in udp_rcv_segment().
+
+Link: https://lore.kernel.org/netdev/20250724083005.3918375-1-wangliang74@huawei.com/
+Link: https://lore.kernel.org/netdev/20250729123907.3318425-1-wangliang74@huawei.com/
+Fixes: cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
+Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250730101458.3470788-1-wangliang74@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-bcm-unimac.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/net/udp.h | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
-index 074d96328f41..60565e7c88bd 100644
---- a/drivers/net/mdio/mdio-bcm-unimac.c
-+++ b/drivers/net/mdio/mdio-bcm-unimac.c
-@@ -209,10 +209,9 @@ static int unimac_mdio_clk_set(struct unimac_mdio_priv *priv)
- 	if (ret)
- 		return ret;
+diff --git a/include/net/udp.h b/include/net/udp.h
+index 6e89520e100d..b59462c5b97a 100644
+--- a/include/net/udp.h
++++ b/include/net/udp.h
+@@ -586,6 +586,16 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
+ {
+ 	netdev_features_t features = NETIF_F_SG;
+ 	struct sk_buff *segs;
++	int drop_count;
++
++	/*
++	 * Segmentation in UDP receive path is only for UDP GRO, drop udp
++	 * fragmentation offload (UFO) packets.
++	 */
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP) {
++		drop_count = 1;
++		goto drop;
++	}
  
--	if (!priv->clk)
-+	rate = clk_get_rate(priv->clk);
-+	if (!rate)
- 		rate = 250000000;
--	else
--		rate = clk_get_rate(priv->clk);
+ 	/* Avoid csum recalculation by skb_segment unless userspace explicitly
+ 	 * asks for the final checksum values
+@@ -609,16 +619,18 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
+ 	 */
+ 	segs = __skb_gso_segment(skb, features, false);
+ 	if (IS_ERR_OR_NULL(segs)) {
+-		int segs_nr = skb_shinfo(skb)->gso_segs;
+-
+-		atomic_add(segs_nr, &sk->sk_drops);
+-		SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, segs_nr);
+-		kfree_skb(skb);
+-		return NULL;
++		drop_count = skb_shinfo(skb)->gso_segs;
++		goto drop;
+ 	}
  
- 	div = (rate / (2 * priv->clk_freq)) - 1;
- 	if (div & ~MDIO_CLK_DIV_MASK) {
+ 	consume_skb(skb);
+ 	return segs;
++
++drop:
++	atomic_add(drop_count, &sk->sk_drops);
++	SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, drop_count);
++	kfree_skb(skb);
++	return NULL;
+ }
+ 
+ static inline void udp_post_segment_fix_csum(struct sk_buff *skb)
 -- 
 2.39.5
 
