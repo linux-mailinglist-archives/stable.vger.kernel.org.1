@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDE0B2306F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A697B2332A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 566A7189CD2B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 258E41778AF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB142FAC02;
-	Tue, 12 Aug 2025 17:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7ED2EAB97;
+	Tue, 12 Aug 2025 18:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DS/2LVNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3kHF/7P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BCB2868AF;
-	Tue, 12 Aug 2025 17:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21E51FF7C5;
+	Tue, 12 Aug 2025 18:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021051; cv=none; b=UMCkzDbIkJlhJdYdXYDFQ2a9EukZI3AwWyIflmmKBiHKnnKMM7Qcnepi+/nn7y0ZhccjaP8zXWcDvpIKWzwr+Vx5UNfeHWFB1EEeIPAmtjWWzL1YvIEfgKjphugS6/nxPYrMhS/KvMANAO4iUWViEm9ykD5aX3f+UNi63yDCaTo=
+	t=1755022906; cv=none; b=Fvu3pvcQyJBDZ554fnpFK6cCGWaIoNj+4z2Ttx5E3PHxSxA8aq7jXSF0fP25opsgzbchoXbZbimIJ4dWzC4YQFkg9cuECU9ObR5jh3rQKlmKhMNYQqh/frx6ikW8vdLUbjnOIC9jVKa2G1y5m9MfEl6tUEQJOYCAHJTPv2k7XW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021051; c=relaxed/simple;
-	bh=44bJ1M1ir5KNAstPzdm8GAy4SxNxAdlPTjqTN4SqpAc=;
+	s=arc-20240116; t=1755022906; c=relaxed/simple;
+	bh=Qu8mqSjG+nFD9x2SLn5e+E4Z5FgHGkoC4ZDFKDvTzJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOZ5f2akN6CLUNCcxQS1psMLGTAnn2RKxqKWDFNk6R965xmv2Klj2A4hsUjMtXFXO1vcKqEdxjXnXtMSCqVI/qGTTeBkzLvmtg9hEeuY03V+p+CqECjiLHcWp4+a7K2pSQjni5u6HeWyAWxn+475DsCspdNtPlsElctJSXOyAIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DS/2LVNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9572BC4CEF0;
-	Tue, 12 Aug 2025 17:50:50 +0000 (UTC)
+	 MIME-Version; b=gbWIyLLIKIIFrEnPt2Hkq2KJT3DueYvBWb12HBWeAtU2v1sD8nZgOKqySkz0ooLQJITMe9z6bds0GgRghmjfw61Q3D69H5ZhcMvNyCfSzHT7kku0a3NyCYRsZJeZguT29oavNhU17AbgGORLl7nXHiZ9wPD/BiPMyX97loMqhqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3kHF/7P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D31C4CEF0;
+	Tue, 12 Aug 2025 18:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021051;
-	bh=44bJ1M1ir5KNAstPzdm8GAy4SxNxAdlPTjqTN4SqpAc=;
+	s=korg; t=1755022906;
+	bh=Qu8mqSjG+nFD9x2SLn5e+E4Z5FgHGkoC4ZDFKDvTzJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DS/2LVNMawxZ44cHZP1iRqD8uFPOIcjkaWejkSr4yOMBwYxDtcY76UZ2iWipu7icu
-	 ekbHVZ037jNQ1wASJLtJGxRcCZHhn8ZLecsxpJ2w37Z+3OadC+M2G/uQ0fz+265b7L
-	 ZUUHvq3gkYh58GWpxLb9ZnxgW51D3TknXIovhskQ=
+	b=h3kHF/7P/it4TMeudJuOQ8Uo8yu1x0kk6ddwRxESkMnNdOceK7kLKSo/dZI/4rkft
+	 9ACl4/IQhhLN4FC2x9emUG4bYtdssMDPt/HqUD8XzP1PNycBJAh+hRNtK1MTumUHrt
+	 Fl7pZ+Lp+2pb8Ol6fccxslwQMCy2lbNM1LtlVTMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salomon Dushimirimana <salomondush@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/253] scsi: sd: Make sd shutdown issue START STOP UNIT appropriately
+Subject: [PATCH 6.12 295/369] block: ensure discard_granularity is zero when discard is not supported
 Date: Tue, 12 Aug 2025 19:29:52 +0200
-Message-ID: <20250812172957.501126319@linuxfoundation.org>
+Message-ID: <20250812173027.826109661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salomon Dushimirimana <salomondush@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 8e48727c26c4d839ff9b4b73d1cae486bea7fe19 ]
+[ Upstream commit fad6551fcf537375702b9af012508156a16a1ff7 ]
 
-Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
-manage_system_start_stop") enabled libata EH to manage device power mode
-trasitions for system suspend/resume and removed the flag from
-ata_scsi_dev_config. However, since the sd_shutdown() function still
-relies on the manage_system_start_stop flag, a spin-down command is not
-issued to the disk with command "echo 1 > /sys/block/sdb/device/delete"
+Documentation/ABI/stable/sysfs-block states:
 
-sd_shutdown() can be called for both system/runtime start stop
-operations, so utilize the manage_run_time_start_stop flag set in the
-ata_scsi_dev_config and issue a spin-down command during disk removal
-when the system is running. This is in addition to when the system is
-powering off and manage_shutdown flag is set. The
-manage_system_start_stop flag will still be used for drivers that still
-set the flag.
+  What: /sys/block/<disk>/queue/discard_granularity
+  [...]
+  A discard_granularity of 0 means that the device does not support
+  discard functionality.
 
-Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250724214520.112927-1-salomondush@google.com
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+but this got broken when sorting out the block limits updates.  Fix this
+by setting the discard_granularity limit to zero when the combined
+max_discard_sectors is zero.
+
+Fixes: 3c407dc723bb ("block: default the discard granularity to sector size")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250731152228.873923-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ block/blk-settings.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index c3006524eb03..3b481779af35 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3771,7 +3771,9 @@ static void sd_shutdown(struct device *dev)
- 	if ((system_state != SYSTEM_RESTART &&
- 	     sdkp->device->manage_system_start_stop) ||
- 	    (system_state == SYSTEM_POWER_OFF &&
--	     sdkp->device->manage_shutdown)) {
-+	     sdkp->device->manage_shutdown) ||
-+	    (system_state == SYSTEM_RUNNING &&
-+	     sdkp->device->manage_runtime_start_stop)) {
- 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
- 		sd_start_stop_device(sdkp, 0);
- 	}
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 7858c92b4483..22ce7fa4fe20 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -320,12 +320,19 @@ static int blk_validate_limits(struct queue_limits *lim)
+ 	lim->max_discard_sectors =
+ 		min(lim->max_hw_discard_sectors, lim->max_user_discard_sectors);
+ 
++	/*
++	 * When discard is not supported, discard_granularity should be reported
++	 * as 0 to userspace.
++	 */
++	if (lim->max_discard_sectors)
++		lim->discard_granularity =
++			max(lim->discard_granularity, lim->physical_block_size);
++	else
++		lim->discard_granularity = 0;
++
+ 	if (!lim->max_discard_segments)
+ 		lim->max_discard_segments = 1;
+ 
+-	if (lim->discard_granularity < lim->physical_block_size)
+-		lim->discard_granularity = lim->physical_block_size;
+-
+ 	/*
+ 	 * By default there is no limit on the segment boundary alignment,
+ 	 * but if there is one it can't be smaller than the page size as
 -- 
 2.39.5
 
