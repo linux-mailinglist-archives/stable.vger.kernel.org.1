@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9052EB232A1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702BCB230B7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DDEF5826CA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D28FA3B2253
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA692FD1C2;
-	Tue, 12 Aug 2025 18:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47FC2D5C76;
+	Tue, 12 Aug 2025 17:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znIBLB0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VUICbDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C59E1B87F2;
-	Tue, 12 Aug 2025 18:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737162DE1E2;
+	Tue, 12 Aug 2025 17:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022531; cv=none; b=duVemRJTg60ya2cfIaUX/cwqMCN+hbP7To7ii+cAkc8Umhr8IVW0SZGfees1QeaBkevteAXt7I5tVFFMAR1cxsTP/MOL+jHHesfAw0m/StC+EqV3YyG1QCVKA6yOy2ETCzCteh8VhVmTYXklatm8VaMr5zHAj2OGhAepKSevOeE=
+	t=1755021254; cv=none; b=BNO7/ykJBSiyrd45V/JhccLVzJtK467cWOwfVoXy8wYUzOdsJgwV7w3oqtQz0RQSJBpz1MZb7fF7rgOJHTsIVM2Z2HcpQbCATHE5Kc8HEtRalwj+1ECusfS+wddfVi+1jZ0sjCpS54LsrNsyGBiFn1E2PRBJUgrapsoTPCkBeFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022531; c=relaxed/simple;
-	bh=Kg0mht5U3BlexbwnAAH5rZuu2i2rD+bZCY7hzEM3AK4=;
+	s=arc-20240116; t=1755021254; c=relaxed/simple;
+	bh=wVZpyChry8ANaZRQHgmGyVXz3pYB7TirvEimm5+eQJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnZF8E2q5FJMxmoWl7qYZxs9M/rrePtbvzHYkRBBC4vCdj3Pk+oQhho/XBort6RrxAFYzbeN3HEKIpl1Smah9YMIzwgbNxnVum6ZNojUiPk447kCtxB1dfE49dzR8PC6JyIe+vkWYX+yt+oJRQnRZMhdtN4v0NPMSlNBrjkluus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znIBLB0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD47C4CEF0;
-	Tue, 12 Aug 2025 18:15:30 +0000 (UTC)
+	 MIME-Version; b=S5pBExLz25hBWZ6CqPfiHAucEcQ90/rFhVfm+Kzyp/6JN/ig9kV24+qhRh/p/erWmPUZdYn+Txtj9qwxUBValRuiNya/DHZHmmMFY8kWgNYkA8o40SrGkUd5bdIQaCUHpNEliadk9IvcV2sttS/bEliIAhdxdzzy6ykrmwohl50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VUICbDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7957C4CEF0;
+	Tue, 12 Aug 2025 17:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022531;
-	bh=Kg0mht5U3BlexbwnAAH5rZuu2i2rD+bZCY7hzEM3AK4=;
+	s=korg; t=1755021254;
+	bh=wVZpyChry8ANaZRQHgmGyVXz3pYB7TirvEimm5+eQJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znIBLB0b0RU2oFtEcnq0ndNLxG+Cwz4oLnI1e37xXE3rby4r0fb/LnZCy9wj+1NIr
-	 eEAg71t6ReaQnXjErYyDnUiZ6taJZJeyq0nG94e+xkURcMMJ7E0ziatnZDkCdYpIQ+
-	 ZoHeMVxMBnfmIPdGq1jHwZb5OkloHggCnskKX2o8=
+	b=2VUICbDTH92Ce4Ge0UOZzGh25ZUqnLKkjMITyqRFw3Gs9vXoMYQyU3hL+e4jAvHkk
+	 79WIlMBPSOXsXOZWAgnEFVn/EiP0YN9ewufOaqfVlX+PIWhVcqcio4O0mF5+mSYFXL
+	 LHa9NkdxrSy9b1bpb4AZnmmTBFjYCBbTuxmgW92c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/369] perf tools: Fix use-after-free in help_unknown_cmd()
+Subject: [PATCH 6.6 084/262] wifi: mac80211: Do not schedule stopped TXQs
 Date: Tue, 12 Aug 2025 19:27:52 +0200
-Message-ID: <20250812173021.360725004@linuxfoundation.org>
+Message-ID: <20250812172956.620250683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit 1fdf938168c4d26fa279d4f204768690d1f9c4ae ]
+[ Upstream commit 11e3e22fa533f5d7cf04e32343b05a27eda3c7a5 ]
 
-Currently perf aborts when it finds an invalid command.  I guess it
-depends on the environment as I have some custom commands in the path.
+Ignore TXQs with the flag IEEE80211_TXQ_STOP when scheduling a queue.
 
-  $ perf bad-command
-  perf: 'bad-command' is not a perf-command. See 'perf --help'.
-  Aborted (core dumped)
+The flag is only set after all fragments have been dequeued and won't
+allow dequeueing other frames as long as the flag is set.
 
-It's because the exclude_cmds() in libsubcmd has a use-after-free when
-it removes some entries.  After copying one to another entry, it keeps
-the pointer in the both position.  And the next copy operation will free
-the later one but it's the same entry in the previous one.
+For drivers using ieee80211_txq_schedule_start() this prevents an
+loop trying to push the queued frames while IEEE80211_TXQ_STOP is set:
 
-For example, let's say cmds = { A, B, C, D, E } and excludes = { B, E }.
+After setting IEEE80211_TXQ_STOP the driver will call
+ieee80211_return_txq(). Which calls __ieee80211_schedule_txq(), detects
+that there sill are frames in the queue and immediately restarts the
+stopped TXQ. Which can't dequeue any frame and thus starts over the loop.
 
-  ci  cj  ei   cmds-name  excludes
-  -----------+--------------------
-   0   0   0 |     A         B       :    cmp < 0, ci == cj
-   1   1   0 |     B         B       :    cmp == 0
-   2   1   1 |     C         E       :    cmp < 0, ci != cj
-
-At this point, it frees cmds->names[1] and cmds->names[1] is assigned to
-cmds->names[2].
-
-   3   2   1 |     D         E       :    cmp < 0, ci != cj
-
-Now it frees cmds->names[2] but it's the same as cmds->names[1].  So
-accessing cmds->names[1] will be invalid.
-
-This makes the subcmd tests succeed.
-
-  $ perf test subcmd
-   69: libsubcmd help tests                                            :
-   69.1: Load subcmd names                                             : Ok
-   69.2: Uniquify subcmd names                                         : Ok
-   69.3: Exclude duplicate subcmd names                                : Ok
-
-Fixes: 4b96679170c6 ("libsubcmd: Avoid SEGV/use-after-free when commands aren't excluded")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250701201027.1171561-3-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
+Link: https://patch.msgid.link/20250717162547.94582-2-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/subcmd/help.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/mac80211/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 8561b0f01a24..9ef569492560 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -9,6 +9,7 @@
- #include <sys/stat.h>
- #include <unistd.h>
- #include <dirent.h>
-+#include <assert.h>
- #include "subcmd-util.h"
- #include "help.h"
- #include "exec-cmd.h"
-@@ -82,10 +83,11 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 				ci++;
- 				cj++;
- 			} else {
--				zfree(&cmds->names[cj]);
--				cmds->names[cj++] = cmds->names[ci++];
-+				cmds->names[cj++] = cmds->names[ci];
-+				cmds->names[ci++] = NULL;
- 			}
- 		} else if (cmp == 0) {
-+			zfree(&cmds->names[ci]);
- 			ci++;
- 			ei++;
- 		} else if (cmp > 0) {
-@@ -94,12 +96,12 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 	}
- 	if (ci != cj) {
- 		while (ci < cmds->cnt) {
--			zfree(&cmds->names[cj]);
--			cmds->names[cj++] = cmds->names[ci++];
-+			cmds->names[cj++] = cmds->names[ci];
-+			cmds->names[ci++] = NULL;
- 		}
- 	}
- 	for (ci = cj; ci < cmds->cnt; ci++)
--		zfree(&cmds->names[ci]);
-+		assert(cmds->names[ci] == NULL);
- 	cmds->cnt = cj;
- }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index ec5469add68a..bdf7c7ca5654 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4099,7 +4099,9 @@ void __ieee80211_schedule_txq(struct ieee80211_hw *hw,
  
+ 	spin_lock_bh(&local->active_txq_lock[txq->ac]);
+ 
+-	has_queue = force || txq_has_queue(txq);
++	has_queue = force ||
++		    (!test_bit(IEEE80211_TXQ_STOP, &txqi->flags) &&
++		     txq_has_queue(txq));
+ 	if (list_empty(&txqi->schedule_order) &&
+ 	    (has_queue || ieee80211_txq_keep_active(txqi))) {
+ 		/* If airtime accounting is active, always enqueue STAs at the
 -- 
 2.39.5
 
