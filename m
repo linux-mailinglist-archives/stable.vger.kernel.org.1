@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-168964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2016FB23783
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:12:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A9CB237B5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33F8F16ED4A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:12:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21D881AA3DA5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B259F2DA779;
-	Tue, 12 Aug 2025 19:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB1F2D3230;
+	Tue, 12 Aug 2025 19:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcSm3pDy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuzR5Ctm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA3126FA77;
-	Tue, 12 Aug 2025 19:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0F3260583;
+	Tue, 12 Aug 2025 19:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025921; cv=none; b=DXLksQttpHPZOZFRNVYHcCiYrl/Oj9iqdvHNvyLRkIJvetsywpXX9AXcwhTkm2NpUnDzQFnyq4jZhgpexHOM2PwRiY1B8W+xzKdNFvN67PP1dVUzL/l0Y+mkcHMo/f+QNFoXzIkUl1qBR1SUGNminW5h+yaWOR9yAw9DtlTmlOc=
+	t=1755026069; cv=none; b=ifiN+Dw/cr0/VvD2Zs1roo4Dydgq2NhZZJQIfhU7ejv1+8aUyWiJexufw4FILj2xlEABZPAPxhfh11uYwt1LWHzEqPEI2LZ5VJOKpryGf5X8RIhMJ3rrPSC2gI4muCatGy2WekPA4HG/gttMYnzgLq1namnFAVxeyhwYtn7N3tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025921; c=relaxed/simple;
-	bh=wBTIlnp/tcXXvsMYiVNuy3sZ+Dys2cyyODk/2M7wUUs=;
+	s=arc-20240116; t=1755026069; c=relaxed/simple;
+	bh=YaFo1cWZmKA3HXJiLjQ1Qu8iPJ2eXuCo78m5pC5TETk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMOLqpJ573LYiHAfve4KCFduVvYNV5og4KuZXwF+ubE1T3mLutr5o/81ZEsiRmPjxMzv62VHTCf4tq1rQHf7ojN6XdMAllAZarDumtmYyFU7U6DqaF/RozBRksLytzeHJZ3JDtS1yzbYK40S6QgxqPzi1iJqj7dnKaeAQUIK8Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcSm3pDy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A54C4CEF0;
-	Tue, 12 Aug 2025 19:12:00 +0000 (UTC)
+	 MIME-Version; b=ZdmI0HMNeCaZbqGuomtesDcUzuQAZduRcnPHTccndgq8KgpKk+4cZt/f1BbhsLMDRhUvXUs/TfydoOsXBqaaxX7Bw6yrTWPbXG5jYDJcZA1WjFFoGZYiRI29mhcm3/bmy6nr/K05b1Us9DXNdMJRGpa1AJbMad/NYrwnjaX9F9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuzR5Ctm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0228CC4CEF0;
+	Tue, 12 Aug 2025 19:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025921;
-	bh=wBTIlnp/tcXXvsMYiVNuy3sZ+Dys2cyyODk/2M7wUUs=;
+	s=korg; t=1755026069;
+	bh=YaFo1cWZmKA3HXJiLjQ1Qu8iPJ2eXuCo78m5pC5TETk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcSm3pDy/eTJDrX8AY1V/aX3xrwitrbmLjtPr19WPKDCY8J1JLvXcNiWZrOjqy4CP
-	 okLTbzoDfoVqOrWNy5YELVkhtiOXyd7j2BFLvzCUk2rVlVqSXiJb3FUeJwiuBDtktR
-	 3dR1tyZ1863sfj+akmRobkUD5O7hWc615PT82P3k=
+	b=kuzR5Ctm0Kh3B39/QAP+stR83eEiHvRYWJg28txiCp2+Kt0hdVGPJDSFxT6R2Gqp8
+	 X4aLmY/prsqWE2+XZs6vecG7GRJuSs5efD1J+VhuvIyTeqZISlEkIKXnQ485GRAasr
+	 hVLLf5fUt4g/pg2Ce0Ae7Gtr/Q9JrasGji8Gx6OA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 183/480] PM: cpufreq: powernv/tracing: Move powernv_throttle trace event
-Date: Tue, 12 Aug 2025 19:46:31 +0200
-Message-ID: <20250812174405.061919626@linuxfoundation.org>
+Subject: [PATCH 6.15 184/480] wifi: mac80211: Write cnt before copying in ieee80211_copy_rnr_beacon()
+Date: Tue, 12 Aug 2025 19:46:32 +0200
+Message-ID: <20250812174405.106143931@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -73,165 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 647fe16b46999258ce1aec41f4bdeabb4f0cc8e7 ]
+[ Upstream commit a37192c432adaec9e8ef29e4ddb319ea2f443aa6 ]
 
-As the trace event powernv_throttle is only used by the powernv code, move
-it to a separate include file and have that code directly enable it.
+While I caught the need for setting cnt early in nl80211_parse_rnr_elems()
+in the original annotation of struct cfg80211_rnr_elems with __counted_by,
+I missed a similar pattern in ieee80211_copy_rnr_beacon(). Fix this by
+moving the cnt assignment to before the loop.
 
-Trace events can take up around 5K of memory when they are defined
-regardless if they are used or not. It wastes memory to have them defined
-in configurations where the tracepoint is not used.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/20250612145407.906308844@goodmis.org
-Fixes: 0306e481d479a ("cpufreq: powernv/tracing: Add powernv_throttle tracepoint")
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 7b6d7087031b ("wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://patch.msgid.link/20250721182521.work.540-kees@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/Makefile          |  1 +
- drivers/cpufreq/powernv-cpufreq.c |  4 ++-
- drivers/cpufreq/powernv-trace.h   | 44 +++++++++++++++++++++++++++++++
- include/trace/events/power.h      | 22 ----------------
- kernel/trace/power-traces.c       |  1 -
- 5 files changed, 48 insertions(+), 24 deletions(-)
- create mode 100644 drivers/cpufreq/powernv-trace.h
+ net/mac80211/cfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-index 22ab45209f9b..246f58b496da 100644
---- a/drivers/cpufreq/Makefile
-+++ b/drivers/cpufreq/Makefile
-@@ -20,6 +20,7 @@ obj-$(CONFIG_CPUFREQ_VIRT)		+= virtual-cpufreq.o
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 4a8d9c3ea480..d9f96a962fa6 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1109,13 +1109,13 @@ ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
+ {
+ 	int i, offset = 0;
  
- # Traces
- CFLAGS_amd-pstate-trace.o               := -I$(src)
-+CFLAGS_powernv-cpufreq.o                := -I$(src)
- amd_pstate-y				:= amd-pstate.o amd-pstate-trace.o
++	dst->cnt = src->cnt;
+ 	for (i = 0; i < src->cnt; i++) {
+ 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
+ 		dst->elem[i].len = src->elem[i].len;
+ 		dst->elem[i].data = pos + offset;
+ 		offset += dst->elem[i].len;
+ 	}
+-	dst->cnt = src->cnt;
  
- ##################################################################################
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index afe5abf89d33..b7c3251e7e87 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -21,7 +21,6 @@
- #include <linux/string_choices.h>
- #include <linux/cpu.h>
- #include <linux/hashtable.h>
--#include <trace/events/power.h>
- 
- #include <asm/cputhreads.h>
- #include <asm/firmware.h>
-@@ -30,6 +29,9 @@
- #include <asm/opal.h>
- #include <linux/timer.h>
- 
-+#define CREATE_TRACE_POINTS
-+#include "powernv-trace.h"
-+
- #define POWERNV_MAX_PSTATES_ORDER  8
- #define POWERNV_MAX_PSTATES	(1UL << (POWERNV_MAX_PSTATES_ORDER))
- #define PMSR_PSAFE_ENABLE	(1UL << 30)
-diff --git a/drivers/cpufreq/powernv-trace.h b/drivers/cpufreq/powernv-trace.h
-new file mode 100644
-index 000000000000..8cadb7c9427b
---- /dev/null
-+++ b/drivers/cpufreq/powernv-trace.h
-@@ -0,0 +1,44 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#if !defined(_POWERNV_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _POWERNV_TRACE_H
-+
-+#include <linux/cpufreq.h>
-+#include <linux/tracepoint.h>
-+#include <linux/trace_events.h>
-+
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM power
-+
-+TRACE_EVENT(powernv_throttle,
-+
-+	TP_PROTO(int chip_id, const char *reason, int pmax),
-+
-+	TP_ARGS(chip_id, reason, pmax),
-+
-+	TP_STRUCT__entry(
-+		__field(int, chip_id)
-+		__string(reason, reason)
-+		__field(int, pmax)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->chip_id = chip_id;
-+		__assign_str(reason);
-+		__entry->pmax = pmax;
-+	),
-+
-+	TP_printk("Chip %d Pmax %d %s", __entry->chip_id,
-+		  __entry->pmax, __get_str(reason))
-+);
-+
-+#endif /* _POWERNV_TRACE_H */
-+
-+/* This part must be outside protection */
-+#undef TRACE_INCLUDE_PATH
-+#define TRACE_INCLUDE_PATH .
-+
-+#undef TRACE_INCLUDE_FILE
-+#define TRACE_INCLUDE_FILE powernv-trace
-+
-+#include <trace/define_trace.h>
-diff --git a/include/trace/events/power.h b/include/trace/events/power.h
-index 9253e83b9bb4..ff0974e9be9a 100644
---- a/include/trace/events/power.h
-+++ b/include/trace/events/power.h
-@@ -99,28 +99,6 @@ DEFINE_EVENT(psci_domain_idle, psci_domain_idle_exit,
- 	TP_ARGS(cpu_id, state, s2idle)
- );
- 
--TRACE_EVENT(powernv_throttle,
--
--	TP_PROTO(int chip_id, const char *reason, int pmax),
--
--	TP_ARGS(chip_id, reason, pmax),
--
--	TP_STRUCT__entry(
--		__field(int, chip_id)
--		__string(reason, reason)
--		__field(int, pmax)
--	),
--
--	TP_fast_assign(
--		__entry->chip_id = chip_id;
--		__assign_str(reason);
--		__entry->pmax = pmax;
--	),
--
--	TP_printk("Chip %d Pmax %d %s", __entry->chip_id,
--		  __entry->pmax, __get_str(reason))
--);
--
- TRACE_EVENT(pstate_sample,
- 
- 	TP_PROTO(u32 core_busy,
-diff --git a/kernel/trace/power-traces.c b/kernel/trace/power-traces.c
-index 21bb161c2316..f2fe33573e54 100644
---- a/kernel/trace/power-traces.c
-+++ b/kernel/trace/power-traces.c
-@@ -17,5 +17,4 @@
- EXPORT_TRACEPOINT_SYMBOL_GPL(suspend_resume);
- EXPORT_TRACEPOINT_SYMBOL_GPL(cpu_idle);
- EXPORT_TRACEPOINT_SYMBOL_GPL(cpu_frequency);
--EXPORT_TRACEPOINT_SYMBOL_GPL(powernv_throttle);
- 
+ 	return offset;
+ }
 -- 
 2.39.5
 
