@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-169211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD16B238CC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD270B238D1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE093B56B5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757FE3B8159
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AEC2D663D;
-	Tue, 12 Aug 2025 19:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBC52D5A10;
+	Tue, 12 Aug 2025 19:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DycJf/h/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQQ3x5/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36DB2D3A94;
-	Tue, 12 Aug 2025 19:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB4E29BD9D;
+	Tue, 12 Aug 2025 19:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026756; cv=none; b=CU2obotcKuGh5Y1k2PuxVdietU4+A+o2cn55sDaKMQzuOwOJfvCVPx80lafmr6iJMvSPha4MGQmLaSpllboPyWQDU6UBL4xHy4iJAjvHXhutXWdeuGAmiUO+/jaPVYihYdGiGfpqXEeXcPP93UlmwVBQHkm+LzEJrw1x6HHB51M=
+	t=1755026774; cv=none; b=rpILosbKx9ly0Qe8jzLD3Mm4QJ2RxfbX4K+5RJcx/wHFxyVakwnpezsadt46k0iDGcR3QMJ35v0/ZPraA66aDWWeZbHC5qANnTn4i+O1zS3zqvoUyKnQZpMHii64hZ1qeLWmHTu8SEtvh1PFHVEpLNoq1X6LKpmnPDf5tb1+/vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026756; c=relaxed/simple;
-	bh=Ingi3AJcjVmyqs//y95xStnIa4RsKb7p91ZNkLLB4CU=;
+	s=arc-20240116; t=1755026774; c=relaxed/simple;
+	bh=onoFtrb2n9icqsjVHl7cw9kuMjBJdBH1Tc7d/UGMB0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjOCp97ujedq9ukFkvBYNMEZJgQGlRLXjNtR0rV2ncoNiBPn4BpF2pALdZwRz46BUQ92taBQmW1VcgwBRzRRV06ij4eqjgMsGT5hFFC+EnL/qmk2UVFiecgveAxyFl0U47dSJlc3MnHD+cilgT3gQNNmc+SE0hElRQn5G74XlVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DycJf/h/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3B9C4CEF0;
-	Tue, 12 Aug 2025 19:25:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Du8KUYEOHnFmvVAtTOzrkikN2XglwqhlLVpWdR4FhCuVe0kmtuD9QvV4hWhMFrQrY1Y4eyVkpDkOVUBnYRTEnl3lphYNL/tg+BOS1EzyYGOu5oEBNagkFJZ9SJj3VL6ycNnu21ILa9Za9bfMu4QMbC5WNOLHj2hBWjRVT7Orzzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQQ3x5/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C0CC4CEF0;
+	Tue, 12 Aug 2025 19:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026754;
-	bh=Ingi3AJcjVmyqs//y95xStnIa4RsKb7p91ZNkLLB4CU=;
+	s=korg; t=1755026773;
+	bh=onoFtrb2n9icqsjVHl7cw9kuMjBJdBH1Tc7d/UGMB0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DycJf/h/v2ypUjTRRAyFmqI2OlIvohwkhbDUZeYidquT8Siv6IFxRLwSlibWCDI7N
-	 WYpEgUy+bXo7xMnZ7hMgsaVbWUQKgsBmtn01jeOaLozaFMjlxO67MMwErcTrY1bXk6
-	 esBp3Qgm0QROrV7oVXc0ajuEBffYPQEL813SWx4E=
+	b=ZQQ3x5/EeDGZ8DDp9Vjh3lMiVGANZxzRSVtC84Qf7xa17HkDR9mwqelmwWmXR5iEE
+	 TJ+zTH9g8I6TVpw9n+PdTIPpDfLWy9WSNJ3tCPbS1Zq+/UatiGhbd6jBDEIWj6hJWA
+	 OzyldyMOlwgHBmLVP9IiISscLJnhq6is+yHgVxWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@hammerspace.com>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 403/480] sunrpc: fix client side handling of tls alerts
-Date: Tue, 12 Aug 2025 19:50:11 +0200
-Message-ID: <20250812174414.055198715@linuxfoundation.org>
+Subject: [PATCH 6.15 404/480] drm/xe/pf: Disable PF restart worker on device removal
+Date: Tue, 12 Aug 2025 19:50:12 +0200
+Message-ID: <20250812174414.096074338@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -62,128 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit cc5d59081fa26506d02de2127ab822f40d88bc5a ]
+[ Upstream commit c286ce6b01f633806b4db3e4ec8e0162928299cd ]
 
-A security exploit was discovered in NFS over TLS in tls_alert_recv
-due to its assumption that there is valid data in the msghdr's
-iterator's kvec.
+We can't let restart worker run once device is removed, since other
+data that it might want to access could be already released.
+Explicitly disable worker as part of device cleanup action.
 
-Instead, this patch proposes the rework how control messages are
-setup and used by sock_recvmsg().
-
-If no control message structure is setup, kTLS layer will read and
-process TLS data record types. As soon as it encounters a TLS control
-message, it would return an error. At that point, NFS can setup a kvec
-backed control buffer and read in the control message such as a TLS
-alert. Scott found that a msg iterator can advance the kvec pointer
-as a part of the copy process thus we need to revert the iterator
-before calling into the tls_alert_recv.
-
-Fixes: dea034b963c8 ("SUNRPC: Capture CMSG metadata on client-side receive")
-Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
-Suggested-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Link: https://lore.kernel.org/r/20250731180058.4669-3-okorniev@redhat.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: a4d1c5d0b99b ("drm/xe/pf: Move VFs reprovisioning to worker")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250801142822.180530-2-michal.wajdeczko@intel.com
+(cherry picked from commit a424353937c24554bb242a6582ed8f018b4a411c)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c | 40 ++++++++++++++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_pf.c | 32 ++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 4b10ecf4c265..9b2328b727b6 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -358,7 +358,7 @@ xs_alloc_sparse_pages(struct xdr_buf *buf, size_t want, gfp_t gfp)
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+index 35489fa81825..2ea81d81c0ae 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+@@ -47,9 +47,16 @@ static int pf_alloc_metadata(struct xe_gt *gt)
  
- static int
- xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
--		     struct cmsghdr *cmsg, int ret)
-+		     unsigned int *msg_flags, struct cmsghdr *cmsg, int ret)
+ static void pf_init_workers(struct xe_gt *gt)
  {
- 	u8 content_type = tls_get_record_type(sock->sk, cmsg);
- 	u8 level, description;
-@@ -371,7 +371,7 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
- 		 * record, even though there might be more frames
- 		 * waiting to be decrypted.
- 		 */
--		msg->msg_flags &= ~MSG_EOR;
-+		*msg_flags &= ~MSG_EOR;
- 		break;
- 	case TLS_RECORD_TYPE_ALERT:
- 		tls_alert_recv(sock->sk, msg, &level, &description);
-@@ -386,19 +386,33 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
++	xe_gt_assert(gt, IS_SRIOV_PF(gt_to_xe(gt)));
+ 	INIT_WORK(&gt->sriov.pf.workers.restart, pf_worker_restart_func);
  }
  
- static int
--xs_sock_recv_cmsg(struct socket *sock, struct msghdr *msg, int flags)
-+xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- {
- 	union {
- 		struct cmsghdr	cmsg;
- 		u8		buf[CMSG_SPACE(sizeof(u8))];
- 	} u;
-+	u8 alert[2];
-+	struct kvec alert_kvec = {
-+		.iov_base = alert,
-+		.iov_len = sizeof(alert),
-+	};
-+	struct msghdr msg = {
-+		.msg_flags = *msg_flags,
-+		.msg_control = &u,
-+		.msg_controllen = sizeof(u),
-+	};
- 	int ret;
- 
--	msg->msg_control = &u;
--	msg->msg_controllen = sizeof(u);
--	ret = sock_recvmsg(sock, msg, flags);
--	if (msg->msg_controllen != sizeof(u))
--		ret = xs_sock_process_cmsg(sock, msg, &u.cmsg, ret);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
-+		      alert_kvec.iov_len);
-+	ret = sock_recvmsg(sock, &msg, flags);
-+	if (ret > 0 &&
-+	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
-+		iov_iter_revert(&msg.msg_iter, ret);
-+		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
-+					   -EAGAIN);
-+	}
- 	return ret;
++static void pf_fini_workers(struct xe_gt *gt)
++{
++	xe_gt_assert(gt, IS_SRIOV_PF(gt_to_xe(gt)));
++	disable_work_sync(&gt->sriov.pf.workers.restart);
++}
++
+ /**
+  * xe_gt_sriov_pf_init_early - Prepare SR-IOV PF data structures on PF.
+  * @gt: the &xe_gt to initialize
+@@ -79,6 +86,21 @@ int xe_gt_sriov_pf_init_early(struct xe_gt *gt)
+ 	return 0;
  }
  
-@@ -408,7 +422,13 @@ xs_sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags, size_t seek)
- 	ssize_t ret;
- 	if (seek != 0)
- 		iov_iter_advance(&msg->msg_iter, seek);
--	ret = xs_sock_recv_cmsg(sock, msg, flags);
-+	ret = sock_recvmsg(sock, msg, flags);
-+	/* Handle TLS inband control message lazily */
-+	if (msg->msg_flags & MSG_CTRUNC) {
-+		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
-+		if (ret == 0 || ret == -EIO)
-+			ret = xs_sock_recv_cmsg(sock, &msg->msg_flags, flags);
-+	}
- 	return ret > 0 ? ret + seek : ret;
++static void pf_fini_action(void *arg)
++{
++	struct xe_gt *gt = arg;
++
++	pf_fini_workers(gt);
++}
++
++static int pf_init_late(struct xe_gt *gt)
++{
++	struct xe_device *xe = gt_to_xe(gt);
++
++	xe_gt_assert(gt, IS_SRIOV_PF(xe));
++	return devm_add_action_or_reset(xe->drm.dev, pf_fini_action, gt);
++}
++
+ /**
+  * xe_gt_sriov_pf_init - Prepare SR-IOV PF data structures on PF.
+  * @gt: the &xe_gt to initialize
+@@ -95,7 +117,15 @@ int xe_gt_sriov_pf_init(struct xe_gt *gt)
+ 	if (err)
+ 		return err;
+ 
+-	return xe_gt_sriov_pf_migration_init(gt);
++	err = xe_gt_sriov_pf_migration_init(gt);
++	if (err)
++		return err;
++
++	err = pf_init_late(gt);
++	if (err)
++		return err;
++
++	return 0;
  }
  
-@@ -434,7 +454,7 @@ xs_read_discard(struct socket *sock, struct msghdr *msg, int flags,
- 		size_t count)
- {
- 	iov_iter_discard(&msg->msg_iter, ITER_DEST, count);
--	return xs_sock_recv_cmsg(sock, msg, flags);
-+	return xs_sock_recvmsg(sock, msg, flags, 0);
- }
- 
- #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
+ static bool pf_needs_enable_ggtt_guest_update(struct xe_device *xe)
 -- 
 2.39.5
 
