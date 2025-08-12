@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C8FB22F64
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:39:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757B7B23269
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F16027A8513
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:38:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E723A9960
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FA82FDC5C;
-	Tue, 12 Aug 2025 17:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A91E2882CE;
+	Tue, 12 Aug 2025 18:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kh250Hpp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNCoJ+vQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF8F2FDC51;
-	Tue, 12 Aug 2025 17:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15639305E08;
+	Tue, 12 Aug 2025 18:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020337; cv=none; b=L+Vf4mSrdNNsL8iCSa0PXeVRslaqh/Cxt1l9ym2Kuze6JwiwNUB51yIDLPegLT2HmmfDQDxQBc4Y3uWNhKeNLzFZYAr9C7LiSANkoo8SV08Mq7PQ8U5kTXjWVvOaAu+qBsBRyCIfnSBfxOMsFWeCX3hWTIXKpFsjjH7mxTY9Wjs=
+	t=1755022299; cv=none; b=o/1j0r31TAp6W/XIC0nwI1oLrQ0THfxF+Bg+sFL3qrs19jMwH2q23bNSJJmmpyUh6sBIzdn90EHEPw6M+49E7Mnf0QaQCwBHzegZynPZKtLe3PfRMdRuA8KWIoPt7UMcHgWe6aldkO/cfjk7hgJO2AKH7UkAhdPybuV7l9SW1OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020337; c=relaxed/simple;
-	bh=x4d/JvC/+0b3j6Ti1bla6K0GAz8OpJ/howDdd83rWQY=;
+	s=arc-20240116; t=1755022299; c=relaxed/simple;
+	bh=4ZQCb/uhPfe4SVjIFYLhS2/caHgf5yMJPRhWNGj17uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+HuYXSwT6zfwrBKlTbbIw62I/tpN7nNvT/H0JpOx8eRYA6sGobggP6x4TGy2Jw23Ev2nlXtMuSxoF2jGAXlg3AyM59w+oJMe11FYQwPO8tdl7oeSCNoj7TTJiWiCuf3je+zYWZCSwXRtQHjIusRX9V3C69pai2hlIJ0NNDT2O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kh250Hpp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6F5C4CEF0;
-	Tue, 12 Aug 2025 17:38:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qpcwh0rVW7PHcBpRs3tBrMwO3H4WqR62TaEglNeRr5KeocCPpH1zXhbnAcz8rIV1GpQQEGB4paEdFprkuotLehSaJwX+kHr2DgtlidQ1j959ZZUxDnhZV/id2sE7/ojT9x/gz9ikmkUIlOVwVnbCHsZKiYszhjAor6gEOYICVWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNCoJ+vQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BCCC4CEF0;
+	Tue, 12 Aug 2025 18:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020337;
-	bh=x4d/JvC/+0b3j6Ti1bla6K0GAz8OpJ/howDdd83rWQY=;
+	s=korg; t=1755022298;
+	bh=4ZQCb/uhPfe4SVjIFYLhS2/caHgf5yMJPRhWNGj17uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kh250HppU9dk0Q0CeP02E/xyT6zQdCejL/gjSUUgGIiQvERj4dH2jyhLgelByAJua
-	 67toYpvW1435WkduZBM/deusTnQECA4EDH57Iuvy3L3b5AoOU4aeysei/igZRcEEci
-	 5TE0bTZTbXBGeaVba2aezTCCs0C2sSZRyCcNqnqA=
+	b=xNCoJ+vQlr7rRqeJkueUj81I86qeFGSL4gdzP43X3EzA1vcKAiYM2qeBJJmeE+BNA
+	 sMz37KCT7E/pVBy+6vvr3RYa6KgXdwgbQR5jLSNqmNt2xx3rbaTeRNUQoT1pZlUvV8
+	 sje126AchCESFOuYOAgFKddtDoIGs7ca8R4W/wV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jiadong Zhu <Jiadong.Zhu@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/253] net: hns3: fix concurrent setting vlan filter issue
-Date: Tue, 12 Aug 2025 19:26:51 +0200
-Message-ID: <20250812172949.708876322@linuxfoundation.org>
+Subject: [PATCH 6.12 115/369] drm/amdgpu/gfx10: fix kiq locking in KCQ reset
+Date: Tue, 12 Aug 2025 19:26:52 +0200
+Message-ID: <20250812173019.095359817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 4555f8f8b6aa46940f55feb6a07704c2935b6d6e ]
+[ Upstream commit a4b2ba8f631d3e44b30b9b46ee290fbfe608b7d0 ]
 
-The vport->req_vlan_fltr_en may be changed concurrently by function
-hclge_sync_vlan_fltr_state() called in periodic work task and
-function hclge_enable_vport_vlan_filter() called by user configuration.
-It may cause the user configuration inoperative. Fixes it by protect
-the vport->req_vlan_fltr by vport_lock.
+The ring test needs to be inside the lock.
 
-Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-2-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 097af47d3cfb ("drm/amdgpu/gfx10: wait for reset done before remap")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Jiadong Zhu <Jiadong.Zhu@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 36 +++++++++++--------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index ed1b49a360165..c509c1e12109f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -9599,33 +9599,36 @@ static bool hclge_need_enable_vport_vlan_filter(struct hclge_vport *vport)
- 	return false;
- }
- 
--int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
-+static int __hclge_enable_vport_vlan_filter(struct hclge_vport *vport,
-+					    bool request_en)
- {
--	struct hclge_dev *hdev = vport->back;
- 	bool need_en;
- 	int ret;
- 
--	mutex_lock(&hdev->vport_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 24d711b0e634..9a1c9dbad126 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -9510,9 +9510,8 @@ static int gfx_v10_0_reset_kcq(struct amdgpu_ring *ring,
+ 	kiq->pmf->kiq_unmap_queues(kiq_ring, ring, RESET_QUEUES,
+ 				   0, 0);
+ 	amdgpu_ring_commit(kiq_ring);
+-	spin_unlock_irqrestore(&kiq->ring_lock, flags);
 -
--	vport->req_vlan_fltr_en = request_en;
--
- 	need_en = hclge_need_enable_vport_vlan_filter(vport);
--	if (need_en == vport->cur_vlan_fltr_en) {
--		mutex_unlock(&hdev->vport_lock);
-+	if (need_en == vport->cur_vlan_fltr_en)
- 		return 0;
--	}
+ 	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	if (r)
+ 		return r;
  
- 	ret = hclge_set_vport_vlan_filter(vport, need_en);
--	if (ret) {
--		mutex_unlock(&hdev->vport_lock);
-+	if (ret)
- 		return ret;
--	}
- 
- 	vport->cur_vlan_fltr_en = need_en;
- 
-+	return 0;
-+}
-+
-+int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
-+{
-+	struct hclge_dev *hdev = vport->back;
-+	int ret;
-+
-+	mutex_lock(&hdev->vport_lock);
-+	vport->req_vlan_fltr_en = request_en;
-+	ret = __hclge_enable_vport_vlan_filter(vport, request_en);
- 	mutex_unlock(&hdev->vport_lock);
- 
--	return 0;
-+	return ret;
- }
- 
- static int hclge_enable_vlan_filter(struct hnae3_handle *handle, bool enable)
-@@ -10646,16 +10649,19 @@ static void hclge_sync_vlan_fltr_state(struct hclge_dev *hdev)
- 					&vport->state))
- 			continue;
- 
--		ret = hclge_enable_vport_vlan_filter(vport,
--						     vport->req_vlan_fltr_en);
-+		mutex_lock(&hdev->vport_lock);
-+		ret = __hclge_enable_vport_vlan_filter(vport,
-+						       vport->req_vlan_fltr_en);
- 		if (ret) {
- 			dev_err(&hdev->pdev->dev,
- 				"failed to sync vlan filter state for vport%u, ret = %d\n",
- 				vport->vport_id, ret);
- 			set_bit(HCLGE_VPORT_STATE_VLAN_FLTR_CHANGE,
- 				&vport->state);
-+			mutex_unlock(&hdev->vport_lock);
- 			return;
- 		}
-+		mutex_unlock(&hdev->vport_lock);
+@@ -9559,9 +9558,8 @@ static int gfx_v10_0_reset_kcq(struct amdgpu_ring *ring,
  	}
- }
+ 	kiq->pmf->kiq_map_queues(kiq_ring, ring);
+ 	amdgpu_ring_commit(kiq_ring);
+-	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+-
+ 	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	if (r)
+ 		return r;
  
 -- 
 2.39.5
