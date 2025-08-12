@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90296B22F9B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0C8B232D0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C0793B1ACB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBF646E492D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D922FD1CE;
-	Tue, 12 Aug 2025 17:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8D32FD1AD;
+	Tue, 12 Aug 2025 18:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpI0WcMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJNYzm5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BE22F7461;
-	Tue, 12 Aug 2025 17:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB2E2FA0F9;
+	Tue, 12 Aug 2025 18:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020530; cv=none; b=H60pSZHdln3Cr31DbK6jPOj6c6SHWma6qUqDcjBoND3Ff1XCIShga7Qt30GIZwroGesPXAxpp47vGlcfj1iRvtzGtwMRhveszbXXuZdCYfMAAxL+GgLWoyDcofSKpMukZBvzw9OyPd0xgoImRg51SW75jLF3+9ZNzkEhU8R4Ui8=
+	t=1755022590; cv=none; b=taSG2CgDHSJix8AlQuqBRbOQReEvJJi0sAR+J9zzsL1tkI32N6dgqAQRWmSkg3GKbqn1jJepVkx0oSh9+OizpaYseu+T0ZlMySdqzICpAMjWnIT+8K6K/68gMQneVBdSxmK65X7x1H/kXdRHTUzXgZsv9VTWl2BqnwGE4MXzniY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020530; c=relaxed/simple;
-	bh=Ke/d58eQ8JcsnMHp/ZnrRPcfWILsH9r6PPx4QJlW6Zw=;
+	s=arc-20240116; t=1755022590; c=relaxed/simple;
+	bh=YBZr5mkRSyXU25snQXAQDz8MeWJaxVUfLcjtgksYqvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzJUJAwej/BewME8uVJ2BMWG6+t6qAuYrTLxUfcifWqIqBtlF/s12XnzVjuR+Ib7vBMkFek9j/PfHGxnSTU9ooJT7dNDa/xMlzNNABYtLx710lti/4wBPmLsFlYmIZmvJsd91x3J01P3jIqRSq3LrATbCY7Mm2BR+r056geHLPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpI0WcMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1729DC4CEF0;
-	Tue, 12 Aug 2025 17:42:08 +0000 (UTC)
+	 MIME-Version; b=fo04qbHCgbbU8ioBNY+ZJ63mPQ9/RtgJMY7nDQDh0YaoP0LKsF91fbOZ53Tb+xKiIdvll7ZELHD44bp/28mRsq4zwxycZ9lhrGTrHBJEyQU0jmSeGx1bXiVHYsTZIIJP0OyHWNdoqINBgqI+pD7+1yzlbBc5i34se4TlruzyWZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJNYzm5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A28C4CEF1;
+	Tue, 12 Aug 2025 18:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020529;
-	bh=Ke/d58eQ8JcsnMHp/ZnrRPcfWILsH9r6PPx4QJlW6Zw=;
+	s=korg; t=1755022588;
+	bh=YBZr5mkRSyXU25snQXAQDz8MeWJaxVUfLcjtgksYqvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mpI0WcMnk34+ILom8w0OFMLWigkh7eD55DUsuENlFTxXPIjZ7prO0gih7ifd0XgZv
-	 euUxcgFp+2sAaG29RvlUNATUA61u540a4TOhBR8rwNLKpLpT24G4Mmvv5/P1UX96SA
-	 DYda3ZSIhu2V9pcRJPzcbDST4eYb7QSkvmIZc09I=
+	b=iJNYzm5lOZ6Sltdi3jfyJlscBJsgHpGkqJwflx1JU11rxsUDHEA1NN4mvIFsl7NPZ
+	 0g798hTngYPHSKlPE6l7vWMu3DSWFXe1BsDtIi1YuheDyv3cvz/nBqvSA7uLBrUfuV
+	 E1jEAwTBlr1II5yWMgeph5R1F61F3Il/9o43L8SE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stav Aviram <saviram@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/253] net/mlx5: Check device memory pointer before usage
+Subject: [PATCH 6.12 199/369] clk: sunxi-ng: v3s: Fix de clock definition
 Date: Tue, 12 Aug 2025 19:28:16 +0200
-Message-ID: <20250812172953.321759391@linuxfoundation.org>
+Message-ID: <20250812173022.250000642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stav Aviram <saviram@nvidia.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-[ Upstream commit 70f238c902b8c0461ae6fbb8d1a0bbddc4350eea ]
+[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
 
-Add a NULL check before accessing device memory to prevent a crash if
-dev->dm allocation in mlx5_init_once() fails.
+The de clock is marked with CLK_SET_RATE_PARENT, which is really not
+necessary (as confirmed from experimentation) and significantly
+restricts flexibility for other clocks using the same parent.
 
-Fixes: c9b9dcb430b3 ("net/mlx5: Move device memory management to mlx5_core")
-Signed-off-by: Stav Aviram <saviram@nvidia.com>
-Link: https://patch.msgid.link/c88711327f4d74d5cebc730dc629607e989ca187.1751370035.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+In addition the source selection (parent) field is marked as using
+2 bits, when it the documentation reports that it uses 3.
+
+Fix both issues in the de clock definition.
+
+Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/dm.c                  | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c | 4 ++--
- drivers/net/ethernet/mellanox/mlx5/core/main.c   | 3 ---
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/dm.c b/drivers/infiniband/hw/mlx5/dm.c
-index 3669c90b2dad..672e5cfd2fca 100644
---- a/drivers/infiniband/hw/mlx5/dm.c
-+++ b/drivers/infiniband/hw/mlx5/dm.c
-@@ -282,7 +282,7 @@ static struct ib_dm *handle_alloc_dm_memic(struct ib_ucontext *ctx,
- 	int err;
- 	u64 address;
+diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+index d24c0d8dfee4..3416e0020799 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
++++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+@@ -347,8 +347,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
  
--	if (!MLX5_CAP_DEV_MEM(dm_db->dev, memic))
-+	if (!dm_db || !MLX5_CAP_DEV_MEM(dm_db->dev, memic))
- 		return ERR_PTR(-EOPNOTSUPP);
+ static const char * const de_parents[] = { "pll-video", "pll-periph0" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+-				 0x104, 0, 4, 24, 2, BIT(31),
+-				 CLK_SET_RATE_PARENT);
++				 0x104, 0, 4, 24, 3, BIT(31), 0);
  
- 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
-index 9482e51ac82a..bdbbfaf504d9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
-@@ -28,7 +28,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
- 
- 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
- 	if (!dm)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 
- 	spin_lock_init(&dm->lock);
- 
-@@ -80,7 +80,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
- err_steering:
- 	kfree(dm);
- 
--	return ERR_PTR(-ENOMEM);
-+	return NULL;
- }
- 
- void mlx5_dm_cleanup(struct mlx5_core_dev *dev)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 8c9633f740b4..a53f222e3fee 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1022,9 +1022,6 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
- 	}
- 
- 	dev->dm = mlx5_dm_create(dev);
--	if (IS_ERR(dev->dm))
--		mlx5_core_warn(dev, "Failed to init device memory %ld\n", PTR_ERR(dev->dm));
--
- 	dev->tracer = mlx5_fw_tracer_create(dev);
- 	dev->hv_vhca = mlx5_hv_vhca_create(dev);
- 	dev->rsc_dump = mlx5_rsc_dump_create(dev);
+ static const char * const tcon_parents[] = { "pll-video" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
 -- 
 2.39.5
 
