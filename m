@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33591B2328E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CC3B234DD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A0A97B58B2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04509683A94
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39C62ED17F;
-	Tue, 12 Aug 2025 18:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482B32FDC4F;
+	Tue, 12 Aug 2025 18:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGQ2wZeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVXPb14i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725643F9D2;
-	Tue, 12 Aug 2025 18:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0713321ABD0;
+	Tue, 12 Aug 2025 18:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022773; cv=none; b=WjdZxFvrQLXyrK67SNFfTY8iM9u3Ah/Dqpcdp8wbnM8P3SlD6/s39sUmeOmulpR5OxGck1jcSQ+aypou9gj3vspVMCwbW+y3eiFLTLjKMpLy8xI/k6cqWjjAfm+GhTfvKQonkB9kmAUb3kopLyJUXiL52z7GeCX2eHg5IwFu4IY=
+	t=1755024020; cv=none; b=fM6nLjaJ3+gzXfHTjYdd8UY5xqvnqysoiqGTiEQJ4S0tTvM34VFRTd2bcGy3DGfM0bq9lSfxsjnNAHChx3vET3L8NaKQMaSC185kL9FGTAkVRo/MMqBR5YOcs89zQV0MLYN6zgfMieGsCMYYDVSzGl4/Tz16ZNV253L68/IS9ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022773; c=relaxed/simple;
-	bh=a7pogepNtFPCe3hgqAtiqEbSNvUem9m6ju6u/uAB4wk=;
+	s=arc-20240116; t=1755024020; c=relaxed/simple;
+	bh=y8f60VoeE3Rz5pu3oVwohH+qF3l5FGcasmbV23egHMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TY74x/1/16kZ9gA20DVl2DC8Ao+4vrNXYG8uc1Ak0Ps6tDf/wVia+lAFkEwFSwz/d27rGdkfpxE4cg1xlrs+sVIM3p/0rw4uOM0gnIwQFM+WmJuY7yKXMQMgqquswByYnkpkVfj448DfG2uQQrdy/AadK/P3Arcx+BBjHkfYGlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGQ2wZeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79398C4CEF6;
-	Tue, 12 Aug 2025 18:19:32 +0000 (UTC)
+	 MIME-Version; b=nd08rieF1mR5nyiwIwRCqynNAN5b0eJQcPybgjja0mw8bz/87oyUaqA/qI3LvAiysGDDXANqEQ3G2irhL8AShR8+zeXQNSIWjKBC0Rnv0byBkHSzDszV5q4W60Lh671HRUgFsE6WNcDSYCjWl7/Z5/LHtTXstnSoEZmfGpIfmjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVXPb14i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F83C4CEF0;
+	Tue, 12 Aug 2025 18:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022773;
-	bh=a7pogepNtFPCe3hgqAtiqEbSNvUem9m6ju6u/uAB4wk=;
+	s=korg; t=1755024019;
+	bh=y8f60VoeE3Rz5pu3oVwohH+qF3l5FGcasmbV23egHMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGQ2wZeg1rO1qkbf7RVT/zdlyMzyfiTJgMyz1jl9U0fbNzP7Bt9oZf8z+U3vANIm2
-	 pr7uqcDmhJNhX2e6JBSfhXmGcr/B2WeTL/0c39FCgjJVuifzaIRlJqyyX2wCaFPVQS
-	 DBImJhjMmsPqGLet2ExYuM4FjswBFYNkuKPg3UCo=
+	b=MVXPb14isl2OHUiDzJcj4LSpevO4PG+HcoOu6OVxe8/N+2v1PyxhNelRsmvo2achR
+	 HMcdl4J7L2bjJy8TEFhImkoNRNUF+tr0Jnx12NNeTTh9F/UUVEE7bHctQCPV3mxblQ
+	 CnR+98YWujJnT9Rsfs5lOE7S5djqnbhyk6UlQfj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 247/369] rtc: pcf8563: fix incorrect maximum clock rate handling
-Date: Tue, 12 Aug 2025 19:29:04 +0200
-Message-ID: <20250812173024.059714932@linuxfoundation.org>
+Subject: [PATCH 6.16 250/627] wifi: mac80211: fix WARN_ON for monitor mode on some devices
+Date: Tue, 12 Aug 2025 19:29:05 +0200
+Message-ID: <20250812173428.820004679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
+[ Upstream commit c57e5b9819dfd16d709bcd6cb633301ed0829a66 ]
 
-When pcf8563_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+On devices without WANT_MONITOR_VIF (and probably without
+channel context support) we get a WARN_ON for changing the
+per-link setting of a monitor interface.
 
-Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Since we already skip AP_VLAN interfaces and MONITOR with
+WANT_MONITOR_VIF and/or NO_VIRTUAL_MONITOR should update
+the settings, catch this in the link change code instead
+of the warning.
+
+Reported-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Link: https://lore.kernel.org/r/a9de62a0-28f1-4981-84df-253489da74ed@linutronix.de/
+Fixes: c4382d5ca1af ("wifi: mac80211: update the right link for tx power")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf8563.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/main.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
-index 647d52f1f5c5..23b21b908915 100644
---- a/drivers/rtc/rtc-pcf8563.c
-+++ b/drivers/rtc/rtc-pcf8563.c
-@@ -386,7 +386,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 6b6de43d9420..1bad353d8a77 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -407,9 +407,20 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
  
--	return 0;
-+	return clkout_rates[0];
- }
+ 	WARN_ON_ONCE(changed & BSS_CHANGED_VIF_CFG_FLAGS);
  
- static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+-	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
++	if (!changed)
+ 		return;
+ 
++	switch (sdata->vif.type) {
++	case NL80211_IFTYPE_AP_VLAN:
++		return;
++	case NL80211_IFTYPE_MONITOR:
++		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
++			return;
++		break;
++	default:
++		break;
++	}
++
+ 	if (!check_sdata_in_driver(sdata))
+ 		return;
+ 
 -- 
 2.39.5
 
