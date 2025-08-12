@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-167534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FE8B2308B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B8BB231AA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870B33B3CD5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19ECA177BC3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F292F83CB;
-	Tue, 12 Aug 2025 17:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62FB2FF149;
+	Tue, 12 Aug 2025 18:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEpYIR3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPRn0UL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C17268C73;
-	Tue, 12 Aug 2025 17:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921FB2FF145;
+	Tue, 12 Aug 2025 18:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021142; cv=none; b=Ffsqmcv2LgRmQfFiEeldJZaaahfluy7QwFWY2FfEdjNrMIokPYCoDxgX7YYqlu04G0UGxORU/06dCh4l5XdWOymj5DujMrHcrVb0Cxv9DMo/mmh+PGEOg2DuxKthg0brNeYHaLXsqf3xtY7iGwhlMWuh1R56z0AS9vplDQoTqVE=
+	t=1755021775; cv=none; b=s+Me4wjlwg7V4rla51To+yFvG1LtX/+9herKnwD7fW4Umkrn+JLb0WwmJkbe7pE/OKPG/s1ebRXdXaR1ql7L6VC2Kdq728G7nqCJu8mjCQs7Hsc4XWX14SjgSRe4T4FmFZrLRezmlVvWUmsOZmmAsLMdIpUKQO+JftbnUx9ITmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021142; c=relaxed/simple;
-	bh=4Bi6NSqX5URXxojy9dmOEz/F5Tl3K7xa6Sy/Tujh3sw=;
+	s=arc-20240116; t=1755021775; c=relaxed/simple;
+	bh=3mDWtLAAM0IFBkSSkQkbMoDKPuk+wEpOvuEDfGrv//o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVNTfVjqn/7G4EbdExmHsKlfDCK+H+ocTAVXV0+0FnvWSwk3UOEGdMuLEJ3eQlRxuMJy8Bq91NmEA5rQdoBITy7pOhQ41x9B/jVG5OdIhs/+1u7AkyE7GOe4jUTyU58ixN/SVHQdY3xjBEiF6MrZ++WvyF01j10HliuHEpzQkhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEpYIR3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54449C4CEF0;
-	Tue, 12 Aug 2025 17:52:21 +0000 (UTC)
+	 MIME-Version; b=YuK4FOuy0LdCsokZtxMiSxJkUteJlHeSCS2CB1JoPPyG33FW7v5NypK7itnjX/IgEkRYkDyBtpoGIqkK1K/vRmqJWtfvSXx8m4TsYTDTUYt0Cqfx89K3D6USdbXXEqtj/95pjhaD3/wUJhSpb/8041mNrjjjw0hJEQ9AAycqkG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPRn0UL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03729C4CEF6;
+	Tue, 12 Aug 2025 18:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021141;
-	bh=4Bi6NSqX5URXxojy9dmOEz/F5Tl3K7xa6Sy/Tujh3sw=;
+	s=korg; t=1755021775;
+	bh=3mDWtLAAM0IFBkSSkQkbMoDKPuk+wEpOvuEDfGrv//o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEpYIR3+c2tQyr/wY9blIfHUYmyGUeLrERucWh3q9x7Z6DlspPxcgBuYBNTaBfFpU
-	 tlB+4zoge1KwEgXpsHFCbepQ1V9U6fg93/S4iMl8dfrVRhWSBu4+c1VIRez+GkNfnO
-	 ctbFP9GWOGqN0L8jW7veRSv7jkmurnO8FPSIp00M=
+	b=VPRn0UL4qsfUuBE//RF/pr+fxGnom9ho2UnFsV/Ota6Ix0tmW0C+AZUuvkvUg4q6b
+	 vYE0IyvdyGgP3hu9wL16OPHfQlx+J4bVdo2ACnZCNOCXiykZb4G2Z4AETRrDs9rY4s
+	 xfljwj5uomc9Qgq2BradBCI8s1FLJFGsUK42CWgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 220/253] pptp: ensure minimal skb length in pptp_xmit()
+Subject: [PATCH 6.6 220/262] smb: server: let recv_done() avoid touching data_transfer after cleanup/move
 Date: Tue, 12 Aug 2025 19:30:08 +0200
-Message-ID: <20250812172958.198808513@linuxfoundation.org>
+Message-ID: <20250812173002.514935139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +67,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit de9c4861fb42f0cd72da844c3c34f692d5895b7b ]
+[ Upstream commit a6c015b7ac2d8c5233337e5793f50d04fac17669 ]
 
-Commit aabc6596ffb3 ("net: ppp: Add bound checking for skb data
-on ppp_sync_txmung") fixed ppp_sync_txmunge()
+Calling enqueue_reassembly() and wake_up_interruptible(&t->wait_reassembly_queue)
+or put_receive_buffer() means the recvmsg/data_transfer pointer might
+get re-used by another thread, which means these should be
+the last operations before calling return.
 
-We need a similar fix in pptp_xmit(), otherwise we might
-read uninit data as reported by syzbot.
-
-BUG: KMSAN: uninit-value in pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
-  pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
-  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2290 [inline]
-  ppp_input+0x1d6/0xe60 drivers/net/ppp/ppp_generic.c:2314
-  pppoe_rcv_core+0x1e8/0x760 drivers/net/ppp/pppoe.c:379
-  sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
-  __release_sock+0x1d3/0x330 net/core/sock.c:3213
-  release_sock+0x6b/0x270 net/core/sock.c:3767
-  pppoe_sendmsg+0x15d/0xcb0 drivers/net/ppp/pppoe.c:904
-  sock_sendmsg_nosec net/socket.c:712 [inline]
-  __sock_sendmsg+0x330/0x3d0 net/socket.c:727
-  ____sys_sendmsg+0x893/0xd80 net/socket.c:2566
-  ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
-  __sys_sendmmsg+0x2d9/0x7c0 net/socket.c:2709
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68887d86.a00a0220.b12ec.00cd.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Link: https://patch.msgid.link/20250729080207.1863408-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/pptp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/smb/server/transport_rdma.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index 32183f24e63f..951dac268adb 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -159,9 +159,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	int len;
- 	unsigned char *data;
- 	__u32 seq_recv;
--
--
--	struct rtable *rt;
-+	struct rtable *rt = NULL;
- 	struct net_device *tdev;
- 	struct iphdr  *iph;
- 	int    max_headroom;
-@@ -179,16 +177,20 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index b22fe18212cf..6c3a57bff147 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -580,16 +580,11 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			else
+ 				t->full_packet_received = true;
  
- 	if (skb_headroom(skb) < max_headroom || skb_cloned(skb) || skb_shared(skb)) {
- 		struct sk_buff *new_skb = skb_realloc_headroom(skb, max_headroom);
--		if (!new_skb) {
--			ip_rt_put(rt);
+-			enqueue_reassembly(t, recvmsg, (int)data_length);
+-			wake_up_interruptible(&t->wait_reassembly_queue);
+-
+ 			spin_lock(&t->receive_credit_lock);
+ 			receive_credits = --(t->recv_credits);
+ 			avail_recvmsg_count = t->count_avail_recvmsg;
+ 			spin_unlock(&t->receive_credit_lock);
+ 		} else {
+-			put_recvmsg(t, recvmsg);
+-
+ 			spin_lock(&t->receive_credit_lock);
+ 			receive_credits = --(t->recv_credits);
+ 			avail_recvmsg_count = ++(t->count_avail_recvmsg);
+@@ -611,6 +606,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
+ 			mod_delayed_work(smb_direct_wq,
+ 					 &t->post_recv_credits_work, 0);
 +
-+		if (!new_skb)
- 			goto tx_error;
--		}
++		if (data_length) {
++			enqueue_reassembly(t, recvmsg, (int)data_length);
++			wake_up_interruptible(&t->wait_reassembly_queue);
++		} else
++			put_recvmsg(t, recvmsg);
 +
- 		if (skb->sk)
- 			skb_set_owner_w(new_skb, skb->sk);
- 		consume_skb(skb);
- 		skb = new_skb;
+ 		return;
  	}
- 
-+	/* Ensure we can safely access protocol field and LCP code */
-+	if (!pskb_may_pull(skb, 3))
-+		goto tx_error;
-+
- 	data = skb->data;
- 	islcp = ((data[0] << 8) + data[1]) == PPP_LCP && 1 <= data[2] && data[2] <= 7;
- 
-@@ -262,6 +264,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	return 1;
- 
- tx_error:
-+	ip_rt_put(rt);
- 	kfree_skb(skb);
- 	return 1;
- }
+ 	}
 -- 
 2.39.5
 
