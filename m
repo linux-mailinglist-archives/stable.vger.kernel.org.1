@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-167873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2189B2323F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A29FB2342F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1BC7173C93
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 760531A20074
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5D3257435;
-	Tue, 12 Aug 2025 18:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452C727FB12;
+	Tue, 12 Aug 2025 18:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t934R09u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GodT9rOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB08A282E1;
-	Tue, 12 Aug 2025 18:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EDA6BB5B;
+	Tue, 12 Aug 2025 18:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022282; cv=none; b=uW0O4yIPrNNySa9N9KsXN2I1Rh9Tk5X4gMFdwpUgyNCz9XBEvZd4pOGp+aDbPGPixik0jyLur656gNTwwItUuxZ4mK/CZd1dhWRuN2CAkxRE251xZNmpbDjLXy9E7dAQ504+FKY2biRZc6UEPgrtyUQjWqtYFc2ehht59RDLDTo=
+	t=1755023508; cv=none; b=TnIfNI/h++5VOZH42MqevjKwzE9iEiRXj6cH98eoUPbL9sghL8M/qJ1/FdlfQFH5xXJBSIKRQjyXvB7/CmWEgGd6Btc8fAN1SgGmgzqKmCjD2quif1iYryDU1zuY2wm13or3qTjL+aZFFuxkDqUAduIikYefQSmbpG81bENzY+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022282; c=relaxed/simple;
-	bh=NbDeLkuJQuEsZURzINZlr33Wx1tegMfwQx4uwT/ILoM=;
+	s=arc-20240116; t=1755023508; c=relaxed/simple;
+	bh=H8q/TCpakDbHNbxz/VkFwU1B7T9IDop+MA6AAHk1iGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APBoO477ZietwIXWDuw71pNc+cgPPimLn3HN43rNLw691J+ZBKFr79IBTStTMuXB0/rpUmi8Hvi8YTg4oRDniduW4G65Vl8VISDeam5eKitbFgUzuNzJ29uVZB5M6pJ32O1Vp4bD3Ry9F4cvTbLlEII4G+jC2AeiMFrX4OCiYck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t934R09u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A97C4CEF9;
-	Tue, 12 Aug 2025 18:11:18 +0000 (UTC)
+	 MIME-Version; b=DZcDNEVsQ7dXn1ZhFfdDJe4FHIJoGGjwiYsbHn5y57a1igcp9ynR8Ka3HhCyFmuy4dsYWXR8eXtVxFfrDtq7Cjz2sFEcVb1pewDKhfmlG/ndoke0N+7qsMOdXRRN5mWV/0gqcGb8sKu2LMToaBek5sQv1npPuqDFBx58LzAq4PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GodT9rOM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F19C4CEF0;
+	Tue, 12 Aug 2025 18:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022279;
-	bh=NbDeLkuJQuEsZURzINZlr33Wx1tegMfwQx4uwT/ILoM=;
+	s=korg; t=1755023507;
+	bh=H8q/TCpakDbHNbxz/VkFwU1B7T9IDop+MA6AAHk1iGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t934R09uPkfVrtcqzi4VUa5cayMAvBeuPW816DYdOMPi6I6us0Rtzzokkd9biwVCx
-	 1gnjiqHKfXA3+an5V+gGv5lCpKVx2BAqlVTcu9ALCnbFyLH8mC2+oHyNYlmlL/vkVY
-	 EZhjZr/aIBMXymR6XmapS9e0jK2H9r5qggGoIcng=
+	b=GodT9rOMQR/UZ3KMQvV8t8mzrQcK+XL8r5gtkx+4JeFMxO6A24cy4VUKt61Q1txzc
+	 PV+8o4WP+siu1t5vrScOC2TjOS2QBda2165kH5uRwYG1tt3taixgtgkEfA4jWaaL8w
+	 M7hmj/S08v39KCVe2FL5Q7OIv1Ytl4WGT0kB/KBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/369] bus: mhi: host: pci_generic: Fix the modem name of Foxconn T99W640
+Subject: [PATCH 6.16 067/627] mei: vsc: Destroy mutex after freeing the IRQ
 Date: Tue, 12 Aug 2025 19:26:02 +0200
-Message-ID: <20250812173017.210311142@linuxfoundation.org>
+Message-ID: <20250812173421.866590376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit ae5a34264354087aef38cdd07961827482a51c5a ]
+[ Upstream commit 35b7f3525fe0a7283de7116e3c75ee3ccb3b14c9 ]
 
-T99W640 was mistakenly mentioned as T99W515. T99W515 is a LGA device, not
-a M.2 modem device. So correct it's name to avoid name mismatch issue.
+The event_notify callback which runs from vsc_tp_thread_isr may call
+vsc_tp_xfer() which locks the mutex. So the ISR depends on the mutex.
 
-Fixes: bf30a75e6e00 ("bus: mhi: host: Add support for Foxconn SDX72 modems")
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-[mani: commit message fixup]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20250606095019.383992-1-slark_xiao@163.com
+Move the mutex_destroy() call to after free_irq() to ensure that the ISR
+is not running while the mutex is destroyed.
+
+Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-6-hansg@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pci_generic.c | 8 ++++----
+ drivers/misc/mei/vsc-tp.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-index acfd673834ed..6505ce6ab1a2 100644
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -509,8 +509,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_dw5932e_info = {
- 	.sideband_wake = false,
- };
+diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+index 267d0de5fade..66b41b86ea7d 100644
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -552,10 +552,10 @@ static int vsc_tp_probe(struct spi_device *spi)
+ 	return 0;
  
--static const struct mhi_pci_dev_info mhi_foxconn_t99w515_info = {
--	.name = "foxconn-t99w515",
-+static const struct mhi_pci_dev_info mhi_foxconn_t99w640_info = {
-+	.name = "foxconn-t99w640",
- 	.edl = "qcom/sdx72m/foxconn/edl.mbn",
- 	.edl_trigger = true,
- 	.config = &modem_foxconn_sdx72_config,
-@@ -792,9 +792,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
- 	/* DW5932e (sdx62), Non-eSIM */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FOXCONN, 0xe0f9),
- 		.driver_data = (kernel_ulong_t) &mhi_foxconn_dw5932e_info },
--	/* T99W515 (sdx72) */
-+	/* T99W640 (sdx72) */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FOXCONN, 0xe118),
--		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w515_info },
-+		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w640_info },
- 	/* DW5934e(sdx72), With eSIM */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FOXCONN, 0xe11d),
- 		.driver_data = (kernel_ulong_t) &mhi_foxconn_dw5934e_info },
+ err_destroy_lock:
+-	mutex_destroy(&tp->mutex);
+-
+ 	free_irq(spi->irq, tp);
+ 
++	mutex_destroy(&tp->mutex);
++
+ 	return ret;
+ }
+ 
+@@ -565,9 +565,9 @@ static void vsc_tp_remove(struct spi_device *spi)
+ 
+ 	platform_device_unregister(tp->pdev);
+ 
+-	mutex_destroy(&tp->mutex);
+-
+ 	free_irq(spi->irq, tp);
++
++	mutex_destroy(&tp->mutex);
+ }
+ 
+ static void vsc_tp_shutdown(struct spi_device *spi)
 -- 
 2.39.5
 
