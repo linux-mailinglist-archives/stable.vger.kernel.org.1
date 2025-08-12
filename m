@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E88B230C1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4A0B22FB4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 965911728AB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 878947A966F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1FE2FDC2F;
-	Tue, 12 Aug 2025 17:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210A12FDC2B;
+	Tue, 12 Aug 2025 17:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfaUTTBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vk+Hsair"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1645A2F8BE7;
-	Tue, 12 Aug 2025 17:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18F786331;
+	Tue, 12 Aug 2025 17:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021336; cv=none; b=XLnespp0+fn3zfE/3PtQQ/Cce0L8m5+qFdyK+FKle3HB6/+LWSZi9oTwmfn5W7vST8DvzaaMLRLauZ6n2TqwzN33RLj9S+10PQkh5YXYNofnPYUZ2sTVkOKAA5u1V2JeDHU70zrjDmedGDmCjhZjL5e1JO4+cpXR1GFv/LKJqwI=
+	t=1755020609; cv=none; b=rDK/GW5bS9Ou+VV/0zrzojJo0cO6KzZ4dOL4NUl0A2g5Uwd+WHBopPddWAJVs7lqrF1da+O3USTDfVrlxA5z7VQaHXw2kKsGrEhah/Ta4aHsXY44yDql+CR5sMe9VLAbvXq4Tk1UAyBy5iawabvxsWd+GR2Oc35zLo99rq6mmGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021336; c=relaxed/simple;
-	bh=JSj/qbkFQ3fCQhSihoMTfshuFoBKKMy9ryU3bPQ3QMQ=;
+	s=arc-20240116; t=1755020609; c=relaxed/simple;
+	bh=1zMscYCaod19EM4wqE1S3oan6fFitUnH//UTi2khAiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmHOqWZH7o8KiyZ0EJ1l/vcPePHo/azny6pFUC5cB2gTTdLzFaD/5C84OQ6SY2yhkL/Hir1IS8oRymLQt9W+oTqJRCQegRkwwcYU5V72rYd0iyyqtYE/poS9Dl4ALZwo5k0LX3TVRb3gIG+y2orIbDrrdcw3jI83t/Wa7xYtp14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfaUTTBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A29CC4CEF1;
-	Tue, 12 Aug 2025 17:55:35 +0000 (UTC)
+	 MIME-Version; b=Ue3WEIs1pBJ8MXLkLVZnPfrbmY7C6Wy9iy0lwtUqRMhuK4NpI6Ah1cVDCyDP8TDdrxcHotfk20oZ2L1jo4cl9/1oWjgxFfCDVGKMvjneQyCamyXDyMJ6LG6W/X4FIWuGyViWpj1pnoATZ93zqQykDYv22yrhQF/99erx4JlbfHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vk+Hsair; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B833C4CEF0;
+	Tue, 12 Aug 2025 17:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021336;
-	bh=JSj/qbkFQ3fCQhSihoMTfshuFoBKKMy9ryU3bPQ3QMQ=;
+	s=korg; t=1755020609;
+	bh=1zMscYCaod19EM4wqE1S3oan6fFitUnH//UTi2khAiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfaUTTBUu1UlW6e40MUyaQ46mTfVP1sfSFyk3qYv0BjK8qh8+gz0J1oUCjjSLr/e7
-	 8rsqVaboFDsegmSRJ09ECwxf9xS+YTaQ4ugLTUMwwHazVaFCW1qdyaKP7lMnmEb6wp
-	 Cd0l9fFRfOAKW32Bs9v7bzPXK5nM0vNlVEg8pmsw=
+	b=vk+HsairQdCvQ6r6LCwlKIoFbJuGe4G2GJJLMg+nUgzTxrjNIelPHji/FGb5r2G9o
+	 4FjdP24FqBgx9S/vEX/5h0ch6hjg+ovcdCpUJ0kolJLh6LjJEz6HlySZ8/NJTmMwFL
+	 gvq5KwE/KgWoRw1auCug4kE4Ao0LNMZAfcLh5jx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/262] can: kvaser_usb: Assign netdev.dev_port based on device channel index
+Subject: [PATCH 6.1 097/253] drm/rockchip: cleanup fb when drm_gem_fb_afbc_init failed
 Date: Tue, 12 Aug 2025 19:28:05 +0200
-Message-ID: <20250812172957.219229066@linuxfoundation.org>
+Message-ID: <20250812172952.858667512@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit c151b06a087a61c7a1790b75ee2f1d6edb6a8a45 ]
+[ Upstream commit 099593a28138b48feea5be8ce700e5bc4565e31d ]
 
-Assign netdev.dev_port based on the device channel index, to indicate the
-port number of the network device.
-While this driver already uses netdev.dev_id for that purpose, dev_port is
-more appropriate. However, retain dev_id to avoid potential regressions.
+In the function drm_gem_fb_init_with_funcs, the framebuffer (fb)
+and its corresponding object ID have already been registered.
 
-Fixes: 3e66d0138c05 ("can: populate netdev::dev_id for udev discrimination")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123452.41-4-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+So we need to cleanup the drm framebuffer if the subsequent
+execution of drm_gem_fb_afbc_init fails.
+
+Directly call drm_framebuffer_put to ensure that all fb related
+resources are cleanup.
+
+Fixes: 7707f7227f09 ("drm/rockchip: Add support for afbc")
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250509031607.2542187-1-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_fb.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 15f28b6fe758..022b5b79247c 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -856,6 +856,7 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
+index 092bf863110b..9545ee64a90a 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
+@@ -82,16 +82,9 @@ rockchip_fb_create(struct drm_device *dev, struct drm_file *file,
  	}
- 	SET_NETDEV_DEV(netdev, &dev->intf->dev);
- 	netdev->dev_id = channel;
-+	netdev->dev_port = channel;
  
- 	dev->nets[channel] = priv;
- 
+ 	if (drm_is_afbc(mode_cmd->modifier[0])) {
+-		int ret, i;
+-
+ 		ret = drm_gem_fb_afbc_init(dev, mode_cmd, afbc_fb);
+ 		if (ret) {
+-			struct drm_gem_object **obj = afbc_fb->base.obj;
+-
+-			for (i = 0; i < info->num_planes; ++i)
+-				drm_gem_object_put(obj[i]);
+-
+-			kfree(afbc_fb);
++			drm_framebuffer_put(&afbc_fb->base);
+ 			return ERR_PTR(ret);
+ 		}
+ 	}
 -- 
 2.39.5
 
