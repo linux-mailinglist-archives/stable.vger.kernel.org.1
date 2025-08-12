@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2173B2328F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFA6B23090
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26C96E03B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F41565907
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E846D2DE1E2;
-	Tue, 12 Aug 2025 18:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5C52F83CB;
+	Tue, 12 Aug 2025 17:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFN2o+wG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODzYfgpD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FE520409A;
-	Tue, 12 Aug 2025 18:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD64221FAC;
+	Tue, 12 Aug 2025 17:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022435; cv=none; b=CIdZaoPvO3/9O/MoLGo025c0q3rdsiwXXd7rEFLXPk2HHjGMB3F3sz6SG8DfAwe44PjWjPi8KlLyuEqAXx6oa2tV9WgAwKmkcWYBObgZnrsWk1oTYSj5WleNwVArSxZgDB0uewvEDI/kfLDxw1wuoks9C4wYbsNzMIJ2/pbQDqc=
+	t=1755021203; cv=none; b=NDHLegNCQMYIQNg4/S/rzqHL69xgPa05ZzPfx7jibS3dEbM6G+N8cxmkjfOg0ZWKfy08/97/4zDe6FjhXOtQYv8qFKTJ3BKrjnuwePDCzFb02hxrGhy1G+UYTLeIFIL5+ZzP7iLoH933InrO7U8Oe4RP8ptfKBJz5xwvb7asLDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022435; c=relaxed/simple;
-	bh=kUwm8B94F1rDwRjrWATweMzeY016h5BCJnoy6pc9wO4=;
+	s=arc-20240116; t=1755021203; c=relaxed/simple;
+	bh=5xJBha7vIrdnOqvRHY0FKcHe7NuKEfWH04cETb0qr10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmmAkD67l9rFTVKR0ybUg/FJhABqxMCXj9s7ajIf4/lJsq5c/sSCiC92kLDs5msdZLqbWxOGQg0pYMP/RipoO+z4qx/FXXLFOq5wSycdkJuq7uM0+vNhWMdS6twpgozaoJnKC7Tjub3gxW02/dAmghl/E7DMa82I3sPSWd88jdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFN2o+wG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1653DC4CEF0;
-	Tue, 12 Aug 2025 18:13:54 +0000 (UTC)
+	 MIME-Version; b=YMroZ9rp6V85xdi7si0nQiD2z7PuHIatxMmKW9WzEtlEigN3UW09INbdK2+RVDHrrVX0jNxcjUTQOzcIWZiAQn2ZDimdXogTenCDAXCxydaaduhIVMs5ffIecO6Ss++/wL4KxQ+0GF0BtdlLcnH6hgdA0ZpAUVAEh+Vsghq5lao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODzYfgpD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE55DC4CEF0;
+	Tue, 12 Aug 2025 17:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022435;
-	bh=kUwm8B94F1rDwRjrWATweMzeY016h5BCJnoy6pc9wO4=;
+	s=korg; t=1755021203;
+	bh=5xJBha7vIrdnOqvRHY0FKcHe7NuKEfWH04cETb0qr10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFN2o+wGnwWGoPtMA6m8DYqolpNWvwzqL1W1SbnJS9sAC82AwdHBwPKoy6sc4DPQv
-	 7Txg5UH+mTePAa35eh0O6XshbVWK9GcyJ4CYP+1NdkfubLJRahDJr2jAbIDwv5yUy2
-	 NI14sHFCcA44PUgXAbW4GNSFwoKgxjU7umgQguCw=
+	b=ODzYfgpDn+kyMd8dART0fat5owoQCL//VA2XVX0IBM0uTFWkuxW13YLk6buOq9zEO
+	 rV6+/BkqVJX0UexSH2/eD/oGYqTwNfQvfO7ShW7j87cQZ7BB+xAQG+Pi7VtMayurDl
+	 Od4POzU9x1DRQbm6jXWXtulAXsIPZqv+OFiV63EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/369] crypto: sun8i-ce - fix nents passed to dma_unmap_sg()
+Subject: [PATCH 6.6 064/262] net: dst: annotate data-races around dst->output
 Date: Tue, 12 Aug 2025 19:27:32 +0200
-Message-ID: <20250812173020.604524778@linuxfoundation.org>
+Message-ID: <20250812172955.713852206@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b6cd3cfb5afe49952f8f6be947aeeca9ba0faebb ]
+[ Upstream commit 2dce8c52a98995c4719def6f88629ab1581c0b82 ]
 
-In sun8i_ce_cipher_unprepare(), dma_unmap_sg() is incorrectly called with
-the number of entries returned by dma_map_sg(), rather than using the
-original number of entries passed when mapping the scatterlist.
+dst_dev_put() can overwrite dst->output while other
+cpus might read this field (for instance from dst_output())
 
-To fix this, stash the original number of entries passed to dma_map_sg()
-in the request context.
+Add READ_ONCE()/WRITE_ONCE() annotations to suppress
+potential issues.
 
-Fixes: 0605fa0f7826 ("crypto: sun8i-ce - split into prepare/run/unprepare")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+We will likely need RCU protection in the future.
+
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250630121934.3399505-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/dst.h      | 2 +-
+ include/net/lwtunnel.h | 4 ++--
+ net/core/dst.c         | 2 +-
+ net/ipv4/route.c       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-index 05f67661553c..63e66a85477e 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-@@ -265,8 +265,8 @@ static int sun8i_ce_cipher_prepare(struct crypto_engine *engine, void *async_req
+diff --git a/include/net/dst.h b/include/net/dst.h
+index ef7f88f01881..60fb5d2faf43 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -464,7 +464,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
+ /* Output packet to network from transport.  */
+ static inline int dst_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	return INDIRECT_CALL_INET(skb_dst(skb)->output,
++	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->output),
+ 				  ip6_output, ip_output,
+ 				  net, sk, skb);
+ }
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index a4632a64daae..09791f5d9b6e 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -138,8 +138,8 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len,
+ static inline void lwtunnel_set_redirect(struct dst_entry *dst)
+ {
+ 	if (lwtunnel_output_redirect(dst->lwtstate)) {
+-		dst->lwtstate->orig_output = dst->output;
+-		dst->output = lwtunnel_output;
++		dst->lwtstate->orig_output = READ_ONCE(dst->output);
++		WRITE_ONCE(dst->output, lwtunnel_output);
  	}
+ 	if (lwtunnel_input_redirect(dst->lwtstate)) {
+ 		dst->lwtstate->orig_input = READ_ONCE(dst->input);
+diff --git a/net/core/dst.c b/net/core/dst.c
+index def3dbbd37e3..2513665696f6 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -151,7 +151,7 @@ void dst_dev_put(struct dst_entry *dst)
+ 	if (dst->ops->ifdown)
+ 		dst->ops->ifdown(dst, dev);
+ 	WRITE_ONCE(dst->input, dst_discard);
+-	dst->output = dst_discard_out;
++	WRITE_ONCE(dst->output, dst_discard_out);
+ 	dst->dev = blackhole_netdev;
+ 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+ 			   GFP_ATOMIC);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f8538507ce3f..6ee77f7f9114 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1700,7 +1700,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
+ 			new_rt->rt_gw6 = rt->rt_gw6;
  
- 	chan->timeout = areq->cryptlen;
--	rctx->nr_sgs = nr_sgs;
--	rctx->nr_sgd = nr_sgd;
-+	rctx->nr_sgs = ns;
-+	rctx->nr_sgd = nd;
- 	return 0;
- 
- theend_sgs:
+ 		new_rt->dst.input = READ_ONCE(rt->dst.input);
+-		new_rt->dst.output = rt->dst.output;
++		new_rt->dst.output = READ_ONCE(rt->dst.output);
+ 		new_rt->dst.error = rt->dst.error;
+ 		new_rt->dst.lastuse = jiffies;
+ 		new_rt->dst.lwtstate = lwtstate_get(rt->dst.lwtstate);
 -- 
 2.39.5
 
