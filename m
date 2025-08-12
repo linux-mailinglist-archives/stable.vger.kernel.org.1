@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-168861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D60DEB236F8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:06:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84005B236E6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 245361750E3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:06:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3923E7BC694
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F182882CE;
-	Tue, 12 Aug 2025 19:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06C01C1AAA;
+	Tue, 12 Aug 2025 19:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrgf2xkC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NC7JyGSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FD826FA77;
-	Tue, 12 Aug 2025 19:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7132A26FA77;
+	Tue, 12 Aug 2025 19:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025578; cv=none; b=gMApq7R4886WkMI6B5Ev6MAjoWLVOnV/pNxhQ+0nrP/djZ3MAPJnS3E05umEuAF500X2NBH9oY23fdCNLnf8elGDEaBXns/d2H2mFn4ndMcO9BsQz8/wrEzYA+C/W44k2Y1saLAKkzKmzvc4E/iboUfKyA5mtc/2hCBj8hWOkdY=
+	t=1755025466; cv=none; b=d/VdEFD5HFvUYymla1MPz/JpOvOpaijXveeCcjiUzWDICOsnx90EYIkBwwL1k58zU1UBnna/XYtz4Plu7XMonduk6hp82ITtEzEbQsTfU5i9z5ls7jC/VswU/vYqpEyB4L+almMTAm5828Z8vsAf+8dbL+UK3FdeCpatinsu9xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025578; c=relaxed/simple;
-	bh=+/8B0vS+hyGVzL941cdnjVUGDclMPNY/azhU+XwP6YA=;
+	s=arc-20240116; t=1755025466; c=relaxed/simple;
+	bh=x8HqbRPLKTww+8stjIMBQNsPSd2nQasEMwQpKCnjGdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2RKnCGdWwMsHyWTeCMGPs1Y7Uef3CsKHefv4kYIlG8mrQzTPUxu8qP3vtgkyi1n/sRTk6STFZNe5dmglaXvCA4nG1FSE6WFj6Dzdbe00/9WzR4+VwoqTcK3EQo2VmKM5TxxwY3794b9Yp9nITB8IfMWFW83i+qvoAgHpLXp/3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrgf2xkC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00BAC4CEF0;
-	Tue, 12 Aug 2025 19:06:17 +0000 (UTC)
+	 MIME-Version; b=Safa28/KaUS74z/fu5MR4qjhjkNQPTbZLgjDQ7aWrtjjmMOIPDB08UcK18W+Xrji4af3i7WcNmUlT+Wdwt/F61XKUfAaZI07AIuPQgQDyu9+UWjXqeTs9ydkLrEWkDNQ9p/SXD70OrbAqGRNCN7m4VvhO8WOLwsnUlCtQlBjnbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NC7JyGSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A4BC4CEF0;
+	Tue, 12 Aug 2025 19:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025578;
-	bh=+/8B0vS+hyGVzL941cdnjVUGDclMPNY/azhU+XwP6YA=;
+	s=korg; t=1755025466;
+	bh=x8HqbRPLKTww+8stjIMBQNsPSd2nQasEMwQpKCnjGdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrgf2xkCxjeHl6xKQYt6WS2FCUtc2RG1OUmerjRaafIL4Y7Jcoby2xGhd92hVOQ2J
-	 BvVHk632l9tgbUueb2l6p0Q/O6oB8EqK2gOCFPXaat4ulHmQqZTL9dvin1YtNi1R8u
-	 9n84q8obcqtVZ4v6esTDNDPr+Re61LaW0kQCPUog=
+	b=NC7JyGSd/s6YvFtOaoSAx/qeb7zgaA9J6elHfOP9hh4Fo4vsczfy4969GCpKwIawa
+	 tZLgRBxEp25w7Tj0Wflw/YhKaRMdtODZIw7XTEdu59/C/FTNLM5tdm/akW2HO3T3Xy
+	 trzbsGLTqgfVMnhXI8TiI45eUdHDaMYxg3QhKo1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ryan Wanner <Ryan.Wanner@microchip.com>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 049/480] ARM: dts: microchip: sama7d65: Add clock name property
-Date: Tue, 12 Aug 2025 19:44:17 +0200
-Message-ID: <20250812174359.423488227@linuxfoundation.org>
+Subject: [PATCH 6.15 050/480] ARM: dts: microchip: sam9x7: Add clock name property
+Date: Tue, 12 Aug 2025 19:44:18 +0200
+Message-ID: <20250812174359.463755963@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Ryan Wanner <Ryan.Wanner@microchip.com>
 
-[ Upstream commit 0029468132ba2e00a3010865038783d9b2e6cc07 ]
+[ Upstream commit 2e24723492b28ffdccb0e3e68725673e299e3823 ]
 
 Add clock-output-names to the xtal nodes, so the driver can correctly
 register the main and slow xtal.
@@ -76,30 +76,30 @@ register the main and slow xtal.
 This fixes the issue of the SoC clock driver not being able to find
 the main xtal and slow xtal correctly causing a bad clock tree.
 
-Fixes: 261dcfad1b59 ("ARM: dts: microchip: add sama7d65 SoC DT")
+Fixes: 41af45af8bc3 ("ARM: dts: at91: sam9x7: add device tree for SoC")
 Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Link: https://lore.kernel.org/r/3878ae6d0016d46f0c91bd379146d575d5d336aa.1750175453.git.Ryan.Wanner@microchip.com
+Link: https://lore.kernel.org/r/036518968ac657b93e315bb550b822b59ae6f17c.1750175453.git.Ryan.Wanner@microchip.com
 Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/sama7d65.dtsi | 2 ++
+ arch/arm/boot/dts/microchip/sam9x7.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/microchip/sama7d65.dtsi b/arch/arm/boot/dts/microchip/sama7d65.dtsi
-index b6710ccd4c36..7b1dd28a2cfa 100644
---- a/arch/arm/boot/dts/microchip/sama7d65.dtsi
-+++ b/arch/arm/boot/dts/microchip/sama7d65.dtsi
-@@ -38,11 +38,13 @@ cpu0: cpu@0 {
+diff --git a/arch/arm/boot/dts/microchip/sam9x7.dtsi b/arch/arm/boot/dts/microchip/sam9x7.dtsi
+index b217a908f525..114449e90720 100644
+--- a/arch/arm/boot/dts/microchip/sam9x7.dtsi
++++ b/arch/arm/boot/dts/microchip/sam9x7.dtsi
+@@ -45,11 +45,13 @@ cpu@0 {
  	clocks {
- 		main_xtal: clock-mainxtal {
- 			compatible = "fixed-clock";
-+			clock-output-names = "main_xtal";
- 			#clock-cells = <0>;
- 		};
- 
  		slow_xtal: clock-slowxtal {
  			compatible = "fixed-clock";
 +			clock-output-names = "slow_xtal";
+ 			#clock-cells = <0>;
+ 		};
+ 
+ 		main_xtal: clock-mainxtal {
+ 			compatible = "fixed-clock";
++			clock-output-names = "main_xtal";
  			#clock-cells = <0>;
  		};
  	};
