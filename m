@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-167490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED080B2304D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41956B22F78
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD85D6850B7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17BB566142
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE162D46AC;
-	Tue, 12 Aug 2025 17:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91982FF14F;
+	Tue, 12 Aug 2025 17:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7+23moj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+eSjL3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF3A2F7477;
-	Tue, 12 Aug 2025 17:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957E1268C73;
+	Tue, 12 Aug 2025 17:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020993; cv=none; b=X0iXEg8oW7vgfcT9lBghUI2SRl34U2MymWOhyzEATEc9aMvtCZDf1O3sLp030jlPCnbvlBLKRWyscYWgpnaiy5JyRURwspuclbcAKrtoOuD/7eieBeaeD6naOYabtzIB006vN2EWy5FM1zRWz9sCXcwrzcumXGFC2rdJWRDWGu0=
+	t=1755020326; cv=none; b=FlKTpCtWNHcTKf4a2Ztr6jK6CjAGrZKABpGXPT8OW3LhkBrlCKwXO5hL7jXpJmmGutgOZhGibbnhJW1ls1hfVQaKEybnSytCcErQ7l1oaQb+T5idODdTFBpQxs7jFmW0BPdxtWyy9/koGkOCSOqDl56w+s11cR7cJ2xmPl76SOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020993; c=relaxed/simple;
-	bh=LFMbrwAhs86RvXcsvQFdtWJ/OaalH4zfUJGwsGPY2Dw=;
+	s=arc-20240116; t=1755020326; c=relaxed/simple;
+	bh=XoHGWCgWC7UIkVXxCOnsQH5O7BieycocfWOYazIX/RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeIJ8Q+/e39wtmWQazX2zQkhTgXa5yKvK7ml03XKRiHsWnykGkBozEY4H3Ls/VVQnZFOzRNxZ1Nf63sVESCTQqglpXToXEMdwxeVqmXM21lMpyyHbbGeSWlx3FJ4U/SVvi3wEhDC82dckA1JbLiUIC6Fq9SULqTJv3CDKwajtnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7+23moj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E900C4CEF0;
-	Tue, 12 Aug 2025 17:49:52 +0000 (UTC)
+	 MIME-Version; b=QPVnet6rGyZLHeplpQEulPnWBTSnw0xSUR/L3Z9yElc9lZji0z3bPlUwdzSSamtlw+xym9BGdCnj+zkZDiNFuHoNpxSfgVaenTkKXjzOc5Gz4MQQTbv1NOzAz9AFkAju2+5+HOpE0np8FYTCjCgP22FkeWsHgdZsxC63VoXJ3p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+eSjL3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0596CC4CEF0;
+	Tue, 12 Aug 2025 17:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020992;
-	bh=LFMbrwAhs86RvXcsvQFdtWJ/OaalH4zfUJGwsGPY2Dw=;
+	s=korg; t=1755020326;
+	bh=XoHGWCgWC7UIkVXxCOnsQH5O7BieycocfWOYazIX/RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7+23mojvd77q/1CwXshB7qI6gntid1g7jiNvdOL4h2w0Gc6Q5cgVwKEQygx+kV58
-	 2C193m7LDrQX/MY1lr1Cx+JzLfnurfVmHtxxTXo2TmvrP12Ix/HwDocgX7Dp33LdhE
-	 yrz7TufnUEJyY1b7k7KtwrMaD7EM68tezwRIkmBc=
+	b=i+eSjL3k4MtaZuxTDeYeh6eoE8FleqmnH1ZaorrSHYwTrlu6sNWdeTwxbDSlfTf9N
+	 p5oYH/KpADg/Gj4jhInNXuCYf0SsKYJcSTuZNBogUeqf583NonP0Pzw4wl9JSWeYDR
+	 PW7KKDeBH0v+qVVKIPdFy4kcDsCzlA0RiG4OuFWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/262] selftests/tracing: Fix false failure of subsystem event test
+	Michael Zhivich <mzhivich@akamai.com>
+Subject: [PATCH 6.1 047/253] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
 Date: Tue, 12 Aug 2025 19:27:15 +0200
-Message-ID: <20250812172954.974895643@linuxfoundation.org>
+Message-ID: <20250812172950.738265660@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Michael Zhivich <mzhivich@akamai.com>
 
-[ Upstream commit 213879061a9c60200ba971330dbefec6df3b4a30 ]
+For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
+field in zen_patch_rev union on the stack may be garbage.  If so, it will
+prevent correct microcode check when consulting p.ucode_rev, resulting in
+incorrect mitigation selection.
 
-The subsystem event test enables all "sched" events and makes sure there's
-at least 3 different events in the output. It used to cat the entire trace
-file to | wc -l, but on slow machines, that could last a very long time.
-To solve that, it was changed to just read the first 100 lines of the
-trace file. This can cause false failures as some events repeat so often,
-that the 100 lines that are examined could possibly be of only one event.
+This is a stable-only fix.
 
-Instead, create an awk script that looks for 3 different events and will
-exit out after it finds them. This will find the 3 events the test looks
-for (eventually if it works), and still exit out after the test is
-satisfied and not cause slower machines to run forever.
-
-Link: https://lore.kernel.org/r/20250721134212.53c3e140@batman.local.home
-Reported-by: Tengda Wu <wutengda@huaweicloud.com>
-Closes: https://lore.kernel.org/all/20250710130134.591066-1-wutengda@huaweicloud.com/
-Fixes: 1a4ea83a6e67 ("selftests/ftrace: Limit length in subsystem-enable tests")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
+Fixes: d12145e8454f ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ftrace/test.d/event/subsystem-enable.tc   | 28 +++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-index b7c8f29c09a9..65916bb55dfb 100644
---- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-+++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-@@ -14,11 +14,35 @@ fail() { #msg
-     exit_fail
- }
- 
-+# As reading trace can last forever, simply look for 3 different
-+# events then exit out of reading the file. If there's not 3 different
-+# events, then the test has failed.
-+check_unique() {
-+    cat trace | grep -v '^#' | awk '
-+	BEGIN { cnt = 0; }
-+	{
-+	    for (i = 0; i < cnt; i++) {
-+		if (event[i] == $5) {
-+		    break;
-+		}
-+	    }
-+	    if (i == cnt) {
-+		event[cnt++] = $5;
-+		if (cnt > 2) {
-+		    exit;
-+		}
-+	    }
-+	}
-+	END {
-+	    printf "%d", cnt;
-+	}'
-+}
-+
- echo 'sched:*' > set_event
- 
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -29,7 +53,7 @@ echo 1 > events/sched/enable
- 
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
--- 
-2.39.5
+Changes in v3:
+- separate "fixes" tag for each stable
 
+ arch/x86/kernel/cpu/amd.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -563,6 +563,8 @@ static bool amd_check_tsa_microcode(void
+ 	p.model		= c->x86_model;
+ 	p.ext_model	= c->x86_model >> 4;
+ 	p.stepping	= c->x86_stepping;
++	/* reserved bits are expected to be 0 in test below */
++	p.__reserved	= 0;
+ 
+ 	if (c->x86 == 0x19) {
+ 		switch (p.ucode_rev >> 8) {
 
 
 
