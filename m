@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1717AB2304A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EEAB23478
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81826685CEB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19C991A2297B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F462FDC5E;
-	Tue, 12 Aug 2025 17:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24722ECE93;
+	Tue, 12 Aug 2025 18:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xqxm0Tkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZtmgu8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F9E279915;
-	Tue, 12 Aug 2025 17:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95761FFE;
+	Tue, 12 Aug 2025 18:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020969; cv=none; b=A2+KjVCVMaOUFGlqzukKaZYQR9tCIiA+JTLXt9X0j7PYVwjDOgvunM9HSmUFxEN3uQe6gpXh+J4GHOYEssQvIt2CJIH7K9Qd0uGf8PdBG5OHIbWPgKJoPd4NfUez0vR7CiU2zDcv+IBb0YPe6IIonaVgbD/aePq6KVxKcygKJaI=
+	t=1755023748; cv=none; b=dh/EXrHPNRsKgpBe1VZPI6awbCEzV3nxVfC7whWbbhZx2JwgXzujP0Qi9imOu2Hc9Wjajazf5/kRh26ZtjywDzCn6Oxpx5VW1ADYJCEXn0zQ840/rpDnHL6d1kcymR0iCAwTImhubodMtcDJVBT8UApEhmshboOjdBL62kah5pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020969; c=relaxed/simple;
-	bh=+wuPU98U4ApXAIQZV2YoJqPKOl4g+Ig86Ywkj7EZ/W8=;
+	s=arc-20240116; t=1755023748; c=relaxed/simple;
+	bh=0W/wXZk5n+3jpkga1XcjdYTYICu5I2Yqw/TRIRZ0A/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=loFQDTkP6dKRKRN6zcxbRz8x8JUj6a9VQLVuYe7zC347pgZEk+vcnXSw4yX1rF7NxE1n/wEgXc/FaaNQH7xrLMjRnbTyPmnaIjhfx1XeLIN8VsiTMeO2aSBQpYaEsVFnVifOyPBLAqnhpZzEQjXUtXf61W2AMGQDxCF9xJ9EQJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xqxm0Tkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D89C4CEF1;
-	Tue, 12 Aug 2025 17:49:28 +0000 (UTC)
+	 MIME-Version; b=Bq/UfdmTaRdfGsH+HPngpDlpK2yu2z7zJSMqzxuf7rNgNDT94Tw/j8pCrE3L/peLmycctO68o9ZTtOvDjuExUr0IXYEp5StadFXEYHLkNjA2PrbN7keNWO3cQ+mrkPazB6gUkC68VPvXuTNKYYEWGgq9AaFy1DnwEJckdH6X3Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZtmgu8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3F9C4CEF0;
+	Tue, 12 Aug 2025 18:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020969;
-	bh=+wuPU98U4ApXAIQZV2YoJqPKOl4g+Ig86Ywkj7EZ/W8=;
+	s=korg; t=1755023748;
+	bh=0W/wXZk5n+3jpkga1XcjdYTYICu5I2Yqw/TRIRZ0A/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xqxm0TkgZzLTxnY1Vc6SG/gi23F7l2t3AfS/CuCIdBRrwjya+tTgfhlg7hDTLo6JW
-	 E3VRA3JtzNuAM/whUr+gyw5+gBzOKtEWDcimUvlDHllFAclnMr7fdGDNU85vR17Yma
-	 qd73N9Hnt8hXYZU7QWZpiKEYtJ1N3+knt32/lcnA=
+	b=AZtmgu8lMnninONTXWEjjZLfP04eEyNKYguCb1EHHVeOsR/D8uXKV2huDYmvxRjvx
+	 f/yz78Pzu55xJEgTQT6L5fkPmTo9nh44EFJuq7LUnDp1trspWUlpB8vjUQZhRaGzTj
+	 wBoBEX2BoDPl6sNx9veH5ipAI+/U5zPOg4X1TxrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/262] interconnect: qcom: sc8280xp: specify num_links for qnm_a1noc_cfg
+Subject: [PATCH 6.16 137/627] wifi: rtw89: mcc: prevent shift wrapping in rtw89_core_mlsr_switch()
 Date: Tue, 12 Aug 2025 19:27:12 +0200
-Message-ID: <20250812172954.843053195@linuxfoundation.org>
+Message-ID: <20250812173424.514777256@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 02ee375506dceb7d32007821a2bff31504d64b99 ]
+[ Upstream commit 53cf488927a0f79968f9c03c4d1e00d2a79731c3 ]
 
-The qnm_a1noc_cfg declaration didn't include .num_links definition, fix
-it.
+The "link_id" value comes from the user via debugfs.  If it's larger
+than BITS_PER_LONG then that would result in shift wrapping and
+potentially an out of bounds access later.  In fact, we can limit it
+to IEEE80211_MLD_MAX_NUM_LINKS (15).
 
-Fixes: f29dabda7917 ("interconnect: qcom: Add SC8280XP interconnect provider")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250704-rework-icc-v2-1-875fac996ef5@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Fortunately, only root can write to debugfs files so the security
+impact is minimal.
+
+Fixes: 9dd85e739ce0 ("wifi: rtw89: debug: add mlo_mode dbgfs")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/aDbFFkX09K7FrL9h@stanley.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sc8280xp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/qcom/sc8280xp.c b/drivers/interconnect/qcom/sc8280xp.c
-index 0270f6c64481..c646cdf8a19b 100644
---- a/drivers/interconnect/qcom/sc8280xp.c
-+++ b/drivers/interconnect/qcom/sc8280xp.c
-@@ -48,6 +48,7 @@ static struct qcom_icc_node qnm_a1noc_cfg = {
- 	.id = SC8280XP_MASTER_A1NOC_CFG,
- 	.channels = 1,
- 	.buswidth = 4,
-+	.num_links = 1,
- 	.links = { SC8280XP_SLAVE_SERVICE_A1NOC },
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 49447668cbf3..3604a8e15df0 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -5239,7 +5239,8 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ 	if (unlikely(!ieee80211_vif_is_mld(vif)))
+ 		return -EOPNOTSUPP;
  
+-	if (unlikely(!(usable_links & BIT(link_id)))) {
++	if (unlikely(link_id >= IEEE80211_MLD_MAX_NUM_LINKS ||
++		     !(usable_links & BIT(link_id)))) {
+ 		rtw89_warn(rtwdev, "%s: link id %u is not usable\n", __func__,
+ 			   link_id);
+ 		return -ENOLINK;
 -- 
 2.39.5
 
