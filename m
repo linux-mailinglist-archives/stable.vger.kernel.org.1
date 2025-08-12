@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5213AB2310D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78F4B234D8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28268172A8B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E368682A95
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2092FE579;
-	Tue, 12 Aug 2025 17:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEB92FE560;
+	Tue, 12 Aug 2025 18:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQjweBM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vi6J2M4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE472FE571;
-	Tue, 12 Aug 2025 17:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB976BB5B;
+	Tue, 12 Aug 2025 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021519; cv=none; b=GQccsCFMG2/AFJbZcVwjhuGI7g6xAOC4VHg5EBY9ROZDZ2RQMC1cN/grGJEg7kaCXu30neVN0vemtP6q0Snam8+i0z0x7mMl9TrvGamNczt/utWG6emcBuKhHQUQULXS759FB+gHSq+8hjJbzHw9dFxHuL4OK4Xm1AJ+mEq0wHk=
+	t=1755024009; cv=none; b=R+fRF9e0gi3wrHukPh/4cqV3XxF4GdYjP5t6TE5WsS/xSzQggNl88XJ+2C8ehUw5AWW4ckP1M4yZ2YlQCA9B4E0/bDIZcFzvcwrPTTbrs98hjC3nKrgN9keA22bZLAZAI9C/xZxntWuFDfR8UNgCyVGExp6vKeTAx/BvIxuEvoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021519; c=relaxed/simple;
-	bh=EVYPAk+2NPCW0mJMeJSN5mMg6VbTgfaED6KMnJcWqwo=;
+	s=arc-20240116; t=1755024009; c=relaxed/simple;
+	bh=XV8CwznsuAm8xsKaGekypuv5wlYTUJW9F7EMYB5yRzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rxb/GdbKnJAMv2dzaeQGaBLhjVhhMysfvOTj9S+JMEPn/gS/F3gjROHG/NuXKL8EkYjAjF7yfPXFCoLMnbrjt3H2ykp431rdpNpjdEoRVxcQYJC4ZXZrPcCGWYvx3uF3MDxVpTuI2mKmSxCgcrBCg56v2VyRIGorRd/wARsQepw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQjweBM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16904C4CEF0;
-	Tue, 12 Aug 2025 17:58:38 +0000 (UTC)
+	 MIME-Version; b=Gdanw5YOsknYo15HBkk488dPpaW5bcRDrBpfj6WdN88jqUozttLMORoLMz03Z98gO7duIXI+1I6+8RGUF2lhzaLWKNbuzyKn/Jc7zoZGrUGsgQbD9WGlGh7oHswsPkWqNAMudApy9bQcNXFTHyGFQtKHOYuArIr1MtWtVKMzii4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vi6J2M4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18478C4CEF0;
+	Tue, 12 Aug 2025 18:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021519;
-	bh=EVYPAk+2NPCW0mJMeJSN5mMg6VbTgfaED6KMnJcWqwo=;
+	s=korg; t=1755024009;
+	bh=XV8CwznsuAm8xsKaGekypuv5wlYTUJW9F7EMYB5yRzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQjweBM0BO30BGPLUUjGC3K4sUy7bzFJ1hHEsi76Apxh5Sv/ALSPl1MOlAGp8N9kj
-	 1JDuJvhBELOvBpzTkkCtXYZovZg63uaB2ZpCawiuRWQ8OtW4QIhCz1n+jYiNB0GvEH
-	 tbplk9LzgLObQxmRTVJeP5QOSRJVhy0HnDezG9+s=
+	b=vi6J2M4gx6fByFqMSyviLQF2l91tZlSrGoSoa59kD8xJUfrqEwwYgzyo/MtPALF2E
+	 YFpCNwWDtXlEX86L/KpsWBAwnzNoPZdyO04PcdXZ1UnEDATGkmvl4GqE2zOmFu6l4+
+	 8qmYbz33cdmqK3pB7SxfaoQZ2b/LdWwPmZmuefZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mike Marshall <hubcap@omnibond.com>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/262] fs/orangefs: Allow 2 more characters in do_c_string()
+Subject: [PATCH 6.16 239/627] wifi: mac80211: Check 802.11 encaps offloading in ieee80211_tx_h_select_key()
 Date: Tue, 12 Aug 2025 19:28:54 +0200
-Message-ID: <20250812172959.316474555@linuxfoundation.org>
+Message-ID: <20250812173428.393755501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 2138e89cb066b40386b1d9ddd61253347d356474 ]
+[ Upstream commit 4037c468d1b3c508d69e6df0ef47fdee3d440e39 ]
 
-The do_k_string() and do_c_string() functions do essentially the same
-thing which is they add a string and a comma onto the end of an existing
-string.  At the end, the caller will overwrite the last comma with a
-newline.  Later, in orangefs_kernel_debug_init(), we add a newline to
-the string.
+With 802.11 encapsulation offloading, ieee80211_tx_h_select_key() is
+called on 802.3 frames. In that case do not try to use skb data as
+valid 802.11 headers.
 
-The change to do_k_string() is just cosmetic.  I moved the "- 1" to
-the other side of the comparison and made it "+ 1".  This has no
-effect on runtime, I just wanted the functions to match each other
-and the rest of the file.
-
-However in do_c_string(), I removed the "- 2" which allows us to print
-two extra characters.  I noticed this issue while reviewing the code
-and I doubt affects anything in real life.  My guess is that this was
-double counting the comma and the newline.  The "+ 1" accounts for
-the newline, and the caller will delete the final comma which ensures
-there is enough space for the newline.
-
-Removing the "- 2" lets us print 2 more characters, but mainly it makes
-the code more consistent and understandable for reviewers.
-
-Fixes: 44f4641073f1 ("orangefs: clean up debugfs globals")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/1af4b5b903a5fca5ebe67333d5854f93b2be5abe.1752765971.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mac80211/tx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index fa41db088488..b57140ebfad0 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -728,8 +728,8 @@ static void do_k_string(void *k_mask, int index)
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 04f4d574401f..73304a5cf6fc 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -612,6 +612,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 	else
+ 		tx->key = NULL;
  
- 	if (*mask & s_kmod_keyword_mask_map[index].mask_val) {
- 		if ((strlen(kernel_debug_string) +
--		     strlen(s_kmod_keyword_mask_map[index].keyword))
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 1) {
-+		     strlen(s_kmod_keyword_mask_map[index].keyword) + 1)
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(kernel_debug_string,
- 				       s_kmod_keyword_mask_map[index].keyword);
- 				strcat(kernel_debug_string, ",");
-@@ -756,7 +756,7 @@ static void do_c_string(void *c_mask, int index)
- 	    (mask->mask2 & cdm_array[index].mask2)) {
- 		if ((strlen(client_debug_string) +
- 		     strlen(cdm_array[index].keyword) + 1)
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 2) {
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(client_debug_string,
- 				       cdm_array[index].keyword);
- 				strcat(client_debug_string, ",");
++	if (info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) {
++		if (tx->key && tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
++			info->control.hw_key = &tx->key->conf;
++		return TX_CONTINUE;
++	}
++
+ 	if (tx->key) {
+ 		bool skip_hw = false;
+ 
 -- 
 2.39.5
 
