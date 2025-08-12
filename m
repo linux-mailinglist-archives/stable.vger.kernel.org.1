@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50053B234A5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84543B230D7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73DA6585ADF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3697A6867A2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2407D2FF169;
-	Tue, 12 Aug 2025 18:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2762FD1D7;
+	Tue, 12 Aug 2025 17:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f836mJMx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diz6uiFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D22FE579;
-	Tue, 12 Aug 2025 18:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F552FA0DB;
+	Tue, 12 Aug 2025 17:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023985; cv=none; b=ZlNINW3lSI9CeMziTb25y9p5vUy/QUdmOZ4dGXALvhTAQsnmNHXWbWi/9Q9eVaIrJLJC7HHoH2Eap3rdrA5z2jmV8RNQlwe3dvlbT7DeAJsQuEHKT3ipkZXTAkYXI4Y+f/Xww9JLP4QM+pbJBy1A/MYVBsoP+ymPDcuLtU4SeBQ=
+	t=1755021409; cv=none; b=TCDq6r4vOquLZxSFnSowdVQA4fwzoqTR3H2Xxs8+VyV3dZcX2o4aKIFGClSQwk+Y0s1mFmKMpY/oahBYlDFNMs6lweDEy0rzcmbJrNkKonQmJFDq+byhDcA9U3hljj4T+stcTddJo4pmfn99K1D9feCAmLP7PNI9tcyfyG2nCFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023985; c=relaxed/simple;
-	bh=/m10iM81LQvaU6efVs4NbsQkDmaTSU3Qq9nisbKc7zk=;
+	s=arc-20240116; t=1755021409; c=relaxed/simple;
+	bh=B1KOnSsVy812xZ0fGRwbzQ/2Aw4ndAy1RyWUD9zHZyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwGTtJ38RRQhvf3cKFkbF4k/HxpC3bUaFQ/3p8uXEScJGcqrHMEroOmfyi/oHoZU2A1axI8M46VjAjIhIxiSxeelGapqJhwBmd68o+N+vnKszFPmn6k+xvMppf6K5FMLCMo5orcmhk0j9+94CCJZcaH30pyxr/faa4+lLsVLeWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f836mJMx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4435C4CEF0;
-	Tue, 12 Aug 2025 18:39:44 +0000 (UTC)
+	 MIME-Version; b=I8eSwZa6lqC6pCveyqjl97oh6WOksq3uZxNnjmWKooOwM1G8EJJYqJjVFcv29zcw5vFU04lzcR7dKu18LNyve4iW+Fi0gU0ciGocJg6UQFfPsyvvP5L2watoODd5RectfG62j+9Z4kOXlzxazp4apGkdhR8o4NlbnZR2KPIAuPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diz6uiFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06314C4CEF0;
+	Tue, 12 Aug 2025 17:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023985;
-	bh=/m10iM81LQvaU6efVs4NbsQkDmaTSU3Qq9nisbKc7zk=;
+	s=korg; t=1755021409;
+	bh=B1KOnSsVy812xZ0fGRwbzQ/2Aw4ndAy1RyWUD9zHZyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f836mJMxq1Jd7YciTwda+Kh8Nn3n9MMEVrYZdG9tRG8jaKBs1B0oatNW5jc/QA5b4
-	 YQPa/kr3BtC9a4If35IeGa+VFicf3gH9N0JSpFEiPOf/bj0KjaF9WZLSRkKKlPrRRV
-	 CHcWCAHDFUYKTfwG0gIbSCqbSpTfqv7H+qQxuWHg=
+	b=diz6uiFVtrC54dEhfJMgOg/7gJcYeKt3r2qurRjXSVAHpk3geM2L5+N80izlahm5t
+	 YveSR4zk7+q1b6XML+xJ/GfoWdoztVjohmpO9+VCgsBZ8G1nCXywAnQLS+pZmLcCPg
+	 22fy9vWydy/RK3H5G0lunfH8sVTLz9wEsrVW+zXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Korsnes <johan.korsnes@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	James Cowgill <james.cowgill@blaize.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 206/627] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
+Subject: [PATCH 6.6 113/262] media: v4l2-ctrls: Fix H264 SEPARATE_COLOUR_PLANE check
 Date: Tue, 12 Aug 2025 19:28:21 +0200
-Message-ID: <20250812173427.121055719@linuxfoundation.org>
+Message-ID: <20250812172957.913225013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Korsnes <johan.korsnes@gmail.com>
+From: James Cowgill <james.cowgill@blaize.com>
 
-[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
+[ Upstream commit 803b9eabc649c778986449eb0596e5ffeb7a8aed ]
 
-This option was removed from the Kconfig in commit
-8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
-removed from the defconfigs.
+The `separate_colour_plane_flag` element is only present in the SPS if
+`chroma_format_idc == 3`, so the corresponding flag should be disabled
+whenever that is not the case and not just on profiles where
+`chroma_format_idc` is not present.
 
-Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
-Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
+Fixes: b32e48503df0 ("media: controls: Validate H264 stateless controls")
+Signed-off-by: James Cowgill <james.cowgill@blaize.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/configs/ppc6xx_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index f96f8ed9856c..bb359643ddc1 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -252,7 +252,6 @@ CONFIG_NET_SCH_DSMARK=m
- CONFIG_NET_SCH_NETEM=m
- CONFIG_NET_SCH_INGRESS=m
- CONFIG_NET_CLS_BASIC=m
--CONFIG_NET_CLS_TCINDEX=m
- CONFIG_NET_CLS_ROUTE4=m
- CONFIG_NET_CLS_FW=m
- CONFIG_NET_CLS_U32=m
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+index a662fb60f73f..84fbf4e06cd3 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -894,12 +894,12 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
+ 
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS;
+-
+-			if (p_h264_sps->chroma_format_idc < 3)
+-				p_h264_sps->flags &=
+-					~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
+ 		}
+ 
++		if (p_h264_sps->chroma_format_idc < 3)
++			p_h264_sps->flags &=
++				~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
++
+ 		if (p_h264_sps->flags & V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY)
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD;
 -- 
 2.39.5
 
