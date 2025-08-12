@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908A9B23520
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27BB3B23049
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D07E6E610C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2B9564C92
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649BE2FF143;
-	Tue, 12 Aug 2025 18:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E182FAC02;
+	Tue, 12 Aug 2025 17:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/bIXY5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UE1ZeMa3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0712FE57E;
-	Tue, 12 Aug 2025 18:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7825A279915;
+	Tue, 12 Aug 2025 17:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024152; cv=none; b=Y+jHvqpK6elBZviXoOXYBRSV0s4nXG8h8uiMMcUUWtrTyFcBPy2/E6g4XMZ5dixyk8aZsb0nsHb9H6gnvCxNwHtiD/RnxaE2La4e5hETr9BGpc18DWJEjuskb/mMwMwhMg5MLAhU9zIqcjAwO4HnKvt0mylGNabbz7eBzcFvttQ=
+	t=1755021003; cv=none; b=RYtk5jaI+Us4/619u0EHxf08KAJpok26gF18Cfdcz3POgLQ95eBtb0pApdsWk8Q2GRcxrFaaIofSkzGG/pgDqbeQXSiYWNgcA5BPoOb0aXpTB2i+c2EAtrSsP+vYum1l/eTLfnBfd1fjFn8TELDIsP5zVjQ5yDuRA7fetpj67NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024152; c=relaxed/simple;
-	bh=Ksxk4+5W5V5Z1fJ5Mlg8emHAStuaBhn2Q86BvHKFMd4=;
+	s=arc-20240116; t=1755021003; c=relaxed/simple;
+	bh=i7579eaHYR9MmV2CBviSzJsIge3z1DOwWsG7LqZb6JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LqGP3RC5d5MaLyIzDh0pxDi03n8EwKscUZ30JZjCliIXGm8clMK+Ss7LMzl2GSaF/nFSRzh4KzY1r88AKt031i4kGdKhthB6+TMtF+2lTBBe8FmChN0ZBPoBxghF9OGzYUBOOScy9R+twXBZQdx0DhiNrb3UueAXBJS7AksBXJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/bIXY5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83092C4CEF0;
-	Tue, 12 Aug 2025 18:42:31 +0000 (UTC)
+	 MIME-Version; b=h2hHta95ICkTDC3i/dUMu8Syp2DJngK870E6Z2f6BPQiVzIeb4I3Mp0ToH92u/YsQf4UQPkpL7+RInNspMpw7fUmK94ZiWNb8p8b3+M9bAazlvZXdun8SrB6rwDr4ZeqO3ktnaFpw0aqwt8mx3/+FB7UH3QrIKTaYoejmUL1VnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UE1ZeMa3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7CFC4CEF6;
+	Tue, 12 Aug 2025 17:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024152;
-	bh=Ksxk4+5W5V5Z1fJ5Mlg8emHAStuaBhn2Q86BvHKFMd4=;
+	s=korg; t=1755021003;
+	bh=i7579eaHYR9MmV2CBviSzJsIge3z1DOwWsG7LqZb6JM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/bIXY5AwDiKbzarWyR/U9zyRgjdrf4uKa6pZvIaxPa2/mhqGAmPWz95DfL96s1AV
-	 yl8td9MxzKx86MdtfkQDBoInQSx2du4JXsLuTAGYki4w+tm1kzCXCRyhHVjJWu6QSx
-	 RrMgU0uJenhTkewmpFHyvwH4X+fYS/2DeL9hPg7o=
+	b=UE1ZeMa3OKVFgbF7b5Duxr0tpi88NT5TD+NDtOyc8ZNCBO5x/CtzLsnBVMvi6R1by
+	 8CFOOMi1L3nd17gPI382GHm+fyil+WZAwKcnxfUP0IQvobwyslKNiiswFupq5lcciT
+	 GQJt2QKTHwSyfpH/SHbJ5dlnFh3fivB9XhgK/T9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Christoph Hellwig <hch@lst.de>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 290/627] bpf/preload: Dont select USERMODE_DRIVER
-Date: Tue, 12 Aug 2025 19:29:45 +0200
-Message-ID: <20250812173430.345581753@linuxfoundation.org>
+Subject: [PATCH 6.1 198/253] f2fs: fix to update upper_p in __get_secs_required() correctly
+Date: Tue, 12 Aug 2025 19:29:46 +0200
+Message-ID: <20250812172957.229740328@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 2b03164eee20eac7ce0fe3aa4fbda7efc1e5427a ]
+[ Upstream commit 6840faddb65683b4e7bd8196f177b038a1e19faf ]
 
-The usermode driver framework is not used anymore by the BPF
-preload code.
+Commit 1acd73edbbfe ("f2fs: fix to account dirty data in __get_secs_required()")
+missed to calculate upper_p w/ data_secs, fix it.
 
-Fixes: cb80ddc67152 ("bpf: Convert bpf_preload.ko to use light skeleton.")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/bpf/20250721-remove-usermode-driver-v1-1-0d0083334382@linutronix.de
+Fixes: 1acd73edbbfe ("f2fs: fix to account dirty data in __get_secs_required()")
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/preload/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ fs/f2fs/segment.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/preload/Kconfig b/kernel/bpf/preload/Kconfig
-index c9d45c9d6918..f9b11d01c3b5 100644
---- a/kernel/bpf/preload/Kconfig
-+++ b/kernel/bpf/preload/Kconfig
-@@ -10,7 +10,6 @@ menuconfig BPF_PRELOAD
- 	# The dependency on !COMPILE_TEST prevents it from being enabled
- 	# in allmodconfig or allyesconfig configurations
- 	depends on !COMPILE_TEST
--	select USERMODE_DRIVER
- 	help
- 	  This builds kernel module with several embedded BPF programs that are
- 	  pinned into BPF FS mount point as human readable files that are
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index 5ef5a88f47a0..3f1d6cdd4ae0 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -635,7 +635,7 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
+ 	if (lower_p)
+ 		*lower_p = node_secs + dent_secs + data_secs;
+ 	if (upper_p)
+-		*upper_p = node_secs + dent_secs +
++		*upper_p = node_secs + dent_secs + data_secs +
+ 			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0) +
+ 			(data_blocks ? 1 : 0);
+ 	if (curseg_p)
 -- 
 2.39.5
 
