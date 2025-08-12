@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D79AB231F8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454B2B2338F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 610BF3A9E5D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C73197B2205
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882EA280037;
-	Tue, 12 Aug 2025 18:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898062EAB97;
+	Tue, 12 Aug 2025 18:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdHPs3tW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJYD3T7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4675D2F5E;
-	Tue, 12 Aug 2025 18:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AC51DF27F;
+	Tue, 12 Aug 2025 18:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022090; cv=none; b=Inf/bMdZkCnRdHUms1NShknx3v6TE1dtREUO4+c6/0ujbcnGwTZ8o40sv/FUw2b8q91Qys/Gd8e6/MiFLgsCwIaU/fU0PsY92wFB1/C9wzqdzS3AvrzNtu30SFn5rxNkII/E+9Nlp7VRAuXzbZxItzHZcs6EL+vuT9NC6MHyPi8=
+	t=1755023361; cv=none; b=LW9JVGudUhOrsbbP2ASWHdbuULu/fEiKa+cQOBx+erFd8IBLCeHKE0pWtQXz5s5EuLWmgZk5HgPRc9zK4H3+/7Rq1var6liu4XNuG1vD/i+MJdcoUXaW2lVccE+Hm/6V2Abm4xvnw8Vi3R2EloVWtGGe7NYJt3vYj3jLfqCq9aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022090; c=relaxed/simple;
-	bh=lr41ogaqO8maQzQeCsuPBbex1QlDDluT4m7t84JbAt8=;
+	s=arc-20240116; t=1755023361; c=relaxed/simple;
+	bh=3+6eWTrXULcGbw7H9izSRr4xsFzxd/aQ16Fu/V8V7rA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hyil4WoM2VIN1cnf+g/eAolfFndERDHPdTxgFCAP+tOiLI3JUvbPt1PEEA8zYjP1M7uf8NgTU4F481YHpJLP70UxvoO833CsEuCLHhwwwocHEvbfIpncolQY9K/YgTaWP6WbNDPl9WwMhWPpAbpI0WMjbF5sKDqOJ4SFYawPCgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdHPs3tW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A685AC4CEF0;
-	Tue, 12 Aug 2025 18:08:09 +0000 (UTC)
+	 MIME-Version; b=baG2XnsPG1B3k66knBV4AhIdl3fHK7YMekvp45BMta6vy6GIjZNZrSovWWFKNfwh61LGti37Ar5lR4aa9G36V24Xinc7gUa/+1xoTBKeiqULxRNMmNdygwiyKy9ozfRBLwODkqbaU31v6j7kKx5MJ5sQ6DSu3jQN2V7DHBVwR2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJYD3T7X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5235CC4CEF0;
+	Tue, 12 Aug 2025 18:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022090;
-	bh=lr41ogaqO8maQzQeCsuPBbex1QlDDluT4m7t84JbAt8=;
+	s=korg; t=1755023358;
+	bh=3+6eWTrXULcGbw7H9izSRr4xsFzxd/aQ16Fu/V8V7rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdHPs3tWpVh0wnchPTVdu8SKjaHiVPFufZV3Oq1Yrg2wgBFuB1ooLRqvJ/qhINh7F
-	 7xXcrRG4OFEUlwK+0FO14FFZV4Ax+bFuqQGYnqD0FhmcjzE/ARCWFSla3eDDXEr+jD
-	 zt/OjSu8XeV7LxSHljsyH9Ah0zzxpys65dvTR5Tk=
+	b=LJYD3T7Xq+IaBZXj3NQ2e+JOOrV0t3RtXUE3evmvOHLL+Hf7HgJaaw9GA5KM2pBiN
+	 vMxKwje+6EvTzk5TpGd5oSCvg/l4F6aIHScLLWDH7PnBKTZEcGdcSUW31YPQnHeh4N
+	 vl5KddO3KaBeRIwCSGfl28BK0x4FArH0p+N7IPko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Annette Kobou <annette.kobou@kontron.de>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/369] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
-Date: Tue, 12 Aug 2025 19:25:49 +0200
-Message-ID: <20250812173016.722993313@linuxfoundation.org>
+Subject: [PATCH 6.16 055/627] arm64: dts: ti: k3-am62p-verdin: Enable pull-ups on I2C_3_HDMI
+Date: Tue, 12 Aug 2025 19:25:50 +0200
+Message-ID: <20250812173421.423524731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Annette Kobou <annette.kobou@kontron.de>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
+[ Upstream commit cb2d9c00770e2e6c51864704b5d98c9a0ddccaf9 ]
 
-The polarity of the DE signal of the transceiver is active-high for
-sending. Therefore rs485-rts-active-low is wrong and needs to be
-removed to make RS485 transmissions work.
+Enable internal bias pull-ups on the SoC-side I2C_3_HDMI that do not have
+external pull resistors populated on the SoM. This ensures proper
+default line levels.
 
-Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 87f95ea316ac ("arm64: dts: ti: Add Toradex Verdin AM62P")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20250529102601.452859-1-ghidoliemanuele@gmail.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-index 29d2f86d5e34..f4c45e964daf 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-@@ -168,7 +168,6 @@ &uart2 {
- 	pinctrl-0 = <&pinctrl_uart2>;
- 	linux,rs485-enabled-at-boot-time;
- 	rs485-rx-during-tx;
--	rs485-rts-active-low;
- 	uart-has-rtscts;
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+index 226398c37fa9..d90d13287076 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+@@ -717,8 +717,8 @@ AM62PX_MCU_IOPAD(0x0010, PIN_INPUT, 7) /* (D10) MCU_SPI0_D1.MCU_GPIO0_4 */ /* SO
+ 	/* Verdin I2C_3_HDMI */
+ 	pinctrl_mcu_i2c0: mcu-i2c0-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62PX_MCU_IOPAD(0x0044, PIN_INPUT, 0) /* (E11) MCU_I2C0_SCL */ /* SODIMM 59 */
+-			AM62PX_MCU_IOPAD(0x0048, PIN_INPUT, 0) /* (D11) MCU_I2C0_SDA */ /* SODIMM 57 */
++			AM62PX_MCU_IOPAD(0x0044, PIN_INPUT_PULLUP, 0) /* (E11) MCU_I2C0_SCL */ /* SODIMM 59 */
++			AM62PX_MCU_IOPAD(0x0048, PIN_INPUT_PULLUP, 0) /* (D11) MCU_I2C0_SDA */ /* SODIMM 57 */
+ 		>;
+ 	};
+ 
 -- 
 2.39.5
 
