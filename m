@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D956B232B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6A8B234A8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69B8E6E2BE5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0E333B9160
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07FC2FE583;
-	Tue, 12 Aug 2025 18:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD202FE580;
+	Tue, 12 Aug 2025 18:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkAxOsFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLJs3m0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0BE2D46B3;
-	Tue, 12 Aug 2025 18:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF461E500C;
+	Tue, 12 Aug 2025 18:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022493; cv=none; b=qPDPXeneJgh4HZttB36V5eK4om0U0lRw1BMdQPfF29QtdBYtEPweKAiTTUj07xFy1H1hJkinHuUnEUQncgMvc4ZweEkLJRwlau3Aa3KqFc8+G8UyPd8PRTMZ36RaUBG65UCCDyG+8oIWPjJ+uoG7CfZN4ax4P0np9fxQfWI9bUk=
+	t=1755023868; cv=none; b=qx6Hh0wSzC+YjOOU8DBgC999MG4i42MNssqEUsQWUQdmq0hsxN+sl8FM++9jC/BafwwrcUqFe5glE+aQmcXt3VKURj1rRl0fgo/ql9UL3wGB/oeQY6bz67SyHZXOOkAgTP+5UigYcs2eAhgFl8odyEvwnBpNjTe4FCeFqVm3dxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022493; c=relaxed/simple;
-	bh=o87JD++0ZCPEdE98A+EPLSL81I3OigOHwwfoZs59Q8Y=;
+	s=arc-20240116; t=1755023868; c=relaxed/simple;
+	bh=cIyIMa603LyY08vi0c9il/RsTPpE84dGHWg3F81OHtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pezQvlJ75GsRmxJCE9/ZCwocdeOTACANOKXlxLnBYGVX2BSpNKSvyEproRREqu99jGCP2jfoYOUFh5x5L5wdtmOjhyVbAiEFBfv7KPYmzyv7LuFZtpKclRIugEjNvUbCdX1PTb1M3Nm226ucwx2sRC27QVstrU+ThBJdOTMecig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkAxOsFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC07C4CEF1;
-	Tue, 12 Aug 2025 18:14:52 +0000 (UTC)
+	 MIME-Version; b=oAmslbLRz4IbW+utRiZKAqYOGIBDgPN2+js7bU5IHArIzvCIGvy0QvOdEH56qpielmXzKlpGTR2PrY6/FzUPzx/uwR7bqs64MfPWMuxAlhM3ksAjojRu3xRNh2G4+D0l9GikF6bPlRP6UA24wC55kK2EhDXuFxLORWcr9JrAt4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLJs3m0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108BFC4CEF0;
+	Tue, 12 Aug 2025 18:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022493;
-	bh=o87JD++0ZCPEdE98A+EPLSL81I3OigOHwwfoZs59Q8Y=;
+	s=korg; t=1755023867;
+	bh=cIyIMa603LyY08vi0c9il/RsTPpE84dGHWg3F81OHtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkAxOsFDYJMltVMxj73GxUvfSepBuEWvveuJXKKTiV1uj9hCGjRWWCQNw0GczXuEb
-	 yiOsZo2KxruJ7WMDecYL0ByV7GSHDhRAgBBUyygUK42yv+84RFQwm3Icr/4Cmve9jb
-	 CmjKRgk+WSf9dLUWgYsmns3fiRQzDDKj3O+dNg0I=
+	b=NLJs3m0UnEOepBFDttMLy6lPLABd7gIcr+/dNf0yFljnuAgo5ALqn+0qZ2sAHTIO9
+	 nX4fLOfSXiAbohP3z4DidJm/mTBTt4qc2dWy8gw/yoI989tzNtuB65USSA231AFQHt
+	 QydhLfL93MUB7D7vMZyGt89k9mdC+1LOViO/HzCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Stav Aviram <saviram@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 170/369] dmaengine: mmp: Fix again Wvoid-pointer-to-enum-cast warning
-Date: Tue, 12 Aug 2025 19:27:47 +0200
-Message-ID: <20250812173021.159119808@linuxfoundation.org>
+Subject: [PATCH 6.16 173/627] net/mlx5: Check device memory pointer before usage
+Date: Tue, 12 Aug 2025 19:27:48 +0200
+Message-ID: <20250812173425.858554021@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Stav Aviram <saviram@nvidia.com>
 
-[ Upstream commit a0b1589b62e2fcfb112996e0f4d5593bd2edf069 ]
+[ Upstream commit 70f238c902b8c0461ae6fbb8d1a0bbddc4350eea ]
 
-This was fixed and re-introduced.  'type' is an enum, thus cast of
-pointer on 64-bit compile test with W=1 causes:
+Add a NULL check before accessing device memory to prevent a crash if
+dev->dm allocation in mlx5_init_once() fails.
 
-  mmp_tdma.c:644:9: error: cast to smaller integer type 'enum mmp_tdma_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
-
-Fixes: a67ba97dfb30 ("dmaengine: Use device_get_match_data()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250525-dma-fixes-v1-5-89d06dac9bcb@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: c9b9dcb430b3 ("net/mlx5: Move device memory management to mlx5_core")
+Signed-off-by: Stav Aviram <saviram@nvidia.com>
+Link: https://patch.msgid.link/c88711327f4d74d5cebc730dc629607e989ca187.1751370035.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mmp_tdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/dm.c                  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c | 4 ++--
+ drivers/net/ethernet/mellanox/mlx5/core/main.c   | 3 ---
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dma/mmp_tdma.c b/drivers/dma/mmp_tdma.c
-index b76fe99e1151..f88792049be5 100644
---- a/drivers/dma/mmp_tdma.c
-+++ b/drivers/dma/mmp_tdma.c
-@@ -641,7 +641,7 @@ static int mmp_tdma_probe(struct platform_device *pdev)
- 	int chan_num = TDMA_CHANNEL_NUM;
- 	struct gen_pool *pool = NULL;
+diff --git a/drivers/infiniband/hw/mlx5/dm.c b/drivers/infiniband/hw/mlx5/dm.c
+index b4c97fb62abf..9ded2b7c1e31 100644
+--- a/drivers/infiniband/hw/mlx5/dm.c
++++ b/drivers/infiniband/hw/mlx5/dm.c
+@@ -282,7 +282,7 @@ static struct ib_dm *handle_alloc_dm_memic(struct ib_ucontext *ctx,
+ 	int err;
+ 	u64 address;
  
--	type = (enum mmp_tdma_type)device_get_match_data(&pdev->dev);
-+	type = (kernel_ulong_t)device_get_match_data(&pdev->dev);
+-	if (!MLX5_CAP_DEV_MEM(dm_db->dev, memic))
++	if (!dm_db || !MLX5_CAP_DEV_MEM(dm_db->dev, memic))
+ 		return ERR_PTR(-EOPNOTSUPP);
  
- 	/* always have couple channels */
- 	tdev = devm_kzalloc(&pdev->dev, sizeof(*tdev), GFP_KERNEL);
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+index 7c5516b0a844..8115071c34a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+@@ -30,7 +30,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ 
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+ 	if (!dm)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	spin_lock_init(&dm->lock);
+ 
+@@ -96,7 +96,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ err_steering:
+ 	kfree(dm);
+ 
+-	return ERR_PTR(-ENOMEM);
++	return NULL;
+ }
+ 
+ void mlx5_dm_cleanup(struct mlx5_core_dev *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 9c1504d29d34..e7bcd0f0a709 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1102,9 +1102,6 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
+ 	}
+ 
+ 	dev->dm = mlx5_dm_create(dev);
+-	if (IS_ERR(dev->dm))
+-		mlx5_core_warn(dev, "Failed to init device memory %ld\n", PTR_ERR(dev->dm));
+-
+ 	dev->tracer = mlx5_fw_tracer_create(dev);
+ 	dev->hv_vhca = mlx5_hv_vhca_create(dev);
+ 	dev->rsc_dump = mlx5_rsc_dump_create(dev);
 -- 
 2.39.5
 
