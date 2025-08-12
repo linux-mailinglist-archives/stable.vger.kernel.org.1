@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-167569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C019AB230B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F40B2335E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 967C11895F3A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1DA23BB916
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A18C2F8BE7;
-	Tue, 12 Aug 2025 17:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F351EBFE0;
+	Tue, 12 Aug 2025 18:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ba1xvy2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7mRfg8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487B72FDC2C;
-	Tue, 12 Aug 2025 17:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFFD280037;
+	Tue, 12 Aug 2025 18:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021258; cv=none; b=ZTOlTSTBkwIBkYHlMCAmSnAP6sN7RGL88V4nE26j0p6JuJN5vrJE3n5wUTTIXxXLnPU2H699M1zZqpB52PC89FsJkAdjNM9tPfIfZ3wCQ/ciC8ZHHrMwmO5UieCnj5WtTb3sHt5K5hHqkzBzTxuzhhnO+4ZakW6jeFDBU/twIwE=
+	t=1755023021; cv=none; b=YrvoI01D1F1RMrk1kA+MWTtZAzZJCwHyegWh1RdzwScr6xPI4phFWITXeZjD3k+rdzZZQTIg6Lk0FwNbXWeqSFzl58Ejko+t2r+BXZ4csW2rE+KmDUg1R95PGF9uri+bt7BTAYWrZ2cWEbHs2y92Lt1q0Kd/Z1loaILhwVQ9+BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021258; c=relaxed/simple;
-	bh=Kh22GwZGllxymCtwj9nCgMD/y2wNG+oWzIbr1IEbVoM=;
+	s=arc-20240116; t=1755023021; c=relaxed/simple;
+	bh=XC5IKstZllg+DwV6WdCBKYi+2vqPTDJCi1qTQb8bBLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFRsxUnp9EIeNyfphH3pcv52+izPZqEBn2Gu/zXhCr84+8U1xUo4mcQ8eXMFDvUEXgqdcIpoHpdBGdOrDEzHl4I4XyJ8ARRoW6cgA/tuIPeAqz/CAhCblmwHp/GWRJXWoY9nAdw4O1/0rQEdYLeaexsmjqvVp1wLnoy+cABydRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ba1xvy2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59302C4CEF0;
-	Tue, 12 Aug 2025 17:54:17 +0000 (UTC)
+	 MIME-Version; b=ShoK1KDtrw328yZbUlRwYQ5TqWUQJvXPezyzknhs/zfNOet/uFBkrMBp58YK8iLx9+SDYC7FTvrT4gQX025PO62zsS8XsvwZu9saAFL78AIGgMsti+aqxsdoahkej0zzViYwJOSu3CDrzHBtQHMlDFheqDOlQn0zmxijeNIYZi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7mRfg8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D418C4CEF8;
+	Tue, 12 Aug 2025 18:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021257;
-	bh=Kh22GwZGllxymCtwj9nCgMD/y2wNG+oWzIbr1IEbVoM=;
+	s=korg; t=1755023021;
+	bh=XC5IKstZllg+DwV6WdCBKYi+2vqPTDJCi1qTQb8bBLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ba1xvy2mJ/6re3DbBtxiCApsRv/JLUkAi6kMPaiPwUfcLCkr4AHDno6Qgm3O5i6ud
-	 /NvmoJEAb+Xx1fzzWKm+H/KLtVPCfXwH95Zfxzhv/MA1vci86NG+RC0kVdnZ7OQZWZ
-	 H15JHJ+ydKEQIHx0VtNu9cc33fhhjlIKmy8TV0js=
+	b=f7mRfg8uoTWporX9m+H05Lx7D83Djx1uzy+ETOBwEkGTIWLU09a0dbXLQy1ZaYWMO
+	 taWNHiI5VhgecW0je6T3p2R4OjuVRKmqMcFw2WunsKZJ8Q0ntZEle3Zx1CwsErFyyd
+	 IBCKZOncHWFDb5pCmeZBqfvI2WN060RBDNceuYeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 236/253] selftests/perf_events: Add a mmap() correctness test
+Subject: [PATCH 6.12 327/369] selftests/perf_events: Add a mmap() correctness test
 Date: Tue, 12 Aug 2025 19:30:24 +0200
-Message-ID: <20250812172958.876996843@linuxfoundation.org>
+Message-ID: <20250812173029.016244077@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,10 +99,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/tools/testing/selftests/perf_events/.gitignore
 +++ b/tools/testing/selftests/perf_events/.gitignore
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
+@@ -2,3 +2,4 @@
  sigtrap_threads
  remove_on_exec
+ watermark_signal
 +mmap
 --- a/tools/testing/selftests/perf_events/Makefile
 +++ b/tools/testing/selftests/perf_events/Makefile
@@ -110,8 +110,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  CFLAGS += -Wl,-no-as-needed -Wall $(KHDR_INCLUDES)
  LDFLAGS += -lpthread
  
--TEST_GEN_PROGS := sigtrap_threads remove_on_exec
-+TEST_GEN_PROGS := sigtrap_threads remove_on_exec mmap
+-TEST_GEN_PROGS := sigtrap_threads remove_on_exec watermark_signal
++TEST_GEN_PROGS := sigtrap_threads remove_on_exec watermark_signal mmap
  include ../lib.mk
 --- /dev/null
 +++ b/tools/testing/selftests/perf_events/mmap.c
