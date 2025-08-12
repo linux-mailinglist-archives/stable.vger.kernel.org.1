@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-168445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70267B234EA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A27B232D5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856CF5852D7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A88B97A80C7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3D02FD1AD;
-	Tue, 12 Aug 2025 18:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D9B2F83A1;
+	Tue, 12 Aug 2025 18:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpJcj2fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daj6VUnz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09B813AA2F;
-	Tue, 12 Aug 2025 18:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5241E1EBFE0;
+	Tue, 12 Aug 2025 18:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024193; cv=none; b=hBVqTmYPi0qkoEMSxVys8/PuFSqQHnxbH7Xcg6pWVyQx49lRqYzvDRVy7YI7m6EU8SvuASRlwZaZwumD7w5SssF1mYtW8YqLyV9KYi/UMxhlENQGGleQff4uZ27siPck6rYPN0dv63dNnk864KWrsJ3oWm5zjQwt69XnH4QEUtE=
+	t=1755022920; cv=none; b=ke9K9r7xS0LnbpxLD8aRXhCPdUE0iMz+13BmatzNnd6MkxHxCreefDwtK3d4Gyj5Q8oaW6QGEykVoVVteNY2sTfEexa/ImEmd+O605fQpOMqSXa8tFIxdwCq2s7wCyZRggeKewj29yIQWCcXFK9DfIT1GGankF0yeB0IpbqIzoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024193; c=relaxed/simple;
-	bh=aesKUrmUx4m7fOcQPNduq3Vkum/lpgM9+hcCWX4Plzo=;
+	s=arc-20240116; t=1755022920; c=relaxed/simple;
+	bh=orXrSWQQYXig+AcYOQuj1ARvJ+KbglaJoDrFpawf3d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGobzAgVFldbcRWSiAUlEa8+kI5VmcydoAZzica1jGX8940UWNEU8UEHOOCx/RRVaWPf2NfNEvOz/QicFlEnXCvFIBv6veYMQHITh3JErlMk1OW9mG0wa3SiTAXu1i92WDl+VSMnS9usWDSlx3s6FY+p5Hz+VDMD2n/9eSXNLbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpJcj2fh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C55C4CEF0;
-	Tue, 12 Aug 2025 18:43:12 +0000 (UTC)
+	 MIME-Version; b=dCsNbgVS303YlXKayQmsm3OJbRkBqSm9TkOUt5J35ox5M40rxS3CWyb0Ie0ZS2zocqGQjJH7xlraHXnOph3RRhkrelozKQLaRyfHabK09uCDvTQMqGtWZY7NA8t8Dl0Qa1dRQuCMDS2xf0pCEaUDKyW6EpQfCCKai8hso2t1Fb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daj6VUnz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ACEC4CEF0;
+	Tue, 12 Aug 2025 18:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024193;
-	bh=aesKUrmUx4m7fOcQPNduq3Vkum/lpgM9+hcCWX4Plzo=;
+	s=korg; t=1755022920;
+	bh=orXrSWQQYXig+AcYOQuj1ARvJ+KbglaJoDrFpawf3d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpJcj2fhCy6C3TJDJpmXMjXFh6U82mNH1ZQoktUxjBt2G1uz/Annk2RE/6vvrKZF7
-	 Sg2Fyz5UfO2xYBn969lWItY+s8NbuvtWkhufxgMlhppHui749Jttm/o+SpK8u3zrvb
-	 Lv4OcubfOCpPA5TUx1/YVI2Z0Cu11gOCX07A4V88=
+	b=daj6VUnzk61XvdkQuCzUJkUwlUj6eoTS9LJ4oWDwLa+ZvLflUnxbZixntvgJhjAzP
+	 1IJkoPlezf27TgeW9tbSabZruZcd2TQ6OSAAuydsy9CxxqfL1ZwiXiOYhuC6gDCOWe
+	 VxkoEUZALJFImO69s7QrmiFa80ILWwOM3XpDT+ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 301/627] clk: renesas: rzv2h: Fix missing CLK_SET_RATE_PARENT flag for ddiv clocks
+Subject: [PATCH 6.12 299/369] ipv6: reject malicious packets in ipv6_gso_segment()
 Date: Tue, 12 Aug 2025 19:29:56 +0200
-Message-ID: <20250812173430.753507344@linuxfoundation.org>
+Message-ID: <20250812173027.977694193@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 715676d8418062f54d746451294ccce9786c1734 ]
+[ Upstream commit d45cf1e7d7180256e17c9ce88e32e8061a7887fe ]
 
-Commit bc4d25fdfadf ("clk: renesas: rzv2h: Add support for dynamic
-switching divider clocks") missed setting the `CLK_SET_RATE_PARENT`
-flag when registering ddiv clocks.
+syzbot was able to craft a packet with very long IPv6 extension headers
+leading to an overflow of skb->transport_header.
 
-Without this flag, rate changes to the divider clock do not propagate
-to its parent, potentially resulting in incorrect clock configurations.
+This 16bit field has a limited range.
 
-Fix this by setting `CLK_SET_RATE_PARENT` in the clock init data.
+Add skb_reset_transport_header_careful() helper and use it
+from ipv6_gso_segment()
 
-Fixes: bc4d25fdfadfa ("clk: renesas: rzv2h: Add support for dynamic switching divider clocks")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250609140341.235919-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Modules linked in:
+CPU: 0 UID: 0 PID: 5871 Comm: syz-executor211 Not tainted 6.16.0-rc6-syzkaller-g7abc678e3084 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+ RIP: 0010:skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+ RIP: 0010:ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Call Trace:
+ <TASK>
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  nsh_gso_segment+0x54a/0xe10 net/nsh/nsh.c:110
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  __skb_gso_segment+0x342/0x510 net/core/gso.c:124
+  skb_gso_segment include/net/gso.h:83 [inline]
+  validate_xmit_skb+0x857/0x11b0 net/core/dev.c:3950
+  validate_xmit_skb_list+0x84/0x120 net/core/dev.c:4000
+  sch_direct_xmit+0xd3/0x4b0 net/sched/sch_generic.c:329
+  __dev_xmit_skb net/core/dev.c:4102 [inline]
+  __dev_queue_xmit+0x17b6/0x3a70 net/core/dev.c:4679
+
+Fixes: d1da932ed4ec ("ipv6: Separate ipv6 offload support")
+Reported-by: syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/688a1a05.050a0220.5d226.0008.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250730131738.3385939-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzv2h-cpg.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/skbuff.h | 23 +++++++++++++++++++++++
+ net/ipv6/ip6_offload.c |  4 +++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/rzv2h-cpg.c b/drivers/clk/renesas/rzv2h-cpg.c
-index bcc496e8cbcd..fb39e6446b26 100644
---- a/drivers/clk/renesas/rzv2h-cpg.c
-+++ b/drivers/clk/renesas/rzv2h-cpg.c
-@@ -381,6 +381,7 @@ rzv2h_cpg_ddiv_clk_register(const struct cpg_core_clk *core,
- 		init.ops = &rzv2h_ddiv_clk_divider_ops;
- 	init.parent_names = &parent_name;
- 	init.num_parents = 1;
-+	init.flags = CLK_SET_RATE_PARENT;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 39f1d16f3628..a726a698aac4 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2991,6 +2991,29 @@ static inline void skb_reset_transport_header(struct sk_buff *skb)
+ 	skb->transport_header = skb->data - skb->head;
+ }
  
- 	ddiv->priv = priv;
- 	ddiv->mon = cfg_ddiv.monbit;
++/**
++ * skb_reset_transport_header_careful - conditionally reset transport header
++ * @skb: buffer to alter
++ *
++ * Hardened version of skb_reset_transport_header().
++ *
++ * Returns: true if the operation was a success.
++ */
++static inline bool __must_check
++skb_reset_transport_header_careful(struct sk_buff *skb)
++{
++	long offset = skb->data - skb->head;
++
++	if (unlikely(offset != (typeof(skb->transport_header))offset))
++		return false;
++
++	if (unlikely(offset == (typeof(skb->transport_header))~0U))
++		return false;
++
++	skb->transport_header = offset;
++	return true;
++}
++
+ static inline void skb_set_transport_header(struct sk_buff *skb,
+ 					    const int offset)
+ {
+diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
+index 9822163428b0..fce91183797a 100644
+--- a/net/ipv6/ip6_offload.c
++++ b/net/ipv6/ip6_offload.c
+@@ -148,7 +148,9 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
+ 
+ 	ops = rcu_dereference(inet6_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment)) {
+-		skb_reset_transport_header(skb);
++		if (!skb_reset_transport_header_careful(skb))
++			goto out;
++
+ 		segs = ops->callbacks.gso_segment(skb, features);
+ 		if (!segs)
+ 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
 -- 
 2.39.5
 
