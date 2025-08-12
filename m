@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B18B234F8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 102A5B231AF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BDB7A6644
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27DA66E13A1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCD72FDC5C;
-	Tue, 12 Aug 2025 18:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDB22E7BD4;
+	Tue, 12 Aug 2025 18:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs7yPd3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWDnKugi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6DF20409A;
-	Tue, 12 Aug 2025 18:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5A72F5E;
+	Tue, 12 Aug 2025 18:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024342; cv=none; b=f8c1MNVOCjS4P8c4ziGUTP/nLq9iEmoO7iPNffyyyQmKBK6sdS5BzNsIzF7tvpd1pgkXDLJk9xeiw2Og+V0NY0ZXU0MN1KfRkaSzLVs68N4Rfm7NGfY3dHgKgDZXp0i+tYYOrEM4MxHl9yKcA1uqkuX9GZ8EH8A96RA7h38r3qg=
+	t=1755021873; cv=none; b=bU0YnYsDdHs1u9pYYtjN5O8XoauYw9+2nTtJPPWNTvof6W5NlzSOJ0feHg0y2ArK3Ofp4EQElnlCANVMmPb6+623le5E1pvczOYJykWzn+ciuVpqbZue0rSFKd+mxhf8SuK+9P0MtyypwDsw0a3KJtA1Rg1oKPccb1Ojcx8yh5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024342; c=relaxed/simple;
-	bh=2eX1rRPDXGXwaW/LDnGCGfw4EmGdUlLlnyQUwbtXMTE=;
+	s=arc-20240116; t=1755021873; c=relaxed/simple;
+	bh=1CEmesvveaDn/BdtPnNyelFhwzBU9urvi+xctiIYGeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLYOqjEK4BdbUF69nwGijZQP+Y9KdAonL2tb4q/504RHiDZCLoADLcTsZfAG+PGn1ptQRF2JRyyLF0qM2uUamMfUrYQN7OJlJlv0Lbb31UQiWRkApPyrSEg6UV0WZgbSMqpNWvB7fCYZyVeI/p2uqpGfgXrFHIAaN7IJPvPFbBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs7yPd3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F6CC4CEF0;
-	Tue, 12 Aug 2025 18:45:41 +0000 (UTC)
+	 MIME-Version; b=iSm3GjmfyoSTBuVYbhNBOemXp7Cjpm13NlTJAk8NEkvq7QTEJFWi0uhbeTLhtiOWYpkmZgwee5GQVTfCsbOVHaSSMzYIu8QBSUmRjkQdECj18jw71mFXkfq8uD0PWrx9VRhKu3ep9as5QB9toek8Lcvjc0k6MhFX5Mo0waVMeg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWDnKugi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDE8C4CEF0;
+	Tue, 12 Aug 2025 18:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024342;
-	bh=2eX1rRPDXGXwaW/LDnGCGfw4EmGdUlLlnyQUwbtXMTE=;
+	s=korg; t=1755021873;
+	bh=1CEmesvveaDn/BdtPnNyelFhwzBU9urvi+xctiIYGeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bs7yPd3CNML64mhzwx5IL8JjcXS2svQrzNX4gtjWk3QGiTbf1KwQlcwIv+YORGb1o
-	 Z3X641ls/U+1/ArvEh0l6RwQIeQkAiM5szZKyIZjCC30NyhZyN5pXuXonrRxh1DKDk
-	 4WyLMOrTgFQao6J7TDYtPaYZuh4gcsZAQ3O6mSvk=
+	b=eWDnKugi0quJ0GLB86p2DUC3ISn+ohZO4Z/UV/Giuk+0ykSSVzU0747KpBFq2qxo6
+	 aAGs2y5uMtTcVkqhfXasKATOEq0Gj1zLEtGcPiLW31qjmKhNHIaoT8taPHts0PrxU5
+	 4GYsLQ1uu+EVKHOLR5mDk+CS1rjGnsjEWXr2vbJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 343/627] RDMA/mlx5: Check CAP_NET_RAW in user namespace for flow create
+	Elliot Berman <quic_eberman@quicinc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Abhijeet Dharmapurikar <quic_adharmap@quicinc.com>,
+	Chen Ridong <chenridong@huawei.com>
+Subject: [PATCH 6.6 250/262] freezer,sched: Do not restore saved_state of a thawed task
 Date: Tue, 12 Aug 2025 19:30:38 +0200
-Message-ID: <20250812173432.330183501@linuxfoundation.org>
+Message-ID: <20250812173003.799461995@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Elliot Berman <quic_eberman@quicinc.com>
 
-[ Upstream commit 95a89ec304c38f7447cdbf271f2d1cbad4c3bf81 ]
+commit 23ab79e8e469e2605beec2e3ccb40d19c68dd2e0 upstream.
 
-Currently, the capability check is done in the default
-init_user_ns user namespace. When a process runs in a
-non default user namespace, such check fails. Due to this
-when a process is running using Podman, it fails to create
-the flow.
+It is possible for a task to be thawed multiple times when mixing the
+*legacy* cgroup freezer and system-wide freezer. To do this, freeze the
+cgroup, do system-wide freeze/thaw, then thaw the cgroup. When this
+happens, then a stale saved_state can be written to the task's state
+and cause task to hang indefinitely. Fix this by only trying to thaw
+tasks that are actually frozen.
 
-Since the RDMA device is a resource within a network namespace,
-use the network namespace associated with the RDMA device to
-determine its owning user namespace.
+This change also has the marginal benefit avoiding unnecessary
+wake_up_state(p, TASK_FROZEN) if we know the task is already thawed.
+There is not possibility of time-of-compare/time-of-use race when we skip
+the wake_up_state because entering/exiting TASK_FROZEN is guarded by
+freezer_lock.
 
-Fixes: 322694412400 ("IB/mlx5: Introduce driver create and destroy flow methods")
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Link: https://patch.msgid.link/a4dcd5e3ac6904ef50b19e56942ca6ab0728794c.1750963874.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8f0eed4a78a8 ("freezer,sched: Use saved_state to reduce some spurious wakeups")
+Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Abhijeet Dharmapurikar <quic_adharmap@quicinc.com>
+Link: https://lore.kernel.org/r/20231120-freezer-state-multiple-thaws-v1-1-f2e1dd7ce5a2@quicinc.com
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/fs.c | 2 +-
+ kernel/freezer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/fs.c b/drivers/infiniband/hw/mlx5/fs.c
-index 680627f1de33..de8114ba9c1f 100644
---- a/drivers/infiniband/hw/mlx5/fs.c
-+++ b/drivers/infiniband/hw/mlx5/fs.c
-@@ -2458,7 +2458,7 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_CREATE_FLOW)(
- 	struct mlx5_ib_dev *dev;
- 	u32 flags;
+--- a/kernel/freezer.c
++++ b/kernel/freezer.c
+@@ -201,7 +201,7 @@ void __thaw_task(struct task_struct *p)
+ 	if (WARN_ON_ONCE(freezing(p)))
+ 		goto unlock;
  
--	if (!capable(CAP_NET_RAW))
-+	if (!rdma_uattrs_has_raw_cap(attrs))
- 		return -EPERM;
+-	if (task_call_func(p, __restore_freezer_state, NULL))
++	if (!frozen(p) || task_call_func(p, __restore_freezer_state, NULL))
+ 		goto unlock;
  
- 	fs_matcher = uverbs_attr_get_obj(attrs,
--- 
-2.39.5
-
+ 	wake_up_state(p, TASK_FROZEN);
 
 
 
