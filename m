@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-167598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474E8B230BE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905C1B23375
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3AB1F4E38B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 274E23BC8D2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69632FDC20;
-	Tue, 12 Aug 2025 17:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5D02E7BD4;
+	Tue, 12 Aug 2025 18:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhBFSzjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQx6dcwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643512D5C76;
-	Tue, 12 Aug 2025 17:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7133F9D2;
+	Tue, 12 Aug 2025 18:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021356; cv=none; b=IXXs3peMsBdxr5pVD4N5Fc54aWIMihQrJ8vy4pY7HCLkPvRFILzPUryMq9PD/+ak5KKYmu47PpK6X5vLcu8Qwh1tve8R7EDPlNgeibIEp4LRCJNwYk8QnehXr1z81jYHChPP3YDefYluzh9qJ+9AIguD0bjr0rx6osVb2hSvCP0=
+	t=1755023079; cv=none; b=Rj1GEJBYaRmAGc+fP/xy/GB4dsAiXJzZ3+VLXzBvQeAju/RHP87T5O3D4wytaCXqe4H8RRlAxCxuhVIh71u3cRvbeC5zySp+2+jrRYWUSBbtLuiTAIAQevvyb6rNxo/m/lBbvG7x5ZgvUoUPQsiwzOSAKTTXLk3HX8HOHt9MKv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021356; c=relaxed/simple;
-	bh=urZbPkhcQD0P7/pQVngsFstOkjPZuAYBJ3D/WvNwdOg=;
+	s=arc-20240116; t=1755023079; c=relaxed/simple;
+	bh=hHJMDxR41SQpo8UPDoLUCG+T9NdnjTuw/ED8FG7MoJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNs5th/kIMcw2aUmX+EhwYb5eLWnxFh0AdpT+C2NTRX454NA3t3g3qy/7oVtq+gef26HOt/TiyphL4VIopznMdX7FWM8FEnbIIu8cX1rbywrgUpt9m4rlGB2Xw3smiO/CByA/3eY5+mpKhVpKDGK6M/ijKvizboRsh1WOj1LoaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhBFSzjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD19BC4CEF1;
-	Tue, 12 Aug 2025 17:55:55 +0000 (UTC)
+	 MIME-Version; b=kNxsvb0EMuMHv5Nk0mWSlp1tRx474/vbgLYIGLB6KKBeaqBLvJhPQfTAlMbYD9bI2pm1Arnq3aXwoErBfEYS/33kVo2fVBGv54QNLURPo9f7O8p4R4IwR9SxcDJErfqyWNPTc8tuzbiRGrmMn8nRmImdFr1JKGFGaVKBgmdfqbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQx6dcwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1902C4CEF0;
+	Tue, 12 Aug 2025 18:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021356;
-	bh=urZbPkhcQD0P7/pQVngsFstOkjPZuAYBJ3D/WvNwdOg=;
+	s=korg; t=1755023079;
+	bh=hHJMDxR41SQpo8UPDoLUCG+T9NdnjTuw/ED8FG7MoJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhBFSzjgP3HBSol82uHVg/pFLTa3BAoKPgdooLEsMi+JWS4Rzz0/Rx4jr+MOe1zBi
-	 LROvpkAUfi8/s/u6Jf2qvChk0PGCz3Td2yrClqrlgVTYTwtatr5hVsKtT/OVQTvJXE
-	 ets4xBO1zEU4mKZrzvCCWsggTy8jcKqeLyfAq8Wo=
+	b=wQx6dcwJ3pCIbsi0QdSJD3gaMLkh8ma9KtPfq1c3O5upuiI4+hcNcqw78hACyccQq
+	 nTTqYDusLImMPMBzVTAnNhq+U8Hyl4tn5UwIw1YwGX6drRWB6Z8djoSW7PMfQ0x+N+
+	 H/LBSSK6IjQrQS4wHYFBjspOKvEhpDz05D5paE0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Bill Wendling <morbo@google.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 252/253] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
+	David Howells <dhowells@redhat.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 343/369] ksmbd: fix corrupted mtime and ctime in smb2_open
 Date: Tue, 12 Aug 2025 19:30:40 +0200
-Message-ID: <20250812172959.588969467@linuxfoundation.org>
+Message-ID: <20250812173029.602302692@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 upstream.
+commit 4f8ff9486fd94b9d6a4932f2aefb9f2fc3bd0cf6 upstream.
 
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
+If STATX_BASIC_STATS flags are not given as an argument to vfs_getattr,
+It can not get ctime and mtime in kstat.
 
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
+This causes a problem showing mtime and ctime outdated from cifs.ko.
+File: /xfstest.test/foo
+Size: 4096            Blocks: 8          IO Block: 1048576 regular file
+Device: 0,65    Inode: 2033391     Links: 1
+Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+Context: system_u:object_r:cifs_t:s0
+Access: 2025-07-23 22:15:30.136051900 +0100
+Modify: 1970-01-01 01:00:00.000000000 +0100
+Change: 1970-01-01 01:00:00.000000000 +0100
+Birth: 2025-07-23 22:15:30.136051900 +0100
 
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
-
-See also:
-
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Reported-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hmm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/vfs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -173,6 +173,7 @@ static inline unsigned long hmm_pfn_flag
- 	return order << HMM_PFN_ORDER_SHIFT;
- }
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
- 						 pmd_t pmd)
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -563,7 +563,8 @@ int ksmbd_vfs_getattr(const struct path
  {
-@@ -183,7 +184,6 @@ static inline unsigned long pmd_to_hmm_p
- 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
- }
+ 	int err;
  
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 			      unsigned long end, unsigned long hmm_pfns[],
- 			      pmd_t pmd)
+-	err = vfs_getattr(path, stat, STATX_BTIME, AT_STATX_SYNC_AS_STAT);
++	err = vfs_getattr(path, stat, STATX_BASIC_STATS | STATX_BTIME,
++			AT_STATX_SYNC_AS_STAT);
+ 	if (err)
+ 		pr_err("getattr failed, err %d\n", err);
+ 	return err;
 
 
 
