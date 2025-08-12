@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-168700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBB0B2363C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:59:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBABB23644
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E83CF5A0160
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38BAC1885422
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819252FE597;
-	Tue, 12 Aug 2025 18:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E85C2FE571;
+	Tue, 12 Aug 2025 18:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyhmW8dF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK6VUoCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3A82FDC59;
-	Tue, 12 Aug 2025 18:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CDC2FABFC;
+	Tue, 12 Aug 2025 18:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025044; cv=none; b=nssV2HfyovA8TUwHzRS/FrPlqvgBBsQwqZtjJr8uffgW3e1Rx5hEQjWe3Ghh73m/GBw3+OgOBavNEE1qKdpXQoBnlKZHjOczRgtPFWAgR/DXUpZNGK98W8earx4VQ5JAXwSODU9He4NhxsD9afmUVfauvaDoD4FIZRP2TfORNSQ=
+	t=1755025051; cv=none; b=FBEvS6mlra9wuMUwS5vmktzrpVLnH/ofEkN+MZ/xn+r+mnYU4Wm5Ca58LawlM95wmZU7TkT5J8gSD2oDELuKNL1tlqWCMVpRMMas6ejoSmnYY/7nS3U0sS1KXtvLvrB+LOg+CYzM2Dy2fM0LkTTo2IHxKEU5u0oDvn++GizsLo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025044; c=relaxed/simple;
-	bh=raFL+I/OvsODt8uXyWqFhvaf2ct7OArgm1xWu7fYh5s=;
+	s=arc-20240116; t=1755025051; c=relaxed/simple;
+	bh=ZDMJdX4XlEsc0TJUxzfKDLO/QkXEve8kcCriNjhw58U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b70N8Dy4WlCVGrzKYPeh/U51zMZH+RDK3wJLhtxb5TwdO9UubDBXy2AMGaEXYGFCQlEThuV4zPYwPAoNk1cOIXFV+leSHX55tK/7vuroTC+cQczlcgBJxb7gV9GXYK43s47ggtODF2RhtP/pai2oUxnTapbrqwrp8XVD7QdVkt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyhmW8dF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F361C4CEF0;
-	Tue, 12 Aug 2025 18:57:23 +0000 (UTC)
+	 MIME-Version; b=K6lJx5E8VhqH2TIgobhHQxS1y/y8BAnDi14AM7HYivpFo8bODa7tikR60b2WJMt6Y8xrBiJ9yKh17Ltzsdu1wayKQdqtChe2OLFAtikMqzB+XCLesmBStjWDht3iU8UgiQR+R4umk8xRcYG3HzKkmln7pFVaOBKvx9E4Wvz42MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK6VUoCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E71C4CEF0;
+	Tue, 12 Aug 2025 18:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025044;
-	bh=raFL+I/OvsODt8uXyWqFhvaf2ct7OArgm1xWu7fYh5s=;
+	s=korg; t=1755025050;
+	bh=ZDMJdX4XlEsc0TJUxzfKDLO/QkXEve8kcCriNjhw58U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hyhmW8dFawW+pwoAxe7+OB/6pdah7IiC555qBP4+BQg2+Y+ounuM+xRMucVfP2pXt
-	 5u1qPt7LTJwXcWCYtUc1fxxXnzOwC4KFtBwwQg1CCYrYptlXKAjnAHGu9y2tQ4QpZU
-	 vtivNS0wAUgvk1j/zU9sJ+2nkgAygY841YdIVL68=
+	b=mK6VUoCuc4dxc1m70na1aQ6RZTEuopPjXQ+dGoj5YeCvR2amMszGjO8Iz0DfKj0vq
+	 xffyirNFsTqO9AHyu9Bp6e+1HEWVxg7kaSExXVpIuIxg0HfqUbwp7XBCMk1P3qUnyE
+	 YyWJqbHwCNWIXhAFne+CF7hTmLLQJ7BJskgSOl5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Meghana Malladi <m-malladi@ti.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 553/627] NFS/localio: nfs_uuid_put() fix the wake up after unlinking the file
-Date: Tue, 12 Aug 2025 19:34:08 +0200
-Message-ID: <20250812173452.937404405@linuxfoundation.org>
+Subject: [PATCH 6.16 554/627] net: ti: icssg-prueth: Fix skb handling for XDP_PASS
+Date: Tue, 12 Aug 2025 19:34:09 +0200
+Message-ID: <20250812173452.975255138@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -67,38 +67,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-[ Upstream commit 4ec752ce6debd5a0e7e0febf6bcf780ccda6ab5e ]
+[ Upstream commit d942fe13f72bec92f6c689fbd74c5ec38228c16a ]
 
-Use store_release_wake_up() instead of wake_up_var_locked(), because the
-waiter cannot retake the nfs_uuid->lock.
+emac_rx_packet() is a common function for handling traffic
+for both xdp and non-xdp use cases. Use common logic for
+handling skb with or without xdp to prevent any incorrect
+packet processing. This patch fixes ping working with
+XDP_PASS for icssg driver.
 
-Acked-by: Mike Snitzer <snitzer@kernel.org>
-Tested-by: Mike Snitzer <snitzer@kernel.org>
-Suggested-by: NeilBrown <neil@brown.name>
-Link: https://lore.kernel.org/all/175262948827.2234665.1891349021754495573@noble.neil.brown.name/
-Fixes: 21fb44034695 ("nfs_localio: protect race between nfs_uuid_put() and nfs_close_local_fh()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 62aa3246f4623 ("net: ti: icssg-prueth: Add XDP support")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250803180216.3569139-1-m-malladi@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs_common/nfslocalio.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/ti/icssg/icssg_common.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfs_common/nfslocalio.c b/fs/nfs_common/nfslocalio.c
-index f1f1592ac134..dd715cdb6c04 100644
---- a/fs/nfs_common/nfslocalio.c
-+++ b/fs/nfs_common/nfslocalio.c
-@@ -198,8 +198,7 @@ static bool nfs_uuid_put(nfs_uuid_t *nfs_uuid)
- 		/* Now we can allow racing nfs_close_local_fh() to
- 		 * skip the locking.
- 		 */
--		RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
--		wake_up_var_locked(&nfl->nfs_uuid, &nfs_uuid->lock);
-+		store_release_wake_up(&nfl->nfs_uuid, RCU_INITIALIZER(NULL));
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
+index 12f25cec6255..57e5f1c88f50 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_common.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
+@@ -706,9 +706,9 @@ static int emac_rx_packet(struct prueth_emac *emac, u32 flow_id, u32 *xdp_state)
+ 	struct page_pool *pool;
+ 	struct sk_buff *skb;
+ 	struct xdp_buff xdp;
++	int headroom, ret;
+ 	u32 *psdata;
+ 	void *pa;
+-	int ret;
+ 
+ 	*xdp_state = 0;
+ 	pool = rx_chn->pg_pool;
+@@ -757,22 +757,23 @@ static int emac_rx_packet(struct prueth_emac *emac, u32 flow_id, u32 *xdp_state)
+ 		xdp_prepare_buff(&xdp, pa, PRUETH_HEADROOM, pkt_len, false);
+ 
+ 		*xdp_state = emac_run_xdp(emac, &xdp, page, &pkt_len);
+-		if (*xdp_state == ICSSG_XDP_PASS)
+-			skb = xdp_build_skb_from_buff(&xdp);
+-		else
++		if (*xdp_state != ICSSG_XDP_PASS)
+ 			goto requeue;
++		headroom = xdp.data - xdp.data_hard_start;
++		pkt_len = xdp.data_end - xdp.data;
+ 	} else {
+-		/* prepare skb and send to n/w stack */
+-		skb = napi_build_skb(pa, PAGE_SIZE);
++		headroom = PRUETH_HEADROOM;
  	}
  
- 	/* Remove client from nn->local_clients */
++	/* prepare skb and send to n/w stack */
++	skb = napi_build_skb(pa, PAGE_SIZE);
+ 	if (!skb) {
+ 		ndev->stats.rx_dropped++;
+ 		page_pool_recycle_direct(pool, page);
+ 		goto requeue;
+ 	}
+ 
+-	skb_reserve(skb, PRUETH_HEADROOM);
++	skb_reserve(skb, headroom);
+ 	skb_put(skb, pkt_len);
+ 	skb->dev = ndev;
+ 
 -- 
 2.39.5
 
