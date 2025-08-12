@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-168197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316FBB233FE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FBCB231CD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD751A20707
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 296433A1D57
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2D42FFDC1;
-	Tue, 12 Aug 2025 18:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C2E2FAC06;
+	Tue, 12 Aug 2025 18:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP7UzaFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuEoSkHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7052FE599;
-	Tue, 12 Aug 2025 18:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AC22EAB97;
+	Tue, 12 Aug 2025 18:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023372; cv=none; b=a7ckjNdq+yAgNcqKDI86G1+iaatKi+WMUzFIbOPk4b86cH4nyiJBGqri6NPKefNjGoZiz/azFzTAG3TfmvFJHg/XkNYbycwYZkFkqtWkw0GW6IphbzT/PhAvY2ujwcH5DGMXuU3ynUBL/nyoX87xQp7x0SJm4y9rZcmlDONyz0E=
+	t=1755021999; cv=none; b=cOvoV8SxAZJqUFFMK9kgCKB7THTvdWRu3rvJuun9W7JEDdGDUULkB/0kJrxgU/WbwcnUl22rOAJEiVQu/sNADgj8IukKkjocJV242C/k/uVOYARIdqniocWwYUP4WWs0AzBXLMMFjIU27qsAEBSASNBEX/lOTXmwvt8orBxmCAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023372; c=relaxed/simple;
-	bh=L0N1MqZykYJGJbGpYc3LF6qQlB6JPUGpTtT7Fyc/M68=;
+	s=arc-20240116; t=1755021999; c=relaxed/simple;
+	bh=rRH3NviaOZXznGqrDwscPqiWR45jdL+3mqlXtkKszWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efSRI4lmTREDg8BEfSgtVdVQL8JmQxlp6e2tkWl0ezSWjh1E+JZffiJR/bsM9g22Wt51CMUHT3exdE9H50Wa0KmqZt8U8rhaDF5IKYtLDW4y9oSkY6AB+fDON3Y9y7deccZfhC3zwc9XPjWOLWeAVpVGXo6cGyLSLVZCtTdpueg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP7UzaFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA9BC4CEF0;
-	Tue, 12 Aug 2025 18:29:31 +0000 (UTC)
+	 MIME-Version; b=aC3bPMSKiLlW8Z516MiE7wxLiZ0lOD3fkVgSZUBTUqy1iLyvxMNM1Av3nwcsabpNQCvSsV3GTP6as8Qx1wd/GoNreXTxWybnhaX+bgU6kD+rAydiwzyYkBqBMWvkjCGUPX6W9Lnr7AMWZDJ9jt/+tGRCPe1UKAkkl3j4dRsnfCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuEoSkHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC7FC4CEF8;
+	Tue, 12 Aug 2025 18:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023372;
-	bh=L0N1MqZykYJGJbGpYc3LF6qQlB6JPUGpTtT7Fyc/M68=;
+	s=korg; t=1755021999;
+	bh=rRH3NviaOZXznGqrDwscPqiWR45jdL+3mqlXtkKszWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oP7UzaFsTsUsJsChfxNoxnNY7JPDi9R5ybApURLgsxIC9pOhvP24GnJ4brVgotqpL
-	 Em/vfJhHDCneDcogKqIjFG43HvQ4mY854MhNFn8F9BVoID9zA6WHqL0UmEl5mamVwN
-	 /Bdre1sJByvwxBbGvQUsLq1Dyv2biqqjXqa6DMsQ=
+	b=vuEoSkHFD6iROu8bH32Ce9NOHj4w67Qe8x+TAqCoNQD925ZvN1ChFrJ0HTm4dgnX3
+	 HO7DvZZDC2c0lgngygcJYhqzAPOI5TobC2qSG+sJS+6mE6RQ5TIT/ASf5+yso4xEdz
+	 fOOgNDC2HvdDxxctlbOnAtSJY8fJaOevhmJOSh6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	kernel test robot <lkp@intel.com>,
-	Jann Horn <jannh@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 027/627] eventpoll: fix sphinx documentation build warning
+Subject: [PATCH 6.12 025/369] arm64: dts: qcom: sc7180: Expand IMEM region
 Date: Tue, 12 Aug 2025 19:25:22 +0200
-Message-ID: <20250812173420.361121227@linuxfoundation.org>
+Message-ID: <20250812173015.687379212@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit ecb6cc0fd8cd2d34b983e118aa61dd8c9b052d0d ]
+[ Upstream commit 965e28cad4739b11f1bc58c0a9935e025938bb1f ]
 
-Sphinx complains that ep_get_upwards_depth_proc() has a kerneldoc-style
-comment without documenting its parameters.
-This is an internal function that was not meant to show up in kernel
-documentation, so fix the warning by changing the comment to a
-non-kerneldoc one.
+We need more than what is currently described, expand the region to its
+actual boundaries.
 
-Fixes: 22bacca48a17 ("epoll: prevent creating circular epoll structures")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/r/20250717173655.10ecdce6@canb.auug.org.au
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507171958.aMcW08Cn-lkp@intel.com/
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/20250721-epoll-sphinx-fix-v1-1-b695c92bf009@google.com
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: ede638c42c82 ("arm64: dts: qcom: sc7180: Add IMEM and pil info regions")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250523-topic-ipa_mem_dts-v1-3-f7aa94fac1ab@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 7a7b044daadc..b22d6f819f78 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -2190,9 +2190,7 @@ static int ep_loop_check_proc(struct eventpoll *ep, int depth)
- 	return result;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index 249b257fc6a7..6ae5ca00c718 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -3524,18 +3524,18 @@ spmi_bus: spmi@c440000 {
+ 			#interrupt-cells = <4>;
+ 		};
  
--/**
-- * ep_get_upwards_depth_proc - determine depth of @ep when traversed upwards
-- */
-+/* ep_get_upwards_depth_proc - determine depth of @ep when traversed upwards */
- static int ep_get_upwards_depth_proc(struct eventpoll *ep, int depth)
- {
- 	int result = 0;
+-		sram@146aa000 {
++		sram@14680000 {
+ 			compatible = "qcom,sc7180-imem", "syscon", "simple-mfd";
+-			reg = <0 0x146aa000 0 0x2000>;
++			reg = <0 0x14680000 0 0x2e000>;
+ 
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 
+-			ranges = <0 0 0x146aa000 0x2000>;
++			ranges = <0 0 0x14680000 0x2e000>;
+ 
+-			pil-reloc@94c {
++			pil-reloc@2a94c {
+ 				compatible = "qcom,pil-reloc-info";
+-				reg = <0x94c 0xc8>;
++				reg = <0x2a94c 0xc8>;
+ 			};
+ 		};
+ 
 -- 
 2.39.5
 
