@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A05B23366
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC213B23180
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6F61AA726E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E280172668
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E8E1EBFE0;
-	Tue, 12 Aug 2025 18:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F0B2F83CB;
+	Tue, 12 Aug 2025 18:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1kvxZ7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaabmPki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D171EF38C;
-	Tue, 12 Aug 2025 18:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1321C8621;
+	Tue, 12 Aug 2025 18:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023014; cv=none; b=id1JNkDBAwUJZOAjqgaxuYOjPhsOlnK2/gCo8Cs+Ygl3z2YVXvbOeeXz49QUHd4wtJrYn8Rk1/tq6b2gkLKB9RrB/xs8rhODT2AVclq8gDIz0Pedx/dvt12vrWgRaTz7wdP14bIk44D3V+Guo42BV0ete+LSieRll2UeXgDXamQ=
+	t=1755021694; cv=none; b=Z9fU364ZxDpM3PfJ0hYUGbbiz1PRyZYqP6wLjK3sK/OM1/92RtkIiX42pUk9JGx6lOCsDaR6w1LZIkATxqVKxmPagt4yydqUYfRmeqs7kXV8j+xnERrPj2q4enviP+d9AACgt476d5g3Kyt/1qgvuyB1E7bIqoODc000ZdZ727w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023014; c=relaxed/simple;
-	bh=igfcEjR6L0sGQjIYFay4wGVNT9plnH8oAMzJPMWu4rk=;
+	s=arc-20240116; t=1755021694; c=relaxed/simple;
+	bh=WQzn+u5HlIIaYxmoBov+wYSg1UUafnoMp9feVJMbpg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CERrNmCSS5E23HULwFMDOp38G7wFhBqWwTk6ChCeSDTxurPCQsT+Wtb1v+LQnCQnrolD2expkWEMTRzf9bWMiem0xXzkVItHol1Bd8EmZHxv3DCVRtMv3nhWl7jLGVOimh7N4djkp5g2C1oTsv9f9lWFhiMZmilL8psx+oDyp1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1kvxZ7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CF6C4CEF6;
-	Tue, 12 Aug 2025 18:23:33 +0000 (UTC)
+	 MIME-Version; b=peUNaZ6RsEd1Bg5rkdeBNTNFPrRMBKlp7TSSKEOFH6WjO9IFZBheMFXxO3qQWtT+IPWfQCZgAeXtakM/oVsYr93kReneTJM18LGBjUPn0r5F3LlrCX6MCxbu0B2QElTiwx4qPpykE3HdeK2NsiubRIqWfS9T6AVOe56JDZ5thiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaabmPki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FB0C4CEF0;
+	Tue, 12 Aug 2025 18:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023014;
-	bh=igfcEjR6L0sGQjIYFay4wGVNT9plnH8oAMzJPMWu4rk=;
+	s=korg; t=1755021694;
+	bh=WQzn+u5HlIIaYxmoBov+wYSg1UUafnoMp9feVJMbpg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1kvxZ7t1++1nIO7ERgbpSolklPaBNQQOKxUWJ3v6SMQcmdOYQ0qX6scBY8t83j3c
-	 qq5HSeweLixyqAAaU++0e8vXyYOwL6FuoevphWaUsCaWhgF2hjOGuuFpNkOauQZPTF
-	 lE6nY/3gr/QuH697dMv202fggQKYanAa56Oa1BUs=
+	b=HaabmPkiFX4iikGQcTVmAQyC/pIX5DszDW99PCiotB/AWztkPCeNjcM0VE0IACMm7
+	 orBB2dLORqEaH3WPfsiTt90Z5+O2Dlr7yJmOGIxyrBubDSaX16nirZFFuzSYz3PQLZ
+	 9rpFN7qt1bwLfnGI1AYyOdkJqMDFQyayKiZxtkoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
+	Chris Mason <clm@meta.com>,
+	Beata Michalska <beata.michalska@arm.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 281/369] sched: Add test_and_clear_wake_up_bit() and atomic_dec_and_wake_up()
+Subject: [PATCH 6.6 190/262] sched/psi: Fix psi_seq initialization
 Date: Tue, 12 Aug 2025 19:29:38 +0200
-Message-ID: <20250812173026.869492592@linuxfoundation.org>
+Message-ID: <20250812173001.221535001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 52d633def56c10fe3e82a2c5d88c3ecb3f4e4852 ]
+[ Upstream commit 99b773d720aeea1ef2170dce5fcfa80649e26b78 ]
 
-There are common patterns in the kernel of using test_and_clear_bit()
-before wake_up_bit(), and atomic_dec_and_test() before wake_up_var().
+With the seqcount moved out of the group into a global psi_seq,
+re-initializing the seqcount on group creation is causing seqcount
+corruption.
 
-These combinations don't need extra barriers but sometimes include them
-unnecessarily.
-
-To help avoid the unnecessary barriers and to help discourage the
-general use of wake_up_bit/var (which is a fragile interface) introduce
-two combined functions which implement these patterns.
-
-Also add store_release_wake_up() which supports the task of simply
-setting a non-atomic variable and sending a wakeup.  This pattern
-requires barriers which are often omitted.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
+Fixes: 570c8efd5eb7 ("sched/psi: Optimize psi_group_change() cpu_clock() usage")
+Reported-by: Chris Mason <clm@meta.com>
+Suggested-by: Beata Michalska <beata.michalska@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240925053405.3960701-5-neilb@suse.de
-Stable-dep-of: 1db3a48e83bb ("NFS: Fix wakeup of __nfs_lookup_revalidate() in unblock_revalidate()")
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/wait_bit.h | 60 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ kernel/sched/psi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
-index 7725b7579b78..2209c227e859 100644
---- a/include/linux/wait_bit.h
-+++ b/include/linux/wait_bit.h
-@@ -335,4 +335,64 @@ static inline void clear_and_wake_up_bit(int bit, void *word)
- 	wake_up_bit(word, bit);
- }
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index 837b065749ce..08a9a9f909d5 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -172,7 +172,7 @@ struct psi_group psi_system = {
+ 	.pcpu = &system_group_pcpu,
+ };
  
-+/**
-+ * test_and_clear_wake_up_bit - clear a bit if it was set: wake up anyone waiting on that bit
-+ * @bit: the bit of the word being waited on
-+ * @word: the address of memory containing that bit
-+ *
-+ * If the bit is set and can be atomically cleared, any tasks waiting in
-+ * wait_on_bit() or similar will be woken.  This call has the same
-+ * complete ordering semantics as test_and_clear_bit().  Any changes to
-+ * memory made before this call are guaranteed to be visible after the
-+ * corresponding wait_on_bit() completes.
-+ *
-+ * Returns %true if the bit was successfully set and the wake up was sent.
-+ */
-+static inline bool test_and_clear_wake_up_bit(int bit, unsigned long *word)
-+{
-+	if (!test_and_clear_bit(bit, word))
-+		return false;
-+	/* no extra barrier required */
-+	wake_up_bit(word, bit);
-+	return true;
-+}
-+
-+/**
-+ * atomic_dec_and_wake_up - decrement an atomic_t and if zero, wake up waiters
-+ * @var: the variable to dec and test
-+ *
-+ * Decrements the atomic variable and if it reaches zero, send a wake_up to any
-+ * processes waiting on the variable.
-+ *
-+ * This function has the same complete ordering semantics as atomic_dec_and_test.
-+ *
-+ * Returns %true is the variable reaches zero and the wake up was sent.
-+ */
-+
-+static inline bool atomic_dec_and_wake_up(atomic_t *var)
-+{
-+	if (!atomic_dec_and_test(var))
-+		return false;
-+	/* No extra barrier required */
-+	wake_up_var(var);
-+	return true;
-+}
-+
-+/**
-+ * store_release_wake_up - update a variable and send a wake_up
-+ * @var: the address of the variable to be updated and woken
-+ * @val: the value to store in the variable.
-+ *
-+ * Store the given value in the variable send a wake up to any tasks
-+ * waiting on the variable.  All necessary barriers are included to ensure
-+ * the task calling wait_var_event() sees the new value and all values
-+ * written to memory before this call.
-+ */
-+#define store_release_wake_up(var, val)					\
-+do {									\
-+	smp_store_release(var, val);					\
-+	smp_mb();							\
-+	wake_up_var(var);						\
-+} while (0)
-+
- #endif /* _LINUX_WAIT_BIT_H */
+-static DEFINE_PER_CPU(seqcount_t, psi_seq);
++static DEFINE_PER_CPU(seqcount_t, psi_seq) = SEQCNT_ZERO(psi_seq);
+ 
+ static inline void psi_write_begin(int cpu)
+ {
+@@ -200,11 +200,7 @@ static void poll_timer_fn(struct timer_list *t);
+ 
+ static void group_init(struct psi_group *group)
+ {
+-	int cpu;
+-
+ 	group->enabled = true;
+-	for_each_possible_cpu(cpu)
+-		seqcount_init(per_cpu_ptr(&psi_seq, cpu));
+ 	group->avg_last_update = sched_clock();
+ 	group->avg_next_update = group->avg_last_update + psi_period;
+ 	mutex_init(&group->avgs_lock);
 -- 
 2.39.5
 
