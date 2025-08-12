@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C14DB23185
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3104DB2331D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB4817AAA7F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CFF17B0B54
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5112FD1DA;
-	Tue, 12 Aug 2025 18:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBE62F90C8;
+	Tue, 12 Aug 2025 18:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODXoRxfb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXw6FtOv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966C02FD1A6;
-	Tue, 12 Aug 2025 18:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE8A21ABD0;
+	Tue, 12 Aug 2025 18:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021907; cv=none; b=OJoODdN2NWBl4Jx7IDjsSIFong4vi8dAFDHY+f7MeYj4dY1DTuQKqi/ZnjrJ/QDE6auRvdtoR7CX9OAWcm2ryt4NXMWn0pEnQcEK1mu6NeO/l86air85r0hkosSkNt0OlfqagWQkhBCfmmu/mTX/EL75J7Wl+hEqc9BUyx98PNw=
+	t=1755023110; cv=none; b=JEHM36MPLGFDGDhPvBrDavoqsfvFUPRQHtKna51Lm2PPFLZW7vym+/Zv6KOpgSEOJbdYE07ujbvmku3YLHsMwe7Ey/djeL7exUYuES38wKF77unWyYKbP6uGg8rxtT4C2vBUinafwVj4W1eVXdUAqWCIWTV6ILeSsGigK8Wv9Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021907; c=relaxed/simple;
-	bh=EtXYQ6vQBAWbroZiwjHS2MRxzqG9MSK56D46F15OGXA=;
+	s=arc-20240116; t=1755023110; c=relaxed/simple;
+	bh=l382D/AKGrX5zKwFTgeHny3DKrS5XodNOw8UAEjBazE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rv8F3Sv5YdLX91DTmXshdlNZ7INip23BZTH+7E7iuMZNsI3ztwJ/t3S21KHgxtelTtzY+Gc9r8JgXUsGvT6OzdgALKrkkt0Fy3lAzPWmrGZojJNluC0lqirI5mi4L0RAH/cVLv6Wi/phIngA/IrXaYuU+Xfd+P9z3SV4QsOfsJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODXoRxfb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C83C4CEF0;
-	Tue, 12 Aug 2025 18:05:06 +0000 (UTC)
+	 MIME-Version; b=TntUhRP4o5jMK6csVeyEz1VBG7huUfxbrSIP/Fmcm5MgK4pumWHnPW1ASF8jpixGz8ztPJw6D7+YXOVXVKU2zO9kowz0ukTEy1GM0NTCtMNqOGvWR9KhRYilYU3AMhSWPcE8RO4qtr6OrlDfqlUXqSav4W1V1U63L2ZCVvRsdTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXw6FtOv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6AFC4CEF7;
+	Tue, 12 Aug 2025 18:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021907;
-	bh=EtXYQ6vQBAWbroZiwjHS2MRxzqG9MSK56D46F15OGXA=;
+	s=korg; t=1755023109;
+	bh=l382D/AKGrX5zKwFTgeHny3DKrS5XodNOw8UAEjBazE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODXoRxfbo1YoI2KGrnWztMd5p7TtqlJtKXNwf834hz/slMb/z0iXnAwSUm5Cda6uJ
-	 yz3FKjCTFgEs4eeRaxnb6Uj1+fadrnazDOmd6jtqnKC5+aOFCoF5NxdCK06MYQPgZ0
-	 oVONZhv6EyXOxDlAMiwORqA/9ychLSfcTG4Q8BZA=
+	b=aXw6FtOvrhC7PbmEFD57B6wi9YqhElsIbxEy/ge6afhDg4RxG3TX+5wDQOygyLiDR
+	 ijfx82Mvour+N2K3Q5bgt3b8+0NmuvKzPQk29xxZ+4TlK9NhRcVgaFmD6ygKniQNWJ
+	 kSivm41ib4q8Z3kyn8fAndBQ6lQdbMkOHnyq8yrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.6 259/262] x86/fpu: Delay instruction pointer fixup until after warning
-Date: Tue, 12 Aug 2025 19:30:47 +0200
-Message-ID: <20250812173004.161735185@linuxfoundation.org>
+	Armando Budianto <sprite@gnuweeb.org>,
+	Simon Horman <horms@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ammar Faizi <ammarfaizi2@gnuweeb.org>
+Subject: [PATCH 6.12 351/369] net: usbnet: Fix the wrong netif_carrier_on() call
+Date: Tue, 12 Aug 2025 19:30:48 +0200
+Message-ID: <20250812173029.898520698@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
 
-commit 1cec9ac2d071cfd2da562241aab0ef701355762a upstream.
+commit 8466d393700f9ccef68134d3349f4e0a087679b9 upstream.
 
-Right now, if XRSTOR fails a console message like this is be printed:
+The commit referenced in the Fixes tag causes usbnet to malfunction
+(identified via git bisect). Post-commit, my external RJ45 LAN cable
+fails to connect. Linus also reported the same issue after pulling that
+commit.
 
-	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
+The code has a logic error: netif_carrier_on() is only called when the
+link is already on. Fix this by moving the netif_carrier_on() call
+outside the if-statement entirely. This ensures it is always called
+when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
+of the link state.
 
-However, the text location (...+0x9a in this case) is the instruction
-*AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
-also points one instruction late.
-
-The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
-keep on running after returning from the #GP handler. But it does this
-fixup before warning.
-
-The resulting warning output is nonsensical because it looks like the
-non-FPU-related instruction is #GP'ing.
-
-Do not fix up RIP until after printing the warning. Do this by using
-the more generic and standard ex_handler_default().
-
-Fixes: d5c8028b4788 ("x86/fpu: Reinitialize FPU registers if restoring FPU state fails")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Acked-by: Alison Schofield <alison.schofield@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250624210148.97126F9E%40davehans-spike.ostc.intel.com
+Cc: stable@vger.kernel.org
+Cc: Armando Budianto <sprite@gnuweeb.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
+Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
+Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
+Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
+Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/extable.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/usb/usbnet.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/mm/extable.c
-+++ b/arch/x86/mm/extable.c
-@@ -121,13 +121,12 @@ static bool ex_handler_sgx(const struct
- static bool ex_handler_fprestore(const struct exception_table_entry *fixup,
- 				 struct pt_regs *regs)
- {
--	regs->ip = ex_fixup_addr(fixup);
--
- 	WARN_ONCE(1, "Bad FPU state detected at %pB, reinitializing FPU registers.",
- 		  (void *)instruction_pointer(regs));
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1113,6 +1113,9 @@ static void __handle_link_change(struct
+ 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
+ 		return;
  
- 	fpu_reset_from_exception_fixup();
--	return true;
++	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++		netif_carrier_on(dev->net);
 +
-+	return ex_handler_default(fixup, regs);
- }
- 
- /*
+ 	if (!netif_carrier_ok(dev->net)) {
+ 		/* kill URBs for reading packets to save bus bandwidth */
+ 		unlink_urbs(dev, &dev->rxq);
+@@ -1122,9 +1125,6 @@ static void __handle_link_change(struct
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
+-		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
+-			netif_carrier_on(dev->net);
+-
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
 
 
 
