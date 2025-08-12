@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECC7B23140
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DB4B234C8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1BA18840C9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A80F2167798
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01C52FF15E;
-	Tue, 12 Aug 2025 17:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF92FFDD0;
+	Tue, 12 Aug 2025 18:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFsYadjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8awz1kf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E49D2FA0FD;
-	Tue, 12 Aug 2025 17:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DCF2F4A0A;
+	Tue, 12 Aug 2025 18:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021593; cv=none; b=L/FzelOAfXc36sVambszFqoGiFbzTRH4W0jp5mzVCEwnLIp8DZ6mDjbhnWQznEm841JXHSBExtIbK5TPKRY0zr/zYgpfFk3YxfL4jsZyopznIKY3plBD4BU141bI4TFmUhzI/LIZyo9jTeeWf1mFi3/uC5bS7eyKYk1YLYzYGPQ=
+	t=1755024063; cv=none; b=Q3hV2HOmzTD3H5kK/VBlKRaRZ0Q7VfvHrmhqUiSKOadnGPxSZ+dqU+8VG549NAaJa7keQerX6U0Dbt4TJ/cZQNbBlfIs+gJ41ngsa7cWWZE8K5gEkWIAa9+6iU4hgbNpgfkTkxFtILFBf+gE29UZI7wgQcF3bO/3pYasBH2yWT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021593; c=relaxed/simple;
-	bh=JO7lU9N3I/9z2KmRD8uFQVol2x8QRYgUtrqALSFpKyQ=;
+	s=arc-20240116; t=1755024063; c=relaxed/simple;
+	bh=ERHIsji9gqL1E/SnrHFAIxMB4AGH9/qJ9BPdVinrxcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNidfrg02VJLarxTWHr0aCYx2zcMJOSl0xSgSKwAKmWX2fzr4n+Ha0mj5bRcX7YRcmP6IhghCO4b7g1qJ/TeTOSeVxU9fJ0ARN61Y2ptxj5utlGOl1tBU6/ntmPpRFssfxyGBiq8GZGATodHSGciFyByj0rR8Vsu0sfdGN8s5DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFsYadjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4CAC4CEF0;
-	Tue, 12 Aug 2025 17:59:52 +0000 (UTC)
+	 MIME-Version; b=OnFAYzv91okAmHefkrEl8ybdESi5EAbkZJlfZQPzPWgMbgsQE3zx0p30Q6KbM6dlnlGN+bzpk+DnzMPFyjoBqVkPXshT9Bw8FoRX+QfWUgXgjHEUoNX4U6u7KuEbTKbR6s5a+wBd6X//Vmpmm/OeagUlXFTEmwpsnCq9NsslB3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8awz1kf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2018C4CEF0;
+	Tue, 12 Aug 2025 18:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021593;
-	bh=JO7lU9N3I/9z2KmRD8uFQVol2x8QRYgUtrqALSFpKyQ=;
+	s=korg; t=1755024063;
+	bh=ERHIsji9gqL1E/SnrHFAIxMB4AGH9/qJ9BPdVinrxcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFsYadjHJrbyxcm76PaYJQxvYFAZMsKrOIUNDT4bUrTN0k+6BVHJz3oX6kmNyystF
-	 WurkbfpnoinNp/EPE1wHTRImJgWX9p6NRUFNErSBTtcJvjguDe1djeBqYv2nApizzw
-	 v/zp8CBhst4KieWXidJ2M+ac03r6QRcdyI7Lrkfg=
+	b=v8awz1kfNLhilCsTkliDTi2dK0AYz+lvYf3oxywuNDO58GqFf6nvaTOPi3AbMyuCB
+	 jylkqrLsM0UpHUE+swoc4rhaDY7wnw3AJEg2H2h/MVCU5WIQxlcjccRUbyCaZdVBCZ
+	 WPzc6Jj7RvEGsjB0sNcX6zGKhAjaJWYng9nU/FW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/262] rtc: nct3018y: fix incorrect maximum clock rate handling
-Date: Tue, 12 Aug 2025 19:29:16 +0200
-Message-ID: <20250812173000.253998480@linuxfoundation.org>
+Subject: [PATCH 6.16 262/627] bpf: Reject narrower access to pointer ctx fields
+Date: Tue, 12 Aug 2025 19:29:17 +0200
+Message-ID: <20250812173429.282959908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 437c59e4b222cd697b4cf95995d933e7d583c5f1 ]
+[ Upstream commit e09299225d5ba3916c91ef70565f7d2187e4cca0 ]
 
-When nct3018y_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+The following BPF program, simplified from a syzkaller repro, causes a
+kernel warning:
 
-Fixes: 5adbaed16cc63 ("rtc: Add NCT3018Y real time clock driver")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-3-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+    r0 = *(u8 *)(r1 + 169);
+    exit;
+
+With pointer field sk being at offset 168 in __sk_buff. This access is
+detected as a narrower read in bpf_skb_is_valid_access because it
+doesn't match offsetof(struct __sk_buff, sk). It is therefore allowed
+and later proceeds to bpf_convert_ctx_access. Note that for the
+"is_narrower_load" case in the convert_ctx_accesses(), the insn->off
+is aligned, so the cnt may not be 0 because it matches the
+offsetof(struct __sk_buff, sk) in the bpf_convert_ctx_access. However,
+the target_size stays 0 and the verifier errors with a kernel warning:
+
+    verifier bug: error during ctx access conversion(1)
+
+This patch fixes that to return a proper "invalid bpf_context access
+off=X size=Y" error on the load instruction.
+
+The same issue affects multiple other fields in context structures that
+allow narrow access. Some other non-affected fields (for sk_msg,
+sk_lookup, and sockopt) were also changed to use bpf_ctx_range_ptr for
+consistency.
+
+Note this syzkaller crash was reported in the "Closes" link below, which
+used to be about a different bug, fixed in
+commit fce7bd8e385a ("bpf/verifier: Handle BPF_LOAD_ACQ instructions
+in insn_def_regno()"). Because syzbot somehow confused the two bugs,
+the new crash and repro didn't get reported to the mailing list.
+
+Fixes: f96da09473b52 ("bpf: simplify narrower ctx access")
+Fixes: 0df1a55afa832 ("bpf: Warn on internal verifier errors")
+Reported-by: syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0ef84a7bdf5301d4cbec
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://patch.msgid.link/3b8dcee67ff4296903351a974ddd9c4dca768b64.1753194596.git.paul.chaignon@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-nct3018y.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/cgroup.c |  8 ++++----
+ net/core/filter.c   | 20 ++++++++++----------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/rtc/rtc-nct3018y.c b/drivers/rtc/rtc-nct3018y.c
-index c4533c0f5389..5e7a8c7ad58c 100644
---- a/drivers/rtc/rtc-nct3018y.c
-+++ b/drivers/rtc/rtc-nct3018y.c
-@@ -342,7 +342,7 @@ static long nct3018y_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index f4885514f007..deb88fade249 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -2440,22 +2440,22 @@ static bool cg_sockopt_is_valid_access(int off, int size,
+ 	}
  
--	return 0;
-+	return clkout_rates[0];
- }
+ 	switch (off) {
+-	case offsetof(struct bpf_sockopt, sk):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, sk):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+ 		break;
+-	case offsetof(struct bpf_sockopt, optval):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, optval):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_PACKET;
+ 		break;
+-	case offsetof(struct bpf_sockopt, optval_end):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, optval_end):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_PACKET_END;
+ 		break;
+-	case offsetof(struct bpf_sockopt, retval):
++	case bpf_ctx_range(struct bpf_sockopt, retval):
+ 		if (size != size_default)
+ 			return false;
+ 		return prog->expected_attach_type == BPF_CGROUP_GETSOCKOPT;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 7a72f766aacf..47073a0180a4 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -8690,7 +8690,7 @@ static bool bpf_skb_is_valid_access(int off, int size, enum bpf_access_type type
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct __sk_buff, sk):
++	case bpf_ctx_range_ptr(struct __sk_buff, sk):
+ 		if (type == BPF_WRITE || size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCK_COMMON_OR_NULL;
+@@ -9268,7 +9268,7 @@ static bool sock_addr_is_valid_access(int off, int size,
+ 				return false;
+ 		}
+ 		break;
+-	case offsetof(struct bpf_sock_addr, sk):
++	case bpf_ctx_range_ptr(struct bpf_sock_addr, sk):
+ 		if (type != BPF_READ)
+ 			return false;
+ 		if (size != sizeof(__u64))
+@@ -9318,17 +9318,17 @@ static bool sock_ops_is_valid_access(int off, int size,
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, sk):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, sk):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_SOCKET_OR_NULL;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, skb_data):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_PACKET;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, skb_data_end):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data_end):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_PACKET_END;
+@@ -9337,7 +9337,7 @@ static bool sock_ops_is_valid_access(int off, int size,
+ 			bpf_ctx_record_field_size(info, size_default);
+ 			return bpf_ctx_narrow_access_ok(off, size,
+ 							size_default);
+-		case offsetof(struct bpf_sock_ops, skb_hwtstamp):
++		case bpf_ctx_range(struct bpf_sock_ops, skb_hwtstamp):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			break;
+@@ -9407,17 +9407,17 @@ static bool sk_msg_is_valid_access(int off, int size,
+ 		return false;
  
- static int nct3018y_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	switch (off) {
+-	case offsetof(struct sk_msg_md, data):
++	case bpf_ctx_range_ptr(struct sk_msg_md, data):
+ 		info->reg_type = PTR_TO_PACKET;
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct sk_msg_md, data_end):
++	case bpf_ctx_range_ptr(struct sk_msg_md, data_end):
+ 		info->reg_type = PTR_TO_PACKET_END;
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct sk_msg_md, sk):
++	case bpf_ctx_range_ptr(struct sk_msg_md, sk):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+@@ -11623,7 +11623,7 @@ static bool sk_lookup_is_valid_access(int off, int size,
+ 		return false;
+ 
+ 	switch (off) {
+-	case offsetof(struct bpf_sk_lookup, sk):
++	case bpf_ctx_range_ptr(struct bpf_sk_lookup, sk):
+ 		info->reg_type = PTR_TO_SOCKET_OR_NULL;
+ 		return size == sizeof(__u64);
+ 
 -- 
 2.39.5
 
