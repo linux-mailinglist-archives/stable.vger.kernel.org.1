@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-168479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91762B23569
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB99B231DA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B47625EF7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE15E16A099
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA8E2FF172;
-	Tue, 12 Aug 2025 18:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D862FE57B;
+	Tue, 12 Aug 2025 18:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMm3iAhi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKy4dzlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686842FF167;
-	Tue, 12 Aug 2025 18:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B592DE6E9;
+	Tue, 12 Aug 2025 18:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024311; cv=none; b=pw3Dgr390cFzZUg9/2Phej3unFxkLjm9XQgFseXZtuoB04ynpfY+z8GXByV1zbxzn6VqpO31uoCLB9Fjz4XN61fybVf0fcSbHQ3Zi4DeaA79A46FqDvpiYk6nVwGiAUlQAJx1QQ/hteVDknW+l8PQBkLm3JtSzkhZR+Jc6fLtWM=
+	t=1755021843; cv=none; b=vFoPj35nSjnOKPY1K60TCUrjM5ABYuhNb9VTu0dajzNTxRNZ0Ved+BEVahy37EfhvNAIZrIbHy+kkYDWIh51pOeJIQumVVaOzbMlLgQ9h8xrkC4jY956qnMe9YfPRvfv/6psigeIfuFKhe7ZoTCzW7XYappRKCvglIyyzy55Ipg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024311; c=relaxed/simple;
-	bh=cl96HL/4sSGMvvsAsedsrL36YEPVmWBj3y0b/9F9cEU=;
+	s=arc-20240116; t=1755021843; c=relaxed/simple;
+	bh=cti562yJVxveqlAVPWqF/CUbNzv4vI9E1twdKHxSeNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kC/LDKRD285nSX387iLTguQaQpqKftbj7JjUtbD/RWuI3GhRwMEDDqpMloOATwrfWbZTrW825AlKgHLscayc/h8cTvDjxeQrlh6Ix9c2xXvG9AIRoFIQBob3BJ+UfU370Z23WaUbHgfYlSXM78IjNWmZuy7KoGwNJIMJFBdHyyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMm3iAhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC56C4CEF1;
-	Tue, 12 Aug 2025 18:45:10 +0000 (UTC)
+	 MIME-Version; b=CTxUd3UeEnYJuIqu8tnzc6o8P39QuzccHouj86SBgFei/kHhylwawLsbd8ztxiA0utxEYIpWH/Ct60iNy7m4tNHqAI3wxLfC3LWIZwM5RUoVRPZs0K/Nef5c/0wBbc5vJaFXsgF+kC6C9NmvH39w76Po/Vpx2oj1F+R5Jfqfllo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKy4dzlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77300C4CEF7;
+	Tue, 12 Aug 2025 18:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024311;
-	bh=cl96HL/4sSGMvvsAsedsrL36YEPVmWBj3y0b/9F9cEU=;
+	s=korg; t=1755021843;
+	bh=cti562yJVxveqlAVPWqF/CUbNzv4vI9E1twdKHxSeNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMm3iAhiPeB9L1qyeXoABCljxfE4A5lOqlcpF6h1F6GwmhVzWU8dVeaOAShUrnrqq
-	 WmV656gc+ZB4E6JhblLovCBfSN76z1a0QB+wizC0BiuxLBUHUN1DYwQrc0Gaq38AVK
-	 2nIjaRhBrGqPf0Dqz+T5xqMKeNQU1DtGPp7CLJ3U=
+	b=bKy4dzlDnPmPkc8CCaQQXlXodcZdtFFzPVrHLQJBBph6WlVAS6diRM69iUUZ7/DL5
+	 YsfbdB5sBukAbIwc0KdNfypHH0wixL/5la2PT3CzdZE8W5ELhUaI+yNFD+OMf2BB8x
+	 nfSbFvcYPa3T9l2EZ9fTcfO4zfn+fql5kGrCNDmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 335/627] soundwire: Correct some property names
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 242/262] USB: serial: option: add Foxconn T99W709
 Date: Tue, 12 Aug 2025 19:30:30 +0200
-Message-ID: <20250812173432.031442855@linuxfoundation.org>
+Message-ID: <20250812173003.456138205@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit ae6a0f5b8a5b0ca2e4bf1c0380267ad83aca8401 ]
+commit ad1244e1ce18f8c1a5ebad8074bfcf10eacb0311 upstream.
 
-The DisCo properties should be mipi-sdw-paging-supported and
-mipi-sdw-bank-delay-supported, with an 'ed' on the end. Correct the
-property names used in sdw_slave_read_prop().
+T99W709 is designed based on MTK T300(5G redcap) chip. There are
+7 serial ports to be enumerated: AP_LOG, GNSS, AP_META, AT,
+MD_META, NPT, DBG. RSVD(5) for ADB port.
 
-The internal flag bank_delay_support is currently unimplemented, so that
-being read wrong does not currently affect anything. The two existing
-users for this helper and the paging_support flag rt1320-sdw.c and
-rt721-sdca-sdw.c both manually set the flag in their slave properties,
-thus are not affected by this bug either.
+test evidence as below:
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e15f Rev=00.01
+S:  Manufacturer=MediaTek Inc.
+S:  Product=USB DATA CARD
+S:  SerialNumber=355511220000399
+C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
 
-Fixes: 56d4fe31af77 ("soundwire: Add MIPI DisCo property helpers")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250624125507.2866346-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/mipi_disco.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soundwire/mipi_disco.c b/drivers/soundwire/mipi_disco.c
-index 65afb28ef8fa..c69b78cd0b62 100644
---- a/drivers/soundwire/mipi_disco.c
-+++ b/drivers/soundwire/mipi_disco.c
-@@ -451,10 +451,10 @@ int sdw_slave_read_prop(struct sdw_slave *slave)
- 			"mipi-sdw-highPHY-capable");
- 
- 	prop->paging_support = mipi_device_property_read_bool(dev,
--			"mipi-sdw-paging-support");
-+			"mipi-sdw-paging-supported");
- 
- 	prop->bank_delay_support = mipi_device_property_read_bool(dev,
--			"mipi-sdw-bank-delay-support");
-+			"mipi-sdw-bank-delay-supported");
- 
- 	device_property_read_u32(dev,
- 			"mipi-sdw-port15-read-behavior", &prop->p15_behave);
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
+ 	  .driver_info = RSVD(5) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
 
 
 
