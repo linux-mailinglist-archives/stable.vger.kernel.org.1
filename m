@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-168137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893F3B233A3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32C3B2354C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A28BF3A8292
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11C41894767
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B862FFDC3;
-	Tue, 12 Aug 2025 18:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE254291C1F;
+	Tue, 12 Aug 2025 18:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Si40jJMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCiXh9bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BE51D416C;
-	Tue, 12 Aug 2025 18:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1A52CA9;
+	Tue, 12 Aug 2025 18:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023170; cv=none; b=PTDEDZ+xKNzJ+n4CTtiMVL1T3rD4+WTcfNNoa5XdFO7Ry4NL3fiROvW1i4wVwX2SN8P/CgvZdzj11o/qVD4pto3Spqcpi57c+EXN7+b6JOfliFu3SlgB+iO8thh5fJi3yncnDzYFXDJAhT06RADYcu7+pSHxpRyz5sDmlf077jk=
+	t=1755024384; cv=none; b=PqLOJUQzeHQt6wMYPMx3Y/4bHAKLWKmr2WGO87bE7gUwmtjT8RkzZxkryeivtq4KS4K0Rk+srzZdl+uQ4pAJgDgutROzu1u69FS5PGNQSvJwbYjOppv+9VCCVhqiT+8x845PWwO0Mj8vGK2vwDqWpwFHRb3YAZ3uOGJCHY/jMnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023170; c=relaxed/simple;
-	bh=oqufU1mVM27QcU4dwkLhIFedkNSereROMK8aplppqlk=;
+	s=arc-20240116; t=1755024384; c=relaxed/simple;
+	bh=kyDP+a1q74YEnlMXSAHjTlmvMkbgkW412jP3ykJDdZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncniUEpDolkdiPx8/bbPJ/5lPJDpt3XkA2AwC+RomiN26vA9ioeYYowXjfVQ5ht3nWwtxERzWGfOny3BPqdwjFubjP+V8Kstnmes8uotajE7wnHZ/csina+7MNkh441144MfTSCTAb3zvK8OMI82NLsZoeJaiIyJ6CZmnCpXh6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Si40jJMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82ACC4CEF0;
-	Tue, 12 Aug 2025 18:26:09 +0000 (UTC)
+	 MIME-Version; b=ppjkaLCZKGetCMwtj77CPP0Eb3BcF8prWMiYmFeCLkcxuiMip7MLTP/oRjg0Y5+xpJ5Rf0d7nZlhWLNyE1PoK6LF1wJ3K1DxGGUU86YoIv/X9O9xHKLIdnq2tqedHr9QS+pFCRZSxHaAMrTozNjqz8nJVnloYKleRBGPEGaYTQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCiXh9bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BFBC4CEF0;
+	Tue, 12 Aug 2025 18:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023170;
-	bh=oqufU1mVM27QcU4dwkLhIFedkNSereROMK8aplppqlk=;
+	s=korg; t=1755024384;
+	bh=kyDP+a1q74YEnlMXSAHjTlmvMkbgkW412jP3ykJDdZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Si40jJMJB1BD0FQFTuahrD3tGgBYBuyMj7mzvIJAHv3W7kNmYL9RRZuefCsKKIl9e
-	 iv19LVu0OJTEjbK1ONBePHNtRN78bxax851EOv2xjoWAHOzfmYKhIf+t1r9DPBk8zY
-	 ukoYM+5W7dw3UKF7wJK/V0L+JdLApBzTmzkRZsb8=
+	b=dCiXh9buJ3tjiCWMai3xw+vOeOsybQx/UVYwg9vDFSMjkjG9HzFwFHqjMirbsFXAi
+	 LWEB9EsyOswODIET9DvxmGmmAPoAKd1hkkE1kkAxeyZG3p9SQnopC84Qos54OusAMo
+	 8/gRi1peG6gjUPvFIe4ZibBGdhIbwwR2lMBOQQ0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edip Hazuri <edip@medip.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 356/369] ALSA: hda/realtek - Fix mute LED for HP Victus 16-s0xxx
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 358/627] perf sched: Free thread->priv using priv_destructor
 Date: Tue, 12 Aug 2025 19:30:53 +0200
-Message-ID: <20250812173030.083525726@linuxfoundation.org>
+Message-ID: <20250812173432.917035573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edip Hazuri <edip@medip.dev>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 956048a3cd9d2575032e2c7ca62803677357ae18 upstream.
+[ Upstream commit aa9fdd106bab8c478d37eba5703c0950ad5c0d4f ]
 
-The mute led on this laptop is using ALC245 but requires a quirk to work
-This patch enables the existing quirk for the device.
+In many perf sched subcommand saves priv data structure in the thread
+but it forgot to free them.  As it's an opaque type with 'void *', it
+needs to register that knows how to free the data.  In this case, just
+regular 'free()' is fine.
 
-Tested on Victus 16-S0063NT Laptop. The LED behaviour works
-as intended.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
-Link: https://patch.msgid.link/20250729181848.24432-2-edip@medip.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04cb4fc4d40a5bf1 ("perf thread: Allow tools to register a thread->priv destructor")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-3-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-sched.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10736,6 +10736,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8bbe, "HP Victus 16-r0xxx (MB 8BBE)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
-+	SND_PCI_QUIRK(0x103c, 0x8bd4, "HP Victus 16-s0xxx (MB 8BD4)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bdf, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index b7bbfad0ed60..fa4052e04020 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -3898,6 +3898,8 @@ int cmd_sched(int argc, const char **argv)
+ 	if (!argc)
+ 		usage_with_options(sched_usage, sched_options);
+ 
++	thread__set_priv_destructor(free);
++
+ 	/*
+ 	 * Aliased to 'perf script' for now:
+ 	 */
+-- 
+2.39.5
+
 
 
 
