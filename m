@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC48B2331B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 662F4B23160
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B508517C081
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51A22188251E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C3E2FA0F9;
-	Tue, 12 Aug 2025 18:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83BF2FE586;
+	Tue, 12 Aug 2025 18:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tdil0Qn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1L/xltje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC1D282E1;
-	Tue, 12 Aug 2025 18:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6729F2FE564;
+	Tue, 12 Aug 2025 18:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022851; cv=none; b=uDaLdugndVVtJvO4Mpce/N4lfZCTwnaeNx1siqP13noYlH5r3EnHgwQtBH2O10/Wn8Z46eQJSuFqV+4aO9SSzBXcFad4pxt734chbt1jff9thQfblw2P8cd7dRSxNitaE3GkgVl4linVCwHfP3akRJIB7SmSPL014Y2Ff1vPYU4=
+	t=1755021661; cv=none; b=kE5lmCG4vMOy2B7vIcFdAbH6bhiba8Bi8J8KLEA3yk4Qascf9bJNEwISLXcj5agZnAwj7kS1TRNeJyI/U77HzTyLiUUxmTs59hvtQfEeioEfT/Wj5l81sGbiYNuCQZg/0lHB8EwgB1AxvsXj+BZUxD3r8XBOUYFqdHHNYKELJKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022851; c=relaxed/simple;
-	bh=GtvldUA36v/SOJSMa3dkhpd6LfMG9C+sT2f0cIe/u7c=;
+	s=arc-20240116; t=1755021661; c=relaxed/simple;
+	bh=wQ/VSnTlLvIoKXNtS7q6ky5ga0/8yw+bnq9YrFqsaS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjRwLB3jNJNtsLImbKuv0KCA2y7JDJA5lfNpwGi01aWQeA1uvDxMZW8m2gMbVjU9R60NbhpC6WgxUn27GfEe7cFPpb7SikNKiJnIdXqO/jFEDXK+h+SNtRXWkazgdL2YBw6jkh/AjjybfU91bm7Ll3PEqu2u+GHglnTBPobslFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tdil0Qn5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A59C4CEF1;
-	Tue, 12 Aug 2025 18:20:50 +0000 (UTC)
+	 MIME-Version; b=Ldfq4U6Atk0iD8tt7PANeoz2c095VmmuKsHXOH1eBF1MsRH/hTunnfFkAGZiV0/n0W/4Mc/I/GY8dtaYVlSWaWj5RG3G5wC5QDv/seBZbndqKw++TsOBApREkdXQwc0cPNG1Rt70Xfsd//zmU6IntevyoP5PKHCJCY6wvLdeKIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1L/xltje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB48EC4CEF0;
+	Tue, 12 Aug 2025 18:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022851;
-	bh=GtvldUA36v/SOJSMa3dkhpd6LfMG9C+sT2f0cIe/u7c=;
+	s=korg; t=1755021661;
+	bh=wQ/VSnTlLvIoKXNtS7q6ky5ga0/8yw+bnq9YrFqsaS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tdil0Qn5aHSzdKjN3FL173Cq5E2lk4beKfaE3b8a5ul7970xxcBQBhyiZkAHyoDZG
-	 l32GqRMKRznQ7INQjWs84DquHLPPUAwRs0wXgZKikWZBLa6V3qhOLXwmjAFu+IyhTb
-	 OGD3sWg9bP7px7p8TCV4m8Nc96140C0xj4yc8O8w=
+	b=1L/xltjeE1UqZpiYS/vC8JofghrhUURnGfnjIalsd7Kv+FDzc/eQLQtjhXZ/hJugQ
+	 ioKJNvhjwNORg4xI9RRUdUISwh+SzOuoorpRxnfV4uy2ZMjP1nd1lK3oKWl3V6beBr
+	 NfkAGTUkrBJvKFLjbeaO588Y7pgM0XKPQonGn3eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 276/369] PCI: pnv_php: Work around switches with broken presence detection
-Date: Tue, 12 Aug 2025 19:29:33 +0200
-Message-ID: <20250812173025.810515354@linuxfoundation.org>
+Subject: [PATCH 6.6 186/262] scsi: Revert "scsi: iscsi: Fix HW conn removal use after free"
+Date: Tue, 12 Aug 2025 19:29:34 +0200
+Message-ID: <20250812173001.049308215@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
+[ Upstream commit 7bdc68921481c19cd8c85ddf805a834211c19e61 ]
 
-The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
-was observed to incorrectly assert the Presence Detect Set bit in its
-capabilities when tested on a Raptor Computing Systems Blackbird system,
-resulting in the hot insert path never attempting a rescan of the bus
-and any downstream devices not being re-detected.
+This reverts commit c577ab7ba5f3bf9062db8a58b6e89d4fe370447e.
 
-Work around this by additionally checking whether the PCIe data link is
-active or not when performing presence detection on downstream switches'
-ports, similar to the pciehp_hpc.c driver.
+The invocation of iscsi_put_conn() in iscsi_iter_destory_conn_fn() is
+used to free the initial reference counter of iscsi_cls_conn.  For
+non-qla4xxx cases, the ->destroy_conn() callback (e.g.,
+iscsi_conn_teardown) will call iscsi_remove_conn() and iscsi_put_conn()
+to remove the connection from the children list of session and free the
+connection at last.  However for qla4xxx, it is not the case. The
+->destroy_conn() callback of qla4xxx will keep the connection in the
+session conn_list and doesn't use iscsi_put_conn() to free the initial
+reference counter. Therefore, it seems necessary to keep the
+iscsi_put_conn() in the iscsi_iter_destroy_conn_fn(), otherwise, there
+will be memory leak problem.
 
-Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
+Link: https://lore.kernel.org/all/88334658-072b-4b90-a949-9c74ef93cfd1@huawei.com/
+Fixes: c577ab7ba5f3 ("scsi: iscsi: Fix HW conn removal use after free")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Link: https://lore.kernel.org/r/20250715073926.3529456-1-lilingfeng3@huawei.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/scsi/scsi_transport_iscsi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 1304329ca6f7..5476c9e7760d 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -391,6 +391,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index f2c31e74d8ed..22bec2453bac 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -2169,6 +2169,8 @@ static int iscsi_iter_destroy_conn_fn(struct device *dev, void *data)
+ 		return 0;
+ 
+ 	iscsi_remove_conn(iscsi_dev_to_conn(dev));
++	iscsi_put_conn(iscsi_dev_to_conn(dev));
++
  	return 0;
  }
  
-+static int pcie_check_link_active(struct pci_dev *pdev)
-+{
-+	u16 lnk_status;
-+	int ret;
-+
-+	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
-+	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
-+		return -ENODEV;
-+
-+	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
-+
-+	return ret;
-+}
-+
- static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
- {
- 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
-@@ -403,6 +417,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
- 	 */
- 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
- 	if (ret >= 0) {
-+		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
-+			presence == OPAL_PCI_SLOT_EMPTY) {
-+			/*
-+			 * Similar to pciehp_hpc, check whether the Link Active
-+			 * bit is set to account for broken downstream bridges
-+			 * that don't properly assert Presence Detect State, as
-+			 * was observed on the Microsemi Switchtec PM8533 PFX
-+			 * [11f8:8533].
-+			 */
-+			if (pcie_check_link_active(php_slot->pdev) > 0)
-+				presence = OPAL_PCI_SLOT_PRESENT;
-+		}
-+
- 		*state = presence;
- 		ret = 0;
- 	} else {
 -- 
 2.39.5
 
