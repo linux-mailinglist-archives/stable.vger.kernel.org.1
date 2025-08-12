@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2614B23468
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815F4B232C9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 530B97A4490
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 860FE583DF2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198AB2FF171;
-	Tue, 12 Aug 2025 18:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6232DFA3E;
+	Tue, 12 Aug 2025 18:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaZ3ijuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTvo9MEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3AC2FD1AD;
-	Tue, 12 Aug 2025 18:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFF92F5E;
+	Tue, 12 Aug 2025 18:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023995; cv=none; b=IAl4fKOxMgxH5bdju7AE9fDKX3eL/rwQ7IJjFSWc9TD4zvccz/UafFWJARs+QTWMZW6lNkzc3Djbdb0vd6IH786p/9BW75dw6Wl3XcjJoROVbwRb0r9q1GZ6e4q0Dprj9m/4Q7u/Ez7PXG7F24wBMDGC8dLXChgepZ6C7ssLC3k=
+	t=1755022618; cv=none; b=gNtzP2zpWhdmTPvkVtsefOC0jl0YJrzgWl3XDQDz1vRy2ZVmb0xfqQyfABZeY4npFp8Sq2LBimCu51sCa6q3VWLkF3lmYzFXidD7/bKcMQo40Y3NmKlntr/fbLCF+SsklQfqPCgqso5JzTTqS0mF1cQBJ+3sxmmwkvgrj1Y5qGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023995; c=relaxed/simple;
-	bh=ft9X0iT4pXziygjuqS7K4KYZkV8ZGMqzorxi2T4J6qA=;
+	s=arc-20240116; t=1755022618; c=relaxed/simple;
+	bh=em5nQT3bpMOI65tTXLlv/Fh74/5RXEL0c4gn4AggvcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZAQqp/h5oPN+uPpdF8NuLYKwlKO2a9Pm7E9a8HtwDKR/O4LD710qNpCzWfq+OOJQnnL6JJEPfSHZwf8SlOZ8VqmsJCO4Dfgz6dS4hXTT3UUEHaRG2wH6xtPBpbACbERl+g85K7ZAM9+HDa1TXViCzH9++VbKq2K0Crk4lipCpVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaZ3ijuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299F5C4CEF0;
-	Tue, 12 Aug 2025 18:39:54 +0000 (UTC)
+	 MIME-Version; b=MnGuyNvKeZGFzIh+ZHTZxW5uNwRpLXsAGn7Cot07eViJ/x4w9mqtXz8Uf/yUsRWZrUeLa3LpPlFFAqlX/5gXJ/62erYSP2sAxuZvhEkdKdLJZtEVGQR3t+42BsEdtRG03KLjipXjrDJKOkIriAa9v1vkup8Mky9udDNGe5VH5Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTvo9MEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDA5C4CEF0;
+	Tue, 12 Aug 2025 18:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023995;
-	bh=ft9X0iT4pXziygjuqS7K4KYZkV8ZGMqzorxi2T4J6qA=;
+	s=korg; t=1755022618;
+	bh=em5nQT3bpMOI65tTXLlv/Fh74/5RXEL0c4gn4AggvcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GaZ3ijuJw+qx3BQ4kPoTv/eg5PNJ+/GxSOhdN6q9dxbBk11UzCB0NDMblO8ySLtcg
-	 kt6GYi/lqNcsRPbXx0ynjFVjuF214IJKsuOmhYj262IQTNCjPoAhe8zK0CCW4G9B2w
-	 r9moxk4iaoUxCP2asmEAWMyL92e1PeMdLftWRdlY=
+	b=MTvo9MEbeSy0UAnmt87xS6LDNBo2IQgqsRbpXZ9dB5MnkLKv9Nl2HcUbDRcmyMgLI
+	 CnztmBRXizoS+UhfyGQrFiHkX3gwwrPyFLhBWpRw/nMdK6Y5GyEdJ/NfA7lbHbIuPf
+	 mBfzNAfsxzOD0PXZsVtwtVGf13562K5TlVJCjzNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Mark Brown <broonie@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 209/627] spi: spi-nxp-fspi: Check return value of devm_mutex_init()
+Subject: [PATCH 6.12 207/369] hwrng: mtk - handle devm_pm_runtime_enable errors
 Date: Tue, 12 Aug 2025 19:28:24 +0200
-Message-ID: <20250812173427.232941331@linuxfoundation.org>
+Message-ID: <20250812173022.550637558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit d24a54e032021cf381af3c3cf119cc5cf6b3c1be ]
+[ Upstream commit 522a242a18adc5c63a24836715dbeec4dc3faee1 ]
 
-devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will
-be marked as unusable and trigger errors on usage.
+Although unlikely, devm_pm_runtime_enable() call might fail, so handle
+the return value.
 
-Add the missed check.
-
-Fixes: 48900813abd2 ("spi: spi-nxp-fspi: remove the goto in probe")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250617-must_check-devm_mutex_init-v7-1-d9e449f4d224@weissschuh.net
+Fixes: 78cb66caa6ab ("hwrng: mtk - Use devm_pm_runtime_enable")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 4 +++-
+ drivers/char/hw_random/mtk-rng.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index e63c77e41823..f3d576505413 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1273,7 +1273,9 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to request irq\n");
- 
--	devm_mutex_init(dev, &f->lock);
-+	ret = devm_mutex_init(dev, &f->lock);
+diff --git a/drivers/char/hw_random/mtk-rng.c b/drivers/char/hw_random/mtk-rng.c
+index 1e3048f2bb38..6c4e40d0365f 100644
+--- a/drivers/char/hw_random/mtk-rng.c
++++ b/drivers/char/hw_random/mtk-rng.c
+@@ -142,7 +142,9 @@ static int mtk_rng_probe(struct platform_device *pdev)
+ 	dev_set_drvdata(&pdev->dev, priv);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+-	devm_pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
 +	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to initialize lock\n");
++		return ret;
  
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+ 	dev_info(&pdev->dev, "registered RNG driver\n");
+ 
 -- 
 2.39.5
 
