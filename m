@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29067B23242
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98102B23416
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E9B3189399D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621611A26379
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F47920409A;
-	Tue, 12 Aug 2025 18:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4439926529E;
+	Tue, 12 Aug 2025 18:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRAJVMDm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQJjwLA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2949118FC91;
-	Tue, 12 Aug 2025 18:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CA16BB5B;
+	Tue, 12 Aug 2025 18:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022192; cv=none; b=kmEyPPol6UQhc60KNo29X85125/wMJdzTXurCSctB4mciPyAE708gASFcZuLpWE7X2I9IlQI1RuFur1RKibwyKpNXFW5xDM3vekvrbvVLFECg2XEPDj7azbArNCttVffv9tibBaXRP4WzokD7dp8tXolCzXWhf7qRsn5UePJ39k=
+	t=1755023460; cv=none; b=ApywE76qCRtxYQFEXg8fHS/nl2WxzH+h/VQcotc9sUWyoMEp9QmP/B77eG0motZTRO9f0upvQmNeW3mnV6WYvVWKpk8XqKRmaFgRD2uu3gzbXTuBx5E5h0PXiq95uQKx9Kip+ynrB513l2QnmoHwDdIgp4rgSpn4VUxYPp/37vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022192; c=relaxed/simple;
-	bh=fD79+C5/pjqtePigLl/FhLaPFGpQCTUNZ76mCS1U94s=;
+	s=arc-20240116; t=1755023460; c=relaxed/simple;
+	bh=lCmdNt04PXcf5Zi1fOncq8QKH75+ltqsW715SzHD3oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2v11qogBlLmmopYIJil24YumU7Z9eXvMCj6pidQ/VTwjIWJEwYduE/NSA6dHtA6KHXm6MNI0I/ewoHOWRBHcZ55NOgTOQdDxxJPx0OPwu7lqmLNtyx4xtx9GgCYEAkri3FirIMC1q6OfjlzG9kzjtGEACtym18U7oZPJN4EkpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRAJVMDm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708CFC4CEF0;
-	Tue, 12 Aug 2025 18:09:51 +0000 (UTC)
+	 MIME-Version; b=iwRLkXuEfsM5UbjWrlST0lYzlz3PhA/b0uHG7quSLACnE2q0OBoMiVSG4sNYdMEyXzAVYUBjJWrKH/DeFlEXkbeizj37X9z+N4jB8PCZj/fzq6zKUW4nKtRYrQD2ReAzNO+j45+xmXQjFEzgYeiMrNGqXrLgo7jsK7KYbp7U6sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQJjwLA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF7BC4CEF0;
+	Tue, 12 Aug 2025 18:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022191;
-	bh=fD79+C5/pjqtePigLl/FhLaPFGpQCTUNZ76mCS1U94s=;
+	s=korg; t=1755023459;
+	bh=lCmdNt04PXcf5Zi1fOncq8QKH75+ltqsW715SzHD3oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRAJVMDmkeQBx0O23sFeig1ZmXCJ3NLJGpDQCzvZTW2J5CPt4FzZTHOsxw7mhmsHK
-	 p8YqGzlK/25/HSEWXNI3WwFIG1Sc5UNTE9KcoJNp+MpWWimiCcdjpEC6MQcDANdjZb
-	 oyvt5zkbmhKJv/TgiW5bXzbgC9UkWcihO05oLZ2I=
+	b=aQJjwLA7T3MEG+27A+a5cuIMOT4zsef8WpuMS7686I/18fBsv4T1FMmA4lXDwxxbl
+	 jx0VLgAd/t0umMLkuuKMNVImwCYChk/sJjVRrbF9ZzhQsN6TCeuUIKaKJ1bUgvLWVU
+	 CbLjvdE88LAyXOLia5RhuCE4teQj4cEx2YZgYtKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/369] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
-Date: Tue, 12 Aug 2025 19:26:20 +0200
-Message-ID: <20250812173017.907085993@linuxfoundation.org>
+Subject: [PATCH 6.16 086/627] Revert "vmci: Prevent the dispatching of uninitialized payloads"
+Date: Tue, 12 Aug 2025 19:26:21 +0200
+Message-ID: <20250812173422.577032700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
+[ Upstream commit 8f5d9bed6122b8d96508436e5ad2498bb797eb6b ]
 
-When iwl_opmode_register() fails, it does not unregster rate control,
-which will cause a memory leak issue, this patch fixes it.
+This reverts commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031.
 
-Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+While the code "looks" correct, the compiler has no way to know that
+doing "fun" pointer math like this really isn't a write off the end of
+the structure as there is no hint anywhere that the structure has data
+at the end of it.
+
+This causes the following build warning:
+
+In function 'fortify_memset_chk',
+    inlined from 'ctx_fire_notification.isra' at drivers/misc/vmw_vmci/vmci_context.c:254:3:
+include/linux/fortify-string.h:480:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  480 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So revert it for now and it can come back in the future in a "sane" way
+that either correctly makes the structure know that there is trailing
+data, OR just the payload structure is properly referenced and zeroed
+out.
+
+Fixes: bfb4cf9fb97e ("vmci: Prevent the dispatching of uninitialized payloads")
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://lore.kernel.org/r/20250703171021.0aee1482@canb.auug.org.au
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/vmw_vmci/vmci_context.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 4dd4a9d5c71f..a7dbc0a5ea84 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -61,8 +61,10 @@ static int __init iwl_mvm_init(void)
- 	}
+diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
+index d566103caa27..f22b44827e92 100644
+--- a/drivers/misc/vmw_vmci/vmci_context.c
++++ b/drivers/misc/vmw_vmci/vmci_context.c
+@@ -251,8 +251,6 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
+ 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
+ 						  VMCI_CONTEXT_RESOURCE_ID);
+ 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
+-		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
+-			ev.msg.hdr.payload_size);
+ 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
+ 		ev.payload.context_id = context_id;
  
- 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
--	if (ret)
-+	if (ret) {
- 		pr_err("Unable to register MVM op_mode: %d\n", ret);
-+		iwl_mvm_rate_control_unregister();
-+	}
- 
- 	return ret;
- }
 -- 
 2.39.5
 
