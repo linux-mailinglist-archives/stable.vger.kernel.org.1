@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE21CB231CC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB1EB2354D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5C46166874
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 927DA3AC50D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5032FDC30;
-	Tue, 12 Aug 2025 18:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7206A2FDC49;
+	Tue, 12 Aug 2025 18:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYoJpxg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJgk1l24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390EC2F90C8;
-	Tue, 12 Aug 2025 18:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFC22F291B;
+	Tue, 12 Aug 2025 18:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021823; cv=none; b=Y59TO3uKK7uGpVZf/aTUPs56aiclhTyMOM8FuDFSDjkzvBQ0jWeEfwbSVRk+DNCw3uTSxzmBvZDqOo3rxuxBLrVsuihfEgOW7zhxyQo19au4voq0aIz4vBkpodOhDdNPLohqy5n//0f2MrpK4Ny9CaCFbmPPKKV5QrBOuT8Kn+I=
+	t=1755024290; cv=none; b=H6VQWXp6gULVcYnCUxIkGv9qVIVNyFfWNnLuRvtxYLi2ASo+wuacDoTUImNCt7WepuJ+gG5Id2+nFBeZLGF4EI4hVIYfD2jAV6Oh3tBwwyG505tPkQBr+/289GN/my94mN20MUcurPCncizBiLVj8ZuKhKDKTx9Xhzetp6QC1NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021823; c=relaxed/simple;
-	bh=uyDlPsu6Xz81az/L8CIWbQ3yjJ8TWVtBbzQpD7O9r8E=;
+	s=arc-20240116; t=1755024290; c=relaxed/simple;
+	bh=BsuAkzF+8xlr55FDes4gcyJ75CapleLTz5NRWsrEJxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPef2WBfSD/cJX6y6iVoAxSoLa6POE3RKsqoYzvl60FimcKYfC+TB0yLRQNfLuWOymzAOjdZKA7He/c23CI+Bak3fSvZd8gjP4XmXYxad77/sEBNem8rxPRphEbAHBG6yCNdRYb0LB6HoZ0cUg+53yBX3Q+KKvqgnMbai9UMLu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYoJpxg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C33C4CEF6;
-	Tue, 12 Aug 2025 18:03:42 +0000 (UTC)
+	 MIME-Version; b=kLQEjFW3m1pugkauO5HMoQAKAfZkMSIARy66DzZuww8eJXq6Y5gZHu3if4WjcDuW8aefnfhM7X4wjeSpBl9ik5aQC/EXef53sKm8yL2bqBwymjEvnHb+SYsgUhS8evbjXVoCccLjlSF3fTLwS6e7x3kDDKj88dB0ToSbzeU5uPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJgk1l24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8953CC4CEF0;
+	Tue, 12 Aug 2025 18:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021823;
-	bh=uyDlPsu6Xz81az/L8CIWbQ3yjJ8TWVtBbzQpD7O9r8E=;
+	s=korg; t=1755024290;
+	bh=BsuAkzF+8xlr55FDes4gcyJ75CapleLTz5NRWsrEJxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYoJpxg4+ywh7zYU+ZkcagrRROZxMYIo1FclcDOlM0+pRChO+pNO7tBPfNz9EzzZ9
-	 kezaE77/O7660GXi7wyZHB5P/NuawkiCTgFuI+Uv4sE6xHMTbXAMKOHXzcfnZK2o50
-	 uNwhvnLEgJuaecSO8VVhgkQcpiy/SCbj2iDE17AI=
+	b=wJgk1l24DulvSbZqATk5a6OX6LMP8hmIwY0M/g0DNXx8Ex1tghCX59W8PLaR/f+/z
+	 WnZ0oN62BegF1b2qKke1v1EBwZdz+4qxZ8esGaDFjGVVz4zaCQHbIV/ReEnn+jiQIT
+	 sgQKOHoYZZnW4qe52vyoyFN7dIp5ESvREhnOAYPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 236/262] vsock: Do not allow binding to VMADDR_PORT_ANY
+	Yao Zi <ziyao@disroot.org>,
+	Ze Huang <huangze@whut.edu.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 329/627] pinctrl: canaan: k230: add NULL check in DT parse
 Date: Tue, 12 Aug 2025 19:30:24 +0200
-Message-ID: <20250812173003.208617070@linuxfoundation.org>
+Message-ID: <20250812173431.812159463@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Budimir Markovic <markovicbudimir@gmail.com>
+From: Ze Huang <huangze@whut.edu.cn>
 
-commit aba0c94f61ec05315fa7815d21aefa4c87f6a9f4 upstream.
+[ Upstream commit 65bd0be486390fc12a84eafaad78758c5e5a55e6 ]
 
-It is possible for a vsock to autobind to VMADDR_PORT_ANY. This can
-cause a use-after-free when a connection is made to the bound socket.
-The socket returned by accept() also has port VMADDR_PORT_ANY but is not
-on the list of unbound sockets. Binding it will result in an extra
-refcount decrement similar to the one fixed in fcdd2242c023 (vsock: Keep
-the binding until socket destruction).
+Add a NULL check for the return value of of_get_property() when
+retrieving the "pinmux" property in the group parser. This avoids
+a potential NULL pointer dereference if the property is missing
+from the device tree node.
 
-Modify the check in __vsock_bind_connectible() to also prevent binding
-to VMADDR_PORT_ANY.
+Also fix a typo ("sintenel") in the device ID match table comment,
+correcting it to "sentinel".
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250807041811.678-1-markovicbudimir@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 545887eab6f6 ("pinctrl: canaan: Add support for k230 SoC")
+Reported-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Ze Huang <huangze@whut.edu.cn>
+Link: https://lore.kernel.org/20250624-k230-return-check-v1-1-6b4fc5ba0c41@whut.edu.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-k230.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -688,7 +688,8 @@ static int __vsock_bind_connectible(stru
- 		unsigned int i;
+diff --git a/drivers/pinctrl/pinctrl-k230.c b/drivers/pinctrl/pinctrl-k230.c
+index a9b4627b46b0..4976308e6237 100644
+--- a/drivers/pinctrl/pinctrl-k230.c
++++ b/drivers/pinctrl/pinctrl-k230.c
+@@ -477,6 +477,10 @@ static int k230_pinctrl_parse_groups(struct device_node *np,
+ 	grp->name = np->name;
  
- 		for (i = 0; i < MAX_PORT_RETRIES; i++) {
--			if (port <= LAST_RESERVED_PORT)
-+			if (port == VMADDR_PORT_ANY ||
-+			    port <= LAST_RESERVED_PORT)
- 				port = LAST_RESERVED_PORT + 1;
+ 	list = of_get_property(np, "pinmux", &size);
++	if (!list) {
++		dev_err(dev, "failed to get pinmux property\n");
++		return -EINVAL;
++	}
+ 	size /= sizeof(*list);
  
- 			new_addr.svm_port = port++;
+ 	grp->num_pins = size;
+@@ -623,7 +627,7 @@ static int k230_pinctrl_probe(struct platform_device *pdev)
+ 
+ static const struct of_device_id k230_dt_ids[] = {
+ 	{ .compatible = "canaan,k230-pinctrl", },
+-	{ /* sintenel */ }
++	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, k230_dt_ids);
+ 
+-- 
+2.39.5
+
 
 
 
