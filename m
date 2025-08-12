@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B28B23298
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05820B23495
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 914962A087A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76EE21A211E7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601242FA0DF;
-	Tue, 12 Aug 2025 18:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F62E2FAC11;
+	Tue, 12 Aug 2025 18:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJjTQPNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN+KD3Wj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4542F83A1;
-	Tue, 12 Aug 2025 18:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9681DB92A;
+	Tue, 12 Aug 2025 18:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022487; cv=none; b=rKIWbLmPDKf3G+tiDdu8HgT54JgtHCQnh1Enjc17KV6jKxkwxZLjvavL36Lcct0z5mGKTzcHQ7vBUGtAClO56lV2OPdzG0nHJwjRxxSrcLTlcfB6i11IvX9IX0UYxHYv4fcqgUdMekPVgn4miyYvukuPUT/F/oLJX2dEtAWO5mc=
+	t=1755023840; cv=none; b=qtHpEy/uJ11XS3uWxm3iMJ5Gd1TJfjNLVBOL442FuzB4IbjcGrERIDkvHk8NgwKW0CreUSHg5NfTVHom4NbkGSrNT39pEy6T0xrspkOr+4OgbWe8CHG9AeL+TcDKQGfm4p0J9pQlWxy0D+a78TNcND+yDhqpRRbpuPzdnQnlsWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022487; c=relaxed/simple;
-	bh=+3O9hbRdMVzSrZzsiQA32qZgYTshSB6Mw8b3tWh4fbo=;
+	s=arc-20240116; t=1755023840; c=relaxed/simple;
+	bh=urn7o22lTMAOtliigNx5D/NZ9RXJel1w956uBJQb6Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moysERZjQ0HYfJlLR+0I62Gf3dbdhEF+p/UPZg6wJ5i9qlT+ne3ka4KcmUVyNIm2xw8SZHq8JOn9znMOGX19rZbQq/gMN0p+5aOF0HPUqCxIPeoeGlzfKZuRg3dkWxg78+/TcWFXnSwTtwWnfa7JPvqwsczcpciDc3i5Ljj9BLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJjTQPNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783CBC4CEF0;
-	Tue, 12 Aug 2025 18:14:46 +0000 (UTC)
+	 MIME-Version; b=qKKfXT9nbeakyeuSm3I5fVe8rsY0t4TeXFZeaISx/9ePurhtocU4B9fhZXwyO5eBzNpEAOaPpMUZrW+qc/09/e4qHvXPPUppgbtKAb0sY17eEjtpECkuXjq+etK+Q6v7yLVs96Hb2jUP9bTY90MG4etDfSw2jiwkX7uSsrkBS5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN+KD3Wj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FB2C4CEF0;
+	Tue, 12 Aug 2025 18:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022487;
-	bh=+3O9hbRdMVzSrZzsiQA32qZgYTshSB6Mw8b3tWh4fbo=;
+	s=korg; t=1755023839;
+	bh=urn7o22lTMAOtliigNx5D/NZ9RXJel1w956uBJQb6Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJjTQPNHimwlo8iBIa768faEBCZTMDroos7TGa1iey8msc+qjiC7Dbo0owUBrD6AO
-	 jHS5SXofTSFCCyB1u/1FJFhVV+8GONdABvmO2IAcQDy9ICs/CpNNDWntugKcYUlzAX
-	 SKI0gMBFJ/LJL/tHhuIzr6nV670KOIdJgpmdxm3U=
+	b=sN+KD3Wj3pUf04/ac9rY4V0EAKQMQmUA4rxDIKRoONC4AlyiTCTdWwLKdN10IMJnN
+	 nF/ZcNNnw2bUrsKJvZpgUH50pJPDl2EWNhltizD7Vu4oRhOB/Wd7zuLjIH8X/avvgL
+	 ppkQbNpV35dW97Wb31m079TElGxE4Z4/fP1PQP9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/369] pinctrl: sunxi: Fix memory leak on krealloc failure
+Subject: [PATCH 6.16 170/627] wifi: ath11k: clear initialized flag for deinit-ed srng lists
 Date: Tue, 12 Aug 2025 19:27:45 +0200
-Message-ID: <20250812173021.088500797@linuxfoundation.org>
+Message-ID: <20250812173425.747791019@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
+[ Upstream commit a5b46aa7cf5f05c213316a018e49a8e086efd98e ]
 
-In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
-the pinctrl_map array, the function returns -ENOMEM directly
-without freeing the previously allocated *map buffer. This results
-in a memory leak of the original kmalloc_array allocation.
+In a number of cases we see kernel panics on resume due
+to ath11k kernel page fault, which happens under the
+following circumstances:
 
-Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+1) First ath11k_hal_dump_srng_stats() call
+
+ Last interrupt received for each group:
+ ath11k_pci 0000:01:00.0: group_id 0 22511ms before
+ ath11k_pci 0000:01:00.0: group_id 1 14440788ms before
+ [..]
+ ath11k_pci 0000:01:00.0: failed to receive control response completion, polling..
+ ath11k_pci 0000:01:00.0: Service connect timeout
+ ath11k_pci 0000:01:00.0: failed to connect to HTT: -110
+ ath11k_pci 0000:01:00.0: failed to start core: -110
+ ath11k_pci 0000:01:00.0: firmware crashed: MHI_CB_EE_RDDM
+ ath11k_pci 0000:01:00.0: already resetting count 2
+ ath11k_pci 0000:01:00.0: failed to wait wlan mode request (mode 4): -110
+ ath11k_pci 0000:01:00.0: qmi failed to send wlan mode off: -110
+ ath11k_pci 0000:01:00.0: failed to reconfigure driver on crash recovery
+ [..]
+
+2) At this point reconfiguration fails (we have 2 resets) and
+  ath11k_core_reconfigure_on_crash() calls ath11k_hal_srng_deinit()
+  which destroys srng lists.  However, it does not reset per-list
+  ->initialized flag.
+
+3) Second ath11k_hal_dump_srng_stats() call sees stale ->initialized
+  flag and attempts to dump srng stats:
+
+ Last interrupt received for each group:
+ ath11k_pci 0000:01:00.0: group_id 0 66785ms before
+ ath11k_pci 0000:01:00.0: group_id 1 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 2 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 3 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 4 14780845ms before
+ ath11k_pci 0000:01:00.0: group_id 5 14780845ms before
+ ath11k_pci 0000:01:00.0: group_id 6 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 7 66814ms before
+ ath11k_pci 0000:01:00.0: group_id 8 68997ms before
+ ath11k_pci 0000:01:00.0: group_id 9 67588ms before
+ ath11k_pci 0000:01:00.0: group_id 10 69511ms before
+ BUG: unable to handle page fault for address: ffffa007404eb010
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 100000067 P4D 100000067 PUD 10022d067 PMD 100b01067 PTE 0
+ Oops: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
+ Call Trace:
+ <TASK>
+ ? __die_body+0xae/0xb0
+ ? page_fault_oops+0x381/0x3e0
+ ? exc_page_fault+0x69/0xa0
+ ? asm_exc_page_fault+0x22/0x30
+ ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:6cea 4)]
+ ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
+ worker_thread+0x389/0x930
+ kthread+0x149/0x170
+
+Clear per-list ->initialized flag in ath11k_hal_srng_deinit().
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: 5118935b1bc2 ("ath11k: dump SRNG stats during FW assert")
+Link: https://patch.msgid.link/20250612084551.702803-1-senozhatsky@chromium.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-index bde67ee31417..8fbbdcc52deb 100644
---- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-+++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-@@ -395,6 +395,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	const char *function, *pin_prop;
- 	const char *group;
- 	int ret, npins, nmaps, configlen = 0, i = 0;
-+	struct pinctrl_map *new_map;
- 
- 	*map = NULL;
- 	*num_maps = 0;
-@@ -469,9 +470,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	 * We know have the number of maps we need, we can resize our
- 	 * map array
- 	 */
--	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
--	if (!*map)
--		return -ENOMEM;
-+	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
-+	if (!new_map) {
-+		ret = -ENOMEM;
-+		goto err_free_map;
-+	}
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index 8cb1505a5a0c..cab11a35f911 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1346,6 +1346,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
+ {
+ 	struct ath11k_hal *hal = &ab->hal;
++	int i;
 +
-+	*map = new_map;
++	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
++		ab->hal.srng_list[i].initialized = 0;
  
- 	return 0;
- 
+ 	ath11k_hal_unregister_srng_key(ab);
+ 	ath11k_hal_free_cont_rdp(ab);
 -- 
 2.39.5
 
