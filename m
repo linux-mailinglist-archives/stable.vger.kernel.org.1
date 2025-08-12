@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CEEB232E6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D228AB230EF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 648A02A32C0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 042BE7A10C5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC612DBF5E;
-	Tue, 12 Aug 2025 18:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8672B2FA0FD;
+	Tue, 12 Aug 2025 17:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tov1jPFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL/ITSLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338B63F9D2;
-	Tue, 12 Aug 2025 18:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D232FDC25;
+	Tue, 12 Aug 2025 17:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022692; cv=none; b=pq2DfbKzTIXlxuQo6o/XjmlDPC58g7ceNTq5LkyWGbHgBFQF/2cEb0risYJFj2P2tBdFLA5uo1pe82DFw/KFhFJfZIz6KGO5HuAMuV8VH94+l+XbwfZLoGRkGw5fTA59P74as8QT0YTvnWa6M3OYovKvP0k0HCTIzV2bFASz4eA=
+	t=1755021495; cv=none; b=nFscd1BegbfPsVF64RjRVbrbRCtMHOq0KtRWGg1vWjrlwh6HO3hMxvpdKRK+AenhyHpBUrRyHbybOEZHd//CkLNo39/fbJRuEE3Gg586lIzLguUxwucofnGB9+Ij4FMUPU+RPP6IQkKHQ5i+F/GVLm2KJmHF69Uq9zj6dh57msE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022692; c=relaxed/simple;
-	bh=goNJhPvU/I8qF85q+G70MeZUK937GjcEa5QIEUwIYB4=;
+	s=arc-20240116; t=1755021495; c=relaxed/simple;
+	bh=Nkesf/BeQDOW3Sk+UB4rTkXYD3J4+BeskFZ8UUqdJP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwejB4fifPhBRmBu2MnAOYy1g53Tm5EN1fJkW2AoOvexJ4U/s3OvITjBBU0ZnxAx5eCtl06/PCusM12WdMYAnXWhl/GXfQ0JBef+jL39GH0xRDugb/nWpAbOxHCNboxv3zYDvkbdPjkjGA0y7DuSLneWQMSX7EZ0lQEZ0xQB3EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tov1jPFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940E2C4CEF0;
-	Tue, 12 Aug 2025 18:18:11 +0000 (UTC)
+	 MIME-Version; b=uf/C3P+vUTd+uWqXYBvM9KH94U6+2TN6tayGhj3Qkw4+2BBPRRnISehqffUAqLJQJ98tCH9zBI3J/Ca7Hviz0bLyZH0XYqVw8dOQZuE9tRnG8cC28QmW+K5dtgeKK+GqWPV8mESCX4bt1x3lfPKEmp6tSGNcpyanow4CkAT9i2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL/ITSLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F149C4CEF0;
+	Tue, 12 Aug 2025 17:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022692;
-	bh=goNJhPvU/I8qF85q+G70MeZUK937GjcEa5QIEUwIYB4=;
+	s=korg; t=1755021494;
+	bh=Nkesf/BeQDOW3Sk+UB4rTkXYD3J4+BeskFZ8UUqdJP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tov1jPFuZUIY5/N+4uWkJQogJXC4SGnrYweoDci7VbV33SVVx3XWhCuDwP8gydwlV
-	 eT1l1R8OFIQg4Si3GL01ujeiTe8m0aZhnhkqyyOWpgSgIxjct3h0qHI8SR710xGVkH
-	 hs9M99DirEo/OKl7oi+mk7fQhMWQ1d4gJUa6/Hc4=
+	b=LL/ITSLqS0QqqBobaLLxLVivfebd5ijV6oxx8Tc5lkq97jLverzCKtPmtoyLJgxIq
+	 LRLguGNCI71PguDPkOr9mhif7XkWNJTU8IisJOcqtS0M+N+eEUk14pgc0UpacyPs1r
+	 GCqRQOz9Jue0ApOJm6C6vzILyOf7zN03o1Bv6zRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/369] perf record: Cache build-ID of hit DSOs only
+Subject: [PATCH 6.6 139/262] scsi: isci: Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:47 +0200
-Message-ID: <20250812173023.426227452@linuxfoundation.org>
+Message-ID: <20250812172959.014477784@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 6235ce77749f45cac27f630337e2fdf04e8a6c73 ]
+[ Upstream commit 063bec4444d54e5f35d11949c5c90eaa1ff84c11 ]
 
-It post-processes samples to find which DSO has samples.  Based on that
-info, it can save used DSOs in the build-ID cache directory.  But for
-some reason, it saves all DSOs without checking the hit mark.  Skipping
-unused DSOs can give some speedup especially with --buildid-mmap being
-default.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-On my idle machine, `time perf record -a sleep 1` goes down from 3 sec
-to 1.5 sec with this change.
-
-Fixes: e29386c8f7d71fa5 ("perf record: Add --buildid-mmap option to enable PERF_RECORD_MMAP2's build id")
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250731070330.57116-1-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: ddcc7e347a89 ("isci: fix dma_unmap_sg usage")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627142451.241713-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/build-id.c | 2 +-
+ drivers/scsi/isci/request.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/build-id.c b/tools/perf/util/build-id.c
-index e763e8d99a43..ee00313d5d7e 100644
---- a/tools/perf/util/build-id.c
-+++ b/tools/perf/util/build-id.c
-@@ -864,7 +864,7 @@ static int dso__cache_build_id(struct dso *dso, struct machine *machine,
- 	char *allocated_name = NULL;
- 	int ret = 0;
- 
--	if (!dso__has_build_id(dso))
-+	if (!dso__has_build_id(dso) || !dso__hit(dso))
- 		return 0;
- 
- 	if (dso__is_kcore(dso)) {
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index 7162a5029b37..3841db665fe4 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -2907,7 +2907,7 @@ static void isci_request_io_request_complete(struct isci_host *ihost,
+ 					 task->total_xfer_len, task->data_dir);
+ 		else  /* unmap the sgl dma addresses */
+ 			dma_unmap_sg(&ihost->pdev->dev, task->scatter,
+-				     request->num_sg_entries, task->data_dir);
++				     task->num_scatter, task->data_dir);
+ 		break;
+ 	case SAS_PROTOCOL_SMP: {
+ 		struct scatterlist *sg = &task->smp_task.smp_req;
 -- 
 2.39.5
 
