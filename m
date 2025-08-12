@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-168543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2597B23551
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E37AB23554
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FDA816F203
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E13D17188E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59542FD1A4;
-	Tue, 12 Aug 2025 18:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC5C2FD1A4;
+	Tue, 12 Aug 2025 18:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhTUA1KN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSo6Hd+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732A12CA9;
-	Tue, 12 Aug 2025 18:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A332CA9;
+	Tue, 12 Aug 2025 18:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024523; cv=none; b=DzOJIEUziLCHcQWueuCeAWAftiP/QFjdBEOJxYrPFaTQj7BpGwJzXTA7FLh3VgvIDKxGttZD+ksIqbcy/bKZ7tS1A9wcANWPp4yOjkseohf6iOviSOLkbkhiXF6fm13jvTPMHgy4Ft23hTrVBo6Tm/P1jHsoSE0qVvu71FscTpA=
+	t=1755024530; cv=none; b=WQXekhPU41qWSfbnEHezSostsh490a4kT68CirL7syjaZc/5rOI6XVyls8fSCJtm+0IInNjBmb6FpbryNpVq14c3UCTJlrjMyTSyMy3F+bJfJogdU/90BEMLjr3wFV9i1TbAaxWvo8bIeuaoO5PLle1vGQaMLctDMNssWNGZEoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024523; c=relaxed/simple;
-	bh=eDIE6YPuBB3SPQijJRodESmgYmctprWlXnHG9TugYko=;
+	s=arc-20240116; t=1755024530; c=relaxed/simple;
+	bh=GQ/lmZ14exF0dKzvrnHyZrP+bESuAsqWYiw7DdwIqz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVUzrAH0giKNSZLDAcvGnC3saf3pZyXCfWhorfifx/9uI/XmLdpNieF6AlRd4gZW/LErfO6alHXsXrx8X+EYG+3IyrLySbTJ8WGV49tMLCgeraGimIfyBUIqVfBgF7jnYTEXyCfmZZZIHGB3g2a4pLg7EtZHwKLX/tV7MKaKVzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhTUA1KN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFBDC4CEF0;
-	Tue, 12 Aug 2025 18:48:42 +0000 (UTC)
+	 MIME-Version; b=QdEL6MbqvH1HbgK3Ef1ng7krObuc3fx2uOhPEuZkFW539Wu42dbh9WiHOxHiJoM3KWtUaC7qIX2gMPGIW5KobmiI8+wyIZr+y3icgPiCYHC5z0hbNj9YQeYhamB3IvDSL2SRj4Xi+9dnWzc0BWzX4TuEys6szK6sn+SNL3hz3Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSo6Hd+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92358C4CEF0;
+	Tue, 12 Aug 2025 18:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024523;
-	bh=eDIE6YPuBB3SPQijJRodESmgYmctprWlXnHG9TugYko=;
+	s=korg; t=1755024530;
+	bh=GQ/lmZ14exF0dKzvrnHyZrP+bESuAsqWYiw7DdwIqz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhTUA1KNfnL9WdQRqza7jhXtCJrHb3L4lXmHSkr/OKVLtXhrmxSoaMHizS8ZnpRvU
-	 WEu7nCxddzZZrW+9/ta4O0EoOvSK4a8FaKvfklXua581HBfoNxh1ZfZkaBjKyBiknh
-	 EE9/E/A4Ott/enj4yjBePk8voUBpbuboxYIgUi34=
+	b=TSo6Hd+1OxY4pt+cQy8hYBs5SXWLDwWukezDSTXw5ywwdHXCGyZEdxCBpuTWw0n62
+	 L0C5UeGrKE30R/DLLzSwOvxwRL7V1P+GvQMEomsaFaE/t/39Nb2zk/6rgLupdghctz
+	 p2vK1xPzkKwFoAl7pzc2oKjI+gfiF6GS2bOr68EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Liu <liubaolin12138@163.com>,
-	Zhi Long <longzhi@sangfor.com.cn>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Patrice Vilchez <Patrice.Vilchez@microchip.com>,
+	Varshini Rajendran <varshini.rajendran@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 399/627] ext4: Make sure BH_New bit is cleared in ->write_end handler
-Date: Tue, 12 Aug 2025 19:31:34 +0200
-Message-ID: <20250812173434.475068138@linuxfoundation.org>
+Subject: [PATCH 6.16 400/627] clk: at91: sam9x7: update pll clk ranges
+Date: Tue, 12 Aug 2025 19:31:35 +0200
+Message-ID: <20250812173434.512124638@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -68,74 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Varshini Rajendran <varshini.rajendran@microchip.com>
 
-[ Upstream commit 91b8ca8b26729b729dda8a4eddb9aceaea706f37 ]
+[ Upstream commit c7f7ddbd27d55fa552a7269b7bae539adc2a3d46 ]
 
-Currently we clear BH_New bit in case of error and also in the standard
-ext4_write_end() handler (in block_commit_write()). However
-ext4_journalled_write_end() misses this clearing and thus we are leaving
-stale BH_New bits behind. Generally ext4_block_write_begin() clears
-these bits before any harm can be done but in case blocksize < pagesize
-and we hit some error when processing a page with these stale bits,
-we'll try to zero buffers with these stale BH_New bits and jbd2 will
-complain (as buffers were not prepared for writing in this transaction).
-Fix the problem by clearing BH_New bits in ext4_journalled_write_end()
-and WARN if ext4_block_write_begin() sees stale BH_New bits.
+Update the min, max ranges of the PLL clocks according to the latest
+datasheet to be coherent in the driver. This patch solves the issues in
+configuring the clocks related to peripherals with the desired frequency
+within the range.
 
-Reported-by: Baolin Liu <liubaolin12138@163.com>
-Reported-by: Zhi Long <longzhi@sangfor.com.cn>
-Fixes: 3910b513fcdf ("ext4: persist the new uptodate buffers in ext4_journalled_zero_new_buffers")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250709084831.23876-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 33013b43e271 ("clk: at91: sam9x7: add sam9x7 pmc driver")
+Suggested-by: Patrice Vilchez <Patrice.Vilchez@microchip.com>
+Signed-off-by: Varshini Rajendran <varshini.rajendran@microchip.com>
+Link: https://lore.kernel.org/r/20250714093512.29944-1-varshini.rajendran@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 2 ++
- fs/ext4/inode.c  | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/at91/sam9x7.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index a1bbcdf40824..1545846e0e3e 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -612,6 +612,7 @@ static int ext4_convert_inline_data_to_extent(struct address_space *mapping,
- 	} else
- 		ret = ext4_block_write_begin(handle, folio, from, to,
- 					     ext4_get_block);
-+	clear_buffer_new(folio_buffers(folio));
+diff --git a/drivers/clk/at91/sam9x7.c b/drivers/clk/at91/sam9x7.c
+index cbb8b220f16b..ffab32b047a0 100644
+--- a/drivers/clk/at91/sam9x7.c
++++ b/drivers/clk/at91/sam9x7.c
+@@ -61,44 +61,44 @@ static const struct clk_master_layout sam9x7_master_layout = {
  
- 	if (!ret && ext4_should_journal_data(inode)) {
- 		ret = ext4_walk_page_buffers(handle, inode,
-@@ -891,6 +892,7 @@ static int ext4_da_convert_inline_data_to_extent(struct address_space *mapping,
- 		return ret;
- 	}
+ /* Fractional PLL core output range. */
+ static const struct clk_range plla_core_outputs[] = {
+-	{ .min = 375000000, .max = 1600000000 },
++	{ .min = 800000000, .max = 1600000000 },
+ };
  
-+	clear_buffer_new(folio_buffers(folio));
- 	folio_mark_dirty(folio);
- 	folio_mark_uptodate(folio);
- 	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 8997a5f096b4..2509389badf3 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1171,7 +1171,7 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
- 			}
- 			continue;
- 		}
--		if (buffer_new(bh))
-+		if (WARN_ON_ONCE(buffer_new(bh)))
- 			clear_buffer_new(bh);
- 		if (!buffer_mapped(bh)) {
- 			WARN_ON(bh->b_size != blocksize);
-@@ -1395,6 +1395,7 @@ static int write_end_fn(handle_t *handle, struct inode *inode,
- 	ret = ext4_dirty_journalled_data(handle, bh);
- 	clear_buffer_meta(bh);
- 	clear_buffer_prio(bh);
-+	clear_buffer_new(bh);
- 	return ret;
- }
+ static const struct clk_range upll_core_outputs[] = {
+-	{ .min = 600000000, .max = 1200000000 },
++	{ .min = 600000000, .max = 960000000 },
+ };
  
+ static const struct clk_range lvdspll_core_outputs[] = {
+-	{ .min = 400000000, .max = 800000000 },
++	{ .min = 600000000, .max = 1200000000 },
+ };
+ 
+ static const struct clk_range audiopll_core_outputs[] = {
+-	{ .min = 400000000, .max = 800000000 },
++	{ .min = 600000000, .max = 1200000000 },
+ };
+ 
+ static const struct clk_range plladiv2_core_outputs[] = {
+-	{ .min = 375000000, .max = 1600000000 },
++	{ .min = 800000000, .max = 1600000000 },
+ };
+ 
+ /* Fractional PLL output range. */
+ static const struct clk_range plla_outputs[] = {
+-	{ .min = 732421, .max = 800000000 },
++	{ .min = 400000000, .max = 800000000 },
+ };
+ 
+ static const struct clk_range upll_outputs[] = {
+-	{ .min = 300000000, .max = 600000000 },
++	{ .min = 300000000, .max = 480000000 },
+ };
+ 
+ static const struct clk_range lvdspll_outputs[] = {
+-	{ .min = 10000000, .max = 800000000 },
++	{ .min = 175000000, .max = 550000000 },
+ };
+ 
+ static const struct clk_range audiopll_outputs[] = {
+-	{ .min = 10000000, .max = 800000000 },
++	{ .min = 0, .max = 300000000 },
+ };
+ 
+ static const struct clk_range plladiv2_outputs[] = {
+-	{ .min = 366210, .max = 400000000 },
++	{ .min = 200000000, .max = 400000000 },
+ };
+ 
+ /* PLL characteristics. */
 -- 
 2.39.5
 
