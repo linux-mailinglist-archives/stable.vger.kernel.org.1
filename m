@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A2EB2358A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B04CB23381
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A79B3B9F5E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 236021B61CCC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2401726CE2B;
-	Tue, 12 Aug 2025 18:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1960521ABD0;
+	Tue, 12 Aug 2025 18:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoP8pEia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfYS63N9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41522CA9;
-	Tue, 12 Aug 2025 18:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72422F291B;
+	Tue, 12 Aug 2025 18:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024371; cv=none; b=HEyXuELt7TanOVesOZ6W4H4SNKcPDYKg6+lA9Z65ZENszGzq0KyzLuHLGkb0mNf6hGft3yByudl43oj1H9IkPtchZx5Zw+nHRNPioGmdGK4RhfDcR5QWwF/ioU+C9MEM8wvbZODNfm9+N6Af0Ajn+FAPLYVUTh/xU7BAj80XIEk=
+	t=1755023113; cv=none; b=DB8cdE5nNT0tIHzZOWs1mu2yFbCjMc7zKWrXX3RBB6u06VUTUxyqakBoyxn8uJTuIgcCoyoGmcrKklfxRjrSAo2u53tNhpNW10SHUm+9IWvMHb6oUBOJBR0YG7wmgYsxwCMWUwZxtuyEnS097AauGt4jouMwCEyI1GEMAJcV3LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024371; c=relaxed/simple;
-	bh=wv+KjdMEneBr/bfsar0VKcm3MtTKE4dD8ApQg9eSf64=;
+	s=arc-20240116; t=1755023113; c=relaxed/simple;
+	bh=797tPlI4Wd2ByILiV+YqOW+5YhaJghNwTuQ5ErRadcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqENODC0ylOst1XjaGDYtkKbAHz30kf9ngAvgmP0Q5ARIiNw0FlhO8BVCoIXj222iQnxJhrKfr4zzR+1n1lgbQEA/V+bpdOGFseKgvWDoCe2UBL6YqIRelkW9cWc8Gp5MPFYoGuT9XCru5GPUueO8Wx6Del8H9mM32suy4TFoXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoP8pEia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E69C4CEF0;
-	Tue, 12 Aug 2025 18:46:10 +0000 (UTC)
+	 MIME-Version; b=LJx9KrlvBJo10jqmzASbqJUWl/v03dASv623UUqh8nKqiW6A/I2P+O8MxcvJwmT01K3yRRIsGmtqaZqRDQFP813U8mMinm1+TaRwDh7SXwAPqgvYhgIUbs5blnnq22A/HFdx/OHYDc00rLsPKEUlQSp5hiyxhGbMTefbqk0gZG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfYS63N9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BD8C4CEF0;
+	Tue, 12 Aug 2025 18:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024371;
-	bh=wv+KjdMEneBr/bfsar0VKcm3MtTKE4dD8ApQg9eSf64=;
+	s=korg; t=1755023113;
+	bh=797tPlI4Wd2ByILiV+YqOW+5YhaJghNwTuQ5ErRadcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RoP8pEiaW/vmoIhJbVnW1z/X68WMRMWnXssbbG10AK8+CdiInb4dIXm2niOZJWmrS
-	 2lHwniRMV4weQryj/0daF7iCoKTG+/6HW/icdf4Vu00e1baErBbB4w0n5xEC2L3Iwz
-	 fZszxPFP5fNvMVqEDgdCkU2ExM3GIBx2T+NiHg6g=
+	b=MfYS63N92EpmnpuAMYmVc2yoKSm9nBgDM+v4XWAT/aIh3tmiukiuO3rTZw+y+WO19
+	 hQ41OIhgN/KqiURla0Uu3UTQ/6FXWbgQM6XV6Ru9DiNC/6WFR7HWpuTdW2Sd6KLvEI
+	 qtIUBeTIYrdW5cfkgVfQfRlA41yD+YoMxC+/8SjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 354/627] perf tools: Fix use-after-free in help_unknown_cmd()
+	Michael Roth <michael.roth@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.12 352/369] x86/sev: Evict cache lines during SNP memory validation
 Date: Tue, 12 Aug 2025 19:30:49 +0200
-Message-ID: <20250812173432.761129230@linuxfoundation.org>
+Message-ID: <20250812173029.937256349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-[ Upstream commit 1fdf938168c4d26fa279d4f204768690d1f9c4ae ]
+Commit 7b306dfa326f70114312b320d083b21fa9481e1e upstream.
 
-Currently perf aborts when it finds an invalid command.  I guess it
-depends on the environment as I have some custom commands in the path.
+An SNP cache coherency vulnerability requires a cache line eviction
+mitigation when validating memory after a page state change to private.
+The specific mitigation is to touch the first and last byte of each 4K
+page that is being validated. There is no need to perform the mitigation
+when performing a page state change to shared and rescinding validation.
 
-  $ perf bad-command
-  perf: 'bad-command' is not a perf-command. See 'perf --help'.
-  Aborted (core dumped)
+CPUID bit Fn8000001F_EBX[31] defines the COHERENCY_SFW_NO CPUID bit that,
+when set, indicates that the software mitigation for this vulnerability is
+not needed.
 
-It's because the exclude_cmds() in libsubcmd has a use-after-free when
-it removes some entries.  After copying one to another entry, it keeps
-the pointer in the both position.  And the next copy operation will free
-the later one but it's the same entry in the previous one.
+Implement the mitigation and invoke it when validating memory (making it
+private) and the COHERENCY_SFW_NO bit is not set, indicating the SNP guest
+is vulnerable.
 
-For example, let's say cmds = { A, B, C, D, E } and excludes = { B, E }.
-
-  ci  cj  ei   cmds-name  excludes
-  -----------+--------------------
-   0   0   0 |     A         B       :    cmp < 0, ci == cj
-   1   1   0 |     B         B       :    cmp == 0
-   2   1   1 |     C         E       :    cmp < 0, ci != cj
-
-At this point, it frees cmds->names[1] and cmds->names[1] is assigned to
-cmds->names[2].
-
-   3   2   1 |     D         E       :    cmp < 0, ci != cj
-
-Now it frees cmds->names[2] but it's the same as cmds->names[1].  So
-accessing cmds->names[1] will be invalid.
-
-This makes the subcmd tests succeed.
-
-  $ perf test subcmd
-   69: libsubcmd help tests                                            :
-   69.1: Load subcmd names                                             : Ok
-   69.2: Uniquify subcmd names                                         : Ok
-   69.3: Exclude duplicate subcmd names                                : Ok
-
-Fixes: 4b96679170c6 ("libsubcmd: Avoid SEGV/use-after-free when commands aren't excluded")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250701201027.1171561-3-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Co-developed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/subcmd/help.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/x86/boot/cpuflags.c           |   13 ++++++++++
+ arch/x86/coco/sev/shared.c         |   46 +++++++++++++++++++++++++++++++++++++
+ arch/x86/include/asm/cpufeatures.h |    1 
+ arch/x86/kernel/cpu/scattered.c    |    1 
+ 4 files changed, 61 insertions(+)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 8561b0f01a24..9ef569492560 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -9,6 +9,7 @@
- #include <sys/stat.h>
- #include <unistd.h>
- #include <dirent.h>
-+#include <assert.h>
- #include "subcmd-util.h"
- #include "help.h"
- #include "exec-cmd.h"
-@@ -82,10 +83,11 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 				ci++;
- 				cj++;
- 			} else {
--				zfree(&cmds->names[cj]);
--				cmds->names[cj++] = cmds->names[ci++];
-+				cmds->names[cj++] = cmds->names[ci];
-+				cmds->names[ci++] = NULL;
- 			}
- 		} else if (cmp == 0) {
-+			zfree(&cmds->names[ci]);
- 			ci++;
- 			ei++;
- 		} else if (cmp > 0) {
-@@ -94,12 +96,12 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 	}
- 	if (ci != cj) {
- 		while (ci < cmds->cnt) {
--			zfree(&cmds->names[cj]);
--			cmds->names[cj++] = cmds->names[ci++];
-+			cmds->names[cj++] = cmds->names[ci];
-+			cmds->names[ci++] = NULL;
+--- a/arch/x86/boot/cpuflags.c
++++ b/arch/x86/boot/cpuflags.c
+@@ -115,5 +115,18 @@ void get_cpuflags(void)
+ 			cpuid(0x80000001, &ignored, &ignored, &cpu.flags[6],
+ 			      &cpu.flags[1]);
  		}
++
++		if (max_amd_level >= 0x8000001f) {
++			u32 ebx;
++
++			/*
++			 * The X86_FEATURE_COHERENCY_SFW_NO feature bit is in
++			 * the virtualization flags entry (word 8) and set by
++			 * scattered.c, so the bit needs to be explicitly set.
++			 */
++			cpuid(0x8000001f, &ignored, &ebx, &ignored, &ignored);
++			if (ebx & BIT(31))
++				set_bit(X86_FEATURE_COHERENCY_SFW_NO, cpu.flags);
++		}
  	}
- 	for (ci = cj; ci < cmds->cnt; ci++)
--		zfree(&cmds->names[ci]);
-+		assert(cmds->names[ci] == NULL);
- 	cmds->cnt = cj;
+ }
+--- a/arch/x86/coco/sev/shared.c
++++ b/arch/x86/coco/sev/shared.c
+@@ -1243,6 +1243,24 @@ static void svsm_pval_terminate(struct s
+ 	__pval_terminate(pfn, action, page_size, ret, svsm_ret);
  }
  
--- 
-2.39.5
-
++static inline void sev_evict_cache(void *va, int npages)
++{
++	volatile u8 val __always_unused;
++	u8 *bytes = va;
++	int page_idx;
++
++	/*
++	 * For SEV guests, a read from the first/last cache-lines of a 4K page
++	 * using the guest key is sufficient to cause a flush of all cache-lines
++	 * associated with that 4K page without incurring all the overhead of a
++	 * full CLFLUSH sequence.
++	 */
++	for (page_idx = 0; page_idx < npages; page_idx++) {
++		val = bytes[page_idx * PAGE_SIZE];
++		val = bytes[page_idx * PAGE_SIZE + PAGE_SIZE - 1];
++	}
++}
++
+ static void svsm_pval_4k_page(unsigned long paddr, bool validate)
+ {
+ 	struct svsm_pvalidate_call *pc;
+@@ -1295,6 +1313,13 @@ static void pvalidate_4k_page(unsigned l
+ 		if (ret)
+ 			__pval_terminate(PHYS_PFN(paddr), validate, RMP_PG_SIZE_4K, ret, 0);
+ 	}
++
++	/*
++	 * If validating memory (making it private) and affected by the
++	 * cache-coherency vulnerability, perform the cache eviction mitigation.
++	 */
++	if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
++		sev_evict_cache((void *)vaddr, 1);
+ }
+ 
+ static void pval_pages(struct snp_psc_desc *desc)
+@@ -1479,10 +1504,31 @@ static void svsm_pval_pages(struct snp_p
+ 
+ static void pvalidate_pages(struct snp_psc_desc *desc)
+ {
++	struct psc_entry *e;
++	unsigned int i;
++
+ 	if (snp_vmpl)
+ 		svsm_pval_pages(desc);
+ 	else
+ 		pval_pages(desc);
++
++	/*
++	 * If not affected by the cache-coherency vulnerability there is no need
++	 * to perform the cache eviction mitigation.
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_COHERENCY_SFW_NO))
++		return;
++
++	for (i = 0; i <= desc->hdr.end_entry; i++) {
++		e = &desc->entries[i];
++
++		/*
++		 * If validating memory (making it private) perform the cache
++		 * eviction mitigation.
++		 */
++		if (e->operation == SNP_PAGE_STATE_PRIVATE)
++			sev_evict_cache(pfn_to_kaddr(e->gfn), e->pagesize ? 512 : 1);
++	}
+ }
+ 
+ static int vmgexit_psc(struct ghcb *ghcb, struct snp_psc_desc *desc)
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -227,6 +227,7 @@
+ #define X86_FEATURE_FLEXPRIORITY	( 8*32+ 1) /* "flexpriority" Intel FlexPriority */
+ #define X86_FEATURE_EPT			( 8*32+ 2) /* "ept" Intel Extended Page Table */
+ #define X86_FEATURE_VPID		( 8*32+ 3) /* "vpid" Intel Virtual Processor ID */
++#define X86_FEATURE_COHERENCY_SFW_NO	( 8*32+ 4) /* SNP cache coherency software work around not needed */
+ 
+ #define X86_FEATURE_VMMCALL		( 8*32+15) /* "vmmcall" Prefer VMMCALL to VMCALL */
+ #define X86_FEATURE_XENPV		( 8*32+16) /* Xen paravirtual guest */
+--- a/arch/x86/kernel/cpu/scattered.c
++++ b/arch/x86/kernel/cpu/scattered.c
+@@ -47,6 +47,7 @@ static const struct cpuid_bit cpuid_bits
+ 	{ X86_FEATURE_PROC_FEEDBACK,    CPUID_EDX, 11, 0x80000007, 0 },
+ 	{ X86_FEATURE_FAST_CPPC, 	CPUID_EDX, 15, 0x80000007, 0 },
+ 	{ X86_FEATURE_MBA,		CPUID_EBX,  6, 0x80000008, 0 },
++	{ X86_FEATURE_COHERENCY_SFW_NO,	CPUID_EBX, 31, 0x8000001f, 0 },
+ 	{ X86_FEATURE_SMBA,		CPUID_EBX,  2, 0x80000020, 0 },
+ 	{ X86_FEATURE_BMEC,		CPUID_EBX,  3, 0x80000020, 0 },
+ 	{ X86_FEATURE_TSA_SQ_NO,	CPUID_ECX,  1, 0x80000021, 0 },
 
 
 
