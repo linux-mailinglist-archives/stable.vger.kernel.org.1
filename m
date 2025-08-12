@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F02EB23588
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B294B23343
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16D603BED1A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60E543B8F93
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8378E2D47E5;
-	Tue, 12 Aug 2025 18:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26902F4A02;
+	Tue, 12 Aug 2025 18:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiHghfLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcRqDdng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B7B26CE2B;
-	Tue, 12 Aug 2025 18:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7000D1EBFE0;
+	Tue, 12 Aug 2025 18:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024365; cv=none; b=Ir1SE6+sbLq5cB6anbLJLfBMOM3Capn2Ze7B/D1Ag9Nlgo6iP19IpVxqEt1oJrq8+8g3d/efI0CG+HI0xLhURoktXKj3epHMwlvE+E1NPspk5pfpzj+aQsF09HSG0bV5Ig+1vAd7US7nNqcm9/lZctMc5nP2iIfxHjBumqCzLf0=
+	t=1755022957; cv=none; b=E4C4gEhun44xdCXrs05QfSRVrKifCcCozpNFT+c7w3xMGLPv5Q4Rwt0y+oG8MdRwOxxQFALdbPFgu6psedNMt0LWkTNgrWEGAJ1YkpZ9ojSi7SlG/67AbgPgrCDY6ifHlWJ+hOwdAXnKVy3hw2aqhS462SphRz5bgFpBTJGiacc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024365; c=relaxed/simple;
-	bh=Vw16C6yEiAwTv0+b2Hyvm4jx1HII21a7SA4XxEroVlQ=;
+	s=arc-20240116; t=1755022957; c=relaxed/simple;
+	bh=8aJFs9uj9Yh1GTsG/Io9oyTrd/NWBsFLKGkFYRpq3yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9iFDbjEOS/qpfUIhvwcN/Gv9bBWh0i2ox8GUFeRxGMbv0R1vRtckUStc42//nfB2HPvgmNiutxFQ+3IfMxeFAm67FAFt/gJ1uUXKNeeDF1iHlLGsv97tGHreSD5GF5jYZyR+Ob5YXjW3aPMNUybBZ14j2tf9jfj3sh4AE+b4O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiHghfLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B473BC4CEF0;
-	Tue, 12 Aug 2025 18:46:04 +0000 (UTC)
+	 MIME-Version; b=S9XDb/DNcyKlggs4GQDnxxwdXO8FhwIlpfE5XXhbTR45+PNRRmnguGRaARFeFKsXM9ytn9c9m2h1sf69hJVGsz3aaoIZu+7TYjmG8OYw9shO07oqVz2b1v7QOCO5wrkrJ5y7f1UOJ5k4EF7a4mJvjYgppyj/BfJ3XmTXwEIyXOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcRqDdng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772D8C4CEF7;
+	Tue, 12 Aug 2025 18:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024365;
-	bh=Vw16C6yEiAwTv0+b2Hyvm4jx1HII21a7SA4XxEroVlQ=;
+	s=korg; t=1755022955;
+	bh=8aJFs9uj9Yh1GTsG/Io9oyTrd/NWBsFLKGkFYRpq3yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiHghfLqXK9Rvjhoim/WR82CLUrAeVzO0Inhx855wqmkC4zb6duXdKDSR6Sf5gryQ
-	 hCRx2rV9HuUFvXhDAE7B4TBN6zN2x6rPpHoppsFcqH8Z8x0g7IRu3YL23SPzNbl6tS
-	 YcVoVFjo2B1uqgjiSFo12/8hv+Xm9uKtcs9sb9yA=
+	b=mcRqDdngszE7PtfCS9agZ/hU9DxEinFtAMIWQdFq+1lzwBaF6oWOiG9yecoCLpzEY
+	 CwzaQB8+HGXcZV6Xdo5X7L3oR+zWUjmXA4+umsaBktTYRBuWhznHwqcoe5lVZ/UOs5
+	 TFaTrOlGMf6mhsXNc+fgL3RMyC2+Wlmnbl0p+CHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Michal Witwicki <michal.witwicki@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 309/627] crypto: qat - allow enabling VFs in the absence of IOMMU
+Subject: [PATCH 6.12 307/369] s390/mm: Allocate page table with PAGE_SIZE granularity
 Date: Tue, 12 Aug 2025 19:30:04 +0200
-Message-ID: <20250812173431.063162780@linuxfoundation.org>
+Message-ID: <20250812173028.279688600@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahsan Atta <ahsan.atta@intel.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-[ Upstream commit 53669ff591d4deb2d80eed4c07593ad0c0b45899 ]
+[ Upstream commit daa8af80d283ee9a7d42dd6f164a65036665b9d4 ]
 
-The commit ca88a2bdd4dd ("crypto: qat - allow disabling SR-IOV VFs")
-introduced an unnecessary change that prevented enabling SR-IOV when
-IOMMU is disabled. In certain scenarios, it is desirable to enable
-SR-IOV even in the absence of IOMMU. Thus, restoring the previous
-functionality to allow VFs to be enumerated in the absence of IOMMU.
+Make vmem_pte_alloc() consistent by always allocating page table of
+PAGE_SIZE granularity, regardless of whether page_table_alloc() (with
+slab) or memblock_alloc() is used. This ensures page table can be fully
+freed when the corresponding page table entries are removed.
 
-Fixes: ca88a2bdd4dd ("crypto: qat - allow disabling SR-IOV VFs")
-Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Michal Witwicki <michal.witwicki@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d08d4e7cd6bf ("s390/mm: use full 4KB page for 2KB PTE")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_sriov.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/s390/mm/vmem.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_sriov.c b/drivers/crypto/intel/qat/qat_common/adf_sriov.c
-index c75d0b6cb0ad..31d1ef0cb1f5 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_sriov.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_sriov.c
-@@ -155,7 +155,6 @@ static int adf_do_enable_sriov(struct adf_accel_dev *accel_dev)
- 	if (!device_iommu_mapped(&GET_DEV(accel_dev))) {
- 		dev_warn(&GET_DEV(accel_dev),
- 			 "IOMMU should be enabled for SR-IOV to work correctly\n");
--		return -EINVAL;
- 	}
+diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
+index 665b8228afeb..dd971826652a 100644
+--- a/arch/s390/mm/vmem.c
++++ b/arch/s390/mm/vmem.c
+@@ -63,13 +63,12 @@ void *vmem_crst_alloc(unsigned long val)
  
- 	if (adf_dev_started(accel_dev)) {
+ pte_t __ref *vmem_pte_alloc(void)
+ {
+-	unsigned long size = PTRS_PER_PTE * sizeof(pte_t);
+ 	pte_t *pte;
+ 
+ 	if (slab_is_available())
+-		pte = (pte_t *) page_table_alloc(&init_mm);
++		pte = (pte_t *)page_table_alloc(&init_mm);
+ 	else
+-		pte = (pte_t *) memblock_alloc(size, size);
++		pte = (pte_t *)memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 	if (!pte)
+ 		return NULL;
+ 	memset64((u64 *)pte, _PAGE_INVALID, PTRS_PER_PTE);
 -- 
 2.39.5
 
