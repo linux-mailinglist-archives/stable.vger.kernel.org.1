@@ -1,235 +1,230 @@
-Return-Path: <stable+bounces-167217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898A6B22D45
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0A6B22D61
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB15F16283A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:18:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68919626966
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A40F2F83AA;
-	Tue, 12 Aug 2025 16:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3DB2F83D4;
+	Tue, 12 Aug 2025 16:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="s902gEyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lps602OF"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic301-21.consmr.mail.sg3.yahoo.com (sonic301-21.consmr.mail.sg3.yahoo.com [106.10.242.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2D923D7D9
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.242.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02E22F659B
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015492; cv=none; b=UgDoAMgsKyiQgYGhhE24S1zIbkM6c3gcLSlDBC2/K+pa4SaUYgNOY/1FbPyGXpNMrEoXs28metkhB1Tt9vlpLACHVUZ4N7MQE6YQpnNPRTBOwPyA+yP/3e4o05Hge+OvxKdWmClihwzhLGewI9BOYbYrJ3LD6eVG1V4srH1sh+0=
+	t=1755015527; cv=none; b=OUIvL1SoRpa/YsPQhUB52Ks/2zJ7+jmWZYefx3qV/Vlel9N+sYWALc0GxDJjsYaPWh3MTMK5QnCGdSGk89yq85YPEI0Us+3nT6ppkEVnONl57XBROflQzgpxLttIUQ878+6QEvaH2tobPqGQTMia84FsK7Kv2Iff22Uy4Mzjd8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015492; c=relaxed/simple;
-	bh=47dtQ0+NnxVh6Wv1F04eEO3b5zcGJmdlqvbUUrHVQ40=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=PvdT59GZ8lvWnzQDQcLtkT9sj3MB3U4IsawpXRIm9ClGTWGp//FJO8W+LOdY86Ugmn9FHgCV+xC+AnUYBuuHZaL4fPOt/zVJPQrX6LqwZt/A9LVjgdQU9dLxPvD3V34k/rwbUp+Y1jrYT0r7iIP6XuKUL3H+L4o4p41E3NyW3tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=s902gEyB; arc=none smtp.client-ip=106.10.242.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755015483; bh=2Np9t6XE5Kp4/1uhHUg0bqElqxOXmpDTaNcKzwtAyt8=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=s902gEyB2IGQ33Wd3PtN+Qw7PvAa1h3OL4KhlKX+YlL2xViETXC+y7Rktd2T5ClKofEU8EecOapRrNHXy/kkqwMkSI85TvGyW2jZYtq0D8zDOKwM+m8EybycwgRPFp2TGruKLf9c6CpScHo1PsHqcthv3tj//9SJHw4xYdCWNvxzq6lGo7WJQkWXSkeO0uAFnNBX6NpeBEvMrOSKyKOuAL8A3Id+5IJjHQ8hCsFKDBcrgAAEh0xRYyopQhrZ5HBvNaMkRc/3HMVpghqmYHfVmnfQABWzJ3eJIGxKvLEGZ1ITw/Oif/8GZDeDydxzG+8SeCUNBgtCziwTweEljjfB5g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755015483; bh=zUiAOLCxR0LM/P3+np2I+6/Zd2QpFlXq17/N1QBuUAQ=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=X6IIm4UQ+CYmAXfhTPPjBRsbRwbMxgK63JKyhNctNmCSOnSVuvuGvicT+kkJViM7HAWophuDTsr4XMn8NETZ3Dk+ppj0Z/KFUtMoxEr93JG1uTjQEPiKbnQNTWZtQC04zpgIXx5gtoOEsUk2Rp6pxqB2/Qjo1O5n+F1IhQibX+R22g3KcSchGPegWTUcyagF459tu3xmK6f8QbGVy69dxZ3Lp30mRjwWYOJcvJt8Xmjk4ocNQiTjtx+AotLbbGZMHUSX5505fo+T3pKhYYlOxbvBwqmPAzHexJNWArivYMVYuDW7O/OKVoNhD3kq8+1DiDvBWLzwtstG24C0ZC4CmA==
-X-YMail-OSG: 1jJnYy0VM1loLxxLve.B0bpSjucOddJpiLfR6MuGcUahtHHYRr3SFROjDtW1jZS
- zESs62jdOE4h7c3oG9t_L_IDxzAJn.d9lhxGYdB3PVhBXz7K3fXkQRgtA_g3ghpCXKTru6V_eGU_
- tnP9CZqh1KZmb9hAOU_JXtatX4U_PJNMjKMIH0xAgUgKCZIQmAgZCgXKYxk.IXRznpcS9zS5h5ZC
- WNh2dk5E01XPOIoHVOrmAUIBl1c4WCUjomLgedhshzS_vr0hH3rXINefRBcHpPOghZYZ5p6N5CDK
- SCsEqAv2rWT3vmwLMCVWCc9srLAg4u4nnUWaKVlHujDXwgs4fXTQct9dtkyMCU5Ydk664zAdZppV
- 0mW6BMh9TKvs8KbkLXhnjPd7Szg06pnxUgkexE9nVzrVBZeTFN5lw7xzIlfXfVp4mS9..ryWxv7Q
- 6QS9I6f9meTEHpFrpjfoJy3.e5hL4SDfahvOd6Y0sNPNPbw9OeqFMw0YrxLLOrCAmDER73q3blRZ
- OR3w2bEtz.BDJRZf1iUBYAtaY7heHw9OqFKarahVBB3hZ.p9AubTntvUlYlYyiFH0pRBM.VZ9GrS
- obKpOITS6GnwJt2eLB1R6kaVdsPy96ZysywVO_mgn79BfomP3TzBx2mUHE391RtTnh0Hxdvagfwa
- 2BeuSd13kFotHmdtHcUzdssN190EvE9eu_IuF.TUxtqv3_hoHhLkjlXvF1ea7Hvucqz3YEeIodWe
- C4XumWacviuccIhRmBwf7OXsyr5LhrhM7nVROlERUnpykQjYkY3JvjpN1cvxa1qAjabRRm4LrxpD
- di4G2grUXMPoAKJjUblKJUHE9EQ8HnnA6Lj55CjFF05WolVsIgGrE6WFD8uuTpMb7q_p4LcsMrk.
- MtbnsfYTJ3j9DMoZiqsppFdpdxKmuuy2g3rlEDK7Z_P0BjLb3PGwiEZhIan3ln.FxVZkNYFM_Wjo
- 0mc29LZsnSmk_PmclSiWKz2NtlYcZ0bOfTbHx1XLGL_.DY5DbW7S4y.x97L0Q7b4fjJvsrd1fuqt
- UchkzsmDKbuwnlKv0LwrZExLomKbSOhqUaF6Wuqf8WnIC1aRzTXvGnu0_HJqPGNqdQ7p.YNw80DE
- MxWzuQ2OcoxMbnlVJd7dUTwXAfJl5Js1wsHO8VANXqpELzh0nB9tMCvh0sX_N7XY11XS6rawYLy3
- cVN1QODNpCSAnmXJpGbCZDxGZY0km5wwWByQ4IZXxRKrmQCVb.UM4kYhuMzTubnX0CCYl3IqEv1f
- 0XBFIiNrp6FLusG67iC4P5U0d.bH72ANAY3VarlBKjXIZz_agUyJJFFcnp4GxLjcrDvDMamLE_b2
- LkBcUO8QSiEFbQC4l1rgw1OHydVLGQGNk94xaMQy7s7xE632fX3fPUw0WbBOz24YrHOqkRuOGa9X
- c0kqD.1nqnax_CUNKiETwLn9w7y0ssdR72HW3Ht0DNlcjXTwvd6FCTnWrUmwglgegGeyTD97xoMy
- H77_LkBpKAJXV3Nl8mll4gevjZRCAmgagNEc3U3xhK8EZCvtvLklbF6PXkqbbyxyURIToBIiKQm3
- SdC.0rbKQPJbutJrmoAjNyDLwl4zvKZ56.mo86d67mnAuMbZa7ioqGapW8qj2_sOEfB0vlvIujCs
- we0S4nGD7H0btZ.ekJihnmomhoBdnuX66eTw.UWktVL3p.263IoB3guJ8WppR0MQjLwZELbNLJEJ
- l6exvR2LjkqSI544B8NJT5efv_bHLt1ahY1C2COZn4MGAzFVaYTE7K.6kMNSjIG1o26z90RRiMBh
- N7NndP.KZmZdEp.GTHLLzgX9vp.v5fZhGxnoCxsBoQcTX6xEVwRjaNc70CD9cdKzhMT4dZ3Paut3
- NW9tfdj7SKDSAWGOFPCw5Mytx_vGNsqzl30ncmYbQVB4xVQiWyht1cZ.oPJqiFNwjfC_GifD7AFm
- 4Yrb3cs4OlAmummf6TQAoxLhtRjqUdNJDtgDp1YkkALoGmdGdHXnGyovTl3Ad3NJC3lsXBZyNCqF
- LXcqJSkpC7CJY1czpMqrXi3tcCE9x0agF.TnOnsQJJxJL5fXZnX.97TO7PZ1KtHSbHGspsUNQ0sP
- XjRXx2bH4CkJsXTF5P.QHI1PMGAc27bNMaEiG52cDFVYiXON7Qn2blgvFwfLTn7Y7yW8tTVqjqoU
- Q4pzNxD8GfD3IkCEwSjs_QauIkdK4_.VifR6rtfIMG2tuEBnNTUwd_vi_8WSJNNJJrzfaYJyImZt
- XurlC5Ij4MpEYCG4.BLktfFEl.Iq2gTNwYAEUOpbavgtg7M1WXXM0QwUoWgVCAjEPoHAcbzalpsS
- KjdZy.1fG2_wyqLHNg8UBR61sD9kb6Of_NBpLHtM5
-X-Sonic-MF: <sumanth.gavini@yahoo.com>
-X-Sonic-ID: 81c8d48c-51e7-47d1-a1b4-7a32898358ed
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.sg3.yahoo.com with HTTP; Tue, 12 Aug 2025 16:18:03 +0000
-Received: by hermes--production-ne1-9495dc4d7-nmbx6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c833430937a7bf59cd7a05229c15b336;
-          Tue, 12 Aug 2025 16:17:59 +0000 (UTC)
-From: Sumanth Gavini <sumanth.gavini@yahoo.com>
-To: rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	sumanth.gavini@yahoo.com,
-	tglx@linutronix.de,
-	jstultz@google.com,
-	clingutla@codeaurora.org,
-	mingo@kernel.org,
-	sashal@kernel.org,
-	boqun.feng@gmail.com,
-	gregkh@linuxfoundation.org,
-	ryotkkr98@gmail.com,
-	kprateek.nayak@amd.com
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"J . Avila" <elavila@google.com>
-Subject: [PATCH 6.1] softirq: Add trace points for tasklet entry/exit
-Date: Tue, 12 Aug 2025 11:17:54 -0500
-Message-ID: <20250812161755.609600-1-sumanth.gavini@yahoo.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1755015527; c=relaxed/simple;
+	bh=a1jhJa7Dprc2yiYuLvP3+6v+4liLH1oTMz7k7gohuy8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BAvZxUZp0CHqb1+UCp3cZDOfj7X+oCkFNniQd6U+IaIh8pTIFN7wUEEk3YgL3HG/ZZe0t4ZvQng+23kLgxdE8cqafk15kG+1WvN76fUp0d8njBK/1UitpLD6J4e/V6ePrpPFKJK9b1HQ6KZL5yUSssQBp9iayzELVwOt9dfX1/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lps602OF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B13C4CEF6;
+	Tue, 12 Aug 2025 16:18:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755015526;
+	bh=a1jhJa7Dprc2yiYuLvP3+6v+4liLH1oTMz7k7gohuy8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Lps602OF7dZOce9sMwlP76b5jXZd91GjW+MjHifiDhEMMf1lS2P6fabG4OBctRlFz
+	 ShKOGtw78IKkkO0XQHsgnE7hni/Y1vcWf5pFFMAT21P2ShasVF+kzMXV+ZOpRpP8t9
+	 dbCM6d5ifMq8LfaXQWhoJlPwuOn4MSzLqZRDm5ik=
+Subject: FAILED: patch "[PATCH] mm: fix a UAF when vma->mm is freed after vma->vm_refcnt got" failed to apply to 6.16-stable tree
+To: surenb@google.com,akpm@linux-foundation.org,jannh@google.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,stable@vger.kernel.org,vbabka@suse.cz
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 12 Aug 2025 18:18:37 +0200
+Message-ID: <2025081237-buffed-scuba-d3f3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-References: <20250812161755.609600-1-sumanth.gavini.ref@yahoo.com>
 
-commit f4bf3ca2e5cba655824b6e0893a98dfb33ed24e5 upstream.
 
-Tasklets are supposed to finish their work quickly and should not block the
-current running process, but it is not guaranteed that they do so.
+The patch below does not apply to the 6.16-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Currently softirq_entry/exit can be used to analyse the total tasklets
-execution time, but that's not helpful to track individual tasklets
-execution time. That makes it hard to identify tasklet functions, which
-take more time than expected.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Add tasklet_entry/exit trace point support to track individual tasklet
-execution.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9bbffee67ffd16360179327b57f3b1245579ef08
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081237-buffed-scuba-d3f3@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
-Trivial usage example:
-   # echo 1 > /sys/kernel/debug/tracing/events/irq/tasklet_entry/enable
-   # echo 1 > /sys/kernel/debug/tracing/events/irq/tasklet_exit/enable
-   # cat /sys/kernel/debug/tracing/trace
- # tracer: nop
- #
- # entries-in-buffer/entries-written: 4/4   #P:4
- #
- #                                _-----=> irqs-off/BH-disabled
- #                               / _----=> need-resched
- #                              | / _---=> hardirq/softirq
- #                              || / _--=> preempt-depth
- #                              ||| / _-=> migrate-disable
- #                              |||| /     delay
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-           <idle>-0       [003] ..s1.   314.011428: tasklet_entry: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
-           <idle>-0       [003] ..s1.   314.011432: tasklet_exit: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
-           <idle>-0       [003] ..s1.   314.017369: tasklet_entry: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
-           <idle>-0       [003] ..s1.   314.017371: tasklet_exit: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
+Possible dependencies:
 
-Signed-off-by: Lingutla Chandrasekhar <clingutla@codeaurora.org>
-Signed-off-by: J. Avila <elavila@google.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20230407230526.1685443-1-jstultz@google.com
 
-[elavila: Port to android-mainline]
-[jstultz: Rebased to upstream, cut unused trace points, added
- comments for the tracepoints, reworded commit]
 
-Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
----
- include/trace/events/irq.h | 47 ++++++++++++++++++++++++++++++++++++++
- kernel/softirq.c           |  9 ++++++--
- 2 files changed, 54 insertions(+), 2 deletions(-)
+thanks,
 
-diff --git a/include/trace/events/irq.h b/include/trace/events/irq.h
-index eeceafaaea4c..a07b4607b663 100644
---- a/include/trace/events/irq.h
-+++ b/include/trace/events/irq.h
-@@ -160,6 +160,53 @@ DEFINE_EVENT(softirq, softirq_raise,
- 	TP_ARGS(vec_nr)
- );
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9bbffee67ffd16360179327b57f3b1245579ef08 Mon Sep 17 00:00:00 2001
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 28 Jul 2025 10:53:55 -0700
+Subject: [PATCH] mm: fix a UAF when vma->mm is freed after vma->vm_refcnt got
+ dropped
+
+By inducing delays in the right places, Jann Horn created a reproducer for
+a hard to hit UAF issue that became possible after VMAs were allowed to be
+recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
+
+Race description is borrowed from Jann's discovery report:
+lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
+rcu_read_lock().  At that point, the VMA may be concurrently freed, and it
+can be recycled by another process.  vma_start_read() then increments the
+vma->vm_refcnt (if it is in an acceptable range), and if this succeeds,
+vma_start_read() can return a recycled VMA.
+
+In this scenario where the VMA has been recycled, lock_vma_under_rcu()
+will then detect the mismatching ->vm_mm pointer and drop the VMA through
+vma_end_read(), which calls vma_refcount_put().  vma_refcount_put() drops
+the refcount and then calls rcuwait_wake_up() using a copy of vma->vm_mm.
+This is wrong: It implicitly assumes that the caller is keeping the VMA's
+mm alive, but in this scenario the caller has no relation to the VMA's mm,
+so the rcuwait_wake_up() can cause UAF.
+
+The diagram depicting the race:
+T1         T2         T3
+==         ==         ==
+lock_vma_under_rcu
+  mas_walk
+          <VMA gets removed from mm>
+                      mmap
+                        <the same VMA is reallocated>
+  vma_start_read
+    __refcount_inc_not_zero_limited_acquire
+                      munmap
+                        __vma_enter_locked
+                          refcount_add_not_zero
+  vma_end_read
+    vma_refcount_put
+      __refcount_dec_and_test
+                          rcuwait_wait_event
+                            <finish operation>
+      rcuwait_wake_up [UAF]
+
+Note that rcuwait_wait_event() in T3 does not block because refcount was
+already dropped by T1.  At this point T3 can exit and free the mm causing
+UAF in T1.
+
+To avoid this we move vma->vm_mm verification into vma_start_read() and
+grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
+
+[surenb@google.com: v3]
+  Link: https://lkml.kernel.org/r/20250729145709.2731370-1-surenb@google.com
+Link: https://lkml.kernel.org/r/20250728175355.2282375-1-surenb@google.com
+Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: Jann Horn <jannh@google.com>
+Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 1f4f44951abe..11a078de9150 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+ #include <linux/tracepoint-defs.h>
+ #include <linux/types.h>
+ #include <linux/cleanup.h>
++#include <linux/sched/mm.h>
  
-+DECLARE_EVENT_CLASS(tasklet,
-+
-+	TP_PROTO(struct tasklet_struct *t, void *func),
-+
-+	TP_ARGS(t, func),
-+
-+	TP_STRUCT__entry(
-+		__field(	void *,	tasklet)
-+		__field(	void *,	func)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->tasklet = t;
-+		__entry->func = func;
-+	),
-+
-+	TP_printk("tasklet=%ps function=%ps", __entry->tasklet, __entry->func)
-+);
-+
-+/**
-+ * tasklet_entry - called immediately before the tasklet is run
-+ * @t: tasklet pointer
-+ * @func: tasklet callback or function being run
+ #define MMAP_LOCK_INITIALIZER(name) \
+ 	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
+@@ -154,6 +155,10 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
+  * reused and attached to a different mm before we lock it.
+  * Returns the vma on success, NULL on failure to lock and EAGAIN if vma got
+  * detached.
 + *
-+ * Used to find individual tasklet execution time
-+ */
-+DEFINE_EVENT(tasklet, tasklet_entry,
-+
-+	TP_PROTO(struct tasklet_struct *t, void *func),
-+
-+	TP_ARGS(t, func)
-+);
-+
-+/**
-+ * tasklet_exit - called immediately after the tasklet is run
-+ * @t: tasklet pointer
-+ * @func: tasklet callback or function being run
-+ *
-+ * Used to find individual tasklet execution time
-+ */
-+DEFINE_EVENT(tasklet, tasklet_exit,
-+
-+	TP_PROTO(struct tasklet_struct *t, void *func),
-+
-+	TP_ARGS(t, func)
-+);
-+
- #endif /*  _TRACE_IRQ_H */
++ * WARNING! The vma passed to this function cannot be used if the function
++ * fails to lock it because in certain cases RCU lock is dropped and then
++ * reacquired. Once RCU lock is dropped the vma can be concurently freed.
+  */
+ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 						    struct vm_area_struct *vma)
+@@ -183,6 +188,31 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	}
  
- /* This part must be outside protection */
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 9ab5ca399a99..fadc6bbda27b 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -822,10 +822,15 @@ static void tasklet_action_common(struct softirq_action *a,
- 		if (tasklet_trylock(t)) {
- 			if (!atomic_read(&t->count)) {
- 				if (tasklet_clear_sched(t)) {
--					if (t->use_callback)
-+					if (t->use_callback) {
-+						trace_tasklet_entry(t, t->callback);
- 						t->callback(t);
--					else
-+						trace_tasklet_exit(t, t->callback);
-+					} else {
-+						trace_tasklet_entry(t, t->func);
- 						t->func(t->data);
-+						trace_tasklet_exit(t, t->func);
-+					}
- 				}
- 				tasklet_unlock(t);
- 				continue;
--- 
-2.43.0
+ 	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
++
++	/*
++	 * If vma got attached to another mm from under us, that mm is not
++	 * stable and can be freed in the narrow window after vma->vm_refcnt
++	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
++	 * releasing vma->vm_refcnt.
++	 */
++	if (unlikely(vma->vm_mm != mm)) {
++		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
++		struct mm_struct *other_mm = vma->vm_mm;
++
++		/*
++		 * __mmdrop() is a heavy operation and we don't need RCU
++		 * protection here. Release RCU lock during these operations.
++		 * We reinstate the RCU read lock as the caller expects it to
++		 * be held when this function returns even on error.
++		 */
++		rcu_read_unlock();
++		mmgrab(other_mm);
++		vma_refcount_put(vma);
++		mmdrop(other_mm);
++		rcu_read_lock();
++		return NULL;
++	}
++
+ 	/*
+ 	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
+ 	 * False unlocked result is impossible because we modify and check
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index 729fb7d0dd59..b006cec8e6fe 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+ 	 */
+ 
+ 	/* Check if the vma we locked is the right one. */
+-	if (unlikely(vma->vm_mm != mm ||
+-		     address < vma->vm_start || address >= vma->vm_end))
++	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
+ 		goto inval_end_read;
+ 
+ 	rcu_read_unlock();
+@@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+ 		goto fallback;
+ 	}
+ 
+-	/*
+-	 * Verify the vma we locked belongs to the same address space and it's
+-	 * not behind of the last search position.
+-	 */
+-	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
++	/* Verify the vma is not behind the last search position. */
++	if (unlikely(from_addr >= vma->vm_end))
+ 		goto fallback_unlock;
+ 
+ 	/*
 
 
