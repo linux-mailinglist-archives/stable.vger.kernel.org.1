@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-168240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73114B23431
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AD9B2342C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4BA51A23795
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EBCE3BA8EE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D4927FB12;
-	Tue, 12 Aug 2025 18:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F8E2F5481;
+	Tue, 12 Aug 2025 18:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VskZpEw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2s7DTBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3382EAB97;
-	Tue, 12 Aug 2025 18:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDBC2EF652;
+	Tue, 12 Aug 2025 18:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023518; cv=none; b=OGHZ+hM/FWU8DNvzWKizz5qQMHHYqL2arNN0awVMlDjyA5PjCGZpnIP7Kn/SHJrKgHhh83KO+IlAE3w/ZsYHHWXJDZLjpArZnAW1M52h/6Km+oWZUBVljF7PxwQs+ixXSNJtQTQce4ISApINwfVwFIuBnY208XN8w/bNqEwXe2s=
+	t=1755023556; cv=none; b=WBzVHzfQENbdu26s8ylzRX39J79lMCjKCnaSDIqIjAoxEYI8S1hXe+C7xM7Wff7L4jzfM7Tm9ZRjpXlcmDRacU/LsFVLL4lRFmOUTrTQynv2+xnTqJ8JfUc2qgs/DH27kz3s8TtlQPcRb+h7CMwflIqyPkJn/x06wIZZsrJbWWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023518; c=relaxed/simple;
-	bh=gbyHqXYMQXB0F3RmwIKV2vOeUshCo505OLySDWYp24o=;
+	s=arc-20240116; t=1755023556; c=relaxed/simple;
+	bh=1Fhs3fcyPLf63/WQXnMmYJiFpDFkJm3VSyWsl4qUI6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2HpT2fYU/RaUka93ufVf+g781kDw72Uy4NBLiC8M93rTPizzTLK6NK1lIBqLZ9j//M/0G5xXRmDPCIchFOkfk76RoJtdup2wDytoRWUFmS8XqmuOwTpaGyzZeNVEiwwdbPJj/vKxbUnWYzVF9U55UPRiw0V8Wt23CG0oHYz5NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VskZpEw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0CDC4CEF0;
-	Tue, 12 Aug 2025 18:31:57 +0000 (UTC)
+	 MIME-Version; b=h+BboSDwp9cciGOetSY1kFC7Lb4n3cBm5BUJfKa6v0gkDh9JdCRvEW5ns8NW3FfZ28fHaRTQmdZdFOPFGTlDF1vAOBYRVKweD6WRK4LfRpbzo2PFZyS4luizEmcUTPeNqXToJc3kiLFT17/sbQjuTx0VkTKFrfxQd0OevZSA8HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2s7DTBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3632C4CEF0;
+	Tue, 12 Aug 2025 18:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023518;
-	bh=gbyHqXYMQXB0F3RmwIKV2vOeUshCo505OLySDWYp24o=;
+	s=korg; t=1755023556;
+	bh=1Fhs3fcyPLf63/WQXnMmYJiFpDFkJm3VSyWsl4qUI6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VskZpEw9htYfE+NFvK2cqQkSj5VlMSp0J0GujeHpD5V4XzEP9CAdzrVkTjA1nCyk1
-	 V8Ef1bIAJ5agK6HfXCllZlSxQhoPM1Jo5NHeIpOBPJig3XADiOOr7DToqaM7C8GeKG
-	 B4l6La38ASPm3tm6GwiEhYE/AvHNhd51+Awe3IUI=
+	b=K2s7DTBXwHW+f+5eUmJrKBRG9awXxNgQ2BIX1g7JRpCbqVdhyQiOq8o1KZF1jn5K0
+	 5Gr6Oa3YhaBMzX2Gb9913uwgqvE04kxSFwT7zp7v+e1WFP1UAt1hmxBBX0Z8m5ewNS
+	 sBLNeFA4+nikQqobb3DtyTLrByp6ahmOA39opRfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 096/627] staging: gpib: Fix error handling paths in cb_gpib_probe()
-Date: Tue, 12 Aug 2025 19:26:31 +0200
-Message-ID: <20250812173422.971267975@linuxfoundation.org>
+Subject: [PATCH 6.16 097/627] soc/tegra: cbb: Clear ERR_FORCE register with ERR_STATUS
+Date: Tue, 12 Aug 2025 19:26:32 +0200
+Message-ID: <20250812173423.007667199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -65,57 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit 1b0ee85ee7967a4d7a68080c3f6a66af69e4e0b4 ]
+[ Upstream commit a0647bca8966db04b79af72851ebd04224a4da40 ]
 
-If cb_gpib_config() fails, 'info' needs to be freed, as already done in the
-remove function.
+When error is injected with the ERR_FORCE register, then this register
+is not auto cleared on clearing the ERR_STATUS register. This causes
+repeated interrupts on error injection. To fix, set the ERR_FORCE to
+zero along with clearing the ERR_STATUS register after handling error.
 
-While at it, remove a pointless comment related to gpib_attach().
-
-Fixes: e9dc69956d4d ("staging: gpib: Add Computer Boards GPIB driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/bf89d6f2f8b8c680720d02061fc4ebdd805deca8.1751709098.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/cb7210/cb7210.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/soc/tegra/cbb/tegra234-cbb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/staging/gpib/cb7210/cb7210.c b/drivers/staging/gpib/cb7210/cb7210.c
-index 298ed306189d..3e2397898a9b 100644
---- a/drivers/staging/gpib/cb7210/cb7210.c
-+++ b/drivers/staging/gpib/cb7210/cb7210.c
-@@ -1184,8 +1184,7 @@ struct local_info {
- static int cb_gpib_probe(struct pcmcia_device *link)
+diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
+index c74629af9bb5..1da31ead2b5e 100644
+--- a/drivers/soc/tegra/cbb/tegra234-cbb.c
++++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
+@@ -185,6 +185,8 @@ static void tegra234_cbb_error_clear(struct tegra_cbb *cbb)
  {
- 	struct local_info *info;
--
--//	int ret, i;
-+	int ret;
+ 	struct tegra234_cbb *priv = to_tegra234_cbb(cbb);
  
- 	/* Allocate space for private device-specific data */
- 	info = kzalloc(sizeof(*info), GFP_KERNEL);
-@@ -1211,8 +1210,16 @@ static int cb_gpib_probe(struct pcmcia_device *link)
- 
- 	/* Register with Card Services */
- 	curr_dev = link;
--	return cb_gpib_config(link);
--} /* gpib_attach */
-+	ret = cb_gpib_config(link);
-+	if (ret)
-+		goto free_info;
++	writel(0, priv->mon + FABRIC_MN_MASTER_ERR_FORCE_0);
 +
-+	return 0;
-+
-+free_info:
-+	kfree(info);
-+	return ret;
-+}
- 
- /*
-  *   This deletes a driver "instance".  The device is de-registered
+ 	writel(0x3f, priv->mon + FABRIC_MN_MASTER_ERR_STATUS_0);
+ 	dsb(sy);
+ }
 -- 
 2.39.5
 
