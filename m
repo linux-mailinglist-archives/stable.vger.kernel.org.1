@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4A0B22FB4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8D0B2348C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 878947A966F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EB43189A59E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210A12FDC2B;
-	Tue, 12 Aug 2025 17:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526B42FD1AD;
+	Tue, 12 Aug 2025 18:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vk+Hsair"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbhBAS3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18F786331;
-	Tue, 12 Aug 2025 17:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116792F4A0A;
+	Tue, 12 Aug 2025 18:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020609; cv=none; b=rDK/GW5bS9Ou+VV/0zrzojJo0cO6KzZ4dOL4NUl0A2g5Uwd+WHBopPddWAJVs7lqrF1da+O3USTDfVrlxA5z7VQaHXw2kKsGrEhah/Ta4aHsXY44yDql+CR5sMe9VLAbvXq4Tk1UAyBy5iawabvxsWd+GR2Oc35zLo99rq6mmGs=
+	t=1755023817; cv=none; b=sdwVxB6sSW97qeyuSzgAmRa5rDkwL/uzuPYsHMjr7XFK43zLS+NmtMasCd+WSoyGPyJxSnSLStDx99+o/eR4j2HnDiYDo1nNW8RsXbDd/zBd7YyVLWZJ8EzzlkJxflZV63SkkH2H8vWKzpgRCX7EjBTWypxx90yBHxtWusgt3DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020609; c=relaxed/simple;
-	bh=1zMscYCaod19EM4wqE1S3oan6fFitUnH//UTi2khAiE=;
+	s=arc-20240116; t=1755023817; c=relaxed/simple;
+	bh=4ezptqIphjyKHJMeveY+PhIWqZ5LYmKvbmfUzngCIRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ue3WEIs1pBJ8MXLkLVZnPfrbmY7C6Wy9iy0lwtUqRMhuK4NpI6Ah1cVDCyDP8TDdrxcHotfk20oZ2L1jo4cl9/1oWjgxFfCDVGKMvjneQyCamyXDyMJ6LG6W/X4FIWuGyViWpj1pnoATZ93zqQykDYv22yrhQF/99erx4JlbfHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vk+Hsair; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B833C4CEF0;
-	Tue, 12 Aug 2025 17:43:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ny3xU/3kCFEZmDNhlgJ2mRz590Ktsw7kmvqtzblI+Ou+nEYsKfstqFXD/893UX+MLbL0FzzkrzmxW+T9fyv4+rcUW4g77SUAakCt2f65cP1EMEMCzmGtCvKX09xbSsT+2kM3SYT68EjkTYG2dq6Gm1u/UuTNgt6gT1deBTgNK8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbhBAS3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECB2C4CEF0;
+	Tue, 12 Aug 2025 18:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020609;
-	bh=1zMscYCaod19EM4wqE1S3oan6fFitUnH//UTi2khAiE=;
+	s=korg; t=1755023816;
+	bh=4ezptqIphjyKHJMeveY+PhIWqZ5LYmKvbmfUzngCIRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vk+HsairQdCvQ6r6LCwlKIoFbJuGe4G2GJJLMg+nUgzTxrjNIelPHji/FGb5r2G9o
-	 4FjdP24FqBgx9S/vEX/5h0ch6hjg+ovcdCpUJ0kolJLh6LjJEz6HlySZ8/NJTmMwFL
-	 gvq5KwE/KgWoRw1auCug4kE4Ao0LNMZAfcLh5jx4=
+	b=BbhBAS3Qm+wSsd1MOjoaERbF1er5N3N6au7Kk37/GHSo7XsVWzn7X2RkeyiBsWKvf
+	 RHRGMkb14VrudtAitWaZoiE5UaTuBL9LvWwSAlDcCcMI+m1UQnTwXxJv/xX0VMsjYm
+	 7By8WjnDmm7R52Gs9GdhAKKli/z1LCzUucDF614A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/253] drm/rockchip: cleanup fb when drm_gem_fb_afbc_init failed
+Subject: [PATCH 6.16 190/627] drm/amdgpu/gfx10: fix KGQ reset sequence
 Date: Tue, 12 Aug 2025 19:28:05 +0200
-Message-ID: <20250812172952.858667512@linuxfoundation.org>
+Message-ID: <20250812173426.500894947@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 099593a28138b48feea5be8ce700e5bc4565e31d ]
+[ Upstream commit 14b2d71a9a24727f1b9f2131ed5eb2e345840a3a ]
 
-In the function drm_gem_fb_init_with_funcs, the framebuffer (fb)
-and its corresponding object ID have already been registered.
+Need to reinit the ring before remapping it and all of
+the KIQ handling needs to be within the kiq lock.
 
-So we need to cleanup the drm framebuffer if the subsequent
-execution of drm_gem_fb_afbc_init fails.
-
-Directly call drm_framebuffer_put to ensure that all fb related
-resources are cleanup.
-
-Fixes: 7707f7227f09 ("drm/rockchip: Add support for afbc")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250509031607.2542187-1-andyshrk@163.com
+Fixes: 1741281a157f ("drm/amdgpu/gfx10: add ring reset callbacks")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_fb.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-index 092bf863110b..9545ee64a90a 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-@@ -82,16 +82,9 @@ rockchip_fb_create(struct drm_device *dev, struct drm_file *file,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 777e383d75e2..e7df0487eaae 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -9540,7 +9540,7 @@ static int gfx_v10_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
+ 
+ 	spin_lock_irqsave(&kiq->ring_lock, flags);
+ 
+-	if (amdgpu_ring_alloc(kiq_ring, 5 + 7 + 7 + kiq->pmf->map_queues_size)) {
++	if (amdgpu_ring_alloc(kiq_ring, 5 + 7 + 7)) {
+ 		spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 		return -ENOMEM;
+ 	}
+@@ -9560,12 +9560,9 @@ static int gfx_v10_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
+ 			       0, 1, 0x20);
+ 	gfx_v10_0_ring_emit_reg_wait(kiq_ring,
+ 				     SOC15_REG_OFFSET(GC, 0, mmCP_VMID_RESET), 0, 0xffffffff);
+-	kiq->pmf->kiq_map_queues(kiq_ring, ring);
+ 	amdgpu_ring_commit(kiq_ring);
+-
+-	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+-
+ 	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	if (r)
+ 		return r;
+ 
+@@ -9575,6 +9572,19 @@ static int gfx_v10_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
+ 		return r;
  	}
  
- 	if (drm_is_afbc(mode_cmd->modifier[0])) {
--		int ret, i;
--
- 		ret = drm_gem_fb_afbc_init(dev, mode_cmd, afbc_fb);
- 		if (ret) {
--			struct drm_gem_object **obj = afbc_fb->base.obj;
--
--			for (i = 0; i < info->num_planes; ++i)
--				drm_gem_object_put(obj[i]);
--
--			kfree(afbc_fb);
-+			drm_framebuffer_put(&afbc_fb->base);
- 			return ERR_PTR(ret);
- 		}
- 	}
++	spin_lock_irqsave(&kiq->ring_lock, flags);
++
++	if (amdgpu_ring_alloc(kiq_ring, kiq->pmf->map_queues_size)) {
++		spin_unlock_irqrestore(&kiq->ring_lock, flags);
++		return -ENOMEM;
++	}
++	kiq->pmf->kiq_map_queues(kiq_ring, ring);
++	amdgpu_ring_commit(kiq_ring);
++	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
++	if (r)
++		return r;
++
+ 	r = amdgpu_ring_test_ring(ring);
+ 	if (r)
+ 		return r;
 -- 
 2.39.5
 
