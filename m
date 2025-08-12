@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-168524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915D4B2356D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42D4B235CC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 230631884B12
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D891A3BA42C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8646F2FF157;
-	Tue, 12 Aug 2025 18:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24B02FE57C;
+	Tue, 12 Aug 2025 18:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mo1JyeRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTeww/Ye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455D52FE570;
-	Tue, 12 Aug 2025 18:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B89247287;
+	Tue, 12 Aug 2025 18:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024461; cv=none; b=CRNSOorLARHhYhsPgiSKcaA1QIDOYD0HCDj9IVxM3qDR97qgAFO8+ASKhMkkFoXhkhnKRVI3FfW38MtTsXRjNzBhNEn49FA88+qzngBMZkSNADTGXLE4vsy0IMwGJM/CFrKtEXyOdxGGSJk9glPNyS0X8iQLCKWXlz2y6tyvZoY=
+	t=1755024608; cv=none; b=XyEeX3jkKPbv96uhsvf6ZuATSNC/3SgQt7BqkwOM9ii/sVnCXzR8uu4dTPUNLPz9esJLVk10efUIJuBQw4goBmCFcOhkVYZJMyV1Nsgg0CNXVd6n8BiERKg+l0LgJUfmVwjAa+AMl2huqRq0rH1tZxpQFMPe00hd+u+M/7Ij+wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024461; c=relaxed/simple;
-	bh=66xKFWYNwNMasBanIubSF0f3PafBmlWOHLND4Swaekc=;
+	s=arc-20240116; t=1755024608; c=relaxed/simple;
+	bh=sMQXHvvv4n8Z0bUxsV8/AQdzJAIedTV2xSrDTLpmgjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBSx2DzLY8nWEO+B2XDF9iiZnJTlPk910J/avytvafUKpJJAVuYON83vivO0JZQd2/iMH9Mh30qqQRkKC+MTP4MludvV+7g8bnEs7cckBQeFKXChdoVii59nHdD2/Fz4mM5yRl9wcjM6T01gC4t3BQ6HN9SgvkTXV2GMkRpuTx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mo1JyeRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BE3C4CEF0;
-	Tue, 12 Aug 2025 18:47:40 +0000 (UTC)
+	 MIME-Version; b=iKIdpfRuQAXqccVLV2U6xMUhzCuqQKq6p4DDJfcVK8Mecvsd7AM6TMZlceU52u1ISfA087YxJmG018K7mlkdmYDFHQ/9Km/wjQ0j1q49UpPxUFMRDaqmgn4GGYb7R3s8kxExscZvSpLOujKVB8mDFHH1dZNM+wSSxteGXghd7G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTeww/Ye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E98C4CEF0;
+	Tue, 12 Aug 2025 18:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024461;
-	bh=66xKFWYNwNMasBanIubSF0f3PafBmlWOHLND4Swaekc=;
+	s=korg; t=1755024608;
+	bh=sMQXHvvv4n8Z0bUxsV8/AQdzJAIedTV2xSrDTLpmgjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mo1JyeRg1cZvB6q1G1tOZ1TbmRLtfDhAgQDiy5Ein6shJtB8mqakkq6qlK2nVBOF8
-	 KG7/2kOtdLCH3jnMzu50mxdIQZclxnX2KjypLQQaIV3poQMSLlc9EsFBGHtoBgxtu8
-	 tH7tCFBpnLpL2/Oh95RxdXxv2avXRMlIocjT7MEw=
+	b=jTeww/YeB25nL1MVMW9+JdBYOq03zlmDGk8J2TPbQfstOI8TRbkCmF7sY/ZhIIF9j
+	 +qhpuVWBN/iZcf72kOli5nuPxX2nKvtwc5h1IYRlgCENpUpF7e0GwAvqR053KQuCdr
+	 J8Xk5yfhmz7vQsQ4b1O19at2rEP4pmBNRf51blBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ming <ming.li@zohomail.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 379/627] cxl/edac: Fix wrong dpa checking for PPR operation
-Date: Tue, 12 Aug 2025 19:31:14 +0200
-Message-ID: <20250812173433.716812321@linuxfoundation.org>
+Subject: [PATCH 6.16 380/627] pinmux: fix race causing mux_owner NULL with active mux_usecount
+Date: Tue, 12 Aug 2025 19:31:15 +0200
+Message-ID: <20250812173433.752838160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -69,49 +66,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Ming <ming.li@zohomail.com>
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-[ Upstream commit 03ff65c02559e8da32be231d7f10fe899233ceae ]
+[ Upstream commit 0b075c011032f88d1cfde3b45d6dcf08b44140eb ]
 
-Per Table 8-143. "Get Partition Info Output Payload" in CXL r3.2 section
-8.2.10.9.2.1 "Get Partition Info(Opcode 4100h)", DPA 0 is a valid
-address of a CXL device. However, cxl_do_ppr() considers it as an
-invalid address, so that user will get an -EINVAL when user calls the
-sysfs interface of the edac driver to trigger a Post Package Repair(PPR)
-operation for DPA 0 on a CXL device. The correct implementation should
-be checking if the input DPA is in the DPA range of the CXL device.
+commit 5a3e85c3c397 ("pinmux: Use sequential access to access
+desc->pinmux data") tried to address the issue when two client of the
+same gpio calls pinctrl_select_state() for the same functionality, was
+resulting in NULL pointer issue while accessing desc->mux_owner.
+However, issue was not completely fixed due to the way it was handled
+and it can still result in the same NULL pointer.
 
-Fixes: be9b359e056a ("cxl/edac: Add CXL memory device soft PPR control feature")
-Signed-off-by: Li Ming <ming.li@zohomail.com>
-Tested-by: Shiju Jose <shiju.jose@huawei.com>
-Reviewed-by: Shiju Jose <shiju.jose@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20250711032357.127355-3-ming.li@zohomail.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+The issue occurs due to the following interleaving:
+
+     cpu0 (process A)                   cpu1 (process B)
+
+      pin_request() {                   pin_free() {
+
+                                         mutex_lock()
+                                         desc->mux_usecount--; //becomes 0
+                                         ..
+                                         mutex_unlock()
+
+  mutex_lock(desc->mux)
+  desc->mux_usecount++; // becomes 1
+  desc->mux_owner = owner;
+  mutex_unlock(desc->mux)
+
+                                         mutex_lock(desc->mux)
+                                         desc->mux_owner = NULL;
+                                         mutex_unlock(desc->mux)
+
+This sequence leads to a state where the pin appears to be in use
+(`mux_usecount == 1`) but has no owner (`mux_owner == NULL`), which can
+cause NULL pointer on next pin_request on the same pin.
+
+Ensure that updates to mux_usecount and mux_owner are performed
+atomically under the same lock. Only clear mux_owner when mux_usecount
+reaches zero and no new owner has been assigned.
+
+Fixes: 5a3e85c3c397 ("pinmux: Use sequential access to access desc->pinmux data")
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Link: https://lore.kernel.org/20250708-pinmux-race-fix-v2-1-8ae9e8a0d1a1@oss.qualcomm.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/edac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinmux.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/cxl/core/edac.c b/drivers/cxl/core/edac.c
-index 623aaa4439c4..991fa3e70522 100644
---- a/drivers/cxl/core/edac.c
-+++ b/drivers/cxl/core/edac.c
-@@ -1923,8 +1923,11 @@ static int cxl_ppr_set_nibble_mask(struct device *dev, void *drv_data,
- static int cxl_do_ppr(struct device *dev, void *drv_data, u32 val)
- {
- 	struct cxl_ppr_context *cxl_ppr_ctx = drv_data;
-+	struct cxl_memdev *cxlmd = cxl_ppr_ctx->cxlmd;
-+	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
+index 0743190da59e..2c31e7f2a27a 100644
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -236,18 +236,7 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
+ 			if (desc->mux_usecount)
+ 				return NULL;
+ 		}
+-	}
+-
+-	/*
+-	 * If there is no kind of request function for the pin we just assume
+-	 * we got it by default and proceed.
+-	 */
+-	if (gpio_range && ops->gpio_disable_free)
+-		ops->gpio_disable_free(pctldev, gpio_range, pin);
+-	else if (ops->free)
+-		ops->free(pctldev, pin);
  
--	if (!cxl_ppr_ctx->dpa || val != EDAC_DO_MEM_REPAIR)
-+	if (val != EDAC_DO_MEM_REPAIR ||
-+	    !cxl_resource_contains_addr(&cxlds->dpa_res, cxl_ppr_ctx->dpa))
- 		return -EINVAL;
+-	scoped_guard(mutex, &desc->mux_lock) {
+ 		if (gpio_range) {
+ 			owner = desc->gpio_owner;
+ 			desc->gpio_owner = NULL;
+@@ -258,6 +247,15 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
+ 		}
+ 	}
  
- 	return cxl_mem_perform_ppr(cxl_ppr_ctx);
++	/*
++	 * If there is no kind of request function for the pin we just assume
++	 * we got it by default and proceed.
++	 */
++	if (gpio_range && ops->gpio_disable_free)
++		ops->gpio_disable_free(pctldev, gpio_range, pin);
++	else if (ops->free)
++		ops->free(pctldev, pin);
++
+ 	module_put(pctldev->owner);
+ 
+ 	return owner;
 -- 
 2.39.5
 
