@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0DD8B22F5E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:39:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617ACB23249
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E63331A27EFD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59A703B6A89
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C882FDC59;
-	Tue, 12 Aug 2025 17:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0D32DE1E2;
+	Tue, 12 Aug 2025 18:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pk0ixoE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6kIEmTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B2A2FDC49;
-	Tue, 12 Aug 2025 17:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10643F9D2;
+	Tue, 12 Aug 2025 18:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020253; cv=none; b=VHscgXNFLhykPNfNNuOOMHcRXunhLFROHEK5cNkof/eqVWX0q3g55u0NhgF9kKz4H/BqkYb+CHkAlZzB+XWckwZsU5W/5T7/unSdp2d+ShoW2WjpxUu1VHFgOWvcJVXXlBcXqeIr5+Cx+7P0HIW7KisNGBIUr9xURQYB0Mccuxg=
+	t=1755022249; cv=none; b=qet/BRUN0MrGoM57Gm+V+YFGSdE9/rWmrp9DLpPJY9jpbbDieD7+OhxMcodiWdEwvtHmSOl8Ecq+5wB7ImIuDVWV/yhPztoxdyfmD1oFQoty5ImgO8c6YwJ2bPr3qkIpCzy5IgkvKpoM6umIUBp1hhxLzN+TLmGK4QXJDQyrHUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020253; c=relaxed/simple;
-	bh=IwESf3bf40uOAPu9MbXsE36rhBCdHSWLY+YgciZhc3E=;
+	s=arc-20240116; t=1755022249; c=relaxed/simple;
+	bh=oG1DlPEPdAPwgWnJF55DdF68D2suQyEZ7slJG/yQsuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnU/DvbaJ55zZPJCeRPF6jlmV8+7E1QQgXYDTJoodvMiAM0wHg3fj9HFhgtg3DVMlXSd8AMvtoazW+NCGeAltgSSmypNyxIeCFOTM55UWS8hwXm9opOlRLehr1KWbhw53Mwccyhg05ECepz6njy+A1Di/5lYtP+ntXTwSSQSu8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pk0ixoE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E64CC4CEF0;
-	Tue, 12 Aug 2025 17:37:31 +0000 (UTC)
+	 MIME-Version; b=afZ7hNLh0PuHK148W/s8TeC0kPAjYG0qC4Y2Z7L06vPpbmriGL7BxlveJKXBMNZmMDcn/lTOvLM2fxfHAmTEqkXhYpLpxqdFofpFedgJ/k6YSSuBqF/lM9TR5BoHqg2jikkcPMJhg5TBD7yk0l9nA0C5cvN6z5ObB/pm6lGSRjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6kIEmTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF06CC4CEF0;
+	Tue, 12 Aug 2025 18:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020251;
-	bh=IwESf3bf40uOAPu9MbXsE36rhBCdHSWLY+YgciZhc3E=;
+	s=korg; t=1755022249;
+	bh=oG1DlPEPdAPwgWnJF55DdF68D2suQyEZ7slJG/yQsuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pk0ixoE3K5n6LrHXNuI/j5crT2Kd4HJ8G0/5P9Ae/2wk1M9jWylEtX3GL900hiM/s
-	 yJ3hJbXZsPy3j2lgUtbUpjRFFgLHoJkqs+LuyyzL1n9a6foGkh8xIOZhLSpw66wD5Z
-	 4yTPScIGDIG3Qxu9ARK8tTfJ4qDA/iB4gInVZCSQ=
+	b=K6kIEmTpyNSz2D3/VWdddXurO3d/4DKV9b6+dIagVlNisjIOkTsH+XieJyFV1DjVo
+	 /1zvv9L+QJM+uHxBObtU6T+w0kd4Av8ttaE4+6HinT2uMH0s1eJwszZcry5PsdmXsq
+	 K4tP349zlMRHUIpcSORlQjWRj92sxqAKNbouEV+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/253] x86/hyperv: Fix usage of cpu_online_mask to get valid cpu
+Subject: [PATCH 6.12 098/369] netfilter: nf_tables: Drop dead code from fill_*_info routines
 Date: Tue, 12 Aug 2025 19:26:35 +0200
-Message-ID: <20250812172948.997425499@linuxfoundation.org>
+Message-ID: <20250812173018.467787569@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit bb169f80ed5a156ec3405e0e49c6b8e9ae264718 ]
+[ Upstream commit 8080357a8c6cf4905bbd8969412c19d34be3395e ]
 
-Accessing cpu_online_mask here is problematic because the cpus read lock
-is not held in this context.
+This practically reverts commit 28339b21a365 ("netfilter: nf_tables: do
+not send complete notification of deletions"): The feature was never
+effective, due to prior modification of 'event' variable the conditional
+early return never happened.
 
-However, cpu_online_mask isn't needed here since the effective affinity
-mask is guaranteed to be valid in this callback. So, just use
-cpumask_first() to get the cpu instead of ANDing it with cpus_online_mask
-unnecessarily.
+User space also relies upon the current behaviour, so better reintroduce
+the shortened deletion notifications once it is fixed.
 
-Fixes: e39397d1fd68 ("x86/hyperv: implement an MSI domain for root partition")
-Reported-by: Michael Kelley <mhklinux@outlook.com>
-Closes: https://lore.kernel.org/linux-hyperv/SN6PR02MB4157639630F8AD2D8FD8F52FD475A@SN6PR02MB4157.namprd02.prod.outlook.com/
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1751582677-30930-4-git-send-email-nunodasneves@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1751582677-30930-4-git-send-email-nunodasneves@linux.microsoft.com>
+Fixes: 28339b21a365 ("netfilter: nf_tables: do not send complete notification of deletions")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/irqdomain.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 25 -------------------------
+ 1 file changed, 25 deletions(-)
 
-diff --git a/arch/x86/hyperv/irqdomain.c b/arch/x86/hyperv/irqdomain.c
-index 42c70d28ef272..865ae4be233b3 100644
---- a/arch/x86/hyperv/irqdomain.c
-+++ b/arch/x86/hyperv/irqdomain.c
-@@ -192,7 +192,6 @@ static void hv_irq_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
- 	struct pci_dev *dev;
- 	struct hv_interrupt_entry out_entry, *stored_entry;
- 	struct irq_cfg *cfg = irqd_cfg(data);
--	const cpumask_t *affinity;
- 	int cpu;
- 	u64 status;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index bdee187bc5dd..8077bf0378bb 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1029,11 +1029,6 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_TABLE_PAD))
+ 		goto nla_put_failure;
  
-@@ -204,8 +203,7 @@ static void hv_irq_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
- 		return;
- 	}
+-	if (event == NFT_MSG_DELTABLE) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
+ 			 htonl(table->flags & NFT_TABLE_F_MASK)))
+ 		goto nla_put_failure;
+@@ -1889,11 +1884,6 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_CHAIN_PAD))
+ 		goto nla_put_failure;
  
--	affinity = irq_data_get_effective_affinity_mask(data);
--	cpu = cpumask_first_and(affinity, cpu_online_mask);
-+	cpu = cpumask_first(irq_data_get_effective_affinity_mask(data));
+-	if (event == NFT_MSG_DELCHAIN && !hook_list) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nft_is_base_chain(chain)) {
+ 		const struct nft_base_chain *basechain = nft_base_chain(chain);
+ 		struct nft_stats __percpu *stats;
+@@ -4678,11 +4668,6 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			 NFTA_SET_PAD))
+ 		goto nla_put_failure;
  
- 	if (data->chip_data) {
- 		/*
+-	if (event == NFT_MSG_DELSET) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (set->flags != 0)
+ 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
+ 			goto nla_put_failure;
+@@ -8017,11 +8002,6 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_OBJ_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELOBJ) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
+ 	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
+ 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
+@@ -9040,11 +9020,6 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_FLOWTABLE_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELFLOWTABLE && !hook_list) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
+ 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
+ 		goto nla_put_failure;
 -- 
 2.39.5
 
