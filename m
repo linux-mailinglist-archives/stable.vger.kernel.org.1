@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00B6B234B6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC252B23300
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B7818893C0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0578188FB7A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EE62FD1AD;
-	Tue, 12 Aug 2025 18:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62173F9D2;
+	Tue, 12 Aug 2025 18:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSksD51/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2Ndhh6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D442F5E;
-	Tue, 12 Aug 2025 18:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644EB61FFE;
+	Tue, 12 Aug 2025 18:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023909; cv=none; b=cRQpcGF39R8JlStL9Q1D536l6ArZJvVHRJjc/strnPte0d2/3YXn2z7TKNFInRLBCeNCIRzi+EsEE/NVP3FeP+IAUIKMcLB3TvSho4TSeeILqou/Yp6pl/zO1WjZNlN2U5aeDk667iXi6s+yQFlh8+rtfyN99FZR4pha0iFZJe4=
+	t=1755022756; cv=none; b=nBtpyjcZC/ArclraN8fyyDiEUgY4/QZ6dho8sxl7WviJi3vukOMkHJmVlDY1IK8JJqYqpejmmMeH+caYCauxeaa7kIaC3WXnZhiNQCJhqDvCINIMIsnfBj/rPeEccIYEC/O+BVsBDTacXOHPdpgOvXOs6KRThNEid9J+S7UBCDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023909; c=relaxed/simple;
-	bh=2SxhUKJ6DBVARi6ybYmk8pgckoLN+CCwTopYmnW3Zu8=;
+	s=arc-20240116; t=1755022756; c=relaxed/simple;
+	bh=GMPWeLIuK2YniLs8RWgTpemIRAYTkvUIDg50IbBd3oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4Yow0VRW6PAG0oIk1alKbWT70eePTxyOPnOxcT+FhgXZxksRZXYS0dCrH/6UTfZX2HI12KHqWKIGPEif7P8R75m0wmfNmssVdBpCeuVNjLSqCTXfvhLmkLAnnRbCiSN/U31g6+oNheqO1rZcjM40vKEx4HZgV9muXoBbArGjBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSksD51/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D834C4CEF0;
-	Tue, 12 Aug 2025 18:38:28 +0000 (UTC)
+	 MIME-Version; b=BZqvN3s1TUqYi1WCTOYLd1kCRBROaQBV5sOo3dEYsgGzm7z3r2VQ5+Dk7WwgOOqB10J6eljLCwcev9Z8bfSB3KvVyma/RX9PPkztlU2wThbU8wNHteSXhxbOb3OpGJqFPOXFA7+gNBlSCHuo9nIzW8PmxiBt/y8M3Rd2zHKVuZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2Ndhh6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60D2C4CEF6;
+	Tue, 12 Aug 2025 18:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023909;
-	bh=2SxhUKJ6DBVARi6ybYmk8pgckoLN+CCwTopYmnW3Zu8=;
+	s=korg; t=1755022756;
+	bh=GMPWeLIuK2YniLs8RWgTpemIRAYTkvUIDg50IbBd3oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSksD51/BYokFTe//C8zAuTuljSE0Mauq7IEZSTAzn4X3DuQzwTL/H4+fZOae+r4G
-	 UeXYl6WRq8xXvnjnx3I2NNbXbKXJdY3cLRIq6kDsEjFTByg8D6sLI+KbR2M8sGR05m
-	 UzSafMsaJlOWaE4gaZRO/Y6C3iHSiak3FLri8snU=
+	b=z2Ndhh6FRiATOdqpMi2a34ItOmmuq5UluAKhJ5j62nXRXiZaJIN78aFu/a79Suy1c
+	 +jmPtBvvFK8pNvdqmjbC+ORJqDTP6P2l/x/pl9TXZQd1AAsRRKrtrh09Q6wHiHSQqg
+	 NEPD24kfASyPZbtDCO+kHHLUpME+bNonsaLAfERc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Milon <ethan.milon@eviden.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Will Deacon <will@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 218/627] iommu/vt-d: Fix missing PASID in dev TLB flush with cache_tag_flush_all
+Subject: [PATCH 6.12 216/369] dmaengine: mv_xor: Fix missing check after DMA map and missing unmap
 Date: Tue, 12 Aug 2025 19:28:33 +0200
-Message-ID: <20250812173427.575947955@linuxfoundation.org>
+Message-ID: <20250812173022.875716268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Milon <ethan.milon@eviden.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 3141153816bf4f0257747bd4dda176d38f1a9a49 ]
+[ Upstream commit 60095aca6b471b7b7a79c80b7395f7e4e414b479 ]
 
-The function cache_tag_flush_all() was originally implemented with
-incorrect device TLB invalidation logic that does not handle PASID, in
-commit c4d27ffaa8eb ("iommu/vt-d: Add cache tag invalidation helpers")
+The DMA map functions can fail and should be tested for errors.
 
-This causes regressions where full address space TLB invalidations occur
-with a PASID attached, such as during transparent hugepage unmapping in
-SVA configurations or when calling iommu_flush_iotlb_all(). In these
-cases, the device receives a TLB invalidation that lacks PASID.
+In case of error, unmap the already mapped regions.
 
-This incorrect logic was later extracted into
-cache_tag_flush_devtlb_all(), in commit 3297d047cd7f ("iommu/vt-d:
-Refactor IOTLB and Dev-IOTLB flush for batching")
-
-The fix replaces the call to cache_tag_flush_devtlb_all() with
-cache_tag_flush_devtlb_psi(), which properly handles PASID.
-
-Fixes: 4f609dbff51b ("iommu/vt-d: Use cache helpers in arch_invalidate_secondary_tlbs")
-Fixes: 4e589a53685c ("iommu/vt-d: Use cache_tag_flush_all() in flush_iotlb_all")
-Signed-off-by: Ethan Milon <ethan.milon@eviden.com>
-Link: https://lore.kernel.org/r/20250708214821.30967-1-ethan.milon@eviden.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20250714045028.958850-11-baolu.lu@linux.intel.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 22843545b200 ("dma: mv_xor: Add support for DMA_INTERRUPT")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250701123753.46935-2-fourier.thomas@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/cache.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ drivers/dma/mv_xor.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/intel/cache.c b/drivers/iommu/intel/cache.c
-index 47692cbfaabd..c8b79de84d3f 100644
---- a/drivers/iommu/intel/cache.c
-+++ b/drivers/iommu/intel/cache.c
-@@ -422,22 +422,6 @@ static void cache_tag_flush_devtlb_psi(struct dmar_domain *domain, struct cache_
- 					     domain->qi_batch);
- }
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index 40b76b40bc30..184813766cd1 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1061,8 +1061,16 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ 	 */
+ 	mv_chan->dummy_src_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_src, MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_src_addr))
++		return ERR_PTR(-ENOMEM);
++
+ 	mv_chan->dummy_dst_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_dst, MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_dst_addr)) {
++		ret = -ENOMEM;
++		goto err_unmap_src;
++	}
++
  
--static void cache_tag_flush_devtlb_all(struct dmar_domain *domain, struct cache_tag *tag)
--{
--	struct intel_iommu *iommu = tag->iommu;
--	struct device_domain_info *info;
--	u16 sid;
--
--	info = dev_iommu_priv_get(tag->dev);
--	sid = PCI_DEVID(info->bus, info->devfn);
--
--	qi_batch_add_dev_iotlb(iommu, sid, info->pfsid, info->ats_qdep, 0,
--			       MAX_AGAW_PFN_WIDTH, domain->qi_batch);
--	if (info->dtlb_extra_inval)
--		qi_batch_add_dev_iotlb(iommu, sid, info->pfsid, info->ats_qdep, 0,
--				       MAX_AGAW_PFN_WIDTH, domain->qi_batch);
--}
--
- /*
-  * Invalidates a range of IOVA from @start (inclusive) to @end (inclusive)
-  * when the memory mappings in the target domain have been modified.
-@@ -508,7 +492,7 @@ void cache_tag_flush_all(struct dmar_domain *domain)
- 			break;
- 		case CACHE_TAG_DEVTLB:
- 		case CACHE_TAG_NESTING_DEVTLB:
--			cache_tag_flush_devtlb_all(domain, tag);
-+			cache_tag_flush_devtlb_psi(domain, tag, 0, MAX_AGAW_PFN_WIDTH);
- 			break;
- 		}
+ 	/* allocate coherent memory for hardware descriptors
+ 	 * note: writecombine gives slightly better performance, but
+@@ -1071,8 +1079,10 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ 	mv_chan->dma_desc_pool_virt =
+ 	  dma_alloc_wc(&pdev->dev, MV_XOR_POOL_SIZE, &mv_chan->dma_desc_pool,
+ 		       GFP_KERNEL);
+-	if (!mv_chan->dma_desc_pool_virt)
+-		return ERR_PTR(-ENOMEM);
++	if (!mv_chan->dma_desc_pool_virt) {
++		ret = -ENOMEM;
++		goto err_unmap_dst;
++	}
+ 
+ 	/* discover transaction capabilities from the platform data */
+ 	dma_dev->cap_mask = cap_mask;
+@@ -1155,6 +1165,13 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ err_free_dma:
+ 	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
++err_unmap_dst:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++err_unmap_src:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_src_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++
+ 	return ERR_PTR(ret);
+ }
  
 -- 
 2.39.5
