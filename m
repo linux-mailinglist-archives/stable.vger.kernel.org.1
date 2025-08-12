@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-167793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B826B23206
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 839B4B23234
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F861AA2C37
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B45611892A3F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD542882CE;
-	Tue, 12 Aug 2025 18:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5333257435;
+	Tue, 12 Aug 2025 18:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZM5lhN0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWkFZaSP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642EE280037;
-	Tue, 12 Aug 2025 18:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726903F9D2;
+	Tue, 12 Aug 2025 18:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022009; cv=none; b=hT6rAwubjRBBodR8mpPq7hj/1V3bIMNWWhPsfd6BItoUb/c+bhfxHA1pDZ1le7ZnLqvSBfv/YanOq+Qle9jVyg0sqVkIpEYQYWFOiMDjm3EbC9PHfrzBXfUUBxA++IBh3IEf46trBAsnz6loBeUlJg3+sCcRNEST6LMzAk/FhZM=
+	t=1755022158; cv=none; b=k8z0biE415qmwhWMIMtmGui2kfVG/4YR0ych/+/v2UTiXRbxEL7K1/X1vvkfjUPNp0ha3rpCmG+C6eky9VTpma90VtwbZTZyCBl9js+C6sTvO/9xI3tCyvh14SyxhMCybyiXkHHg3V4RkfQdL2qJyjthjoQp3KJ2+IWD5QxwP/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022009; c=relaxed/simple;
-	bh=+q9zQldOVpW25BI6E85O7YHfUAvr9jzOZgfL4UrXBjc=;
+	s=arc-20240116; t=1755022158; c=relaxed/simple;
+	bh=0HwPl6U5NrQWj9vPQ5STEDETJ+hjeTC/xCdPVJ7Uleg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f6t4zKJdCBO7aJMH3D3VtxfnPxDEuERrFWKTzxgHbPKPQIS10TLdkuWxTOvbJ4k5zMXPLg/9nK3hUaKRoKS+OEbbjdVHoz88589y1rGcWHu4e/e7PS+gp1UisJ/ZLu2MX2d1W6zuj2r4SSLQAFhzI5kZvZjWbPm0+gS+kLuFzXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZM5lhN0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E958C4CEF6;
-	Tue, 12 Aug 2025 18:06:48 +0000 (UTC)
+	 MIME-Version; b=fErLuTShz6+kyWeIhhne0AUdIL0CIL4eCTxxiCHrf8uaXOvKfTq3FIUZvUljrOwt9br59iAX/ptOSRT584ImZYlWLwJRjQ8GigOpWUnAIn+ZdzK7tmxlAn7xx3dS3Ts6jxEfAyq2tNXJM4FFHTvC2i72ftzR788W2QO03Cf4rt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWkFZaSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E2BC4CEF0;
+	Tue, 12 Aug 2025 18:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022009;
-	bh=+q9zQldOVpW25BI6E85O7YHfUAvr9jzOZgfL4UrXBjc=;
+	s=korg; t=1755022158;
+	bh=0HwPl6U5NrQWj9vPQ5STEDETJ+hjeTC/xCdPVJ7Uleg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZM5lhN0ey7+i0Le3eoNVAtTc/0+A7ejFO3pv2PreIAnltpte0BC0RMONWDioRnm3T
-	 bPF1rSoQsv5eP8y3x4nPz1K9RyrZinmnK+gXGks7MtK4QfHnbv7NBwuO+ovdIQtFtg
-	 DEsa+bxTEddQS5Uvp2wg4bEitKSlcZHQu42MokD4=
+	b=mWkFZaSPjkxEPfKMWSqPWvrmnGF2z94dWtQVstXFbG3slgUgaO1WJU+TeAzY9ZbT6
+	 FtfwH6vbQ6Nf1zkXzITtHg86pSw2gZ9qaUGFb0ayEm2SWQjx4fSKCWuC302a8c6NVz
+	 Enu478JbWX3Qljci2tPplwzrT16kMPsHVXLXRm/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/369] arm64: dts: qcom: msm8976: Make blsp_dma controlled-remotely
-Date: Tue, 12 Aug 2025 19:25:25 +0200
-Message-ID: <20250812173015.796158178@linuxfoundation.org>
+Subject: [PATCH 6.12 029/369] ARM: dts: vfxxx: Correctly use two tuples for timer address
+Date: Tue, 12 Aug 2025 19:25:26 +0200
+Message-ID: <20250812173015.833369562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
 References: <20250812173014.736537091@linuxfoundation.org>
@@ -61,63 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 76270a18dbdf0bb50615f1b29d2cae8d683da01e ]
+[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
 
-The blsp_dma controller is shared between the different subsystems,
-which is why it is already initialized by the firmware. We should not
-reinitialize it from Linux to avoid potential other users of the DMA
-engine to misbehave.
+Address and size-cells are 1 and the ftm timer node takes two address
+spaces in "reg" property, so this should be in two <> tuples.  Change
+has no functional impact, but original code is confusing/less readable.
 
-In mainline this can be described using the "qcom,controlled-remotely"
-property. In the downstream/vendor kernel from Qualcomm there is an
-opposite "qcom,managed-locally" property. This property is *not* set
-for the qcom,sps-dma@7884000 and qcom,sps-dma@7ac4000 [1] so adding
-"qcom,controlled-remotely" upstream matches the behavior of the
-downstream/vendor kernel.
-
-Adding this fixes booting Longcheer L9360.
-
-[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.3.7.c26/arch/arm/boot/dts/qcom/msm8976.dtsi#L1149-1163
-
-Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Link: https://lore.kernel.org/r/20250615-bqx5plus-v2-1-72b45c84237d@apitzsch.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8976.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/nxp/vf/vfxxx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-index 06af6e5ec578..884b5bb54ba8 100644
---- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-@@ -1330,6 +1330,7 @@ blsp1_dma: dma-controller@7884000 {
- 			clock-names = "bam_clk";
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,controlled-remotely;
- 		};
+diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+index acccf9a3c898..27422a343f14 100644
+--- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
++++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+@@ -604,7 +604,7 @@ usbmisc1: usb@400b4800 {
  
- 		blsp1_uart1: serial@78af000 {
-@@ -1450,6 +1451,7 @@ blsp2_dma: dma-controller@7ac4000 {
- 			clock-names = "bam_clk";
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,controlled-remotely;
- 		};
- 
- 		blsp2_uart2: serial@7af0000 {
+ 			ftm: ftm@400b8000 {
+ 				compatible = "fsl,ftm-timer";
+-				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
++				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
+ 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clock-names = "ftm-evt", "ftm-src",
+ 					"ftm-evt-counter-en", "ftm-src-counter-en";
 -- 
 2.39.5
 
