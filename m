@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6E8B23286
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D22B23087
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 473A617B732
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829F63B27C0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BC92FE583;
-	Tue, 12 Aug 2025 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0452A2FDC20;
+	Tue, 12 Aug 2025 17:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8JjcOqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dV2/otzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF232F90C8;
-	Tue, 12 Aug 2025 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B368E2DE1E2;
+	Tue, 12 Aug 2025 17:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022453; cv=none; b=eHWs2+8rEIEn4eq4wSwckIqAMKLLTrPYFHQZZMv/mY9aweRyFwZNiO5w0JRMNMWf9miISlKZfzah3PYc79rLHq+0/A0yZJRVgi55d4FlzjLYMcY7lEr1zd4a5y4tW/QM/lZ67KAzRRa/eX25yMtyIlL+vD8HrA9sPscI508BzJg=
+	t=1755021138; cv=none; b=nfsv4HHRralrbkYclm7hCc/wX6j1RzaWp2w46uMuqYW0/ztz5IY0TTEFN5bY4eEx+LI3lzrwqp5SslNVtA5jsfeY7uM+ttFEd8FZ4RatGjuipLv21Lbq2pQRri9hXjqQbCa6f1cwbNA0c+qCh4d/2dsyqLWFPnU+9MK3Kl5oDI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022453; c=relaxed/simple;
-	bh=83jB/9jPyWL8b72FpOtLBqjemlAQn9BAjHhTwgsXvCg=;
+	s=arc-20240116; t=1755021138; c=relaxed/simple;
+	bh=ZrUoHG/LUQjctgmhIWtJTSXqMfDWK4YKKE5u3FIt8Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBgccyDK+xbTlX84X+0qvNwIti4k4np8Ydn1IkThkw3zXNdUCksJYPycODb5jEFZKlribC6fxrJkuPOkthpGQnw28l3GInu6d40QXNqbX8bwdc5sETdb6gVSpNoNOKEVGi2BdOF+m7TKVV4n1BxgO755hNp5ytphyolEFrLAD48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8JjcOqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7911BC4CEF7;
-	Tue, 12 Aug 2025 18:14:12 +0000 (UTC)
+	 MIME-Version; b=dzhQKjoQRmXrWL+pDiWuExH/10fYtzPqT/UxPdj+rioDT3ZQQx2pilnx/hgrQvGhaPrnHOPEyJxaJd5sk+C3lG+5wovulLX3aJdzgwxeB1KMvLoO4bOlIvZ2RlNOwzlb8xTk2uqpZk7+e4fsBv6JJCGAi6QNx47kAGznCDUVHnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dV2/otzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3152C4CEF0;
+	Tue, 12 Aug 2025 17:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022453;
-	bh=83jB/9jPyWL8b72FpOtLBqjemlAQn9BAjHhTwgsXvCg=;
+	s=korg; t=1755021138;
+	bh=ZrUoHG/LUQjctgmhIWtJTSXqMfDWK4YKKE5u3FIt8Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8JjcOqjP0p6on3Avbiyq4j9UIxPpsm9jt4Rpr9znjw4jhtTYyR6eMLkuWv015qRn
-	 BqnQVeNPz7M+jfV7Dxv3CGvG90jWTYUZu6BQqHlLJrZ3inuT3PJFVzu/Kw8C54Edxv
-	 11wAUPzoC+cyfholaDFRro4PgIcmC6WQnX6IeGtY=
+	b=dV2/otzWtLw66vSOr4D0c0R0Zza/HELb6FHkUIOdA4LQtTdBena+sGzo/YbnNh3dU
+	 uuwxgdf7bz5PZ5s57/QwR+DuaR4KJxBVURrryprcfyXykCXPX5dnO1sszIWYuTQ5Gn
+	 aWX7ArMhhVnckJYPhiLPiNCAOiNGq0rJmy5o8pLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/369] crypto: qat - fix state restore for banks with exceptions
+Subject: [PATCH 6.6 068/262] drm/amd/pm/powerplay/hwmgr/smu_helper: fix order of mask and value
 Date: Tue, 12 Aug 2025 19:27:36 +0200
-Message-ID: <20250812173020.748547244@linuxfoundation.org>
+Message-ID: <20250812172955.896133404@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 254923ca8715f623704378266815b6d14eb26194 ]
+[ Upstream commit a54e4639c4ef37a0241bac7d2a77f2e6ffb57099 ]
 
-Change the logic in the restore function to properly handle bank
-exceptions.
+There is a small typo in phm_wait_on_indirect_register().
 
-The check for exceptions in the saved state should be performed before
-conducting any other ringstat register checks.
-If a bank was saved with an exception, the ringstat will have the
-appropriate rp_halt/rp_exception bits set, causing the driver to exit
-the restore process with an error. Instead, the restore routine should
-first check the ringexpstat register, and if any exception was raised,
-it should stop further checks and return without any error. In other
-words, if a ring pair is in an exception state at the source, it should
-be restored the same way at the destination but without raising an error.
+Swap mask and value arguments provided to phm_wait_on_register() so that
+they satisfy the function signature and actual usage scheme.
 
-Even though this approach might lead to losing the exception state
-during migration, the driver will log the exception from the saved state
-during the restore process.
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
 
-Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
-Fixes: bbfdde7d195f ("crypto: qat - add bank save and restore flows")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+In practice this doesn't fix any issues because the only place this
+function is used uses the same value for the value and mask.
+
+Fixes: 3bace3591493 ("drm/amd/powerplay: add hardware manager sub-component")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/qat/qat_common/adf_gen4_hw_data.c   | 29 ++++++++++++++-----
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c
-index 41a0979e68c1..e70adb90e5e4 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c
-@@ -585,6 +585,28 @@ static int bank_state_restore(struct adf_hw_csr_ops *ops, void __iomem *base,
- 	ops->write_csr_int_srcsel_w_val(base, bank, state->iaintflagsrcsel0);
- 	ops->write_csr_exp_int_en(base, bank, state->ringexpintenable);
- 	ops->write_csr_int_col_ctl(base, bank, state->iaintcolctl);
-+
-+	/*
-+	 * Verify whether any exceptions were raised during the bank save process.
-+	 * If exceptions occurred, the status and exception registers cannot
-+	 * be directly restored. Consequently, further restoration is not
-+	 * feasible, and the current state of the ring should be maintained.
-+	 */
-+	val = state->ringexpstat;
-+	if (val) {
-+		pr_info("QAT: Bank %u state not fully restored due to exception in saved state (%#x)\n",
-+			bank, val);
-+		return 0;
-+	}
-+
-+	/* Ensure that the restoration process completed without exceptions */
-+	tmp_val = ops->read_csr_exp_stat(base, bank);
-+	if (tmp_val) {
-+		pr_err("QAT: Bank %u restored with exception: %#x\n",
-+		       bank, tmp_val);
-+		return -EFAULT;
-+	}
-+
- 	ops->write_csr_ring_srv_arb_en(base, bank, state->ringsrvarben);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
+index 79a566f3564a..c305ea4ec17d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
+@@ -149,7 +149,7 @@ int phm_wait_on_indirect_register(struct pp_hwmgr *hwmgr,
+ 	}
  
- 	/* Check that all ring statuses match the saved state. */
-@@ -618,13 +640,6 @@ static int bank_state_restore(struct adf_hw_csr_ops *ops, void __iomem *base,
- 	if (ret)
- 		return ret;
- 
--	tmp_val = ops->read_csr_exp_stat(base, bank);
--	val = state->ringexpstat;
--	if (tmp_val && !val) {
--		pr_err("QAT: Bank was restored with exception: 0x%x\n", val);
--		return -EINVAL;
--	}
--
- 	return 0;
+ 	cgs_write_register(hwmgr->device, indirect_port, index);
+-	return phm_wait_on_register(hwmgr, indirect_port + 1, mask, value);
++	return phm_wait_on_register(hwmgr, indirect_port + 1, value, mask);
  }
  
+ int phm_wait_for_register_unequal(struct pp_hwmgr *hwmgr,
 -- 
 2.39.5
 
