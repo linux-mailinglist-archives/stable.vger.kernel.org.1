@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAA3B230D9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24D1B22FD0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24332189E146
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7397A6858D4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A152FA0DB;
-	Tue, 12 Aug 2025 17:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2432FDC34;
+	Tue, 12 Aug 2025 17:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePFkNpFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S04QoSGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABB92F8BE7;
-	Tue, 12 Aug 2025 17:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390FF2FD1CE;
+	Tue, 12 Aug 2025 17:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021346; cv=none; b=d6D4f5PtAtHS+0afEuSQ5vH6bg2e3ZsaelEQOLNSx/HpaWd0pEQg3p6/CiufKfeq81ghNwXYSlN2U63Xv7UJCr+TNDMmbsiUevHzcpzOlMbU2T3aOt6Ys4/cR3BiOLxw0YBT9NzOi5SBOOytu8ACv6/4DirHEBD8c7I/Qr1XXCk=
+	t=1755020613; cv=none; b=AAHU18tkHjTHTfEcLA5dlQ9WutyR8aTKk5Xigx/2i23Im7i3mvNFoPhkKiPkcNJ3ulQ3LVxzPESDPwAWK9SNEV7FSJWep6td4NkCNXUt8OXY+ZAsTcVF3ObiGsYJAhMQiuuWUR7QQLM/3TSeVk5qZxZvt6WS0fvTTK3+2WbwxHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021346; c=relaxed/simple;
-	bh=0hN5wptpIt8qlrdj1XOtJ2WieepiqZgcEYheOvxpXcQ=;
+	s=arc-20240116; t=1755020613; c=relaxed/simple;
+	bh=gXEmnUpJfrv57EUCWCoJs8yXuGuzZixIbctnYlM0u1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0jC7OUcgrJWfdUHTv97P6CynNl4PGnHCQ71+iDPqdvWLH5xe7C4WPLzjzY9xuM2zefDqKjpbzWkKjvooe5TfWScv/M1fQoLdL4URUufLOVCI8uQO4ZfGzK+TXa8VLWwvkKkExVdDVyfZKayh8RVMdqrDAEaAs8lgLLpXC9UPpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePFkNpFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0B2C4CEF1;
-	Tue, 12 Aug 2025 17:55:45 +0000 (UTC)
+	 MIME-Version; b=Seczb9I+TYv/KkYGBSCNmqXZEdcuP1iY6WR1FrCxyoZdkvE1ND3mlRjulE7j4gKtDLXAWg2bpu0moX2kbf++6EgcTej8/YipP7+RMVcT92FswRDSumV6RRE88bQSZNWeIJD1K5GZf448oGJGZzC7VySw8PKChPByPJo/sN8afMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S04QoSGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCF1C4CEF0;
+	Tue, 12 Aug 2025 17:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021346;
-	bh=0hN5wptpIt8qlrdj1XOtJ2WieepiqZgcEYheOvxpXcQ=;
+	s=korg; t=1755020613;
+	bh=gXEmnUpJfrv57EUCWCoJs8yXuGuzZixIbctnYlM0u1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePFkNpFxk2uXODE/mGfkshUVj4gDschpqeX6gZ/+9+O4djWqSkHnGtEystVIHJUpc
-	 1Du2oiF+ViXkIfdCr+PFzYGDPlPRM+emG5LOjY2tjJBdTN2jGlq96Ap7rKJvwO4r3+
-	 B4/lTxkWY1JY8J1Ff13HnDHUeSSLrm1s1Keuahhc=
+	b=S04QoSGQGEIdIDFBBP4zw8gNhfuI7ydamTfzCfeLKEFxKVdsjsSNX8C8vxQrK1dw9
+	 uAkRFTQimGQmTjExH5XYcNJIammFfPn/54TEqmZczfncgNsrf5E8afEWuz7265tOqV
+	 3SVtu7RLOcYgdkGJYJXuDJlQ2K/ZsInHTMo+CuQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/262] netfilter: xt_nfacct: dont assume acct name is null-terminated
+Subject: [PATCH 6.1 098/253] bpf, sockmap: Fix psock incorrectly pointing to sk
 Date: Tue, 12 Aug 2025 19:28:06 +0200
-Message-ID: <20250812172957.260614204@linuxfoundation.org>
+Message-ID: <20250812172952.900786924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit bf58e667af7d96c8eb9411f926a0a0955f41ce21 ]
+[ Upstream commit 76be5fae32febb1fdb848ba09f78c4b2c76cb337 ]
 
-BUG: KASAN: slab-out-of-bounds in .. lib/vsprintf.c:721
-Read of size 1 at addr ffff88801eac95c8 by task syz-executor183/5851
-[..]
- string+0x231/0x2b0 lib/vsprintf.c:721
- vsnprintf+0x739/0xf00 lib/vsprintf.c:2874
- [..]
- nfacct_mt_checkentry+0xd2/0xe0 net/netfilter/xt_nfacct.c:41
- xt_check_match+0x3d1/0xab0 net/netfilter/x_tables.c:523
+We observed an issue from the latest selftest: sockmap_redir where
+sk_psock(psock->sk) != psock in the backlog. The root cause is the special
+behavior in sockmap_redir - it frequently performs map_update() and
+map_delete() on the same socket. During map_update(), we create a new
+psock and during map_delete(), we eventually free the psock via rcu_work
+in sk_psock_drop(). However, pending workqueues might still exist and not
+be processed yet. If users immediately perform another map_update(), a new
+psock will be allocated for the same sk, resulting in two psocks pointing
+to the same sk.
 
-nfnl_acct_find_get() handles non-null input, but the error
-printk relied on its presence.
+When the pending workqueue is later triggered, it uses the old psock to
+access sk for I/O operations, which is incorrect.
 
-Reported-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ff165b9251e4d295690
-Tested-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
-Fixes: ceb98d03eac5 ("netfilter: xtables: add nfacct match to support extended accounting")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Timing Diagram:
+
+cpu0                        cpu1
+
+map_update(sk):
+    sk->psock = psock1
+    psock1->sk = sk
+map_delete(sk):
+   rcu_work_free(psock1)
+
+map_update(sk):
+    sk->psock = psock2
+    psock2->sk = sk
+                            workqueue:
+                                wakeup with psock1, but the sk of psock1
+                                doesn't belong to psock1
+rcu_handler:
+    clean psock1
+    free(psock1)
+
+Previously, we used reference counting to address the concurrency issue
+between backlog and sock_map_close(). This logic remains necessary as it
+prevents the sk from being freed while processing the backlog. But this
+patch prevents pending backlogs from using a psock after it has been
+stopped.
+
+Note: We cannot call cancel_delayed_work_sync() in map_delete() since this
+might be invoked in BPF context by BPF helper, and the function may sleep.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20250609025908.79331-1-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_nfacct.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/skmsg.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/netfilter/xt_nfacct.c b/net/netfilter/xt_nfacct.c
-index 7c6bf1c16813..0ca1cdfc4095 100644
---- a/net/netfilter/xt_nfacct.c
-+++ b/net/netfilter/xt_nfacct.c
-@@ -38,8 +38,8 @@ nfacct_mt_checkentry(const struct xt_mtchk_param *par)
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 2aa6262f19e8..01ca497fe2cd 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -654,6 +654,13 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	bool ingress;
+ 	int ret;
  
- 	nfacct = nfnl_acct_find_get(par->net, info->name);
- 	if (nfacct == NULL) {
--		pr_info_ratelimited("accounting object `%s' does not exists\n",
--				    info->name);
-+		pr_info_ratelimited("accounting object `%.*s' does not exist\n",
-+				    NFACCT_NAME_MAX, info->name);
- 		return -ENOENT;
- 	}
- 	info->nfacct = nfacct;
++	/* If sk is quickly removed from the map and then added back, the old
++	 * psock should not be scheduled, because there are now two psocks
++	 * pointing to the same sk.
++	 */
++	if (!sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED))
++		return;
++
+ 	/* Increment the psock refcnt to synchronize with close(fd) path in
+ 	 * sock_map_close(), ensuring we wait for backlog thread completion
+ 	 * before sk_socket freed. If refcnt increment fails, it indicates
 -- 
 2.39.5
 
