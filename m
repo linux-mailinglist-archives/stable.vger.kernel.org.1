@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE99B22FE8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB9CB234B4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2784B686007
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EEE462108A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16132FDC58;
-	Tue, 12 Aug 2025 17:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321BF2FDC49;
+	Tue, 12 Aug 2025 18:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YiZLWMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BU5tKk+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE972FDC51;
-	Tue, 12 Aug 2025 17:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E2C2F5E;
+	Tue, 12 Aug 2025 18:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020666; cv=none; b=CGiAH4V04GYheZBeQdwo1s7XL6rO0xO71ikrHYwVaS4gCl70Tv0AnlpUySLT+egw5UvK7mwclu/GP4Boq+a+BfKyo/WABmn/fDOoLhMHYL7gkiIs/buIFLyOA+fOXcN17nCYN4zDXMjBHqkQMBc4VjM+EFI+OViuJJZIDO/alSs=
+	t=1755023930; cv=none; b=A865Q8lRZS2p86+koZtObcYXFrao1cUokXvHdLjmSeN31Jcq+KARL+hmVDG+dzEx97khYskHJLWXX9PResHsLC0HYdvd5rqF4Y0ZaCFlaSv1bM8kQatOC81nNSnG9QxLZ8QHHz3InjZJx64H+rwWQD7motfCqETt0FKxyjPlxoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020666; c=relaxed/simple;
-	bh=ptbrkg0TyrcTEdQUO4mBWlEOtuvoFRNe7v+4K9Y7IKo=;
+	s=arc-20240116; t=1755023930; c=relaxed/simple;
+	bh=bERJcUwDk8Mwue2APiS7DcJxXenJk+40Ficp9hnQqFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1XmNdDQJA+41/C1Dmw3oKwATTs6f9F8c+n+ShUQuMWsTQDukwYTIDV4hZ7xgEvqZybYBziXawwmdarhrglhFGWPEVevgW7JkJnQhZGiO5agTFsQ139NYQI8wADMl/7SEr1qs1b3qGMn69AWUkVsZXoISQTbCE8VKx1mhHr+Ch0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YiZLWMR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23146C4CEF0;
-	Tue, 12 Aug 2025 17:44:25 +0000 (UTC)
+	 MIME-Version; b=iocuHKEy7XgFOMqdavrh4R6mFFBsLKOHrkl6Qs/qWO7YCwc+J1e4urKbLjFbg+Y8L8DUxwVguwUewL0oBpI2u2lrMS+YZpkpza+dK8vXBkP/d4goEWhJ/Hn26HN1q3pMHvDpTE8loDl8Zqmi1ceCIC37VHqjqBE2pyePQnRCS2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BU5tKk+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D23C4CEF0;
+	Tue, 12 Aug 2025 18:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020666;
-	bh=ptbrkg0TyrcTEdQUO4mBWlEOtuvoFRNe7v+4K9Y7IKo=;
+	s=korg; t=1755023929;
+	bh=bERJcUwDk8Mwue2APiS7DcJxXenJk+40Ficp9hnQqFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YiZLWMR9gMJ5bYeno2bgvxqtPm5QHL3GlwEY0+GJgkjWeL8CX2bShupWYndE+c0D
-	 D1VtW7d2rHb3c3VbWxNTC5kkEO/8b9XMoQOgBHolQ2XfOoZ8UvAlAX4GGekpTnXtlr
-	 V+g/45v1yGe1fAYdQ2xSkYZBr0PJwWbNGETbntWA=
+	b=BU5tKk+wD00xmVk1LEMCKjreZRRDUVMpU94FnE2pRyxfMBPwjZ9QiZC8Ij+TVVyw9
+	 VtBvnnN5ywSVnBHkv1PsNoDS9/amyAybt3p0wCQ44SbOyOjY6uXa6cP4Viuk2EDPaP
+	 g0G8HmW1YMU58rj33NAvEGikvhkGwL21AMAYYXv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/253] can: kvaser_pciefd: Store device channel index
+Subject: [PATCH 6.16 223/627] wifi: rtw88: Fix macid assigned to TDLS station
 Date: Tue, 12 Aug 2025 19:28:38 +0200
-Message-ID: <20250812172954.232383241@linuxfoundation.org>
+Message-ID: <20250812173427.760107043@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit d54b16b40ddadb7d0a77fff48af7b319a0cd6aae ]
+[ Upstream commit 526b000991b557c40ea53e64ba24bb9e0fff0071 ]
 
-Store device channel index in netdev.dev_port.
+When working in station mode, TDLS peers are assigned macid 0, even
+though 0 was already assigned to the AP. This causes the connection
+with the AP to stop working after the TDLS connection is torn down.
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123230.8-6-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Assign the next available macid to TDLS peers, same as client stations
+in AP mode.
+
+Fixes: 902cb7b11f9a ("wifi: rtw88: assign mac_id for vif/sta and update to TX desc")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/58648c09-8553-4bcc-a977-9dc9afd63780@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/kvaser_pciefd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw88/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 74a47244f129..c6406fc1b0d5 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -966,6 +966,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
- 		can->err_rep_cnt = 0;
- 		can->bec.txerr = 0;
- 		can->bec.rxerr = 0;
-+		can->can.dev->dev_port = i;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index c4de5d114eda..8be6e70d92d1 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -349,7 +349,7 @@ int rtw_sta_add(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
+ 	int i;
  
- 		init_completion(&can->start_comp);
- 		init_completion(&can->flush_comp);
+-	if (vif->type == NL80211_IFTYPE_STATION) {
++	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
+ 		si->mac_id = rtwvif->mac_id;
+ 	} else {
+ 		si->mac_id = rtw_acquire_macid(rtwdev);
+@@ -386,7 +386,7 @@ void rtw_sta_remove(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 
+ 	cancel_work_sync(&si->rc_work);
+ 
+-	if (vif->type != NL80211_IFTYPE_STATION)
++	if (vif->type != NL80211_IFTYPE_STATION || sta->tdls)
+ 		rtw_release_macid(rtwdev, si->mac_id);
+ 	if (fw_exist)
+ 		rtw_fw_media_status_report(rtwdev, si->mac_id, false);
 -- 
 2.39.5
 
