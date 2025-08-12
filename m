@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781E4B23404
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8290CB231C3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1C41A24247
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D130F7A2CAE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6650E2FE580;
-	Tue, 12 Aug 2025 18:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264D12D46B3;
+	Tue, 12 Aug 2025 18:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amFRAaHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjNtR10K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2364B2FE57A;
-	Tue, 12 Aug 2025 18:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BB51EF38C;
+	Tue, 12 Aug 2025 18:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023396; cv=none; b=AfHoA7i65/lpcUjvGZmvE7zIOSJSExF/DsS55qEHkdpCYx/txe8Yhzl9CmDHDEe4L96w0r90RNCMt4plYSZNaE7QaUCVmro1o9SAGfKogd+LTn1qND+l/z93qZ3oZsOfZu826AYcsmvAT1IqG+oQbjusCom2/y1yX4Zrxb5lpsE=
+	t=1755022110; cv=none; b=DG5Kxfvl++oa79oT6aylaYh9vys02YIXiYuFoG4ABig1zxWdLF1rPY6Oad3wwemVXSTGynWk9w/BLixHhyIatA5DaHx0dYEPMuX5uvP8XrcgpftWDNsN7MbsNWojy+g3bhV1E3R0CIyxJE5BHy/Tcwr3lTfjg0f22d2c95/pX/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023396; c=relaxed/simple;
-	bh=1v8tLvJg1xGQcNkUsZaaZbeaiWB2Y7bVQ5ItcvvlC1E=;
+	s=arc-20240116; t=1755022110; c=relaxed/simple;
+	bh=vy2cBem9Mq7rVc+rXHvryRr7gWOtGfhYpoVgjB/nuZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eu0x6g1l2OqVrvRwwRX6mrRLMLjFNrmPq5yWyd2FqvPApYl6IgeUIo6RegaCGr2PJMvq6TUdmJdrTDOcOGqOgnFSvfN4lgXTESeWy7pqwzUxCytURhgL6VLgZnRtO+aoY4CzhhfkPp0+VcUp1SUDyyKifumE3niqJmlXGHV7Yyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amFRAaHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA97C4CEF0;
-	Tue, 12 Aug 2025 18:29:55 +0000 (UTC)
+	 MIME-Version; b=jMILzqjX/ZPV4fzZEpRfdAInevalhHveWwvE7iNV0M2ZwVaZunfe2lmurtIEou/8+7KXmvVwcK1PIjWPzdzoxS89cNFqWDRTkt1Hxta9DRH22Y5ZEZXHI2H8B+hvC41JAyDyEwOmlNNWWRM1CT3Ho4N24C34hDQ+yNOHdNiO584=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjNtR10K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11587C4CEF8;
+	Tue, 12 Aug 2025 18:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023396;
-	bh=1v8tLvJg1xGQcNkUsZaaZbeaiWB2Y7bVQ5ItcvvlC1E=;
+	s=korg; t=1755022110;
+	bh=vy2cBem9Mq7rVc+rXHvryRr7gWOtGfhYpoVgjB/nuZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amFRAaHaSSNS9DX1SWE+3hd069Jpk+AXMkBT7KG9wmsoUGpr7kwSpdoBuKbM7vpoE
-	 Ufw6Ig+eKiQHRUAt+mFfJq3MW3d/CCnrJSvh9xxnFAYlfv42p3+jXG2Z+VH6KRFbm9
-	 jqeQu+FDYfcaqMCol7lJLYwOF7jBqpKWTkyV29m4=
+	b=AjNtR10KJzdzOeqN0bn+N9bwrmfhxK/bUfuhv6QqTKuIDTL25pePGjxnrrfezGTh2
+	 i426N5T40+suKC7kieNn1dYDnzj95NYtmyMMpj7rL8PQcCLLYRB1SiEQaMMLoXx7cj
+	 UNZJK01h6F0Qlcf7YPh2ljqVP8kfGMMOea1VMOc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 060/627] firmware: arm_scmi: Fix up turbo frequencies selection
+Subject: [PATCH 6.12 058/369] cpufreq: Initialize cpufreq-based frequency-invariance later
 Date: Tue, 12 Aug 2025 19:25:55 +0200
-Message-ID: <20250812173421.610240805@linuxfoundation.org>
+Message-ID: <20250812173016.945002786@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit ad28fc31dd702871764e9294d4f2314ad78d24a9 ]
+[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
 
-Sustained frequency when greater than or equal to 4Ghz on 64-bit devices
-currently result in marking all frequencies as turbo. Address the turbo
-frequency selection bug by fixing the truncation.
+The cpufreq-based invariance is enabled in cpufreq_register_driver(),
+but never disabled after registration fails. Move the invariance
+initialization to where all other initializations have been successfully
+done to solve this problem.
 
-Fixes: a897575e79d7 ("firmware: arm_scmi: Add support for marking certain frequencies as turbo")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Message-Id: <20250514214719.203607-1-quic_sibis@quicinc.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index c7e5a34b254b..683fd9b85c5c 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -892,7 +892,7 @@ static int scmi_dvfs_device_opps_add(const struct scmi_protocol_handle *ph,
- 			freq = dom->opp[idx].indicative_freq * dom->mult_factor;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 1f52bced4c29..df3c8daede26 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2961,15 +2961,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	cpufreq_driver = driver_data;
+ 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
  
- 		/* All OPPs above the sustained frequency are treated as turbo */
--		data.turbo = freq > dom->sustained_freq_khz * 1000;
-+		data.turbo = freq > dom->sustained_freq_khz * 1000UL;
+-	/*
+-	 * Mark support for the scheduler's frequency invariance engine for
+-	 * drivers that implement target(), target_index() or fast_switch().
+-	 */
+-	if (!cpufreq_driver->setpolicy) {
+-		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
+-		pr_debug("supports frequency invariance");
+-	}
+-
+ 	if (driver_data->setpolicy)
+ 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
  
- 		data.level = dom->opp[idx].perf;
- 		data.freq = freq;
+@@ -3000,6 +2991,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	hp_online = ret;
+ 	ret = 0;
+ 
++	/*
++	 * Mark support for the scheduler's frequency invariance engine for
++	 * drivers that implement target(), target_index() or fast_switch().
++	 */
++	if (!cpufreq_driver->setpolicy) {
++		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
++		pr_debug("supports frequency invariance");
++	}
++
+ 	pr_debug("driver %s up and running\n", driver_data->name);
+ 	goto out;
+ 
 -- 
 2.39.5
 
