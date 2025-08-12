@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B0CB23505
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6568EB23047
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D2221B64141
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFD6D18984AF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206CA2FDC55;
-	Tue, 12 Aug 2025 18:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C7A2F7477;
+	Tue, 12 Aug 2025 17:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEEmouIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdmdZ0Se"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D293E2FDC4F;
-	Tue, 12 Aug 2025 18:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9DF23D7E5;
+	Tue, 12 Aug 2025 17:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024139; cv=none; b=EEjv/ehetzYmZZWw+mF7NX20SBGYSi3e3FzlXjYrXXzFKlBoDb7OoHA9xtZ6YCidXMA81PLbuBgDyx/6tzjRNSllN+04SChw0p3CF3CKZSY5RVU78iBm+RkvK0MZ1hk3/OfPQH4UNOIvNAPiJIQTKmxwUqJpV831T7c+9errnS8=
+	t=1755020965; cv=none; b=foZDDWk+K4CfTU7B6RYdykwQT4/4gbeCmGsYg2EC3Ff1Ej7INdlTl/si0WMat8eqFwvIBTiLE7bcx4o3pvgmhNpQ8mnE5TfBZFJ0Dhhgnh+wIuEqtFcyjfD7e9HIxwuYcsT0KawHIy5O5NrDbb+9JcCL9J8GERBPB1qFAdaOo6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024139; c=relaxed/simple;
-	bh=F/uR4qEkZYdwAe7ENcjmnf0r3s8jtZW4A1UR+saJUqA=;
+	s=arc-20240116; t=1755020965; c=relaxed/simple;
+	bh=eR3Wo1KeXAxO3l007SfkuQL73mkDXittDUAnmZasOH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+LY9F4Ag3/NHeB7G43o363IViDY0L5A0v+7pZmncYYbBASS+8XNtL+8ofdn68i7MrYwrVYJv+vTb3iaVVPX2VWuJJJElCslt1pbK/RQtJhacVmEvBLFIvdIBvyaxep12e3hy7zZMu+4B9gMZvq3NrTwoDA4xSDqLmiiLQtstfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEEmouIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B60C4CEF0;
-	Tue, 12 Aug 2025 18:42:17 +0000 (UTC)
+	 MIME-Version; b=qP7JN+OMRXaPfE0VONBobZm7LFMjOc2qLKYBjZ1kwy2yd4BbLiO2E+fq0SR+Lhbr/RopLfiS0jW/d1zQRuwctkISdUON5nbMLxPE1ujHeFmnpcNcvBfaidMSyWG6IBLzJMHXksHTXNa6FPUHvSDQfCkz90WD6qV5gT+jgyA0e8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdmdZ0Se; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB13C4CEF1;
+	Tue, 12 Aug 2025 17:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024138;
-	bh=F/uR4qEkZYdwAe7ENcjmnf0r3s8jtZW4A1UR+saJUqA=;
+	s=korg; t=1755020965;
+	bh=eR3Wo1KeXAxO3l007SfkuQL73mkDXittDUAnmZasOH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEEmouIxkJeOTm5QFiUo2q3pUe/Uf/bG/tfh9WPPk1FpsHSH5/h6Kwa7j26MOs1By
-	 8W3381F91LzKIRoJ0YR63fLFDivTa7GwgDK67hDBz9UvisqmPpkSU40JyCKDfjIIQ8
-	 G3I1k1GnRvanN1LD618nLAuK+vtm2TZbLGE+UHw4=
+	b=TdmdZ0Sex2FPbr3s/EhY5/Sa1x2yqWKySRB2olTrq2DmSxshIBQ0t9PNJ1zUvMtLz
+	 uqnNCr/Q6K/yokELNerwTkQrNNhLxZe70TCgk0aA/3rcT4zlmzA8r0tnLGinlXKILX
+	 e8NOO6QW+KRvPPDjdlTKpiK4HGKzOEuE1GgQbZuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot <syzkaller@googlegroups.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 286/627] ipv6: add a retry logic in net6_rt_notify()
+Subject: [PATCH 6.1 193/253] f2fs: doc: fix wrong quota mount option description
 Date: Tue, 12 Aug 2025 19:29:41 +0200
-Message-ID: <20250812173430.194382260@linuxfoundation.org>
+Message-ID: <20250812172957.012538506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit ea2f921db7a483a526058c5b5b8162edd88dabe5 ]
+[ Upstream commit 81b6ecca2f15922e8d653dc037df5871e754be6e ]
 
-inet6_rt_notify() can be called under RCU protection only.
-This means the route could be changed concurrently
-and rt6_fill_node() could return -EMSGSIZE.
+We should use "{usr,grp,prj}jquota=" to disable journaled quota,
+rather than using off{usr,grp,prj}jquota.
 
-Re-size the skb when this happens and retry, removing
-one WARN_ON() that syzbot was able to trigger:
-
-WARNING: CPU: 3 PID: 6291 at net/ipv6/route.c:6342 inet6_rt_notify+0x475/0x4b0 net/ipv6/route.c:6342
-Modules linked in:
-CPU: 3 UID: 0 PID: 6291 Comm: syz.0.77 Not tainted 6.16.0-rc7-syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:inet6_rt_notify+0x475/0x4b0 net/ipv6/route.c:6342
-Code: fc ff ff e8 6d 52 ea f7 e9 47 fc ff ff 48 8b 7c 24 08 4c 89 04 24 e8 5a 52 ea f7 4c 8b 04 24 e9 94 fd ff ff e8 9c fe 84 f7 90 <0f> 0b 90 e9 bd fd ff ff e8 6e 52 ea f7 e9 bb fb ff ff 48 89 df e8
-RSP: 0018:ffffc900035cf1d8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffc900035cf540 RCX: ffffffff8a36e790
-RDX: ffff88802f7e8000 RSI: ffffffff8a36e9d4 RDI: 0000000000000005
-RBP: ffff88803c230f00 R08: 0000000000000005 R09: 00000000ffffffa6
-R10: 00000000ffffffa6 R11: 0000000000000001 R12: 00000000ffffffa6
-R13: 0000000000000900 R14: ffff888032ea4100 R15: 0000000000000000
-FS:  00007fac7b89a6c0(0000) GS:ffff8880d6a20000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fac7b899f98 CR3: 0000000034b3f000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
-  ip6_route_mpath_notify+0xde/0x280 net/ipv6/route.c:5356
-  ip6_route_multipath_add+0x1181/0x1bd0 net/ipv6/route.c:5536
-  inet6_rtm_newroute+0xe4/0x1a0 net/ipv6/route.c:5647
-  rtnetlink_rcv_msg+0x95e/0xe90 net/core/rtnetlink.c:6944
-  netlink_rcv_skb+0x155/0x420 net/netlink/af_netlink.c:2552
-  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-  netlink_unicast+0x58d/0x850 net/netlink/af_netlink.c:1346
-  netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1896
-  sock_sendmsg_nosec net/socket.c:712 [inline]
-  __sock_sendmsg net/socket.c:727 [inline]
-  ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
-  ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
-
-Fixes: 169fd62799e8 ("ipv6: Get rid of RTNL for SIOCADDRT and RTM_NEWROUTE.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Link: https://patch.msgid.link/20250725140725.3626540-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4b2414d04e99 ("f2fs: support journalled quota")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ Documentation/filesystems/f2fs.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 7b9e49be7164..38016f5b2291 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -6321,8 +6321,9 @@ static int inet6_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
- 		     unsigned int nlm_flags)
- {
--	struct sk_buff *skb;
- 	struct net *net = info->nl_net;
-+	struct sk_buff *skb;
-+	size_t sz;
- 	u32 seq;
- 	int err;
- 
-@@ -6330,17 +6331,21 @@ void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *info,
- 	seq = info->nlh ? info->nlh->nlmsg_seq : 0;
- 
- 	rcu_read_lock();
--
--	skb = nlmsg_new(rt6_nlmsg_size(rt), GFP_ATOMIC);
-+	sz = rt6_nlmsg_size(rt);
-+retry:
-+	skb = nlmsg_new(sz, GFP_ATOMIC);
- 	if (!skb)
- 		goto errout;
- 
- 	err = rt6_fill_node(net, skb, rt, NULL, NULL, NULL, 0,
- 			    event, info->portid, seq, nlm_flags);
- 	if (err < 0) {
--		/* -EMSGSIZE implies BUG in rt6_nlmsg_size() */
--		WARN_ON(err == -EMSGSIZE);
- 		kfree_skb(skb);
-+		/* -EMSGSIZE implies needed space grew under us. */
-+		if (err == -EMSGSIZE) {
-+			sz = max(rt6_nlmsg_size(rt), sz << 1);
-+			goto retry;
-+		}
- 		goto errout;
- 	}
- 
+diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
+index 17df9a02ccff..0625d5bce596 100644
+--- a/Documentation/filesystems/f2fs.rst
++++ b/Documentation/filesystems/f2fs.rst
+@@ -230,9 +230,9 @@ usrjquota=<file>	 Appoint specified file and type during mount, so that quota
+ grpjquota=<file>	 information can be properly updated during recovery flow,
+ prjjquota=<file>	 <quota file>: must be in root directory;
+ jqfmt=<quota type>	 <quota type>: [vfsold,vfsv0,vfsv1].
+-offusrjquota		 Turn off user journalled quota.
+-offgrpjquota		 Turn off group journalled quota.
+-offprjjquota		 Turn off project journalled quota.
++usrjquota=		 Turn off user journalled quota.
++grpjquota=		 Turn off group journalled quota.
++prjjquota=		 Turn off project journalled quota.
+ quota			 Enable plain user disk quota accounting.
+ noquota			 Disable all plain disk quota option.
+ alloc_mode=%s		 Adjust block allocation policy, which supports "reuse"
 -- 
 2.39.5
 
