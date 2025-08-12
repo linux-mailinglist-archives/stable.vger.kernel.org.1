@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-168909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760E0B23747
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:10:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DABEB23731
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3008684D06
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:09:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B01E4585F53
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961D0285043;
-	Tue, 12 Aug 2025 19:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242F629BDB7;
+	Tue, 12 Aug 2025 19:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+82OSJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS/eyyYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B9321C187;
-	Tue, 12 Aug 2025 19:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D655C2949E0;
+	Tue, 12 Aug 2025 19:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025742; cv=none; b=MBQqEOGKkewuAF1XlM/EmFh1hUFkt7HmKoh9CXSprf3YwgUE9YTMFqA25MEst+NPqKrPCPCwRoEuBJFNyLVZTKQRYrhrQQZl18b21Jz14nL2GP6n+2wudmN6EL+drkDn5xk0PKupp2zLQ9yjtd2SQihZxZ2U8ZHlMopTiAFzFWI=
+	t=1755025748; cv=none; b=EdanjpOW+CNkTb2BJUmtGYG79ILhjBPOcG5WXkVh7tojOD3AliWxFTIjJG02gRi1KTwn6E6DkOi4Q+iAESoValHzoia/6cAKu1CMQN4xcAyrbzmp5fh0pDi7GJz6wEPjX2UgmlLpP+muEerStBSSthskcUQdBJfcahA1USl2jjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025742; c=relaxed/simple;
-	bh=e8Lrge0xACZuYFhbaOVuMJMPSd/r7eXQkfNvuW3b/E4=;
+	s=arc-20240116; t=1755025748; c=relaxed/simple;
+	bh=qVMb/db35WLs2OKmPmnoCFxL02Z5j+Nav9MN7mT+LZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aN/zWJQU1qJgrku8aCmRyJl63UYPcSyOsaDIPdBR8v+pD5YM3IEB4rC2AWrTIt6/PkF6zuLm7Ff4tk9gpQQHdA1q3oYcbmVuN4+z1FYDZU+aMbQoMuWvoaLi14pgZKV3ga+8wCdrOVR8JKSESSLYuWfw4jGODT5E2G/S+of87zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+82OSJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D3BC4CEF0;
-	Tue, 12 Aug 2025 19:09:01 +0000 (UTC)
+	 MIME-Version; b=mzfiV/LS1EwcrGHJSJYBiExUFBtWKGnuQqXOA4LCDA1yVonqkGTZgC5zifdLjPyDT6maZfeHy7uXV/62c634FK89l9+ZtWkeXUfszw1TthCp6wWb9F0coii5FOPb3gBozMjP8KYr0KfB+NvDerXwHoO24Y/aD5HUdgbsX09gjuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS/eyyYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4687BC4CEF0;
+	Tue, 12 Aug 2025 19:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025742;
-	bh=e8Lrge0xACZuYFhbaOVuMJMPSd/r7eXQkfNvuW3b/E4=;
+	s=korg; t=1755025748;
+	bh=qVMb/db35WLs2OKmPmnoCFxL02Z5j+Nav9MN7mT+LZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+82OSJnIG2KzIQUFwxr1a4Gp5GJ5DhmJgLeQAL/D4Z9GXxFnXz09kCDePHWi+R/P
-	 FfiLZ4BNkGTAguvXWTG4z2NVvtQxF4wWPJSiUIlMwlntfbixoSlB5O8/zyL3MmFCxh
-	 kFNxGLjct241x/Ua4fPC3g96aVifVM4J9GnAQT8E=
+	b=pS/eyyYfgCkKIRBQHkpmqr7zgWUoZKNE8s1C1wqg5LL+2v+nK4ZpyFbZGD8hXsUF3
+	 u3E9AqT1xrNU9C5NjOVXo1xeTX+hm8cjZhFBD6+94XW2gDkk+HrHnZ+bwub/oguxYr
+	 1VJ7pgfMoWnp2OzOlRIfXqlS5E4UhSCO8weoGHl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 131/480] net: dst: add four helpers to annotate data-races around dst->dev
-Date: Tue, 12 Aug 2025 19:45:39 +0200
-Message-ID: <20250812174402.928932113@linuxfoundation.org>
+Subject: [PATCH 6.15 132/480] wifi: iwlwifi: Fix error code in iwl_op_mode_dvm_start()
+Date: Tue, 12 Aug 2025 19:45:40 +0200
+Message-ID: <20250812174402.969967095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,137 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 88fe14253e181878c2ddb51a298ae8c468a63010 ]
+[ Upstream commit cf80c02a9fdb6c5bc8508beb6a0f6a1294fc32f6 ]
 
-dst->dev is read locklessly in many contexts,
-and written in dst_dev_put().
+Preserve the error code if iwl_setup_deferred_work() fails.  The current
+code returns ERR_PTR(0) (which is NULL) on this path.  I believe the
+missing error code potentially leads to a use after free involving
+debugfs.
 
-Fixing all the races is going to need many changes.
-
-We probably will have to add full RCU protection.
-
-Add three helpers to ease this painful process.
-
-static inline struct net_device *dst_dev(const struct dst_entry *dst)
-{
-       return READ_ONCE(dst->dev);
-}
-
-static inline struct net_device *skb_dst_dev(const struct sk_buff *skb)
-{
-       return dst_dev(skb_dst(skb));
-}
-
-static inline struct net *skb_dst_dev_net(const struct sk_buff *skb)
-{
-       return dev_net(skb_dst_dev(skb));
-}
-
-static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
-{
-       return dev_net_rcu(skb_dst_dev(skb));
-}
-
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250630121934.3399505-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 90a0d9f33996 ("iwlwifi: Add missing check for alloc_ordered_workqueue")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/a7a1cd2c-ce01-461a-9afd-dbe535f8df01@sabinyo.mountain
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h | 20 ++++++++++++++++++++
- net/core/dst.c    |  4 ++--
- net/core/sock.c   |  8 ++++----
- 3 files changed, 26 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 2caf85e2ce86..32dafbab4cd0 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -561,6 +561,26 @@ static inline void skb_dst_update_pmtu_no_confirm(struct sk_buff *skb, u32 mtu)
- 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index cd20958fb91a..59c13c40bb83 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1468,7 +1468,8 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	/********************
+ 	 * 6. Setup services
+ 	 ********************/
+-	if (iwl_setup_deferred_work(priv))
++	err = iwl_setup_deferred_work(priv);
++	if (err)
+ 		goto out_uninit_drv;
  
-+static inline struct net_device *dst_dev(const struct dst_entry *dst)
-+{
-+	return READ_ONCE(dst->dev);
-+}
-+
-+static inline struct net_device *skb_dst_dev(const struct sk_buff *skb)
-+{
-+	return dst_dev(skb_dst(skb));
-+}
-+
-+static inline struct net *skb_dst_dev_net(const struct sk_buff *skb)
-+{
-+	return dev_net(skb_dst_dev(skb));
-+}
-+
-+static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
-+{
-+	return dev_net_rcu(skb_dst_dev(skb));
-+}
-+
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
- void dst_blackhole_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 			       struct sk_buff *skb, u32 mtu, bool confirm_neigh);
-diff --git a/net/core/dst.c b/net/core/dst.c
-index e483daf17666..b3a12c7c08af 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -150,7 +150,7 @@ void dst_dev_put(struct dst_entry *dst)
- 		dst->ops->ifdown(dst, dev);
- 	WRITE_ONCE(dst->input, dst_discard);
- 	WRITE_ONCE(dst->output, dst_discard_out);
--	dst->dev = blackhole_netdev;
-+	WRITE_ONCE(dst->dev, blackhole_netdev);
- 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
- 			   GFP_ATOMIC);
- }
-@@ -263,7 +263,7 @@ unsigned int dst_blackhole_mtu(const struct dst_entry *dst)
- {
- 	unsigned int mtu = dst_metric_raw(dst, RTAX_MTU);
- 
--	return mtu ? : dst->dev->mtu;
-+	return mtu ? : dst_dev(dst)->mtu;
- }
- EXPORT_SYMBOL_GPL(dst_blackhole_mtu);
- 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 3e8c548cb1f8..bcd0d6c757ce 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2557,8 +2557,8 @@ static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
- 		   !ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr));
- #endif
- 	/* pairs with the WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
--	max_size = is_ipv6 ? READ_ONCE(dst->dev->gso_max_size) :
--			READ_ONCE(dst->dev->gso_ipv4_max_size);
-+	max_size = is_ipv6 ? READ_ONCE(dst_dev(dst)->gso_max_size) :
-+			READ_ONCE(dst_dev(dst)->gso_ipv4_max_size);
- 	if (max_size > GSO_LEGACY_MAX_SIZE && !sk_is_tcp(sk))
- 		max_size = GSO_LEGACY_MAX_SIZE;
- 
-@@ -2569,7 +2569,7 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
- {
- 	u32 max_segs = 1;
- 
--	sk->sk_route_caps = dst->dev->features;
-+	sk->sk_route_caps = dst_dev(dst)->features;
- 	if (sk_is_tcp(sk)) {
- 		struct inet_connection_sock *icsk = inet_csk(sk);
- 
-@@ -2587,7 +2587,7 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
- 			sk->sk_route_caps |= NETIF_F_SG | NETIF_F_HW_CSUM;
- 			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dst);
- 			/* pairs with the WRITE_ONCE() in netif_set_gso_max_segs() */
--			max_segs = max_t(u32, READ_ONCE(dst->dev->gso_max_segs), 1);
-+			max_segs = max_t(u32, READ_ONCE(dst_dev(dst)->gso_max_segs), 1);
- 		}
- 	}
- 	sk->sk_gso_max_segs = max_segs;
+ 	iwl_setup_rx_handlers(priv);
 -- 
 2.39.5
 
