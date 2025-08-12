@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-167764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97233B231CF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBF8B234D9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FC45188D318
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D11AE7AE153
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AC32FE57A;
-	Tue, 12 Aug 2025 18:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8EE2F291B;
+	Tue, 12 Aug 2025 18:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAYotmQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZKIV+ZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A602F745E;
-	Tue, 12 Aug 2025 18:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB3F13AA2F;
+	Tue, 12 Aug 2025 18:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021915; cv=none; b=Xsi1Dy4F9SQlAxkw8+O2FndERvO2bUvCQGhW1zLINGIRaBIr76BzXuhVQfbNZtB7nlI2WHUay1SnqNn/jtVnExWrkfe0TYcN6pOHzwtSO1Oq2JAtpP/YfftsH9wRFsnenRpZ+Kfyk8FIipksBvFU96yYllfn71gfUHM/4KSjJV8=
+	t=1755024262; cv=none; b=fGdT82hnXK91ATQU7keuLvwYO4plDs3KEyqvpJ7rirdlN0yx4N+nUcuKbsFBIVFRJYcMKptdCU271hAMegKF3bLGaa+ywaB/eWDLrY9NFsMfOjMGPCNhpxKUsu9m7e77bb/d1RZWgEwe2Z0Ppj9FBCWAD7QrM6cppAh5E8i6+Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021915; c=relaxed/simple;
-	bh=w2lwJB/tdlB559C067ziz0uS2t2Z4uAP3SJxane2rXY=;
+	s=arc-20240116; t=1755024262; c=relaxed/simple;
+	bh=bKIbQQJdaYRFLL7Oz2Nth3t8kml3srC+OHabulpl9O4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMM/WGPCCzvPiuiDw8xjndBKjd3m0jnRAjl+ayBxveI7Dy+ngTNnIE9vzJ2h03tYSoBTtKDphYTR4P+QHGXvmXleclJrJLr3CE1JwV1Og5WfXYUMRQfKJWXu+FmLKzqytWt9/ZNqQ9Lbd32jY9rn10miTxZuhDESIyb6F32SP8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAYotmQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872A8C4CEF0;
-	Tue, 12 Aug 2025 18:05:13 +0000 (UTC)
+	 MIME-Version; b=T1ekcq9E9NK/OQrxos+m/6z5EiJ86WQgOuzE6GtLCaAtriY3/0mn8L+xpGirbJ85EezsyM9yHd4wrvZ6sfblGdpvRX9j2A0CWd2ln8wyzEDDmlgkEWXfJ67V1kAtFea/Uk+wpDjmgBSE5IZdXLaqidQrL3vMjJ9gwZl7y0L+ciY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZKIV+ZO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DC9C4CEF0;
+	Tue, 12 Aug 2025 18:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021914;
-	bh=w2lwJB/tdlB559C067ziz0uS2t2Z4uAP3SJxane2rXY=;
+	s=korg; t=1755024262;
+	bh=bKIbQQJdaYRFLL7Oz2Nth3t8kml3srC+OHabulpl9O4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAYotmQBaMwGOqjQZMl1j7Mbh4tBLZf3ekG1tZtJt+J4phe3/iGegEyyW1pD8Sw2j
-	 Crt+F/lKjilul8Lu0I4czo9kTQTRQ5jjK17OvYrobHpxC+0dmz8KZ6goojLSih31ok
-	 giubb4mfTKW49r4bsbaOrnGHj8JMVwLIH/y+1yZM=
+	b=0ZKIV+ZOVU4RDTnuuJEg0LqXjAE0pFl/DLBiywROOR5AdqfDMvedF9xbLrItKzk0I
+	 V/+pmE945SdO72+iPV1r2rKotpZPD1m0TIV2oFFl7G1fCEj6j0r4BIZAjkKNl5QJoC
+	 z+ifeeqDeSpTH2BVIHV1nCW6QtIN6BWZw+89NFrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/262] smb: client: return an error if rdma_connect does not return within 5 seconds
+Subject: [PATCH 6.16 322/627] crypto: arm/aes-neonbs - work around gcc-15 warning
 Date: Tue, 12 Aug 2025 19:30:17 +0200
-Message-ID: <20250812173002.914031126@linuxfoundation.org>
+Message-ID: <20250812173431.545368669@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,46 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 03537826f77f1c829d0593d211b38b9c876c1722 ]
+[ Upstream commit d5fa96dc5590915f060fee3209143313e4f5b03b ]
 
-This matches the timeout for tcp connections.
+I get a very rare -Wstringop-overread warning with gcc-15 for one function
+in aesbs_ctr_encrypt():
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:212:1446: error: '__builtin_memcpy' offset [17, 2147483647] is out of the bounds [0, 16] of object 'buf' with type 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds=]
+  212 |                         src = dst = memcpy(buf + sizeof(buf) - bytes,
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:218:17: error: 'aesbs_ctr_encrypt' reading 1 byte from a region of size 0 [-Werror=stringop-overread]
+  218 |                 aesbs_ctr_encrypt(dst, src, ctx->rk, ctx->rounds, bytes, walk.iv);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 2 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 3 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 6 of type 'u8[0]' {aka 'unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:36:17: note: in a call to function 'aesbs_ctr_encrypt'
+   36 | asmlinkage void aesbs_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
+
+This could happen in theory if walk.nbytes is larger than INT_MAX and gets
+converted to a negative local variable.
+
+Keep the type unsigned like the orignal nbytes to be sure there is no
+integer overflow.
+
+Fixes: c8bf850e991a ("crypto: arm/aes-neonbs-ctr - deal with non-multiples of AES block size")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/crypto/aes-neonbs-glue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index c7f4eb8c9a10..71aef565db5f 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1647,8 +1647,10 @@ static struct smbd_connection *_smbd_get_connection(
- 		goto rdma_connect_failed;
- 	}
+diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
+index c60104dc1585..df5afe601e4a 100644
+--- a/arch/arm/crypto/aes-neonbs-glue.c
++++ b/arch/arm/crypto/aes-neonbs-glue.c
+@@ -206,7 +206,7 @@ static int ctr_encrypt(struct skcipher_request *req)
+ 	while (walk.nbytes > 0) {
+ 		const u8 *src = walk.src.virt.addr;
+ 		u8 *dst = walk.dst.virt.addr;
+-		int bytes = walk.nbytes;
++		unsigned int bytes = walk.nbytes;
  
--	wait_event_interruptible(
--		info->conn_wait, sc->status != SMBDIRECT_SOCKET_CONNECTING);
-+	wait_event_interruptible_timeout(
-+		info->conn_wait,
-+		sc->status != SMBDIRECT_SOCKET_CONNECTING,
-+		msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
- 
- 	if (sc->status != SMBDIRECT_SOCKET_CONNECTED) {
- 		log_rdma_event(ERR, "rdma_connect failed port=%d\n", port);
+ 		if (unlikely(bytes < AES_BLOCK_SIZE))
+ 			src = dst = memcpy(buf + sizeof(buf) - bytes,
 -- 
 2.39.5
 
