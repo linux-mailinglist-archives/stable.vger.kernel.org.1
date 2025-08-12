@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-167409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169C4B23009
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741B4B23166
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE09189795F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C1C13A5C63
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D6D2FD1BF;
-	Tue, 12 Aug 2025 17:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1423E2FF15D;
+	Tue, 12 Aug 2025 18:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="minNelY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIW31vWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FCB2C15B5;
-	Tue, 12 Aug 2025 17:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EBE2882CE;
+	Tue, 12 Aug 2025 18:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020722; cv=none; b=gW7EwzbCMHclA6KZRQtQPuKimtX4otJX68zrld1YFRvm+NNNGAV5mHYfzPlER9SOHQWeO4SfP1QQZRPWssqBI7E8TqdorM64VEraps1YxeW5zfe/cO6EdzfQW9BrPlyHjjPIeGKPn+nrNuyapOkzvA/FqQ99Dex9TmaYnd0WRRk=
+	t=1755021677; cv=none; b=ssJrNteNEwNUZWIipfHF162JwzWnI3NWAfakv4YYwFvxQu75+WiKlstptgI9Fz/jBk0h2anVZOv9Ht7D68k2/zybRwH2vgVPG4Uq1gZ4lBMwto4W55d6ftyFMRE10O67gfyARIwhlJezLB0IkbGIAQ7/5BWaOgOECy98QGQtpKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020722; c=relaxed/simple;
-	bh=8Wc6suO/uQ/CVTjpYCt/tgzUyhJqAWynmU1YgcGOJO8=;
+	s=arc-20240116; t=1755021677; c=relaxed/simple;
+	bh=HAIjS9mACo0ISIlDIZDU3qcL8uLo5zSwF3ikrmZLl6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUDOy1zM6QVm8YvFbcqql7hXknx23NSEvcs9yEmBybgvjhEFGWtIj25PCsNe7JiM30EuAOLwKvKe37qxDZ6EDKR8Yrf/8mHepDGCoPu7cXdYYV3/Co+1rQxyGWkgxtCRPxCpVNo4J2hYWo7+svdcFrlWKqTSwC5e9ubmi6GnY6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=minNelY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35834C4CEF1;
-	Tue, 12 Aug 2025 17:45:22 +0000 (UTC)
+	 MIME-Version; b=YRDC+6YRshI91IM4umc6IA831v6i2e2vVwitcdYAvuhchTMcoUQ5TtrgRJNbb/XvuDeUNYSZZDjufAcf2ohmNVEpUTIq3SGPvL4HUFhUaM0MTLQbLagPzDw7AV8V+XvhvSogdQANXgFdKpSR3wbqjQ1uace8yPdJR28N/wPB1vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIW31vWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3473BC4CEF1;
+	Tue, 12 Aug 2025 18:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020722;
-	bh=8Wc6suO/uQ/CVTjpYCt/tgzUyhJqAWynmU1YgcGOJO8=;
+	s=korg; t=1755021677;
+	bh=HAIjS9mACo0ISIlDIZDU3qcL8uLo5zSwF3ikrmZLl6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=minNelY5UkloDM22dX8zjsAp5BPijqMyzfHggMyjp5Opue6lDfUYYFxGL16Fu7JGw
-	 1nIpVS/fGulBt+mD5wIv5iKqexg2SSQR0R+RQj2tLLyyuK+fW59DdRdDgpQoHVd9xE
-	 v2zeHWRo5QbzABFhXvAsvP9fXXvyREmulTrAl9tI=
+	b=AIW31vWYukehS6LVNoZpdJqhENXhKQbMiZKLR7i4BbXID9ou7XilbaBFAlJJlBPax
+	 fBoq2CQivqOZSwxLyvGbK0+sPhICuZLITpIU0Wm/7WTWUhUASgr0DSM6e4dDbU9Rrk
+	 UksIlRBn6fbznwwpzYgeunefTlMAQGDXNP3s51Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"Kirill A. Shuemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Christie <michael.christie@oracle.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/253] proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al
-Date: Tue, 12 Aug 2025 19:29:06 +0200
-Message-ID: <20250812172955.442719222@linuxfoundation.org>
+Subject: [PATCH 6.6 159/262] vhost-scsi: Fix log flooding with target does not exist errors
+Date: Tue, 12 Aug 2025 19:29:07 +0200
+Message-ID: <20250812172959.874078442@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit ff7ec8dc1b646296f8d94c39339e8d3833d16c05 ]
+[ Upstream commit 69cd720a8a5e9ef0f05ce5dd8c9ea6e018245c82 ]
 
-Check pde->proc_ops->proc_lseek directly may cause UAF in rmmod scenario.
-It's a gap in proc_reg_open() after commit 654b33ada4ab("proc: fix UAF in
-proc_get_inode()").  Followed by AI Viro's suggestion, fix it in same
-manner.
+As part of the normal initiator side scanning the guest's scsi layer
+will loop over all possible targets and send an inquiry. Since the
+max number of targets for virtio-scsi is 256, this can result in 255
+error messages about targets not existing if you only have a single
+target. When there's more than 1 vhost-scsi device each with a single
+target, then you get N * 255 log messages.
 
-Link: https://lkml.kernel.org/r/20250607021353.1127963-1-wangzijie1@honor.com
-Fixes: 3f61631d47f1 ("take care to handle NULL ->proc_lseek()")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reviewed-by: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+It looks like the log message was added by accident in:
+
+commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from
+control queue handler")
+
+when we added common helpers. Then in:
+
+commit 09d7583294aa ("vhost/scsi: Use common handling code in request
+queue handler")
+
+we converted the scsi command processing path to use the new
+helpers so we started to see the extra log messages during scanning.
+
+The patches were just making some code common but added the vq_err
+call and I'm guessing the patch author forgot to enable the vq_err
+call (vq_err is implemented by pr_debug which defaults to off). So
+this patch removes the call since it's expected to hit this path
+during device discovery.
+
+Fixes: 09d7583294aa ("vhost/scsi: Use common handling code in request queue handler")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20250611210113.10912-1-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/generic.c       | 2 ++
- fs/proc/inode.c         | 2 +-
- fs/proc/internal.h      | 5 +++++
- include/linux/proc_fs.h | 1 +
- 4 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/vhost/scsi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index b721bb88b4a6..c3a809e1d719 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -568,6 +568,8 @@ static void pde_set_flags(struct proc_dir_entry *pde)
- 	if (pde->proc_ops->proc_compat_ioctl)
- 		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
- #endif
-+	if (pde->proc_ops->proc_lseek)
-+		pde->flags |= PROC_ENTRY_proc_lseek;
- }
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 662351511157..90a3c0fc5ab0 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -1032,10 +1032,8 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
+ 			/* validated at handler entry */
+ 			vs_tpg = vhost_vq_get_backend(vq);
+ 			tpg = READ_ONCE(vs_tpg[*vc->target]);
+-			if (unlikely(!tpg)) {
+-				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
++			if (unlikely(!tpg))
+ 				goto out;
+-			}
+ 		}
  
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index bc4011901c90..623aa0d97a6d 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -494,7 +494,7 @@ static int proc_reg_open(struct inode *inode, struct file *file)
- 	typeof_member(struct proc_ops, proc_release) release;
- 	struct pde_opener *pdeo;
- 
--	if (!pde->proc_ops->proc_lseek)
-+	if (!pde_has_proc_lseek(pde))
- 		file->f_mode &= ~FMODE_LSEEK;
- 
- 	if (pde_is_permanent(pde)) {
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index d115d22c01d4..019137261a03 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -98,6 +98,11 @@ static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
- #endif
- }
- 
-+static inline bool pde_has_proc_lseek(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_lseek;
-+}
-+
- extern struct kmem_cache *proc_dir_entry_cache;
- void pde_free(struct proc_dir_entry *pde);
- 
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index 39532c19aa28..ca9cd8a2569e 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -27,6 +27,7 @@ enum {
- 
- 	PROC_ENTRY_proc_read_iter	= 1U << 1,
- 	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
-+	PROC_ENTRY_proc_lseek		= 1U << 3,
- };
- 
- struct proc_ops {
+ 		if (tpgp)
 -- 
 2.39.5
 
