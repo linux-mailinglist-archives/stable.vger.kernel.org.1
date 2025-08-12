@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCA7B2329B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDE6B230B4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E60581FD7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40375686E0C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2682FE594;
-	Tue, 12 Aug 2025 18:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76E82FAC02;
+	Tue, 12 Aug 2025 17:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmo35d6v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zK3DQU1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1C11E500C;
-	Tue, 12 Aug 2025 18:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76706221FAC;
+	Tue, 12 Aug 2025 17:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022503; cv=none; b=ctIQvobRraokctx1bHTvRfcEnaj1CtPJwDj61wwdhxcNxwVRPPpBq5/Qtr2wKYIKhtuRR0PNzATTpsSoIPGGy8S/GtYj3gvAHSIlvHC6UAlXI8b1gH/9JyvR//FZLyN8kZIHDKOFCi53KaoxOjE/oU/y4MDz/LyJXSLDcDSgf/M=
+	t=1755021237; cv=none; b=TL6t4IPL4ynS3wLU6PQG4lqIA0tT9UiPZizAH4fM0v2CQYvus8uC2eqwUu1r3Sr3DypCT5gvB7MuQpRQgZzuVtOEaA6mT0n10ArK/JKhKyl0kMEwqEm82TAUM23sjFoeDUOMTYunIkg+7cKQOJgb7Oi5RkGC8n/EZWfdPOmfCaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022503; c=relaxed/simple;
-	bh=EuscYDpH5L1BC/jEzhFJMHStBTUktJL2zW8iQMvGYHc=;
+	s=arc-20240116; t=1755021237; c=relaxed/simple;
+	bh=e7pOyeJ+qA8zKyrIKSt5EhbyAWanMQx27K94LKwf6z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qfTSt9vi4RY+O76GCMVD7C3PryQNPHRmXJwgFzB/ilMDzW7pD2GHwXSUseuFmX7G4LwSHDDHT2IZe5DW5UBxu1oEYVkrKADgE46dMcTimpcA+8oOfd81+9Ci6T3j01pDKwU+BfGMFOAYQbdTth/s/zTCza+Du2zIsnZqkBvxRRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmo35d6v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1C6C4CEF0;
-	Tue, 12 Aug 2025 18:15:02 +0000 (UTC)
+	 MIME-Version; b=Ef/iVZ0QpfGVWLzKmjlBmrcqLe/NNoxVmPTjxjzCFNNrPvRl0UXUOQqtWvtLlGeMjWa6PMo16spFtL+IyphDMmGFpsCMd6DOGJifcYQ+QayfHAemVzUqRnKikO/NWOhg9elRU9sE8+V9N9WH2ac6HFbO2Qd8kykGtCH7fVN41Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zK3DQU1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C0EC4CEF0;
+	Tue, 12 Aug 2025 17:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022503;
-	bh=EuscYDpH5L1BC/jEzhFJMHStBTUktJL2zW8iQMvGYHc=;
+	s=korg; t=1755021237;
+	bh=e7pOyeJ+qA8zKyrIKSt5EhbyAWanMQx27K94LKwf6z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmo35d6vbDGTkrXkboxH0vChEmfDIj633WpTkEAWU6L1sC6xLRZWdwnRCZ3Ylyjbz
-	 MMqyDmALrpTHc/+JMV2l3z1hV/yyZxfHB7Kgftep85wCAcf9E2KRRDuLypxcWKpMXU
-	 xtL6KZJVY+KioR6HqUBRxuA9XmGrqxFshIRIPUhM=
+	b=zK3DQU1CpfJSWcA3gMN/TD9wTLA1/X56jATWc/OrthRZ5gPydVPJlPSfddCCVAxGS
+	 9bE5GkpTJPXyrsaQm4OtfDBaeVxaHpOR9rrj0EAka5JRJI9CQqxsZ4rGfaUqOtIl/j
+	 OplZ+AJjwmWlUmqUO0NnQKIiHscTjBjMMklnPlTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/369] clk: clk-axi-clkgen: fix fpfd_max frequency for zynq
+Subject: [PATCH 6.6 082/262] wifi: mac80211: reject TDLS operations when station is not associated
 Date: Tue, 12 Aug 2025 19:27:50 +0200
-Message-ID: <20250812173021.271655871@linuxfoundation.org>
+Message-ID: <20250812172956.536254838@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit ce8a9096699500e2c5bca09dde27b16edda5f636 ]
+[ Upstream commit 16ecdab5446f15a61ec88eb0d23d25d009821db0 ]
 
-The fpfd_max frequency should be set to 450 MHz instead of 300 MHz.
-Well, it actually depends on the platform speed grade but we are being
-conservative for ultrascale so let's be consistent. In a following
-change we will set these limits at runtime.
+syzbot triggered a WARN in ieee80211_tdls_oper() by sending
+NL80211_TDLS_ENABLE_LINK immediately after NL80211_CMD_CONNECT,
+before association completed and without prior TDLS setup.
 
-Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20250519-dev-axi-clkgen-limits-v6-1-bc4b3b61d1d4@analog.com
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+This left internal state like sdata->u.mgd.tdls_peer uninitialized,
+leading to a WARN_ON() in code paths that assumed it was valid.
+
+Reject the operation early if not in station mode or not associated.
+
+Reported-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f73f203f8c9b19037380
+Fixes: 81dd2b882241 ("mac80211: move TDLS data to mgd private part")
+Tested-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Link: https://patch.msgid.link/20250715230904.661092-2-moonhee.lee.ca@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-axi-clkgen.c | 2 +-
+ net/mac80211/tdls.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index 934e53a96ddd..00bf799964c6 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -118,7 +118,7 @@ static const struct axi_clkgen_limits axi_clkgen_zynqmp_default_limits = {
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index a4af3b7675ef..f3cdbd2133f6 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1450,7 +1450,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS))
+ 		return -ENOTSUPP;
  
- static const struct axi_clkgen_limits axi_clkgen_zynq_default_limits = {
- 	.fpfd_min = 10000,
--	.fpfd_max = 300000,
-+	.fpfd_max = 450000,
- 	.fvco_min = 600000,
- 	.fvco_max = 1200000,
- };
+-	if (sdata->vif.type != NL80211_IFTYPE_STATION)
++	if (sdata->vif.type != NL80211_IFTYPE_STATION || !sdata->vif.cfg.assoc)
+ 		return -EINVAL;
+ 
+ 	switch (oper) {
 -- 
 2.39.5
 
