@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD4BB231F5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1583B233B6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE3F582293
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5CD63B5FA9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8EC2FDC49;
-	Tue, 12 Aug 2025 18:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7752ECE93;
+	Tue, 12 Aug 2025 18:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEo/jvKP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfQpmiVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC691C8621;
-	Tue, 12 Aug 2025 18:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC396BB5B;
+	Tue, 12 Aug 2025 18:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021966; cv=none; b=d9ULKBgZTiwfloiH8/izuCFATQk/VXwPcoh6jOHp2++fsVGzH5CHUznX2r/fXb5VRs2MSyhU1CG6U9i0GZXahmPlOZ9gWLHZclraIP3JDnx1TDTUdJBNJ/kLV2Khja1PsM7emIxH4Hw1QktOxM1kARPIvTQC0OvGp7JNQr+keow=
+	t=1755023225; cv=none; b=J0B8eDQG9TbrV+JJojO6mYPVpkK99u4TpdfETAao6zghrVI+hbJx+YCZ296Ajghrlpf9uI8lFflsitf9d+Y2w9SX/wmYSbMQUp+afDgAGYrkHX3l1FANgKYUb9TM25UJQCqXEnkp4ZRQ9fznUDM5hzXVi/suIOIln6z1eiIwGzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021966; c=relaxed/simple;
-	bh=M6J4Wh061FG8cxDmksfkNaiEHI7jKNAOqaomwVgPd+4=;
+	s=arc-20240116; t=1755023225; c=relaxed/simple;
+	bh=OTHj/cagT+7C2JhYR3zuxGZ8B/kBVaEVIUEBukv5BcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rB1Q33ivT4FGkd9lhKwamrWGeY5Wzz6+GgywVk1nemVh1KcqMOIbzBAi9RhyGttQpWGFS7c8gz31RlMJzT+r8YUQmQCPXsuwvSY0RgmF5+SsPybUL14zok28OxTFIHU1P5L7npKS0miKZgZU8GfO8f5OxqAufj5DQJfjzSUTQFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEo/jvKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F069FC4CEF0;
-	Tue, 12 Aug 2025 18:06:05 +0000 (UTC)
+	 MIME-Version; b=TM1NS+tjbDre+NAHGj5c7HoCwrZfayE8qnCaCK3IxuOwe5+fDk28DdhhrK7kFmKptCxd/KvXMCsxDwJ1AaIUBr/LMrfmYC+Kfo5g8iiacYAL2tDQyiaVdfTjgBvsokOCxI+XlzeOrNY5d+/U6+KasllP/durGJWk/aoV7AOIzVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfQpmiVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C699C4CEF0;
+	Tue, 12 Aug 2025 18:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021966;
-	bh=M6J4Wh061FG8cxDmksfkNaiEHI7jKNAOqaomwVgPd+4=;
+	s=korg; t=1755023225;
+	bh=OTHj/cagT+7C2JhYR3zuxGZ8B/kBVaEVIUEBukv5BcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eEo/jvKPXg50my82wzfU2fua+qXpUEibU5XDSASmZadwTfGJhD1HtqazfbNAslHxY
-	 O9q33PuBjoOWtMYF9/UqxHor2gXPl5runy/IJqFYbGSDgwlq96zCnFUWosZKDknVXt
-	 EyVsfrH/9xPMQvZZtBjt1tgQAqd3Sqq8dwxezFPI=
+	b=JfQpmiVZ++CtBMOCgREDur44Z/HhZ2YlgxhBiZ56owKmiWB+tbGpsV5GUWjSNWd5L
+	 C+Hk/NDye8WQ8JLGROwwpCzAun23FkMttTpCMGtK7QoGLtNnEJf+oym7G57hrpfBHx
+	 Jp+BI6iIgPt56VMFl6KHF9R3LQ4HybFfefozDVNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunjie Zhu <chunjie.zhu@cloud.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/369] gfs2: No more self recovery
+Subject: [PATCH 6.16 018/627] ublk: speed up ublk server exit handling
 Date: Tue, 12 Aug 2025 19:25:13 +0200
-Message-ID: <20250812173015.350966370@linuxfoundation.org>
+Message-ID: <20250812173420.013407083@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit deb016c1669002e48c431d6fd32ea1c20ef41756 ]
+[ Upstream commit 2fa9c93035e17380cafa897ee1a4d503881a3770 ]
 
-When a node withdraws and it turns out that it is the only node that has
-the filesystem mounted, gfs2 currently tries to replay the local journal
-to bring the filesystem back into a consistent state.  Not only is that
-a very bad idea, it has also never worked because gfs2_recover_func()
-will refuse to do anything during a withdraw.
+Recently, we've observed a few cases where a ublk server is able to
+complete restart more quickly than the driver can process the exit of
+the previous ublk server. The new ublk server comes up, attempts
+recovery of the preexisting ublk devices, and observes them still in
+state UBLK_S_DEV_LIVE. While this is possible due to the asynchronous
+nature of io_uring cleanup and should therefore be handled properly in
+the ublk server, it is still preferable to make ublk server exit
+handling faster if possible, as we should strive for it to not be a
+limiting factor in how fast a ublk server can restart and provide
+service again.
 
-However, before even getting to this point, gfs2_recover_func()
-dereferences sdp->sd_jdesc->jd_inode.  This was a use-after-free before
-commit 04133b607a78 ("gfs2: Prevent double iput for journal on error")
-and is a NULL pointer dereference since then.
+Analysis of the issue showed that the vast majority of the time spent in
+handling the ublk server exit was in calls to blk_mq_quiesce_queue,
+which is essentially just a (relatively expensive) call to
+synchronize_rcu. The ublk server exit path currently issues an
+unnecessarily large number of calls to blk_mq_quiesce_queue, for two
+reasons:
 
-Simply get rid of self recovery to fix that.
+1. It tries to call blk_mq_quiesce_queue once per ublk_queue. However,
+   blk_mq_quiesce_queue targets the request_queue of the underlying ublk
+   device, of which there is only one. So the number of calls is larger
+   than necessary by a factor of nr_hw_queues.
+2. In practice, it calls blk_mq_quiesce_queue _more_ than once per
+   ublk_queue. This is because of a data race where we read
+   ubq->canceling without any locking when deciding if we should call
+   ublk_start_cancel. It is thus possible for two calls to
+   ublk_uring_cmd_cancel_fn against the same ublk_queue to both call
+   ublk_start_cancel against the same ublk_queue.
 
-Fixes: 601ef0d52e96 ("gfs2: Force withdraw to replay journals and wait for it to finish")
-Reported-by: Chunjie Zhu <chunjie.zhu@cloud.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fix this by making the "canceling" flag a per-device state. This
+actually matches the existing code better, as there are several places
+where the flag is set or cleared for all queues simultaneously, and
+there is the general expectation that cancellation corresponds with ublk
+server exit. This per-device canceling flag is then checked under a
+(new) lock (addressing the data race (2) above), and the queue is only
+quiesced if it is cleared (addressing (1) above). The result is just one
+call to blk_mq_quiesce_queue per ublk device.
+
+To minimize the number of cache lines that are accessed in the hot path,
+the per-queue canceling flag is kept. The values of the per-device
+canceling flag and all per-queue canceling flags should always match.
+
+In our setup, where one ublk server handles I/O for 128 ublk devices,
+each having 24 hardware queues of depth 4096, here are the results
+before and after this patch, where teardown time is measured from the
+first call to io_ring_ctx_wait_and_kill to the return from the last
+ublk_ch_release:
+
+						before		after
+number of calls to blk_mq_quiesce_queue:	6469		256
+teardown time:					11.14s		2.44s
+
+There are still some potential optimizations here, but this takes care
+of a big chunk of the ublk server exit handling delay.
+
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250703-ublk_too_many_quiesce-v2-1-3527b5339eeb@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c2c8089f325e ("ublk: validate ublk server pid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/util.c | 31 +++++++++++--------------------
- 1 file changed, 11 insertions(+), 20 deletions(-)
+ drivers/block/ublk_drv.c | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
-index 13be8d1d228b..ee198a261d4f 100644
---- a/fs/gfs2/util.c
-+++ b/fs/gfs2/util.c
-@@ -232,32 +232,23 @@ static void signal_our_withdraw(struct gfs2_sbd *sdp)
- 	 */
- 	ret = gfs2_glock_nq(&sdp->sd_live_gh);
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 8ded49f3b68b..2492c11defcc 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -216,6 +216,8 @@ struct ublk_device {
+ 	struct completion	completion;
+ 	unsigned int		nr_queues_ready;
+ 	unsigned int		nr_privileged_daemon;
++	struct mutex cancel_mutex;
++	bool canceling;
+ };
  
-+	gfs2_glock_put(live_gl); /* drop extra reference we acquired */
-+	clear_bit(SDF_WITHDRAW_RECOVERY, &sdp->sd_flags);
-+
- 	/*
- 	 * If we actually got the "live" lock in EX mode, there are no other
--	 * nodes available to replay our journal. So we try to replay it
--	 * ourselves. We hold the "live" glock to prevent other mounters
--	 * during recovery, then just dequeue it and reacquire it in our
--	 * normal SH mode. Just in case the problem that caused us to
--	 * withdraw prevents us from recovering our journal (e.g. io errors
--	 * and such) we still check if the journal is clean before proceeding
--	 * but we may wait forever until another mounter does the recovery.
-+	 * nodes available to replay our journal.
+ /* header of ublk_params */
+@@ -1578,6 +1580,7 @@ static int ublk_ch_release(struct inode *inode, struct file *filp)
+ 	 * All requests may be inflight, so ->canceling may not be set, set
+ 	 * it now.
  	 */
- 	if (ret == 0) {
--		fs_warn(sdp, "No other mounters found. Trying to recover our "
--			"own journal jid %d.\n", sdp->sd_lockstruct.ls_jid);
--		if (gfs2_recover_journal(sdp->sd_jdesc, 1))
--			fs_warn(sdp, "Unable to recover our journal jid %d.\n",
--				sdp->sd_lockstruct.ls_jid);
--		gfs2_glock_dq_wait(&sdp->sd_live_gh);
--		gfs2_holder_reinit(LM_ST_SHARED,
--				   LM_FLAG_NOEXP | GL_EXACT | GL_NOPID,
--				   &sdp->sd_live_gh);
--		gfs2_glock_nq(&sdp->sd_live_gh);
-+		fs_warn(sdp, "No other mounters found.\n");
-+		/*
-+		 * We are about to release the lockspace.  By keeping live_gl
-+		 * locked here, we ensure that the next mounter coming along
-+		 * will be a "first" mounter which will perform recovery.
-+		 */
-+		goto skip_recovery;
++	ub->canceling = true;
+ 	for (i = 0; i < ub->dev_info.nr_hw_queues; i++) {
+ 		struct ublk_queue *ubq = ublk_get_queue(ub, i);
+ 
+@@ -1706,23 +1709,18 @@ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq)
  	}
+ }
  
--	gfs2_glock_put(live_gl); /* drop extra reference we acquired */
--	clear_bit(SDF_WITHDRAW_RECOVERY, &sdp->sd_flags);
+-/* Must be called when queue is frozen */
+-static void ublk_mark_queue_canceling(struct ublk_queue *ubq)
+-{
+-	spin_lock(&ubq->cancel_lock);
+-	if (!ubq->canceling)
+-		ubq->canceling = true;
+-	spin_unlock(&ubq->cancel_lock);
+-}
 -
+-static void ublk_start_cancel(struct ublk_queue *ubq)
++static void ublk_start_cancel(struct ublk_device *ub)
+ {
+-	struct ublk_device *ub = ubq->dev;
+ 	struct gendisk *disk = ublk_get_disk(ub);
++	int i;
+ 
+ 	/* Our disk has been dead */
+ 	if (!disk)
+ 		return;
++
++	mutex_lock(&ub->cancel_mutex);
++	if (ub->canceling)
++		goto out;
  	/*
- 	 * At this point our journal is evicted, so we need to get a new inode
- 	 * for it. Once done, we need to call gfs2_find_jhead which
+ 	 * Now we are serialized with ublk_queue_rq()
+ 	 *
+@@ -1731,8 +1729,12 @@ static void ublk_start_cancel(struct ublk_queue *ubq)
+ 	 * touch completed uring_cmd
+ 	 */
+ 	blk_mq_quiesce_queue(disk->queue);
+-	ublk_mark_queue_canceling(ubq);
++	ub->canceling = true;
++	for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
++		ublk_get_queue(ub, i)->canceling = true;
+ 	blk_mq_unquiesce_queue(disk->queue);
++out:
++	mutex_unlock(&ub->cancel_mutex);
+ 	ublk_put_disk(disk);
+ }
+ 
+@@ -1805,8 +1807,7 @@ static void ublk_uring_cmd_cancel_fn(struct io_uring_cmd *cmd,
+ 	if (WARN_ON_ONCE(task && task != io->task))
+ 		return;
+ 
+-	if (!ubq->canceling)
+-		ublk_start_cancel(ubq);
++	ublk_start_cancel(ubq->dev);
+ 
+ 	WARN_ON_ONCE(io->cmd != cmd);
+ 	ublk_cancel_cmd(ubq, pdu->tag, issue_flags);
+@@ -1933,6 +1934,7 @@ static void ublk_reset_io_flags(struct ublk_device *ub)
+ 		ubq->canceling = false;
+ 		ubq->fail_io = false;
+ 	}
++	ub->canceling = false;
+ }
+ 
+ /* device can only be started after all IOs are ready */
+@@ -2580,6 +2582,7 @@ static void ublk_cdev_rel(struct device *dev)
+ 	ublk_deinit_queues(ub);
+ 	ublk_free_dev_number(ub);
+ 	mutex_destroy(&ub->mutex);
++	mutex_destroy(&ub->cancel_mutex);
+ 	kfree(ub);
+ }
+ 
+@@ -2933,6 +2936,7 @@ static int ublk_ctrl_add_dev(const struct ublksrv_ctrl_cmd *header)
+ 		goto out_unlock;
+ 	mutex_init(&ub->mutex);
+ 	spin_lock_init(&ub->lock);
++	mutex_init(&ub->cancel_mutex);
+ 
+ 	ret = ublk_alloc_dev_number(ub, header->dev_id);
+ 	if (ret < 0)
+@@ -3003,6 +3007,7 @@ static int ublk_ctrl_add_dev(const struct ublksrv_ctrl_cmd *header)
+ 	ublk_free_dev_number(ub);
+ out_free_ub:
+ 	mutex_destroy(&ub->mutex);
++	mutex_destroy(&ub->cancel_mutex);
+ 	kfree(ub);
+ out_unlock:
+ 	mutex_unlock(&ublk_ctl_mutex);
+@@ -3357,8 +3362,9 @@ static int ublk_ctrl_quiesce_dev(struct ublk_device *ub,
+ 	if (ub->dev_info.state != UBLK_S_DEV_LIVE)
+ 		goto put_disk;
+ 
+-	/* Mark all queues as canceling */
++	/* Mark the device as canceling */
+ 	blk_mq_quiesce_queue(disk->queue);
++	ub->canceling = true;
+ 	for (i = 0; i < ub->dev_info.nr_hw_queues; i++) {
+ 		struct ublk_queue *ubq = ublk_get_queue(ub, i);
+ 
 -- 
 2.39.5
 
