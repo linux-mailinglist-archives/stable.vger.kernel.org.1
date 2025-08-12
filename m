@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C695BB23267
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E77B23008
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D66AE1A2509C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CAC044E3017
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCEA2FD1A6;
-	Tue, 12 Aug 2025 18:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171F52DE1E2;
+	Tue, 12 Aug 2025 17:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/ZZc9/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWYGaTJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F582FABF4;
-	Tue, 12 Aug 2025 18:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C803E221FAC;
+	Tue, 12 Aug 2025 17:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022295; cv=none; b=eRFLBcZ2itnW/XRjNmTKJtB6zD4B/mBagB/n7JzbPAlmI04BNRAFKSLPK9IyeuRgMonyrL7JHj5/X+GXuomvsi+eTgs5QhDRjq6nxbN4aJcSJyMaEp02t3/pkMnFMen+ccj+2MdSSe9M2YhwxTTQ6pWAepjp3OLOyKkTVXJu/GI=
+	t=1755020842; cv=none; b=Iqc/lF24tQ1awYH249o5W7Mj3hVPeH80g/AvCzU5HEfvEnMTzmnNNnca/zdgesAZxkdziN5uUk08nAd4AsZIvmt4T3avwQwtLIEW8wLk7bWgy+wD4dtFVTtJ2NtZxxJOsdGH065UioTUbdRyRUMxvg9mS3Lu+BUoxq1XMMtEG9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022295; c=relaxed/simple;
-	bh=Ds2xPNJq/B4TILZYadCg6cPeLaDHVpPpWmz0Oy6w+bU=;
+	s=arc-20240116; t=1755020842; c=relaxed/simple;
+	bh=qZBqCsmbbPm4MHKoG9OEBLAWUAnx96o90fY0kGltm/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d7PABKhyGunl/2kgzKLX7Xw/JMIqeX60pQTddinP4a3pXJfskk27a64hUTaScx3mb1IE8uH6znnD1pXhCRLhwU13WU7J2Jqlg4RGaxjQpKN2c+9QcKUOJuxaMH2Mk8Uaj3ccqZ/FZBulaMCZRodzLoKpqUYLQi9XutOzGGqfu+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/ZZc9/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18ADFC4CEF7;
-	Tue, 12 Aug 2025 18:11:34 +0000 (UTC)
+	 MIME-Version; b=gQI76lanuYgXheokeSKNxMxs21TOqrdt+MpVmy5Q8szbqKFyhnYLzC3qXZ0wKPozwEoJCx0eM88KN3gXhnZGGfiJuq/3TAIm8CJin2Jo0JrlMu/YYQLNSVofmf9dSiTNWsUvg5jwqoOqgSwi0DBHlTl1xpq4Ag5PEZpAe9NC7cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWYGaTJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37311C4CEF0;
+	Tue, 12 Aug 2025 17:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022295;
-	bh=Ds2xPNJq/B4TILZYadCg6cPeLaDHVpPpWmz0Oy6w+bU=;
+	s=korg; t=1755020842;
+	bh=qZBqCsmbbPm4MHKoG9OEBLAWUAnx96o90fY0kGltm/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/ZZc9/IF+gCQO+PWzkFrDNBXsQLraLOPBfU+UqbNF+vFqYlFRa9cRLHg2dwbLT90
-	 aPZ+nVlTE5DlNwfV/863yKnFy3JRLO4P3hm+MGMWINIV8oAlbMECbHQsYjq+kLnfz9
-	 d5Olm3xraoTF2U75furLQjcZNocoxgjpebNneY2U=
+	b=CWYGaTJgSUwFGiroFVgqLhRzg+ieIUOA18gUneSxGynOWkPP4bycNh3TMvN3UYjFr
+	 Mtjv3cgNLRR18nd3+ydMNGL3gjFQOoKRAlhcmJNJoVILx2AmQrEP5ZEgC8VBx9ca0l
+	 0OdOKLUMek2vIQAHIj4V7daMbXr4CZh3R5/OCixE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jiadong Zhu <Jiadong.Zhu@amd.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 114/369] drm/amdgpu/gfx9.4.3: fix kiq locking in KCQ reset
+Subject: [PATCH 6.6 023/262] ARM: dts: vfxxx: Correctly use two tuples for timer address
 Date: Tue, 12 Aug 2025 19:26:51 +0200
-Message-ID: <20250812173019.059985508@linuxfoundation.org>
+Message-ID: <20250812172953.956070603@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 08f116c59310728ea8b7e9dc3086569006c861cf ]
+[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
 
-The ring test needs to be inside the lock.
+Address and size-cells are 1 and the ftm timer node takes two address
+spaces in "reg" property, so this should be in two <> tuples.  Change
+has no functional impact, but original code is confusing/less readable.
 
-Fixes: 4c953e53cc34 ("drm/amdgpu/gfx_9.4.3: wait for reset done before remap")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Jiadong Zhu <Jiadong.Zhu@amd.com>
+Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/vf/vfxxx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-index 5dc3454d7d36..f27ccb8f3c8c 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-@@ -3640,9 +3640,8 @@ static int gfx_v9_4_3_reset_kcq(struct amdgpu_ring *ring,
- 	}
- 	kiq->pmf->kiq_map_queues(kiq_ring, ring);
- 	amdgpu_ring_commit(kiq_ring);
--	spin_unlock_irqrestore(&kiq->ring_lock, flags);
--
- 	r = amdgpu_ring_test_ring(kiq_ring);
-+	spin_unlock_irqrestore(&kiq->ring_lock, flags);
- 	if (r) {
- 		dev_err(adev->dev, "fail to remap queue\n");
- 		return r;
+diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+index d1095b700c56..d96148abf5bb 100644
+--- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
++++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+@@ -612,7 +612,7 @@ usbmisc1: usb@400b4800 {
+ 
+ 			ftm: ftm@400b8000 {
+ 				compatible = "fsl,ftm-timer";
+-				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
++				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
+ 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clock-names = "ftm-evt", "ftm-src",
+ 					"ftm-evt-counter-en", "ftm-src-counter-en";
 -- 
 2.39.5
 
