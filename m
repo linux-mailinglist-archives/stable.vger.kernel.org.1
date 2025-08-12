@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD6CB232DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A23B23480
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C095A5848F9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9F01A23764
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD8B2FDC35;
-	Tue, 12 Aug 2025 18:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82052F659A;
+	Tue, 12 Aug 2025 18:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyTfdVxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I93IOBdm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB02C2FE57A;
-	Tue, 12 Aug 2025 18:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959251DB92A;
+	Tue, 12 Aug 2025 18:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022648; cv=none; b=hJLaXMWo0Y0QdFN3fDASAJRIQYTWTY/lwtFEWPwcGt/7DSrY3lyPMmVCwi3Xj+PgfdMfJ6BvEJRUU+dAwJOwnIiTz3hb/R8goJGaeHL4q/H68Kr7l5Zg4OyrnAFFePb2Ngu+OS3w7zLVQbHFv92hQo1rIpdMyqEZCmmOyzto2A4=
+	t=1755023771; cv=none; b=s+XiLD2qRkSE7skqHS6g4EKgPyfa+cIycSfUYzDYOXbgYuKQuCnCVi42eifvcxeaYMuBK97HAmHR/sO97iFxZF8po/hiy6JSshG/ogcB3DXh8nA3cT6AXwHHUGPt1J4NVW/T6wMYpkZrTjOksDw0dMyRNy/o+7GBMzDsLnqLYpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022648; c=relaxed/simple;
-	bh=a2Yugctz6Y4mcqn3Wg0ro3xG4R6AO6JyDqlvkyikF7o=;
+	s=arc-20240116; t=1755023771; c=relaxed/simple;
+	bh=W/56mvw92a747GixckqX5N6NYoXWg7iRLFA6w4ijVIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyYSM5jbOjKRo1rO8FDtpxiwRNwAYSzHmDlHgCO2VLmWiFON+2X1cavsJlMEUblP80AGWDExGKUckjoEjdZUSfA9/+aNPfNfUAaKDOUuRxJZQUIpGb8Ftsg2YpprOs3zlYt/wpUuidjy0+NYqaLixwZBIVMtTOcyeAFvb6gO+0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyTfdVxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A231C4CEF6;
-	Tue, 12 Aug 2025 18:17:27 +0000 (UTC)
+	 MIME-Version; b=koeJ+VszsTvRB1H2Tu7dOK0neGkJvumE4LQ4ddURR9HzWBKvV3ZO0gUDaYd3APCSNnNLr8fWBjfxHMENqqkkxIVi1Ul9Fng6a2BD/c6OP617mxG9UXrJhBMk3R0rrvAVvQoGLscxo7bvNivF5uKZulys8b30cjwzpvs3sm8OmlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I93IOBdm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDC7C4CEF0;
+	Tue, 12 Aug 2025 18:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022647;
-	bh=a2Yugctz6Y4mcqn3Wg0ro3xG4R6AO6JyDqlvkyikF7o=;
+	s=korg; t=1755023771;
+	bh=W/56mvw92a747GixckqX5N6NYoXWg7iRLFA6w4ijVIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyTfdVxfbDyb4X0ikFgK84LC1NqkQUl4JtCrvAQWNo42dM2oUqnDoWrFe7fxGStva
-	 DK+w7+FVT9Mnnr5zgwzSxcywETLPT84xUVP0vo2lyhZOkFzC/GroL3m/lGCvTskml+
-	 RiXDxL/wFCIxTNNavzQ+UuXX6VHJvkojAnwO9K5A=
+	b=I93IOBdmQkJnut+JprB4nhDqM+kGJY324E/ANHziAsbuN7K1U5mI751EyvK4NVrFs
+	 CNWVF22KhcooOk24KDXCot8jENno1xJhzGO86GN3P5pz4ew96/8ag+IrqQEtch5R6L
+	 bUoSMLXzPd5ZSKg5Ebog3p2w27cqz5j/BYooKgzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 174/369] Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:27:51 +0200
-Message-ID: <20250812173021.314257709@linuxfoundation.org>
+Subject: [PATCH 6.16 177/627] wifi: iwlwifi: Fix error code in iwl_op_mode_dvm_start()
+Date: Tue, 12 Aug 2025 19:27:52 +0200
+Message-ID: <20250812173426.009260138@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1db50f7b7a793670adcf062df9ff27798829d963 ]
+[ Upstream commit cf80c02a9fdb6c5bc8508beb6a0f6a1294fc32f6 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Preserve the error code if iwl_setup_deferred_work() fails.  The current
+code returns ERR_PTR(0) (which is NULL) on this path.  I believe the
+missing error code potentially leads to a use after free involving
+debugfs.
 
-Fixes: ed10435d3583 ("RDMA/erdma: Implement hierarchical MTT")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20250630092346.81017-2-fourier.thomas@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 90a0d9f33996 ("iwlwifi: Add missing check for alloc_ordered_workqueue")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/a7a1cd2c-ce01-461a-9afd-dbe535f8df01@sabinyo.mountain
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/erdma/erdma_verbs.c | 3 ++-
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
-index 51d619edb6c5..e56ba86d460e 100644
---- a/drivers/infiniband/hw/erdma/erdma_verbs.c
-+++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
-@@ -597,7 +597,8 @@ static struct erdma_mtt *erdma_create_cont_mtt(struct erdma_dev *dev,
- static void erdma_destroy_mtt_buf_sg(struct erdma_dev *dev,
- 				     struct erdma_mtt *mtt)
- {
--	dma_unmap_sg(&dev->pdev->dev, mtt->sglist, mtt->nsg, DMA_TO_DEVICE);
-+	dma_unmap_sg(&dev->pdev->dev, mtt->sglist,
-+		     DIV_ROUND_UP(mtt->size, PAGE_SIZE), DMA_TO_DEVICE);
- 	vfree(mtt->sglist);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index e015b83bb6e9..2b4dbebc71c2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1467,7 +1467,8 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	/********************
+ 	 * 6. Setup services
+ 	 ********************/
+-	if (iwl_setup_deferred_work(priv))
++	err = iwl_setup_deferred_work(priv);
++	if (err)
+ 		goto out_uninit_drv;
  
+ 	iwl_setup_rx_handlers(priv);
 -- 
 2.39.5
 
