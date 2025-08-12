@@ -1,132 +1,98 @@
-Return-Path: <stable+bounces-167251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69893B22E61
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:57:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6E6B22EA2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 252817AB63A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:56:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A6B16083B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412052FABFC;
-	Tue, 12 Aug 2025 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEDD2F8BF8;
+	Tue, 12 Aug 2025 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUVKnMgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E95QSfBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B882857EC
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCFE23D7F6;
+	Tue, 12 Aug 2025 17:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755017847; cv=none; b=pyNl2mWBMRm7TOWgKE044ZZdeGMAc4jeAsdIvFyCL7eG8L72P5OONHeJvK2Kr/Fz+uBgFedEb0kjJo5I7QXtBB/8u0Z5Vxht0/wBPgxYXa84OcMPHr0xOHTHXrO2yiXcy2uHxqFHYy5FQoyu1gCFQ+iQBuyHqdYJSlLDcKVco/Q=
+	t=1755018659; cv=none; b=XcGDcqEYka1EgdiLYKqw+hNY0wscogEJRcDTucMj1NsEXSB1IyiJmnTc9YJ9TTcGJdDpqAAapKr7u+A7avMQg4YN1Qf00u413zlfbm0+oWJ5a2YecOX1/UThbxBMm+OXGgHk/3vfEkZ2oxG0ZHVDHFf6OxO0wunY4wBGNoCJIJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755017847; c=relaxed/simple;
-	bh=NVc72EI2DjaenABJgAFHLJHRObIKzErg5giGxv41qfU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y517bbyOBmZlFbhy71D5xO5XNpFN5uhhgVVJAgyHhto8ngmYNeNMEb/5/SZULrTsj0tRJTK4TXRiKfGRtnysc/Lh9GGsYQ2UIpQNqDK0xO/sDktEj2XckJ4rvuurTB9l5K73d80nxypobw6RYRF28Zo6RirdAkjfKDRFhB9WED8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUVKnMgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D502C4CEF1;
-	Tue, 12 Aug 2025 16:57:25 +0000 (UTC)
+	s=arc-20240116; t=1755018659; c=relaxed/simple;
+	bh=oeO3oswPSIxuGMauo6AcF42kFWIo1ZJwzMrkI3ytPDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r8tCaPoT0Vq2tPQpInWO2aapzMRfQCvm7fSxYTILF1EhWiQWso/CY7vqSZanSQq9CrbkFGiFTzvtJmSc5+oEHuruNzpa3a4HJ0jTc2cqkgoZC9kPtYvK0unbBBY2VGiSYsRLS78esOvBLlg4U7a4bgIznvEgp18O5okCg7JKza8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E95QSfBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15094C4CEF0;
+	Tue, 12 Aug 2025 17:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755017846;
-	bh=NVc72EI2DjaenABJgAFHLJHRObIKzErg5giGxv41qfU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=aUVKnMgilZEovzIQB8YanJvW9xBcxNfBHhv7Bs5il9Z8pq8cug2vixB77RblYSLkt
-	 DSCredAICOwk5/Y4xK3a1i0LfKyFnB28mNkutS1F1HR5yFHPzrffl+1PpZeQ7BUybP
-	 a0tfXGaM3eI38lKWsnMH6wNWsa/Y0mlyVls5LrNE=
-Subject: FAILED: patch "[PATCH] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is" failed to apply to 6.12-stable tree
-To: seanjc@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Aug 2025 18:57:10 +0200
-Message-ID: <2025081210-overhand-panhandle-a07f@gregkh>
+	s=korg; t=1755018657;
+	bh=oeO3oswPSIxuGMauo6AcF42kFWIo1ZJwzMrkI3ytPDE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E95QSfBvzwPBeou03b7N2PaZxmUFSsnbQpRpgSJXg19TdnDdkzo39NoE+pJeuEhlP
+	 TILOEdEscv62rBW2O13X0Opqk/BJ0gaAP/oc5qV8WOHpkslUSy81wixeM0pffj1TYi
+	 rUKCkdvX9ErRcC1NPFWjVZZrct2CYPhKsul3Mep4=
+Date: Tue, 12 Aug 2025 19:10:54 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: Ilya K <me@0upti.me>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ACPI: EC: Relax sanity check of the ECDT ID string
+Message-ID: <2025081227-humpback-garden-7a4b@gregkh>
+References: <20250729062038.303734-1-W_Armin@gmx.de>
+ <e911ca96-fe8f-4cc5-bf68-f20ec7da46be@0upti.me>
+ <CAJZ5v0g0vjP_ST2xnDnFAmDXKR9oPn5t0sfQqamDCNwUjJt-xg@mail.gmail.com>
+ <d8c3432f-dfb7-4263-a556-2d93f22e618e@0upti.me>
+ <2025081246-raft-tattle-642c@gregkh>
+ <4e610854-d84c-4a59-9f83-422eafb40d6e@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4e610854-d84c-4a59-9f83-422eafb40d6e@gmx.de>
 
+On Tue, Aug 12, 2025 at 06:54:39PM +0200, Armin Wolf wrote:
+> Am 12.08.25 um 18:40 schrieb Greg KH:
+> 
+> > On Tue, Aug 12, 2025 at 06:51:10PM +0300, Ilya K wrote:
+> > > On 2025-08-12 16:32, Rafael J. Wysocki wrote:
+> > > > Applied as 6.17-rc material and sorry for the delay (I was offline).
+> > > > 
+> > > > Thanks!
+> > > Thanks!
+> > > 
+> > > Tagging stable@ so we're hopefully in time for 6.16.1.
+> > <formletter>
+> > 
+> > This is not the correct way to submit patches for inclusion in the
+> > stable kernel tree.  Please read:
+> >      https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > for how to do this properly.
+> > 
+> > </formletter>
+> 
+> Agree.
+> 
+> AFAIK the Fixes: tag should be enough to ensure that this patch gets included
+> in the affected stable kernels.
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Not at all!
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 17ec2f965344ee3fd6620bef7ef68792f4ac3af0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081210-overhand-panhandle-a07f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Possible dependencies:
-
-
+Please read the above link for the full details on how to do this (hint,
+Fixes: will not do it.)
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Jun 2025 16:20:06 -0700
-Subject: [PATCH] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is
- supported
-
-Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
-guest CPUID model, as debug support is supposed to be available if RTM is
-supported, and there are no known downsides to letting the guest debug RTM
-aborts.
-
-Note, there are no known bug reports related to RTM_DEBUG, the primary
-motivation is to reduce the probability of breaking existing guests when a
-future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
-(KVM currently lets L2 run with whatever hardware supports; whoops).
-
-Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
-DR7.RTM.
-
-Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index b7dded3c8113..fa878b136eba 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -419,6 +419,7 @@
- #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
- #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
- #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
-+#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
- 
- #define MSR_PEBS_FRONTEND		0x000003f7
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 4ee6cc796855..311f6fa53b67 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2186,6 +2186,10 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
- 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
- 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
- 
-+	if (boot_cpu_has(X86_FEATURE_RTM) &&
-+	    (host_initiated || guest_cpu_cap_has(vcpu, X86_FEATURE_RTM)))
-+		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
-+
- 	return debugctl;
- }
- 
-
 
