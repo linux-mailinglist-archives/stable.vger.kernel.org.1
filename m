@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-169253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA579B238F7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:31:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61696B23906
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398AF1B6298B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:28:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C03D3BE725
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D0F2C21F7;
-	Tue, 12 Aug 2025 19:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1642D663D;
+	Tue, 12 Aug 2025 19:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuBCURsW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6dJdp3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89D41E47AD;
-	Tue, 12 Aug 2025 19:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB9E1E47AD;
+	Tue, 12 Aug 2025 19:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026895; cv=none; b=PanOLE04nANRxFM1uaTgZA1uCItflZ6QFDwkTIy6GvIiPjogmARL0NVk5Nvebt2bew1CDykl1neohN10v58ILDOJxeVzunXPUnorlPc6OS/uyuMERMc6oDjmYDbwgmG78xGPcH/VaVX1lim0VJLqepIIv8VGH2n8Pv5c7jnNBfM=
+	t=1755026947; cv=none; b=kXAgj8aoIXMcPY4CXmml/q3H3kOTYSQIz+ogrJN9sIVzTa8AwhfEmKOS5/DBsoqWDLjxOOUa72qj1i855shWQvm98C+OZyqMhWxi3vl6wQMGd+v1qeEVQZECBGT0RDtzBTXycUZxqkPBdlil1nBC3F8M0D5uGG7XOWg/YhXiSgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026895; c=relaxed/simple;
-	bh=TC+G2VMEyv1H1zgl1WLJgOIJXaIUPcQTa9lb8q9Bt+U=;
+	s=arc-20240116; t=1755026947; c=relaxed/simple;
+	bh=cJCC+pPSC/Bo/uZl57mS9lhnlfejCIok7Gp/O4683eE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OOuDvF1DN5Mit1Ws9PDHcc2S9GvWcBVcZb2nRe5i0P4BpMaqOd4/iBq1wTDOByU41ENyPIQ5r7384wM34zy7EfHLBd1xUt+rxYD4PAfX2N5BV+C+fZpmjeV8R0mPIJVx9xiM6wxFCkAhAHqmBqyKLOVjwYK+7w8SHmLxYNgg7gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuBCURsW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E357C4CEF0;
-	Tue, 12 Aug 2025 19:28:14 +0000 (UTC)
+	 MIME-Version; b=RJ8GjMs3eCaPdSRwzlsARp50/+pdQzoU1/vSXeCUfLvmn23AG/WGHEqmTi8/fG6Kpo9P6O4KqJyM7RdOhRiQprZP9NhVo4CnafDG2me43rwkwihto7+6jhoPECXvCAY0VDPiTVlwop/TSjRO04ZfruQqeMfx5Ln5XwbyU95q5zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6dJdp3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9818CC4CEF0;
+	Tue, 12 Aug 2025 19:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026895;
-	bh=TC+G2VMEyv1H1zgl1WLJgOIJXaIUPcQTa9lb8q9Bt+U=;
+	s=korg; t=1755026947;
+	bh=cJCC+pPSC/Bo/uZl57mS9lhnlfejCIok7Gp/O4683eE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuBCURsWYSyv/V/RBefwK7fj3I/vO/f4bsu4CYEZF00ST81SvcsVa5RXIy2Wps4fo
-	 iSX6yNwXw25Eida5S3rkx8NGul9xodCFy8QHO9PwYZUa/yXj8WA987UJoqxFNktlIM
-	 f0qxi1Y2y+gr8JTWFuxDL+UXApjuS+DKfeWegcXg=
+	b=p6dJdp3MNOQnDxoQy0ETQp4xEywTFSjGstBfcpOrF3QzZjePKSekMvDY8KNEcC/Oc
+	 NFw9mvMdCVolkeWeHi6qSgYYU0njy+cGOjopNRiasYymXdHVIJga0A/B6NDPz1Alz/
+	 W4K621CmvoCkRpmN0szH+kLPMWHiQPVy41UemxLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Patryk Kowalczyk <patryk@kowalczyk.ws>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 471/480] mm: shmem: fix the shmem large folio allocation for the i915 driver
-Date: Tue, 12 Aug 2025 19:51:19 +0200
-Message-ID: <20250812174416.807110270@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Akash Kumar <quic_akakum@quicinc.com>
+Subject: [PATCH 6.15 472/480] usb: gadget: uvc: Initialize frame-based format color matching descriptor
+Date: Tue, 12 Aug 2025 19:51:20 +0200
+Message-ID: <20250812174416.847102300@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -62,70 +59,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Akash Kumar <quic_akakum@quicinc.com>
 
-commit 8d58d65621118fdca3ed6a0b3d658ba7e0e5153c upstream.
+commit 323a80a1a5ace319a722909c006d5bdb2a35d273 upstream.
 
-After commit acd7ccb284b8 ("mm: shmem: add large folio support for
-tmpfs"), we extend the 'huge=' option to allow any sized large folios for
-tmpfs, which means tmpfs will allow getting a highest order hint based on
-the size of write() and fallocate() paths, and then will try each
-allowable large order.
+Fix NULL pointer crash in uvcg_framebased_make due to uninitialized color
+matching descriptor for frame-based format which was added in
+commit f5e7bdd34aca ("usb: gadget: uvc: Allow creating new color matching
+descriptors") that added handling for uncompressed and mjpeg format.
 
-However, when the i915 driver allocates shmem memory, it doesn't provide
-hint information about the size of the large folio to be allocated,
-resulting in the inability to allocate PMD-sized shmem, which in turn
-affects GPU performance.
+Crash is seen when userspace configuration (via configfs) does not
+explicitly define the color matching descriptor. If color_matching is not
+found, config_group_find_item() returns NULL. The code then jumps to
+out_put_cm, where it calls config_item_put(color_matching);. If
+color_matching is NULL, this will dereference a null pointer, leading to a
+crash.
 
-Patryk added:
+[    2.746440] Unable to handle kernel NULL pointer dereference at virtual address 000000000000008c
+[    2.756273] Mem abort info:
+[    2.760080]   ESR = 0x0000000096000005
+[    2.764872]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    2.771068]   SET = 0, FnV = 0
+[    2.771069]   EA = 0, S1PTW = 0
+[    2.771070]   FSC = 0x05: level 1 translation fault
+[    2.771071] Data abort info:
+[    2.771072]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[    2.771073]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[    2.771074]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[    2.771075] user pgtable: 4k pages, 39-bit VAs, pgdp=00000000a3e59000
+[    2.771077] [000000000000008c] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+[    2.771081] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+[    2.771084] Dumping ftrace buffer:
+[    2.771085]    (ftrace buffer empty)
+[    2.771138] CPU: 7 PID: 486 Comm: ln Tainted: G        W   E      6.6.58-android15
+[    2.771139] Hardware name: Qualcomm Technologies, Inc. SunP QRD HDK (DT)
+[    2.771140] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[    2.771141] pc : __uvcg_fill_strm+0x198/0x2cc
+[    2.771145] lr : __uvcg_iter_strm_cls+0xc8/0x17c
+[    2.771146] sp : ffffffc08140bbb0
+[    2.771146] x29: ffffffc08140bbb0 x28: ffffff803bc81380 x27: ffffff8023bbd250
+[    2.771147] x26: ffffff8023bbd250 x25: ffffff803c361348 x24: ffffff803d8e6768
+[    2.771148] x23: 0000000000000004 x22: 0000000000000003 x21: ffffffc08140bc48
+[    2.771149] x20: 0000000000000000 x19: ffffffc08140bc48 x18: ffffffe9f8cf4a00
+[    2.771150] x17: 000000001bf64ec3 x16: 000000001bf64ec3 x15: ffffff8023bbd250
+[    2.771151] x14: 000000000000000f x13: 004c4b40000f4240 x12: 000a2c2a00051615
+[    2.771152] x11: 000000000000004f x10: ffffffe9f76b40ec x9 : ffffffe9f7e389d0
+[    2.771153] x8 : ffffff803d0d31ce x7 : 000f4240000a2c2a x6 : 0005161500028b0a
+[    2.771154] x5 : ffffff803d0d31ce x4 : 0000000000000003 x3 : 0000000000000000
+[    2.771155] x2 : ffffffc08140bc50 x1 : ffffffc08140bc48 x0 : 0000000000000000
+[    2.771156] Call trace:
+[    2.771157]  __uvcg_fill_strm+0x198/0x2cc
+[    2.771157]  __uvcg_iter_strm_cls+0xc8/0x17c
+[    2.771158]  uvcg_streaming_class_allow_link+0x240/0x290
+[    2.771159]  configfs_symlink+0x1f8/0x630
+[    2.771161]  vfs_symlink+0x114/0x1a0
+[    2.771163]  do_symlinkat+0x94/0x28c
+[    2.771164]  __arm64_sys_symlinkat+0x54/0x70
+[    2.771164]  invoke_syscall+0x58/0x114
+[    2.771166]  el0_svc_common+0x80/0xe0
+[    2.771168]  do_el0_svc+0x1c/0x28
+[    2.771169]  el0_svc+0x3c/0x70
+[    2.771172]  el0t_64_sync_handler+0x68/0xbc
+[    2.771173]  el0t_64_sync+0x1a8/0x1ac
 
-: In my tests, the performance drop ranges from a few percent up to 13%
-: in Unigine Superposition under heavy memory usage on the CPU Core Ultra
-: 155H with the Xe 128 EU GPU.  Other users have reported performance
-: impact up to 30% on certain workloads.  Please find more in the
-: regressions reports:
-: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645
-: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845
-:
-: I believe the change should be backported to all active kernel branches
-: after version 6.12.
+Initialize color matching descriptor for frame-based format to prevent
+NULL pointer crash by mirroring the handling done for uncompressed and
+mjpeg formats.
 
-To fix this issue, we can use the inode's size as a write size hint in
-shmem_read_folio_gfp() to help allocate PMD-sized large folios.
-
-Link: https://lkml.kernel.org/r/f7e64e99a3a87a8144cc6b2f1dddf7a89c12ce44.1753926601.git.baolin.wang@linux.alibaba.com
-Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Suggested-by: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 7b5a58952fc3 ("usb: gadget: uvc: configfs: Add frame-based frame format support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Akash Kumar <quic_akakum@quicinc.com>
+Link: https://lore.kernel.org/r/20250718085138.1118788-1-quic_akakum@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/shmem.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/uvc_configfs.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5930,8 +5930,8 @@ struct folio *shmem_read_folio_gfp(struc
- 	struct folio *folio;
- 	int error;
+--- a/drivers/usb/gadget/function/uvc_configfs.c
++++ b/drivers/usb/gadget/function/uvc_configfs.c
+@@ -2916,8 +2916,15 @@ static struct config_group *uvcg_frameba
+ 		'H',  '2',  '6',  '4', 0x00, 0x00, 0x10, 0x00,
+ 		0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71
+ 	};
++	struct uvcg_color_matching *color_match;
++	struct config_item *streaming;
+ 	struct uvcg_framebased *h;
  
--	error = shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
--				    gfp, NULL, NULL);
-+	error = shmem_get_folio_gfp(inode, index, i_size_read(inode),
-+				    &folio, SGP_CACHE, gfp, NULL, NULL);
- 	if (error)
- 		return ERR_PTR(error);
++	streaming = group->cg_item.ci_parent;
++	color_match = uvcg_format_get_default_color_match(streaming);
++	if (!color_match)
++		return ERR_PTR(-EINVAL);
++
+ 	h = kzalloc(sizeof(*h), GFP_KERNEL);
+ 	if (!h)
+ 		return ERR_PTR(-ENOMEM);
+@@ -2936,6 +2943,9 @@ static struct config_group *uvcg_frameba
+ 
+ 	INIT_LIST_HEAD(&h->fmt.frames);
+ 	h->fmt.type = UVCG_FRAMEBASED;
++
++	h->fmt.color_matching = color_match;
++	color_match->refcnt++;
+ 	config_group_init_type_name(&h->fmt.group, name,
+ 				    &uvcg_framebased_type);
  
 
 
