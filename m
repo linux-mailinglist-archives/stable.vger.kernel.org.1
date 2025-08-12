@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-168107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2B5B2330E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3FBB230CD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0B5E7AF863
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FD968775C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF772DFA3E;
-	Tue, 12 Aug 2025 18:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F28A2FDC55;
+	Tue, 12 Aug 2025 17:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzvg4LCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtksfO7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2937C1EF38C;
-	Tue, 12 Aug 2025 18:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01ED2DE1E2;
+	Tue, 12 Aug 2025 17:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023069; cv=none; b=YC7IIDMzVyOU/EIzqWbCqWQhj2Vh5AMitWZQvDwjw5qMTEXEm0NVFPJOnpCRRE8L0Jay7ZM+gpk49+LnvIacxpajCIevFB3nvT6lwms5v9uDxZtTx0FQvhqREZEgJBmGBAQryOpASOQ83pJlv8//8z0UyG3zHpsMxWGNd6TVNpo=
+	t=1755021333; cv=none; b=oXk6CSRX3ffnStWmu1Ila8ZM1yOrJLss421vEgFL2KcZTM5+SFO4DepyaRSGXbIddIZS6rNfnKsdi11bWtakj9g/Z2kLP5fUrr/tm8aeodtzztTuIWAfJZV03bzkXIHG8Qs/YbqyYA5uADKndp2DCxSrWM5GjftxjyhOWlLU384=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023069; c=relaxed/simple;
-	bh=9FS3K6pBzi5oEkI7xxLsU0iiebJXwCz3epO+QYXvBJg=;
+	s=arc-20240116; t=1755021333; c=relaxed/simple;
+	bh=OQF2IZIs9VrOS3Ro2dQaMltZdxgwfXUMZoxZ3HVtOnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjExR0KPqp333kGBLqYJK0s5LqVF3pZelw4t2u9h4ftIqmbFppY0Vqy8s2AT1dcO7Gg8WfYQ3jGdRGPmfqYB7HP1ilcE4PBONwO9u3QLFki0F74pv0WkOqarA38hpadpKVHMYu+uRr6oVYql9Ard1vlWwqP/FgbAoFgDHbhA3OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzvg4LCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84413C4CEFA;
-	Tue, 12 Aug 2025 18:24:28 +0000 (UTC)
+	 MIME-Version; b=UjpPqFvys6ic2sS5WgNcYhSvpNInMeTW8SQAmBC2IEVAqq+myUoTTCIwzbWe3xPYI8tI+RAxK4z2DfvqwXV87SXclBhBYpyI5DXb+z/EzC2CpzaWQZdToUolCQ9mdC8ix85+qekBnDUOLZfeqertSbiPK+wCg+1krtovkLMQ2LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtksfO7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0462CC4CEF1;
+	Tue, 12 Aug 2025 17:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023069;
-	bh=9FS3K6pBzi5oEkI7xxLsU0iiebJXwCz3epO+QYXvBJg=;
+	s=korg; t=1755021332;
+	bh=OQF2IZIs9VrOS3Ro2dQaMltZdxgwfXUMZoxZ3HVtOnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vzvg4LCEGd2H66zfxK0e4RDX4b6s0gv1mi/zkoFkHjhevu9sSVH9xR2MPbyyOTlF7
-	 OLgrkYDH6Axr1KInSXYtgbRrUbkn9mpFtzz08kDoQ5eoKd0edL4CVRCUvEkQnYg9Zl
-	 25drEmj3alyQ6JyOjOoUpih05MbmlDpAmcKURbxo=
+	b=BtksfO7owPWr17pahZDDGnpEj3rAkWbvGQBLfI/zpuuww152X/fcaIkvrq1hpbb+M
+	 79YXfKWYoAKT0SM4xjDcZyW+wnMVMNcUsrbYnrlwZ+gBjt/QfDfRrME5P2cmA57LaL
+	 LfZ/4dPa5lFhsrmcAhAf7L8cAjYXe74qhCDTD5Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 340/369] drm/i915/ddi: only call shutdown hooks for valid encoders
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 249/253] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
 Date: Tue, 12 Aug 2025 19:30:37 +0200
-Message-ID: <20250812173029.488620908@linuxfoundation.org>
+Message-ID: <20250812172959.457907251@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit 60a43ecbd59decb77b31c09a73f09e1d4f4d1c4c upstream.
+commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 upstream.
 
-DDI might be HDMI or DP only, leaving the other encoder
-uninitialized. Calling the shutdown hook on an uninitialized encoder may
-lead to a NULL pointer dereference. Check the encoder types (and thus
-validity via the DP output_reg or HDMI hdmi_reg checks) before calling
-the hooks.
+During communication with Focusrite Scarlett Gen 2/3/4 USB audio
+interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
+snd_usb_ctl_msg() which can cause initialisation and control
+operations to fail intermittently.
 
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Closes: https://lore.kernel.org/r/20241031105145.2140590-1-senozhatsky@chromium.org
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/8b197c50e7f3be2bbc07e3935b21e919815015d5.1735568047.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+This patch adds up to 5 retries in scarlett2_usb(), with a delay
+starting at 5ms and doubling each time. This follows the same approach
+as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
+("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
+which resolved similar -EPROTO issues during device initialisation,
+and is the same approach as in fcp.c:fcp_usb().
+
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
+Cc: stable@vger.kernel.org
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_ddi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/usb/mixer_scarlett2.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -4798,8 +4798,10 @@ static void intel_ddi_tc_encoder_suspend
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -1279,6 +1279,8 @@ static int scarlett2_usb(
+ 	struct scarlett2_usb_packet *req, *resp = NULL;
+ 	size_t req_buf_size = struct_size(req, data, req_size);
+ 	size_t resp_buf_size = struct_size(resp, data, resp_size);
++	int retries = 0;
++	const int max_retries = 5;
+ 	int err;
  
- static void intel_ddi_encoder_shutdown(struct intel_encoder *encoder)
- {
--	intel_dp_encoder_shutdown(encoder);
--	intel_hdmi_encoder_shutdown(encoder);
-+	if (intel_encoder_is_dp(encoder))
-+		intel_dp_encoder_shutdown(encoder);
-+	if (intel_encoder_is_hdmi(encoder))
-+		intel_hdmi_encoder_shutdown(encoder);
- }
+ 	req = kmalloc(req_buf_size, GFP_KERNEL);
+@@ -1302,10 +1304,15 @@ static int scarlett2_usb(
+ 	if (req_size)
+ 		memcpy(req->data, req_data, req_size);
  
- static void intel_ddi_tc_encoder_shutdown_complete(struct intel_encoder *encoder)
++retry:
+ 	err = scarlett2_usb_tx(dev, private->bInterfaceNumber,
+ 			       req, req_buf_size);
+ 
+ 	if (err != req_buf_size) {
++		if (err == -EPROTO && ++retries <= max_retries) {
++			msleep(5 * (1 << (retries - 1)));
++			goto retry;
++		}
+ 		usb_audio_err(
+ 			mixer->chip,
+ 			"%s USB request result cmd %x was %d\n",
 
 
 
