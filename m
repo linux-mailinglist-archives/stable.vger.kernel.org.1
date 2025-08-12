@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-169269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61696B23906
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:33:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4534EB238F8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C03D3BE725
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:29:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22B5D1B66110
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1642D663D;
-	Tue, 12 Aug 2025 19:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EF02D6619;
+	Tue, 12 Aug 2025 19:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6dJdp3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fh39JmnB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB9E1E47AD;
-	Tue, 12 Aug 2025 19:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49F51A9F89;
+	Tue, 12 Aug 2025 19:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026947; cv=none; b=kXAgj8aoIXMcPY4CXmml/q3H3kOTYSQIz+ogrJN9sIVzTa8AwhfEmKOS5/DBsoqWDLjxOOUa72qj1i855shWQvm98C+OZyqMhWxi3vl6wQMGd+v1qeEVQZECBGT0RDtzBTXycUZxqkPBdlil1nBC3F8M0D5uGG7XOWg/YhXiSgE=
+	t=1755026921; cv=none; b=sgEn9UjrRRQn9KutaCRzuZjFgFU5ksxd/57LxR1ekLGNdOuSzNQGqn/gDDy6lFo82d/EFi/gplvIySRS2PRzeYRjRx7BJmtaSpvdVNYkpCYNC1bFN4iGLNGfY2PYYRzyQYZNgKOoIkAZFxnJiUiYLiVFvguaL8QHAFIFq2sivQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026947; c=relaxed/simple;
-	bh=cJCC+pPSC/Bo/uZl57mS9lhnlfejCIok7Gp/O4683eE=;
+	s=arc-20240116; t=1755026921; c=relaxed/simple;
+	bh=ZLxuinPVFHFNYm+IzFKeMjvxtF2jDm2HPonfEPEYugU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJ8GjMs3eCaPdSRwzlsARp50/+pdQzoU1/vSXeCUfLvmn23AG/WGHEqmTi8/fG6Kpo9P6O4KqJyM7RdOhRiQprZP9NhVo4CnafDG2me43rwkwihto7+6jhoPECXvCAY0VDPiTVlwop/TSjRO04ZfruQqeMfx5Ln5XwbyU95q5zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6dJdp3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9818CC4CEF0;
-	Tue, 12 Aug 2025 19:29:06 +0000 (UTC)
+	 MIME-Version; b=B36Qf0/yek6ke87Dx3GxyheLgpcCxqYXuiCaD8KVTrn74GV4IWTWQnVnqiyi8O64ir9pIONtozd1PqF7fc4HChthDPS1cm77268AzfMN0rjdXHgWaYx2McZDDn2bRKf4r9waw2TCEUPy+2gnRvhQGREtnQ7KcK+Yc2DD6sCjoUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fh39JmnB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA6CC4CEF0;
+	Tue, 12 Aug 2025 19:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026947;
-	bh=cJCC+pPSC/Bo/uZl57mS9lhnlfejCIok7Gp/O4683eE=;
+	s=korg; t=1755026921;
+	bh=ZLxuinPVFHFNYm+IzFKeMjvxtF2jDm2HPonfEPEYugU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6dJdp3MNOQnDxoQy0ETQp4xEywTFSjGstBfcpOrF3QzZjePKSekMvDY8KNEcC/Oc
-	 NFw9mvMdCVolkeWeHi6qSgYYU0njy+cGOjopNRiasYymXdHVIJga0A/B6NDPz1Alz/
-	 W4K621CmvoCkRpmN0szH+kLPMWHiQPVy41UemxLs=
+	b=fh39JmnB9LajctuKVl/i2V44uR+wcdUcFXTPJsCfFODOMYh0h52q01mH52x0wQIeC
+	 fkZ1he9FTCYV10tocvmwdh/DRBjSslNmxbR7TkNaVqJod8JvNIKSI2HV3PjQLcoCd1
+	 d1vJthy17NXx7yggnaQbtpWyK2GPGsiJbyUmfflg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Akash Kumar <quic_akakum@quicinc.com>
-Subject: [PATCH 6.15 472/480] usb: gadget: uvc: Initialize frame-based format color matching descriptor
-Date: Tue, 12 Aug 2025 19:51:20 +0200
-Message-ID: <20250812174416.847102300@linuxfoundation.org>
+	Robin Murphy <robin.murphy@arm.com>,
+	Shouping Wang <allen.wang@hj-micro.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.15 473/480] perf/arm-ni: Set initial IRQ affinity
+Date: Tue, 12 Aug 2025 19:51:21 +0200
+Message-ID: <20250812174416.886851512@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -65,110 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Akash Kumar <quic_akakum@quicinc.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-commit 323a80a1a5ace319a722909c006d5bdb2a35d273 upstream.
+commit c872d7c837382517c51a76dfdcf550332cfab231 upstream.
 
-Fix NULL pointer crash in uvcg_framebased_make due to uninitialized color
-matching descriptor for frame-based format which was added in
-commit f5e7bdd34aca ("usb: gadget: uvc: Allow creating new color matching
-descriptors") that added handling for uncompressed and mjpeg format.
+While we do request our IRQs with the right flags to stop their affinity
+changing unexpectedly, we forgot to actually set it to start with. Oops.
 
-Crash is seen when userspace configuration (via configfs) does not
-explicitly define the color matching descriptor. If color_matching is not
-found, config_group_find_item() returns NULL. The code then jumps to
-out_put_cm, where it calls config_item_put(color_matching);. If
-color_matching is NULL, this will dereference a null pointer, leading to a
-crash.
-
-[    2.746440] Unable to handle kernel NULL pointer dereference at virtual address 000000000000008c
-[    2.756273] Mem abort info:
-[    2.760080]   ESR = 0x0000000096000005
-[    2.764872]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    2.771068]   SET = 0, FnV = 0
-[    2.771069]   EA = 0, S1PTW = 0
-[    2.771070]   FSC = 0x05: level 1 translation fault
-[    2.771071] Data abort info:
-[    2.771072]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[    2.771073]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    2.771074]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    2.771075] user pgtable: 4k pages, 39-bit VAs, pgdp=00000000a3e59000
-[    2.771077] [000000000000008c] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
-[    2.771081] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-[    2.771084] Dumping ftrace buffer:
-[    2.771085]    (ftrace buffer empty)
-[    2.771138] CPU: 7 PID: 486 Comm: ln Tainted: G        W   E      6.6.58-android15
-[    2.771139] Hardware name: Qualcomm Technologies, Inc. SunP QRD HDK (DT)
-[    2.771140] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[    2.771141] pc : __uvcg_fill_strm+0x198/0x2cc
-[    2.771145] lr : __uvcg_iter_strm_cls+0xc8/0x17c
-[    2.771146] sp : ffffffc08140bbb0
-[    2.771146] x29: ffffffc08140bbb0 x28: ffffff803bc81380 x27: ffffff8023bbd250
-[    2.771147] x26: ffffff8023bbd250 x25: ffffff803c361348 x24: ffffff803d8e6768
-[    2.771148] x23: 0000000000000004 x22: 0000000000000003 x21: ffffffc08140bc48
-[    2.771149] x20: 0000000000000000 x19: ffffffc08140bc48 x18: ffffffe9f8cf4a00
-[    2.771150] x17: 000000001bf64ec3 x16: 000000001bf64ec3 x15: ffffff8023bbd250
-[    2.771151] x14: 000000000000000f x13: 004c4b40000f4240 x12: 000a2c2a00051615
-[    2.771152] x11: 000000000000004f x10: ffffffe9f76b40ec x9 : ffffffe9f7e389d0
-[    2.771153] x8 : ffffff803d0d31ce x7 : 000f4240000a2c2a x6 : 0005161500028b0a
-[    2.771154] x5 : ffffff803d0d31ce x4 : 0000000000000003 x3 : 0000000000000000
-[    2.771155] x2 : ffffffc08140bc50 x1 : ffffffc08140bc48 x0 : 0000000000000000
-[    2.771156] Call trace:
-[    2.771157]  __uvcg_fill_strm+0x198/0x2cc
-[    2.771157]  __uvcg_iter_strm_cls+0xc8/0x17c
-[    2.771158]  uvcg_streaming_class_allow_link+0x240/0x290
-[    2.771159]  configfs_symlink+0x1f8/0x630
-[    2.771161]  vfs_symlink+0x114/0x1a0
-[    2.771163]  do_symlinkat+0x94/0x28c
-[    2.771164]  __arm64_sys_symlinkat+0x54/0x70
-[    2.771164]  invoke_syscall+0x58/0x114
-[    2.771166]  el0_svc_common+0x80/0xe0
-[    2.771168]  do_el0_svc+0x1c/0x28
-[    2.771169]  el0_svc+0x3c/0x70
-[    2.771172]  el0t_64_sync_handler+0x68/0xbc
-[    2.771173]  el0t_64_sync+0x1a8/0x1ac
-
-Initialize color matching descriptor for frame-based format to prevent
-NULL pointer crash by mirroring the handling done for uncompressed and
-mjpeg formats.
-
-Fixes: 7b5a58952fc3 ("usb: gadget: uvc: configfs: Add frame-based frame format support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Akash Kumar <quic_akakum@quicinc.com>
-Link: https://lore.kernel.org/r/20250718085138.1118788-1-quic_akakum@quicinc.com
+Cc: stable@vger.kernel.org
+Fixes: 4d5a7680f2b4 ("perf: Add driver for Arm NI-700 interconnect PMU")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Tested-by: Shouping Wang <allen.wang@hj-micro.com>
+Link: https://lore.kernel.org/r/614ced9149ee8324e58930862bd82cbf46228d27.1747149165.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/uvc_configfs.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/perf/arm-ni.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/gadget/function/uvc_configfs.c
-+++ b/drivers/usb/gadget/function/uvc_configfs.c
-@@ -2916,8 +2916,15 @@ static struct config_group *uvcg_frameba
- 		'H',  '2',  '6',  '4', 0x00, 0x00, 0x10, 0x00,
- 		0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71
- 	};
-+	struct uvcg_color_matching *color_match;
-+	struct config_item *streaming;
- 	struct uvcg_framebased *h;
+--- a/drivers/perf/arm-ni.c
++++ b/drivers/perf/arm-ni.c
+@@ -544,6 +544,8 @@ static int arm_ni_init_cd(struct arm_ni
+ 		return err;
  
-+	streaming = group->cg_item.ci_parent;
-+	color_match = uvcg_format_get_default_color_match(streaming);
-+	if (!color_match)
-+		return ERR_PTR(-EINVAL);
+ 	cd->cpu = cpumask_local_spread(0, dev_to_node(ni->dev));
++	irq_set_affinity(cd->irq, cpumask_of(cd->cpu));
 +
- 	h = kzalloc(sizeof(*h), GFP_KERNEL);
- 	if (!h)
- 		return ERR_PTR(-ENOMEM);
-@@ -2936,6 +2943,9 @@ static struct config_group *uvcg_frameba
- 
- 	INIT_LIST_HEAD(&h->fmt.frames);
- 	h->fmt.type = UVCG_FRAMEBASED;
-+
-+	h->fmt.color_matching = color_match;
-+	color_match->refcnt++;
- 	config_group_init_type_name(&h->fmt.group, name,
- 				    &uvcg_framebased_type);
- 
+ 	cd->pmu = (struct pmu) {
+ 		.module = THIS_MODULE,
+ 		.parent = ni->dev,
 
 
 
