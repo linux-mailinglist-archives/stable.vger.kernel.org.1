@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7AFB23294
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2EFB23148
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F19D17B5B33
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58CC4162CB9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7263B2F659A;
-	Tue, 12 Aug 2025 18:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EE42FF16B;
+	Tue, 12 Aug 2025 17:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsZWGBi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zw4IX02f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304B82E3B06;
-	Tue, 12 Aug 2025 18:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC112F83CB;
+	Tue, 12 Aug 2025 17:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022790; cv=none; b=LvoDK5pk0zG3/5C9HH05B4KFYEkBv9QomLRmSS7oZg9mLY0FH+hEIc+Gmbl4QkFJL/e1vCYrBEEm7EoqU4q1qbhUhaWLVCpDewnHpY0GqCmGVmPADc7fwf0Dn6KCrhN0UjPuINYIkIU/kewFuFHR6daX3p7fCjLAE1EwMsMkt4Q=
+	t=1755021596; cv=none; b=a2Wj12AEH8YgMJWFZGwnXpRa+jrYg7sFvnDHVV/7JtQ4Nj3PLshErGx/IQ+kqkvwhsJMXFcTG1fg0vUKhuIyAHu5Tsil3QMOUuhsRg+r3quTEio0kGP5vcNZvpzSirHdiYqfodPPwKcGDrFaO/utZI2bw8xNMYd0vN73claMQFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022790; c=relaxed/simple;
-	bh=Ti/oF/SWK/4S4kFWSERqZTymOvJAFHqawvUWcjn7RvU=;
+	s=arc-20240116; t=1755021596; c=relaxed/simple;
+	bh=VSqJH0Ez4h6hn6DXdd2HoIF8Tj08luEkBAENk+56U+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJDIybFuNIAcygIZlewSQuAEgQoTNbeU9Hpny9pbE4iyI1aEDYlh6hiJxbYtrXEZw0tFYx11dqqtvTPzfQxcFNeP1/QCyjhkZQrVvmTUf+Xm3gqO56Z3InvAjn7AmRCOrTbSmdN37VlNQymyOyry7MdxaIvMJhdhEhYuh8qjKz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsZWGBi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DB2C4CEF6;
-	Tue, 12 Aug 2025 18:19:49 +0000 (UTC)
+	 MIME-Version; b=qYjK7dzxKJ2RhFSpjKhoDCSdQZW6TbJLC+OxlASx5TvS4dcJEhUm4GRlw27qFQ8w1Yw767m6DXugSmFphp+BBUVpxQy1KJivE3BKTEYqeKdwwi3XC6zlCjRWGshdRVdLXbeU/NtidlzexWDoMeenO9PESi5oBKBv6GA+WHg5eGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zw4IX02f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4724C4CEF0;
+	Tue, 12 Aug 2025 17:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022790;
-	bh=Ti/oF/SWK/4S4kFWSERqZTymOvJAFHqawvUWcjn7RvU=;
+	s=korg; t=1755021596;
+	bh=VSqJH0Ez4h6hn6DXdd2HoIF8Tj08luEkBAENk+56U+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vsZWGBi7PNDX/4Jdwq6nTpyP4eDvAtMxC3fn9pZAvoF0/3/g+irFCT9frYYZQsL2b
-	 vRGh5zJtUNrt7UkOIYOMPGksZgMIwXlwwaMtbcFBw+fn3em0VXFDWojGYz+S+bjFMd
-	 Qej7BaafMqymd2r6epYYIrp8pWot/s3VHYS7cgNU=
+	b=zw4IX02f4Lhyr7ENDvv7B4lQXlXNv5hw9I8CUWRVpz45lGPxYMYp9QNKeDLBigSU8
+	 FCw8KQ/zF/fXc63oUdWFzXtUfoGxtnyvmiWsL+LOle1mlCAvxqSwOHfblqHW0MJuSc
+	 Nit9PVZWa3RffC/ioc1kW/9tCGjogirxHIf/85XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 260/369] f2fs: fix to update upper_p in __get_secs_required() correctly
+Subject: [PATCH 6.6 169/262] rtc: pcf85063: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:17 +0200
-Message-ID: <20250812173024.545243349@linuxfoundation.org>
+Message-ID: <20250812173000.298961957@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 6840faddb65683b4e7bd8196f177b038a1e19faf ]
+[ Upstream commit 186ae1869880e58bb3f142d222abdb35ecb4df0f ]
 
-Commit 1acd73edbbfe ("f2fs: fix to account dirty data in __get_secs_required()")
-missed to calculate upper_p w/ data_secs, fix it.
+When pcf85063_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-Fixes: 1acd73edbbfe ("f2fs: fix to account dirty data in __get_secs_required()")
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 8c229ab6048b7 ("rtc: pcf85063: Add pcf85063 clkout control to common clock framework")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-4-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 2 +-
+ drivers/rtc/rtc-pcf85063.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 52bb1a281935..7d7d709b55ff 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -636,7 +636,7 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 	if (lower_p)
- 		*lower_p = node_secs + dent_secs + data_secs;
- 	if (upper_p)
--		*upper_p = node_secs + dent_secs +
-+		*upper_p = node_secs + dent_secs + data_secs +
- 			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0) +
- 			(data_blocks ? 1 : 0);
- 	if (curseg_p)
+diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
+index 73848f764559..2b4921c23467 100644
+--- a/drivers/rtc/rtc-pcf85063.c
++++ b/drivers/rtc/rtc-pcf85063.c
+@@ -410,7 +410,7 @@ static long pcf85063_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
+ 
+-	return 0;
++	return clkout_rates[0];
+ }
+ 
+ static int pcf85063_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
