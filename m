@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-167770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B3AB231D6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 240CAB2309C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD191896FD0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023EF6817B6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820AB2FE593;
-	Tue, 12 Aug 2025 18:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE90D2FDC20;
+	Tue, 12 Aug 2025 17:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoVMyHBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgmEz5Tr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326CC2882CE;
-	Tue, 12 Aug 2025 18:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C13B2E4248;
+	Tue, 12 Aug 2025 17:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021934; cv=none; b=rZ1M6qZJ6D72HaqhzI1w0ksnEpkowB/xl0D87gWTHHhNi41gBiQH5JinTNDVmFF25uATYnz/UT/ctC7CpbSrevE471PH7d+zWdHbNKPVBtVjYdwQQtvsYGrCEDL80kY9Lt7XweltOsoK5AGFNG0TcVGNW2K+ibpUDssa0X860kI=
+	t=1755021177; cv=none; b=mlSdU1gyYN+X/TYjrsWN7zwcm6v7WwHdEw+ntZn8E0WMbAgJoa6dsl1yQNq4lgmlD5Rn8Dv9fEEfwAgQQuDALnQxvsDSc3M0STUE15EHsXIEuBkvrPjSHbPqfg504Wh8wrApqlCttTFGC5Dggtr6ftYkDzJijS0XcEFHmeH/nEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021934; c=relaxed/simple;
-	bh=13wVkpRIGvsWnEkNRfyzl1PG/LpQzFyvTft6hZuEfE4=;
+	s=arc-20240116; t=1755021177; c=relaxed/simple;
+	bh=9g1VSg1/+f2aBVC/Qy1vlZ7SuxcGBef3MjJ4pr823N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkeZPNd4toPyEzeeMJSH7bdxFwHFUWZ1pLr4pwzPJd4c0evwNBQJMKQjXuwBb3Z/dbLGEmBwsOU6/LGi9cWyZDzf4hF/HaxR/s/P0ygy5rJe6uwCrs23BvYpHaIMZlmsm/QhzOx4Ux2TR9BoPEac+4OAraOqUyuSpKxoqA0As48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoVMyHBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96315C4CEF0;
-	Tue, 12 Aug 2025 18:05:33 +0000 (UTC)
+	 MIME-Version; b=m05PdiMKW/kxBNhbkEeARiPfbibnQ9YJCQTekG+f3BuNNFE683YcNFs+VCMH+DQevJ4hAKHBupYc0DPGM5JQeVxyWxRgtNJ4WLi16YcmaV9kImFiBJC9YeuNjOhflTWFzqfiMjxt8cK0iOzcTN++aZfE/ZTJR8nYQpNbfnKI0Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgmEz5Tr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F4FC4CEF0;
+	Tue, 12 Aug 2025 17:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021934;
-	bh=13wVkpRIGvsWnEkNRfyzl1PG/LpQzFyvTft6hZuEfE4=;
+	s=korg; t=1755021177;
+	bh=9g1VSg1/+f2aBVC/Qy1vlZ7SuxcGBef3MjJ4pr823N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VoVMyHBX41PHByD8xoW7lJhtaJUbil+cR45kBtetkbLicpQtM5HYGWCYt9o1kmSQb
-	 ste5GUFfUDqGeKnjNnIyAUoty9mRdFi97GgvQLjmgpXUc4efCKR/rSUK0/lg13H3FF
-	 RXS27zM0EUKfEpdTbKqbjNFfeBFxKSEVsrhqN3Io=
+	b=ZgmEz5Tr0D7moiSFopnWygrlV0+NLmjZ7Vxc/aW7o0kqq1c1BTYVXnUA+ceZi2gqY
+	 /syGzpDzNl+xRnSGROpAti1R0XH6fWcA1Ml7Dm6VxAcJj26LOovd7oINFt/6nnXQaJ
+	 TsvCPJaXR20L8b5RA/4w+OM4b8vpG20nWD17whfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/262] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
+Subject: [PATCH 6.1 225/253] irqchip: Build IMX_MU_MSI only on ARM
 Date: Tue, 12 Aug 2025 19:30:13 +0200
-Message-ID: <20250812173002.731272150@linuxfoundation.org>
+Message-ID: <20250812172958.406840373@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,64 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5349ae5e05fa37409fd48a1eb483b199c32c889b ]
+[ Upstream commit 3b6a18f0da8720d612d8a682ea5c55870da068e0 ]
 
-We should call ib_dma_unmap_single() and mempool_free() before calling
-smbd_disconnect_rdma_connection().
+Compile-testing IMX_MU_MSI on x86 without PCI_MSI support results in a
+build failure:
 
-And smbd_disconnect_rdma_connection() needs to be the last function to
-call as all other state might already be gone after it returns.
+drivers/gpio/gpio-sprd.c:8:
+include/linux/gpio/driver.h:41:33: error: field 'msiinfo' has incomplete type
+drivers/iommu/iommufd/viommu.c:4:
+include/linux/msi.h:528:33: error: field 'alloc_info' has incomplete type
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Tighten the dependency further to only allow compile testing on Arm.
+This could be refined further to allow certain x86 configs.
+
+This was submitted before to address a different build failure, which was
+fixed differently, but the problem has now returned in a different form.
+
+Fixes: 70afdab904d2d1e6 ("irqchip: Add IMX MU MSI controller driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250805160952.4006075-1-arnd@kernel.org
+Link: https://lore.kernel.org/all/20221215164109.761427-1-arnd@kernel.org/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/irqchip/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 8d215b207dcc..9aef85f3cf11 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -282,18 +282,20 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
- 		request, wc->status);
- 
--	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
--		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
--			wc->status, wc->opcode);
--		smbd_disconnect_rdma_connection(request->info);
--	}
--
- 	for (i = 0; i < request->num_sge; i++)
- 		ib_dma_unmap_single(sc->ib.dev,
- 			request->sge[i].addr,
- 			request->sge[i].length,
- 			DMA_TO_DEVICE);
- 
-+	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
-+			wc->status, wc->opcode);
-+		mempool_free(request, info->request_mempool);
-+		smbd_disconnect_rdma_connection(info);
-+		return;
-+	}
-+
- 	if (atomic_dec_and_test(&request->info->send_pending))
- 		wake_up(&request->info->wait_send_pending);
- 
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index a29a426e4eed..eae221b28397 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -486,6 +486,7 @@ config IMX_MU_MSI
+ 	tristate "i.MX MU used as MSI controller"
+ 	depends on OF && HAS_IOMEM
+ 	depends on ARCH_MXC || COMPILE_TEST
++	depends on ARM || ARM64
+ 	default m if ARCH_MXC
+ 	select IRQ_DOMAIN
+ 	select IRQ_DOMAIN_HIERARCHY
 -- 
 2.39.5
 
