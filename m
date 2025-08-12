@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-167761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDCAB231E5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153E3B2337C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 696D4581367
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0FBB1B609BF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A958E2FDC30;
-	Tue, 12 Aug 2025 18:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C912FD1DC;
+	Tue, 12 Aug 2025 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IC94+N5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBB5bplg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679242FD1C3;
-	Tue, 12 Aug 2025 18:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559D2FD1AD;
+	Tue, 12 Aug 2025 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021904; cv=none; b=Pbf5iMvVFKj4ptWkphIEVkWPlJwesxqfI0FOk4ovrc3z5QtD/oCBW/b+tLZ52/m+5J3D6EVA5MnH/wbTnJN3Go5qu9xc/F1fQ0H50Z4p7ddrc+bNJPdt6ae1jfd0Nvbt1RCxSziVr3oOM/ZYnZ6QTiNkj4VDsjLzgfj9lAMfhOs=
+	t=1755023103; cv=none; b=Ze8U+b+ucx51en91nKvgY66DqF0DLAddmNZC4RqJV43HEmLrmDaibHLcAksLf1iZqaLclXC7xrGNvtmBfTmLtdUwSVe/tzm8VmiUbir//JH2Ttkn0tdZhnniISXuhOtEKMRMMK/fRS9S2F8fj2/R23TMc4lDcDZSOEnalWg4PLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021904; c=relaxed/simple;
-	bh=avtbK/KWuMPKtS/qw4J9MLRZWPSgCKNii7hx8Dn1JwI=;
+	s=arc-20240116; t=1755023103; c=relaxed/simple;
+	bh=ITAJvymrz7Rdj0QxWb+KRtUt7JqrnEcE/BqCG16+LdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+/um5DBe+GgFsG33Rd3UTnMOD3IjdSU1LyGTA4RemWrQHhSWdSdBx7lyckHdcvbAbmgKAUhrJGGMgLZUJ5yd13YqCEwwFIEaT4PtR+szBqqKRT3O/OEZ+4vbNF1LnpfwsEMNVuArBWdS/om+ZvEuAnhderufrJXP9NqLpOacL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IC94+N5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA195C4CEF0;
-	Tue, 12 Aug 2025 18:05:03 +0000 (UTC)
+	 MIME-Version; b=OPKeJGAObzvv4h6hAyL9Vkxy0SbtFrnC2Jh0yFN6UovYNp4D0WiPSoGkXYvg33sdGDvo4ZRfCQuSDbaT97RYNjxXWYaO3qvpxp4nugVLtJJjXDIEDYcE6Bb6dAf101Qcvk1MhNjpsTDrboowpQpLQRWjmj6yzN0aKShSWaoe8GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBB5bplg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76EBC4CEF0;
+	Tue, 12 Aug 2025 18:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021904;
-	bh=avtbK/KWuMPKtS/qw4J9MLRZWPSgCKNii7hx8Dn1JwI=;
+	s=korg; t=1755023103;
+	bh=ITAJvymrz7Rdj0QxWb+KRtUt7JqrnEcE/BqCG16+LdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1IC94+N5SpbYHNoH+bhl7I1B+I1DdGei03ybzxzNE/1j/N4Uj9K2jVEvmUgfIwka6
-	 OWHsi/DOirhWVLI/mh3JJrEFBuwwVqjNwiyrNGRvC0AxUEah+8T3jstIGzk7tij0AR
-	 uAwGJox+ArGIP2RL+qElOX4Hwu8z3dqQhcfXNuuo=
+	b=WBB5bplgk8dHVWYuVQ24tNPtUh4NeSPs2lDfSAyjvw5YPUr33MBeU6N7BYCdTheOj
+	 KAP0R+1tMSbCeEQtX9pd5vHs/3gdUUdYOTeJCXGl9zYmOd90agoNBn6H7hGR+5de9d
+	 09crNf/kVGJYupHh38x1pNovmPDLvgH/HpBDfkd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 258/262] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
+	Zenm Chen <zenmchen@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 349/369] Bluetooth: btusb: Add USB ID 3625:010b for TP-LINK Archer TX10UB Nano
 Date: Tue, 12 Aug 2025 19:30:46 +0200
-Message-ID: <20250812173004.121194499@linuxfoundation.org>
+Message-ID: <20250812173029.824781513@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Zenm Chen <zenmchen@gmail.com>
 
-commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 upstream.
+commit d9da920233ec85af8b9c87154f2721a7dc4623f5 upstream.
 
-During communication with Focusrite Scarlett Gen 2/3/4 USB audio
-interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
-snd_usb_ctl_msg() which can cause initialisation and control
-operations to fail intermittently.
+Add USB ID 3625:010b for TP-LINK Archer TX10UB Nano which is based on
+a Realtek RTL8851BU chip.
 
-This patch adds up to 5 retries in scarlett2_usb(), with a delay
-starting at 5ms and doubling each time. This follows the same approach
-as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
-("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
-which resolved similar -EPROTO issues during device initialisation,
-and is the same approach as in fcp.c:fcp_usb().
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below:
 
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
+T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 9 Spd=480 MxCh= 0
+D: Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs= 1
+P: Vendor=3625 ProdID=010b Rev= 0.00
+S: Manufacturer=Realtek
+S: Product=802.11ax WLAN Adapter
+S: SerialNumber=00e04c000001
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
+A: FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
+E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+I: If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 63 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtl8851bu
+E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/bluetooth/btusb.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -1279,6 +1279,8 @@ static int scarlett2_usb(
- 	struct scarlett2_usb_packet *req, *resp = NULL;
- 	size_t req_buf_size = struct_size(req, data, req_size);
- 	size_t resp_buf_size = struct_size(resp, data, resp_size);
-+	int retries = 0;
-+	const int max_retries = 5;
- 	int err;
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -511,6 +511,10 @@ static const struct usb_device_id quirks
+ 	{ USB_DEVICE(0x13d3, 0x3549), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
- 	req = kmalloc(req_buf_size, GFP_KERNEL);
-@@ -1302,10 +1304,15 @@ static int scarlett2_usb(
- 	if (req_size)
- 		memcpy(req->data, req_data, req_size);
- 
-+retry:
- 	err = scarlett2_usb_tx(dev, private->bInterfaceNumber,
- 			       req, req_buf_size);
- 
- 	if (err != req_buf_size) {
-+		if (err == -EPROTO && ++retries <= max_retries) {
-+			msleep(5 * (1 << (retries - 1)));
-+			goto retry;
-+		}
- 		usb_audio_err(
- 			mixer->chip,
- 			"%s USB request result cmd %x was %d\n",
++	/* Realtek 8851BU Bluetooth devices */
++	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
++
+ 	/* Realtek 8852AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
 
 
 
