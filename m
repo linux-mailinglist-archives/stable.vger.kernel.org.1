@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28272B2307B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40ABB22FB0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 133F04E3394
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BC581894759
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827E52F8BE7;
-	Tue, 12 Aug 2025 17:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E53E2FDC2B;
+	Tue, 12 Aug 2025 17:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKykvr98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVdW+X+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429DE2D5C76;
-	Tue, 12 Aug 2025 17:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D020A2F7461;
+	Tue, 12 Aug 2025 17:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021224; cv=none; b=SuDY+CxT5o3aqozdpsx7pY8I1fSokmnded2OQLAmq1maD5bEt/2O/vTCO58rSKa4Q4VwNrZxvcJNLnX2AXJu6TH8pyCQVQVfvBJ3s8TsQzC4NU7lMmLSP5CivQGeOtWWaas+dLDbCe8hgFtD0TipNHEILoseFGf2a5bDR6hAO28=
+	t=1755020438; cv=none; b=TA3VYVIc+cxUdLlKlY9RoVZZEGj/10b/9xDrwzmF5KKh4pzd1+Eg555C9Y1LOMrQCi4WEulN8vBi7u0Os2keDPcBNOBNIhnlmJ/Mq+NwrwmJV8iS5FqXIxPvDatrJlTKUBsd5UZyqj2l8PSiQlO9Rlpg6jpKxe7/EaRo/rghduA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021224; c=relaxed/simple;
-	bh=CjVcq/7BLyr8V7SYoLNyWah10t0e3F0yJi7wUdvF12k=;
+	s=arc-20240116; t=1755020438; c=relaxed/simple;
+	bh=xiZ8kL56t/TNTES9rvGNeCDp0MMLfsn8MJOztGrXY6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqiJzlPjUAfef39wg713UzcuR6R37UuULdPdDA7NtJlI7sBwbTI9aBHZ9h9b+Uxr+1XJNjYQdjkAIvXrmPaqTibAS/AKJmZbqXyQXuF66L4RifKzHbK0kK5JUA9Ef9zRKpZNR1c6TmOMW9VmIcqGa+axtFpnN40ua+w+2wVe2PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKykvr98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4218AC4CEF0;
-	Tue, 12 Aug 2025 17:53:43 +0000 (UTC)
+	 MIME-Version; b=ZqgafrwoTmLb1g+B64P3QOXYr+0okq2WhfAg8cyqYC+RU5PItVnjvhKhEW6HznRNdX7XSd6Eng00RQV09Y9gCWjbUa+q95vo+HMTOhe281uomzQnwu2dKj7vkIEJNwoynKELEa/vlzAbCg5+eHg6xD2gPfng7iy/FgHShv8AvcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVdW+X+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDCDC4CEF1;
+	Tue, 12 Aug 2025 17:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021223;
-	bh=CjVcq/7BLyr8V7SYoLNyWah10t0e3F0yJi7wUdvF12k=;
+	s=korg; t=1755020438;
+	bh=xiZ8kL56t/TNTES9rvGNeCDp0MMLfsn8MJOztGrXY6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKykvr98FXWzfRQp5KHktHWUwfyqR5UPWCViJ7v7bhCnj/xEXsYNi6VjcLJ22GynQ
-	 vdnDwo9vT9j5qeSTj0uhS2h3/56IWwW8EqGZpcLAUrSUc3NWmhX0Fh/rlxHvuIN/Hq
-	 cQrPZQ0o59luMZNI8iKv6NsxFDF54WhpXk9lTGLM=
+	b=dVdW+X+yj4H2wa2s0O9gLH50Cu68BSo0Qjanutezsq05oSWEmEO4UhwMEGpFCsAWH
+	 g517g2A/TbZ6YkIUrguG152ClswajSZkuerq7NE5oE1GMxN9KrZt1M+xaSVaYFRftv
+	 1gPYcBiyEvPu5DUa1jD9EuBX/8PPTpEqcHOzWkJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Sivan Zohar-Kotzer <sivany32@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/262] mwl8k: Add missing check after DMA map
-Date: Tue, 12 Aug 2025 19:27:48 +0200
-Message-ID: <20250812172956.450587636@linuxfoundation.org>
+Subject: [PATCH 6.1 081/253] powercap: dtpm_cpu: Fix NULL pointer dereference in get_pd_power_uw()
+Date: Tue, 12 Aug 2025 19:27:49 +0200
+Message-ID: <20250812172952.183040912@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Sivan Zohar-Kotzer <sivany32@gmail.com>
 
-[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
+[ Upstream commit 46dc57406887dd02565cb264224194a6776d882b ]
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+The get_pd_power_uw() function can crash with a NULL pointer dereference
+when em_cpu_get() returns NULL. This occurs when a CPU becomes impossible
+during runtime, causing get_cpu_device() to return NULL, which propagates
+through em_cpu_get() and leads to a crash when em_span_cpus() dereferences
+the NULL pointer.
 
-Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Add a NULL check after em_cpu_get() and return 0 if unavailable,
+matching the existing fallback behavior in __dtpm_cpu_setup().
+
+Fixes: eb82bace8931 ("powercap/drivers/dtpm: Scale the power with the load")
+Signed-off-by: Sivan Zohar-Kotzer <sivany32@gmail.com>
+Link: https://patch.msgid.link/20250701221355.96916-1-sivany32@gmail.com
+[ rjw: Drop an excess empty code line ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/powercap/dtpm_cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index c0ecd769ada7..1a48914e6f82 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -1222,6 +1222,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
+diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+index ae7ee611978b..99a82060ead9 100644
+--- a/drivers/powercap/dtpm_cpu.c
++++ b/drivers/powercap/dtpm_cpu.c
+@@ -93,6 +93,8 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
+ 	int i;
  
- 		addr = dma_map_single(&priv->pdev->dev, skb->data,
- 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&priv->pdev->dev, addr)) {
-+			kfree_skb(skb);
-+			break;
-+		}
+ 	pd = em_cpu_get(dtpm_cpu->cpu);
++	if (!pd)
++		return 0;
  
- 		rxq->rxd_count++;
- 		rx = rxq->tail++;
+ 	pd_mask = em_span_cpus(pd);
+ 
 -- 
 2.39.5
 
