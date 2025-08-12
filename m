@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-167758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13558B231E4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B52B23378
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1F16172723
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F0BF18913C6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D142FA0CD;
-	Tue, 12 Aug 2025 18:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6B52DFA3E;
+	Tue, 12 Aug 2025 18:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/ojOwaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+fiDqE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E252F745E;
-	Tue, 12 Aug 2025 18:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26D51EF38C;
+	Tue, 12 Aug 2025 18:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021894; cv=none; b=gUPuxqoywAzdp5tfXpb07D6ptO49yEJRxhUUDJxPriGi+H5hLXR8WnCwXeS+PpJFGwRLZQFtX3ABs8B5t0waU9YIeuCAiMA7PZxkHpmF1YXiGoY9idPG2NbBbYbLgOENM8sSIkxwCUS+wPfJ89UwEsAgWd6XqzrUx2yeKC5NMCY=
+	t=1755023090; cv=none; b=Ho10N96VRWTA2JyfHtVHGGre5q3J2XC2v4sCQy2SN/iLRGRSo8ddzBWCPCdOztdXcS3w7N2ODP8V4cneKotantafulPue3LPsJsSjkxYnJKUXy0VFO/TB8ZJphA74jZr0+EfWJol4gRZW2eWglcU7AmNlETyNA492GVFLhPwzBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021894; c=relaxed/simple;
-	bh=Sk8edFw+XhSGBDyOY5YcyasqnJ88iogMJaX8ewRU0AU=;
+	s=arc-20240116; t=1755023090; c=relaxed/simple;
+	bh=vSX9S3YwslYANIoSdHGC0CsoumHklxaFGaTXRUB+No4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGtZLCFM3jQjlQvY3nzxHs+Sr0O8X32W4258yzVH/FNtrV8RjmiJ4r5QvJzenhr+4lC/wMTcd+7/K2kcZ9Sdks+c60E1w0tRAcXMDyetn2q2AdFF+DA8ffJHcmJzl9IPo6g6ZhvIp1v/ZyD2gL+3HofrJbHokUNQBylK5hjaZac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/ojOwaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9742C4CEF0;
-	Tue, 12 Aug 2025 18:04:53 +0000 (UTC)
+	 MIME-Version; b=mguHeUVhzcKjV+by0V0FDNtXV5BJ645QGhceB/bilsNIKEdslySRQzEDN2CKspCnfqfeZ6IBoGJIWB4/r4bIxSI6UvcJjhI6t++QOi0zVR5A3HesFvuNm7glc3JnxSn8YqpB5uDxN9YDHBIrxBVe5jixYSPTh36tIog/lxaTDTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+fiDqE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501B7C4CEF0;
+	Tue, 12 Aug 2025 18:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021894;
-	bh=Sk8edFw+XhSGBDyOY5YcyasqnJ88iogMJaX8ewRU0AU=;
+	s=korg; t=1755023089;
+	bh=vSX9S3YwslYANIoSdHGC0CsoumHklxaFGaTXRUB+No4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/ojOwaKIJs97bI7AsIYjXO/q/sDnjz9Qz73ZnJUbjuFyIXnWBVjs0hpAKa2CyjGC
-	 RqTVn///0br10a6x/t253V47SOgbtl/kRo5GCOAEytmvfe1yNPxAYE83qY8KKdsHwu
-	 VPKK6Dxk+sAypSj0ye98advvosoOsCBx8KJxuYEM=
+	b=b+fiDqE7e0skrW6aq5rc29Pl0+t8FtPgI7VTj3386QkAnnmo2jBSQ9v1adLko9Xbu
+	 EG64dQXGNOJ3HssqXd6AfaOrd6HKnXuvx4pep+JNFQ1j7+outYhG5Yw2N+RYQcC3VB
+	 oXyyG2BfcaZxAGdSfyX5rpLerqjngiZyAjR5vkJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armando Budianto <sprite@gnuweeb.org>,
-	Simon Horman <horms@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Subject: [PATCH 6.6 255/262] net: usbnet: Fix the wrong netif_carrier_on() call
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 346/369] USB: serial: option: add Foxconn T99W709
 Date: Tue, 12 Aug 2025 19:30:43 +0200
-Message-ID: <20250812173004.002411970@linuxfoundation.org>
+Message-ID: <20250812173029.710083068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+From: Slark Xiao <slark_xiao@163.com>
 
-commit 8466d393700f9ccef68134d3349f4e0a087679b9 upstream.
+commit ad1244e1ce18f8c1a5ebad8074bfcf10eacb0311 upstream.
 
-The commit referenced in the Fixes tag causes usbnet to malfunction
-(identified via git bisect). Post-commit, my external RJ45 LAN cable
-fails to connect. Linus also reported the same issue after pulling that
-commit.
+T99W709 is designed based on MTK T300(5G redcap) chip. There are
+7 serial ports to be enumerated: AP_LOG, GNSS, AP_META, AT,
+MD_META, NPT, DBG. RSVD(5) for ADB port.
 
-The code has a logic error: netif_carrier_on() is only called when the
-link is already on. Fix this by moving the netif_carrier_on() call
-outside the if-statement entirely. This ensures it is always called
-when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
-of the link state.
+test evidence as below:
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e15f Rev=00.01
+S:  Manufacturer=MediaTek Inc.
+S:  Product=USB DATA CARD
+S:  SerialNumber=355511220000399
+C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
 
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
 Cc: stable@vger.kernel.org
-Cc: Armando Budianto <sprite@gnuweeb.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1113,6 +1113,9 @@ static void __handle_link_change(struct
- 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
- 		return;
- 
-+	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+		netif_carrier_on(dev->net);
-+
- 	if (!netif_carrier_ok(dev->net)) {
- 		/* kill URBs for reading packets to save bus bandwidth */
- 		unlink_urbs(dev, &dev->rxq);
-@@ -1122,9 +1125,6 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
--		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
--			netif_carrier_on(dev->net);
--
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
+ 	  .driver_info = RSVD(5) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
 
 
 
