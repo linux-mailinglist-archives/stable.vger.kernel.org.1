@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB14B22FAF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C835B23297
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA3D2188F187
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64EE6164CBF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B1C2F7461;
-	Tue, 12 Aug 2025 17:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B6C2F5E;
+	Tue, 12 Aug 2025 18:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYxXcPQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khcLJ7Bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6F82FD1D1;
-	Tue, 12 Aug 2025 17:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51202FD1C1;
+	Tue, 12 Aug 2025 18:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020422; cv=none; b=XKMr4EVPCxNJey/Z1uZWtkUWORkZRZgl6dOAIUr5oIEZHHnznm0BlT+QuMbcuPtdaC3J/Lj5U/VxH+I7JeTPM+blCcBpYhINM5nvB9OpkgsPHUvC5IoDI9J0hcq9PYIXGKzmbdoWQHIvahOcxdQ/rtagrVsg4CNCgsIQJG4xwRk=
+	t=1755022484; cv=none; b=mycFNSfOEiMDrM7l9JvLweesH098f6xiWhBx1QI1R/WWYWtW5HjI4+0W1YYi+q5QELeqEdkP74dEUonbmp0ABVLuew2A/bWzJLa1SCB4shwF4HFj+Yh80g+lJ0wIyKe8qQ5esyxbJxOTUGa7RYNkLZ9UkGxVq464byMgbDnJuxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020422; c=relaxed/simple;
-	bh=hJ+ygO8HcVOGDu65Yn86xEYsPbaIB4A1Joz4jkzAP/Y=;
+	s=arc-20240116; t=1755022484; c=relaxed/simple;
+	bh=oZkPh6r5ZA26CGJ9xJ8mypiZeOddzf+YYun5YdEeW4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiRnkhE7gfsL9VXYIoAmnzwu1cn/ls0mt63PTwTueSnL5HNRV6xxzMEVkx2Me2YNMbpE7DhaY2iaGdQgEeaz45tWv7ZahYJLKnifwC9rtbyo5ufWf9+IC4VagXvfkv+RgsYl1KSh8qGnLIiemikYfXBIY/HzdKTLu9/XUcePBwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYxXcPQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25878C4CEF0;
-	Tue, 12 Aug 2025 17:40:20 +0000 (UTC)
+	 MIME-Version; b=qvOjzw1PKR3Bb4nNQjOpG0KwTzZcz+bnHm0hZK4MwoXjUrCsg8ptgWfWzugsTBBBti6LbDpYYYUKEqFgz9DRHPULFCz7aFqhYlLsP7YVOhqt63QrWvu6uD7sVI8D54zaeAUn5ONGFZYNRl2cYuSKPeZk3dv/HNjNjSQYCU/tDys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khcLJ7Bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A3AC4CEF0;
+	Tue, 12 Aug 2025 18:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020421;
-	bh=hJ+ygO8HcVOGDu65Yn86xEYsPbaIB4A1Joz4jkzAP/Y=;
+	s=korg; t=1755022483;
+	bh=oZkPh6r5ZA26CGJ9xJ8mypiZeOddzf+YYun5YdEeW4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bYxXcPQR6oXv4IOLcB6rZwR+LdE5caTZSDeqkRNQpSysC5VeGW0O/Y+pPtc3NqOqh
-	 Zlx6627Cg9k+xqRhSYXZfXQfo+Cnw/hKRkRLKzvjvehUGjG6F3dq9G33SFxYpQqWFq
-	 yTWoOcVjPTQkhIMBphMtgQlXha+pJ1oj+f5N5QNw=
+	b=khcLJ7BuzQsFkCaRT2iCqfmQIN1LMxjE4apkGEazhyWkAa3Z7v75IQ2wXYQ5/dsMW
+	 5Ly/MVpveWvARQ624uDuXp9JrKobam00j1RD0ZYvAZ8oHpG+LkTOcs2LvVuDZSl5tt
+	 zrz//ZvDbbyaRI/ZAAJJwZx7c8dq5o5ArM9uYVSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/253] usb: misc: apple-mfi-fastcharge: Make power supply names unique
+Subject: [PATCH 6.12 167/369] PCI: endpoint: pci-epf-vntb: Return -ENOENT if pci_epc_get_next_free_bar() fails
 Date: Tue, 12 Aug 2025 19:27:44 +0200
-Message-ID: <20250812172951.965615693@linuxfoundation.org>
+Message-ID: <20250812173021.052727821@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 43007b89fb2de746443fbbb84aedd1089afdf582 ]
+[ Upstream commit 7ea488cce73263231662e426639dd3e836537068 ]
 
-When multiple Apple devices are connected concurrently, the
-apple-mfi-fastcharge driver fails to probe the subsequent devices with
-the following error:
+According the function documentation of epf_ntb_init_epc_bar(), the
+function should return an error code on error. However, it returns -1 when
+no BAR is available i.e., when pci_epc_get_next_free_bar() fails.
 
-    sysfs: cannot create duplicate filename '/class/power_supply/apple_mfi_fastcharge'
-    apple-mfi-fastcharge 5-2.4.3.3: probe of 5-2.4.3.3 failed with error -17
+Return -ENOENT instead.
 
-This happens because the driver uses a fixed power supply name
-("apple_mfi_fastcharge") for all devices, causing a sysfs name
-conflict when a second device is connected.
-
-Fix this by generating unique names using the USB bus and device
-number (e.g., "apple_mfi_fastcharge_5-12"). This ensures each
-connected device gets a unique power supply entry in sysfs.
-
-The change requires storing a copy of the power_supply_desc structure
-in the per-device mfi_device struct, since the name pointer needs to
-remain valid for the lifetime of the power supply registration.
-
-Fixes: 249fa8217b84 ("USB: Add driver to control USB fast charge for iOS devices")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/r/20250602-apple-mfi-fastcharge-duplicate-sysfs-v1-1-5d84de34fac6@posteo.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+[mani: changed err code to -ENOENT]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250603-pci-vntb-bar-mapping-v2-1-fc685a22ad28@baylibre.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/apple-mfi-fastcharge.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c b/drivers/usb/misc/apple-mfi-fastcharge.c
-index ac8695195c13..8e852f4b8262 100644
---- a/drivers/usb/misc/apple-mfi-fastcharge.c
-+++ b/drivers/usb/misc/apple-mfi-fastcharge.c
-@@ -44,6 +44,7 @@ MODULE_DEVICE_TABLE(usb, mfi_fc_id_table);
- struct mfi_device {
- 	struct usb_device *udev;
- 	struct power_supply *battery;
-+	struct power_supply_desc battery_desc;
- 	int charge_type;
- };
- 
-@@ -178,6 +179,7 @@ static int mfi_fc_probe(struct usb_device *udev)
- {
- 	struct power_supply_config battery_cfg = {};
- 	struct mfi_device *mfi = NULL;
-+	char *battery_name;
- 	int err;
- 
- 	if (!mfi_fc_match(udev))
-@@ -187,23 +189,38 @@ static int mfi_fc_probe(struct usb_device *udev)
- 	if (!mfi)
- 		return -ENOMEM;
- 
-+	battery_name = kasprintf(GFP_KERNEL, "apple_mfi_fastcharge_%d-%d",
-+				 udev->bus->busnum, udev->devnum);
-+	if (!battery_name) {
-+		err = -ENOMEM;
-+		goto err_free_mfi;
-+	}
-+
-+	mfi->battery_desc = apple_mfi_fc_desc;
-+	mfi->battery_desc.name = battery_name;
-+
- 	battery_cfg.drv_data = mfi;
- 
- 	mfi->charge_type = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
- 	mfi->battery = power_supply_register(&udev->dev,
--						&apple_mfi_fc_desc,
-+						&mfi->battery_desc,
- 						&battery_cfg);
- 	if (IS_ERR(mfi->battery)) {
- 		dev_err(&udev->dev, "Can't register battery\n");
- 		err = PTR_ERR(mfi->battery);
--		kfree(mfi);
--		return err;
-+		goto err_free_name;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 874cb097b093..3cddfdd04029 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -700,7 +700,7 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
+ 		barno = pci_epc_get_next_free_bar(epc_features, barno);
+ 		if (barno < 0) {
+ 			dev_err(dev, "Fail to get NTB function BAR\n");
+-			return barno;
++			return -ENOENT;
+ 		}
+ 		ntb->epf_ntb_bar[bar] = barno;
  	}
- 
- 	mfi->udev = usb_get_dev(udev);
- 	dev_set_drvdata(&udev->dev, mfi);
- 
- 	return 0;
-+
-+err_free_name:
-+	kfree(battery_name);
-+err_free_mfi:
-+	kfree(mfi);
-+	return err;
- }
- 
- static void mfi_fc_disconnect(struct usb_device *udev)
-@@ -213,6 +230,7 @@ static void mfi_fc_disconnect(struct usb_device *udev)
- 	mfi = dev_get_drvdata(&udev->dev);
- 	if (mfi->battery)
- 		power_supply_unregister(mfi->battery);
-+	kfree(mfi->battery_desc.name);
- 	dev_set_drvdata(&udev->dev, NULL);
- 	usb_put_dev(mfi->udev);
- 	kfree(mfi);
 -- 
 2.39.5
 
