@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2555EB2302F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2EBB23159
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6516E6825D3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8B1D1AA4AFE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019CF2F7477;
-	Tue, 12 Aug 2025 17:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50015302CBA;
+	Tue, 12 Aug 2025 18:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/kNBYjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HW42Mjph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B42221FAC;
-	Tue, 12 Aug 2025 17:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6C32FFDE1;
+	Tue, 12 Aug 2025 18:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020876; cv=none; b=k4KjjJT48aFGetufpCSzjaPfA/OgRQXbO1UIMI5ghZ22kXwJD85fBqPZJU7kRbfQVoQkzpbwbiuavUCWA8ji22SFWTPHT7op4QPHYYQqtzXxOI/rJKEi1KD/nMEacAdsDgPCnq0e2fUBLNRLdOn9DDML+0MnwE/JaVto0e8R0WI=
+	t=1755021642; cv=none; b=qzVBv1+ATRJ+ZJtjR3rDoo0fyLGz9Y7mQaEdjERCX8DQwCm+bXl1eymEFpuPXBhISyp3Ko50s8PADGhf8PzFzNClqOM5Lo4P32QJEqgygIAnCAItZEvAXE4LnNBjzxtxbjT+F13KMTy/MaB3N8k7bS1FgcEzPx41KJbM0AgqFuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020876; c=relaxed/simple;
-	bh=1WoYnugmbp6iWRHxZthgA83odREM1UMh2X1EAlOIJYk=;
+	s=arc-20240116; t=1755021642; c=relaxed/simple;
+	bh=xdOeesZ7iCkqeybJbW2G+EpyE9d6IgHKAj1G7qHzbEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hcw4dCsLWr3jYZX5YkPYGNEP1aWrvw9/helVW4J8HsAiOiOn45CHImO4HMIDZiUpzpVF/NaktjyAiGKfcHxsrTLPi1wpytoha1ZyKnh0O28Kfn/gIGEV+xGW6h7T32uNWy9tseSP8GYQsPGECmThLheLz81jTLi1+tojT+T6bZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/kNBYjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEC7C4CEF0;
-	Tue, 12 Aug 2025 17:47:55 +0000 (UTC)
+	 MIME-Version; b=aCwifqp0QyoAyDB8y76REUodnes7cdoO8EewhkJye5pjJk8/YMiwkZ/QOJbYnBcOtgArQwGiO3K4w7Yo/4vIvHH2FPyaA+ajmBubv+BPU+gy5jXlN7u/CFOJBPtCst+xRsP27NKcBbOFkF0sKIuaRfXjO98AHNtWbnUGsrih5ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HW42Mjph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744D7C4CEF0;
+	Tue, 12 Aug 2025 18:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020876;
-	bh=1WoYnugmbp6iWRHxZthgA83odREM1UMh2X1EAlOIJYk=;
+	s=korg; t=1755021641;
+	bh=xdOeesZ7iCkqeybJbW2G+EpyE9d6IgHKAj1G7qHzbEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/kNBYjge+mcOChMX9y+GoUZe/eJB5POWkLIIp/eyEmfiVv10pCvUvZgMt6iTwGsD
-	 3xrXxB6HyGyrKptcR/7DAKmcK0iqv6oIDL7YUZ8ql8MReYDoRkmiTXVDWGqTEH51Lx
-	 un0ZBjIzpFGAMHqnZk4pk+t5XugFIm1FL29699us=
+	b=HW42MjphpBAmaXiwwP7X/UYbUxwJT37b1V9ZfwKVfpyB1m8EFEsiQASqWn7f4ikRO
+	 82ju93y6v9UVyiQx0vmp1wDdmj+AI0RgVOY02E40DtoiFWfHnvSAHpGb+71q55NGpI
+	 7WfUUrRWFFu90+EikhjZlIHUooy3AfRPUHRbM+2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/253] vhost-scsi: Fix log flooding with target does not exist errors
+Subject: [PATCH 6.6 181/262] vfio: Fix unbalanced vfio_df_close call in no-iommu mode
 Date: Tue, 12 Aug 2025 19:29:29 +0200
-Message-ID: <20250812172956.467668062@linuxfoundation.org>
+Message-ID: <20250812173000.831924715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
 
-[ Upstream commit 69cd720a8a5e9ef0f05ce5dd8c9ea6e018245c82 ]
+[ Upstream commit b25e271b377999191b12f0afbe1861edcf57e3fe ]
 
-As part of the normal initiator side scanning the guest's scsi layer
-will loop over all possible targets and send an inquiry. Since the
-max number of targets for virtio-scsi is 256, this can result in 255
-error messages about targets not existing if you only have a single
-target. When there's more than 1 vhost-scsi device each with a single
-target, then you get N * 255 log messages.
+For devices with no-iommu enabled in IOMMUFD VFIO compat mode, the group open
+path skips vfio_df_open(), leaving open_count at 0. This causes a warning in
+vfio_assert_device_open(device) when vfio_df_close() is called during group
+close.
 
-It looks like the log message was added by accident in:
+The correct behavior is to skip only the IOMMUFD bind in the device open path
+for no-iommu devices. Commit 6086efe73498 omitted vfio_df_open(), which was
+too broad. This patch restores the previous behavior, ensuring
+the vfio_df_open is called in the group open path.
 
-commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from
-control queue handler")
-
-when we added common helpers. Then in:
-
-commit 09d7583294aa ("vhost/scsi: Use common handling code in request
-queue handler")
-
-we converted the scsi command processing path to use the new
-helpers so we started to see the extra log messages during scanning.
-
-The patches were just making some code common but added the vq_err
-call and I'm guessing the patch author forgot to enable the vq_err
-call (vq_err is implemented by pr_debug which defaults to off). So
-this patch removes the call since it's expected to hit this path
-during device discovery.
-
-Fixes: 09d7583294aa ("vhost/scsi: Use common handling code in request queue handler")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20250611210113.10912-1-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 6086efe73498 ("vfio-iommufd: Move noiommu compat validation out of vfio_iommufd_bind()")
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250618234618.1910456-1-jacob.pan@linux.microsoft.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/vfio/group.c   | 7 +++----
+ drivers/vfio/iommufd.c | 4 ++++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 87f2f56fd20a..de6f108a50a9 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -913,10 +913,8 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
- 			/* validated at handler entry */
- 			vs_tpg = vhost_vq_get_backend(vq);
- 			tpg = READ_ONCE(vs_tpg[*vc->target]);
--			if (unlikely(!tpg)) {
--				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
-+			if (unlikely(!tpg))
- 				goto out;
--			}
- 		}
+diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
+index 610a429c6191..54c3079031e1 100644
+--- a/drivers/vfio/group.c
++++ b/drivers/vfio/group.c
+@@ -194,11 +194,10 @@ static int vfio_df_group_open(struct vfio_device_file *df)
+ 		 * implies they expected translation to exist
+ 		 */
+ 		if (!capable(CAP_SYS_RAWIO) ||
+-		    vfio_iommufd_device_has_compat_ioas(device, df->iommufd))
++		    vfio_iommufd_device_has_compat_ioas(device, df->iommufd)) {
+ 			ret = -EPERM;
+-		else
+-			ret = 0;
+-		goto out_put_kvm;
++			goto out_put_kvm;
++		}
+ 	}
  
- 		if (tpgp)
+ 	ret = vfio_df_open(df);
+diff --git a/drivers/vfio/iommufd.c b/drivers/vfio/iommufd.c
+index 82eba6966fa5..02852899c2ae 100644
+--- a/drivers/vfio/iommufd.c
++++ b/drivers/vfio/iommufd.c
+@@ -25,6 +25,10 @@ int vfio_df_iommufd_bind(struct vfio_device_file *df)
+ 
+ 	lockdep_assert_held(&vdev->dev_set->lock);
+ 
++	/* Returns 0 to permit device opening under noiommu mode */
++	if (vfio_device_is_noiommu(vdev))
++		return 0;
++
+ 	return vdev->ops->bind_iommufd(vdev, ictx, &df->devid);
+ }
+ 
 -- 
 2.39.5
 
