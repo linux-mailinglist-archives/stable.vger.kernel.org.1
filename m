@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E061BB23323
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA35EB23502
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DA281882647
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9966A1B63E7D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE3F6BB5B;
-	Tue, 12 Aug 2025 18:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D822FFDE3;
+	Tue, 12 Aug 2025 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+iCw8TI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eqvQszh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2791A1EBFE0;
-	Tue, 12 Aug 2025 18:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964A42FFDD6;
+	Tue, 12 Aug 2025 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022831; cv=none; b=mbrA/U1Vv2VU8Fso+HdRUvZ/l8HVp2z1wlbdQE4y+2YaEkSXKGur7JqNl2lYnnYZDy92gcmhBbPjrPFGxoNyKe8nRuKtc5jjJ3HTB99669MVAxcg2T8uyGB1LYpAmXXJSjIb4K8+fD/iPBRjlIYYY6F6JvYGEYQpc1f0UbcZtZY=
+	t=1755024125; cv=none; b=ii9f/Trs66jVIYKEUIOI8J0KCM/Rz0Dog6QB4yHe4461v6IbtKjjv+3icpDF5ZoQqzR0aWXQ7kIn7TEVxMmbNhjOuLAbnMYGomr83EoUYq9PD5KWcuD002EUQo4hWJlBV1wyoa2WNme0Wc+RZ0nSXT/jwMVBYzB2302cWEERSt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022831; c=relaxed/simple;
-	bh=YcSKqqylIcHiqqdwH9hzuZ06Zxn+lXl/riEm8rzcbzk=;
+	s=arc-20240116; t=1755024125; c=relaxed/simple;
+	bh=Zl+1hCJi6MrGr9VIX+xKyuS3FfhvEZDS+WteyX8HMaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=grv7k+RipBspbd9GUtiZeglj6ci47/vmxjdLfVOBqT2bpiY1iR/2jmWlv+ooeof1yPylFPhpJMourfGm2hw1rfy0XV196Jt5XGh/T3up4HiDFDeSD4efCIxYltU1tXFl9yrcIGqhuByay6jsCRD0HcyWKfJyWvQELOq1nTH2Dtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+iCw8TI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88931C4CEF1;
-	Tue, 12 Aug 2025 18:20:30 +0000 (UTC)
+	 MIME-Version; b=PbZ07QG+dhH8ksXZIG1IkWy/MTEM4FC5olnAqqbhhoB25jWMbwG/SLqlPEOmBB/ps41l/nPZaF2u+oAR7YC/OV/6IfDqtFOHdA0HhTTClxMB9PNY2iV0ztKvnh2ShlMrYQaQw23hFLR84D4Q8corj8pZ080wUVCHTdq9zjAIFK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eqvQszh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045E9C4CEF0;
+	Tue, 12 Aug 2025 18:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022831;
-	bh=YcSKqqylIcHiqqdwH9hzuZ06Zxn+lXl/riEm8rzcbzk=;
+	s=korg; t=1755024125;
+	bh=Zl+1hCJi6MrGr9VIX+xKyuS3FfhvEZDS+WteyX8HMaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+iCw8TIr0JIG5vuV2995FQeeOamAkjBCJcgWzoQwZ4Dv+ZhI5Z4rCFT1fZkUYTyg
-	 dCTLRZ0OLvkZsuB5uAHr2leezYocAvBs5pj8dFpFm3YuesZbZi9rntKH4gaMkSOoss
-	 8IRHSNP6cUeNLpWrc+/DsN05Mj1fi8j+sC0OxPM8=
+	b=2eqvQszhH01FHuKThENs6Wkl3Byt9fa65YQoONq0DKSNCx+tnFDZnkbZEv1Tl98aH
+	 uzmzPoTa5ILU44HyaqOkiC7zcgemZS6w2PDtoi64YyxzUHt2kEFBgWqNGl0Tdvj4Y8
+	 FQD1efM+yHjTBlM/r52YmjXwB4cT02RCHTOjQLHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghui Lee <sh043.lee@samsung.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/369] scsi: ufs: core: Use link recovery when h8 exit fails during runtime resume
-Date: Tue, 12 Aug 2025 19:29:28 +0200
-Message-ID: <20250812173024.956482767@linuxfoundation.org>
+Subject: [PATCH 6.16 274/627] selftests: netfilter: Ignore tainted kernels in interface stress test
+Date: Tue, 12 Aug 2025 19:29:29 +0200
+Message-ID: <20250812173429.736544907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghui Lee <sh043.lee@samsung.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 35dabf4503b94a697bababe94678a8bc989c3223 ]
+[ Upstream commit 8d1c91850d064944ab214b2fbfffb7fc08a11d65 ]
 
-If the h8 exit fails during runtime resume process, the runtime thread
-enters runtime suspend immediately and the error handler operates at the
-same time.  It becomes stuck and cannot be recovered through the error
-handler.  To fix this, use link recovery instead of the error handler.
+Complain about kernel taint value only if it wasn't set at start
+already.
 
-Fixes: 4db7a2360597 ("scsi: ufs: Fix concurrency of error handler and other error recovery paths")
-Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
-Link: https://lore.kernel.org/r/20250717081213.6811-1-sh043.lee@samsung.com
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Acked-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 73db1b5dab6f ("selftests: netfilter: Torture nftables netdev hooks")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ .../testing/selftests/net/netfilter/nft_interface_stress.sh  | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a6299cb19237..e079cb5d9ec6 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4337,7 +4337,7 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
- 	hba->uic_async_done = NULL;
- 	if (reenable_intr)
- 		ufshcd_enable_intr(hba, UIC_COMMAND_COMPL);
--	if (ret) {
-+	if (ret && !hba->pm_op_in_progress) {
- 		ufshcd_set_link_broken(hba);
- 		ufshcd_schedule_eh_work(hba);
- 	}
-@@ -4345,6 +4345,14 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
- 	mutex_unlock(&hba->uic_cmd_mutex);
+diff --git a/tools/testing/selftests/net/netfilter/nft_interface_stress.sh b/tools/testing/selftests/net/netfilter/nft_interface_stress.sh
+index 5ff7be9daeee..c0fffaa6dbd9 100755
+--- a/tools/testing/selftests/net/netfilter/nft_interface_stress.sh
++++ b/tools/testing/selftests/net/netfilter/nft_interface_stress.sh
+@@ -10,6 +10,8 @@ source lib.sh
+ checktool "nft --version" "run test without nft tool"
+ checktool "iperf3 --version" "run test without iperf3 tool"
  
-+	/*
-+	 * If the h8 exit fails during the runtime resume process, it becomes
-+	 * stuck and cannot be recovered through the error handler.  To fix
-+	 * this, use link recovery instead of the error handler.
-+	 */
-+	if (ret && hba->pm_op_in_progress)
-+		ret = ufshcd_link_recovery(hba);
++read kernel_tainted < /proc/sys/kernel/tainted
 +
- 	return ret;
- }
+ # how many seconds to torture the kernel?
+ # default to 80% of max run time but don't exceed 48s
+ TEST_RUNTIME=$((${kselftest_timeout:-60} * 8 / 10))
+@@ -135,7 +137,8 @@ else
+ 	wait
+ fi
  
+-[[ $(</proc/sys/kernel/tainted) -eq 0 ]] || {
++
++[[ $kernel_tainted -eq 0 && $(</proc/sys/kernel/tainted) -ne 0 ]] && {
+ 	echo "FAIL: Kernel is tainted!"
+ 	exit $ksft_fail
+ }
 -- 
 2.39.5
 
