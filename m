@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E25B23410
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9540BB23201
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF991A26111
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153533ABCBF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41D32EF652;
-	Tue, 12 Aug 2025 18:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F6418FC91;
+	Tue, 12 Aug 2025 18:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6+vXzYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiJSsOd+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B252EAB97;
-	Tue, 12 Aug 2025 18:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B168C17993;
+	Tue, 12 Aug 2025 18:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023433; cv=none; b=Bg0uOz45h67TS36B21dO9ha7GHcNOG8WRZW1OSwAL6YsUT3ZaF0JoK6v7YM5hylS5pUxzI68YJeskHzRh567GsWZ7MQm2BaH3vLP7l3eX7Uv81JY7iIcg0A0nHjUmI8JV61PcttYNk8gT1bvkZ26le1sQtWU5qMw0r86H5rHS40=
+	t=1755022117; cv=none; b=dFzjhP06z5533MRBuYefu8L1hJ08likoQWGyg1sosAXVk3OORtWudpN+HXp/QexbEwK+tTEk8R+lwd/W8CzMN9/0j57dDL/dZuRLyMRI75deP/3tVr9E/VekrKQsktJZ7ZRXf6nPO50fAL81B7s44fIGVuUM9PF2RCm1ExgJoN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023433; c=relaxed/simple;
-	bh=vtBo/Jyxv8tJwML59EFapwx2VOd/I73lIte98MWWfnc=;
+	s=arc-20240116; t=1755022117; c=relaxed/simple;
+	bh=QI+/d4blvY8ETO81GDO6nOWn4kEK9sD1T1RtWoCaCj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdLFDwCea6KCPKOit1annE8xN3/JLfDba1meFPsusTeXh9dl6ZGOKsVjch++G+wzluXvUQv5LxdxyCsLwvB/4kMdtk8JhHvMC6HqXoLQw7ybwAX13HKvgfT4vXogsfHOORzC+hxMWnj54DiSgPV3j1ky7k5YGU7DCswJQXh/xeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6+vXzYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB8FC4CEF0;
-	Tue, 12 Aug 2025 18:30:32 +0000 (UTC)
+	 MIME-Version; b=bqzlwT+OrhXsH0AcZBAl1YzpSTbJ5swINFnDFlounHT8ccbJuWPOqy6WXZcaijcHirfnx3NgmTPtv1yQb1DFjhPjCxtBEfipV4uIo5Oa4C9vEQUhR4G/crOLVPksgRZ9UKz6SQLkhWD6un6l44RY8DLq+7rStmi0PsHgMnaIrwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiJSsOd+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201BEC4CEF7;
+	Tue, 12 Aug 2025 18:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023433;
-	bh=vtBo/Jyxv8tJwML59EFapwx2VOd/I73lIte98MWWfnc=;
+	s=korg; t=1755022117;
+	bh=QI+/d4blvY8ETO81GDO6nOWn4kEK9sD1T1RtWoCaCj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6+vXzYuwmjRoEeLQhpIkntKrBHPmueA4Pou6yILZiYbJcQP1yL81kdCMmuqeRVyL
-	 obvYcpEGcjKHsD3BYbm2iMiwzTFUCkxMFbp+fkSaT1zaok4bup/0ZbWWQJELugP31s
-	 uxInsFOHJIKm5wJ85EHtWhmHHMazzUttuYyorRCA=
+	b=NiJSsOd+aYqrarzOSU2U25Z4yhY7YU3L9zlS9vHWOnr5i0GkpEbWpr6DiZGpAvWxg
+	 hYVPKZEgEbqQleplzsfH2k3qhZfYQz2zMhW4areahXeeBDy9YenFS8wd+u3CTis1nv
+	 fPu5vBCzfSKiXgd6nRW0naHZHqiyCNxfvnOGLKX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 061/627] x86/bugs: Avoid AUTO after the select step in the retbleed mitigation
+Subject: [PATCH 6.12 059/369] cpufreq: Init policy->rwsem before it may be possibly used
 Date: Tue, 12 Aug 2025 19:25:56 +0200
-Message-ID: <20250812173421.647752381@linuxfoundation.org>
+Message-ID: <20250812173016.982132421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 98ff5c071d1cde9426b0bfa449c43d49ec58f1c4 ]
+[ Upstream commit d1378d1d7edb3a4c4935a44fe834ae135be03564 ]
 
-The retbleed select function leaves the mitigation to AUTO in some cases.
-Moreover, the update function can also set the mitigation to AUTO. This
-is inconsistent with other mitigations and requires explicit handling of
-AUTO at the end of update step.
+In cpufreq_policy_put_kobj(), policy->rwsem is used. But in
+cpufreq_policy_alloc(), if freq_qos_add_notifier() returns an error, error
+path via err_kobj_remove or err_min_qos_notifier will be reached and
+cpufreq_policy_put_kobj() will be called before policy->rwsem is
+initialized. Thus, the calling of init_rwsem() should be moved to where
+before these two error paths can be reached.
 
-Make sure a mitigation gets selected in the select step, and do not change
-it to AUTO in the update step. When no mitigation can be selected leave it
-to NONE, which is what AUTO was getting changed to in the end.
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250611-eibrs-fix-v4-1-5ff86cac6c61@linux.intel.com
-Stable-dep-of: ab9f2388e0b9 ("x86/bugs: Allow ITS stuffing in eIBRS+retpoline mode also")
+Fixes: 67d874c3b2c6 ("cpufreq: Register notifiers with the PM QoS framework")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-3-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/cpufreq/cpufreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index f4d3abb12317..0bf2566d21b6 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1251,6 +1251,14 @@ static void __init retbleed_select_mitigation(void)
- 			retbleed_mitigation = RETBLEED_MITIGATION_IBPB;
- 		else
- 			retbleed_mitigation = RETBLEED_MITIGATION_NONE;
-+	} else if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL) {
-+		/* Final mitigation depends on spectre-v2 selection */
-+		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED))
-+			retbleed_mitigation = RETBLEED_MITIGATION_EIBRS;
-+		else if (boot_cpu_has(X86_FEATURE_IBRS))
-+			retbleed_mitigation = RETBLEED_MITIGATION_IBRS;
-+		else
-+			retbleed_mitigation = RETBLEED_MITIGATION_NONE;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index df3c8daede26..fab94ffcb22c 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1275,6 +1275,8 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 		goto err_free_real_cpus;
  	}
- }
  
-@@ -1259,9 +1267,6 @@ static void __init retbleed_update_mitigation(void)
- 	if (!boot_cpu_has_bug(X86_BUG_RETBLEED) || cpu_mitigations_off())
- 		return;
- 
--	if (retbleed_mitigation == RETBLEED_MITIGATION_NONE)
--		goto out;
--
- 	/*
- 	 * retbleed=stuff is only allowed on Intel.  If stuffing can't be used
- 	 * then a different mitigation will be selected below.
-@@ -1272,7 +1277,7 @@ static void __init retbleed_update_mitigation(void)
- 	    its_mitigation == ITS_MITIGATION_RETPOLINE_STUFF) {
- 		if (spectre_v2_enabled != SPECTRE_V2_RETPOLINE) {
- 			pr_err("WARNING: retbleed=stuff depends on spectre_v2=retpoline\n");
--			retbleed_mitigation = RETBLEED_MITIGATION_AUTO;
-+			retbleed_mitigation = RETBLEED_MITIGATION_NONE;
- 		} else {
- 			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
- 				pr_info("Retbleed mitigation updated to stuffing\n");
-@@ -1298,15 +1303,11 @@ static void __init retbleed_update_mitigation(void)
- 			if (retbleed_mitigation != RETBLEED_MITIGATION_STUFF)
- 				pr_err(RETBLEED_INTEL_MSG);
- 		}
--		/* If nothing has set the mitigation yet, default to NONE. */
--		if (retbleed_mitigation == RETBLEED_MITIGATION_AUTO)
--			retbleed_mitigation = RETBLEED_MITIGATION_NONE;
- 	}
--out:
++	init_rwsem(&policy->rwsem);
 +
- 	pr_info("%s\n", retbleed_strings[retbleed_mitigation]);
- }
+ 	freq_constraints_init(&policy->constraints);
  
--
- static void __init retbleed_apply_mitigation(void)
- {
- 	bool mitigate_smt = false;
+ 	policy->nb_min.notifier_call = cpufreq_notifier_min;
+@@ -1297,7 +1299,6 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 	}
+ 
+ 	INIT_LIST_HEAD(&policy->policy_list);
+-	init_rwsem(&policy->rwsem);
+ 	spin_lock_init(&policy->transition_lock);
+ 	init_waitqueue_head(&policy->transition_wait);
+ 	INIT_WORK(&policy->update, handle_update);
 -- 
 2.39.5
 
