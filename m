@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEFBB2308A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCC6B2329F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2720A567399
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EAF56E23E3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1AE268C73;
-	Tue, 12 Aug 2025 17:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DC92FF176;
+	Tue, 12 Aug 2025 18:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2CCgwm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJX1wehN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D42D2DE1E2;
-	Tue, 12 Aug 2025 17:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A992E36F1;
+	Tue, 12 Aug 2025 18:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021176; cv=none; b=f4PDLY5H0x5jx7kysGGU5iM6ZVrchSlLHD0E/t59uKCt0ngsT0w2AwXGw0RTvdxjHUM7l0TbpTJmHtQvU3hhIR8BooPXKM8jZmz2GpiuFZxdmQg10pLYzYDSWH8pMJCG+WVDwfPK5NHV9223/6S8Pai8kPo0EXKc3rdo3NxtSy8=
+	t=1755022469; cv=none; b=AliEXWAXLvgYc18XtsSmWn/H4scSfux+R6MddLIowdmpBqJob13ubjjX6d9H6cUtWfJ2sqHEVtuKrUAFDlvEW1GgLEIsPzH22/M8CZbg8NVWFQgNqNccbm8Z3ZT7tKO9VPE1KvUbqWhPP6dJbgwVwXM5Vmy4lAxBWPW+8EoLeUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021176; c=relaxed/simple;
-	bh=7mcBqLR9csTgmZGbu6rCAKBxXYogV9hr4ZU9bvbQlRQ=;
+	s=arc-20240116; t=1755022469; c=relaxed/simple;
+	bh=akH2DWR4r4QnJG7BaGOXS4EKsq/ec3rHMt24O8kSB+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgn9KCSO5po9FrQfyEho+EuVp6rcu0XukmMpyOuJg+s3Gqh7bKpHpV/CwLgkKL/wVAu636YNEqQ1UWfou4KOkemViBz5usxnJ5Z9K9QTJeFmwEyCW8iyAcgGEd1mH0TmtgOZ8UiQPrPY8TXIZnUkFmbgBtgihbDdpT3G3iuKvok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2CCgwm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319CEC4CEF0;
-	Tue, 12 Aug 2025 17:52:54 +0000 (UTC)
+	 MIME-Version; b=D6cB3wgTcynUkiJWJ81n/uBqTiNm4m9D/IotgyuMZUSZFKYJcFY2dWhxtb0EkV1lucZUb1wI9/aHPRjiQv7pGSkdaE6s/fJEwt9HL4Bb31R/lnG38zspWDpqIV89x8VWdVkuYgmpv0om4+uJPaV19Xv4ADpd+rqWsdRd5hRsVb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJX1wehN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A9AC4CEF0;
+	Tue, 12 Aug 2025 18:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021174;
-	bh=7mcBqLR9csTgmZGbu6rCAKBxXYogV9hr4ZU9bvbQlRQ=;
+	s=korg; t=1755022469;
+	bh=akH2DWR4r4QnJG7BaGOXS4EKsq/ec3rHMt24O8kSB+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2CCgwm4uxACuFZNMysypVG+zqX4BW6mNqQP1EdISqBWhRPmlpkhX1Saolgdj0aBv
-	 20bz6onZS5jDUQd6fhAJJVIfQXyoxIAQgICvWt/3vucNNxylgrrtgamL1Fa9dyIxdu
-	 irol7y3QsICdkw8Q1pGhfM0TdQpY8vFmfUqRxfwc=
+	b=QJX1wehNR3KybYYRXYOzM6Ju4g8brUN+gYfwaC9azserbVhzEkEpgWNxUJ1cZwcSN
+	 23ppqWVlJqJ8NBBtrwW3pgjunz0/US/HngK2A8f5Omc/3QTBSRAKVTQsX/T7mVtWfE
+	 7xi/VChH0Ka8sXJ2/xF+5sevx7xnyvu1GnxjL+DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Korsnes <johan.korsnes@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/262] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
+Subject: [PATCH 6.12 164/369] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
 Date: Tue, 12 Aug 2025 19:27:41 +0200
-Message-ID: <20250812172956.132901129@linuxfoundation.org>
+Message-ID: <20250812173020.945236614@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Korsnes <johan.korsnes@gmail.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
+[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
 
-This option was removed from the Kconfig in commit
-8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
-removed from the defconfigs.
+In the cpcap_usb_detect() function, the power_supply_get_by_name()
+function may return `NULL` instead of an error pointer.
+To prevent potential null pointer dereferences, Added a null check.
 
-Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
-Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
+Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/configs/ppc6xx_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/power/supply/cpcap-charger.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index eaf3273372a9..80989e3f6780 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -254,7 +254,6 @@ CONFIG_NET_SCH_DSMARK=m
- CONFIG_NET_SCH_NETEM=m
- CONFIG_NET_SCH_INGRESS=m
- CONFIG_NET_CLS_BASIC=m
--CONFIG_NET_CLS_TCINDEX=m
- CONFIG_NET_CLS_ROUTE4=m
- CONFIG_NET_CLS_FW=m
- CONFIG_NET_CLS_U32=m
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+index 91e7292d86bb..66dc622159a6 100644
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -688,9 +688,8 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 		struct power_supply *battery;
+ 
+ 		battery = power_supply_get_by_name("battery");
+-		if (IS_ERR_OR_NULL(battery)) {
+-			dev_err(ddata->dev, "battery power_supply not available %li\n",
+-					PTR_ERR(battery));
++		if (!battery) {
++			dev_err(ddata->dev, "battery power_supply not available\n");
+ 			return;
+ 		}
+ 
 -- 
 2.39.5
 
