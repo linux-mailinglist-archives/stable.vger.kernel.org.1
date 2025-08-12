@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79708B2353F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3704B232AD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D52163A98FC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 867AC7A8E10
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBDBA2FD1A4;
-	Tue, 12 Aug 2025 18:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2662DFA3E;
+	Tue, 12 Aug 2025 18:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6WkZGVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEvP4dAM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABF013AA2F;
-	Tue, 12 Aug 2025 18:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3DA1D416C;
+	Tue, 12 Aug 2025 18:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024238; cv=none; b=FDC4Y7uyed79dDH8xrKQHR2H7BtbV+/Ic5jpcF5fvu23s6znH/JRfk8ZNi25fnYhJWrNc1KF3Bt3+sBj5PBsP1XWJU8B+A9Tga4s8eKoQxHm0TF/zqaUsJGpfu8oynCPZk9jh9hKL000e8dzqoR4T01EhhaM95EIpEdR1rNLzNM=
+	t=1755022861; cv=none; b=JR+fVmaIWc/9PJR3UBCwouIsOohL8U+WBbhGvbhv2X+J1/LRQGZtlFwPeGBC26sYtmCRdl0z5ff2rfBX5kJQzQvF5/A9XN/AA09fT/q5fz0JKWZPohlZBAyJTHWeXTy5+C/IfEUL3m65B9kEDQOf0KzSUFTlEZ6QpudRkxpDyic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024238; c=relaxed/simple;
-	bh=U/7YGj5lmP+zyHOZNweoW8Rf3vFh73aDjiZAyOtrFS0=;
+	s=arc-20240116; t=1755022861; c=relaxed/simple;
+	bh=PVaFaalyHH4Y3v6O0fhALNEaDIy7Eovu8tNkqC4qLNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIBaH+YWI+jktbVCG0OpEk5MMb22ZD7mKqwce0Nn1+JZ3IfTVEGJJPaqGm6q0+1wBw1DvdCkMri7HskWiG0FSUSO7q0vEbZ41ggz4VBKMh/IhB9ZmHZBEXjHFR/L+2hs0Y7qxGj3pQFobPtxPgESFuDKDTMyatqZopwwuoXR2O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6WkZGVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD89C4CEF0;
-	Tue, 12 Aug 2025 18:43:57 +0000 (UTC)
+	 MIME-Version; b=RKf8pwu/pyiJYktlRT6xZ0rtN1iYDfHGAZ0NrQB69Fc/0ov0s9AcoqTB/2nkZA9t83FepmhT4Ri6hSj5lUz+Lbt6DiRXFPU0GprE6R29whqWKepCY5TLtXlp9YhuH3k3UjL2N7PEdlYNhfUIs7zz71Zxz2hblaEVYwk/iL0Hrvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEvP4dAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52F7C4CEF1;
+	Tue, 12 Aug 2025 18:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024238;
-	bh=U/7YGj5lmP+zyHOZNweoW8Rf3vFh73aDjiZAyOtrFS0=;
+	s=korg; t=1755022861;
+	bh=PVaFaalyHH4Y3v6O0fhALNEaDIy7Eovu8tNkqC4qLNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6WkZGVlyeQ64E0Bb8FjLOLaPJyyQTQKOokSDLHi8uPF95x2rR1Q7UqCXDiEddLRT
-	 U0/sJ4U+74MaTrjhvstOZ8KszLrG+6IVFCQwJXp0O5wU15GuJB61FvhcB5ENUCmEZy
-	 G6kkJFnujMjsUyl7NxfVCV46IyTqJSjgY2nDdxew=
+	b=WEvP4dAMRwi8oBa4iPbEGXtkzmq4zWa/W3CTFCNyLIlVX7xwjNoGsvKzq57Ihgsd3
+	 giM/al1sKBQxvBS6sMMZT/D3iHt/OsOjxj3U9kC7Jw1Sb+LIEGdu7umf33lHmQwiRy
+	 IsEynTV/udbElojyCZ5FXB2ffvF10uYBznBK0Ur4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 281/627] neighbour: Fix null-ptr-deref in neigh_flush_dev().
+Subject: [PATCH 6.12 279/369] PCI: pnv_php: Fix surprise plug detection and recovery
 Date: Tue, 12 Aug 2025 19:29:36 +0200
-Message-ID: <20250812173430.011541223@linuxfoundation.org>
+Message-ID: <20250812173026.443805787@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,198 +63,217 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 1bbb76a899486827394530916f01214d049931b3 ]
+[ Upstream commit a2a2a6fc2469524caa713036297c542746d148dc ]
 
-kernel test robot reported null-ptr-deref in neigh_flush_dev(). [0]
+The existing PowerNV hotplug code did not handle surprise plug events
+correctly, leading to a complete failure of the hotplug system after device
+removal and a required reboot to detect new devices.
 
-The cited commit introduced per-netdev neighbour list and converted
-neigh_flush_dev() to use it instead of the global hash table.
+This comes down to two issues:
 
-One thing we missed is that neigh_table_clear() calls neigh_ifdown()
-with NULL dev.
+ 1) When a device is surprise removed, often the bridge upstream
+    port will cause a PE freeze on the PHB.  If this freeze is not
+    cleared, the MSI interrupts from the bridge hotplug notification
+    logic will not be received by the kernel, stalling all plug events
+    on all slots associated with the PE.
 
-Let's restore the hash table iteration.
+ 2) When a device is removed from a slot, regardless of surprise or
+    programmatic removal, the associated PHB/PE ls left frozen.
+    If this freeze is not cleared via a fundamental reset, skiboot
+    is unable to clear the freeze and cannot retrain / rescan the
+    slot.  This also requires a reboot to clear the freeze and redetect
+    the device in the slot.
 
-Note that IPv6 module is no longer unloadable, so neigh_table_clear()
-is called only when IPv6 fails to initialise, which is unlikely to
-happen.
+Issue the appropriate unfreeze and rescan commands on hotplug events,
+and don't oops on hotplug if pci_bus_to_OF_node() returns NULL.
 
-[0]:
-IPv6: Attempt to unregister permanent protocol 136
-IPv6: Attempt to unregister permanent protocol 17
-Oops: general protection fault, probably for non-canonical address 0xdffffc00000001a0: 0000 [#1] SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000d00-0x0000000000000d07]
-CPU: 1 UID: 0 PID: 1 Comm: systemd Tainted: G                T  6.12.0-rc6-01246-gf7f52738637f #1
-Tainted: [T]=RANDSTRUCT
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:neigh_flush_dev.llvm.6395807810224103582+0x52/0x570
-Code: c1 e8 03 42 8a 04 38 84 c0 0f 85 15 05 00 00 31 c0 41 83 3e 0a 0f 94 c0 48 8d 1c c3 48 81 c3 f8 0c 00 00 48 89 d8 48 c1 e8 03 <42> 80 3c 38 00 74 08 48 89 df e8 f7 49 93 fe 4c 8b 3b 4d 85 ff 0f
-RSP: 0000:ffff88810026f408 EFLAGS: 00010206
-RAX: 00000000000001a0 RBX: 0000000000000d00 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffc0631640
-RBP: ffff88810026f470 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffffffffc0625250 R14: ffffffffc0631640 R15: dffffc0000000000
-FS:  00007f575cb83940(0000) GS:ffff8883aee00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f575db40008 CR3: 00000002bf936000 CR4: 00000000000406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __neigh_ifdown.llvm.6395807810224103582+0x44/0x390
- neigh_table_clear+0xb1/0x268
- ndisc_cleanup+0x21/0x38 [ipv6]
- init_module+0x2f5/0x468 [ipv6]
- do_one_initcall+0x1ba/0x628
- do_init_module+0x21a/0x530
- load_module+0x2550/0x2ea0
- __se_sys_finit_module+0x3d2/0x620
- __x64_sys_finit_module+0x76/0x88
- x64_sys_call+0x7ff/0xde8
- do_syscall_64+0xfb/0x1e8
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x7f575d6f2719
-Code: 08 89 e8 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d b7 06 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007fff82a2a268 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-RAX: ffffffffffffffda RBX: 0000557827b45310 RCX: 00007f575d6f2719
-RDX: 0000000000000000 RSI: 00007f575d584efd RDI: 0000000000000004
-RBP: 00007f575d584efd R08: 0000000000000000 R09: 0000557827b47b00
-R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000020000
-R13: 0000000000000000 R14: 0000557827b470e0 R15: 00007f575dbb4270
- </TASK>
-Modules linked in: ipv6(+)
-
-Fixes: f7f52738637f4 ("neighbour: Create netdev->neighbour association")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202507200931.7a89ecd8-lkp@intel.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250723195443.448163-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+[bhelgaas: tidy comments]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/171044224.1359864.1752615546988.JavaMail.zimbra@raptorengineeringinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 88 ++++++++++++++++++++++++++++++--------------
- 1 file changed, 61 insertions(+), 27 deletions(-)
+ arch/powerpc/kernel/pci-hotplug.c |   3 +
+ drivers/pci/hotplug/pnv_php.c     | 110 +++++++++++++++++++++++++++++-
+ 2 files changed, 110 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 49dce9a82295..a8dc72eda202 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -368,6 +368,43 @@ static void pneigh_queue_purge(struct sk_buff_head *list, struct net *net,
- 	}
+diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
+index 9ea74973d78d..6f444d0822d8 100644
+--- a/arch/powerpc/kernel/pci-hotplug.c
++++ b/arch/powerpc/kernel/pci-hotplug.c
+@@ -141,6 +141,9 @@ void pci_hp_add_devices(struct pci_bus *bus)
+ 	struct pci_controller *phb;
+ 	struct device_node *dn = pci_bus_to_OF_node(bus);
+ 
++	if (!dn)
++		return;
++
+ 	phb = pci_bus_to_host(bus);
+ 
+ 	mode = PCI_PROBE_NORMAL;
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 5476c9e7760d..4f85e7fe29ec 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -4,12 +4,14 @@
+  *
+  * Copyright Gavin Shan, IBM Corporation 2016.
+  * Copyright (C) 2025 Raptor Engineering, LLC
++ * Copyright (C) 2025 Raptor Computing Systems, LLC
+  */
+ 
+ #include <linux/bitfield.h>
+ #include <linux/libfdt.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/delay.h>
+ #include <linux/pci_hotplug.h>
+ #include <linux/of_fdt.h>
+ 
+@@ -469,6 +471,61 @@ static int pnv_php_set_attention_state(struct hotplug_slot *slot, u8 state)
+ 	return 0;
  }
  
-+static void neigh_flush_one(struct neighbour *n)
++static int pnv_php_activate_slot(struct pnv_php_slot *php_slot,
++				 struct hotplug_slot *slot)
 +{
-+	hlist_del_rcu(&n->hash);
-+	hlist_del_rcu(&n->dev_list);
++	int ret, i;
 +
-+	write_lock(&n->lock);
++	/*
++	 * Issue initial slot activation command to firmware
++	 *
++	 * Firmware will power slot on, attempt to train the link, and
++	 * discover any downstream devices. If this process fails, firmware
++	 * will return an error code and an invalid device tree. Failure
++	 * can be caused for multiple reasons, including a faulty
++	 * downstream device, poor connection to the downstream device, or
++	 * a previously latched PHB fence.  On failure, issue fundamental
++	 * reset up to three times before aborting.
++	 */
++	ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
++	if (ret) {
++		SLOT_WARN(
++			php_slot,
++			"PCI slot activation failed with error code %d, possible frozen PHB",
++			ret);
++		SLOT_WARN(
++			php_slot,
++			"Attempting complete PHB reset before retrying slot activation\n");
++		for (i = 0; i < 3; i++) {
++			/*
++			 * Slot activation failed, PHB may be fenced from a
++			 * prior device failure.
++			 *
++			 * Use the OPAL fundamental reset call to both try a
++			 * device reset and clear any potentially active PHB
++			 * fence / freeze.
++			 */
++			SLOT_WARN(php_slot, "Try %d...\n", i + 1);
++			pci_set_pcie_reset_state(php_slot->pdev,
++						 pcie_warm_reset);
++			msleep(250);
++			pci_set_pcie_reset_state(php_slot->pdev,
++						 pcie_deassert_reset);
 +
-+	neigh_del_timer(n);
-+	neigh_mark_dead(n);
++			ret = pnv_php_set_slot_power_state(
++				slot, OPAL_PCI_SLOT_POWER_ON);
++			if (!ret)
++				break;
++		}
 +
-+	if (refcount_read(&n->refcnt) != 1) {
-+		/* The most unpleasant situation.
-+		 * We must destroy neighbour entry,
-+		 * but someone still uses it.
-+		 *
-+		 * The destroy will be delayed until
-+		 * the last user releases us, but
-+		 * we must kill timers etc. and move
-+		 * it to safe state.
-+		 */
-+		__skb_queue_purge(&n->arp_queue);
-+		n->arp_queue_len_bytes = 0;
-+		WRITE_ONCE(n->output, neigh_blackhole);
-+
-+		if (n->nud_state & NUD_VALID)
-+			n->nud_state = NUD_NOARP;
-+		else
-+			n->nud_state = NUD_NONE;
-+
-+		neigh_dbg(2, "neigh %p is stray\n", n);
++		if (i >= 3)
++			SLOT_WARN(php_slot,
++				  "Failed to bring slot online, aborting!\n");
 +	}
 +
-+	write_unlock(&n->lock);
-+
-+	neigh_cleanup_and_release(n);
++	return ret;
 +}
 +
- static void neigh_flush_dev(struct neigh_table *tbl, struct net_device *dev,
- 			    bool skip_perm)
+ static int pnv_php_enable(struct pnv_php_slot *php_slot, bool rescan)
  {
-@@ -381,32 +418,24 @@ static void neigh_flush_dev(struct neigh_table *tbl, struct net_device *dev,
- 		if (skip_perm && n->nud_state & NUD_PERMANENT)
- 			continue;
+ 	struct hotplug_slot *slot = &php_slot->slot;
+@@ -531,7 +588,7 @@ static int pnv_php_enable(struct pnv_php_slot *php_slot, bool rescan)
+ 		goto scan;
  
--		hlist_del_rcu(&n->hash);
--		hlist_del_rcu(&n->dev_list);
--		write_lock(&n->lock);
--		neigh_del_timer(n);
--		neigh_mark_dead(n);
--		if (refcount_read(&n->refcnt) != 1) {
--			/* The most unpleasant situation.
--			 * We must destroy neighbour entry,
--			 * but someone still uses it.
--			 *
--			 * The destroy will be delayed until
--			 * the last user releases us, but
--			 * we must kill timers etc. and move
--			 * it to safe state.
--			 */
--			__skb_queue_purge(&n->arp_queue);
--			n->arp_queue_len_bytes = 0;
--			WRITE_ONCE(n->output, neigh_blackhole);
--			if (n->nud_state & NUD_VALID)
--				n->nud_state = NUD_NOARP;
--			else
--				n->nud_state = NUD_NONE;
--			neigh_dbg(2, "neigh %p is stray\n", n);
--		}
--		write_unlock(&n->lock);
--		neigh_cleanup_and_release(n);
-+		neigh_flush_one(n);
-+	}
-+}
-+
-+static void neigh_flush_table(struct neigh_table *tbl)
-+{
-+	struct neigh_hash_table *nht;
-+	int i;
-+
-+	nht = rcu_dereference_protected(tbl->nht,
-+					lockdep_is_held(&tbl->lock));
-+
-+	for (i = 0; i < (1 << nht->hash_shift); i++) {
-+		struct hlist_node *tmp;
-+		struct neighbour *n;
-+
-+		neigh_for_each_in_bucket_safe(n, tmp, &nht->hash_heads[i])
-+			neigh_flush_one(n);
- 	}
+ 	/* Power is off, turn it on and then scan the slot */
+-	ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
++	ret = pnv_php_activate_slot(php_slot, slot);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -838,16 +895,63 @@ static int pnv_php_enable_msix(struct pnv_php_slot *php_slot)
+ 	return entry.vector;
  }
  
-@@ -422,7 +451,12 @@ static int __neigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
- 			  bool skip_perm)
- {
- 	write_lock_bh(&tbl->lock);
--	neigh_flush_dev(tbl, dev, skip_perm);
-+	if (likely(dev)) {
-+		neigh_flush_dev(tbl, dev, skip_perm);
++static void
++pnv_php_detect_clear_suprise_removal_freeze(struct pnv_php_slot *php_slot)
++{
++	struct pci_dev *pdev = php_slot->pdev;
++	struct eeh_dev *edev;
++	struct eeh_pe *pe;
++	int i, rc;
++
++	/*
++	 * When a device is surprise removed from a downstream bridge slot,
++	 * the upstream bridge port can still end up frozen due to related EEH
++	 * events, which will in turn block the MSI interrupts for slot hotplug
++	 * detection.
++	 *
++	 * Detect and thaw any frozen upstream PE after slot deactivation.
++	 */
++	edev = pci_dev_to_eeh_dev(pdev);
++	pe = edev ? edev->pe : NULL;
++	rc = eeh_pe_get_state(pe);
++	if ((rc == -ENODEV) || (rc == -ENOENT)) {
++		SLOT_WARN(
++			php_slot,
++			"Upstream bridge PE state unknown, hotplug detect may fail\n");
 +	} else {
-+		DEBUG_NET_WARN_ON_ONCE(skip_perm);
-+		neigh_flush_table(tbl);
++		if (pe->state & EEH_PE_ISOLATED) {
++			SLOT_WARN(
++				php_slot,
++				"Upstream bridge PE %02x frozen, thawing...\n",
++				pe->addr);
++			for (i = 0; i < 3; i++)
++				if (!eeh_unfreeze_pe(pe))
++					break;
++			if (i >= 3)
++				SLOT_WARN(
++					php_slot,
++					"Unable to thaw PE %02x, hotplug detect will fail!\n",
++					pe->addr);
++			else
++				SLOT_WARN(php_slot,
++					  "PE %02x thawed successfully\n",
++					  pe->addr);
++		}
 +	}
- 	pneigh_ifdown_and_unlock(tbl, dev);
- 	pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
- 			   tbl->family);
++}
++
+ static void pnv_php_event_handler(struct work_struct *work)
+ {
+ 	struct pnv_php_event *event =
+ 		container_of(work, struct pnv_php_event, work);
+ 	struct pnv_php_slot *php_slot = event->php_slot;
+ 
+-	if (event->added)
++	if (event->added) {
+ 		pnv_php_enable_slot(&php_slot->slot);
+-	else
++	} else {
+ 		pnv_php_disable_slot(&php_slot->slot);
++		pnv_php_detect_clear_suprise_removal_freeze(php_slot);
++	}
+ 
+ 	kfree(event);
+ }
 -- 
 2.39.5
 
