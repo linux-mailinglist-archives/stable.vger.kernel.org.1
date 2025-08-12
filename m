@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D9DB23302
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65ADBB231AE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45B737AC0D2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFEEF188A890
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98FE1EBFE0;
-	Tue, 12 Aug 2025 18:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090382FD1DA;
+	Tue, 12 Aug 2025 18:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cs8KH+Gl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufqQegPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796021FF7C5;
-	Tue, 12 Aug 2025 18:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2AA2F90C8;
+	Tue, 12 Aug 2025 18:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023024; cv=none; b=QmSwrdiOd03Tgd109D0IUUhhmkBWlfQVuWaXBrCKs73rPotQ3uCyGtWz7iSbzgkqovMg+UuvGJDmZRQlsZ/AvdFBfrtPcT7XHDZcfJzzm5bn+6qRKn5f+bmkYhpLsHnWdHhPdWaIZ021kRhQohvRcM57BwsuDns/vEFm+rv8Etc=
+	t=1755021826; cv=none; b=S2bVB90qYfoNUqaxRDirrQrWNBPNyTIaNS+DMea44OaLVG7Q+XJW4Csd3BJw3yJ4sTcaU0G+x4E2EINMPwYh+b5+fxv3xcSzvH/H4RgJ2WjQRQ+2UvmBx/dKOvF6k8AQpEIStgimNNomAc8RuFkCkU0Th3vUrEr4uPbHzOB7bXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023024; c=relaxed/simple;
-	bh=XKLWf/mSKfBx4hp27GrhebNR4bxh/CKdqqPitgdSN4U=;
+	s=arc-20240116; t=1755021826; c=relaxed/simple;
+	bh=f576PLdS0DNQPoBdbz5gmXKaZKwPs7yjHkhantSAWqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhF4EPlkuujkylGER3hdcXmcsEBzopWHOgo7jbfgRhoIHTSq5GSJkWSmswg0OEF3Jh/LAaGiI5uTgWn56zUNJGFJuxWPAwdMQL6LbDfo1rErsRSOsEhe3UiZrNTd5rS/zk9RndvohxR/dFyLUXIHiM2NXlO8uECDnm96MzI9boY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cs8KH+Gl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD408C4CEF7;
-	Tue, 12 Aug 2025 18:23:43 +0000 (UTC)
+	 MIME-Version; b=GGNpDhi/UBCChVQ+/PmDLT2LdZUbVW+XC/54kwIEhuE1T5kuvjULhPjOER4AB5o3TPcQFmCG327HfCluOPaOIOMtuA1WU7B1K0wv5w/JUC7dL+gtoMV8LHXP19J62PEiS/2+kuDLzTk10wU/bK8aE43GeaqGO1iJMypEo1i1SV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufqQegPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08AEC4CEF0;
+	Tue, 12 Aug 2025 18:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023024;
-	bh=XKLWf/mSKfBx4hp27GrhebNR4bxh/CKdqqPitgdSN4U=;
+	s=korg; t=1755021826;
+	bh=f576PLdS0DNQPoBdbz5gmXKaZKwPs7yjHkhantSAWqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cs8KH+Glu4XrDNltVXYUNxDhoR+t003g06OIiwNtLfuQBoeZR/HjiYLesn5yjNcLA
-	 8t1hHtvuHfLNSO1kKeM1T+hVoRdI0j7zySben7VNFzhmhmwrU8iELof+1gz139W0RZ
-	 iDwk1oF6x+gEHBHC9Qc3qg5z/lwKbzj77W4UV4ac=
+	b=ufqQegPoKITfSPK4FI/QeIP6/Z0p5bWmE1XMvJCoJoJ46K6bMD9F//Hnr3bvG6FRq
+	 D11FkrVjkSCa/g2vicvD9sXdqamD4B3mewl0AMcGQ5yjc7whYFS7m0Zu9oyYXEK61w
+	 2axf8jUsxkCbRsR3UtrCPtIXflgG69mgNLZGPd7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quang Le <quanglex97@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 328/369] net/packet: fix a race in packet_set_ring() and packet_notifier()
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.6 237/262] ksmbd: fix null pointer dereference error in generate_encryptionkey
 Date: Tue, 12 Aug 2025 19:30:25 +0200
-Message-ID: <20250812173029.052171172@linuxfoundation.org>
+Message-ID: <20250812173003.249883520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quang Le <quanglex97@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 01d3c8417b9c1b884a8a981a3b886da556512f36 upstream.
+commit 9b493ab6f35178afd8d619800df9071992f715de upstream.
 
-When packet_set_ring() releases po->bind_lock, another thread can
-run packet_notifier() and process an NETDEV_UP event.
+If client send two session setups with krb5 authenticate to ksmbd,
+null pointer dereference error in generate_encryptionkey could happen.
+sess->Preauth_HashValue is set to NULL if session is valid.
+So this patch skip generate encryption key if session is valid.
 
-This race and the fix are both similar to that of commit 15fe076edea7
-("net/packet: fix a race in packet_bind() and packet_notifier()").
-
-There too the packet_notifier NETDEV_UP event managed to run while a
-po->bind_lock critical section had to be temporarily released. And
-the fix was similarly to temporarily set po->num to zero to keep
-the socket unhooked until the lock is retaken.
-
-The po->bind_lock in packet_set_ring and packet_notifier precede the
-introduction of git history.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Quang Le <quanglex97@gmail.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250801175423.2970334-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27654
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/smb/server/smb2pdu.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -4562,10 +4562,10 @@ static int packet_set_ring(struct sock *
- 	spin_lock(&po->bind_lock);
- 	was_running = packet_sock_flag(po, PACKET_SOCK_RUNNING);
- 	num = po->num;
--	if (was_running) {
--		WRITE_ONCE(po->num, 0);
-+	WRITE_ONCE(po->num, 0);
-+	if (was_running)
- 		__unregister_prot_hook(sk, false);
--	}
-+
- 	spin_unlock(&po->bind_lock);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1610,11 +1610,24 @@ static int krb5_authenticate(struct ksmb
  
- 	synchronize_net();
-@@ -4597,10 +4597,10 @@ static int packet_set_ring(struct sock *
- 	mutex_unlock(&po->pg_vec_lock);
+ 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
  
- 	spin_lock(&po->bind_lock);
--	if (was_running) {
--		WRITE_ONCE(po->num, num);
-+	WRITE_ONCE(po->num, num);
-+	if (was_running)
- 		register_prot_hook(sk);
--	}
+-	if ((conn->sign || server_conf.enforced_signing) ||
++	/*
++	 * If session state is SMB2_SESSION_VALID, We can assume
++	 * that it is reauthentication. And the user/password
++	 * has been verified, so return it here.
++	 */
++	if (sess->state == SMB2_SESSION_VALID) {
++		if (conn->binding)
++			goto binding_session;
++		return 0;
++	}
 +
- 	spin_unlock(&po->bind_lock);
- 	if (pg_vec && (po->tp_version > TPACKET_V2)) {
- 		/* Because we don't support block-based V3 on tx-ring */
++	if ((rsp->SessionFlags != SMB2_SESSION_FLAG_IS_GUEST_LE &&
++	    (conn->sign || server_conf.enforced_signing)) ||
+ 	    (req->SecurityMode & SMB2_NEGOTIATE_SIGNING_REQUIRED))
+ 		sess->sign = true;
+ 
+-	if (smb3_encryption_negotiated(conn)) {
++	if (smb3_encryption_negotiated(conn) &&
++	    !(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
+ 		retval = conn->ops->generate_encryptionkey(conn, sess);
+ 		if (retval) {
+ 			ksmbd_debug(SMB,
+@@ -1627,6 +1640,7 @@ static int krb5_authenticate(struct ksmb
+ 		sess->sign = false;
+ 	}
+ 
++binding_session:
+ 	if (conn->dialect >= SMB30_PROT_ID) {
+ 		chann = lookup_chann_list(sess, conn);
+ 		if (!chann) {
 
 
 
