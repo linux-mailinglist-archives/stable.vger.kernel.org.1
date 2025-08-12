@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33955B233B9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1994AB231B6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB9C21A2445D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5343A7BE0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372CE2FD1A2;
-	Tue, 12 Aug 2025 18:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB00D2BEC2F;
+	Tue, 12 Aug 2025 18:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj+I/kf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="um5saUXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C761EF38C;
-	Tue, 12 Aug 2025 18:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89799305E08;
+	Tue, 12 Aug 2025 18:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023232; cv=none; b=SjbBvpJuc3Ppvq0KK21aSF+Ldf9/KI0XwCDK8eDCdrmKEyEm3K7/wsDZxeZO6SLubHFGiBhVe6TLN+PHMrznYXoT7Zxwl+aqVedQIhLnn+pDZOa/EeqSiqqSO7i02CPFpdXdioq8t1MVQ+mNQQ8coYXXejLkJWdNKHC9QjoeUks=
+	t=1755021944; cv=none; b=l32QRmJAh2ImnM2U4J8YI4J15bg4WhWorOSUwvNM/JuUHWrG+HtcUOm/HjqzQFAiBx3IE5KumCy8YcA1Nan+3MoJ0N0L9PqhnUZ/bCmkRPurREKVQ7jhztfXzJwuwpKw5F5F/J5jhXOyeTv9sS6Kur7SpleS410f8wLvv9Nu5XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023232; c=relaxed/simple;
-	bh=REaYwkF8ITYE8gjSrbM7Viuui2bP3ENFK5XowNEz//Q=;
+	s=arc-20240116; t=1755021944; c=relaxed/simple;
+	bh=51wXK7BH7TcZVxDiht6OSr+AzCVcoSHpIn0vj6N5dgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6HUahzFdzm35DwFAN64rDCIr3ofFrcmQbVrLSIQP160/urOZILukTKCJ0DJde5hGF4jc1rKFSMMKMA+8ayHJRcwAvM6gzjpR3/nUiM8FGMg4zm7jW5WjIr4Kamze8PmY/sEXxFXJ//iogtznUmfkDBEvjVOkkMzxYw0Jp8ubV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lj+I/kf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E99C4CEF0;
-	Tue, 12 Aug 2025 18:27:11 +0000 (UTC)
+	 MIME-Version; b=lqHwqem4fbglrG3nPD9nCaF3ybEkzglWTCllTTA/d8eVXtC95rqDVLqK20bLXZKZy06jZOgFqBSes134yjAUdcFJRmdcLdp/5zsvmHz1nq8kw+iqL+JeV09Oroh7hBk1lTLIdpRHl3fxP4lK/AAUbpaqR4BzVbisJwmnqYP+VUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=um5saUXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFFEC4CEF8;
+	Tue, 12 Aug 2025 18:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023231;
-	bh=REaYwkF8ITYE8gjSrbM7Viuui2bP3ENFK5XowNEz//Q=;
+	s=korg; t=1755021944;
+	bh=51wXK7BH7TcZVxDiht6OSr+AzCVcoSHpIn0vj6N5dgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lj+I/kf5FZ/4IWTvd8KyENjOBA5bb7UWN6FRB6XzFW0uxYAbD7bgKOf/5wQQO9qE9
-	 pZyZYGWJVLAH62ZTpujoNSiWJS/pEzM3eY0IRyygiXyLfBbhI0flLUvYOOuedZzheZ
-	 U9O9pCUiwJzX2vS6CN7ewCYOdkE48StKJD4B20aM=
+	b=um5saUXmUy3Lle+ojLjdHbyX5132pjmffJXzHnEdOLIlQ2/gNbeWYQGNJOr0XE4bn
+	 TFPKRVsb5sze2XM41UNKbuedeq5cVMsBAc9f+IK00e/90C+W1AABIZbpzoO+E0/cyQ
+	 k0R2mWeJPV80pWr4TStLljKMvndXECHFM5VbRYXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Lane Odenbach <laodenbach@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 002/627] [ceph] parse_longname(): strrchr() expects NUL-terminated string
-Date: Tue, 12 Aug 2025 19:24:57 +0200
-Message-ID: <20250812173419.404765606@linuxfoundation.org>
+Subject: [PATCH 6.12 001/369] ASoC: amd: yc: Add DMI quirk for HP Laptop 17 cp-2033dx
+Date: Tue, 12 Aug 2025 19:24:58 +0200
+Message-ID: <20250812173014.796557202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Lane Odenbach <laodenbach@gmail.com>
 
-[ Upstream commit 101841c38346f4ca41dc1802c867da990ffb32eb ]
+[ Upstream commit 7bab1bd9fdf15b9fa7e6a4b0151deab93df3c80d ]
 
-... and parse_longname() is not guaranteed that.  That's the reason
-why it uses kmemdup_nul() to build the argument for kstrtou64();
-the problem is, kstrtou64() is not the only thing that need it.
+This fixes the internal microphone in the stated device
 
-Just get a NUL-terminated copy of the entire thing and be done
-with that...
-
-Fixes: dd66df0053ef "ceph: add support for encrypted snapshot names"
-Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Lane Odenbach <laodenbach@gmail.com>
+Link: https://patch.msgid.link/20250715182038.10048-1-laodenbach@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/crypto.c | 31 ++++++++++++-------------------
- 1 file changed, 12 insertions(+), 19 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/ceph/crypto.c b/fs/ceph/crypto.c
-index 3b3c4d8d401e..9c7062245880 100644
---- a/fs/ceph/crypto.c
-+++ b/fs/ceph/crypto.c
-@@ -215,35 +215,31 @@ static struct inode *parse_longname(const struct inode *parent,
- 	struct ceph_client *cl = ceph_inode_to_client(parent);
- 	struct inode *dir = NULL;
- 	struct ceph_vino vino = { .snap = CEPH_NOSNAP };
--	char *inode_number;
--	char *name_end;
--	int orig_len = *name_len;
-+	char *name_end, *inode_number;
- 	int ret = -EIO;
--
-+	/* NUL-terminate */
-+	char *str __free(kfree) = kmemdup_nul(name, *name_len, GFP_KERNEL);
-+	if (!str)
-+		return ERR_PTR(-ENOMEM);
- 	/* Skip initial '_' */
--	name++;
--	name_end = strrchr(name, '_');
-+	str++;
-+	name_end = strrchr(str, '_');
- 	if (!name_end) {
--		doutc(cl, "failed to parse long snapshot name: %s\n", name);
-+		doutc(cl, "failed to parse long snapshot name: %s\n", str);
- 		return ERR_PTR(-EIO);
- 	}
--	*name_len = (name_end - name);
-+	*name_len = (name_end - str);
- 	if (*name_len <= 0) {
- 		pr_err_client(cl, "failed to parse long snapshot name\n");
- 		return ERR_PTR(-EIO);
- 	}
- 
- 	/* Get the inode number */
--	inode_number = kmemdup_nul(name_end + 1,
--				   orig_len - *name_len - 2,
--				   GFP_KERNEL);
--	if (!inode_number)
--		return ERR_PTR(-ENOMEM);
-+	inode_number = name_end + 1;
- 	ret = kstrtou64(inode_number, 10, &vino.ino);
- 	if (ret) {
--		doutc(cl, "failed to parse inode number: %s\n", name);
--		dir = ERR_PTR(ret);
--		goto out;
-+		doutc(cl, "failed to parse inode number: %s\n", str);
-+		return ERR_PTR(ret);
- 	}
- 
- 	/* And finally the inode */
-@@ -254,9 +250,6 @@ static struct inode *parse_longname(const struct inode *parent,
- 		if (IS_ERR(dir))
- 			doutc(cl, "can't find inode %s (%s)\n", inode_number, name);
- 	}
--
--out:
--	kfree(inode_number);
- 	return dir;
- }
- 
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 1689b6b22598..42d123cb8b4c 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -577,6 +577,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "8A7F"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_BOARD_NAME, "8A81"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.39.5
 
