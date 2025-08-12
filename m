@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED1EB22FCA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4428B2344A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CC7F188A2C1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56B167B3C9E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E9D2FD1D6;
-	Tue, 12 Aug 2025 17:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AAA2F5E;
+	Tue, 12 Aug 2025 18:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAK+6mgV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzyyYm4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3F86331;
-	Tue, 12 Aug 2025 17:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D6B6BB5B;
+	Tue, 12 Aug 2025 18:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020576; cv=none; b=PlKJETt65NAB5UtZ2O6y2jjN6bpK6Kr8EOIzHyrX4CAVCdjXSCQnY5N0pAHzC+BBywIjiGVTp4J/npnHnz17jz+3FMhCeDdivjPiPgN9574CNVHo97jS8cy56yWaydz8J7iE4ybDPARvSydiD3Lk7G0Pa5rrWjYvNjpZsn0tAnY=
+	t=1755023892; cv=none; b=BgtcAv/pxUxvEuntCIp+nAT4pLH2gkepwEFOhWkyRr/nw4RD/xf29HrKtVkzdrk4gdeex9UaGqz/GXIyPs+Oc7KoFwzWhluWUeETNfsW5dhBeImXfPY6hjOZKBvdHYBhwRGPjoCnkHL7dTL3zQMh1I7tdE7Ww6+R/q11ERArWTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020576; c=relaxed/simple;
-	bh=sqE9alErCFiyPduyPhwGLWbAHybBc941uQZ+DuqzKsA=;
+	s=arc-20240116; t=1755023892; c=relaxed/simple;
+	bh=VbgCIOiH69oKrdgQJ7n/7YvXdsMTwST1fZgIYA52+nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCo14tG6ptVB+BTVyRBC4JYvStf+Mplr4lX7m78qPhet5vsiqXNjWHNJd8a151ch9czZ9xHFvnbctp4s91H8oh/Bh7C19R3B6i2qAbb0nhHz66bwvKAjMFqRWwOeoI5sL2uuE0sNHCLIqCxL/aBWK52TWrf1UaHjH0wfFdxSXQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAK+6mgV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59C3C4CEF0;
-	Tue, 12 Aug 2025 17:42:55 +0000 (UTC)
+	 MIME-Version; b=uixNxHbtPbE4C89Ee6cI3ixTKzs1ACI3ZGvZUCjRUqmc31iq0Cih6o2FL4irTvYxPZpahUK5pFjvrwpBFtaRCgGf7PYnDqsAisnneTsN6s9VYQLjDymsVN1r4+JdVirKQX9EonGihdk+AWz5he/gucH3xsASGRrtBfjRLrS19Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzyyYm4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6248C4CEF0;
+	Tue, 12 Aug 2025 18:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020576;
-	bh=sqE9alErCFiyPduyPhwGLWbAHybBc941uQZ+DuqzKsA=;
+	s=korg; t=1755023892;
+	bh=VbgCIOiH69oKrdgQJ7n/7YvXdsMTwST1fZgIYA52+nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAK+6mgVwxl+gNWJ7R5MFlsvvLj0pfGojXhOwo4UzmvrWpO1jDX2qJPaUtgXY9NRG
-	 fXJNsYl3/lzCS0gyrTHeXRQExvwui/u/r+h7BsXJDr4EtL7gUQqE9arsnDTvcZOHrm
-	 C87Y55D8ux+EFaKtjys6nA6J26CR400n+UoBGlx0=
+	b=UzyyYm4e6aybxc1L9r3qsVLLRguDhbYF2Y7ArdcAhaCVBkunIwcAGNYadxSyE1BO7
+	 bQytumN3RBqZr3EqqhhW99pWvCICO2qUX5KTg8DUjpomQHfUZHGAMlVWQjLmRkSk8P
+	 mgw/ZPboy1Hmm2V/TZoeENWQ6G4ZXw46jirHVKNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/253] mwl8k: Add missing check after DMA map
+Subject: [PATCH 6.16 213/627] RDMA/mlx5: Fix UMR modifying of mkey page size
 Date: Tue, 12 Aug 2025 19:28:28 +0200
-Message-ID: <20250812172953.811787531@linuxfoundation.org>
+Message-ID: <20250812173427.385636131@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Edward Srouji <edwards@nvidia.com>
 
-[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
+[ Upstream commit c4f96972c3c206ac8f6770b5ecd5320b561d0058 ]
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+When changing the page size on an mkey, the driver needs to set the
+appropriate bits in the mkey mask to indicate which fields are being
+modified.
+The 6th bit of a page size in mlx5 driver is considered an extension,
+and this bit has a dedicated capability and mask bits.
 
-Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Previously, the driver was not setting this mask in the mkey mask when
+performing page size changes, regardless of its hardware support,
+potentially leading to an incorrect page size updates.
+
+This fixes the issue by setting the relevant bit in the mkey mask when
+performing page size changes on an mkey and the 6th bit of this field is
+supported by the hardware.
+
+Fixes: cef7dde8836a ("net/mlx5: Expand mkey page size to support 6 bits")
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/9f43a9c73bf2db6085a99dc836f7137e76579f09.1751979184.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/hw/mlx5/umr.c | 6 ++++--
+ include/linux/mlx5/device.h      | 1 +
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index 61697dad4ea6..cc3a9543d255 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -1222,6 +1222,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
+diff --git a/drivers/infiniband/hw/mlx5/umr.c b/drivers/infiniband/hw/mlx5/umr.c
+index 5be4426a2884..25601dea9e30 100644
+--- a/drivers/infiniband/hw/mlx5/umr.c
++++ b/drivers/infiniband/hw/mlx5/umr.c
+@@ -32,13 +32,15 @@ static __be64 get_umr_disable_mr_mask(void)
+ 	return cpu_to_be64(result);
+ }
  
- 		addr = dma_map_single(&priv->pdev->dev, skb->data,
- 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&priv->pdev->dev, addr)) {
-+			kfree_skb(skb);
-+			break;
-+		}
+-static __be64 get_umr_update_translation_mask(void)
++static __be64 get_umr_update_translation_mask(struct mlx5_ib_dev *dev)
+ {
+ 	u64 result;
  
- 		rxq->rxd_count++;
- 		rx = rxq->tail++;
+ 	result = MLX5_MKEY_MASK_LEN |
+ 		 MLX5_MKEY_MASK_PAGE_SIZE |
+ 		 MLX5_MKEY_MASK_START_ADDR;
++	if (MLX5_CAP_GEN_2(dev->mdev, umr_log_entity_size_5))
++		result |= MLX5_MKEY_MASK_PAGE_SIZE_5;
+ 
+ 	return cpu_to_be64(result);
+ }
+@@ -654,7 +656,7 @@ static void mlx5r_umr_final_update_xlt(struct mlx5_ib_dev *dev,
+ 		flags & MLX5_IB_UPD_XLT_ENABLE || flags & MLX5_IB_UPD_XLT_ADDR;
+ 
+ 	if (update_translation) {
+-		wqe->ctrl_seg.mkey_mask |= get_umr_update_translation_mask();
++		wqe->ctrl_seg.mkey_mask |= get_umr_update_translation_mask(dev);
+ 		if (!mr->ibmr.length)
+ 			MLX5_SET(mkc, &wqe->mkey_seg, length64, 1);
+ 	}
+diff --git a/include/linux/mlx5/device.h b/include/linux/mlx5/device.h
+index 6822cfa5f4ad..9d2467f982ad 100644
+--- a/include/linux/mlx5/device.h
++++ b/include/linux/mlx5/device.h
+@@ -280,6 +280,7 @@ enum {
+ 	MLX5_MKEY_MASK_SMALL_FENCE	= 1ull << 23,
+ 	MLX5_MKEY_MASK_RELAXED_ORDERING_WRITE	= 1ull << 25,
+ 	MLX5_MKEY_MASK_FREE			= 1ull << 29,
++	MLX5_MKEY_MASK_PAGE_SIZE_5		= 1ull << 42,
+ 	MLX5_MKEY_MASK_RELAXED_ORDERING_READ	= 1ull << 47,
+ };
+ 
 -- 
 2.39.5
 
