@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-168202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FEDB233F4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442BDB233C8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF7E0623DC0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6EE11A25C21
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7C02FDC55;
-	Tue, 12 Aug 2025 18:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB14F2FE560;
+	Tue, 12 Aug 2025 18:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goQkqU/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4Snq0Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398132FD1C5;
-	Tue, 12 Aug 2025 18:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681F72FDC55;
+	Tue, 12 Aug 2025 18:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023389; cv=none; b=EDzAsVeBGSL8lwj3gh6F/EQ84XKwG47+PX1I2Loonk6lRGNUm+/MeUj+/6n7U3F39oxC0sNGwnKJum4EbtL4R0IPUW5bCF/Ttr0upmOymK26VWCkW4AGypXx6QNMlXFIUZxlmwzHg8L+FLUXhYhw99FkkJXk4/X8mDEiyd7bKWg=
+	t=1755023277; cv=none; b=nxLge5Hzyil/jaIVelnn4GrP6W6RVmIeiiC+YKZN7X6+I5xeh5R+Gf7+J08gYp8qzl4cI56Vu10ymXROfS2IlciNZJ+waCK7tMC+4C+8MY18NO+zko0g0unzAu4AX2IC7o/rsocbcydLWM/7obl4gDpv+0F2Sf6I+pPjd8k+sNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023389; c=relaxed/simple;
-	bh=6tKQ45N8VsPLXlOZbjhIfD/IMXGYvrtvOpVlB8WDZyI=;
+	s=arc-20240116; t=1755023277; c=relaxed/simple;
+	bh=Uc+klOh6+HjKHSZR6tR+00HVo9ydvk2rUlfM5C6kslk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JulJwCKpq4XFlXPzoIfEjz9YJTOHx43cBjbwohuOBcWYbV74lMiGiPa55Smja1KvhvwHs8xZLqXv0wvBstq4L0/l24krVG/FEIqrl9Y6vBW/E6dXQFeOc4RCF6b5RtcVAV7meSpBidLKHvhaZ29qwQ7svJcLrwafM/4SF49hISo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goQkqU/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D413C4CEF0;
-	Tue, 12 Aug 2025 18:29:48 +0000 (UTC)
+	 MIME-Version; b=J38gBktvVOeVpi5WHcLzDArTYq1xIujyYpYIZgCvD4TrYjQ3bGXNXdOIL55pr/MF4ZNa8bKTe37A7EeTl79DC5mUspcH//ZKwGEm8wYBOjRQES5rux+PdTXJEnp+SZta5sF0V7vY33ifaT3gLuUNp+rKS+rbvOpLHsPLGz/24n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4Snq0Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6CFC4CEF0;
+	Tue, 12 Aug 2025 18:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023389;
-	bh=6tKQ45N8VsPLXlOZbjhIfD/IMXGYvrtvOpVlB8WDZyI=;
+	s=korg; t=1755023277;
+	bh=Uc+klOh6+HjKHSZR6tR+00HVo9ydvk2rUlfM5C6kslk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=goQkqU/J8s7O7N3b9q6ad9IstiNd1+HCtOZFMw8ESY578h6VX/RduR3i1q/2hXH0Y
-	 03lTAD3ZqOhJBh2PncC2Q/H2p6VvYYKnISPQh2ataBvXRgIi6tG/EC8vzCgiTqVtIx
-	 HurRqIt6Ir9SWaS7KfJJBPF6a1/vvCC9np0nzUh8=
+	b=u4Snq0Dv8/zkdmIS/pMqiEVHySIzQYRwrGyOnMPWl9OcG3Zm3zXJaM1VtLhmp3QHp
+	 /3Ni/KvvFC6kgjJcFKUW1E5fXIFQH6nJ6t1M6oUxnQ6KIvZaEgJzi2P+jKv9h7b3bf
+	 qscDz8MNxgqRfG1swR/+WEeAh1UdqlxksXuPC6TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Giedrius=20Trainavi=C4=8Dius?= <giedrius@blokas.io>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 032/627] ASoC: soc-dai: tidyup return value of snd_soc_xlate_tdm_slot_mask()
-Date: Tue, 12 Aug 2025 19:25:27 +0200
-Message-ID: <20250812173420.548164870@linuxfoundation.org>
+Subject: [PATCH 6.16 033/627] ASoC: amd: acp: Fix pointer assignments for snd_soc_acpi_mach structures
+Date: Tue, 12 Aug 2025 19:25:28 +0200
+Message-ID: <20250812173420.585792083@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -61,90 +60,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
 
-[ Upstream commit f4c77d5af0a9cd0ee22617baa8b49d0e151fbda7 ]
+[ Upstream commit 0779c0ad2a7cc0ae1865860c9bc8732613cc56b1 ]
 
-commit 7f1186a8d738661 ("ASoC: soc-dai: check return value at
-snd_soc_dai_set_tdm_slot()") checks return value of
-xlate_tdm_slot_mask() (A1)(A2).
+This patch modifies the assignment of machine structure pointers in the
+acp_pci_probe function. Previously, the machine pointers were assigned
+using the address-of operator (&), which caused incompatibility issues
+in type assignments.
 
-	/*
-	 * ...
-(Y)	 * TDM mode can be disabled by passing 0 for @slots. In this case @tx_mask,
-	 * @rx_mask and @slot_width will be ignored.
-	 * ...
-	 */
-	int snd_soc_dai_set_tdm_slot(...)
-	{
-		...
-		if (...)
-(A1)			ret = dai->driver->ops->xlate_tdm_slot_mask(...);
-		else
-(A2)			ret = snd_soc_xlate_tdm_slot_mask(...);
-		if (ret)
-			goto err;
-		...
-	}
+Additionally, the declarations of the machine arrays in amd.h have been
+updated to reflect that they are indeed arrays (`[]`). The code is
+further cleaned up by declaring the codec structures in
+amd-acpi-mach.c as static, reflecting their intended usage.
 
-snd_soc_xlate_tdm_slot_mask() (A2) will return -EINVAL if slots was 0 (X),
-but snd_soc_dai_set_tdm_slot() allow to use it (Y).
+error: symbol 'amp_rt1019' was not declared. Should it be static?
+error: symbol 'amp_max' was not declared. Should it be static?
+error: symbol 'snd_soc_acpi_amd_acp_machines' was not declared. Should it be static?
+error: symbol 'snd_soc_acpi_amd_rmb_acp_machines' was not declared. Should it be static?
+error: symbol 'snd_soc_acpi_amd_acp63_acp_machines' was not declared. Should it be static?
+error: symbol 'snd_soc_acpi_amd_acp70_acp_machines' was not declared. Should it be static?
 
-(A)	static int snd_soc_xlate_tdm_slot_mask(...)
-	{
-		...
-		if (!slots)
-(X)			return -EINVAL;
-		...
-	}
+Fixes: 9c2c0ef64009 ("ASoC: amd: acp: Fix snd_soc_acpi_mach id's duplicate symbol error")
 
-Call xlate_tdm_slot_mask() only if slots was non zero.
-
-Reported-by: Giedrius Trainavičius <giedrius@blokas.io>
-Closes: https://lore.kernel.org/r/CAMONXLtSL7iKyvH6w=CzPTxQdBECf++hn8RKL6Y4=M_ou2YHow@mail.gmail.com
-Fixes: 7f1186a8d738661 ("ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()")
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/8734cdfx59.wl-kuninori.morimoto.gx@renesas.com
+Link: https://github.com/thesofproject/linux/issues/5438
+Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Link: https://patch.msgid.link/20250609121251.639080-1-venkataprasad.potturu@amd.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ sound/soc/amd/acp/acp-pci.c       | 8 ++++----
+ sound/soc/amd/acp/amd-acpi-mach.c | 4 ++--
+ sound/soc/amd/acp/amd.h           | 8 ++++----
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index a210089747d0..32f46a38682b 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -259,13 +259,15 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- 		&rx_mask,
- 	};
+diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
+index 0b2aa33cc426..2591b1a1c5e0 100644
+--- a/sound/soc/amd/acp/acp-pci.c
++++ b/sound/soc/amd/acp/acp-pci.c
+@@ -137,26 +137,26 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
+ 		chip->name = "acp_asoc_renoir";
+ 		chip->rsrc = &rn_rsrc;
+ 		chip->acp_hw_ops_init = acp31_hw_ops_init;
+-		chip->machines = &snd_soc_acpi_amd_acp_machines;
++		chip->machines = snd_soc_acpi_amd_acp_machines;
+ 		break;
+ 	case 0x6f:
+ 		chip->name = "acp_asoc_rembrandt";
+ 		chip->rsrc = &rmb_rsrc;
+ 		chip->acp_hw_ops_init = acp6x_hw_ops_init;
+-		chip->machines = &snd_soc_acpi_amd_rmb_acp_machines;
++		chip->machines = snd_soc_acpi_amd_rmb_acp_machines;
+ 		break;
+ 	case 0x63:
+ 		chip->name = "acp_asoc_acp63";
+ 		chip->rsrc = &acp63_rsrc;
+ 		chip->acp_hw_ops_init = acp63_hw_ops_init;
+-		chip->machines = &snd_soc_acpi_amd_acp63_acp_machines;
++		chip->machines = snd_soc_acpi_amd_acp63_acp_machines;
+ 		break;
+ 	case 0x70:
+ 	case 0x71:
+ 		chip->name = "acp_asoc_acp70";
+ 		chip->rsrc = &acp70_rsrc;
+ 		chip->acp_hw_ops_init = acp70_hw_ops_init;
+-		chip->machines = &snd_soc_acpi_amd_acp70_acp_machines;
++		chip->machines = snd_soc_acpi_amd_acp70_acp_machines;
+ 		break;
+ 	default:
+ 		dev_err(dev, "Unsupported device revision:0x%x\n", pci->revision);
+diff --git a/sound/soc/amd/acp/amd-acpi-mach.c b/sound/soc/amd/acp/amd-acpi-mach.c
+index d95047d2ee94..27da2a862f1c 100644
+--- a/sound/soc/amd/acp/amd-acpi-mach.c
++++ b/sound/soc/amd/acp/amd-acpi-mach.c
+@@ -8,12 +8,12 @@
  
--	if (dai->driver->ops &&
--	    dai->driver->ops->xlate_tdm_slot_mask)
--		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	else
--		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	if (ret)
--		goto err;
-+	if (slots) {
-+		if (dai->driver->ops &&
-+		    dai->driver->ops->xlate_tdm_slot_mask)
-+			ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		else
-+			ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		if (ret)
-+			goto err;
-+	}
+ #include <sound/soc-acpi.h>
  
- 	for_each_pcm_streams(stream)
- 		snd_soc_dai_tdm_mask_set(dai, stream, *tdm_mask[stream]);
+-struct snd_soc_acpi_codecs amp_rt1019 = {
++static struct snd_soc_acpi_codecs amp_rt1019 = {
+ 	.num_codecs = 1,
+ 	.codecs = {"10EC1019"}
+ };
+ 
+-struct snd_soc_acpi_codecs amp_max = {
++static struct snd_soc_acpi_codecs amp_max = {
+ 	.num_codecs = 1,
+ 	.codecs = {"MX98360A"}
+ };
+diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
+index 863e74fcee43..cb8d97122f95 100644
+--- a/sound/soc/amd/acp/amd.h
++++ b/sound/soc/amd/acp/amd.h
+@@ -243,10 +243,10 @@ extern struct acp_resource rmb_rsrc;
+ extern struct acp_resource acp63_rsrc;
+ extern struct acp_resource acp70_rsrc;
+ 
+-extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp_machines;
+-extern struct snd_soc_acpi_mach snd_soc_acpi_amd_rmb_acp_machines;
+-extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp63_acp_machines;
+-extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp70_acp_machines;
++extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp_machines[];
++extern struct snd_soc_acpi_mach snd_soc_acpi_amd_rmb_acp_machines[];
++extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp63_acp_machines[];
++extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp70_acp_machines[];
+ 
+ extern const struct snd_soc_dai_ops asoc_acp_cpu_dai_ops;
+ extern const struct snd_soc_dai_ops acp_dmic_dai_ops;
 -- 
 2.39.5
 
