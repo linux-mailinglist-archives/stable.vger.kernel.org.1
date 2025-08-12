@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45EF4B23427
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F8AB231EF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0BF01611DF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A33F7AB37A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC9A2FA0DF;
-	Tue, 12 Aug 2025 18:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E14E257435;
+	Tue, 12 Aug 2025 18:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCkPMuQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkVzgwh5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB7B191F98;
-	Tue, 12 Aug 2025 18:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B94E305E08;
+	Tue, 12 Aug 2025 18:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023552; cv=none; b=ukyMnAQ10HK1ECEFowHPtl5tWon5R4X1sUIQZSqiv64KTjZToDeuY/YUmOxOINGwXWSVLea72N/+FSJme/rTFkhcAkWqJIKaKpu5WCWtS6ZWO6hZuz867nm7xhULI+9omQb/MYqpP57tOtNVn7Dhhgni1RKouDZT2rKMh1/pJX4=
+	t=1755022289; cv=none; b=rr+rxwdRE+LPJTyM7gwVrKL9PPFp+nAYUwDWSWu6rbteUij+Fp1Ef0/hifrkcx/uEpd1zLSu6GpiI6CkrYVEV/rSgT1Ciyy5xx6rJo2swiaFRmYQpuK7tj6NuFBXSjmcufv1MmZd0HSjztrh8wNZqJz2IPhSnsZpLkAHOTJptC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023552; c=relaxed/simple;
-	bh=fU6GiwitEVTLUzN6A+EhUntAqFHFiJkUrAKwlWNrux4=;
+	s=arc-20240116; t=1755022289; c=relaxed/simple;
+	bh=etcrusL7VWTURRdyZzPPob+RzQzbr2M9gd7l4kNhf6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+4EgG8vDNXrbtM1NSe29vYEDhqwwviA3pKf2MlM2DZgSMtGvlzYWSWjoAQmfNL0YaeqgcjeE61qn1iCk6oYZg77NCZJoVIQNqL9y814yrrWnT3z4XKz+CSQ4WAVhcQtiQoBpr3lKuStSB1+HVEbi5SRpmS63FPIS8AGMzr7R8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCkPMuQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C55EC4CEF0;
-	Tue, 12 Aug 2025 18:32:31 +0000 (UTC)
+	 MIME-Version; b=DK5wUTLNIz+9wdB8nYUjINfFJXmPWffXq074hCxPVo3Bifnp6dM1v+4+jXkHFef20Xn7bnWbcMm1DmHAvdF1Z8V1JMgg+o73EV6waEsNnYa+x4uR1NpJqnqKiNXQShT3kIV7qFo2TScAjeMwU1qZ8lqv/IX9DMGqxp4nnk04XQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkVzgwh5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0385C4CEF0;
+	Tue, 12 Aug 2025 18:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023552;
-	bh=fU6GiwitEVTLUzN6A+EhUntAqFHFiJkUrAKwlWNrux4=;
+	s=korg; t=1755022289;
+	bh=etcrusL7VWTURRdyZzPPob+RzQzbr2M9gd7l4kNhf6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCkPMuQr6qdoQlrJ3ndbRFX48Spa9KkbD5eevz8NaG9Jg5lulzrIAJTKuH6Pnv77N
-	 IWKBMyIMmHwMQGQpASCOhXcCb31eyRr9o/leqiplSzkD3qhXp+X4yun6GrOMdupxed
-	 sO2GxNJgl76YgCGayWSxwwbFA3txpdNW6tfnUAlk=
+	b=AkVzgwh5fFYMj1YV0Z14ljFo59Lsrb8qp2uCXaXZiEOyB1MYAzrvhGuzJg0WD8eSo
+	 SBXfEGvIVnbWVb+D7UwG1ezSs+0iytyORzeDsVIVFMBrVZLquxls/TqArGaoyXgnDE
+	 RJ7GFu4ZFPFyoP2Kj1BfgCBoU8nVqJ1dN+dpdeGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 114/627] ASoC: SDCA: Allow read-only controls to be deferrable
+Subject: [PATCH 6.12 112/369] wifi: ath11k: fix sleeping-in-atomic in ath11k_mac_op_set_bitrate_mask()
 Date: Tue, 12 Aug 2025 19:26:49 +0200
-Message-ID: <20250812173423.646678522@linuxfoundation.org>
+Message-ID: <20250812173018.986264334@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 4eb6ad5d2080681b531db2c1764246f9a868062f ]
+[ Upstream commit 65c12b104cb942d588a1a093acc4537fb3d3b129 ]
 
-The current SDCA Control parsing only checks the deferrable flag for
-Read/Write and Dual Ranked controls. However, reads can defer as well as
-writes so Read Only controls should also check for the deferrable flag.
-Add the handling for this into find_sdca_entity_control().
+ath11k_mac_disable_peer_fixed_rate() is passed as the iterator to
+ieee80211_iterate_stations_atomic(). Note in this case the iterator is
+required to be atomic, however ath11k_mac_disable_peer_fixed_rate() does
+not follow it as it might sleep. Consequently below warning is seen:
 
-Fixes: 42b144cb6a2d ("ASoC: SDCA: Add SDCA Control parsing")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20250707124155.2596744-2-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+BUG: sleeping function called from invalid context at wmi.c:304
+Call Trace:
+ <TASK>
+ dump_stack_lvl
+ __might_resched.cold
+ ath11k_wmi_cmd_send
+ ath11k_wmi_set_peer_param
+ ath11k_mac_disable_peer_fixed_rate
+ ieee80211_iterate_stations_atomic
+ ath11k_mac_op_set_bitrate_mask.cold
+
+Change to ieee80211_iterate_stations_mtx() to fix this issue.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250603-ath11k-use-non-atomic-iterator-v1-1-d75762068d56@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdca/sdca_functions.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
-index de213a69e0da..28e9e6de6d5d 100644
---- a/sound/soc/sdca/sdca_functions.c
-+++ b/sound/soc/sdca/sdca_functions.c
-@@ -880,7 +880,8 @@ static int find_sdca_entity_control(struct device *dev, struct sdca_entity *enti
- 			control->value = tmp;
- 			control->has_fixed = true;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 7ead581f5bfd..ddf4ec6b244b 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8681,9 +8681,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
+ 				    arvif->vdev_id, ret);
+ 			return ret;
  		}
--
-+		fallthrough;
-+	case SDCA_ACCESS_MODE_RO:
- 		control->deferrable = fwnode_property_read_bool(control_node,
- 								"mipi-sdca-control-deferrable");
- 		break;
+-		ieee80211_iterate_stations_atomic(ar->hw,
+-						  ath11k_mac_disable_peer_fixed_rate,
+-						  arvif);
++		ieee80211_iterate_stations_mtx(ar->hw,
++					       ath11k_mac_disable_peer_fixed_rate,
++					       arvif);
+ 	} else if (ath11k_mac_bitrate_mask_get_single_nss(ar, arvif, band, mask,
+ 							  &single_nss)) {
+ 		rate = WMI_FIXED_RATE_NONE;
+@@ -8750,9 +8750,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
+ 		}
+ 
+ 		mutex_lock(&ar->conf_mutex);
+-		ieee80211_iterate_stations_atomic(ar->hw,
+-						  ath11k_mac_disable_peer_fixed_rate,
+-						  arvif);
++		ieee80211_iterate_stations_mtx(ar->hw,
++					       ath11k_mac_disable_peer_fixed_rate,
++					       arvif);
+ 
+ 		arvif->bitrate_mask = *mask;
+ 		ieee80211_iterate_stations_atomic(ar->hw,
 -- 
 2.39.5
 
