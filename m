@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0A8B230EC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B20B22FF3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85A3C188A8AA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 127447B0CB0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA982FAC02;
-	Tue, 12 Aug 2025 17:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A782F8BE6;
+	Tue, 12 Aug 2025 17:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA51HPvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kt4EN1s2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD1D2F8BE7;
-	Tue, 12 Aug 2025 17:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417782E4248;
+	Tue, 12 Aug 2025 17:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021454; cv=none; b=bwjwVbFQ//LrSnpbwJiE2qn0hIdyTbsHuVlsDxctVw+BW1JpcNbfqnOLFeTSxU1cLROFeKKM3nwvDO1XgAq7/g6RatHOphNWy6mQqiWpoawsnnTf9Q2dlW7rgcqXNSZBSaZYy9EGNqTFVlD37IYsIUcCmnCBufVyly+uAFDNvDI=
+	t=1755020772; cv=none; b=Rmlm6IRU2xEkEAJEFXm7qzF+41GQ7AbBVVoYcEJqCasVjo/OrIuPPXC7DV/c5e/EV6uUGho9tHcdzMLGbR6/YO2npFY8lYJm986dojjfhyBBYj0BuYmxHakAfnfnmJlF6Mh57m51Tmq5GnT3zO1N459L+JW0qxNcb6XcQTErM0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021454; c=relaxed/simple;
-	bh=5LF3OgsPQtTTbibxMqtQ1G5iuGu8UNlsDOUfUE5pS04=;
+	s=arc-20240116; t=1755020772; c=relaxed/simple;
+	bh=mpzyxzJyis8EUqo1/BjBcqBXUY1qSE4a26+1kXwWCOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faLYdspPEGswQASpIHE3KpGTwA1UoSPO1qpJShOVpFz8ldMXpZ8TzRsfqz4MroabXWyFV7E+fhpkkKZUQURwYlE8PQ9eKPcljCR2+SeDopS2oRW7hTohoNwdo3AJu3Tx7WrmViksXaOpy6uqwIqLRH2PXNcwfGU3VSOwOPLw+4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA51HPvN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7972CC4CEF0;
-	Tue, 12 Aug 2025 17:57:33 +0000 (UTC)
+	 MIME-Version; b=QQXCTU3CeQtiMz2AOytXqTAp7rsJ4v3qp1p9LULA3tJK8xJvuvy4At014vvhPN9hUOkMKk+DneTknN9TnuefpZKu/hnWkwitRthA9zlDeLnGdPmDa310YQBU/+7H7UEM5ZG+VXNiiw7oNckxs3fHCv5n/++jYUT7G2AWDWm/VnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kt4EN1s2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3119C4CEF0;
+	Tue, 12 Aug 2025 17:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021453;
-	bh=5LF3OgsPQtTTbibxMqtQ1G5iuGu8UNlsDOUfUE5pS04=;
+	s=korg; t=1755020772;
+	bh=mpzyxzJyis8EUqo1/BjBcqBXUY1qSE4a26+1kXwWCOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iA51HPvNhPrOCd8H7MbCNw4JdWZIyyT9Pxz8SxIWWYPjUGHfDXzd2JChOZfq3zXgL
-	 NLd3Wcxb4sQp7EKGaxBMWrnZ98NeLMORHn7+CUKTXzgadRK87YKytX+ailvfDLd7O5
-	 /04ssvj8jmC2Ufz3tApFq4O4ShBy1U/XTeBEODNs=
+	b=kt4EN1s2Qci1B5LngP6zbppAjuqrcGW/XLDAA5wEkfau2a9vHlIqP4/cfLXB2V0YC
+	 pVCUZ11/qzoWQi/g+QDGGe62QnhtR+ReMRDQz05TmeIirPQjemPC5Y9eolbWTlNlPx
+	 /OUWeBg2BeX5VBizCen5u0NRmdSqSlPFljvv3LCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/262] crypto: inside-secure - Fix `dma_unmap_sg()` nents value
+Subject: [PATCH 6.1 128/253] kcsan: test: Initialize dummy variable
 Date: Tue, 12 Aug 2025 19:28:36 +0200
-Message-ID: <20250812172958.556708178@linuxfoundation.org>
+Message-ID: <20250812172954.142107320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit cb7fa6b6fc71e0c801e271aa498e2f19e6df2931 ]
+[ Upstream commit 9872916ad1a1a5e7d089e05166c85dbd65e5b0e8 ]
 
-The `dma_unmap_sg()` functions should be called with the same nents as the
-`dma_map_sg()`, not the value the map function returned.
+Newer compiler versions rightfully point out:
 
-Fixes: c957f8b3e2e5 ("crypto: inside-secure - avoid unmapping DMA memory that was not mapped")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+ kernel/kcsan/kcsan_test.c:591:41: error: variable 'dummy' is
+ uninitialized when passed as a const pointer argument here
+ [-Werror,-Wuninitialized-const-pointer]
+   591 |         KCSAN_EXPECT_READ_BARRIER(atomic_read(&dummy), false);
+       |                                                ^~~~~
+ 1 error generated.
+
+Although this particular test does not care about the value stored in
+the dummy atomic variable, let's silence the warning.
+
+Link: https://lkml.kernel.org/r/CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com
+Fixes: 8bc32b348178 ("kcsan: test: Add test cases for memory barrier instrumentation")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/safexcel_hash.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/kcsan/kcsan_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
-index f44c08f5f5ec..af4b978189e5 100644
---- a/drivers/crypto/inside-secure/safexcel_hash.c
-+++ b/drivers/crypto/inside-secure/safexcel_hash.c
-@@ -249,7 +249,9 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv,
- 	safexcel_complete(priv, ring);
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index a60c561724be..fb5e7b65f799 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -530,7 +530,7 @@ static void test_barrier_nothreads(struct kunit *test)
+ 	struct kcsan_scoped_access *reorder_access = NULL;
+ #endif
+ 	arch_spinlock_t arch_spinlock = __ARCH_SPIN_LOCK_UNLOCKED;
+-	atomic_t dummy;
++	atomic_t dummy = ATOMIC_INIT(0);
  
- 	if (sreq->nents) {
--		dma_unmap_sg(priv->dev, areq->src, sreq->nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(priv->dev, areq->src,
-+			     sg_nents_for_len(areq->src, areq->nbytes),
-+			     DMA_TO_DEVICE);
- 		sreq->nents = 0;
- 	}
- 
-@@ -497,7 +499,9 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
- 			 DMA_FROM_DEVICE);
- unmap_sg:
- 	if (req->nents) {
--		dma_unmap_sg(priv->dev, areq->src, req->nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(priv->dev, areq->src,
-+			     sg_nents_for_len(areq->src, areq->nbytes),
-+			     DMA_TO_DEVICE);
- 		req->nents = 0;
- 	}
- cdesc_rollback:
+ 	KCSAN_TEST_REQUIRES(test, reorder_access != NULL);
+ 	KCSAN_TEST_REQUIRES(test, IS_ENABLED(CONFIG_SMP));
 -- 
 2.39.5
 
