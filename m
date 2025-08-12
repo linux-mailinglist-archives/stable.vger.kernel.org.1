@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA85DB23123
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:00:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCF7B234AF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D7867ADEDB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:59:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D8762127D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBC82FF148;
-	Tue, 12 Aug 2025 17:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2822FDC49;
+	Tue, 12 Aug 2025 18:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkdFFM+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzRBDn92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6EE2FE573;
-	Tue, 12 Aug 2025 17:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD30F1DB92A;
+	Tue, 12 Aug 2025 18:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021566; cv=none; b=bfg59sfTxksCeUd2nhvrYbAsDwZtQiktohm1+gc+q0gw43N5p3rjbXX0xxnlCmFLaKt1nLrgXyGuI+3EJA/hmlDqqeIEOrCK+QDxuFoYqY9H+ZWob1Vry0BxmzJP8zmJesBdi9cMSh2IiVbdTdWAns/OYnu8MSwUA68+ds796b4=
+	t=1755023912; cv=none; b=pTcS/0ayMUhlNVWrzY2ygc+ADy3COvVAsN8EfzBLlgwqSBy2DYq+eZ1oFUvoPzE/PcyLYF200LEYIAR6ltJ7fbsX50zqW2uiAB5sg1pSUp16pn9mWi9yeJtFWAEeXH1rnibWCFaMnbjR30sC+Ntj86StnFmo903ZQAy6aftY4Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021566; c=relaxed/simple;
-	bh=9WypVhOSK8srL+IeahHIkUSCokExQJJHRlE5/kcpHwo=;
+	s=arc-20240116; t=1755023912; c=relaxed/simple;
+	bh=fVb5Zu7ek5JDpfWXJJG7jlPU8ohF0YTy/oZ6abWTGWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjy2VIAtUKKfZG+PhsWnuKoz8uNonF/YXBJGlDKfyMhXC0lYk3Tq6q3VnGkjAiSzcnzQZ2o8ZBovqNgA4D7tAtbRcxOTCGxr2n3xCAkUJEuST9XRXMXf9Y5wVXWJa3lrc4EdIfS1Hm2nWLQ3tx7zRGTLnI29ikPiXm7SXBrYgd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkdFFM+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4705DC4CEF1;
-	Tue, 12 Aug 2025 17:59:25 +0000 (UTC)
+	 MIME-Version; b=ncQ+QVl5dcUMS8i1zkYGvqIbPch6lTkIdsVDnNyGanF05hoHwJE1wiUJVADbETxXxssu/R5mzSPU5vD8pePoMbNxWhx8mdleWf3mYn2eFKYyYxKRAFZH67oRwE7b2mpfFy6AqU1FSntqo4Cy5r56g/U36qm+/Pljf4T/9klxajI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzRBDn92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E414C4CEF0;
+	Tue, 12 Aug 2025 18:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021565;
-	bh=9WypVhOSK8srL+IeahHIkUSCokExQJJHRlE5/kcpHwo=;
+	s=korg; t=1755023912;
+	bh=fVb5Zu7ek5JDpfWXJJG7jlPU8ohF0YTy/oZ6abWTGWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkdFFM+5ZJluBBgWZBDRZGAYXa8miSCLWBwDc/0zfUeyxm3036So4Dh8UJBsrVt/M
-	 vZCKhtr5AB7ZtXnP71AHHdUUH6n12QGxUeEHQ6rUlK4J5qYQCKVurwuDQ9FIptQUJy
-	 eVi6Orn9Ig21/PKvoG8C+PrVAE7U81DLlMTpYtBs=
+	b=tzRBDn923RFt/KDiG/kOZIU2naBRNRIAN4LAk7J1wzEwESCYHMOmOVD8WGpdNjaUP
+	 yCMAj786majwk8LFp5sETb+WPq4prHv0plsqYE/GvrWVgAUGKIZcV2xhUrmivTg1sQ
+	 MFBs0fVvj7AITgRQvOm84vIFU30GERAT35BiwzUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/262] perf sched: Fix memory leaks for evsel->priv in timehist
+Subject: [PATCH 6.16 219/627] iommu/arm-smmu: disable PRR on SM8250
 Date: Tue, 12 Aug 2025 19:28:34 +0200
-Message-ID: <20250812172958.472827691@linuxfoundation.org>
+Message-ID: <20250812173427.614176335@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 117e5c33b1c44037af016d77ce6c0b086d55535f ]
+[ Upstream commit b9bb7e814cd0c3633791327a96749a1f9b7f3ef4 ]
 
-It uses evsel->priv to save per-cpu timing information.  It should be
-freed when the evsel is released.
+On SM8250 / QRB5165-RB5 using PRR bits resets the device, most likely
+because of the hyp limitations. Disable PRR support on that platform.
 
-Add the priv destructor for evsel same as thread to handle that.
-
-Fixes: 49394a2a24c78ce0 ("perf sched timehist: Introduce timehist command")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-6-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 7f2ef1bfc758 ("iommu/arm-smmu: Add support for PRR bit setup")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Reviewed-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250705-iommu-fix-prr-v2-1-406fecc37cf8@oss.qualcomm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 12 ++++++++++++
- tools/perf/util/evsel.c    | 11 +++++++++++
- tools/perf/util/evsel.h    |  2 ++
- 3 files changed, 25 insertions(+)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 5f4fb1ce1ea9..a1fab1a52b6a 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -1949,6 +1949,16 @@ static u64 evsel__get_time(struct evsel *evsel, u32 cpu)
- 	return r->last_time[cpu];
- }
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 62874b18f645..53d88646476e 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -355,7 +355,8 @@ static int qcom_adreno_smmu_init_context(struct arm_smmu_domain *smmu_domain,
+ 	priv->set_prr_addr = NULL;
  
-+static void timehist__evsel_priv_destructor(void *priv)
-+{
-+	struct evsel_runtime *r = priv;
-+
-+	if (r) {
-+		free(r->last_time);
-+		free(r);
-+	}
-+}
-+
- static int comm_width = 30;
- 
- static char *timehist_get_commstr(struct thread *thread)
-@@ -3080,6 +3090,8 @@ static int perf_sched__timehist(struct perf_sched *sched)
- 
- 	setup_pager();
- 
-+	evsel__set_priv_destructor(timehist__evsel_priv_destructor);
-+
- 	/* prefer sched_waking if it is captured */
- 	if (evlist__find_tracepoint_by_name(session->evlist, "sched:sched_waking"))
- 		handlers[1].handler = timehist_sched_wakeup_ignore;
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 6d2b056232f6..2a6295f1ac1b 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -1460,6 +1460,15 @@ static void evsel__free_config_terms(struct evsel *evsel)
- 	free_config_terms(&evsel->config_terms);
- }
- 
-+static void (*evsel__priv_destructor)(void *priv);
-+
-+void evsel__set_priv_destructor(void (*destructor)(void *priv))
-+{
-+	assert(evsel__priv_destructor == NULL);
-+
-+	evsel__priv_destructor = destructor;
-+}
-+
- void evsel__exit(struct evsel *evsel)
- {
- 	assert(list_empty(&evsel->core.node));
-@@ -1485,6 +1494,8 @@ void evsel__exit(struct evsel *evsel)
- 	hashmap__free(evsel->per_pkg_mask);
- 	evsel->per_pkg_mask = NULL;
- 	zfree(&evsel->metric_events);
-+	if (evsel__priv_destructor)
-+		evsel__priv_destructor(evsel->priv);
- 	perf_evsel__object.fini(evsel);
- }
- 
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 848534ec74fa..ac396d6f95cb 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -252,6 +252,8 @@ void evsel__init(struct evsel *evsel, struct perf_event_attr *attr, int idx);
- void evsel__exit(struct evsel *evsel);
- void evsel__delete(struct evsel *evsel);
- 
-+void evsel__set_priv_destructor(void (*destructor)(void *priv));
-+
- struct callchain_param;
- 
- void evsel__config(struct evsel *evsel, struct record_opts *opts,
+ 	if (of_device_is_compatible(np, "qcom,smmu-500") &&
+-			of_device_is_compatible(np, "qcom,adreno-smmu")) {
++	    !of_device_is_compatible(np, "qcom,sm8250-smmu-500") &&
++	    of_device_is_compatible(np, "qcom,adreno-smmu")) {
+ 		priv->set_prr_bit = qcom_adreno_smmu_set_prr_bit;
+ 		priv->set_prr_addr = qcom_adreno_smmu_set_prr_addr;
+ 	}
 -- 
 2.39.5
 
