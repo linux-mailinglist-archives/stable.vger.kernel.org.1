@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-168921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E69B23751
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:10:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EE9B2375C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264766E46E3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:09:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2259018917B9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DEE2FF179;
-	Tue, 12 Aug 2025 19:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C1B29BDA9;
+	Tue, 12 Aug 2025 19:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUicQQAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snyHqINL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F6421C187;
-	Tue, 12 Aug 2025 19:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2064F26FA77;
+	Tue, 12 Aug 2025 19:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025782; cv=none; b=U18k49H4Z3tLcNW9hZOBYhkc7L6894BFM5oOhkta9M0yUUDRiMlSVGF3XS35/mqdEn6r9aRAMjpxHuS/Cyzm4Y9Q9wxkTbF8xnuQZaYU4P7/vVE+v6ZTdjAHU0sppE7lXWKtOdWAFdd64q8LzEJrrmvXnN6nnyi2XJw3JEIcVNA=
+	t=1755025806; cv=none; b=qVT/EaGT8KtH9yql/QJEXtLovIKmjs6DPupGhFVcBBYATXHubr0RvljuCiHkUwNDmEYj2LtBwxuYgXUv+k6bYHJdYQz2USsvZqgDS1YjleA24yAqNcfRTiHnzNHPS9M4MN1W0Z+SSRtk/OGz53xOIKS8RJSFMPug0X7p0OiROEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025782; c=relaxed/simple;
-	bh=owNvjwD5aikUOL1t9sCPeScAVARtSxx3Jc+MJZbHN7o=;
+	s=arc-20240116; t=1755025806; c=relaxed/simple;
+	bh=AI16IzcaTWQJPNoTR/j1DlILGy9c6wsEj2sLXl5enCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OIflxm8e2pn68gk2qT0Xf9zA6sB02F7VgXlOGzHo9ctibkjQdivQtRIyQRetAWhLwbLHeWL+MvWqzQlmihSSb5Ruzrz00gSX19ikEgFDhqOXEnita9CmmJWEsciwTo6AFjxF1I90awS8Ch3WRCuGk9a5UL76GkDZ8v9UA5NMiSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUicQQAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E739BC4CEF6;
-	Tue, 12 Aug 2025 19:09:41 +0000 (UTC)
+	 MIME-Version; b=puaL7GVfvTMoIFvF3P966J+CnRarF58EUbTuf+ZiGEFkn7pDxIXjG38swMHwj4b8QTERjfrmu4tCLljLAgw+plPCLL1T33LnHd81Pikuju7xki1DzCtfMoWzP3xB2O1PqIsWR/hhZlxLNYXu19ihuWInJ9OD82q+jYMmsi5vfgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snyHqINL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81354C4CEF0;
+	Tue, 12 Aug 2025 19:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025782;
-	bh=owNvjwD5aikUOL1t9sCPeScAVARtSxx3Jc+MJZbHN7o=;
+	s=korg; t=1755025806;
+	bh=AI16IzcaTWQJPNoTR/j1DlILGy9c6wsEj2sLXl5enCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUicQQAawW8s06lH+i5nixRVoM8zCmPe+PQWwscX/Rbln70Mj+rPsAS4bZs/qdG10
-	 w0JSho3chlqaJdPgZqbiVuMA/EDgql6prJzPNdzm1JSTaq2+Tnhs9T5RQkHk8Y+V02
-	 jnU8m8ffnN4Fusg1LjfHyJPZAOih/dWt4avoS04A=
+	b=snyHqINLe3DWTtgo5+Z4dfdRnmeFyB5/6+VD96rhua+B9A5alYi+kZFdk3ph3cPdu
+	 i74xTjHKDHOlc18R3oTaXaYlW45i34Kw4HsRBh7LlsosHvijH0PNCTGgL/wRMy//Ao
+	 ucaOnKFDP+EjQNTz+xzsc9BD8hv1fL/2qm2wZgy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kowshik Jois <kowsjois@linux.ibm.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Tyrel Datwyler <tyreld@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 115/480] powerpc/pseries/dlpar: Search DRC index from ibm,drc-indexes for IO add
-Date: Tue, 12 Aug 2025 19:45:23 +0200
-Message-ID: <20250812174402.245997364@linuxfoundation.org>
+Subject: [PATCH 6.15 116/480] wifi: ath12k: Avoid accessing uninitialized arvif->ar during beacon miss
+Date: Tue, 12 Aug 2025 19:45:24 +0200
+Message-ID: <20250812174402.287086714@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -63,114 +61,154 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
-[ Upstream commit 41a1452759a8b1121df9cf7310acf31d766ba70b ]
+[ Upstream commit 36670b67de18f1e5d34900c5d2ac60a8970c293c ]
 
-IO hotplug add event is handled in the user space with drmgr tool.
-After the device is enabled, the user space uses /sys/kernel/dlpar
-interface with “dt add index <drc_index>” to update the device tree.
-The kernel interface (dlpar_hp_dt_add()) finds the parent node for
-the specified ‘drc_index’ from ibm,drc-info property. The recent FW
-provides this property from 2017 onwards. But KVM guest code in
-some releases is still using the older SLOF firmware which has
-ibm,drc-indexes property instead of ibm,drc-info.
+During beacon miss handling, ath12k driver iterates over active virtual
+interfaces (vifs) and attempts to access the radio object (ar) via
+arvif->deflink->ar.
 
-If the ibm,drc-info is not available, this patch adds changes to
-search ‘drc_index’ from the indexes array in ibm,drc-indexes
-property to support old FW.
+However, after commit aa80f12f3bed ("wifi: ath12k: defer vdev creation for
+MLO"), arvif is linked to a radio only after vdev creation, typically when
+a channel is assigned or a scan is requested.
+For P2P capable devices, a default P2P interface is created by
+wpa_supplicant along with regular station interfaces, these serve as dummy
+interfaces for P2P-capable stations, lack an associated netdev and initiate
+frequent scans to discover neighbor p2p devices. When a scan is initiated
+on such P2P vifs, driver selects destination radio (ar) based on scan
+frequency, creates a scan vdev, and attaches arvif to the radio. Once the
+scan completes or is aborted, the scan vdev is deleted, detaching arvif
+from the radio and leaving arvif->ar uninitialized.
 
-Fixes: 02b98ff44a57 ("powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add")
-Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250531235002.239213-1-haren@linux.ibm.com
+While handling beacon miss for station interfaces, P2P interface is also
+encountered in the vif iteration and ath12k_mac_handle_beacon_miss_iter()
+tries to dereference the uninitialized arvif->deflink->ar.
+
+Fix this by verifying that vdev is created for the arvif before accessing
+its ar during beacon miss handling and similar vif iterator callbacks.
+
+==========================================================================
+ wlp6s0: detected beacon loss from AP (missed 7 beacons) - probing
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+
+ CPU: 5 UID: 0 PID: 0 Comm: swapper/5 Not tainted 6.16.0-rc1-wt-ath+ #2 PREEMPT(full)
+ RIP: 0010:ath12k_mac_handle_beacon_miss_iter+0xb5/0x1a0 [ath12k]
+ Call Trace:
+  __iterate_interfaces+0x11a/0x410 [mac80211]
+  ieee80211_iterate_active_interfaces_atomic+0x61/0x140 [mac80211]
+  ath12k_mac_handle_beacon_miss+0xa1/0xf0 [ath12k]
+  ath12k_roam_event+0x393/0x560 [ath12k]
+  ath12k_wmi_op_rx+0x1486/0x28c0 [ath12k]
+  ath12k_htc_process_trailer.isra.0+0x2fb/0x620 [ath12k]
+  ath12k_htc_rx_completion_handler+0x448/0x830 [ath12k]
+  ath12k_ce_recv_process_cb+0x549/0x9e0 [ath12k]
+  ath12k_ce_per_engine_service+0xbe/0xf0 [ath12k]
+  ath12k_pci_ce_workqueue+0x69/0x120 [ath12k]
+  process_one_work+0xe3a/0x1430
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284.1-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: aa80f12f3bed ("wifi: ath12k: defer vdev creation for MLO")
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250618185635.750470-1-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/dlpar.c | 52 +++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 15 +++++++++------
+ drivers/net/wireless/ath/ath12k/p2p.c |  3 ++-
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 213aa26dc8b3..979487da6522 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -404,6 +404,45 @@ get_device_node_with_drc_info(u32 index)
- 	return NULL;
- }
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index d1d3c9f34372..7333ca58d541 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -685,6 +685,9 @@ static void ath12k_get_arvif_iter(void *data, u8 *mac,
+ 		if (WARN_ON(!arvif))
+ 			continue;
  
-+static struct device_node *
-+get_device_node_with_drc_indexes(u32 drc_index)
-+{
-+	struct device_node *np = NULL;
-+	u32 nr_indexes, index;
-+	int i, rc;
++		if (!arvif->is_created)
++			continue;
 +
-+	for_each_node_with_property(np, "ibm,drc-indexes") {
-+		/*
-+		 * First element in the array is the total number of
-+		 * DRC indexes returned.
-+		 */
-+		rc = of_property_read_u32_index(np, "ibm,drc-indexes",
-+				0, &nr_indexes);
-+		if (rc)
-+			goto out_put_np;
-+
-+		/*
-+		 * Retrieve DRC index from the list and return the
-+		 * device node if matched with the specified index.
-+		 */
-+		for (i = 0; i < nr_indexes; i++) {
-+			rc = of_property_read_u32_index(np, "ibm,drc-indexes",
-+							i+1, &index);
-+			if (rc)
-+				goto out_put_np;
-+
-+			if (drc_index == index)
-+				return np;
-+		}
-+	}
-+
-+	return NULL;
-+
-+out_put_np:
-+	of_node_put(np);
-+	return NULL;
-+}
-+
- static int dlpar_hp_dt_add(u32 index)
- {
- 	struct device_node *np, *nodes;
-@@ -423,10 +462,19 @@ static int dlpar_hp_dt_add(u32 index)
- 		goto out;
- 	}
+ 		if (arvif->vdev_id == arvif_iter->vdev_id &&
+ 		    arvif->ar == arvif_iter->ar) {
+ 			arvif_iter->arvif = arvif;
+@@ -1844,7 +1847,7 @@ static void ath12k_mac_handle_beacon_iter(void *data, u8 *mac,
+ 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+ 	struct ath12k_link_vif *arvif = &ahvif->deflink;
  
-+	/*
-+	 * Recent FW provides ibm,drc-info property. So search
-+	 * for the user specified DRC index from ibm,drc-info
-+	 * property. If this property is not available, search
-+	 * in the indexes array from ibm,drc-indexes property.
-+	 */
- 	np = get_device_node_with_drc_info(index);
+-	if (vif->type != NL80211_IFTYPE_STATION)
++	if (vif->type != NL80211_IFTYPE_STATION || !arvif->is_created)
+ 		return;
  
--	if (!np)
--		return -EIO;
-+	if (!np) {
-+		np = get_device_node_with_drc_indexes(index);
-+		if (!np)
-+			return -EIO;
-+	}
+ 	if (!ether_addr_equal(mgmt->bssid, vif->bss_conf.bssid))
+@@ -1867,16 +1870,16 @@ static void ath12k_mac_handle_beacon_miss_iter(void *data, u8 *mac,
+ 	u32 *vdev_id = data;
+ 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+ 	struct ath12k_link_vif *arvif = &ahvif->deflink;
+-	struct ath12k *ar = arvif->ar;
+-	struct ieee80211_hw *hw = ath12k_ar_to_hw(ar);
++	struct ieee80211_hw *hw;
  
- 	/* Next, configure the connector. */
- 	nodes = dlpar_configure_connector(cpu_to_be32(index), np);
+-	if (arvif->vdev_id != *vdev_id)
++	if (!arvif->is_created || arvif->vdev_id != *vdev_id)
+ 		return;
+ 
+ 	if (!arvif->is_up)
+ 		return;
+ 
+ 	ieee80211_beacon_loss(vif);
++	hw = ath12k_ar_to_hw(arvif->ar);
+ 
+ 	/* Firmware doesn't report beacon loss events repeatedly. If AP probe
+ 	 * (done by mac80211) succeeds but beacons do not resume then it
+@@ -9165,7 +9168,7 @@ ath12k_mac_change_chanctx_cnt_iter(void *data, u8 *mac,
+ 		if (WARN_ON(!arvif))
+ 			continue;
+ 
+-		if (arvif->ar != arg->ar)
++		if (!arvif->is_created || arvif->ar != arg->ar)
+ 			continue;
+ 
+ 		link_conf = wiphy_dereference(ahvif->ah->hw->wiphy,
+@@ -9200,7 +9203,7 @@ ath12k_mac_change_chanctx_fill_iter(void *data, u8 *mac,
+ 		if (WARN_ON(!arvif))
+ 			continue;
+ 
+-		if (arvif->ar != arg->ar)
++		if (!arvif->is_created || arvif->ar != arg->ar)
+ 			continue;
+ 
+ 		link_conf = wiphy_dereference(ahvif->ah->hw->wiphy,
+diff --git a/drivers/net/wireless/ath/ath12k/p2p.c b/drivers/net/wireless/ath/ath12k/p2p.c
+index 84cccf7d91e7..59589748f1a8 100644
+--- a/drivers/net/wireless/ath/ath12k/p2p.c
++++ b/drivers/net/wireless/ath/ath12k/p2p.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ 
+ #include <net/mac80211.h>
+@@ -124,7 +125,7 @@ static void ath12k_p2p_noa_update_vdev_iter(void *data, u8 *mac,
+ 
+ 	WARN_ON(!rcu_read_lock_any_held());
+ 	arvif = &ahvif->deflink;
+-	if (arvif->ar != arg->ar || arvif->vdev_id != arg->vdev_id)
++	if (!arvif->is_created || arvif->ar != arg->ar || arvif->vdev_id != arg->vdev_id)
+ 		return;
+ 
+ 	ath12k_p2p_noa_update(arvif, arg->noa);
 -- 
 2.39.5
 
