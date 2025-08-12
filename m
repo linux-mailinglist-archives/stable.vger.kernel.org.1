@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D296DB22FB6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071A1B2347C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFBAA189D4D9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 571EF3ABE6E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE582FD1CE;
-	Tue, 12 Aug 2025 17:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BCE2FAC11;
+	Tue, 12 Aug 2025 18:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoVJ8c6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOAhWAQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F252FDC25;
-	Tue, 12 Aug 2025 17:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D742D3ED6;
+	Tue, 12 Aug 2025 18:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020465; cv=none; b=D71zCBYOI1cSKUjmDO2NKfFLNTE6brdxpbVz+pQXeNH8uJOpbOLPOT/zRb2LWtEiInQr444qh53MI5o8XJSZ4oaOzgx3RlFffflrpX5ixxVFnD/g1NMciCgVgawp27tu7z+K+l6CJD9LQkfFoTpePbmTXfyB7Y7SJfxq7NnUqWI=
+	t=1755023785; cv=none; b=EGQIyJ4/wdzXmVlCq2TJzZCXaUofbXv+H3otJZlvUcRDbulXYZYGPopgbC3ugsP86bAquiVrKg+JfjCVf7g0bP79MsyOsup1y/vj//YF5yVL9gErI0EE8pJEDJRcS1NfX2B9gCGj5RMSJlefRTOzy1rOtlkmMwTlCKnQ/1ymJRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020465; c=relaxed/simple;
-	bh=Qd6HFsvVySr7IQz/bP0GqvJpjz3bHRqJSuPI9tuuzpM=;
+	s=arc-20240116; t=1755023785; c=relaxed/simple;
+	bh=4+TP+vDaANsfEdrN8dJA6q07wBeSD83ftfk1OycsK0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfA0vMPgNgnJLJYuQ2ufFLZQ9GUY5HcDGnIoGKKwVNylHQm0EjcbInpxUxXRKKdZZA9tURMZDW6DcFgX8ebOU9BoJ5Ruza8/c1GV/oqrg+qTdoeotzFQGFzpjq2c2zegpAh0owbnDz6qScpdoaUQ3311cpIqJDSDuzIL6vqsB80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoVJ8c6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4B5C4CEF0;
-	Tue, 12 Aug 2025 17:41:04 +0000 (UTC)
+	 MIME-Version; b=KILUm5pZlVzCc/Oz1wWLnNJh7zHyIkTTDjxv9I6q8rCgWVTmTXVShXlHmzen8O9/gDtSouZYRfOEd0kbwRR1SxzViEsGvhJl/F66E/qSMFDNJ90F3ht723D6Q5KXwgLzPse7ju3hhTglLGmV1HoCp7cMetT5Ut9KdKCYtBJnKZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOAhWAQB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874C3C4CEF1;
+	Tue, 12 Aug 2025 18:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020464;
-	bh=Qd6HFsvVySr7IQz/bP0GqvJpjz3bHRqJSuPI9tuuzpM=;
+	s=korg; t=1755023784;
+	bh=4+TP+vDaANsfEdrN8dJA6q07wBeSD83ftfk1OycsK0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IoVJ8c6dxocb60Rtcdv6kKmibZa61rcdtOqKcPnnWcGvYFZW/D3Ex0EYTf3vSgb6k
-	 JymGbBSW8nl3+iO9sVaY2leFkn7jSC0Sp0DfeIDnWYLxZj4lxzDEkmzBIkUlgxZacE
-	 S9WEnNVI8faisdt501NQfGCcUKpMVRlUAYggX6TU=
+	b=DOAhWAQBiXNU/oy6l7g/C/+r+cMEOPxH+swds+zeHcyaclbAxKQsXSDtfaL6a907D
+	 zIwL74ofOstzO0bLXKc9xGJoaWdYKwbnsiF/u9BWJ+jAzUcz0QxK8mo7ffJ5b5siMl
+	 GiphBSoLox0FAbMvJ5bY/vGY6tSnWg3lwqwmx7oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/253] arm64: dts: imx8mn-beacon: Fix HS400 USDHC clock speed
-Date: Tue, 12 Aug 2025 19:27:55 +0200
-Message-ID: <20250812172952.439234152@linuxfoundation.org>
+Subject: [PATCH 6.16 181/627] drm/msm/dpu: Fill in min_prefill_lines for SC8180X
+Date: Tue, 12 Aug 2025 19:27:56 +0200
+Message-ID: <20250812173426.166093013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit e16ad6c79906bba5e2ac499492b6a5b29ab19d6c ]
+[ Upstream commit 5136acc40afc0261802e5cb01b04f871bf6d876b ]
 
-The reference manual for the i.MX8MN states the clock rate in
-MMC mode is 1/2 of the input clock, therefore to properly run
-at HS400 rates, the input clock must be 400MHz to operate at
-200MHz.  Currently the clock is set to 200MHz which is half the
-rate it should be, so the throughput is half of what it should be
-for HS400 operation.
+Based on the downstream release, predictably same value as for SM8150.
 
-Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: f3af2d6ee9ab ("drm/msm/dpu: Add SC8180x to hw catalog")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/657794/
+Link: https://lore.kernel.org/r/20250610-topic-dpu_8180_mpl-v1-1-f480cd22f11c@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-index c4b1c6029c9a..ef138c867fc8 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-@@ -295,6 +295,8 @@ &usdhc3 {
- 	pinctrl-0 = <&pinctrl_usdhc3>;
- 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
- 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MN_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
- 	bus-width = <8>;
- 	non-removable;
- 	status = "okay";
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index d6f8b1030c68..6c04f41f9bac 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -383,6 +383,7 @@ static const struct dpu_perf_cfg sc8180x_perf_data = {
+ 	.min_core_ib = 2400000,
+ 	.min_llcc_ib = 800000,
+ 	.min_dram_ib = 800000,
++	.min_prefill_lines = 24,
+ 	.danger_lut_tbl = {0xf, 0xffff, 0x0},
+ 	.safe_lut_tbl = {0xfff0, 0xf000, 0xffff},
+ 	.qos_lut_tbl = {
 -- 
 2.39.5
 
