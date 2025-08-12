@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40ABB22FB0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDFCB232B2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BC581894759
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C91903B475B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E53E2FDC2B;
-	Tue, 12 Aug 2025 17:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA5B2FE560;
+	Tue, 12 Aug 2025 18:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVdW+X+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yG2l6Yt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D020A2F7461;
-	Tue, 12 Aug 2025 17:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B1B2D29C3;
+	Tue, 12 Aug 2025 18:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020438; cv=none; b=TA3VYVIc+cxUdLlKlY9RoVZZEGj/10b/9xDrwzmF5KKh4pzd1+Eg555C9Y1LOMrQCi4WEulN8vBi7u0Os2keDPcBNOBNIhnlmJ/Mq+NwrwmJV8iS5FqXIxPvDatrJlTKUBsd5UZyqj2l8PSiQlO9Rlpg6jpKxe7/EaRo/rghduA=
+	t=1755022500; cv=none; b=pWf93hJxZYU8g4N6oXOcIMhBpC7uZOjUtVYOjDvsmhlIoTCRC+A9y8AZRAzsMn4P+pLHCZ0ecqnF+7bfCOSfsGXdWko39oGG0GvfL42sn3mGquYpzyQELnaphc6n5jmJdL9OnIMH3/MRTzCVouApJZMCLqzYHalmUFzB2mqGYr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020438; c=relaxed/simple;
-	bh=xiZ8kL56t/TNTES9rvGNeCDp0MMLfsn8MJOztGrXY6A=;
+	s=arc-20240116; t=1755022500; c=relaxed/simple;
+	bh=BETvVSMKL/1LHIaos6PsLuFhohgleCEKXavfxO3Szns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqgafrwoTmLb1g+B64P3QOXYr+0okq2WhfAg8cyqYC+RU5PItVnjvhKhEW6HznRNdX7XSd6Eng00RQV09Y9gCWjbUa+q95vo+HMTOhe281uomzQnwu2dKj7vkIEJNwoynKELEa/vlzAbCg5+eHg6xD2gPfng7iy/FgHShv8AvcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVdW+X+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDCDC4CEF1;
-	Tue, 12 Aug 2025 17:40:38 +0000 (UTC)
+	 MIME-Version; b=F3WrsJL/gMA97EKcrLxQqA1hDmim1IlTVII+n46GBcIgVB4qAYDKz0mfDKvBj5CqCOvHc2w60pri3N+Uv0QwAw1+aOZBTYl57jV/mp17XL3MpcvXqiVDdv3S3VE1O6C1CcPP+GsmecT1ytVh4ifjx2GDukClWQgy/Ke68l65cNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yG2l6Yt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE5BC4CEF1;
+	Tue, 12 Aug 2025 18:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020438;
-	bh=xiZ8kL56t/TNTES9rvGNeCDp0MMLfsn8MJOztGrXY6A=;
+	s=korg; t=1755022500;
+	bh=BETvVSMKL/1LHIaos6PsLuFhohgleCEKXavfxO3Szns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVdW+X+yj4H2wa2s0O9gLH50Cu68BSo0Qjanutezsq05oSWEmEO4UhwMEGpFCsAWH
-	 g517g2A/TbZ6YkIUrguG152ClswajSZkuerq7NE5oE1GMxN9KrZt1M+xaSVaYFRftv
-	 1gPYcBiyEvPu5DUa1jD9EuBX/8PPTpEqcHOzWkJg=
+	b=yG2l6Yt4OonotVBfC3mBGR3Ehh9jDGX40qLcKBABWsC4qYJ/gfkVHhssp8ip7vs/s
+	 DP+bJ079hpHKeSvRr8EGW6xCroy4fE5jpX9QNqjKt9Luz/WJ2LPeBMNoVwyib2Soez
+	 Q/0vJWsL3SB27U977RNjYsLjAIQg4WkdvWJ5l97A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sivan Zohar-Kotzer <sivany32@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/253] powercap: dtpm_cpu: Fix NULL pointer dereference in get_pd_power_uw()
+Subject: [PATCH 6.12 172/369] fanotify: sanitize handle_type values when reporting fid
 Date: Tue, 12 Aug 2025 19:27:49 +0200
-Message-ID: <20250812172952.183040912@linuxfoundation.org>
+Message-ID: <20250812173021.234585556@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sivan Zohar-Kotzer <sivany32@gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 46dc57406887dd02565cb264224194a6776d882b ]
+[ Upstream commit 8631e01c2c5d1fe6705bcc0d733a0b7a17d3daac ]
 
-The get_pd_power_uw() function can crash with a NULL pointer dereference
-when em_cpu_get() returns NULL. This occurs when a CPU becomes impossible
-during runtime, causing get_cpu_device() to return NULL, which propagates
-through em_cpu_get() and leads to a crash when em_span_cpus() dereferences
-the NULL pointer.
+Unlike file_handle, type and len of struct fanotify_fh are u8.
+Traditionally, filesystem return handle_type < 0xff, but there
+is no enforecement for that in vfs.
 
-Add a NULL check after em_cpu_get() and return 0 if unavailable,
-matching the existing fallback behavior in __dtpm_cpu_setup().
+Add a sanity check in fanotify to avoid truncating handle_type
+if its value is > 0xff.
 
-Fixes: eb82bace8931 ("powercap/drivers/dtpm: Scale the power with the load")
-Signed-off-by: Sivan Zohar-Kotzer <sivany32@gmail.com>
-Link: https://patch.msgid.link/20250701221355.96916-1-sivany32@gmail.com
-[ rjw: Drop an excess empty code line ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 7cdafe6cc4a6 ("exportfs: check for error return value from exportfs_encode_*()")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250627104835.184495-1-amir73il@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/dtpm_cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/notify/fanotify/fanotify.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-index ae7ee611978b..99a82060ead9 100644
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -93,6 +93,8 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
- 	int i;
+diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
+index 224bccaab4cc..bb00e1e16838 100644
+--- a/fs/notify/fanotify/fanotify.c
++++ b/fs/notify/fanotify/fanotify.c
+@@ -441,7 +441,13 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
+ 	dwords = fh_len >> 2;
+ 	type = exportfs_encode_fid(inode, buf, &dwords);
+ 	err = -EINVAL;
+-	if (type <= 0 || type == FILEID_INVALID || fh_len != dwords << 2)
++	/*
++	 * Unlike file_handle, type and len of struct fanotify_fh are u8.
++	 * Traditionally, filesystem return handle_type < 0xff, but there
++	 * is no enforecement for that in vfs.
++	 */
++	BUILD_BUG_ON(MAX_HANDLE_SZ > 0xff || FILEID_INVALID > 0xff);
++	if (type <= 0 || type >= FILEID_INVALID || fh_len != dwords << 2)
+ 		goto out_err;
  
- 	pd = em_cpu_get(dtpm_cpu->cpu);
-+	if (!pd)
-+		return 0;
- 
- 	pd_mask = em_span_cpus(pd);
- 
+ 	fh->type = type;
 -- 
 2.39.5
 
