@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40CCB23400
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D3EB23072
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 543CD7A2597
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB41565770
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCA82F4A0A;
-	Tue, 12 Aug 2025 18:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DB52FDC55;
+	Tue, 12 Aug 2025 17:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5BxdYHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TooewLlf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7AF2D3ED6;
-	Tue, 12 Aug 2025 18:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BA62868AF;
+	Tue, 12 Aug 2025 17:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023693; cv=none; b=gqi3vKOvAtcYIE/MhP+KQ0+X+GT33/nozlQNEKd0kafcskwFO+ifM/seOkofFAwt2MI3HraYLKjLVYN0YokHkPW5n2gokxft3rjxnd+zJ8rM8bxWC+DxvvYDpWz/wFUQ31JY1lBiVnDLG9yo/eIw4Bcv/KH9o/CuCFHB36xZPko=
+	t=1755021095; cv=none; b=YGh2CyffOPQAR2bYSlgErjqUWWBtTKFldoEpkM3Ri9+aCAROlhrDERsd1oSodwCVUjOuQ+09LkBFP9GFxpKxRam+jm1KS0lqA0xSuoR6y3fYHVClPLDO8v8N4GiBRkXF5UEoNbooP5x1WlOwb1EJKaGvAjRYqkW1BCbJeuaE9EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023693; c=relaxed/simple;
-	bh=6V1YHLkg9MHbI/QhvSk7zX+/g/a9ZqO+21ZmHq/i9vA=;
+	s=arc-20240116; t=1755021095; c=relaxed/simple;
+	bh=98wHyz+mvFXTOm+I+3lbO4eOY5Y1hlklNMCVR0/LQH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6/fGZMWzlVZc7b5mIgr8yu7ejlLVmHNhvZKsv7S7TnjPhfKzYcyKJFAONJlWlJJzs1MKx+XwTuUEBu2BCgKNd8280HGCphKk+B6OtT8M+XF2DgMG1VtNfOlK6rHADPFs2wCdbceXh6pVOUr65DHo/Zr5J7bK5rcod3ofZ9uUZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5BxdYHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D71C4CEF0;
-	Tue, 12 Aug 2025 18:34:52 +0000 (UTC)
+	 MIME-Version; b=LGDkfVKsEXdMHmq3Mol/VBRpcGklnE9AW9+p5ueNT4VF7C464yamoc25Iq860AR1QZpEI90jBholOB8Eqzrk/fImBRx2dEf2rusl492zrly7r7bXfsX9Ag8sNR9XL2dWGCYaVjErNeRwEeRFjDBYj0xlCDEyY9HKj0TshizWXSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TooewLlf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F085CC4CEF1;
+	Tue, 12 Aug 2025 17:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023693;
-	bh=6V1YHLkg9MHbI/QhvSk7zX+/g/a9ZqO+21ZmHq/i9vA=;
+	s=korg; t=1755021095;
+	bh=98wHyz+mvFXTOm+I+3lbO4eOY5Y1hlklNMCVR0/LQH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5BxdYHprTcehdZqpty6VgGLZYmJpzL4lMD9laihwNnyoLsHEqg2K0L7qW89GfCu7
-	 vCnohYFbBfbY0MY6QcSD01f5abtNtrihVqVkKeirhcx3/IXZLYgKrzXra91GnZ79MD
-	 kvmaiUGBRzLmxf5FhhzaCQueXMZ8wiUQ8waomAgE=
+	b=TooewLlfe1/muk3BkEkhM5jpIe4bimIF7Z+Dj4XjZk2I83KLXzfZTsq7adEwXSlEf
+	 vds4xJ/ihk4kIgapO6MECY7C4BJf97lNldm8Cst3/AqZDh6eZMENCTDGVOkTG9Rjdn
+	 VLAUWzi6LTQRuSsrFIuTIG5/P0bjq1uupuH4J18k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	"xin.guo" <guoxin0309@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 154/627] wifi: mac80211: Fix bssid_indicator for MBSSID in AP mode
+Subject: [PATCH 6.6 061/262] tcp: fix tcp_ofo_queue() to avoid including too much DUP SACK range
 Date: Tue, 12 Aug 2025 19:27:29 +0200
-Message-ID: <20250812173425.147071455@linuxfoundation.org>
+Message-ID: <20250812172955.586844297@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+From: xin.guo <guoxin0309@gmail.com>
 
-[ Upstream commit 2eb7c1baf46aea134e908cd6d37907d92f823251 ]
+[ Upstream commit a041f70e573e185d5d5fdbba53f0db2fbe7257ad ]
 
-Currently, in ieee80211_assign_beacon() mbssid count is updated as link's
-bssid_indicator. mbssid count is the total number of MBSSID elements in
-the beacon instead of Max BSSID indicator of the Multiple BSS set.
-This will result in drivers obtaining an invalid bssid_indicator for BSSes
-in a Multiple BSS set.
-Fix this by updating link's bssid_indicator from MBSSID element for
-Transmitting BSS and update the same for all of its Non-Transmitting BSSes.
+If the new coming segment covers more than one skbs in the ofo queue,
+and which seq is equal to rcv_nxt, then the sequence range
+that is duplicated will be sent as DUP SACK, the detail as below,
+in step6, the {501,2001} range is clearly including too much
+DUP SACK range, in violation of RFC 2883 rules.
 
-Fixes: dde78aa52015 ("mac80211: update bssid_indicator in ieee80211_assign_beacon")
-Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250530040940.3188537-1-rameshkumar.sundaram@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+1. client > server: Flags [.], seq 501:1001, ack 1325288529, win 20000, length 500
+2. server > client: Flags [.], ack 1, [nop,nop,sack 1 {501:1001}], length 0
+3. client > server: Flags [.], seq 1501:2001, ack 1325288529, win 20000, length 500
+4. server > client: Flags [.], ack 1, [nop,nop,sack 2 {1501:2001} {501:1001}], length 0
+5. client > server: Flags [.], seq 1:2001, ack 1325288529, win 20000, length 2000
+6. server > client: Flags [.], ack 2001, [nop,nop,sack 1 {501:2001}], length 0
+
+After this fix, the final ACK is as below:
+
+6. server > client: Flags [.], ack 2001, options [nop,nop,sack 1 {501:1001}], length 0
+
+[edumazet] added a new packetdrill test in the following patch.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: xin.guo <guoxin0309@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250626123420.1933835-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_input.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 954795b0fe48..bc64c1b83a6e 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -178,6 +178,7 @@ static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index f7b95bc8ad60..8520c43726e2 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4872,8 +4872,9 @@ static void tcp_ofo_queue(struct sock *sk)
  
- 		link_conf->nontransmitted = true;
- 		link_conf->bssid_index = params->index;
-+		link_conf->bssid_indicator = tx_bss_conf->bssid_indicator;
- 	}
- 	if (params->ema)
- 		link_conf->ema_ap = true;
-@@ -1218,8 +1219,11 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
- 			ieee80211_copy_rnr_beacon(pos, new->rnr_ies, rnr);
+ 		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
+ 			__u32 dsack = dsack_high;
++
+ 			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))
+-				dsack_high = TCP_SKB_CB(skb)->end_seq;
++				dsack = TCP_SKB_CB(skb)->end_seq;
+ 			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
  		}
- 		/* update bssid_indicator */
--		link_conf->bssid_indicator =
--			ilog2(__roundup_pow_of_two(mbssid->cnt + 1));
-+		if (new->mbssid_ies->cnt && new->mbssid_ies->elem[0].len > 2)
-+			link_conf->bssid_indicator =
-+					*(new->mbssid_ies->elem[0].data + 2);
-+		else
-+			link_conf->bssid_indicator = 0;
- 	}
- 
- 	if (csa) {
+ 		p = rb_next(p);
 -- 
 2.39.5
 
