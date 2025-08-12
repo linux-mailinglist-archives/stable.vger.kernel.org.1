@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A743B22F67
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E8DB23028
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E68A1AA0393
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6DA6560FA2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6AF2FE58D;
-	Tue, 12 Aug 2025 17:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8B22F7477;
+	Tue, 12 Aug 2025 17:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DguTJ4q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6SBweRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D382FA0FD;
-	Tue, 12 Aug 2025 17:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA092F8BE6;
+	Tue, 12 Aug 2025 17:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020281; cv=none; b=aJSoaFTgBrHtbvNB1tjNmL0E1V7R0L/s8Pul0A4ZVujRhXNaCuRZeRZ+oTjbBbuLi62PwrGZt+oirkSC0ZLG7+vg4PSIF05SlhlgLndRKEFS5599xI3y+tjawIZOEdC5oZQu79EO8bF4U8udDsed5soqIw0JKYskp5foHJbZCXg=
+	t=1755020928; cv=none; b=a5Tt/NVxwb3/CwoHjufcAj5XEceNb/nn4ihLz3aHY/kmvjI4oclTANVOgobI8O0GM0A3M6C+WyQG+dBUlHOaoa+nctSIC5eZwc2JRLsZWV59Ru9kX39kyLKXfe2G5iqp76Br2bVDb9qUe3qRpH1/3+VLj9QAP2ckKI5fOkR0VWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020281; c=relaxed/simple;
-	bh=6TTAOKQNxvEsg59VOmjp3OAIIPegXV8aHEmI1qJaq2U=;
+	s=arc-20240116; t=1755020928; c=relaxed/simple;
+	bh=e4OldpH+/PQkkk8DoDQGDrOj6SDBCIJ/5wi9AeMPDEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnvSBiYwIa5SfiTdKPdTGRs3MIWo6pzElO7hVn33515DxmqQPD/3p15+Sst/XeuqiCvs7Bi3KSMMQ49J8lqHI7gNb6G9D6bFkP2+//bqONbyNp89/s00duA6DbPZP9myd6DHWo/kQ5qji752ayr3I7KiHu2kN8Q7KTG72Gxx25M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DguTJ4q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53730C4CEF0;
-	Tue, 12 Aug 2025 17:38:00 +0000 (UTC)
+	 MIME-Version; b=VDjfbUAC+dzwv4g1r/4lHrYhBZ4JcLlpk/N/yIS+qdh50fCXoQoAKJBbEXPTaZgTw31k5lDNPeovNmk1apoErj1iYONrfegGL9KZPcHlu2VIql7FW7cfOl9Tt9OxZl2ubexSFta1xFBPhSEGA8IEceGUeSmb2wDt0gRwUjgE55c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6SBweRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804EBC4CEF0;
+	Tue, 12 Aug 2025 17:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020280;
-	bh=6TTAOKQNxvEsg59VOmjp3OAIIPegXV8aHEmI1qJaq2U=;
+	s=korg; t=1755020928;
+	bh=e4OldpH+/PQkkk8DoDQGDrOj6SDBCIJ/5wi9AeMPDEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DguTJ4q0D2wzZLBO8WbfX/6Z2QLXtIslZGzlKVkEul2LfLj3+zOhKg8js5T8mmKS+
-	 +2k2SdAq77jbfzOkU6MGNYe2PQhFQlctyFSGGNpkgGQ8BeFfe4+5vicNumkKmNEUuy
-	 pO6rV0cSFAa5BPkVK9Yi0JFEXyKIhwmmv0MGL/oo=
+	b=K6SBweRrb8sksNR3wr43m8h0/s6WzUoU60KzpZtUYvX2qvzqsM7ii5gVd3b2W0kM5
+	 4+EHpQcBKtyiTaKV+JPl2J1Vb4rkc51FURouqkmD+lHoX3cSi56ceVTNiCghy3OLvW
+	 78yqyuheG3HtBXcakZbD+zSsfDPZmMdn9TAmPw7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Kowalski <jacek@jacekk.info>,
-	Simon Horman <horms@kernel.org>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.1 034/253] e1000e: disregard NVM checksum on tgp when valid checksum bit is not set
+	Sumit Gupta <sumitg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/262] soc/tegra: cbb: Clear ERR_FORCE register with ERR_STATUS
 Date: Tue, 12 Aug 2025 19:27:02 +0200
-Message-ID: <20250812172950.182318592@linuxfoundation.org>
+Message-ID: <20250812172954.416078789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Kowalski <jacek@jacekk.info>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-commit 536fd741c7ac907d63166cdae1081b1febfab613 upstream.
+[ Upstream commit a0647bca8966db04b79af72851ebd04224a4da40 ]
 
-As described by Vitaly Lifshits:
+When error is injected with the ERR_FORCE register, then this register
+is not auto cleared on clearing the ERR_STATUS register. This causes
+repeated interrupts on error injection. To fix, set the ERR_FORCE to
+zero along with clearing the ERR_STATUS register after handling error.
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set. Since Tiger Lake devices were the first to have
-> this lock, some systems in the field did not meet this requirement.
-> Therefore, for these transitional devices we skip checksum update and
-> verification, if the valid bit is not set.
-
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
-Cc: stable@vger.kernel.org
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c |    2 ++
+ drivers/soc/tegra/cbb/tegra234-cbb.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -4146,6 +4146,8 @@ static s32 e1000_validate_nvm_checksum_i
- 			ret_val = e1000e_update_nvm_checksum(hw);
- 			if (ret_val)
- 				return ret_val;
-+		} else if (hw->mac.type == e1000_pch_tgp) {
-+			return 0;
- 		}
- 	}
+diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
+index 5cf0e8c34164..e8cc46874c72 100644
+--- a/drivers/soc/tegra/cbb/tegra234-cbb.c
++++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
+@@ -185,6 +185,8 @@ static void tegra234_cbb_error_clear(struct tegra_cbb *cbb)
+ {
+ 	struct tegra234_cbb *priv = to_tegra234_cbb(cbb);
  
++	writel(0, priv->mon + FABRIC_MN_MASTER_ERR_FORCE_0);
++
+ 	writel(0x3f, priv->mon + FABRIC_MN_MASTER_ERR_STATUS_0);
+ 	dsb(sy);
+ }
+-- 
+2.39.5
+
 
 
 
