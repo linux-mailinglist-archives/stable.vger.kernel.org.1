@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-167523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EF8B23080
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED88B23456
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0D81885BAC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C0C616F286
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14912FDC2C;
-	Tue, 12 Aug 2025 17:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01A92EF652;
+	Tue, 12 Aug 2025 18:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbENgoOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBEi9zU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E762868AF;
-	Tue, 12 Aug 2025 17:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E02B1DB92A;
+	Tue, 12 Aug 2025 18:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021105; cv=none; b=uSSepG5pnFV/9ZQ2jYlp0piW7JOI/y478gZq7bgaMXZ+YehL/EmkGEHq36Oz2NYLWSGoi9iAyDTUAeBJEy+/P82mW6n3tbzDNn6s0nQHiO7E7AmkTEwyvnRU7KGlBtts+LTcrhbt5UTN/Xu5dWdNVwblLp5YlKTNOE0S5UhHvtw=
+	t=1755023700; cv=none; b=tEBTMdqY1ecZwcmNwpbq6fI32LQ9913W07U7n58HyDsE9krhIPTZMoqEyYm2mBJ1OyJ5GOsvYT4AGiQ3pL0dA21dhgIkOR7vCEp2+QLX16ivCgvbZGGhlk8GhGB5IYve176h5XlX/isc2K04dAnmYYQutJQqoSc8h0LwH3mU5PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021105; c=relaxed/simple;
-	bh=75idTpOlEDqhyYG2F7ggGHbE9OEw9kPqlPfEkBTduPI=;
+	s=arc-20240116; t=1755023700; c=relaxed/simple;
+	bh=Q67NjmQUs3mRaA2qSsHEC7O7S+Rvf4fmuQEEYo+jBL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2j3q/9hYuWPbntyAUZ9RrHxAWVckNlMgKsR3nkiCxQ65fTpj2pZQMuNN6+GM6prQLYY81l6tIr2Se+SExYcnauE1pE+8+uSOGU51vUsSLcK2951eqnxCL2sK0UYXT2cLpS7bw44sssehgpFYl6HPhnBeo68bLUSTj+OdiJpiOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbENgoOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA66C4CEF0;
-	Tue, 12 Aug 2025 17:51:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hF3oltL9N+ouDJdYhM/9KrhOyFy3BIkWwuVXoZp5mhPBtZKq/uoShzusb7dKBEWdMnlx/OvxUoy3LVVs1i+yymICSneqzZuoqawBrgaTvA/UHkBGxkiSB7gaNXSlAL+11L6gHbf/2gJK/3g2CdBZkIm9n1rCDpQ11+9TBOIiV3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBEi9zU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B604DC4CEF0;
+	Tue, 12 Aug 2025 18:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021105;
-	bh=75idTpOlEDqhyYG2F7ggGHbE9OEw9kPqlPfEkBTduPI=;
+	s=korg; t=1755023700;
+	bh=Q67NjmQUs3mRaA2qSsHEC7O7S+Rvf4fmuQEEYo+jBL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbENgoOJzMPuwnOBIidvt6Q3ba5usfQn3EK4n7RGwJtn9XySGNDE6XEMcibFfBA6P
-	 E7VF/WZwbdfMTY/8Ez3onc8HACuCinhvMzNrkI8YAIeOx46A/cyyt8eb8GTB8KIREY
-	 4D67a3fZvyCvyCrzg1NieKS8FbWKAxLpqnnxsbEg=
+	b=MBEi9zU6ymV5zgMUXyIjp5kaGN2qi9g02tqiCrVTkZOdz033tvRAl6spbR+DtcGsE
+	 LJ5k9Vsoh3+i8sTKfIaIAb7ZK23siJ6I24TTeRWzX33e6kgk8L9J4m+s9O5yeUGgDZ
+	 TgYof30amAPkaWZzwXXRuRvX6nK4Jj34jVqC69mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stav Aviram <saviram@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Kowshik Jois <kowsjois@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/262] net/mlx5: Check device memory pointer before usage
-Date: Tue, 12 Aug 2025 19:27:30 +0200
-Message-ID: <20250812172955.628686050@linuxfoundation.org>
+Subject: [PATCH 6.16 156/627] powerpc/pseries/dlpar: Search DRC index from ibm,drc-indexes for IO add
+Date: Tue, 12 Aug 2025 19:27:31 +0200
+Message-ID: <20250812173425.220370471@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stav Aviram <saviram@nvidia.com>
+From: Haren Myneni <haren@linux.ibm.com>
 
-[ Upstream commit 70f238c902b8c0461ae6fbb8d1a0bbddc4350eea ]
+[ Upstream commit 41a1452759a8b1121df9cf7310acf31d766ba70b ]
 
-Add a NULL check before accessing device memory to prevent a crash if
-dev->dm allocation in mlx5_init_once() fails.
+IO hotplug add event is handled in the user space with drmgr tool.
+After the device is enabled, the user space uses /sys/kernel/dlpar
+interface with “dt add index <drc_index>” to update the device tree.
+The kernel interface (dlpar_hp_dt_add()) finds the parent node for
+the specified ‘drc_index’ from ibm,drc-info property. The recent FW
+provides this property from 2017 onwards. But KVM guest code in
+some releases is still using the older SLOF firmware which has
+ibm,drc-indexes property instead of ibm,drc-info.
 
-Fixes: c9b9dcb430b3 ("net/mlx5: Move device memory management to mlx5_core")
-Signed-off-by: Stav Aviram <saviram@nvidia.com>
-Link: https://patch.msgid.link/c88711327f4d74d5cebc730dc629607e989ca187.1751370035.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+If the ibm,drc-info is not available, this patch adds changes to
+search ‘drc_index’ from the indexes array in ibm,drc-indexes
+property to support old FW.
+
+Fixes: 02b98ff44a57 ("powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add")
+Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250531235002.239213-1-haren@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/dm.c                  | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c | 4 ++--
- drivers/net/ethernet/mellanox/mlx5/core/main.c   | 3 ---
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/pseries/dlpar.c | 52 +++++++++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/dm.c b/drivers/infiniband/hw/mlx5/dm.c
-index 3669c90b2dad..672e5cfd2fca 100644
---- a/drivers/infiniband/hw/mlx5/dm.c
-+++ b/drivers/infiniband/hw/mlx5/dm.c
-@@ -282,7 +282,7 @@ static struct ib_dm *handle_alloc_dm_memic(struct ib_ucontext *ctx,
- 	int err;
- 	u64 address;
- 
--	if (!MLX5_CAP_DEV_MEM(dm_db->dev, memic))
-+	if (!dm_db || !MLX5_CAP_DEV_MEM(dm_db->dev, memic))
- 		return ERR_PTR(-EOPNOTSUPP);
- 
- 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
-index 9482e51ac82a..bdbbfaf504d9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
-@@ -28,7 +28,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
- 
- 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
- 	if (!dm)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
- 
- 	spin_lock_init(&dm->lock);
- 
-@@ -80,7 +80,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
- err_steering:
- 	kfree(dm);
- 
--	return ERR_PTR(-ENOMEM);
-+	return NULL;
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 213aa26dc8b3..979487da6522 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -404,6 +404,45 @@ get_device_node_with_drc_info(u32 index)
+ 	return NULL;
  }
  
- void mlx5_dm_cleanup(struct mlx5_core_dev *dev)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 32fa789a6960..62a85f09b52f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1055,9 +1055,6 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
++static struct device_node *
++get_device_node_with_drc_indexes(u32 drc_index)
++{
++	struct device_node *np = NULL;
++	u32 nr_indexes, index;
++	int i, rc;
++
++	for_each_node_with_property(np, "ibm,drc-indexes") {
++		/*
++		 * First element in the array is the total number of
++		 * DRC indexes returned.
++		 */
++		rc = of_property_read_u32_index(np, "ibm,drc-indexes",
++				0, &nr_indexes);
++		if (rc)
++			goto out_put_np;
++
++		/*
++		 * Retrieve DRC index from the list and return the
++		 * device node if matched with the specified index.
++		 */
++		for (i = 0; i < nr_indexes; i++) {
++			rc = of_property_read_u32_index(np, "ibm,drc-indexes",
++							i+1, &index);
++			if (rc)
++				goto out_put_np;
++
++			if (drc_index == index)
++				return np;
++		}
++	}
++
++	return NULL;
++
++out_put_np:
++	of_node_put(np);
++	return NULL;
++}
++
+ static int dlpar_hp_dt_add(u32 index)
+ {
+ 	struct device_node *np, *nodes;
+@@ -423,10 +462,19 @@ static int dlpar_hp_dt_add(u32 index)
+ 		goto out;
  	}
  
- 	dev->dm = mlx5_dm_create(dev);
--	if (IS_ERR(dev->dm))
--		mlx5_core_warn(dev, "Failed to init device memory %ld\n", PTR_ERR(dev->dm));
--
- 	dev->tracer = mlx5_fw_tracer_create(dev);
- 	dev->hv_vhca = mlx5_hv_vhca_create(dev);
- 	dev->rsc_dump = mlx5_rsc_dump_create(dev);
++	/*
++	 * Recent FW provides ibm,drc-info property. So search
++	 * for the user specified DRC index from ibm,drc-info
++	 * property. If this property is not available, search
++	 * in the indexes array from ibm,drc-indexes property.
++	 */
+ 	np = get_device_node_with_drc_info(index);
+ 
+-	if (!np)
+-		return -EIO;
++	if (!np) {
++		np = get_device_node_with_drc_indexes(index);
++		if (!np)
++			return -EIO;
++	}
+ 
+ 	/* Next, configure the connector. */
+ 	nodes = dlpar_configure_connector(cpu_to_be32(index), np);
 -- 
 2.39.5
 
