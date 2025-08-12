@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-167631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAA8B230FB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B8AB232E1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA99683AD2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AEE41AA7585
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31012FAC02;
-	Tue, 12 Aug 2025 17:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9BC2FA0DF;
+	Tue, 12 Aug 2025 18:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBboQj3q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igI6KsRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05F72DE1E2;
-	Tue, 12 Aug 2025 17:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B82F5E;
+	Tue, 12 Aug 2025 18:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021464; cv=none; b=T3gQjL7ldl/Y4weNrF0DOEBIVk50HmlCCm9JKUFakl8OjXfAhmoWLM3BwBQuSg5vlmqbo83o55Czxh7eAjkV3UqqC+HnUJqoF5l+FCbiE5agxXLB1Xsn2+FKFJp/tu8jZq/9F6uLR0bftlY1wyNYk7TE+vlGmizxfCRXriFo0PI=
+	t=1755022665; cv=none; b=odREEwnMDgdiXzyxanTtAMpmO4p8WHllJZ/4SSZklKHMTixGbd/WNQlcpULZK4u2ZInEUvuM9BriuQeeClcBCC59IAt3iUdT9xxhGPWBROSAc+71YrLG7yqLHMk2V2nBgkmEbBVTHcfWsnCxVQ7aZxlvMYyCAWwW/YWkfTHldfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021464; c=relaxed/simple;
-	bh=V9yIRT+VPPkd0JW1aX0adXgQyv45Yb716yG40b2XlGQ=;
+	s=arc-20240116; t=1755022665; c=relaxed/simple;
+	bh=sGugAO7oRNjXEs3T/MHg8DdzGOzOl6u00SpZIeMh1ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nFmC2G2R58y5mqeqLTS6B5eytOJbRxmmv5uB412qCsJ4J2PDKSRHzRaD6kqjoU4vlGerAI5l3mfYkk7t82V0T5EQXq86e1aRZaXFQXNf7DHg+5TW6SIcelIl1NdQn53HHnKYUo8dkA9duVVh0lRSjQf5EtOa0lpG+zYCZPS39Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBboQj3q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CC3C4CEF0;
-	Tue, 12 Aug 2025 17:57:43 +0000 (UTC)
+	 MIME-Version; b=UF6brpdGOeHHNk46uK12CModjfveY2JzHpi2amKUsBUztCI5I5kPPOazBa7O5kl6BldmsiLjzPPTi08QZmjj0sUrLWnBYqMfGp5T0d/u32NoTY144fSa5B9C01t0tPWv2HgpXyHxwqt7YucLA/p/IZmz5zo8lK8AvHnZg/olgng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igI6KsRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A4AC4CEF0;
+	Tue, 12 Aug 2025 18:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021464;
-	bh=V9yIRT+VPPkd0JW1aX0adXgQyv45Yb716yG40b2XlGQ=;
+	s=korg; t=1755022664;
+	bh=sGugAO7oRNjXEs3T/MHg8DdzGOzOl6u00SpZIeMh1ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBboQj3qsyvIUPFIDuREwEofnHfZ1TlATETDw5Y+8Wu4JEO2yNAUOEr9cEGJ/H/n+
-	 pSmnNSR/ikXmyL0BGqiSbXQUYjCDWnNWf6xAG+YQ1DfPL1qtbrDMHBNbC3gSBnh4/n
-	 uM3JEU9cQDTAXrirtt9++rqwSyrnZ9DovnqRD3b4=
+	b=igI6KsRrgHtkQa66fSbJd/JzRcJOHTDcqK2wLR6NwTizpurMM7JEA4GQM9PN909tm
+	 HX8G+U+IyUpfY3YR1eqOFupqZESZfgljfIG2Y5Q8fimYmCRF2+4wopTfg/70+XW0jv
+	 Ew1Cd3f1V/4OIYNiVRXHszFDjthprNewqoYD3wck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Song Chen <chensong_2000@189.cn>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/262] kernel: trace: preemptirq_delay_test: use offstack cpu mask
-Date: Tue, 12 Aug 2025 19:28:39 +0200
-Message-ID: <20250812172958.682498578@linuxfoundation.org>
+Subject: [PATCH 6.12 223/369] fbdev: imxfb: Check fb_add_videomode to prevent null-ptr-deref
+Date: Tue, 12 Aug 2025 19:28:40 +0200
+Message-ID: <20250812173023.148140454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit adc353c0bfb243ebfd29b6222fa3bf149169a6de ]
+[ Upstream commit da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7 ]
 
-A CPU mask on the stack is broken for large values of CONFIG_NR_CPUS:
+fb_add_videomode() can fail with -ENOMEM when its internal kmalloc() cannot
+allocate a struct fb_modelist.  If that happens, the modelist stays empty but
+the driver continues to register.  Add a check for its return value to prevent
+poteintial null-ptr-deref, which is similar to the commit 17186f1f90d3 ("fbdev:
+Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var").
 
-kernel/trace/preemptirq_delay_test.c: In function ‘preemptirq_delay_run’:
-kernel/trace/preemptirq_delay_test.c:143:1: error: the frame size of 8512 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]
-
-Fall back to dynamic allocation here.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Song Chen <chensong_2000@189.cn>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250620111215.3365305-1-arnd@kernel.org
-Fixes: 4b9091e1c194 ("kernel: trace: preemptirq_delay_test: add cpu affinity")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 1b6c79361ba5 ("video: imxfb: Add DT support")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/preemptirq_delay_test.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/imxfb.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
-index cb0871fbdb07..8af92dbe98f0 100644
---- a/kernel/trace/preemptirq_delay_test.c
-+++ b/kernel/trace/preemptirq_delay_test.c
-@@ -119,12 +119,15 @@ static int preemptirq_delay_run(void *data)
- {
- 	int i;
- 	int s = MIN(burst_size, NR_TEST_FUNCS);
--	struct cpumask cpu_mask;
-+	cpumask_var_t cpu_mask;
-+
-+	if (!alloc_cpumask_var(&cpu_mask, GFP_KERNEL))
-+		return -ENOMEM;
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index ff343e4ed35b..c0bdfb10f681 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -1007,8 +1007,13 @@ static int imxfb_probe(struct platform_device *pdev)
+ 	info->fix.smem_start = fbi->map_dma;
  
- 	if (cpu_affinity > -1) {
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(cpu_affinity, &cpu_mask);
--		if (set_cpus_allowed_ptr(current, &cpu_mask))
-+		cpumask_clear(cpu_mask);
-+		cpumask_set_cpu(cpu_affinity, cpu_mask);
-+		if (set_cpus_allowed_ptr(current, cpu_mask))
- 			pr_err("cpu_affinity:%d, failed\n", cpu_affinity);
- 	}
+ 	INIT_LIST_HEAD(&info->modelist);
+-	for (i = 0; i < fbi->num_modes; i++)
+-		fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
++	for (i = 0; i < fbi->num_modes; i++) {
++		ret = fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
++		if (ret) {
++			dev_err(&pdev->dev, "Failed to add videomode\n");
++			goto failed_cmap;
++		}
++	}
  
-@@ -141,6 +144,8 @@ static int preemptirq_delay_run(void *data)
- 
- 	__set_current_state(TASK_RUNNING);
- 
-+	free_cpumask_var(cpu_mask);
-+
- 	return 0;
- }
- 
+ 	/*
+ 	 * This makes sure that our colour bitfield
 -- 
 2.39.5
 
