@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B55B2340A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F510B2323D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4221A24D62
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07E9170531
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6262FE565;
-	Tue, 12 Aug 2025 18:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AA5280037;
+	Tue, 12 Aug 2025 18:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1eFMaLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyAAcBXi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FCB2EAB97;
-	Tue, 12 Aug 2025 18:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C67282E1;
+	Tue, 12 Aug 2025 18:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023413; cv=none; b=rXnR7oKYBifgZJuKI2fHnx+MRRiUktow078n40vNcxR9tHHqYIIsImsZpVeYARVpqGd7zEAbrkB4TzX/vS1EBQONAoghnpo8ntIJDyoTd1c3jdNGactWPqO61M0Js7f5FnHIxCc+iaNChawu/HmTl5t0R/oMqg8Isg8zfdMS4ZE=
+	t=1755022267; cv=none; b=lUm6CHuh0+4os5Rh8nNj8DUIGolBnrMe25Ogznip2PtJGGf/ZbOEs7oSGEuIAI9BxAG9lyAxJvbd3+sYISG8x1FjomvCAiFri6AALs5/kYNT0yyB9JmwssTH04+igDdI53Q2zmSQYkkrSuBXOoC4hVTcdp3MmUigV0nZfosv/EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023413; c=relaxed/simple;
-	bh=3Ydwhwnr/l6MP1UILLSsF0WxsFQViTjI6V2spTjxo00=;
+	s=arc-20240116; t=1755022267; c=relaxed/simple;
+	bh=mIsXBE8VHMY3CjSvWErWoZkZb+64A09MUtvIMqrc5+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=in3mIa6PXAnmGOtcqpo5SL6BHgxjHCQ5F0vn8HwhU2YyrcGq5cx5/+DUNm0kK/Fl9YSg21JKfLXSWyrE7kR4bnvex5X7gHqtPZxVi6CI3p8kzMmNY67F2/NuQdYAXQ1WEXjbqRbGfWmsReQEn6nJvgSQji4mRmfHYLx06vQft0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1eFMaLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95815C4CEF0;
-	Tue, 12 Aug 2025 18:30:12 +0000 (UTC)
+	 MIME-Version; b=kLDfiLy/+U10NqsXj9mcvg1ZurIuciXTGfPO7AqCU4hGn8Q6hKYWt9rZyhwtrFLprF8RiUqEhWnR7n6HzokSeevOTRmCgPHU0BX0d87Ccnu9htZTtQt3vRTWlSfXVMwFKKcoH/MEKkFI9R8FvZrdTR0Q1SAc+0VRVIzYI6hof+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyAAcBXi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E01C4CEF0;
+	Tue, 12 Aug 2025 18:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023413;
-	bh=3Ydwhwnr/l6MP1UILLSsF0WxsFQViTjI6V2spTjxo00=;
+	s=korg; t=1755022266;
+	bh=mIsXBE8VHMY3CjSvWErWoZkZb+64A09MUtvIMqrc5+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1eFMaLX5UbTvGApSchZ8yyQTp+qL5oiA2o/5D8B6WzdVSlBvDn6Hwa9uw/tfzdlf
-	 YPVZmZtWWGnmB0PHmWq2BmgkQAXBZcKHjUm3Le713KI3q+KkWiRIiNG0/YOuPz+d9p
-	 nszmBJZWMvkz0ccIdvgvO77LFARzQ+Osa7TpQgww=
+	b=cyAAcBXileImO7LsqHxi1skU6fC0J+zBQDjcKGzKaoh0D1pIlsgcsquJU+HOQi0ci
+	 CCypZO1Mo8V6/h6Txdu5s7+9ezvq8alZ9WiAE1G+GSvd1aiCu96obu1iS4VW57DHGg
+	 MspbYRiKl1YLUWnD1Auo6ukFkYsZCjbl5vEfV650=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
-	kernel test robot <lkp@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 073/627] spi: stm32: Check for cfg availability in stm32_spi_probe
+Subject: [PATCH 6.12 071/369] bpf, sockmap: Fix psock incorrectly pointing to sk
 Date: Tue, 12 Aug 2025 19:26:08 +0200
-Message-ID: <20250812173422.086567891@linuxfoundation.org>
+Message-ID: <20250812173017.444740890@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Le Goffic <clement.legoffic@foss.st.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 21f1c800f6620e43f31dfd76709dbac8ebaa5a16 ]
+[ Upstream commit 76be5fae32febb1fdb848ba09f78c4b2c76cb337 ]
 
-The stm32_spi_probe function now includes a check to ensure that the
-pointer returned by of_device_get_match_data is not NULL before
-accessing its members. This resolves a warning where a potential NULL
-pointer dereference could occur when accessing cfg->has_device_mode.
+We observed an issue from the latest selftest: sockmap_redir where
+sk_psock(psock->sk) != psock in the backlog. The root cause is the special
+behavior in sockmap_redir - it frequently performs map_update() and
+map_delete() on the same socket. During map_update(), we create a new
+psock and during map_delete(), we eventually free the psock via rcu_work
+in sk_psock_drop(). However, pending workqueues might still exist and not
+be processed yet. If users immediately perform another map_update(), a new
+psock will be allocated for the same sk, resulting in two psocks pointing
+to the same sk.
 
-Before accessing the 'has_device_mode' member, we verify that 'cfg' is
-not NULL. If 'cfg' is NULL, an error message is logged.
+When the pending workqueue is later triggered, it uses the old psock to
+access sk for I/O operations, which is incorrect.
 
-This change ensures that the driver does not attempt to access
-configuration data if it is not available, thus preventing a potential
-system crash due to a NULL pointer dereference.
+Timing Diagram:
 
-Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310191831.MLwx1c6x-lkp@intel.com/
-Fixes: fee681646fc8 ("spi: stm32: disable device mode with st,stm32f4-spi compatible")
-Link: https://patch.msgid.link/20250616-spi-upstream-v1-2-7e8593f3f75d@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+cpu0                        cpu1
+
+map_update(sk):
+    sk->psock = psock1
+    psock1->sk = sk
+map_delete(sk):
+   rcu_work_free(psock1)
+
+map_update(sk):
+    sk->psock = psock2
+    psock2->sk = sk
+                            workqueue:
+                                wakeup with psock1, but the sk of psock1
+                                doesn't belong to psock1
+rcu_handler:
+    clean psock1
+    free(psock1)
+
+Previously, we used reference counting to address the concurrency issue
+between backlog and sock_map_close(). This logic remains necessary as it
+prevents the sk from being freed while processing the backlog. But this
+patch prevents pending backlogs from using a psock after it has been
+stopped.
+
+Note: We cannot call cancel_delayed_work_sync() in map_delete() since this
+might be invoked in BPF context by BPF helper, and the function may sleep.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20250609025908.79331-1-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/core/skmsg.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index da3517d7102d..dc22b98bdbcc 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -2069,9 +2069,15 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	struct reset_control *rst;
- 	struct device_node *np = pdev->dev.of_node;
-+	const struct stm32_spi_cfg *cfg;
- 	bool device_mode;
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 97f52394d1eb..adb3166ede97 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -655,6 +655,13 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	bool ingress;
  	int ret;
--	const struct stm32_spi_cfg *cfg = of_device_get_match_data(&pdev->dev);
-+
-+	cfg = of_device_get_match_data(&pdev->dev);
-+	if (!cfg) {
-+		dev_err(&pdev->dev, "Failed to get match data for platform\n");
-+		return -ENODEV;
-+	}
  
- 	device_mode = of_property_read_bool(np, "spi-slave");
- 	if (!cfg->has_device_mode && device_mode) {
++	/* If sk is quickly removed from the map and then added back, the old
++	 * psock should not be scheduled, because there are now two psocks
++	 * pointing to the same sk.
++	 */
++	if (!sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED))
++		return;
++
+ 	/* Increment the psock refcnt to synchronize with close(fd) path in
+ 	 * sock_map_close(), ensuring we wait for backlog thread completion
+ 	 * before sk_socket freed. If refcnt increment fails, it indicates
 -- 
 2.39.5
 
