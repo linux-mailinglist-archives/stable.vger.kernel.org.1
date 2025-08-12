@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-168293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6CFB23466
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC25B23271
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9484B1896FF0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC072A303F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DE12F5481;
-	Tue, 12 Aug 2025 18:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BEA2882CE;
+	Tue, 12 Aug 2025 18:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQ3WmbJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzsTSVPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188112ECE93;
-	Tue, 12 Aug 2025 18:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3AF2F5E;
+	Tue, 12 Aug 2025 18:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023690; cv=none; b=J6zbwv7JCghjEzaw0cZM1HvM461GTTCEUcHmTWOQ3sKyyIF22FQvvYrCqHz9E6xbUZrS89okoFkYFUaDLAIYj2L0ziFS+drvtlCFqNtJ/2s5wG0AMv+TvaI24IDRYGYQklI6Ppv7LcU63CWirNWhz3yzyXOpouhj76kIb/TpeBg=
+	t=1755022422; cv=none; b=PpRBeHMyjxL84T5PTvMcA4O7cjMfDKovgyJ9QPtWrtfoCtGADndNr8F0iuk4UbtznIr9H7CLsalR/boS+FE3sQbvhuR8UIjZ3136sEBtecNja4zhW1V38vPuDVRSTte91QdJA2G1AEGeYpCM1K6x3uRAskR1gCekKVAujl5QqDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023690; c=relaxed/simple;
-	bh=jv3K/BEWRvknlh4NMraPFo/bl6dpMioHb71ZKPD6YxQ=;
+	s=arc-20240116; t=1755022422; c=relaxed/simple;
+	bh=7SarkvDLs6Rntmzu4VAxXxwYn3SrmydggRi398D6dJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGSqv4psZYyWUYa/Etz4cEChFCKmpe3Bq2LIhmh/TCquVyP+WIn2qLvcilMsqMpJnZWrGm6CaOF7PN+tHcC/k/+2v415SfkfJUjRPJOJnPgxWGFk1qwNDejuIGiMHMtaJjKr7jMQEboRWv6OyDsf25V4mqAMaWu0Ho/6KqV3D/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQ3WmbJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A06BC4CEF0;
-	Tue, 12 Aug 2025 18:34:49 +0000 (UTC)
+	 MIME-Version; b=fjbx5XjKE2WQEB0Bbh/32a/9AOA+C53jOpecoWxrx71AxSTP/4abEXUHB4IPOey0jEcMutbqEiWn+akXDodbE/tL1bYYZYGzkcNRG4JsFivN4V33Dt1P14TW0+cNv66d/6rZsPnNBOp+1LECfm4eTIEtc0y9/hxaIPvyRkwa3xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzsTSVPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DBCCC4CEF1;
+	Tue, 12 Aug 2025 18:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023690;
-	bh=jv3K/BEWRvknlh4NMraPFo/bl6dpMioHb71ZKPD6YxQ=;
+	s=korg; t=1755022421;
+	bh=7SarkvDLs6Rntmzu4VAxXxwYn3SrmydggRi398D6dJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQ3WmbJBWu+jQaztEwcDQzzPo3g/G+PS3dmRuGQFAoPc6IpusSeKlO1dbMOSFsb2m
-	 cHPQFcxH/1ptZu1PpWVvhIt96EdITVizpNFlYs1pT/HcVYcFP4z/uJlmcDhdDQ6Eev
-	 BtG9Ck1StluyVRcYnvIchEO1qV+CUtLGgydvtmYk=
+	b=YzsTSVPSkdNVJtVDwHt/LDoG+RNpgM2prwFdM7kJHAvNU2N1qHXigHgH7phbcdM+I
+	 qYSd1C4fwhz2Yz+ZXZV/QTWSYEtA4Vs7v9nJHQilKSH8XLyL5mPCszyqbnbzcnUXhN
+	 4h4/3T8Ntv21oLNGHbgJ08s0HUMBJnTW28cjmuOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	zepta <z3ptaa@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 153/627] net: mana: Fix potential deadlocks in mana napi ops
+Subject: [PATCH 6.12 151/369] staging: media: atomisp: Fix stack buffer overflow in gmin_get_var_int()
 Date: Tue, 12 Aug 2025 19:27:28 +0200
-Message-ID: <20250812173425.109807187@linuxfoundation.org>
+Message-ID: <20250812173020.462254426@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,116 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit d5c8f0e4e0cb0ac2a4a4e015f2f5b1ba39e5e583 ]
+[ Upstream commit ee4cf798202d285dcbe85e4467a094c44f5ed8e6 ]
 
-When net_shaper_ops are enabled for MANA, netdev_ops_lock
-becomes active.
+When gmin_get_config_var() calls efi.get_variable() and the EFI variable
+is larger than the expected buffer size, two behaviors combine to create
+a stack buffer overflow:
 
-MANA VF setup/teardown by netvsc follows this call chain:
+1. gmin_get_config_var() does not return the proper error code when
+   efi.get_variable() fails. It returns the stale 'ret' value from
+   earlier operations instead of indicating the EFI failure.
 
-netvsc_vf_setup()
-        dev_change_flags()
-		...
-         __dev_open() OR __dev_close()
+2. When efi.get_variable() returns EFI_BUFFER_TOO_SMALL, it updates
+   *out_len to the required buffer size but writes no data to the output
+   buffer. However, due to bug #1, gmin_get_var_int() believes the call
+   succeeded.
 
-dev_change_flags() holds the netdev mutex via netdev_lock_ops.
+The caller gmin_get_var_int() then performs:
+- Allocates val[CFG_VAR_NAME_MAX + 1] (65 bytes) on stack
+- Calls gmin_get_config_var(dev, is_gmin, var, val, &len) with len=64
+- If EFI variable is >64 bytes, efi.get_variable() sets len=required_size
+- Due to bug #1, thinks call succeeded with len=required_size
+- Executes val[len] = 0, writing past end of 65-byte stack buffer
 
-Meanwhile, mana_create_txq() and mana_create_rxq() in mana_open()
-path call NAPI APIs (netif_napi_add_tx(), netif_napi_add_weight(),
-napi_enable()), which also try to acquire the same lock, risking
-deadlock.
+This creates a stack buffer overflow when EFI variables are larger than
+64 bytes. Since EFI variables can be controlled by firmware or system
+configuration, this could potentially be exploited for code execution.
 
-Similarly in the teardown path (mana_close()), netif_napi_disable()
-and netif_napi_del(), contend for the same lock.
+Fix the bug by returning proper error codes from gmin_get_config_var()
+based on EFI status instead of stale 'ret' value.
 
-Switch to the _locked variants of these APIs to avoid deadlocks
-when the netdev_ops_lock is held.
+The gmin_get_var_int() function is called during device initialization
+for camera sensor configuration on Intel Bay Trail and Cherry Trail
+platforms using the atomisp camera stack.
 
-Fixes: d4c22ec680c8 ("net: hold netdev instance lock during ndo_open/ndo_stop")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Reviewed-by: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/1750144656-2021-2-git-send-email-ernis@linux.microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: zepta <z3ptaa@gmail.com>
+Closes: https://lore.kernel.org/all/CAPBS6KoQyM7FMdPwOuXteXsOe44X4H3F8Fw+y_qWq6E+OdmxQA@mail.gmail.com
+Fixes: 38d4f74bc148 ("media: atomisp_gmin_platform: stop abusing efivar API")
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250724080756.work.741-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 28 +++++++++++++------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ .../staging/media/atomisp/pci/atomisp_gmin_platform.c    | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index faad1cb880f8..2dd14d97cc98 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1912,8 +1912,10 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 		napi = &apc->tx_qp[i].tx_cq.napi;
- 		if (apc->tx_qp[i].txq.napi_initialized) {
- 			napi_synchronize(napi);
--			napi_disable(napi);
--			netif_napi_del(napi);
-+			netdev_lock_ops_to_full(napi->dev);
-+			napi_disable_locked(napi);
-+			netif_napi_del_locked(napi);
-+			netdev_unlock_full_to_ops(napi->dev);
- 			apc->tx_qp[i].txq.napi_initialized = false;
- 		}
- 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
-@@ -2065,8 +2067,11 @@ static int mana_create_txq(struct mana_port_context *apc,
- 
- 		mana_create_txq_debugfs(apc, i);
- 
--		netif_napi_add_tx(net, &cq->napi, mana_poll);
--		napi_enable(&cq->napi);
-+		set_bit(NAPI_STATE_NO_BUSY_POLL, &cq->napi.state);
-+		netdev_lock_ops_to_full(net);
-+		netif_napi_add_locked(net, &cq->napi, mana_poll);
-+		napi_enable_locked(&cq->napi);
-+		netdev_unlock_full_to_ops(net);
- 		txq->napi_initialized = true;
- 
- 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
-@@ -2102,9 +2107,10 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
- 	if (napi_initialized) {
- 		napi_synchronize(napi);
- 
--		napi_disable(napi);
+diff --git a/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c b/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
+index e176483df301..b86494faa63a 100644
+--- a/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
++++ b/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
+@@ -1358,14 +1358,15 @@ static int gmin_get_config_var(struct device *maindev,
+ 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
+ 		status = efi.get_variable(var16, &GMIN_CFG_VAR_EFI_GUID, NULL,
+ 					  (unsigned long *)out_len, out);
+-	if (status == EFI_SUCCESS)
++	if (status == EFI_SUCCESS) {
+ 		dev_info(maindev, "found EFI entry for '%s'\n", var8);
+-	else if (is_gmin)
++		return 0;
++	}
++	if (is_gmin)
+ 		dev_info(maindev, "Failed to find EFI gmin variable %s\n", var8);
+ 	else
+ 		dev_info(maindev, "Failed to find EFI variable %s\n", var8);
 -
--		netif_napi_del(napi);
-+		netdev_lock_ops_to_full(napi->dev);
-+		napi_disable_locked(napi);
-+		netif_napi_del_locked(napi);
-+		netdev_unlock_full_to_ops(napi->dev);
- 	}
- 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
+-	return ret;
++	return -ENOENT;
+ }
  
-@@ -2355,14 +2361,18 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
- 
- 	gc->cq_table[cq->gdma_id] = cq->gdma_cq;
- 
--	netif_napi_add_weight(ndev, &cq->napi, mana_poll, 1);
-+	netdev_lock_ops_to_full(ndev);
-+	netif_napi_add_weight_locked(ndev, &cq->napi, mana_poll, 1);
-+	netdev_unlock_full_to_ops(ndev);
- 
- 	WARN_ON(xdp_rxq_info_reg(&rxq->xdp_rxq, ndev, rxq_idx,
- 				 cq->napi.napi_id));
- 	WARN_ON(xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
- 					   rxq->page_pool));
- 
--	napi_enable(&cq->napi);
-+	netdev_lock_ops_to_full(ndev);
-+	napi_enable_locked(&cq->napi);
-+	netdev_unlock_full_to_ops(ndev);
- 
- 	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
- out:
+ int gmin_get_var_int(struct device *dev, bool is_gmin, const char *var, int def)
 -- 
 2.39.5
 
