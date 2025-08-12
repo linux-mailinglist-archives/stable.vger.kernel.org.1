@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17408B2357B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C14DB23185
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D458189EEDD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB4817AAA7F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A5F2C21F6;
-	Tue, 12 Aug 2025 18:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5112FD1DA;
+	Tue, 12 Aug 2025 18:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opdL918t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODXoRxfb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55C4291C1F;
-	Tue, 12 Aug 2025 18:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966C02FD1A6;
+	Tue, 12 Aug 2025 18:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024478; cv=none; b=ZLWLh0hhfk+ivByrcq2GjCsdaxnF7VY5vp06dH+MFoHIJCSBhjThKxP6LH5yTlrJjrwx6K/a7l2b41Tg9W6/sFNzs15nvZ4Y34HqSwOB2CS4BJB2qh5Vh+bZgjujEuRzaOWUrGxR3//SQBYgB5heblQRLLzE9vJG1KxdrIZwunM=
+	t=1755021907; cv=none; b=OJoODdN2NWBl4Jx7IDjsSIFong4vi8dAFDHY+f7MeYj4dY1DTuQKqi/ZnjrJ/QDE6auRvdtoR7CX9OAWcm2ryt4NXMWn0pEnQcEK1mu6NeO/l86air85r0hkosSkNt0OlfqagWQkhBCfmmu/mTX/EL75J7Wl+hEqc9BUyx98PNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024478; c=relaxed/simple;
-	bh=hAHZAvvvdZYr8CnCeZ56Rd+0G1JXqc4UMWyDsd9ZiNU=;
+	s=arc-20240116; t=1755021907; c=relaxed/simple;
+	bh=EtXYQ6vQBAWbroZiwjHS2MRxzqG9MSK56D46F15OGXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5d/n0T3i+4ZDJqYAHVeC6CYs1YTUXpOkZ0xXcCDiEQ0OobXGkenZnCRAwdYWBCok11VpQ6DBkGomUh2iR96bGCfYjqY9KsjCXv9I5jC8r0zAdIETPUIYTsvmCgqJacTXc5IrXRBv4qM/WFkuCo8i8SQl9xzoUsuYvjbpyl3JB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opdL918t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27901C4CEF0;
-	Tue, 12 Aug 2025 18:47:57 +0000 (UTC)
+	 MIME-Version; b=rv8F3Sv5YdLX91DTmXshdlNZ7INip23BZTH+7E7iuMZNsI3ztwJ/t3S21KHgxtelTtzY+Gc9r8JgXUsGvT6OzdgALKrkkt0Fy3lAzPWmrGZojJNluC0lqirI5mi4L0RAH/cVLv6Wi/phIngA/IrXaYuU+Xfd+P9z3SV4QsOfsJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODXoRxfb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C83C4CEF0;
+	Tue, 12 Aug 2025 18:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024478;
-	bh=hAHZAvvvdZYr8CnCeZ56Rd+0G1JXqc4UMWyDsd9ZiNU=;
+	s=korg; t=1755021907;
+	bh=EtXYQ6vQBAWbroZiwjHS2MRxzqG9MSK56D46F15OGXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opdL918t5lorhnYhkNndMcMtYtqKV4LGl/IckncopjfiOKEXVUM5sdnWh3WkgzVDC
-	 VjrxnDXQZuoQTn+dPfNyPAZI5KH79DTW0kBTx0xP/6hGMAxqEZzpRxVpmN2h7H/YVb
-	 Avmq3AnIOyq7j66KkzfKVwoTLmYzEstBAYSB/iqk=
+	b=ODXoRxfbo1YoI2KGrnWztMd5p7TtqlJtKXNwf834hz/slMb/z0iXnAwSUm5Cda6uJ
+	 yz3FKjCTFgEs4eeRaxnb6Uj1+fadrnazDOmd6jtqnKC5+aOFCoF5NxdCK06MYQPgZ0
+	 oVONZhv6EyXOxDlAMiwORqA/9ychLSfcTG4Q8BZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 352/627] leds: pca955x: Avoid potential overflow when filling default_label (take 2)
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 259/262] x86/fpu: Delay instruction pointer fixup until after warning
 Date: Tue, 12 Aug 2025 19:30:47 +0200
-Message-ID: <20250812173432.670505369@linuxfoundation.org>
+Message-ID: <20250812173004.161735185@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-[ Upstream commit 239afba8b9f3b0fcfd464d5ffeaed0ed4441c5a4 ]
+commit 1cec9ac2d071cfd2da562241aab0ef701355762a upstream.
 
-GCC compiler v8.5.0 is not happy about printing
-into a too short buffer (when build with `make W=1`):
+Right now, if XRSTOR fails a console message like this is be printed:
 
-  drivers/leds/leds-pca955x.c:696:5: note: 'snprintf' output between 2 and 11 bytes into a destination of size 8
+	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
 
-Unfortunately this is a false positive from the old GCC versions,
-but we may still improve the code by using '%hhu' format specifier
-and reduce buffer size by 4 bytes.
+However, the text location (...+0x9a in this case) is the instruction
+*AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
+also points one instruction late.
 
-Fixes: bd3d14932923 ("leds: pca955x: Avoid potential overflow when filling default_label")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506282159.TXfvorYl-lkp@intel.com/
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250630093906.1715800-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
+keep on running after returning from the #GP handler. But it does this
+fixup before warning.
+
+The resulting warning output is nonsensical because it looks like the
+non-FPU-related instruction is #GP'ing.
+
+Do not fix up RIP until after printing the warning. Do this by using
+the more generic and standard ex_handler_default().
+
+Fixes: d5c8028b4788 ("x86/fpu: Reinitialize FPU registers if restoring FPU state fails")
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Acked-by: Alison Schofield <alison.schofield@intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250624210148.97126F9E%40davehans-spike.ostc.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-pca955x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/mm/extable.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/leds/leds-pca955x.c b/drivers/leds/leds-pca955x.c
-index 42fe056b1c74..70d109246088 100644
---- a/drivers/leds/leds-pca955x.c
-+++ b/drivers/leds/leds-pca955x.c
-@@ -587,7 +587,7 @@ static int pca955x_probe(struct i2c_client *client)
- 	struct pca955x_platform_data *pdata;
- 	bool keep_psc0 = false;
- 	bool set_default_label = false;
--	char default_label[8];
-+	char default_label[4];
- 	int bit, err, reg;
+--- a/arch/x86/mm/extable.c
++++ b/arch/x86/mm/extable.c
+@@ -121,13 +121,12 @@ static bool ex_handler_sgx(const struct
+ static bool ex_handler_fprestore(const struct exception_table_entry *fixup,
+ 				 struct pt_regs *regs)
+ {
+-	regs->ip = ex_fixup_addr(fixup);
+-
+ 	WARN_ONCE(1, "Bad FPU state detected at %pB, reinitializing FPU registers.",
+ 		  (void *)instruction_pointer(regs));
  
- 	chip = i2c_get_match_data(client);
-@@ -693,7 +693,7 @@ static int pca955x_probe(struct i2c_client *client)
- 			}
+ 	fpu_reset_from_exception_fixup();
+-	return true;
++
++	return ex_handler_default(fixup, regs);
+ }
  
- 			if (set_default_label) {
--				snprintf(default_label, sizeof(default_label), "%u", i);
-+				snprintf(default_label, sizeof(default_label), "%hhu", i);
- 				init_data.default_label = default_label;
- 			} else {
- 				init_data.default_label = NULL;
--- 
-2.39.5
-
+ /*
 
 
 
