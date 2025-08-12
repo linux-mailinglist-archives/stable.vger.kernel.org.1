@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F249CB23125
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:00:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48527B232FA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED36D7ADEA0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:59:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 571EA3AF859
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C1A2FE599;
-	Tue, 12 Aug 2025 17:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0C92ED17F;
+	Tue, 12 Aug 2025 18:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGiHWL1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grE0ZCMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBBA2FE564;
-	Tue, 12 Aug 2025 17:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7873F9D2;
+	Tue, 12 Aug 2025 18:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021572; cv=none; b=f+CTcibDqIYyUbRYV0dWMMoax2ZSVsODfjwiAArHUO0LTmqmvHMVnjEErJy56AVkv/Ahh1f30C6whqK24w42rfxiwfTqNgnZLWn6uN81B2irHsTlc6ed12uLSIjrNAQF+uTofuU9ZsFMUEd73EtFjCif9DfEhPJUx7iad3hxQ58=
+	t=1755022746; cv=none; b=tWtkOAVg+9VO0ZiwXx0I4wMyBwbEqPONR5256qPL35+k/yyOYcKWaleXjjRooB0vCnlkiItge5wap2ER50iIMv1EPdBSTsXLlqzrURnPrgBA4eo0xM7+ZLviY75a+YTltyg3JzmGZgDh8FN8fCfTrEcgmRH9EHU0PtOZT4SgZew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021572; c=relaxed/simple;
-	bh=uKtymRXumZS32ukWrzLH5zzyPsbIMkiQrdnupBfi+2Y=;
+	s=arc-20240116; t=1755022746; c=relaxed/simple;
+	bh=LLBznlxEkRjF9iBImvAEYsIQQyXo7R55ijhGrcLu4Os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qahaSu5rnYh0pZmJnFzHHkMEIfAymbpvIBxH1wJcaqsXSIoznTP1YCi9rhxXwUjvM3nczzODzcgZPkieupKI07ftVd1grXujuvsIXvpwdrW9Wtg4BcT7z1pb2dKnKRDktCmWWULqBLTMZrs7bON/ir+0z2EDpH6OD/rLSBPIiwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGiHWL1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3EFC4CEF1;
-	Tue, 12 Aug 2025 17:59:31 +0000 (UTC)
+	 MIME-Version; b=e5FV2wMunxB4LDtfydUSrgc4eIMV9xyjZIfWFNclBYKtlMPVYDuaD0sNf8nj5SLZfl5ULJLeFrLypnIy+CuSidJRl7tsciaqu0BM9hVDxXJToEfGODfv42mEImGpnq7+kIASuiPa2ATkpKWgW4n6h2Uc/Ii1KNQ8ojDLEzHxk9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grE0ZCMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF50EC4CEF1;
+	Tue, 12 Aug 2025 18:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021572;
-	bh=uKtymRXumZS32ukWrzLH5zzyPsbIMkiQrdnupBfi+2Y=;
+	s=korg; t=1755022746;
+	bh=LLBznlxEkRjF9iBImvAEYsIQQyXo7R55ijhGrcLu4Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGiHWL1h0Ingk74pbliniiICFjiovYCebgy7UxtGSq/awi+EeDZTE7Gx9beGfWUXN
-	 aK9xrGezeSeUdTQ+Lyax1IGwSt2mC9rTSU2MhLINWrUWgOaoo7TDK9RFoqsZLgt/Hu
-	 Ps8I9RioLlFzd9rsF6rOE1sHCKH2FYVmtEjSz7cQ=
+	b=grE0ZCMINScZrsgzuS4voIKOtBOHQeUDY1Pe7HUV1L86GIKAOAUD/X8KWOqq/9k4b
+	 8IBySI/LjNuIcSrW4rZtgHHzKuWz4kIxIvl5qxIJ90Iwm+W2is2Gp8h429K7NW59rP
+	 1Cj0wpw831KWK0fM4qek6EQFH3nRTq4I0e5nDUew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/262] fbdev: imxfb: Check fb_add_videomode to prevent null-ptr-deref
+Subject: [PATCH 6.12 245/369] rtc: nct3018y: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:02 +0200
-Message-ID: <20250812172959.659768444@linuxfoundation.org>
+Message-ID: <20250812173023.984341742@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7 ]
+[ Upstream commit 437c59e4b222cd697b4cf95995d933e7d583c5f1 ]
 
-fb_add_videomode() can fail with -ENOMEM when its internal kmalloc() cannot
-allocate a struct fb_modelist.  If that happens, the modelist stays empty but
-the driver continues to register.  Add a check for its return value to prevent
-poteintial null-ptr-deref, which is similar to the commit 17186f1f90d3 ("fbdev:
-Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var").
+When nct3018y_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-Fixes: 1b6c79361ba5 ("video: imxfb: Add DT support")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 5adbaed16cc63 ("rtc: Add NCT3018Y real time clock driver")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-3-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imxfb.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-nct3018y.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index 7042a43b81d8..5f9e98423d65 100644
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -1004,8 +1004,13 @@ static int imxfb_probe(struct platform_device *pdev)
- 	info->fix.smem_start = fbi->map_dma;
+diff --git a/drivers/rtc/rtc-nct3018y.c b/drivers/rtc/rtc-nct3018y.c
+index 76c5f464b2da..cea05fca0bcc 100644
+--- a/drivers/rtc/rtc-nct3018y.c
++++ b/drivers/rtc/rtc-nct3018y.c
+@@ -376,7 +376,7 @@ static long nct3018y_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
- 	INIT_LIST_HEAD(&info->modelist);
--	for (i = 0; i < fbi->num_modes; i++)
--		fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+	for (i = 0; i < fbi->num_modes; i++) {
-+		ret = fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+		if (ret) {
-+			dev_err(&pdev->dev, "Failed to add videomode\n");
-+			goto failed_cmap;
-+		}
-+	}
+-	return 0;
++	return clkout_rates[0];
+ }
  
- 	/*
- 	 * This makes sure that our colour bitfield
+ static int nct3018y_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
