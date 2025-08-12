@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45425B2346F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C031B2323A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 073133A8752
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE06B7AF814
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6EC2EF652;
-	Tue, 12 Aug 2025 18:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8972FFDC4;
+	Tue, 12 Aug 2025 18:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0np2rtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYaUaLrf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9B41DB92A;
-	Tue, 12 Aug 2025 18:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269442FF17B;
+	Tue, 12 Aug 2025 18:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023738; cv=none; b=TAyQjCCMYjkFxZUgoSV83Hk/JC61k+CYuHMHVbRwGhnqzQm3ChqaTeLEqmW5mTz88G5GL1Iv8ulD2ZLiu87H/o3FQ/iPEFwHjZn2WFYaVxQOiH7WNQK4rb5ECv+4E/We1R3lq0gxdAdXY7JkynG7SvrVNC8Aigdn/wrb9TQ0XS0=
+	t=1755022473; cv=none; b=ILZI7vp3ofmoWTn0kV0BGpoKhbBm8mkzBxyZnNW5TAAwjnn1CWgwodoXfDwL8UMKXUdRFB8a68dRduXqduRd5KUQ2Mf6P/PCKKe9HaozbF84y7E0ao4Sjdas4UfVvJ9qDNKzeeqv0vatgL9w6s+QK+AC9JyCxZlhe8khXEV/GOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023738; c=relaxed/simple;
-	bh=LU5UFFzwhlFkSP6QpU6WE0QbtpV3K7KA85Cu5QQh/io=;
+	s=arc-20240116; t=1755022473; c=relaxed/simple;
+	bh=Q6qV85uo+04zpwjM7s4tCk8jhGnd6io7ZW4QrotE+FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAJmpJT3RS9qBz6+d83+nsiZFIcmoaWNR1yvZ12lirKbiAglL9XMUTI9h9bYUddZuycbIjl6Mz/9DaF090E8mhLExp4xikj9kRhHlqXZq97nd9WC+aFRvQDkV01RO32eOZ1L+lHFcf6IRVzZsW0J9Sv7M6nO8psmkffJGC2GdEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0np2rtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD128C4CEF0;
-	Tue, 12 Aug 2025 18:35:37 +0000 (UTC)
+	 MIME-Version; b=HpcYi9e7N3PYxP1WWIIAIEibXW+AUdbahtK5KcfT6YQLe7DucSJQChPe4l7cTz3Gxt732wU3Ot8Mcv/HTJcrM/3fkLDXgY9yrBK7dm2hN3pyRwugXgXq9uPRc9ZhHf8R9m3gYwKqZ7UoHVhLXoCuGQTTB+oCgSP6WHl9BrnHx3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYaUaLrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7E1C4CEF6;
+	Tue, 12 Aug 2025 18:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023738;
-	bh=LU5UFFzwhlFkSP6QpU6WE0QbtpV3K7KA85Cu5QQh/io=;
+	s=korg; t=1755022473;
+	bh=Q6qV85uo+04zpwjM7s4tCk8jhGnd6io7ZW4QrotE+FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0np2rtKBU1tDFMPel6xwjp61/qA2PEonXW3iR3JWkGbx4xRG3jg1o8zIluhXeRd8
-	 kySwh5Gn79wOupRx3AeH0ykzNQKmfq1b1wb01grpL47J6RELrGEO0TX4n+wm2tfd0p
-	 DYP90LuR+cGu2UzGq9KedDOPH76dBe/G3ihsA2ts=
+	b=sYaUaLrfrGEiJBEnFDqjlLIwaQEwoPdVd+CiLuV0mLWi9sNh4V6mQYtCEYxeaXcGj
+	 k9pMEQQ7UDQpw8zxvMlE5O43e/k8DhtOvVN4WEisR2UxMpP9Lx715UKDuykFWJBN5o
+	 ZGT6oM7iCpAvrZisYiO/+BNx7o0n7mFzpGssCcB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 166/627] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
-Date: Tue, 12 Aug 2025 19:27:41 +0200
-Message-ID: <20250812173425.602015842@linuxfoundation.org>
+Subject: [PATCH 6.12 165/369] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
+Date: Tue, 12 Aug 2025 19:27:42 +0200
+Message-ID: <20250812173020.981352478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
+[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
 
-When iwl_opmode_register() fails, it does not unregster rate control,
-which will cause a memory leak issue, this patch fixes it.
+When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
+function returns NULL. Fix the max14577_charger_probe functionby returning
+-ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
 
-Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+This fixes the below smatch warning:
+max14577_charger_probe() warn: passing zero to 'PTR_ERR'
+
+Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/power/supply/max14577_charger.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index a2dc5c3b0596..1c05a3d8e424 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -61,8 +61,10 @@ static int __init iwl_mvm_init(void)
- 	}
- 
- 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
--	if (ret)
-+	if (ret) {
- 		pr_err("Unable to register MVM op_mode: %d\n", ret);
-+		iwl_mvm_rate_control_unregister();
-+	}
- 
- 	return ret;
+diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
+index b28c04157709..90d40b35256f 100644
+--- a/drivers/power/supply/max14577_charger.c
++++ b/drivers/power/supply/max14577_charger.c
+@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
+ static struct max14577_charger_platform_data *max14577_charger_dt_init(
+ 		struct platform_device *pdev)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODATA);
  }
+ #endif /* CONFIG_OF */
+ 
+@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
+ 	chg->max14577 = max14577;
+ 
+ 	chg->pdata = max14577_charger_dt_init(pdev);
+-	if (IS_ERR_OR_NULL(chg->pdata))
++	if (IS_ERR(chg->pdata))
+ 		return PTR_ERR(chg->pdata);
+ 
+ 	ret = max14577_charger_reg_init(chg);
 -- 
 2.39.5
 
