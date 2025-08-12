@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-168117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153E3B2337C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E224AB23577
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0FBB1B609BF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7197D1886B6F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C912FD1DC;
-	Tue, 12 Aug 2025 18:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F34A2FD1B6;
+	Tue, 12 Aug 2025 18:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBB5bplg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Siqy7Cqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559D2FD1AD;
-	Tue, 12 Aug 2025 18:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7A32CA9;
+	Tue, 12 Aug 2025 18:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023103; cv=none; b=Ze8U+b+ucx51en91nKvgY66DqF0DLAddmNZC4RqJV43HEmLrmDaibHLcAksLf1iZqaLclXC7xrGNvtmBfTmLtdUwSVe/tzm8VmiUbir//JH2Ttkn0tdZhnniISXuhOtEKMRMMK/fRS9S2F8fj2/R23TMc4lDcDZSOEnalWg4PLM=
+	t=1755024475; cv=none; b=NVBPhf3GXUUpHah6hpRFre86dQ6B2skBWoRAWxqNvxQjco4UGk/S+EgrbhfLzBN2P+GRRFyzpWA5OmaLbrxbKrC7ECgqf7j7TiKncKuaUUu8NPpIPruxtX5F56IbKhn45lAzHQahB8luGWs4epMKbrYN1Zh5KZy0vi0k+PGKcng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023103; c=relaxed/simple;
-	bh=ITAJvymrz7Rdj0QxWb+KRtUt7JqrnEcE/BqCG16+LdM=;
+	s=arc-20240116; t=1755024475; c=relaxed/simple;
+	bh=PVpxcwhH1mo17vndFoZwnnC9DBEMKfvWVuUcHIm3sO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPKeJGAObzvv4h6hAyL9Vkxy0SbtFrnC2Jh0yFN6UovYNp4D0WiPSoGkXYvg33sdGDvo4ZRfCQuSDbaT97RYNjxXWYaO3qvpxp4nugVLtJJjXDIEDYcE6Bb6dAf101Qcvk1MhNjpsTDrboowpQpLQRWjmj6yzN0aKShSWaoe8GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBB5bplg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76EBC4CEF0;
-	Tue, 12 Aug 2025 18:25:02 +0000 (UTC)
+	 MIME-Version; b=SEdl/6HDFC/kpWncRHhTBsJr5zhDzplBjTpmxyz0FXZbInUtzp3NUXdKFhn9h/mUfXwFwFLFnKYvGOcOWso89nkaqPWaDjvveg74M6F8fg9tk2RC9lPcei35+/yZ++C5OJ9Ymq1dKSb2uknZwGfYuz8ilRH3eMZet6aY3MmOMyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Siqy7Cqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00BCC4CEF0;
+	Tue, 12 Aug 2025 18:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023103;
-	bh=ITAJvymrz7Rdj0QxWb+KRtUt7JqrnEcE/BqCG16+LdM=;
+	s=korg; t=1755024475;
+	bh=PVpxcwhH1mo17vndFoZwnnC9DBEMKfvWVuUcHIm3sO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBB5bplgk8dHVWYuVQ24tNPtUh4NeSPs2lDfSAyjvw5YPUr33MBeU6N7BYCdTheOj
-	 KAP0R+1tMSbCeEQtX9pd5vHs/3gdUUdYOTeJCXGl9zYmOd90agoNBn6H7hGR+5de9d
-	 09crNf/kVGJYupHh38x1pNovmPDLvgH/HpBDfkd0=
+	b=Siqy7CqdEh9vao7U9R51U3o4AW7aHbqrHvElgX5SCZl+nSlRcyh6vjbTeNV01V/Zq
+	 QQdHs8LI5AohdmZkekihXfJ5rntbHk9tsLtcDwVpt+QBXHK7dBf3tc3l1kz7g6rM39
+	 l5AzZzUL/QilX1hwUpzIEfh3CW+V10EchwLjtSgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 349/369] Bluetooth: btusb: Add USB ID 3625:010b for TP-LINK Archer TX10UB Nano
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 351/627] Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:30:46 +0200
-Message-ID: <20250812173029.824781513@linuxfoundation.org>
+Message-ID: <20250812173432.634039945@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit d9da920233ec85af8b9c87154f2721a7dc4623f5 upstream.
+[ Upstream commit 1db50f7b7a793670adcf062df9ff27798829d963 ]
 
-Add USB ID 3625:010b for TP-LINK Archer TX10UB Nano which is based on
-a Realtek RTL8851BU chip.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below:
-
-T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 9 Spd=480 MxCh= 0
-D: Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs= 1
-P: Vendor=3625 ProdID=010b Rev= 0.00
-S: Manufacturer=Realtek
-S: Product=802.11ax WLAN Adapter
-S: SerialNumber=00e04c000001
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-A: FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
-E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
-I: If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 63 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtl8851bu
-E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ed10435d3583 ("RDMA/erdma: Implement hierarchical MTT")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250630092346.81017-2-fourier.thomas@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/hw/erdma/erdma_verbs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -511,6 +511,10 @@ static const struct usb_device_id quirks
- 	{ USB_DEVICE(0x13d3, 0x3549), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
+index af36a8d2df22..ec0ad4086066 100644
+--- a/drivers/infiniband/hw/erdma/erdma_verbs.c
++++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
+@@ -629,7 +629,8 @@ static struct erdma_mtt *erdma_create_cont_mtt(struct erdma_dev *dev,
+ static void erdma_destroy_mtt_buf_sg(struct erdma_dev *dev,
+ 				     struct erdma_mtt *mtt)
+ {
+-	dma_unmap_sg(&dev->pdev->dev, mtt->sglist, mtt->nsg, DMA_TO_DEVICE);
++	dma_unmap_sg(&dev->pdev->dev, mtt->sglist,
++		     DIV_ROUND_UP(mtt->size, PAGE_SIZE), DMA_TO_DEVICE);
+ 	vfree(mtt->sglist);
+ }
  
-+	/* Realtek 8851BU Bluetooth devices */
-+	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
-+
- 	/* Realtek 8852AE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+-- 
+2.39.5
+
 
 
 
