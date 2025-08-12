@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D78B2341D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C2BB23022
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D987716B987
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9211AA1CA9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D011F2EAB97;
-	Tue, 12 Aug 2025 18:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAE22F7477;
+	Tue, 12 Aug 2025 17:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpijITnG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSBvEsRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6EF1EF38C;
-	Tue, 12 Aug 2025 18:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB89279915;
+	Tue, 12 Aug 2025 17:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023535; cv=none; b=X4n7/4WAcerloD2ildm/t/9O2Xf+wUiymx1f1b8YAHFNnIij5rseSqjWRE5GMFzkjiocDVT+7OebYKCHJr5r20XwNB25ajCsi8Mcrf2E7vG7NZqTY50rVHwcyz8Koi5dLUao2xhBVTwDJRGQAM6SG6AaxFR4LMxT7PXZ4b5IV4o=
+	t=1755020794; cv=none; b=sLknSfpktlsluO/ze1ua+yzqD7xdq8Ll3HkquhhhtZEosz5aKVzKinA4IGPKlpoPz3x6/hvVG0v+SRkiZ62UUaFHKAQcZrqvxLaI2hMyD4jvY6Nq5ypNWVSQ5VyZMIt1DqV54PBhU2yunv4fH3P7tUQUWUVrGeI2zqCdKB0z6yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023535; c=relaxed/simple;
-	bh=qgQBW8R8EAfgE/1RcjTzVuwXTDUs8aqH2kKxVI8aSdY=;
+	s=arc-20240116; t=1755020794; c=relaxed/simple;
+	bh=3DVld5LyipqfvOSKy6OVeoMEd7oF5rflCWi1kzQQi2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4PkqnTqxwQRvlSDVzCnQ7WtUCuG1CXYVlZ2VsgSkye06ql39P1ClR+jLRYUkaVsoAAd/UsvVb6aPz8QAYknCfPlblirqAKH8rbkxG8ubFYZjI56Lrj99u4EMtXpdOBrkzc/l6RjDsi4FdGauiYFTOsGG/hEeBBNCZ2y2kaenAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpijITnG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AE9C4CEF1;
-	Tue, 12 Aug 2025 18:32:14 +0000 (UTC)
+	 MIME-Version; b=rp16hAWg+Ypu5TdRQwjLmepM1kTXtFeetttTxnxY+6oRqbVtd9hkQC+5419gdEeUO27+FrCXSBJp6VwaaOtR78tP//P7Amx+XzZZlhlz04vVXtiUBrQULLOXiubYhgC8/BpRuWRXtcTCPPB0uAxYBgTEJMf0ozCRlUF5u8h1pbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSBvEsRe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546B8C4CEF0;
+	Tue, 12 Aug 2025 17:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023535;
-	bh=qgQBW8R8EAfgE/1RcjTzVuwXTDUs8aqH2kKxVI8aSdY=;
+	s=korg; t=1755020794;
+	bh=3DVld5LyipqfvOSKy6OVeoMEd7oF5rflCWi1kzQQi2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpijITnGoaWktRd6sE5hc/JF3tMSzs81WQEk82gy/+R7CmzilYv1HFxCib0eGDfn1
-	 jcnazAM2gWTPoXLF83lxca2eArQKDxHXbIBaQJVoyRQlte3dX1LH5SUZ6LY5cgKKy9
-	 7dxcMZRXSNw5IuCT908ITHwN7hv163fjeebubjEs=
+	b=LSBvEsReS8dAQk1aEVZBRMn1VPi5eHd5wgWNYn7jAMkWh8q1Mc5VpPlXH+C1cQrTk
+	 DxBqp802DbDA4H/VU45oLh0H5oASNM2g9L3Ri57QuVnULpOOE08DbZXYspLkjKIfdQ
+	 o97qZn583egrGlnQiMGPpLNFyx/UL0mU8wsTEbKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 109/627] cpufreq: Initialize cpufreq-based frequency-invariance later
+Subject: [PATCH 6.6 016/262] ASoC: ops: dynamically allocate struct snd_ctl_elem_value
 Date: Tue, 12 Aug 2025 19:26:44 +0200
-Message-ID: <20250812173423.459382063@linuxfoundation.org>
+Message-ID: <20250812172953.672135620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
+[ Upstream commit 7e10d7242ea8a5947878880b912ffa5806520705 ]
 
-The cpufreq-based invariance is enabled in cpufreq_register_driver(),
-but never disabled after registration fails. Move the invariance
-initialization to where all other initializations have been successfully
-done to solve this problem.
+This structure is really too larget to be allocated on the stack:
 
-Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+sound/soc/soc-ops.c:435:5: error: stack frame size (1296) exceeds limit (1280) in 'snd_soc_limit_volume' [-Werror,-Wframe-larger-than]
+
+Change the function to dynamically allocate it instead.
+
+There is probably a better way to do it since only two integer fields
+inside of that structure are actually used, but this is the simplest
+rework for the moment.
+
+Fixes: 783db6851c18 ("ASoC: ops: Enforce platform maximum on initial value")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250610093057.2643233-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ sound/soc/soc-ops.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index d7426e1d8bdd..189e2166ddef 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2944,15 +2944,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	cpufreq_driver = driver_data;
- 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index eff1355cc3df..5be32c37bb8a 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -641,28 +641,32 @@ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
+ static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
+ {
+ 	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
+-	struct snd_ctl_elem_value uctl;
++	struct snd_ctl_elem_value *uctl;
+ 	int ret;
  
--	/*
--	 * Mark support for the scheduler's frequency invariance engine for
--	 * drivers that implement target(), target_index() or fast_switch().
--	 */
--	if (!cpufreq_driver->setpolicy) {
--		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
--		pr_debug("supports frequency invariance");
--	}
--
- 	if (driver_data->setpolicy)
- 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
+ 	if (!mc->platform_max)
+ 		return 0;
  
-@@ -2983,6 +2974,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	hp_online = ret;
- 	ret = 0;
- 
-+	/*
-+	 * Mark support for the scheduler's frequency invariance engine for
-+	 * drivers that implement target(), target_index() or fast_switch().
-+	 */
-+	if (!cpufreq_driver->setpolicy) {
-+		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
-+		pr_debug("supports frequency invariance");
-+	}
+-	ret = kctl->get(kctl, &uctl);
++	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
++	if (!uctl)
++		return -ENOMEM;
 +
- 	pr_debug("driver %s up and running\n", driver_data->name);
- 	goto out;
++	ret = kctl->get(kctl, uctl);
+ 	if (ret < 0)
+-		return ret;
++		goto out;
  
+-	if (uctl.value.integer.value[0] > mc->platform_max)
+-		uctl.value.integer.value[0] = mc->platform_max;
++	if (uctl->value.integer.value[0] > mc->platform_max)
++		uctl->value.integer.value[0] = mc->platform_max;
+ 
+ 	if (snd_soc_volsw_is_stereo(mc) &&
+-	    uctl.value.integer.value[1] > mc->platform_max)
+-		uctl.value.integer.value[1] = mc->platform_max;
++	    uctl->value.integer.value[1] > mc->platform_max)
++		uctl->value.integer.value[1] = mc->platform_max;
+ 
+-	ret = kctl->put(kctl, &uctl);
+-	if (ret < 0)
+-		return ret;
++	ret = kctl->put(kctl, uctl);
+ 
+-	return 0;
++out:
++	kfree(uctl);
++	return ret;
+ }
+ 
+ /**
 -- 
 2.39.5
 
