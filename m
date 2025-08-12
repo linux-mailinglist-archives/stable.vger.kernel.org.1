@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-168346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644D3B23476
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307A6B230B3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC621630DC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CFF0686CBD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6340A2FF140;
-	Tue, 12 Aug 2025 18:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F288E2F8BE7;
+	Tue, 12 Aug 2025 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcvX+6tm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTlEBL93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C1E2FAC11;
-	Tue, 12 Aug 2025 18:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22232D5C76;
+	Tue, 12 Aug 2025 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023871; cv=none; b=U/v2f+oCPn7ddemXEUdvrwwdSdxqu1vcodQB4yY5XF9bAxmzpBVmCEfZ1S9YRKSZVHS+goYZFCszsFENjKkr3yD6YXwW6PUcgvgwBtiYdK5kwsIH86QL+8yXxShzVrNeyJdxRPjhJrWV3S0XzWd6PqosVNPrE6bHqt7p/fXkJ58=
+	t=1755021230; cv=none; b=Cd6D2FUY8ZrQVvezTzXR93CO7a0vpBqb3FDdmzfg/9ryVr2bKrZ/gf9UKMLFgWQkOER/d71sKLwJa9sIKu9DBqFBS4oNwYQOMgOtArofejrZSIlvk0ANVtp3FEubRa1S/DCrghyqcfCie3cyzd8rbO2W4rdUHyEWnD3e8pZ6pqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023871; c=relaxed/simple;
-	bh=7MS+Bxux3bhxPcr/McyJl9rA9Z3dOjMZVNI7hk8eo3Y=;
+	s=arc-20240116; t=1755021230; c=relaxed/simple;
+	bh=IHZBQZwMldhM2xCdRl2V3CHCXvoHu20G/d1E6xZ377E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eeVZKxVnHXTMbrHF+fE+CUzDNdSYuuKBEO74/jUUyQdBaDscsG48z5XIFNQe/S66hxfLWLueLSZYMRsLes/JLHlLCGrAgs7HF1P2RIOIxGECNsI2No11fsJqXk8Btw3tVr0zxtiNd0FbzrmWWDM5RUoTz25Lb3JkeSy2Fdunxxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcvX+6tm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86044C4CEF0;
-	Tue, 12 Aug 2025 18:37:50 +0000 (UTC)
+	 MIME-Version; b=oAfB7BWbSRFYHiBi2mTVCj5URYTDWJTnLd3KJMZtF86uHuJMC52hdOUIg1fhp2g8U/UQgpk2lJCAqG0k4NEoRgG3K1iUF3b1qYPRPLhDTFGwSeetaV2YCwvJZUWQyLyrn5TNi+UVvAo7zJ2kOgp5xHn/adFEbo9xZup4KE2GjKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTlEBL93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA3FC4CEF0;
+	Tue, 12 Aug 2025 17:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023871;
-	bh=7MS+Bxux3bhxPcr/McyJl9rA9Z3dOjMZVNI7hk8eo3Y=;
+	s=korg; t=1755021230;
+	bh=IHZBQZwMldhM2xCdRl2V3CHCXvoHu20G/d1E6xZ377E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TcvX+6tmVffHm5WgypAbQ73yHvdmnygnkX4Ft8GJC6SAChW5d4IVdzkTjDuHes76H
-	 hO6gmAw6D4aIuJnd3Bd+io4fbk71VVHcHXhyrQwHO7qyeh9yOxuJzfOU4BFoMDolfc
-	 p+WP4RIAPL0Bjgbv/DebnrXDmCe4ZhaNgjd6+O5E=
+	b=BTlEBL93Z/Z0CAbNCEqZhLbJwY7ZssnyDvYzxv1qiyY1VAakeDc4LjYCE0WKjy+/0
+	 hMv1Cmwp0G9qxaqYxMLSCae+gb0g2JyHyJgdgF25h1iNgssd/VKpUcxzO9zv0QZ+yK
+	 cBZfA9w+SHMtlNeDJ4gTfFMDceAt00Q9dk7fG0kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 174/627] net: dst: annotate data-races around dst->input
+Subject: [PATCH 6.6 081/262] iommu/amd: Fix geometry.aperture_end for V2 tables
 Date: Tue, 12 Aug 2025 19:27:49 +0200
-Message-ID: <20250812173425.898637634@linuxfoundation.org>
+Message-ID: <20250812172956.495132788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit f1c5fd34891a1c242885f48c2e4dc52df180f311 ]
+[ Upstream commit 8637afa79cfa6123f602408cfafe8c9a73620ff1 ]
 
-dst_dev_put() can overwrite dst->input while other
-cpus might read this field (for instance from dst_input())
+The AMD IOMMU documentation seems pretty clear that the V2 table follows
+the normal CPU expectation of sign extension. This is shown in
 
-Add READ_ONCE()/WRITE_ONCE() annotations to suppress
-potential issues.
+  Figure 25: AMD64 Long Mode 4-Kbyte Page Address Translation
 
-We will likely need full RCU protection later.
+Where bits Sign-Extend [63:57] == [56]. This is typical for x86 which
+would have three regions in the page table: lower, non-canonical, upper.
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250630121934.3399505-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The manual describes that the V1 table does not sign extend in section
+2.2.4 Sharing AMD64 Processor and IOMMU Page Tables GPA-to-SPA
+
+Further, Vasant has checked this and indicates the HW has an addtional
+behavior that the manual does not yet describe. The AMDv2 table does not
+have the sign extended behavior when attached to PASID 0, which may
+explain why this has gone unnoticed.
+
+The iommu domain geometry does not directly support sign extended page
+tables. The driver should report only one of the lower/upper spaces. Solve
+this by removing the top VA bit from the geometry to use only the lower
+space.
+
+This will also make the iommu_domain work consistently on all PASID 0 and
+PASID != 1.
+
+Adjust dma_max_address() to remove the top VA bit. It now returns:
+
+5 Level:
+  Before 0x1ffffffffffffff
+  After  0x0ffffffffffffff
+4 Level:
+  Before 0xffffffffffff
+  After  0x7fffffffffff
+
+Fixes: 11c439a19466 ("iommu/amd/pgtbl_v2: Fix domain max address")
+Link: https://lore.kernel.org/all/8858d4d6-d360-4ef0-935c-bfd13ea54f42@amd.com/
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h      | 2 +-
- include/net/lwtunnel.h | 4 ++--
- net/core/dst.c         | 2 +-
- net/ipv4/route.c       | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/iommu/amd/iommu.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 78c78cdce0e9..65d81116d6bf 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -466,7 +466,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_local_deliver(struct sk_buff *));
- /* Input packet from network to transport.  */
- static inline int dst_input(struct sk_buff *skb)
- {
--	return INDIRECT_CALL_INET(skb_dst(skb)->input,
-+	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->input),
- 				  ip6_input, ip_local_deliver, skb);
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index a5d6d786dba5..23cfb98fe90a 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2159,8 +2159,21 @@ static inline u64 dma_max_address(void)
+ 	if (amd_iommu_pgtable == AMD_IOMMU_V1)
+ 		return ~0ULL;
+ 
+-	/* V2 with 4/5 level page table */
+-	return ((1ULL << PM_LEVEL_SHIFT(amd_iommu_gpt_level)) - 1);
++	/*
++	 * V2 with 4/5 level page table. Note that "2.2.6.5 AMD64 4-Kbyte Page
++	 * Translation" shows that the V2 table sign extends the top of the
++	 * address space creating a reserved region in the middle of the
++	 * translation, just like the CPU does. Further Vasant says the docs are
++	 * incomplete and this only applies to non-zero PASIDs. If the AMDv2
++	 * page table is assigned to the 0 PASID then there is no sign extension
++	 * check.
++	 *
++	 * Since the IOMMU must have a fixed geometry, and the core code does
++	 * not understand sign extended addressing, we have to chop off the high
++	 * bit to get consistent behavior with attachments of the domain to any
++	 * PASID.
++	 */
++	return ((1ULL << (PM_LEVEL_SHIFT(amd_iommu_gpt_level) - 1)) - 1);
  }
  
-diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
-index c306ebe379a0..eaac07d50595 100644
---- a/include/net/lwtunnel.h
-+++ b/include/net/lwtunnel.h
-@@ -142,8 +142,8 @@ static inline void lwtunnel_set_redirect(struct dst_entry *dst)
- 		dst->output = lwtunnel_output;
- 	}
- 	if (lwtunnel_input_redirect(dst->lwtstate)) {
--		dst->lwtstate->orig_input = dst->input;
--		dst->input = lwtunnel_input;
-+		dst->lwtstate->orig_input = READ_ONCE(dst->input);
-+		WRITE_ONCE(dst->input, lwtunnel_input);
- 	}
- }
- #else
-diff --git a/net/core/dst.c b/net/core/dst.c
-index 795ca07e28a4..b46f7722a1b6 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -148,7 +148,7 @@ void dst_dev_put(struct dst_entry *dst)
- 	dst->obsolete = DST_OBSOLETE_DEAD;
- 	if (dst->ops->ifdown)
- 		dst->ops->ifdown(dst, dev);
--	dst->input = dst_discard;
-+	WRITE_ONCE(dst->input, dst_discard);
- 	dst->output = dst_discard_out;
- 	dst->dev = blackhole_netdev;
- 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 64ac20c27f1b..2cc88f8c3bc6 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1685,7 +1685,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
- 		else if (rt->rt_gw_family == AF_INET6)
- 			new_rt->rt_gw6 = rt->rt_gw6;
- 
--		new_rt->dst.input = rt->dst.input;
-+		new_rt->dst.input = READ_ONCE(rt->dst.input);
- 		new_rt->dst.output = rt->dst.output;
- 		new_rt->dst.error = rt->dst.error;
- 		new_rt->dst.lastuse = jiffies;
+ static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
 -- 
 2.39.5
 
