@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5844AB2321C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83C6B2341B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957F917E566
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46BC23AD8D4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF031EF38C;
-	Tue, 12 Aug 2025 18:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66441E500C;
+	Tue, 12 Aug 2025 18:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVchAi1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0v+6MVtO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D106E305E08;
-	Tue, 12 Aug 2025 18:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C302F5E;
+	Tue, 12 Aug 2025 18:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022134; cv=none; b=mhfwm5PVDw4mCYWzyWL0D7zo9WPEcuv9DO+SIDGzxf/WbkfKzped1NEGzL3pPHPKHPQ4MVglVhSe3vMZDgtWOECHGd4Ef5GluUv5DZIJrFhOngMG1jPL9NGtXhmtd3LuRZ+w0qUMqazZqryqVoAWaD7fg0l2KjSXsjYcKpI85cs=
+	t=1755023504; cv=none; b=foPYwxfZDMJDNZFCb4GKSyBrvkQUho3ArMkZYJHEr3UMnI71bEy+5WnLxQz3HejURCf/5JSg4DKwPBhCCVDPftAajYWDcSvH9E90tL3ZCFW/pGolxOz8+wQ3qwKuAAiMNAC2mOJu11b/sAw++XTJtFy7ZzfHnfqjUSjZv9greTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022134; c=relaxed/simple;
-	bh=Qqz/zMybOm4G/pl/GOScvB9VVktN4uoVqER+v8Gyvcs=;
+	s=arc-20240116; t=1755023504; c=relaxed/simple;
+	bh=TNIUyvli6pmTeJolUsg7TChqfCgpfj+XdwPScWamXOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfXsw2yhWhHcEzz0GiRRLgkMynXgQ5iEcvRKsKlQEHBqSO7ykutuLjqZjE4lVk2596WzK90y72DDuABf9lLqu+MiV7zOXAA6+PnLYIwGpl56K2OVjAtVsch1MtZdkLVxrSmOr19Yvd3unCxh7vdxKHIHaLFZ6617xQkqLiil4OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVchAi1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3844BC4CEF6;
-	Tue, 12 Aug 2025 18:08:54 +0000 (UTC)
+	 MIME-Version; b=jORlqM6Sox2TscptadryZ3/OnssPaVKqs3nGX+OhCuaGEhSDsIwIP4l73ePJOAKVD3De9o8/Z/UtFArTTFHIs0jf21et2oBW1Y33ASsjsEYe3CLcdUUAg2gPGzZ//vyk641wF96z+9WxVxoqrURfb7y5b0Ra/PQJXg12V9nEz08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0v+6MVtO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E892CC4CEF0;
+	Tue, 12 Aug 2025 18:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022134;
-	bh=Qqz/zMybOm4G/pl/GOScvB9VVktN4uoVqER+v8Gyvcs=;
+	s=korg; t=1755023504;
+	bh=TNIUyvli6pmTeJolUsg7TChqfCgpfj+XdwPScWamXOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qVchAi1VkKEsT7rViZol52uCRBtC6L1FgYmFy/Z0Q/lP5mblWVvwrBYoW72+bPVQt
-	 EZjKIkvlGoN7cR61qdRAKy3tsJS32Uzn0xbCw1tX+LJjmm23GloSp7APLYamEdw9NC
-	 2iBZnHoZLUeBhfFGrrHFZIz2jYRPQAXdUjdTxYsU=
+	b=0v+6MVtOj4+0VDMfCUW4KlOYVSx6w+Lw9Uvcwn7arUJYT/5+wDabmPdy+JgbzUdKc
+	 oaacCvgvjKqzH/hgYeO0ApO5A4B/lu99XcZKjWrXHzB4MdLXt+7bjBtEtyzYyziEJt
+	 E5oQ+A7crRiG/7qeRBImObEvqfibckg8/A/hgsbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/369] interconnect: qcom: sc8180x: specify num_nodes
+Subject: [PATCH 6.16 066/627] mei: vsc: Dont re-init VSC from mei_vsc_hw_reset() on stop
 Date: Tue, 12 Aug 2025 19:26:01 +0200
-Message-ID: <20250812173017.171966538@linuxfoundation.org>
+Message-ID: <20250812173421.831814787@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 7e0b59496a02d25828612721e846ea4b717a97b9 ]
+[ Upstream commit 880af854d6343b796f05b9a8b52b68a88535625b ]
 
-Specify .num_nodes for several BCMs which missed this declaration.
+mei_vsc_hw_reset() gets called from mei_start() and mei_stop() in
+the latter case we do not need to re-init the VSC by calling vsc_tp_init().
 
-Fixes: 04548d4e2798 ("interconnect: qcom: sc8180x: Reformat node and bcm definitions")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250704-rework-icc-v2-2-875fac996ef5@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+mei_stop() only happens on shutdown and driver unbind. On shutdown we
+don't need to load + boot the firmware and if the driver later is
+bound to the device again then mei_start() will do another reset.
+
+The intr_enable flag is true when called from mei_start() and false on
+mei_stop(). Skip vsc_tp_init() when intr_enable is false.
+
+This avoids unnecessarily uploading the firmware, which takes 11 seconds.
+This change reduces the poweroff/reboot time by 11 seconds.
+
+Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Reviewed-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250623085052.12347-3-hansg@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sc8180x.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/misc/mei/platform-vsc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/interconnect/qcom/sc8180x.c b/drivers/interconnect/qcom/sc8180x.c
-index 03d626776ba1..576f90a7d55f 100644
---- a/drivers/interconnect/qcom/sc8180x.c
-+++ b/drivers/interconnect/qcom/sc8180x.c
-@@ -1492,34 +1492,40 @@ static struct qcom_icc_bcm bcm_sh3 = {
+diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
+index 435760b1e86f..1ac85f0251c5 100644
+--- a/drivers/misc/mei/platform-vsc.c
++++ b/drivers/misc/mei/platform-vsc.c
+@@ -256,6 +256,9 @@ static int mei_vsc_hw_reset(struct mei_device *mei_dev, bool intr_enable)
  
- static struct qcom_icc_bcm bcm_sn0 = {
- 	.name = "SN0",
-+	.num_nodes = 1,
- 	.nodes = { &slv_qns_gemnoc_sf }
- };
+ 	vsc_tp_reset(hw->tp);
  
- static struct qcom_icc_bcm bcm_sn1 = {
- 	.name = "SN1",
-+	.num_nodes = 1,
- 	.nodes = { &slv_qxs_imem }
- };
- 
- static struct qcom_icc_bcm bcm_sn2 = {
- 	.name = "SN2",
- 	.keepalive = true,
-+	.num_nodes = 1,
- 	.nodes = { &slv_qns_gemnoc_gc }
- };
- 
- static struct qcom_icc_bcm bcm_co2 = {
- 	.name = "CO2",
-+	.num_nodes = 1,
- 	.nodes = { &mas_qnm_npu }
- };
- 
- static struct qcom_icc_bcm bcm_sn3 = {
- 	.name = "SN3",
- 	.keepalive = true,
-+	.num_nodes = 2,
- 	.nodes = { &slv_srvc_aggre1_noc,
- 		  &slv_qns_cnoc }
- };
- 
- static struct qcom_icc_bcm bcm_sn4 = {
- 	.name = "SN4",
-+	.num_nodes = 1,
- 	.nodes = { &slv_qxs_pimem }
- };
++	if (!intr_enable)
++		return 0;
++
+ 	return vsc_tp_init(hw->tp, mei_dev->dev);
+ }
  
 -- 
 2.39.5
