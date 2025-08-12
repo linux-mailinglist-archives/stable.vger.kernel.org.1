@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BF6B232EC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E340B23005
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5563B792B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496B06823CB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7124561FFE;
-	Tue, 12 Aug 2025 18:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030242FE574;
+	Tue, 12 Aug 2025 17:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcEOSC8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YevOG2OR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3C21B87F2;
-	Tue, 12 Aug 2025 18:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52FA2FE566;
+	Tue, 12 Aug 2025 17:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022675; cv=none; b=Gl3BsiSucWTAh3NBsn76XuHw1w68qZyy1GMF0BTSWL94gu3HzACFE2zZFI4qRsbdRF7dnlaPV1CgH4fLb+4UNugjJ7coIcqUF8nsT59Iit6Q8tHyFkPLXpdsIhZFDznIK252aGjeOnJyBBpXJc1ca6yP80qyCIXIgGwcqiqYoxU=
+	t=1755020762; cv=none; b=XihCv2D59gs/Cx5Z3O9oA5RCVsCwnh/Pz14M9RBLoLAL/LbToop0sHBx/S8k7Fws+18M5CVJGKZ9SnHTkhf5UxWodMRVP/szWH2dtZAbQ9nSVxecD0Pl4mHbwfyziQCB24RnTCNSwsRNVjW/mlyNuBrVOQ8t95+NgikkrLnuZyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022675; c=relaxed/simple;
-	bh=UrfQNFk39M5q9uvHeT1MKNc/i7LvxBT5my1xJ3Ac0w8=;
+	s=arc-20240116; t=1755020762; c=relaxed/simple;
+	bh=HZ2IF553qSUflvw9YeMKMc/zTknU4EnPr3xgtRkYdA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edoRh/Xi1/uczR8ygkXkfmRiK1lgIqrBfVhHV/mlM4Yv65jbhKVYCZmOCYmVaZHAgYToabL4NPWl6CUE3VX4IpR2AUGmJri6rpr5FPUegDl4liEbyNL87PHkMqVIiTxYDacGHzybxYYPcbtFcgzbxbIOan3jdU+gN4TITzGm9bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcEOSC8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934C1C4CEF0;
-	Tue, 12 Aug 2025 18:17:54 +0000 (UTC)
+	 MIME-Version; b=TgV6EcSsTKPf04qVRdWFaXbR3MXS2uAAk1A87kmsmSpBoxQ22d5TkUGAZuDwibNgMB/rCiFscTbZ2h8DkWsrDuw1equUB8mjdOgTAk9M8kEleitIFqpWwo+QXkoebJjJOOn7VYJQS8898+i/uS23DRalAwU0Qa5ipfudSQtG5q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YevOG2OR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD580C4CEF0;
+	Tue, 12 Aug 2025 17:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022675;
-	bh=UrfQNFk39M5q9uvHeT1MKNc/i7LvxBT5my1xJ3Ac0w8=;
+	s=korg; t=1755020762;
+	bh=HZ2IF553qSUflvw9YeMKMc/zTknU4EnPr3xgtRkYdA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcEOSC8Fa1R+EwToA4CMvacbQ9tuBwUxH2bHZPNBKudQoc68JH8JPKanQV38Gq+bN
-	 8qdCfiizXN6D5sauYFTtggQXBJnelFKS8Junwa8k0KWfhhkIu3JjPUEtBvqVp8+g0G
-	 dxJfXWksQqZiydihp9HlxsitUr3aoJ0ME8wLewd4=
+	b=YevOG2ORCvEvIEXwqr8cjIbkW8oqoE1ZvtPE1SWuw78WBfoVQm4ZyZEsSgfgJyNCf
+	 B07AgAgeJUEnVlDmuesWrAs9i4izStCpXHjSrlo0wGhKKWoFq0iz04lMNadrvSEiPd
+	 j2g+Y5MqHKXPb4iOedEuUNWOePkaPT4cHOuN/xrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/369] mtd: rawnand: rockchip: Add missing check after DMA map
+Subject: [PATCH 6.1 135/253] ipv6: prevent infinite loop in rt6_nlmsg_size()
 Date: Tue, 12 Aug 2025 19:28:43 +0200
-Message-ID: <20250812173023.264403906@linuxfoundation.org>
+Message-ID: <20250812172954.440104304@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3b36f86dc47261828f96f826077131a35dd825fd ]
+[ Upstream commit 54e6fe9dd3b0e7c481c2228782c9494d653546da ]
 
-The DMA map functions can fail and should be tested for errors.
+While testing prior patch, I was able to trigger
+an infinite loop in rt6_nlmsg_size() in the following place:
 
-Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
+			fib6_siblings) {
+	rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
+}
+
+This is because fib6_del_route() and fib6_add_rt2node()
+uses list_del_rcu(), which can confuse rcu readers,
+because they might no longer see the head of the list.
+
+Restart the loop if f6i->fib6_nsiblings is zero.
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250725140725.3626540-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/rockchip-nand-controller.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/ipv6/ip6_fib.c |  4 ++--
+ net/ipv6/route.c   | 34 ++++++++++++++++++----------------
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-index 51c9cf9013dc..1b65b3aa6aa2 100644
---- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
-+++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-@@ -656,9 +656,16 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index b6a7cbd6bee0..bc70380eb437 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1241,7 +1241,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 							 &rt->fib6_siblings,
+ 							 fib6_siblings)
+ 					sibling->fib6_nsiblings--;
+-				rt->fib6_nsiblings = 0;
++				WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 				list_del_rcu(&rt->fib6_siblings);
+ 				rt6_multipath_rebalance(next_sibling);
+ 				return err;
+@@ -1954,7 +1954,7 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
+ 		list_for_each_entry_safe(sibling, next_sibling,
+ 					 &rt->fib6_siblings, fib6_siblings)
+ 			sibling->fib6_nsiblings--;
+-		rt->fib6_nsiblings = 0;
++		WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 		list_del_rcu(&rt->fib6_siblings);
+ 		rt6_multipath_rebalance(next_sibling);
+ 	}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 4e6b833dc40b..201a0ef51a6d 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5580,32 +5580,34 @@ static int rt6_nh_nlmsg_size(struct fib6_nh *nh, void *arg)
  
- 	dma_data = dma_map_single(nfc->dev, (void *)nfc->page_buf,
- 				  mtd->writesize, DMA_TO_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_data))
-+		return -ENOMEM;
-+
- 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
- 				 ecc->steps * oob_step,
- 				 DMA_TO_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_oob)) {
-+		dma_unmap_single(nfc->dev, dma_data, mtd->writesize, DMA_TO_DEVICE);
-+		return -ENOMEM;
+ static size_t rt6_nlmsg_size(struct fib6_info *f6i)
+ {
++	struct fib6_info *sibling;
++	struct fib6_nh *nh;
+ 	int nexthop_len;
+ 
+ 	if (f6i->nh) {
+ 		nexthop_len = nla_total_size(4); /* RTA_NH_ID */
+ 		nexthop_for_each_fib6_nh(f6i->nh, rt6_nh_nlmsg_size,
+ 					 &nexthop_len);
+-	} else {
+-		struct fib6_nh *nh = f6i->fib6_nh;
+-		struct fib6_info *sibling;
+-
+-		nexthop_len = 0;
+-		if (f6i->fib6_nsiblings) {
+-			rt6_nh_nlmsg_size(nh, &nexthop_len);
+-
+-			rcu_read_lock();
++		goto common;
 +	}
  
- 	reinit_completion(&nfc->done);
- 	writel(INT_DMA, nfc->regs + nfc->cfg->int_en_off);
-@@ -772,9 +779,17 @@ static int rk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *buf, int oob_on,
- 	dma_data = dma_map_single(nfc->dev, nfc->page_buf,
- 				  mtd->writesize,
- 				  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_data))
-+		return -ENOMEM;
-+
- 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
- 				 ecc->steps * oob_step,
- 				 DMA_FROM_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_oob)) {
-+		dma_unmap_single(nfc->dev, dma_data, mtd->writesize,
-+				 DMA_FROM_DEVICE);
-+		return -ENOMEM;
-+	}
+-			list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
+-						fib6_siblings) {
+-				rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
+-			}
++	rcu_read_lock();
++retry:
++	nh = f6i->fib6_nh;
++	nexthop_len = 0;
++	if (READ_ONCE(f6i->fib6_nsiblings)) {
++		rt6_nh_nlmsg_size(nh, &nexthop_len);
  
- 	/*
- 	 * The first blocks (4, 8 or 16 depending on the device)
+-			rcu_read_unlock();
++		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
++					fib6_siblings) {
++			rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
++			if (!READ_ONCE(f6i->fib6_nsiblings))
++				goto retry;
+ 		}
+-		nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
+ 	}
+-
++	rcu_read_unlock();
++	nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
++common:
+ 	return NLMSG_ALIGN(sizeof(struct rtmsg))
+ 	       + nla_total_size(16) /* RTA_SRC */
+ 	       + nla_total_size(16) /* RTA_DST */
 -- 
 2.39.5
 
