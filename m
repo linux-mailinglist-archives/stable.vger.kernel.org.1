@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED62B2342D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1249DB23261
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E1F623101
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13D14189B51F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6422FAC02;
-	Tue, 12 Aug 2025 18:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A785F2D46B3;
+	Tue, 12 Aug 2025 18:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6cFDbRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hb7TmIZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDE2191F98;
-	Tue, 12 Aug 2025 18:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650ED282E1;
+	Tue, 12 Aug 2025 18:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023560; cv=none; b=eA5m7d0rmOyjHszyxN5SjQ41nxNXZzmMdTUWCvFxo7LrG6QmVa+Mr92CSAQh0adCpEFVnpdjVrrnQaZwG41tZ5Yr2xrdeL3x0rcCUnTeP96Y+hp+xoCo6X/RViibucUGm+m0KzwDL8E3aRmR51Xcyh6Z67pcOlDXZDiDqu/ue/E=
+	t=1755022292; cv=none; b=b9EDQwYsTq19/t2Kd32BUn6J5FAUHSvWpb+rNFB6iSuXgeLbGDb1z1q2m5VyUli9se3xH9dIXueWUs0StkB9vlZyRGxu+UDQ33foA2P6t6G9XeCdSAx2g4s5BaGxLx9rIHrkJ1XlTMADq0T5pswJgk0xT2FE5qLQSEZwxVjSh0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023560; c=relaxed/simple;
-	bh=S9VKdWS5dVrfIKKcryMfpzhdlNYnsqGImzVgJREaLCU=;
+	s=arc-20240116; t=1755022292; c=relaxed/simple;
+	bh=NZ3l61PZEE1aiw2X679Ql84QjNUAF5/6tfIUQqE0Li0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W84nj3rFBcGrRftjCMBZSonN9nDZ3pj6q5CvKQ0JCh7WVArpwTgxcbNyZzTrtUqLK1ZLmyFGPgnVi/OdDmZL6ImRrcbaJmHdBg++ID9hipnPGo8iFhjzjzybnVX4Ep/VvQcL804nL4J2PLCjXJYH4ooxxCUsT3tntsfij+k91/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6cFDbRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A5CC4CEF0;
-	Tue, 12 Aug 2025 18:32:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ckg0QTd4cGFvIyzVsr7Bbuicg5kj1y8MFLvbZkPvFBPGtoTjgNuacA5cnJgJC2WDOUAg3n8/Z6slx69/KGkk7JZH87n1zTgkXqnX5wZleLBdyPAtdVYOObgusQ7HaZP3ohNsrMQZmNqpMdV1GUc1B3qhRLNEBCM2YOQpPKqc8jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hb7TmIZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B83C4CEF0;
+	Tue, 12 Aug 2025 18:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023559;
-	bh=S9VKdWS5dVrfIKKcryMfpzhdlNYnsqGImzVgJREaLCU=;
+	s=korg; t=1755022292;
+	bh=NZ3l61PZEE1aiw2X679Ql84QjNUAF5/6tfIUQqE0Li0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6cFDbRL2q2eyQVXmpVOfphRU8GcwPCgR6z21QJVcv0mRtMgbC0WzSQ3srVmHkn4A
-	 5q9RaxRNbo2rck6yoKPI/XL0reH0w0uLXT+XIJqXk4Som6z5KU2nlOg2aIUDxCseFn
-	 8B8lC5z535X4xc4DtNdTzwjcAIhZJZSVWMN8s7H8=
+	b=Hb7TmIZyNUdAhNiZz3mM8i0bEejkiSjmPqwzlhGrdb31r2gQ6BKod1DYbujppTQHc
+	 ROQQ1DzSp9YglcwzBp85YhhaXKjOTq7nrarzbkURDRmAr6RQqLAIVn26Z0UohhMwGL
+	 W7xmPmTgf+10lSIkQlEjdVWACjzrMHr4pliO/fGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Elder <elder@kernel.org>,
-	greybus-dev@lists.linaro.org,
-	Johan Hovold <johan@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jiadong Zhu <Jiadong.Zhu@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 115/627] staging: greybus: gbphy: fix up const issue with the match callback
+Subject: [PATCH 6.12 113/369] drm/amdgpu/gfx9: fix kiq locking in KCQ reset
 Date: Tue, 12 Aug 2025 19:26:50 +0200
-Message-ID: <20250812173423.685629795@linuxfoundation.org>
+Message-ID: <20250812173019.023597167@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit ce32eff1cf3ae8ac2596171dd0af1657634c83eb ]
+[ Upstream commit 730ea5074dac1b105717316be5d9c18b09829385 ]
 
-gbphy_dev_match_id() should be taking a const pointer, as the pointer
-passed to it from the container_of() call was const to start with (it
-was accidentally cast away with the call.)  Fix this all up by correctly
-marking the pointer types.
+The ring test needs to be inside the lock.
 
-Cc: Alex Elder <elder@kernel.org>
-Cc: greybus-dev@lists.linaro.org
-Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/2025070115-reoccupy-showy-e2ad@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fdbd69486b46 ("drm/amdgpu/gfx9: wait for reset done before remap")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Jiadong Zhu <Jiadong.Zhu@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/greybus/gbphy.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/greybus/gbphy.c b/drivers/staging/greybus/gbphy.c
-index 6adcad286633..60cf09a302a7 100644
---- a/drivers/staging/greybus/gbphy.c
-+++ b/drivers/staging/greybus/gbphy.c
-@@ -102,8 +102,8 @@ static int gbphy_dev_uevent(const struct device *dev, struct kobj_uevent_env *en
- }
- 
- static const struct gbphy_device_id *
--gbphy_dev_match_id(struct gbphy_device *gbphy_dev,
--		   struct gbphy_driver *gbphy_drv)
-+gbphy_dev_match_id(const struct gbphy_device *gbphy_dev,
-+		   const struct gbphy_driver *gbphy_drv)
- {
- 	const struct gbphy_device_id *id = gbphy_drv->id_table;
- 
-@@ -119,7 +119,7 @@ gbphy_dev_match_id(struct gbphy_device *gbphy_dev,
- 
- static int gbphy_dev_match(struct device *dev, const struct device_driver *drv)
- {
--	struct gbphy_driver *gbphy_drv = to_gbphy_driver(drv);
-+	const struct gbphy_driver *gbphy_drv = to_gbphy_driver(drv);
- 	struct gbphy_device *gbphy_dev = to_gbphy_dev(dev);
- 	const struct gbphy_device_id *id;
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 114653a0b570..91af1adbf5e8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -7318,8 +7318,8 @@ static int gfx_v9_0_reset_kcq(struct amdgpu_ring *ring,
+ 	}
+ 	kiq->pmf->kiq_map_queues(kiq_ring, ring);
+ 	amdgpu_ring_commit(kiq_ring);
+-	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	if (r) {
+ 		DRM_ERROR("fail to remap queue\n");
+ 		return r;
 -- 
 2.39.5
 
