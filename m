@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BF6B23088
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DAEB23537
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 069615672B8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FE743BD025
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFC52FAC02;
-	Tue, 12 Aug 2025 17:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519D12FD1A4;
+	Tue, 12 Aug 2025 18:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYd058Zw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjpoSZmt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9DF2DE1E2;
-	Tue, 12 Aug 2025 17:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED432F291B;
+	Tue, 12 Aug 2025 18:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021169; cv=none; b=U1faoNtbyCF6vZ5LMtqLbuTEeqE7uNH0BmzX7uHdUIHTlhQZl7FnvbOq5mL5jLNDcm1d/7WS47P4wWeGilhp6iilKgPsy8kNo4mq5clOoMyuW/ZCZHrT9kkNxwUSI3+8HIMPNVmQ1EWMSHpcAu/0CLJ1gUs7TbbwW+epZtx/eiM=
+	t=1755024221; cv=none; b=IOM6eXFNP6VxHMc4CDr6usx+Y2zTmObCi2DW3TIJ4Tp9YCrmUJloBdxrRt2VCPQ0gUii14CyDh52ltLVtE+4rUvhp4e2K3JMsHuMfah5FxeVOdOpiV9hJjOGrzj5cfK+PMozE7+Jy023hRPiabSU9phVQL7xdk9yCVzrLF9wr8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021169; c=relaxed/simple;
-	bh=E54oIxuIe/mpVmqJjpyq2C799XGVE39/SR+Mf/+pkok=;
+	s=arc-20240116; t=1755024221; c=relaxed/simple;
+	bh=GrXUKaDnexGNPhnkTP2p/ooloyFRSsYnEpzynJlYavU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWhk62EytkZVtMsxt6IK2RZ5/GhatsVvnBzFfl5j84pp9nzM3OwCQ9xXYGYNkMXUjnK1STzPfQeEjjbbKam+TE2T/k8FYkW5Tbdd8QzpqKBgXQchyLHnhUXdK8ynqBfr/+jehQPjBFw/MhoXPkw/EiuqXjYsd3BhKLniVFH24wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYd058Zw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF02C4CEF0;
-	Tue, 12 Aug 2025 17:52:48 +0000 (UTC)
+	 MIME-Version; b=dEELuOHUxRxZitPvkQW23Ay9p90+s+hObJ8gQ+vEXHYemUcWpQrSLWcxZdzBvY3QuGOvQorGbrJBq3e9p8PHWvLsExE4SqYbtXCtvOjWPQV8clR10a/yuHXKIx4LNjlFGHMqgTcNZL+8ei+zrPclg/XUlLuVaPZJ4JnoiK1cbGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjpoSZmt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700F8C4CEF0;
+	Tue, 12 Aug 2025 18:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021168;
-	bh=E54oIxuIe/mpVmqJjpyq2C799XGVE39/SR+Mf/+pkok=;
+	s=korg; t=1755024220;
+	bh=GrXUKaDnexGNPhnkTP2p/ooloyFRSsYnEpzynJlYavU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYd058ZwdEkUbOK5AoJksWdrOuKNvAHiiW9K1blFlpbgCvefYP8VS7pqbEaUJLBYT
-	 9CoVqLohwcAQmxyKJiLDpfQefSLjDfLhNTEe0hFk66XC0li1pOHzUyDBkZWRDdoJU9
-	 zQGCryM4PmGzef/ZadQRaXCfx5bVo9YZ6WW506uQ=
+	b=AjpoSZmtdDBcxVW90+kN612pTv4q+LhPqYu+Q6jR2dDigJmqJRTMPQwX7yjJuMm37
+	 j23KjqZsZumHgn7NJpdy584PUAVb5d4oxJ4lSiVkDRZPjRIGtGa0Kga5T9tx8jWAw6
+	 PnjFXJp43zgupPCxTet/xBzA8Zd1STfYwX3YhNus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhangjian <zhangjian496@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/253] NFS: Fix filehandle bounds checking in nfs_fh_to_dentry()
+Subject: [PATCH 6.16 308/627] crypto: ccp - Fix dereferencing uninitialized error pointer
 Date: Tue, 12 Aug 2025 19:30:03 +0200
-Message-ID: <20250812172957.985448388@linuxfoundation.org>
+Message-ID: <20250812173431.025774193@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-[ Upstream commit ef93a685e01a281b5e2a25ce4e3428cf9371a205 ]
+[ Upstream commit 0fa766726c091ff0ec7d26874f6e4724d23ecb0e ]
 
-The function needs to check the minimal filehandle length before it can
-access the embedded filehandle.
+Fix below smatch warnings:
+drivers/crypto/ccp/sev-dev.c:1312 __sev_platform_init_locked()
+error: we previously assumed 'error' could be null
 
-Reported-by: zhangjian <zhangjian496@huawei.com>
-Fixes: 20fa19027286 ("nfs: add export operations")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 9770b428b1a2 ("crypto: ccp - Move dev_info/err messages for SEV/SNP init and shutdown")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202505071746.eWOx5QgC-lkp@intel.com/
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/export.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/crypto/ccp/sev-dev.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/export.c b/fs/nfs/export.c
-index 9fe9586a51b7..aacf6220ab44 100644
---- a/fs/nfs/export.c
-+++ b/fs/nfs/export.c
-@@ -66,14 +66,21 @@ nfs_fh_to_dentry(struct super_block *sb, struct fid *fid,
- {
- 	struct nfs_fattr *fattr = NULL;
- 	struct nfs_fh *server_fh = nfs_exp_embedfh(fid->raw);
--	size_t fh_size = offsetof(struct nfs_fh, data) + server_fh->size;
-+	size_t fh_size = offsetof(struct nfs_fh, data);
- 	const struct nfs_rpc_ops *rpc_ops;
- 	struct dentry *dentry;
- 	struct inode *inode;
--	int len = EMBED_FH_OFF + XDR_QUADLEN(fh_size);
-+	int len = EMBED_FH_OFF;
- 	u32 *p = fid->raw;
- 	int ret;
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index 3451bada884e..8fb94c5f006a 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -1276,9 +1276,11 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
  
-+	/* Initial check of bounds */
-+	if (fh_len < len + XDR_QUADLEN(fh_size) ||
-+	    fh_len > XDR_QUADLEN(NFS_MAXFHSIZE))
-+		return NULL;
-+	/* Calculate embedded filehandle size */
-+	fh_size += server_fh->size;
-+	len += XDR_QUADLEN(fh_size);
- 	/* NULL translates to ESTALE */
- 	if (fh_len < len || fh_type != len)
- 		return NULL;
+ static int __sev_platform_init_locked(int *error)
+ {
+-	int rc, psp_ret = SEV_RET_NO_FW_CALL;
++	int rc, psp_ret, dfflush_error;
+ 	struct sev_device *sev;
+ 
++	psp_ret = dfflush_error = SEV_RET_NO_FW_CALL;
++
+ 	if (!psp_master || !psp_master->sev_data)
+ 		return -ENODEV;
+ 
+@@ -1320,10 +1322,10 @@ static int __sev_platform_init_locked(int *error)
+ 
+ 	/* Prepare for first SEV guest launch after INIT */
+ 	wbinvd_on_all_cpus();
+-	rc = __sev_do_cmd_locked(SEV_CMD_DF_FLUSH, NULL, error);
++	rc = __sev_do_cmd_locked(SEV_CMD_DF_FLUSH, NULL, &dfflush_error);
+ 	if (rc) {
+ 		dev_err(sev->dev, "SEV: DF_FLUSH failed %#x, rc %d\n",
+-			*error, rc);
++			dfflush_error, rc);
+ 		return rc;
+ 	}
+ 
 -- 
 2.39.5
 
