@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3A0B23236
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AF5B23409
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 919623B3110
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268113B82E8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15441EF38C;
-	Tue, 12 Aug 2025 18:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE71191F98;
+	Tue, 12 Aug 2025 18:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA7os2i3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPkeqHOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C902DE6E9;
-	Tue, 12 Aug 2025 18:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AF36BB5B;
+	Tue, 12 Aug 2025 18:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022195; cv=none; b=TdujyF4jcIThnw8zxx2IjMVIWk5jR7z+yyKE4Iz/bU/TasDNXtmIkChg30ON0Cj7B15HEG5jaWcyQ8WRREblSuaV1rr35Bbeiua5CeYdJ4hIGEYdQ6pNlT1jeAuDd0pftSfUyBTt1KIVumzm4Y435pCFYt+8hqoEfqQC0UO9P3k=
+	t=1755023463; cv=none; b=qRuQwalzME7lZzXJr052FcpXyxt6vuGtKrmThQP532IeI1Av+4BhCcHdQ18zqr90nD83d9jrSisqxCXBVoG+okOH3WV8sB1GJsc/d2LNsDyb/MESQlPDfF+UiCid/F00TN5X+YISMI96EPv/rqanDHu90QRKsNf1khBX2799VdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022195; c=relaxed/simple;
-	bh=iaW1hrI/BJG3Xgms7ZYtwpvfIDfYsdQ9l7UymSWmDv8=;
+	s=arc-20240116; t=1755023463; c=relaxed/simple;
+	bh=aa8oLVOwX0Ltp1bGBMY/8XVyRfsrG1juhfgviDYijG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuKgl+cIF1yVI+WL773FwJPDpjrm6m+iMMK3YByCjjz4PtG/aa/LUJUfO8ocNavT4Lv6WZLklrdGK5HwND/GdTdTB5uGmUr+J2KKgnOyQ69MXCiyXTCLvlEBlx+Pj38Ygls4xJudrO9jfC1rk3woaNvecCGzxMREn7d3rhSfMrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA7os2i3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B97BC4CEF0;
-	Tue, 12 Aug 2025 18:09:54 +0000 (UTC)
+	 MIME-Version; b=fBxCIf8NDkhj64xMPt/hKoh1RlNsXySpR2v6B98Ei57mlrO0yxCzApc9QCYpbtjDjsC/Nvo8cv9WCgBcmHJv/zUtcJztYPj+aYOZKzvxV2MkD0aH6fQs2uXUWFkTZi+RxBRccCTV4BYwyLQmHJUsrrhOFMqW2NzVNvvue9bHuvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPkeqHOd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09E5C4CEF0;
+	Tue, 12 Aug 2025 18:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022195;
-	bh=iaW1hrI/BJG3Xgms7ZYtwpvfIDfYsdQ9l7UymSWmDv8=;
+	s=korg; t=1755023463;
+	bh=aa8oLVOwX0Ltp1bGBMY/8XVyRfsrG1juhfgviDYijG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iA7os2i3XSRTGvrzO0kA0Tg/PWNxFZtYo3t8jP/O6SJ+/yCtW3dvfajblAU7I+cZA
-	 ALCwcfWpO3LEjdtBr8kNVGnGS+o/E+1AbGzmLl+iYxLHF8VKDja5C7d+sNgnkEg8E5
-	 D5Ti3dg7H7njfJjnHLMELO+FSaYNLx0rYDtprZwE=
+	b=tPkeqHOd0UkaquecofIBlu8iheXSUu0le4Jy6UkWPTAOvCHrFv8C9Ec4pMzgAn2qH
+	 s9DmXctubCf58Veh+K2F+TUjWLAIt7hhKyl8eNQEw1o4n/VpDT3iC962voaH3S43j9
+	 Vh0u2BclUrb+vHP1IDBDYtauS0UEd6NrrjwC/zPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sivan Zohar-Kotzer <sivany32@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/369] iwlwifi: Add missing check for alloc_ordered_workqueue
-Date: Tue, 12 Aug 2025 19:26:21 +0200
-Message-ID: <20250812173017.944512305@linuxfoundation.org>
+Subject: [PATCH 6.16 087/627] powercap: dtpm_cpu: Fix NULL pointer dereference in get_pd_power_uw()
+Date: Tue, 12 Aug 2025 19:26:22 +0200
+Message-ID: <20250812173422.613375555@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Sivan Zohar-Kotzer <sivany32@gmail.com>
 
-[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
+[ Upstream commit 46dc57406887dd02565cb264224194a6776d882b ]
 
-Add check for the return value of alloc_ordered_workqueue since it may
-return NULL pointer.
+The get_pd_power_uw() function can crash with a NULL pointer dereference
+when em_cpu_get() returns NULL. This occurs when a CPU becomes impossible
+during runtime, causing get_cpu_device() to return NULL, which propagates
+through em_cpu_get() and leads to a crash when em_span_cpus() dereferences
+the NULL pointer.
 
-Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Add a NULL check after em_cpu_get() and return 0 if unavailable,
+matching the existing fallback behavior in __dtpm_cpu_setup().
+
+Fixes: eb82bace8931 ("powercap/drivers/dtpm: Scale the power with the load")
+Signed-off-by: Sivan Zohar-Kotzer <sivany32@gmail.com>
+Link: https://patch.msgid.link/20250701221355.96916-1-sivany32@gmail.com
+[ rjw: Drop an excess empty code line ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/powercap/dtpm_cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index e0b14be25b02..b8713ebd7190 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1048,9 +1048,11 @@ static void iwl_bg_restart(struct work_struct *data)
-  *
-  *****************************************************************************/
+diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+index 6b6f51b21550..99390ec1481f 100644
+--- a/drivers/powercap/dtpm_cpu.c
++++ b/drivers/powercap/dtpm_cpu.c
+@@ -96,6 +96,8 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
+ 	int i;
  
--static void iwl_setup_deferred_work(struct iwl_priv *priv)
-+static int iwl_setup_deferred_work(struct iwl_priv *priv)
- {
- 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
-+	if (!priv->workqueue)
-+		return -ENOMEM;
+ 	pd = em_cpu_get(dtpm_cpu->cpu);
++	if (!pd)
++		return 0;
  
- 	INIT_WORK(&priv->restart, iwl_bg_restart);
- 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
-@@ -1067,6 +1069,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
- 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
+ 	pd_mask = em_span_cpus(pd);
  
- 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
-+
-+	return 0;
- }
- 
- void iwl_cancel_deferred_work(struct iwl_priv *priv)
-@@ -1454,7 +1458,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	/********************
- 	 * 6. Setup services
- 	 ********************/
--	iwl_setup_deferred_work(priv);
-+	if (iwl_setup_deferred_work(priv))
-+		goto out_uninit_drv;
-+
- 	iwl_setup_rx_handlers(priv);
- 
- 	iwl_power_initialize(priv);
-@@ -1492,6 +1498,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	iwl_cancel_deferred_work(priv);
- 	destroy_workqueue(priv->workqueue);
- 	priv->workqueue = NULL;
-+out_uninit_drv:
- 	iwl_uninit_drv(priv);
- out_free_eeprom_blob:
- 	kfree(priv->eeprom_blob);
 -- 
 2.39.5
 
