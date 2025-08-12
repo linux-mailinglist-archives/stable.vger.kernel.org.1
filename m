@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6192B23484
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D296DB22FB6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F36E1897649
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFBAA189D4D9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D9D2D3ED6;
-	Tue, 12 Aug 2025 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE582FD1CE;
+	Tue, 12 Aug 2025 17:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwoLiqWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoVJ8c6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCD8191F98;
-	Tue, 12 Aug 2025 18:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F252FDC25;
+	Tue, 12 Aug 2025 17:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023781; cv=none; b=rD7DO7muayIW4Y0FYi4EV5dvu/ARLyTltUfx4K1Dec+X6W0BZx5G964fCCRK/8+uGWJo5pKxUPdEvEXxqMckuRIi/feJd0jApQ2p67Zad/qHWyi+d0Ifthg/nrWAEOtc+43N9p9+9+xdzhrhNAP+7ue/Of6J4rCl8sXOeT0+dWA=
+	t=1755020465; cv=none; b=D71zCBYOI1cSKUjmDO2NKfFLNTE6brdxpbVz+pQXeNH8uJOpbOLPOT/zRb2LWtEiInQr444qh53MI5o8XJSZ4oaOzgx3RlFffflrpX5ixxVFnD/g1NMciCgVgawp27tu7z+K+l6CJD9LQkfFoTpePbmTXfyB7Y7SJfxq7NnUqWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023781; c=relaxed/simple;
-	bh=9SI4eOEPRQim2rUh7ZaIndqwfHH1eVvyujKbyWkB3IU=;
+	s=arc-20240116; t=1755020465; c=relaxed/simple;
+	bh=Qd6HFsvVySr7IQz/bP0GqvJpjz3bHRqJSuPI9tuuzpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXzpVwrw9QbMKh1yNxAiiwYShK52mQOaQl7BAO2UZ3DAjg6WYF7v3EZL/065rGkxd1HYPlXH5wNo0mdOMyN8SddOBSyNBH5OzckWxYlm/keH9Pz28TE1guQxdMN0MbfUUXeSmfp8a3dDV6iNnss+wE9HSfmum4SsntjuZB1vk50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwoLiqWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405EDC4CEF0;
-	Tue, 12 Aug 2025 18:36:21 +0000 (UTC)
+	 MIME-Version; b=EfA0vMPgNgnJLJYuQ2ufFLZQ9GUY5HcDGnIoGKKwVNylHQm0EjcbInpxUxXRKKdZZA9tURMZDW6DcFgX8ebOU9BoJ5Ruza8/c1GV/oqrg+qTdoeotzFQGFzpjq2c2zegpAh0owbnDz6qScpdoaUQ3311cpIqJDSDuzIL6vqsB80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoVJ8c6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4B5C4CEF0;
+	Tue, 12 Aug 2025 17:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023781;
-	bh=9SI4eOEPRQim2rUh7ZaIndqwfHH1eVvyujKbyWkB3IU=;
+	s=korg; t=1755020464;
+	bh=Qd6HFsvVySr7IQz/bP0GqvJpjz3bHRqJSuPI9tuuzpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LwoLiqWwZA5vqYZgDO4l+sgWaEtV1ILYS/Ya28fOQxs/4rLMb9EsNF6pOiEaUT4S0
-	 ZAb+EcdOfWGFAUOjk3Nrr8xqMPhpONs4+sx/MFpM9NzBk4nMXt4Cs4xCSzoQmSNqSx
-	 /jSgvj9RXcaxGr7luYCjnX+wfYHSBQ2OgOtlUsVA=
+	b=IoVJ8c6dxocb60Rtcdv6kKmibZa61rcdtOqKcPnnWcGvYFZW/D3Ex0EYTf3vSgb6k
+	 JymGbBSW8nl3+iO9sVaY2leFkn7jSC0Sp0DfeIDnWYLxZj4lxzDEkmzBIkUlgxZacE
+	 S9WEnNVI8faisdt501NQfGCcUKpMVRlUAYggX6TU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Adam Ford <aford173@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 180/627] bpf: Ensure RCU lock is held around bpf_prog_ksym_find
+Subject: [PATCH 6.1 087/253] arm64: dts: imx8mn-beacon: Fix HS400 USDHC clock speed
 Date: Tue, 12 Aug 2025 19:27:55 +0200
-Message-ID: <20250812173426.128627677@linuxfoundation.org>
+Message-ID: <20250812172952.439234152@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit d090326860096df9dac6f27cff76d3f8df44d4f1 ]
+[ Upstream commit e16ad6c79906bba5e2ac499492b6a5b29ab19d6c ]
 
-Add a warning to ensure RCU lock is held around tree lookup, and then
-fix one of the invocations in bpf_stack_walker. The program has an
-active stack frame and won't disappear. Use the opportunity to remove
-unneeded invocation of is_bpf_text_address.
+The reference manual for the i.MX8MN states the clock rate in
+MMC mode is 1/2 of the input clock, therefore to properly run
+at HS400 rates, the input clock must be 400MHz to operate at
+200MHz.  Currently the clock is set to 200MHz which is half the
+rate it should be, so the throughput is half of what it should be
+for HS400 operation.
 
-Fixes: f18b03fabaa9 ("bpf: Implement BPF exceptions")
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20250703204818.925464-5-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c    |  5 ++++-
- kernel/bpf/helpers.c | 11 +++++++++--
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index c20babbf998f..93e49b0c218b 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -778,7 +778,10 @@ bool is_bpf_text_address(unsigned long addr)
- 
- struct bpf_prog *bpf_prog_ksym_find(unsigned long addr)
- {
--	struct bpf_ksym *ksym = bpf_ksym_find(addr);
-+	struct bpf_ksym *ksym;
-+
-+	WARN_ON_ONCE(!rcu_read_lock_held());
-+	ksym = bpf_ksym_find(addr);
- 
- 	return ksym && ksym->prog ?
- 	       container_of(ksym, struct bpf_prog_aux, ksym)->prog :
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index ad6df48b540c..fdf8737542ac 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -2943,9 +2943,16 @@ static bool bpf_stack_walker(void *cookie, u64 ip, u64 sp, u64 bp)
- 	struct bpf_throw_ctx *ctx = cookie;
- 	struct bpf_prog *prog;
- 
--	if (!is_bpf_text_address(ip))
--		return !ctx->cnt;
-+	/*
-+	 * The RCU read lock is held to safely traverse the latch tree, but we
-+	 * don't need its protection when accessing the prog, since it has an
-+	 * active stack frame on the current stack trace, and won't disappear.
-+	 */
-+	rcu_read_lock();
- 	prog = bpf_prog_ksym_find(ip);
-+	rcu_read_unlock();
-+	if (!prog)
-+		return !ctx->cnt;
- 	ctx->cnt++;
- 	if (bpf_is_subprog(prog))
- 		return true;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+index c4b1c6029c9a..ef138c867fc8 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+@@ -295,6 +295,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MN_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
 -- 
 2.39.5
 
