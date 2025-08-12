@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-169044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DB1B237DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:16:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B483DB237EA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:17:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B2792A7CF2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:16:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E132B5A04A5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B34C27703A;
-	Tue, 12 Aug 2025 19:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A35826B0AE;
+	Tue, 12 Aug 2025 19:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1god/wlO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sajvzOXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FD03594E;
-	Tue, 12 Aug 2025 19:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF2F217F35;
+	Tue, 12 Aug 2025 19:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026193; cv=none; b=h2Ghd+VN2/9v6BGYUJlheEkHRkoZ+qMxMQhN/kj2wabRWASYWF9RwHpJDy/77VdldIiN32s3O9u26J8xUU0fBeDmSpZqLsB1wrzH97hF7XiEmtIQg3tmi7OjLxQijBQPR4fOsKERLte3VRUEhrQrAxyDDJikAuuOlRqlVHtADBA=
+	t=1755026229; cv=none; b=NB1W0PTcpcvKGCOo/7QViscp4vYCscDbSv+reQ/0X1UhGAXXpYcqPLbpdZVjLjantN+VjJAQxm2ZAXGInoD6Ie1V+/ZK/a8Pvj4lGYt40HN6jQfWpOyUzxvPgE8h4M+MZo5seMgvQ/XntrOBX1YZLkQgRY1PpZnwq6+T9zGDxkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026193; c=relaxed/simple;
-	bh=CY80PJjGBmJz8cQnwXolZgNQdIrdTNwwVldxUCB6TYQ=;
+	s=arc-20240116; t=1755026229; c=relaxed/simple;
+	bh=11tFE41Gab5VKXH2VZvUWliZXYoiu5VYoBTF+VBqNJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxnvXdb1ULljT/ZP8xyYvLdAQaR5d9du4z5cvJosdMofsVm/Ig+9+m8JGfUD/xsQ8pYJ2a8bN32Z5AcAa5AA2wOKs9ZwawW6LZ9pm+Yr16FZKKtzQkr6ZvaFUDDvaH6vnvfBCUskew0ba9H0KMsJ5uun+gtfV49A2Sda/zeIa+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1god/wlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9A2C4CEF0;
-	Tue, 12 Aug 2025 19:16:32 +0000 (UTC)
+	 MIME-Version; b=m4pEpwh3ROsu1G5I37i7kbh0UfgeQokAHbsoruquaMuN8ojvMQWZd/r27m8eAF54dgUI57EfhHVRInO0YdjVDc1ylwcMBNUewMs2FrFt7TLGYf4zpPmwA78avaWa5NSNOen682n2WzT1HXkAMIngkRKdmUrh+jsXCQ6L5AtIC34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sajvzOXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52957C4CEF0;
+	Tue, 12 Aug 2025 19:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026193;
-	bh=CY80PJjGBmJz8cQnwXolZgNQdIrdTNwwVldxUCB6TYQ=;
+	s=korg; t=1755026228;
+	bh=11tFE41Gab5VKXH2VZvUWliZXYoiu5VYoBTF+VBqNJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1god/wlOGAKuq8K/4t8XU7NSzHt/JIHL1hutgyQjMjaSjQM7huS92oNuE1fGUM4gr
-	 e0V65PzjsXC1XIGsqSKoMvyDLsNFGwgrpfDBD7zGshxCf74R9o7wp8sAmI/1bp/RAj
-	 re/jsL7xgBcInfTG+ObJcmNO3eyvUsWcylfq8xVw=
+	b=sajvzOXvKuoepBs7kVJFde1WDcfRm61NORGi/zWQrh+pUFZjkNlVTfxXcAAvD8bg0
+	 RA0YGa7+R+iSGjoV06Vvc830ADBq9ztLARtUImpPweqKbf3LH8yMQW+gtXEbaRVPM7
+	 FBN9wNO3kHV96eHO+gn2WsWtstILPQqH+SNmpozs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 257/480] mtd: spi-nor: spansion: Fixup params->set_4byte_addr_mode for SEMPER
-Date: Tue, 12 Aug 2025 19:47:45 +0200
-Message-ID: <20250812174408.044543993@linuxfoundation.org>
+Subject: [PATCH 6.15 258/480] perf sched: Make sure it frees the usage string
+Date: Tue, 12 Aug 2025 19:47:46 +0200
+Message-ID: <20250812174408.084426494@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,103 +66,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit a45ab839f52f3f00ac3dae18a50e902efd216de2 ]
+[ Upstream commit 10d9b89203765fb776512742c13af8dd92821842 ]
 
-Infineon SEMPER flash family does not support E9h opcode as Exit 4-byte
-mode (EX4B). Therefore, params->set_4byte_addr_mode is not determined by
-BFPT parse. Fixup it up by introducing vendor specific EX4B opcode (B8h)
-and function.
+The parse_options_subcommand() allocates the usage string based on the
+given subcommands.  So it should reach the end of the function to free
+the string to prevent memory leaks.
 
-Fixes: c87c9b11c53ce ("mtd: spi-nor: spansion: Determine current address mode")
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Acked-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Link: https://lore.kernel.org/r/20250612074427.22263-1-Takahiro.Kuwano@infineon.com
+Fixes: 1a5efc9e13f357ab ("libsubcmd: Don't free the usage string")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-2-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ tools/perf/builtin-sched.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index bf08dbf5e742..b9f156c0f8bc 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -17,6 +17,7 @@
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 26ece6e9bfd1..b7bbfad0ed60 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -3902,9 +3902,9 @@ int cmd_sched(int argc, const char **argv)
+ 	 * Aliased to 'perf script' for now:
+ 	 */
+ 	if (!strcmp(argv[0], "script")) {
+-		return cmd_script(argc, argv);
++		ret = cmd_script(argc, argv);
+ 	} else if (strlen(argv[0]) > 2 && strstarts("record", argv[0])) {
+-		return __cmd_record(argc, argv);
++		ret = __cmd_record(argc, argv);
+ 	} else if (strlen(argv[0]) > 2 && strstarts("latency", argv[0])) {
+ 		sched.tp_handler = &lat_ops;
+ 		if (argc > 1) {
+@@ -3913,7 +3913,7 @@ int cmd_sched(int argc, const char **argv)
+ 				usage_with_options(latency_usage, latency_options);
+ 		}
+ 		setup_sorting(&sched, latency_options, latency_usage);
+-		return perf_sched__lat(&sched);
++		ret = perf_sched__lat(&sched);
+ 	} else if (!strcmp(argv[0], "map")) {
+ 		if (argc) {
+ 			argc = parse_options(argc, argv, map_options, map_usage, 0);
+@@ -3924,13 +3924,14 @@ int cmd_sched(int argc, const char **argv)
+ 				sched.map.task_names = strlist__new(sched.map.task_name, NULL);
+ 				if (sched.map.task_names == NULL) {
+ 					fprintf(stderr, "Failed to parse task names\n");
+-					return -1;
++					ret = -1;
++					goto out;
+ 				}
+ 			}
+ 		}
+ 		sched.tp_handler = &map_ops;
+ 		setup_sorting(&sched, latency_options, latency_usage);
+-		return perf_sched__map(&sched);
++		ret = perf_sched__map(&sched);
+ 	} else if (strlen(argv[0]) > 2 && strstarts("replay", argv[0])) {
+ 		sched.tp_handler = &replay_ops;
+ 		if (argc) {
+@@ -3938,7 +3939,7 @@ int cmd_sched(int argc, const char **argv)
+ 			if (argc)
+ 				usage_with_options(replay_usage, replay_options);
+ 		}
+-		return perf_sched__replay(&sched);
++		ret = perf_sched__replay(&sched);
+ 	} else if (!strcmp(argv[0], "timehist")) {
+ 		if (argc) {
+ 			argc = parse_options(argc, argv, timehist_options,
+@@ -3954,19 +3955,19 @@ int cmd_sched(int argc, const char **argv)
+ 				parse_options_usage(NULL, timehist_options, "w", true);
+ 			if (sched.show_next)
+ 				parse_options_usage(NULL, timehist_options, "n", true);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out;
+ 		}
+ 		ret = symbol__validate_sym_arguments();
+-		if (ret)
+-			return ret;
+-
+-		return perf_sched__timehist(&sched);
++		if (!ret)
++			ret = perf_sched__timehist(&sched);
+ 	} else {
+ 		usage_with_options(sched_usage, sched_options);
+ 	}
  
- #define SPINOR_OP_CLSR		0x30	/* Clear status register 1 */
- #define SPINOR_OP_CLPEF		0x82	/* Clear program/erase failure flags */
-+#define SPINOR_OP_CYPRESS_EX4B	0xB8	/* Exit 4-byte address mode */
- #define SPINOR_OP_CYPRESS_DIE_ERASE		0x61	/* Chip (die) erase */
- #define SPINOR_OP_RD_ANY_REG			0x65	/* Read any register */
- #define SPINOR_OP_WR_ANY_REG			0x71	/* Write any register */
-@@ -58,6 +59,13 @@
- 		   SPI_MEM_OP_DUMMY(ndummy, 0),				\
- 		   SPI_MEM_OP_DATA_IN(1, buf, 0))
++out:
+ 	/* free usage string allocated by parse_options_subcommand */
+ 	free((void *)sched_usage[0]);
  
-+#define CYPRESS_NOR_EN4B_EX4B_OP(enable)				\
-+	SPI_MEM_OP(SPI_MEM_OP_CMD(enable ? SPINOR_OP_EN4B :		\
-+					   SPINOR_OP_CYPRESS_EX4B, 0),	\
-+		   SPI_MEM_OP_NO_ADDR,					\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
- #define SPANSION_OP(opcode)						\
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(opcode, 0),				\
- 		   SPI_MEM_OP_NO_ADDR,					\
-@@ -356,6 +364,20 @@ static int cypress_nor_quad_enable_volatile(struct spi_nor *nor)
- 	return 0;
- }
- 
-+static int cypress_nor_set_4byte_addr_mode(struct spi_nor *nor, bool enable)
-+{
-+	int ret;
-+	struct spi_mem_op op = CYPRESS_NOR_EN4B_EX4B_OP(enable);
-+
-+	spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
-+
-+	ret = spi_mem_exec_op(nor->spimem, &op);
-+	if (ret)
-+		dev_dbg(nor->dev, "error %d setting 4-byte mode\n", ret);
-+
+-	return 0;
 +	return ret;
-+}
-+
- /**
-  * cypress_nor_determine_addr_mode_by_sr1() - Determine current address mode
-  *                                            (3 or 4-byte) by querying status
-@@ -526,6 +548,9 @@ s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
- 	struct spi_mem_op op;
- 	int ret;
- 
-+	/* Assign 4-byte address mode method that is not determined in BFPT */
-+	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
-+
- 	ret = cypress_nor_set_addr_mode_nbytes(nor);
- 	if (ret)
- 		return ret;
-@@ -591,6 +616,9 @@ s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
- {
- 	int ret;
- 
-+	/* Assign 4-byte address mode method that is not determined in BFPT */
-+	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
-+
- 	ret = cypress_nor_set_addr_mode_nbytes(nor);
- 	if (ret)
- 		return ret;
-@@ -718,6 +746,9 @@ static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
- 				   const struct sfdp_parameter_header *bfpt_header,
- 				   const struct sfdp_bfpt *bfpt)
- {
-+	/* Assign 4-byte address mode method that is not determined in BFPT */
-+	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
-+
- 	return cypress_nor_set_addr_mode_nbytes(nor);
  }
- 
 -- 
 2.39.5
 
