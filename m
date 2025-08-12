@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-168177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2EAB233D0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B450AB231A9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1240A3BA681
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4DAA4E3AF0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D032ECE93;
-	Tue, 12 Aug 2025 18:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8762FA0CD;
+	Tue, 12 Aug 2025 18:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdMnN3os"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzFQVnTh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E94D27FB12;
-	Tue, 12 Aug 2025 18:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8702E7BD4;
+	Tue, 12 Aug 2025 18:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023304; cv=none; b=Wymzypxq+cy5CUxKaK/QmmiUN/B74G6nPKO5B5omjVbvnbCEPrp2i9fbyOsy9rdLVIt8NGheMmW60PulHjVMls/g5MfzUKdtJJeMsHlGLiiQ/isgNbPQVXwQBab9tr/liSfO6/L4IUkREXsLeVbmr/Bh5TBzdwHiAy0+BvjYajE=
+	t=1755022042; cv=none; b=dfPydxOF5AwZiMPvxalpTXMLEkJND1hvLd4mZGwr08z1UQgKStBx8yz+Rf5jty+VNYejKujqhdqyjQlYUB3caZ78XbuR2uXRLU1uWOzBGPgLjhVAodS7fBLlMJ1WJOVDXGENcBE33nGHcMXpVnGNM4AnH9TaMOfa9LBPBBvjlJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023304; c=relaxed/simple;
-	bh=q08r3KqPmjqgbLFB54Ii1elmFAQW5MXl1Mc55q7epwM=;
+	s=arc-20240116; t=1755022042; c=relaxed/simple;
+	bh=JI+QqJ9iHxX/k0h+brwFkQ6aKTKNs2kBgmAkEu70Aqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/wPbc/OM+6j7aCozUzaCLkQqYvKasD3gc1oWbV1w+epXoPZTWb2ft46nD4kHN2pRb5nRRjMYxPj031dWmniCVU6zWvGheQW4XvEa2SvJX2nWrvG1ll4iJH0/1lkGGgwJbTorDLvLQU+3F7xFwQauqbT1mO4gZjh8pGgctPRkH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdMnN3os; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDFFC4CEF1;
-	Tue, 12 Aug 2025 18:28:23 +0000 (UTC)
+	 MIME-Version; b=X7FsWQVN5UKP6ee1g2P3ZkG/bxoMyybBd/HUjVBiZiKFjrlT8Aqag4UbcMgQYjtSP01aMlPJZphPiMhj3cFo383Dp2PYBl2MRdGET6ZzEijxMqdjuOoCxFizYDIxVbZdtg4Hf/vIiCjC2/7BtqcW94eGfl3DS22aCwMMUpIUX4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzFQVnTh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D283BC4CEF0;
+	Tue, 12 Aug 2025 18:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023304;
-	bh=q08r3KqPmjqgbLFB54Ii1elmFAQW5MXl1Mc55q7epwM=;
+	s=korg; t=1755022042;
+	bh=JI+QqJ9iHxX/k0h+brwFkQ6aKTKNs2kBgmAkEu70Aqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdMnN3os1CBZHsIDrXhtqUmF7gCTIy4Tg4lSQjOxzto+ef7RnbEc2orKl6h8MK1wP
-	 +dvf0eiBgzO0+MPzQlA68i5H5U8tHO1cSmtMZy/DZ+6GYXKDeRbBeEEqqDXi0T5bmi
-	 Yvt5zzVTRbj1v+7Wo291Z1mh9TwDJ0FoAAzDSKAo=
+	b=hzFQVnThNHZdyLcGMmLocKzrfYPa9EkNNc1PWMP/6FJTr/VGlhE7Hq8SmffTgbqFq
+	 DfECzTYg2LHr5Am4ByiAVDXNkxXsVqsz0r+F0eHMKQQbG5n9bCa6MLZwj99NGLTTUv
+	 MGibDQqCRsVubySjKEox0gTX2+tny1dfib9i84CA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 041/627] soc: qcom: fix endianness for QMI header
+Subject: [PATCH 6.12 039/369] mei: vsc: Unset the event callback on remove and probe errors
 Date: Tue, 12 Aug 2025 19:25:36 +0200
-Message-ID: <20250812173420.897847488@linuxfoundation.org>
+Message-ID: <20250812173016.230423308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 07a4688833b237331e5045f90fc546c085b28c86 ]
+[ Upstream commit 6175c6974095f8ca7e5f8d593171512f3e5bd453 ]
 
-The members of QMI header have to be swapped on big endian platforms. Use
-__le16 types instead of u16 ones.
+Make mei_vsc_remove() properly unset the callback to avoid a dead callback
+sticking around after probe errors or unbinding of the platform driver.
 
-Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-Fixes: 9b8a11e82615 ("soc: qcom: Introduce QMI encoder/decoder")
-Fixes: 3830d0771ef6 ("soc: qcom: Introduce QMI helpers")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250522143530.3623809-3-alexander.wilhelm@westermo.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-8-hansg@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qmi_encdec.c    | 6 +++---
- drivers/soc/qcom/qmi_interface.c | 6 +++---
- include/linux/soc/qcom/qmi.h     | 6 +++---
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/misc/mei/platform-vsc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/soc/qcom/qmi_encdec.c b/drivers/soc/qcom/qmi_encdec.c
-index dafe0a4c202e..7660a960fb45 100644
---- a/drivers/soc/qcom/qmi_encdec.c
-+++ b/drivers/soc/qcom/qmi_encdec.c
-@@ -776,9 +776,9 @@ void *qmi_encode_message(int type, unsigned int msg_id, size_t *len,
+diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
+index 20a11b299bcd..ab80bd3271b2 100644
+--- a/drivers/misc/mei/platform-vsc.c
++++ b/drivers/misc/mei/platform-vsc.c
+@@ -379,6 +379,8 @@ static int mei_vsc_probe(struct platform_device *pdev)
+ err_cancel:
+ 	mei_cancel_work(mei_dev);
  
- 	hdr = msg;
- 	hdr->type = type;
--	hdr->txn_id = txn_id;
--	hdr->msg_id = msg_id;
--	hdr->msg_len = msglen;
-+	hdr->txn_id = cpu_to_le16(txn_id);
-+	hdr->msg_id = cpu_to_le16(msg_id);
-+	hdr->msg_len = cpu_to_le16(msglen);
++	vsc_tp_register_event_cb(tp, NULL, NULL);
++
+ 	mei_disable_interrupts(mei_dev);
  
- 	*len = sizeof(*hdr) + msglen;
+ 	return ret;
+@@ -387,11 +389,14 @@ static int mei_vsc_probe(struct platform_device *pdev)
+ static void mei_vsc_remove(struct platform_device *pdev)
+ {
+ 	struct mei_device *mei_dev = platform_get_drvdata(pdev);
++	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
  
-diff --git a/drivers/soc/qcom/qmi_interface.c b/drivers/soc/qcom/qmi_interface.c
-index bc6d6379d8b1..6500f863aae5 100644
---- a/drivers/soc/qcom/qmi_interface.c
-+++ b/drivers/soc/qcom/qmi_interface.c
-@@ -400,7 +400,7 @@ static void qmi_invoke_handler(struct qmi_handle *qmi, struct sockaddr_qrtr *sq,
+ 	pm_runtime_disable(mei_dev->dev);
  
- 	for (handler = qmi->handlers; handler->fn; handler++) {
- 		if (handler->type == hdr->type &&
--		    handler->msg_id == hdr->msg_id)
-+		    handler->msg_id == le16_to_cpu(hdr->msg_id))
- 			break;
- 	}
+ 	mei_stop(mei_dev);
  
-@@ -488,7 +488,7 @@ static void qmi_handle_message(struct qmi_handle *qmi,
- 	/* If this is a response, find the matching transaction handle */
- 	if (hdr->type == QMI_RESPONSE) {
- 		mutex_lock(&qmi->txn_lock);
--		txn = idr_find(&qmi->txns, hdr->txn_id);
-+		txn = idr_find(&qmi->txns, le16_to_cpu(hdr->txn_id));
++	vsc_tp_register_event_cb(hw->tp, NULL, NULL);
++
+ 	mei_disable_interrupts(mei_dev);
  
- 		/* Ignore unexpected responses */
- 		if (!txn) {
-@@ -514,7 +514,7 @@ static void qmi_handle_message(struct qmi_handle *qmi,
- 	} else {
- 		/* Create a txn based on the txn_id of the incoming message */
- 		memset(&tmp_txn, 0, sizeof(tmp_txn));
--		tmp_txn.id = hdr->txn_id;
-+		tmp_txn.id = le16_to_cpu(hdr->txn_id);
- 
- 		qmi_invoke_handler(qmi, sq, &tmp_txn, buf, len);
- 	}
-diff --git a/include/linux/soc/qcom/qmi.h b/include/linux/soc/qcom/qmi.h
-index 469e02d2aa0d..291cdc7ef49c 100644
---- a/include/linux/soc/qcom/qmi.h
-+++ b/include/linux/soc/qcom/qmi.h
-@@ -24,9 +24,9 @@ struct socket;
-  */
- struct qmi_header {
- 	u8 type;
--	u16 txn_id;
--	u16 msg_id;
--	u16 msg_len;
-+	__le16 txn_id;
-+	__le16 msg_id;
-+	__le16 msg_len;
- } __packed;
- 
- #define QMI_REQUEST	0
+ 	mei_deregister(mei_dev);
 -- 
 2.39.5
 
