@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C2BB23022
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D951B23268
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9211AA1CA9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB26617DD19
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAE22F7477;
-	Tue, 12 Aug 2025 17:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B1F2E285E;
+	Tue, 12 Aug 2025 18:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSBvEsRe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fv2XtBqL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB89279915;
-	Tue, 12 Aug 2025 17:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2119A1EBFE0;
+	Tue, 12 Aug 2025 18:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020794; cv=none; b=sLknSfpktlsluO/ze1ua+yzqD7xdq8Ll3HkquhhhtZEosz5aKVzKinA4IGPKlpoPz3x6/hvVG0v+SRkiZ62UUaFHKAQcZrqvxLaI2hMyD4jvY6Nq5ypNWVSQ5VyZMIt1DqV54PBhU2yunv4fH3P7tUQUWUVrGeI2zqCdKB0z6yo=
+	t=1755022391; cv=none; b=H6KnZI9oxowee76Qj654wwvfypotlRlLruxJHKDaI1nXuStOysuPSyniykK0mbrAPMz46SL8rT3dqKo1jeN7yRm8I52VfsaWIQ6Ju9PdddLRB/CW2DsmMN2TQEnSk+KpESwhtxIjkwkdW1UUYUcnL+5xwgi5VSy010pu5TCoErY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020794; c=relaxed/simple;
-	bh=3DVld5LyipqfvOSKy6OVeoMEd7oF5rflCWi1kzQQi2I=;
+	s=arc-20240116; t=1755022391; c=relaxed/simple;
+	bh=QeOFuwmkHd8i/dnrhxqrSU3yhjk9YTbtD2uiOanibMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rp16hAWg+Ypu5TdRQwjLmepM1kTXtFeetttTxnxY+6oRqbVtd9hkQC+5419gdEeUO27+FrCXSBJp6VwaaOtR78tP//P7Amx+XzZZlhlz04vVXtiUBrQULLOXiubYhgC8/BpRuWRXtcTCPPB0uAxYBgTEJMf0ozCRlUF5u8h1pbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSBvEsRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546B8C4CEF0;
-	Tue, 12 Aug 2025 17:46:33 +0000 (UTC)
+	 MIME-Version; b=LCPA8fpAeyhbkF6IAAwZ6kBtVk+3CrHKkMGHMHuuqArfC/q62QYeyVpXXbaPaxS2Zi1A73U0vxRhqCw26zXlhoKVkw2N+ywzecQq/rscYqUghs5pZ17AdED6LqkN/nuA9YmV/7CAco5rl69XUwCDc/iWaENreaKVjhoAqqi/dcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fv2XtBqL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842FFC4CEF1;
+	Tue, 12 Aug 2025 18:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020794;
-	bh=3DVld5LyipqfvOSKy6OVeoMEd7oF5rflCWi1kzQQi2I=;
+	s=korg; t=1755022391;
+	bh=QeOFuwmkHd8i/dnrhxqrSU3yhjk9YTbtD2uiOanibMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSBvEsReS8dAQk1aEVZBRMn1VPi5eHd5wgWNYn7jAMkWh8q1Mc5VpPlXH+C1cQrTk
-	 DxBqp802DbDA4H/VU45oLh0H5oASNM2g9L3Ri57QuVnULpOOE08DbZXYspLkjKIfdQ
-	 o97qZn583egrGlnQiMGPpLNFyx/UL0mU8wsTEbKk=
+	b=fv2XtBqLykZNIrNl+3hNAMZHrIbu7F3DJ0pSTF4UzK9+XTCyRPavBrCnC5q8o1FME
+	 lxWxF3j+R19otlROmes8rxg65vTfTAixlxSwt/Ogn3Ia0uwRL98/AfxlWa0l8xMMp0
+	 72DeM/Ig9vO55ydzUk9kcqM5MNw9UDEP4HLTMa8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/262] ASoC: ops: dynamically allocate struct snd_ctl_elem_value
-Date: Tue, 12 Aug 2025 19:26:44 +0200
-Message-ID: <20250812172953.672135620@linuxfoundation.org>
+Subject: [PATCH 6.12 108/369] tcp: call tcp_measure_rcv_mss() for ooo packets
+Date: Tue, 12 Aug 2025 19:26:45 +0200
+Message-ID: <20250812173018.841851841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7e10d7242ea8a5947878880b912ffa5806520705 ]
+[ Upstream commit 38d7e444336567bae1c7b21fc18b7ceaaa5643a0 ]
 
-This structure is really too larget to be allocated on the stack:
+tcp_measure_rcv_mss() is used to update icsk->icsk_ack.rcv_mss
+(tcpi_rcv_mss in tcp_info) and tp->scaling_ratio.
 
-sound/soc/soc-ops.c:435:5: error: stack frame size (1296) exceeds limit (1280) in 'snd_soc_limit_volume' [-Werror,-Wframe-larger-than]
+Calling it from tcp_data_queue_ofo() makes sure these
+fields are updated, and permits a better tuning
+of sk->sk_rcvbuf, in the case a new flow receives many ooo
+packets.
 
-Change the function to dynamically allocate it instead.
-
-There is probably a better way to do it since only two integer fields
-inside of that structure are actually used, but this is the simplest
-rework for the moment.
-
-Fixes: 783db6851c18 ("ASoC: ops: Enforce platform maximum on initial value")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250610093057.2643233-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250711114006.480026-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ net/ipv4/tcp_input.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index eff1355cc3df..5be32c37bb8a 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -641,28 +641,32 @@ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
- static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
- {
- 	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
--	struct snd_ctl_elem_value uctl;
-+	struct snd_ctl_elem_value *uctl;
- 	int ret;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index d45a6dcc3753..30f4375f8431 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -5040,6 +5040,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
+ 		return;
+ 	}
  
- 	if (!mc->platform_max)
- 		return 0;
- 
--	ret = kctl->get(kctl, &uctl);
-+	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
-+	if (!uctl)
-+		return -ENOMEM;
-+
-+	ret = kctl->get(kctl, uctl);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
--	if (uctl.value.integer.value[0] > mc->platform_max)
--		uctl.value.integer.value[0] = mc->platform_max;
-+	if (uctl->value.integer.value[0] > mc->platform_max)
-+		uctl->value.integer.value[0] = mc->platform_max;
- 
- 	if (snd_soc_volsw_is_stereo(mc) &&
--	    uctl.value.integer.value[1] > mc->platform_max)
--		uctl.value.integer.value[1] = mc->platform_max;
-+	    uctl->value.integer.value[1] > mc->platform_max)
-+		uctl->value.integer.value[1] = mc->platform_max;
- 
--	ret = kctl->put(kctl, &uctl);
--	if (ret < 0)
--		return ret;
-+	ret = kctl->put(kctl, uctl);
- 
--	return 0;
-+out:
-+	kfree(uctl);
-+	return ret;
- }
- 
- /**
++	tcp_measure_rcv_mss(sk, skb);
+ 	/* Disable header prediction. */
+ 	tp->pred_flags = 0;
+ 	inet_csk_schedule_ack(sk);
 -- 
 2.39.5
 
