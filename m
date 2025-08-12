@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D2CB232FC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42690B234E3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A6DB7A5607
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AEF117ECC0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9C32FD1C2;
-	Tue, 12 Aug 2025 18:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A65F2F4A0A;
+	Tue, 12 Aug 2025 18:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzZ/6ThZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg3JyfvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792C42F7449;
-	Tue, 12 Aug 2025 18:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97342FF155;
+	Tue, 12 Aug 2025 18:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023007; cv=none; b=pL9FC6Xa3cHb95hMR4+E5Odq+S+V5OOfcWFfK+SjrbWLAA7jJFBztE1bGvR1LxbxhrCjA09Ecrvhr7350FgE+ClYGl1axrVN/u+htbJYLbAVVU+f4auGDUpAXBE7BjjeAYn+wlBhur+OhDh5YiP+f/JWnZ9hoV6ff9WWIYFoN8g=
+	t=1755024155; cv=none; b=PqwS5zsttbDyaKNp1LrFAdEUOs7xQ+8qEuq/4HxbZjlNgnFa+5sgJ6rjexVuxH0BZOA9sweBOfUaalwEyf0WjD2Yke3dAQ2W1rQFkMg7gmVzJsJyfZ9+G1H7aoTI2kRBlktYWOUsXNC2HUszff4vrFUPCA4bLssvzp+uvHP8vSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023007; c=relaxed/simple;
-	bh=6zOwvI+j7iL3bZngdBVxoTCqIB6hG1SYddwD72S0SSM=;
+	s=arc-20240116; t=1755024155; c=relaxed/simple;
+	bh=j/sTsKDOYgzM7Ydem+iPCQ3n1Flqdltsmq5/ce7g4ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrnYjDw4Y8I+L277bRtI8lIJtbl6KQcdVO1dW/74yUaa9gytTVEAwi0gBx8Dk+DNK9agl1VF/7W4QfUYR4Qw4AiYASUbIW5x/8xoGBCw9Fkw9vH8gs56cD7sanno/TtmvmhAQP8fxljdSYKBK8uvJlh2wS3iq4BHcId94TeKGSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzZ/6ThZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFEAC4CEF6;
-	Tue, 12 Aug 2025 18:23:26 +0000 (UTC)
+	 MIME-Version; b=LSXrcSaLhbhY+IxtRxmxJmC/fMlikqPwMEbBJuw4bsqIASS5QT5fLUobXH0gKIW09lCxSZUF6APCHbj1BXXtYcqFKlEgM4/fKG9XDrbsUZb03RZYxVMyUf32DhF5hv+BGF2DcHk8FAS1Y93W3aSIwSm2fRwaEntKsMmnOJYttVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg3JyfvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CD3C4CEF0;
+	Tue, 12 Aug 2025 18:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023007;
-	bh=6zOwvI+j7iL3bZngdBVxoTCqIB6hG1SYddwD72S0SSM=;
+	s=korg; t=1755024155;
+	bh=j/sTsKDOYgzM7Ydem+iPCQ3n1Flqdltsmq5/ce7g4ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzZ/6ThZtqz2sgKI2pEahjCRGzoqEoCcax3bdOHlnzNiVISthZjHEfHbFLISE5MSO
-	 sy5778LokCRGtWqCWA5Mf/KlXFFWee5NcUmXlkoMXsrRE0wU7uNBO6vXKYAIj4GYsd
-	 WkXqmgSVahLWpay5ZGDFq6KiMjEE+NnKALoZCKTo=
+	b=zg3JyfvKvjbvHcSGuzQ4qPfSh9VQGU1SYausD6Q8zandtd5pbPDUfnjX4tmeJrYZ8
+	 Bd1NMaLPSW8MA4K+7z/LU5A5V3OT2rYTabfRvMvyiNwovIZCtsBsEOuwk3+EoBlW8e
+	 ELdrPVbelqJ46WBB0vChCuBgr5juHZwlfl/ed6+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Alex Elder <elder@riscstar.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Xu Kuohai <xukuohai@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/369] net: ipa: add IPA v5.1 and v5.5 to ipa_version_string()
+Subject: [PATCH 6.16 291/627] bpf, arm64: Fix fp initialization for exception boundary
 Date: Tue, 12 Aug 2025 19:29:46 +0200
-Message-ID: <20250812173027.604117726@linuxfoundation.org>
+Message-ID: <20250812173430.382383795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit f2aa00e4f65efcf25ff6bc8198e21f031e7b9b1b ]
+[ Upstream commit b114fcee766d5101eada1aca7bb5fd0a86c89b35 ]
 
-Handle the case for v5.1 and v5.5 instead of returning "0.0".
+In the ARM64 BPF JIT when prog->aux->exception_boundary is set for a BPF
+program, find_used_callee_regs() is not called because for a program
+acting as exception boundary, all callee saved registers are saved.
+find_used_callee_regs() sets `ctx->fp_used = true;` when it sees FP
+being used in any of the instructions.
 
-Also reword the comment below since I don't see any evidence of such a
-check happening, and - since 5.5 has been missing - can happen.
+For programs acting as exception boundary, ctx->fp_used remains false
+even if frame pointer is used by the program and therefore, FP is not
+set-up for such programs in the prologue. This can cause the kernel to
+crash due to a pagefault.
 
-Fixes: 3aac8ec1c028 ("net: ipa: add some new IPA versions")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Alex Elder <elder@riscstar.com>
-Link: https://patch.msgid.link/20250728-ipa-5-1-5-5-version_string-v1-1-d7a5623d7ece@fairphone.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix it by setting ctx->fp_used = true for exception boundary programs as
+fp is always saved in such programs.
+
+Fixes: 5d4fa9ec5643 ("bpf, arm64: Avoid blindly saving/restoring all callee-saved registers")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Xu Kuohai <xukuohai@huawei.com>
+Link: https://lore.kernel.org/bpf/20250722133410.54161-2-puranjay@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/ipa_sysfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/net/bpf_jit_comp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
-index a59bd215494c..a53e9e6f6cdf 100644
---- a/drivers/net/ipa/ipa_sysfs.c
-+++ b/drivers/net/ipa/ipa_sysfs.c
-@@ -37,8 +37,12 @@ static const char *ipa_version_string(struct ipa *ipa)
- 		return "4.11";
- 	case IPA_VERSION_5_0:
- 		return "5.0";
-+	case IPA_VERSION_5_1:
-+		return "5.1";
-+	case IPA_VERSION_5_5:
-+		return "5.5";
- 	default:
--		return "0.0";	/* Won't happen (checked at probe time) */
-+		return "0.0";	/* Should not happen */
- 	}
- }
- 
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index da8b89dd2910..58f838b310bc 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -412,6 +412,7 @@ static void push_callee_regs(struct jit_ctx *ctx)
+ 		emit(A64_PUSH(A64_R(23), A64_R(24), A64_SP), ctx);
+ 		emit(A64_PUSH(A64_R(25), A64_R(26), A64_SP), ctx);
+ 		emit(A64_PUSH(A64_R(27), A64_R(28), A64_SP), ctx);
++		ctx->fp_used = true;
+ 	} else {
+ 		find_used_callee_regs(ctx);
+ 		for (i = 0; i + 1 < ctx->nr_used_callee_reg; i += 2) {
 -- 
 2.39.5
 
