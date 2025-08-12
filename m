@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495E4B230C4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B48B231E1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3B0566E9E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 365F0581003
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313962FDC2F;
-	Tue, 12 Aug 2025 17:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052C72F5E;
+	Tue, 12 Aug 2025 18:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3t+p0Es"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yybvAKfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34E92DE1E2;
-	Tue, 12 Aug 2025 17:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81062DE1E2;
+	Tue, 12 Aug 2025 18:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021350; cv=none; b=i70nys82GwOmr9O/YTusjNZDvLd3H+k8TMnh9pL+udPEzfHukmadzY4UrvQ2uKXnjbQWhbq2U2x37ETW2NNSthYNpYy4Qop2kwEaqzwjcBTSN0BhHZ2F0FO+N3TWlMEYLUp2txgPyuDb7yptk4F9QMgEiRpU3xc3W0I3dhXI2ok=
+	t=1755021880; cv=none; b=fo4ati9var2MWHEOoaavDKBj3TZuBOgKWdqDlvQgtYtvJ4yPJBsBIowz+Yqa9DZkG9wIXF24+95mfdfLSNrsE5s80j7XbzxlioU5Fia6PjFbqdtkSJwV+MdAPA9MFD1z4xVxBfND5fYJOHMpUs8H18nyABForJso02xKRl3XKW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021350; c=relaxed/simple;
-	bh=mCDxofHQDsGIc9+oHNjxJqRBce2tNgjCfrqIKQLWhQc=;
+	s=arc-20240116; t=1755021880; c=relaxed/simple;
+	bh=ebCIkZSVkBW1bW4yNPy0zan7wbjVW8DTuNsb2LPR354=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbNugv3vIRFBYCwbeFgicVS+DxTIu4gI+tmOrCdILuyNJ9tS3LWx2pKoBQ8dvsMCeG5KKGzYZRpfdEAyNQE+dHtveKNebdWFjdMzzPixonyuiKh31insvG3lqYVjl+PjIICBga/7O7ZMC3XK+Oz9mVWP6S33BYqhAUXBhNqQ0/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3t+p0Es; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEADC4CEF1;
-	Tue, 12 Aug 2025 17:55:49 +0000 (UTC)
+	 MIME-Version; b=t25PXu8zjepCZf9usZ6Zt5MoHoa5AvPEMzppRAGcp/1t6k38P1u8tFeJoDW371ZMQt5CdAsT8ZnIYEaV9flUSMStNezGV55UQZv5IXxPMCnU+33CnWj8b2cCTu/HpsvObV/gi4fbzU+qD+7kgU7qGYSIAjUmyJwBwH3wyNkU4y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yybvAKfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED51BC4CEF7;
+	Tue, 12 Aug 2025 18:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021349;
-	bh=mCDxofHQDsGIc9+oHNjxJqRBce2tNgjCfrqIKQLWhQc=;
+	s=korg; t=1755021880;
+	bh=ebCIkZSVkBW1bW4yNPy0zan7wbjVW8DTuNsb2LPR354=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3t+p0EsGsYf1w/qCh+VZzm9ivmfAtjCQNPi/jnNIGJFWWyzR4PoaQNouyLay44ox
-	 Wbcp7lzJx4FcxyMpQh8PyYACdNT5qZ2npaGXD5/RLbrfYgqaZ7XUTK7ABu2HAgPqRb
-	 S8PRzVUzAk1k9UR+GPKHsRo3QviQzGwOi00YM8DE=
+	b=yybvAKfEuJYi8jIBdgAAijiL/+4RcjKIAupfNgCNL9HWgkZuKirwBlF3ydvQLh2SX
+	 l38rerQ9GStuvBcNWY0ON76XvLlwPOeDLxYpkSv86GXxEzvxq7EXZLadY09G80bSWE
+	 zz0Bw71eGggVS7ZJWqSs+KXI34+7Gp1GchzH9GkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 251/253] MIPS: mm: tlb-r4k: Uniquify TLB entries on init
-Date: Tue, 12 Aug 2025 19:30:39 +0200
-Message-ID: <20250812172959.545428907@linuxfoundation.org>
+	Zhong Jiawei <zhongjiawei1@huawei.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 252/262] sched,freezer: Remove unnecessary warning in __thaw_task
+Date: Tue, 12 Aug 2025 19:30:40 +0200
+Message-ID: <20250812173003.880715224@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 35ad7e181541aa5757f9f316768d3e64403ec843 upstream.
+commit 9beb8c5e77dc10e3889ff5f967eeffba78617a88 upstream.
 
-Hardware or bootloader will initialize TLB entries to any value, which
-may collide with kernel's UNIQUE_ENTRYHI value. On MIPS microAptiv/M5150
-family of cores this will trigger machine check exception and cause boot
-failure. On M5150 simulation this could happen 7 times out of 1000 boots.
+Commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
+frozen") modified the cgroup_freezing() logic to verify that the FROZEN
+flag is not set, affecting the return value of the freezing() function,
+in order to address a warning in __thaw_task.
 
-Replace local_flush_tlb_all() with r4k_tlb_uniquify() which probes each
-TLB ENTRIHI unique value for collisions before it's written, and in case
-of collision try a different ASID.
+A race condition exists that may allow tasks to escape being frozen. The
+following scenario demonstrates this issue:
 
-Cc: stable@kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+CPU 0 (get_signal path)		CPU 1 (freezer.state reader)
+try_to_freeze			read freezer.state
+__refrigerator			freezer_read
+				update_if_frozen
+WRITE_ONCE(current->__state, TASK_FROZEN);
+				...
+				/* Task is now marked frozen */
+				/* frozen(task) == true */
+				/* Assuming other tasks are frozen */
+				freezer->state |= CGROUP_FROZEN;
+/* freezing(current) returns false */
+/* because cgroup is frozen (not freezing) */
+break out
+__set_current_state(TASK_RUNNING);
+/* Bug: Task resumes running when it should remain frozen */
+
+The existing !frozen(p) check in __thaw_task makes the
+WARN_ON_ONCE(freezing(p)) warning redundant. Removing this warning enables
+reverting commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if
+not frozen") to resolve the issue.
+
+This patch removes the warning from __thaw_task. A subsequent patch will
+revert commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if
+not frozen") to complete the fix.
+
+Reported-by: Zhong Jiawei<zhongjiawei1@huawei.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ kernel/freezer.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -498,6 +498,60 @@ static int __init set_ntlb(char *str)
+--- a/kernel/freezer.c
++++ b/kernel/freezer.c
+@@ -196,18 +196,9 @@ static int __restore_freezer_state(struc
  
- __setup("ntlb=", set_ntlb);
- 
-+/* Initialise all TLB entries with unique values */
-+static void r4k_tlb_uniquify(void)
-+{
-+	int entry = num_wired_entries();
-+
-+	htw_stop();
-+	write_c0_entrylo0(0);
-+	write_c0_entrylo1(0);
-+
-+	while (entry < current_cpu_data.tlbsize) {
-+		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
-+		unsigned long asid = 0;
-+		int idx;
-+
-+		/* Skip wired MMID to make ginvt_mmid work */
-+		if (cpu_has_mmid)
-+			asid = MMID_KERNEL_WIRED + 1;
-+
-+		/* Check for match before using UNIQUE_ENTRYHI */
-+		do {
-+			if (cpu_has_mmid) {
-+				write_c0_memorymapid(asid);
-+				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
-+			} else {
-+				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
-+			}
-+			mtc0_tlbw_hazard();
-+			tlb_probe();
-+			tlb_probe_hazard();
-+			idx = read_c0_index();
-+			/* No match or match is on current entry */
-+			if (idx < 0 || idx == entry)
-+				break;
-+			/*
-+			 * If we hit a match, we need to try again with
-+			 * a different ASID.
-+			 */
-+			asid++;
-+		} while (asid < asid_mask);
-+
-+		if (idx >= 0 && idx != entry)
-+			panic("Unable to uniquify TLB entry %d", idx);
-+
-+		write_c0_index(entry);
-+		mtc0_tlbw_hazard();
-+		tlb_write_indexed();
-+		entry++;
-+	}
-+
-+	tlbw_use_hazard();
-+	htw_start();
-+	flush_micro_tlb();
-+}
-+
- /*
-  * Configure TLB (for init or after a CPU has been powered off).
-  */
-@@ -537,7 +591,7 @@ static void r4k_tlb_configure(void)
- 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
- 
- 	/* From this point on the ARC firmware is dead.	 */
--	local_flush_tlb_all();
-+	r4k_tlb_uniquify();
- 
- 	/* Did I tell you that ARC SUCKS?  */
+ void __thaw_task(struct task_struct *p)
+ {
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&freezer_lock, flags);
+-	if (WARN_ON_ONCE(freezing(p)))
+-		goto unlock;
+-
+-	if (!frozen(p) || task_call_func(p, __restore_freezer_state, NULL))
+-		goto unlock;
+-
+-	wake_up_state(p, TASK_FROZEN);
+-unlock:
+-	spin_unlock_irqrestore(&freezer_lock, flags);
++	guard(spinlock_irqsave)(&freezer_lock);
++	if (frozen(p) && !task_call_func(p, __restore_freezer_state, NULL))
++		wake_up_state(p, TASK_FROZEN);
  }
+ 
+ /**
 
 
 
