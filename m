@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67995B2339C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4BA9B23224
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A54C87B345D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4BF316603F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BEA6BB5B;
-	Tue, 12 Aug 2025 18:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFCB2F659A;
+	Tue, 12 Aug 2025 18:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvZeodtJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v84cblEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8FF1EF38C;
-	Tue, 12 Aug 2025 18:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3492DE6E9;
+	Tue, 12 Aug 2025 18:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023436; cv=none; b=R9X0ZrtldicIeXK+Q0u2winfTy/BPq98s0vfsYenHAXf2iiekMvLZJNQWulJkLrlLSFipaoJsrb3pbfMEjZGvP54A4T+pe3cUvXI/Ll/nkjGNuvVCTu+IqYEP2TdRcyX/Ct49M1jYNn4TKjqMW/mGSSuRT5KTULTYPABJB91iZM=
+	t=1755022174; cv=none; b=pWcGH+sdMBaqptf220msWsIkdA7MsvFskzLTLp5K4Rd8bGPQhddMait5wF7ESPdVQLxcZUFqeED2Z4sM8aLbBUYKsHAdF5gFxOpacBxhXdk2nc2JWv6hqW08dmDYzonzvI6ENC/ycNdIo3GiYHC1uMJ34wzrUXh2jG0ZoRo/48E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023436; c=relaxed/simple;
-	bh=WiYnjwRhQFSQgyeXE2R7GTndw9v1KUuTkh7Z2EsrZF8=;
+	s=arc-20240116; t=1755022174; c=relaxed/simple;
+	bh=8gBMjsEXMl1D+NfIlVpsO3xZCb34sqJZhpoTzjkA+c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t66WtDnV9D7IqJrpGkguoSnRzyQSfk69tjrQpvRCnziKEUp6+e7RmTuUXUYEBERco31kguD5vZuYyuQwpW9F54fIxqcVlM+6xX2PC1JhP6OFD9dIgcjYQfKs/BD/yD8xQBzXeJ65A1uZ6XirUHGtD5oQDvVTAa+C/RdFOVwi0GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvZeodtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F585C4CEF0;
-	Tue, 12 Aug 2025 18:30:35 +0000 (UTC)
+	 MIME-Version; b=G8nkABJ6oBN8sCpB4MosXg4CYAGBO3Q5cNrUv31bsGRCk56Bspw3fk+ewyYNAT2yASVV+iY8rU1pNm0cQl50w02frNMxzqV+MoNJqiav50d+BKIDhl6I6lT+Awy2YIEPMDZYMi6NYE7k0sHrfR97MNqzEezlpf9Fg1diZA9oiQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v84cblEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420F5C4CEF0;
+	Tue, 12 Aug 2025 18:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023436;
-	bh=WiYnjwRhQFSQgyeXE2R7GTndw9v1KUuTkh7Z2EsrZF8=;
+	s=korg; t=1755022174;
+	bh=8gBMjsEXMl1D+NfIlVpsO3xZCb34sqJZhpoTzjkA+c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvZeodtJ+sTpaAei1P1nf65bE3+yw7NEVrHIPiTA7lAyaj72+I5THeL+NtZsF5OJX
-	 Hsc6T6+veiJ6WxTcAIQr2GPowNhraon7R6GXbxQEA9BR8ypecSNDupH6dsdc+hMGBO
-	 H+EsO7MhqYc6PlWBsCVM0rivBiN7JwS1vkwlqEDo=
+	b=v84cblEYo+J2ECTiHoX5od0ZAYBkNRqtBpzgXtAugIEpkRQUSLZqJfscziWUiU9lU
+	 4Wsfw6hPv+EVksPWIQwTdSe9w1z3TcXO0/y1TjKrKKMc0Jwcrh60EvUa+UHYj2fNWV
+	 VGYDpe5gLwN/n12orbvMronnU2+GgIaYbHZjEsCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 079/627] staging: gpib: fix unset padding field copy back to userspace
-Date: Tue, 12 Aug 2025 19:26:14 +0200
-Message-ID: <20250812173422.313578678@linuxfoundation.org>
+Subject: [PATCH 6.12 078/369] bpftool: Fix memory leak in dump_xx_nlmsg on realloc failure
+Date: Tue, 12 Aug 2025 19:26:15 +0200
+Message-ID: <20250812173017.721531149@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit a739d3b13bff0dfa1aec679d08c7062131a2a425 ]
+[ Upstream commit 99fe8af069a9fa5b09140518b1364e35713a642e ]
 
-The introduction of a padding field in the gpib_board_info_ioctl is
-showing up as initialized data on the stack frame being copyied back
-to userspace in function board_info_ioctl. The simplest fix is to
-initialize the entire struct to zero to ensure all unassigned padding
-fields are zero'd before being copied back to userspace.
+In function dump_xx_nlmsg(), when realloc() fails to allocate memory,
+the original pointer to the buffer is overwritten with NULL. This causes
+a memory leak because the previously allocated buffer becomes unreachable
+without being freed.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Fixes: 9dde4559e939 ("staging: gpib: Add GPIB common core driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20250623220958.280424-1-colin.i.king@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7900efc19214 ("tools/bpf: bpftool: improve output format for bpftool net")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/r/20250620012133.14819-1-chenyuan_fl@163.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/common/gpib_os.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/bpf/bpftool/net.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/staging/gpib/common/gpib_os.c b/drivers/staging/gpib/common/gpib_os.c
-index a193d64db033..93ef5f6ce249 100644
---- a/drivers/staging/gpib/common/gpib_os.c
-+++ b/drivers/staging/gpib/common/gpib_os.c
-@@ -1774,7 +1774,7 @@ static int query_board_rsv_ioctl(struct gpib_board *board, unsigned long arg)
- 
- static int board_info_ioctl(const struct gpib_board *board, unsigned long arg)
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index d2242d9f8441..39f208928cdb 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -366,17 +366,18 @@ static int dump_link_nlmsg(void *cookie, void *msg, struct nlattr **tb)
  {
--	struct gpib_board_info_ioctl info;
-+	struct gpib_board_info_ioctl info = { };
- 	int retval;
+ 	struct bpf_netdev_t *netinfo = cookie;
+ 	struct ifinfomsg *ifinfo = msg;
++	struct ip_devname_ifindex *tmp;
  
- 	info.pad = board->pad;
+ 	if (netinfo->filter_idx > 0 && netinfo->filter_idx != ifinfo->ifi_index)
+ 		return 0;
+ 
+ 	if (netinfo->used_len == netinfo->array_len) {
+-		netinfo->devices = realloc(netinfo->devices,
+-			(netinfo->array_len + 16) *
+-			sizeof(struct ip_devname_ifindex));
+-		if (!netinfo->devices)
++		tmp = realloc(netinfo->devices,
++			(netinfo->array_len + 16) * sizeof(struct ip_devname_ifindex));
++		if (!tmp)
+ 			return -ENOMEM;
+ 
++		netinfo->devices = tmp;
+ 		netinfo->array_len += 16;
+ 	}
+ 	netinfo->devices[netinfo->used_len].ifindex = ifinfo->ifi_index;
+@@ -395,6 +396,7 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
+ {
+ 	struct bpf_tcinfo_t *tcinfo = cookie;
+ 	struct tcmsg *info = msg;
++	struct tc_kind_handle *tmp;
+ 
+ 	if (tcinfo->is_qdisc) {
+ 		/* skip clsact qdisc */
+@@ -406,11 +408,12 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
+ 	}
+ 
+ 	if (tcinfo->used_len == tcinfo->array_len) {
+-		tcinfo->handle_array = realloc(tcinfo->handle_array,
++		tmp = realloc(tcinfo->handle_array,
+ 			(tcinfo->array_len + 16) * sizeof(struct tc_kind_handle));
+-		if (!tcinfo->handle_array)
++		if (!tmp)
+ 			return -ENOMEM;
+ 
++		tcinfo->handle_array = tmp;
+ 		tcinfo->array_len += 16;
+ 	}
+ 	tcinfo->handle_array[tcinfo->used_len].handle = info->tcm_handle;
 -- 
 2.39.5
 
