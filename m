@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D24DB232C5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9F4B22FBC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 179A9583920
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8725017F438
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9499D280037;
-	Tue, 12 Aug 2025 18:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119052FDC32;
+	Tue, 12 Aug 2025 17:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGvaRXyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzPo8DBo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548302F5E;
-	Tue, 12 Aug 2025 18:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27172F83CB;
+	Tue, 12 Aug 2025 17:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022602; cv=none; b=Cw613Jml1lA9sKPzt7lfYtDOOVu/6hATSAbKO21xUS3vCqpzLbVI3XYY6L1oI2del/yB4cSAs4gibiRYuWmsFIe6qD2uoVTMPERguSXaBpS6rMCHWgsWFaXTanf2U+GEXwgioCEUVaLhdX8W0wTEudgt01Qy2zh2qNLpi9XSLAg=
+	t=1755020551; cv=none; b=LZdI4Il/7Orr2YguS7kA4wqFULIjzLcBPR2wEPbSj4AsbzI7awUhWTFbM7ucPnl2vwMd99OZVrjMsY/dJwa+ANYHVoDjBKHYc+bzDsZ0WHaJ8MCZYnLK20Br1H9TKBTXy4EvYiMGt8HUaZR2c9eGvyUfmtPLyMaenVbeJCFMn9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022602; c=relaxed/simple;
-	bh=RMTPOPcpwZHFvbc80utrc6SSZwPHsz4mIjUrJojNt1A=;
+	s=arc-20240116; t=1755020551; c=relaxed/simple;
+	bh=Czv0JqLgOsYj20WE8sNokHyRh6CZgBuLHotOoEpAkik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuuMvMgucMY6Pk7vJD8slIS1TFmYmFS7aycq92qJIVbG2kXuCrZaW/wofZvr01BvKZDS697dlwMqpvm3D3Cl9lDRQNYPFmLBmLXHpJI+1Zu0IAPnKZ4iiCXtZeXj1XyH4tjNLf4FlYdoErGOrPQ/8Ei0QINQVY3YNZFZiMVMS7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGvaRXyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2E6C4CEF0;
-	Tue, 12 Aug 2025 18:16:41 +0000 (UTC)
+	 MIME-Version; b=aq3SvMJADk2OPvsDBxEpsncfi+QxxgUXOtiI9a44cI7TBVzC+tS/5kqUwJbEGP3ZDbR0v3mwpcgtntVKb6A3bEa8HX7O1/8Lnud1jm4PUxm0kOHIL0zi1tZFBzzPntaugEhx1coCJAo8DAjj/XQa7G3N7iZ+IZ9N9aML77WtLj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzPo8DBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AC4C4CEF0;
+	Tue, 12 Aug 2025 17:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022602;
-	bh=RMTPOPcpwZHFvbc80utrc6SSZwPHsz4mIjUrJojNt1A=;
+	s=korg; t=1755020551;
+	bh=Czv0JqLgOsYj20WE8sNokHyRh6CZgBuLHotOoEpAkik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGvaRXyCmy0jFxg/8HNn2zxCJGvnKkLK4pNvj6DzWBHSgWG6jEDZL7O2WHQTvl+Lx
-	 3gUD5R2EgzUS6Mdvgwzo7VmTV8alluQomeaGTdaZEpkuPewBJN4+jY8GDjTi/ujlWt
-	 1Jy/DDqwiHmmedsvCuyIcp28YBJX/1MKBDHtDzsc=
+	b=DzPo8DBoqf59IrUiUvwi+8P1DWMG2ZzlSOMua8w38Rs5eXZGigtQ8CkFSWlADfxma
+	 Z5taJKuk18QrDtW1d36UMwVWKhC2ZpQ/mlQ7SD48aFrNI+H5zsLrwuI8dmTk9fOtkY
+	 3MQJkBNmZdvM7OqkNTTuZobEuJNJwxlhA0Gb14g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/369] scsi: isci: Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:28:20 +0200
-Message-ID: <20250812173022.404753057@linuxfoundation.org>
+Subject: [PATCH 6.1 113/253] netfilter: nf_tables: adjust lockdep assertions handling
+Date: Tue, 12 Aug 2025 19:28:21 +0200
+Message-ID: <20250812172953.527258692@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 063bec4444d54e5f35d11949c5c90eaa1ff84c11 ]
+[ Upstream commit 8df1b40de76979bb8e975201d07b71103d5de820 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+It's needed to check the return value of lockdep_commit_lock_is_held(),
+otherwise there's no point in this assertion as it doesn't print any
+debug information on itself.
 
-Fixes: ddcc7e347a89 ("isci: fix dma_unmap_sg usage")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627142451.241713-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
+
+Fixes: b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
+Reported-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/isci/request.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
-index 355a0bc0828e..bb89a2e33eb4 100644
---- a/drivers/scsi/isci/request.c
-+++ b/drivers/scsi/isci/request.c
-@@ -2904,7 +2904,7 @@ static void isci_request_io_request_complete(struct isci_host *ihost,
- 					 task->total_xfer_len, task->data_dir);
- 		else  /* unmap the sgl dma addresses */
- 			dma_unmap_sg(&ihost->pdev->dev, task->scatter,
--				     request->num_sg_entries, task->data_dir);
-+				     task->num_scatter, task->data_dir);
- 		break;
- 	case SAS_PROTOCOL_SMP: {
- 		struct scatterlist *sg = &task->smp_task.smp_req;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 0bf347a0a1dd..df83224bef06 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3513,7 +3513,7 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
+ /* can only be used if rule is no longer visible to dumps */
+ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
+ {
+-	lockdep_commit_lock_is_held(ctx->net);
++	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
+ 
+ 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
+ 	nf_tables_rule_destroy(ctx, rule);
+@@ -5250,7 +5250,7 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			      struct nft_set_binding *binding,
+ 			      enum nft_trans_phase phase)
+ {
+-	lockdep_commit_lock_is_held(ctx->net);
++	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
+ 
+ 	switch (phase) {
+ 	case NFT_TRANS_PREPARE_ERROR:
 -- 
 2.39.5
 
