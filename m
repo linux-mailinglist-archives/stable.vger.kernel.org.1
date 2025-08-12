@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9B2B23395
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A90B23524
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5386C560445
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F4EE2A108C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1A52FE57B;
-	Tue, 12 Aug 2025 18:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3A026CE2B;
+	Tue, 12 Aug 2025 18:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvOsN7c8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7mbpqu1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15233F9D2;
-	Tue, 12 Aug 2025 18:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578F02CA9;
+	Tue, 12 Aug 2025 18:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023148; cv=none; b=CGRiCbV2jTQhOWtt/hE6cPwxsASsSUMNVfR1cVIMobj2yKREKBZivEKzTtwvXMY7Nhg/TG4dTN8EcrRu39dv5HgjV+8eu1WAHTCZzBhAr40zK1MxK9Vh/+DAdFZKlJXm3DmlFme97SFwSeh+uxR3N9LCFvCG5njkGMhpQKjkZmc=
+	t=1755024414; cv=none; b=iGFsDNN4618dIzcL2SmM7pmQeb1InvbgjSTDqog+kHbkOg9TbvCbShbmcBO+IsopJ/h7E35eUOj5qsheuSfKlfKm8mKKfh2nl78kR4nhjruUbNU/GjdYEUCbfyVS9vBfN1l72A04NcjKqaLmiA9Uld5xreRjpSuMoSMgs+KP8Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023148; c=relaxed/simple;
-	bh=Z+uzInZ6aXXmQfLPPFzPNTjQ1m7iX1a9Rl5CUyQDkHQ=;
+	s=arc-20240116; t=1755024414; c=relaxed/simple;
+	bh=ycjv02oZjGVUy+11VuOhFWU+uMt82sWR7Teg9PA++xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9+Y2Hv4Q0IhC9/8y7+2neqif0e0DfYpma8t+3OoSzaTrFTVRcr9m9EGU4DBUL76eO+RaQV/9j5Z+lCjq5DhxxmRY9ihelA81I32WRg8Sa4KEGZmwybztSM1T2JXGkQRWRqho5XbMPlrnokl4UKgbfZTomZZs8luIJi+PATQ28A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvOsN7c8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706E3C4CEF0;
-	Tue, 12 Aug 2025 18:25:47 +0000 (UTC)
+	 MIME-Version; b=egLichWdqZPQlYJo40A8Orvnk7AJaigT0ZvzGRthbTVjminvduP+p9ek7h02MEu1mPDCSzlvYvb4RIh8GQcTpCATowEVWVywx20ug7SbQuVAoHr5wIqb+ULoDz186JJPw6CGcbRTmgGIsdLGJyiqfa34JlJes7y64QkpYOBbrGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7mbpqu1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FA9C4CEF0;
+	Tue, 12 Aug 2025 18:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023147;
-	bh=Z+uzInZ6aXXmQfLPPFzPNTjQ1m7iX1a9Rl5CUyQDkHQ=;
+	s=korg; t=1755024414;
+	bh=ycjv02oZjGVUy+11VuOhFWU+uMt82sWR7Teg9PA++xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvOsN7c8gxGQd5sFC81j3OXzgylLdpMCKFjxWbO/6BPN67IooKeZFSL8FAVQvpurZ
-	 p6tHWSsk8eLYnEB/5W+8PU6cOssRs9yKQaRngJIfvDuuE36z/7MzB1UvCsZTfOP3uX
-	 wkL6zBC09LOtS8T45BoLUPyEKsUcXSyRCmtiHDzM=
+	b=K7mbpqu1STJ7VWngZBvghUeZs5gtA0fK0oIykobaZ7tWfUEKxd7TVrdHXI/Pei3vK
+	 gNpNhT4nOC+25XrCquO7fKn6dkbT2ObA7bHZK7DAsPBkWu+Fu+1bpgOZrhGM5+3pb7
+	 PSDiYP7pKb6k6kqIVMofSQ1Faj0/3tfx5mcOLtlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <bhe@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Kairui Song <kasong@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 364/369] mm: swap: fix potential buffer overflow in setup_clusters()
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 366/627] RDMA/hns: Fix HW configurations not cleared in error flow
 Date: Tue, 12 Aug 2025 19:31:01 +0200
-Message-ID: <20250812173030.374139350@linuxfoundation.org>
+Message-ID: <20250812173433.226666469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: wenglianfa <wenglianfa@huawei.com>
 
-commit 152c1339dc13ad46f1b136e8693de15980750835 upstream.
+[ Upstream commit 998b41cb20b02c4e28ac558e4e7f8609d659ec05 ]
 
-In setup_swap_map(), we only ensure badpages are in range (0, last_page].
-As maxpages might be < last_page, setup_clusters() will encounter a buffer
-overflow when a badpage is >= maxpages.
+hns_roce_clear_extdb_list_info() will eventually do some HW
+configurations through FW, and they need to be cleared by
+calling hns_roce_function_clear() when the initialization
+fails.
 
-Only call inc_cluster_info_page() for badpage which is < maxpages to fix
-the issue.
-
-Link: https://lkml.kernel.org/r/20250522122554.12209-4-shikemeng@huaweicloud.com
-Fixes: b843786b0bd0 ("mm: swapfile: fix SSD detection with swapfile on btrfs")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e78dd816e45 ("RDMA/hns: Clear extended doorbell info before using")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250703113905.3597124-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/swapfile.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3309,9 +3309,13 @@ static struct swap_cluster_info *setup_c
- 	 * and the EOF part of the last cluster.
- 	 */
- 	inc_cluster_info_page(si, cluster_info, 0);
--	for (i = 0; i < swap_header->info.nr_badpages; i++)
--		inc_cluster_info_page(si, cluster_info,
--				      swap_header->info.badpages[i]);
-+	for (i = 0; i < swap_header->info.nr_badpages; i++) {
-+		unsigned int page_nr = swap_header->info.badpages[i];
-+
-+		if (page_nr >= maxpages)
-+			continue;
-+		inc_cluster_info_page(si, cluster_info, page_nr);
-+	}
- 	for (i = maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i++)
- 		inc_cluster_info_page(si, cluster_info, i);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 29068be052d9..2b04e25c6b09 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -3001,7 +3001,7 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
  
+ 	ret = get_hem_table(hr_dev);
+ 	if (ret)
+-		goto err_clear_extdb_failed;
++		goto err_get_hem_table_failed;
+ 
+ 	if (hr_dev->is_vf)
+ 		return 0;
+@@ -3016,6 +3016,8 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
+ 
+ err_llm_init_failed:
+ 	put_hem_table(hr_dev);
++err_get_hem_table_failed:
++	hns_roce_function_clear(hr_dev);
+ err_clear_extdb_failed:
+ 	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08)
+ 		free_mr_exit(hr_dev);
+-- 
+2.39.5
+
 
 
 
