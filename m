@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AEBB2310B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93361B234D2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC366567B63
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D201918871CE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041992FDC52;
-	Tue, 12 Aug 2025 17:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DE92FE571;
+	Tue, 12 Aug 2025 18:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkMg9zYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKjAz9EA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53AA1EBFE0;
-	Tue, 12 Aug 2025 17:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFE62FD1AD;
+	Tue, 12 Aug 2025 18:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021512; cv=none; b=SwiaPirBBu3yUM5Z6Uny672uYLiE4Sx/DYfD8kVVcdcqUe8LhMqItRPH/ypNeNUZKs+fIc/R1ahBk8NmPRcajCPz9ynjATTOw1DIa1XEAJwpk5PTkgGa+zfaI4kmjaM+xegegFACw4Yn8tH32cLSP1HkIy/yC37k67u1LN7/jfo=
+	t=1755023983; cv=none; b=Zq7sqOUhzaRSp2gwnN7i46LE+0Vjgi7VtrgsQoPvdcE11loFfFZPf9RHyMS9C69jE3uxPED5I/AVmPckBGnRgTjNoD0lJEzugwwTJZIh0X5IhIRvHgNhRTYPGTVPzChCjhGXF9h8xHGRO0o0W05TFIGjRQcTY/tyBDHDYGBJR6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021512; c=relaxed/simple;
-	bh=omqrZeJQRNr5XL5YCSW2plgYiVfFWXKhuLGtZ8KKQ/M=;
+	s=arc-20240116; t=1755023983; c=relaxed/simple;
+	bh=rB45pbiPqx12ToZplfUAnh/K1Ul1HZU9ijbt6/JqUzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ajGlxeWf7+YtebXetwLNFFlwJqcjPPQWtZ5rOA0wd7LEDwVQ4uSplPZFXF+lrZ/IvCiRo41KEM2tmTsYOCq0QLk9dETokMZLff/hCcBRL2C8iQ1huNufSIPBnhV5L3iqlUowxid4iWblHjbRJ4c5FUSAyucIaf5jcL+nfJPbPoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkMg9zYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22357C4CEF0;
-	Tue, 12 Aug 2025 17:58:31 +0000 (UTC)
+	 MIME-Version; b=p7aOvHjGFDaSZbt0gLyE/NrtEVNbjkkWlrKnvEHXrt1ti2x7US7nPDH3G8TbPPMcISafZqo+09eOGqmKevWIDUunT2lWL+oNPrTPrEc8zaNf/LzclvaS8OssAtC5p7+05F1HeE9rYgCeg0kctEegQ8tzXvTgvLW2CgqNZviNwh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKjAz9EA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A28FC4CEF0;
+	Tue, 12 Aug 2025 18:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021512;
-	bh=omqrZeJQRNr5XL5YCSW2plgYiVfFWXKhuLGtZ8KKQ/M=;
+	s=korg; t=1755023981;
+	bh=rB45pbiPqx12ToZplfUAnh/K1Ul1HZU9ijbt6/JqUzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkMg9zYUlPvEU9fM/TYgb+opkb8kTBgFC4ZGh5yUU86xqZ2R/XaJ0CXLOIPpaNmAv
-	 2cU3g/51z//ZIadK2Hd5cBYvOhcWisWvcLF0/XT4Aw1g9BduC92JPtswITLm9wrL1K
-	 fwDa76q4FK5DJT7XQ0vo8eP3c995+t56uQBTTDkU=
+	b=HKjAz9EA4Gvj61ITF8LNWpECZG9iMfyyz+/w7gc0h94H2l9T6/kzChprgXqUfGKTu
+	 3d01QRCOZIr621a4cJDL+OoS1Wp2SmXAB4krqkNzkV2oR5iPWvhuK/3YxYIPmnJe07
+	 nrfwJgtyt/oQ8XsgQy3tcIFOiArRySU5zfsQ2kOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/262] soundwire: stream: restore params when prepare ports fail
+Subject: [PATCH 6.16 237/627] wifi: mac80211: Do not schedule stopped TXQs
 Date: Tue, 12 Aug 2025 19:28:52 +0200
-Message-ID: <20250812172959.232658088@linuxfoundation.org>
+Message-ID: <20250812173428.318247954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit dba7d9dbfdc4389361ff3a910e767d3cfca22587 ]
+[ Upstream commit 11e3e22fa533f5d7cf04e32343b05a27eda3c7a5 ]
 
-The bus->params should be restored if the stream is failed to prepare.
-The issue exists since beginning. The Fixes tag just indicates the
-first commit that the commit can be applied to.
+Ignore TXQs with the flag IEEE80211_TXQ_STOP when scheduling a queue.
 
-Fixes: 17ed5bef49f4 ("soundwire: add missing newlines in dynamic debug logs")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20250626060952.405996-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The flag is only set after all fragments have been dequeued and won't
+allow dequeueing other frames as long as the flag is set.
+
+For drivers using ieee80211_txq_schedule_start() this prevents an
+loop trying to push the queued frames while IEEE80211_TXQ_STOP is set:
+
+After setting IEEE80211_TXQ_STOP the driver will call
+ieee80211_return_txq(). Which calls __ieee80211_schedule_txq(), detects
+that there sill are frames in the queue and immediately restarts the
+stopped TXQ. Which can't dequeue any frame and thus starts over the loop.
+
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
+Link: https://patch.msgid.link/20250717162547.94582-2-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
-index 68d54887992d..8ebfa44078e8 100644
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -1409,7 +1409,7 @@ static int _sdw_prepare_stream(struct sdw_stream_runtime *stream,
- 		if (ret < 0) {
- 			dev_err(bus->dev, "Prepare port(s) failed ret = %d\n",
- 				ret);
--			return ret;
-+			goto restore_params;
- 		}
- 	}
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index d58b80813bdd..4a9b258300fe 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4098,7 +4098,9 @@ void __ieee80211_schedule_txq(struct ieee80211_hw *hw,
  
+ 	spin_lock_bh(&local->active_txq_lock[txq->ac]);
+ 
+-	has_queue = force || txq_has_queue(txq);
++	has_queue = force ||
++		    (!test_bit(IEEE80211_TXQ_STOP, &txqi->flags) &&
++		     txq_has_queue(txq));
+ 	if (list_empty(&txqi->schedule_order) &&
+ 	    (has_queue || ieee80211_txq_keep_active(txqi))) {
+ 		/* If airtime accounting is active, always enqueue STAs at the
 -- 
 2.39.5
 
