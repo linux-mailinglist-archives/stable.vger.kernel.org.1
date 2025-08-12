@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88625B22F97
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D388FB232BE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C1743A20BB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 685D7580C3D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837272FDC2B;
-	Tue, 12 Aug 2025 17:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0622FA0DB;
+	Tue, 12 Aug 2025 18:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUfISVAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb8mej2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4194D2FABF0;
-	Tue, 12 Aug 2025 17:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1342D8363;
+	Tue, 12 Aug 2025 18:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020519; cv=none; b=Tzl02/j9TjbQYVPIlkUTk6Dk1F6vbbPp086H9sDg9MyEl21F+kcvopTGWSzImdCj52M1EDGL8oY4/sA58dldYpjVcQe2pBNwWHMQ4H6RdqpaIyZn7XFmT+0rwYLiBpROpUZf5Zs+JO+vOk4bqXdOLj4ymY0SYBmD+m4UDh9i+WQ=
+	t=1755022582; cv=none; b=lB67jW8mEDgMKyfAVzQCtPpAzxtGLdxpTQrv0vctFQ9LKwjDHKgEypSsMfRlJx6mZpEbCT806wkuSmHjLVMixsti+POoZu5A3LsyPDBLRzpzjZGSsnCeAIdICggOCDWc4RO59Yg2uO9fWUl4ewkCKyJzWQCX9MjHhzQ8KkCSNXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020519; c=relaxed/simple;
-	bh=5dWGA3BSt3NkEUAzhJSEkDl1JvSoFQBe6iLO0aIpRh0=;
+	s=arc-20240116; t=1755022582; c=relaxed/simple;
+	bh=Ec+HXgrIBaB39I3tew0zByYx9FUa5P/6N5qq3aeyOao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bToTi0x4nVb6cls393V/KWYwclln5S9crZSeXXwIrPoS0yPsY3pbDrH1fX9pNTKdjGlgP8Asp1daf83N+2nvHVZ/8sEQNPt38HRqotsblJOX4BOO4EtOW7FeRJXcRdfIN1oLgUu1PTdKaFD5SMOUlddsB4QK0SxM4Yb//lTWCbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUfISVAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0F0C4CEF0;
-	Tue, 12 Aug 2025 17:41:58 +0000 (UTC)
+	 MIME-Version; b=PV5ov9EpZIotISP0esAHP9zGk0Hj4BrkeR0VPfzpCEwZ0FQjZ4PRAMLo1jLHG7pGmAUHUsFf3FreJtl6tYerLVcAQBDfmZG73TsbL9xDCcQLdXVBQ175p4Pl4mnL/a5X27HZWacEngWfE5TtB9yiu7l4zO2x1vR7buGUSBhdZfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb8mej2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08151C4CEF6;
+	Tue, 12 Aug 2025 18:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020519;
-	bh=5dWGA3BSt3NkEUAzhJSEkDl1JvSoFQBe6iLO0aIpRh0=;
+	s=korg; t=1755022582;
+	bh=Ec+HXgrIBaB39I3tew0zByYx9FUa5P/6N5qq3aeyOao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUfISVAftlcidOOr6wSTFvbNPn5yIPuFXZnlKr0mBVkTgat7fpsJ9i29U9f0kzg6R
-	 82X7Jz9JJzJyzTgr/C19rQgCVJG9A9iNuYhtDcWVjdKNYUvrk0CzXiBiPxH+sMylEZ
-	 R/mSNxgkC5uo1f2Jli7J7LE8pgrbUiMbd419T9yY=
+	b=tb8mej2Y11P+B33bAu1LBDSbE2rmvzhJZaKNIoYaSF5ebf/GgwaYsv+H9BeMc6CvQ
+	 XrYdoHhpSFsZYn6KC8ZHCA16uNw8fEv6Ms8qJQWDu6WW8496/j2JnT8/GEghQKhJ0k
+	 E1+FhXm60h3MXFD2QfNsSHu3tL3G1BZ6k9YaeNtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/253] iwlwifi: Add missing check for alloc_ordered_workqueue
-Date: Tue, 12 Aug 2025 19:28:13 +0200
-Message-ID: <20250812172953.195406357@linuxfoundation.org>
+Subject: [PATCH 6.12 197/369] RDMA/mana_ib: Fix DSCP value in modify QP
+Date: Tue, 12 Aug 2025 19:28:14 +0200
+Message-ID: <20250812173022.176537996@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Shiraz Saleem <shirazsaleem@microsoft.com>
 
-[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
+[ Upstream commit 62de0e67328e9503459a24b9343c3358937cdeef ]
 
-Add check for the return value of alloc_ordered_workqueue since it may
-return NULL pointer.
+Convert the traffic_class in GRH to a DSCP value as required by the HW.
 
-Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: e095405b45bb ("RDMA/mana_ib: Modify QP state")
+Signed-off-by: Shiraz Saleem <shirazsaleem@microsoft.com>
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://patch.msgid.link/1752143085-4169-1-git-send-email-kotaranov@linux.microsoft.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mana/qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index a873be109f43..b490a88b97ca 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1048,9 +1048,11 @@ static void iwl_bg_restart(struct work_struct *data)
-  *
-  *****************************************************************************/
+diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
+index 73d67c853b6f..48fef989318b 100644
+--- a/drivers/infiniband/hw/mana/qp.c
++++ b/drivers/infiniband/hw/mana/qp.c
+@@ -561,7 +561,7 @@ static int mana_ib_gd_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 		req.ah_attr.dest_port = ROCE_V2_UDP_DPORT;
+ 		req.ah_attr.src_port = rdma_get_udp_sport(attr->ah_attr.grh.flow_label,
+ 							  ibqp->qp_num, attr->dest_qp_num);
+-		req.ah_attr.traffic_class = attr->ah_attr.grh.traffic_class;
++		req.ah_attr.traffic_class = attr->ah_attr.grh.traffic_class >> 2;
+ 		req.ah_attr.hop_limit = attr->ah_attr.grh.hop_limit;
+ 	}
  
--static void iwl_setup_deferred_work(struct iwl_priv *priv)
-+static int iwl_setup_deferred_work(struct iwl_priv *priv)
- {
- 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
-+	if (!priv->workqueue)
-+		return -ENOMEM;
- 
- 	INIT_WORK(&priv->restart, iwl_bg_restart);
- 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
-@@ -1067,6 +1069,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
- 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
- 
- 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
-+
-+	return 0;
- }
- 
- void iwl_cancel_deferred_work(struct iwl_priv *priv)
-@@ -1456,7 +1460,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	/********************
- 	 * 6. Setup services
- 	 ********************/
--	iwl_setup_deferred_work(priv);
-+	if (iwl_setup_deferred_work(priv))
-+		goto out_uninit_drv;
-+
- 	iwl_setup_rx_handlers(priv);
- 
- 	iwl_power_initialize(priv);
-@@ -1494,6 +1500,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	iwl_cancel_deferred_work(priv);
- 	destroy_workqueue(priv->workqueue);
- 	priv->workqueue = NULL;
-+out_uninit_drv:
- 	iwl_uninit_drv(priv);
- out_free_eeprom_blob:
- 	kfree(priv->eeprom_blob);
 -- 
 2.39.5
 
