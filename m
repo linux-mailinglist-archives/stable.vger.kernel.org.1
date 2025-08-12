@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA06B230E6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2614B23468
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76D201896A57
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 530B97A4490
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303F32FD1D7;
-	Tue, 12 Aug 2025 17:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198AB2FF171;
+	Tue, 12 Aug 2025 18:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp5IQN5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaZ3ijuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DBA2DE1E2;
-	Tue, 12 Aug 2025 17:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3AC2FD1AD;
+	Tue, 12 Aug 2025 18:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021423; cv=none; b=PWAvAPMgjaNjYv+L9i+Abua+mx3hKBgUw5Hz2QEebEQwTWX+2dMXY8kCdrnLMNwNvJbcVpCGXesBfDWZJXTf7lCKGSdcWC39jyHNvmM08KP+m54UUdjdvWD0a4pj7KUNZwI1OIyvxLmrK+E/b2DruZDGfBEb3+UgsEYS0aCvEqs=
+	t=1755023995; cv=none; b=IAl4fKOxMgxH5bdju7AE9fDKX3eL/rwQ7IJjFSWc9TD4zvccz/UafFWJARs+QTWMZW6lNkzc3Djbdb0vd6IH786p/9BW75dw6Wl3XcjJoROVbwRb0r9q1GZ6e4q0Dprj9m/4Q7u/Ez7PXG7F24wBMDGC8dLXChgepZ6C7ssLC3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021423; c=relaxed/simple;
-	bh=tAab+al2OFsDkiidbZRhPsYvnwhappmTbo/RFVZ1k3c=;
+	s=arc-20240116; t=1755023995; c=relaxed/simple;
+	bh=ft9X0iT4pXziygjuqS7K4KYZkV8ZGMqzorxi2T4J6qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9ottgeahb1LZP/kYuRXFNkI1FZG94edIuhMNGRN2k3w07NVQbDJqtWP20HFB4uPe8Ug3yGis28Beal6vApmW4VOtKAUyb2cKB/zg0+ni4c8bsHMOS0rqnN0QRgGfPoTgZS94JP7fPVWnv7eibg+tS09j8njDWju6bPKED4wwxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp5IQN5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518A1C4CEF0;
-	Tue, 12 Aug 2025 17:57:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZAQqp/h5oPN+uPpdF8NuLYKwlKO2a9Pm7E9a8HtwDKR/O4LD710qNpCzWfq+OOJQnnL6JJEPfSHZwf8SlOZ8VqmsJCO4Dfgz6dS4hXTT3UUEHaRG2wH6xtPBpbACbERl+g85K7ZAM9+HDa1TXViCzH9++VbKq2K0Crk4lipCpVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaZ3ijuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299F5C4CEF0;
+	Tue, 12 Aug 2025 18:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021422;
-	bh=tAab+al2OFsDkiidbZRhPsYvnwhappmTbo/RFVZ1k3c=;
+	s=korg; t=1755023995;
+	bh=ft9X0iT4pXziygjuqS7K4KYZkV8ZGMqzorxi2T4J6qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zp5IQN5zcsEEELzdvxvrgRvbzFrbBzJ5wc1hiTCAh6pzF+taYhvzjl03Kn11OeAqO
-	 vsJyvQtat7rtcrosjCf6gr7jivn4adk/y3yG9irVNkWzeUTFg2067GgmzN5Ms2QLhw
-	 yHn4FD+Nnv1xfeXWJciuEBY4tNuhSZCILWQN3i2A=
+	b=GaZ3ijuJw+qx3BQ4kPoTv/eg5PNJ+/GxSOhdN6q9dxbBk11UzCB0NDMblO8ySLtcg
+	 kt6GYi/lqNcsRPbXx0ynjFVjuF214IJKsuOmhYj262IQTNCjPoAhe8zK0CCW4G9B2w
+	 r9moxk4iaoUxCP2asmEAWMyL92e1PeMdLftWRdlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Mark Brown <broonie@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/262] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
+Subject: [PATCH 6.16 209/627] spi: spi-nxp-fspi: Check return value of devm_mutex_init()
 Date: Tue, 12 Aug 2025 19:28:24 +0200
-Message-ID: <20250812172958.043255726@linuxfoundation.org>
+Message-ID: <20250812173427.232941331@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
+[ Upstream commit d24a54e032021cf381af3c3cf119cc5cf6b3c1be ]
 
-When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
-function returns NULL. Fix the max14577_charger_probe functionby returning
--ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
+devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will
+be marked as unusable and trigger errors on usage.
 
-This fixes the below smatch warning:
-max14577_charger_probe() warn: passing zero to 'PTR_ERR'
+Add the missed check.
 
-Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 48900813abd2 ("spi: spi-nxp-fspi: remove the goto in probe")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20250617-must_check-devm_mutex_init-v7-1-d9e449f4d224@weissschuh.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max14577_charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
-index 96f9de775043..daa5a6d41bb4 100644
---- a/drivers/power/supply/max14577_charger.c
-+++ b/drivers/power/supply/max14577_charger.c
-@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
- static struct max14577_charger_platform_data *max14577_charger_dt_init(
- 		struct platform_device *pdev)
- {
--	return NULL;
-+	return ERR_PTR(-ENODATA);
- }
- #endif /* CONFIG_OF */
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index e63c77e41823..f3d576505413 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1273,7 +1273,9 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to request irq\n");
  
-@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
- 	chg->max14577 = max14577;
+-	devm_mutex_init(dev, &f->lock);
++	ret = devm_mutex_init(dev, &f->lock);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to initialize lock\n");
  
- 	chg->pdata = max14577_charger_dt_init(pdev);
--	if (IS_ERR_OR_NULL(chg->pdata))
-+	if (IS_ERR(chg->pdata))
- 		return PTR_ERR(chg->pdata);
- 
- 	ret = max14577_charger_reg_init(chg);
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
 -- 
 2.39.5
 
