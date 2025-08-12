@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-168144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7A9B233AB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B858B231ED
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3235418999EA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C8911635F2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FA82EE5E8;
-	Tue, 12 Aug 2025 18:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D242FE583;
+	Tue, 12 Aug 2025 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M11Bgs6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeydfrHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC15861FFE;
-	Tue, 12 Aug 2025 18:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92949305E08;
+	Tue, 12 Aug 2025 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023192; cv=none; b=RC01gfe4iuAE6lSWLLmsP+JKMvMgrsbQ6ILBAxdlLCRGsW0QGPVXKAnmb0mSe5O2hSksVTXWs3GVEfTYi2yT08ZneKa3Gx3/E5Gzx+xN5rEKi1VR61dJ7b5j4bWnKCDnwGz1CUkOkagw6oEWdxHwEwtA8FoFg4hLXqEvkdpFWUc=
+	t=1755021937; cv=none; b=h1esE979ikro/Wv3ZLK4pvaDjzXucueqXyhZctazuSHaliN6lx8jaNgs0FSeSKjgH+lTyrU0BUY6JthJWMBI0WmLMu7HoZOnA43l5bNW8pqy/CmDYfajgiwAO6YbUVaexMwrbqi0UxeOsJF7dauNAHs5g7jKTxA9U4LHHVt+bWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023192; c=relaxed/simple;
-	bh=22SC/39ChKKre+qGjLcGbmI9t7CSNiQ9dx1qK2RBtgk=;
+	s=arc-20240116; t=1755021937; c=relaxed/simple;
+	bh=hwkDdfpfdX3VkAtIvpl90GF0XJFjohnXVhWey645EnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUMcaH7U0MWiu6PQwgjqThR1WrbxVHS4wTpzOFeMZQQ/JgKmUQ/j6+I9/MmAn4UmBnELIeQgr54+PN+Rr2iJDdYZOm0ZXUbOEgZ8xz1xOA+KneaJxhiunVnmGvCrclVkwHA2+tPnuE8+ZAGvH5gzPPoHVSLN8JV6I9hkj8aRdOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M11Bgs6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA63C4CEF0;
-	Tue, 12 Aug 2025 18:26:32 +0000 (UTC)
+	 MIME-Version; b=XIDnmsfHT/FbvfuT5idSclm4isVg/qilKVmAy02syECpswwujuaINInHQlRUQhi5iZbUnO3vgDblXEdTtaaSPsJTL6sU2bz6qLd467k1oFxDsisrqoXAEiTFSJF8zY5ljc0m6BdwoPKklXFw+/MvbNVqZBEVS1TGiJhvWtzR9yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeydfrHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0107CC4CEF0;
+	Tue, 12 Aug 2025 18:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023192;
-	bh=22SC/39ChKKre+qGjLcGbmI9t7CSNiQ9dx1qK2RBtgk=;
+	s=korg; t=1755021937;
+	bh=hwkDdfpfdX3VkAtIvpl90GF0XJFjohnXVhWey645EnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M11Bgs6lk3Q9JegHDZq545/jSQ5plzV9aRVIIfBTCTM4W0kRVFn9PZ8g46AUFwnkn
-	 d4XW4ffa/reFd/aafYMSTV74qkmg5L8VceEa/NH0okeN3Iri2d56A1CV+KLlF9yeW/
-	 1MbdPq4Irs30ZJGhrzwDi+bnzK+ynbe/4bOlG1jk=
+	b=VeydfrHkGE6PFeKsC8jNnDoXFu6U0aHNtWWF5247IYeYK/Bkrt0I/+e9O3u4Jt6q3
+	 zJcf/yrK/hOjS0fOViS1kmPRrCPUSJ48Mf+soLInJkMzdVxWnDEziN00LKCi1Vn3UN
+	 DjGjNAobnE14FQBO1D2kWT2FFdJBytyRqttnEhOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 353/369] ALSA: intel_hdmi: Fix off-by-one error in __hdmi_lpe_audio_probe()
+	stable <stable@kernel.org>,
+	Tao Xue <xuetao09@huawei.com>
+Subject: [PATCH 6.6 262/262] usb: gadget : fix use-after-free in composite_dev_cleanup()
 Date: Tue, 12 Aug 2025 19:30:50 +0200
-Message-ID: <20250812173029.972479360@linuxfoundation.org>
+Message-ID: <20250812173004.287687334@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Tao Xue <xuetao09@huawei.com>
 
-commit 8cbe564974248ee980562be02f2b1912769562c7 upstream.
+commit 151c0aa896c47a4459e07fee7d4843f44c1bb18e upstream.
 
-In __hdmi_lpe_audio_probe(), strscpy() is incorrectly called with the
-length of the source string (excluding the NUL terminator) rather than
-the size of the destination buffer. This results in one character less
-being copied from 'card->shortname' to 'pcm->name'.
+1. In func configfs_composite_bind() -> composite_os_desc_req_prepare():
+if kmalloc fails, the pointer cdev->os_desc_req will be freed but not
+set to NULL. Then it will return a failure to the upper-level function.
+2. in func configfs_composite_bind() -> composite_dev_cleanup():
+it will checks whether cdev->os_desc_req is NULL. If it is not NULL, it
+will attempt to use it.This will lead to a use-after-free issue.
 
-Use the destination buffer size instead to ensure the card name is
-copied correctly.
+BUG: KASAN: use-after-free in composite_dev_cleanup+0xf4/0x2c0
+Read of size 8 at addr 0000004827837a00 by task init/1
 
-Cc: stable@vger.kernel.org
-Fixes: 75b1a8f9d62e ("ALSA: Convert strlcpy to strscpy when return value is unused")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20250805234156.60294-1-thorsten.blum@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+CPU: 10 PID: 1 Comm: init Tainted: G           O      5.10.97-oh #1
+ kasan_report+0x188/0x1cc
+ __asan_load8+0xb4/0xbc
+ composite_dev_cleanup+0xf4/0x2c0
+ configfs_composite_bind+0x210/0x7ac
+ udc_bind_to_driver+0xb4/0x1ec
+ usb_gadget_probe_driver+0xec/0x21c
+ gadget_dev_desc_UDC_store+0x264/0x27c
+
+Fixes: 37a3a533429e ("usb: gadget: OS Feature Descriptors support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Tao Xue <xuetao09@huawei.com>
+Link: https://lore.kernel.org/r/20250721093908.14967-1-xuetao09@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/x86/intel_hdmi_audio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/composite.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/sound/x86/intel_hdmi_audio.c
-+++ b/sound/x86/intel_hdmi_audio.c
-@@ -1767,7 +1767,7 @@ static int __hdmi_lpe_audio_probe(struct
- 		/* setup private data which can be retrieved when required */
- 		pcm->private_data = ctx;
- 		pcm->info_flags = 0;
--		strscpy(pcm->name, card->shortname, strlen(card->shortname));
-+		strscpy(pcm->name, card->shortname, sizeof(pcm->name));
- 		/* setup the ops for playback */
- 		snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &had_pcm_ops);
- 
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2489,6 +2489,11 @@ int composite_os_desc_req_prepare(struct
+ 	if (!cdev->os_desc_req->buf) {
+ 		ret = -ENOMEM;
+ 		usb_ep_free_request(ep0, cdev->os_desc_req);
++		/*
++		 * Set os_desc_req to NULL so that composite_dev_cleanup()
++		 * will not try to free it again.
++		 */
++		cdev->os_desc_req = NULL;
+ 		goto end;
+ 	}
+ 	cdev->os_desc_req->context = cdev;
 
 
 
