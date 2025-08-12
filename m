@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21EDB230C9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91762B23569
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D0E9188BF72
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B47625EF7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9EA2FDC20;
-	Tue, 12 Aug 2025 17:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA8E2FF172;
+	Tue, 12 Aug 2025 18:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOaRjJYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMm3iAhi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1E92D5C76;
-	Tue, 12 Aug 2025 17:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686842FF167;
+	Tue, 12 Aug 2025 18:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021306; cv=none; b=eju80miVo7sM+7E72ddIS5emwvNqusGKyLQFnA146048BzYiPmno1ZOxXuRfEqPyh5Og4GvOaMPrG6UM3yS8ojJeIG0Qz19mVoHxfH8pU6+yAv9/JNAHk3Erwp5LJnfpbEngxYRGUxb5FUN1NtnA3Lk+x6NeoP6ucDfSC9ypKgw=
+	t=1755024311; cv=none; b=pw3Dgr390cFzZUg9/2Phej3unFxkLjm9XQgFseXZtuoB04ynpfY+z8GXByV1zbxzn6VqpO31uoCLB9Fjz4XN61fybVf0fcSbHQ3Zi4DeaA79A46FqDvpiYk6nVwGiAUlQAJx1QQ/hteVDknW+l8PQBkLm3JtSzkhZR+Jc6fLtWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021306; c=relaxed/simple;
-	bh=U+ddJ2dQxdwY08eUl+DG3KajTOH9XYPJ0SA1ln/wi/k=;
+	s=arc-20240116; t=1755024311; c=relaxed/simple;
+	bh=cl96HL/4sSGMvvsAsedsrL36YEPVmWBj3y0b/9F9cEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiKxHtr253x3Touhx984+UROvIMzj5iRC+0XChVyeyBqqiVZGI2kOZdICQIlEgxBFJ7iJa9HVniWVTp7DoFedauD7qwmZZHwtETgdohm2Ex/g8id2lqbR3ul3u1H2Kzp+cvwRMxGN9/MpOnhMHQllRtN0ZWDugKaRDpbCMlqEU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOaRjJYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BA5C4CEF0;
-	Tue, 12 Aug 2025 17:55:04 +0000 (UTC)
+	 MIME-Version; b=kC/LDKRD285nSX387iLTguQaQpqKftbj7JjUtbD/RWuI3GhRwMEDDqpMloOATwrfWbZTrW825AlKgHLscayc/h8cTvDjxeQrlh6Ix9c2xXvG9AIRoFIQBob3BJ+UfU370Z23WaUbHgfYlSXM78IjNWmZuy7KoGwNJIMJFBdHyyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMm3iAhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC56C4CEF1;
+	Tue, 12 Aug 2025 18:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021305;
-	bh=U+ddJ2dQxdwY08eUl+DG3KajTOH9XYPJ0SA1ln/wi/k=;
+	s=korg; t=1755024311;
+	bh=cl96HL/4sSGMvvsAsedsrL36YEPVmWBj3y0b/9F9cEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOaRjJYIH6Joq+OSc+JSH3m8McC3MN7ulK9++aXfKR5r+/S0MjZpzQN55N9wPCKNh
-	 8P9MzLoUirUq1az7YunYRF7Cd0Tu2ayjKjle+YQWiZ5icgWyeVvVMOEQp1xgVBAFfP
-	 O/D6TjDmdAg/wfTthSYDolrIQV87XFqQ2eC1wXRs=
+	b=eMm3iAhiPeB9L1qyeXoABCljxfE4A5lOqlcpF6h1F6GwmhVzWU8dVeaOAShUrnrqq
+	 WmV656gc+ZB4E6JhblLovCBfSN76z1a0QB+wizC0BiuxLBUHUN1DYwQrc0Gaq38AVK
+	 2nIjaRhBrGqPf0Dqz+T5xqMKeNQU1DtGPp7CLJ3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 241/253] ksmbd: fix corrupted mtime and ctime in smb2_open
-Date: Tue, 12 Aug 2025 19:30:29 +0200
-Message-ID: <20250812172959.102222727@linuxfoundation.org>
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 335/627] soundwire: Correct some property names
+Date: Tue, 12 Aug 2025 19:30:30 +0200
+Message-ID: <20250812173432.031442855@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 4f8ff9486fd94b9d6a4932f2aefb9f2fc3bd0cf6 upstream.
+[ Upstream commit ae6a0f5b8a5b0ca2e4bf1c0380267ad83aca8401 ]
 
-If STATX_BASIC_STATS flags are not given as an argument to vfs_getattr,
-It can not get ctime and mtime in kstat.
+The DisCo properties should be mipi-sdw-paging-supported and
+mipi-sdw-bank-delay-supported, with an 'ed' on the end. Correct the
+property names used in sdw_slave_read_prop().
 
-This causes a problem showing mtime and ctime outdated from cifs.ko.
-File: /xfstest.test/foo
-Size: 4096            Blocks: 8          IO Block: 1048576 regular file
-Device: 0,65    Inode: 2033391     Links: 1
-Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
-Context: system_u:object_r:cifs_t:s0
-Access: 2025-07-23 22:15:30.136051900 +0100
-Modify: 1970-01-01 01:00:00.000000000 +0100
-Change: 1970-01-01 01:00:00.000000000 +0100
-Birth: 2025-07-23 22:15:30.136051900 +0100
+The internal flag bank_delay_support is currently unimplemented, so that
+being read wrong does not currently affect anything. The two existing
+users for this helper and the paging_support flag rt1320-sdw.c and
+rt721-sdca-sdw.c both manually set the flag in their slave properties,
+thus are not affected by this bug either.
 
-Cc: stable@vger.kernel.org
-Reported-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 56d4fe31af77 ("soundwire: Add MIPI DisCo property helpers")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250624125507.2866346-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soundwire/mipi_disco.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -562,7 +562,8 @@ int ksmbd_vfs_getattr(const struct path
- {
- 	int err;
+diff --git a/drivers/soundwire/mipi_disco.c b/drivers/soundwire/mipi_disco.c
+index 65afb28ef8fa..c69b78cd0b62 100644
+--- a/drivers/soundwire/mipi_disco.c
++++ b/drivers/soundwire/mipi_disco.c
+@@ -451,10 +451,10 @@ int sdw_slave_read_prop(struct sdw_slave *slave)
+ 			"mipi-sdw-highPHY-capable");
  
--	err = vfs_getattr(path, stat, STATX_BTIME, AT_STATX_SYNC_AS_STAT);
-+	err = vfs_getattr(path, stat, STATX_BASIC_STATS | STATX_BTIME,
-+			AT_STATX_SYNC_AS_STAT);
- 	if (err)
- 		pr_err("getattr failed, err %d\n", err);
- 	return err;
+ 	prop->paging_support = mipi_device_property_read_bool(dev,
+-			"mipi-sdw-paging-support");
++			"mipi-sdw-paging-supported");
+ 
+ 	prop->bank_delay_support = mipi_device_property_read_bool(dev,
+-			"mipi-sdw-bank-delay-support");
++			"mipi-sdw-bank-delay-supported");
+ 
+ 	device_property_read_u32(dev,
+ 			"mipi-sdw-port15-read-behavior", &prop->p15_behave);
+-- 
+2.39.5
+
 
 
 
