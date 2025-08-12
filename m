@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C569B231B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DEBB233C3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F51D7B3413
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 651F71B64188
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22C02F83B5;
-	Tue, 12 Aug 2025 18:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801D92F83A1;
+	Tue, 12 Aug 2025 18:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BziPKHHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQE5UJpD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3872ED17F;
-	Tue, 12 Aug 2025 18:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4B061FFE;
+	Tue, 12 Aug 2025 18:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022022; cv=none; b=oDU7T13V36V5lTjQlTrNarjwAuRrM0DwjreAYWfiiZQ5iNlxAWSpBNOSCbbODYUDE5tU722Zj1NO6LUvfGU5NrEBGJaNiNuNuPvifAhSQIqAZj6bKECVfw0lGAJBpOAHM6eSPrrG6XYejIan38SLfM1tDYZjjX26gP2bbkdVnWA=
+	t=1755023262; cv=none; b=MGalWVKhm3+MJyoYcDIxbUkpDOX+OHk2MoDe5aQa94OFDdRRXtg707l9nnZgydjIpTzDD9sEc4RJvNl8RYMMnW+GGK43XVYNsJ8F6DmYzWj9N0prJgd650nV6u//ZKGnnYN4C5OGlARRJjVqs+VlgWEsjqJM7Z5fBcNc5naDkWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022022; c=relaxed/simple;
-	bh=H+OSlNqvvjMGjtUY4C85tvwmrDjUgqMAOmqvvrqUH14=;
+	s=arc-20240116; t=1755023262; c=relaxed/simple;
+	bh=jz58q21568z2KWQzqil6R8r6SHAbUcrq89uYn+51x9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoK1jfOmWGvu0Bs2fZgEuchrn+3WZE87eB214Ds4mwuPpbgprmmMx9k2rA/tbsuxPvmOlSp3Y5W7GcwH30dtxaWLopQR6Af2LK6RrrbqY6HYb54E8bt56cQYe8zKXTFggHnk8/gU3/fdseJkapdaebqZXplJeDPfddH8lbwk44s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BziPKHHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77389C4CEF0;
-	Tue, 12 Aug 2025 18:07:01 +0000 (UTC)
+	 MIME-Version; b=ZdVUtpGivadOoVq1Hkr/0ZnogICzZXUe1vPp7M7eEXhP9adehJr6nkjJsczrepJGZToZ9nNpuDg7Gzpr2Big+w/u3v0+l+Yob192jAqp0wtccRupN4BwIOE4WmtmJsVbHrw4WqXN/cFllWFb4sS2DRFg3UH7a0rhPkkeERK7hxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQE5UJpD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6E5C4CEF1;
+	Tue, 12 Aug 2025 18:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022021;
-	bh=H+OSlNqvvjMGjtUY4C85tvwmrDjUgqMAOmqvvrqUH14=;
+	s=korg; t=1755023262;
+	bh=jz58q21568z2KWQzqil6R8r6SHAbUcrq89uYn+51x9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BziPKHHWl5GyL9MUqhWbC27qhqor5VWQYUF772qge2iif3GRWnjbl8OHHHTerpslx
-	 ef2CT81RzH5t+t6cR1sqwMKpvIZjmDOJkA7a5qzUr0yGCCmSh6kV83YywtJ3jGKK+B
-	 aoJOz2TfXhjmzzG/pjOCstLWtP6Qcjr4sY4iOE7M=
+	b=xQE5UJpD3xNBQpfChkfX0qxU4IhNxvZlhNQD0zqwvPsHci4MGZURRpUo7E5p3dJrM
+	 gyhnAw5bMAWbSueLYn4ccFX8nPZzTyxf1bgql0MwghHf0Wf0+gmVAvdf6se1Eu/bLc
+	 PaReVrzLh+15YgCV97xYtepcuVXn13CeTW9gCCpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Andries <alex.andries.aa@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/369] ASoC: amd: yc: add DMI quirk for ASUS M6501RM
+Subject: [PATCH 6.16 008/627] ublk: use vmalloc for ublk_devices __queues
 Date: Tue, 12 Aug 2025 19:25:03 +0200
-Message-ID: <20250812173014.982834358@linuxfoundation.org>
+Message-ID: <20250812173419.636550663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Andries <alex.andries.aa@gmail.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit 6f80be548588429100eb1f5e25dc2a714d583ffe ]
+[ Upstream commit c2f48453b7806d41f5a3270f206a5cd5640ed207 ]
 
-add DMI entry for ASUS Vivobook PRO 15X (M6501RM)
-to make the internal microphone function
+struct ublk_device's __queues points to an allocation with up to
+UBLK_MAX_NR_QUEUES (4096) queues, each of which have:
+- struct ublk_queue (48 bytes)
+- Tail array of up to UBLK_MAX_QUEUE_DEPTH (4096) struct ublk_io's,
+  32 bytes each
+This means the full allocation can exceed 512 MB, which may well be
+impossible to service with contiguous physical pages. Switch to
+kvcalloc() and kvfree(), since there is no need for physically
+contiguous memory.
 
-Signed-off-by: Alexandru Andries <alex.andries.aa@gmail.com>
-Link: https://patch.msgid.link/20250707220730.361290-1-alex.andries.aa@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250620151008.3976463-2-csander@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/block/ublk_drv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 4bde41663f42..e362c2865ec1 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -409,6 +409,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M6501RM"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 9fd284fa76dc..8ded49f3b68b 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -2513,7 +2513,7 @@ static void ublk_deinit_queues(struct ublk_device *ub)
+ 
+ 	for (i = 0; i < nr_queues; i++)
+ 		ublk_deinit_queue(ub, i);
+-	kfree(ub->__queues);
++	kvfree(ub->__queues);
+ }
+ 
+ static int ublk_init_queues(struct ublk_device *ub)
+@@ -2524,7 +2524,7 @@ static int ublk_init_queues(struct ublk_device *ub)
+ 	int i, ret = -ENOMEM;
+ 
+ 	ub->queue_size = ubq_size;
+-	ub->__queues = kcalloc(nr_queues, ubq_size, GFP_KERNEL);
++	ub->__queues = kvcalloc(nr_queues, ubq_size, GFP_KERNEL);
+ 	if (!ub->__queues)
+ 		return ret;
+ 
 -- 
 2.39.5
 
