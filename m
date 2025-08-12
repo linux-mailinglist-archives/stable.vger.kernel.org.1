@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-167330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C78B22FB1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE96CB22FB3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29CBE18986B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0058189A04D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69BC2FD1D1;
-	Tue, 12 Aug 2025 17:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FD02FDC25;
+	Tue, 12 Aug 2025 17:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyZXm53R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0bQZCsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B942F7461;
-	Tue, 12 Aug 2025 17:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05E32F7477;
+	Tue, 12 Aug 2025 17:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020449; cv=none; b=fvLoO2A4L1wJGvLo5y/WKKjHe4+5yILJMcyt0s5SQrUNcjZ0cfymsMNh3+YFZXrimnzQEbRRTiSPPNhbORUo+2ZqR84g4js9yWb2jhjFZtYO9Rvj37JZoOEnupP9/uv1CYBome9OEUx2rE8Osz9RvAC6VB7a4FU3GSLwP7Xojhs=
+	t=1755020455; cv=none; b=M2Kt/BnZNA+I0BaT0VjtSwIrVszOYG1zcpTUHDLKnZG8RQwr3PSDlT8T1vXUK/hbsUzmm5hU6LzFFldmPzM+OjPBAnjGjnrqTrf/DXCdIHXiOb4hjVXLMjt8WGMRIzyLpagdrCVfwz4M9NXn4i7ysQrw7H5zdmisAL74pXJqpuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020449; c=relaxed/simple;
-	bh=JT7h8eNsV6ao0mb7ReXRhTWkWAcgg85YqqCceDYI3wc=;
+	s=arc-20240116; t=1755020455; c=relaxed/simple;
+	bh=FGJb53o4/9lpH0MfpvOOa+s8T24HaMOA65uNhMmlue0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjatYufs+chRNNe0YPZytHBzD/jIWzuAIzYFRdsqg9ZYav4T8FWLgHYATbsiKushxGbNMx0KpWKlfr8qmKi5t9pM210K7hnLIdmHDn5txZBCbKXKUXS9crdFgY/ARf/yzYF+SWbPGB/Nc6s2kY0Nb9HGqOAwqV8Y+m6t9fO5ayo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyZXm53R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93739C4CEF0;
-	Tue, 12 Aug 2025 17:40:48 +0000 (UTC)
+	 MIME-Version; b=QUyXg95qnJ3nzZ8xm/3otIQ6E6yznIdFLs7tTiUkV1OqMMvwZM56yanXGVghxD+mVx70eH5G3YUR0IvCemZ+xOOqznWR9J498OTfZpY8+HxemwQtEWDNTsVaskJrUaZCd+Nqb+15CyLxFP9obY/trSRpvNNjqUG4tDzX6BCpRfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0bQZCsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38310C4CEF1;
+	Tue, 12 Aug 2025 17:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020449;
-	bh=JT7h8eNsV6ao0mb7ReXRhTWkWAcgg85YqqCceDYI3wc=;
+	s=korg; t=1755020455;
+	bh=FGJb53o4/9lpH0MfpvOOa+s8T24HaMOA65uNhMmlue0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyZXm53R2wzgyDt6IXubXJzMxozna8L6QxlQI3uQ7h4gaTaiEbjF2cciGQsLzkVoO
-	 pZIF2RJF4yJqYDnVmsLtRPZT4NWqU9p8LKWDn9sgRnzli7MDCFmOj/HeUaHbNSlzJZ
-	 XjsbmhHG5yZTCeLWHAIS8hCGGL0kIcfLnaAF34tU=
+	b=a0bQZCsFamsHa2K7xFW1dBvMVmI4MpFsxbCJUK6kwDMCTZmhFB252hS1Mz7697LgE
+	 ub9gHmoQocQq0aom/9Wv77cKG14G5TM3WheWYm7LQt3MRJrULc8HQvOH4TWaDjlXaB
+	 X6m4/VOnWV509a54seX8KUxb26moT8JteBMPbyGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Annette Kobou <annette.kobou@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/253] soc/tegra: cbb: Clear ERR_FORCE register with ERR_STATUS
-Date: Tue, 12 Aug 2025 19:27:52 +0200
-Message-ID: <20250812172952.315645454@linuxfoundation.org>
+Subject: [PATCH 6.1 085/253] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
+Date: Tue, 12 Aug 2025 19:27:53 +0200
+Message-ID: <20250812172952.356064999@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
 References: <20250812172948.675299901@linuxfoundation.org>
@@ -66,36 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Annette Kobou <annette.kobou@kontron.de>
 
-[ Upstream commit a0647bca8966db04b79af72851ebd04224a4da40 ]
+[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
 
-When error is injected with the ERR_FORCE register, then this register
-is not auto cleared on clearing the ERR_STATUS register. This causes
-repeated interrupts on error injection. To fix, set the ERR_FORCE to
-zero along with clearing the ERR_STATUS register after handling error.
+The polarity of the DE signal of the transceiver is active-high for
+sending. Therefore rs485-rts-active-low is wrong and needs to be
+removed to make RS485 transmissions work.
 
-Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/cbb/tegra234-cbb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/imx6ul-kontron-bl-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
-index f33d094e5ea6..5813c55222ca 100644
---- a/drivers/soc/tegra/cbb/tegra234-cbb.c
-+++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
-@@ -189,6 +189,8 @@ static void tegra234_cbb_error_clear(struct tegra_cbb *cbb)
- {
- 	struct tegra234_cbb *priv = to_tegra234_cbb(cbb);
- 
-+	writel(0, priv->mon + FABRIC_MN_MASTER_ERR_FORCE_0);
-+
- 	writel(0x3f, priv->mon + FABRIC_MN_MASTER_ERR_STATUS_0);
- 	dsb(sy);
- }
+diff --git a/arch/arm/boot/dts/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/imx6ul-kontron-bl-common.dtsi
+index 43868311f48a..bb324725411c 100644
+--- a/arch/arm/boot/dts/imx6ul-kontron-bl-common.dtsi
++++ b/arch/arm/boot/dts/imx6ul-kontron-bl-common.dtsi
+@@ -169,7 +169,6 @@ &uart2 {
+ 	pinctrl-0 = <&pinctrl_uart2>;
+ 	linux,rs485-enabled-at-boot-time;
+ 	rs485-rx-during-tx;
+-	rs485-rts-active-low;
+ 	uart-has-rtscts;
+ 	status = "okay";
+ };
 -- 
 2.39.5
 
