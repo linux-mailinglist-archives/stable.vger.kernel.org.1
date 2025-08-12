@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E04B234D7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C32CB2315B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 890A4682FD1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E14CF1AA4C11
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39A02FD1AD;
-	Tue, 12 Aug 2025 18:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155262FE59B;
+	Tue, 12 Aug 2025 18:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPvMrgtT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="co4CJG8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CF36BB5B;
-	Tue, 12 Aug 2025 18:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C272FE56B;
+	Tue, 12 Aug 2025 18:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024016; cv=none; b=msYQRxcKnONTX9TnBpu9unFNgebArAS14OWff+ajd4ALRM4EcRXaH9oavOLHqEvSa4J+x2Djy0N8o/UoShX2HzfuUdjx9RtxgKb6DRVSri/wI7rLPPe4jUEPfisfRo8yGhLI3uNrQ05jfbR5BjfcMt+1G5fYLidwko8Tc+Zrz/c=
+	t=1755021648; cv=none; b=M+N5g/mPrzZa/PauZiHbRNX7LfUQkcncWZHHNljy/d2AuSbDdoRzyvticCJMnpqXjr5MxAU4v0x7wVTT0G1WeuB9pHF2T5sJFKoDgIexL1sK8JflGOautSY8/yY7Yl4nAYdKBYdKJIfqfhbtGxB/wE5c+k4EKvZiKH37/8jdv3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024016; c=relaxed/simple;
-	bh=oaHRcql5jAd2PwcK3tzabgaMLXnp1gRuNahmTFZo3FQ=;
+	s=arc-20240116; t=1755021648; c=relaxed/simple;
+	bh=q1kmf0i1xPAW0uMuM5F08Z0H/7zookg53dw4Pkal9Mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmPEtmhFGZuhE+2u3tLD13kejsWHZvszHjrbHoeNJc4Q7b/zATIQdwM3mj5vWLAb4nMDgQ4821oLpBHU4Yma0y+4KuuiGOZI5RYn3ZSGgYnddcMeGFZSEfSJbGgZ7ZMiccooHSzs4YLClLvdJvrwPWsrMVbX184kKiwaf54x1Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPvMrgtT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F84DC4CEF0;
-	Tue, 12 Aug 2025 18:40:15 +0000 (UTC)
+	 MIME-Version; b=apvK/15na4RuEJFMaAGT4FgtkA8z8mq8orf22Chs8vyC6t6dujkUQ5h7L4v/vhzu6yNEUXLGUO5ssAdqqrVPCof90WiTa7odK1lmJ6jJ13mR47CFCiguvWpT4CCjGTgHwqkfJzWCuL+de7mXEBX9i3wpJJN1JepLQJ50s/7xhYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=co4CJG8i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3813BC4CEF0;
+	Tue, 12 Aug 2025 18:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024016;
-	bh=oaHRcql5jAd2PwcK3tzabgaMLXnp1gRuNahmTFZo3FQ=;
+	s=korg; t=1755021648;
+	bh=q1kmf0i1xPAW0uMuM5F08Z0H/7zookg53dw4Pkal9Mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPvMrgtTmbodw6Y37UqzeDhU7B1ifoGvQc2OGrpaY6blLjCmk1kig9OPrBb90llDP
-	 jkJPZCjIWHl+LrgvW1AXfL9VRonWJG0VJcYL5HV5vdiFUSqyEX89lIbKAbz80QxvYb
-	 urViGoaUAMlaqPZoxK6F54B0sKcRba+ZbLoGy4Bk=
+	b=co4CJG8idtsZPTmqonTE0B+xPQQRuPjm4ohmBomPFk3oZ8mXgb9LIqmBINay6z8pU
+	 lRH86OvPynndj0MivLaaVZ1hLcNZLlsu9KWEvtJYo7BOmGBmNaJYpw1rgntebupCRN
+	 QmWmgosNUocwp6HoqARIhU7K+fqUoUMYhKFusvkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 6.16 249/627] wifi: brcmfmac: cyw: Fix __counted_by to be LE variant
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/262] mtd: rawnand: atmel: Fix dma_mapping_error() address
 Date: Tue, 12 Aug 2025 19:29:04 +0200
-Message-ID: <20250812173428.774931927@linuxfoundation.org>
+Message-ID: <20250812172959.744754752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 204bb852863bf14f343a0801b15bc2173bc318f9 ]
+[ Upstream commit e1e6b933c56b1e9fda93caa0b8bae39f3f421e5c ]
 
-In brcmf_cyw_mgmt_tx() the "len" counter of the struct
-brcmf_mf_params_le::data flexible array is stored as little-endian via
-cpu_to_le16() so the __counted_by_le() variant must be used:
+It seems like what was intended is to test if the dma_map of the
+previous line failed but the wrong dma address was passed.
 
-	struct brcmf_mf_params_le *mf_params;
-	...
-	mf_params_len = offsetof(struct brcmf_mf_params_le, data) +
-			(len - DOT11_MGMT_HDR_LEN);
-	mf_params = kzalloc(mf_params_len, GFP_KERNEL);
-	...
-        mf_params->len = cpu_to_le16(len - DOT11_MGMT_HDR_LEN);
-
-Fixes: 66f909308a7c ("wifi: brcmfmac: cyw: support external SAE authentication in station mode")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
-Link: https://patch.msgid.link/20250721181810.work.575-kees@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250702064515.18145-2-fourier.thomas%40gmail.com
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h   | 2 +-
+ drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
-index 08c69142495a..669564382e32 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
-@@ -80,7 +80,7 @@ struct brcmf_mf_params_le {
- 	u8 da[ETH_ALEN];
- 	u8 bssid[ETH_ALEN];
- 	__le32 packet_id;
--	u8 data[] __counted_by(len);
-+	u8 data[] __counted_by_le(len);
- };
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index 3f494f7c7ecb..d4fd1302008e 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -373,7 +373,7 @@ static int atmel_nand_dma_transfer(struct atmel_nand_controller *nc,
+ 	dma_cookie_t cookie;
  
- #endif /* CYW_FWIL_TYPES_H_ */
+ 	buf_dma = dma_map_single(nc->dev, buf, len, dir);
+-	if (dma_mapping_error(nc->dev, dev_dma)) {
++	if (dma_mapping_error(nc->dev, buf_dma)) {
+ 		dev_err(nc->dev,
+ 			"Failed to prepare a buffer for DMA access\n");
+ 		goto err;
 -- 
 2.39.5
 
