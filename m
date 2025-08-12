@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE31B23220
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DCAB233FF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 996CC16A803
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C3D33B642D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218402882CE;
-	Tue, 12 Aug 2025 18:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377712FAC02;
+	Tue, 12 Aug 2025 18:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FH0WVIhb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9TLgbMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12F7305E08;
-	Tue, 12 Aug 2025 18:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E863526529E;
+	Tue, 12 Aug 2025 18:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022164; cv=none; b=UoWvr0IME2XNmbQBh2++fSPrv1gQixbFMAeUKjDFS2eEFf1eP7WRxVVbyYQzMuQqIapntivncmlSPxTKTlhzpmfL9pfsaFgZTSQkiIORP9sf20MT49LFRNzFNHevAYd+jLhqU59Uc73sh7oXxQokbSEP7yypu6kcuIP6s4iXDg0=
+	t=1755023427; cv=none; b=e5ffxE14oqTBYr0uyStJTP1CEulGXxw+LQ9obNTzfoJeD6SqDgSsAh7yDTGTjLCUjhp9OA3J21U0K0yzS4tou8EymraSM53wJqWT46qngNCAlHGrqLZDP8cxjPAwVHWoptMLEx+SHXahpMrH4lLfwaon9irdVzRitrXgikkTi54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022164; c=relaxed/simple;
-	bh=LSDBGEoHTAt+3ePqn7hrPGl5dbUKGSZ1qxEobKmDfoU=;
+	s=arc-20240116; t=1755023427; c=relaxed/simple;
+	bh=BTDhVnsy0D5bSdenz8sXfz0dfWIQrjbR7ExuDVGr4WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0wMxi0BpazZZgjO4UWXQJUyihc/9dU7beaRj2daSbXL6pDzcXonRO3PD7bGqwHMfRH9jJCmyVLETA6+V+kzcpI9w8ejUlXClr5x2ZekThb0PBXPonfuEmintnF529BRzXGUNKWUMG4yvwIQRFUdZmpx0PTa7yp6vtiby4HoKQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FH0WVIhb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD99C4CEF0;
-	Tue, 12 Aug 2025 18:09:24 +0000 (UTC)
+	 MIME-Version; b=NZzl2v3ZY8B6LLKg9jFuvXR5YXCLScSwdxUAKlPNKQtjR55Zf1FSb0vqQ/TQQXn03bxXyDkhu9S+PGZUoB2wIfeVzfLB+afeD51xz7lFJh6X7p9iCqAtjx54Jj4A1zZDqgXgrSlw7caYd2dPBv3A7nfZK/tdiJ80SLedbp1JWRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9TLgbMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DEEC4CEF6;
+	Tue, 12 Aug 2025 18:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022164;
-	bh=LSDBGEoHTAt+3ePqn7hrPGl5dbUKGSZ1qxEobKmDfoU=;
+	s=korg; t=1755023426;
+	bh=BTDhVnsy0D5bSdenz8sXfz0dfWIQrjbR7ExuDVGr4WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FH0WVIhbf11c2qnbUbj2YvJzyRyU9TAoLr1FTAIYhIAS4s08EZvZHofGqrvyNl5Lj
-	 rkB+05Fr/12jpHN4Zpmja2E9U/XD7mg39BzVQCVhkEBMYNhK4OmINExNjEofqTDrhH
-	 3wtjj+/d6d+GVSikmGNM1Fl3H897m63jKzhN3rU8=
+	b=h9TLgbMscvy4CJli31hkgiA7ly8IOVdfc1JLWMUd3KByYtQwDirEo/V6z4L0EsbHe
+	 bLt1artmSS3htSbkB7retd9BfQ1yH0ZoqSNmMD8pYfIVzuB+NBvHFdLTHh8d7S1RPQ
+	 yotz3tdliXhaV5jO6XC5Xc0lT9a8EmdthMgokF94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/369] net: ipv6: ip6mr: Fix in/out netdev to pass to the FORWARD chain
+Subject: [PATCH 6.16 077/627] arm64: dts: rockchip: Enable eMMC HS200 mode on Radxa E20C
 Date: Tue, 12 Aug 2025 19:26:12 +0200
-Message-ID: <20250812173017.597849010@linuxfoundation.org>
+Message-ID: <20250812173422.240915158@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 3365afd3abda5f6a54f4a822dad5c9314e94c3fc ]
+[ Upstream commit 6e3071f4e03997ca0e4388ca61aa06df2802dcd1 ]
 
-The netfilter hook is invoked with skb->dev for input netdevice, and
-vif_dev for output netdevice. However at the point of invocation, skb->dev
-is already set to vif_dev, and MR-forwarded packets are reported with
-in=out:
+eMMC HS200 mode (1.8V I/O) is supported by the MMC host controller on
+RK3528 and works with the optional on-board eMMC module on Radxa E20C.
 
- # ip6tables -A FORWARD -j LOG --log-prefix '[forw]'
- # cd tools/testing/selftests/net/forwarding
- # ./router_multicast.sh
- # dmesg | fgrep '[forw]'
- [ 1670.248245] [forw]IN=v5 OUT=v5 [...]
+Be explicit about HS200 support in the device tree for Radxa E20C.
 
-For reference, IPv4 MR code shows in and out as appropriate.
-Fix by caching skb->dev and using the updated value for output netdev.
-
-Fixes: 7bc570c8b4f7 ("[IPV6] MROUTE: Support multicast forwarding.")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/3141ae8386fbe13fef4b793faa75e6bae58d798a.1750113335.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3a01b5f14a8a ("arm64: dts: rockchip: Enable onboard eMMC on Radxa E20C")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20250621165832.2226160-1-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6mr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 440048d609c3..68bc518500f9 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -2032,6 +2032,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 			  struct sk_buff *skb, int vifi)
- {
- 	struct vif_device *vif = &mrt->vif_table[vifi];
-+	struct net_device *indev = skb->dev;
- 	struct net_device *vif_dev;
- 	struct ipv6hdr *ipv6h;
- 	struct dst_entry *dst;
-@@ -2094,7 +2095,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 	IP6CB(skb)->flags |= IP6SKB_FORWARDED;
- 
- 	return NF_HOOK(NFPROTO_IPV6, NF_INET_FORWARD,
--		       net, NULL, skb, skb->dev, vif_dev,
-+		       net, NULL, skb, indev, skb->dev,
- 		       ip6mr_forward2_finish);
- 
- out_free:
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
+index 9f6ccd9dd1f7..ea722be2acd3 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
+@@ -278,6 +278,7 @@ &saradc {
+ &sdhci {
+ 	bus-width = <8>;
+ 	cap-mmc-highspeed;
++	mmc-hs200-1_8v;
+ 	no-sd;
+ 	no-sdio;
+ 	non-removable;
 -- 
 2.39.5
 
