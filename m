@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1E7B230E5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38196B232C2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD8DB17207D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD595583255
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ADC2FD1D7;
-	Tue, 12 Aug 2025 17:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECF62F90C8;
+	Tue, 12 Aug 2025 18:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ1ksHnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJd8ACBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A5A2F7449;
-	Tue, 12 Aug 2025 17:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24C01D416C;
+	Tue, 12 Aug 2025 18:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021390; cv=none; b=kCxdNawkUrf0dR7PLk4cM/YZjNKkNMt9oq2vgNr4qjWn1qIpPWcveO3Jb6jnBmSiKya0ERtH7/YrjgG1BPnYaP7dz/xUU2Av5RwC7di8m/bCVzQ38Ln6IRfRs3jDenkNi/8NQjzKL/ZGOXcW4GJEf7oKdKzQ3vl6xjxvmD80rjs=
+	t=1755022585; cv=none; b=Vyt4tMcOZOoyGZXHGfkdcksC0Qyv1cceCKyz+vUIB2tkI2PbTO2lkCrkDctQ7xvyC2dVynaauN8IK0opAmL2m0spZe88oBnRVE7Z4dF8DCHdzb0QBX06XXwQlBe2UYhpSqw2CJzdWf8IiTIJ/a43xFD5vmzyZ5FyAZy8aI0YRv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021390; c=relaxed/simple;
-	bh=nhEt7OrlNAfhjCTAysMP2zYQsi2bYwIjt8+0sCT5M3s=;
+	s=arc-20240116; t=1755022585; c=relaxed/simple;
+	bh=WvaXSOv9KWVShmQHlSRSePCjIhS0plahTT6EhKuvJ4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=seBQ5Su2m5zwV2fYPtPTy6lhf+0bz7iPQMKfld+4p9zOQ9au0lnXpKbZ3kplZnD7CPZwwVKAMyI29YYgMkj903rw+kJotGdEq7UOSODH1KeVIRUspidDeYSRp2tbrpcB/R2HPGjF4ai6GWrU4cjhystSUm0iZbvXdGpjLfRpwe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ1ksHnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC28C4CEF0;
-	Tue, 12 Aug 2025 17:56:28 +0000 (UTC)
+	 MIME-Version; b=sRiHsQnDhDpOu3oJxTKEziwm648q2VQ4hdkzAZ48tDeGspbpYZM5NPSUVDH3tij0CNxcSPutIUc522Ia/zqfJnv92wMkimSHs18WrLNI9IOa+AAZHSP6pdI3P/la3rsN+VVvsLtq5RqQxVMVY2hy0h7j4AgWF7PHXax1yPsLbvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJd8ACBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F71DC4CEF1;
+	Tue, 12 Aug 2025 18:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021389;
-	bh=nhEt7OrlNAfhjCTAysMP2zYQsi2bYwIjt8+0sCT5M3s=;
+	s=korg; t=1755022585;
+	bh=WvaXSOv9KWVShmQHlSRSePCjIhS0plahTT6EhKuvJ4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJ1ksHnmnLghVm6LQShgiKxe6Mgs3aCJ9p4OOyNaFLKmOlvfljT6nFF6b/8FzC9TO
-	 VK5u3psqfQIVrs6T6assp0ROvKzBLpPdZFI7cEZfWUlH9ez9gRyNHWciNngMxatWaB
-	 md6HLlpnH8Pp/zL4fXjrhHP8rPhJvS398EoRUdH0=
+	b=hJd8ACBsAEQHgR9eHzOur+jgpH8kvNQP5pDYqmq5DTfIPYn8nRuRjcE7CTAyaxkYP
+	 sphQC1VIfpTnEpz5pm3pdQmVOt+2z0Rl0RmyPhA2EjcfjAiUAVWy8eLXdyvHdflGC/
+	 Tvkp6OBxF5mngs3inNYyYuQsofFajvLKiTmOpStA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+	Yao Zi <ziyao@disroot.org>,
+	Drew Fustini <fustini@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/262] PCI: rockchip-host: Fix "Unexpected Completion" log message
+Subject: [PATCH 6.12 198/369] clk: thead: th1520-ap: Correctly refer the parent of osc_12m
 Date: Tue, 12 Aug 2025 19:28:15 +0200
-Message-ID: <20250812172957.646647421@linuxfoundation.org>
+Message-ID: <20250812173022.214339535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit fcc5f586c4edbcc10de23fb9b8c0972a84e945cd ]
+[ Upstream commit d274c77ffa202b70ad01d579f33b73b4de123375 ]
 
-Fix the debug message for the PCIE_CORE_INT_UCR interrupt to clearly
-indicate "Unexpected Completion" instead of a duplicate "malformed TLP"
-message.
+The "osc_12m" fixed factor clock refers the external oscillator by
+setting clk_parent_data.fw_name to osc_24m, which is obviously wrong
+since no clock-names property is allowed for compatible
+thead,th1520-clk-ap.
 
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-[mani: added fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/20250607160201.807043-2-18255117159@163.com
+Refer the oscillator as parent by index instead.
+
+Fixes: ae81b69fd2b1 ("clk: thead: Add support for T-Head TH1520 AP_SUBSYS clocks")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Reviewed-by: Drew Fustini <fustini@kernel.org>
+Signed-off-by: Drew Fustini <fustini@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/thead/clk-th1520-ap.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index afbbdccd195d..6ff20d585396 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -436,7 +436,7 @@ static irqreturn_t rockchip_pcie_subsys_irq_handler(int irq, void *arg)
- 			dev_dbg(dev, "malformed TLP received from the link\n");
+diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
+index 4c9555fc6184..6ab89245af12 100644
+--- a/drivers/clk/thead/clk-th1520-ap.c
++++ b/drivers/clk/thead/clk-th1520-ap.c
+@@ -582,7 +582,14 @@ static const struct clk_parent_data peri2sys_apb_pclk_pd[] = {
+ 	{ .hw = &peri2sys_apb_pclk.common.hw }
+ };
  
- 		if (sub_reg & PCIE_CORE_INT_UCR)
--			dev_dbg(dev, "malformed TLP received from the link\n");
-+			dev_dbg(dev, "Unexpected Completion received from the link\n");
+-static CLK_FIXED_FACTOR_FW_NAME(osc12m_clk, "osc_12m", "osc_24m", 2, 1, 0);
++static struct clk_fixed_factor osc12m_clk = {
++	.div		= 2,
++	.mult		= 1,
++	.hw.init	= CLK_HW_INIT_PARENTS_DATA("osc_12m",
++						   osc_24m_clk,
++						   &clk_fixed_factor_ops,
++						   0),
++};
  
- 		if (sub_reg & PCIE_CORE_INT_FCE)
- 			dev_dbg(dev, "an error was observed in the flow control advertisements from the other side\n");
+ static const char * const out_parents[] = { "osc_24m", "osc_12m" };
+ 
 -- 
 2.39.5
 
