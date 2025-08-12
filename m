@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-168554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C135DB235BE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:54:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B478BB23556
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089693AE2F9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:49:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A166F4E3BBA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E3C2FA0FD;
-	Tue, 12 Aug 2025 18:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5032FD1B2;
+	Tue, 12 Aug 2025 18:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPKw5jee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERgPGK3m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6500C2CA9;
-	Tue, 12 Aug 2025 18:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFD02FA0FD;
+	Tue, 12 Aug 2025 18:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024560; cv=none; b=XHx6jDqxTFYbW+cYxg4fOUBZUYPaVa8KGcLulkoduxaA2VLG5sfm9ym3AfIbDFlROQirV7RdEBnYO7D+VghMikcj0VVqnYBN3ZRMJ4UYn6AvAiTlQ4dGU6VMc3NYSRtqkgUDyh7yBjMA45ng1DHlXjGprkeZvDv90fYrqh/u5jU=
+	t=1755024567; cv=none; b=slRx+654K+PeFkgzTyBRs31IzjKcwRHYjtOHQzPpcfKSj9B9fC+AMhvU/DFXJEygx+R/Z2k/DJRlKa4fRKfqgL5cB/MflpCBO71KOrhc3ei/a+9YiGiXRqZy0awZrMf4SJW3Qcefw+HcSzG2ZbtQupceFDePXaeo9l0vumtKZwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024560; c=relaxed/simple;
-	bh=FfDOd6Kmg5GQmTxNw+0plDsTIokY0QDHEH8jKSSEUOI=;
+	s=arc-20240116; t=1755024567; c=relaxed/simple;
+	bh=30xGq+du/7bPrU1b+nK9NeebN+Vfx30KiWeV+4sQT+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmA9YljIOO2n0wuS9waZe1rD+2JVikS0+cLLmbkIl6x3/COCzYNmBu3AdcYdBWRfgQkyYqiSWK78DkQFN51yKFD3ucrVAHPQgoLbOw5lHAVQlvmxDhJNL2EWQlf8ui5K5bkM3lyzKVrf4lWK2IGn5dfIC+RXunKPKP2Uc+oAVjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPKw5jee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A78C4CEF0;
-	Tue, 12 Aug 2025 18:49:19 +0000 (UTC)
+	 MIME-Version; b=LV079HpMDcn21H5/LHCfeZaLaGS5lNLOeChEI4GOSAPrIVZefxp4SLxISc5EASx4AgL9lH9iqlBr2TWocqv3Ea/ww6B2TYugGtK95k24W94DCCTYsAnlpSTVtsmpU9vpTtN9Cz7MlQX7pRCnmD1EE/2ndSTEZeNd2BzWvmxPqEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERgPGK3m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB78C4CEF0;
+	Tue, 12 Aug 2025 18:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024560;
-	bh=FfDOd6Kmg5GQmTxNw+0plDsTIokY0QDHEH8jKSSEUOI=;
+	s=korg; t=1755024566;
+	bh=30xGq+du/7bPrU1b+nK9NeebN+Vfx30KiWeV+4sQT+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPKw5jeeYALcIvqVXV7v0s03ioL8uCBjMzUDVS9ChZKNDf+Ko4CGeJl4QY1w6xLbp
-	 4twfzaucBo71cTKa2f0+A4GF80MIVklIbt+8yf88BsXA/bMP/sAFU7pB16Ah2JqIJy
-	 B+TCqNbw6uQztUjurW2rwhLkRD0Mw4gqnhI5cA64=
+	b=ERgPGK3mS3zsPR5noswpwBENECHobpDHXnRDE+CKlePQzq4f9uwoJHCb379KC+tVc
+	 nrvnbvAp4b5HmwxRQL6YPsl5Hq6ZNpudCs2oBb9/6g7jmv59gBbEK8ZFrDiJqMiPFJ
+	 X4SOhPkdqdQnDoTn3DLJ1N1xV1l5F+6UUXlQ3lHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
 	Frank Li <Frank.Li@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 409/627] PCI: endpoint: pci-epf-vntb: Fix the incorrect usage of __iomem attribute
-Date: Tue, 12 Aug 2025 19:31:44 +0200
-Message-ID: <20250812173434.841850475@linuxfoundation.org>
+Subject: [PATCH 6.16 410/627] clk: imx95-blk-ctl: Fix synchronous abort
+Date: Tue, 12 Aug 2025 19:31:45 +0200
+Message-ID: <20250812173434.879186452@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -66,48 +68,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manivannan Sadhasivam <mani@kernel.org>
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-[ Upstream commit 61ae7f8694fb4b57a8c02a1a8d2b601806afc999 ]
+[ Upstream commit b08217a257215ed9130fce93d35feba66b49bf0a ]
 
-__iomem attribute is supposed to be used only with variables holding the
-MMIO pointer. But here, 'mw_addr' variable is just holding a 'void *'
-returned by pci_epf_alloc_space(). So annotating it with __iomem is clearly
-wrong. Hence, drop the attribute.
+When enabling runtime PM for clock suppliers that also belong to a power
+domain, the following crash is thrown:
+error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP
+Workqueue: events_unbound deferred_probe_work_func
+pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : clk_mux_get_parent+0x60/0x90
+lr : clk_core_reparent_orphans_nolock+0x58/0xd8
+  Call trace:
+   clk_mux_get_parent+0x60/0x90
+   clk_core_reparent_orphans_nolock+0x58/0xd8
+   of_clk_add_hw_provider.part.0+0x90/0x100
+   of_clk_add_hw_provider+0x1c/0x38
+   imx95_bc_probe+0x2e0/0x3f0
+   platform_probe+0x70/0xd8
 
-This also fixes the below sparse warning:
+Enabling runtime PM without explicitly resuming the device caused
+the power domain cut off after clk_register() is called. As a result,
+a crash happens when the clock hardware provider is added and attempts
+to access the BLK_CTL register.
 
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17: warning: incorrect type in assignment (different address spaces)
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    expected void [noderef] __iomem *mw_addr
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    got void *
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21: warning: incorrect type in assignment (different address spaces)
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    expected unsigned int [usertype] *epf_db
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    got void [noderef] __iomem *mw_addr
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38: warning: incorrect type in argument 2 (different address spaces)
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    expected void *addr
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    got void [noderef] __iomem *mw_addr
+Fix this by using devm_pm_runtime_enable() instead of pm_runtime_enable()
+and getting rid of the pm_runtime_disable() in the cleanup path.
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250709125022.22524-1-mani@kernel.org
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250707-imx95-blk-ctl-7-1-v3-2-c1b676ec13be@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx95-blk-ctl.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 30c6c563335a..577055be3033 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -510,7 +510,7 @@ static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
- 	struct device *dev = &ntb->epf->dev;
- 	int ret;
- 	struct pci_epf_bar *epf_bar;
--	void __iomem *mw_addr;
-+	void *mw_addr;
- 	enum pci_barno barno;
- 	size_t size = sizeof(u32) * ntb->db_count;
+diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+index cc2ee2be1819..86bdcd217531 100644
+--- a/drivers/clk/imx/clk-imx95-blk-ctl.c
++++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+@@ -342,8 +342,10 @@ static int imx95_bc_probe(struct platform_device *pdev)
+ 	if (!clk_hw_data)
+ 		return -ENOMEM;
+ 
+-	if (bc_data->rpm_enabled)
+-		pm_runtime_enable(&pdev->dev);
++	if (bc_data->rpm_enabled) {
++		devm_pm_runtime_enable(&pdev->dev);
++		pm_runtime_resume_and_get(&pdev->dev);
++	}
+ 
+ 	clk_hw_data->num = bc_data->num_clks;
+ 	hws = clk_hw_data->hws;
+@@ -383,8 +385,10 @@ static int imx95_bc_probe(struct platform_device *pdev)
+ 		goto cleanup;
+ 	}
+ 
+-	if (pm_runtime_enabled(bc->dev))
++	if (pm_runtime_enabled(bc->dev)) {
++		pm_runtime_put_sync(&pdev->dev);
+ 		clk_disable_unprepare(bc->clk_apb);
++	}
+ 
+ 	return 0;
+ 
+@@ -395,9 +399,6 @@ static int imx95_bc_probe(struct platform_device *pdev)
+ 		clk_hw_unregister(hws[i]);
+ 	}
+ 
+-	if (bc_data->rpm_enabled)
+-		pm_runtime_disable(&pdev->dev);
+-
+ 	return ret;
+ }
  
 -- 
 2.39.5
