@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0C8B232D0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C808B22FBD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBF646E492D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76747188625A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8D32FD1AD;
-	Tue, 12 Aug 2025 18:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681372F7461;
+	Tue, 12 Aug 2025 17:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJNYzm5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWJ02GOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB2E2FA0F9;
-	Tue, 12 Aug 2025 18:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274E42F7477;
+	Tue, 12 Aug 2025 17:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022590; cv=none; b=taSG2CgDHSJix8AlQuqBRbOQReEvJJi0sAR+J9zzsL1tkI32N6dgqAQRWmSkg3GKbqn1jJepVkx0oSh9+OizpaYseu+T0ZlMySdqzICpAMjWnIT+8K6K/68gMQneVBdSxmK65X7x1H/kXdRHTUzXgZsv9VTWl2BqnwGE4MXzniY=
+	t=1755020533; cv=none; b=n8aumgANjxJKJeSZYc9zX8Eo9uxiIQZoVf+Z1lUT1yLza+AuKspIe1OIy10CyXSlFu0MQOoYI2eg4yb6iv1d3/+POZSoU/8JAbjYuMxotgM+/Zcmq4aCpbxwNRnXX55wi8CvyHgrjEkV2iSSr/76dQnjxq8ObtUqWEJDCbpN2P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022590; c=relaxed/simple;
-	bh=YBZr5mkRSyXU25snQXAQDz8MeWJaxVUfLcjtgksYqvU=;
+	s=arc-20240116; t=1755020533; c=relaxed/simple;
+	bh=wz+e2GsxBSuDXKkzGXWeG+Xk5nF06CR70w5FasRpbts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fo04qbHCgbbU8ioBNY+ZJ63mPQ9/RtgJMY7nDQDh0YaoP0LKsF91fbOZ53Tb+xKiIdvll7ZELHD44bp/28mRsq4zwxycZ9lhrGTrHBJEyQU0jmSeGx1bXiVHYsTZIIJP0OyHWNdoqINBgqI+pD7+1yzlbBc5i34se4TlruzyWZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJNYzm5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A28C4CEF1;
-	Tue, 12 Aug 2025 18:16:28 +0000 (UTC)
+	 MIME-Version; b=fKBpYmWicmCr5LKDGSm4BXml2myGNVfb38dXHvnujQxEkpUk1CtEM295TZ9ShcQ4yNY0h8BXd660TVzSXzpNzKieoevrpQE9UAckSXUHvQmGu2+xuKkd5A7jaeG3bczwJcp9p1UzeYPcWQDq3CcCYylw3CIUvLEprQjTUS4FeGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWJ02GOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8E5C4CEF0;
+	Tue, 12 Aug 2025 17:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022588;
-	bh=YBZr5mkRSyXU25snQXAQDz8MeWJaxVUfLcjtgksYqvU=;
+	s=korg; t=1755020533;
+	bh=wz+e2GsxBSuDXKkzGXWeG+Xk5nF06CR70w5FasRpbts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJNYzm5lOZ6Sltdi3jfyJlscBJsgHpGkqJwflx1JU11rxsUDHEA1NN4mvIFsl7NPZ
-	 0g798hTngYPHSKlPE6l7vWMu3DSWFXe1BsDtIi1YuheDyv3cvz/nBqvSA7uLBrUfuV
-	 E1jEAwTBlr1II5yWMgeph5R1F61F3Il/9o43L8SE=
+	b=IWJ02GOaPQvVERa6VUzet0b9ISeftKAqBT5SCbaB/3UQKCWD2LnvWy2aboXpZAFUQ
+	 nATSISYm3Wj8aan8AnqSSx05VU8y9xnttPjLryauW2RhT4yt1/c/4MJiKiFyC6Tzrr
+	 au8VCVPch5wFKKgxJy4JgsQ3Zhb2rDUz7ZzZJtEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 199/369] clk: sunxi-ng: v3s: Fix de clock definition
-Date: Tue, 12 Aug 2025 19:28:16 +0200
-Message-ID: <20250812173022.250000642@linuxfoundation.org>
+Subject: [PATCH 6.1 109/253] kselftest/arm64: Fix check for setting new VLs in sve-ptrace
+Date: Tue, 12 Aug 2025 19:28:17 +0200
+Message-ID: <20250812172953.361675911@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
+[ Upstream commit 867446f090589626497638f70b10be5e61a0b925 ]
 
-The de clock is marked with CLK_SET_RATE_PARENT, which is really not
-necessary (as confirmed from experimentation) and significantly
-restricts flexibility for other clocks using the same parent.
+The check that the new vector length we set was the expected one was typoed
+to an assignment statement which for some reason the compilers didn't spot,
+most likely due to the macros involved.
 
-In addition the source selection (parent) field is marked as using
-2 bits, when it the documentation reports that it uses 3.
-
-Fix both issues in the de clock definition.
-
-Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: a1d7111257cd ("selftests: arm64: More comprehensively test the SVE ptrace interface")
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-1-998fcfa6f240@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/arm64/fp/sve-ptrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-index d24c0d8dfee4..3416e0020799 100644
---- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-@@ -347,8 +347,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
+diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+index 8c4847977583..91dd31629ffe 100644
+--- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
++++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+@@ -241,7 +241,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
+ 		return;
+ 	}
  
- static const char * const de_parents[] = { "pll-video", "pll-periph0" };
- static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
--				 0x104, 0, 4, 24, 2, BIT(31),
--				 CLK_SET_RATE_PARENT);
-+				 0x104, 0, 4, 24, 3, BIT(31), 0);
+-	ksft_test_result(new_sve->vl = prctl_vl, "Set %s VL %u\n",
++	ksft_test_result(new_sve->vl == prctl_vl, "Set %s VL %u\n",
+ 			 type->name, vl);
  
- static const char * const tcon_parents[] = { "pll-video" };
- static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
+ 	free(new_sve);
 -- 
 2.39.5
 
