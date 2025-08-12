@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-168309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56A1B23472
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC5FB2303F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF3383A17C3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF862562480
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26D42E285E;
-	Tue, 12 Aug 2025 18:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689232F7449;
+	Tue, 12 Aug 2025 17:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/E9airV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjqCllIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607EB26A0EB;
-	Tue, 12 Aug 2025 18:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B2923D7E5;
+	Tue, 12 Aug 2025 17:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023745; cv=none; b=GjfGfZ9tBhHbCH6z/fHmZNdflfPkrpMzMEthIvLgJ4J8ZcZa+Tyal/ldThRy7v4GLBfduE82w0PyEYz9AbNjyvQkik/i3htAzj51leCAIw1y0XFJgzeHnSI4cv6IUXr7UzrN+Y/1OZ3aTKkZS1BGcr4wTcd0xT4Nxo0NtKEz2Gw=
+	t=1755020962; cv=none; b=nJ2inmc/jHM+4vt9Jbl4yWLOh6fAE5SWccwWrG8V68TFgFps3RYMYzMSCit05Rdc/TuStHCO9oQF/R5iWwss7hBtVXu4QY3i09fWmAZnPRsCMvDIZaqrxZwSpCVErqKnng0xBmQx48l5SayiIT5oaurEXbgqd2Pn+gmwWt6CtbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023745; c=relaxed/simple;
-	bh=dwJcXpVPdgKzCJJehrNm+mM22XynnYAWYN/P73G1QqU=;
+	s=arc-20240116; t=1755020962; c=relaxed/simple;
+	bh=Z0aDafmPDBqfmTfW+BKoYxCQ3sphpo7mInnYbYFCyiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pX5taKEpMJOdWjCRnZa1EcnY9k18GzZb2sQKbIfg0iNaU9DdUNwhntn3ZymrEvqUN0Jk6ujgJQsCQg2NpgV0FUq5ZhUEX77D1pf0jnb0bUITpzkOpTiNUpNFag2jaGooaREp9d7o5sGjbCY5S7J0LVj25AnMy5NMyx4+GuaI91Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/E9airV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C353FC4CEF0;
-	Tue, 12 Aug 2025 18:35:44 +0000 (UTC)
+	 MIME-Version; b=I26fFnS/8kgPB+h1MjZKKRD1YvaQgwNPmOOF/qWTOpF5nQ81eBQK0jsZ2vKCMyRXukcnH1y/HtqsgiMu3zYURA9M/e69loin6Cn+jWQyROF0dBn8PYwHEMJuC0qA8z0b6+9He4VVQ2r2LV63CfZ7GWvHKHtfRwrIxuwZJb+D93E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjqCllIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F6AC4CEF0;
+	Tue, 12 Aug 2025 17:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023745;
-	bh=dwJcXpVPdgKzCJJehrNm+mM22XynnYAWYN/P73G1QqU=;
+	s=korg; t=1755020962;
+	bh=Z0aDafmPDBqfmTfW+BKoYxCQ3sphpo7mInnYbYFCyiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/E9airVXs5Pir/3CQe2f2dM7Wr0kmfOgsvtiCKAzl4Ds1VRCfSPP5qTYXLF8eTaq
-	 5zBrNaUdRdYosKZ1gEimkvyhVp5CGQJwqtfrLJzaAyMOcn4iJp56Gn21fyV3Nm367B
-	 Kp9ST2LkTLBWRNyITJ+rJ/E6ElAF49x8cdC2YH7Y=
+	b=zjqCllIWjagvhL8ElX4EOsEqjIB1GbTUyEg12HbhP6Uhf18ukFVuDzFQb9Z1yzVD1
+	 d6vc8/4lYbXHivVSJhYmm/E08ld4HEXj9DszUv7GYqHFzCy/nMfEKCPYcFn/KsnrPj
+	 8d+yJ4ISV+xuMV8UPVwV6d2W5n9V/equmLSx6DE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 136/627] drm/panthor: Add missing explicit padding in drm_panthor_gpu_info
+Subject: [PATCH 6.6 043/262] soc: qcom: pmic_glink: fix OF node leak
 Date: Tue, 12 Aug 2025 19:27:11 +0200
-Message-ID: <20250812173424.478785217@linuxfoundation.org>
+Message-ID: <20250812172954.796225813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 95cbab48782bf62e4093837dc15ac6133902c12f ]
+[ Upstream commit 65702c3d293e45d3cac5e4e175296a9c90404326 ]
 
-drm_panthor_gpu_info::shader_present is currently automatically offset
-by 4 byte to meet Arm's 32-bit/64-bit field alignment rules, but those
-constraints don't stand on 32-bit x86 and cause a mismatch when running
-an x86 binary in a user emulated environment like FEX. It's also
-generally agreed that uAPIs should explicitly pad their struct fields,
-which we originally intended to do, but a mistake slipped through during
-the submission process, leading drm_panthor_gpu_info::shader_present to
-be misaligned.
+Make sure to drop the OF node reference taken when registering the
+auxiliary devices when the devices are later released.
 
-This uAPI change doesn't break any of the existing users of panthor
-which are either arm32 or arm64 where the 64-bit alignment of
-u64 fields is already enforced a the compiler level.
-
-Changes in v2:
-- Rename the garbage field into pad0 and adjust the comment accordingly
-- Add Liviu's A-b
-
-Changes in v3:
-- Add R-bs
-
-Fixes: 0f25e493a246 ("drm/panthor: Add uAPI")
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250606080932.4140010-2-boris.brezillon@collabora.com
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250708085717.15922-1-johan@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/drm/panthor_drm.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soc/qcom/pmic_glink.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
-index ad9a70afea6c..3a76c4f2882b 100644
---- a/include/uapi/drm/panthor_drm.h
-+++ b/include/uapi/drm/panthor_drm.h
-@@ -296,6 +296,9 @@ struct drm_panthor_gpu_info {
- 	/** @as_present: Bitmask encoding the number of address-space exposed by the MMU. */
- 	__u32 as_present;
+diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+index 7e50eeb4cc6f..2222ca4fa6e2 100644
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -145,7 +145,10 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
+ 	return 0;
+ }
  
-+	/** @pad0: MBZ. */
-+	__u32 pad0;
-+
- 	/** @shader_present: Bitmask encoding the shader cores exposed by the GPU. */
- 	__u64 shader_present;
+-static void pmic_glink_aux_release(struct device *dev) {}
++static void pmic_glink_aux_release(struct device *dev)
++{
++	of_node_put(dev->of_node);
++}
  
+ static int pmic_glink_add_aux_device(struct pmic_glink *pg,
+ 				     struct auxiliary_device *aux,
+@@ -159,8 +162,10 @@ static int pmic_glink_add_aux_device(struct pmic_glink *pg,
+ 	aux->dev.release = pmic_glink_aux_release;
+ 	device_set_of_node_from_dev(&aux->dev, parent);
+ 	ret = auxiliary_device_init(aux);
+-	if (ret)
++	if (ret) {
++		of_node_put(aux->dev.of_node);
+ 		return ret;
++	}
+ 
+ 	ret = auxiliary_device_add(aux);
+ 	if (ret)
 -- 
 2.39.5
 
