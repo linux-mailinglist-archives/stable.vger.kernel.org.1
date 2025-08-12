@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B34B22FA7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB09B2328B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5839C188B522
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 411841AA724C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2302FDC36;
-	Tue, 12 Aug 2025 17:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88862FA0DB;
+	Tue, 12 Aug 2025 18:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pl3vS2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFF3shw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122B0268C73;
-	Tue, 12 Aug 2025 17:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960F72E285E;
+	Tue, 12 Aug 2025 18:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020395; cv=none; b=b5HoXCu9kt3qvWzF1d1nHzImq//kp9LKW4OItkzucJOgnilrGhAhVA/t5cBAg+qe9SuSchoAuRDADymEDka+GnppGQa362CjW7vjOhzHb7fEpygz0v98hth+Leqm6Y4W1A/VqKkp1XVkA6chRBW/WFVHVpD0f9AWun+vlgcpY8s=
+	t=1755022456; cv=none; b=VieOuX8t5RufGEqXvQuPAKhVuYrRK5Irde5Y3SDpqm1ddYFtvA+hBsH1V65kV1HwBgjvZpowm5ObVlDDHUYB+fawMhgdZcLc/omTWbMdbk8eNSV0q+A51tUuIG2D3nwQ09qbDjMmV/y7wQr51P4MY+x+Z12jK6lfNAOV+rjA+AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020395; c=relaxed/simple;
-	bh=L8gm5ysJ+jAsjX6vYexwh53a551Ja1UOR+kmIyEIVGU=;
+	s=arc-20240116; t=1755022456; c=relaxed/simple;
+	bh=GtPFwe4eOKfi3a0OwBd3S7XCmV4XG3K3iWGjuRJ2UJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/FkA3o3Q/0iFU5DWPh3Rut1ZrUsGoE+FQuftlbQqrUzPClsqKQJ5OOvbfk1W7Nqcxxc+bizu9JQ12Yioy8jHojgfOjwtDwUwyiceeCNt6SK+SKmRLkzFDjuojUAeNvVggdilPTAyKg6jSpcLsVQyX1059+hTaw1DJdnDUujes0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pl3vS2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3500DC4CEF0;
-	Tue, 12 Aug 2025 17:39:54 +0000 (UTC)
+	 MIME-Version; b=oFtB7gjT+3jM2meKPzyfdDcwXYdjaBSZ2jgDneNCpG+o1CsyPsivUUqxTTWrT7Fx34NSrhiZ/5xKtxIdUFIuroYzKBDL3mwLhEC4uihtTGbuzSefsM1q03JNQlxeAUo/nDiSlkgTOvaXBdKGqgLjrZPP8RiogBSSxQOTaaeaMFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFF3shw8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA3DC4CEF1;
+	Tue, 12 Aug 2025 18:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020394;
-	bh=L8gm5ysJ+jAsjX6vYexwh53a551Ja1UOR+kmIyEIVGU=;
+	s=korg; t=1755022456;
+	bh=GtPFwe4eOKfi3a0OwBd3S7XCmV4XG3K3iWGjuRJ2UJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pl3vS2MEmT9AV799c8eCFH7Tq/bKybBhPE1Fy49r2Oii0D26Oj6g8ftbYS1Iesge
-	 0mx/3a5MrnPCN8bIThkdZttWWD/9ABikb//9aU/4NuVNM/ZT2sgA0akWJX3GE6Mh6J
-	 d/RAv7gmOMwvJUufrdh4CBye8aSgcEcfCwpw5AqE=
+	b=aFF3shw8wCxcytFPlZRZcavC3VC7M++NI9Rz6qgShny+rgNGwcn94uFFGr1EgBJ1z
+	 A6GgYpb/LDIVcq/9bjszH4LmbuqS/11eLvO2r0leWsxhODL5iXhJHnSrPq9t6AA5/9
+	 NP4Z5tfSmf0e5PLYcUXuYzH5ZVD1sW9IOpyhSYGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/253] ASoC: ops: dynamically allocate struct snd_ctl_elem_value
+Subject: [PATCH 6.12 160/369] mtd: fix possible integer overflow in erase_xfer()
 Date: Tue, 12 Aug 2025 19:27:37 +0200
-Message-ID: <20250812172951.663534814@linuxfoundation.org>
+Message-ID: <20250812173020.784399170@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-[ Upstream commit 7e10d7242ea8a5947878880b912ffa5806520705 ]
+[ Upstream commit 9358bdb9f9f54d94ceafc650deffefd737d19fdd ]
 
-This structure is really too larget to be allocated on the stack:
+The expression '1 << EraseUnitSize' is evaluated in int, which causes
+a negative result when shifting by 31 - the upper bound of the valid
+range [10, 31], enforced by scan_header(). This leads to incorrect
+extension when storing the result in 'erase->len' (uint64_t), producing
+a large unexpected value.
 
-sound/soc/soc-ops.c:435:5: error: stack frame size (1296) exceeds limit (1280) in 'snd_soc_limit_volume' [-Werror,-Wframe-larger-than]
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Change the function to dynamically allocate it instead.
-
-There is probably a better way to do it since only two integer fields
-inside of that structure are actually used, but this is the simplest
-rework for the moment.
-
-Fixes: 783db6851c18 ("ASoC: ops: Enforce platform maximum on initial value")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250610093057.2643233-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/mtd/ftl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index eff1355cc3df..5be32c37bb8a 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -641,28 +641,32 @@ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
- static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
- {
- 	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
--	struct snd_ctl_elem_value uctl;
-+	struct snd_ctl_elem_value *uctl;
- 	int ret;
+diff --git a/drivers/mtd/ftl.c b/drivers/mtd/ftl.c
+index 8c22064ead38..f2bd1984609c 100644
+--- a/drivers/mtd/ftl.c
++++ b/drivers/mtd/ftl.c
+@@ -344,7 +344,7 @@ static int erase_xfer(partition_t *part,
+             return -ENOMEM;
  
- 	if (!mc->platform_max)
- 		return 0;
+     erase->addr = xfer->Offset;
+-    erase->len = 1 << part->header.EraseUnitSize;
++    erase->len = 1ULL << part->header.EraseUnitSize;
  
--	ret = kctl->get(kctl, &uctl);
-+	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
-+	if (!uctl)
-+		return -ENOMEM;
-+
-+	ret = kctl->get(kctl, uctl);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
--	if (uctl.value.integer.value[0] > mc->platform_max)
--		uctl.value.integer.value[0] = mc->platform_max;
-+	if (uctl->value.integer.value[0] > mc->platform_max)
-+		uctl->value.integer.value[0] = mc->platform_max;
- 
- 	if (snd_soc_volsw_is_stereo(mc) &&
--	    uctl.value.integer.value[1] > mc->platform_max)
--		uctl.value.integer.value[1] = mc->platform_max;
-+	    uctl->value.integer.value[1] > mc->platform_max)
-+		uctl->value.integer.value[1] = mc->platform_max;
- 
--	ret = kctl->put(kctl, &uctl);
--	if (ret < 0)
--		return ret;
-+	ret = kctl->put(kctl, uctl);
- 
--	return 0;
-+out:
-+	kfree(uctl);
-+	return ret;
- }
- 
- /**
+     ret = mtd_erase(part->mbd.mtd, erase);
+     if (!ret) {
 -- 
 2.39.5
 
