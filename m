@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E06B23481
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A67CB232D1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93ABF3BA792
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C193584464
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48D62FD1DC;
-	Tue, 12 Aug 2025 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3752F83B5;
+	Tue, 12 Aug 2025 18:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnYcsfDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emR7BGbi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6555D2F5481;
-	Tue, 12 Aug 2025 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8AD2D8363;
+	Tue, 12 Aug 2025 18:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023797; cv=none; b=IRGRMpRs3T8OTSSBtB7jFAeKFSLAFgYtUnXrdxJiWb539St6LLPYW0ect0/oqD+iCc1TUTCBhZG8vUJuoLpns3oOotdHAa35VAlv78zhyZgZZpz5DXpdmHsR/vuGAXkYNk3jhWe5IemvQOo5HSU4sfMm4Nlx4Dta/NErG8PyUzI=
+	t=1755022645; cv=none; b=iD+vVubwXmtcU9jd+XeB1YIc1NDuV5XQ3Yi2jHXtTDWlTItRt4JSuF5aXE+Oz6uFVUtMjQvj80Rtz9EKvIbpnn3WpucFAVsjzfpAfJ+BYfFrs8b/4g6Ez65Jg74JdNRDDXpKC3s0HqHFR9axTRLm+im9g31QsdOWRLrtd9IJW9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023797; c=relaxed/simple;
-	bh=D2DujF2dcbfx834i7vjK9d3nl41j9GjFVOWkG1cti8M=;
+	s=arc-20240116; t=1755022645; c=relaxed/simple;
+	bh=F+q/to525DcxvCa2VhzH+jxKcYBF7CVh9qosBjakfAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2ki/U6HSrvOsy9Hm+sN3JQ9k2EScnQkQsv7fx99mrBeaCKCImgCo3pInouteZc5bTFP4WM+V05aCv0eKisNs22T7XyUmjh8xrNMAW53uNq7GFQ6g9ICDcqDhlIwipKZb2Cjf6spqiQGieZGOhWd2liMQNZveqhmAs0uRsvKxzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnYcsfDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85EBC4CEF0;
-	Tue, 12 Aug 2025 18:36:36 +0000 (UTC)
+	 MIME-Version; b=uGqqSHZ63rr2T9aaY80gY9m4DLzDvuaNmPnAaB2wzMsKzv0P2U052Rx6mdYYEJvryOlUuathAV36S4IrJIe2hjj5I1tqwx6fIu7KJ2fVQy0QHLNRyWo3FKoDrJPrigVrDKKQ3wJC69tGpoFHEDNFnLSaYswPsDvJ/If9DYOjPgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emR7BGbi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21C9C4CEF6;
+	Tue, 12 Aug 2025 18:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023797;
-	bh=D2DujF2dcbfx834i7vjK9d3nl41j9GjFVOWkG1cti8M=;
+	s=korg; t=1755022644;
+	bh=F+q/to525DcxvCa2VhzH+jxKcYBF7CVh9qosBjakfAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnYcsfDe8Hepzu0J8+tDKo+Mq6RDoBQKBglubcEtvwo2eU5lfJg0ObtEN7Y+ryr75
-	 oqBV9RGpSnXFwlKEzGvUPRJ6z2RF8tMyrBvAp/sp3FKoeuX/+0fZXDjeLzkZx+IP18
-	 gmyM6C2NQbPiWcRc2ozI7pGikKuDt6oQiT6inw/M=
+	b=emR7BGbirlphqYuOhhdgM+0Qierqb1QGGtqFtH9Ykc90P8Ol6ulHVWaf6r7mnEDTM
+	 JejKLoavkc2XJEdpbr9GIr6aBiFscpcXM+ZJXqzcgMpOf8nB/YV5kVS/m6AofxBJHb
+	 y7We/w8XvgERd4OwV4Yg/ZH1f1UlfINB9rXlY0x8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 185/627] wifi: mt76: mt7996: Fix possible OOB access in mt7996_tx()
+Subject: [PATCH 6.12 183/369] perf sched: Fix memory leaks in perf sched latency
 Date: Tue, 12 Aug 2025 19:28:00 +0200
-Message-ID: <20250812173426.318154838@linuxfoundation.org>
+Message-ID: <20250812173021.653725786@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 64cbf0d7ce9afe20666da90ec6ecaec6ba5ac64b ]
+[ Upstream commit e68b1c0098b959cb88afce5c93dd6a9324e6da78 ]
 
-Fis possible Out-Of-Boundary access in mt7996_tx routine if link_id is
-set to IEEE80211_LINK_UNSPECIFIED
+The work_atoms should be freed after use.  Add free_work_atoms() to
+make sure to release all.  It should use list_splice_init() when merging
+atoms to prevent accessing invalid pointers.
 
-Fixes: 3ce8acb86b661 ("wifi: mt76: mt7996: Update mt7996_tx to MLO support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250704-mt7996-mlo-fixes-v1-6-356456c73f43@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: b1ffe8f3e0c96f552 ("perf sched: Finish latency => atom rename and misc cleanups")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-8-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/main.c    | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ tools/perf/builtin-sched.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 07dd75ce94a5..44b4e48e499d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1216,10 +1216,17 @@ static void mt7996_tx(struct ieee80211_hw *hw,
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 6e9c22c1c29d..64bf3ac237f2 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -1116,6 +1116,21 @@ add_sched_in_event(struct work_atoms *atoms, u64 timestamp)
+ 	atoms->nb_atoms++;
+ }
  
- 	if (vif) {
- 		struct mt7996_vif *mvif = (void *)vif->drv_priv;
--		struct mt76_vif_link *mlink;
-+		struct mt76_vif_link *mlink = &mvif->deflink.mt76;
- 
--		mlink = rcu_dereference(mvif->mt76.link[link_id]);
--		if (mlink && mlink->wcid)
-+		if (link_id < IEEE80211_LINK_UNSPECIFIED)
-+			mlink = rcu_dereference(mvif->mt76.link[link_id]);
++static void free_work_atoms(struct work_atoms *atoms)
++{
++	struct work_atom *atom, *tmp;
 +
-+		if (!mlink) {
-+			ieee80211_free_txskb(hw, skb);
-+			goto unlock;
-+		}
++	if (atoms == NULL)
++		return;
 +
-+		if (mlink->wcid)
- 			wcid = mlink->wcid;
- 
- 		if (mvif->mt76.roc_phy &&
-@@ -1228,7 +1235,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
- 			if (mphy->roc_link)
- 				wcid = mphy->roc_link->wcid;
- 		} else {
--			mphy = mt76_vif_link_phy(&mvif->deflink.mt76);
-+			mphy = mt76_vif_link_phy(mlink);
++	list_for_each_entry_safe(atom, tmp, &atoms->work_list, list) {
++		list_del(&atom->list);
++		free(atom);
++	}
++	thread__zput(atoms->thread);
++	free(atoms);
++}
++
+ static int latency_switch_event(struct perf_sched *sched,
+ 				struct evsel *evsel,
+ 				struct perf_sample *sample,
+@@ -3390,13 +3405,13 @@ static void __merge_work_atoms(struct rb_root_cached *root, struct work_atoms *d
+ 			this->total_runtime += data->total_runtime;
+ 			this->nb_atoms += data->nb_atoms;
+ 			this->total_lat += data->total_lat;
+-			list_splice(&data->work_list, &this->work_list);
++			list_splice_init(&data->work_list, &this->work_list);
+ 			if (this->max_lat < data->max_lat) {
+ 				this->max_lat = data->max_lat;
+ 				this->max_lat_start = data->max_lat_start;
+ 				this->max_lat_end = data->max_lat_end;
+ 			}
+-			zfree(&data);
++			free_work_atoms(data);
+ 			return;
  		}
  	}
- 
-@@ -1237,7 +1244,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
- 		goto unlock;
+@@ -3475,7 +3490,6 @@ static int perf_sched__lat(struct perf_sched *sched)
+ 		work_list = rb_entry(next, struct work_atoms, node);
+ 		output_lat_thread(sched, work_list);
+ 		next = rb_next(next);
+-		thread__zput(work_list->thread);
  	}
  
--	if (control->sta) {
-+	if (control->sta && link_id < IEEE80211_LINK_UNSPECIFIED) {
- 		struct mt7996_sta *msta = (void *)control->sta->drv_priv;
- 		struct mt7996_sta_link *msta_link;
+ 	printf(" -----------------------------------------------------------------------------------------------------------------\n");
+@@ -3489,6 +3503,13 @@ static int perf_sched__lat(struct perf_sched *sched)
  
+ 	rc = 0;
+ 
++	while ((next = rb_first_cached(&sched->sorted_atom_root))) {
++		struct work_atoms *data;
++
++		data = rb_entry(next, struct work_atoms, node);
++		rb_erase_cached(next, &sched->sorted_atom_root);
++		free_work_atoms(data);
++	}
+ out_free_cpus_switch_event:
+ 	free_cpus_switch_event(sched);
+ 	return rc;
 -- 
 2.39.5
 
