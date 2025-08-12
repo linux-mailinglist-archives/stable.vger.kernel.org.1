@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-167282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA018B22F6A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D405AB2304C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2B7F683BBA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4BBC684CE8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04F52FE599;
-	Tue, 12 Aug 2025 17:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5303279915;
+	Tue, 12 Aug 2025 17:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRwno6ux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXfz+PC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEEE2FE591;
-	Tue, 12 Aug 2025 17:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A331A257435;
+	Tue, 12 Aug 2025 17:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020290; cv=none; b=hlVw34GqUrhuu6+LdilHuCZMomjix0bKjSL2AvUQ4QIuApTQ/wLhORs6y5THhz9rcSb8xqa/szQ440kxPtjPXqPwhauzbg0ncP/BM6mN8X/wfadz4dVpzz86C7E5sZBZw6i+eS3AKT30R+exGJQ/2Hhe4Mau1Jyofn5cOfQ8N28=
+	t=1755020989; cv=none; b=JUTdcV1rVonGYNNcGv9KmhS91xrPRmK01h75bS7+dhJqBqI+HdDPmIlmGbiDrsUm/2OUu/ESlhYfC63jWZTlBJiLSWqUDGqrKGlGEbFy5FYVXmq+SyTX9SMc7cFVu6dQyeJZf/gQwhkYsQXw2Wz8g7nuQhg7u/p6Imzez38h8eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020290; c=relaxed/simple;
-	bh=hMdCDfECN6DqbLVOiqFeqltArl/ocSHeFClJ4Z5yVWA=;
+	s=arc-20240116; t=1755020989; c=relaxed/simple;
+	bh=NxFw3PGj8jUWQ/B9piGC1lkVF621dWc4opxJ2+LlH/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1bhMhmXO87ZxY2ozUp/IOMgV51nY+xjdbA803T/Nj9Gkcqkx4y0AhP+g8e6Imj9jvF7RjCQayJU/dt9kzvTDGPWlXTsUKBxnFb/wpyhoW33M/vqvnVcRRBqGyk6SQaVwGWmwqC2WyyAjDfiUOMFGNjaAegcXfKq9ko+i+aUUvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRwno6ux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A0DC4CEF0;
-	Tue, 12 Aug 2025 17:38:09 +0000 (UTC)
+	 MIME-Version; b=Q2lEARRlOYh8I7WQ2d3Mup//Fp+rRXov+E6tCmFGpPPTx53tD2uAjVqtxsoDg6Dl/+JQiqdJfn/Fi2ALzFyZ4LibokK6T679blBS6hsQ1HI5CjgK1fQR8Ik59yCxZkOy8Wnm3nVCYfGz6yfRWtuIYdrRxP7CvLsbuvfIRP3GTRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXfz+PC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD1CC4CEF0;
+	Tue, 12 Aug 2025 17:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020290;
-	bh=hMdCDfECN6DqbLVOiqFeqltArl/ocSHeFClJ4Z5yVWA=;
+	s=korg; t=1755020989;
+	bh=NxFw3PGj8jUWQ/B9piGC1lkVF621dWc4opxJ2+LlH/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRwno6ux3sTO4vrliUJ6zrDPo/9/Mp2KuiuLrABsPMm0lxm3y1+NsakOycbpYuaOf
-	 64J/OzYanX6J5l3uqkoOPvEXV2z08JRRJefK2CQuUro2L/NjU5KKCyhGiRvxHTgITM
-	 i5X4lSYMfFhoEHu6vwo6wQYOz+4kCFMeycaChG50=
+	b=nXfz+PC8/uOkOPdkDqWzItJ4gQnixdZdPg1/mvmQyConSafjQ6CbOsjx5aHsedmZK
+	 DQChkThMccd8ebjvpeE08D3TnxygHpFhe8SNZkaet5AUhhi8LRm7Zu53BL25vd/wJt
+	 SP0k58GWt/HZNMt4LMlpvmr1Zv/10MqPhHYf1cMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.1 037/253] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
+	Adam Ford <aford173@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/262] arm64: dts: imx8mn-beacon: Fix HS400 USDHC clock speed
 Date: Tue, 12 Aug 2025 19:27:05 +0200
-Message-ID: <20250812172950.310613449@linuxfoundation.org>
+Message-ID: <20250812172954.539914035@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Adam Ford <aford173@gmail.com>
 
-commit 4ff12d82dac119b4b99b5a78b5af3bf2474c0a36 upstream.
+[ Upstream commit e16ad6c79906bba5e2ac499492b6a5b29ab19d6c ]
 
-Add check for the return value of devm_kmemdup()
-to prevent potential null pointer dereference.
+The reference manual for the i.MX8MN states the clock rate in
+MMC mode is 1/2 of the input clock, therefore to properly run
+at HS400 rates, the input clock must be 400MHz to operate at
+200MHz.  Currently the clock is set to 200MHz which is half the
+rate it should be, so the throughput is half of what it should be
+for HS400 operation.
 
-Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_flex_pipe.c |    2 ++
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-@@ -1753,6 +1753,8 @@ ice_copy_and_init_pkg(struct ice_hw *hw,
- 		return ICE_DDP_PKG_ERR;
- 
- 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
-+	if (!buf_copy)
-+		return ICE_DDP_PKG_ERR;
- 
- 	state = ice_init_pkg(hw, buf_copy, len);
- 	if (!ice_is_init_pkg_successful(state)) {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+index 1760062e6ffc..f5f87b389123 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+@@ -295,6 +295,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MN_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
+-- 
+2.39.5
+
 
 
 
