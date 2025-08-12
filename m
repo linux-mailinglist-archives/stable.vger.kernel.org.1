@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-168714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC43B23664
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:00:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEFCB23637
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD8CE6823A8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A56C1885098
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF602FF152;
-	Tue, 12 Aug 2025 18:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91D52FF17C;
+	Tue, 12 Aug 2025 18:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhcVxyoc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZVsqneV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4575A2FE595;
-	Tue, 12 Aug 2025 18:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7002E2FF155;
+	Tue, 12 Aug 2025 18:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025092; cv=none; b=T36XeLTywZjdFPApcpeEN1E6xMsKaKt6EpEhjG+ohXUmvuqbcg5qSInD/EZbHZuV5aHKF+QVd+zj6C+cIbAUwagUTiTZL2t1hwYxmxPzxH1oAO97td4GqzZ9KAqy27pbBoY8WpxjZ0dXXqGpio1Y989wvE1ogNZUhMjVxQNCi+I=
+	t=1755024975; cv=none; b=qDnpJpQH8t00rONe4QIfXp2xDfv7Up5A7Cf2Et63CXwVpWhlPqUG6oxfu7rUEY9wfNDGaqW2LVDj8iFDq7tD9VpulnDNsK05HkrAUqO4cVhag8U/EtWkrxh3hcF4A19SNaixczKFYgmB+eDtrfJM1V9olKC+Xd+G+IiBZVxKUqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025092; c=relaxed/simple;
-	bh=cKsQeSkm+Hlu5OqGDI3IuZHjSkvingSfceLq1nLS9IQ=;
+	s=arc-20240116; t=1755024975; c=relaxed/simple;
+	bh=AOuIgPWgdVhwTYv/Lp2NYmOrOpxj7dRhmekGd4rytao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/cbf7xqHme66ytUCPGd1Q4goRHAnt/T84TZ42BHGjBDjRasJYQ7KDxBnRDG2k3KBpOWL507BRjtXEUN1SfT9tqagMG8VXXQhBy+cVBt6J9JP/20MxA8NHJ0o3a45etNib8TuytiQN0DAVxGQsVNpBZysXdXgXADCmbbEtLTTzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhcVxyoc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9208C4CEF0;
-	Tue, 12 Aug 2025 18:58:11 +0000 (UTC)
+	 MIME-Version; b=WWaFn7o1EyYCRcRv+InHBrwwB8IoypIpIKsf9AWOGN/h3OM3R85QGt+PEG2REip24HWs6qSlQk+NIie/CAVNB3kyXPo/Bi0FBdXrstvnWZo3g4Ae51l4UGC3uaFdrHxmd+WQvvolW4ukR9fGsQw/9dNK1VF5IKcc4FE02os3h5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZVsqneV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9202C4CEF0;
+	Tue, 12 Aug 2025 18:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025092;
-	bh=cKsQeSkm+Hlu5OqGDI3IuZHjSkvingSfceLq1nLS9IQ=;
+	s=korg; t=1755024975;
+	bh=AOuIgPWgdVhwTYv/Lp2NYmOrOpxj7dRhmekGd4rytao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhcVxyocsn35CE2FeeXRMGaOZhDp/RONh9nHJUAJWs6hXiGq3jsvIoc9KLQcCVmb/
-	 oel5RzgSrwqhX7gY8lgKmQSQcbl2B4kCyYORywCEqMKM4o0m8zg7ceHCnmxl03UW2d
-	 tAzBat4bhjLteFEbHcZtbEG0q8V7LZwb4Vq/lPQQ=
+	b=qZVsqneVDHvk6Mmq7bMrJ9wuUCZ2wFZTNoV7p2wmwV6z6WEgbVu8WliwWWb0LiVHs
+	 GQwwsYOVw7TEdJ8Ohk8sGKyUkoYTWlC8KB6XpFgASWCNzvlu/9o97Fob+NVkcZsTcZ
+	 S33V3tnA3VtezMhlKM0a12ieHTUa92/bDS6erE4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duo Yi <duo@meta.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 524/627] netlink: specs: ethtool: fix module EEPROM input/output arguments
-Date: Tue, 12 Aug 2025 19:33:39 +0200
-Message-ID: <20250812173451.778191331@linuxfoundation.org>
+Subject: [PATCH 6.16 525/627] block: Fix default IO priority if there is no IO context
+Date: Tue, 12 Aug 2025 19:33:40 +0200
+Message-ID: <20250812173451.866397153@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -67,48 +69,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 01051012887329ea78eaca19b1d2eac4c9f601b5 ]
+[ Upstream commit e2ba58ccc9099514380c3300cbc0750b5055fc1c ]
 
-Module (SFP) eeprom GET has a lot of input params, they are all
-mistakenly listed as output in the spec. Looks like kernel doesn't
-output them at all. Correct what are the inputs and what the outputs.
+Upstream commit 53889bcaf536 ("block: make __get_task_ioprio() easier to
+read") changes the IO priority returned to the caller if no IO context
+is defined for the task. Prior to this commit, the returned IO priority
+was determined by task_nice_ioclass() and task_nice_ioprio(). Now it is
+always IOPRIO_DEFAULT, which translates to IOPRIO_CLASS_NONE with priority
+0. However, task_nice_ioclass() returns IOPRIO_CLASS_IDLE, IOPRIO_CLASS_RT,
+or IOPRIO_CLASS_BE depending on the task scheduling policy, and
+task_nice_ioprio() returns a value determined by task_nice(). This causes
+regressions in test code checking the IO priority and class of IO
+operations on tasks with no IO context.
 
-Reported-by: Duo Yi <duo@meta.com>
-Fixes: a353318ebf24 ("tools: ynl: populate most of the ethtool spec")
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250730172137.1322351-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix the problem by returning the IO priority calculated from
+task_nice_ioclass() and task_nice_ioprio() if no IO context is defined
+to match earlier behavior.
+
+Fixes: 53889bcaf536 ("block: make __get_task_ioprio() easier to read")
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250731044953.1852690-1-linux@roeck-us.net
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/ethtool.yaml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/ioprio.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index 348c6ad548f5..d1ee5307160f 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -2107,9 +2107,6 @@ operations:
+diff --git a/include/linux/ioprio.h b/include/linux/ioprio.h
+index b25377b6ea98..5210e8371238 100644
+--- a/include/linux/ioprio.h
++++ b/include/linux/ioprio.h
+@@ -60,7 +60,8 @@ static inline int __get_task_ioprio(struct task_struct *p)
+ 	int prio;
  
-       do: &module-eeprom-get-op
-         request:
--          attributes:
--            - header
--        reply:
-           attributes:
-             - header
-             - offset
-@@ -2117,6 +2114,9 @@ operations:
-             - page
-             - bank
-             - i2c-address
-+        reply:
-+          attributes:
-+            - header
-             - data
-       dump: *module-eeprom-get-op
-     -
+ 	if (!ioc)
+-		return IOPRIO_DEFAULT;
++		return IOPRIO_PRIO_VALUE(task_nice_ioclass(p),
++					 task_nice_ioprio(p));
+ 
+ 	if (p != current)
+ 		lockdep_assert_held(&p->alloc_lock);
 -- 
 2.39.5
 
