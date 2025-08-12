@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69500B23555
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AE5B23376
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A71321894D9F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D7333B2AA9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516082CA9;
-	Tue, 12 Aug 2025 18:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF142E7BD4;
+	Tue, 12 Aug 2025 18:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUPTtjY+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4xaCQMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E638294A17;
-	Tue, 12 Aug 2025 18:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9D6188715;
+	Tue, 12 Aug 2025 18:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024404; cv=none; b=lFNpvauIHv+Sd08fZGLtAoJzgUvTC410asPfJoKGfBDqts5EEbbbzSEQQpRiaQaj2/B7jX9RN/hkewzLK7uTjDVDciQMo/9qPc3aHz50xTyJliC/Sx9rkGoLcvphExZzDKqmLPp8ujw38SKF3RmB48BQp6hjMWT4GItJOy7fkLE=
+	t=1755023083; cv=none; b=U5O8Gz97NRW7Zt06e1R7g0+LlHDqtSKEv3lju+T4gV6zVcdgE+nI6e7RmUmaNsfKNza3dq9f0WanWrUIMrTJheDWamsRoh5Hd7wmUxdqiyjULPBjuIY4bMsOoCFzi8m0WTpLb1mrCa1l1NKZ8pHqHlfbB5177hNqOn8tYHnsYtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024404; c=relaxed/simple;
-	bh=DFFejc6Dv+RjVxfVmnLYSOiQxVT8ebhp6npg9E8czw4=;
+	s=arc-20240116; t=1755023083; c=relaxed/simple;
+	bh=oLwuR14qeDSGWaDYS6YD5WhusMCMDK1TI5NsS1GQrBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyY9bEMdMBZOhzVe4YEPOlWUeTR+ieKOi9ixcpHnRuFzUrknZIBaUPpVwXF+Wsc3g2PmvT4pxL5iga0UkCxkdVX8aRRSeyDUfmqjZM3K0urwhrxzxjg4e2tLyS6nti8d3+gzsvrbJ6EZBx0eeZjM7nydjSjnqHE3lJ/TpzUE7pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUPTtjY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D231C4CEF0;
-	Tue, 12 Aug 2025 18:46:43 +0000 (UTC)
+	 MIME-Version; b=ChGjUX7htfhIoS55b1MFjtQnTpk275a/fPy5Kp6tG1KzjYm7AIYg7d1yYAZAHthPzNZDL8LPtrSGy+0yKaIn1fm3VVZUq9bL4E3/Cj3jxNIqPxnGEZLD8zUHCwbE0vN/wZ5C4etcMfA/0U/h/lw39SovGoUf7iE+nch+Mcxfmk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4xaCQMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DBFC4CEF0;
+	Tue, 12 Aug 2025 18:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024403;
-	bh=DFFejc6Dv+RjVxfVmnLYSOiQxVT8ebhp6npg9E8czw4=;
+	s=korg; t=1755023082;
+	bh=oLwuR14qeDSGWaDYS6YD5WhusMCMDK1TI5NsS1GQrBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUPTtjY+CiHey9whvkFz51H1V9l7sOOtd7eGUR4NrFNPTEFFsfugvWA6ImXibCpf4
-	 BYv/AUviftY4Y/vLdkFAKimjPsuoOwZIxUCMRE5Y3WkPllh0G1Artxh8ogglZ7xvVd
-	 cA6BaEWU5QuF3I2+2C9Mk8uWkY1yoqSVX72sPXdo=
+	b=q4xaCQMZ4LgEHbSeYZgyCv9aa0KwRDX4Q+dyWyeX1boQ9UAewjyDI0FBuX3MyEGAr
+	 19gvJe9tWWmvYKkG4aGrMgbB5Ti6M6bH/lXl+ceU5UlGFSwVjUzckdRJAvRquptTzy
+	 dHAAAdhpFQPLKD/ElSPVOmMHCNOAqmT2Ivu/oTpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 346/627] RDMA/uverbs: Check CAP_NET_RAW in user namespace for RAW QP create
+	tianshuo han <hantianshuo233@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 344/369] ksmbd: limit repeated connections from clients with the same IP
 Date: Tue, 12 Aug 2025 19:30:41 +0200
-Message-ID: <20250812173432.453338289@linuxfoundation.org>
+Message-ID: <20250812173029.637889979@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit a6dca091ba7646ff5304af660c94fa51b6696476 ]
+commit e6bb9193974059ddbb0ce7763fa3882bd60d4dc3 upstream.
 
-Currently, the capability check is done in the default
-init_user_ns user namespace. When a process runs in a
-non default user namespace, such check fails. Due to this
-when a process is running using Podman, it fails to create
-the QP.
+Repeated connections from clients with the same IP address may exhaust
+the max connections and prevent other normal client connections.
+This patch limit repeated connections from clients with the same IP.
 
-Since the RDMA device is a resource within a network namespace,
-use the network namespace associated with the RDMA device to
-determine its owning user namespace.
-
-Fixes: 6d1e7ba241e9 ("IB/uverbs: Introduce create/destroy QP commands over ioctl")
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Link: https://patch.msgid.link/7b6b87505ccc28a1f7b4255af94d898d2df0fff5.1750963874.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/uverbs_std_types_qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/connection.h    |    1 +
+ fs/smb/server/transport_tcp.c |   17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/infiniband/core/uverbs_std_types_qp.c b/drivers/infiniband/core/uverbs_std_types_qp.c
-index 7b4773fa4bc0..be0730e8509e 100644
---- a/drivers/infiniband/core/uverbs_std_types_qp.c
-+++ b/drivers/infiniband/core/uverbs_std_types_qp.c
-@@ -133,7 +133,7 @@ static int UVERBS_HANDLER(UVERBS_METHOD_QP_CREATE)(
- 		device = xrcd->device;
- 		break;
- 	case IB_UVERBS_QPT_RAW_PACKET:
--		if (!capable(CAP_NET_RAW))
-+		if (!rdma_uattrs_has_raw_cap(attrs))
- 			return -EPERM;
- 		fallthrough;
- 	case IB_UVERBS_QPT_RC:
--- 
-2.39.5
-
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -46,6 +46,7 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
++	__be32				inet_addr;
+ 	char				*request_buf;
+ 	struct ksmbd_transport		*transport;
+ 	struct nls_table		*local_nls;
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -87,6 +87,7 @@ static struct tcp_transport *alloc_trans
+ 		return NULL;
+ 	}
+ 
++	conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
+ 	conn->transport = KSMBD_TRANS(t);
+ 	KSMBD_TRANS(t)->conn = conn;
+ 	KSMBD_TRANS(t)->ops = &ksmbd_tcp_transport_ops;
+@@ -230,6 +231,8 @@ static int ksmbd_kthread_fn(void *p)
+ {
+ 	struct socket *client_sk = NULL;
+ 	struct interface *iface = (struct interface *)p;
++	struct inet_sock *csk_inet;
++	struct ksmbd_conn *conn;
+ 	int ret;
+ 
+ 	while (!kthread_should_stop()) {
+@@ -248,6 +251,20 @@ static int ksmbd_kthread_fn(void *p)
+ 			continue;
+ 		}
+ 
++		/*
++		 * Limits repeated connections from clients with the same IP.
++		 */
++		csk_inet = inet_sk(client_sk->sk);
++		down_read(&conn_list_lock);
++		list_for_each_entry(conn, &conn_list, conns_list)
++			if (csk_inet->inet_daddr == conn->inet_addr) {
++				ret = -EAGAIN;
++				break;
++			}
++		up_read(&conn_list_lock);
++		if (ret == -EAGAIN)
++			continue;
++
+ 		if (server_conf.max_connections &&
+ 		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
+ 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
 
 
 
