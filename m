@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FB3B22F93
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC66B230E2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55D1868239F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730021893658
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3F72FDC25;
-	Tue, 12 Aug 2025 17:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DC92FD1D7;
+	Tue, 12 Aug 2025 17:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8lZ55zz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2NV6aM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855132F7461;
-	Tue, 12 Aug 2025 17:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143E42F8BE7;
+	Tue, 12 Aug 2025 17:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020472; cv=none; b=WQ/fOpoRJzCcnOsLNRP0LsylzSh7hd5OheVOC6WtNwjdddfANDy7LswkLhBWMt9JcCOMQf3bMsRzpgXLqpxrMKfRAnyvVzmSp7f/x3PRBlZz/++9rSbCUltdD0F5L3Q6aaXqrStibADrPGkWHwM18/PwS4b9MgDILFKPJENKpfU=
+	t=1755021416; cv=none; b=Jg+rMhRxibZX+Pe8AaN2nytuDuuegaWxMJuB/b/HRIUINrx2JmaIx3mzq3+5RWzIKux/4WFp0XKV8EGDFZDXzdr52XGb5YPNxjlcgoabUV9pft20o7TFYru7BYy+gd4TAHoC6/tUSzXMt8246GYq+L2Ztjr3LFcOx8zbar1uWfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020472; c=relaxed/simple;
-	bh=oKViSp3vIwY5zkMPiY2wUhFrqZwVENhqLjArF4dCt0c=;
+	s=arc-20240116; t=1755021416; c=relaxed/simple;
+	bh=+1DQFgswVuHo5NbejPa62AzXZmOyKCOdXNUyR7C72lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwxJJ1xMMTUvHyJNbA3dV8ROc/vmxcSYMYp3wA4z7OW5muJ5wJrEl4DptN59/dDa+2Fa29Fr4JxVmtQvqy2fzChjccVXXxHhRosXBd8yPG2Oxu4mxiD57rwsKNdtIoxUs7y+zVCH1NMZzcF7QuLA3Oaq0052F7/EDaL21s3DT4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8lZ55zz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABA3C4CEF0;
-	Tue, 12 Aug 2025 17:41:11 +0000 (UTC)
+	 MIME-Version; b=HUMkALBbppllOdiTVYlNk9eaQrtWvyNpi7RjbKRvc7VRwgGZ0w6M4VwCtqyn1jZlpmgLEWD3yEKjAG8AsuVAz7HfnkNd/IDK8nisKdjX1dWNRBVB+vkFPMrDH6DWcdlor+idZiN1oDUSM/5nHhYiyTmhqFAGSe9IA/DQuKNfR9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2NV6aM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7399DC4CEF0;
+	Tue, 12 Aug 2025 17:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020472;
-	bh=oKViSp3vIwY5zkMPiY2wUhFrqZwVENhqLjArF4dCt0c=;
+	s=korg; t=1755021415;
+	bh=+1DQFgswVuHo5NbejPa62AzXZmOyKCOdXNUyR7C72lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T8lZ55zzMiF3/Q9Rctu/ca4oEanC3dAzK9B3bnRnmOtq51UII1IyIm03UFF5mTqlB
-	 aMKCRxlzgYGgG9WCAYDqHxDwcSWcFI/yjuZoJ50lOXMjUUQMC/z6wylA3w8VAgabcO
-	 RPbSColHV3bveqLMFBwwCptFOB8fGObhkKIWbRks=
+	b=x2NV6aM/skB88L73exKlxOQxkHKfw4Sb17zkjmewYl0VzOf9b1FKTeXRkF0hZIU2N
+	 fHNXpmkiTJjYqtOmJS6pu5haFBQg4Kz6qUrIT8CdnmyE0WILfM9zsbmvux15hP4cJH
+	 w1EtTnmD3VGZ1T9Eh0lEbJRR1BpK1YxPiJKXRPr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/253] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
-Date: Tue, 12 Aug 2025 19:27:57 +0200
-Message-ID: <20250812172952.521645660@linuxfoundation.org>
+Subject: [PATCH 6.6 090/262] wifi: mac80211: Write cnt before copying in ieee80211_copy_rnr_beacon()
+Date: Tue, 12 Aug 2025 19:27:58 +0200
+Message-ID: <20250812172956.895068724@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
+[ Upstream commit a37192c432adaec9e8ef29e4ddb319ea2f443aa6 ]
 
-In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
-accordance with the target frequency to ensure delivering adequate
-performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
-indication that the desired performance level is actually equal to the
-floor one.  This may cause it to choose a performance point way above
-the desired level.
+While I caught the need for setting cnt early in nl80211_parse_rnr_elems()
+in the original annotation of struct cfg80211_rnr_elems with __counted_by,
+I missed a similar pattern in ieee80211_copy_rnr_beacon(). Fix this by
+moving the cnt assignment to before the loop.
 
-Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
-actually sets HWP_DESIRED_PERF in accordance with the target performance
-value.
-
-Address this by adjusting intel_cpufreq_update_pstate() to pass
-target_pstate as both the minimum and the desired performance levels
-to intel_cpufreq_hwp_update().
-
-Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
+Fixes: 7b6d7087031b ("wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://patch.msgid.link/20250721182521.work.540-kees@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index d471d74df3bb..ee676ae1bc48 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2867,8 +2867,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
- 		int max_pstate = policy->strict_target ?
- 					target_pstate : cpu->max_perf_ratio;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index a3c5d4d995db..3ff7f38394a6 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1099,13 +1099,13 @@ ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
+ {
+ 	int i, offset = 0;
  
--		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
--					 fast_switch);
-+		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
-+					 target_pstate, fast_switch);
- 	} else if (target_pstate != old_pstate) {
- 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
++	dst->cnt = src->cnt;
+ 	for (i = 0; i < src->cnt; i++) {
+ 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
+ 		dst->elem[i].len = src->elem[i].len;
+ 		dst->elem[i].data = pos + offset;
+ 		offset += dst->elem[i].len;
  	}
+-	dst->cnt = src->cnt;
+ 
+ 	return offset;
+ }
 -- 
 2.39.5
 
