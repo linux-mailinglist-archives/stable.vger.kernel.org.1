@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C869B2304E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A63B23359
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7236820B8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C539F3A0867
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF702F7449;
-	Tue, 12 Aug 2025 17:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F942FA0F9;
+	Tue, 12 Aug 2025 18:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBJtrxyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMxiwScR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED52257435;
-	Tue, 12 Aug 2025 17:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364EA1A9F89;
+	Tue, 12 Aug 2025 18:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020996; cv=none; b=OkMiMWXDJRGdqIchyIh4vHCT7Qls5N2zmu0J5N/Flh9UAKOJbncsy0nhA9MPWiHiRgQUk4wbhe/nfnPEfU62k0RPSELN49IxN00s4etPc7HWaRb0ccZ+cxy+6cQQOHWzwlHh/N/1JbuXF/diBZErM46le96fY/yuhzj/ANaKiRg=
+	t=1755023004; cv=none; b=JQGZPv2uroAmat5UL3cBh1gC28a9v0rLOqIeVll7dllt7eSyWAUK6vS+AsNfFmjTzsq2b+71uoFpmlsBvhLrbdTArOf+mivLTxq3p6WyJ+UW8/yrwFt7j3cUL5drGuv4rFIlsFIKG0k+gKzVigumQFeHovEOZpDH17kMVBf6wWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020996; c=relaxed/simple;
-	bh=a35eeDcXRcWBTz18BZo+TGf1+noo0Qd1oV5eP8JkDzM=;
+	s=arc-20240116; t=1755023004; c=relaxed/simple;
+	bh=gxIxj2NQbo//cb2UTCQJlcv3/ZGTpsOkNi2qxkDgejw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xyne/GxSEtgO+0yxyRHF/UevMWnNetnEDjjacbDOX4mm/0J2gn92qMBlq+MMzemIclQpWhJpyGMkfcPSDTvbw00UzoGFx2P1KhcR66P3AYWSge1PNmdNiX1gn2CpoLjBSqMcGb9RhrKmSvFPDq4EOshhC02En1GMSqdZsCYlTCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBJtrxyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B263FC4CEF0;
-	Tue, 12 Aug 2025 17:49:55 +0000 (UTC)
+	 MIME-Version; b=RkTiJu5sssixbskx9soo7EtqH9gKllnLIpKEuKDvwcfL3UxADicD/dhn4FV08JrdAWdpMUFu7B6sUWkdk5b7P1fVcB+Wj7Pe9uXmGCo26mGzzLofaq6KwuKAO0mKUdIN3VWsKNYC4bhYGfcbu7ZMxU2Yp4DNc7iF2043HEWk2gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMxiwScR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AD3C4CEF6;
+	Tue, 12 Aug 2025 18:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020996;
-	bh=a35eeDcXRcWBTz18BZo+TGf1+noo0Qd1oV5eP8JkDzM=;
+	s=korg; t=1755023004;
+	bh=gxIxj2NQbo//cb2UTCQJlcv3/ZGTpsOkNi2qxkDgejw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBJtrxyLvrUgYpcqTIYhNBj0KfjbOPOeKONjLAJyLvzYDVhydzal6ZQnF9UM2PWY4
-	 R5WP1zX1+egBvVC6fSn13S9fJtMgeUyvK/lxF5+UROZxjXIxSUlACMQQfwcvrNDINi
-	 /mpfDnN6eGEgEUcIbcosagtsP4OHIGS27aQ0SyGw=
+	b=uMxiwScRCB8q2RdvRrTJbIweU0h9qe8nXPJtvgnwxC/rYyQ2hCef8JK59m83tvTxG
+	 PZrLhIz2YN0TM3IuH7j9c00oPV8sccoA74JCAwyhz3M84FamIFF+VHtreEz/sio7TN
+	 0k9N1AJ0XYMN2jh5Nz+FY7//h15HNkZX0wP2GwXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Prusakowski <jprusakowski@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 197/253] f2fs: vm_unmap_ram() may be called from an invalid context
+Subject: [PATCH 6.12 288/369] phy: mscc: Fix parsing of unicast frames
 Date: Tue, 12 Aug 2025 19:29:45 +0200
-Message-ID: <20250812172957.188248731@linuxfoundation.org>
+Message-ID: <20250812173027.565189447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Prusakowski <jprusakowski@google.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 08a7efc5b02a0620ae16aa9584060e980a69cb55 ]
+[ Upstream commit 6fb5ff63b35b7e849cc8510957f25753f87f63d2 ]
 
-When testing F2FS with xfstests using UFS backed virtual disks the
-kernel complains sometimes that f2fs_release_decomp_mem() calls
-vm_unmap_ram() from an invalid context. Example trace from
-f2fs/007 test:
+According to the 1588 standard, it is possible to use both unicast and
+multicast frames to send the PTP information. It was noticed that if the
+frames were unicast they were not processed by the analyzer meaning that
+they were not timestamped. Therefore fix this to match also these
+unicast frames.
 
-f2fs/007 5s ...  [12:59:38][    8.902525] run fstests f2fs/007
-[   11.468026] BUG: sleeping function called from invalid context at mm/vmalloc.c:2978
-[   11.471849] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 68, name: irq/22-ufshcd
-[   11.475357] preempt_count: 1, expected: 0
-[   11.476970] RCU nest depth: 0, expected: 0
-[   11.478531] CPU: 0 UID: 0 PID: 68 Comm: irq/22-ufshcd Tainted: G        W           6.16.0-rc5-xfstests-ufs-g40f92e79b0aa #9 PREEMPT(none)
-[   11.478535] Tainted: [W]=WARN
-[   11.478536] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   11.478537] Call Trace:
-[   11.478543]  <TASK>
-[   11.478545]  dump_stack_lvl+0x4e/0x70
-[   11.478554]  __might_resched.cold+0xaf/0xbe
-[   11.478557]  vm_unmap_ram+0x21/0xb0
-[   11.478560]  f2fs_release_decomp_mem+0x59/0x80
-[   11.478563]  f2fs_free_dic+0x18/0x1a0
-[   11.478565]  f2fs_finish_read_bio+0xd7/0x290
-[   11.478570]  blk_update_request+0xec/0x3b0
-[   11.478574]  ? sbitmap_queue_clear+0x3b/0x60
-[   11.478576]  scsi_end_request+0x27/0x1a0
-[   11.478582]  scsi_io_completion+0x40/0x300
-[   11.478583]  ufshcd_mcq_poll_cqe_lock+0xa3/0xe0
-[   11.478588]  ufshcd_sl_intr+0x194/0x1f0
-[   11.478592]  ufshcd_threaded_intr+0x68/0xb0
-[   11.478594]  ? __pfx_irq_thread_fn+0x10/0x10
-[   11.478599]  irq_thread_fn+0x20/0x60
-[   11.478602]  ? __pfx_irq_thread_fn+0x10/0x10
-[   11.478603]  irq_thread+0xb9/0x180
-[   11.478605]  ? __pfx_irq_thread_dtor+0x10/0x10
-[   11.478607]  ? __pfx_irq_thread+0x10/0x10
-[   11.478609]  kthread+0x10a/0x230
-[   11.478614]  ? __pfx_kthread+0x10/0x10
-[   11.478615]  ret_from_fork+0x7e/0xd0
-[   11.478619]  ? __pfx_kthread+0x10/0x10
-[   11.478621]  ret_from_fork_asm+0x1a/0x30
-[   11.478623]  </TASK>
-
-This patch modifies in_task() check inside f2fs_read_end_io() to also
-check if interrupts are disabled. This ensures that pages are unmapped
-asynchronously in an interrupt handler.
-
-Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
-Signed-off-by: Jan Prusakowski <jprusakowski@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: ab2bf9339357 ("net: phy: mscc: 1588 block initialization")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250726140307.3039694-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mscc/mscc_ptp.c | 1 +
+ drivers/net/phy/mscc/mscc_ptp.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 7b65766d365f..dc8f283f210c 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -273,7 +273,7 @@ static void f2fs_read_end_io(struct bio *bio)
- {
- 	struct f2fs_sb_info *sbi = F2FS_P_SB(bio_first_page_all(bio));
- 	struct bio_post_read_ctx *ctx;
--	bool intask = in_task();
-+	bool intask = in_task() && !irqs_disabled();
- 
- 	iostat_update_and_unbind_ctx(bio, 0);
- 	ctx = bio->bi_private;
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index ce49f3ac6939..bce6cc5b04ee 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -897,6 +897,7 @@ static int vsc85xx_eth1_conf(struct phy_device *phydev, enum ts_blk blk,
+ 				     get_unaligned_be32(ptp_multicast));
+ 	} else {
+ 		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST;
++		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST;
+ 		vsc85xx_ts_write_csr(phydev, blk,
+ 				     MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(0), val);
+ 		vsc85xx_ts_write_csr(phydev, blk,
+diff --git a/drivers/net/phy/mscc/mscc_ptp.h b/drivers/net/phy/mscc/mscc_ptp.h
+index da3465360e90..ae9ad925bfa8 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.h
++++ b/drivers/net/phy/mscc/mscc_ptp.h
+@@ -98,6 +98,7 @@
+ #define MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(x) (MSCC_ANA_ETH1_FLOW_ENA(x) + 3)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_MASK_MASK	GENMASK(22, 20)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST	0x400000
++#define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST	0x200000
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_FULL_ADDR	0x100000
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST_MASK	GENMASK(17, 16)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST	0x020000
 -- 
 2.39.5
 
