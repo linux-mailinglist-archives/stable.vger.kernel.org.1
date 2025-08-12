@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-167870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB5CB23255
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35077B233EC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169093A6820
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A23B7580537
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B11418FC91;
-	Tue, 12 Aug 2025 18:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0B42FA0F9;
+	Tue, 12 Aug 2025 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YuKf1qJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pU2O9IIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4846B305E08;
-	Tue, 12 Aug 2025 18:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDC21A9F9B;
+	Tue, 12 Aug 2025 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022271; cv=none; b=Qyyt/wwSQyIvdVQchlCCclObkKUm2yQmMbtXn+GNrRUf8k+58YkgMZU/7lq6AbBDfiKVu7LEufjuCr3MJhar2dlcUy3ebW0uXZ/va/3QnRCqMiD6zlm5GYSboqeWqqUi+4A3YssAcWiaGtN07x3PpqyZnL2PvBKtvNfb3qYaYP0=
+	t=1755023416; cv=none; b=FtXu2/oIpY2rekESMCu21qz5hK6cYLUuFiHy8oULU6aGFh9qVCuRDoNmZe/VdTqyjvORhDilguujkKA+HpaluEixEh2/imPHuEvOUTJlLK8uq/vThixaBZMDrPajOSnt9GGSg8PyuMW3muMxuGbNz2MCqs6aWJhJqtLezlv8i4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022271; c=relaxed/simple;
-	bh=xVT6/h/zmJPFCscePEELjRJETDewtd40NWn5ODsWMao=;
+	s=arc-20240116; t=1755023416; c=relaxed/simple;
+	bh=+cRICX/m07mbYJeC0qQ8nGAdetzi1aZ3LHcn+41gRHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/c2HAFAuQfgoEYbHJb39kNPadRL5xMOJCbkWKjLNhkT7ADEdU6UXM9O+rzyD5iG4fOOhtDmQZQtdUK9d/d2k9iOyVsbsd7eKNRiiRMxGjAU1jlbYLou1ZUDNbh8xhWFB+fZf09MjdP1J7M9aMLT78ECPrQXrQMlKo24/1jrf+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YuKf1qJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CD3C4CEF0;
-	Tue, 12 Aug 2025 18:11:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YAM80/HjCDQ2Uaouk4+0PCw7Z5VvOIZDxcE75Jz3dWK6qI2HpQmeCBJXBl9/Ph1Xj6A9PeGAsFB2bkhSR/l9WR/D69OOTQJsU7P9WL4cCw5aeq5f7NrJx94AzFRNqoxSozsEqMxZu27Em8rIAveXD1gxeYhjWKbnjAjCu9K5O4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pU2O9IIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DDBC4CEF0;
+	Tue, 12 Aug 2025 18:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022269;
-	bh=xVT6/h/zmJPFCscePEELjRJETDewtd40NWn5ODsWMao=;
+	s=korg; t=1755023416;
+	bh=+cRICX/m07mbYJeC0qQ8nGAdetzi1aZ3LHcn+41gRHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YuKf1qJhCTmB8/2J3fzdF2Sj10Od88jGsT+J71nD+hK4pI/N2bRPwuLo6HKN48Dm
-	 90OGkTh3Q0bU5YFTV6EtmaLc6iSy2URc+64dIaE9f6LaIvHocAtIkhXi4hCLGZ9MSD
-	 f1+CP8HiEEw7Ki4r7X6tOfab8Oe9+H8/cakAhCLc=
+	b=pU2O9IIiAZ8LSk6Vnnr2zbE0ZeaRFrbH8iX7uhIbjgBQpkbNgFp2fB6kLODGCbU20
+	 o0OH1Jibf196eFSb7Mlasc5rfPUEuALiQCpbXso/M0/h5EY0PTnnZnzecmu7bQ/71Y
+	 UxIYEiED8yThRCX2qQcUtP3KuvnX34QHj9OSWS3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/369] bpf, ktls: Fix data corruption when using bpf_msg_pop_data() in ktls
+Subject: [PATCH 6.16 074/627] drivers: misc: sram: fix up some const issues with recent attribute changes
 Date: Tue, 12 Aug 2025 19:26:09 +0200
-Message-ID: <20250812173017.480358807@linuxfoundation.org>
+Message-ID: <20250812173422.122369562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 178f6a5c8cb3b6be1602de0964cd440243f493c9 ]
+[ Upstream commit bf7b4a0e25569ce39c6749afe363aefe5723d326 ]
 
-When sending plaintext data, we initially calculated the corresponding
-ciphertext length. However, if we later reduced the plaintext data length
-via socket policy, we failed to recalculate the ciphertext length.
+The binary attribute const changes recently for the sram driver were
+made in a way that hid the fact that we would be casting a const pointer
+to a non-const one.  So explicitly make the cast so that it is obvious
+and preserve the const pointer in the sram_reserve_cmp() function.
 
-This results in transmitting buffers containing uninitialized data during
-ciphertext transmission.
-
-This causes uninitialized bytes to be appended after a complete
-"Application Data" packet, leading to errors on the receiving end when
-parsing TLS record.
-
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/bpf/20250609020910.397930-2-jiayuan.chen@linux.dev
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Thomas Weißschuh <linux@weissschuh.net>
+Fixes: c3b8c358c4f3 ("misc: sram: constify 'struct bin_attribute'")
+Link: https://lore.kernel.org/r/2025052125-squid-sandstorm-a418@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/misc/sram.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 8fb5925f2389..1d7caadd0cbc 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -872,6 +872,19 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
- 		delta = msg->sg.size;
- 		psock->eval = sk_psock_msg_verdict(sk, psock, msg);
- 		delta -= msg->sg.size;
-+
-+		if ((s32)delta > 0) {
-+			/* It indicates that we executed bpf_msg_pop_data(),
-+			 * causing the plaintext data size to decrease.
-+			 * Therefore the encrypted data size also needs to
-+			 * correspondingly decrease. We only need to subtract
-+			 * delta to calculate the new ciphertext length since
-+			 * ktls does not support block encryption.
-+			 */
-+			struct sk_msg *enc = &ctx->open_rec->msg_encrypted;
-+
-+			sk_msg_trim(sk, enc, enc->sg.size - delta);
-+		}
- 	}
- 	if (msg->cork_bytes && msg->cork_bytes > msg->sg.size &&
- 	    !enospc && !full_record) {
+diff --git a/drivers/misc/sram.c b/drivers/misc/sram.c
+index e5069882457e..c69644be4176 100644
+--- a/drivers/misc/sram.c
++++ b/drivers/misc/sram.c
+@@ -28,7 +28,8 @@ static ssize_t sram_read(struct file *filp, struct kobject *kobj,
+ {
+ 	struct sram_partition *part;
+ 
+-	part = container_of(attr, struct sram_partition, battr);
++	/* Cast away the const as the attribute is part of a larger structure */
++	part = (struct sram_partition *)container_of(attr, struct sram_partition, battr);
+ 
+ 	mutex_lock(&part->lock);
+ 	memcpy_fromio(buf, part->base + pos, count);
+@@ -43,7 +44,8 @@ static ssize_t sram_write(struct file *filp, struct kobject *kobj,
+ {
+ 	struct sram_partition *part;
+ 
+-	part = container_of(attr, struct sram_partition, battr);
++	/* Cast away the const as the attribute is part of a larger structure */
++	part = (struct sram_partition *)container_of(attr, struct sram_partition, battr);
+ 
+ 	mutex_lock(&part->lock);
+ 	memcpy_toio(part->base + pos, buf, count);
+@@ -164,8 +166,8 @@ static void sram_free_partitions(struct sram_dev *sram)
+ static int sram_reserve_cmp(void *priv, const struct list_head *a,
+ 					const struct list_head *b)
+ {
+-	struct sram_reserve *ra = list_entry(a, struct sram_reserve, list);
+-	struct sram_reserve *rb = list_entry(b, struct sram_reserve, list);
++	const struct sram_reserve *ra = list_entry(a, struct sram_reserve, list);
++	const struct sram_reserve *rb = list_entry(b, struct sram_reserve, list);
+ 
+ 	return ra->start - rb->start;
+ }
 -- 
 2.39.5
 
