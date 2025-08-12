@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D753DB230A2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6192B23484
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 474AB562330
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F36E1897649
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA682F8BE7;
-	Tue, 12 Aug 2025 17:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D9D2D3ED6;
+	Tue, 12 Aug 2025 18:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBB5ra/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwoLiqWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B51D2DE1E2;
-	Tue, 12 Aug 2025 17:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCD8191F98;
+	Tue, 12 Aug 2025 18:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021274; cv=none; b=rVVUgFG0wbh7O/0RB5NHeatgQ2w6BTt/7ADunRiISmAoWGmq7vHD/roCOYOx6qLA7MoiKFNZVgJHmS6PHJDyNO0Wucfw+MTMIBSxn0JNVlv/xuJ2/MT45g4sEXD/E+elCx1NWss+ejCH866SI4p/zjadWGpXcHC7Pdz3dE0pOjk=
+	t=1755023781; cv=none; b=rD7DO7muayIW4Y0FYi4EV5dvu/ARLyTltUfx4K1Dec+X6W0BZx5G964fCCRK/8+uGWJo5pKxUPdEvEXxqMckuRIi/feJd0jApQ2p67Zad/qHWyi+d0Ifthg/nrWAEOtc+43N9p9+9+xdzhrhNAP+7ue/Of6J4rCl8sXOeT0+dWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021274; c=relaxed/simple;
-	bh=Pzm7RRNGHuUSNDMPkgglskyQdLrIqhps1bRffFS+mz8=;
+	s=arc-20240116; t=1755023781; c=relaxed/simple;
+	bh=9SI4eOEPRQim2rUh7ZaIndqwfHH1eVvyujKbyWkB3IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROqbDb8zpxwan4ziDWDRLS49WcWpUpUW+EhIwM/DbK2PZ5ex+IiCD/8tsQudRJuDsveeS8bqq1dslSJvFSQGt6ehTjkYj/OE3X5P4uAL21/QiZ4Men+MHYFmv+G0ryJ//eAJ8G/jhPMRe5FqCZc28rdc2Elcj5DKTy22Yuv3RUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBB5ra/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87B7C4CEF0;
-	Tue, 12 Aug 2025 17:54:33 +0000 (UTC)
+	 MIME-Version; b=eXzpVwrw9QbMKh1yNxAiiwYShK52mQOaQl7BAO2UZ3DAjg6WYF7v3EZL/065rGkxd1HYPlXH5wNo0mdOMyN8SddOBSyNBH5OzckWxYlm/keH9Pz28TE1guQxdMN0MbfUUXeSmfp8a3dDV6iNnss+wE9HSfmum4SsntjuZB1vk50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwoLiqWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405EDC4CEF0;
+	Tue, 12 Aug 2025 18:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021274;
-	bh=Pzm7RRNGHuUSNDMPkgglskyQdLrIqhps1bRffFS+mz8=;
+	s=korg; t=1755023781;
+	bh=9SI4eOEPRQim2rUh7ZaIndqwfHH1eVvyujKbyWkB3IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBB5ra/dQR1T/PIj+h6XV4fY8MFH1idIipJCPBSMRBivvw1YcjqGHIY0dJfSd99pu
-	 5XLmi2srCIbXy5jaEBjC55d2q1UsnbS3lr7knSRpX6nyAk2jYqw+cXmvE+Vj7kKFqo
-	 LlIe6CftuGRupjXp7/Ii+bxwWN3lob+ASzNGtjKk=
+	b=LwoLiqWwZA5vqYZgDO4l+sgWaEtV1ILYS/Ya28fOQxs/4rLMb9EsNF6pOiEaUT4S0
+	 ZAb+EcdOfWGFAUOjk3Nrr8xqMPhpONs4+sx/MFpM9NzBk4nMXt4Cs4xCSzoQmSNqSx
+	 /jSgvj9RXcaxGr7luYCjnX+wfYHSBQ2OgOtlUsVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/262] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 6.16 180/627] bpf: Ensure RCU lock is held around bpf_prog_ksym_find
 Date: Tue, 12 Aug 2025 19:27:55 +0200
-Message-ID: <20250812172956.759225311@linuxfoundation.org>
+Message-ID: <20250812173426.128627677@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
+[ Upstream commit d090326860096df9dac6f27cff76d3f8df44d4f1 ]
 
-This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
-skb's control block key in ieee80211_tx_dequeue()"").
+Add a warning to ensure RCU lock is held around tree lookup, and then
+fix one of the invocations in bpf_stack_walker. The program has an
+active stack frame and won't disappear. Use the opportunity to remove
+unneeded invocation of is_bpf_text_address.
 
-This commit broke TX with 802.11 encapsulation HW offloading, now that
-this is fixed, reapply it.
-
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: f18b03fabaa9 ("bpf: Implement BPF exceptions")
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20250703204818.925464-5-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/core.c    |  5 ++++-
+ kernel/bpf/helpers.c | 11 +++++++++--
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index e4797eb9c2ba..7eddcb6f9645 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3884,6 +3884,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
-+	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index c20babbf998f..93e49b0c218b 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -778,7 +778,10 @@ bool is_bpf_text_address(unsigned long addr)
+ 
+ struct bpf_prog *bpf_prog_ksym_find(unsigned long addr)
+ {
+-	struct bpf_ksym *ksym = bpf_ksym_find(addr);
++	struct bpf_ksym *ksym;
++
++	WARN_ON_ONCE(!rcu_read_lock_held());
++	ksym = bpf_ksym_find(addr);
+ 
+ 	return ksym && ksym->prog ?
+ 	       container_of(ksym, struct bpf_prog_aux, ksym)->prog :
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index ad6df48b540c..fdf8737542ac 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2943,9 +2943,16 @@ static bool bpf_stack_walker(void *cookie, u64 ip, u64 sp, u64 bp)
+ 	struct bpf_throw_ctx *ctx = cookie;
+ 	struct bpf_prog *prog;
+ 
+-	if (!is_bpf_text_address(ip))
+-		return !ctx->cnt;
++	/*
++	 * The RCU read lock is held to safely traverse the latch tree, but we
++	 * don't need its protection when accessing the prog, since it has an
++	 * active stack frame on the current stack trace, and won't disappear.
++	 */
++	rcu_read_lock();
+ 	prog = bpf_prog_ksym_find(ip);
++	rcu_read_unlock();
++	if (!prog)
++		return !ctx->cnt;
+ 	ctx->cnt++;
+ 	if (bpf_is_subprog(prog))
+ 		return true;
 -- 
 2.39.5
 
