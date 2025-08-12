@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B20B22FF3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BBBB23303
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 127447B0CB0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8996D3B228B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A782F8BE6;
-	Tue, 12 Aug 2025 17:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD412F4A02;
+	Tue, 12 Aug 2025 18:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kt4EN1s2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvCzeifk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417782E4248;
-	Tue, 12 Aug 2025 17:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE28E61FFE;
+	Tue, 12 Aug 2025 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020772; cv=none; b=Rmlm6IRU2xEkEAJEFXm7qzF+41GQ7AbBVVoYcEJqCasVjo/OrIuPPXC7DV/c5e/EV6uUGho9tHcdzMLGbR6/YO2npFY8lYJm986dojjfhyBBYj0BuYmxHakAfnfnmJlF6Mh57m51Tmq5GnT3zO1N459L+JW0qxNcb6XcQTErM0w=
+	t=1755022766; cv=none; b=asC28kB51qtlblkbi5qubqH5fP7ahT0wdEorHIjjcwha4FbciDJNJOZ+C++XBPuy08e59z20mdquc9D4ofXs0PhjVNAJV1xzigfU8On79/ycgflq5OiJXHINwK3hn1W417rR4jx03E3b0T3x3dvUkfv1CcFOPFYgzMHR1qtsYpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020772; c=relaxed/simple;
-	bh=mpzyxzJyis8EUqo1/BjBcqBXUY1qSE4a26+1kXwWCOA=;
+	s=arc-20240116; t=1755022766; c=relaxed/simple;
+	bh=j4FLM3HVxamTahhH889CLHjrV237Y1LIjugprFwgWQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQXCTU3CeQtiMz2AOytXqTAp7rsJ4v3qp1p9LULA3tJK8xJvuvy4At014vvhPN9hUOkMKk+DneTknN9TnuefpZKu/hnWkwitRthA9zlDeLnGdPmDa310YQBU/+7H7UEM5ZG+VXNiiw7oNckxs3fHCv5n/++jYUT7G2AWDWm/VnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kt4EN1s2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3119C4CEF0;
-	Tue, 12 Aug 2025 17:46:11 +0000 (UTC)
+	 MIME-Version; b=hac0iYISfnAgSa4mIB5FHwGxG+XarTIfb9MVO+eByYh/9pi4agK3iCSMbwh/dTIIwkFOKulIQ7LAt70AIDt3t9f9+oHcYv0h5GM4Fj0ZM8p1J1Au1MHgQuXknyEN/pVuahxSd+kc8jdwhA8t36M5hyMaQtj6n/qp9X/i3kHcA+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvCzeifk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC6CC4CEF6;
+	Tue, 12 Aug 2025 18:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020772;
-	bh=mpzyxzJyis8EUqo1/BjBcqBXUY1qSE4a26+1kXwWCOA=;
+	s=korg; t=1755022766;
+	bh=j4FLM3HVxamTahhH889CLHjrV237Y1LIjugprFwgWQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kt4EN1s2Qci1B5LngP6zbppAjuqrcGW/XLDAA5wEkfau2a9vHlIqP4/cfLXB2V0YC
-	 pVCUZ11/qzoWQi/g+QDGGe62QnhtR+ReMRDQz05TmeIirPQjemPC5Y9eolbWTlNlPx
-	 /OUWeBg2BeX5VBizCen5u0NRmdSqSlPFljvv3LCk=
+	b=zvCzeifkvbHs0JDu/60i9zz+bGX6eheF9MY3yuOCdCltc44BPUvIRZkr8qMlqO3S6
+	 LPpNPrzvc6iE5oF/ulH7qCHM/PdfTTUw2nTLU7Q5JOuEa+vQnVcDsynkMSP0Zdv18g
+	 V1UY8pdlHoUVqge1ZNEdLDKpNT7CAmE4IT2U8ci8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
+	Ben Hutchings <benh@debian.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/253] kcsan: test: Initialize dummy variable
+Subject: [PATCH 6.12 219/369] sh: Do not use hyphen in exported variable name
 Date: Tue, 12 Aug 2025 19:28:36 +0200
-Message-ID: <20250812172954.142107320@linuxfoundation.org>
+Message-ID: <20250812173022.999189078@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Ben Hutchings <benh@debian.org>
 
-[ Upstream commit 9872916ad1a1a5e7d089e05166c85dbd65e5b0e8 ]
+[ Upstream commit c32969d0362a790fbc6117e0b6a737a7e510b843 ]
 
-Newer compiler versions rightfully point out:
+arch/sh/Makefile defines and exports ld-bfd to be used by
+arch/sh/boot/compressed/Makefile and arch/sh/boot/romimage/Makefile.
+However some shells, including dash, will not pass through environment
+variables whose name includes a hyphen.  Usually GNU make does not use
+a shell to recurse, but if e.g. $(srctree) contains '~' it will use a
+shell here.
 
- kernel/kcsan/kcsan_test.c:591:41: error: variable 'dummy' is
- uninitialized when passed as a const pointer argument here
- [-Werror,-Wuninitialized-const-pointer]
-   591 |         KCSAN_EXPECT_READ_BARRIER(atomic_read(&dummy), false);
-       |                                                ^~~~~
- 1 error generated.
+Other instances of this problem were previously fixed by commits
+2bfbe7881ee0 "kbuild: Do not use hyphen in exported variable name"
+and 82977af93a0d "sh: rename suffix-y to suffix_y".
 
-Although this particular test does not care about the value stored in
-the dummy atomic variable, let's silence the warning.
+Rename the variable to ld_bfd.
 
-Link: https://lkml.kernel.org/r/CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com
-Fixes: 8bc32b348178 ("kcsan: test: Add test cases for memory barrier instrumentation")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Marco Elver <elver@google.com>
+References: https://buildd.debian.org/status/fetch.php?pkg=linux&arch=sh4&ver=4.13%7Erc5-1%7Eexp1&stamp=1502943967&raw=0
+Fixes: 7b022d07a0fd ("sh: Tidy up the ldscript output format specifier.")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kcsan/kcsan_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sh/Makefile                 | 10 +++++-----
+ arch/sh/boot/compressed/Makefile |  4 ++--
+ arch/sh/boot/romimage/Makefile   |  4 ++--
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
-index a60c561724be..fb5e7b65f799 100644
---- a/kernel/kcsan/kcsan_test.c
-+++ b/kernel/kcsan/kcsan_test.c
-@@ -530,7 +530,7 @@ static void test_barrier_nothreads(struct kunit *test)
- 	struct kcsan_scoped_access *reorder_access = NULL;
- #endif
- 	arch_spinlock_t arch_spinlock = __ARCH_SPIN_LOCK_UNLOCKED;
--	atomic_t dummy;
-+	atomic_t dummy = ATOMIC_INIT(0);
+diff --git a/arch/sh/Makefile b/arch/sh/Makefile
+index cab2f9c011a8..7b420424b6d7 100644
+--- a/arch/sh/Makefile
++++ b/arch/sh/Makefile
+@@ -103,16 +103,16 @@ UTS_MACHINE		:= sh
+ LDFLAGS_vmlinux		+= -e _stext
  
- 	KCSAN_TEST_REQUIRES(test, reorder_access != NULL);
- 	KCSAN_TEST_REQUIRES(test, IS_ENABLED(CONFIG_SMP));
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+-ld-bfd			:= elf32-sh-linux
+-LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64 --oformat $(ld-bfd)
++ld_bfd			:= elf32-sh-linux
++LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64 --oformat $(ld_bfd)
+ KBUILD_LDFLAGS		+= -EL
+ else
+-ld-bfd			:= elf32-shbig-linux
+-LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64+4 --oformat $(ld-bfd)
++ld_bfd			:= elf32-shbig-linux
++LDFLAGS_vmlinux		+= --defsym jiffies=jiffies_64+4 --oformat $(ld_bfd)
+ KBUILD_LDFLAGS		+= -EB
+ endif
+ 
+-export ld-bfd
++export ld_bfd
+ 
+ # Mach groups
+ machdir-$(CONFIG_SOLUTION_ENGINE)		+= mach-se
+diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
+index 8bc319ff54bf..58df491778b2 100644
+--- a/arch/sh/boot/compressed/Makefile
++++ b/arch/sh/boot/compressed/Makefile
+@@ -27,7 +27,7 @@ endif
+ 
+ ccflags-remove-$(CONFIG_MCOUNT) += -pg
+ 
+-LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(IMAGE_OFFSET) -e startup \
++LDFLAGS_vmlinux := --oformat $(ld_bfd) -Ttext $(IMAGE_OFFSET) -e startup \
+ 		   -T $(obj)/../../kernel/vmlinux.lds
+ 
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+@@ -51,7 +51,7 @@ $(obj)/vmlinux.bin.lzo: $(obj)/vmlinux.bin FORCE
+ 
+ OBJCOPYFLAGS += -R .empty_zero_page
+ 
+-LDFLAGS_piggy.o := -r --format binary --oformat $(ld-bfd) -T
++LDFLAGS_piggy.o := -r --format binary --oformat $(ld_bfd) -T
+ 
+ $(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/vmlinux.bin.$(suffix_y) FORCE
+ 	$(call if_changed,ld)
+diff --git a/arch/sh/boot/romimage/Makefile b/arch/sh/boot/romimage/Makefile
+index c7c8be58400c..17b03df0a8de 100644
+--- a/arch/sh/boot/romimage/Makefile
++++ b/arch/sh/boot/romimage/Makefile
+@@ -13,7 +13,7 @@ mmcif-obj-$(CONFIG_CPU_SUBTYPE_SH7724)	:= $(obj)/mmcif-sh7724.o
+ load-$(CONFIG_ROMIMAGE_MMCIF)		:= $(mmcif-load-y)
+ obj-$(CONFIG_ROMIMAGE_MMCIF)		:= $(mmcif-obj-y)
+ 
+-LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(load-y) -e romstart \
++LDFLAGS_vmlinux := --oformat $(ld_bfd) -Ttext $(load-y) -e romstart \
+ 		   -T $(obj)/../../kernel/vmlinux.lds
+ 
+ $(obj)/vmlinux: $(obj)/head.o $(obj-y) $(obj)/piggy.o FORCE
+@@ -24,7 +24,7 @@ OBJCOPYFLAGS += -j .empty_zero_page
+ $(obj)/zeropage.bin: vmlinux FORCE
+ 	$(call if_changed,objcopy)
+ 
+-LDFLAGS_piggy.o := -r --format binary --oformat $(ld-bfd) -T
++LDFLAGS_piggy.o := -r --format binary --oformat $(ld_bfd) -T
+ 
+ $(obj)/piggy.o: $(obj)/vmlinux.scr $(obj)/zeropage.bin arch/sh/boot/zImage FORCE
+ 	$(call if_changed,ld)
 -- 
 2.39.5
 
