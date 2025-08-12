@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-168257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C50CB2342E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4126B2302A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D0003BD3B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1916681EED
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F672FD1AD;
-	Tue, 12 Aug 2025 18:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3E82F83CB;
+	Tue, 12 Aug 2025 17:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJLTpS/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAnR39IZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51202FA0F9;
-	Tue, 12 Aug 2025 18:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7D226B2C8;
+	Tue, 12 Aug 2025 17:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023566; cv=none; b=JlpADoyeL5JUPXgrdAlYwFei1MCJbJ1U2r4Q4JX6GlbjK++jEDrKhmbcYOdJvrFYsuh85DBxb5ou+ARL8uzICivi+PpiMPVOyr8oel7dwy0FGsLIuVXbvId5MPuLNf18bk/7rYFEzHu1EXZwKlj5/8LgmcBe3If1tE4QkJ7yRyM=
+	t=1755020853; cv=none; b=mrulHFmWqvwiQ6d0rFH6/NKq5ySUDzFt8R0wSp8hf2fEmLf8sSj7Zb7DGlopCvXzQov3ONqW/TtXzPHp2GopjxjAYx74hFMUb+f+j9Ft1fWP3tHg3IOl1Mz12+AyGO+xH5ATDK4dY3eInk6ymgPKl/nc0PRSND8Nwx9wl0xxdPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023566; c=relaxed/simple;
-	bh=7vPEG+3yb7PFCqOBNRaUze/BtkNoz93HFw1m1XTcrgU=;
+	s=arc-20240116; t=1755020853; c=relaxed/simple;
+	bh=Ixv9V7KrEQ2ZUg3ix3nMzr0bDsjNpFCMxeJxi0KKIVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFrvTHn7/fqJkmX5tR74BMTnHJi775bE7eJTisrIYLAw9gRNLG8F08zIagQRKC6jKYUN/O4obOvmqC3Tspukv9+Jm2taQ6Z6S1VKgqA5NkbnTX5xvG0WYejmFEadCKlOHFp5oqQBk2TOAUOJxc5TZEd068V1tHbJHgbO28rBEk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJLTpS/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CFDC4CEF0;
-	Tue, 12 Aug 2025 18:32:46 +0000 (UTC)
+	 MIME-Version; b=FthRyJ1++AGIvfvvGIad3ZxEaLzDxTHWkEwtb0XTxwp08qTXj43cUNC6r3GOq1cJh5NoiTXIGgQisoJFhJPcSbv6SCTuIbCddM9PcJ8xAzJwZO3eoUapDTf7ofqqRLhF4Ps+p31JewUS9qUunVmvrx7cCLAvLmqBQYlu4JAYMX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAnR39IZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E08FC4CEF0;
+	Tue, 12 Aug 2025 17:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023566;
-	bh=7vPEG+3yb7PFCqOBNRaUze/BtkNoz93HFw1m1XTcrgU=;
+	s=korg; t=1755020853;
+	bh=Ixv9V7KrEQ2ZUg3ix3nMzr0bDsjNpFCMxeJxi0KKIVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJLTpS/M2ItsC/i8xkAcKTdDsJIdnukqrjp8GWzBaKJiQB7Cq1YG4Kabg923JSzTH
-	 2kXepNMfYbvAOmAXrOWt+gXMdos6Xpdz7Qp6SoHZeDnlfBIGPuxGxQ6wELRt6zME6Z
-	 iuWlJxXc6eTEGIWlXEkhllKf1z5LVxKyeu2VDfSQ=
+	b=dAnR39IZvJuQXzqUy4gj1KGq3Tuzt49jHIuuuCqiOGh9PhOctslUUT6JDgpljWHyX
+	 ysX2JvqYr/CfIahwTC12JYL1rqTq4gu94nLsJaHnTIXxNXG3C/xYew4cw3P3UTPs31
+	 82PESmNJMenXOGUz6CwB1dd3eqGNW8T9iVGb0DMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <listout@listout.xyz>,
+	Seungjin Bae <eeodqql09@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 117/627] samples: mei: Fix building on musl libc
+Subject: [PATCH 6.6 024/262] usb: host: xhci-plat: fix incorrect type for of_match variable in xhci_plat_probe()
 Date: Tue, 12 Aug 2025 19:26:52 +0200
-Message-ID: <20250812173423.767472340@linuxfoundation.org>
+Message-ID: <20250812172954.001900272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 239df3e4b4752524e7c0fb3417c218d8063654b4 ]
+[ Upstream commit d9e496a9fb4021a9e6b11e7ba221a41a2597ac27 ]
 
-The header bits/wordsize.h is glibc specific and on building on musl
-with allyesconfig results in
+The variable `of_match` was incorrectly declared as a `bool`.
+It is assigned the return value of of_match_device(), which is a pointer of
+type `const struct of_device_id *`.
 
-samples/mei/mei-amt-version.c:77:10: fatal error: bits/wordsize.h: No such file or directory
-   77 | #include <bits/wordsize.h>
-      |          ^~~~~~~~~~~~~~~~~
-
-mei-amt-version.c build file without bits/wordsize.h on musl and glibc.
-
-However on musl we get the follwing error without sys/time.h
-
-samples/mei/mei-amt-version.c: In function 'mei_recv_msg':
-samples/mei/mei-amt-version.c:159:24: error: storage size of 'tv' isn't known
-  159 |         struct timeval tv;
-      |                        ^~
-samples/mei/mei-amt-version.c:160:9: error: unknown type name 'fd_set'
-  160 |         fd_set set;
-      |         ^~~~~~
-samples/mei/mei-amt-version.c:168:9: error: implicit declaration of function 'FD_ZERO' [-Wimplicit-function-declaration]
-  168 |         FD_ZERO(&set);
-      |         ^~~~~~~
-samples/mei/mei-amt-version.c:169:9: error: implicit declaration of function 'FD_SET'; did you mean 'L_SET'? [-Wimplicit-function-declaration]
-  169 |         FD_SET(me->fd, &set);
-      |         ^~~~~~
-      |         L_SET
-samples/mei/mei-amt-version.c:170:14: error: implicit declaration of function 'select' [-Wimplicit-function-declaration]
-  170 |         rc = select(me->fd + 1, &set, NULL, NULL, &tv);
-      |              ^~~~~~
-samples/mei/mei-amt-version.c:171:23: error: implicit declaration of function 'FD_ISSET' [-Wimplicit-function-declaration]
-  171 |         if (rc > 0 && FD_ISSET(me->fd, &set)) {
-      |                       ^~~~~~~~
-samples/mei/mei-amt-version.c:159:24: warning: unused variable 'tv' [-Wunused-variable]
-  159 |         struct timeval tv;
-      |                        ^~
-
-Hence the the file has been included.
-
-Fixes: c52827cc4ddf ("staging/mei: add mei user space example")
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Link: https://lore.kernel.org/r/20250702135955.24955-1-listout@listout.xyz
+Fixes: 16b7e0cccb243 ("USB: xhci-plat: fix legacy PHY double init")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20250619055746.176112-2-eeodqql09@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/mei/mei-amt-version.c | 2 +-
+ drivers/usb/host/xhci-plat.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/mei/mei-amt-version.c b/samples/mei/mei-amt-version.c
-index 867debd3b912..1d7254bcb44c 100644
---- a/samples/mei/mei-amt-version.c
-+++ b/samples/mei/mei-amt-version.c
-@@ -69,11 +69,11 @@
- #include <string.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
-+#include <sys/time.h>
- #include <unistd.h>
- #include <errno.h>
- #include <stdint.h>
- #include <stdbool.h>
--#include <bits/wordsize.h>
- #include <linux/mei.h>
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 749ba3596c2b..b350ee080236 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -149,7 +149,7 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 	int			ret;
+ 	int			irq;
+ 	struct xhci_plat_priv	*priv = NULL;
+-	bool			of_match;
++	const struct of_device_id *of_match;
  
- /*****************************************************************************
+ 	if (usb_disabled())
+ 		return -ENODEV;
 -- 
 2.39.5
 
