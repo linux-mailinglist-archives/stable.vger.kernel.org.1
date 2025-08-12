@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-167280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B40B22F6E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F36B23084
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72C156550B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCA23B07DF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD2D2FE58A;
-	Tue, 12 Aug 2025 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924772E4248;
+	Tue, 12 Aug 2025 17:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01KqmK2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP3qKRxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A0D2FA0FD;
-	Tue, 12 Aug 2025 17:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE55268C73;
+	Tue, 12 Aug 2025 17:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020284; cv=none; b=XFvH5at9Udym1jdzM8nQKXVYm7DQYXq3FVMMt/sbayV4opMt+7hJOapxZA4jTqfN1UsSVJY6yIlYixoPLtQIL8+Um7TqjP4amvStUjJ2ySE6xneA1VQaCw55I6SdTGVvXBHRkZlMhYuiSiiCuxuOVw6VOZ+utzdAqoyHOZ4hX4A=
+	t=1755021128; cv=none; b=HC2Pqg1Efq2GAbeShbLVhRCz+AtcKv60Lc0xi+rSOlp6bRFI0ijddE5Hlh0rzuAdEixEBehmv918302+5ocxHwq4OyhLxz2+ZJsXNa0dbfaxP2Lb5Gt06DV858pBGjZRNyBCaQ1/xTbcWW+lxwVVtfDxOntleORzHQ5qThPN8Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020284; c=relaxed/simple;
-	bh=aAghk7t8EA16o3OCjtT3c7XVPTuVHBW5XpnFJeRAoQo=;
+	s=arc-20240116; t=1755021128; c=relaxed/simple;
+	bh=Jtsx6gmSkNH8xgflY5xI3kxLBkV2I9xxQz610LiATCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgUzINmat4sXLnuslcF7PLe7j4WD/mGI70WV39PVuAPmNUUjoU1XVlbJ3S61waOrR3K2wG9RQyiHWExmqwz4/NqpQW03jRR7P1dCZlpL0yvy4zh21HQK7+3jkaziI+On7wSgoqLBgHwTodzGK22yOxhZiHQbpNltW+wdxGTo3jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01KqmK2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AD0C4CEF0;
-	Tue, 12 Aug 2025 17:38:03 +0000 (UTC)
+	 MIME-Version; b=JbfdMhtiBvphrXRjXQHoCXi7Lu7aNhFj08XO8D+ERuqDk9HJ5MXGQ8EiqvSvzUfMk1i8NaWi25uoOXn3j1pW7wpw7e+72G6UGiD6GEH/UHs5mmxiic3p2Vms9Mcw6vgTXw0A1xaHfzjeR0EY4z0LXK3kBglpxhlcxNLIAjgAdmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP3qKRxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4671C4CEF0;
+	Tue, 12 Aug 2025 17:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020283;
-	bh=aAghk7t8EA16o3OCjtT3c7XVPTuVHBW5XpnFJeRAoQo=;
+	s=korg; t=1755021128;
+	bh=Jtsx6gmSkNH8xgflY5xI3kxLBkV2I9xxQz610LiATCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01KqmK2tRS3hNqlkuaDVLXDlEXuSBsA2oQ4AVyLWyifm9juDdVOUPLOuArMVlpKyQ
-	 HVDSwlMSoRGbqkrIiitFsvzNAan1Fy++2TP8ZmSmdm3bpSWQi8WnhmKNC/iTIotIjf
-	 4lgRlaicoDj91rcM3XCb06/SYqmP1njFrzHAwOoQ=
+	b=nP3qKRxLjO9u21DOmhcbe0Pu0vPABkZ+NZD0Qnu7SGNznXm94nH5YNMN1AgD+hPxR
+	 bdMgV53yS836sppJozlDhnZm0hhJGgDH9yBQ4nqihklOUEBzlz99YJnIyowxIfoUlt
+	 6LR8moWC1yjRv34Zf3aUAUIvH2xhtAEDSZzSJ8tQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Kowalski <jacek@jacekk.info>,
-	Vlad URSU <vlad@ursu.me>,
-	Simon Horman <horms@kernel.org>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.1 035/253] e1000e: ignore uninitialized checksum word on tgp
+	Annette Kobou <annette.kobou@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 035/262] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
 Date: Tue, 12 Aug 2025 19:27:03 +0200
-Message-ID: <20250812172950.225223557@linuxfoundation.org>
+Message-ID: <20250812172954.458885573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Kowalski <jacek@jacekk.info>
+From: Annette Kobou <annette.kobou@kontron.de>
 
-commit 61114910a5f6a71d0b6ea3b95082dfe031b19dfe upstream.
+[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
 
-As described by Vitaly Lifshits:
+The polarity of the DE signal of the transceiver is active-high for
+sending. Therefore rs485-rts-active-low is wrong and needs to be
+removed to make RS485 transmissions work.
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set.
-
-Unfortunately some systems have left the factory with an uninitialized
-value of 0xFFFF at register address 0x3F (checksum word location).
-So on Tiger Lake platform we ignore the computed checksum when such
-condition is encountered.
-
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Tested-by: Vlad URSU <vlad@ursu.me>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/defines.h |    3 +++
- drivers/net/ethernet/intel/e1000e/nvm.c     |    6 ++++++
- 2 files changed, 9 insertions(+)
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -638,6 +638,9 @@
- /* For checksumming, the sum of all words in the NVM should equal 0xBABA. */
- #define NVM_SUM                    0xBABA
- 
-+/* Uninitialized ("empty") checksum word value */
-+#define NVM_CHECKSUM_UNINITIALIZED 0xFFFF
-+
- /* PBA (printed board assembly) number words */
- #define NVM_PBA_OFFSET_0           8
- #define NVM_PBA_OFFSET_1           9
---- a/drivers/net/ethernet/intel/e1000e/nvm.c
-+++ b/drivers/net/ethernet/intel/e1000e/nvm.c
-@@ -558,6 +558,12 @@ s32 e1000e_validate_nvm_checksum_generic
- 		checksum += nvm_data;
- 	}
- 
-+	if (hw->mac.type == e1000_pch_tgp &&
-+	    nvm_data == NVM_CHECKSUM_UNINITIALIZED) {
-+		e_dbg("Uninitialized NVM Checksum on TGP platform - ignoring\n");
-+		return 0;
-+	}
-+
- 	if (checksum != (u16)NVM_SUM) {
- 		e_dbg("NVM Checksum Invalid\n");
- 		return -E1000_ERR_NVM;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+index 33d5f27285a4..9ece280d163a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+@@ -169,7 +169,6 @@ &uart2 {
+ 	pinctrl-0 = <&pinctrl_uart2>;
+ 	linux,rs485-enabled-at-boot-time;
+ 	rs485-rx-during-tx;
+-	rs485-rts-active-low;
+ 	uart-has-rtscts;
+ 	status = "okay";
+ };
+-- 
+2.39.5
+
 
 
 
