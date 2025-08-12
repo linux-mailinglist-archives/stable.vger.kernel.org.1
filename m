@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED171B22FE1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 223CFB232F0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C319056411B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEDA62A32F3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56382FE562;
-	Tue, 12 Aug 2025 17:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1052E3B06;
+	Tue, 12 Aug 2025 18:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2yydyes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXJmxLxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26AC2FE560;
-	Tue, 12 Aug 2025 17:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396B73F9D2;
+	Tue, 12 Aug 2025 18:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020660; cv=none; b=Q1Bwy6SC5DELBS81o32BNRFu5B1+TcwMtLkTA/bYwMV4+4TKQhABd3Ka21RkFg5Fx2gQiW7NO20xQqQOA3nHMoDnk96EHYqXpGOaDmeAZXfDxgkdDNIyvjyUOgIcjD4AOx3hFfxMf4fESaK0qlRoikxdab/H4QDVqNATFyAzwQE=
+	t=1755022719; cv=none; b=bwtEPI1BH2dyyaayQycdqupBsCZk2PA3lnhtK1BpHSYWIe80kzKCpo6BlEyzHKjZXbHYEyh3bJ7OYW1/7oXaYV0XbW6YVzHl5ER08uRre2+n6Z0bml6DCqhQv0ZWJY8TybSArss/FrCFLEjxdQRFdEJ9EhtVoPdEOEiQYlN1hEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020660; c=relaxed/simple;
-	bh=xDQYv72VHvARUg3xYrakhXjl2LIF6EwUCUk6LEYN0AU=;
+	s=arc-20240116; t=1755022719; c=relaxed/simple;
+	bh=iqHz6h6kX5s+ly2rpe+mKIwgXkHaRepmrhwjiHxxDig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjTr1D6TwFouVJ3pOvgYjmMB2bl0pXv9gFPr2lmgIadPz4nyczbE9mzZvRKWpuYEWiCV1DBFf1JIKp9TephVMUMuDNKt3e6QDrP6C0oTnkEVMrgzCOCtbbKjjZ8VREcrYncuaRUpFK3rvUgmyEFzzbA7qPtHXXLW8Pbh6TF6pyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2yydyes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27719C4CEF0;
-	Tue, 12 Aug 2025 17:44:19 +0000 (UTC)
+	 MIME-Version; b=enJSqnBIecyPI419dHdrYxK6qOXCxrlwhoOxFFJmDEqxg6PpVc5sSA98+6Vu26zYm2Kmrd0VLlfoil0OA5C/9vwIDS/oue3b1ybPKGgsiDceHaly1huSufGMI5K05cQw+++3XA5kp8bTaNdhCzFEz3doqcf6DPB+bN0SCRb3inY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXJmxLxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD395C4CEF1;
+	Tue, 12 Aug 2025 18:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020660;
-	bh=xDQYv72VHvARUg3xYrakhXjl2LIF6EwUCUk6LEYN0AU=;
+	s=korg; t=1755022719;
+	bh=iqHz6h6kX5s+ly2rpe+mKIwgXkHaRepmrhwjiHxxDig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2yydyesel4BchiIpy/HDU/7RGVfUrH2eEEkWm3BadOClK1RiljxC63Mu58ixskAt
-	 FlAP9uusULSqq+5llzZi/ftltY68Zc1NOLyhxTWXH/De7XxPO4efDtskrZhNexwD6k
-	 chLS4ZAJLxA5RZRjaU/CXpDCh+aOhRoTrOJyDdpo=
+	b=hXJmxLxNVHY1qT36lUxZa6aYrekuev+y5Hsxs1SaUqEJ1Xc5OO/tW8oQ3Y2SQRxaj
+	 PQhXqIijCd22tsWa2KqLvqn4AWNRebQj+GHuOOKyrWDUyQQ/lvxNS5vRSAUwyzMqCs
+	 nEL0ErmY9UO45V/6Jq+nOG4YnuUQK3trsOe8OrtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/253] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
-Date: Tue, 12 Aug 2025 19:28:54 +0200
-Message-ID: <20250812172954.916632938@linuxfoundation.org>
+Subject: [PATCH 6.12 238/369] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
+Date: Tue, 12 Aug 2025 19:28:55 +0200
+Message-ID: <20250812173023.731228022@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
+[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
 
-In the cpcap_usb_detect() function, the power_supply_get_by_name()
-function may return `NULL` instead of an error pointer.
-To prevent potential null pointer dereferences, Added a null check.
+WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
+comment in the declaration of struct match_workbuf stating it is and a
+modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
+WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
+line to ensure that any future changes to the value of WB_HISTORY_SIZE
+respect this requirement.
 
-Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 136db994852a ("apparmor: increase left match history buffer size")
+
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/cpcap-charger.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ security/apparmor/include/match.h | 3 ++-
+ security/apparmor/match.c         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
-index be9764541d52..05a3f4b208a4 100644
---- a/drivers/power/supply/cpcap-charger.c
-+++ b/drivers/power/supply/cpcap-charger.c
-@@ -689,9 +689,8 @@ static void cpcap_usb_detect(struct work_struct *work)
- 		struct power_supply *battery;
+diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
+index 4bb0405c9190..0539abda328d 100644
+--- a/security/apparmor/include/match.h
++++ b/security/apparmor/include/match.h
+@@ -135,7 +135,8 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
  
- 		battery = power_supply_get_by_name("battery");
--		if (IS_ERR_OR_NULL(battery)) {
--			dev_err(ddata->dev, "battery power_supply not available %li\n",
--					PTR_ERR(battery));
-+		if (!battery) {
-+			dev_err(ddata->dev, "battery power_supply not available\n");
- 			return;
- 		}
+ void aa_dfa_free_kref(struct kref *kref);
  
+-#define WB_HISTORY_SIZE 24
++/* This needs to be a power of 2 */
++#define WB_HISTORY_SIZE 32
+ struct match_workbuf {
+ 	unsigned int count;
+ 	unsigned int pos;
+diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+index 517d77d3c34c..0f791a58d933 100644
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -626,6 +626,7 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
+ 
+ #define inc_wb_pos(wb)						\
+ do {								\
++	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
+ 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
+ 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
+ } while (0)
 -- 
 2.39.5
 
