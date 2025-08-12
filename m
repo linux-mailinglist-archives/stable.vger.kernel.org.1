@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223CFB232F0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E13B234C3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEDA62A32F3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96E68165814
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1052E3B06;
-	Tue, 12 Aug 2025 18:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E062FE579;
+	Tue, 12 Aug 2025 18:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXJmxLxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhAWJeha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396B73F9D2;
-	Tue, 12 Aug 2025 18:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AF16BB5B;
+	Tue, 12 Aug 2025 18:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022719; cv=none; b=bwtEPI1BH2dyyaayQycdqupBsCZk2PA3lnhtK1BpHSYWIe80kzKCpo6BlEyzHKjZXbHYEyh3bJ7OYW1/7oXaYV0XbW6YVzHl5ER08uRre2+n6Z0bml6DCqhQv0ZWJY8TybSArss/FrCFLEjxdQRFdEJ9EhtVoPdEOEiQYlN1hEg=
+	t=1755024047; cv=none; b=hrOCn9Qnntxh44g63XVYyPXOT5eJ/fuQjgztCKHYH7hgz4wBPmwnpGE3F9hxZiguIG6WSANwT63NtpXoUVMlRrTwX19hekiXLHe9O6gKpQxQ2pRYdGI061sndMoxX/bM+g3bDwRayzoiaWuQI1ZrL5BcGWnGunk6jOcrr120sO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022719; c=relaxed/simple;
-	bh=iqHz6h6kX5s+ly2rpe+mKIwgXkHaRepmrhwjiHxxDig=;
+	s=arc-20240116; t=1755024047; c=relaxed/simple;
+	bh=q6hUYXmFUffVKa1Def1xkf2qPjL5lQ6L8fl1Ptqyk6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enJSqnBIecyPI419dHdrYxK6qOXCxrlwhoOxFFJmDEqxg6PpVc5sSA98+6Vu26zYm2Kmrd0VLlfoil0OA5C/9vwIDS/oue3b1ybPKGgsiDceHaly1huSufGMI5K05cQw+++3XA5kp8bTaNdhCzFEz3doqcf6DPB+bN0SCRb3inY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXJmxLxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD395C4CEF1;
-	Tue, 12 Aug 2025 18:18:38 +0000 (UTC)
+	 MIME-Version; b=NUAsg3i6InFpP9bOQqiA2Hio43PGtepVUV222fjJEKYQzx5h69CQ6W0N5VBZeg+jI8+NreWfbohg4GexMYYLW7o/mdqFmsBP/RsR4bbpOVO70tuCbcCyLuJ4USyJxvv5QbhuHmslSWQxqeeExmZQU22vgiU89uB2QQetp7FTAE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhAWJeha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74DAC4CEF1;
+	Tue, 12 Aug 2025 18:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022719;
-	bh=iqHz6h6kX5s+ly2rpe+mKIwgXkHaRepmrhwjiHxxDig=;
+	s=korg; t=1755024047;
+	bh=q6hUYXmFUffVKa1Def1xkf2qPjL5lQ6L8fl1Ptqyk6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXJmxLxNVHY1qT36lUxZa6aYrekuev+y5Hsxs1SaUqEJ1Xc5OO/tW8oQ3Y2SQRxaj
-	 PQhXqIijCd22tsWa2KqLvqn4AWNRebQj+GHuOOKyrWDUyQQ/lvxNS5vRSAUwyzMqCs
-	 nEL0ErmY9UO45V/6Jq+nOG4YnuUQK3trsOe8OrtM=
+	b=lhAWJehaprbqmlluNS5lgPvswFDIfXl9rUU3gwwbebIViAQZ+qirNrfJ6lXpm3FSB
+	 xK/iVCjvsMROvhXkHfUboxGEBa/dXZURt+9h3uxfhkPAufl0r2xhLJsB8wPVw2PtVB
+	 2FNAWqXV11FrgSOnUy1Rx8AlNALtfwUThS2HFEWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Lee <ryan.lee@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 238/369] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
+Subject: [PATCH 6.16 240/627] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Tue, 12 Aug 2025 19:28:55 +0200
-Message-ID: <20250812173023.731228022@linuxfoundation.org>
+Message-ID: <20250812173428.431074029@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Lee <ryan.lee@canonical.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
+[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
 
-WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
-comment in the declaration of struct match_workbuf stating it is and a
-modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
-WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
-line to ensure that any future changes to the value of WB_HISTORY_SIZE
-respect this requirement.
+This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
+skb's control block key in ieee80211_tx_dequeue()"").
 
-Fixes: 136db994852a ("apparmor: increase left match history buffer size")
+This commit broke TX with 802.11 encapsulation HW offloading, now that
+this is fixed, reapply it.
 
-Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h | 3 ++-
- security/apparmor/match.c         | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
-index 4bb0405c9190..0539abda328d 100644
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -135,7 +135,8 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
- 
- void aa_dfa_free_kref(struct kref *kref);
- 
--#define WB_HISTORY_SIZE 24
-+/* This needs to be a power of 2 */
-+#define WB_HISTORY_SIZE 32
- struct match_workbuf {
- 	unsigned int count;
- 	unsigned int pos;
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index 517d77d3c34c..0f791a58d933 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -626,6 +626,7 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
- 
- #define inc_wb_pos(wb)						\
- do {								\
-+	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
- 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
- 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
- } while (0)
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 73304a5cf6fc..8aaa59a27bc4 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3883,6 +3883,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
++	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.39.5
 
