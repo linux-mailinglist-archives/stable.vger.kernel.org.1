@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-168467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9F2B234DB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF25B230AF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30E1C4E486E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA10686AA8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3B12FDC55;
-	Tue, 12 Aug 2025 18:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46742FDC34;
+	Tue, 12 Aug 2025 17:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlCpd81T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9ASNuVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C70513AA2F;
-	Tue, 12 Aug 2025 18:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0342DE1E2;
+	Tue, 12 Aug 2025 17:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024269; cv=none; b=d8xntGo85qjToySarpHhrUtkqdYbRLjVEAlinUmtT3WOEsMxNAOllcPHypIB8n/T4jnI/LYzXcynwHjS4hjB43qxHIYzVk4elLkkuQUe32/wGsXRepc50fjtARRXV2kaf7HzV3xMgtiRhTPDBdLPUQiBEZ9ii8LAWN4SCyAJ4/4=
+	t=1755021220; cv=none; b=D1qs25dAcyRdVUjSHqTJfxWcrQiLPjt9JMA3J5wCABSVDXRMbr/7TyLu8WMa7khncQUyUPW0pTTeI/IPKh731/hNMfnZqmjffNwKz05925WHquG1pdXoFE4EU1oC8EnkhlaCg9ikLRtHTEhCd99xWiaR/o6B+aqSloxntlJBqhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024269; c=relaxed/simple;
-	bh=FTA2gUm3NNeRW+K2j340+zhRrKvlkobS9jL7kq96f4k=;
+	s=arc-20240116; t=1755021220; c=relaxed/simple;
+	bh=Z26aaxs1UkGcg8nnjmNaAzdD3oO6MkY83j/pZpTpsmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDJ42HtKqmuRCd6EXXoblCR5IMpq4WRXqRfAcb3GbWrM8b+SJGXUJi8SfwvdCnNNsRJI4ZyPaSei+fHrB3W1hbO0KQKZHhkfi48Xf66hDZs3gx36Lq0TLd1I9EVSjtPYC2tyimxLd0ZDoMN5OHi+joV7aMQlYAS2ykXHKiAcxaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlCpd81T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02D8C4CEF0;
-	Tue, 12 Aug 2025 18:44:28 +0000 (UTC)
+	 MIME-Version; b=sRoch13elWTD0pRFdu4rvvIFELu3t6s2sz3Pl9noYunR9I7QjFfzfKMvFcRal1B04+YpwSH7oM/kM4qdtJrqr+/Z/K50Fx+UFEhXXsCykTN3bwW7PaIpexziCkLDGddIdgH6U8rlAagBqq26YQyBYWHirUJoqnCKpDHyXUA9K3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9ASNuVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CE6C4CEF0;
+	Tue, 12 Aug 2025 17:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024269;
-	bh=FTA2gUm3NNeRW+K2j340+zhRrKvlkobS9jL7kq96f4k=;
+	s=korg; t=1755021220;
+	bh=Z26aaxs1UkGcg8nnjmNaAzdD3oO6MkY83j/pZpTpsmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xlCpd81T7xb2g+U7Ly4JWa32fmG8zFKd1VtQ8gfXTfx8vz7JtFkOK2QEKv1U/mV4n
-	 7LtHTI90ECDCELhJQOOzN+51WWJ9XDV0F8cbTdxEOWjr5YeD2rNrb9WqZAoQslo6ao
-	 GCyIVWMnfCnTgwFR/1+3YrGR+7Io0DQ6twOmHkY8=
+	b=I9ASNuVXqWliqJxH0KUP9dc0Hd0/ZkJtyYn0waPChSCxvpwVcWao8ExJjoM+HMYM+
+	 uDw7KDnClhzDedrcDlBAXO4qWC/q/U3j0/XAYh15zYF8/dcckg4QNefN7452oHHDpt
+	 ypHbVq4qp+F/UwD3vh/ghjvFEX73EYTWov/Otma4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 324/627] crypto: ahash - Stop legacy tfms from using the set_virt fallback path
+Subject: [PATCH 6.1 231/253] smb: client: let recv_done() cleanup before notifying the callers.
 Date: Tue, 12 Aug 2025 19:30:19 +0200
-Message-ID: <20250812173431.621165293@linuxfoundation.org>
+Message-ID: <20250812172958.659709952@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +67,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 1e2b7fcd3f075ff8c5b0e4474fe145d1c685f54f ]
+[ Upstream commit bdd7afc6dca5e0ebbb75583484aa6ea9e03fbb13 ]
 
-Ensure that drivers that have not been converted to the ahash API
-do not use the ahash_request_set_virt fallback path as they cannot
-use the software fallback.
+We should call put_receive_buffer() before waking up the callers.
 
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Fixes: 9d7a0ab1c753 ("crypto: ahash - Handle partial blocks in API")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+For the internal error case of response->type being unexpected,
+we now also call smbd_disconnect_rdma_connection() instead
+of not waking up the callers at all.
+
+Note that the SMBD_TRANSFER_DATA case still has problems,
+which will be addressed in the next commit in order to make
+it easier to review this one.
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/ahash.c                 | 3 +++
- include/crypto/internal/hash.h | 6 ++++++
- 2 files changed, 9 insertions(+)
+ fs/smb/client/smbdirect.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/crypto/ahash.c b/crypto/ahash.c
-index 3878b4da3cfd..2f06e6b4f601 100644
---- a/crypto/ahash.c
-+++ b/crypto/ahash.c
-@@ -350,6 +350,9 @@ static int ahash_do_req_chain(struct ahash_request *req,
- 	if (!crypto_ahash_need_fallback(tfm))
- 		return -ENOSYS;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index cf923f211c51..d47eae133a20 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -455,7 +455,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
+ 		log_rdma_recv(INFO, "wc->status=%d opcode=%d\n",
+ 			wc->status, wc->opcode);
+-		smbd_disconnect_rdma_connection(info);
+ 		goto error;
+ 	}
  
-+	if (crypto_hash_no_export_core(tfm))
-+		return -ENOSYS;
-+
- 	{
- 		u8 state[HASH_MAX_STATESIZE];
+@@ -472,8 +471,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		info->full_packet_received = true;
+ 		info->negotiate_done =
+ 			process_negotiation_response(response, wc->byte_len);
++		put_receive_buffer(info, response);
+ 		complete(&info->negotiate_completion);
+-		break;
++		return;
  
-diff --git a/include/crypto/internal/hash.h b/include/crypto/internal/hash.h
-index 0f85c543f80b..f052afa6e7b0 100644
---- a/include/crypto/internal/hash.h
-+++ b/include/crypto/internal/hash.h
-@@ -91,6 +91,12 @@ static inline bool crypto_hash_alg_needs_key(struct hash_alg_common *alg)
- 		!(alg->base.cra_flags & CRYPTO_ALG_OPTIONAL_KEY);
+ 	/* SMBD data transfer packet */
+ 	case SMBD_TRANSFER_DATA:
+@@ -530,14 +530,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		}
+ 
+ 		return;
+-
+-	default:
+-		log_rdma_recv(ERR,
+-			"unexpected response type=%d\n", response->type);
+ 	}
+ 
++	/*
++	 * This is an internal error!
++	 */
++	log_rdma_recv(ERR, "unexpected response type=%d\n", response->type);
++	WARN_ON_ONCE(response->type != SMBD_TRANSFER_DATA);
+ error:
+ 	put_receive_buffer(info, response);
++	smbd_disconnect_rdma_connection(info);
  }
  
-+static inline bool crypto_hash_no_export_core(struct crypto_ahash *tfm)
-+{
-+	return crypto_hash_alg_common(tfm)->base.cra_flags &
-+	       CRYPTO_AHASH_ALG_NO_EXPORT_CORE;
-+}
-+
- int crypto_grab_ahash(struct crypto_ahash_spawn *spawn,
- 		      struct crypto_instance *inst,
- 		      const char *name, u32 type, u32 mask);
+ static struct rdma_cm_id *smbd_create_id(
 -- 
 2.39.5
 
