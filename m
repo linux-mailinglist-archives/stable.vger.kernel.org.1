@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7727B232DC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8053B23487
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F54B3A8792
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31A11897AD7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BF92EAB97;
-	Tue, 12 Aug 2025 18:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990A72FA0CD;
+	Tue, 12 Aug 2025 18:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVXp0LCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks+6Dai2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637B72D8363;
-	Tue, 12 Aug 2025 18:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560031E500C;
+	Tue, 12 Aug 2025 18:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022641; cv=none; b=TfpvN96gQhHi35x8w+NXvlht/QyE5RgZp6Fw8d/zFBHjkkD5+IUlcfFai3AMd+siiWVFAdi/Nw0WTrCSxjK6bj58B1vaR3zFfE4hvHDaeanqKPasii96K7yfkDIVRfnXxXRhhNQbr/ZLofEmyzmGYexa4JyD7KsqI4aTQFFXABk=
+	t=1755023794; cv=none; b=TUJJQh8EQwOueCMpirZINvP2vIQGNpcdvQr2yi6sU4zBUiYuZFUtjEgaO9jwZKb+0WOr1Zs/+U0/PwooXEXv+cLS9LDYqjrE9oeRCat2Jg8qWwDcZyUmRPr8EafPcM010ZPoKElr+RFawOxd3wEfvFODNmyw+HOu/e2LHvf9aGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022641; c=relaxed/simple;
-	bh=0Lu8Ye09aw7r5XnC9vyzWgmQyJ5L1Jc4+PnkVE+yGqw=;
+	s=arc-20240116; t=1755023794; c=relaxed/simple;
+	bh=NxY9qPfk8zrfXmbEjdXSzSInXoPTAJAcRFSW/wE6y8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbcO17F/jxQDfcQQxB8oqdnj46av4Gwinb6BBugIZtA8WTW397PmzmDxEGh/48GrLFvD1/L1EOp3k6B+vlROD0XyF0vIqcCEtl0Km7PrB7UO2V3325XM9gQKIf+nB3ArvmOPr+RwO5eswXkaM6b84di3AJSQo1ZUuOzvl8MsEDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVXp0LCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56EAC4CEF0;
-	Tue, 12 Aug 2025 18:17:20 +0000 (UTC)
+	 MIME-Version; b=c8HqCmWzPxQaOfoW0f4vfzAzEQEToksqtwnsXsAqsvqJTrmxwINH0xBcZhauL4HrqtoFJ39yD/8kxBGXyATUycNJlI+VSwTVCElCCo/adBW0KK9nV+non++hK59+7ug7ofrTD7u8wDWvOZlDFLIhnr4oOYLzx39LSJufa59aKjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks+6Dai2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73DDC4CEF0;
+	Tue, 12 Aug 2025 18:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022641;
-	bh=0Lu8Ye09aw7r5XnC9vyzWgmQyJ5L1Jc4+PnkVE+yGqw=;
+	s=korg; t=1755023794;
+	bh=NxY9qPfk8zrfXmbEjdXSzSInXoPTAJAcRFSW/wE6y8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVXp0LCh9EEhnnBdeO9mb9gkfjZgDcF1RIbccD/qEtj9gjNpa/jz1FBAhytxwhs4+
-	 6mEtLqqBXnFXYuMfznxeeweQJAF6sBPnBIOEfoeRHUzaGp1kN2ZvauwcQTAw4xWNJ1
-	 lkgM9zc5Zaz/+Z7TI+mm5ELGMk5oVYuUt72278Gc=
+	b=Ks+6Dai2OAc4FL7H3JwuwFpVEIQdqyc1Dw2jvoLmPSiVve0tR/l+CnEJoNg53nPnA
+	 b/ks7NA+QunB9ge21/Xwq7lyuw6hxd03yyb3+GgnTOblX0ypTGxa9BK2uKgNUxroRp
+	 Zyl2GRcZh21L3WCosnfV51aBJalTBiMNp5pu9Tcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/369] perf sched: Use RC_CHK_EQUAL() to compare pointers
+Subject: [PATCH 6.16 184/627] wifi: mt76: mt7996: Fix secondary link lookup in mt7996_mcu_sta_mld_setup_tlv()
 Date: Tue, 12 Aug 2025 19:27:59 +0200
-Message-ID: <20250812173021.617601213@linuxfoundation.org>
+Message-ID: <20250812173426.282571796@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 7a4002ec9e0fced907179da94f67c3082d7b4162 ]
+[ Upstream commit e8d7eef07199887161cd6f3c062406628781f8b6 ]
 
-So that it can check two pointers to the same object properly when
-REFCNT_CHECKING is on.
+Use proper link_id value for secondary link lookup in
+mt7996_mcu_sta_mld_setup_tlv routine.
 
-Fixes: 78c32f4cb12f9430 ("libperf rc_check: Add RC_CHK_EQUAL")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-7-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 00cef41d9d8f5 ("wifi: mt76: mt7996: Add mt7996_mcu_sta_mld_setup_tlv() and mt7996_mcu_sta_eht_mld_tlv()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250704-mt7996-mlo-fixes-v1-2-356456c73f43@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 686747ae4cad..6e9c22c1c29d 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -999,7 +999,7 @@ thread_atoms_search(struct rb_root_cached *root, struct thread *thread,
- 		else if (cmp < 0)
- 			node = node->rb_right;
- 		else {
--			BUG_ON(thread != atoms->thread);
-+			BUG_ON(!RC_CHK_EQUAL(thread, atoms->thread));
- 			return atoms;
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 994526c65bfc..dd4b7b8c34ea 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2326,8 +2326,7 @@ mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
+ 
+ 	if (nlinks > 1) {
+ 		link_id = __ffs(links & ~BIT(msta->deflink_id));
+-		msta_link = mt76_dereference(msta->link[msta->deflink_id],
+-					     &dev->mt76);
++		msta_link = mt76_dereference(msta->link[link_id], &dev->mt76);
+ 		if (!msta_link)
+ 			return;
  	}
 -- 
 2.39.5
