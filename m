@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B9AB234AB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCF0B230DD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6845188ABDF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A8F1885AD5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444D62FE571;
-	Tue, 12 Aug 2025 18:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9A02FDC2F;
+	Tue, 12 Aug 2025 17:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbbYNNJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFPlXY1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033AE2F5481;
-	Tue, 12 Aug 2025 18:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA072FA0DB;
+	Tue, 12 Aug 2025 17:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023857; cv=none; b=Y+uMZkxrzdLA7Ma2Pcn90TCWDH9H+/bFhrJTj2+yOQ6XXJnJumE+5UnqtVpd3fqfUVvmUge86ZopqSXEwyn95xQxQCxOErhJdZ+FEwUf0vzPtEfm7S2MYyWcyWr80i0ht4Q/98mU5dRv+UzQF4a7/Lhoid8aqE/KSV01Pw0ZgyA=
+	t=1755021393; cv=none; b=q9dTitfdmkMUD46XB2RLdxspkmltj5cWZWPTLnbrFmJJyHYPEN2bjWjgVPMRcOy6BXjZFtUm8V2Zv+r1AE94RNVMfGG5thLigPRZw+iE5y46F6KhwmsJeRrGCr6lcz+BnO6XAOrkb4mTqhKDjVRPi7P02PUEKXOzRcRnrDjbJA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023857; c=relaxed/simple;
-	bh=ugD+9sHDj+gRJR9p7c6tYK/JllUk8RzkqtpKrjLDUB4=;
+	s=arc-20240116; t=1755021393; c=relaxed/simple;
+	bh=Lkq53+noy8fEIdk/opS7hP5JZXR6RCFKFVADQ++2fWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEhUyR6lCDSTxGceK/gaJiAtsn67zZzhmiRxlc/d4AqHXkqtP2R8azbBOrt57GkDTETFxF7yJyGZe8HSLw2GTYOTq2JTdFLXv06Bmb8KSYXnolGxp/wJbKG+M/N2pxhYKRk0EkQczc1n6/uuBwEJamDftg10VuoWWBoP11WhVjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbbYNNJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B42C4CEF0;
-	Tue, 12 Aug 2025 18:37:36 +0000 (UTC)
+	 MIME-Version; b=ro3eMsuxp65UrpEf1Db1G4cbCewQVQTfF6T2B2shaI+GbNK+B/LZLO2F4uqB6QEHdrE8Xa+GX+Hd+wowotGOtQtNTLHqhMW3VBHQhvsSfsdIT268OFtGR62aJw3+BR+1H2aNoZoic2nCduqupZXO31I65YuDq2CVKex31+kovDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFPlXY1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B539AC4CEF0;
+	Tue, 12 Aug 2025 17:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023856;
-	bh=ugD+9sHDj+gRJR9p7c6tYK/JllUk8RzkqtpKrjLDUB4=;
+	s=korg; t=1755021393;
+	bh=Lkq53+noy8fEIdk/opS7hP5JZXR6RCFKFVADQ++2fWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbbYNNJN6ZkY6NTo89WdyP46EouGiysVMNieRuKj8qgiAy3r/PJiXIqd0gv+hCHgn
-	 KrDkZoJbnD9pIzTU8FEVUHQQP+ymr0I4bHbolUveeA+mAkoLy7caDXNAgcspHG87ok
-	 ZfpwoqannzjpFLYfCrM2F2dkoUG0Xep2Q6tV1J3A=
+	b=DFPlXY1pxw8YTkHf9/juLcZ9Axi/GPvEOT/Sm+07uIqttsA6w1op6UIIYyu1MOQGy
+	 8yTLLUQF5N3PqusNLXD87cQzSn9UGU6FCgRGpN+bPL2/UW/1UEboNkkKBYHmIwSLB+
+	 auC364zPdSr+VnpY50Z4Kyih7OOihdOmSP75LYDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Corentin LABBE <clabbe.montjoie@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 201/627] netfilter: nf_tables: Drop dead code from fill_*_info routines
+Subject: [PATCH 6.6 108/262] crypto: sun8i-ce - fix nents passed to dma_unmap_sg()
 Date: Tue, 12 Aug 2025 19:28:16 +0200
-Message-ID: <20250812173426.928212305@linuxfoundation.org>
+Message-ID: <20250812172957.688012678@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 8080357a8c6cf4905bbd8969412c19d34be3395e ]
+[ Upstream commit b6cd3cfb5afe49952f8f6be947aeeca9ba0faebb ]
 
-This practically reverts commit 28339b21a365 ("netfilter: nf_tables: do
-not send complete notification of deletions"): The feature was never
-effective, due to prior modification of 'event' variable the conditional
-early return never happened.
+In sun8i_ce_cipher_unprepare(), dma_unmap_sg() is incorrectly called with
+the number of entries returned by dma_map_sg(), rather than using the
+original number of entries passed when mapping the scatterlist.
 
-User space also relies upon the current behaviour, so better reintroduce
-the shortened deletion notifications once it is fixed.
+To fix this, stash the original number of entries passed to dma_map_sg()
+in the request context.
 
-Fixes: 28339b21a365 ("netfilter: nf_tables: do not send complete notification of deletions")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 0605fa0f7826 ("crypto: sun8i-ce - split into prepare/run/unprepare")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a7240736f98e..9ebda0248d20 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1165,11 +1165,6 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_TABLE_PAD))
- 		goto nla_put_failure;
+diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+index 70434601f99b..9e093d44a066 100644
+--- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
++++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+@@ -265,8 +265,8 @@ static int sun8i_ce_cipher_prepare(struct crypto_engine *engine, void *async_req
+ 	}
  
--	if (event == NFT_MSG_DELTABLE) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
- 			 htonl(table->flags & NFT_TABLE_F_MASK)))
- 		goto nla_put_failure;
-@@ -2028,11 +2023,6 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_CHAIN_PAD))
- 		goto nla_put_failure;
+ 	chan->timeout = areq->cryptlen;
+-	rctx->nr_sgs = nr_sgs;
+-	rctx->nr_sgd = nr_sgd;
++	rctx->nr_sgs = ns;
++	rctx->nr_sgd = nd;
+ 	return 0;
  
--	if (event == NFT_MSG_DELCHAIN && !hook_list) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (nft_is_base_chain(chain)) {
- 		const struct nft_base_chain *basechain = nft_base_chain(chain);
- 		struct nft_stats __percpu *stats;
-@@ -4859,11 +4849,6 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
- 			 NFTA_SET_PAD))
- 		goto nla_put_failure;
- 
--	if (event == NFT_MSG_DELSET) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (set->flags != 0)
- 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
- 			goto nla_put_failure;
-@@ -8350,11 +8335,6 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_OBJ_PAD))
- 		goto nla_put_failure;
- 
--	if (event == NFT_MSG_DELOBJ) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
- 	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
- 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
-@@ -9394,11 +9374,6 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_FLOWTABLE_PAD))
- 		goto nla_put_failure;
- 
--	if (event == NFT_MSG_DELFLOWTABLE && !hook_list) {
--		nlmsg_end(skb, nlh);
--		return 0;
--	}
--
- 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
- 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
- 		goto nla_put_failure;
+ theend_sgs:
 -- 
 2.39.5
 
