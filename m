@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4DFB230E1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817F9B232C8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB4DA16CAE9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4862A1B61FF8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AC82F7449;
-	Tue, 12 Aug 2025 17:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CEB2FE584;
+	Tue, 12 Aug 2025 18:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mx31Cy84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5svCkqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EF02FA0DB;
-	Tue, 12 Aug 2025 17:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55F52F745D;
+	Tue, 12 Aug 2025 18:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021382; cv=none; b=SrqR/JAy5V62+EXPJZk+vdYcA5J1RJca1dKLm/ooZKUw3/wZ5JssL8HKdImAmaW8q7He0TOYLlF0T2AzpSWyATwzXVBbIua6egNU51aL8f4WuSDZbr+bKLEqQOG8X5XXOlH/osPWkEoQXM0y2Y2UEpxCp8oTeKe9LDCqm8O5v2U=
+	t=1755022579; cv=none; b=dyDU/9LGhdjlS2ZeZYp6ds/JQZcgdu2merNN8b4E0jo8dAc5lJv5naS+oOFlLn+6yHmtBzKEr1NaJkuMyySHybIA/Qg0VpgGQH1BPnJEWqQ7S4ehBwoOIinU8/LxbSXmwZ78/7NbarAwdkMuU5g0CmIYaTJf7TSmDJtS5fk1QW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021382; c=relaxed/simple;
-	bh=hAoaE51QVvkP1dwlt+TZqi0sYCNixNX+G4xol3MbWAk=;
+	s=arc-20240116; t=1755022579; c=relaxed/simple;
+	bh=PshlVZS+a9eQhTCjt/FMDWp0RhwRmvMD6GkpXs7GrkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oELIGwJt50K4O4NwnBP/98DclSZtSeJGwnEtFt8DsdMHOllojPq1fOCj4p207VTpVNIM6gulcnzS185Q9hOG33b0r28MZlc4X0PJJ1fH9wfvk0SJVdB0Zw/y0S0xL01cRBxJ4FcLqGR2Z23DWcSouA9Y0g8Mk5PPgzsZEoreZc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mx31Cy84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D04C4CEF0;
-	Tue, 12 Aug 2025 17:56:22 +0000 (UTC)
+	 MIME-Version; b=sBQQZUMU3HarA9bqaIn2Lc0oEUrbFDfvrImgNis1ubPjAnREsVcpjF1fpXPY4yspKmq/YdjWzPWa7g37qImdkqEW+EwsdUNBhcn7nDAE27n7yGA/2M7xlcO4ESzyUzW8faces6KA9hJCH8e754Sr8DvO5R+98E4PgDjHjXT8/qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5svCkqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8870C4CEF1;
+	Tue, 12 Aug 2025 18:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021382;
-	bh=hAoaE51QVvkP1dwlt+TZqi0sYCNixNX+G4xol3MbWAk=;
+	s=korg; t=1755022579;
+	bh=PshlVZS+a9eQhTCjt/FMDWp0RhwRmvMD6GkpXs7GrkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mx31Cy84bd9cW16YDbbw5rioFhNXbkay40xgvJAgWtBvJmOcnzm95/M3AmW6onECe
-	 JSy45a/+QBiGoxNVcuu/N8EiEbPHFeE5sMvtiI9o3uaX4KGpu9R4TfLrR+jjzqNDGz
-	 +ecOUOQNlIeNeazZyRYuE15CT3r3Nkvjoi8A2KHs=
+	b=H5svCkqT++YXbqGzMZN9BJHqF6zAchLJCovD9dbXrz68zOzabctCKn/KaQgPv7r3R
+	 v+Es4X5PhaxpTipcUTCXn0ooAFsyfEKl1PSUXThWUR02h2/wgZ2qjrkLhaXo/HWHO3
+	 cQrU7wDbHTQ+RcYR3uwbjUbrJy3y+Q90NLzNPyRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aishwarya TCV <aishwarya.tcv@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/262] ipv6: annotate data-races around rt->fib6_nsiblings
+Subject: [PATCH 6.12 196/369] perf tests bp_account: Fix leaked file descriptor
 Date: Tue, 12 Aug 2025 19:28:13 +0200
-Message-ID: <20250812172957.562134140@linuxfoundation.org>
+Message-ID: <20250812173022.136555545@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 31d7d67ba1274f42494256d52e86da80ed09f3cb ]
+[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
 
-rt->fib6_nsiblings can be read locklessly, add corresponding
-READ_ONCE() and WRITE_ONCE() annotations.
+Since the commit e9846f5ead26 ("perf test: In forked mode add check that
+fds aren't leaked"), the test "Breakpoint accounting" reports the error:
 
-Fixes: 66f5d6ce53e6 ("ipv6: replace rwlock with rcu and spinlock in fib6_table")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250725140725.3626540-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  # perf test -vvv "Breakpoint accounting"
+  20: Breakpoint accounting:
+  --- start ---
+  test child forked, pid 373
+  failed opening event 0
+  failed opening event 0
+  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
+  wp 0 created
+  wp 1 created
+  wp 2 created
+  wp 3 created
+  wp 0 modified to bp
+  wp max created
+  ---- end(0) ----
+  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
+
+A watchpoint's file descriptor was not properly released. This patch
+fixes the leak.
+
+Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
+Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 20 +++++++++++++-------
- net/ipv6/route.c   |  5 +++--
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ tools/perf/tests/bp_account.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 65702bddb21f..c44136cbbaa1 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -437,15 +437,17 @@ struct fib6_dump_arg {
- static int fib6_rt_dump(struct fib6_info *rt, struct fib6_dump_arg *arg)
- {
- 	enum fib_event_type fib_event = FIB_EVENT_ENTRY_REPLACE;
-+	unsigned int nsiblings;
- 	int err;
+diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
+index 4cb7d486b5c1..047433c977bc 100644
+--- a/tools/perf/tests/bp_account.c
++++ b/tools/perf/tests/bp_account.c
+@@ -104,6 +104,7 @@ static int bp_accounting(int wp_cnt, int share)
+ 		fd_wp = wp_event((void *)&the_var, &attr_new);
+ 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
+ 		pr_debug("wp max created\n");
++		close(fd_wp);
+ 	}
  
- 	if (!rt || rt == arg->net->ipv6.fib6_null_entry)
- 		return 0;
- 
--	if (rt->fib6_nsiblings)
-+	nsiblings = READ_ONCE(rt->fib6_nsiblings);
-+	if (nsiblings)
- 		err = call_fib6_multipath_entry_notifier(arg->nb, fib_event,
- 							 rt,
--							 rt->fib6_nsiblings,
-+							 nsiblings,
- 							 arg->extack);
- 	else
- 		err = call_fib6_entry_notifier(arg->nb, fib_event, rt,
-@@ -1118,7 +1120,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 
- 			if (rt6_duplicate_nexthop(iter, rt)) {
- 				if (rt->fib6_nsiblings)
--					rt->fib6_nsiblings = 0;
-+					WRITE_ONCE(rt->fib6_nsiblings, 0);
- 				if (!(iter->fib6_flags & RTF_EXPIRES))
- 					return -EEXIST;
- 				if (!(rt->fib6_flags & RTF_EXPIRES))
-@@ -1144,7 +1146,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 			 */
- 			if (rt_can_ecmp &&
- 			    rt6_qualify_for_ecmp(iter))
--				rt->fib6_nsiblings++;
-+				WRITE_ONCE(rt->fib6_nsiblings,
-+					   rt->fib6_nsiblings + 1);
- 		}
- 
- 		if (iter->fib6_metric > rt->fib6_metric)
-@@ -1194,7 +1197,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 		fib6_nsiblings = 0;
- 		list_for_each_entry_safe(sibling, temp_sibling,
- 					 &rt->fib6_siblings, fib6_siblings) {
--			sibling->fib6_nsiblings++;
-+			WRITE_ONCE(sibling->fib6_nsiblings,
-+				   sibling->fib6_nsiblings + 1);
- 			BUG_ON(sibling->fib6_nsiblings != rt->fib6_nsiblings);
- 			fib6_nsiblings++;
- 		}
-@@ -1239,7 +1243,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 				list_for_each_entry_safe(sibling, next_sibling,
- 							 &rt->fib6_siblings,
- 							 fib6_siblings)
--					sibling->fib6_nsiblings--;
-+					WRITE_ONCE(sibling->fib6_nsiblings,
-+						   sibling->fib6_nsiblings - 1);
- 				WRITE_ONCE(rt->fib6_nsiblings, 0);
- 				list_del_rcu(&rt->fib6_siblings);
- 				rt6_multipath_rebalance(next_sibling);
-@@ -1952,7 +1957,8 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
- 			notify_del = true;
- 		list_for_each_entry_safe(sibling, next_sibling,
- 					 &rt->fib6_siblings, fib6_siblings)
--			sibling->fib6_nsiblings--;
-+			WRITE_ONCE(sibling->fib6_nsiblings,
-+				   sibling->fib6_nsiblings - 1);
- 		WRITE_ONCE(rt->fib6_nsiblings, 0);
- 		list_del_rcu(&rt->fib6_siblings);
- 		rt6_multipath_rebalance(next_sibling);
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index f180b7bc9f57..eb9e505f71f9 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5230,7 +5230,8 @@ static void ip6_route_mpath_notify(struct fib6_info *rt,
- 	 */
- 	rcu_read_lock();
- 
--	if ((nlflags & NLM_F_APPEND) && rt_last && rt_last->fib6_nsiblings) {
-+	if ((nlflags & NLM_F_APPEND) && rt_last &&
-+	    READ_ONCE(rt_last->fib6_nsiblings)) {
- 		rt = list_first_or_null_rcu(&rt_last->fib6_siblings,
- 					    struct fib6_info,
- 					    fib6_siblings);
-@@ -5763,7 +5764,7 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
- 		if (dst->lwtstate &&
- 		    lwtunnel_fill_encap(skb, dst->lwtstate, RTA_ENCAP, RTA_ENCAP_TYPE) < 0)
- 			goto nla_put_failure;
--	} else if (rt->fib6_nsiblings) {
-+	} else if (READ_ONCE(rt->fib6_nsiblings)) {
- 		struct fib6_info *sibling;
- 		struct nlattr *mp;
- 
+ 	for (i = 0; i < wp_cnt; i++)
 -- 
 2.39.5
 
