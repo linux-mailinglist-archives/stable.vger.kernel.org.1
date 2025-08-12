@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-167859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4FBB23250
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73114B23431
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B841897D79
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4BA51A23795
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B84D257435;
-	Tue, 12 Aug 2025 18:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D4927FB12;
+	Tue, 12 Aug 2025 18:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0zgui/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VskZpEw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F9B305E08;
-	Tue, 12 Aug 2025 18:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3382EAB97;
+	Tue, 12 Aug 2025 18:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022232; cv=none; b=H/11zT3GwWhJFwlZ8gw+nSYebUDJwoZtJiiDQP4e3I0hoOBeqnaTpeO0oxXHJvGZOJniFcGRMX3x9koub7TxNbFAWh8Nzk1AqlDoVDKpZNJWha6OJcIUmx/upBaRVezvmGWriNrsdW/ze23mj0w0YF+4T75BnTlRQXrHk2w6+tU=
+	t=1755023518; cv=none; b=OGHZ+hM/FWU8DNvzWKizz5qQMHHYqL2arNN0awVMlDjyA5PjCGZpnIP7Kn/SHJrKgHhh83KO+IlAE3w/ZsYHHWXJDZLjpArZnAW1M52h/6Km+oWZUBVljF7PxwQs+ixXSNJtQTQce4ISApINwfVwFIuBnY208XN8w/bNqEwXe2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022232; c=relaxed/simple;
-	bh=n361qkSYWPN0DBBmS1s2d14T0V32CvWgZvRmJa+TaYk=;
+	s=arc-20240116; t=1755023518; c=relaxed/simple;
+	bh=gbyHqXYMQXB0F3RmwIKV2vOeUshCo505OLySDWYp24o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrpjanZqhgpM6No+h5NclFuOcV/1K2OKkFQQ7TXYKSHYaSQ46aCvd47NNpVbfERGcIRSNCMlgZEW+M1QEnkBeK/sjHVlqgZJXLEjroQhwRzJjkWLS1lpcUgRj03PTL09NfHNKXuuZNt6DMVpAlnNQl2jWups10/qje0Cldn2Q48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0zgui/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD3CC4CEF0;
-	Tue, 12 Aug 2025 18:10:31 +0000 (UTC)
+	 MIME-Version; b=B2HpT2fYU/RaUka93ufVf+g781kDw72Uy4NBLiC8M93rTPizzTLK6NK1lIBqLZ9j//M/0G5xXRmDPCIchFOkfk76RoJtdup2wDytoRWUFmS8XqmuOwTpaGyzZeNVEiwwdbPJj/vKxbUnWYzVF9U55UPRiw0V8Wt23CG0oHYz5NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VskZpEw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0CDC4CEF0;
+	Tue, 12 Aug 2025 18:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022232;
-	bh=n361qkSYWPN0DBBmS1s2d14T0V32CvWgZvRmJa+TaYk=;
+	s=korg; t=1755023518;
+	bh=gbyHqXYMQXB0F3RmwIKV2vOeUshCo505OLySDWYp24o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0zgui/mPDndev80gF7+qJKj+B969heUOCpupuUIOhPB9s0MmxWtgpU7vLhmebzVp
-	 sDZVjv4HzIoC4rzVPksDbYpn7tq/tZ3MKz7f2y0dJdG/RaC4TvxnEINirZg6FE/jxg
-	 YIN+HooqPRiiXwJeJ3SFNveexpAJUdmTFnERC+iU=
+	b=VskZpEw9htYfE+NFvK2cqQkSj5VlMSp0J0GujeHpD5V4XzEP9CAdzrVkTjA1nCyk1
+	 V8Ef1bIAJ5agK6HfXCllZlSxQhoPM1Jo5NHeIpOBPJig3XADiOOr7DToqaM7C8GeKG
+	 B4l6La38ASPm3tm6GwiEhYE/AvHNhd51+Awe3IUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/369] refscale: Check that nreaders and loops multiplication doesnt overflow
+Subject: [PATCH 6.16 096/627] staging: gpib: Fix error handling paths in cb_gpib_probe()
 Date: Tue, 12 Aug 2025 19:26:31 +0200
-Message-ID: <20250812173018.320836807@linuxfoundation.org>
+Message-ID: <20250812173422.971267975@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 005b6187705bc9723518ce19c5cb911fc1f7ef07 ]
+[ Upstream commit 1b0ee85ee7967a4d7a68080c3f6a66af69e4e0b4 ]
 
-The nreaders and loops variables are exposed as module parameters, which,
-in certain combinations, can lead to multiplication overflow.
+If cb_gpib_config() fails, 'info' needs to be freed, as already done in the
+remove function.
 
-Besides, loops parameter is defined as long, while through the code is
-used as int, which can cause truncation on 64-bit kernels and possible
-zeroes where they shouldn't appear.
+While at it, remove a pointless comment related to gpib_attach().
 
-Since code uses result of multiplication as int anyway, it only makes sense
-to replace loops with int. Multiplication overflow check is also added
-due to possible multiplication between two very big numbers.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 653ed64b01dc ("refperf: Add a test to measure performance of read-side synchronization")
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Fixes: e9dc69956d4d ("staging: gpib: Add Computer Boards GPIB driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/bf89d6f2f8b8c680720d02061fc4ebdd805deca8.1751709098.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/refscale.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/staging/gpib/cb7210/cb7210.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
-index 0db9db73f57f..36b78d5a0675 100644
---- a/kernel/rcu/refscale.c
-+++ b/kernel/rcu/refscale.c
-@@ -81,7 +81,7 @@ torture_param(int, holdoff, IS_BUILTIN(CONFIG_RCU_REF_SCALE_TEST) ? 10 : 0,
- // Number of typesafe_lookup structures, that is, the degree of concurrency.
- torture_param(long, lookup_instances, 0, "Number of typesafe_lookup structures.");
- // Number of loops per experiment, all readers execute operations concurrently.
--torture_param(long, loops, 10000, "Number of loops per experiment.");
-+torture_param(int, loops, 10000, "Number of loops per experiment.");
- // Number of readers, with -1 defaulting to about 75% of the CPUs.
- torture_param(int, nreaders, -1, "Number of readers, -1 for 75% of CPUs.");
- // Number of runs.
-@@ -1029,7 +1029,7 @@ static void
- ref_scale_print_module_parms(const struct ref_scale_ops *cur_ops, const char *tag)
+diff --git a/drivers/staging/gpib/cb7210/cb7210.c b/drivers/staging/gpib/cb7210/cb7210.c
+index 298ed306189d..3e2397898a9b 100644
+--- a/drivers/staging/gpib/cb7210/cb7210.c
++++ b/drivers/staging/gpib/cb7210/cb7210.c
+@@ -1184,8 +1184,7 @@ struct local_info {
+ static int cb_gpib_probe(struct pcmcia_device *link)
  {
- 	pr_alert("%s" SCALE_FLAG
--		 "--- %s:  verbose=%d verbose_batched=%d shutdown=%d holdoff=%d lookup_instances=%ld loops=%ld nreaders=%d nruns=%d readdelay=%d\n", scale_type, tag,
-+		 "--- %s:  verbose=%d verbose_batched=%d shutdown=%d holdoff=%d lookup_instances=%ld loops=%d nreaders=%d nruns=%d readdelay=%d\n", scale_type, tag,
- 		 verbose, verbose_batched, shutdown, holdoff, lookup_instances, loops, nreaders, nruns, readdelay);
- }
+ 	struct local_info *info;
+-
+-//	int ret, i;
++	int ret;
  
-@@ -1126,12 +1126,16 @@ ref_scale_init(void)
- 	// Reader tasks (default to ~75% of online CPUs).
- 	if (nreaders < 0)
- 		nreaders = (num_online_cpus() >> 1) + (num_online_cpus() >> 2);
--	if (WARN_ONCE(loops <= 0, "%s: loops = %ld, adjusted to 1\n", __func__, loops))
-+	if (WARN_ONCE(loops <= 0, "%s: loops = %d, adjusted to 1\n", __func__, loops))
- 		loops = 1;
- 	if (WARN_ONCE(nreaders <= 0, "%s: nreaders = %d, adjusted to 1\n", __func__, nreaders))
- 		nreaders = 1;
- 	if (WARN_ONCE(nruns <= 0, "%s: nruns = %d, adjusted to 1\n", __func__, nruns))
- 		nruns = 1;
-+	if (WARN_ONCE(loops > INT_MAX / nreaders,
-+		      "%s: nreaders * loops will overflow, adjusted loops to %d",
-+		      __func__, INT_MAX / nreaders))
-+		loops = INT_MAX / nreaders;
- 	reader_tasks = kcalloc(nreaders, sizeof(reader_tasks[0]),
- 			       GFP_KERNEL);
- 	if (!reader_tasks) {
+ 	/* Allocate space for private device-specific data */
+ 	info = kzalloc(sizeof(*info), GFP_KERNEL);
+@@ -1211,8 +1210,16 @@ static int cb_gpib_probe(struct pcmcia_device *link)
+ 
+ 	/* Register with Card Services */
+ 	curr_dev = link;
+-	return cb_gpib_config(link);
+-} /* gpib_attach */
++	ret = cb_gpib_config(link);
++	if (ret)
++		goto free_info;
++
++	return 0;
++
++free_info:
++	kfree(info);
++	return ret;
++}
+ 
+ /*
+  *   This deletes a driver "instance".  The device is de-registered
 -- 
 2.39.5
 
