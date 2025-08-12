@@ -1,119 +1,196 @@
-Return-Path: <stable+bounces-167154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48DBB22791
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 14:58:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D68B227C4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 15:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABD9A16617C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 12:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D2743A73D4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 13:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7766623B627;
-	Tue, 12 Aug 2025 12:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C48A27815F;
+	Tue, 12 Aug 2025 13:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIY+lz+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H87I8mjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECC9218827;
-	Tue, 12 Aug 2025 12:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8687276022
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 13:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755003233; cv=none; b=pcH5FVZYd5AtQIVQIYQ9DQfrfnT5ZMsedGmV+/0Qda2kZenb+v8JygP7AMjl5JSu0rKpbwWmSBb5wNmNXvcKyPHbKs6/EtgQavVj7RwAI9hvKpV+MrsAe/89kw+AnqdMsbZ3eO5WBRFFuSf5xTKDzPdqRRJYSU9+lWf4DlWBwiI=
+	t=1755003624; cv=none; b=BL/+wseFOJsSm0VC/IQFi7lME2g7oWGLt1oCpxj21vFoOwzZQqjN/5IEya5BChWKq1tFQl/rmVigRYiIUUaFSLsizYnoAIXfEGTxgXp7T4ODTcJXxKYmqqkTgGwwdxNL32Fl1N2f3ddlXuNk9hHVsa6VZZm5p8NaE+NH9KLWs28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755003233; c=relaxed/simple;
-	bh=666ZXj4AcCGhbJLahDGjx1GCcakbB28RNTMrqfv6E4A=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=T+4M+RPjrdVwV3kODgNPKxkoUjQ7i7266BdRBCntsrxLlyGhZyeUF4kNa88Pt+jl4mButCq+JptYTklY5uP0C5ZlIoXfYWeGXRSci3RwFz2GHuJT/beCadPJN2Y/tYQjcqLFZo3/0F7Hel6Ws7Lg0+Y+ECSA5jX53wW8KKWHtOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIY+lz+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA18C4CEF0;
-	Tue, 12 Aug 2025 12:53:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755003232;
-	bh=666ZXj4AcCGhbJLahDGjx1GCcakbB28RNTMrqfv6E4A=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=TIY+lz+ET3rAnLo6IC2MSXSkyN40+y5baa98nZ4mi8hqGfVOmvx6ctMH0Zd2zzFJC
-	 V714BBgc9tXAt6G3uRGjF2ypx17i50VgvT0o1szzHhJmU+KjWPeWf/JEQWH08Ds+DN
-	 doY38n3tDWyZSOV7vavq0iwxxJL8gN0uUmt3CCUgB43L9bXyBk8X7eqke6pWArvG6G
-	 rNa2qDensbtOKY+ppdRMyYMjWM6vfImXKlKRebHuqf4JiY5hS3+f3VAKILt5cTQUA5
-	 L0LZAvWkG+ibNC4tM8ITMYiCqw2qfnA6dtSuDq/CkHNUlYWuSgJcBzo4mJPOHc80f+
-	 pslRSOpSk7/lA==
-Date: Tue, 12 Aug 2025 14:53:50 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Qasim Ijaz <qasdev00@gmail.com>
-cc: bentiss@kernel.org, linux-input@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-    Jiri Slaby <jirislaby@kernel.org>
-Subject: Re: [PATCH v2 RESEND] HID: multitouch: fix slab out-of-bounds access
- in mt_report_fixup()
-In-Reply-To: <20250810180924.44582-1-qasdev00@gmail.com>
-Message-ID: <6o42n3q5-sq57-q7nq-rpn6-50np33r5ssqp@xreary.bet>
-References: <20250810180924.44582-1-qasdev00@gmail.com>
+	s=arc-20240116; t=1755003624; c=relaxed/simple;
+	bh=PG8hVJjep3gKKXlbagGMnZ0xM7MzoS5P57P2DRnxoek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kd8i6mwlzNOzSehHxWGDGHlAJRUTi6cPkxjHyKhKSBSLHWyuxg4k9Hbo9QsRwwdWolbfeaixIHDO9WKwXkpy2Zdzp0mqzdXSICe1+tQCz3zSc4CrFAEwq2/3G550dNsSFaC0W3jLntuYPrtVHqEjL5EYWa73W6GURddejGDoavM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H87I8mjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABFDC4CEF0;
+	Tue, 12 Aug 2025 13:00:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755003624;
+	bh=PG8hVJjep3gKKXlbagGMnZ0xM7MzoS5P57P2DRnxoek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H87I8mjK4BR3lRI7tKXcVv8B+87D+Mh5veIJIxIiTBgc+2ue679kYkJObF+8XMmm7
+	 SqtRv9q6zLnyrpAFJaJvBftohGlDCMeFiHeXE7mktI3NWr5sj3qBJEHmEb7JfW5GgI
+	 RPxSauy/knFEtTpnzgeO5iC6o6DuSXmUb43i2Xd0=
+Date: Tue, 12 Aug 2025 15:00:20 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jimmy Tran <jtoantran@google.com>
+Cc: stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Laight <david.laight@aculab.com>,
+	Andrei Vagin <avagin@gmail.com>
+Subject: Re: [PATCH v2 2/7] runtime constants: add default dummy
+ infrastructure
+Message-ID: <2025081229-unwound-palpitate-7671@gregkh>
+References: <20250806162003.1134886-1-jtoantran@google.com>
+ <20250806162003.1134886-3-jtoantran@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250806162003.1134886-3-jtoantran@google.com>
 
-On Sun, 10 Aug 2025, Qasim Ijaz wrote:
-
-> A malicious HID device can trigger a slab out-of-bounds during
-> mt_report_fixup() by passing in report descriptor smaller than
-> 607 bytes. mt_report_fixup() attempts to patch byte offset 607
-> of the descriptor with 0x25 by first checking if byte offset
-> 607 is 0x15 however it lacks bounds checks to verify if the
-> descriptor is big enough before conducting this check. Fix
-> this bug by ensuring the descriptor size is at least 608
-> bytes before accessing it.
+On Wed, Aug 06, 2025 at 04:19:58PM +0000, Jimmy Tran wrote:
+> From: Linus Torvalds <torvalds@linux-foundation.org>
 > 
-> Below is the KASAN splat after the out of bounds access happens:
+> commit e78298556ee5d881f6679effb2a6743969ea6e2d upstream.
 > 
-> [   13.671954] ==================================================================
-> [   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
-> [   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
-> [   13.673297]
-> [   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
-> [   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
-> [   13.673297] Call Trace:
-> [   13.673297]  <TASK>
-> [   13.673297]  dump_stack_lvl+0x5f/0x80
-> [   13.673297]  print_report+0xd1/0x660
-> [   13.673297]  kasan_report+0xe5/0x120
-> [   13.673297]  __asan_report_load1_noabort+0x18/0x20
-> [   13.673297]  mt_report_fixup+0x103/0x110
-> [   13.673297]  hid_open_report+0x1ef/0x810
-> [   13.673297]  mt_probe+0x422/0x960
-> [   13.673297]  hid_device_probe+0x2e2/0x6f0
-> [   13.673297]  really_probe+0x1c6/0x6b0
-> [   13.673297]  __driver_probe_device+0x24f/0x310
-> [   13.673297]  driver_probe_device+0x4e/0x220
-> [   13.673297]  __device_attach_driver+0x169/0x320
-> [   13.673297]  bus_for_each_drv+0x11d/0x1b0
-> [   13.673297]  __device_attach+0x1b8/0x3e0
-> [   13.673297]  device_initial_probe+0x12/0x20
-> [   13.673297]  bus_probe_device+0x13d/0x180
-> [   13.673297]  device_add+0xe3a/0x1670
-> [   13.673297]  hid_add_device+0x31d/0xa40
-> [...]
+> This adds the initial dummy support for 'runtime constants' for when
+> an architecture doesn't actually support an implementation of fixing
+> up said runtime constants.
 > 
-> Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-> Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+> This ends up being the fallback to just using the variables as regular
+> __ro_after_init variables, and changes the dcache d_hash() function to
+> use this model.
+> 
+> Cc: <stable@vger.kernel.org> # 6.10.x: e60cc61: vfs: dcache: move hashlen_hash
+> Fixes: e78298556ee5 ("runtime constants: add default dummy infrastructure")
+> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Jimmy Tran <jtoantran@google.com>
 > ---
-> v2:
-> - Simplify fix with a if-size check after discussion with Jiri Slaby
-> - Change explanation of bug to reflect inclusion of a if-size check
+>  fs/dcache.c                         | 11 ++++++++++-
+>  include/asm-generic/Kbuild          |  1 +
+>  include/asm-generic/runtime-const.h | 15 +++++++++++++++
+>  include/asm-generic/vmlinux.lds.h   |  8 ++++++++
+>  4 files changed, 34 insertions(+), 1 deletion(-)
+>  create mode 100644 include/asm-generic/runtime-const.h
+> 
+> diff --git a/fs/dcache.c b/fs/dcache.c
+> index 82adee104f82c..9e5c92b4b4aaa 100644
+> --- a/fs/dcache.c
+> +++ b/fs/dcache.c
+> @@ -35,6 +35,8 @@
+>  #include "internal.h"
+>  #include "mount.h"
+>  
+> +#include <asm/runtime-const.h>
+> +
+>  /*
+>   * Usage:
+>   * dcache->d_inode->i_lock protects:
+> @@ -102,7 +104,8 @@ static struct hlist_bl_head *dentry_hashtable __read_mostly;
+>  
+>  static inline struct hlist_bl_head *d_hash(unsigned long hashlen)
+>  {
+> -	return dentry_hashtable + ((u32)hashlen >> d_hash_shift);
+> +	return runtime_const_ptr(dentry_hashtable) +
+> +		runtime_const_shift_right_32(hashlen, d_hash_shift);
+>  }
+>  
+>  #define IN_LOOKUP_SHIFT 10
+> @@ -3297,6 +3300,9 @@ static void __init dcache_init_early(void)
+>  					0,
+>  					0);
+>  	d_hash_shift = 32 - d_hash_shift;
+> +
+> +	runtime_const_init(shift, d_hash_shift);
+> +	runtime_const_init(ptr, dentry_hashtable);
+>  }
+>  
+>  static void __init dcache_init(void)
+> @@ -3325,6 +3331,9 @@ static void __init dcache_init(void)
+>  					0,
+>  					0);
+>  	d_hash_shift = 32 - d_hash_shift;
+> +
+> +	runtime_const_init(shift, d_hash_shift);
+> +	runtime_const_init(ptr, dentry_hashtable);
+>  }
+>  
+>  /* SLAB cache for __getname() consumers */
+> diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+> index 941be574bbe00..22673ec5defbb 100644
+> --- a/include/asm-generic/Kbuild
+> +++ b/include/asm-generic/Kbuild
+> @@ -46,6 +46,7 @@ mandatory-y += pci.h
+>  mandatory-y += percpu.h
+>  mandatory-y += pgalloc.h
+>  mandatory-y += preempt.h
+> +mandatory-y += runtime-const.h
+>  mandatory-y += rwonce.h
+>  mandatory-y += sections.h
+>  mandatory-y += serial.h
+> diff --git a/include/asm-generic/runtime-const.h b/include/asm-generic/runtime-const.h
+> new file mode 100644
+> index 0000000000000..3e68a17fbf287
+> --- /dev/null
+> +++ b/include/asm-generic/runtime-const.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_RUNTIME_CONST_H
+> +#define _ASM_RUNTIME_CONST_H
+> +
+> +/*
+> + * This is the fallback for when the architecture doesn't
+> + * support the runtime const operations.
+> + *
+> + * We just use the actual symbols as-is.
+> + */
+> +#define runtime_const_ptr(sym) (sym)
+> +#define runtime_const_shift_right_32(val, sym) ((u32)(val)>>(sym))
+> +#define runtime_const_init(type, sym) do { } while (0)
+> +
+> +#endif
+> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+> index cf3f8b9bf43f0..66bfd3dc91a33 100644
+> --- a/include/asm-generic/vmlinux.lds.h
+> +++ b/include/asm-generic/vmlinux.lds.h
+> @@ -907,6 +907,14 @@
+>  #define CON_INITCALL							\
+>  	BOUNDED_SECTION_POST_LABEL(.con_initcall.init, __con_initcall, _start, _end)
+>  
+> +#define RUNTIME_NAME(t, x) runtime_##t##_##x
 
-Applied to hid.git#for-6.17/upstream-fixes, thanks.
+I appreciate wanting to do things in the proper coding style, but when
+backporting commits, please do NOT make whitespace changes like this as
+it makes follow-on patches hard, if not impossible, to ever apply.
 
--- 
-Jiri Kosina
-SUSE Labs
+This is doubly important when dealing with maintaining kernel trees for
+the number of years we do here, tiny things like this add up quickly and
+make just more and more work overall for everyone involved.
 
+Same for later commits in this series, please do not add extra
+whitespace where the original commit did not have it.  Can you fix this
+all up and submit a v3 after verifying it works correctly?
+
+thanks,
+
+greg k-h
 
