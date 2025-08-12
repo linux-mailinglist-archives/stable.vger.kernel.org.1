@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-168092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F8DB232FF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE07B231BC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDACD7AB6C5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C882B188EFF1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F331EF38C;
-	Tue, 12 Aug 2025 18:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BD02FF147;
+	Tue, 12 Aug 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zz2SJ0Fe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIqEIFhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA281FF7C5;
-	Tue, 12 Aug 2025 18:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFBB2F5E;
+	Tue, 12 Aug 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023017; cv=none; b=Gs4EjC5dlCxzD7WYxmELe3oycUvMqaIyYta8Hqp5/gUocjlOtrVdkLvc5R/ZybcsdgXhlr3qokhgIFUZuGmldj4pUaOlxXtKDPLBDeBMXm75fM/yHcwTDwnF1xvD6LbQxqK+1KO16pLKxYcX/56U6Jl+cqUOSo3AHEY5pvaZzkE=
+	t=1755021853; cv=none; b=o7d55nQ4Nxe4i77Ayd6tjVkAZqnyhNlYapS2j4Rfl1dn5IJxMRBNadu/VLMkQlKKGHsk06ZlgpO45K9MgmdInXst4teWrWBAKBVGeu2w+YIyRE7qIo2xGCRuxK86ZrLynLt89QnHA+arVwGdfJEM+MW/oOuIaoRRZrsfx40w5NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023017; c=relaxed/simple;
-	bh=CuAAvE2BHD47gsZZ28WomOAibslkNyeyl4bbYUB7iks=;
+	s=arc-20240116; t=1755021853; c=relaxed/simple;
+	bh=U8BYxjoiJOawlEhVfsSfXO3uSUZ56cIGq+CiYsMiz7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLT5M5Q9zt5TnlVwXu5wWsdk6eY71iKKmx3yqXN2oWPhjSnY7bHvSLQwKA0MqDnUlmsjqSmft9hlSf3qz+FsZWwTK1jnCIuYChYRrBjOuONjsAqcQTan4tTOov44K70KAevntYyFb087zMziHOQ5g4G4VOw/iF43Ls/ADm4+DUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zz2SJ0Fe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08951C4CEF6;
-	Tue, 12 Aug 2025 18:23:36 +0000 (UTC)
+	 MIME-Version; b=nXYctBxwXo7A3kt7mlA6yCET+HtVra8Vbp2YSTfYVDbgWXPJr6WVa5FiH93+cVY2tGt3AMh+Nqzr0JrGmnRUz5eS4mRpGifWXZQdP3Xdr7kVT00884q/sUFwkb39Ij+PGONdE2CqY1IBtNOi2QJVli59X1/AdIrE3jc8+0zxlF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIqEIFhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80282C4CEF0;
+	Tue, 12 Aug 2025 18:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023017;
-	bh=CuAAvE2BHD47gsZZ28WomOAibslkNyeyl4bbYUB7iks=;
+	s=korg; t=1755021853;
+	bh=U8BYxjoiJOawlEhVfsSfXO3uSUZ56cIGq+CiYsMiz7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zz2SJ0FeBo9s+iDBmgJ6ZL9wzlPXYfwrrpAyJ7WQPrv6VwdZPEFstUeU8tzbltVYL
-	 etyodWpmkHWtY5L/w5dBW93N/c8nbIQcwkcE6ATMyqJmEpLaqW/yElvUNnfj14lfvI
-	 C/XtydDfQY0a8gvDz3PWJUeZFEdYgDTNAtgMNBvU=
+	b=tIqEIFhT4hcuSyWG20Y6+grxD/Bc1xmFqEyk8fjqXZX99YUVYUf8ExKSIlSLIAgLB
+	 Of9uVUWeUuZwwbTup4bHuyKA4L7GVHpjkJuDCXenX0ePwLIBrjpkC6y0CrEU0Lsa0v
+	 BAhG1xPnEWvi7p/fFkkBYxNUcstcqCIB40XNGUVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stefan Metzmacher <metze@samba.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 318/369] smb: client: let recv_done() cleanup before notifying the callers.
+Subject: [PATCH 6.6 227/262] smb: client: let recv_done() cleanup before notifying the callers.
 Date: Tue, 12 Aug 2025 19:30:15 +0200
-Message-ID: <20250812173028.686241478@linuxfoundation.org>
+Message-ID: <20250812173002.823566955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,10 +99,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 5690e8b3d101..d26b8cef82d6 100644
+index 49aafb58c7df..c7f4eb8c9a10 100644
 --- a/fs/smb/client/smbdirect.c
 +++ b/fs/smb/client/smbdirect.c
-@@ -454,7 +454,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+@@ -467,7 +467,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
  	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
  		log_rdma_recv(INFO, "wc->status=%d opcode=%d\n",
  			wc->status, wc->opcode);
@@ -110,7 +110,7 @@ index 5690e8b3d101..d26b8cef82d6 100644
  		goto error;
  	}
  
-@@ -471,8 +470,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+@@ -484,8 +483,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
  		info->full_packet_received = true;
  		info->negotiate_done =
  			process_negotiation_response(response, wc->byte_len);
@@ -121,7 +121,7 @@ index 5690e8b3d101..d26b8cef82d6 100644
  
  	/* SMBD data transfer packet */
  	case SMBD_TRANSFER_DATA:
-@@ -529,14 +529,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+@@ -542,14 +542,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
  		}
  
  		return;
