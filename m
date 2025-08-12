@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73433B233AA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 365F3B23205
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D53EE3B8E7E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E5F17592E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CCB2FDC4F;
-	Tue, 12 Aug 2025 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A02320409A;
+	Tue, 12 Aug 2025 18:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U71YFZ3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkRMudPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E792FD1AD;
-	Tue, 12 Aug 2025 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3862F5E;
+	Tue, 12 Aug 2025 18:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023199; cv=none; b=rqMZ5A59CNEZ6JfpsoRkgsViXxEIfv4hVaed6794pjO/btJFutJI/cJHvyDEARGbbfxAcMlsgPBq4nzP27w21d6l5hbcFHHQ37+6Sfs9csEjWm0bYd+z9bjlQ0AvgKbOToVqpSiE8kf0WUa6ap9Men0geSYRW+E2w57swzxUyOU=
+	t=1755022028; cv=none; b=I5FIwuoFWz0s7Z/W9nDvyj5O25Gt73YLuzk5/gpOhqlS4VLMZPRu82+b+WhoiTt1YfKJ294xAPiGzhYlhN8MsryeWte91hKQc4bLYbu5yfWi4+gPzSM8uG+Zi3i/HL+ybbVcuUPRpRR+vFRjcRPQYrUxW8facUvr4+tJJ7GrWco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023199; c=relaxed/simple;
-	bh=HsrS4tEl73UPdDBqpsmDALOsB0Vbuf7PHPQ+yldGcYI=;
+	s=arc-20240116; t=1755022028; c=relaxed/simple;
+	bh=34NmTKVINyiclWEVwpIFJqCBPfjEPywG/KdarvsW330=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CD33/tziyAAGqIuS0p78X+iKpulwsT5mLNc+9aXsTWcdYG9RJkxH44dXHOYn58nbgcuox289RE8mLs1TOaSIBiVUj7GWFuniTwf5aM+wuFNYBDQce95G5yafn1+k0Bipld3Q4gYvy/HRsKY0ZBTBoaDCVEdc4HgwFcdE+I+x2Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U71YFZ3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27DEC4CEF0;
-	Tue, 12 Aug 2025 18:26:38 +0000 (UTC)
+	 MIME-Version; b=rTWnpT4z50u/mJzMTM2Yysl9fwonmk2DWTfpkFARJ4xvVduKFA+9ymDCrcboGV5JT6ra4h0wCAyJVQj0Cj9f/1bCUqhoP9999gsKAaB1nwQmx0SKhyaUN55RDB6QybZXRcoTBFvX1+BDTtnR2MwVrP5WZK2lO1KbCM8ncJx17ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkRMudPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B93AC4CEF0;
+	Tue, 12 Aug 2025 18:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023199;
-	bh=HsrS4tEl73UPdDBqpsmDALOsB0Vbuf7PHPQ+yldGcYI=;
+	s=korg; t=1755022028;
+	bh=34NmTKVINyiclWEVwpIFJqCBPfjEPywG/KdarvsW330=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U71YFZ3hsNpg/Pj5PNfrT3cUHaNpjDIXcw4STyyZuXd6ju6/BxSZuYy+7jsm43dZJ
-	 Cqs+X5dByiYoEqKpYAJlsnDhETr8yjqQMZrNgWrY/+PZ41RLl0d2iXuTaKShetX4cK
-	 kkaAROwAyoRF1PoEfORTLPlVi8gLdzsWPXTD34IM=
+	b=EkRMudPNHjnfgxX1mj8TT4Qgn101ccPCPC5b8hbbPP8FgB8jbERrOUSOOxbQGEhcb
+	 fCBBQfQvLyDA3OizAPQWpdXODHMZgMKw5cJYfeSbAgaCb22o1TPK02UQrSEuWLq1B2
+	 sIjDwK4oneoqLXTGPdB33oaXYAXUNS2oXbMzpuz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 010/627] hfs: make splice write available again
+Subject: [PATCH 6.12 008/369] [ceph] parse_longname(): strrchr() expects NUL-terminated string
 Date: Tue, 12 Aug 2025 19:25:05 +0200
-Message-ID: <20250812173419.716664121@linuxfoundation.org>
+Message-ID: <20250812173015.058691573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 4c831f30475a222046ded25560c3810117a6cff6 ]
+[ Upstream commit 101841c38346f4ca41dc1802c867da990ffb32eb ]
 
-Since 5.10, splice() or sendfile() return EINVAL. This was
-caused by commit 36e2c7421f02 ("fs: don't allow splice read/write
-without explicit ops").
+... and parse_longname() is not guaranteed that.  That's the reason
+why it uses kmemdup_nul() to build the argument for kstrtou64();
+the problem is, kstrtou64() is not the only thing that need it.
 
-This patch initializes the splice_write field in file_operations, like
-most file systems do, to restore the functionality.
+Just get a NUL-terminated copy of the entire thing and be done
+with that...
 
-Fixes: 36e2c7421f02 ("fs: don't allow splice read/write without explicit ops")
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250529140033.2296791-2-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: dd66df0053ef "ceph: add support for encrypted snapshot names"
+Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ceph/crypto.c | 31 ++++++++++++-------------------
+ 1 file changed, 12 insertions(+), 19 deletions(-)
 
-diff --git a/fs/hfs/inode.c b/fs/hfs/inode.c
-index a81ce7a740b9..451115360f73 100644
---- a/fs/hfs/inode.c
-+++ b/fs/hfs/inode.c
-@@ -692,6 +692,7 @@ static const struct file_operations hfs_file_operations = {
- 	.write_iter	= generic_file_write_iter,
- 	.mmap		= generic_file_mmap,
- 	.splice_read	= filemap_splice_read,
-+	.splice_write	= iter_file_splice_write,
- 	.fsync		= hfs_file_fsync,
- 	.open		= hfs_file_open,
- 	.release	= hfs_file_release,
+diff --git a/fs/ceph/crypto.c b/fs/ceph/crypto.c
+index 3b3c4d8d401e..9c7062245880 100644
+--- a/fs/ceph/crypto.c
++++ b/fs/ceph/crypto.c
+@@ -215,35 +215,31 @@ static struct inode *parse_longname(const struct inode *parent,
+ 	struct ceph_client *cl = ceph_inode_to_client(parent);
+ 	struct inode *dir = NULL;
+ 	struct ceph_vino vino = { .snap = CEPH_NOSNAP };
+-	char *inode_number;
+-	char *name_end;
+-	int orig_len = *name_len;
++	char *name_end, *inode_number;
+ 	int ret = -EIO;
+-
++	/* NUL-terminate */
++	char *str __free(kfree) = kmemdup_nul(name, *name_len, GFP_KERNEL);
++	if (!str)
++		return ERR_PTR(-ENOMEM);
+ 	/* Skip initial '_' */
+-	name++;
+-	name_end = strrchr(name, '_');
++	str++;
++	name_end = strrchr(str, '_');
+ 	if (!name_end) {
+-		doutc(cl, "failed to parse long snapshot name: %s\n", name);
++		doutc(cl, "failed to parse long snapshot name: %s\n", str);
+ 		return ERR_PTR(-EIO);
+ 	}
+-	*name_len = (name_end - name);
++	*name_len = (name_end - str);
+ 	if (*name_len <= 0) {
+ 		pr_err_client(cl, "failed to parse long snapshot name\n");
+ 		return ERR_PTR(-EIO);
+ 	}
+ 
+ 	/* Get the inode number */
+-	inode_number = kmemdup_nul(name_end + 1,
+-				   orig_len - *name_len - 2,
+-				   GFP_KERNEL);
+-	if (!inode_number)
+-		return ERR_PTR(-ENOMEM);
++	inode_number = name_end + 1;
+ 	ret = kstrtou64(inode_number, 10, &vino.ino);
+ 	if (ret) {
+-		doutc(cl, "failed to parse inode number: %s\n", name);
+-		dir = ERR_PTR(ret);
+-		goto out;
++		doutc(cl, "failed to parse inode number: %s\n", str);
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	/* And finally the inode */
+@@ -254,9 +250,6 @@ static struct inode *parse_longname(const struct inode *parent,
+ 		if (IS_ERR(dir))
+ 			doutc(cl, "can't find inode %s (%s)\n", inode_number, name);
+ 	}
+-
+-out:
+-	kfree(inode_number);
+ 	return dir;
+ }
+ 
 -- 
 2.39.5
 
