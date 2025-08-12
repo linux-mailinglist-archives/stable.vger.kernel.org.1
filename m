@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C63B23531
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80106B23174
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895A83B521B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26DE03A8132
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4062A2FDC55;
-	Tue, 12 Aug 2025 18:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768E12FE591;
+	Tue, 12 Aug 2025 18:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PzqNbB+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ax8fRECW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA00F2F291B;
-	Tue, 12 Aug 2025 18:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EB8282E1;
+	Tue, 12 Aug 2025 18:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024204; cv=none; b=Na/Gf6Ny+B0wMwpVGBJbOBVpFbNiHJ508o6jg/7L3BvlSdTrL4Y3OYN0RSztO8RsVtB9sa1bRf0oGYaKulN7fxRpk2uXpoNKW0pqIy8d2/h6rENECee3eS+a0O+hyPAOmQVbtVK6rYMrvVI1TXrES5R61aaaV1NLDD8ntgk0nlU=
+	t=1755021742; cv=none; b=XK0lHJscPfvqK1u531jEyGfIEXtU+9iBc+ao1TgKMDPr5HmvYnXz0SdMwOiC07ZUwP4BNgugOeKix+8Fe/zPrcDqIUPq71JRjI9k2JVstMCsf324ddBLqFqNosaWugv5MztkzKOaxdmqTTA7HyvNThl4v1grjDvoc7t2I1OIZ7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024204; c=relaxed/simple;
-	bh=WweE8xjqWSsbxlBZ6dXJY5uJ8EqjhsFciXgMhrck5kc=;
+	s=arc-20240116; t=1755021742; c=relaxed/simple;
+	bh=FH4r/zxnW7htRwxV+XJJzLt9WOozqFqQb5gZbY2JLMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCwq+iMXwkjUo13EL1CfRihLxO4MnMnc4NyyU0aEU+SGifFXeU/DoKt3TXC6Kv+IQHHuDeJ8yNh11FYF6EYkifBjo+K09IxHdODw+lsSE2ANW1V/l1C9D+g0sOnb3sdENv3oITdSgkU5fPo9oQARIIf1yqMmuRA/F/W6s2TAh2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PzqNbB+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52885C4CEF0;
-	Tue, 12 Aug 2025 18:43:23 +0000 (UTC)
+	 MIME-Version; b=Skh9/OP9ueg8Xk6/CRkRdxmankkZVXoyukUjLmCyDWTDPRreWvbruhIkMGreoWWCJgd+gKYrBdviK1Kx0wU/QNcxtn3yR+s2j0uzD3eCV0rOEX2NviPoQQuxfFXAVFiPJ6ciudKqX25qDx/dnl6wrWTlMUG4SpBFnGkMgijkL0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ax8fRECW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7EFC4CEF0;
+	Tue, 12 Aug 2025 18:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024203;
-	bh=WweE8xjqWSsbxlBZ6dXJY5uJ8EqjhsFciXgMhrck5kc=;
+	s=korg; t=1755021741;
+	bh=FH4r/zxnW7htRwxV+XJJzLt9WOozqFqQb5gZbY2JLMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PzqNbB+ZwVuj2oC0hC23vwC9vS1dtqiwNrf73k24Ei+aLp4z5FjHtNpdjpfZRVq2
-	 7H+iKbWgzyNkLZXDB0QHP9tN643MWQGGu4PQB5weYZ3nAGPxppSyzOjWcv2j5y8dHF
-	 UiICnPVfY0tZDKhOWSluttJzkaLhCqsz1zSQnEUg=
+	b=Ax8fRECWynSnixht3pAWR9YWAjZsSDTBA1hJ6dJkKgSkWrAyR0/p8KNJX1h0hwstI
+	 W5gKfXdSLOVRoz8/GjGJUCp0JECNQKlasKx26dOScebp7qdxKgLv4mZ8MYnWYS/b3P
+	 mImCEcmPxoldz4MmOp8twE6ztC4NXxHd8CJ91jw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com,
+	Takamitsu Iwai <takamitz@amazon.co.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 303/627] crypto: qat - use unmanaged allocation for dc_data
-Date: Tue, 12 Aug 2025 19:29:58 +0200
-Message-ID: <20250812173430.839706802@linuxfoundation.org>
+Subject: [PATCH 6.6 211/262] net/sched: taprio: enforce minimum value for picos_per_byte
+Date: Tue, 12 Aug 2025 19:29:59 +0200
+Message-ID: <20250812173002.135423107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+From: Takamitsu Iwai <takamitz@amazon.co.jp>
 
-[ Upstream commit 4cc871ad0173e8bc22f80e3609e34d546d30ef1a ]
+[ Upstream commit ae8508b25def57982493c48694ef135973bfabe0 ]
 
-The dc_data structure holds data required for handling compression
-operations, such as overflow buffers. In this context, the use of
-managed memory allocation APIs (devm_kzalloc() and devm_kfree())
-is not necessary, as these data structures are freed and
-re-allocated when a device is restarted in adf_dev_down() and
-adf_dev_up().
+Syzbot reported a WARNING in taprio_get_start_time().
 
-Additionally, managed APIs automatically handle memory cleanup when the
-device is detached, which can lead to conflicts with manual cleanup
-processes. Specifically, if a device driver invokes the adf_dev_down()
-function as part of the cleanup registered with
-devm_add_action_or_reset(), it may attempt to free memory that is also
-managed by the device's resource management system, potentially leading
-to a double-free.
+When link speed is 470,589 or greater, q->picos_per_byte becomes too
+small, causing length_to_duration(q, ETH_ZLEN) to return zero.
 
-This might result in a warning similar to the following when unloading
-the device specific driver, for example qat_6xxx.ko:
+This zero value leads to validation failures in fill_sched_entry() and
+parse_taprio_schedule(), allowing arbitrary values to be assigned to
+entry->interval and cycle_time. As a result, sched->cycle can become zero.
 
-    qat_free_dc_data+0x4f/0x60 [intel_qat]
-    qat_compression_event_handler+0x3d/0x1d0 [intel_qat]
-    adf_dev_shutdown+0x6d/0x1a0 [intel_qat]
-    adf_dev_down+0x32/0x50 [intel_qat]
-    devres_release_all+0xb8/0x110
-    device_unbind_cleanup+0xe/0x70
-    device_release_driver_internal+0x1c1/0x200
-    driver_detach+0x48/0x90
-    bus_remove_driver+0x74/0xf0
-    pci_unregister_driver+0x2e/0xb0
+Since SPEED_800000 is the largest defined speed in
+include/uapi/linux/ethtool.h, this issue can occur in realistic scenarios.
 
-Use unmanaged memory allocation APIs (kzalloc_node() and kfree()) for
-the dc_data structure. This ensures that memory is explicitly allocated
-and freed under the control of the driver code, preventing manual
-deallocation from interfering with automatic cleanup.
+To ensure length_to_duration() returns a non-zero value for minimum-sized
+Ethernet frames (ETH_ZLEN = 60), picos_per_byte must be at least 17
+(60 * 17 > PSEC_PER_NSEC which is 1000).
 
-Fixes: 1198ae56c9a5 ("crypto: qat - expose deflate through acomp api for QAT GEN2")
-Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This patch enforces a minimum value of 17 for picos_per_byte when the
+calculated value would be lower, and adds a warning message to inform
+users that scheduling accuracy may be affected at very high link speeds.
+
+Fixes: fb66df20a720 ("net/sched: taprio: extend minimum interval restriction to entire cycle too")
+Reported-by: syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=398e1ee4ca2cac05fddb
+Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
+Link: https://patch.msgid.link/20250728173149.45585-1-takamitz@amazon.co.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_compression.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_taprio.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_compression.c b/drivers/crypto/intel/qat/qat_common/qat_compression.c
-index c285b45b8679..0a77ca65c8d4 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_compression.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_compression.c
-@@ -196,7 +196,7 @@ static int qat_compression_alloc_dc_data(struct adf_accel_dev *accel_dev)
- 	struct adf_dc_data *dc_data = NULL;
- 	u8 *obuff = NULL;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index d162e2dd8602..a01d17d03bf5 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -41,6 +41,11 @@ static struct static_key_false taprio_have_working_mqprio;
+ #define TXTIME_ASSIST_IS_ENABLED(flags) ((flags) & TCA_TAPRIO_ATTR_FLAG_TXTIME_ASSIST)
+ #define FULL_OFFLOAD_IS_ENABLED(flags) ((flags) & TCA_TAPRIO_ATTR_FLAG_FULL_OFFLOAD)
+ #define TAPRIO_FLAGS_INVALID U32_MAX
++/* Minimum value for picos_per_byte to ensure non-zero duration
++ * for minimum-sized Ethernet frames (ETH_ZLEN = 60).
++ * 60 * 17 > PSEC_PER_NSEC (1000)
++ */
++#define TAPRIO_PICOS_PER_BYTE_MIN 17
  
--	dc_data = devm_kzalloc(dev, sizeof(*dc_data), GFP_KERNEL);
-+	dc_data = kzalloc_node(sizeof(*dc_data), GFP_KERNEL, dev_to_node(dev));
- 	if (!dc_data)
- 		goto err;
- 
-@@ -234,7 +234,7 @@ static void qat_free_dc_data(struct adf_accel_dev *accel_dev)
- 	dma_unmap_single(dev, dc_data->ovf_buff_p, dc_data->ovf_buff_sz,
- 			 DMA_FROM_DEVICE);
- 	kfree_sensitive(dc_data->ovf_buff);
--	devm_kfree(dev, dc_data);
-+	kfree(dc_data);
- 	accel_dev->dc_data = NULL;
+ struct sched_entry {
+ 	/* Durations between this GCL entry and the GCL entry where the
+@@ -1294,7 +1299,8 @@ static void taprio_start_sched(struct Qdisc *sch,
  }
  
+ static void taprio_set_picos_per_byte(struct net_device *dev,
+-				      struct taprio_sched *q)
++				      struct taprio_sched *q,
++				      struct netlink_ext_ack *extack)
+ {
+ 	struct ethtool_link_ksettings ecmd;
+ 	int speed = SPEED_10;
+@@ -1310,6 +1316,15 @@ static void taprio_set_picos_per_byte(struct net_device *dev,
+ 
+ skip:
+ 	picos_per_byte = (USEC_PER_SEC * 8) / speed;
++	if (picos_per_byte < TAPRIO_PICOS_PER_BYTE_MIN) {
++		if (!extack)
++			pr_warn("Link speed %d is too high. Schedule may be inaccurate.\n",
++				speed);
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "Link speed %d is too high. Schedule may be inaccurate.",
++				       speed);
++		picos_per_byte = TAPRIO_PICOS_PER_BYTE_MIN;
++	}
+ 
+ 	atomic64_set(&q->picos_per_byte, picos_per_byte);
+ 	netdev_dbg(dev, "taprio: set %s's picos_per_byte to: %lld, linkspeed: %d\n",
+@@ -1334,7 +1349,7 @@ static int taprio_dev_notifier(struct notifier_block *nb, unsigned long event,
+ 		if (dev != qdisc_dev(q->root))
+ 			continue;
+ 
+-		taprio_set_picos_per_byte(dev, q);
++		taprio_set_picos_per_byte(dev, q, NULL);
+ 
+ 		stab = rtnl_dereference(q->root->stab);
+ 
+@@ -1871,7 +1886,7 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->flags = err;
+ 
+ 	/* Needed for length_to_duration() during netlink attribute parsing */
+-	taprio_set_picos_per_byte(dev, q);
++	taprio_set_picos_per_byte(dev, q, extack);
+ 
+ 	err = taprio_parse_mqprio_opt(dev, mqprio, extack, q->flags);
+ 	if (err < 0)
 -- 
 2.39.5
 
