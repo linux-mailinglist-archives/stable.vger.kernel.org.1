@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FB4B2347E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3F3B2306B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64561889C81
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F6F51896269
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF7761FFE;
-	Tue, 12 Aug 2025 18:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618502F83CB;
+	Tue, 12 Aug 2025 17:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2YRy3ph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ell9aS+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890131DB92A;
-	Tue, 12 Aug 2025 18:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D39279915;
+	Tue, 12 Aug 2025 17:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023765; cv=none; b=CXdy3fUKJVI5JCVFzoKEdP6usWpSRBLNDo+35JlxS15KoarvPxPVT/8telPnNHfCw4Fj2yWUTPNcLsnnaGLi2XswJ5WmHLPatgNWkjHDV9pp5wYSDTSbXeWTAmSSba3KwRpjDms6Z8Ueg1+DKP7qdxLdxXVMG/qMigjpAHhw1KA=
+	t=1755021028; cv=none; b=HG8ok2Vq1Qne46uqQIoESTrKO21H0aahSwxHhV/9FryLlJN/TqBeKn/FQDUXPMcUW/5qglXKiD4/AYBB8umKUVr2wQi2qJHY4o8Sb0kLdNk/SMw1U/NCd59B4FctrgHKT06wdsUfVKt00R4CsXcamJtB4Cqy9gQgEEmh+3/WYWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023765; c=relaxed/simple;
-	bh=/Xie4eJhInbXatZASg1gdnRp4+LHgyDxrVUONcSt5E4=;
+	s=arc-20240116; t=1755021028; c=relaxed/simple;
+	bh=Uu8R8cowDIRDEM41TgLI9zueQaBuHq0PGt+jNQI6Xdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQMXhRZu5dDSVm1g/sZ2DbGzuMr4vkiR81sYRmnP8AaLMIMSHA9B+FojWJ3cvQ9pdAQYsNLnPKW/jvkqX2fo5u1AxpUN6T0wJbuYG71FYgFKZLH8qPwtE1arNndJi2brb1t/WL3gl632zVehDpvP1QDHHB/ZZ1e802YuSZOxPBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2YRy3ph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFB6C4CEF0;
-	Tue, 12 Aug 2025 18:36:04 +0000 (UTC)
+	 MIME-Version; b=UxzMFi/cU6ox87jIOWHw6cbon3zQfdAUeFs8V8Wnx3CcaeTzl7cbtzVg/lh7XyPDL+yKJerHEnLOSnFPKAThJlzAJYOMIQSknKGuNm8atEvTo/zbXPONGTFDy5b5Vm5a5QnMcGKmjlizem7C0AZ2S82TJ4Ll8Z82Ok7eIHKYMtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ell9aS+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BCBC4CEF0;
+	Tue, 12 Aug 2025 17:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023765;
-	bh=/Xie4eJhInbXatZASg1gdnRp4+LHgyDxrVUONcSt5E4=;
+	s=korg; t=1755021027;
+	bh=Uu8R8cowDIRDEM41TgLI9zueQaBuHq0PGt+jNQI6Xdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2YRy3phX6jpcjjDGxlbfPAt8zdFSiHsyCSSVhLNEjdycMfGfRcHOP2mfVLfERlae
-	 zZOEGuof1zisGSmdNmeid3QbjkYStxKqqrig+oU3jilPRlNqjfp0ctrqPpEVhI2nOL
-	 CxPNanCHLkVJEI3TTluW4BjyFSfMaX7+SL1wCdLY=
+	b=ell9aS+Ew8hqGAuD9Ln2g98kNAFsSpOrj2j0iwQPWrp6pj0OyOKmPpeUk8FXZpmIZ
+	 4hjV5wtlQEVSdOLEhuxc/DhZP8Wn9jxizkIA+WTLoheSJ/rEqi0IiNO99IzETxhQkD
+	 l+OGBiCZfj7yyD90hXK92F7pGLrMSPCqu0rMCi54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huan Yang <link@vivo.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 131/627] udmabuf: fix vmap missed offset page
+Subject: [PATCH 6.6 038/262] PM / devfreq: Check governor before using governor->name
 Date: Tue, 12 Aug 2025 19:27:06 +0200
-Message-ID: <20250812173424.300477351@linuxfoundation.org>
+Message-ID: <20250812172954.580240692@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huan Yang <link@vivo.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit a26fd92b7223160ad31c3e2971b63178faed9cf5 ]
+[ Upstream commit bab7834c03820eb11269bc48f07c3800192460d2 ]
 
-Before invoke vmap, we need offer a pages pointer array which each page
-need to map in vmalloc area.
+Commit 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from
+struct devfreq") removes governor_name and uses governor->name to replace
+it. But devfreq->governor may be NULL and directly using
+devfreq->governor->name may cause null pointer exception. Move the check of
+governor to before using governor->name.
 
-But currently vmap_udmabuf only set each folio's head page into pages,
-missed each offset pages when iter.
-
-This patch set the correctly offset page in each folio into array.
-
-Signed-off-by: Huan Yang <link@vivo.com>
-Fixes: 5e72b2b41a21 ("udmabuf: convert udmabuf driver to use folios")
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Link: https://lore.kernel.org/r/20250428073831.19942-3-link@vivo.com
+Fixes: 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from struct devfreq")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/lkml/20250421030020.3108405-5-zhenglifeng1@huawei.com/
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/udmabuf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/devfreq/devfreq.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index 4cc342fb28f4..40399c26e6be 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -120,7 +120,8 @@ static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
- 		return -ENOMEM;
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 49c542ecccde..7b991bbef489 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -1382,15 +1382,11 @@ int devfreq_remove_governor(struct devfreq_governor *governor)
+ 		int ret;
+ 		struct device *dev = devfreq->dev.parent;
  
- 	for (pg = 0; pg < ubuf->pagecount; pg++)
--		pages[pg] = &ubuf->folios[pg]->page;
-+		pages[pg] = folio_page(ubuf->folios[pg],
-+				       ubuf->offsets[pg] >> PAGE_SHIFT);
- 
- 	vaddr = vm_map_ram(pages, ubuf->pagecount, -1);
- 	kvfree(pages);
++		if (!devfreq->governor)
++			continue;
++
+ 		if (!strncmp(devfreq->governor->name, governor->name,
+ 			     DEVFREQ_NAME_LEN)) {
+-			/* we should have a devfreq governor! */
+-			if (!devfreq->governor) {
+-				dev_warn(dev, "%s: Governor %s NOT present\n",
+-					 __func__, governor->name);
+-				continue;
+-				/* Fall through */
+-			}
+ 			ret = devfreq->governor->event_handler(devfreq,
+ 						DEVFREQ_GOV_STOP, NULL);
+ 			if (ret) {
 -- 
 2.39.5
 
