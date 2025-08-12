@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76C5B2344D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DD8B22F5E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068D8188D968
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E63331A27EFD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024D72FD1AD;
-	Tue, 12 Aug 2025 18:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C882FDC59;
+	Tue, 12 Aug 2025 17:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hv3piyH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pk0ixoE3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A162F4A0A;
-	Tue, 12 Aug 2025 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B2A2FDC49;
+	Tue, 12 Aug 2025 17:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023621; cv=none; b=pMW29tPXUPjHRyLoAIFYaESUnWSY9aCw9H2uewoL+o3djrE5/ynjl+q7niH/dm18NGX4gCvPmHbP/P3nV0xjb3YWh4juI4C9enLhJrONSv10AlV5F/Pz0a+wumypyD/Io9VRR9hvR2FQnGkCLI1pjUpnHPokQ8Nc/vvA7IOQb7E=
+	t=1755020253; cv=none; b=VHscgXNFLhykPNfNNuOOMHcRXunhLFROHEK5cNkof/eqVWX0q3g55u0NhgF9kKz4H/BqkYb+CHkAlZzB+XWckwZsU5W/5T7/unSdp2d+ShoW2WjpxUu1VHFgOWvcJVXXlBcXqeIr5+Cx+7P0HIW7KisNGBIUr9xURQYB0Mccuxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023621; c=relaxed/simple;
-	bh=QFXvNRLpqzn5O900b/XEXTyfxMhYD4vyL5GCsFWkv+Y=;
+	s=arc-20240116; t=1755020253; c=relaxed/simple;
+	bh=IwESf3bf40uOAPu9MbXsE36rhBCdHSWLY+YgciZhc3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYGGF+d8GzHpkU92pv0LUyBa+uOefGQqmgnaEujYuD5JdhIahDwdkEFrqj9/2n/oUjz0b7tUtA8UpdsaqXBl6CEaqKHC4kfCDnkyhiBTPWBPYezpGK6hjJtVMAOmqSwt6BQQB1AZ4icHMALpSjbCXLiKAwP2Y2xsQMyQQ66yRs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hv3piyH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18918C4CEF6;
-	Tue, 12 Aug 2025 18:33:40 +0000 (UTC)
+	 MIME-Version; b=MnU/DvbaJ55zZPJCeRPF6jlmV8+7E1QQgXYDTJoodvMiAM0wHg3fj9HFhgtg3DVMlXSd8AMvtoazW+NCGeAltgSSmypNyxIeCFOTM55UWS8hwXm9opOlRLehr1KWbhw53Mwccyhg05ECepz6njy+A1Di/5lYtP+ntXTwSSQSu8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pk0ixoE3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E64CC4CEF0;
+	Tue, 12 Aug 2025 17:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023621;
-	bh=QFXvNRLpqzn5O900b/XEXTyfxMhYD4vyL5GCsFWkv+Y=;
+	s=korg; t=1755020251;
+	bh=IwESf3bf40uOAPu9MbXsE36rhBCdHSWLY+YgciZhc3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hv3piyH3GH/6ucWVDyprVNmPnNeUWwd/c2yIMFhVJf5S4qGTMvYC8R0rC5F6FhnPE
-	 +2KpK1B5QeofBNJF+jpItJfQ40Js3UFXfei5csKT0YKifo0q80hKldFYzCtCHUSUGZ
-	 CqJvymnc/g7v214GbPQCfWbnfwChDjyTSgoLQJzY=
+	b=pk0ixoE3K5n6LrHXNuI/j5crT2Kd4HJ8G0/5P9Ae/2wk1M9jWylEtX3GL900hiM/s
+	 yJ3hJbXZsPy3j2lgUtbUpjRFFgLHoJkqs+LuyyzL1n9a6foGkh8xIOZhLSpw66wD5Z
+	 4yTPScIGDIG3Qxu9ARK8tTfJ4qDA/iB4gInVZCSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 100/627] selftests: breakpoints: use suspend_stats to reliably check suspend success
+Subject: [PATCH 6.1 007/253] x86/hyperv: Fix usage of cpu_online_mask to get valid cpu
 Date: Tue, 12 Aug 2025 19:26:35 +0200
-Message-ID: <20250812173423.122967573@linuxfoundation.org>
+Message-ID: <20250812172948.997425499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
 
-[ Upstream commit 07b7c2b4eca3f83ce9cd5ee3fa1c7c001d721c69 ]
+[ Upstream commit bb169f80ed5a156ec3405e0e49c6b8e9ae264718 ]
 
-The step_after_suspend_test verifies that the system successfully
-suspended and resumed by setting a timerfd and checking whether the
-timer fully expired. However, this method is unreliable due to timing
-races.
+Accessing cpu_online_mask here is problematic because the cpus read lock
+is not held in this context.
 
-In practice, the system may take time to enter suspend, during which the
-timer may expire just before or during the transition. As a result,
-the remaining time after resume may show non-zero nanoseconds, even if
-suspend/resume completed successfully. This leads to false test failures.
+However, cpu_online_mask isn't needed here since the effective affinity
+mask is guaranteed to be valid in this callback. So, just use
+cpumask_first() to get the cpu instead of ANDing it with cpus_online_mask
+unnecessarily.
 
-Replace the timer-based check with a read from
-/sys/power/suspend_stats/success. This counter is incremented only
-after a full suspend/resume cycle, providing a reliable and race-free
-indicator.
-
-Also remove the unused file descriptor for /sys/power/state, which
-remained after switching to a system() call to trigger suspend [1].
-
-[1] https://lore.kernel.org/all/20240930224025.2858767-1-yifei.l.liu@oracle.com/
-
-Link: https://lore.kernel.org/r/20250626191626.36794-1-moonhee.lee.ca@gmail.com
-Fixes: c66be905cda2 ("selftests: breakpoints: use remaining time to check if suspend succeed")
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: e39397d1fd68 ("x86/hyperv: implement an MSI domain for root partition")
+Reported-by: Michael Kelley <mhklinux@outlook.com>
+Closes: https://lore.kernel.org/linux-hyperv/SN6PR02MB4157639630F8AD2D8FD8F52FD475A@SN6PR02MB4157.namprd02.prod.outlook.com/
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1751582677-30930-4-git-send-email-nunodasneves@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1751582677-30930-4-git-send-email-nunodasneves@linux.microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../breakpoints/step_after_suspend_test.c     | 41 ++++++++++++++-----
- 1 file changed, 31 insertions(+), 10 deletions(-)
+ arch/x86/hyperv/irqdomain.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-index 8d275f03e977..8d233ac95696 100644
---- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-+++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-@@ -127,22 +127,42 @@ int run_test(int cpu)
- 	return KSFT_PASS;
- }
+diff --git a/arch/x86/hyperv/irqdomain.c b/arch/x86/hyperv/irqdomain.c
+index 42c70d28ef272..865ae4be233b3 100644
+--- a/arch/x86/hyperv/irqdomain.c
++++ b/arch/x86/hyperv/irqdomain.c
+@@ -192,7 +192,6 @@ static void hv_irq_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+ 	struct pci_dev *dev;
+ 	struct hv_interrupt_entry out_entry, *stored_entry;
+ 	struct irq_cfg *cfg = irqd_cfg(data);
+-	const cpumask_t *affinity;
+ 	int cpu;
+ 	u64 status;
  
-+/*
-+ * Reads the suspend success count from sysfs.
-+ * Returns the count on success or exits on failure.
-+ */
-+static int get_suspend_success_count_or_fail(void)
-+{
-+	FILE *fp;
-+	int val;
-+
-+	fp = fopen("/sys/power/suspend_stats/success", "r");
-+	if (!fp)
-+		ksft_exit_fail_msg(
-+			"Failed to open suspend_stats/success: %s\n",
-+			strerror(errno));
-+
-+	if (fscanf(fp, "%d", &val) != 1) {
-+		fclose(fp);
-+		ksft_exit_fail_msg(
-+			"Failed to read suspend success count\n");
-+	}
-+
-+	fclose(fp);
-+	return val;
-+}
-+
- void suspend(void)
- {
--	int power_state_fd;
- 	int timerfd;
- 	int err;
-+	int count_before;
-+	int count_after;
- 	struct itimerspec spec = {};
+@@ -204,8 +203,7 @@ static void hv_irq_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+ 		return;
+ 	}
  
- 	if (getuid() != 0)
- 		ksft_exit_skip("Please run the test as root - Exiting.\n");
+-	affinity = irq_data_get_effective_affinity_mask(data);
+-	cpu = cpumask_first_and(affinity, cpu_online_mask);
++	cpu = cpumask_first(irq_data_get_effective_affinity_mask(data));
  
--	power_state_fd = open("/sys/power/state", O_RDWR);
--	if (power_state_fd < 0)
--		ksft_exit_fail_msg(
--			"open(\"/sys/power/state\") failed %s)\n",
--			strerror(errno));
--
- 	timerfd = timerfd_create(CLOCK_BOOTTIME_ALARM, 0);
- 	if (timerfd < 0)
- 		ksft_exit_fail_msg("timerfd_create() failed\n");
-@@ -152,14 +172,15 @@ void suspend(void)
- 	if (err < 0)
- 		ksft_exit_fail_msg("timerfd_settime() failed\n");
- 
-+	count_before = get_suspend_success_count_or_fail();
-+
- 	system("(echo mem > /sys/power/state) 2> /dev/null");
- 
--	timerfd_gettime(timerfd, &spec);
--	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
-+	count_after = get_suspend_success_count_or_fail();
-+	if (count_after <= count_before)
- 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
- 
- 	close(timerfd);
--	close(power_state_fd);
- }
- 
- int main(int argc, char **argv)
+ 	if (data->chip_data) {
+ 		/*
 -- 
 2.39.5
 
