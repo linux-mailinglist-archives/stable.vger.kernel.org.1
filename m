@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4F5B23164
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908A9B23520
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 970907A7D3B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D07E6E610C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF1B2FFDF1;
-	Tue, 12 Aug 2025 18:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649BE2FF143;
+	Tue, 12 Aug 2025 18:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJ9y+Qm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/bIXY5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F7A3F9D2;
-	Tue, 12 Aug 2025 18:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0712FE57E;
+	Tue, 12 Aug 2025 18:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021806; cv=none; b=Vfmi8OKr8K80ubI1O9EArOj5bwD8eMhDma8WxMRK8TgqWaHxNp9dZ46rp78Oy1INHoeooNHG7drmNXyq8dsq+XNbEJ2sQbkIuAydKWEmxXQgwUAhh4eulCzO5zlxH1IEOEu7Nir4yW0NjWygBBqQ0eMLvH2OzgU/gJ4mxeJSylI=
+	t=1755024152; cv=none; b=Y+jHvqpK6elBZviXoOXYBRSV0s4nXG8h8uiMMcUUWtrTyFcBPy2/E6g4XMZ5dixyk8aZsb0nsHb9H6gnvCxNwHtiD/RnxaE2La4e5hETr9BGpc18DWJEjuskb/mMwMwhMg5MLAhU9zIqcjAwO4HnKvt0mylGNabbz7eBzcFvttQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021806; c=relaxed/simple;
-	bh=pkfVsCwkiEn7BS+q1YNCI8XDaX4qBppjVIhIvTLnoKc=;
+	s=arc-20240116; t=1755024152; c=relaxed/simple;
+	bh=Ksxk4+5W5V5Z1fJ5Mlg8emHAStuaBhn2Q86BvHKFMd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8A39KlbmOcSb5JinExOfoKCf8BCJNQb2CeRFkxDkPlTLgK7+kt1aslk5YTCwJe5b0CzVV799RXyrK1LSzOEpdqqm8nwWlkQaaQvBNutBQpoaldJPKHMg2wLbUBe5LbHKrQqHHm62SEv8Vk5Zrg8uLXTzmawBPj7LRBo+FXAjvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJ9y+Qm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B119BC4CEF6;
-	Tue, 12 Aug 2025 18:03:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LqGP3RC5d5MaLyIzDh0pxDi03n8EwKscUZ30JZjCliIXGm8clMK+Ss7LMzl2GSaF/nFSRzh4KzY1r88AKt031i4kGdKhthB6+TMtF+2lTBBe8FmChN0ZBPoBxghF9OGzYUBOOScy9R+twXBZQdx0DhiNrb3UueAXBJS7AksBXJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/bIXY5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83092C4CEF0;
+	Tue, 12 Aug 2025 18:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021806;
-	bh=pkfVsCwkiEn7BS+q1YNCI8XDaX4qBppjVIhIvTLnoKc=;
+	s=korg; t=1755024152;
+	bh=Ksxk4+5W5V5Z1fJ5Mlg8emHAStuaBhn2Q86BvHKFMd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJ9y+Qm4GgGVSl7sb1qBLV1rrrdbC7Icbfoa0ylc5vAVLspkeGj0GsJQyjqkJkf+a
-	 rglsD0Z5+oRdYTAuqheLIEj3A4U+ia2xN5UoKLJkApuVPTNRE/EVFSFZhFzqc8bDnw
-	 ALN1gXxP29tNbiFtsCsjTeW+CCyiUlM7YFrDSM7Q=
+	b=w/bIXY5AwDiKbzarWyR/U9zyRgjdrf4uKa6pZvIaxPa2/mhqGAmPWz95DfL96s1AV
+	 yl8td9MxzKx86MdtfkQDBoInQSx2du4JXsLuTAGYki4w+tm1kzCXCRyhHVjJWu6QSx
+	 RrMgU0uJenhTkewmpFHyvwH4X+fYS/2DeL9hPg7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/262] sched: Add test_and_clear_wake_up_bit() and atomic_dec_and_wake_up()
+Subject: [PATCH 6.16 290/627] bpf/preload: Dont select USERMODE_DRIVER
 Date: Tue, 12 Aug 2025 19:29:45 +0200
-Message-ID: <20250812173001.547247650@linuxfoundation.org>
+Message-ID: <20250812173430.345581753@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,108 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 52d633def56c10fe3e82a2c5d88c3ecb3f4e4852 ]
+[ Upstream commit 2b03164eee20eac7ce0fe3aa4fbda7efc1e5427a ]
 
-There are common patterns in the kernel of using test_and_clear_bit()
-before wake_up_bit(), and atomic_dec_and_test() before wake_up_var().
+The usermode driver framework is not used anymore by the BPF
+preload code.
 
-These combinations don't need extra barriers but sometimes include them
-unnecessarily.
-
-To help avoid the unnecessary barriers and to help discourage the
-general use of wake_up_bit/var (which is a fragile interface) introduce
-two combined functions which implement these patterns.
-
-Also add store_release_wake_up() which supports the task of simply
-setting a non-atomic variable and sending a wakeup.  This pattern
-requires barriers which are often omitted.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240925053405.3960701-5-neilb@suse.de
-Stable-dep-of: 1db3a48e83bb ("NFS: Fix wakeup of __nfs_lookup_revalidate() in unblock_revalidate()")
+Fixes: cb80ddc67152 ("bpf: Convert bpf_preload.ko to use light skeleton.")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/bpf/20250721-remove-usermode-driver-v1-1-0d0083334382@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/wait_bit.h | 60 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ kernel/bpf/preload/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
-index 7725b7579b78..2209c227e859 100644
---- a/include/linux/wait_bit.h
-+++ b/include/linux/wait_bit.h
-@@ -335,4 +335,64 @@ static inline void clear_and_wake_up_bit(int bit, void *word)
- 	wake_up_bit(word, bit);
- }
- 
-+/**
-+ * test_and_clear_wake_up_bit - clear a bit if it was set: wake up anyone waiting on that bit
-+ * @bit: the bit of the word being waited on
-+ * @word: the address of memory containing that bit
-+ *
-+ * If the bit is set and can be atomically cleared, any tasks waiting in
-+ * wait_on_bit() or similar will be woken.  This call has the same
-+ * complete ordering semantics as test_and_clear_bit().  Any changes to
-+ * memory made before this call are guaranteed to be visible after the
-+ * corresponding wait_on_bit() completes.
-+ *
-+ * Returns %true if the bit was successfully set and the wake up was sent.
-+ */
-+static inline bool test_and_clear_wake_up_bit(int bit, unsigned long *word)
-+{
-+	if (!test_and_clear_bit(bit, word))
-+		return false;
-+	/* no extra barrier required */
-+	wake_up_bit(word, bit);
-+	return true;
-+}
-+
-+/**
-+ * atomic_dec_and_wake_up - decrement an atomic_t and if zero, wake up waiters
-+ * @var: the variable to dec and test
-+ *
-+ * Decrements the atomic variable and if it reaches zero, send a wake_up to any
-+ * processes waiting on the variable.
-+ *
-+ * This function has the same complete ordering semantics as atomic_dec_and_test.
-+ *
-+ * Returns %true is the variable reaches zero and the wake up was sent.
-+ */
-+
-+static inline bool atomic_dec_and_wake_up(atomic_t *var)
-+{
-+	if (!atomic_dec_and_test(var))
-+		return false;
-+	/* No extra barrier required */
-+	wake_up_var(var);
-+	return true;
-+}
-+
-+/**
-+ * store_release_wake_up - update a variable and send a wake_up
-+ * @var: the address of the variable to be updated and woken
-+ * @val: the value to store in the variable.
-+ *
-+ * Store the given value in the variable send a wake up to any tasks
-+ * waiting on the variable.  All necessary barriers are included to ensure
-+ * the task calling wait_var_event() sees the new value and all values
-+ * written to memory before this call.
-+ */
-+#define store_release_wake_up(var, val)					\
-+do {									\
-+	smp_store_release(var, val);					\
-+	smp_mb();							\
-+	wake_up_var(var);						\
-+} while (0)
-+
- #endif /* _LINUX_WAIT_BIT_H */
+diff --git a/kernel/bpf/preload/Kconfig b/kernel/bpf/preload/Kconfig
+index c9d45c9d6918..f9b11d01c3b5 100644
+--- a/kernel/bpf/preload/Kconfig
++++ b/kernel/bpf/preload/Kconfig
+@@ -10,7 +10,6 @@ menuconfig BPF_PRELOAD
+ 	# The dependency on !COMPILE_TEST prevents it from being enabled
+ 	# in allmodconfig or allyesconfig configurations
+ 	depends on !COMPILE_TEST
+-	select USERMODE_DRIVER
+ 	help
+ 	  This builds kernel module with several embedded BPF programs that are
+ 	  pinned into BPF FS mount point as human readable files that are
 -- 
 2.39.5
 
