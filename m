@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4042FB232D3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37E0B22FB7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FDF51A226E9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAF201A25BA4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8F02DFA3E;
-	Tue, 12 Aug 2025 18:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55782FDC31;
+	Tue, 12 Aug 2025 17:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/pknkN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyuADsni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D47D280037;
-	Tue, 12 Aug 2025 18:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A972FD1D1;
+	Tue, 12 Aug 2025 17:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022638; cv=none; b=lDfazErQUbKrJ94UzESjrzAP/CSio3nEEulU6WGOBf1DafuK3LDsCV314oxi+RAhDfCOhjugTrNpQSBAEX+55wFQhMYXaVfaiG7HqeQ3XsReAzwrbB0jO3qmkOzg5imCrlw+WvURoGM0Su55ygvpL9vB+pjMVUlB2Jw8EhAVRrY=
+	t=1755020475; cv=none; b=de2blm1vQLZ1NxgMR8m7KzAqZbm+rQmqTML/Dl96jdC+voioeGJa3WXxIFNjX4g+7CMVb0GYc8PXOWV7MuDQNTjtopXuxqqwtQhN1zrlszJzxaENcmJ9kVQGLFxVLccR75RFcigDRjl3cockT7gqpLqu1gFuA6RWf8hmEw67Pcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022638; c=relaxed/simple;
-	bh=C0P/2aLDbq7hFdaj+S65/tjgbZXMfjrXoAJIVlxp60c=;
+	s=arc-20240116; t=1755020475; c=relaxed/simple;
+	bh=iU6ntrNK5285kYkdj/Cmf0JUPq2XasCHb88TkoAEHwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smwBKdpJM1FY272xjUVtBK4yPx0V74sFVTL10RxCQt1dGpLJDXOSXPnJFs+nmRvk3hTbScLUoaVtVVtjCeNRFmX79pd2PZDA5Ka9oKJ/a0+7CEml14RQuG3nS0/IeUA6/hGCqwywru+4X4OL3hqAOUciSc3v+JZTwSPM32zHae8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/pknkN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78587C4CEF0;
-	Tue, 12 Aug 2025 18:17:17 +0000 (UTC)
+	 MIME-Version; b=lSI9DvVXCeTPXaAJ7ynfQy1d+vP8uTU/BV0++9Dx0JsnaSxPByZzEH3VbrJuqZgPxybMYsnT9rI+8YrPpHKLOkn9H+EgV94nzSwd+JgijBndKUqtDHCFeWg/9RCows1DyOzj1mZKxLzNMymb5jko7w2c0ayT92PA+OATMpvYI10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyuADsni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26693C4CEF0;
+	Tue, 12 Aug 2025 17:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022637;
-	bh=C0P/2aLDbq7hFdaj+S65/tjgbZXMfjrXoAJIVlxp60c=;
+	s=korg; t=1755020475;
+	bh=iU6ntrNK5285kYkdj/Cmf0JUPq2XasCHb88TkoAEHwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/pknkN50DR7n8PsQ+WfNK2VMbZ1Q4aCsAnG5I7penPv/HVvfPlP7PT84ceRb0tTL
-	 xpBfrjPFHX+nFZNJXFR0k9qT6n0ZiU31ACfoPKqh+fJ6AqafnmRP0bd45AHSkN3TVb
-	 ZtcX1bWN4s/63wkNBLS4c7V6h9qrhVg+BlElSTEo=
+	b=PyuADsni7YJM5GMrF9BivEEfO74at9CEIxb/tdOC+U2WFPBlrAL5jYsMTdWaHri+B
+	 jPUkJ6Z4Le1CABmQJGEZJu9/VZDqlcHdIMUnFq0fYYDln9CxqXQE31uwGI7ChSy6Qm
+	 03ownUtu01JjNYeSHUZ+iDxy2AEs1Qt/xPkQkf0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/369] perf sched: Fix memory leaks for evsel->priv in timehist
+Subject: [PATCH 6.1 090/253] cpufreq: Initialize cpufreq-based frequency-invariance later
 Date: Tue, 12 Aug 2025 19:27:58 +0200
-Message-ID: <20250812173021.582166354@linuxfoundation.org>
+Message-ID: <20250812172952.565155060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 117e5c33b1c44037af016d77ce6c0b086d55535f ]
+[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
 
-It uses evsel->priv to save per-cpu timing information.  It should be
-freed when the evsel is released.
+The cpufreq-based invariance is enabled in cpufreq_register_driver(),
+but never disabled after registration fails. Move the invariance
+initialization to where all other initializations have been successfully
+done to solve this problem.
 
-Add the priv destructor for evsel same as thread to handle that.
-
-Fixes: 49394a2a24c78ce0 ("perf sched timehist: Introduce timehist command")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-6-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 12 ++++++++++++
- tools/perf/util/evsel.c    | 11 +++++++++++
- tools/perf/util/evsel.h    |  2 ++
- 3 files changed, 25 insertions(+)
+ drivers/cpufreq/cpufreq.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index cd15c0cba9b2..686747ae4cad 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -2025,6 +2025,16 @@ static u64 evsel__get_time(struct evsel *evsel, u32 cpu)
- 	return r->last_time[cpu];
- }
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 3f35ce19c7b6..1d18a56dccab 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2882,15 +2882,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	cpufreq_driver = driver_data;
+ 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
  
-+static void timehist__evsel_priv_destructor(void *priv)
-+{
-+	struct evsel_runtime *r = priv;
-+
-+	if (r) {
-+		free(r->last_time);
-+		free(r);
+-	/*
+-	 * Mark support for the scheduler's frequency invariance engine for
+-	 * drivers that implement target(), target_index() or fast_switch().
+-	 */
+-	if (!cpufreq_driver->setpolicy) {
+-		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
+-		pr_debug("supports frequency invariance");
+-	}
+-
+ 	if (driver_data->setpolicy)
+ 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
+ 
+@@ -2921,6 +2912,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	hp_online = ret;
+ 	ret = 0;
+ 
++	/*
++	 * Mark support for the scheduler's frequency invariance engine for
++	 * drivers that implement target(), target_index() or fast_switch().
++	 */
++	if (!cpufreq_driver->setpolicy) {
++		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
++		pr_debug("supports frequency invariance");
 +	}
-+}
 +
- static int comm_width = 30;
+ 	pr_debug("driver %s up and running\n", driver_data->name);
+ 	goto out;
  
- static char *timehist_get_commstr(struct thread *thread)
-@@ -3278,6 +3288,8 @@ static int perf_sched__timehist(struct perf_sched *sched)
- 
- 	setup_pager();
- 
-+	evsel__set_priv_destructor(timehist__evsel_priv_destructor);
-+
- 	/* prefer sched_waking if it is captured */
- 	if (evlist__find_tracepoint_by_name(session->evlist, "sched:sched_waking"))
- 		handlers[1].handler = timehist_sched_wakeup_ignore;
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index dbf9c8cee3c5..6d7249cc1a99 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -1477,6 +1477,15 @@ static void evsel__free_config_terms(struct evsel *evsel)
- 	free_config_terms(&evsel->config_terms);
- }
- 
-+static void (*evsel__priv_destructor)(void *priv);
-+
-+void evsel__set_priv_destructor(void (*destructor)(void *priv))
-+{
-+	assert(evsel__priv_destructor == NULL);
-+
-+	evsel__priv_destructor = destructor;
-+}
-+
- void evsel__exit(struct evsel *evsel)
- {
- 	assert(list_empty(&evsel->core.node));
-@@ -1502,6 +1511,8 @@ void evsel__exit(struct evsel *evsel)
- 	hashmap__free(evsel->per_pkg_mask);
- 	evsel->per_pkg_mask = NULL;
- 	zfree(&evsel->metric_events);
-+	if (evsel__priv_destructor)
-+		evsel__priv_destructor(evsel->priv);
- 	perf_evsel__object.fini(evsel);
- 	if (evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME ||
- 	    evsel__tool_event(evsel) == PERF_TOOL_USER_TIME)
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 15e745a9a798..26574a33a725 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -282,6 +282,8 @@ void evsel__init(struct evsel *evsel, struct perf_event_attr *attr, int idx);
- void evsel__exit(struct evsel *evsel);
- void evsel__delete(struct evsel *evsel);
- 
-+void evsel__set_priv_destructor(void (*destructor)(void *priv));
-+
- struct callchain_param;
- 
- void evsel__config(struct evsel *evsel, struct record_opts *opts,
 -- 
 2.39.5
 
