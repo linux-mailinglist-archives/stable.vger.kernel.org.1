@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-167932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D1FB23299
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B61CB2347F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825D21B614AF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED69A189497E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A4A2FE588;
-	Tue, 12 Aug 2025 18:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E696D2F5481;
+	Tue, 12 Aug 2025 18:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkkT9az2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDL5FtBm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6672D46B3;
-	Tue, 12 Aug 2025 18:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52752D3ED6;
+	Tue, 12 Aug 2025 18:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022476; cv=none; b=R3KomCVfkGaGgTEEymdImh8ExP6Brjw+K3GJOkWNPJiFDA7+y72dj0ruGBsB57Td5aePVI+1ebQCVHfTrs+JwGuhqxJbrR/hXGKnbtj76vylQLvZ6ZJWDrnGGV1F0+adWNNplIyMyqm2UoMqqoHElxVRexo+WuhoVLmWwvCj0VU=
+	t=1755023768; cv=none; b=lagHIFQZ3NA8SU8hyIXfW2cQZkeZUCqls4JEx4sQm9RmE8t40dlHRdmmI1gWcqD3ddEiS+DjY6AL6at4XcdrwV0VzEhk4p6RcmYB4GCxnwOZyI+lYYYGKcqeN+n6435HnzDRDSbXkTJITDjxHn3ZAb+qwyccadaEhByiXW/pZfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022476; c=relaxed/simple;
-	bh=EpPuwK2f8GTaOKCBzE7TB5H7vvMsnTaY0+M7YAJvWYw=;
+	s=arc-20240116; t=1755023768; c=relaxed/simple;
+	bh=guyrkRMrllV9HqkL3i+bqyRDV514Vw3V/Rt0GdsZsCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psE5vqt9CqwC5dS6DNhHyDQ15g15tgry+zrfUvG8YJWXifqY+TIv0nZ1Teu8mZ8X+mMJg+trvCZnp59G9u6kNBgJ4aot605ROjjgDMV13L0w6zXsVLwbXJ3RTCnPNjmGFjwpRuohgOT57bYEpEs4Bry6UqfPWOR8NEkuqvRTBxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkkT9az2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B11BC4CEF0;
-	Tue, 12 Aug 2025 18:14:35 +0000 (UTC)
+	 MIME-Version; b=DTl2HmMoFL7Vd97XrFLxU39zPpANngJhmpFMTIiE5hYPD9C0+7oEgc8spprIzKgcqJuoIiGy0xZNOeIlG3rpMRtOnzTA4bOkdYcpCDboGBYYW/Y4NixTpzEedvJaiAwbpYTJcphn63yJ2aw4XMXeJyXaIrqGVsZti4zSsLILexI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDL5FtBm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19417C4CEF0;
+	Tue, 12 Aug 2025 18:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022476;
-	bh=EpPuwK2f8GTaOKCBzE7TB5H7vvMsnTaY0+M7YAJvWYw=;
+	s=korg; t=1755023768;
+	bh=guyrkRMrllV9HqkL3i+bqyRDV514Vw3V/Rt0GdsZsCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkkT9az2g2Z3WvUXLR3v5ru0WilFNxGWXVXsmEyN0c2PXomZgROKTjV5t9brh7i5H
-	 q6uFR5pZFLL40Od5inoCB7XI/fJ8cUNFhlHrax0NoHAjVG2yYtGpUOhM4NKxJzTpwZ
-	 tseh9z6hBGPqU3zmQYa4M3HQUrQD5edPPSKZfCzM=
+	b=cDL5FtBmE42PrhMbyqqQnblaQYWmnXkfOxrUSJkicSGRSIVAkXs1QewMIVG9gkweY
+	 zahyXSRqB2dvoZ2XiaXr+6jm64J3kWk1wsuhLvjql25KT/0YCE3OUsQDYjboZDtasf
+	 8kwIMYd5l+FbYLYrcZd1WYY2l7I8XJTq5boEp6ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Zongyao Bai <zongyao.bai@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/369] crypto: arm/aes-neonbs - work around gcc-15 warning
+Subject: [PATCH 6.16 168/627] drm/xe/uapi: Correct sync type definition in comments
 Date: Tue, 12 Aug 2025 19:27:43 +0200
-Message-ID: <20250812173021.017223953@linuxfoundation.org>
+Message-ID: <20250812173425.673362383@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit d5fa96dc5590915f060fee3209143313e4f5b03b ]
+[ Upstream commit 771f002ef1d6f6c2b9bddf779abd31da6b9ccd25 ]
 
-I get a very rare -Wstringop-overread warning with gcc-15 for one function
-in aesbs_ctr_encrypt():
+Commit 37d078e51b4c ("drm/xe/uapi: Split xe_sync types from flags") renamed some DRM_XE_SYNC_*
+defines but later commits kept using the old names. Correct them with the new definition.
 
-arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
-arch/arm/crypto/aes-neonbs-glue.c:212:1446: error: '__builtin_memcpy' offset [17, 2147483647] is out of the bounds [0, 16] of object 'buf' with type 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds=]
-  212 |                         src = dst = memcpy(buf + sizeof(buf) - bytes,
-arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
-arch/arm/crypto/aes-neonbs-glue.c:218:17: error: 'aesbs_ctr_encrypt' reading 1 byte from a region of size 0 [-Werror=stringop-overread]
-  218 |                 aesbs_ctr_encrypt(dst, src, ctx->rk, ctx->rounds, bytes, walk.iv);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 2 of type 'const u8[0]' {aka 'const unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 3 of type 'const u8[0]' {aka 'const unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 6 of type 'u8[0]' {aka 'unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:36:17: note: in a call to function 'aesbs_ctr_encrypt'
-   36 | asmlinkage void aesbs_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
+v2: correct fixes tag and update commit message to explain why (Lucas)
 
-This could happen in theory if walk.nbytes is larger than INT_MAX and gets
-converted to a negative local variable.
-
-Keep the type unsigned like the orignal nbytes to be sure there is no
-integer overflow.
-
-Fixes: c8bf850e991a ("crypto: arm/aes-neonbs-ctr - deal with non-multiples of AES block size")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 9329f0667215 ("drm/xe/uapi: Use LR abbrev for long-running vms")
+Fixes: 4b437893a826 ("drm/xe/uapi: More uAPI documentation additions and cosmetic updates")
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Zongyao Bai <zongyao.bai@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://lore.kernel.org/r/20250608230133.1250849-1-shuicheng.lin@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/crypto/aes-neonbs-glue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/drm/xe_drm.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
-index f6be80b5938b..2fad3a0c0563 100644
---- a/arch/arm/crypto/aes-neonbs-glue.c
-+++ b/arch/arm/crypto/aes-neonbs-glue.c
-@@ -232,7 +232,7 @@ static int ctr_encrypt(struct skcipher_request *req)
- 	while (walk.nbytes > 0) {
- 		const u8 *src = walk.src.virt.addr;
- 		u8 *dst = walk.dst.virt.addr;
--		int bytes = walk.nbytes;
-+		unsigned int bytes = walk.nbytes;
+diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
+index 6a702ba7817c..5f1524f466a7 100644
+--- a/include/uapi/drm/xe_drm.h
++++ b/include/uapi/drm/xe_drm.h
+@@ -925,9 +925,9 @@ struct drm_xe_gem_mmap_offset {
+  *  - %DRM_XE_VM_CREATE_FLAG_LR_MODE - An LR, or Long Running VM accepts
+  *    exec submissions to its exec_queues that don't have an upper time
+  *    limit on the job execution time. But exec submissions to these
+- *    don't allow any of the flags DRM_XE_SYNC_FLAG_SYNCOBJ,
+- *    DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ, DRM_XE_SYNC_FLAG_DMA_BUF,
+- *    used as out-syncobjs, that is, together with DRM_XE_SYNC_FLAG_SIGNAL.
++ *    don't allow any of the sync types DRM_XE_SYNC_TYPE_SYNCOBJ,
++ *    DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ, used as out-syncobjs, that is,
++ *    together with sync flag DRM_XE_SYNC_FLAG_SIGNAL.
+  *    LR VMs can be created in recoverable page-fault mode using
+  *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE, if the device supports it.
+  *    If that flag is omitted, the UMD can not rely on the slightly
+@@ -1394,7 +1394,7 @@ struct drm_xe_sync {
  
- 		if (unlikely(bytes < AES_BLOCK_SIZE))
- 			src = dst = memcpy(buf + sizeof(buf) - bytes,
+ 	/**
+ 	 * @timeline_value: Input for the timeline sync object. Needs to be
+-	 * different than 0 when used with %DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ.
++	 * different than 0 when used with %DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ.
+ 	 */
+ 	__u64 timeline_value;
+ 
 -- 
 2.39.5
 
