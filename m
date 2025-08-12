@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-167849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1D0B23237
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A2FB23408
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FB243B3535
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B1B01A245BF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3955A3F9D2;
-	Tue, 12 Aug 2025 18:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD7A2FF158;
+	Tue, 12 Aug 2025 18:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clFqAvkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bW7VwlO0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4FF257435;
-	Tue, 12 Aug 2025 18:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7282FE582;
+	Tue, 12 Aug 2025 18:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022199; cv=none; b=nQEvzY2ajCuzR5KdgCehWUgHGtl08OIJ/vjx9j4yIpp+5QTIve0G50QH64wMEmDVOx2bvpxPkzCvV+e7u5dDHaepyz7jKpyz1c/2gH1GV5U28ZwvgHNLn8VL3GKE4ELUaasaAP4LC63znVpShlHxrtzEAyusolo1YSEoR8bfwak=
+	t=1755023403; cv=none; b=kbASAk20D3rdyHhDPrBisdzGy3+ksFAMXT+FOxQpUO0lyX66Ckiinb6FEcHeFrzI/OOeg8e9gPMCaALaVzsHW3g0ohb0GFKAbHc/+CQRrswgIWBeQrDJgctesN6DQ2PqLMZZEzS7rqWQ+iDK+b9gQMxJ4MPh+49JtBQZgYowAf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022199; c=relaxed/simple;
-	bh=TqlP5+mHH6P1eLtp+c+Y5VpEvupWn80kVff7JTvBQp4=;
+	s=arc-20240116; t=1755023403; c=relaxed/simple;
+	bh=ikQdNsSLyJaATHVspyj5f+aEX/4uTlsjnrw53uo0jfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPGrCjsLrOLOGk+zdEn1TUMx4FrleUhtSw8OJx4Y7GOjTGRrPzEYmTwZ1a75Lgi1kMOKGZ4UUlpIxGTmKaUZjKsYKnCULUSCYjxyhQYeaC0dtmHtUYMg7cvF6yTGryIzJAmrKygv0N00KDVmKE+EKRPrti84Jqzn4m0SG+As0as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=clFqAvkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AC6C4CEF0;
-	Tue, 12 Aug 2025 18:09:57 +0000 (UTC)
+	 MIME-Version; b=SDPyK+t+8ZVB+1uggZ9ZuSoK6nsFtQob03k7A8X6Tfs7XgG/FkCbGPgNdmPD2A08BJCIs9yBIe/F5sGsvRPcMsAYXoGUKHhuitbO4ffv/ttC0kng0it71/Q2fVkOEegnokZ1o0jUw34n3IwPOeOV46xpS+3Wfm9YnYWMz0Jw2as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bW7VwlO0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D028C4CEF0;
+	Tue, 12 Aug 2025 18:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022198;
-	bh=TqlP5+mHH6P1eLtp+c+Y5VpEvupWn80kVff7JTvBQp4=;
+	s=korg; t=1755023403;
+	bh=ikQdNsSLyJaATHVspyj5f+aEX/4uTlsjnrw53uo0jfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=clFqAvkHsEmjjVwVoNe8HdfVZ+8q+BrByY5jB8CzzXOP/Jdm1hEefm9oXA3k4ioSX
-	 c13o5GIiRPywB0TwCfKjRL3RpHjGBLPUuqsqECmM6pxB8x04+ActjALx2DzxiTA2K+
-	 7Ak9uGs9PwqnQHRYKjDrjqFPvcrKUfOumv19c6VY=
+	b=bW7VwlO0Ilt+edcwuqT9c6J1KK9DNDG+mVWxLBV/EQiYRQPrKFUtt9trVcpLnKZB8
+	 j8KBtSNhd9oFVOjZL3nC64TwFbg544+xBXgrh1zcO4SrQBR4BYN84NDn2ARcRGcPDt
+	 62bo3JXOSa1JpYDlOGwrW7Wc4FTUQhgD/oJrBepE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/369] selftests/tracing: Fix false failure of subsystem event test
-Date: Tue, 12 Aug 2025 19:26:04 +0200
-Message-ID: <20250812173017.285748941@linuxfoundation.org>
+Subject: [PATCH 6.16 070/627] mei: vsc: Drop unused vsc_tp_request_irq() and vsc_tp_free_irq()
+Date: Tue, 12 Aug 2025 19:26:05 +0200
+Message-ID: <20250812173421.978365169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 213879061a9c60200ba971330dbefec6df3b4a30 ]
+[ Upstream commit a49159aa80207d49569b7453b4838f2f9501a17c ]
 
-The subsystem event test enables all "sched" events and makes sure there's
-at least 3 different events in the output. It used to cat the entire trace
-file to | wc -l, but on slow machines, that could last a very long time.
-To solve that, it was changed to just read the first 100 lines of the
-trace file. This can cause false failures as some events repeat so often,
-that the 100 lines that are examined could possibly be of only one event.
+Drop the unused vsc_tp_request_irq() and vsc_tp_free_irq() functions.
 
-Instead, create an awk script that looks for 3 different events and will
-exit out after it finds them. This will find the 3 events the test looks
-for (eventually if it works), and still exit out after the test is
-satisfied and not cause slower machines to run forever.
-
-Link: https://lore.kernel.org/r/20250721134212.53c3e140@batman.local.home
-Reported-by: Tengda Wu <wutengda@huaweicloud.com>
-Closes: https://lore.kernel.org/all/20250710130134.591066-1-wutengda@huaweicloud.com/
-Fixes: 1a4ea83a6e67 ("selftests/ftrace: Limit length in subsystem-enable tests")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-2-hansg@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: de88b02c94db ("mei: vsc: Run event callback from a workqueue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/event/subsystem-enable.tc   | 28 +++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ drivers/misc/mei/vsc-tp.c | 31 -------------------------------
+ drivers/misc/mei/vsc-tp.h |  3 ---
+ 2 files changed, 34 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-index b7c8f29c09a9..65916bb55dfb 100644
---- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-+++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-@@ -14,11 +14,35 @@ fail() { #msg
-     exit_fail
+diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+index 97df3077175d..d0450c80316c 100644
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -409,37 +409,6 @@ int vsc_tp_register_event_cb(struct vsc_tp *tp, vsc_tp_event_cb_t event_cb,
  }
+ EXPORT_SYMBOL_NS_GPL(vsc_tp_register_event_cb, "VSC_TP");
  
-+# As reading trace can last forever, simply look for 3 different
-+# events then exit out of reading the file. If there's not 3 different
-+# events, then the test has failed.
-+check_unique() {
-+    cat trace | grep -v '^#' | awk '
-+	BEGIN { cnt = 0; }
-+	{
-+	    for (i = 0; i < cnt; i++) {
-+		if (event[i] == $5) {
-+		    break;
-+		}
-+	    }
-+	    if (i == cnt) {
-+		event[cnt++] = $5;
-+		if (cnt > 2) {
-+		    exit;
-+		}
-+	    }
-+	}
-+	END {
-+	    printf "%d", cnt;
-+	}'
-+}
-+
- echo 'sched:*' > set_event
+-/**
+- * vsc_tp_request_irq - request irq for vsc_tp device
+- * @tp: vsc_tp device handle
+- */
+-int vsc_tp_request_irq(struct vsc_tp *tp)
+-{
+-	struct spi_device *spi = tp->spi;
+-	struct device *dev = &spi->dev;
+-	int ret;
+-
+-	irq_set_status_flags(spi->irq, IRQ_DISABLE_UNLAZY);
+-	ret = request_threaded_irq(spi->irq, vsc_tp_isr, vsc_tp_thread_isr,
+-				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+-				   dev_name(dev), tp);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_NS_GPL(vsc_tp_request_irq, "VSC_TP");
+-
+-/**
+- * vsc_tp_free_irq - free irq for vsc_tp device
+- * @tp: vsc_tp device handle
+- */
+-void vsc_tp_free_irq(struct vsc_tp *tp)
+-{
+-	free_irq(tp->spi->irq, tp);
+-}
+-EXPORT_SYMBOL_NS_GPL(vsc_tp_free_irq, "VSC_TP");
+-
+ /**
+  * vsc_tp_intr_synchronize - synchronize vsc_tp interrupt
+  * @tp: vsc_tp device handle
+diff --git a/drivers/misc/mei/vsc-tp.h b/drivers/misc/mei/vsc-tp.h
+index 14ca195cbddc..f9513ddc3e40 100644
+--- a/drivers/misc/mei/vsc-tp.h
++++ b/drivers/misc/mei/vsc-tp.h
+@@ -37,9 +37,6 @@ int vsc_tp_xfer(struct vsc_tp *tp, u8 cmd, const void *obuf, size_t olen,
+ int vsc_tp_register_event_cb(struct vsc_tp *tp, vsc_tp_event_cb_t event_cb,
+ 			     void *context);
  
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -29,7 +53,7 @@ echo 1 > events/sched/enable
- 
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
+-int vsc_tp_request_irq(struct vsc_tp *tp);
+-void vsc_tp_free_irq(struct vsc_tp *tp);
+-
+ void vsc_tp_intr_enable(struct vsc_tp *tp);
+ void vsc_tp_intr_disable(struct vsc_tp *tp);
+ void vsc_tp_intr_synchronize(struct vsc_tp *tp);
 -- 
 2.39.5
 
