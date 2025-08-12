@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2696B234CD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB2DB2301A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53EE168628
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90C23B3B83
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C152FDC55;
-	Tue, 12 Aug 2025 18:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD8B2DE1E2;
+	Tue, 12 Aug 2025 17:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGR+8Xzd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgH4nje1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D1E188715;
-	Tue, 12 Aug 2025 18:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1309D221FAC;
+	Tue, 12 Aug 2025 17:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024086; cv=none; b=s73+9MfIeJrPrAkjiUq3qCS5R03DVsL40KT0ETol5wqUoh3yMWhN0AfUWC0iDIWwqDtNyzVMpR0Aa5ml6iPZdhREKMEK+5212z6cTpP2b1f2LlJNf6h2ZkH6oKsKDezM6ScFs+4TYsVVErYnrMhtnungn74vb6dVVzsq23qq1/A=
+	t=1755020833; cv=none; b=GsZ+whlRjWZ77pNvYVpMRWwaV2/4zBK4l1OcRbO8BVXP2y8a8ZMtEYAatVv+Jb2oNE5Rq/iSceQ9rZj9cx2F1WzLuMn3PXzk7G8nQd1riPJHdx4AKmSJ/cq511a34anedy5rd+4QpEFLZmbvVPLuKZOr0L1SPHwmb1C5P/2Kc6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024086; c=relaxed/simple;
-	bh=yH3OVp/U67u6gubwKibqBBwzlCZrHEuDqnTVi/q68Bc=;
+	s=arc-20240116; t=1755020833; c=relaxed/simple;
+	bh=AUD6xaVURWRSRmHOfPazptxBoCdoin+rar1Rcb29sdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZzCTQzJS0f9VYOzStzNgWLHO0y8ga8U7+WoR7wUCrvabG+KNBKdb2JzvACMin8MEvUoTJbWlloZSr3L0XEovCwioKukbCIvmBiXkj7mNPcrlHfx7DSAMhKIUPc24r/Av/QyA1Qt32T/n3eEt/ZZ+FSOC8E1Wj9ihQEzqiLgjog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGR+8Xzd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA509C4CEF0;
-	Tue, 12 Aug 2025 18:41:25 +0000 (UTC)
+	 MIME-Version; b=bKq3ILWEqEaVjSPtbmvqGJUV/LYUy6+t5Z0+C81PE13Baesvty6gAPNMquphetD9xm1Gp47eIsvAYXSD1p7mD1JFgiV3rsBrB0pd1CxhRvCf8Be2m5ovx14mIfdzWTvKqO+Og5FQps6XDGwHdAeHldtykOVXqC2gxJsnwuG4GEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgH4nje1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A192C4CEF0;
+	Tue, 12 Aug 2025 17:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024086;
-	bh=yH3OVp/U67u6gubwKibqBBwzlCZrHEuDqnTVi/q68Bc=;
+	s=korg; t=1755020833;
+	bh=AUD6xaVURWRSRmHOfPazptxBoCdoin+rar1Rcb29sdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGR+8XzdY54azy2e1JwOhtI6fltKT1WbGhRVX8BFSa8hn0CFHyyo6V3HD8HoY8aJf
-	 2GNVIM4qOvIvulpwooc/hQQkkYl3Uz12//jm2dWN7JK69m9xw0ui4sam+cOL9UohFo
-	 4qBf+Z03sAEjXTmeJnEtgv/wHeWcH+SdnQdDrMz4=
+	b=cgH4nje1er4CI77BTFXt9bjRXlOjZnLtj7eMDo5vNH9MDplDhNNj9Mjj9vIZqbLPV
+	 OF/NPaFPIe78PWJOH2Ca91y4p25eDbVeb66XIFNeEknB9o459ixrZFK7qL5xoolgU8
+	 C96gpJVowQItZfpcSmNLNvF25FdoeNevWYEzzy9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephane Grosjean <stephane.grosjean@hms-networks.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 268/627] can: peak_usb: fix USB FD devices potential malfunction
+Subject: [PATCH 6.1 175/253] crypto: qat - fix seq_file position update in adf_ring_next()
 Date: Tue, 12 Aug 2025 19:29:23 +0200
-Message-ID: <20250812173429.506012090@linuxfoundation.org>
+Message-ID: <20250812172956.194663225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephane Grosjean <stephane.grosjean@hms-networks.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 788199b73b6efe4ee2ade4d7457b50bb45493488 ]
+[ Upstream commit 6908c5f4f066a0412c3d9a6f543a09fa7d87824b ]
 
-The latest firmware versions of USB CAN FD interfaces export the EP numbers
-to be used to dialog with the device via the "type" field of a response to
-a vendor request structure, particularly when its value is greater than or
-equal to 2.
+The `adf_ring_next()` function in the QAT debug transport interface
+fails to correctly update the position index when reaching the end of
+the ring elements. This triggers the following kernel warning when
+reading ring files, such as
+/sys/kernel/debug/qat_c6xx_<D:B:D:F>/transport/bank_00/ring_00:
 
-Correct the driver's test of this field.
+   [27725.022965] seq_file: buggy .next function adf_ring_next [intel_qat] did not update position index
 
-Fixes: 4f232482467a ("can: peak_usb: include support for a new MCU")
-Signed-off-by: Stephane Grosjean <stephane.grosjean@hms-networks.com>
-Link: https://patch.msgid.link/20250724081550.11694-1-stephane.grosjean@free.fr
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-[mkl: rephrase commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Ensure that the `*pos` index is incremented before returning NULL when
+after the last element in the ring is found, satisfying the seq_file API
+requirements and preventing the warning.
+
+Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/crypto/qat/qat_common/adf_transport_debug.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-index 4d85b29a17b7..ebefc274b50a 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-@@ -49,7 +49,7 @@ struct __packed pcan_ufd_fw_info {
- 	__le32	ser_no;		/* S/N */
- 	__le32	flags;		/* special functions */
+diff --git a/drivers/crypto/qat/qat_common/adf_transport_debug.c b/drivers/crypto/qat/qat_common/adf_transport_debug.c
+index e2dd568b87b5..621b5d3dfcef 100644
+--- a/drivers/crypto/qat/qat_common/adf_transport_debug.c
++++ b/drivers/crypto/qat/qat_common/adf_transport_debug.c
+@@ -31,8 +31,10 @@ static void *adf_ring_next(struct seq_file *sfile, void *v, loff_t *pos)
+ 	struct adf_etr_ring_data *ring = sfile->private;
  
--	/* extended data when type == PCAN_USBFD_TYPE_EXT */
-+	/* extended data when type >= PCAN_USBFD_TYPE_EXT */
- 	u8	cmd_out_ep;	/* ep for cmd */
- 	u8	cmd_in_ep;	/* ep for replies */
- 	u8	data_out_ep[2];	/* ep for CANx TX */
-@@ -982,10 +982,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
- 			dev->can.ctrlmode |= CAN_CTRLMODE_FD_NON_ISO;
- 		}
+ 	if (*pos >= (ADF_SIZE_TO_RING_SIZE_IN_BYTES(ring->ring_size) /
+-		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size)))
++		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size))) {
++		(*pos)++;
+ 		return NULL;
++	}
  
--		/* if vendor rsp is of type 2, then it contains EP numbers to
--		 * use for cmds pipes. If not, then default EP should be used.
-+		/* if vendor rsp type is greater than or equal to 2, then it
-+		 * contains EP numbers to use for cmds pipes. If not, then
-+		 * default EP should be used.
- 		 */
--		if (fw_info->type != cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
-+		if (le16_to_cpu(fw_info->type) < PCAN_USBFD_TYPE_EXT) {
- 			fw_info->cmd_out_ep = PCAN_USBPRO_EP_CMDOUT;
- 			fw_info->cmd_in_ep = PCAN_USBPRO_EP_CMDIN;
- 		}
-@@ -1018,11 +1019,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
- 	dev->can_channel_id =
- 		le32_to_cpu(pdev->usb_if->fw_info.dev_id[dev->ctrl_idx]);
- 
--	/* if vendor rsp is of type 2, then it contains EP numbers to
--	 * use for data pipes. If not, then statically defined EP are used
--	 * (see peak_usb_create_dev()).
-+	/* if vendor rsp type is greater than or equal to 2, then it contains EP
-+	 * numbers to use for data pipes. If not, then statically defined EP are
-+	 * used (see peak_usb_create_dev()).
- 	 */
--	if (fw_info->type == cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
-+	if (le16_to_cpu(fw_info->type) >= PCAN_USBFD_TYPE_EXT) {
- 		dev->ep_msg_in = fw_info->data_in_ep;
- 		dev->ep_msg_out = fw_info->data_out_ep[dev->ctrl_idx];
- 	}
+ 	return ring->base_addr +
+ 		(ADF_MSG_SIZE_TO_BYTES(ring->msg_size) * (*pos)++);
 -- 
 2.39.5
 
