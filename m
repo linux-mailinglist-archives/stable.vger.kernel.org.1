@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F896B23081
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2298B234EC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5AB31AA265F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A545E5862D0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE972FABF8;
-	Tue, 12 Aug 2025 17:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F235F2FDC4F;
+	Tue, 12 Aug 2025 18:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h13Y9N+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zd1SEmza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CA82868AF;
-	Tue, 12 Aug 2025 17:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0912F4A0A;
+	Tue, 12 Aug 2025 18:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021108; cv=none; b=amCQ0H9griiArHMfqph5fk0D6KKiDnFESNM+KJ0img/dZQgUj1Z+rMVgfSyWAv5fusFURu3i9zhJtlrgKzGCNwOmhIDgwfT9oh/n0LXDk+mN2U9wGAgUoWCwxsP+jMM+VuTHuJCHO1gFVw4EZlo3n1wv2yHCjHZ/dVhUwSniL8A=
+	t=1755024210; cv=none; b=Q+pZM/aTmhpg8cXoA0YsjFR+sJAKB1piEGup1zJNiDRKjVlMj2gRAyqd/MVoFi/t9X9f6Q5Hk5EmL3SzgeHpUqEWfuOO6wQDFWXcETYF1H+7ni/zqrfq5xv27/jBKDC5edBM63Mym0a5VG7NqxMldAKAegjRGFBtVU6g4/eafM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021108; c=relaxed/simple;
-	bh=NoSvVet8nOhxFuN39w6mCBgBkLQQTyNMjl40STqeEek=;
+	s=arc-20240116; t=1755024210; c=relaxed/simple;
+	bh=awJDRcdCgaTe8R30AvBtaxYs5t0z9rZbXtbpC5BGPCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=msCHeQDFgBcqlHQYNRoZYjYG7uJfJoQx4K8Jq5ASwIVC/PS0Ay3/M+X1iHtZXHMs11wbLRXoo1MnoUZknyKHAAcbRfeem7XHRPGCA3/QOeTyxOwgq90rYyx+P6/q0DOCGXlO873XVt95AvYPeJsiizl6senRCygATPBdzeIMIRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h13Y9N+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F128C4CEF0;
-	Tue, 12 Aug 2025 17:51:47 +0000 (UTC)
+	 MIME-Version; b=W0JsodAzO1joovlE1IQRHGBxMmisbu213IQbOwdTScdqsHqylYXmbIRrJ8LNIviNv5VG85qsQq+hZr1SAI77ysgzdtB/8VmDBI3ey5zgbp1XOujjPGdmmjS30mMOHwI70Lj93QhHtEyQDN1VoSqc1iBAjHXb57CDoANu57daT+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zd1SEmza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A030C4CEF0;
+	Tue, 12 Aug 2025 18:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021108;
-	bh=NoSvVet8nOhxFuN39w6mCBgBkLQQTyNMjl40STqeEek=;
+	s=korg; t=1755024210;
+	bh=awJDRcdCgaTe8R30AvBtaxYs5t0z9rZbXtbpC5BGPCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h13Y9N+QmhdMrlWCCxidM6gdh84j1q2OLFVJxD0eILjrW8lbpiBZA/OxGxi+jntcx
-	 xhjlMcrw7vH/+tlFftxOoTXcOrJzg51jeynvfP6IBY+oHMTBtQQx+tvlcoLgu/9va3
-	 Dos9vExpqfuTutGMRBynGFOkui6INkMJ5KMX+Vvw=
+	b=zd1SEmzalIyUUW01jiFGsvri7swCeUUB8rfXQrAtLqQRcBCf+hRdvVxKRv3w662hG
+	 GmdrRI5aQrRpVkrEwmpDCKVcUl+t0oC1zycRyWn2tP1wkIet4DkECELTdAoKy7xuD8
+	 sZm0YiSFGR8AI7IqGUdGOkZsfdgNm44BEWIj31HA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/253] pNFS/flexfiles: dont attempt pnfs on fatal DS errors
+Subject: [PATCH 6.16 305/627] crypto: s390/hmac - Fix counter in export state
 Date: Tue, 12 Aug 2025 19:30:00 +0200
-Message-ID: <20250812172957.853620459@linuxfoundation.org>
+Message-ID: <20250812173430.915737575@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit f06bedfa62d57f7b67d44aacd6badad2e13a803f ]
+[ Upstream commit 1b39bc4a703a63a22c08232015540adfb31f22ba ]
 
-When an applications get killed (SIGTERM/SIGINT) while pNFS client performs a connection
-to DS, client ends in an infinite loop of connect-disconnect. This
-source of the issue, it that flexfilelayoutdev#nfs4_ff_layout_prepare_ds gets an error
-on nfs4_pnfs_ds_connect with status ERESTARTSYS, which is set by rpc_signal_task, but
-the error is treated as transient, thus retried.
+The hmac export state needs to be one block-size bigger to account
+for the ipad.
 
-The issue is reproducible with Ctrl+C the following script(there should be ~1000 files in
-a directory, client should must not have any connections to DSes):
-
-```
-echo 3 > /proc/sys/vm/drop_caches
-
-for i in *
-do
-   head -1 $i
-done
-```
-
-The change aims to propagate the nfs4_ff_layout_prepare_ds error state
-to the caller that can decide whatever this is a retryable error or not.
-
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Link: https://lore.kernel.org/r/20250627071751.189663-1-tigran.mkrtchyan@desy.de
-Fixes: 260f32adb88d ("pNFS/flexfiles: Check the result of nfs4_pnfs_ds_connect")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Fixes: 08811169ac01 ("crypto: s390/hmac - Use API partial block handling")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c    | 26 ++++++++++++++---------
- fs/nfs/flexfilelayout/flexfilelayoutdev.c |  6 +++---
- 2 files changed, 19 insertions(+), 13 deletions(-)
+ arch/s390/crypto/hmac_s390.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index aa55b5df065b..5dd16f4ae74d 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -745,14 +745,14 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
- {
- 	struct nfs4_ff_layout_segment *fls = FF_LAYOUT_LSEG(lseg);
- 	struct nfs4_ff_layout_mirror *mirror;
--	struct nfs4_pnfs_ds *ds;
-+	struct nfs4_pnfs_ds *ds = ERR_PTR(-EAGAIN);
- 	u32 idx;
- 
- 	/* mirrors are initially sorted by efficiency */
- 	for (idx = start_idx; idx < fls->mirror_array_cnt; idx++) {
- 		mirror = FF_LAYOUT_COMP(lseg, idx);
- 		ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
--		if (!ds)
-+		if (IS_ERR(ds))
- 			continue;
- 
- 		if (check_device &&
-@@ -760,10 +760,10 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
- 			continue;
- 
- 		*best_idx = idx;
--		return ds;
-+		break;
- 	}
- 
--	return NULL;
-+	return ds;
+diff --git a/arch/s390/crypto/hmac_s390.c b/arch/s390/crypto/hmac_s390.c
+index 93a1098d9f8d..58444da9b004 100644
+--- a/arch/s390/crypto/hmac_s390.c
++++ b/arch/s390/crypto/hmac_s390.c
+@@ -290,6 +290,7 @@ static int s390_hmac_export(struct shash_desc *desc, void *out)
+ 	struct s390_kmac_sha2_ctx *ctx = shash_desc_ctx(desc);
+ 	unsigned int bs = crypto_shash_blocksize(desc->tfm);
+ 	unsigned int ds = bs / 2;
++	u64 lo = ctx->buflen[0];
+ 	union {
+ 		u8 *u8;
+ 		u64 *u64;
+@@ -301,9 +302,10 @@ static int s390_hmac_export(struct shash_desc *desc, void *out)
+ 	else
+ 		memcpy(p.u8, ctx->param, ds);
+ 	p.u8 += ds;
+-	put_unaligned(ctx->buflen[0], p.u64++);
++	lo += bs;
++	put_unaligned(lo, p.u64++);
+ 	if (ds == SHA512_DIGEST_SIZE)
+-		put_unaligned(ctx->buflen[1], p.u64);
++		put_unaligned(ctx->buflen[1] + (lo < bs), p.u64);
+ 	return err;
  }
  
- static struct nfs4_pnfs_ds *
-@@ -933,7 +933,7 @@ ff_layout_pg_init_write(struct nfs_pageio_descriptor *pgio,
- 	for (i = 0; i < pgio->pg_mirror_count; i++) {
- 		mirror = FF_LAYOUT_COMP(pgio->pg_lseg, i);
- 		ds = nfs4_ff_layout_prepare_ds(pgio->pg_lseg, mirror, true);
--		if (!ds) {
-+		if (IS_ERR(ds)) {
- 			if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
- 				goto out_mds;
- 			pnfs_generic_pg_cleanup(pgio);
-@@ -1839,6 +1839,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
- 	u32 idx = hdr->pgio_mirror_idx;
- 	int vers;
- 	struct nfs_fh *fh;
-+	bool ds_fatal_error = false;
+@@ -316,14 +318,16 @@ static int s390_hmac_import(struct shash_desc *desc, const void *in)
+ 		const u8 *u8;
+ 		const u64 *u64;
+ 	} p = { .u8 = in };
++	u64 lo;
+ 	int err;
  
- 	dprintk("--> %s ino %lu pgbase %u req %zu@%llu\n",
- 		__func__, hdr->inode->i_ino,
-@@ -1846,8 +1847,10 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
- 
- 	mirror = FF_LAYOUT_COMP(lseg, idx);
- 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
--	if (!ds)
-+	if (IS_ERR(ds)) {
-+		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
- 		goto out_failed;
-+	}
- 
- 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
- 						   hdr->inode);
-@@ -1888,7 +1891,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
- 	return PNFS_ATTEMPTED;
- 
- out_failed:
--	if (ff_layout_avoid_mds_available_ds(lseg))
-+	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
- 		return PNFS_TRY_AGAIN;
- 	trace_pnfs_mds_fallback_read_pagelist(hdr->inode,
- 			hdr->args.offset, hdr->args.count,
-@@ -1909,11 +1912,14 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
- 	int vers;
- 	struct nfs_fh *fh;
- 	u32 idx = hdr->pgio_mirror_idx;
-+	bool ds_fatal_error = false;
- 
- 	mirror = FF_LAYOUT_COMP(lseg, idx);
- 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
--	if (!ds)
-+	if (IS_ERR(ds)) {
-+		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
- 		goto out_failed;
-+	}
- 
- 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
- 						   hdr->inode);
-@@ -1956,7 +1962,7 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
- 	return PNFS_ATTEMPTED;
- 
- out_failed:
--	if (ff_layout_avoid_mds_available_ds(lseg))
-+	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
- 		return PNFS_TRY_AGAIN;
- 	trace_pnfs_mds_fallback_write_pagelist(hdr->inode,
- 			hdr->args.offset, hdr->args.count,
-@@ -1998,7 +2004,7 @@ static int ff_layout_initiate_commit(struct nfs_commit_data *data, int how)
- 	idx = calc_ds_index_from_commit(lseg, data->ds_commit_index);
- 	mirror = FF_LAYOUT_COMP(lseg, idx);
- 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
--	if (!ds)
-+	if (IS_ERR(ds))
- 		goto out_err;
- 
- 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
-diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-index d21c5ecfbf1c..95d5dca67145 100644
---- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-@@ -370,11 +370,11 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
- 			  struct nfs4_ff_layout_mirror *mirror,
- 			  bool fail_return)
- {
--	struct nfs4_pnfs_ds *ds = NULL;
-+	struct nfs4_pnfs_ds *ds;
- 	struct inode *ino = lseg->pls_layout->plh_inode;
- 	struct nfs_server *s = NFS_SERVER(ino);
- 	unsigned int max_payload;
--	int status;
-+	int status = -EAGAIN;
- 
- 	if (!ff_layout_init_mirror_ds(lseg->pls_layout, mirror))
- 		goto noconnect;
-@@ -412,7 +412,7 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
- 	ff_layout_send_layouterror(lseg);
- 	if (fail_return || !ff_layout_has_available_ds(lseg))
- 		pnfs_error_mark_layout_for_return(ino, lseg);
--	ds = NULL;
-+	ds = ERR_PTR(status);
- out:
- 	return ds;
- }
+ 	err = s390_hmac_sha2_init(desc);
+ 	memcpy(ctx->param, p.u8, ds);
+ 	p.u8 += ds;
+-	ctx->buflen[0] = get_unaligned(p.u64++);
++	lo = get_unaligned(p.u64++);
++	ctx->buflen[0] = lo - bs;
+ 	if (ds == SHA512_DIGEST_SIZE)
+-		ctx->buflen[1] = get_unaligned(p.u64);
++		ctx->buflen[1] = get_unaligned(p.u64) - (lo < bs);
+ 	if (ctx->buflen[0] | ctx->buflen[1])
+ 		ctx->gr0.ikp = 1;
+ 	return err;
 -- 
 2.39.5
 
