@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-167214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A75B22D53
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CD6B22D35
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01BC8623ABD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA8EE1893F41
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68DD2F7469;
-	Tue, 12 Aug 2025 16:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1502E2F747B;
+	Tue, 12 Aug 2025 16:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySMapL+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJuENIOm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57EA305E08
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B512F744F
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015395; cv=none; b=KgPK2vcw1GI7Yl4Gz6aviuDfhXjhSGH/amCnckKJvlMh+8OIkTV9uv4VzEr0XiXqqzOFrk6SUz2yyIZBoU5W08ZIMloE/s9MaTS+K0K7mNkcJGWqd1MwqTwIYyVlpz2YTpex5vqQN498K0EqkOaJ6iCpcRTrOErZD3CiCcfooQc=
+	t=1755015418; cv=none; b=jSMYCkKhLt4K+PvObYmVMq75bnImiz/DFOu4j1FB6OjP7/5Q07Gz8c25t7oMOIiVyBEkL/G22JJbAZ8za1Mx8xF80tgu9O9pez8BbXA+gGZw0LnjVXSlJ/6s5mTPBTZH+ib2hPaPLKjtnxhPEaPWHrw03uvl9xnNIP9ixZBcS28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015395; c=relaxed/simple;
-	bh=ue5+w+j65YresU5K34yShjA9D1PZ0HSH4F3dfgqDisQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ch9teligqK+aIC1S9bC5SQOPmg/6LrK3zghYAQmX+whIGMeUQ0h/X6c09mqs4RqCNVd/jthgqBJ+aS60gC+rlWgTWB/F61DO7TgHSzYdYygROkgxq7CnMqGfIIjp4GZa7BrSfVpm03n4opkMhXc49fCT0RezrAelumXpMUbROlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySMapL+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E83C4CEF0;
-	Tue, 12 Aug 2025 16:16:34 +0000 (UTC)
+	s=arc-20240116; t=1755015418; c=relaxed/simple;
+	bh=LEErqAAwkXBX0BBhkbEVFEo4Sd7pDls5rKBKLa+0omE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nc1g/8BAHCh1iHjq4K+APkkbIIvGm9FlklkuXSMq6i2T6ElNgH3hN+QQlLxYqnDy0KL2Rq1GY+Ux4atzHhnmgdOLm7B+7oVhIz/R9rZbKAKhT+2gmxAIvqt3AAFuOtO9ePVFOjUuZ323zbDCVfeXVTfVLnK2ssNrTzzS5SBzbOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJuENIOm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3856BC4CEF0;
+	Tue, 12 Aug 2025 16:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755015395;
-	bh=ue5+w+j65YresU5K34yShjA9D1PZ0HSH4F3dfgqDisQ=;
+	s=korg; t=1755015418;
+	bh=LEErqAAwkXBX0BBhkbEVFEo4Sd7pDls5rKBKLa+0omE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ySMapL+yeQXthKQoGMCTi5Yc1Fp/y9WXHB2u99mIfABC7E2fCL18p3YXLXGbLorT/
-	 YWUMBTRJJu09yQt7LVvEhpW+8NuHi7mZpxUAQCRr/7hAqBknpJzR2vvWlxG/Oxrdue
-	 BOvn6y7BJwQT8pGYf2OfI2pGzv/AkqoEw92wgdxM=
-Subject: FAILED: patch "[PATCH] KVM: VMX: Preserve host's DEBUGCTLMSR_FREEZE_IN_SMM while" failed to apply to 5.4-stable tree
-To: mlevitsk@redhat.com,seanjc@google.com
+	b=NJuENIOmHlC0z9koybSDh1YJejvoO3NS0mWuUNLyupUJfmd6bG93GoudUWKCv2PPN
+	 1Gf2SQ/pPY+vmCmIjsvSzmIsEj1OBXg7RutaroNKJz50NHVbc1GUpMIpjAimoAlBhR
+	 Y3qmgicjqVy3l/rl+tntPWDUN3Ht84WevFnPMo6I=
+Subject: FAILED: patch "[PATCH] s390/mm: Remove possible false-positive warning in" failed to apply to 6.6-stable tree
+To: gerald.schaefer@linux.ibm.com,agordeev@linux.ibm.com,imbrenda@linux.ibm.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Aug 2025 18:15:38 +0200
-Message-ID: <2025081238-veggie-abrasive-ce80@gregkh>
+Date: Tue, 12 Aug 2025 18:16:55 +0200
+Message-ID: <2025081255-shabby-impound-4a47@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6b1dd26544d045f6a79e8c73572c0c0db3ef3c1a
+git cherry-pick -x 5647f61ad9171e8f025558ed6dc5702c56a33ba3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081238-veggie-abrasive-ce80@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081255-shabby-impound-4a47@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,183 +77,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6b1dd26544d045f6a79e8c73572c0c0db3ef3c1a Mon Sep 17 00:00:00 2001
-From: Maxim Levitsky <mlevitsk@redhat.com>
-Date: Tue, 10 Jun 2025 16:20:10 -0700
-Subject: [PATCH] KVM: VMX: Preserve host's DEBUGCTLMSR_FREEZE_IN_SMM while
- running the guest
+From 5647f61ad9171e8f025558ed6dc5702c56a33ba3 Mon Sep 17 00:00:00 2001
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Date: Wed, 9 Jul 2025 20:34:30 +0200
+Subject: [PATCH] s390/mm: Remove possible false-positive warning in
+ pte_free_defer()
 
-Set/clear DEBUGCTLMSR_FREEZE_IN_SMM in GUEST_IA32_DEBUGCTL based on the
-host's pre-VM-Enter value, i.e. preserve the host's FREEZE_IN_SMM setting
-while running the guest.  When running with the "default treatment of SMIs"
-in effect (the only mode KVM supports), SMIs do not generate a VM-Exit that
-is visible to host (non-SMM) software, and instead transitions directly
-from VMX non-root to SMM.  And critically, DEBUGCTL isn't context switched
-by hardware on SMI or RSM, i.e. SMM will run with whatever value was
-resident in hardware at the time of the SMI.
+Commit 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing
+page") added a warning to pte_free_defer(), on our request. It was meant
+to warn if this would ever be reached for KVM guest mappings, because
+the page table would be freed w/o a gmap_unlink(). THP mappings are not
+allowed for KVM guests on s390, so this should never happen.
 
-Failure to preserve FREEZE_IN_SMM results in the PMU unexpectedly counting
-events while the CPU is executing in SMM, which can pollute profiling and
-potentially leak information into the guest.
+However, it is possible that the warning is triggered in a valid case as
+false-positive.
 
-Check for changes in FREEZE_IN_SMM prior to every entry into KVM's inner
-run loop, as the bit can be toggled in IRQ context via IPI callback (SMP
-function call), by way of /sys/devices/cpu/freeze_on_smi.
+s390_enable_sie() takes the mmap_lock, marks all VMAs as VM_NOHUGEPAGE and
+splits possibly existing THP guest mappings. mm->context.has_pgste is set
+to 1 before that, to prevent races with the mm_has_pgste() check in
+MADV_HUGEPAGE.
 
-Add a field in kvm_x86_ops to communicate which DEBUGCTL bits need to be
-preserved, as FREEZE_IN_SMM is only supported and defined for Intel CPUs,
-i.e. explicitly checking FREEZE_IN_SMM in common x86 is at best weird, and
-at worst could lead to undesirable behavior in the future if AMD CPUs ever
-happened to pick up a collision with the bit.
+khugepaged drops the mmap_lock for file mappings and might run in parallel,
+before a vma is marked VM_NOHUGEPAGE, but after mm->context.has_pgste was
+set to 1. If it finds file mappings to collapse, it will eventually call
+pte_free_defer(). This will trigger the warning, but it is a valid case
+because gmap is not yet set up, and the THP mappings will be split again.
 
-Exempt TDX vCPUs, i.e. protected guests, from the check, as the TDX Module
-owns and controls GUEST_IA32_DEBUGCTL.
+Therefore, remove the warning and the comment.
 
-WARN in SVM if KVM_RUN_LOAD_DEBUGCTL is set, mostly to document that the
-lack of handling isn't a KVM bug (TDX already WARNs on any run_flag).
+Fixes: 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing page")
+Cc: <stable@vger.kernel.org> # 6.6+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
-Lastly, explicitly reload GUEST_IA32_DEBUGCTL on a VM-Fail that is missed
-by KVM but detected by hardware, i.e. in nested_vmx_restore_host_state().
-Doing so avoids the need to track host_debugctl on a per-VMCS basis, as
-GUEST_IA32_DEBUGCTL is unconditionally written by prepare_vmcs02() and
-load_vmcs12_host_state().  For the VM-Fail case, even though KVM won't
-have actually entered the guest, vcpu_enter_guest() will have run with
-vmcs02 active and thus could result in vmcs01 being run with a stale value.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-9-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 4f7ee2dbf10e..5e0415a8ee3f 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1677,6 +1677,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
- enum kvm_x86_run_flags {
- 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
- 	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
-+	KVM_RUN_LOAD_DEBUGCTL		= BIT(2),
- };
+diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
+index b449fd2605b0..d2f6f1f6d2fc 100644
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -173,11 +173,6 @@ void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
+ 	struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
  
- struct kvm_x86_ops {
-@@ -1707,6 +1708,12 @@ struct kvm_x86_ops {
- 	void (*vcpu_load)(struct kvm_vcpu *vcpu, int cpu);
- 	void (*vcpu_put)(struct kvm_vcpu *vcpu);
- 
-+	/*
-+	 * Mask of DEBUGCTL bits that are owned by the host, i.e. that need to
-+	 * match the host's value even while the guest is active.
-+	 */
-+	const u64 HOST_OWNED_DEBUGCTL;
-+
- 	void (*update_exception_bitmap)(struct kvm_vcpu *vcpu);
- 	int (*get_msr)(struct kvm_vcpu *vcpu, struct msr_data *msr);
- 	int (*set_msr)(struct kvm_vcpu *vcpu, struct msr_data *msr);
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index c85cbce6d2f6..4a6d4460f947 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -915,6 +915,8 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.vcpu_load = vt_op(vcpu_load),
- 	.vcpu_put = vt_op(vcpu_put),
- 
-+	.HOST_OWNED_DEBUGCTL = DEBUGCTLMSR_FREEZE_IN_SMM,
-+
- 	.update_exception_bitmap = vt_op(update_exception_bitmap),
- 	.get_feature_msr = vmx_get_feature_msr,
- 	.get_msr = vt_op(get_msr),
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index ef20184b8b11..c69df3aba8d1 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4861,6 +4861,9 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
- 			WARN_ON(kvm_set_dr(vcpu, 7, vmcs_readl(GUEST_DR7)));
- 	}
- 
-+	/* Reload DEBUGCTL to ensure vmcs01 has a fresh FREEZE_IN_SMM value. */
-+	vmx_reload_guest_debugctl(vcpu);
-+
- 	/*
- 	 * Note that calling vmx_set_{efer,cr0,cr4} is important as they
- 	 * handle a variety of side effects to KVM's software model.
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index a77d325fe78b..0db1bd383302 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7377,6 +7377,9 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
- 		set_debugreg(vcpu->arch.dr6, 6);
- 
-+	if (run_flags & KVM_RUN_LOAD_DEBUGCTL)
-+		vmx_reload_guest_debugctl(vcpu);
-+
- 	/*
- 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
- 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index c20a4185d10a..076af78af151 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -419,12 +419,25 @@ bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated)
- 
- static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
- {
-+	WARN_ON_ONCE(val & DEBUGCTLMSR_FREEZE_IN_SMM);
-+
-+	val |= vcpu->arch.host_debugctl & DEBUGCTLMSR_FREEZE_IN_SMM;
- 	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
+ 	call_rcu(&ptdesc->pt_rcu_head, pte_free_now);
+-	/*
+-	 * THPs are not allowed for KVM guests. Warn if pgste ever reaches here.
+-	 * Turn to the generic pte_free_defer() version once gmap is removed.
+-	 */
+-	WARN_ON_ONCE(mm_has_pgste(mm));
  }
- 
- static inline u64 vmx_guest_debugctl_read(void)
- {
--	return vmcs_read64(GUEST_IA32_DEBUGCTL);
-+	return vmcs_read64(GUEST_IA32_DEBUGCTL) & ~DEBUGCTLMSR_FREEZE_IN_SMM;
-+}
-+
-+static inline void vmx_reload_guest_debugctl(struct kvm_vcpu *vcpu)
-+{
-+	u64 val = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+
-+	if (!((val ^ vcpu->arch.host_debugctl) & DEBUGCTLMSR_FREEZE_IN_SMM))
-+		return;
-+
-+	vmx_guest_debugctl_write(vcpu, val & ~DEBUGCTLMSR_FREEZE_IN_SMM);
- }
- 
- /*
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 7fe3549bbd93..179c2c550c8d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10779,7 +10779,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		dm_request_for_irq_injection(vcpu) &&
- 		kvm_cpu_accept_dm_intr(vcpu);
- 	fastpath_t exit_fastpath;
--	u64 run_flags;
-+	u64 run_flags, debug_ctl;
- 
- 	bool req_immediate_exit = false;
- 
-@@ -11051,7 +11051,17 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		set_debugreg(0, 7);
- 	}
- 
--	vcpu->arch.host_debugctl = get_debugctlmsr();
-+	/*
-+	 * Refresh the host DEBUGCTL snapshot after disabling IRQs, as DEBUGCTL
-+	 * can be modified in IRQ context, e.g. via SMP function calls.  Inform
-+	 * vendor code if any host-owned bits were changed, e.g. so that the
-+	 * value loaded into hardware while running the guest can be updated.
-+	 */
-+	debug_ctl = get_debugctlmsr();
-+	if ((debug_ctl ^ vcpu->arch.host_debugctl) & kvm_x86_ops.HOST_OWNED_DEBUGCTL &&
-+	    !vcpu->arch.guest_state_protected)
-+		run_flags |= KVM_RUN_LOAD_DEBUGCTL;
-+	vcpu->arch.host_debugctl = debug_ctl;
- 
- 	guest_timing_enter_irqoff();
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
 
 
