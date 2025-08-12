@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-168350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4113BB234B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A17B22F9F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84561A26B79
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D6B63BC4D0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2A12FE560;
-	Tue, 12 Aug 2025 18:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BBE2FDC2E;
+	Tue, 12 Aug 2025 17:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2Bnxc5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJY/VI+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B32F5E;
-	Tue, 12 Aug 2025 18:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12692FABF0;
+	Tue, 12 Aug 2025 17:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023885; cv=none; b=PCpnIH3oQSmon6OgSPJHjT+4hGHOaF/SdYeCtz+Bw17cR0NBz/KUDjJ7+sztWuUM2PL5x/xjesTP/hSVvA0QuQiS2uodVsyt6Gls962e9nT0MCXJThhrdQdEiAAb9mxRfxTc5B0qfB0xqkmgOeYq5kYCMnLW63EG9QvXUqrIyi8=
+	t=1755020536; cv=none; b=TeO9hyG5Od2fsgTIlnyFButpVJpZ4HMfq9mVKRrC6hh0/vEka68pWGfZdMsEUSQ8mqpeqW82S9GEKyItG3TdSyafUijZPzszb8CyqvGP3IczVPAdcGldi+pBtysBzGeGHNMfRdPc8AWooIKQFCoDOPJ1Cd/9lg7kFjBCcrh8Yec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023885; c=relaxed/simple;
-	bh=B3sYB9H60DWxkVVJf9DammbAliin7Eu3e5CFYg5P/zw=;
+	s=arc-20240116; t=1755020536; c=relaxed/simple;
+	bh=qnDa14VmuWDyFuqifHCP2WMBN0JCluiQ8McRpWYtv8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PTLDtf19FkukyhdyF0J7FuBc6eFJTxymLkYIAyHHbA9k5V9D6T7Iuw5GZbUgnvAQRqJji+YEQeCyG6V+vLys6q5P424Fc4gCs9o9q1ZUinI1csRsinR02vMOcwdjuu8Gi26TG3EVXs8lswpLI40xR+0e8RQ1rbdIyMvat9evDPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2Bnxc5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF53AC4CEF0;
-	Tue, 12 Aug 2025 18:38:04 +0000 (UTC)
+	 MIME-Version; b=BoYMGYLBHlmFA96Ktvm/azBeGiFHuMIw4+NCfr/I/7EmssVk4BBk0/iZGTT/wZtZIy54u12M5VgqCUHro+uD0aQe7jc+Lc01teQDMqPUenRXBhnKeS8Bf7guEEM1QhJ2eIddyl62dzB/J+EBYFfkyZHj0PD18Sa//ntEb40dYyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJY/VI+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD95C4CEF0;
+	Tue, 12 Aug 2025 17:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023885;
-	bh=B3sYB9H60DWxkVVJf9DammbAliin7Eu3e5CFYg5P/zw=;
+	s=korg; t=1755020536;
+	bh=qnDa14VmuWDyFuqifHCP2WMBN0JCluiQ8McRpWYtv8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2Bnxc5wHfaS+6urdbY6XeojPrJE/npOIaimNaBcK3+jyl1W9ZVuytp/nlcWRKfpq
-	 6x/vF9y9w90tHP7NOq4Cdhrt3w9zEPFKe7Wrwpax3NHwQpNLJNJuP+mL00+XmGMbzQ
-	 yXbw0dIiCQvVbAp0DKc6eF7F75KVVeTV4j+E4TgM=
+	b=AJY/VI+PJXaeQNuU7J9EivQ940f7tYM9Dh0soQa30AErqrlEj9Rc7+T/hPo3xpcK7
+	 704BkuFNVSo59QZ3Ezd4mdk5yjbenrMt7uTANetUqBvDPs2CemHyUxSopLln3h1NIX
+	 n9qDmGjhe225wnokAmSDvbrAb0U82ZOclFiYfFyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Simona Vetter <simona.vetter@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 203/627] drm/panthor: Fix UAF in panthor_gem_create_with_handle() debugfs code
+Subject: [PATCH 6.1 110/253] m68k: Dont unregister boot console needlessly
 Date: Tue, 12 Aug 2025 19:28:18 +0200
-Message-ID: <20250812173426.999062591@linuxfoundation.org>
+Message-ID: <20250812172953.402046388@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,154 +61,154 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit fe69a391808404977b1f002a6e7447de3de7a88e ]
+[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
 
-The object is potentially already gone after the drm_gem_object_put().
-In general the object should be fully constructed before calling
-drm_gem_handle_create(), except the debugfs tracking uses a separate
-lock and list and separate flag to denotate whether the object is
-actually initialized.
+When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
+generate console output. That will continue to work even after
+debug_cons_nputs() becomes unavailable so there's no need to
+unregister the boot console.
 
-Since I'm touching this all anyway simplify this by only adding the
-object to the debugfs when it's ready for that, which allows us to
-delete that separate flag. panthor_gem_debugfs_bo_rm() already checks
-whether we've actually been added to the list or this is some error
-path cleanup.
+Take the opportunity to remove a repeated MACH_IS_* test. Use the
+actual .write method (instead of a wrapper) and test that pointer
+instead. This means adding an unused parameter to debug_cons_nputs() for
+consistency with the struct console API.
 
-v2: Fix build issues for !CONFIG_DEBUGFS (Adrián)
+early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
+head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
+depend on the latter, to obviate some ifdef conditionals.
 
-v3: Add linebreak and remove outdated comment (Liviu)
-
-Fixes: a3707f53eb3f ("drm/panthor: show device-wide list of DRM GEM objects over DebugFS")
-Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250709135220.1428931-1-simona.vetter@ffwll.ch
+Cc: Daniel Palmer <daniel@0x0f.com>
+Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_gem.c | 31 +++++++++++++--------------
- drivers/gpu/drm/panthor/panthor_gem.h |  3 ---
- 2 files changed, 15 insertions(+), 19 deletions(-)
+ arch/m68k/Kconfig.debug         |  2 +-
+ arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
+ arch/m68k/kernel/head.S         |  8 +++----
+ 3 files changed, 19 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index 7c00fd77758b..a123bc740ba1 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -16,10 +16,15 @@
- #include "panthor_mmu.h"
+diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
+index 465e28be0ce4..6a6f0ed7713f 100644
+--- a/arch/m68k/Kconfig.debug
++++ b/arch/m68k/Kconfig.debug
+@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
  
- #ifdef CONFIG_DEBUG_FS
--static void panthor_gem_debugfs_bo_add(struct panthor_device *ptdev,
--				       struct panthor_gem_object *bo)
-+static void panthor_gem_debugfs_bo_init(struct panthor_gem_object *bo)
- {
- 	INIT_LIST_HEAD(&bo->debugfs.node);
-+}
-+
-+static void panthor_gem_debugfs_bo_add(struct panthor_gem_object *bo)
-+{
-+	struct panthor_device *ptdev = container_of(bo->base.base.dev,
-+						    struct panthor_device, base);
+ config EARLY_PRINTK
+ 	bool "Early printk"
+-	depends on !(SUN3 || M68000 || COLDFIRE)
++	depends on MMU_MOTOROLA
+ 	help
+ 	  Write kernel log output directly to a serial port.
+ 	  Where implemented, output goes to the framebuffer as well.
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index f11ef9f1f56f..521cbb8a150c 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -16,25 +16,10 @@
+ #include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
  
- 	bo->debugfs.creator.tgid = current->group_leader->pid;
- 	get_task_comm(bo->debugfs.creator.process_name, current->group_leader);
-@@ -44,14 +49,13 @@ static void panthor_gem_debugfs_bo_rm(struct panthor_gem_object *bo)
- 
- static void panthor_gem_debugfs_set_usage_flags(struct panthor_gem_object *bo, u32 usage_flags)
- {
--	bo->debugfs.flags = usage_flags | PANTHOR_DEBUGFS_GEM_USAGE_FLAG_INITIALIZED;
-+	bo->debugfs.flags = usage_flags;
-+	panthor_gem_debugfs_bo_add(bo);
- }
- #else
--static void panthor_gem_debugfs_bo_add(struct panthor_device *ptdev,
--				       struct panthor_gem_object *bo)
--{}
- static void panthor_gem_debugfs_bo_rm(struct panthor_gem_object *bo) {}
- static void panthor_gem_debugfs_set_usage_flags(struct panthor_gem_object *bo, u32 usage_flags) {}
-+static void panthor_gem_debugfs_bo_init(struct panthor_gem_object *bo) {}
- #endif
- 
- static void panthor_gem_free_object(struct drm_gem_object *obj)
-@@ -246,7 +250,7 @@ struct drm_gem_object *panthor_gem_create_object(struct drm_device *ddev, size_t
- 	drm_gem_gpuva_set_lock(&obj->base.base, &obj->gpuva_list_lock);
- 	mutex_init(&obj->label.lock);
- 
--	panthor_gem_debugfs_bo_add(ptdev, obj);
-+	panthor_gem_debugfs_bo_init(obj);
- 
- 	return &obj->base.base;
- }
-@@ -285,6 +289,8 @@ panthor_gem_create_with_handle(struct drm_file *file,
- 		bo->base.base.resv = bo->exclusive_vm_root_gem->resv;
- 	}
- 
-+	panthor_gem_debugfs_set_usage_flags(bo, 0);
-+
- 	/*
- 	 * Allocate an id of idr table where the obj is registered
- 	 * and handle has the id what user can see.
-@@ -296,12 +302,6 @@ panthor_gem_create_with_handle(struct drm_file *file,
- 	/* drop reference from allocate - handle holds it now. */
- 	drm_gem_object_put(&shmem->base);
- 
--	/*
--	 * No explicit flags are needed in the call below, since the
--	 * function internally sets the INITIALIZED bit for us.
--	 */
--	panthor_gem_debugfs_set_usage_flags(bo, 0);
+-asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
 -
- 	return ret;
- }
+-static void __ref debug_cons_write(struct console *c,
+-				   const char *s, unsigned n)
+-{
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME147)
+-		mvme147_scc_write(c, s, n);
+-	else if (MACH_IS_MVME16x)
+-		mvme16x_cons_write(c, s, n);
+-	else
+-		debug_cons_nputs(s, n);
+-#endif
+-}
++asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
  
-@@ -387,7 +387,7 @@ static void panthor_gem_debugfs_bo_print(struct panthor_gem_object *bo,
- 	unsigned int refcount = kref_read(&bo->base.base.refcount);
- 	char creator_info[32] = {};
- 	size_t resident_size;
--	u32 gem_usage_flags = bo->debugfs.flags & (u32)~PANTHOR_DEBUGFS_GEM_USAGE_FLAG_INITIALIZED;
-+	u32 gem_usage_flags = bo->debugfs.flags;
- 	u32 gem_state_flags = 0;
- 
- 	/* Skip BOs being destroyed. */
-@@ -436,8 +436,7 @@ void panthor_gem_debugfs_print_bos(struct panthor_device *ptdev,
- 
- 	scoped_guard(mutex, &ptdev->gems.lock) {
- 		list_for_each_entry(bo, &ptdev->gems.node, debugfs.node) {
--			if (bo->debugfs.flags & PANTHOR_DEBUGFS_GEM_USAGE_FLAG_INITIALIZED)
--				panthor_gem_debugfs_bo_print(bo, m, &totals);
-+			panthor_gem_debugfs_bo_print(bo, m, &totals);
- 		}
- 	}
- 
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.h b/drivers/gpu/drm/panthor/panthor_gem.h
-index 4dd732dcd59f..8fc7215e9b90 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.h
-+++ b/drivers/gpu/drm/panthor/panthor_gem.h
-@@ -35,9 +35,6 @@ enum panthor_debugfs_gem_usage_flags {
- 
- 	/** @PANTHOR_DEBUGFS_GEM_USAGE_FLAG_FW_MAPPED: BO is mapped on the FW VM. */
- 	PANTHOR_DEBUGFS_GEM_USAGE_FLAG_FW_MAPPED = BIT(PANTHOR_DEBUGFS_GEM_USAGE_FW_MAPPED_BIT),
--
--	/** @PANTHOR_DEBUGFS_GEM_USAGE_FLAG_INITIALIZED: BO is ready for DebugFS display. */
--	PANTHOR_DEBUGFS_GEM_USAGE_FLAG_INITIALIZED = BIT(31),
+ static struct console early_console_instance = {
+ 	.name  = "debug",
+-	.write = debug_cons_write,
+ 	.flags = CON_PRINTBUFFER | CON_BOOT,
+ 	.index = -1
  };
+@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
+ 	if (early_console || buf)
+ 		return 0;
  
- /**
++	if (MACH_IS_MVME147)
++		early_console_instance.write = mvme147_scc_write;
++	else if (MACH_IS_MVME16x)
++		early_console_instance.write = mvme16x_cons_write;
++	else
++		early_console_instance.write = debug_cons_nputs;
+ 	early_console = &early_console_instance;
+ 	register_console(early_console);
+ 
+@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
+ }
+ early_param("earlyprintk", setup_early_printk);
+ 
+-/*
+- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
+- * after init sections are discarded (for platforms that use it).
+- */
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-
+ static int __init unregister_early_console(void)
+ {
+-	if (!early_console || MACH_IS_MVME16x)
+-		return 0;
++	/*
++	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
++	 * called after init sections are discarded (for platforms that use it).
++	 */
++	if (early_console && early_console->write == debug_cons_nputs)
++		return unregister_console(early_console);
+ 
+-	return unregister_console(early_console);
++	return 0;
+ }
+ late_initcall(unregister_early_console);
+-
+-#endif
+diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
+index 9e812d8606be..397114962a14 100644
+--- a/arch/m68k/kernel/head.S
++++ b/arch/m68k/kernel/head.S
+@@ -3267,8 +3267,8 @@ func_return	putn
+  *	turns around and calls the internal routines.  This routine
+  *	is used by the boot console.
+  *
+- *	The calling parameters are:
+- *		void debug_cons_nputs(const char *str, unsigned length)
++ *	The function signature is -
++ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
+  *
+  *	This routine does NOT understand variable arguments only
+  *	simple strings!
+@@ -3277,8 +3277,8 @@ ENTRY(debug_cons_nputs)
+ 	moveml	%d0/%d1/%a0,%sp@-
+ 	movew	%sr,%sp@-
+ 	ori	#0x0700,%sr
+-	movel	%sp@(18),%a0		/* fetch parameter */
+-	movel	%sp@(22),%d1		/* fetch parameter */
++	movel	%sp@(22),%a0		/* char *s */
++	movel	%sp@(26),%d1		/* unsigned int n */
+ 	jra	2f
+ 1:
+ #ifdef CONSOLE_DEBUG
 -- 
 2.39.5
 
