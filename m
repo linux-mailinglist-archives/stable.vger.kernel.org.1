@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-167499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7AEB23051
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F49B234E5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1444A682149
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C982D2A13B4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95342F7449;
-	Tue, 12 Aug 2025 17:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953092FE593;
+	Tue, 12 Aug 2025 18:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHVajOWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adchXmsY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B3C279915;
-	Tue, 12 Aug 2025 17:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F92FDC55;
+	Tue, 12 Aug 2025 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021024; cv=none; b=CmUmDLxkqBy4nuRlEi0f5mOQ04p/DfRD+GW8oeXv2pR6ypN0BjjN1zZLMUHiaq7CYPI5tvpvVUAIHqQxu8i5MNDLcQE1p4VNX2XjsA0GF5L2XYft0kZHr7mlKyhSkp+HGkfPk6CjrNl542sbs7bKYHDqDwMd38ORayI6Bgc07Po=
+	t=1755024170; cv=none; b=Ut8ZmHeRviHIjdair1QYyHcRpDubUmIuVt6ppbOFNbmINvoOzjtaogtZcEWDj3OiWYKF2AHX8yT2Uwd0w38d+NhC8Rx8XRDaKVNsxMvVIyBtIjCtVBCV72uPAXiV80ujE5Iy/FmsScrpkN6jfpR3sh1P/SiYIqrS6TJZLf2PtyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021024; c=relaxed/simple;
-	bh=Je0FYIalwXPjRn6QNWJ+DhfFYG82/uBeqrJv/dMbeR0=;
+	s=arc-20240116; t=1755024170; c=relaxed/simple;
+	bh=WG/tC0tUdn4YzEkJwBhMcHxtUcaui8/RT6UiQ7IYZ6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0zfKbttX0QPQTZcfX/SPVh4wErTuPVS+faFIk1HJTCxFSe/ngcexH8f84OgMaB3Iz8r1wyrHSTLJcdyyxTNc2dbISP6J4qvEvPQ6fdF9eEkoOhdVrfJnJ5lwqQ3ivoV0w0U2QGA3cwAGGrqZzqepakSe/TCTDI4RZ5ai4pwHf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHVajOWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FD2C4CEF1;
-	Tue, 12 Aug 2025 17:50:23 +0000 (UTC)
+	 MIME-Version; b=RIgijIuDOZpQvIOJV36ob5sGxIPRMqJTjyZqljO2afPVW6SCZoWc5FJjVewCit1jgwntzOoKKtCZ6K+v/QyDwi4sSQo4GwZZK5VRIrKoPO2Sat1BQvCN744Q7OjBBSZ69ai4quOoNlvOZFpAQahL6EI2+g82Acbu54zcL4ZjENo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adchXmsY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EC1C4CEF0;
+	Tue, 12 Aug 2025 18:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021024;
-	bh=Je0FYIalwXPjRn6QNWJ+DhfFYG82/uBeqrJv/dMbeR0=;
+	s=korg; t=1755024169;
+	bh=WG/tC0tUdn4YzEkJwBhMcHxtUcaui8/RT6UiQ7IYZ6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHVajOWNYF2RfBHSnqYLRzP+5ZY3axyMSqmJNRLlpsgAQvdolPXd008Bo0+pJrYm0
-	 PyGaVPCUSTnznrNerl0TMTfO3e7MRJ9Gn6YGFpS+q/fQjEWMBFSFdMYnWXTfZoBUks
-	 h0zEub7SVqbUCpaHbsnlxoP5Ja/toScJel7dNCxA=
+	b=adchXmsYdMFYINUV6t0BUr/KLKicPhw6MrEdLb+F+qKcvG6AqNixzgwSff++5wVgn
+	 yqOkcG7q9FjiZSSZHeFq9sjqYAkj8osX/0twhHRu2kRDPDNKMF/6/pOiGhk+iCK1tZ
+	 7HoDWmPRkSzGJGlopX7iFFWgg/J+3jMnGLzDiP78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Henzl <thenzl@redhat.com>,
-	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Tomas Glozar <tglozar@redhat.com>,
+	Juri Lelli <jlelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	John Kacur <jkacur@redhat.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/253] scsi: mpt3sas: Fix a fw_event memory leak
+Subject: [PATCH 6.16 294/627] rv: Use strings in da monitors tracepoints
 Date: Tue, 12 Aug 2025 19:29:49 +0200
-Message-ID: <20250812172957.360908281@linuxfoundation.org>
+Message-ID: <20250812173430.493889971@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +70,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Henzl <thenzl@redhat.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit 3e90b38781e3bdd651edaf789585687611638862 ]
+[ Upstream commit 7f904ff6e58d398c4336f3c19c42b338324451f7 ]
 
-In _mpt3sas_fw_work() the fw_event reference is removed, it should also
-be freed in all cases.
+Using DA monitors tracepoints with KASAN enabled triggers the following
+warning:
 
-Fixes: 4318c7347847 ("scsi: mpt3sas: Handle NVMe PCIe device related events generated from firmware.")
-Signed-off-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://lore.kernel.org/r/20250723153018.50518-1-thenzl@redhat.com
-Acked-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ BUG: KASAN: global-out-of-bounds in do_trace_event_raw_event_event_da_monitor+0xd6/0x1a0
+ Read of size 32 at addr ffffffffaada8980 by task ...
+ Call Trace:
+  <TASK>
+ [...]
+  do_trace_event_raw_event_event_da_monitor+0xd6/0x1a0
+  ? __pfx_do_trace_event_raw_event_event_da_monitor+0x10/0x10
+  ? trace_event_sncid+0x83/0x200
+  trace_event_sncid+0x163/0x200
+ [...]
+ The buggy address belongs to the variable:
+  automaton_snep+0x4e0/0x5e0
+
+This is caused by the tracepoints reading 32 bytes __array instead of
+__string from the automata definition. Such strings are literals and
+reading 32 bytes ends up in out of bound memory accesses (e.g. the next
+automaton's data in this case).
+The error is harmless as, while printing the string, we stop at the null
+terminator, but it should still be fixed.
+
+Use the __string facilities while defining the tracepoints to avoid
+reading out of bound memory.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tomas Glozar <tglozar@redhat.com>
+Cc: Juri Lelli <jlelli@redhat.com>
+Cc: Clark Williams <williams@redhat.com>
+Cc: John Kacur <jkacur@redhat.com>
+Link: https://lore.kernel.org/20250728135022.255578-4-gmonaco@redhat.com
+Fixes: 792575348ff7 ("rv/include: Add deterministic automata monitor definition via C macros")
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_scsih.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/trace/rv/rv_trace.h | 76 +++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-index 31768da482a5..b5b77b82d69f 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-@@ -10819,8 +10819,7 @@ _mpt3sas_fw_work(struct MPT3SAS_ADAPTER *ioc, struct fw_event_work *fw_event)
- 		break;
- 	case MPI2_EVENT_PCIE_TOPOLOGY_CHANGE_LIST:
- 		_scsih_pcie_topology_change_event(ioc, fw_event);
--		ioc->current_event = NULL;
--		return;
-+		break;
- 	}
- out:
- 	fw_event_work_put(fw_event);
+diff --git a/kernel/trace/rv/rv_trace.h b/kernel/trace/rv/rv_trace.h
+index 18fa0e358a30..01fa84824bcb 100644
+--- a/kernel/trace/rv/rv_trace.h
++++ b/kernel/trace/rv/rv_trace.h
+@@ -16,23 +16,23 @@ DECLARE_EVENT_CLASS(event_da_monitor,
+ 	TP_ARGS(state, event, next_state, final_state),
+ 
+ 	TP_STRUCT__entry(
+-		__array(	char,	state,		MAX_DA_NAME_LEN	)
+-		__array(	char,	event,		MAX_DA_NAME_LEN	)
+-		__array(	char,	next_state,	MAX_DA_NAME_LEN	)
+-		__field(	bool,	final_state			)
++		__string(	state,		state		)
++		__string(	event,		event		)
++		__string(	next_state,	next_state	)
++		__field(	bool,		final_state	)
+ 	),
+ 
+ 	TP_fast_assign(
+-		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
+-		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
+-		memcpy(__entry->next_state,	next_state,	MAX_DA_NAME_LEN);
+-		__entry->final_state		= final_state;
++		__assign_str(state);
++		__assign_str(event);
++		__assign_str(next_state);
++		__entry->final_state = final_state;
+ 	),
+ 
+ 	TP_printk("%s x %s -> %s%s",
+-		__entry->state,
+-		__entry->event,
+-		__entry->next_state,
++		__get_str(state),
++		__get_str(event),
++		__get_str(next_state),
+ 		__entry->final_state ? " (final)" : "")
+ );
+ 
+@@ -43,18 +43,18 @@ DECLARE_EVENT_CLASS(error_da_monitor,
+ 	TP_ARGS(state, event),
+ 
+ 	TP_STRUCT__entry(
+-		__array(	char,	state,		MAX_DA_NAME_LEN	)
+-		__array(	char,	event,		MAX_DA_NAME_LEN	)
++		__string(	state,	state	)
++		__string(	event,	event	)
+ 	),
+ 
+ 	TP_fast_assign(
+-		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
+-		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
++		__assign_str(state);
++		__assign_str(event);
+ 	),
+ 
+ 	TP_printk("event %s not expected in the state %s",
+-		__entry->event,
+-		__entry->state)
++		__get_str(event),
++		__get_str(state))
+ );
+ 
+ #include <monitors/wip/wip_trace.h>
+@@ -75,26 +75,26 @@ DECLARE_EVENT_CLASS(event_da_monitor_id,
+ 	TP_ARGS(id, state, event, next_state, final_state),
+ 
+ 	TP_STRUCT__entry(
+-		__field(	int,	id				)
+-		__array(	char,	state,		MAX_DA_NAME_LEN	)
+-		__array(	char,	event,		MAX_DA_NAME_LEN	)
+-		__array(	char,	next_state,	MAX_DA_NAME_LEN	)
+-		__field(	bool,	final_state			)
++		__field(	int,		id		)
++		__string(	state,		state		)
++		__string(	event,		event		)
++		__string(	next_state,	next_state	)
++		__field(	bool,		final_state	)
+ 	),
+ 
+ 	TP_fast_assign(
+-		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
+-		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
+-		memcpy(__entry->next_state,	next_state,	MAX_DA_NAME_LEN);
+-		__entry->id			= id;
+-		__entry->final_state		= final_state;
++		__assign_str(state);
++		__assign_str(event);
++		__assign_str(next_state);
++		__entry->id		= id;
++		__entry->final_state	= final_state;
+ 	),
+ 
+ 	TP_printk("%d: %s x %s -> %s%s",
+ 		__entry->id,
+-		__entry->state,
+-		__entry->event,
+-		__entry->next_state,
++		__get_str(state),
++		__get_str(event),
++		__get_str(next_state),
+ 		__entry->final_state ? " (final)" : "")
+ );
+ 
+@@ -105,21 +105,21 @@ DECLARE_EVENT_CLASS(error_da_monitor_id,
+ 	TP_ARGS(id, state, event),
+ 
+ 	TP_STRUCT__entry(
+-		__field(	int,	id				)
+-		__array(	char,	state,		MAX_DA_NAME_LEN	)
+-		__array(	char,	event,		MAX_DA_NAME_LEN	)
++		__field(	int,	id	)
++		__string(	state,	state	)
++		__string(	event,	event	)
+ 	),
+ 
+ 	TP_fast_assign(
+-		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
+-		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
+-		__entry->id			= id;
++		__assign_str(state);
++		__assign_str(event);
++		__entry->id	= id;
+ 	),
+ 
+ 	TP_printk("%d: event %s not expected in the state %s",
+ 		__entry->id,
+-		__entry->event,
+-		__entry->state)
++		__get_str(event),
++		__get_str(state))
+ );
+ 
+ #include <monitors/wwnr/wwnr_trace.h>
 -- 
 2.39.5
 
