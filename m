@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76556B231E3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE242B23534
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 090F35810FF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70BF6167C10
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914142F83A1;
-	Tue, 12 Aug 2025 18:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDA02C21F6;
+	Tue, 12 Aug 2025 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcomFKZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhtDCKxz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0521C8621;
-	Tue, 12 Aug 2025 18:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF46D291C1F;
+	Tue, 12 Aug 2025 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021887; cv=none; b=MztQR7OFLvEywDKal5Jps5mFKav6isr+Z1AI1usiuEHQHBLo5IrhFA/Q3Y6h+Di9jtjIKPsB4Rbe29ZWd7Yt70rtLlAabXD4C7iVbwxSQjHSebZgV0/ewnydPdXjKPe8O3A/lMa8LG6NZQZye6C9aLCb6kvnDC0V0m4Pq8hfyYE=
+	t=1755024441; cv=none; b=FPj7ZJ1CwYVLJNIai+5vfbWNZY6jzDkWy5NkqBvsANjoyR+nxZxbVkqfsmiHB2ZJvtaPbw+zln/NKq4xCybt10NAL7m9tHBV2/8Rfaa6szv4SGuPPqz5+4UBw5GKCGLukm07b40tgi02bDTKsnxF6odfjutpvQ+Pg5GXBS3EWxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021887; c=relaxed/simple;
-	bh=B0TvZV8mlVcdugX5Sk+fn6xU/D7cBaS2G2MdbKOHqpI=;
+	s=arc-20240116; t=1755024441; c=relaxed/simple;
+	bh=SivwWfug9CQZ32SAzFw5rATmgN1o16Vnu6tzU6inqBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=imh2lWCDJcNl3MLyDfgF4upSMJih8UwrarUENy8kEc2joQgeNktcUw6HRsFJ52seu1dVfpudAqCXPZZVhABZmGG0Gb3ByNVSDpS/uhgQFMbaaTVigVjhvcZ9ZFM9g1QfzL1gapUBFLUWhvJwjoqIBvZ93Fc09zG3CZeK6NO3Jks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcomFKZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39D7C4CEF0;
-	Tue, 12 Aug 2025 18:04:46 +0000 (UTC)
+	 MIME-Version; b=Ot66B0/TyKJjD1IT+0bxJyXVHsDcD5nWURe+RZggZUAkvVIMzjUgM7s3s9GKwMvcfcJJ/tvyzvzfm51mfUOKiM5nG2sOFPij2F4eB9VeQhMOBhATh6Bw6gj2FfUUr/Bybf6v3tYFML0nJI8qBY4FL8N8z9tXeSR7HCiED0/EqOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhtDCKxz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87CEC4CEF0;
+	Tue, 12 Aug 2025 18:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021887;
-	bh=B0TvZV8mlVcdugX5Sk+fn6xU/D7cBaS2G2MdbKOHqpI=;
+	s=korg; t=1755024441;
+	bh=SivwWfug9CQZ32SAzFw5rATmgN1o16Vnu6tzU6inqBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcomFKZV6mGI7kOKwN3QxzQL5AKtmPUJH8NWDvRV+73oKRZc0VGjfd4gz3B7/jJPT
-	 f7tSBGwJeiEt76+BbLe8ZKunFBEXI/JJyf3RGduiN6lbSCdSDBMDbkFmaxxsv1UINq
-	 YFTx/ZGjRAuyl0VTpEKV0hPqwu3Og/sneb1C36fA=
+	b=YhtDCKxzUbkcsHVlGoLCbe8h4/SLWKa/GuWztmbs8yMy1NFj9JXGrgC2baJILdyKd
+	 7lSuQpxHJydeo8Ca5w8hcbGJVjGSKxtA5aUd0s//FMC0hwpAWeuBWi9j8otZ6Yz6kp
+	 3wUWUzt+y84fQeGouutebDQB5YuVVziQ+OL3ahd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 254/262] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+	Arnd Bergmann <arnd@arndb.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 347/627] leds: tps6131x: Add V4L2_FLASH_LED_CLASS dependency
 Date: Tue, 12 Aug 2025 19:30:42 +0200
-Message-ID: <20250812173003.961998423@linuxfoundation.org>
+Message-ID: <20250812173432.489461716@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f upstream.
+[ Upstream commit c3c38e80016548685e439b23999b4f0bd0ad7e05 ]
 
-The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-up and down events when the WWAN interface is activated on the modem-side.
+This driver can optionally use the v4l2_flash infrastructure, but fails to
+link built=in if that is in a loadable module:
 
-Interrupt URBs will in consecutive polls grab:
-* Link Connected
-* Link Disconnected
-* Link Connected
+ld.lld-21: error: undefined symbol: v4l2_flash_release
+>>> referenced by leds-tps6131x.c:792 (drivers/leds/flash/leds-tps6131x.c:792)
 
-Where the last Connected is then a stable link state.
+Add the usual Kconfig dependency for it, still allowing it to be built when
+CONFIG_V4L2_FLASH_LED_CLASS is disabled.
 
-When the system is under load this may cause the unlink_urbs() work in
-__handle_link_change() to not complete before the next usbnet_link_change()
-call turns the carrier on again, allowing rx_submit() to queue new SKBs.
-
-In that event the URB queue is filled faster than it can drain, ending up
-in a RCU stall:
-
-    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
-    rcu: blocking rcu_node structures (internal RCU debug):
-    Sending NMI from CPU 1 to CPUs 0:
-    NMI backtrace for cpu 0
-
-    Call trace:
-     arch_local_irq_enable+0x4/0x8
-     local_bh_enable+0x18/0x20
-     __netdev_alloc_skb+0x18c/0x1cc
-     rx_submit+0x68/0x1f8 [usbnet]
-     rx_alloc_submit+0x4c/0x74 [usbnet]
-     usbnet_bh+0x1d8/0x218 [usbnet]
-     usbnet_bh_tasklet+0x10/0x18 [usbnet]
-     tasklet_action_common+0xa8/0x110
-     tasklet_action+0x2c/0x34
-     handle_softirqs+0x2cc/0x3a0
-     __do_softirq+0x10/0x18
-     ____do_softirq+0xc/0x14
-     call_on_irq_stack+0x24/0x34
-     do_softirq_own_stack+0x18/0x20
-     __irq_exit_rcu+0xa8/0xb8
-     irq_exit_rcu+0xc/0x30
-     el1_interrupt+0x34/0x48
-     el1h_64_irq_handler+0x14/0x1c
-     el1h_64_irq+0x68/0x6c
-     _raw_spin_unlock_irqrestore+0x38/0x48
-     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
-     unlink1+0xd4/0xdc [usbcore]
-     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
-     usb_unlink_urb+0x24/0x44 [usbcore]
-     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
-     __handle_link_change+0x34/0x70 [usbnet]
-     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
-     process_scheduled_works+0x2d0/0x48c
-     worker_thread+0x150/0x1dc
-     kthread+0xd8/0xe8
-     ret_from_fork+0x10/0x20
-
-Get around the problem by delaying the carrier on to the scheduled work.
-
-This needs a new flag to keep track of the necessary action.
-
-The carrier ok check cannot be removed as it remains required for the
-LINK_RESET event flow.
-
-Fixes: 4b49f58fff00 ("usbnet: handle link change")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b338a2ae9b31 ("leds: tps6131x: Add support for Texas Instruments TPS6131X flash LED driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20250620114440.4080938-1-arnd@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c   |   11 ++++++++---
- include/linux/usb/usbnet.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/leds/flash/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1122,6 +1122,9 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
-+		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+			netif_carrier_on(dev->net);
-+
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
-@@ -2015,10 +2018,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
- void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
- {
- 	/* update link after link is reseted */
--	if (link && !need_reset)
--		netif_carrier_on(dev->net);
--	else
-+	if (link && !need_reset) {
-+		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
-+	} else {
-+		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
- 		netif_carrier_off(dev->net);
-+	}
- 
- 	if (need_reset && link)
- 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -76,6 +76,7 @@ struct usbnet {
- #		define EVENT_LINK_CHANGE	11
- #		define EVENT_SET_RX_MODE	12
- #		define EVENT_NO_IP_ALIGN	13
-+#		define EVENT_LINK_CARRIER_ON	14
- /* This one is special, as it indicates that the device is going away
-  * there are cyclic dependencies between tasklet, timer and bh
-  * that must be broken
+diff --git a/drivers/leds/flash/Kconfig b/drivers/leds/flash/Kconfig
+index 55ca663ca506..5e08102a6784 100644
+--- a/drivers/leds/flash/Kconfig
++++ b/drivers/leds/flash/Kconfig
+@@ -136,6 +136,7 @@ config LEDS_TPS6131X
+ 	tristate "LED support for TI TPS6131x flash LED driver"
+ 	depends on I2C && OF
+ 	depends on GPIOLIB
++	depends on V4L2_FLASH_LED_CLASS || !V4L2_FLASH_LED_CLASS
+ 	select REGMAP_I2C
+ 	help
+ 	  This option enables support for Texas Instruments TPS61310/TPS61311
+-- 
+2.39.5
+
 
 
 
