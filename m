@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD92B2359B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:52:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD42BB233A6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A030E621C0A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D1A62A4DAE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212361A01BF;
-	Tue, 12 Aug 2025 18:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722D42FD1DA;
+	Tue, 12 Aug 2025 18:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KC9F/4v+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPEQCPXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2246294A17;
-	Tue, 12 Aug 2025 18:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306152E4248;
+	Tue, 12 Aug 2025 18:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024400; cv=none; b=P+JZi+L42ee7tf5shqqwo1zdIJth7MTL3k6kM0jzJnmsgd61ptpesYOmwA776JmmWArXuU5rtR3+XEoDf2RIR6+6i2+J1H4DtCFCEXd9o5emfLUhKtH7plo56LkyBoRTRvJVQfVcxpx0vtJmtj2eLVKeGOKJ0v3lPYstYyJ/Az0=
+	t=1755023186; cv=none; b=CakkKeFS/746aLrVLulm5qYGeiSttLg8ouZbsYWYVLw+7fsOGrXkbcuuhl2sA4T5adVHYwk4RKrvWqUHB24PrJHVTV5clU9DcM6sCSmq/jn8ABn9LqZdJdEaQ3qQNZUBulJ/auD2Mi1rD128jz1zCVM9Mzx3N9HinrLDWNmj+Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024400; c=relaxed/simple;
-	bh=mK2MmIur2JyfG2lf8U0M4N2pCb4r3EuVpiHh8oyKQ18=;
+	s=arc-20240116; t=1755023186; c=relaxed/simple;
+	bh=ORqbNgUob5MQDscsY75IALIRQRJglIfz0tz+2G3PBNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhvajoRVCf8uEatFyOrP5qIOgAx8zw35IrUc/3Ch6Bb7vm/ZZpT6TSNkPHDnOOD0nGUWbO9lCGQgl6T6I5pkBpBL332iGYD2Qq6SiO8yBWq3GpShACP1iWLku3jBy8C32AXcH+Csw7PofDW7SkhtcFrGXaiOfhki/mSPSOYIoN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KC9F/4v+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E70C4CEF0;
-	Tue, 12 Aug 2025 18:46:40 +0000 (UTC)
+	 MIME-Version; b=awpM9cBsKcQZpYuhdUqoage85CG4y4MXztIXDsQXwhrQcsvhrc0JnOxqEt0juh8HZd6JQnVZxBc+9nX6XeB+AWDb9m8xDW+D7As7jMnHSBNSQDUtQRP3U5c4Sua2dYVIxzheWzO+D/Eoa4OLA7OhTTG4c+YdWicovO6eo+VnHM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPEQCPXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8053C4CEF0;
+	Tue, 12 Aug 2025 18:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024400;
-	bh=mK2MmIur2JyfG2lf8U0M4N2pCb4r3EuVpiHh8oyKQ18=;
+	s=korg; t=1755023186;
+	bh=ORqbNgUob5MQDscsY75IALIRQRJglIfz0tz+2G3PBNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KC9F/4v+CA9/KcjYGsvJiMhrUpeNr2iZeAFkJiEY8WnmNS5ptqh0uwRpS7pP++Wt9
-	 KALBB1VdM1CGegnjpMNo5pdgOPyqWAWt7igotzEG1r0AoOwKtFziTP0aMlfdAiHPUh
-	 7wwysLlIA/aZiz++8q2cNVqRQIWFeCK3X4A33//o=
+	b=aPEQCPXWNv7XRyb+5n9/v3LEbx1WesUkae9sApox4pAAw0XYLoKVnGkONTO1tfuYB
+	 cRER2vFZ+pVM9X/nFBbeJG+dzXANVA11Omm9fOy7uy37YQm/7iALv6GHPrDKujhsAA
+	 bkPGS2zEtoLDlQcfLKNs5wjMyxGsHwV4lgIwUjZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 363/627] perf sched: Fix memory leaks in perf sched latency
+	stable@kernel.org,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 361/369] MIPS: mm: tlb-r4k: Uniquify TLB entries on init
 Date: Tue, 12 Aug 2025 19:30:58 +0200
-Message-ID: <20250812173433.099200617@linuxfoundation.org>
+Message-ID: <20250812173030.266802651@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit e68b1c0098b959cb88afce5c93dd6a9324e6da78 ]
+commit 35ad7e181541aa5757f9f316768d3e64403ec843 upstream.
 
-The work_atoms should be freed after use.  Add free_work_atoms() to
-make sure to release all.  It should use list_splice_init() when merging
-atoms to prevent accessing invalid pointers.
+Hardware or bootloader will initialize TLB entries to any value, which
+may collide with kernel's UNIQUE_ENTRYHI value. On MIPS microAptiv/M5150
+family of cores this will trigger machine check exception and cause boot
+failure. On M5150 simulation this could happen 7 times out of 1000 boots.
 
-Fixes: b1ffe8f3e0c96f552 ("perf sched: Finish latency => atom rename and misc cleanups")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-8-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace local_flush_tlb_all() with r4k_tlb_uniquify() which probes each
+TLB ENTRIHI unique value for collisions before it's written, and in case
+of collision try a different ASID.
+
+Cc: stable@kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ arch/mips/mm/tlb-r4k.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 087d4eaba5f7..4bbebd6ef2e4 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -1111,6 +1111,21 @@ add_sched_in_event(struct work_atoms *atoms, u64 timestamp)
- 	atoms->nb_atoms++;
- }
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -508,6 +508,60 @@ static int __init set_ntlb(char *str)
  
-+static void free_work_atoms(struct work_atoms *atoms)
+ __setup("ntlb=", set_ntlb);
+ 
++/* Initialise all TLB entries with unique values */
++static void r4k_tlb_uniquify(void)
 +{
-+	struct work_atom *atom, *tmp;
++	int entry = num_wired_entries();
 +
-+	if (atoms == NULL)
-+		return;
++	htw_stop();
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
 +
-+	list_for_each_entry_safe(atom, tmp, &atoms->work_list, list) {
-+		list_del(&atom->list);
-+		free(atom);
++	while (entry < current_cpu_data.tlbsize) {
++		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
++		unsigned long asid = 0;
++		int idx;
++
++		/* Skip wired MMID to make ginvt_mmid work */
++		if (cpu_has_mmid)
++			asid = MMID_KERNEL_WIRED + 1;
++
++		/* Check for match before using UNIQUE_ENTRYHI */
++		do {
++			if (cpu_has_mmid) {
++				write_c0_memorymapid(asid);
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
++			} else {
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
++			}
++			mtc0_tlbw_hazard();
++			tlb_probe();
++			tlb_probe_hazard();
++			idx = read_c0_index();
++			/* No match or match is on current entry */
++			if (idx < 0 || idx == entry)
++				break;
++			/*
++			 * If we hit a match, we need to try again with
++			 * a different ASID.
++			 */
++			asid++;
++		} while (asid < asid_mask);
++
++		if (idx >= 0 && idx != entry)
++			panic("Unable to uniquify TLB entry %d", idx);
++
++		write_c0_index(entry);
++		mtc0_tlbw_hazard();
++		tlb_write_indexed();
++		entry++;
 +	}
-+	thread__zput(atoms->thread);
-+	free(atoms);
++
++	tlbw_use_hazard();
++	htw_start();
++	flush_micro_tlb();
 +}
 +
- static int latency_switch_event(struct perf_sched *sched,
- 				struct evsel *evsel,
- 				struct perf_sample *sample,
-@@ -3426,13 +3441,13 @@ static void __merge_work_atoms(struct rb_root_cached *root, struct work_atoms *d
- 			this->total_runtime += data->total_runtime;
- 			this->nb_atoms += data->nb_atoms;
- 			this->total_lat += data->total_lat;
--			list_splice(&data->work_list, &this->work_list);
-+			list_splice_init(&data->work_list, &this->work_list);
- 			if (this->max_lat < data->max_lat) {
- 				this->max_lat = data->max_lat;
- 				this->max_lat_start = data->max_lat_start;
- 				this->max_lat_end = data->max_lat_end;
- 			}
--			zfree(&data);
-+			free_work_atoms(data);
- 			return;
- 		}
- 	}
-@@ -3511,7 +3526,6 @@ static int perf_sched__lat(struct perf_sched *sched)
- 		work_list = rb_entry(next, struct work_atoms, node);
- 		output_lat_thread(sched, work_list);
- 		next = rb_next(next);
--		thread__zput(work_list->thread);
- 	}
+ /*
+  * Configure TLB (for init or after a CPU has been powered off).
+  */
+@@ -547,7 +601,7 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
  
- 	printf(" -----------------------------------------------------------------------------------------------------------------\n");
-@@ -3525,6 +3539,13 @@ static int perf_sched__lat(struct perf_sched *sched)
+ 	/* From this point on the ARC firmware is dead.	 */
+-	local_flush_tlb_all();
++	r4k_tlb_uniquify();
  
- 	rc = 0;
- 
-+	while ((next = rb_first_cached(&sched->sorted_atom_root))) {
-+		struct work_atoms *data;
-+
-+		data = rb_entry(next, struct work_atoms, node);
-+		rb_erase_cached(next, &sched->sorted_atom_root);
-+		free_work_atoms(data);
-+	}
- out_free_cpus_switch_event:
- 	free_cpus_switch_event(sched);
- 	return rc;
--- 
-2.39.5
-
+ 	/* Did I tell you that ARC SUCKS?  */
+ }
 
 
 
