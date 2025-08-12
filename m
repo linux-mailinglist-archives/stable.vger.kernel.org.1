@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-169083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE9FB23812
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58736B23816
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25CE06E5332
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:18:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 062791B67620
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BEE2D0C86;
-	Tue, 12 Aug 2025 19:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DFD28640A;
+	Tue, 12 Aug 2025 19:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgdV2Plz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9UAQLYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA41021A43B;
-	Tue, 12 Aug 2025 19:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A141F37A1;
+	Tue, 12 Aug 2025 19:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026320; cv=none; b=IuejGY59HHXAyLp9/DBUmn9+QTGUyAGMgXU6Nw7Jng/EK4LDxxW3C1NEOMSYOZbN73LeEAEYH6bh2104tmgHwAx7Wehx6BpljYb7vR8c/CCvLhCnVtCTLtTFRyxbn+lN5XPxhkmPRBTa02e9VnUzUvg5JmmfOOBuOpwxlg5Sf60=
+	t=1755026324; cv=none; b=Pnwg1qoAt0Q7otOQmoBxwKSvfH3BYhXzl7GtY5zMqXY9B2FtGqopuBxJ+O0cvJ3G/QhH0dr7YtH2+4ihsSx7hFmvAgxSogSqllnbZ0lbpSUps5NMF16F6IOEn86dVvt+qKdJjYLzuqSuDwnsVDA1TBySoiYxeCWsjXhIlk9Zaws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026320; c=relaxed/simple;
-	bh=CMWngQE3V5y34bPbm1Jva9+eZ/sgDxAS5ioaTzORRRo=;
+	s=arc-20240116; t=1755026324; c=relaxed/simple;
+	bh=8gv1zN5Few81N8UpZ+d1SCHkNLDDuFKKidGX/yqgfWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhrNt0MjwbePT0AVHjtkTxQ01IKUCXsfdf/f7q+iYabNRxf9EH1C6Jvx9YgsmE0/hz+LTH/tz6GNGJMWJ3heV34teV2zAJG26vWmzu1VUj6/F/G1nhC1kxJ0iuzItKrrTzNUyOmpL+bTdWPQKjAOxdwOfMJZ8M0UjBsslpBg9q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgdV2Plz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49749C4CEF0;
-	Tue, 12 Aug 2025 19:18:40 +0000 (UTC)
+	 MIME-Version; b=B9PsTtpQEhS+z9K+11VMlc4ofzlstJ50BEYBM/UXbXCIfgzkrR9b/ktpn2wj28pTnbjYg/bPvc6Hu+V/dZijaBN3bJ+tCVKUXafY9pxsFwSzlQpMBfaq3Y8c+erU2N6e0rYgo2EhGop7xcZuv5SJ3OMP0HGZEpDdoLzkzblNJbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9UAQLYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9D7C4CEF0;
+	Tue, 12 Aug 2025 19:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026320;
-	bh=CMWngQE3V5y34bPbm1Jva9+eZ/sgDxAS5ioaTzORRRo=;
+	s=korg; t=1755026323;
+	bh=8gv1zN5Few81N8UpZ+d1SCHkNLDDuFKKidGX/yqgfWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgdV2Plzk5NYqx3qx9zNGOp4Qyfef6YJiLyXcIJ6aZjm1wcbXgxYSTwxD4aCF0ZNZ
-	 JJmGy1tDlH1MAm5LVxiforfyhhzuZ27I6L5ohRyGulA3pMWfo+ixRyR2rkWVe1P4FY
-	 Cy+h9pB3zifWfK51Xc5ulq5UaiRz096db4Vaa4Bo=
+	b=O9UAQLYPb1lMgifrk7/zMXf397w1ZJda1BMakQf4lflEx3Y4ApAg4LTcqxE79mEIM
+	 IrWOqB2WDVP+jMJSc33RUJCe8hCPERvC5mRJN3k+urC4qESQt38Mj59dQ7E/By6LoA
+	 XSoZWgPyiMqC1AWdIgKZSYhIlJFdt8VHSEtmNOX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thomas Fourier <fourier.thomas@gmail.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 303/480] dmaengine: mv_xor: Fix missing check after DMA map and missing unmap
-Date: Tue, 12 Aug 2025 19:48:31 +0200
-Message-ID: <20250812174409.927520083@linuxfoundation.org>
+Subject: [PATCH 6.15 304/480] dmaengine: nbpfaxi: Add missing check after DMA map
+Date: Tue, 12 Aug 2025 19:48:32 +0200
+Message-ID: <20250812174409.973849050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -68,69 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 60095aca6b471b7b7a79c80b7395f7e4e414b479 ]
+[ Upstream commit c6ee78fc8f3e653bec427cfd06fec7877ee782bd ]
 
 The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-In case of error, unmap the already mapped regions.
-
-Fixes: 22843545b200 ("dma: mv_xor: Add support for DMA_INTERRUPT")
+Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
 Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250701123753.46935-2-fourier.thomas@gmail.com
+Link: https://lore.kernel.org/r/20250707075752.28674-2-fourier.thomas@gmail.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mv_xor.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/dma/nbpfaxi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
-index fa6e4646fdc2..1fdcb0f5c9e7 100644
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1061,8 +1061,16 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- 	 */
- 	mv_chan->dummy_src_addr = dma_map_single(dma_dev->dev,
- 		mv_chan->dummy_src, MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
-+	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_src_addr))
-+		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
+index 7a2488a0d6a3..765462303de0 100644
+--- a/drivers/dma/nbpfaxi.c
++++ b/drivers/dma/nbpfaxi.c
+@@ -711,6 +711,9 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 		list_add_tail(&ldesc->node, &lhead);
+ 		ldesc->hwdesc_dma_addr = dma_map_single(dchan->device->dev,
+ 					hwdesc, sizeof(*hwdesc), DMA_TO_DEVICE);
++		if (dma_mapping_error(dchan->device->dev,
++				      ldesc->hwdesc_dma_addr))
++			goto unmap_error;
+ 
+ 		dev_dbg(dev, "%s(): mapped 0x%p to %pad\n", __func__,
+ 			hwdesc, &ldesc->hwdesc_dma_addr);
+@@ -737,6 +740,16 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 	spin_unlock_irq(&chan->lock);
+ 
+ 	return ARRAY_SIZE(dpage->desc);
 +
- 	mv_chan->dummy_dst_addr = dma_map_single(dma_dev->dev,
- 		mv_chan->dummy_dst, MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
-+	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_dst_addr)) {
-+		ret = -ENOMEM;
-+		goto err_unmap_src;
++unmap_error:
++	while (i--) {
++		ldesc--; hwdesc--;
++
++		dma_unmap_single(dchan->device->dev, ldesc->hwdesc_dma_addr,
++				 sizeof(hwdesc), DMA_TO_DEVICE);
 +	}
 +
- 
- 	/* allocate coherent memory for hardware descriptors
- 	 * note: writecombine gives slightly better performance, but
-@@ -1071,8 +1079,10 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- 	mv_chan->dma_desc_pool_virt =
- 	  dma_alloc_wc(&pdev->dev, MV_XOR_POOL_SIZE, &mv_chan->dma_desc_pool,
- 		       GFP_KERNEL);
--	if (!mv_chan->dma_desc_pool_virt)
--		return ERR_PTR(-ENOMEM);
-+	if (!mv_chan->dma_desc_pool_virt) {
-+		ret = -ENOMEM;
-+		goto err_unmap_dst;
-+	}
- 
- 	/* discover transaction capabilities from the platform data */
- 	dma_dev->cap_mask = cap_mask;
-@@ -1155,6 +1165,13 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- err_free_dma:
- 	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
-+err_unmap_dst:
-+	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
-+			 MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
-+err_unmap_src:
-+	dma_unmap_single(dma_dev->dev, mv_chan->dummy_src_addr,
-+			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
-+
- 	return ERR_PTR(ret);
++	return -ENOMEM;
  }
  
+ static void nbpf_desc_put(struct nbpf_desc *desc)
 -- 
 2.39.5
 
