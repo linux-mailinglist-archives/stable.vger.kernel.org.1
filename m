@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-167451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945A8B23036
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4BDB2343F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB15E1885A11
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D80D188E7B6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3932DE1E2;
-	Tue, 12 Aug 2025 17:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07CE2EE5E8;
+	Tue, 12 Aug 2025 18:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3bX5hNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pr1OIvAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A427221FAC;
-	Tue, 12 Aug 2025 17:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1822FA0F9;
+	Tue, 12 Aug 2025 18:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020860; cv=none; b=kRx6iIzLYUU4uqwwEwNv4OWh736OSCDkZF/468TrsYbIgtmhHVo4s9LU9E2j+39R1teZ6+Ka8sLFUYvNJ8GDqIysiNFjled7C+NdIxVGNP6YTLyp+0Zb7MJOJmtANfLDvmuD72KWcwXQ43XYG6btX52npBZ1XQbnD4MESjBWXDU=
+	t=1755023570; cv=none; b=m5obR6n5D813Wf1SXXTR/6HsB9D3uZz0NlreQJiJCF8fkxrvNI9pyVb33Ct9yztXT9o0bK6+ZOk0Uewz3Z8t+zLQm7XfaNLKUzRpywZPAkb8kW1Mukue7awhkTgrRRb5IwGn+3/BASl4apXmFOBR4KfZxI0T3sKux6GhnpaZ62g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020860; c=relaxed/simple;
-	bh=prFEsRv0VJxNL5Coafvn1YRSQFY0pTCOyig4BvZOnyM=;
+	s=arc-20240116; t=1755023570; c=relaxed/simple;
+	bh=3YEg6M3P/y5fqFpDtL1JjFCes+EoqTKuJUhuq0yVWG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nb1V1hoeAuLcBvanoTGb3VS6HaqUV5qN6k/E/oIG1OR6GGki5sOk4Ai8l3mrwQnI0GHuBj/nf2b5bTwWMRwnWXITCWNKL1Wcvo73r2f0bNz2mrUGwgH8h1qYJo6pLcuFyZhjyFwDdqK8WvjVcZVEGM61xWkwJwkd6uBuc2rlJbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3bX5hNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E3CC4CEF0;
-	Tue, 12 Aug 2025 17:47:39 +0000 (UTC)
+	 MIME-Version; b=DdArZAo0KQlYniIqXjbIGb8lo5kS7xgdQAR2NohH+q30xoVkreb9D5OILbX0shpSUnHFyYXMH4hQMEH+DyU4Qd2imVTIXJYPJjInyd2xuL/eJ6rWSnvnBk3Rlekn4A0VqMBpdtA03tdHLhkhW0+5be4X91diVgU4eBR00LT0NRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pr1OIvAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A998EC4CEF0;
+	Tue, 12 Aug 2025 18:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020860;
-	bh=prFEsRv0VJxNL5Coafvn1YRSQFY0pTCOyig4BvZOnyM=;
+	s=korg; t=1755023570;
+	bh=3YEg6M3P/y5fqFpDtL1JjFCes+EoqTKuJUhuq0yVWG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3bX5hNWPI/jAolQrbB6zOZjGc+F7/xE/6mNUV/aeHN7Vusk8Y8eYisX3J2e8sF4J
-	 o+TNoceBJY7z96SbLYYnuDkuwOSKKTyzJwefGvQFODfRqfKPR+bNnCrogStv0NVQEE
-	 YBHLXgF9NLmIr5U/IbXtWw2A9ClWR6vchfPApuMo=
+	b=pr1OIvASkE8l6yXttx1BDxdWWsfqvLt4hMTBshmv9cGGVcoMEcHCxIZ9vAfpApgEA
+	 Teq3MImqgp1RW2Hy0QNX2RGwbhxrsqtstlufVpUhU5MxVDwAPminWJkcsAXiCLe3yJ
+	 OLLTWuylbw9BCW7Sth0oubjsf4ypKkJdO2ATFG6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/262] usb: misc: apple-mfi-fastcharge: Make power supply names unique
+Subject: [PATCH 6.16 118/627] soc: qcom: pmic_glink: fix OF node leak
 Date: Tue, 12 Aug 2025 19:26:53 +0200
-Message-ID: <20250812172954.044812408@linuxfoundation.org>
+Message-ID: <20250812173423.804945656@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 43007b89fb2de746443fbbb84aedd1089afdf582 ]
+[ Upstream commit 65702c3d293e45d3cac5e4e175296a9c90404326 ]
 
-When multiple Apple devices are connected concurrently, the
-apple-mfi-fastcharge driver fails to probe the subsequent devices with
-the following error:
+Make sure to drop the OF node reference taken when registering the
+auxiliary devices when the devices are later released.
 
-    sysfs: cannot create duplicate filename '/class/power_supply/apple_mfi_fastcharge'
-    apple-mfi-fastcharge 5-2.4.3.3: probe of 5-2.4.3.3 failed with error -17
-
-This happens because the driver uses a fixed power supply name
-("apple_mfi_fastcharge") for all devices, causing a sysfs name
-conflict when a second device is connected.
-
-Fix this by generating unique names using the USB bus and device
-number (e.g., "apple_mfi_fastcharge_5-12"). This ensures each
-connected device gets a unique power supply entry in sysfs.
-
-The change requires storing a copy of the power_supply_desc structure
-in the per-device mfi_device struct, since the name pointer needs to
-remain valid for the lifetime of the power supply registration.
-
-Fixes: 249fa8217b84 ("USB: Add driver to control USB fast charge for iOS devices")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/r/20250602-apple-mfi-fastcharge-duplicate-sysfs-v1-1-5d84de34fac6@posteo.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250708085717.15922-1-johan@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/apple-mfi-fastcharge.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/pmic_glink.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c b/drivers/usb/misc/apple-mfi-fastcharge.c
-index ac8695195c13..8e852f4b8262 100644
---- a/drivers/usb/misc/apple-mfi-fastcharge.c
-+++ b/drivers/usb/misc/apple-mfi-fastcharge.c
-@@ -44,6 +44,7 @@ MODULE_DEVICE_TABLE(usb, mfi_fc_id_table);
- struct mfi_device {
- 	struct usb_device *udev;
- 	struct power_supply *battery;
-+	struct power_supply_desc battery_desc;
- 	int charge_type;
- };
- 
-@@ -178,6 +179,7 @@ static int mfi_fc_probe(struct usb_device *udev)
- {
- 	struct power_supply_config battery_cfg = {};
- 	struct mfi_device *mfi = NULL;
-+	char *battery_name;
- 	int err;
- 
- 	if (!mfi_fc_match(udev))
-@@ -187,23 +189,38 @@ static int mfi_fc_probe(struct usb_device *udev)
- 	if (!mfi)
- 		return -ENOMEM;
- 
-+	battery_name = kasprintf(GFP_KERNEL, "apple_mfi_fastcharge_%d-%d",
-+				 udev->bus->busnum, udev->devnum);
-+	if (!battery_name) {
-+		err = -ENOMEM;
-+		goto err_free_mfi;
-+	}
-+
-+	mfi->battery_desc = apple_mfi_fc_desc;
-+	mfi->battery_desc.name = battery_name;
-+
- 	battery_cfg.drv_data = mfi;
- 
- 	mfi->charge_type = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
- 	mfi->battery = power_supply_register(&udev->dev,
--						&apple_mfi_fc_desc,
-+						&mfi->battery_desc,
- 						&battery_cfg);
- 	if (IS_ERR(mfi->battery)) {
- 		dev_err(&udev->dev, "Can't register battery\n");
- 		err = PTR_ERR(mfi->battery);
--		kfree(mfi);
--		return err;
-+		goto err_free_name;
- 	}
- 
- 	mfi->udev = usb_get_dev(udev);
- 	dev_set_drvdata(&udev->dev, mfi);
- 
+diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+index 0a6d325b195c..c0a4be5df926 100644
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -167,7 +167,10 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
  	return 0;
-+
-+err_free_name:
-+	kfree(battery_name);
-+err_free_mfi:
-+	kfree(mfi);
-+	return err;
  }
  
- static void mfi_fc_disconnect(struct usb_device *udev)
-@@ -213,6 +230,7 @@ static void mfi_fc_disconnect(struct usb_device *udev)
- 	mfi = dev_get_drvdata(&udev->dev);
- 	if (mfi->battery)
- 		power_supply_unregister(mfi->battery);
-+	kfree(mfi->battery_desc.name);
- 	dev_set_drvdata(&udev->dev, NULL);
- 	usb_put_dev(mfi->udev);
- 	kfree(mfi);
+-static void pmic_glink_aux_release(struct device *dev) {}
++static void pmic_glink_aux_release(struct device *dev)
++{
++	of_node_put(dev->of_node);
++}
+ 
+ static int pmic_glink_add_aux_device(struct pmic_glink *pg,
+ 				     struct auxiliary_device *aux,
+@@ -181,8 +184,10 @@ static int pmic_glink_add_aux_device(struct pmic_glink *pg,
+ 	aux->dev.release = pmic_glink_aux_release;
+ 	device_set_of_node_from_dev(&aux->dev, parent);
+ 	ret = auxiliary_device_init(aux);
+-	if (ret)
++	if (ret) {
++		of_node_put(aux->dev.of_node);
+ 		return ret;
++	}
+ 
+ 	ret = auxiliary_device_add(aux);
+ 	if (ret)
 -- 
 2.39.5
 
