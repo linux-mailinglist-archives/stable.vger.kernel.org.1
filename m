@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-169007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A9CB237B5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E633B2377F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21D881AA3DA5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:14:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856B11890923
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB1F2D3230;
-	Tue, 12 Aug 2025 19:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843C62949E0;
+	Tue, 12 Aug 2025 19:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuzR5Ctm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qpuu3YN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0F3260583;
-	Tue, 12 Aug 2025 19:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41ACE21C187;
+	Tue, 12 Aug 2025 19:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026069; cv=none; b=ifiN+Dw/cr0/VvD2Zs1roo4Dydgq2NhZZJQIfhU7ejv1+8aUyWiJexufw4FILj2xlEABZPAPxhfh11uYwt1LWHzEqPEI2LZ5VJOKpryGf5X8RIhMJ3rrPSC2gI4muCatGy2WekPA4HG/gttMYnzgLq1namnFAVxeyhwYtn7N3tU=
+	t=1755025949; cv=none; b=nht6I9A4juFetU9zIJfWQw/seqhYAr/cVVPYULKpKQu8BDLv4NTLv2bsZfOjbWxMjMz4AeEcZoVOkB0v7Iz200AgDnSIp2idueYVe7g0aUu3JKDjrJbCxA0hIMG2W9tBKHKUzpK7h9/xjao0/1Pk0FabN2BsTwc7Q359Ge1WDVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026069; c=relaxed/simple;
-	bh=YaFo1cWZmKA3HXJiLjQ1Qu8iPJ2eXuCo78m5pC5TETk=;
+	s=arc-20240116; t=1755025949; c=relaxed/simple;
+	bh=OyhZN0WMDrv+3YXj4cfSZIujuKF224meMo0/Y4TcVj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdmI0HMNeCaZbqGuomtesDcUzuQAZduRcnPHTccndgq8KgpKk+4cZt/f1BbhsLMDRhUvXUs/TfydoOsXBqaaxX7Bw6yrTWPbXG5jYDJcZA1WjFFoGZYiRI29mhcm3/bmy6nr/K05b1Us9DXNdMJRGpa1AJbMad/NYrwnjaX9F9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuzR5Ctm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0228CC4CEF0;
-	Tue, 12 Aug 2025 19:14:28 +0000 (UTC)
+	 MIME-Version; b=H6v2oCpr5wZ2x2wwkaLSF+ZBcuLY8u70gIhdp5r3dFtV2ilj3S91MQJMcCVYfrjOVvDPMOezVXCnnpdOGrJ/ueMYk79pGyq99dVnTE7KjFyCA+dOV2k0wgJpt69exgiimMUYkcYoJCI+xYTmpGHGoMzn3tHyqzpEk+CMtwofxXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qpuu3YN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDE5C4CEF0;
+	Tue, 12 Aug 2025 19:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026069;
-	bh=YaFo1cWZmKA3HXJiLjQ1Qu8iPJ2eXuCo78m5pC5TETk=;
+	s=korg; t=1755025948;
+	bh=OyhZN0WMDrv+3YXj4cfSZIujuKF224meMo0/Y4TcVj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kuzR5Ctm0Kh3B39/QAP+stR83eEiHvRYWJg28txiCp2+Kt0hdVGPJDSFxT6R2Gqp8
-	 X4aLmY/prsqWE2+XZs6vecG7GRJuSs5efD1J+VhuvIyTeqZISlEkIKXnQ485GRAasr
-	 hVLLf5fUt4g/pg2Ce0Ae7Gtr/Q9JrasGji8Gx6OA=
+	b=Qpuu3YN4JYNQO3ddZqs8PZJCQERDIekc7OpgssdS88WyzQPCrXRqH50YXoxhDXBQW
+	 7QtTXAbElmz/Z9DXfxMicwaDGYwvB9fHe7E+9BQUa7JzpQdGvtwmVUrs0dvkaMlosI
+	 Z/3pPcthYCOs6sbXOAe54elqi4frwibEikcwBf24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 184/480] wifi: mac80211: Write cnt before copying in ieee80211_copy_rnr_beacon()
-Date: Tue, 12 Aug 2025 19:46:32 +0200
-Message-ID: <20250812174405.106143931@linuxfoundation.org>
+Subject: [PATCH 6.15 185/480] wifi: nl80211: Set num_sub_specs before looping through sub_specs
+Date: Tue, 12 Aug 2025 19:46:33 +0200
+Message-ID: <20250812174405.145205879@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -69,42 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit a37192c432adaec9e8ef29e4ddb319ea2f443aa6 ]
+[ Upstream commit 2ed9a9fc9976262109d04f1a3c75c46de8ce4f22 ]
 
-While I caught the need for setting cnt early in nl80211_parse_rnr_elems()
-in the original annotation of struct cfg80211_rnr_elems with __counted_by,
-I missed a similar pattern in ieee80211_copy_rnr_beacon(). Fix this by
-moving the cnt assignment to before the loop.
+The processing of the struct cfg80211_sar_specs::sub_specs flexible
+array requires its counter, num_sub_specs, to be assigned before the
+loop in nl80211_set_sar_specs(). Leave the final assignment after the
+loop in place in case fewer ended up in the array.
 
-Fixes: 7b6d7087031b ("wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by")
+Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
 Signed-off-by: Kees Cook <kees@kernel.org>
 Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/20250721182521.work.540-kees@kernel.org
+Link: https://patch.msgid.link/20250721183125.work.183-kees@kernel.org
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 4a8d9c3ea480..d9f96a962fa6 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1109,13 +1109,13 @@ ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
- {
- 	int i, offset = 0;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 0c7e8389bc49..5b348aefd77d 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -16892,6 +16892,7 @@ static int nl80211_set_sar_specs(struct sk_buff *skb, struct genl_info *info)
+ 	if (!sar_spec)
+ 		return -ENOMEM;
  
-+	dst->cnt = src->cnt;
- 	for (i = 0; i < src->cnt; i++) {
- 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
- 		dst->elem[i].len = src->elem[i].len;
- 		dst->elem[i].data = pos + offset;
- 		offset += dst->elem[i].len;
- 	}
--	dst->cnt = src->cnt;
- 
- 	return offset;
- }
++	sar_spec->num_sub_specs = specs;
+ 	sar_spec->type = type;
+ 	specs = 0;
+ 	nla_for_each_nested(spec_list, tb[NL80211_SAR_ATTR_SPECS], rem) {
 -- 
 2.39.5
 
