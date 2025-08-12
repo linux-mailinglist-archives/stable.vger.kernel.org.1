@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D132AB234F7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160A7B23138
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6154D6E3B8E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07319160648
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB45D2FF165;
-	Tue, 12 Aug 2025 18:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BE92FF14E;
+	Tue, 12 Aug 2025 17:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZEigW3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bd1HheAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95BC2FE571;
-	Tue, 12 Aug 2025 18:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EA12FDC52;
+	Tue, 12 Aug 2025 17:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024043; cv=none; b=m7q3Yk3L6yI9pSJfaRiuTa7lTTPJZgeJdzd0U0yizVVbizMqggOjtS4BCWNO8GDBkCtRVjTAdV7Jy94AKElrgUkyLQCzIRUophwWx72gZqjNdn52RWmClRqwK2pM0NB9q030DR3fYjamtV2ajWC8nDQVrHMUIcks5lqwjlaCor4=
+	t=1755021579; cv=none; b=jPdCYBmIMGn+CpxM3gFq3MB7BLgix8f4S7iMelkbyzEM4qobAPAdKMLTPLLyFQRjk2rMGe2UyJu4S0Z/HyY/XP9ADYI5zYRXDHPg3MO+6LwpyKsNjPkHh0QMTYdDVXYHfwa1rFQIgwoCUOOE8e2MAsm8e6SgmhsySVjUKtidPVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024043; c=relaxed/simple;
-	bh=0EUm9J9D94tPi1uwVTKXTwzg6Y42cYUoOAxm59aRdsM=;
+	s=arc-20240116; t=1755021579; c=relaxed/simple;
+	bh=rg9YN0/M819/mVpht11D1XtKJ5l6oJsJU15jvGEqKcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NznYmUpZkDas17Nj1Cerg45iLqxsUvlpCFC0wjzGpNkD1Cd0+mugb9yKtenR+Pz9OFd5fO/s/CdL8dtgo9DkisF6JxuNGETUaj2l5fUcMLDzVZepNTzHOvfuynpWHed7lfQi8Y9KunKmy8tPrXf1NkUaUi4YnZY1qOmWERyUxm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZEigW3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17690C4CEF0;
-	Tue, 12 Aug 2025 18:40:42 +0000 (UTC)
+	 MIME-Version; b=DDKioo3vdcA60rsXkXVJlmAXrPiBRU+TkNIbxgtEOoy0c3WDG4lFnuvC7pDtbZSb+ojOPFizXysZINJsTXwhxybQxSb7GYaYC6WVgZp61urW9U1uAQcyloKjY61lrSt/EpHWOY5nv6M1lqqw7H9Xkx6N+hZWns5/RyGiP12rd+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bd1HheAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20EFC4CEF6;
+	Tue, 12 Aug 2025 17:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024043;
-	bh=0EUm9J9D94tPi1uwVTKXTwzg6Y42cYUoOAxm59aRdsM=;
+	s=korg; t=1755021579;
+	bh=rg9YN0/M819/mVpht11D1XtKJ5l6oJsJU15jvGEqKcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZEigW3t6ts5/E42QQw4UUDvpjuk1JZAYrWqokxpHB1MwDoNoGfYLF2UrOMTbyj1s
-	 j/0eIJ5+Im/YW5haYsUOM1EklmrpUqsY1xaxNRq2EHfu85vhiCgAdZmnk5Fjlsxsqh
-	 Ih2kzyUPPP+J/62zickuFt771Uulwd9eRG2Q/2Vc=
+	b=Bd1HheAvH9Vy7GwikRIlnhMjVUV3u1Ew2ojJQELiZSHergmIgMaZTOGcVL5f4jYTh
+	 /uIzkwH+GiEPQFNCjJ0Wsb4WURNjP2Yyn8pxIwC0NmBwRk1lcBnVmwgoj5/MxP/KFe
+	 UAS9lxFbZYsVkjXP2lFkt56Uw5SdLwRWz14xDlpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ac3c79181f6aecc5120c@syzkaller.appspotmail.com,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 257/627] Bluetooth: hci_devcd_dump: fix out-of-bounds via dev_coredumpv
+Subject: [PATCH 6.6 164/262] module: Restore the moduleparam prefix length check
 Date: Tue, 12 Aug 2025 19:29:12 +0200
-Message-ID: <20250812173429.094146491@linuxfoundation.org>
+Message-ID: <20250812173000.082248691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 7af4d7b53502286c6cf946d397ab183e76d14820 ]
+[ Upstream commit bdc877ba6b7ff1b6d2ebeff11e63da4a50a54854 ]
 
-Currently both dev_coredumpv and skb_put_data in hci_devcd_dump use
-hdev->dump.head. However, dev_coredumpv can free the buffer. From
-dev_coredumpm_timeout documentation, which is used by dev_coredumpv:
+The moduleparam code allows modules to provide their own definition of
+MODULE_PARAM_PREFIX, instead of using the default KBUILD_MODNAME ".".
 
-    > Creates a new device coredump for the given device. If a previous one hasn't
-    > been read yet, the new coredump is discarded. The data lifetime is determined
-    > by the device coredump framework and when it is no longer needed the @free
-    > function will be called to free the data.
+Commit 730b69d22525 ("module: check kernel param length at compile time,
+not runtime") added a check to ensure the prefix doesn't exceed
+MODULE_NAME_LEN, as this is what param_sysfs_builtin() expects.
 
-If the data has not been read by the userspace yet, dev_coredumpv will
-discard new buffer, freeing hdev->dump.head. This leads to
-vmalloc-out-of-bounds error when skb_put_data tries to access
-hdev->dump.head.
+Later, commit 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking
+for sysfs perms.") removed this check, but there is no indication this was
+intentional.
 
-A crash report from syzbot illustrates this:
+Since the check is still useful for param_sysfs_builtin() to function
+properly, reintroduce it in __module_param_call(), but in a modernized form
+using static_assert().
 
-    ==================================================================
-    BUG: KASAN: vmalloc-out-of-bounds in skb_put_data
-    include/linux/skbuff.h:2752 [inline]
-    BUG: KASAN: vmalloc-out-of-bounds in hci_devcd_dump+0x142/0x240
-    net/bluetooth/coredump.c:258
-    Read of size 140 at addr ffffc90004ed5000 by task kworker/u9:2/5844
+While here, clean up the __module_param_call() comments. In particular,
+remove the comment "Default value instead of permissions?", which comes
+from commit 9774a1f54f17 ("[PATCH] Compile-time check re world-writeable
+module params"). This comment was related to the test variable
+__param_perm_check_##name, which was removed in the previously mentioned
+commit 58f86cc89c33.
 
-    CPU: 1 UID: 0 PID: 5844 Comm: kworker/u9:2 Not tainted
-    6.14.0-syzkaller-10892-g4e82c87058f4 #0 PREEMPT(full)
-    Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
-    Google 02/12/2025
-    Workqueue: hci0 hci_devcd_timeout
-    Call Trace:
-     <TASK>
-     __dump_stack lib/dump_stack.c:94 [inline]
-     dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-     print_address_description mm/kasan/report.c:408 [inline]
-     print_report+0xc3/0x670 mm/kasan/report.c:521
-     kasan_report+0xe0/0x110 mm/kasan/report.c:634
-     check_region_inline mm/kasan/generic.c:183 [inline]
-     kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
-     __asan_memcpy+0x23/0x60 mm/kasan/shadow.c:105
-     skb_put_data include/linux/skbuff.h:2752 [inline]
-     hci_devcd_dump+0x142/0x240 net/bluetooth/coredump.c:258
-     hci_devcd_timeout+0xb5/0x2e0 net/bluetooth/coredump.c:413
-     process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
-     process_scheduled_works kernel/workqueue.c:3319 [inline]
-     worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
-     kthread+0x3c2/0x780 kernel/kthread.c:464
-     ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
-     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-     </TASK>
-
-    The buggy address ffffc90004ed5000 belongs to a vmalloc virtual mapping
-    Memory state around the buggy address:
-     ffffc90004ed4f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-     ffffc90004ed4f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-    >ffffc90004ed5000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                       ^
-     ffffc90004ed5080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-     ffffc90004ed5100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-    ==================================================================
-
-To avoid this issue, reorder dev_coredumpv to be called after
-skb_put_data that does not free the data.
-
-Reported-by: syzbot+ac3c79181f6aecc5120c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ac3c79181f6aecc5120c
-Fixes: b257e02ecc46 ("HCI: coredump: Log devcd dumps into the monitor")
-Tested-by: syzbot+ac3c79181f6aecc5120c@syzkaller.appspotmail.com
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking for sysfs perms.")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Link: https://lore.kernel.org/r/20250630143535.267745-4-petr.pavlu@suse.com
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/coredump.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/moduleparam.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/coredump.c b/net/bluetooth/coredump.c
-index 819eacb38762..720cb79adf96 100644
---- a/net/bluetooth/coredump.c
-+++ b/net/bluetooth/coredump.c
-@@ -249,15 +249,15 @@ static void hci_devcd_dump(struct hci_dev *hdev)
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 962cd41a2cb5..061e19c94a6b 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -282,10 +282,9 @@ struct kparam_array
+ #define __moduleparam_const const
+ #endif
  
- 	size = hdev->dump.tail - hdev->dump.head;
- 
--	/* Emit a devcoredump with the available data */
--	dev_coredumpv(&hdev->dev, hdev->dump.head, size, GFP_KERNEL);
--
- 	/* Send a copy to monitor as a diagnostic packet */
- 	skb = bt_skb_alloc(size, GFP_ATOMIC);
- 	if (skb) {
- 		skb_put_data(skb, hdev->dump.head, size);
- 		hci_recv_diag(hdev, skb);
- 	}
-+
-+	/* Emit a devcoredump with the available data */
-+	dev_coredumpv(&hdev->dev, hdev->dump.head, size, GFP_KERNEL);
- }
- 
- static void hci_devcd_handle_pkt_complete(struct hci_dev *hdev,
+-/* This is the fundamental function for registering boot/module
+-   parameters. */
++/* This is the fundamental function for registering boot/module parameters. */
+ #define __module_param_call(prefix, name, ops, arg, perm, level, flags)	\
+-	/* Default value instead of permissions? */			\
++	static_assert(sizeof(""prefix) - 1 <= MAX_PARAM_PREFIX_LEN);	\
+ 	static const char __param_str_##name[] = prefix #name;		\
+ 	static struct kernel_param __moduleparam_const __param_##name	\
+ 	__used __section("__param")					\
 -- 
 2.39.5
 
