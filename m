@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C671B22FAE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1D5B234D0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 543CF3AADE0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D51B1883ECD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FF42FDC4F;
-	Tue, 12 Aug 2025 17:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2986B2FF155;
+	Tue, 12 Aug 2025 18:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOpxoKUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="120p8p3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0DE2F83CB;
-	Tue, 12 Aug 2025 17:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6BD2FF143;
+	Tue, 12 Aug 2025 18:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020547; cv=none; b=PPIucASwbfvMWmJ6pcPgR9iC6bKVCbUfDapC/LEjZhJm3x6jhp/5qp93sQYpJgpdp/gYslJVGJoaitrLoRYf8rDkHNrhr1bN0pfnGcxMklMzwQ/rYlGxCMtz4PyViHYp5ox/zctV23lCLQPN6PCuV44+P5GbA3QtVeknDVC+2FY=
+	t=1755023961; cv=none; b=biQANh21Ooy2NgJI9qicDLzz1TJkUU50EWvfKXVeGGHYdezM03on/KV9OiFCaVB+/V0prPaPjy3en/fIYnEs2F9BKQRvl9gxTZAR1MKSmI8TsFtybQcDQaP/42kyBqwRBrsVReMvtjEYKEBAXlxTUVlTNuDYBmyeEDO7QELLtFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020547; c=relaxed/simple;
-	bh=i92cVtI1Oqqo1Gz8Fgj5Ei4Rh2KZ2I7YThvIcQ2WiRk=;
+	s=arc-20240116; t=1755023961; c=relaxed/simple;
+	bh=UAIEPWvZfQEVaWUJ86nDvPZ93J4EMbDL4oncZiZVLU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVhAMaKIDinCXmvyfPDeZQl6osR9VqHOddq4IF1AC6Rr447zCVJ5okUPdi5FM9XENgjiHWCoWMicjrV1dwecckvBD1ZMbeF1+8k/FWduRTxePkqoyfzy4nm5uX7QADunwei9VInO1nSLYiQcX/RepIlfaic5pVkuybkunyLR2ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOpxoKUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BE0C4CEF0;
-	Tue, 12 Aug 2025 17:42:26 +0000 (UTC)
+	 MIME-Version; b=MRMlR+GA/rGlK7bS+Trxy/0VQZw4ghxf3Ep/wvFd0h0qDcit4lOOeXy82O9ZVqTZbjE1ErfEH0recL069dHANr/OZ2EdQEuxcIqyI0bKqnO/zT6FVc6kxFR7fM8mhDLrl+uWGNAh9KC/nrj5CM+7AOjCEUPSuAp67duUHh2Oy3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=120p8p3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EC0C4CEF0;
+	Tue, 12 Aug 2025 18:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020547;
-	bh=i92cVtI1Oqqo1Gz8Fgj5Ei4Rh2KZ2I7YThvIcQ2WiRk=;
+	s=korg; t=1755023960;
+	bh=UAIEPWvZfQEVaWUJ86nDvPZ93J4EMbDL4oncZiZVLU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOpxoKUnCvSu+j1O8ldjvgT01dSzeBc8InEIReP4wFYOmGKm8Luwq1vT8XPZs1n+U
-	 CAzRp9T2u3yKuICQJ3VeLOipZk3airHzW6NtZbTQltDIwSzsbGrNCTyvCg9W/T5HDD
-	 mXi8xOrvNMhZ7SQSiKaTFdPJDHd4Zfc5HQI6Cg2U=
+	b=120p8p3ITHATzho90FirsFaRSnucb8kcIOfB/4/yiOHvhO0M+eItA1c/IhFGAju/M
+	 XOwpRUV6SMnV8CmE5o7xlc5MJX89PI1wSzyV4uke2Qgia6w5o+NUxX56SXLipru7rm
+	 e7784YKLWgST7HQLe7Qw42C7Vj2eWluf2Rwa1lpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/253] fbcon: Fix outdated registered_fb reference in comment
+Subject: [PATCH 6.16 205/627] wifi: ath12k: pack HTT pdev rate stats structs
 Date: Tue, 12 Aug 2025 19:28:20 +0200
-Message-ID: <20250812172953.485355679@linuxfoundation.org>
+Message-ID: <20250812173427.082558981@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shixiong Ou <oushixiong@kylinos.cn>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-[ Upstream commit 0f168e7be696a17487e83d1d47e5a408a181080f ]
+[ Upstream commit fee9b1f6691120182136edacf590f52d62d9de7f ]
 
-The variable was renamed to fbcon_registered_fb, but this comment was
-not updated along with the change. Correct it to avoid confusion.
+In order to ensure the HTT DebugFS structs shared with firmware have
+matching alignment, the structs should be packed. Most of the structs
+are correctly packed, however the following are not:
 
-Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
-Fixes: efc3acbc105a ("fbcon: Maintain a private array of fb_info")
-[sima: Add Fixes: line.]
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250709103438.572309-1-oushixiong1025@163.com
+ath12k_htt_tx_pdev_rate_stats_tlv
+ath12k_htt_rx_pdev_rate_stats_tlv
+ath12k_htt_rx_pdev_rate_ext_stats_tlv
+
+So pack those structs.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: ba42b22aa336 ("wifi: ath12k: Dump PDEV transmit rate HTT stats")
+Fixes: a24cd7583003 ("wifi: ath12k: Dump PDEV receive rate HTT stats")
+Fixes: 7a3e8eec8d18 ("wifi: ath12k: Dump additional PDEV receive rate HTT stats")
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250702-debugfs_htt_packed-v1-1-07bd18b31e79@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 1a1727418711..194889e1cc34 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -935,13 +935,13 @@ static const char *fbcon_startup(void)
- 	int rows, cols;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+index c2a02cf8a38b..db9532c39cbf 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+@@ -470,7 +470,7 @@ struct ath12k_htt_tx_pdev_rate_stats_tlv {
+ 			   [ATH12K_HTT_TX_PDEV_STATS_NUM_EXTRA_MCS_COUNTERS];
+ 	__le32 tx_mcs_ext_2[ATH12K_HTT_TX_PDEV_STATS_NUM_EXTRA2_MCS_COUNTERS];
+ 	__le32 tx_bw_320mhz;
+-};
++} __packed;
  
- 	/*
--	 *  If num_registered_fb is zero, this is a call for the dummy part.
-+	 *  If fbcon_num_registered_fb is zero, this is a call for the dummy part.
- 	 *  The frame buffer devices weren't initialized yet.
- 	 */
- 	if (!fbcon_num_registered_fb || info_idx == -1)
- 		return display_desc;
- 	/*
--	 * Instead of blindly using registered_fb[0], we use info_idx, set by
-+	 * Instead of blindly using fbcon_registered_fb[0], we use info_idx, set by
- 	 * fbcon_fb_registered();
- 	 */
- 	info = fbcon_registered_fb[info_idx];
+ #define ATH12K_HTT_RX_PDEV_STATS_NUM_LEGACY_CCK_STATS		4
+ #define ATH12K_HTT_RX_PDEV_STATS_NUM_LEGACY_OFDM_STATS		8
+@@ -550,7 +550,7 @@ struct ath12k_htt_rx_pdev_rate_stats_tlv {
+ 	__le32 rx_ulofdma_non_data_nusers[ATH12K_HTT_RX_PDEV_MAX_OFDMA_NUM_USER];
+ 	__le32 rx_ulofdma_data_nusers[ATH12K_HTT_RX_PDEV_MAX_OFDMA_NUM_USER];
+ 	__le32 rx_mcs_ext[ATH12K_HTT_RX_PDEV_STATS_NUM_EXTRA_MCS_COUNTERS];
+-};
++} __packed;
+ 
+ #define ATH12K_HTT_RX_PDEV_STATS_NUM_BW_EXT_COUNTERS		4
+ #define ATH12K_HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS_EXT		14
+@@ -580,7 +580,7 @@ struct ath12k_htt_rx_pdev_rate_ext_stats_tlv {
+ 	__le32 rx_gi_ext_2[ATH12K_HTT_RX_PDEV_STATS_NUM_GI_COUNTERS]
+ 		[ATH12K_HTT_RX_PDEV_STATS_NUM_EXTRA2_MCS_COUNTERS];
+ 	__le32 rx_su_punctured_mode[ATH12K_HTT_RX_PDEV_STATS_NUM_PUNCTURED_MODE_COUNTERS];
+-};
++} __packed;
+ 
+ #define ATH12K_HTT_TX_PDEV_STATS_SCHED_PER_TXQ_MAC_ID	GENMASK(7, 0)
+ #define ATH12K_HTT_TX_PDEV_STATS_SCHED_PER_TXQ_ID	GENMASK(15, 8)
 -- 
 2.39.5
 
