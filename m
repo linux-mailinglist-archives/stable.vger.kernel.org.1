@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E506B2302E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23381B23433
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEF7B682425
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952D73A7C97
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A755B2FABE3;
-	Tue, 12 Aug 2025 17:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DE62EE5E8;
+	Tue, 12 Aug 2025 18:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WV8NQ6tu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYYn0g2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65167279915;
-	Tue, 12 Aug 2025 17:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD560191F98;
+	Tue, 12 Aug 2025 18:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020873; cv=none; b=k8ss00qdanv9dxSe9JD5fX8EJACOVP7xsnesrgA9V9AHCYnaS0GEdswzk59WTYgdf/TCXABsWF3Ymey1uRI7PTNK7JT6igR0aOKjITq69ZTA143WBQbU6dE2AsPc+jzRcqHT/wRTwsIktbIpTkEnEDjPDD2ItpnYsFJ/813zSi8=
+	t=1755023576; cv=none; b=UMx2aCDhqTjqMju2Zj/9pNFoqW7TRgy0GaUr8tLkkHwzweg+wzdKjNIzq1oipjK2YZFLHL3tSQG+cmsqQWGuIl+0CZvsG+8hFcYt+z3C9VGlGXTvKmonLf03EFR9fHNoqPvKXIcMmVdwwPDocXtnMBw+yNp44wrXGFnb+pR6avc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020873; c=relaxed/simple;
-	bh=pKETphnQ7G5R+O4mnvigND2sSw788dYl10lV5BG3v7c=;
+	s=arc-20240116; t=1755023576; c=relaxed/simple;
+	bh=wj4UbWgpkfS2bs52Y9r9FMZ2kHTsDfV0Lz3gg7wWSOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKeI9Om0qoyY+XHGyUBTqaf83cMRfpezx7r0Rb9jQgD/RgLdOwvKZ1HFPsDiMA0bqTq14ArE8ly10afOslQS52iD5aV9IbfQ+sfnIZ22m/jXeTtlyWCpk7uQNG1jwzPqXEApCgg7SkHMedjpTTe0apk3NncztuxPC/W+RwAiY84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WV8NQ6tu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC6EC4CEF0;
-	Tue, 12 Aug 2025 17:47:52 +0000 (UTC)
+	 MIME-Version; b=WTsgmGs+LJ5EEJTs6WNMAYru9yASGQumD1Jc78+PV+OdzSgAWRywCWN+lbHUYrXbcmt9A2XEVYSSLMeRMZDLY6kElJy3WNncGksH4JyyVFqLMkFwlWB32+LVnXb6/Vc/klHXC36bQ04bPxkWfGd/Zcik8o6GE0/ZeUpHY0l5Uig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYYn0g2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD72C4CEF0;
+	Tue, 12 Aug 2025 18:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020873;
-	bh=pKETphnQ7G5R+O4mnvigND2sSw788dYl10lV5BG3v7c=;
+	s=korg; t=1755023576;
+	bh=wj4UbWgpkfS2bs52Y9r9FMZ2kHTsDfV0Lz3gg7wWSOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WV8NQ6tuJQM2wRp6rs1G+Jnl/K5My9SXDeKGyX+vxtR1TTp8ty7twAvsw9Uv5pbVh
-	 uSCpKomnyLR5tdOG4hkxvsS5MLRnzAtq+c42LePAqT3MtHI4Apr/8F+8+Ur75oenh6
-	 KP0+xxrOShFkLtPqRqpwlCs+gMHxh/DdErzkrwGI=
+	b=NYYn0g2EH3rqXObuQ51wfPLKcRwFkZaHHItJJYlKIgGx791QQ9tMCcw8Dm3MABCui
+	 zfroB5fmCecUdbddLSVsKnXs6wOYhE0nGvi7a4aRuqfHKao9voSnsUwqYZHuXkQgAu
+	 T5whJ6tmt/SYrUNFGzLOjU1FYOVkYisQpS5moEMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/262] staging: fbtft: fix potential memory leak in fbtft_framebuffer_alloc()
+Subject: [PATCH 6.16 120/627] interconnect: qcom: sc8180x: specify num_nodes
 Date: Tue, 12 Aug 2025 19:26:55 +0200
-Message-ID: <20250812172954.128196559@linuxfoundation.org>
+Message-ID: <20250812173423.890710017@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit eb2cb7dab60f9be0b435ac4a674255429a36d72c ]
+[ Upstream commit 7e0b59496a02d25828612721e846ea4b717a97b9 ]
 
-In the error paths after fb_info structure is successfully allocated,
-the memory allocated in fb_deferred_io_init() for info->pagerefs is not
-freed. Fix that by adding the cleanup function on the error path.
+Specify .num_nodes for several BCMs which missed this declaration.
 
-Fixes: c296d5f9957c ("staging: fbtft: core support")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20250626172412.18355-1-abdun.nihaal@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04548d4e2798 ("interconnect: qcom: sc8180x: Reformat node and bcm definitions")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250704-rework-icc-v2-2-875fac996ef5@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/fbtft/fbtft-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/interconnect/qcom/sc8180x.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index eac1d570f437..dce721f440c5 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -744,6 +744,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
- 	return info;
+diff --git a/drivers/interconnect/qcom/sc8180x.c b/drivers/interconnect/qcom/sc8180x.c
+index a741badaa966..4dd1d2f2e821 100644
+--- a/drivers/interconnect/qcom/sc8180x.c
++++ b/drivers/interconnect/qcom/sc8180x.c
+@@ -1492,34 +1492,40 @@ static struct qcom_icc_bcm bcm_sh3 = {
  
- release_framebuf:
-+	fb_deferred_io_cleanup(info);
- 	framebuffer_release(info);
+ static struct qcom_icc_bcm bcm_sn0 = {
+ 	.name = "SN0",
++	.num_nodes = 1,
+ 	.nodes = { &slv_qns_gemnoc_sf }
+ };
  
- alloc_fail:
+ static struct qcom_icc_bcm bcm_sn1 = {
+ 	.name = "SN1",
++	.num_nodes = 1,
+ 	.nodes = { &slv_qxs_imem }
+ };
+ 
+ static struct qcom_icc_bcm bcm_sn2 = {
+ 	.name = "SN2",
+ 	.keepalive = true,
++	.num_nodes = 1,
+ 	.nodes = { &slv_qns_gemnoc_gc }
+ };
+ 
+ static struct qcom_icc_bcm bcm_co2 = {
+ 	.name = "CO2",
++	.num_nodes = 1,
+ 	.nodes = { &mas_qnm_npu }
+ };
+ 
+ static struct qcom_icc_bcm bcm_sn3 = {
+ 	.name = "SN3",
+ 	.keepalive = true,
++	.num_nodes = 2,
+ 	.nodes = { &slv_srvc_aggre1_noc,
+ 		  &slv_qns_cnoc }
+ };
+ 
+ static struct qcom_icc_bcm bcm_sn4 = {
+ 	.name = "SN4",
++	.num_nodes = 1,
+ 	.nodes = { &slv_qxs_pimem }
+ };
+ 
 -- 
 2.39.5
 
