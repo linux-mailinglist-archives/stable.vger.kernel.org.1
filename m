@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA35EB23502
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB78B23314
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9966A1B63E7D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925A2165940
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D822FFDE3;
-	Tue, 12 Aug 2025 18:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB3B1D416C;
+	Tue, 12 Aug 2025 18:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eqvQszh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmaeasaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964A42FFDD6;
-	Tue, 12 Aug 2025 18:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD53C6BB5B;
+	Tue, 12 Aug 2025 18:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024125; cv=none; b=ii9f/Trs66jVIYKEUIOI8J0KCM/Rz0Dog6QB4yHe4461v6IbtKjjv+3icpDF5ZoQqzR0aWXQ7kIn7TEVxMmbNhjOuLAbnMYGomr83EoUYq9PD5KWcuD002EUQo4hWJlBV1wyoa2WNme0Wc+RZ0nSXT/jwMVBYzB2302cWEERSt8=
+	t=1755022834; cv=none; b=hsEEEZyhmI8IbJPpfIplC5o/WYmRu+hoxTNS06EiJKDeKJzcESCKL8UhQ3A9vMxE+FxAUaw0BPh8BGZM9vpVFB+o+ClJOR/trRX+TsR77CIHXJs/P80zTWqLijHTC5UkUxMQ/G0G4RPCnC8VVZP97zrKvqep5wnKpVBIlWwYHzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024125; c=relaxed/simple;
-	bh=Zl+1hCJi6MrGr9VIX+xKyuS3FfhvEZDS+WteyX8HMaw=;
+	s=arc-20240116; t=1755022834; c=relaxed/simple;
+	bh=AwKgnszTQSgjIkIxCRc9+1X6+mbbYLvLq3cmsaaMAxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbZ07QG+dhH8ksXZIG1IkWy/MTEM4FC5olnAqqbhhoB25jWMbwG/SLqlPEOmBB/ps41l/nPZaF2u+oAR7YC/OV/6IfDqtFOHdA0HhTTClxMB9PNY2iV0ztKvnh2ShlMrYQaQw23hFLR84D4Q8corj8pZ080wUVCHTdq9zjAIFK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eqvQszh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045E9C4CEF0;
-	Tue, 12 Aug 2025 18:42:04 +0000 (UTC)
+	 MIME-Version; b=Q08QkbokkFRAWqwQ1PFTFA2O7SOGJ8XitrctV07J/4Cc+2X8KeVUtObxCWK1wU5c/zV1YaurU65GncENDJilXK9s9tTXVnG4ShvK2P48Xrm7vKOJ4wF5HCm5CdhW3gzUrNUdgFL4pbu5lDdAyZ/T3ii8h1VTxr2XXJpfiWod7A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmaeasaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E611BC4CEF1;
+	Tue, 12 Aug 2025 18:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024125;
-	bh=Zl+1hCJi6MrGr9VIX+xKyuS3FfhvEZDS+WteyX8HMaw=;
+	s=korg; t=1755022834;
+	bh=AwKgnszTQSgjIkIxCRc9+1X6+mbbYLvLq3cmsaaMAxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eqvQszhH01FHuKThENs6Wkl3Byt9fa65YQoONq0DKSNCx+tnFDZnkbZEv1Tl98aH
-	 uzmzPoTa5ILU44HyaqOkiC7zcgemZS6w2PDtoi64YyxzUHt2kEFBgWqNGl0Tdvj4Y8
-	 FQD1efM+yHjTBlM/r52YmjXwB4cT02RCHTOjQLHw=
+	b=nmaeasaPnDuYODLrlHOBLTsRHYKq1gJflJgFtC7orPHVQlw+94p+SoBRwqzHCqP52
+	 Q9Dn9i699kBCdbTeQZp9mFeM+57Ae5fS5OFWbIZzV0pJaOUKVJHhuXdJUD8v1MlKg7
+	 yVkAcViDEnbnxrvpzpogvfo+/dHZ6WzSY8eef+o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Salomon Dushimirimana <salomondush@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 274/627] selftests: netfilter: Ignore tainted kernels in interface stress test
+Subject: [PATCH 6.12 272/369] scsi: sd: Make sd shutdown issue START STOP UNIT appropriately
 Date: Tue, 12 Aug 2025 19:29:29 +0200
-Message-ID: <20250812173429.736544907@linuxfoundation.org>
+Message-ID: <20250812173025.021520455@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Salomon Dushimirimana <salomondush@google.com>
 
-[ Upstream commit 8d1c91850d064944ab214b2fbfffb7fc08a11d65 ]
+[ Upstream commit 8e48727c26c4d839ff9b4b73d1cae486bea7fe19 ]
 
-Complain about kernel taint value only if it wasn't set at start
-already.
+Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
+manage_system_start_stop") enabled libata EH to manage device power mode
+trasitions for system suspend/resume and removed the flag from
+ata_scsi_dev_config. However, since the sd_shutdown() function still
+relies on the manage_system_start_stop flag, a spin-down command is not
+issued to the disk with command "echo 1 > /sys/block/sdb/device/delete"
 
-Fixes: 73db1b5dab6f ("selftests: netfilter: Torture nftables netdev hooks")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+sd_shutdown() can be called for both system/runtime start stop
+operations, so utilize the manage_run_time_start_stop flag set in the
+ata_scsi_dev_config and issue a spin-down command during disk removal
+when the system is running. This is in addition to when the system is
+powering off and manage_shutdown flag is set. The
+manage_system_start_stop flag will still be used for drivers that still
+set the flag.
+
+Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
+Link: https://lore.kernel.org/r/20250724214520.112927-1-salomondush@google.com
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/netfilter/nft_interface_stress.sh  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/sd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/nft_interface_stress.sh b/tools/testing/selftests/net/netfilter/nft_interface_stress.sh
-index 5ff7be9daeee..c0fffaa6dbd9 100755
---- a/tools/testing/selftests/net/netfilter/nft_interface_stress.sh
-+++ b/tools/testing/selftests/net/netfilter/nft_interface_stress.sh
-@@ -10,6 +10,8 @@ source lib.sh
- checktool "nft --version" "run test without nft tool"
- checktool "iperf3 --version" "run test without iperf3 tool"
- 
-+read kernel_tainted < /proc/sys/kernel/tainted
-+
- # how many seconds to torture the kernel?
- # default to 80% of max run time but don't exceed 48s
- TEST_RUNTIME=$((${kselftest_timeout:-60} * 8 / 10))
-@@ -135,7 +137,8 @@ else
- 	wait
- fi
- 
--[[ $(</proc/sys/kernel/tainted) -eq 0 ]] || {
-+
-+[[ $kernel_tainted -eq 0 && $(</proc/sys/kernel/tainted) -ne 0 ]] && {
- 	echo "FAIL: Kernel is tainted!"
- 	exit $ksft_fail
- }
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 86dde3e7debb..e1b06f803a94 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -4179,7 +4179,9 @@ static void sd_shutdown(struct device *dev)
+ 	if ((system_state != SYSTEM_RESTART &&
+ 	     sdkp->device->manage_system_start_stop) ||
+ 	    (system_state == SYSTEM_POWER_OFF &&
+-	     sdkp->device->manage_shutdown)) {
++	     sdkp->device->manage_shutdown) ||
++	    (system_state == SYSTEM_RUNNING &&
++	     sdkp->device->manage_runtime_start_stop)) {
+ 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
+ 		sd_start_stop_device(sdkp, 0);
+ 	}
 -- 
 2.39.5
 
