@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FBCB232C7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7A1B234D6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744B1583BD6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9569A681FE5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDC12F83A1;
-	Tue, 12 Aug 2025 18:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF0B2FF16C;
+	Tue, 12 Aug 2025 18:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLeU9txg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToKiGSrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4662F5E;
-	Tue, 12 Aug 2025 18:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE122FE579;
+	Tue, 12 Aug 2025 18:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022613; cv=none; b=X1W6j6omHWyiCj4wrAYs97uwq1jRIjlyKLZF8YTj7yt3XdoP9BnkIwQLaf3FfEtPYMKLdmkLN2WgmL9xVmhm9/iOcgkKvM+sXL9lzS4M4gXYyjUUtwvZSX3rd6gHfPrEshmKv896FnasCHbd044q3NuU28/O2L0DxUrImXjf9VY=
+	t=1755023989; cv=none; b=iUtZ8Gx5gx9R+N7PDcGMsjnnk8iSWosCK7KShiD5lMg5SlAMdKxEY5GGXjlh8TlDrxljgCdZhKy7czimOB7IZwefsvO2TqSH1ov5Jq1EKeadSk5ejGirC62x8c+oz6AIB7r9yxmEb1/nDzte0K9v//hUl3hU412dBei4lZsDix8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022613; c=relaxed/simple;
-	bh=hzY+cSsca9kBa4i7oCAcRvebpxw7xXUzAi7eMcFq/U0=;
+	s=arc-20240116; t=1755023989; c=relaxed/simple;
+	bh=wENkP5XZhWqQNCgMSaXJB+MK2zcRyhhmBEV6Du2/jAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suaDS5mqsiXTGjJbZIwZLCpgY86K7S9irg3f0L37d5MaWcAG7BwykqN7cGmph3eVNQowYvwchhXUt525grQdDfXr0JaM+cGghPKWEnmdoG+00rIAQ2dZzAmC1VCToCjnw0ystHDip5HWpAdqjbVJF2rnCuUBGmzxa3lrtcRnw0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLeU9txg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D11C4AF0B;
-	Tue, 12 Aug 2025 18:16:51 +0000 (UTC)
+	 MIME-Version; b=Bg5xH3oKy9Gv1rrzGD35AqEzZjqcOIwkhcIcRzXYrLJalFc3FfzAfZxGK2CcRDoo54isIIwZXwjI05qtrlIfkM6dJwsAyNzAztj846R/4DEwyV/5R4XuVFW8+BY9BIJmypXq6riVKZyv2XszlH5iFY5FHI1MjPP4wBsjxMCUC9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToKiGSrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6E5C4CEF0;
+	Tue, 12 Aug 2025 18:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022611;
-	bh=hzY+cSsca9kBa4i7oCAcRvebpxw7xXUzAi7eMcFq/U0=;
+	s=korg; t=1755023988;
+	bh=wENkP5XZhWqQNCgMSaXJB+MK2zcRyhhmBEV6Du2/jAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLeU9txg2M7r73wLc3OwqOgKaeUvNjyhz1CNAPoLtQLbmSw3T+7vWqcYduavNy54h
-	 Ed5ApCBxaoIklrpoJtb4w7DunOhDo4BdkORhcjw336Zd8fzbfIEhLT8jITUuVCCjRe
-	 ltDrRBFgWhRy51mhz/OEDOty2JyHefAdUhg1Rtfg=
+	b=ToKiGSrRkFkrW3aDDdqONdCkDclx6Ep1ZPxay3GheVsGsrMR/Qc5wt/kcihltXlJt
+	 ZZQ825kd0t7TYuowjTxxbkPmkuS62Y9pix/IA+3cnDD+wzeqDNZKSihoankf6jPefS
+	 AkE3yWaWPt87MgULCuhpnQv73JBR+VgwH4NLnQVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Liu <liubaolin12138@163.com>,
-	Zhi Long <longzhi@sangfor.com.cn>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 205/369] ext4: Make sure BH_New bit is cleared in ->write_end handler
+Subject: [PATCH 6.16 207/627] um: rtc: Avoid shadowing err in uml_rtc_start()
 Date: Tue, 12 Aug 2025 19:28:22 +0200
-Message-ID: <20250812173022.479087915@linuxfoundation.org>
+Message-ID: <20250812173427.158460715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 91b8ca8b26729b729dda8a4eddb9aceaea706f37 ]
+[ Upstream commit 4c916e3b224a02019b3cc3983a15f32bfd9a22df ]
 
-Currently we clear BH_New bit in case of error and also in the standard
-ext4_write_end() handler (in block_commit_write()). However
-ext4_journalled_write_end() misses this clearing and thus we are leaving
-stale BH_New bits behind. Generally ext4_block_write_begin() clears
-these bits before any harm can be done but in case blocksize < pagesize
-and we hit some error when processing a page with these stale bits,
-we'll try to zero buffers with these stale BH_New bits and jbd2 will
-complain (as buffers were not prepared for writing in this transaction).
-Fix the problem by clearing BH_New bits in ext4_journalled_write_end()
-and WARN if ext4_block_write_begin() sees stale BH_New bits.
+Remove the declaration of 'err' inside the 'if (timetravel)' block,
+as it would otherwise be unavailable outside that block, potentially
+leading to uml_rtc_start() returning an uninitialized value.
 
-Reported-by: Baolin Liu <liubaolin12138@163.com>
-Reported-by: Zhi Long <longzhi@sangfor.com.cn>
-Fixes: 3910b513fcdf ("ext4: persist the new uptodate buffers in ext4_journalled_zero_new_buffers")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250709084831.23876-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: dde8b58d5127 ("um: add a pseudo RTC")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250708090403.1067440-5-tiwei.bie@linux.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 2 ++
- fs/ext4/inode.c  | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ arch/um/drivers/rtc_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 05b148d6fc71..e02a3141637a 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -606,6 +606,7 @@ static int ext4_convert_inline_data_to_extent(struct address_space *mapping,
- 	} else
- 		ret = ext4_block_write_begin(handle, folio, from, to,
- 					     ext4_get_block);
-+	clear_buffer_new(folio_buffers(folio));
+diff --git a/arch/um/drivers/rtc_user.c b/arch/um/drivers/rtc_user.c
+index 51e79f3148cd..67912fcf7b28 100644
+--- a/arch/um/drivers/rtc_user.c
++++ b/arch/um/drivers/rtc_user.c
+@@ -28,7 +28,7 @@ int uml_rtc_start(bool timetravel)
+ 	int err;
  
- 	if (!ret && ext4_should_journal_data(inode)) {
- 		ret = ext4_walk_page_buffers(handle, inode,
-@@ -867,6 +868,7 @@ static int ext4_da_convert_inline_data_to_extent(struct address_space *mapping,
- 		return ret;
- 	}
- 
-+	clear_buffer_new(folio_buffers(folio));
- 	folio_mark_dirty(folio);
- 	folio_mark_uptodate(folio);
- 	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index eb092133c6b8..232131804bb8 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1056,7 +1056,7 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
- 			}
- 			continue;
- 		}
--		if (buffer_new(bh))
-+		if (WARN_ON_ONCE(buffer_new(bh)))
- 			clear_buffer_new(bh);
- 		if (!buffer_mapped(bh)) {
- 			WARN_ON(bh->b_size != blocksize);
-@@ -1272,6 +1272,7 @@ static int write_end_fn(handle_t *handle, struct inode *inode,
- 	ret = ext4_dirty_journalled_data(handle, bh);
- 	clear_buffer_meta(bh);
- 	clear_buffer_prio(bh);
-+	clear_buffer_new(bh);
- 	return ret;
- }
- 
+ 	if (timetravel) {
+-		int err = os_pipe(uml_rtc_irq_fds, 1, 1);
++		err = os_pipe(uml_rtc_irq_fds, 1, 1);
+ 		if (err)
+ 			goto fail;
+ 	} else {
 -- 
 2.39.5
 
