@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-167843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD43B231D5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA1DB233F5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 362A87A5651
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCC10167B6F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0D03F9D2;
-	Tue, 12 Aug 2025 18:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429682FAC02;
+	Tue, 12 Aug 2025 18:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ee3R4b8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlDRrbgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4700A2FD1DC;
-	Tue, 12 Aug 2025 18:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005DF191F98;
+	Tue, 12 Aug 2025 18:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022178; cv=none; b=uhjaNPioJIwtbukWt6+HAbrhCuJaJiLEgjK+AH7KPLgdlEnP3CLP7aSuoRAuDq/vEOF5+BQF2GVzYUWMSjIVB7HD2z6JKgjb3P/MPwUe76jP3atHih08siNS798mu80c50PnVWs+esgokrX3cEE7EKHNfw889pvA1nK0HRTDfJk=
+	t=1755023447; cv=none; b=r2JtI5aeWbtC0Bsc1ktMLN2eZjanQ+4q+IOaHKjaaBeho1+uubPfCPvTqv4Ior+4KvUYsyhYcWKlETzLYfA8cVbCWfeb0PpgGjNp0OTHPBpn4jE419doUEwW9f1M0ZAIoccRUw718oVw1z/vpQVyOtFsUd8Leb7Q0M3rvdSYE/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022178; c=relaxed/simple;
-	bh=jxlr0+36lBJ/0pP2efXL74lDzUjfsKv0rueeDwbXAck=;
+	s=arc-20240116; t=1755023447; c=relaxed/simple;
+	bh=rOMWmXaaAamSudSDvDxibfkfvlzIc87cbQAwW3PoAFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aLaAEYieY7W94Pla4wyvIokeNL/6Ouoa9BSVT1y8iLyAEsbGlrAxgUGo+VKdJW/U76+AyHpcnWxIRGpp7qlpDvB0DONEcAxSC6LFh1sQASPp3kTErmz3YbpKTYqCqYnp7kpSq4D41b+oGS3YkcOwosuTCsXDC1MURzeUJ4io36U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ee3R4b8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEB4C4CEF0;
-	Tue, 12 Aug 2025 18:09:37 +0000 (UTC)
+	 MIME-Version; b=r9zAYCsl87sC7mTqt4Ac0ztNm6PqLscKIS+2Fzs3OT2v0KA4AZjbBPQIPMqMEMXNXe8bBAXAo/khBrXbnaXVXZEuaA5tGTVs4ZLbn2xs3QQxk8z0tuGZ+4BhQw8SlwzX1SaHJEm3eMvKVKh3Nihz2+MrTneUI8h4CgDcKYgBUWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlDRrbgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BA6C4CEF0;
+	Tue, 12 Aug 2025 18:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022178;
-	bh=jxlr0+36lBJ/0pP2efXL74lDzUjfsKv0rueeDwbXAck=;
+	s=korg; t=1755023446;
+	bh=rOMWmXaaAamSudSDvDxibfkfvlzIc87cbQAwW3PoAFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ee3R4b8nP+RcweJw9N0TZYgRBO9ptmJ2HVipljGCCAdAVRUDPqTOHZNZmi3lSoOSw
-	 DWOg33lvf0BEqTTK1BDMnwTtGyAZSooGUykGGkjyXPlR3qCvEiRGLIWg9GCUmEUzoB
-	 JDw/bJ2suJQP/v8EqyON61ocBt04RRxAuYitsMXM=
+	b=JlDRrbgqbWNdkJo3jEX0w6q1ki5VT9YtXAwD9WcfcimsV8EEHc2B3rUgzrnqImWtt
+	 Niiq+NH07eVK8ubo47OBjoDGlXvm5Z6IPZxIDxH7urSVLIoVgBMlQD9vEaHsa6ojBE
+	 /lF5I+EUX2Ly6oElrQveLSoNvkPgQUWQTgHUaYmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kowshik Jois <kowsjois@linux.ibm.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Tyrel Datwyler <tyreld@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/369] powerpc/pseries/dlpar: Search DRC index from ibm,drc-indexes for IO add
-Date: Tue, 12 Aug 2025 19:26:16 +0200
-Message-ID: <20250812173017.758989911@linuxfoundation.org>
+Subject: [PATCH 6.16 082/627] vmci: Prevent the dispatching of uninitialized payloads
+Date: Tue, 12 Aug 2025 19:26:17 +0200
+Message-ID: <20250812173422.424686817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 41a1452759a8b1121df9cf7310acf31d766ba70b ]
+[ Upstream commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031 ]
 
-IO hotplug add event is handled in the user space with drmgr tool.
-After the device is enabled, the user space uses /sys/kernel/dlpar
-interface with “dt add index <drc_index>” to update the device tree.
-The kernel interface (dlpar_hp_dt_add()) finds the parent node for
-the specified ‘drc_index’ from ibm,drc-info property. The recent FW
-provides this property from 2017 onwards. But KVM guest code in
-some releases is still using the older SLOF firmware which has
-ibm,drc-indexes property instead of ibm,drc-info.
+The reproducer executes the host's unlocked_ioctl call in two different
+tasks. When init_context fails, the struct vmci_event_ctx is not fully
+initialized when executing vmci_datagram_dispatch() to send events to all
+vm contexts. This affects the datagram taken from the datagram queue of
+its context by another task, because the datagram payload is not initialized
+according to the size payload_size, which causes the kernel data to leak
+to the user space.
 
-If the ibm,drc-info is not available, this patch adds changes to
-search ‘drc_index’ from the indexes array in ibm,drc-indexes
-property to support old FW.
+Before dispatching the datagram, and before setting the payload content,
+explicitly set the payload content to 0 to avoid data leakage caused by
+incomplete payload initialization.
 
-Fixes: 02b98ff44a57 ("powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add")
-Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250531235002.239213-1-haren@linux.ibm.com
+Fixes: 28d6692cd8fb ("VMCI: context implementation.")
+Reported-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9b9124ae9b12d5af5d95
+Tested-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://lore.kernel.org/r/20250627055214.2967129-1-lizhi.xu@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/dlpar.c | 52 +++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ drivers/misc/vmw_vmci/vmci_context.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 213aa26dc8b3..979487da6522 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -404,6 +404,45 @@ get_device_node_with_drc_info(u32 index)
- 	return NULL;
- }
+diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
+index f22b44827e92..d566103caa27 100644
+--- a/drivers/misc/vmw_vmci/vmci_context.c
++++ b/drivers/misc/vmw_vmci/vmci_context.c
+@@ -251,6 +251,8 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
+ 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
+ 						  VMCI_CONTEXT_RESOURCE_ID);
+ 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
++		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
++			ev.msg.hdr.payload_size);
+ 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
+ 		ev.payload.context_id = context_id;
  
-+static struct device_node *
-+get_device_node_with_drc_indexes(u32 drc_index)
-+{
-+	struct device_node *np = NULL;
-+	u32 nr_indexes, index;
-+	int i, rc;
-+
-+	for_each_node_with_property(np, "ibm,drc-indexes") {
-+		/*
-+		 * First element in the array is the total number of
-+		 * DRC indexes returned.
-+		 */
-+		rc = of_property_read_u32_index(np, "ibm,drc-indexes",
-+				0, &nr_indexes);
-+		if (rc)
-+			goto out_put_np;
-+
-+		/*
-+		 * Retrieve DRC index from the list and return the
-+		 * device node if matched with the specified index.
-+		 */
-+		for (i = 0; i < nr_indexes; i++) {
-+			rc = of_property_read_u32_index(np, "ibm,drc-indexes",
-+							i+1, &index);
-+			if (rc)
-+				goto out_put_np;
-+
-+			if (drc_index == index)
-+				return np;
-+		}
-+	}
-+
-+	return NULL;
-+
-+out_put_np:
-+	of_node_put(np);
-+	return NULL;
-+}
-+
- static int dlpar_hp_dt_add(u32 index)
- {
- 	struct device_node *np, *nodes;
-@@ -423,10 +462,19 @@ static int dlpar_hp_dt_add(u32 index)
- 		goto out;
- 	}
- 
-+	/*
-+	 * Recent FW provides ibm,drc-info property. So search
-+	 * for the user specified DRC index from ibm,drc-info
-+	 * property. If this property is not available, search
-+	 * in the indexes array from ibm,drc-indexes property.
-+	 */
- 	np = get_device_node_with_drc_info(index);
- 
--	if (!np)
--		return -EIO;
-+	if (!np) {
-+		np = get_device_node_with_drc_indexes(index);
-+		if (!np)
-+			return -EIO;
-+	}
- 
- 	/* Next, configure the connector. */
- 	nodes = dlpar_configure_connector(cpu_to_be32(index), np);
 -- 
 2.39.5
 
