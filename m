@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBCFB2309E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D64B232CC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CC6C566F88
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2739E58420F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1690A2FD1D7;
-	Tue, 12 Aug 2025 17:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A245F2E36F1;
+	Tue, 12 Aug 2025 18:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSP5cbv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nvt33YCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1C52F8BE7;
-	Tue, 12 Aug 2025 17:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602341B87F2;
+	Tue, 12 Aug 2025 18:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021267; cv=none; b=mu5CuOcw+i3s6Z5QiDoMNyDFrp4r4q47muGpA1fjm0oN/plv2g7ZgXiLyO4RXq6W0UmfxSLUJxxGaDxsB/n1ZnEN+/cIAUVpKK/nYJvLL9T2W7eYUo+MWG602bKBUtOPCM5KEoKJFQ1oJbnjzBkoe5YlaVLQtgTjBlJyzHkYhTk=
+	t=1755022628; cv=none; b=pV1WpMgJ7J+e8ijyiPofuCTSR23nrWi6u+wetQ2wKxJVV6xL9HOeijlJ3usOHlffHo8lDy+ICmn/jN3CgI2hojoZbhnRXWbnW8iMgxlerYg/l1+2pK/EhdTaZD9GAsYZlIyKFgIKsUpuXcfcab8w9im0Up9UaZfT0B+uXj/TAS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021267; c=relaxed/simple;
-	bh=niDAzv1biZxFWkoc8dMuONFObFqIEKElBjjVrQmelmw=;
+	s=arc-20240116; t=1755022628; c=relaxed/simple;
+	bh=UpX9EYgCimc2ql0jVN4ryqdjXFy4MURdm86R4sqES8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwrllfdJ3LImq79JHekuyLmU2oag1uacdScwX3NgLO8IPi28C3OPn3/3RGNDbwt7Yx550tH7wuFXfjjVzT6HdIBEaQXQpj1Z2WAxbuzJ5HQNRGdS4JMzdA//WlsqaP3YzE+vc+92KZSRlsIrNA1T3ZduhjkH0cRnGsXahEWPbTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSP5cbv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E035C4CEF0;
-	Tue, 12 Aug 2025 17:54:26 +0000 (UTC)
+	 MIME-Version; b=Fud56OfWoQYjBDUoIsBCkmqFq1FtEFoXV+dvCYWixR+w0VutT+8xaxV0MA3rLuNtJNrlvjWCag7Qd48FqCvgDOrcYbBm4VzWvDkY7GYbIiytxI0nym3coT3WBEBwGB3vam3PlPZkw3zDyU0EmVb8LwrxV/BAo2MlvMXMRYtuS1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nvt33YCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBF8C4CEF0;
+	Tue, 12 Aug 2025 18:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021267;
-	bh=niDAzv1biZxFWkoc8dMuONFObFqIEKElBjjVrQmelmw=;
+	s=korg; t=1755022628;
+	bh=UpX9EYgCimc2ql0jVN4ryqdjXFy4MURdm86R4sqES8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSP5cbv4pwm0E3GU5EsCHjzAFbD5IkSRq3Ek/WYXK9vKfkOrkZHXyUfryBjMIjq3B
-	 SKYsAWBT/fgyFDN9YvraMVb/p1TSDC48Y8Hm6yPcmGHdgB+lI72OnaGO4MmU/UIKHJ
-	 HQWXvyj5q2URez3w7yw80p9tQOvQZbxDpzxeK11k=
+	b=Nvt33YCeCCGl+9x1TKUq4pPa2ta4kqrPRBYLwrcV+zlxOtFfldT55RJK5Mz5Q0Q5N
+	 eE6c6tjIbV5c/ncAEKkqH11514psNxLuZA+avnRb+ghhAv+HOcBdStYsthPRbn1cas
+	 HF6btl88GfNq/R7uDz7trGxjKgQoOhvh7QChzIlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/262] wifi: mac80211: Check 802.11 encaps offloading in ieee80211_tx_h_select_key()
-Date: Tue, 12 Aug 2025 19:27:54 +0200
-Message-ID: <20250812172956.707989877@linuxfoundation.org>
+Subject: [PATCH 6.12 178/369] perf sched: Make sure it frees the usage string
+Date: Tue, 12 Aug 2025 19:27:55 +0200
+Message-ID: <20250812173021.470258084@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 4037c468d1b3c508d69e6df0ef47fdee3d440e39 ]
+[ Upstream commit 10d9b89203765fb776512742c13af8dd92821842 ]
 
-With 802.11 encapsulation offloading, ieee80211_tx_h_select_key() is
-called on 802.3 frames. In that case do not try to use skb data as
-valid 802.11 headers.
+The parse_options_subcommand() allocates the usage string based on the
+given subcommands.  So it should reach the end of the function to free
+the string to prevent memory leaks.
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/1af4b5b903a5fca5ebe67333d5854f93b2be5abe.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1a5efc9e13f357ab ("libsubcmd: Don't free the usage string")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-2-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/perf/builtin-sched.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index f54792c4b910..e4797eb9c2ba 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -629,6 +629,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
- 	else
- 		tx->key = NULL;
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 5981cc51abc8..864fcb76e758 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -3891,9 +3891,9 @@ int cmd_sched(int argc, const char **argv)
+ 	 * Aliased to 'perf script' for now:
+ 	 */
+ 	if (!strcmp(argv[0], "script")) {
+-		return cmd_script(argc, argv);
++		ret = cmd_script(argc, argv);
+ 	} else if (strlen(argv[0]) > 2 && strstarts("record", argv[0])) {
+-		return __cmd_record(argc, argv);
++		ret = __cmd_record(argc, argv);
+ 	} else if (strlen(argv[0]) > 2 && strstarts("latency", argv[0])) {
+ 		sched.tp_handler = &lat_ops;
+ 		if (argc > 1) {
+@@ -3902,7 +3902,7 @@ int cmd_sched(int argc, const char **argv)
+ 				usage_with_options(latency_usage, latency_options);
+ 		}
+ 		setup_sorting(&sched, latency_options, latency_usage);
+-		return perf_sched__lat(&sched);
++		ret = perf_sched__lat(&sched);
+ 	} else if (!strcmp(argv[0], "map")) {
+ 		if (argc) {
+ 			argc = parse_options(argc, argv, map_options, map_usage, 0);
+@@ -3913,13 +3913,14 @@ int cmd_sched(int argc, const char **argv)
+ 				sched.map.task_names = strlist__new(sched.map.task_name, NULL);
+ 				if (sched.map.task_names == NULL) {
+ 					fprintf(stderr, "Failed to parse task names\n");
+-					return -1;
++					ret = -1;
++					goto out;
+ 				}
+ 			}
+ 		}
+ 		sched.tp_handler = &map_ops;
+ 		setup_sorting(&sched, latency_options, latency_usage);
+-		return perf_sched__map(&sched);
++		ret = perf_sched__map(&sched);
+ 	} else if (strlen(argv[0]) > 2 && strstarts("replay", argv[0])) {
+ 		sched.tp_handler = &replay_ops;
+ 		if (argc) {
+@@ -3927,7 +3928,7 @@ int cmd_sched(int argc, const char **argv)
+ 			if (argc)
+ 				usage_with_options(replay_usage, replay_options);
+ 		}
+-		return perf_sched__replay(&sched);
++		ret = perf_sched__replay(&sched);
+ 	} else if (!strcmp(argv[0], "timehist")) {
+ 		if (argc) {
+ 			argc = parse_options(argc, argv, timehist_options,
+@@ -3943,19 +3944,19 @@ int cmd_sched(int argc, const char **argv)
+ 				parse_options_usage(NULL, timehist_options, "w", true);
+ 			if (sched.show_next)
+ 				parse_options_usage(NULL, timehist_options, "n", true);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out;
+ 		}
+ 		ret = symbol__validate_sym_arguments();
+-		if (ret)
+-			return ret;
+-
+-		return perf_sched__timehist(&sched);
++		if (!ret)
++			ret = perf_sched__timehist(&sched);
+ 	} else {
+ 		usage_with_options(sched_usage, sched_options);
+ 	}
  
-+	if (info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) {
-+		if (tx->key && tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
-+			info->control.hw_key = &tx->key->conf;
-+		return TX_CONTINUE;
-+	}
-+
- 	if (tx->key) {
- 		bool skip_hw = false;
++out:
+ 	/* free usage string allocated by parse_options_subcommand */
+ 	free((void *)sched_usage[0]);
  
+-	return 0;
++	return ret;
+ }
 -- 
 2.39.5
 
