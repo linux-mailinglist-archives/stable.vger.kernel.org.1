@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8053B23487
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E97DB230F2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31A11897AD7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CABC567C1C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990A72FA0CD;
-	Tue, 12 Aug 2025 18:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7FF2FDC2F;
+	Tue, 12 Aug 2025 17:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks+6Dai2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+8t7X1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560031E500C;
-	Tue, 12 Aug 2025 18:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E6B2FA0DB;
+	Tue, 12 Aug 2025 17:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023794; cv=none; b=TUJJQh8EQwOueCMpirZINvP2vIQGNpcdvQr2yi6sU4zBUiYuZFUtjEgaO9jwZKb+0WOr1Zs/+U0/PwooXEXv+cLS9LDYqjrE9oeRCat2Jg8qWwDcZyUmRPr8EafPcM010ZPoKElr+RFawOxd3wEfvFODNmyw+HOu/e2LHvf9aGM=
+	t=1755021436; cv=none; b=q82fj1BHUmxxFxkTsOvjPOMnOemOspxSnRfnCB0Skeal+CaPsrmboOD4Yho+qAgYXxwTEivgj3MBbT1Db+jllMLjfICGjxiFT0QPr8g8BOFA10HxViD3IJr9fLQg4fzXqfcdwFOmFRfOgKuZmfyeztIcZQjsEqq2RgbknMrCPIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023794; c=relaxed/simple;
-	bh=NxY9qPfk8zrfXmbEjdXSzSInXoPTAJAcRFSW/wE6y8k=;
+	s=arc-20240116; t=1755021436; c=relaxed/simple;
+	bh=4Tw1MK3EOVxFZhPhNX4VyVpcSZ5ApcJNjB9RL2UQUQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8HqCmWzPxQaOfoW0f4vfzAzEQEToksqtwnsXsAqsvqJTrmxwINH0xBcZhauL4HrqtoFJ39yD/8kxBGXyATUycNJlI+VSwTVCElCCo/adBW0KK9nV+non++hK59+7ug7ofrTD7u8wDWvOZlDFLIhnr4oOYLzx39LSJufa59aKjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks+6Dai2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73DDC4CEF0;
-	Tue, 12 Aug 2025 18:36:33 +0000 (UTC)
+	 MIME-Version; b=JkHns1MQB5wc5FDDb5TygYhIa6Wnpm942IE0DRB0u8QYS0on8Ev8KQDlhSCZA6/fnq8wDMdiJUIYC4p3HFJSYQAlEkDNjEvgg8o9mNse3STcyOckyl198ey9minQmEwyF7iteXK4N5LVAF4v1tsW46eJV2kbzzx/Ql4Tt/oN4WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+8t7X1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D133C4CEF0;
+	Tue, 12 Aug 2025 17:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023794;
-	bh=NxY9qPfk8zrfXmbEjdXSzSInXoPTAJAcRFSW/wE6y8k=;
+	s=korg; t=1755021436;
+	bh=4Tw1MK3EOVxFZhPhNX4VyVpcSZ5ApcJNjB9RL2UQUQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ks+6Dai2OAc4FL7H3JwuwFpVEIQdqyc1Dw2jvoLmPSiVve0tR/l+CnEJoNg53nPnA
-	 b/ks7NA+QunB9ge21/Xwq7lyuw6hxd03yyb3+GgnTOblX0ypTGxa9BK2uKgNUxroRp
-	 Zyl2GRcZh21L3WCosnfV51aBJalTBiMNp5pu9Tcs=
+	b=g+8t7X1VHEpV+fn68vlaAa47gshL14j8Ugg55p3EJUUzZCkZUgblGqdf6QFS/CvJ3
+	 8wDu/U+KwsUiRTsd1siVKCjGmoJXN6oI+iPgiQabQPhXca6KzHh75d9Sn8OiuFJ1q0
+	 rEnul+07Kaakrv3PqKnB5XQPXkes/+rPqr0SMFdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Chris Down <chris@chrisdown.name>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 184/627] wifi: mt76: mt7996: Fix secondary link lookup in mt7996_mcu_sta_mld_setup_tlv()
-Date: Tue, 12 Aug 2025 19:27:59 +0200
-Message-ID: <20250812173426.282571796@linuxfoundation.org>
+Subject: [PATCH 6.6 092/262] Bluetooth: hci_event: Mask data status from LE ext adv reports
+Date: Tue, 12 Aug 2025 19:28:00 +0200
+Message-ID: <20250812172956.984467094@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Chris Down <chris@chrisdown.name>
 
-[ Upstream commit e8d7eef07199887161cd6f3c062406628781f8b6 ]
+[ Upstream commit 0cadf8534f2a727bc3a01e8c583b085d25963ee0 ]
 
-Use proper link_id value for secondary link lookup in
-mt7996_mcu_sta_mld_setup_tlv routine.
+The Event_Type field in an LE Extended Advertising Report uses bits 5
+and 6 for data status (e.g. truncation or fragmentation), not the PDU
+type itself.
 
-Fixes: 00cef41d9d8f5 ("wifi: mt76: mt7996: Add mt7996_mcu_sta_mld_setup_tlv() and mt7996_mcu_sta_eht_mld_tlv()")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250704-mt7996-mlo-fixes-v1-2-356456c73f43@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The ext_evt_type_to_legacy() function fails to mask these status bits
+before evaluation. This causes valid advertisements with status bits set
+(e.g. a truncated non-connectable advertisement, which ends up showing
+as PDU type 0x40) to be misclassified as unknown and subsequently
+dropped. This is okay for most checks which use bitwise AND on the
+relevant event type bits, but it doesn't work for non-connectable types,
+which are checked with '== LE_EXT_ADV_NON_CONN_IND' (that is, zero).
+
+In terms of behaviour, first the device sends a truncated report:
+
+> HCI Event: LE Meta Event (0x3e) plen 26
+      LE Extended Advertising Report (0x0d)
+        Entry 0
+          Event type: 0x0040
+            Data status: Incomplete, data truncated, no more to come
+          Address type: Random (0x01)
+          Address: 1D:12:46:FA:F8:6E (Non-Resolvable)
+          SID: 0x03
+          RSSI: -98 dBm (0x9e)
+          Data length: 0x00
+
+Then, a few seconds later, it sends the subsequent complete report:
+
+> HCI Event: LE Meta Event (0x3e) plen 122
+      LE Extended Advertising Report (0x0d)
+        Entry 0
+          Event type: 0x0000
+            Data status: Complete
+          Address type: Random (0x01)
+          Address: 1D:12:46:FA:F8:6E (Non-Resolvable)
+          SID: 0x03
+          RSSI: -97 dBm (0x9f)
+          Data length: 0x60
+          Service Data: Google (0xfef3)
+            Data[92]: ...
+
+These devices often send multiple truncated reports per second.
+
+This patch introduces a PDU type mask to ensure only the relevant bits
+are evaluated, allowing for the correct translation of all valid
+extended advertising packets.
+
+Fixes: b2cc9761f144 ("Bluetooth: Handle extended ADV PDU types")
+Signed-off-by: Chris Down <chris@chrisdown.name>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/net/bluetooth/hci.h | 1 +
+ net/bluetooth/hci_event.c   | 8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 994526c65bfc..dd4b7b8c34ea 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2326,8 +2326,7 @@ mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index e4a97b2d0998..4c084a03d6bb 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -2577,6 +2577,7 @@ struct hci_ev_le_conn_complete {
+ #define LE_EXT_ADV_DIRECT_IND		0x0004
+ #define LE_EXT_ADV_SCAN_RSP		0x0008
+ #define LE_EXT_ADV_LEGACY_PDU		0x0010
++#define LE_EXT_ADV_DATA_STATUS_MASK	0x0060
+ #define LE_EXT_ADV_EVT_TYPE_MASK	0x007f
  
- 	if (nlinks > 1) {
- 		link_id = __ffs(links & ~BIT(msta->deflink_id));
--		msta_link = mt76_dereference(msta->link[msta->deflink_id],
--					     &dev->mt76);
-+		msta_link = mt76_dereference(msta->link[link_id], &dev->mt76);
- 		if (!msta_link)
- 			return;
- 	}
+ #define ADDR_LE_DEV_PUBLIC		0x00
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 8516ba62c545..3b22ce3aa95b 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6216,6 +6216,11 @@ static void hci_le_adv_report_evt(struct hci_dev *hdev, void *data,
+ 
+ static u8 ext_evt_type_to_legacy(struct hci_dev *hdev, u16 evt_type)
+ {
++	u16 pdu_type = evt_type & ~LE_EXT_ADV_DATA_STATUS_MASK;
++
++	if (!pdu_type)
++		return LE_ADV_NONCONN_IND;
++
+ 	if (evt_type & LE_EXT_ADV_LEGACY_PDU) {
+ 		switch (evt_type) {
+ 		case LE_LEGACY_ADV_IND:
+@@ -6247,8 +6252,7 @@ static u8 ext_evt_type_to_legacy(struct hci_dev *hdev, u16 evt_type)
+ 	if (evt_type & LE_EXT_ADV_SCAN_IND)
+ 		return LE_ADV_SCAN_IND;
+ 
+-	if (evt_type == LE_EXT_ADV_NON_CONN_IND ||
+-	    evt_type & LE_EXT_ADV_DIRECT_IND)
++	if (evt_type & LE_EXT_ADV_DIRECT_IND)
+ 		return LE_ADV_NONCONN_IND;
+ 
+ invalid:
 -- 
 2.39.5
 
