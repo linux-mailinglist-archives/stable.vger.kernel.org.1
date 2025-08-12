@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-168526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B732CB23546
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C62CB23581
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 825E9171FDA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E6DE585D96
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C713D2FDC30;
-	Tue, 12 Aug 2025 18:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A3B2C21F6;
+	Tue, 12 Aug 2025 18:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mU2Jz2sT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3NC5XGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C4E2FE584
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 18:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69C61C3C11
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 18:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024465; cv=none; b=Mg/htacwvrt+DokXDxFLhZV6ifxl7Oegbizw5DM+GA1WGOGoDdFb+ZArlAw1UycEiyXVOdxZjJBaXG9I0Cn2qTvefqYVRDo+o2ZkOEVsE601Q3GRF7ATyho7dfv0FpGtV40VQmoKRyQrQp1FQd+/sFiHfq9kPna50XSR7FmA5ZE=
+	t=1755024644; cv=none; b=MHt5Ik8KqjoV4dseV3JSBSHF25JOpmokExX+UMtw4qVmnk/eZZf81EBTuzOvsxjGwee0sF5XCaO1q9OMJOowdFFxRv/5MwJmH8Q7MxPNpg/BBdHTlhBt6ERs1IxbkCD91RKz3HtTKDAYstnGuYa6b4hg279iBmm917DAFUj82Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024465; c=relaxed/simple;
+	s=arc-20240116; t=1755024644; c=relaxed/simple;
 	bh=CziuQVh4iq7lLlvhoxXKN6Q55B4af9Mr5xTJrXqsevw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XqYBnujZGNaLLOAt6I/kTThe+R4vwOt3xxThChGJ1BoeYFTsxs4R44hbWkYQVE35uSbuQuT3ycgAv66d1cE5UpagARDvXeg4xZybP7dW8fYqbHEsC1k0k+8WE4PbsTLN0hemIhXXimUcKltrdPgoEUR1AbBr9F+OwLO/5h8R+ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mU2Jz2sT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F9EC4CEF0;
-	Tue, 12 Aug 2025 18:47:43 +0000 (UTC)
+	 MIME-Version; b=Sk+YZd4LsfyXg2K4PQbcutfXOoDcpIHHERK/Sx66fA8EJk5kCWDJXbhRsTP+EmRsfy0gMcLP0r4/pwxpC5d03vowk+EkOweWH0+TFNdGyXDGU0zxJ/nWsTTPHYEdMWqkwkFU5/yqz23Ku+XIuDyY1HUqMh5XNJ5szwp6HPv0co4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3NC5XGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B7AC4CEF0;
+	Tue, 12 Aug 2025 18:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755024465;
+	s=k20201202; t=1755024644;
 	bh=CziuQVh4iq7lLlvhoxXKN6Q55B4af9Mr5xTJrXqsevw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mU2Jz2sT0KfDULUgAILmkgcQUcyEJxPzGzof4NEhgKSSji0+vbOxgq+O0kmZJunxQ
-	 5wZbxYYKbETSCgBn9LlkS3QOlc8J2/9tCvymxMKnlPVGhuoCnXS9uLfC443FAlkJzF
-	 UtccAjcMl8mpJz88NnmJp7Y6ncoWj8bWOIFkJW4tG/T357Bcgr2CWS9tNmbgY35Joz
-	 CaPqIFoN1Pa8R6LjMEMoAlTE8ndS2KuvUF7tadz26IlVrXe27v/pF0PLxkqMCnCs/w
-	 hhBpWKNUDjo2qaz7uWzKY9NR8FpUFmKgefRZx3lULVSLzTfg0LmxWlNmdxXfZGGUoN
-	 z+Nx6a6zKk0fQ==
+	b=d3NC5XGkxlxhBgXjG+nupLkhtlhcnF7U98HF7jykASQZGzm7G35P988lF4mECqLgU
+	 sNupmWL8FMRwvVWkO1iUmaSZHvSQqzYobXIvP/WFj4n3rH5UHA04lIXvh/lpzPBA4D
+	 FKe299wpGQ0Z+YXeMNm67zi4xzV/ktorReV3rsuMl9OliVSABLcmIbhUHpAryaFYZs
+	 zWGfeQ0VYPN1fTMmlUT9uR/Wi3ikSAOl3cH8zy+7jjZqZVxkAmjgDnAldTQuRWvLYA
+	 gCr4tTYMTIoAVFuOAjVboPQfCh5fS3mAcXI7rJi3+2u9IA8dBScq5mURsVXToL4CzO
+	 07WNlFQWCeAbA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y] smb: server: Fix extension string in ksmbd_extract_shortname()
-Date: Tue, 12 Aug 2025 14:47:40 -0400
-Message-Id: <20250812184740.2027825-1-sashal@kernel.org>
+Subject: [PATCH 6.15.y] smb: server: Fix extension string in ksmbd_extract_shortname()
+Date: Tue, 12 Aug 2025 14:50:40 -0400
+Message-Id: <20250812185040.2028641-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081238-unnamed-nappy-9be5@gregkh>
-References: <2025081238-unnamed-nappy-9be5@gregkh>
+In-Reply-To: <2025081241-bobsled-broiling-d341@gregkh>
+References: <2025081241-bobsled-broiling-d341@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
