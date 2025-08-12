@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757B7B23269
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CD6B22F96
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E723A9960
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4177C1886857
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A91E2882CE;
-	Tue, 12 Aug 2025 18:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28282FE566;
+	Tue, 12 Aug 2025 17:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNCoJ+vQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eu5dV7iQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15639305E08;
-	Tue, 12 Aug 2025 18:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD962FDC25;
+	Tue, 12 Aug 2025 17:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022299; cv=none; b=o/1j0r31TAp6W/XIC0nwI1oLrQ0THfxF+Bg+sFL3qrs19jMwH2q23bNSJJmmpyUh6sBIzdn90EHEPw6M+49E7Mnf0QaQCwBHzegZynPZKtLe3PfRMdRuA8KWIoPt7UMcHgWe6aldkO/cfjk7hgJO2AKH7UkAhdPybuV7l9SW1OE=
+	t=1755020357; cv=none; b=JtaBFqKJf+BsQQhz69rMQ4lcBQi7RjOcn/7NDHiOudAQ9Zj4vnXKAT+tYhkfmoVN0TtG90/YywND92KohuMVxtT79R6ELjKXOkds36UoUk5acvQzV2foGUb/GmHmgQc8Al2heSHHrmWbEEGw74tzyQ9tEKlVT9ZFQibz9qSGUSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022299; c=relaxed/simple;
-	bh=4ZQCb/uhPfe4SVjIFYLhS2/caHgf5yMJPRhWNGj17uw=;
+	s=arc-20240116; t=1755020357; c=relaxed/simple;
+	bh=wLrPYmLKn7+SG/0IJM1mfYToyuJ1/y6+HJXp3LI/AEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qpcwh0rVW7PHcBpRs3tBrMwO3H4WqR62TaEglNeRr5KeocCPpH1zXhbnAcz8rIV1GpQQEGB4paEdFprkuotLehSaJwX+kHr2DgtlidQ1j959ZZUxDnhZV/id2sE7/ojT9x/gz9ikmkUIlOVwVnbCHsZKiYszhjAor6gEOYICVWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNCoJ+vQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BCCC4CEF0;
-	Tue, 12 Aug 2025 18:11:38 +0000 (UTC)
+	 MIME-Version; b=rSJuMHBL7YkV3UUD4tG47GQXb5tqohAzOv8C7XHJQfh9Tej9lIQu0kaFUOEMIyhstYJKtOAg3x0+7ggHH3FRWs0R+zHULqGHI4DC2oqfZWJ3tE7d6a665cVZUTpd5IPemz/e76QnIkR0nLXMIEKZNSWlw/xtZLiCtCd49E/H//c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eu5dV7iQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26526C4CEF0;
+	Tue, 12 Aug 2025 17:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022298;
-	bh=4ZQCb/uhPfe4SVjIFYLhS2/caHgf5yMJPRhWNGj17uw=;
+	s=korg; t=1755020357;
+	bh=wLrPYmLKn7+SG/0IJM1mfYToyuJ1/y6+HJXp3LI/AEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNCoJ+vQlr7rRqeJkueUj81I86qeFGSL4gdzP43X3EzA1vcKAiYM2qeBJJmeE+BNA
-	 sMz37KCT7E/pVBy+6vvr3RYa6KgXdwgbQR5jLSNqmNt2xx3rbaTeRNUQoT1pZlUvV8
-	 sje126AchCESFOuYOAgFKddtDoIGs7ca8R4W/wV0=
+	b=eu5dV7iQ+enkt9xz02vogxYoWFM+nWOBf1dbVjxINfK1rIp6gu6uSH9eY4BORzbZe
+	 1MzRrbTFQubDn+1Uc4aFoYN5XFsNhGby0RiP+oq2COv3nWfPEPCLOGrheMANsd+iF/
+	 YjqchoQFi0BRQRnAK8aFnMiIfLRYNlRvN7zFHFdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jiadong Zhu <Jiadong.Zhu@amd.com>,
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/369] drm/amdgpu/gfx10: fix kiq locking in KCQ reset
+Subject: [PATCH 6.1 024/253] net: hns3: disable interrupt when ptp init failed
 Date: Tue, 12 Aug 2025 19:26:52 +0200
-Message-ID: <20250812173019.095359817@linuxfoundation.org>
+Message-ID: <20250812172949.758102632@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-[ Upstream commit a4b2ba8f631d3e44b30b9b46ee290fbfe608b7d0 ]
+[ Upstream commit cde304655f25d94a996c45b0f9956e7dcc2bc4c0 ]
 
-The ring test needs to be inside the lock.
+When ptp init failed, we'd better disable the interrupt and clear the
+flag, to avoid early report interrupt at next probe.
 
-Fixes: 097af47d3cfb ("drm/amdgpu/gfx10: wait for reset done before remap")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Jiadong Zhu <Jiadong.Zhu@amd.com>
+Fixes: 0bf5eb788512 ("net: hns3: add support for PTP")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-3-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 24d711b0e634..9a1c9dbad126 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -9510,9 +9510,8 @@ static int gfx_v10_0_reset_kcq(struct amdgpu_ring *ring,
- 	kiq->pmf->kiq_unmap_queues(kiq_ring, ring, RESET_QUEUES,
- 				   0, 0);
- 	amdgpu_ring_commit(kiq_ring);
--	spin_unlock_irqrestore(&kiq->ring_lock, flags);
--
- 	r = amdgpu_ring_test_ring(kiq_ring);
-+	spin_unlock_irqrestore(&kiq->ring_lock, flags);
- 	if (r)
- 		return r;
- 
-@@ -9559,9 +9558,8 @@ static int gfx_v10_0_reset_kcq(struct amdgpu_ring *ring,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+index b7cf9fbf97183..6d7aeac600128 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
+@@ -509,14 +509,14 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init freq, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
  	}
- 	kiq->pmf->kiq_map_queues(kiq_ring, ring);
- 	amdgpu_ring_commit(kiq_ring);
--	spin_unlock_irqrestore(&kiq->ring_lock, flags);
--
- 	r = amdgpu_ring_test_ring(kiq_ring);
-+	spin_unlock_irqrestore(&kiq->ring_lock, flags);
- 	if (r)
- 		return r;
+ 
+ 	ret = hclge_ptp_set_ts_mode(hdev, &hdev->ptp->ts_cfg);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init ts mode, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
+ 
+ 	ktime_get_real_ts64(&ts);
+@@ -524,7 +524,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to init ts time, ret = %d\n", ret);
+-		goto out;
++		goto out_clear_int;
+ 	}
+ 
+ 	set_bit(HCLGE_STATE_PTP_EN, &hdev->state);
+@@ -532,6 +532,9 @@ int hclge_ptp_init(struct hclge_dev *hdev)
+ 
+ 	return 0;
+ 
++out_clear_int:
++	clear_bit(HCLGE_PTP_FLAG_EN, &hdev->ptp->flags);
++	hclge_ptp_int_en(hdev, false);
+ out:
+ 	hclge_ptp_destroy_clock(hdev);
  
 -- 
 2.39.5
