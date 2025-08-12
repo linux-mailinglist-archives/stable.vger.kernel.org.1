@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-167407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E705AB23007
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A66B23329
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A941A189691B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B67518867E2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAE52FDC2B;
-	Tue, 12 Aug 2025 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680182F5481;
+	Tue, 12 Aug 2025 18:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rd+l5Mi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3yxEqKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF722E4248;
-	Tue, 12 Aug 2025 17:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2323D2DBF5E;
+	Tue, 12 Aug 2025 18:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020715; cv=none; b=s11TcombJRLap9UcQxWKqesEfgyJN5HGn+ikrSvGOzqNRWU6FGP0ganupb4aU/fkp2hEwTBWX7JCZYyvgms1m8E8QcW8GITMg7x3n4aQc//BNqwAe0mQ3voazU81Umz4vunOR9umaDTKYhKDfgcsZb1xbFAqKBrgF18W1+E7mnQ=
+	t=1755022848; cv=none; b=KeWz2sNQWRW2F6gNe9yscRVgPv74JGIo4YX2TZdJqz1FZrM1Xtc4Sg8YqrgWHy3C7q5KLdvhKqbsRKNkp7kWV/bbS+usI+ZYtw23YpTji+IgyoBMBNEfttX1bQR8uJXSDg9apFTHunrI/FRf33qRPLr1806PwX3gJS1F8DaSXVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020715; c=relaxed/simple;
-	bh=JFDZ6y0Fa49CpNPOX7Do3Dh8fKzT2T0OeiI0D0zli2g=;
+	s=arc-20240116; t=1755022848; c=relaxed/simple;
+	bh=OToJF4gaRfRbxYvgA4rj1ecG7bzZ0MA64jct9Z1Ncz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k2MLSbjT3EeK0Nbkqjk1IdFmy1ZYRaElZ2oyl0xfRDsuUNMrRjAJwMz8yGvmySp1I0msELlsG4210CYHbfJdopJamCXTb+AvAIv/kGo+cseawXTUaHkqqAVUY4qDVYn60loo11EQB7kgdsAbcyO1HtoU6GtcoDpRoNMncdzrfrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rd+l5Mi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1EAC4CEF0;
-	Tue, 12 Aug 2025 17:45:15 +0000 (UTC)
+	 MIME-Version; b=eCtGT6KJiQDoVSa6IlrQVNAyy+9Vy/yL29QDOs4D6veFxoGtWRylgUxRVDxQmgi2gMlkqRtDXMHZboFiQPpDSKsUY3qoej+ISq0Cu3tua+M0X0H93lrjnZ6aKzFhuigEb+sWTIo6kyS19ah54/fwSr/p95oDbGBCBDQs7I0hSZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3yxEqKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A05C4CEF6;
+	Tue, 12 Aug 2025 18:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020715;
-	bh=JFDZ6y0Fa49CpNPOX7Do3Dh8fKzT2T0OeiI0D0zli2g=;
+	s=korg; t=1755022848;
+	bh=OToJF4gaRfRbxYvgA4rj1ecG7bzZ0MA64jct9Z1Ncz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rd+l5Mi8n7DqZa+dNN9di8kn8iCvx+UoUQMKFPYkWwWjnzfZLN3sXLF2/39sCxWYf
-	 R1YLa7J+0h5dFUPXp+406TNOoaRDepNe5EF9I3ftn0pTvpWoMA6RKbtoMOo7dHWYKL
-	 gwgkTx0tyfHb2WBk6SPhQ0oSJMjeQjWzo8FB/Txw=
+	b=T3yxEqKzanXr/KD9IRhmTaEdHCpFsevkqHmi3I4tpTWDyK9llkyYR+NUFFE9GGcmf
+	 UBpIbBgGtVseOUbioXz+3pF8Ei0+NS+asSVPh4duo7b0PCZEBUdtDgKDFSQW3mFc9z
+	 Or/fsmPHRWhfXmk1zieloV5JsiTxmpQWK/SHSwwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Song Chen <chensong_2000@189.cn>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/253] kernel: trace: preemptirq_delay_test: use offstack cpu mask
-Date: Tue, 12 Aug 2025 19:29:05 +0200
-Message-ID: <20250812172955.400641480@linuxfoundation.org>
+Subject: [PATCH 6.12 249/369] f2fs: turn off one_time when forcibly set to foreground GC
+Date: Tue, 12 Aug 2025 19:29:06 +0200
+Message-ID: <20250812173024.129852096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit adc353c0bfb243ebfd29b6222fa3bf149169a6de ]
+[ Upstream commit 8142daf8a53806689186ee255cc02f89af7f8890 ]
 
-A CPU mask on the stack is broken for large values of CONFIG_NR_CPUS:
+one_time mode is only for background GC. So, we need to set it back to
+false when foreground GC is enforced.
 
-kernel/trace/preemptirq_delay_test.c: In function ‘preemptirq_delay_run’:
-kernel/trace/preemptirq_delay_test.c:143:1: error: the frame size of 8512 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]
-
-Fall back to dynamic allocation here.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Song Chen <chensong_2000@189.cn>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250620111215.3365305-1-arnd@kernel.org
-Fixes: 4b9091e1c194 ("kernel: trace: preemptirq_delay_test: add cpu affinity")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 9748c2ddea4a ("f2fs: do FG_GC when GC boosting is required for zoned devices")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/preemptirq_delay_test.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/f2fs/gc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
-index cb0871fbdb07..8af92dbe98f0 100644
---- a/kernel/trace/preemptirq_delay_test.c
-+++ b/kernel/trace/preemptirq_delay_test.c
-@@ -119,12 +119,15 @@ static int preemptirq_delay_run(void *data)
- {
- 	int i;
- 	int s = MIN(burst_size, NR_TEST_FUNCS);
--	struct cpumask cpu_mask;
-+	cpumask_var_t cpu_mask;
-+
-+	if (!alloc_cpumask_var(&cpu_mask, GFP_KERNEL))
-+		return -ENOMEM;
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index cd56c0e66657..c0e43d6056a0 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1899,6 +1899,7 @@ int f2fs_gc(struct f2fs_sb_info *sbi, struct f2fs_gc_control *gc_control)
+ 	/* Let's run FG_GC, if we don't have enough space. */
+ 	if (has_not_enough_free_secs(sbi, 0, 0)) {
+ 		gc_type = FG_GC;
++		gc_control->one_time = false;
  
- 	if (cpu_affinity > -1) {
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(cpu_affinity, &cpu_mask);
--		if (set_cpus_allowed_ptr(current, &cpu_mask))
-+		cpumask_clear(cpu_mask);
-+		cpumask_set_cpu(cpu_affinity, cpu_mask);
-+		if (set_cpus_allowed_ptr(current, cpu_mask))
- 			pr_err("cpu_affinity:%d, failed\n", cpu_affinity);
- 	}
- 
-@@ -141,6 +144,8 @@ static int preemptirq_delay_run(void *data)
- 
- 	__set_current_state(TASK_RUNNING);
- 
-+	free_cpumask_var(cpu_mask);
-+
- 	return 0;
- }
- 
+ 		/*
+ 		 * For example, if there are many prefree_segments below given
 -- 
 2.39.5
 
