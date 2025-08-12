@@ -1,244 +1,196 @@
-Return-Path: <stable+bounces-167167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208CCB22B72
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:12:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 482BEB22B90
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 474902A09F8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 15:10:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697971A21B4E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 15:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7FE221F03;
-	Tue, 12 Aug 2025 15:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A563D2EFD94;
+	Tue, 12 Aug 2025 15:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HD6yb4BJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9JjT29L"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2072.outbound.protection.outlook.com [40.107.220.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A13B2F5308;
-	Tue, 12 Aug 2025 15:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755011450; cv=fail; b=N+YSCalXr2mFvnrt/gRVFCrpoo1nEu+VqHFTm5P1grdB9KUNhP53vS5xRAVLbwOdbu+znlxal3j6reQITA5GhhCmP+LSPV7lPkAnTEMD6H0bmU4/tqbmBGIHyqSC6p4QXB/X+Wz/Pr9n0God+DOtAUfRiU4uO0jO3Pnfn7cjsro=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755011450; c=relaxed/simple;
-	bh=p1DYgsFitiyDIsFJ1PQrZhuc4Dqk8c1Q9gY6MuTsc5s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Vj/8CBK17uI0Y3Jfd8gT1eHGNrwvg1PVELb50cQk/g0Yt9Tg6iqXmhDYBi0nFS+TliWc8lgpfOnASVajuNlaZWpVGrYNTZOvQVUzw9WsECTJCGjEJhXwbUblU1J72h54KcSeLnTkowEYsugQFBVrukRVYzXZHOsfqRIBhf2DOXw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HD6yb4BJ; arc=fail smtp.client-ip=40.107.220.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L5RGziEm/UBhEg62ZxqY7j2OhltctSI0zqi2QRt39FHA48xZhq4at/cn0PYhBDl8CKRn7U1hObciyhGT3vTLwZ1T3qbvw0u8LU2onvO6lnbdxWMGleWbqVRmUF9EK5EwASrmvZBSurUXy5Hk4F2hnkS+GkkZZhqfWcogewD3AgM7Ab9fLtCBqkA6N/ShRMQrkPaF3nfGT+/2Ayfv3NozOqg1VARotbGTF06IeL4vWCzngoG/TU3pmKIj2yeXSDiZSkxTIGtWsPLmYp1NUvOj3f/eHpOoGCMKiBEllokTNB2rbAGEz7I9PGoffc8zVTdol6f/JC9wm1JF513f4+qxhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lz2bJyykGasvalwTjjUDQAEjMONwOHokthsOPZABC2g=;
- b=yQ6aQ59jJiV11LUBYilQyUgmAWai9CU+FJZVfdcAjmxh7+co1p9Zj3q7d+738mnsz7eg5Lfyo0Q5R/t83F7HLbZ87xt59iMq5l/IyBzQAUEYGgDsbZNJ0SWhGcs+a1r/NwYIRtC7TGqpdB/eUuNcJLoh3Yz9koyxUvYi5QXzgkPfBwo87NtSOtF4k1plC1u3NJXFljp8vu3S+8jW29QsOTG6u5oDBMtxfU8ln/386yJLBf5uHRlTUlANIZ8NCy8e+8k4+5RKIq8eygIW4pnz3354Wy4AMOKl6ipH4Z/0LXrR6/R96CxD01b6odPWZyQJoSAL6iE0rGEoO03k/yjwKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lz2bJyykGasvalwTjjUDQAEjMONwOHokthsOPZABC2g=;
- b=HD6yb4BJisRuhbC7Ah4x+bd+IPtraBtTHDosoAPhB8ST4f2H/P1ZdWAkXmTLVJw/G8H78LuoVxAGt0NWXoi0wlSu9ffWsPzhyrVlvDdUu0eN7WR6iMiIbczpOc9rDgidCeq3gm+Sf5Mo7msbq/zvl9eHUV9+jO0w2Z0JxkyoUGXmn98UQWJYX5m0JzO6XggZ6sqpTtZXKruRvHAUEjAIYvHjSJrlMnVq+AEOl7v2yYGFrvvaXDgl0pvIkPXJaqW/+OVniSqlqHpDlJOZWio6P69SroQMYX5ixcZSPvWudgzFOKSsnNAShk4bxM8N4cS9B3STbQkDmX5YzZ6t6Udz+A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB7548.namprd12.prod.outlook.com (2603:10b6:610:144::12)
- by CH3PR12MB7642.namprd12.prod.outlook.com (2603:10b6:610:14a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Tue, 12 Aug
- 2025 15:10:44 +0000
-Received: from CH3PR12MB7548.namprd12.prod.outlook.com
- ([fe80::e8c:e992:7287:cb06]) by CH3PR12MB7548.namprd12.prod.outlook.com
- ([fe80::e8c:e992:7287:cb06%2]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
- 15:10:44 +0000
-Message-ID: <13cc74e7-4a18-45e6-b511-940f9ed56a2b@nvidia.com>
-Date: Tue, 12 Aug 2025 18:10:39 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rdma-next 1/1] RDMA/core: Fix socket leak in
- rdma_dev_init_net
-To: Parav Pandit <parav@nvidia.com>, =?UTF-8?Q?H=C3=A5kon_Bugge?=
- <haakon.bugge@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Chiara Meiohas <cmeiohas@nvidia.com>,
- Michael Guralnik <michaelgur@nvidia.com>, Yuyu Li <liyuyu6@huawei.com>,
- Patrisious Haddad <phaddad@nvidia.com>, Zhu Yanjun <yanjun.zhu@linux.dev>,
- Yishai Hadas <yishaih@nvidia.com>, "Dr. David Alan Gilbert"
- <linux@treblig.org>, Wang Liang <wangliang74@huawei.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Junxian Huang <huangjunxian6@hisilicon.com>,
- "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250812133743.1788579-1-haakon.bugge@oracle.com>
- <CY8PR12MB719547A39C4B93FFA6FF40EEDC2BA@CY8PR12MB7195.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: Mark Bloch <mbloch@nvidia.com>
-In-Reply-To: <CY8PR12MB719547A39C4B93FFA6FF40EEDC2BA@CY8PR12MB7195.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TL2P290CA0018.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::17) To CH3PR12MB7548.namprd12.prod.outlook.com
- (2603:10b6:610:144::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8592ED850
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 15:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755012122; cv=none; b=ex3VI3MsEgvs0Q7SN67F7uP+zesItUCJFPfeWSdjHuEmMlmxDGJ/fIFN62jKYTtTEUUTmvXpJM55eXefN0Y8P+/Cc/rCrLz55+DFInNepmONuW73nRr+XeuXNlw4nMyS8EK+Kaeo8uJmVYV1lkwcH32WPgiYAZUTsxNP5cyhWfI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755012122; c=relaxed/simple;
+	bh=3DZsAm/lZ5Laxa8NZLmVrbxw9JmEq/0YL3zuuncOW5g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DI7JbPzWm2HJOFNR7+Cx+QPvC7OL9V/HeknkCa/fqejfwciTQxTJwS8aQ3hZXmJ0aM/culoiOuilHKurxeqrfBZKgY1U+JxG0tW6rDopCiFq75KE0yGi8uKLDrqhqzoXdLhCqfNj2CJ5T7ZvCRYRfq5sUnVI/+SZFs766ivvx2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9JjT29L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330CDC4CEF0;
+	Tue, 12 Aug 2025 15:22:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755012121;
+	bh=3DZsAm/lZ5Laxa8NZLmVrbxw9JmEq/0YL3zuuncOW5g=;
+	h=Subject:To:Cc:From:Date:From;
+	b=O9JjT29LekTSD83EiOhNZUoO1urOBeqFTCjzu7Ktxcn4msRW7Iez5iPN20KiIzzWA
+	 mZJv6h09qCMbG0SGBV8uRfS3fjMVqyfEUlhaV/ittdAivGF+cNwXfANoy2oBq6BggT
+	 DLcOjNePx7cUnz6DXRp9E9Mr8Kk04h8u5I0lcHrM=
+Subject: FAILED: patch "[PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event" failed to apply to 5.10-stable tree
+To: john.ernberg@actia.se,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 12 Aug 2025 17:21:58 +0200
+Message-ID: <2025081258-value-bobbing-e1b7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB7548:EE_|CH3PR12MB7642:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61b633de-d935-418d-e1d5-08ddd9b26859
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Rkh3aXJlQTZGcmJzZVFCR3E0ejNKSHk2LzlscTZaa2hQQlV6U2d6MVlwclpE?=
- =?utf-8?B?Q2hsOTlNV2g2VHZicWN3M2FlN08xL21GRU5RdHhFcmVoaHBEdWp3QUtnek1F?=
- =?utf-8?B?TGdxdEFuaHpXK3pheXUrU2xBdFZSeTFOV3lYb3h6UEJSNVA0ZHZrdTVSbzFW?=
- =?utf-8?B?VExmbWNBOW83K3JqVWp0WVU3UEgvYUl6RngvQUVodWJ0UDk1QWNudWFKNjhz?=
- =?utf-8?B?ckZZQWhqM256Y0dUSHVGTlpFdThYV0xhUG5PYXFibjN4dHZuUkUyS3dKbmx2?=
- =?utf-8?B?ZktGQXFxRlJOZnBLaUJGV2RnUFpPeVV5akxsTThXWTVZRGdJZVovSGtwRE1n?=
- =?utf-8?B?dDN6aGF4YTR5SVV0Ly90TER2NnNqTXpVanIrUjRZZmVJR1dGVmszQTN5OGhH?=
- =?utf-8?B?QUJqVGNYYnViWWI5ZjE0OUZzcHhiS05uT3UxNXl1SHZHdnY0bUNRSURTU0U5?=
- =?utf-8?B?L29hYURzaDlrdk85ejhkTm40U2hybkNaaS9ML0NYdWhrditKWllYZlpYeEtZ?=
- =?utf-8?B?ZldLNE9EK25pZGpBUlVTeEd1QWw2RlFOaEVQMzY1aDEzdytNOGlDRWVLaGVs?=
- =?utf-8?B?ZUM4cWkyaHNueVBhS0FGR0FZeEJOWUhIeWlyZ3JIYk9ZbFE5bHRJYnhVN3cr?=
- =?utf-8?B?SkF4cnVNQVFMK1ZQU0NERGwxclR5eitmZllsWktXRUJSUFdkZ3lsaXVRbkNW?=
- =?utf-8?B?a1UwbmVXVUxDMEtzcjY4WTQ4cXZmR0g2Skc0bEZMZ005MWhnbWRtOTBzb3g5?=
- =?utf-8?B?TkdLWTJIQkYvU3BtMnJxQ3I4aWV6aTFUejhIVXBobGZuTEhYYk4xSjkwVjBO?=
- =?utf-8?B?Y1dUOVZsaHZHaGdudjN0VHF3RkE2b3prUFlPaS9sQk5CcTRTZTZWMEFxR2ty?=
- =?utf-8?B?UnN0bzJLWHdmS1p3NmNIUUlDOGlXbmdqL0l1RWpmalN1ejMwWDJGQTl4YVVF?=
- =?utf-8?B?ZFNsaTQ5K2ljNDR0azEwVW84TllyVC9QQS82bWdQKzltVFlITUZVLzBsUW5T?=
- =?utf-8?B?d2F5ZUhySUVhTmlZTkVuQ0FwbVBNMzdiNTE1ODUyVlpQd2pqTlNrdlpyU2pj?=
- =?utf-8?B?L1FEK2tnQm1rWVppMGdkMTNHNTM0YzJNZWJNdDRkZ1VkN2NPNHFoWHhFK3pl?=
- =?utf-8?B?VDFnWkRrMFo0UW12MUZOVlJoWkFRSVYzTE9STTBpUmgvaGw3ZFQrUmp6VmZE?=
- =?utf-8?B?R0ZXM0xtT1F2Z3JkZEpwQzRtL3FHYkh4NTh1dUtWS21qN1ZXdEpUV0xlbnNv?=
- =?utf-8?B?amNyQnFXekxWMzNxWjlCVHBYWUt0amJQN3M1NDFhc2xEdmVCK09JMERLVzQ4?=
- =?utf-8?B?SlNWb0g5MVh2VlU1OHNtenFwRlJZTDFOU1Q3am5KZjRJdU92OWdEcTcxbXFX?=
- =?utf-8?B?QlFrRDhYZWJqRkVnaFRta1l3OU5BeGtrV0hBVDdFTW9Lc1ZqeEk3Njh0NVNs?=
- =?utf-8?B?TExzV3dIakZGSytHOVJMVDV2a3FYWTFCMkRUZjhvTGVERkJhYVVZVFVJRTBn?=
- =?utf-8?B?eGZ2aWlxUnlyNGR0MHJYc3ZpbXkwd3BicHJyRjduMW0wSTUvdUs4ZE9na2xO?=
- =?utf-8?B?ZVRKUmJVbU8wNFZ3QXFGSEhjeXV6T0ZmSWZPTTljbURNVUNyVzh2by80cUJO?=
- =?utf-8?B?MlBiOVNIbmcybTNFMkEvblJ1WkJqaExoaXJiK0pBbzY3TnkzSTBSY1BZQmZO?=
- =?utf-8?B?RUk4K1UwREJtY0I4TWovWWp5bDEzUWQyVWlmdWRnUHBJdlhZeDVDOExWQ3Rn?=
- =?utf-8?B?azJyYW1KcUhaT3B1Wno4bXJWMXdoSkNKVWFDOTdsYk5HVjZVYkpkbm5kWW9I?=
- =?utf-8?B?OWxMd1RjSHBVbzFlQ2JYNTU5WlFGN3l4MDVXc0FDQlVpT1RrREVQWklQT1dT?=
- =?utf-8?B?bVlwZ2QybTFVb2wrMCsySEpqSkVZNnBrSTR2MmxKemUrT2JPN0RudkJwR3hw?=
- =?utf-8?B?NCt3VGdmSm55VFpvWlRlczUyTDFYSzUzcTlDREk5SVQ1OGpaa24wMUJSWDgw?=
- =?utf-8?B?QW10dzJaTHpRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7548.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eXF0RXhxWjgydmNNS3ZyemphejByWmZLZ05xWnIyZ2JVWVdkUWR6aTlqVlpp?=
- =?utf-8?B?dFlNRjNHZDQ3d0xGblQ2eVl5UEZQU3NZc1g0SSswWi9UNTI5cDMzWFYxMmoy?=
- =?utf-8?B?TFNlQU5yeWFrakhBN1d2WG1GMFcxVVZYUFM3OGFKekpXME5JSEhGRDliNmlx?=
- =?utf-8?B?enN4amJ5U3M2NkFrNmM0SE9nSUFKaVhXWlhsTThCdXM0RVdjVUtlZUo4M2hF?=
- =?utf-8?B?cmZoVkdwb1FHb3ZuMmdqKy8xN04zKzZ3aDYwaFBWQk1KT0NSMzZZTWprTU00?=
- =?utf-8?B?UzhhMGVwK3VRRWpmOWh2VElEV0YvN2hjMkdhaFdpdU94QmY2TDgyeWVTbFhu?=
- =?utf-8?B?WnlMdjZIQUtKTUdobGtMNFJtaXNGZ1VRayt6OTBmem5jVVhJRUJ1bzNOOVVR?=
- =?utf-8?B?cUZrZkxMV0RoYWljMGwyMllqRTVQYWdjNXhoMVYxbTR4QnZia3FlU3plekhB?=
- =?utf-8?B?aUV2WDkrSEEvb2YzWVl2NzQ1NUp2RHlpeE1GYzhJekJ5QU5DUy9YY2lReUk2?=
- =?utf-8?B?WDFhcUR3MFFveFZaQlJTYS92OENpd1g3WU91NWtSUXo2dnkzb0lGcW9EVDVp?=
- =?utf-8?B?VWxDSHVrcXFqTnNxdHBBWW9zTUNZMzhxaDQ1bVRhcjBLaWVuSXVqM1dmeVV0?=
- =?utf-8?B?dU9kQ1pYOFpxZjNadm9MeXJhc0tONFRYL1IvVUFBNFNYclZVM1NSZjRUZDky?=
- =?utf-8?B?RFFRQ0FURjlLS0ZpazcwZzBmUUcvS3FwbjVjM1I5RXMwU1M4UHF4U3RseXR2?=
- =?utf-8?B?anhYSVdSVXpTUDdPVzBOcXBZUWpPdmZPUFdJNjVwa2FGaUpvMU5JRWxNQXkv?=
- =?utf-8?B?QWdydnZwZEZVL3RnS3dKRGRIaVJPdWVONWlvSGFWMlFpdGxHRlVxZWhkbzlL?=
- =?utf-8?B?SXhReE1yVTRGOHErN3poem1BV1FvN2ZLSEttdVVNYW9jYzc2VnZIRGJxd2lo?=
- =?utf-8?B?elZkcCtSb0tzeWl4VHA0cWxkRExIMk5uQ0ZyMjdtWDFTb0NlV1ZGV2p3YjQ0?=
- =?utf-8?B?ZkQwcUZoS0RiL2Vmci9VODlFbzJzVk0wVUVEQTZlV25jeHJHRGs0N056WFR3?=
- =?utf-8?B?c0lhMnBJaXdFTjRoLzNTUDEyT2lsUW01QjZnUFJHSXFlcHQ0bGRnVXB5cnFB?=
- =?utf-8?B?WGtORU50d2UzM3NUMGhaNW5FdmZqRVZwQTlRUWdVVjRYQnBGMzZVT1EzbDlK?=
- =?utf-8?B?WEhKRCtpQXRSdFFESmx0dnhWU2FIT0dMNUVXK1Q0MEJnTStzdjFvcFRlQXRM?=
- =?utf-8?B?THdscFFiT29DSU9aQXF0ZEl4dGRtR3FtM0JIczdxaXgzRGEwbk9EcGVTRnND?=
- =?utf-8?B?UU1PdzJpK0lJai9UakhRSkd0Q2lYNTNQWkJ0dG1CL2tidnlMdEU3dFF4bytR?=
- =?utf-8?B?VWhWSFJIK1B1K3UwRHBEeGhyL3FnOTExbUFPMTI1U1lYWmJhdUxWUExMY2N4?=
- =?utf-8?B?ZDBpVWd3ektXV2dFUStpOHJZbEFUL1lrTUhWZnJjdStCNXI4QnpjcHo2TTd0?=
- =?utf-8?B?YUhrbzNDMk1TU0ZQSGxidXpQYU9ZQUxvYmpXcjlCNksxVW1EeTZSeVI4eTds?=
- =?utf-8?B?MXRmMkFWK0M5VzlGN3o0TUNSaVd5Q1NXRm1VOGdHS3RMTWhWQWVoSTUyWSt1?=
- =?utf-8?B?M0tqS0dSSDdrbDhuTDBkLytlb1FFN3RCdWxwV0lJbzUzSnRMWGhXYk00MkJL?=
- =?utf-8?B?cG1wYUpOT0lBR1h1dVY0a3EzZW9wWXUrbklaMk54SlVUZ2NjU1ByNUwzOGdL?=
- =?utf-8?B?V0pxbGE1b0VXRG9JMEd3M3FQSUtBcFJBZDdjT2F6UlBabkZoV2hDOUhFcGt0?=
- =?utf-8?B?M0ZXV3dPaitKQ3J0Wm96Ujd4SDNXQ216K3crSGM4WE1hMVFDMUZYVzRPRE42?=
- =?utf-8?B?QzhaYkpxRDI3bGlremV2N1hrMzJERDRrV0pLNE1JWFVSNmRkeEFHL2FEMGV3?=
- =?utf-8?B?eFZ4UURaTmJTQk8raEJoU0xNSkluMVRxTU00TmRQRkc2NmtWUWM0S3J4MGQz?=
- =?utf-8?B?QWFtY2xCbEV3OFVubkhjaHdxc2w4US8xckUvL2NwNHphdE5yb0lQcTdsMFZR?=
- =?utf-8?B?MkZXeVZaRVp6U2k4d1NueW9vUTR0dm5WMk9xclJ2Z3Q0MHBVQTZ0NjlWWE1W?=
- =?utf-8?Q?6G6HGlL3MwR8iS+i05S/unXXE?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61b633de-d935-418d-e1d5-08ddd9b26859
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7548.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 15:10:43.8331
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AWebqpa4kZ792u35Flgrgf8BXeiz/LztITKS5W4qc1Ze7PT4h7g7Z3DPY+rD5GEkvYiL6gn2Jtc2SSA8zDrtEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7642
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+
+
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081258-value-bobbing-e1b7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
 
 
 
-On 12/08/2025 16:49, Parav Pandit wrote:
-> 
-> 
->> From: Håkon Bugge <haakon.bugge@oracle.com>
->> Sent: 12 August 2025 07:08 PM
->>
->> If rdma_dev_init_net() has an early return because the supplied net is the
->> default init_net, we need to call rdma_nl_net_exit() before returning.
->>
-> Not really.
-> We still need to create the netlink socket so that rdma commands can be operational in init_net.
-> 
-> However, there is a bug in incorrectly cleaning up the init_net during ib_core driver unload flow.
-> 
-> I reviewed a fix internally from Mark Bloch for it.
-> It should be posted anytime soon from Leon's queue.
-> 
-> Mark,
-> Can you please comment on plan to post the fix to rdma-rc?
+thanks,
 
-Leon is reviewing it now, once he’s finished, he’ll send it.
+greg k-h
 
-Mark
+------------------ original commit in Linus's tree ------------------
 
-> 
->  
->> Fixes: 4e0f7b907072 ("RDMA/core: Implement compat device/sysfs tree in net
->> namespace")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
->> ---
->>  drivers/infiniband/core/device.c | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
->> index 3145cb34a1d20..ec5642e70c5db 100644
->> --- a/drivers/infiniband/core/device.c
->> +++ b/drivers/infiniband/core/device.c
->> @@ -1203,8 +1203,10 @@ static __net_init int rdma_dev_init_net(struct net
->> *net)
->>  		return ret;
->>
->>  	/* No need to create any compat devices in default init_net. */
->> -	if (net_eq(net, &init_net))
->> +	if (net_eq(net, &init_net)) {
->> +		rdma_nl_net_exit(rnet);
->>  		return 0;
->> +	}
->>
->>  	ret = xa_alloc(&rdma_nets, &rnet->id, rnet, xa_limit_32b,
->> GFP_KERNEL);
->>  	if (ret) {
->> --
->> 2.43.5
-> 
+From 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f Mon Sep 17 00:00:00 2001
+From: John Ernberg <john.ernberg@actia.se>
+Date: Wed, 23 Jul 2025 10:25:35 +0000
+Subject: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+
+The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
+up and down events when the WWAN interface is activated on the modem-side.
+
+Interrupt URBs will in consecutive polls grab:
+* Link Connected
+* Link Disconnected
+* Link Connected
+
+Where the last Connected is then a stable link state.
+
+When the system is under load this may cause the unlink_urbs() work in
+__handle_link_change() to not complete before the next usbnet_link_change()
+call turns the carrier on again, allowing rx_submit() to queue new SKBs.
+
+In that event the URB queue is filled faster than it can drain, ending up
+in a RCU stall:
+
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
+
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
+
+Get around the problem by delaying the carrier on to the scheduled work.
+
+This needs a new flag to keep track of the necessary action.
+
+The carrier ok check cannot be removed as it remains required for the
+LINK_RESET event flow.
+
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index c04e715a4c2a..bc1d8631ffe0 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1122,6 +1122,9 @@ static void __handle_link_change(struct usbnet *dev)
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
++		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++			netif_carrier_on(dev->net);
++
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
+@@ -2009,10 +2012,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
+ void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
+ {
+ 	/* update link after link is reseted */
+-	if (link && !need_reset)
+-		netif_carrier_on(dev->net);
+-	else
++	if (link && !need_reset) {
++		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
++	} else {
++		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
+ 		netif_carrier_off(dev->net);
++	}
+ 
+ 	if (need_reset && link)
+ 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
+diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+index 0b9f1e598e3a..4bc6bb01a0eb 100644
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -76,6 +76,7 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++#		define EVENT_LINK_CARRIER_ON	14
+ /* This one is special, as it indicates that the device is going away
+  * there are cyclic dependencies between tasklet, timer and bh
+  * that must be broken
 
 
