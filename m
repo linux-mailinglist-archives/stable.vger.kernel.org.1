@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-168299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3192AB2346B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AA7B23291
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61F83188DC35
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A8956E12C2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A202EF652;
-	Tue, 12 Aug 2025 18:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E5E2FD1DA;
+	Tue, 12 Aug 2025 18:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjIcGbTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEElUVpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F403E2F5481;
-	Tue, 12 Aug 2025 18:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968D72DE1E2;
+	Tue, 12 Aug 2025 18:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023711; cv=none; b=Don90/O+z20kwSbe88q+Qq0F3Wps2SQJYO7djGC5frdqSI5vNpTxnSWoINLzYK08kjDLomQPh7OdrVC2HM3vBTGJIAKUPcWjW2HUAz7yU/i/3yYHaWPe1pIdmiOLOioV+rfvCFweozrqEeCfj4lWZrg/ip4hn2Hyo5nRlbOPihg=
+	t=1755022449; cv=none; b=OeBilPJuBG4p8VSVlNjOhBonqDuIXjETaUy1Na8v2eEJ6NuDkbW8eB9R/qvLD820/IUKk0liLjAz5P3RK2/T2CLZGUY7bZYBOY06kW6t/CADvuCbXnitNJ8WKp+24p88qkPxdZ22shV47nUD2ZmDV3i3uCPp66ogdZx0yXG6IuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023711; c=relaxed/simple;
-	bh=50pYs3f64srL2y8HEIcnepn6JXLOEjadnZu54bHxhAQ=;
+	s=arc-20240116; t=1755022449; c=relaxed/simple;
+	bh=rBohJIqUeOOCJkFQYtXHSi0/RGS7t02/M6GHlOxw2Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVw0wU/BeYenegLh4d7YMtGvndAeueiOewGt7E6D/7G+/oQQXrxViSwlQKzO2kcPn3p4PkmfGwPm6E8G3WVjXHVKGYUfkZ8lkD0xWx1NWqQNlWy+seIhC2BfxHG8vPqiqBxyDUdvmYHeQtbCKF2N1OuGO7hRb0rAAD2/QbHN0z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjIcGbTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46DD2C4CEF0;
-	Tue, 12 Aug 2025 18:35:10 +0000 (UTC)
+	 MIME-Version; b=ECBe3VlXOxEg23oISeZ07rAbFEv4tNbTzvIXXNGeUFOlJ1VvncbQww92DsL+H5GIqd8JoF3immg4R7rHrv27iNut9olTEBXAgIKFRkZNV/UgCB7tEuUe5dnp2JIKlStHj1/z3mLNenjYvXVOFG39QLHdu3nukSsFbRRjp09jSg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEElUVpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E070BC4CEF0;
+	Tue, 12 Aug 2025 18:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023710;
-	bh=50pYs3f64srL2y8HEIcnepn6JXLOEjadnZu54bHxhAQ=;
+	s=korg; t=1755022449;
+	bh=rBohJIqUeOOCJkFQYtXHSi0/RGS7t02/M6GHlOxw2Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjIcGbTvzOQxZiKrvEMiwXGADayrJbltBMzcc5VIijoVRDlv7jyG3xp8IL+3O7kSL
-	 /5iwD4TPvAECfI/JGYUHBRjjIv+Sda37f2RHxCPNQJ5JnsjjDchqn3cKagclP+qshv
-	 71v3jw5Jcxb5EdqzkAtp583fFCz0NHMGJi4wDW+g=
+	b=DEElUVpzllggI3++g5S4P5xIxcO4vHLimtV0WvqtVUpaL8oTVm2DHHk4tyydWrskc
+	 toiSYIjnt48vAWyWT0gS10vaaD2MU+qw4SPHy+Zo6zfAVj+JK0vdYmookCWaikrrlW
+	 Z8VNjsC516ZwfNEPQds6zOGTe3+gM7HGD9SdVWAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <praneesh.p@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Michal Witwicki <michal.witwicki@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 159/627] wifi: ath12k: Fix double budget decrement while reaping monitor ring
-Date: Tue, 12 Aug 2025 19:27:34 +0200
-Message-ID: <20250812173425.335482926@linuxfoundation.org>
+Subject: [PATCH 6.12 158/369] crypto: qat - allow enabling VFs in the absence of IOMMU
+Date: Tue, 12 Aug 2025 19:27:35 +0200
+Message-ID: <20250812173020.712132324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <praneesh.p@oss.qualcomm.com>
+From: Ahsan Atta <ahsan.atta@intel.com>
 
-[ Upstream commit 54c350055b1da2767f18a49c11e4fcc42cf33ff8 ]
+[ Upstream commit 53669ff591d4deb2d80eed4c07593ad0c0b45899 ]
 
-Currently, the budget for monitor ring is reduced during each ring entry
-reaping and again when the end reason is HAL_MON_END_OF_PPDU, leading to
-inefficient budget use. The below mentioned commit intended to decrement
-the budget only for HAL_MON_END_OF_PPDU but did not remove the other
-decrement. Fix this by eliminating the budget decrement for each ring entry
-reaping, ensuring the driver always reaps one full PPDU worth of entries
-from the monitor destination ring.
+The commit ca88a2bdd4dd ("crypto: qat - allow disabling SR-IOV VFs")
+introduced an unnecessary change that prevented enabling SR-IOV when
+IOMMU is disabled. In certain scenarios, it is desirable to enable
+SR-IOV even in the absence of IOMMU. Thus, restoring the previous
+functionality to allow VFs to be enumerated in the absence of IOMMU.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: 394a3fa7c538 ("wifi: ath12k: Optimize NAPI budget by adjusting PPDU processing")
-Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250603103542.1164713-1-praneesh.p@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: ca88a2bdd4dd ("crypto: qat - allow disabling SR-IOV VFs")
+Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Michal Witwicki <michal.witwicki@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 1 -
+ drivers/crypto/intel/qat/qat_common/adf_sriov.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 28cadc4167f7..91f4e3aff74c 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -3761,7 +3761,6 @@ int ath12k_dp_mon_srng_process(struct ath12k *ar, int *budget,
- 	ath12k_hal_srng_access_begin(ab, srng);
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_sriov.c b/drivers/crypto/intel/qat/qat_common/adf_sriov.c
+index c75d0b6cb0ad..31d1ef0cb1f5 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_sriov.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_sriov.c
+@@ -155,7 +155,6 @@ static int adf_do_enable_sriov(struct adf_accel_dev *accel_dev)
+ 	if (!device_iommu_mapped(&GET_DEV(accel_dev))) {
+ 		dev_warn(&GET_DEV(accel_dev),
+ 			 "IOMMU should be enabled for SR-IOV to work correctly\n");
+-		return -EINVAL;
+ 	}
  
- 	while (likely(*budget)) {
--		*budget -= 1;
- 		mon_dst_desc = ath12k_hal_srng_dst_peek(ab, srng);
- 		if (unlikely(!mon_dst_desc))
- 			break;
+ 	if (adf_dev_started(accel_dev)) {
 -- 
 2.39.5
 
