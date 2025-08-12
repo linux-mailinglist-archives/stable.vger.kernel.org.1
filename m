@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-167551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A13B230A6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7ADB23521
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5265D686013
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DF551884E01
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F7F2FDC2C;
-	Tue, 12 Aug 2025 17:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623152FD1A4;
+	Tue, 12 Aug 2025 18:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hoT4JXlY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp90NixY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C7221FAC;
-	Tue, 12 Aug 2025 17:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2176F13AA2F;
+	Tue, 12 Aug 2025 18:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021196; cv=none; b=E/YiyYqQXBcVw0QhkEqMI/iiX4k9P8vGbnkcNWUedySBuy7vqSDYp/vv2eFCvDj2avts9t1pbg3VikcHSkGdX7Ny0oQ+Xv9BFc0zCvXEjz5bds5EneR9sm6Pmh2UI3VDQBSrGBVrIB4FrO5YL2C51Z1dRaEturCHepKLxd3EHs4=
+	t=1755024259; cv=none; b=mDTDWPyHJPJcZTCF6qqVTzcRUNSGgSCxpuN6DHCbEZpSmi7KokM8IXmwCMfpFqZk6eBf1gBPt8QeKpWvbpm0zKAqUM0j1jo1/SlVwtOLc4VMIDbIGl3AjIwtfAI9ySWdmdxLmCBS1nqARgpFaGp5qIaf9r1IbD9sjsAN2J5S+b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021196; c=relaxed/simple;
-	bh=oEalpkgdU01IY9RnN19YES9qLUwU5jQ+JbKZGwgZffU=;
+	s=arc-20240116; t=1755024259; c=relaxed/simple;
+	bh=pAauepJRloQDRfFh4QTR2XirpFDONKN290OpfclVB9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKIM76ggPqNGmEntUa9Xoc0nH1AwL7RHNGR4UL8K46VySHEoDSYD4++SggpWySwhdknKVt/f6NduW7N3kIRi+lYVjeNuHrkjNKA/vMgC9cacjAqnMKX9tUW0taMF71+kx66gRGwWJQDP7B7I0Po6QbgnJSVB/Ecsp1ZFw2ftw/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoT4JXlY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B161BC4CEF0;
-	Tue, 12 Aug 2025 17:53:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WxMhs5WKXdhvn6meEcnJCqh0lH28Rx/0a5QSxQIQB7VldyzyKce+pbD6IALOycgxxyjhCJApcFtEaDkFmDheABXHe+MwF/ihUBAHeQgfYINp2i7QDz4TdC6zYZZf28YuE0sPMv0+X82pgce+LfF56coacB9FcryGghPPYpqh6Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp90NixY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DE4C4CEF0;
+	Tue, 12 Aug 2025 18:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021196;
-	bh=oEalpkgdU01IY9RnN19YES9qLUwU5jQ+JbKZGwgZffU=;
+	s=korg; t=1755024259;
+	bh=pAauepJRloQDRfFh4QTR2XirpFDONKN290OpfclVB9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hoT4JXlYZyXTE0dEy8jbaxYbkFLuPlHRAJlLD9LidCoQsli+zVS2W2YSLKsJoiwnK
-	 nXPYmJeY9kSs3BqZo+/Y8oYGxv++3p9j3IiBE/W2trZoM/zK9bHrk3zJcKJBsPNGPo
-	 HDReHIl1Yzb/i6otkY0oGb1044mDrQcdVCTdR4ts=
+	b=Zp90NixYL3IV0g7m2wDRI9sAL/jT2yWh2z8iFzCgwp1xbe3+/agfLIhYcKUhE5TbR
+	 aJbP0ZCK5A9AFqkPv+J6hk8iOT5QEl5iSJN0hRI9CBvK8u6h1qu0C1uAqHXi5hgmga
+	 VSUSF7UnA6oyM29ODvhI6W2dIvaoWFLE4vpF2iLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Thomas Antoine <t.antoine@uclouvain.be>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 228/253] smb: server: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
+Subject: [PATCH 6.16 321/627] power: supply: max1720x correct capacity computation
 Date: Tue, 12 Aug 2025 19:30:16 +0200
-Message-ID: <20250812172958.530525350@linuxfoundation.org>
+Message-ID: <20250812173431.509538459@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Thomas Antoine <t.antoine@uclouvain.be>
 
-[ Upstream commit afb4108c92898350e66b9a009692230bcdd2ac73 ]
+[ Upstream commit 58ae036172b5f051a19a32eba94a3e5eb37bf47e ]
 
-In case of failures either ib_dma_map_single() might not be called yet
-or ib_dma_unmap_single() was already called.
+>From the datasheet of the MAX17201/17205, the LSB should be "5.0μVh/RSENSE".
+The current computation sets it at 0.5mAh=5.0μVh/10mOhm, which does not take
+into account the value of rsense (which is in 10µV steps) which can be
+different from 10mOhm.
 
-We should make sure put_recvmsg() only calls ib_dma_unmap_single() if needed.
+Change the computation to fit the specs.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 479b6d04964b ("power: supply: add support for MAX1720x standalone fuel gauge")
+Signed-off-by: Thomas Antoine <t.antoine@uclouvain.be>
+Link: https://lore.kernel.org/r/20250523-b4-gs101_max77759_fg-v4-1-b49904e35a34@uclouvain.be
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/power/supply/max1720x_battery.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 0a6fedac59f0..71a12953089c 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -263,8 +263,13 @@ smb_direct_recvmsg *get_free_recvmsg(struct smb_direct_transport *t)
- static void put_recvmsg(struct smb_direct_transport *t,
- 			struct smb_direct_recvmsg *recvmsg)
- {
--	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
--			    recvmsg->sge.length, DMA_FROM_DEVICE);
-+	if (likely(recvmsg->sge.length != 0)) {
-+		ib_dma_unmap_single(t->cm_id->device,
-+				    recvmsg->sge.addr,
-+				    recvmsg->sge.length,
-+				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
-+	}
+diff --git a/drivers/power/supply/max1720x_battery.c b/drivers/power/supply/max1720x_battery.c
+index ea3912fd1de8..68b5314ecf3a 100644
+--- a/drivers/power/supply/max1720x_battery.c
++++ b/drivers/power/supply/max1720x_battery.c
+@@ -288,9 +288,10 @@ static int max172xx_voltage_to_ps(unsigned int reg)
+ 	return reg * 1250;	/* in uV */
+ }
  
- 	spin_lock(&t->recvmsg_queue_lock);
- 	list_add(&recvmsg->list, &t->recvmsg_queue);
-@@ -632,6 +637,7 @@ static int smb_direct_post_recv(struct smb_direct_transport *t,
- 		ib_dma_unmap_single(t->cm_id->device,
- 				    recvmsg->sge.addr, recvmsg->sge.length,
- 				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
- 		smb_direct_disconnect_rdma_connection(t);
- 		return ret;
- 	}
-@@ -1813,6 +1819,7 @@ static int smb_direct_create_pools(struct smb_direct_transport *t)
- 		if (!recvmsg)
- 			goto err;
- 		recvmsg->transport = t;
-+		recvmsg->sge.length = 0;
- 		list_add(&recvmsg->list, &t->recvmsg_queue);
- 	}
- 	t->count_avail_recvmsg = t->recv_credit_max;
+-static int max172xx_capacity_to_ps(unsigned int reg)
++static int max172xx_capacity_to_ps(unsigned int reg,
++				   struct max1720x_device_info *info)
+ {
+-	return reg * 500;	/* in uAh */
++	return reg * (500000 / info->rsense);	/* in uAh */
+ }
+ 
+ /*
+@@ -394,11 +395,11 @@ static int max1720x_battery_get_property(struct power_supply *psy,
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 		ret = regmap_read(info->regmap, MAX172XX_DESIGN_CAP, &reg_val);
+-		val->intval = max172xx_capacity_to_ps(reg_val);
++		val->intval = max172xx_capacity_to_ps(reg_val, info);
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_AVG:
+ 		ret = regmap_read(info->regmap, MAX172XX_REPCAP, &reg_val);
+-		val->intval = max172xx_capacity_to_ps(reg_val);
++		val->intval = max172xx_capacity_to_ps(reg_val, info);
+ 		break;
+ 	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
+ 		ret = regmap_read(info->regmap, MAX172XX_TTE, &reg_val);
+@@ -422,7 +423,7 @@ static int max1720x_battery_get_property(struct power_supply *psy,
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL:
+ 		ret = regmap_read(info->regmap, MAX172XX_FULL_CAP, &reg_val);
+-		val->intval = max172xx_capacity_to_ps(reg_val);
++		val->intval = max172xx_capacity_to_ps(reg_val, info);
+ 		break;
+ 	case POWER_SUPPLY_PROP_MODEL_NAME:
+ 		ret = regmap_read(info->regmap, MAX172XX_DEV_NAME, &reg_val);
 -- 
 2.39.5
 
