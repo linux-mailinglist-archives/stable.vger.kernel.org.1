@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-167518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7519BB23063
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6CFB23466
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6AE974E3538
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9484B1896FF0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB442FE57E;
-	Tue, 12 Aug 2025 17:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DE12F5481;
+	Tue, 12 Aug 2025 18:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIeJJdFf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQ3WmbJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2AF2868AF;
-	Tue, 12 Aug 2025 17:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188112ECE93;
+	Tue, 12 Aug 2025 18:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021089; cv=none; b=g1IzrDH1s8SBWLUxU9/7eqzsYFT9EwSNpk/IGOgiV0thEPh1cCK5jKSUSRPp4jgwhtTyFmUNCL1jMS1le6y5AWNuuIPhqOtncuOccEYYm8hEHo3a+cSFevGwAOnIe8og8Zy7jSCZ1Qw5eg116Bdk+6TgXtqbX7lBRYExmpFty0Y=
+	t=1755023690; cv=none; b=J6zbwv7JCghjEzaw0cZM1HvM461GTTCEUcHmTWOQ3sKyyIF22FQvvYrCqHz9E6xbUZrS89okoFkYFUaDLAIYj2L0ziFS+drvtlCFqNtJ/2s5wG0AMv+TvaI24IDRYGYQklI6Ppv7LcU63CWirNWhz3yzyXOpouhj76kIb/TpeBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021089; c=relaxed/simple;
-	bh=69dmY99I7Nj47db5nXC2Ub8Ke2Bmm/omRu7QRnsLgS8=;
+	s=arc-20240116; t=1755023690; c=relaxed/simple;
+	bh=jv3K/BEWRvknlh4NMraPFo/bl6dpMioHb71ZKPD6YxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7K0hcCO82aZwOFTftXZvMmYKmy0oQLqYdKrQRwK/+cBNR55o0HNdNvTVrRdQBa9Wgt2pOxhKjqEryxX9G6wG16EWVNCGqBRdcCa/BlnKMfj/UqEC0BmDfz//yFxAqvmByaCy6KBSDlD9OxXb9Szaj++c2jig6815H2827v3Lus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIeJJdFf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF23C4CEF0;
-	Tue, 12 Aug 2025 17:51:28 +0000 (UTC)
+	 MIME-Version; b=DGSqv4psZYyWUYa/Etz4cEChFCKmpe3Bq2LIhmh/TCquVyP+WIn2qLvcilMsqMpJnZWrGm6CaOF7PN+tHcC/k/+2v415SfkfJUjRPJOJnPgxWGFk1qwNDejuIGiMHMtaJjKr7jMQEboRWv6OyDsf25V4mqAMaWu0Ho/6KqV3D/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQ3WmbJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A06BC4CEF0;
+	Tue, 12 Aug 2025 18:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021089;
-	bh=69dmY99I7Nj47db5nXC2Ub8Ke2Bmm/omRu7QRnsLgS8=;
+	s=korg; t=1755023690;
+	bh=jv3K/BEWRvknlh4NMraPFo/bl6dpMioHb71ZKPD6YxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nIeJJdFfu69OQPh7InqYtayvlAVgYkrNPmdqVQkNwk6IAPjRhccg2pex5bpwQumkx
-	 uToI1I7G2mt8sWccAEgAw6K1O44tEXRnqXVeDMXc7lFgtoC4z2XCvT2l/dz52+VmNb
-	 DrM3wVnx3jvS/PiTpcGQn/TSKIpquSn5cHvbzVxc=
+	b=SQ3WmbJBWu+jQaztEwcDQzzPo3g/G+PS3dmRuGQFAoPc6IpusSeKlO1dbMOSFsb2m
+	 cHPQFcxH/1ptZu1PpWVvhIt96EdITVizpNFlYs1pT/HcVYcFP4z/uJlmcDhdDQ6Eev
+	 BtG9Ck1StluyVRcYnvIchEO1qV+CUtLGgydvtmYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/262] wifi: ath11k: clear initialized flag for deinit-ed srng lists
+Subject: [PATCH 6.16 153/627] net: mana: Fix potential deadlocks in mana napi ops
 Date: Tue, 12 Aug 2025 19:27:28 +0200
-Message-ID: <20250812172955.544173059@linuxfoundation.org>
+Message-ID: <20250812173425.109807187@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +66,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit a5b46aa7cf5f05c213316a018e49a8e086efd98e ]
+[ Upstream commit d5c8f0e4e0cb0ac2a4a4e015f2f5b1ba39e5e583 ]
 
-In a number of cases we see kernel panics on resume due
-to ath11k kernel page fault, which happens under the
-following circumstances:
+When net_shaper_ops are enabled for MANA, netdev_ops_lock
+becomes active.
 
-1) First ath11k_hal_dump_srng_stats() call
+MANA VF setup/teardown by netvsc follows this call chain:
 
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 22511ms before
- ath11k_pci 0000:01:00.0: group_id 1 14440788ms before
- [..]
- ath11k_pci 0000:01:00.0: failed to receive control response completion, polling..
- ath11k_pci 0000:01:00.0: Service connect timeout
- ath11k_pci 0000:01:00.0: failed to connect to HTT: -110
- ath11k_pci 0000:01:00.0: failed to start core: -110
- ath11k_pci 0000:01:00.0: firmware crashed: MHI_CB_EE_RDDM
- ath11k_pci 0000:01:00.0: already resetting count 2
- ath11k_pci 0000:01:00.0: failed to wait wlan mode request (mode 4): -110
- ath11k_pci 0000:01:00.0: qmi failed to send wlan mode off: -110
- ath11k_pci 0000:01:00.0: failed to reconfigure driver on crash recovery
- [..]
+netvsc_vf_setup()
+        dev_change_flags()
+		...
+         __dev_open() OR __dev_close()
 
-2) At this point reconfiguration fails (we have 2 resets) and
-  ath11k_core_reconfigure_on_crash() calls ath11k_hal_srng_deinit()
-  which destroys srng lists.  However, it does not reset per-list
-  ->initialized flag.
+dev_change_flags() holds the netdev mutex via netdev_lock_ops.
 
-3) Second ath11k_hal_dump_srng_stats() call sees stale ->initialized
-  flag and attempts to dump srng stats:
+Meanwhile, mana_create_txq() and mana_create_rxq() in mana_open()
+path call NAPI APIs (netif_napi_add_tx(), netif_napi_add_weight(),
+napi_enable()), which also try to acquire the same lock, risking
+deadlock.
 
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 66785ms before
- ath11k_pci 0000:01:00.0: group_id 1 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 2 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 3 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 4 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 5 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 6 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 7 66814ms before
- ath11k_pci 0000:01:00.0: group_id 8 68997ms before
- ath11k_pci 0000:01:00.0: group_id 9 67588ms before
- ath11k_pci 0000:01:00.0: group_id 10 69511ms before
- BUG: unable to handle page fault for address: ffffa007404eb010
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 100000067 P4D 100000067 PUD 10022d067 PMD 100b01067 PTE 0
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
- Call Trace:
- <TASK>
- ? __die_body+0xae/0xb0
- ? page_fault_oops+0x381/0x3e0
- ? exc_page_fault+0x69/0xa0
- ? asm_exc_page_fault+0x22/0x30
- ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:6cea 4)]
- ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
- worker_thread+0x389/0x930
- kthread+0x149/0x170
+Similarly in the teardown path (mana_close()), netif_napi_disable()
+and netif_napi_del(), contend for the same lock.
 
-Clear per-list ->initialized flag in ath11k_hal_srng_deinit().
+Switch to the _locked variants of these APIs to avoid deadlocks
+when the netdev_ops_lock is held.
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Fixes: 5118935b1bc2 ("ath11k: dump SRNG stats during FW assert")
-Link: https://patch.msgid.link/20250612084551.702803-1-senozhatsky@chromium.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: d4c22ec680c8 ("net: hold netdev instance lock during ndo_open/ndo_stop")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Reviewed-by: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/1750144656-2021-2-git-send-email-ernis@linux.microsoft.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 28 +++++++++++++------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index f32fa104ded9..df493d176062 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1319,6 +1319,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
- void ath11k_hal_srng_deinit(struct ath11k_base *ab)
- {
- 	struct ath11k_hal *hal = &ab->hal;
-+	int i;
-+
-+	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
-+		ab->hal.srng_list[i].initialized = 0;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index faad1cb880f8..2dd14d97cc98 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1912,8 +1912,10 @@ static void mana_destroy_txq(struct mana_port_context *apc)
+ 		napi = &apc->tx_qp[i].tx_cq.napi;
+ 		if (apc->tx_qp[i].txq.napi_initialized) {
+ 			napi_synchronize(napi);
+-			napi_disable(napi);
+-			netif_napi_del(napi);
++			netdev_lock_ops_to_full(napi->dev);
++			napi_disable_locked(napi);
++			netif_napi_del_locked(napi);
++			netdev_unlock_full_to_ops(napi->dev);
+ 			apc->tx_qp[i].txq.napi_initialized = false;
+ 		}
+ 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
+@@ -2065,8 +2067,11 @@ static int mana_create_txq(struct mana_port_context *apc,
  
- 	ath11k_hal_unregister_srng_key(ab);
- 	ath11k_hal_free_cont_rdp(ab);
+ 		mana_create_txq_debugfs(apc, i);
+ 
+-		netif_napi_add_tx(net, &cq->napi, mana_poll);
+-		napi_enable(&cq->napi);
++		set_bit(NAPI_STATE_NO_BUSY_POLL, &cq->napi.state);
++		netdev_lock_ops_to_full(net);
++		netif_napi_add_locked(net, &cq->napi, mana_poll);
++		napi_enable_locked(&cq->napi);
++		netdev_unlock_full_to_ops(net);
+ 		txq->napi_initialized = true;
+ 
+ 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+@@ -2102,9 +2107,10 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
+ 	if (napi_initialized) {
+ 		napi_synchronize(napi);
+ 
+-		napi_disable(napi);
+-
+-		netif_napi_del(napi);
++		netdev_lock_ops_to_full(napi->dev);
++		napi_disable_locked(napi);
++		netif_napi_del_locked(napi);
++		netdev_unlock_full_to_ops(napi->dev);
+ 	}
+ 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
+ 
+@@ -2355,14 +2361,18 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+ 
+ 	gc->cq_table[cq->gdma_id] = cq->gdma_cq;
+ 
+-	netif_napi_add_weight(ndev, &cq->napi, mana_poll, 1);
++	netdev_lock_ops_to_full(ndev);
++	netif_napi_add_weight_locked(ndev, &cq->napi, mana_poll, 1);
++	netdev_unlock_full_to_ops(ndev);
+ 
+ 	WARN_ON(xdp_rxq_info_reg(&rxq->xdp_rxq, ndev, rxq_idx,
+ 				 cq->napi.napi_id));
+ 	WARN_ON(xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
+ 					   rxq->page_pool));
+ 
+-	napi_enable(&cq->napi);
++	netdev_lock_ops_to_full(ndev);
++	napi_enable_locked(&cq->napi);
++	netdev_unlock_full_to_ops(ndev);
+ 
+ 	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+ out:
 -- 
 2.39.5
 
