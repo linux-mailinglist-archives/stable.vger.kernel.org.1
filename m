@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8D0B2348C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAA3B230D9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EB43189A59E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24332189E146
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526B42FD1AD;
-	Tue, 12 Aug 2025 18:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A152FA0DB;
+	Tue, 12 Aug 2025 17:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbhBAS3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePFkNpFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116792F4A0A;
-	Tue, 12 Aug 2025 18:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABB92F8BE7;
+	Tue, 12 Aug 2025 17:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023817; cv=none; b=sdwVxB6sSW97qeyuSzgAmRa5rDkwL/uzuPYsHMjr7XFK43zLS+NmtMasCd+WSoyGPyJxSnSLStDx99+o/eR4j2HnDiYDo1nNW8RsXbDd/zBd7YyVLWZJ8EzzlkJxflZV63SkkH2H8vWKzpgRCX7EjBTWypxx90yBHxtWusgt3DY=
+	t=1755021346; cv=none; b=d6D4f5PtAtHS+0afEuSQ5vH6bg2e3ZsaelEQOLNSx/HpaWd0pEQg3p6/CiufKfeq81ghNwXYSlN2U63Xv7UJCr+TNDMmbsiUevHzcpzOlMbU2T3aOt6Ys4/cR3BiOLxw0YBT9NzOi5SBOOytu8ACv6/4DirHEBD8c7I/Qr1XXCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023817; c=relaxed/simple;
-	bh=4ezptqIphjyKHJMeveY+PhIWqZ5LYmKvbmfUzngCIRg=;
+	s=arc-20240116; t=1755021346; c=relaxed/simple;
+	bh=0hN5wptpIt8qlrdj1XOtJ2WieepiqZgcEYheOvxpXcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ny3xU/3kCFEZmDNhlgJ2mRz590Ktsw7kmvqtzblI+Ou+nEYsKfstqFXD/893UX+MLbL0FzzkrzmxW+T9fyv4+rcUW4g77SUAakCt2f65cP1EMEMCzmGtCvKX09xbSsT+2kM3SYT68EjkTYG2dq6Gm1u/UuTNgt6gT1deBTgNK8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbhBAS3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECB2C4CEF0;
-	Tue, 12 Aug 2025 18:36:56 +0000 (UTC)
+	 MIME-Version; b=B0jC7OUcgrJWfdUHTv97P6CynNl4PGnHCQ71+iDPqdvWLH5xe7C4WPLzjzY9xuM2zefDqKjpbzWkKjvooe5TfWScv/M1fQoLdL4URUufLOVCI8uQO4ZfGzK+TXa8VLWwvkKkExVdDVyfZKayh8RVMdqrDAEaAs8lgLLpXC9UPpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePFkNpFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0B2C4CEF1;
+	Tue, 12 Aug 2025 17:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023816;
-	bh=4ezptqIphjyKHJMeveY+PhIWqZ5LYmKvbmfUzngCIRg=;
+	s=korg; t=1755021346;
+	bh=0hN5wptpIt8qlrdj1XOtJ2WieepiqZgcEYheOvxpXcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbhBAS3Qm+wSsd1MOjoaERbF1er5N3N6au7Kk37/GHSo7XsVWzn7X2RkeyiBsWKvf
-	 RHRGMkb14VrudtAitWaZoiE5UaTuBL9LvWwSAlDcCcMI+m1UQnTwXxJv/xX0VMsjYm
-	 7By8WjnDmm7R52Gs9GdhAKKli/z1LCzUucDF614A=
+	b=ePFkNpFxk2uXODE/mGfkshUVj4gDschpqeX6gZ/+9+O4djWqSkHnGtEystVIHJUpc
+	 1Du2oiF+ViXkIfdCr+PFzYGDPlPRM+emG5LOjY2tjJBdTN2jGlq96Ap7rKJvwO4r3+
+	 B4/lTxkWY1JY8J1Ff13HnDHUeSSLrm1s1Keuahhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 190/627] drm/amdgpu/gfx10: fix KGQ reset sequence
-Date: Tue, 12 Aug 2025 19:28:05 +0200
-Message-ID: <20250812173426.500894947@linuxfoundation.org>
+Subject: [PATCH 6.6 098/262] netfilter: xt_nfacct: dont assume acct name is null-terminated
+Date: Tue, 12 Aug 2025 19:28:06 +0200
+Message-ID: <20250812172957.260614204@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 14b2d71a9a24727f1b9f2131ed5eb2e345840a3a ]
+[ Upstream commit bf58e667af7d96c8eb9411f926a0a0955f41ce21 ]
 
-Need to reinit the ring before remapping it and all of
-the KIQ handling needs to be within the kiq lock.
+BUG: KASAN: slab-out-of-bounds in .. lib/vsprintf.c:721
+Read of size 1 at addr ffff88801eac95c8 by task syz-executor183/5851
+[..]
+ string+0x231/0x2b0 lib/vsprintf.c:721
+ vsnprintf+0x739/0xf00 lib/vsprintf.c:2874
+ [..]
+ nfacct_mt_checkentry+0xd2/0xe0 net/netfilter/xt_nfacct.c:41
+ xt_check_match+0x3d1/0xab0 net/netfilter/x_tables.c:523
 
-Fixes: 1741281a157f ("drm/amdgpu/gfx10: add ring reset callbacks")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+nfnl_acct_find_get() handles non-null input, but the error
+printk relied on its presence.
+
+Reported-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ff165b9251e4d295690
+Tested-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Fixes: ceb98d03eac5 ("netfilter: xtables: add nfacct match to support extended accounting")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ net/netfilter/xt_nfacct.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 777e383d75e2..e7df0487eaae 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -9540,7 +9540,7 @@ static int gfx_v10_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
+diff --git a/net/netfilter/xt_nfacct.c b/net/netfilter/xt_nfacct.c
+index 7c6bf1c16813..0ca1cdfc4095 100644
+--- a/net/netfilter/xt_nfacct.c
++++ b/net/netfilter/xt_nfacct.c
+@@ -38,8 +38,8 @@ nfacct_mt_checkentry(const struct xt_mtchk_param *par)
  
- 	spin_lock_irqsave(&kiq->ring_lock, flags);
- 
--	if (amdgpu_ring_alloc(kiq_ring, 5 + 7 + 7 + kiq->pmf->map_queues_size)) {
-+	if (amdgpu_ring_alloc(kiq_ring, 5 + 7 + 7)) {
- 		spin_unlock_irqrestore(&kiq->ring_lock, flags);
- 		return -ENOMEM;
+ 	nfacct = nfnl_acct_find_get(par->net, info->name);
+ 	if (nfacct == NULL) {
+-		pr_info_ratelimited("accounting object `%s' does not exists\n",
+-				    info->name);
++		pr_info_ratelimited("accounting object `%.*s' does not exist\n",
++				    NFACCT_NAME_MAX, info->name);
+ 		return -ENOENT;
  	}
-@@ -9560,12 +9560,9 @@ static int gfx_v10_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
- 			       0, 1, 0x20);
- 	gfx_v10_0_ring_emit_reg_wait(kiq_ring,
- 				     SOC15_REG_OFFSET(GC, 0, mmCP_VMID_RESET), 0, 0xffffffff);
--	kiq->pmf->kiq_map_queues(kiq_ring, ring);
- 	amdgpu_ring_commit(kiq_ring);
--
--	spin_unlock_irqrestore(&kiq->ring_lock, flags);
--
- 	r = amdgpu_ring_test_ring(kiq_ring);
-+	spin_unlock_irqrestore(&kiq->ring_lock, flags);
- 	if (r)
- 		return r;
- 
-@@ -9575,6 +9572,19 @@ static int gfx_v10_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
- 		return r;
- 	}
- 
-+	spin_lock_irqsave(&kiq->ring_lock, flags);
-+
-+	if (amdgpu_ring_alloc(kiq_ring, kiq->pmf->map_queues_size)) {
-+		spin_unlock_irqrestore(&kiq->ring_lock, flags);
-+		return -ENOMEM;
-+	}
-+	kiq->pmf->kiq_map_queues(kiq_ring, ring);
-+	amdgpu_ring_commit(kiq_ring);
-+	r = amdgpu_ring_test_ring(kiq_ring);
-+	spin_unlock_irqrestore(&kiq->ring_lock, flags);
-+	if (r)
-+		return r;
-+
- 	r = amdgpu_ring_test_ring(ring);
- 	if (r)
- 		return r;
+ 	info->nfacct = nfacct;
 -- 
 2.39.5
 
