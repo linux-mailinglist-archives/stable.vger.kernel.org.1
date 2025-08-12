@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC80BB230B9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF830B23482
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B5B668717C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 157551A20AE7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCAC2FD1D7;
-	Tue, 12 Aug 2025 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBCF2F659A;
+	Tue, 12 Aug 2025 18:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8zn2oSR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiVVgmnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD5F2F83CB;
-	Tue, 12 Aug 2025 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95E061FFE;
+	Tue, 12 Aug 2025 18:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021261; cv=none; b=WDKmfrq7+VrjWjKruMv+yb4MavJu68Rc8+EwKbzubPd8pXkyCJoQBnrXgcOpSWSOWtm50mSG2cJ+Vr9Ufyta+IAYuFxjo3fFdOx8GFDnmq/UxZa4mWyQnV4LzvzJy3fQGwUEp7+mn/1IGDTX4lLjvOMVHmVesjIbo2B4RpdRqhI=
+	t=1755023777; cv=none; b=LcV04JNkPbWznx/McyknjKtjD8a133h4f8ceGCI84n2iaqbqDYas72fsCeYqaqPf0rfw/CiCDS0TkzMR2xKynvzJOHp4xQNP1oRNbid5LPXX4RJveCRdXJPuPZ6g1D6voyFZKhhhcW8uadfjLurNTUS2QBQEFp4LODIsla4J/Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021261; c=relaxed/simple;
-	bh=aecPb3V7i963nZQmJ3S0YFVhiccndXmJLfHpbfr7168=;
+	s=arc-20240116; t=1755023777; c=relaxed/simple;
+	bh=pRH90TvtdM5KvJo3m/LOex0gqNqVr/a4gP//qrE0cMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUMINNbDgbk3PWJIEOklwa/wBcVIl4jaxZC/1N2zJB1MFac5HCgTaa+p9PfTOhsTim7d3pEE4VvcNfTvdPV+amTHhHWSvGxjTeHkJHh4YIEFBZNLFuZu6YO3+vZKwJk2bHZANMiBVK+CbUmfseJbtWSOWvPIl/DNOWHlk3/6cR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8zn2oSR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F2DC4CEF0;
-	Tue, 12 Aug 2025 17:54:20 +0000 (UTC)
+	 MIME-Version; b=bjFPbLpkwDRb4IO1vJwmC+Gu53WG2KZraW8eOj9l5k1n7wteqqpLRy2RXPxIk4vzrBp4FHhpILK6Genq9rsTI9RhbFQQfOJtvoCmdlLZqcbp4rAcUtYNL+eIeVo96D30CNlSqKDULa5VEwW9+PAsCYwpGIobCModbAXI8W8WQVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiVVgmnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31795C4CEF0;
+	Tue, 12 Aug 2025 18:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021261;
-	bh=aecPb3V7i963nZQmJ3S0YFVhiccndXmJLfHpbfr7168=;
+	s=korg; t=1755023777;
+	bh=pRH90TvtdM5KvJo3m/LOex0gqNqVr/a4gP//qrE0cMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8zn2oSRfvF1gFSCba/u9hJYKhnx7ySDIa7y8fgRl50i9zheqlRo1UZwEJ6o0QoLh
-	 FvuWXlt9n3uzNVTzcIS8BFNLpL7Vm5zy1sn3I5VwUfCCW99DTIwzu3P7LMtz+NbOiF
-	 It6vwBvxWZ8gHnZ/d+dfqA4l9aesflK9Z2odZKpg=
+	b=yiVVgmnI933PdQai+Vp3zNlJY5ahUzzXFCJ/eyRS4wUmqII6K0mkQqyQPazayG6mi
+	 sklkRHD+J06hKy3n3lhc5nd3PCDpwXQnqeF1kwtsAgnzbQVQMljah83f6OLrBCstHF
+	 drJYYG56fOf3xVUpWGegO0IYr+4EemgUY9bowLgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/262] wifi: mac80211: Dont call fq_flow_idx() for management frames
-Date: Tue, 12 Aug 2025 19:27:53 +0200
-Message-ID: <20250812172956.663546894@linuxfoundation.org>
+Subject: [PATCH 6.16 179/627] wifi: mt76: mt7925: fix off by one in mt7925_mcu_hw_scan()
+Date: Tue, 12 Aug 2025 19:27:54 +0200
+Message-ID: <20250812173426.091633228@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit cb3bb3d88dfcd177a1050c0a009a3ee147b2e5b9 ]
+[ Upstream commit b3a431fe2e399b2e0cc5f43f7e9d63d63d3710ee ]
 
-skb_get_hash() can only be used when the skb is linked to a netdev
-device.
+The ssid->ssids[] and sreq->ssids[] arrays have MT7925_RNR_SCAN_MAX_BSSIDS
+elements so this >= needs to be > to prevent an out of bounds access.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Fixes: 73bc9e0af594 ("mac80211: don't apply flow control on management frames")
-Link: https://patch.msgid.link/20250717162547.94582-3-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 8284815ca161 ("wifi: mt76: mt7925: add RNR scan support for 6GHz")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aDVT2tPhG_8T0Qla@stanley.mountain
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index bdf7c7ca5654..f54792c4b910 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1451,7 +1451,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
- {
- 	struct fq *fq = &local->fq;
- 	struct fq_tin *tin = &txqi->tin;
--	u32 flow_idx = fq_flow_idx(fq, skb);
-+	u32 flow_idx;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 8ac6fbb736ab..300c863f0e3e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2916,7 +2916,7 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	for (i = 0; i < sreq->n_ssids; i++) {
+ 		if (!sreq->ssids[i].ssid_len)
+ 			continue;
+-		if (i > MT7925_RNR_SCAN_MAX_BSSIDS)
++		if (i >= MT7925_RNR_SCAN_MAX_BSSIDS)
+ 			break;
  
- 	ieee80211_set_skb_enqueue_time(skb);
+ 		ssid->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+@@ -2933,7 +2933,7 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		mt76_connac_mcu_build_rnr_scan_param(mdev, sreq);
  
-@@ -1467,6 +1467,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
- 			IEEE80211_TX_INTCFL_NEED_TXPROCESSING;
- 		__skb_queue_tail(&txqi->frags, skb);
- 	} else {
-+		flow_idx = fq_flow_idx(fq, skb);
- 		fq_tin_enqueue(fq, tin, flow_idx, skb,
- 			       fq_skb_free_func);
- 	}
+ 		for (j = 0; j < mdev->rnr.bssid_num; j++) {
+-			if (j > MT7925_RNR_SCAN_MAX_BSSIDS)
++			if (j >= MT7925_RNR_SCAN_MAX_BSSIDS)
+ 				break;
+ 
+ 			tlv = mt76_connac_mcu_add_tlv(skb, UNI_SCAN_BSSID,
 -- 
 2.39.5
 
