@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BB3B234E9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A916FB23142
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469DE1B62D01
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F649161F6B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002B22FF167;
-	Tue, 12 Aug 2025 18:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808E12FF151;
+	Tue, 12 Aug 2025 17:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyqxLhCj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n58K+ORS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DB32FF169;
-	Tue, 12 Aug 2025 18:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6001DE2D7;
+	Tue, 12 Aug 2025 17:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024053; cv=none; b=SUYPHDJy+qpdPHvaQfhuiF5LW209uiYdDj7ezDk/BMJcUAR03bUx/c4qec6e3CKu91aeV1PGylJJel3R1FvoTsGQboM9Espmj6LZl5dcaWQeHpDjuV+mF8U7XBLTZpHK2eVQdFiDtOMa8cIJQZ1VgwB9YnxFVunvO+i5+8SH0eI=
+	t=1755021586; cv=none; b=Tr3tyWOBKU4BwRlpbpIEL8OksJbO44tyJiJkGx7T9N7l305keegNByf0SjC8YCThI4RuJSlDjbQRYLAqahLM5E7njxRMzLpUS9avTnYicxmLX9SU6tiuSG0JYEOgTLToIQTxyMMk6iKlsnUJem/DwxYsx+sZu84TW8SNHe+sF8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024053; c=relaxed/simple;
-	bh=RdONG8xWdLqrLfLJzfu6R1TW/0XpUIQpMBUuG5UhxjU=;
+	s=arc-20240116; t=1755021586; c=relaxed/simple;
+	bh=HkPnjXMU4IOShtOalB4BiDVnjUU15yGhrDkKRadiwAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eG88TfqsLcri+MqZvHwGFgF1oLna2aCSwVTMgnvWSrokpZK90EelAAhX1/lHT4Pn+ecGZ/bEJd+9FmzLJgCd+idJJyfAjEFE5y17AsrXGpJJqM2yKTqA6qpABNVAEuOzsmfTdNi3DfJNCT3d6y6cMlm5vVAzT2DEEXGG3NjuPRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyqxLhCj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21872C4CEF0;
-	Tue, 12 Aug 2025 18:40:52 +0000 (UTC)
+	 MIME-Version; b=gdNJPaipfW/bCQ+DQDq7v47jzr9d399cRtOYTY5UqbA3X3b4RpJkVTCZ9BbZb/yK3t59uHAs468bMA7roHV6cGT+jdkmkv1vaV+pIH8JE2Phu2qGlzmUvcTGUfhb/Gx5NEGz9RFFBmbIO3pN/FvOQ+EQmFNGVJi3VTAy1NPcPHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n58K+ORS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A281BC4CEF0;
+	Tue, 12 Aug 2025 17:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024053;
-	bh=RdONG8xWdLqrLfLJzfu6R1TW/0XpUIQpMBUuG5UhxjU=;
+	s=korg; t=1755021586;
+	bh=HkPnjXMU4IOShtOalB4BiDVnjUU15yGhrDkKRadiwAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyqxLhCjl5mVYjdkIFpQUJ8E2GOSh1alHqXwj1fT4kJUgQRdCe1QKReXhG4+RcBy9
-	 330jzOxz03eigZb9CYEBrSVpz/vnd4UOwp7jth32LAfXJNIQ29C1eembr5a8FQaWRN
-	 +vP8RmkDjVlujfnyaRgklWyD8EGTogZgRZzOHqEM=
+	b=n58K+ORSpyTC5/PCb2f4sJz+rZm2MQWLi3PMIAM/FJ1Lszo4McFJl34Tu9t5sLtMq
+	 dpm+pmRAcZFkhYQEvtf9rdQZJl3UablQ9gH23yAOi8EYTDr7l9lGecrTIICCUGJml4
+	 j7a3/0jQM0uSJsb+gPODD6ecqScyr1k4JSKjTJL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sai Teja Aluvala <aluvala.sai.teja@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 259/627] Bluetooth: btintel_pcie: Make driver wait for alive interrupt
+Subject: [PATCH 6.6 166/262] rtc: ds1307: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:14 +0200
-Message-ID: <20250812173429.169011943@linuxfoundation.org>
+Message-ID: <20250812173000.167974991@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 69b3d3acf3dba21e2abad863c80c7114eb110b3d ]
+[ Upstream commit cf6eb547a24af7ad7bbd2abe9c5327f956bbeae8 ]
 
-The firmware raises an alive interrupt upon receiving the HCI_RESET or
-BTINTEL_HCI_OP_RESET (Intel reset - 0xfc01) command. This change fixes
-the driver to properly wait for the alive interrupt to avoid driver
-sending commands to firmware before it is ready to process.
+When ds3231_clk_sqw_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-For details on the handshake between the driver and firmware, refer to
-commit 05c200c8f029 ("Bluetooth: btintel_pcie: Add handshake between
-driver and firmware").
-
-As the driver needs to handle two interrupts for HCI_OP_RESET and
-BTINTEL_HCI_OP_RESET, the firmware ensures that the TX completion
-interrupt is always followed by the alive interrupt.
-
-Fixes: 05c200c8f029 ("Bluetooth: btintel_pcie: Add handshake between driver and firmware")
-Signed-off-by: Sai Teja Aluvala <aluvala.sai.teja@intel.com>
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 6c6ff145b3346 ("rtc: ds1307: add clock provider support for DS3231")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-1-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 1638be0921a3..7f789937a764 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -928,11 +928,13 @@ static void btintel_pcie_msix_gp0_handler(struct btintel_pcie_data *data)
- 	case BTINTEL_PCIE_INTEL_HCI_RESET1:
- 		if (btintel_pcie_in_op(data)) {
- 			submit_rx = true;
-+			signal_waitq = true;
- 			break;
- 		}
- 
- 		if (btintel_pcie_in_iml(data)) {
- 			submit_rx = true;
-+			signal_waitq = true;
- 			data->alive_intr_ctxt = BTINTEL_PCIE_FW_DL;
- 			break;
- 		}
-@@ -1963,8 +1965,11 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
- 			if (opcode == BTINTEL_HCI_OP_RESET)
- 				btintel_pcie_inject_cmd_complete(hdev, opcode);
- 		}
--		/* Firmware raises alive interrupt on HCI_OP_RESET */
--		if (opcode == HCI_OP_RESET)
-+
-+		/* Firmware raises alive interrupt on HCI_OP_RESET or
-+		 * BTINTEL_HCI_OP_RESET
-+		 */
-+		if (opcode == HCI_OP_RESET || opcode == BTINTEL_HCI_OP_RESET)
- 			data->gp0_received = false;
- 
- 		hdev->stat.cmd_tx++;
-@@ -2003,17 +2008,16 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
- 		bt_dev_dbg(data->hdev, "sent cmd: 0x%4.4x alive context changed: %s  ->  %s",
- 			   opcode, btintel_pcie_alivectxt_state2str(old_ctxt),
- 			   btintel_pcie_alivectxt_state2str(data->alive_intr_ctxt));
--		if (opcode == HCI_OP_RESET) {
--			ret = wait_event_timeout(data->gp0_wait_q,
--						 data->gp0_received,
--						 msecs_to_jiffies(BTINTEL_DEFAULT_INTR_TIMEOUT_MS));
--			if (!ret) {
--				hdev->stat.err_tx++;
--				bt_dev_err(hdev, "No alive interrupt received for %s",
--					   btintel_pcie_alivectxt_state2str(data->alive_intr_ctxt));
--				ret = -ETIME;
--				goto exit_error;
--			}
-+		ret = wait_event_timeout(data->gp0_wait_q,
-+					 data->gp0_received,
-+					 msecs_to_jiffies(BTINTEL_DEFAULT_INTR_TIMEOUT_MS));
-+		if (!ret) {
-+			hdev->stat.err_tx++;
-+			bt_dev_err(hdev, "Timeout on alive interrupt (%u ms). Alive context: %s",
-+				   BTINTEL_DEFAULT_INTR_TIMEOUT_MS,
-+				   btintel_pcie_alivectxt_state2str(data->alive_intr_ctxt));
-+			ret = -ETIME;
-+			goto exit_error;
- 		}
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 0c7845196092..e14981383c01 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1461,7 +1461,7 @@ static long ds3231_clk_sqw_round_rate(struct clk_hw *hw, unsigned long rate,
+ 			return ds3231_clk_sqw_rates[i];
  	}
- 	hdev->stat.byte_tx += skb->len;
+ 
+-	return 0;
++	return ds3231_clk_sqw_rates[ARRAY_SIZE(ds3231_clk_sqw_rates) - 1];
+ }
+ 
+ static int ds3231_clk_sqw_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
