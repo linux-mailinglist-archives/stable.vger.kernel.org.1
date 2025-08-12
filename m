@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAACB23259
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE94B22F6B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB48A2A214B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2FF8683D95
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F38D1EBFE0;
-	Tue, 12 Aug 2025 18:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D892FE59A;
+	Tue, 12 Aug 2025 17:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ757uAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBWbNpoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92292F5E;
-	Tue, 12 Aug 2025 18:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A612FDC22;
+	Tue, 12 Aug 2025 17:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022349; cv=none; b=FnXiRjjS+1eM40L4p06ap81dq1UeIcY+74aEBnsjKrOTg2kbfDuwtZSURDc7iq4NcMb4wKyl52yiRQIUwltzHrFjGxs2Qm5yP+mIr7Pu0HjQ+vdaUrqroOPQN/2FIvwOA1da8z7lnxi45NgGfVXdHnbKPkkhOA/lkpVBcUNJ5b4=
+	t=1755020297; cv=none; b=U97xwHNHbYBjWLFs13y8wnawkMuLI0h9tLBh7NLksDrzpE27zUj71+MmFAEBmtZXSVnWx4TiK6Qomqqs5Y6YVKnU03D9Q1uqQq3+Ha1aEdMm9398bdryBVd6N783XQa2u9bHcLi2UUz7E6r50/cJ8WGs3BbzYmP20QVqDSI+q/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022349; c=relaxed/simple;
-	bh=ki0J6yfuenyxgk1hIsJsnUhHrVByf4uULgIWpKzsEQw=;
+	s=arc-20240116; t=1755020297; c=relaxed/simple;
+	bh=MmTHG47pQWcOw+JEe34u2+lr+AlUQ+9dkRbFyO25Q28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWYW8wHvHMDcShmev1dWU1lBIXfEoNnT2riNmNRVQ2RaK6ba0ZwZjmodeFIa0C7TX6Jq3orgmLCoxr9nt6vbzbMRj1Owe6L4cLCiomb12Xygo1lnuvE5dGOY8iWrpun1DzSMPlifJl6TSm+BbUKN3isznysL9zRtvbih4wmlWEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ757uAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B77C4CEF0;
-	Tue, 12 Aug 2025 18:12:28 +0000 (UTC)
+	 MIME-Version; b=JzJO8abFJgCuUcI6HCL9lIH0fQX1XbgS0rB+SDuQzyledcnPM6z1eiLslGVbd8/GhQgzUo63U741LHWw+hyR+d/k9TvhVIHJ3VqgDSHMnBHLxZaaO2qcQST8OrQrdGtrLScOszzcOmr5UxSaH1W2aDDLtmoSLX510z7+7ICKCb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBWbNpoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803BEC4CEF0;
+	Tue, 12 Aug 2025 17:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022349;
-	bh=ki0J6yfuenyxgk1hIsJsnUhHrVByf4uULgIWpKzsEQw=;
+	s=korg; t=1755020296;
+	bh=MmTHG47pQWcOw+JEe34u2+lr+AlUQ+9dkRbFyO25Q28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJ757uAqRkHRm5g3DH6i7QPKY3pKCjq4MXQTMu6rZ4lYZeaA59nKdbgt2eyzi/nIm
-	 WxhAtzXRM5xIe+wKpZ2S20fKtNfS0Py1gARgjeaB8zOy9x4rYx92lMNeWeQ69yCCke
-	 i0n683esMay8VZFdcCbFgljDomH1gi1ICGVG4REA=
+	b=cBWbNpoJkmqNscDAH6BKuPN5bNKiJbc/wEYjnDVFC2+3cFMcqnULcxfHjXg2ZjBUL
+	 OM6U4bN+gM9CqzAlab0zRBt/eNf9NM4EIEfU05hz8Z07DBh6NzsjBk/Y1lIREt5cye
+	 FWrFyRNd8ZH5iQGpK7AhpRYCusUFjALXInx7f11I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/369] kcsan: test: Initialize dummy variable
-Date: Tue, 12 Aug 2025 19:27:06 +0200
-Message-ID: <20250812173019.624139256@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 039/253] nilfs2: reject invalid file types when reading inodes
+Date: Tue, 12 Aug 2025 19:27:07 +0200
+Message-ID: <20250812172950.397608689@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 9872916ad1a1a5e7d089e05166c85dbd65e5b0e8 ]
+commit 4aead50caf67e01020c8be1945c3201e8a972a27 upstream.
 
-Newer compiler versions rightfully point out:
+To prevent inodes with invalid file types from tripping through the vfs
+and causing malfunctions or assertion failures, add a missing sanity check
+when reading an inode from a block device.  If the file type is not valid,
+treat it as a filesystem error.
 
- kernel/kcsan/kcsan_test.c:591:41: error: variable 'dummy' is
- uninitialized when passed as a const pointer argument here
- [-Werror,-Wuninitialized-const-pointer]
-   591 |         KCSAN_EXPECT_READ_BARRIER(atomic_read(&dummy), false);
-       |                                                ^~~~~
- 1 error generated.
-
-Although this particular test does not care about the value stored in
-the dummy atomic variable, let's silence the warning.
-
-Link: https://lkml.kernel.org/r/CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com
-Fixes: 8bc32b348178 ("kcsan: test: Add test cases for memory barrier instrumentation")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
+Fixes: 05fe58fdc10d ("nilfs2: inode operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kcsan/kcsan_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/inode.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
-index 117d9d4d3c3b..5121d9a6dd3b 100644
---- a/kernel/kcsan/kcsan_test.c
-+++ b/kernel/kcsan/kcsan_test.c
-@@ -533,7 +533,7 @@ static void test_barrier_nothreads(struct kunit *test)
- 	struct kcsan_scoped_access *reorder_access = NULL;
- #endif
- 	arch_spinlock_t arch_spinlock = __ARCH_SPIN_LOCK_UNLOCKED;
--	atomic_t dummy;
-+	atomic_t dummy = ATOMIC_INIT(0);
- 
- 	KCSAN_TEST_REQUIRES(test, reorder_access != NULL);
- 	KCSAN_TEST_REQUIRES(test, IS_ENABLED(CONFIG_SMP));
--- 
-2.39.5
-
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -517,11 +517,18 @@ static int __nilfs_read_inode(struct sup
+ 		inode->i_op = &nilfs_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_mapping->a_ops = &nilfs_aops;
+-	} else {
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		inode->i_op = &nilfs_special_inode_operations;
+ 		init_special_inode(
+ 			inode, inode->i_mode,
+ 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
++	} else {
++		nilfs_error(sb,
++			    "invalid file type bits in mode 0%o for inode %lu",
++			    inode->i_mode, ino);
++		err = -EIO;
++		goto failed_unmap;
+ 	}
+ 	nilfs_ifile_unmap_inode(root->ifile, ino, bh);
+ 	brelse(bh);
 
 
 
