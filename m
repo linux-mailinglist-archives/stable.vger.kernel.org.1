@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F351B231AD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85100B2357E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 786CE17864C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B59293AE73F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63F02FDC24;
-	Tue, 12 Aug 2025 18:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1AB2D47E5;
+	Tue, 12 Aug 2025 18:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/Xg5+cx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPvDQ2bk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FC72DE6E9;
-	Tue, 12 Aug 2025 18:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9C6291C1F;
+	Tue, 12 Aug 2025 18:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021779; cv=none; b=GdZMGaHVi535mrYzqu4RV+FAw7dxothtXIeOnhOKirQx3V9JjYhDHx1fFpmIbPQk7u/GNMJ8OhNfTDd+9IW1HQB2CUDkasZfYCvYc8bdfDhYbVcdg4FL0DkSF6g/uTuKhXYjW4TG0tG3PSsT59VHDd2H1gV2U6zD1SX9D3Txu+s=
+	t=1755024349; cv=none; b=Rx2A5iHvCxYTuzOdXMpsfu6sr8NEwJu+B/NuSrsnSp+9D3K/peo8eBw7INL2pNO8KPAn+/Yfx5xtupaxBOEIm/zRRQc5L8svL/3q9PHKKpb83moTLOIllWAA50ub2w7OfAfh6MK0+TUJ+FkSjsVEoLTWcJ02jiwBJaWaYfBZjoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021779; c=relaxed/simple;
-	bh=VBydXkU0cLWe0OdVGRn1Fy+iDoAs+twIeiHyA4vvY4I=;
+	s=arc-20240116; t=1755024349; c=relaxed/simple;
+	bh=4O1w3gCJvrTruUtgs28/lD/tRbmrw63TRcw7SiR68Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iszvjSR1+W5Kfc/ItSMRG/NBN6bIGoxEQGlJuSIz8wBdAFiqK+RSMSO21y4fr5G3KcrAa8nBn7ZHNw1/vjLFtjZrmZQv3/Watn66S9VfMCmZ44b6abS4OR9naUDg7wgHZf3p0zO5fSZn1oHFWEV/ZO1Pu6r00IHkoBUmJ1jKOSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/Xg5+cx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BEDC4CEF7;
-	Tue, 12 Aug 2025 18:02:58 +0000 (UTC)
+	 MIME-Version; b=Ley+tSkclejPoKAub9Uh3E6tw64hGbWvvseAe22vMsolNzat4S0l2fELmX5UKd487JD3n5OjmFaWJT+DeNDyqjVmNUlJB/ufcFHT83/yPAD2Y5cbs1FwR3YPbqRpPKPgq0DwROyj8s61RRAtG1eVd8AZt2Ii0j975ODkWUk1sUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPvDQ2bk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F53C4CEF0;
+	Tue, 12 Aug 2025 18:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021779;
-	bh=VBydXkU0cLWe0OdVGRn1Fy+iDoAs+twIeiHyA4vvY4I=;
+	s=korg; t=1755024349;
+	bh=4O1w3gCJvrTruUtgs28/lD/tRbmrw63TRcw7SiR68Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/Xg5+cxjPZPEd4Nvea6fuAdLaGDgtTvdRwYfQ6uZq9nCwViT/a+O81faFossSv6N
-	 +pyRP5itJaWzAfCq3r//Ic4XnYdUTkoi621y1kZ5F0rSucGQrgmODzDCGmXXSuee6Y
-	 NQqwevGpnXMkfhrALTv/z/GcMfO/XlAOednLADmg=
+	b=cPvDQ2bkbFQWKgGpMDAoEGAmwq0/1nJ+rVtzeDkB4jpy6W0B8VwFe0j8FlWOuYSeP
+	 VdA8F9pmFqXijfl7Agg4EcjrsnKT83ajLiPJY24iw4PXBAf7JEGVVbQhSyRX36MUZO
+	 4pFgzoUMR3rtFMLigEjKihoKRlp8lUbLsqJaZU8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shen Lichuan <shenlichuan@vivo.com>,
-	Steve French <stfrench@microsoft.com>,
+	James Cowgill <james.cowgill@blaize.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/262] smb: client: Use min() macro
+Subject: [PATCH 6.16 314/627] media: v4l2-ctrls: Fix H264 SEPARATE_COLOUR_PLANE check
 Date: Tue, 12 Aug 2025 19:30:09 +0200
-Message-ID: <20250812173002.556768354@linuxfoundation.org>
+Message-ID: <20250812173431.247141637@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shen Lichuan <shenlichuan@vivo.com>
+From: James Cowgill <james.cowgill@blaize.com>
 
-[ Upstream commit 25e68c37caf2b87c7dbcd99c54ec3102db7e4296 ]
+[ Upstream commit 803b9eabc649c778986449eb0596e5ffeb7a8aed ]
 
-Use the min() macro to simplify the function and improve
-its readability.
+The `separate_colour_plane_flag` element is only present in the SPS if
+`chroma_format_idc == 3`, so the corresponding flag should be disabled
+whenever that is not the case and not just on profiles where
+`chroma_format_idc` is not present.
 
-Signed-off-by: Shen Lichuan <shenlichuan@vivo.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
+Fixes: b32e48503df0 ("media: controls: Validate H264 stateless controls")
+Signed-off-by: James Cowgill <james.cowgill@blaize.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsacl.c   | 2 +-
- fs/smb/client/smbdirect.c | 6 ++----
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index bf32bc22ebd6..7bd29e827c8f 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -187,7 +187,7 @@ compare_sids(const struct smb_sid *ctsid, const struct smb_sid *cwsid)
- 	/* compare all of the subauth values if any */
- 	num_sat = ctsid->num_subauth;
- 	num_saw = cwsid->num_subauth;
--	num_subauth = num_sat < num_saw ? num_sat : num_saw;
-+	num_subauth = min(num_sat, num_saw);
- 	if (num_subauth) {
- 		for (i = 0; i < num_subauth; ++i) {
- 			if (ctsid->sub_auth[i] != cwsid->sub_auth[i]) {
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index d74e829de51c..c41a44f4fc63 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1585,10 +1585,8 @@ static struct smbd_connection *_smbd_get_connection(
- 	conn_param.initiator_depth = 0;
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+index 90d25329661e..b45809a82f9a 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -968,12 +968,12 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
  
- 	conn_param.responder_resources =
--		info->id->device->attrs.max_qp_rd_atom
--			< SMBD_CM_RESPONDER_RESOURCES ?
--		info->id->device->attrs.max_qp_rd_atom :
--		SMBD_CM_RESPONDER_RESOURCES;
-+		min(info->id->device->attrs.max_qp_rd_atom,
-+		    SMBD_CM_RESPONDER_RESOURCES);
- 	info->responder_resources = conn_param.responder_resources;
- 	log_rdma_mr(INFO, "responder_resources=%d\n",
- 		info->responder_resources);
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS;
+-
+-			if (p_h264_sps->chroma_format_idc < 3)
+-				p_h264_sps->flags &=
+-					~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
+ 		}
+ 
++		if (p_h264_sps->chroma_format_idc < 3)
++			p_h264_sps->flags &=
++				~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
++
+ 		if (p_h264_sps->flags & V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY)
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD;
 -- 
 2.39.5
 
