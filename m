@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-169210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BDEB238C3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C978B23886
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63E7C1BC0082
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:26:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5EADA4E52A2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F410E2C21F7;
-	Tue, 12 Aug 2025 19:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845C72D3A94;
+	Tue, 12 Aug 2025 19:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUon3kBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjDzJkoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3373217F35;
-	Tue, 12 Aug 2025 19:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43332217F35;
+	Tue, 12 Aug 2025 19:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026751; cv=none; b=GL0aIIxCEyQTbiXkHcrSKOBzM5WIt0KimEp/hZxVo/oLHs3Zym6FTgjsScOdByS/pJlhaac3yPyG6l1PI92hol7e0mRVf2ZXJU5eak+jLkDqXk+LvN3u3qGTQ4AF6cHXk9TuHfkmm6WaTbPsh6ZMCFF74wMXDXnnLuvcoxRGk1o=
+	t=1755026758; cv=none; b=J14VuiYjRtWcD7qGy2h4+Bs/Ct6ZFWTuAdiLbxK4gBJkelm7iWKtlP+dBu8Hq00z8V374/oQjA4HkX3uYpsELETiKusDq7PVya7FmTMYRznlp+nK5y/jcqrcAoTvclDmuX17XNxaQlRZZGm9Slzn7+FnTWq5IkglgsC0AmkHTug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026751; c=relaxed/simple;
-	bh=IK12dY+mWZmt0o7FAo11rBVPC95dbaX4Zkkc9VPRUy0=;
+	s=arc-20240116; t=1755026758; c=relaxed/simple;
+	bh=9uwwSGM49qGvau4Nd3yn5qfKbBRyb/ZM+j8CtceIV8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scq8hNWHU9+REZc0BnfXssH6bz4LOlFh42FxQycrUZ4VyKSicGALLJDhXZBalIfYuS3sGMjX0mAW9k4vDqZku1WjjziJLohly2PI1ynTc5D2+wQc+vIeaghIZKGavIuEE2LAGunFPgMEUqqdJV6M1Oue1XNskZ39ShYG32E30oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUon3kBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01098C4CEF0;
-	Tue, 12 Aug 2025 19:25:50 +0000 (UTC)
+	 MIME-Version; b=Khz1r+rQERhvoim/iDtiShVnSgmka576roaAqPywRb9WsnfViLsr+JfiObliPHv1Q48OTcQ8AbyodtTWttFLMabL1jhzkdONqF4OL6ekV6grZKvzGM0PhS26ygGNMUYo+ZYvTyxrtMFFltrfxXddDQozzQBLF1xVQrfNd41vVjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjDzJkoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC8DC4CEF1;
+	Tue, 12 Aug 2025 19:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026751;
-	bh=IK12dY+mWZmt0o7FAo11rBVPC95dbaX4Zkkc9VPRUy0=;
+	s=korg; t=1755026757;
+	bh=9uwwSGM49qGvau4Nd3yn5qfKbBRyb/ZM+j8CtceIV8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MUon3kBSZALJOVcUfTLi5PAxph14iLMLlYkLPcH93m0LH/XAVTLmuwMaldtQu6sER
-	 Oqjo48OHbJ3tvMhElTqHyXyMXeaU7q5+9VVdd2K5oxs0SUB8yBfI2C5FMu7xfcPJJY
-	 HzcTO6JAb4jFn07Z1NNCkoZJ1BkmnclsmKHfYcVo=
+	b=XjDzJkoLE4O093Yl1gg3vK4NIzjfW22y2k5qRM+U+BmeSbxarv2PNj5UhwnXPRiA/
+	 1JNdsa6QXJJjKv7Yh8xxKbjTQKvRN2Wig9iwhQeiTy8c0xrfR484IwJ5MSRKtgvxfI
+	 +ZpuPkJHIas+uOpikDXO218qGxXwl9d/AfaFZSoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 429/480] nvmet: exit debugfs after discovery subsystem exits
-Date: Tue, 12 Aug 2025 19:50:37 +0200
-Message-ID: <20250812174415.096581825@linuxfoundation.org>
+Subject: [PATCH 6.15 430/480] pptp: fix pptp_xmit() error path
+Date: Tue, 12 Aug 2025 19:50:38 +0200
+Message-ID: <20250812174415.134648971@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -69,43 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 80f21806b8e34ae1e24c0fc6a0f0dfd9b055e130 ]
+[ Upstream commit ae633388cae349886f1a3cfb27aa092854b24c1b ]
 
-Commit 528589947c180 ("nvmet: initialize discovery subsys after debugfs
-is initialized") changed nvmet_init() to initialize nvme discovery after
-"nvmet" debugfs directory is initialized. The change broke nvmet_exit()
-because discovery subsystem now depends on debugfs. Debugfs should be
-destroyed after discovery subsystem. Fix nvmet_exit() to do that.
+I accidentally added a bug in pptp_xmit() that syzbot caught for us.
 
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/all/CAHj4cs96AfFQpyDKF_MdfJsnOEo=2V7dQgqjFv+k3t7H-=yGhA@mail.gmail.com/
-Fixes: 528589947c180 ("nvmet: initialize discovery subsys after debugfs is initialized")
-Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Link: https://lore.kernel.org/r/20250807053507.2794335-1-mkhalfella@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Only call ip_rt_put() if a route has been allocated.
+
+BUG: unable to handle page fault for address: ffffffffffffffdb
+PGD df3b067 P4D df3b067 PUD df3d067 PMD 0
+Oops: Oops: 0002 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6346 Comm: syz.0.336 Not tainted 6.16.0-next-20250804-syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:arch_atomic_add_return arch/x86/include/asm/atomic.h:85 [inline]
+RIP: 0010:raw_atomic_sub_return_release include/linux/atomic/atomic-arch-fallback.h:846 [inline]
+RIP: 0010:atomic_sub_return_release include/linux/atomic/atomic-instrumented.h:327 [inline]
+RIP: 0010:__rcuref_put include/linux/rcuref.h:109 [inline]
+RIP: 0010:rcuref_put+0x172/0x210 include/linux/rcuref.h:173
+Call Trace:
+ <TASK>
+ dst_release+0x24/0x1b0 net/core/dst.c:167
+ ip_rt_put include/net/route.h:285 [inline]
+ pptp_xmit+0x14b/0x1a90 drivers/net/ppp/pptp.c:267
+ __ppp_channel_push+0xf2/0x1c0 drivers/net/ppp/ppp_generic.c:2166
+ ppp_channel_push+0x123/0x660 drivers/net/ppp/ppp_generic.c:2198
+ ppp_write+0x2b0/0x400 drivers/net/ppp/ppp_generic.c:544
+ vfs_write+0x27b/0xb30 fs/read_write.c:684
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: de9c4861fb42 ("pptp: ensure minimal skb length in pptp_xmit()")
+Reported-by: syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/689095a5.050a0220.1fc43d.0009.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250807142146.2877060-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ppp/pptp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 82d0a0fdf912..90abc5c01377 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -1938,8 +1938,8 @@ static int __init nvmet_init(void)
- static void __exit nvmet_exit(void)
- {
- 	nvmet_exit_configfs();
--	nvmet_exit_debugfs();
- 	nvmet_exit_discovery();
-+	nvmet_exit_debugfs();
- 	ida_destroy(&cntlid_ida);
- 	destroy_workqueue(nvmet_wq);
- 	destroy_workqueue(buffered_io_wq);
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index 4cd6f67bd5d3..90737cb71892 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -159,17 +159,17 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	int len;
+ 	unsigned char *data;
+ 	__u32 seq_recv;
+-	struct rtable *rt = NULL;
++	struct rtable *rt;
+ 	struct net_device *tdev;
+ 	struct iphdr  *iph;
+ 	int    max_headroom;
+ 
+ 	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
+-		goto tx_error;
++		goto tx_drop;
+ 
+ 	rt = pptp_route_output(po, &fl4);
+ 	if (IS_ERR(rt))
+-		goto tx_error;
++		goto tx_drop;
+ 
+ 	tdev = rt->dst.dev;
+ 
+@@ -265,6 +265,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 
+ tx_error:
+ 	ip_rt_put(rt);
++tx_drop:
+ 	kfree_skb(skb);
+ 	return 1;
+ }
 -- 
 2.39.5
 
