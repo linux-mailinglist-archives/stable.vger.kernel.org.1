@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326E5B23284
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C99DB230A4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007961B604DB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A74BD5656EB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDC52F4A02;
-	Tue, 12 Aug 2025 18:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3050B2FDC2C;
+	Tue, 12 Aug 2025 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyQca4By"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeKuAQ6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7142F5E;
-	Tue, 12 Aug 2025 18:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E342B2F8BE7;
+	Tue, 12 Aug 2025 17:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022440; cv=none; b=iDSMYCajlKQKplWR70heLh6Q+lV/0b56q92N+kVjxZtTYYBLRP5DIw2s9n8VlE5FTG7DsjH+h+ZZhWNJgxIjV89YI4vX23IGb7QH8ILGrLXhYbA/MEOtEuwYESxPrUkku1x+VGPwtmYX+agiMDsfI/5ScqIsqRHnUUGWEopYpRY=
+	t=1755021278; cv=none; b=kKCK9Qpfy4kzzEhJSAWGGdYT/A+uNlbXZRR3q6yRcJZmUnKTHBXsoU0eeIc5XYsC60UB/5IFEfOLo5lPEY+HDvgxZHlEMJ8C+eYt/mi0YD1yyfGzSIdLgzRRtua+FBZpkiHTrimcZo7tg7hs7akigYAHzZWAMqHojtleYXLfxhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022440; c=relaxed/simple;
-	bh=EVFmGHgL1BZ1hhWCCsWYCeUOdhaOIyZ3qPh+TtVS/Hw=;
+	s=arc-20240116; t=1755021278; c=relaxed/simple;
+	bh=hIYa65TGMCMDdr6SdDMStahmSY87zbeFJrMS7tScCOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBoHWYeJc0zDQHwAPpcNljtkjMT+/RNejb9aKTi/XiJJAQgf9exzlHgwKAaJmUrWWBOa8Yx9lt+d5CCqjWZhV/oT2ZDFRKZYQxGWjN4nHCN/IId4jwYhkR+FvRQxClw3gk1zKFnT7MGSlIvPKQXnWf9Kp79qzxDVvbBpUAnmw5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyQca4By; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F41FC4CEF0;
-	Tue, 12 Aug 2025 18:13:58 +0000 (UTC)
+	 MIME-Version; b=a+hGTK9xkIMrTcnDfiasS1ctwxUldBf//JeFiizQt633QGOfoONBXzXFXQfMZl+TghXlWQMGc5V4zJJh0Gnf6j/tq7oEws1WxAQ7Jl7HOAMF8Xh4ACXda4xAtQG/TwwhIk3bpNgDpxjdWm3iFqe5Xeq+m9O2nBmDj/t5IfZkvLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeKuAQ6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514DCC4CEF0;
+	Tue, 12 Aug 2025 17:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022438;
-	bh=EVFmGHgL1BZ1hhWCCsWYCeUOdhaOIyZ3qPh+TtVS/Hw=;
+	s=korg; t=1755021277;
+	bh=hIYa65TGMCMDdr6SdDMStahmSY87zbeFJrMS7tScCOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyQca4ByG/LDSph/ZTpn273to65Vr4t/Ol+dauNylKnCmr6v4ShA2o9t86/3h9sxv
-	 g3Toa3tHBtExU9xyqOoW6XM1+NgFUY3SJXS9VlahH1HlGsnV/ZKewIr585VUjjLGh0
-	 /KTa49loV+TsuuP5vUFsvn0qs7Qsk50gomhsXnUA=
+	b=DeKuAQ6kLnfFCvM9CmgiCt1G3XZwqaNZcjzmAljoiQzBxKYAsISvoyyX+jrWN/lEm
+	 gFANI68bdt1etPxB8Dz5Bg3ffrrA96fgxVuudJtw9V019eAh6qaJsHM+ZwOka+iB1w
+	 Zs403coQe5W0vz+C/H/etlx6Ln5mPSnzEQ2BSFfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/369] crypto: qat - use unmanaged allocation for dc_data
+Subject: [PATCH 6.6 065/262] kselftest/arm64: Fix check for setting new VLs in sve-ptrace
 Date: Tue, 12 Aug 2025 19:27:33 +0200
-Message-ID: <20250812173020.640171995@linuxfoundation.org>
+Message-ID: <20250812172955.760540469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 4cc871ad0173e8bc22f80e3609e34d546d30ef1a ]
+[ Upstream commit 867446f090589626497638f70b10be5e61a0b925 ]
 
-The dc_data structure holds data required for handling compression
-operations, such as overflow buffers. In this context, the use of
-managed memory allocation APIs (devm_kzalloc() and devm_kfree())
-is not necessary, as these data structures are freed and
-re-allocated when a device is restarted in adf_dev_down() and
-adf_dev_up().
+The check that the new vector length we set was the expected one was typoed
+to an assignment statement which for some reason the compilers didn't spot,
+most likely due to the macros involved.
 
-Additionally, managed APIs automatically handle memory cleanup when the
-device is detached, which can lead to conflicts with manual cleanup
-processes. Specifically, if a device driver invokes the adf_dev_down()
-function as part of the cleanup registered with
-devm_add_action_or_reset(), it may attempt to free memory that is also
-managed by the device's resource management system, potentially leading
-to a double-free.
-
-This might result in a warning similar to the following when unloading
-the device specific driver, for example qat_6xxx.ko:
-
-    qat_free_dc_data+0x4f/0x60 [intel_qat]
-    qat_compression_event_handler+0x3d/0x1d0 [intel_qat]
-    adf_dev_shutdown+0x6d/0x1a0 [intel_qat]
-    adf_dev_down+0x32/0x50 [intel_qat]
-    devres_release_all+0xb8/0x110
-    device_unbind_cleanup+0xe/0x70
-    device_release_driver_internal+0x1c1/0x200
-    driver_detach+0x48/0x90
-    bus_remove_driver+0x74/0xf0
-    pci_unregister_driver+0x2e/0xb0
-
-Use unmanaged memory allocation APIs (kzalloc_node() and kfree()) for
-the dc_data structure. This ensures that memory is explicitly allocated
-and freed under the control of the driver code, preventing manual
-deallocation from interfering with automatic cleanup.
-
-Fixes: 1198ae56c9a5 ("crypto: qat - expose deflate through acomp api for QAT GEN2")
-Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: a1d7111257cd ("selftests: arm64: More comprehensively test the SVE ptrace interface")
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-1-998fcfa6f240@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_compression.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/arm64/fp/sve-ptrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_compression.c b/drivers/crypto/intel/qat/qat_common/qat_compression.c
-index 7842a9f22178..2c3aa89b316a 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_compression.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_compression.c
-@@ -197,7 +197,7 @@ static int qat_compression_alloc_dc_data(struct adf_accel_dev *accel_dev)
- 	struct adf_dc_data *dc_data = NULL;
- 	u8 *obuff = NULL;
+diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+index 6d61992fe8a0..c6228176dd1a 100644
+--- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
++++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+@@ -251,7 +251,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
+ 		return;
+ 	}
  
--	dc_data = devm_kzalloc(dev, sizeof(*dc_data), GFP_KERNEL);
-+	dc_data = kzalloc_node(sizeof(*dc_data), GFP_KERNEL, dev_to_node(dev));
- 	if (!dc_data)
- 		goto err;
+-	ksft_test_result(new_sve->vl = prctl_vl, "Set %s VL %u\n",
++	ksft_test_result(new_sve->vl == prctl_vl, "Set %s VL %u\n",
+ 			 type->name, vl);
  
-@@ -235,7 +235,7 @@ static void qat_free_dc_data(struct adf_accel_dev *accel_dev)
- 	dma_unmap_single(dev, dc_data->ovf_buff_p, dc_data->ovf_buff_sz,
- 			 DMA_FROM_DEVICE);
- 	kfree_sensitive(dc_data->ovf_buff);
--	devm_kfree(dev, dc_data);
-+	kfree(dc_data);
- 	accel_dev->dc_data = NULL;
- }
- 
+ 	free(new_sve);
 -- 
 2.39.5
 
