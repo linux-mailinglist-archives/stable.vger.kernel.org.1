@@ -1,164 +1,194 @@
-Return-Path: <stable+bounces-167098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63988B21E28
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 08:19:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF96B21E77
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 08:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0874282C4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 06:19:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C8B11A23920
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 06:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213B92C21C2;
-	Tue, 12 Aug 2025 06:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1988926A0C5;
+	Tue, 12 Aug 2025 06:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="K/Tx0bDf"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GPamlzTc"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EED20C004;
-	Tue, 12 Aug 2025 06:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EE720C001
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 06:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754979582; cv=none; b=I6L5Arw2d8+mJNcbfMIX6c1JDGo83JgonD5nbNH2tL6Or8diQ3l3+D1FAWph+Eylw2oWpFdSGuMYICM2oRbYeD/73v+jpaHyry2+bD+TW2AnpHJORJYxk3FL1FOga7qDGc1JcyhqWHpSB6nZORNxNsWItqcsaEqAnHfncU8o1Gg=
+	t=1754980638; cv=none; b=L0NeFUhu12ayDQaZtKDQItcSc3IjWqTvWm19KTXZva/YsMimnQkdZ9q92/1NO9DcR+s+jlkobTsrLxuu1hKLrP2EK9eEAJ4VrhMNy3bxjC5LAELKmUyBS0ZCPWPrOE2CYBx0QgWGHEHb6Ip6j/f18hK38uBp1FC1akUnOsJt7F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754979582; c=relaxed/simple;
-	bh=1y6AIQivrcS3lNqgKQD1Jz1j8SsCB0Y9EKiOlf2YRUk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Oebb7m3tqkEY8JGmQwsr0w1QnvM9Nz7P4kvpqE5slZ5Um+qYyodbGwclfSTTHSrMOnw4JCT1JLuUERXjl3Bk6xKud8kggtfaYQvVSRoRR8V6h2F+M98UPluTfWOMPyKpezcnrJNp2fXpVK4dhdkwe8S0LovhTVnHyGZxO8NCKtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=K/Tx0bDf; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57C6JSAF1748235;
-	Tue, 12 Aug 2025 01:19:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1754979568;
-	bh=7Up/GO1ex2gLdQgvAYE87VGy19CzR8Yleera9Scsf3k=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=K/Tx0bDfctQ8WbJs88ob/ZNBUro+ip9hsAfBxqPS1EnagRo5nJfaziENK5RJ6jkam
-	 xTm3koH66a+/CYtab7kiF8R7G53LADgNkgTBXweLkijHOXaPjspCeX2kPQh0asclwt
-	 9FicgceKYGnU9OOwAwhcWX1HwXuPdyhFjSG4Gm44=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57C6JSjm094265
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Tue, 12 Aug 2025 01:19:28 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 12
- Aug 2025 01:19:27 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Tue, 12 Aug 2025 01:19:27 -0500
-Received: from [172.24.233.149] (ws.dhcp.ti.com [172.24.233.149])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57C6JNkP4090592;
-	Tue, 12 Aug 2025 01:19:24 -0500
-Message-ID: <903bbeac-2717-44b0-888b-5a63937fb97c@ti.com>
-Date: Tue, 12 Aug 2025 11:49:23 +0530
+	s=arc-20240116; t=1754980638; c=relaxed/simple;
+	bh=mYiBVXAo93QnGQS5BptwWusIUvuqnLn8pdDv8oIL01c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S9glHO/9rkP/THpXm/di8X5Cx7mwpTSuBtRDUoRdWPT79IxNb0+NVrdYyCMFDhIfwBGfHfuzk6fGRWKIyCID3stQPYHChF8MsAhAIaiAPPKpRO9eh4SCo/4NxPkXHOMEFXoIv7zRHVM0cL4Wrnzwt6CDBaXUljMFc9QiYRK4JHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GPamlzTc; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-242d3ba2b44so18679545ad.3
+        for <stable@vger.kernel.org>; Mon, 11 Aug 2025 23:37:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754980637; x=1755585437;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vnf9J8D/lbhMrAAVySeXBqauE+p5C7GABrpw1C+CN+M=;
+        b=oB6o5tNdfvuwJkX0TvTN7zqGUwS1bGMZGPlfVAUXHQRh2itTrT6WxwOclSUO2ODVmL
+         d7Gj1WQsqC+Sfkh8h8hEgOANZukNFgO6z/SLIC+Pm/SgsgHCq71Ruwpme9CPbIymkh28
+         fjFE7PO8J6WpLJmSbRou62KoiuwiJRIWysgpuE9jxlUWpeFMnepsqP1A2fTQqneg0Njj
+         m/oR7Bt0kVLC7X4Iv4M5ACdnpsVuMJFuh8cdg+dItE+H1ZspHT6KoIAYBk6ERBs/JVWS
+         oUxHc3jNI8LUXBGEs0zrgPXX04lh518ELWddjDqLwVGma7lBKqvvWLJcL7X2Qm0cU6Xy
+         aCsA==
+X-Gm-Message-State: AOJu0YygNBoUPEeEOSWv+nPLphw4K3hoRvw70PjzU17cvrz/qhFz3LMS
+	lzK05wbBlKqrRVoBJdH2MypET4lMCvnJRsGGXpdWNAqrwujzZ+ZJ46TmuWTsQGrx45MO8ugWGNM
+	hbnwq/i/rEj5/LZ2e8MlPTfJWQk0p/ccx+qnRpCc0hu2izQ+8p7plazrsJpO2V1SoQ1c6W9tnYC
+	V7c3kW8EfHXuDqPy2YyNKF9+I+vrlo+LpZDzOmvnvs155Hg1Ckkz85kdvpS8ADjScUevvVWykGR
+	lidROlA3/+yWw0BCw==
+X-Gm-Gg: ASbGnctdGJn5edSbnm/t+pZlfl2gH+v2QB9PXdsFXEzQo+X1TS3UPXgdrZxnCUVWUqa
+	z4oPzejvz45ee6Ilr9ATOCyXcqCzVX8d5Rcwgg+JJqBQ/sKh8uZ99FHTN2oudQJ5d8QuHkw+Sxp
+	lQedryMwT4ksC8sZCnmw2RmwzUXXBQMmOMaM4EW4J72Qqi93/wNCxkihWe/V/A6o/0i589ON1Jb
+	3NA/OQ5d7FAAW1rf3uU65NFIiXM9kReib72Yz3EgJCrg1ZocynLdMIEtJSA4/hKAPcbOaeUF67W
+	+sRruVfIjLQe54++1W49YerotSXKWDH+v5Cb3zRmOnCvoh+QpigVm6ER9bizUUau9orinOIqusk
+	nDEIZ9OdWrhQe98FkUT4S/FpoJz34jEwlUmmYGbE8KGimlJr4XYSHv6BfrEcgPB0YVk5a0XV6H4
+	/d9Gk9QA==
+X-Google-Smtp-Source: AGHT+IFjF4yoFw5h0YE7aQm+4vAztNJz5E1mDjxHBH95DFEMmwQU6L/1raskeC1OKFkIy3Lt8geWUldpTDrN
+X-Received: by 2002:a17:902:fc4c:b0:240:72e9:87bb with SMTP id d9443c01a7336-242c22228fcmr247358055ad.42.1754980636637;
+        Mon, 11 Aug 2025 23:37:16 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-241d1ef5fdasm17207295ad.18.2025.08.11.23.37.16
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 11 Aug 2025 23:37:16 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4af22e50c00so125997271cf.1
+        for <stable@vger.kernel.org>; Mon, 11 Aug 2025 23:37:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1754980635; x=1755585435; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vnf9J8D/lbhMrAAVySeXBqauE+p5C7GABrpw1C+CN+M=;
+        b=GPamlzTcichAUm85LGJQbNiAuJ9qGOl/6KPcke5zGApE4TlmcaYtLNF6bz0cvsPB00
+         JiOGxreDqCa/98DhRREJ2kBe71XvpITpgBZ/P/cYcmbGSkqYLIOgeH9L4VuQoSMaW8BS
+         sAk8akiRNWE94yl/Fd9YBj1nSVRHaBArrjOSk=
+X-Received: by 2002:a05:622a:3c7:b0:4b0:641a:ddde with SMTP id d75a77b69052e-4b0aed86506mr214214141cf.59.1754980635158;
+        Mon, 11 Aug 2025 23:37:15 -0700 (PDT)
+X-Received: by 2002:a05:622a:3c7:b0:4b0:641a:ddde with SMTP id d75a77b69052e-4b0aed86506mr214213721cf.59.1754980634597;
+        Mon, 11 Aug 2025 23:37:14 -0700 (PDT)
+Received: from shivania.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b095e6c7d4sm85319621cf.54.2025.08.11.23.37.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 23:37:14 -0700 (PDT)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: bcm-kernel-feedback-list@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	tapas.kundu@broadcom.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	lijo.lazar@amd.com,
+	mario.limonciello@amd.com,
+	sunil.khatri@amd.com,
+	srinivasan.shanmugam@amd.com,
+	siqueira@igalia.com,
+	cesun102@amd.com,
+	linux@treblig.org,
+	zhangzekun11@huawei.com,
+	andrey.grodzovsky@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Guchun Chen <guchun.chen@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v5.10] drm/amdgpu: handle the case of pci_channel_io_frozen only in amdgpu_pci_resume
+Date: Mon, 11 Aug 2025 23:23:49 -0700
+Message-Id: <20250812062349.149549-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] media: ti, cdns: Multiple pixel support and misc
- fixes
-To: Jai Luthra <jai.luthra@ideasonboard.com>,
-        Mauro Carvalho Chehab
-	<mchehab@kernel.org>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Tomi Valkeinen
-	<tomi.valkeinen@ideasonboard.com>,
-        Sakari Ailus
-	<sakari.ailus@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>
-CC: Devarsh Thakkar <devarsht@ti.com>, Vaishnav Achath <vaishnav.a@ti.com>,
-        Changhuang Liang <changhuang.liang@starfivetech.com>,
-        <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>,
-        Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-References: <20250626-probe_fixes-v3-0-83e735ae466e@ideasonboard.com>
-Content-Language: en-US
-From: Rishikesh Donadkar <r-donadkar@ti.com>
-In-Reply-To: <20250626-probe_fixes-v3-0-83e735ae466e@ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+From: Guchun Chen <guchun.chen@amd.com>
 
-On 27/06/25 06:36, Jai Luthra wrote:
-> Hi,
+[ Upstream commit 248b061689a40f4fed05252ee2c89f87cf26d7d8 ]
 
-Hi Jai,
+In current code, when a PCI error state pci_channel_io_normal is detectd,
+it will report PCI_ERS_RESULT_CAN_RECOVER status to PCI driver, and PCI
+driver will continue the execution of PCI resume callback report_resume by
+pci_walk_bridge, and the callback will go into amdgpu_pci_resume
+finally, where write lock is releasd unconditionally without acquiring
+such lock first. In this case, a deadlock will happen when other threads
+start to acquire the read lock.
 
-Thank you for the patches
+To fix this, add a member in amdgpu_device strucutre to cache
+pci_channel_state, and only continue the execution in amdgpu_pci_resume
+when it's pci_channel_io_frozen.
 
+Fixes: c9a6b82f45e2 ("drm/amdgpu: Implement DPC recovery")
+Suggested-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h        | 1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
->
-> The first four patches in this series are miscellaneous fixes and
-> improvements in the Cadence and TI CSI-RX drivers around probing, fwnode
-> and link creation.
->
-> The last two patches add support for transmitting multiple pixels per
-> clock on the internal bus between Cadence CSI-RX bridge and TI CSI-RX
-> wrapper. As this internal bus is 32-bit wide, the maximum number of
-> pixels that can be transmitted per cycle depend upon the format's bit
-> width. Secondly, the downstream element must support unpacking of
-> multiple pixels.
->
-> Thus we export a module function that can be used by the downstream
-> driver to negotiate the pixels per cycle on the output pixel stream of
-> the Cadence bridge.
->
-> Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index ff5555353eb4..683bbefc39c1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -997,6 +997,7 @@ struct amdgpu_device {
+ 
+ 	bool                            in_pci_err_recovery;
+ 	struct pci_saved_state          *pci_state;
++	pci_channel_state_t		pci_channel_state;
+ };
+ 
+ static inline struct amdgpu_device *drm_to_adev(struct drm_device *ddev)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 40d2f0ed1c75..8efd3ee2621f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4944,6 +4944,8 @@ pci_ers_result_t amdgpu_pci_error_detected(struct pci_dev *pdev, pci_channel_sta
+ 		return PCI_ERS_RESULT_DISCONNECT;
+ 	}
+ 
++	adev->pci_channel_state = state;
++
+ 	switch (state) {
+ 	case pci_channel_io_normal:
+ 		return PCI_ERS_RESULT_CAN_RECOVER;
+@@ -5079,6 +5081,10 @@ void amdgpu_pci_resume(struct pci_dev *pdev)
+ 
+ 	DRM_INFO("PCI error: resume callback!!\n");
+ 
++	/* Only continue execution for the case of pci_channel_io_frozen */
++	if (adev->pci_channel_state != pci_channel_io_frozen)
++		return;
++
+ 	for (i = 0; i < AMDGPU_MAX_RINGS; ++i) {
+ 		struct amdgpu_ring *ring = adev->rings[i];
+ 
+-- 
+2.40.4
 
-
-For the entire series,
-
-Reviewed-by: Rishikesh Donadkar <r-donadkar@ti.com>
-
-Tested-by: Rishikesh Donadkar <r-donadkar@ti.com>
-
-Test Logs (AM62A + imx219): 
-https://gist.github.com/Rishikesh-D/63f9b203a84087d1207ae7c98fa1fb40
-
-> ---
-> Changes in v3:
-> - Move cdns-csi2rx header to include/media
-> - Export symbol from cdns-csi2rx.c to be used only through
->    the j721e-csi2rx.c module namespace
-> - Other minor fixes suggested by Sakari
-> - Add Abhilash's T-by tags
-> - Link to v2: https://lore.kernel.org/r/20250410-probe_fixes-v2-0-801bc6eebdea@ideasonboard.com
->
-> Changes in v2:
-> - Rebase on v6.15-rc1
-> - Fix lkp warnings in PATCH 5/6 missing header for FIELD_PREP
-> - Add R-By tags from Devarsh and Changhuang
-> - Link to v1: https://lore.kernel.org/r/20250324-probe_fixes-v1-0-5cd5b9e1cfac@ideasonboard.com
->
-> ---
-> Jai Luthra (6):
->        media: ti: j721e-csi2rx: Use devm_of_platform_populate
->        media: ti: j721e-csi2rx: Use fwnode_get_named_child_node
->        media: ti: j721e-csi2rx: Fix source subdev link creation
->        media: cadence: csi2rx: Implement get_fwnode_pad op
->        media: cadence: cdns-csi2rx: Support multiple pixels per clock cycle
->        media: ti: j721e-csi2rx: Support multiple pixels per clock
->
->   MAINTAINERS                                        |  1 +
->   drivers/media/platform/cadence/cdns-csi2rx.c       | 74 ++++++++++++++++------
->   drivers/media/platform/ti/Kconfig                  |  3 +-
->   .../media/platform/ti/j721e-csi2rx/j721e-csi2rx.c  | 65 ++++++++++++++-----
->   include/media/cadence/cdns-csi2rx.h                | 19 ++++++
->   5 files changed, 127 insertions(+), 35 deletions(-)
-> ---
-> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-> change-id: 20250314-probe_fixes-7e0ec33c7fee
->
-> Best regards,
 
