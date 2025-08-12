@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-167307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B5AB22F81
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB79B2303C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01EF86850FC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D3E71A2553B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3647B2FDC20;
-	Tue, 12 Aug 2025 17:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951612F7477;
+	Tue, 12 Aug 2025 17:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReQhJrgU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhVx2Tk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92272FDC3E;
-	Tue, 12 Aug 2025 17:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541C2221FAC;
+	Tue, 12 Aug 2025 17:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020374; cv=none; b=u/yrSNfC6KfapCvW/odFmA6FsylWWU/OOCrfE+Ni4M3Z+j0NMHYxYJqme3UdZZbIVNCJRC8UTj3e/AKwtz33CNlry/ahDd4mE2hGRzK/+7j6RPlD4PV09zbGydb7xiD0L5oiWf+cocjV/tLAo03zNFgvnn9ib6wqhsaKFup5ghQ=
+	t=1755020890; cv=none; b=YsoXetZCgpENX8V5UNwpxqfRVMiy6oGCu082qOzwbD+g/IXU3LGeecEN4lmSXPpImOv/HyBsP2GhvJe6e2gEX4TjFJ7BkVi1jyJM+tcmL4XW8JOl6z1dxeZSLpl303GNw/jftu3I1kuY+3qNdlF1oVIcf9FBwG+SzCFtS7BpHYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020374; c=relaxed/simple;
-	bh=zb6/qHNfdtflNsHTLt/pMIy3kmKL2Sg45uEmjLeTUzw=;
+	s=arc-20240116; t=1755020890; c=relaxed/simple;
+	bh=706zFCHp6GqadvBEmRjVvqz4EcOIrgr2BYMBrHhV8BE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaYs9WG3exjkHcoqUw8GXnt9K6LKJK66oN8SsvC6JSCvVTRB926bEldMbO1oWkDXC6MDjQRmlXHE7Q9J6OsGa/LIRRvJUptAZ7RDPMlhDomH2zdZTntAgXfbE0eowa7PaZXtrJCs0P0i/34ZHX7WIjFUOiyjKYF60beW6DdlJNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReQhJrgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7020BC4CEF0;
-	Tue, 12 Aug 2025 17:39:33 +0000 (UTC)
+	 MIME-Version; b=JEQN8EH1m7B3HnnV9kt9MwkAQcUqMSaQ6ZewO2BLRPMaQhtrZhNJ2w1bl5GwJ4sSbCTy32EDnMr3MiB7wi3e6eUEamq8fIu6vYoxeg17F0wV+2AHJhIWVaN7XsRWDiYzA7hSpCIYVKvYJMRF0KeRF3JGXioZNNfW0RKMLd5jfWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhVx2Tk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A04C4CEF0;
+	Tue, 12 Aug 2025 17:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020373;
-	bh=zb6/qHNfdtflNsHTLt/pMIy3kmKL2Sg45uEmjLeTUzw=;
+	s=korg; t=1755020890;
+	bh=706zFCHp6GqadvBEmRjVvqz4EcOIrgr2BYMBrHhV8BE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReQhJrgUT89QAHZTnmGYp39SmECHwVCR+bMhVeaCn8ppySfXdAMx8EJQfr4eaXtgC
-	 8XpML4Qvy4iVXxpOrY+PsUL9/cRFWGubW3YAviDFUgboxKxlG7+dxr/DNijux3LCqM
-	 wBIJSMtN7HhxCsJmq/xcHVCnn26ktbD1wzfbdR7o=
+	b=NhVx2Tk2hYGXUrhp6VPJ+anv8ZUxdCXHAdnGzp8hP+HGWP550LKjtumIVnYdszxQd
+	 pd2nAGmH8vRL6tAID5Gvblt/ol9OV8kZmMe3HpZtCpzdjMt1hQAAtR6/Xb7cfHYwzO
+	 ZMAq/m8titrSVsZYJratEOOcMt5JASmiQRwYaYCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 029/253] i2c: virtio: Avoid hang by using interruptible completion wait
+	Denis OSTERLAND-HEIM <denis.osterland@diehl.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 029/262] pps: fix poll support
 Date: Tue, 12 Aug 2025 19:26:57 +0200
-Message-ID: <20250812172949.971959523@linuxfoundation.org>
+Message-ID: <20250812172954.209742424@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
 
-commit a663b3c47ab10f66130818cf94eb59c971541c3f upstream.
+[ Upstream commit 12c409aa1ec2592280a2ddcc66ff8f3c7f7bb171 ]
 
-The current implementation uses wait_for_completion(), which can cause
-the caller to hang indefinitely if the transfer never completes.
+Because pps_cdev_poll() returns unconditionally EPOLLIN,
+a user space program that calls select/poll get always an immediate data
+ready-to-read response. As a result the intended use to wait until next
+data becomes ready does not work.
 
-Switch to wait_for_completion_interruptible() so that the operation can
-be interrupted by signals.
+User space snippet:
 
-Fixes: 84e1d0bf1d71 ("i2c: virtio: disable timeout handling")
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: <stable@vger.kernel.org> # v5.16+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/b8944e9cab8eb959d888ae80add6f2a686159ba2.1751541962.git.viresh.kumar@linaro.org
+    struct pollfd pollfd = {
+      .fd = open("/dev/pps0", O_RDONLY),
+      .events = POLLIN|POLLERR,
+      .revents = 0 };
+    while(1) {
+      poll(&pollfd, 1, 2000/*ms*/); // returns immediate, but should wait
+      if(revents & EPOLLIN) { // always true
+        struct pps_fdata fdata;
+        memset(&fdata, 0, sizeof(memdata));
+        ioctl(PPS_FETCH, &fdata); // currently fetches data at max speed
+      }
+    }
+
+Lets remember the last fetch event counter and compare this value
+in pps_cdev_poll() with most recent event counter
+and return 0 if they are equal.
+
+Signed-off-by: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
+Co-developed-by: Rodolfo Giometti <giometti@enneenne.com>
+Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+Fixes: eae9d2ba0cfc ("LinuxPPS: core support")
+Link: https://lore.kernel.org/all/f6bed779-6d59-4f0f-8a59-b6312bd83b4e@enneenne.com/
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/c3c50ad1eb19ef553eca8a57c17f4c006413ab70.camel@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-virtio.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/pps/pps.c          | 11 +++++++++--
+ include/linux/pps_kernel.h |  1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-virtio.c
-+++ b/drivers/i2c/busses/i2c-virtio.c
-@@ -116,15 +116,16 @@ static int virtio_i2c_complete_reqs(stru
- 	for (i = 0; i < num; i++) {
- 		struct virtio_i2c_req *req = &reqs[i];
+diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+index 63f96357eb9f..e1689957736d 100644
+--- a/drivers/pps/pps.c
++++ b/drivers/pps/pps.c
+@@ -41,6 +41,9 @@ static __poll_t pps_cdev_poll(struct file *file, poll_table *wait)
  
--		wait_for_completion(&req->completion);
--
--		if (!failed && req->in_hdr.status != VIRTIO_I2C_MSG_OK)
--			failed = true;
-+		if (!failed) {
-+			if (wait_for_completion_interruptible(&req->completion))
-+				failed = true;
-+			else if (req->in_hdr.status != VIRTIO_I2C_MSG_OK)
-+				failed = true;
-+			else
-+				j++;
-+		}
+ 	poll_wait(file, &pps->queue, wait);
  
- 		i2c_put_dma_safe_msg_buf(reqs[i].buf, &msgs[i], !failed);
--
--		if (!failed)
--			j++;
- 	}
++	if (pps->last_fetched_ev == pps->last_ev)
++		return 0;
++
+ 	return EPOLLIN | EPOLLRDNORM;
+ }
  
- 	return j;
+@@ -186,9 +189,11 @@ static long pps_cdev_ioctl(struct file *file,
+ 		if (err)
+ 			return err;
+ 
+-		/* Return the fetched timestamp */
++		/* Return the fetched timestamp and save last fetched event  */
+ 		spin_lock_irq(&pps->lock);
+ 
++		pps->last_fetched_ev = pps->last_ev;
++
+ 		fdata.info.assert_sequence = pps->assert_sequence;
+ 		fdata.info.clear_sequence = pps->clear_sequence;
+ 		fdata.info.assert_tu = pps->assert_tu;
+@@ -272,9 +277,11 @@ static long pps_cdev_compat_ioctl(struct file *file,
+ 		if (err)
+ 			return err;
+ 
+-		/* Return the fetched timestamp */
++		/* Return the fetched timestamp and save last fetched event  */
+ 		spin_lock_irq(&pps->lock);
+ 
++		pps->last_fetched_ev = pps->last_ev;
++
+ 		compat.info.assert_sequence = pps->assert_sequence;
+ 		compat.info.clear_sequence = pps->clear_sequence;
+ 		compat.info.current_mode = pps->current_mode;
+diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
+index c7abce28ed29..aab0aebb529e 100644
+--- a/include/linux/pps_kernel.h
++++ b/include/linux/pps_kernel.h
+@@ -52,6 +52,7 @@ struct pps_device {
+ 	int current_mode;			/* PPS mode at event time */
+ 
+ 	unsigned int last_ev;			/* last PPS event id */
++	unsigned int last_fetched_ev;		/* last fetched PPS event id */
+ 	wait_queue_head_t queue;		/* PPS event queue */
+ 
+ 	unsigned int id;			/* PPS source unique ID */
+-- 
+2.39.5
+
 
 
 
