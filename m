@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B450AB231A9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9FD9B233D5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4DAA4E3AF0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0243A1AA51D7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8762FA0CD;
-	Tue, 12 Aug 2025 18:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002562F5481;
+	Tue, 12 Aug 2025 18:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzFQVnTh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7KnbpP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8702E7BD4;
-	Tue, 12 Aug 2025 18:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25431DF27F;
+	Tue, 12 Aug 2025 18:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022042; cv=none; b=dfPydxOF5AwZiMPvxalpTXMLEkJND1hvLd4mZGwr08z1UQgKStBx8yz+Rf5jty+VNYejKujqhdqyjQlYUB3caZ78XbuR2uXRLU1uWOzBGPgLjhVAodS7fBLlMJ1WJOVDXGENcBE33nGHcMXpVnGNM4AnH9TaMOfa9LBPBBvjlJs=
+	t=1755023307; cv=none; b=QHOSdy+4mJkNah0GKz1rj2+Yz13tmOLyvwPtgyu3eNf50iu544I9KVFy85043Uv33Ixsbn1LeenrVFo9CK61539LTsNqW/6fm7rxIIdo1OvEthSMnKX1YFVdD4SILzTYrON3/gAfPj32mWEqMej8NA0WMCSAC3VKGCmJaHhh8Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022042; c=relaxed/simple;
-	bh=JI+QqJ9iHxX/k0h+brwFkQ6aKTKNs2kBgmAkEu70Aqo=;
+	s=arc-20240116; t=1755023307; c=relaxed/simple;
+	bh=5x+NS+iQefR3oqC0M+hXo3uesDGinVC2YtlSbbJP7Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7FsWQVN5UKP6ee1g2P3ZkG/bxoMyybBd/HUjVBiZiKFjrlT8Aqag4UbcMgQYjtSP01aMlPJZphPiMhj3cFo383Dp2PYBl2MRdGET6ZzEijxMqdjuOoCxFizYDIxVbZdtg4Hf/vIiCjC2/7BtqcW94eGfl3DS22aCwMMUpIUX4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzFQVnTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D283BC4CEF0;
-	Tue, 12 Aug 2025 18:07:21 +0000 (UTC)
+	 MIME-Version; b=mE5jSgdAgOuajieydgW9BOy88h+2ZWEbFQD7B+zF3dbMBcJDgmDeDJTa+bhg/6O68sNlD+pyYSo5VWSVcopi1OXSEr0eNZvZrAZZAWC06zc/OHTJYeJMK8kw2b4nU771ekWJdlJbwMjUJKXnl0StET33BcWE65ohxWkVv2/Xz4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7KnbpP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210F4C4CEF1;
+	Tue, 12 Aug 2025 18:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022042;
-	bh=JI+QqJ9iHxX/k0h+brwFkQ6aKTKNs2kBgmAkEu70Aqo=;
+	s=korg; t=1755023307;
+	bh=5x+NS+iQefR3oqC0M+hXo3uesDGinVC2YtlSbbJP7Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hzFQVnThNHZdyLcGMmLocKzrfYPa9EkNNc1PWMP/6FJTr/VGlhE7Hq8SmffTgbqFq
-	 DfECzTYg2LHr5Am4ByiAVDXNkxXsVqsz0r+F0eHMKQQbG5n9bCa6MLZwj99NGLTTUv
-	 MGibDQqCRsVubySjKEox0gTX2+tny1dfib9i84CA=
+	b=t7KnbpP/zN0MTkHD2QIH8NSLnxUIn/gZ7v9chpvf1hU7FXCtU2wWyTMTwL11I3dXG
+	 rdyMiaPXYin6Lo9qkMstL63uCbVmesxddqWYqku6YetxxMfEyLi4oDNJOSDhKT4yHI
+	 VEJKCsts3Knt4jHDkvVh+iq+RruJJ5iylMwSNwF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
+	Jie Gan <jie.gan@oss.qualcomm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/369] mei: vsc: Unset the event callback on remove and probe errors
-Date: Tue, 12 Aug 2025 19:25:36 +0200
-Message-ID: <20250812173016.230423308@linuxfoundation.org>
+Subject: [PATCH 6.16 042/627] arm64: dts: qcom: qcs615: fix a crash issue caused by infinite loop for Coresight
+Date: Tue, 12 Aug 2025 19:25:37 +0200
+Message-ID: <20250812173420.943144038@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Jie Gan <jie.gan@oss.qualcomm.com>
 
-[ Upstream commit 6175c6974095f8ca7e5f8d593171512f3e5bd453 ]
+[ Upstream commit bd4f35786d5f0798cc1f8c187a81a7c998e6c58f ]
 
-Make mei_vsc_remove() properly unset the callback to avoid a dead callback
-sticking around after probe errors or unbinding of the platform driver.
+An infinite loop has been created by the Coresight devices. When only a
+source device is enabled, the coresight_find_activated_sysfs_sink function
+is recursively invoked in an attempt to locate an active sink device,
+ultimately leading to a stack overflow and system crash. Therefore, disable
+the replicator1 to break the infinite loop and prevent a potential stack
+overflow.
 
-Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250623085052.12347-8-hansg@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+replicator1_out   ->   funnel_swao_in6   ->   tmc_etf_swao_in   ->  tmc_etf_swao_out
+     |                                                                     |
+replicator1_in                                                     replicator_swao_in
+     |                                                                     |
+replicator0_out1                                                   replicator_swao_out0
+     |                                                                     |
+replicator0_in                                                     funnel_in1_in3
+     |                                                                     |
+tmc_etf_out <- tmc_etf_in <- funnel_merg_out <- funnel_merg_in1 <- funnel_in1_out
+
+[call trace]
+   dump_backtrace+0x9c/0x128
+   show_stack+0x20/0x38
+   dump_stack_lvl+0x48/0x60
+   dump_stack+0x18/0x28
+   panic+0x340/0x3b0
+   nmi_panic+0x94/0xa0
+   panic_bad_stack+0x114/0x138
+   handle_bad_stack+0x34/0xb8
+   __bad_stack+0x78/0x80
+   coresight_find_activated_sysfs_sink+0x28/0xa0 [coresight]
+   coresight_find_activated_sysfs_sink+0x5c/0xa0 [coresight]
+   coresight_find_activated_sysfs_sink+0x5c/0xa0 [coresight]
+   coresight_find_activated_sysfs_sink+0x5c/0xa0 [coresight]
+   coresight_find_activated_sysfs_sink+0x5c/0xa0 [coresight]
+   ...
+   coresight_find_activated_sysfs_sink+0x5c/0xa0 [coresight]
+   coresight_enable_sysfs+0x80/0x2a0 [coresight]
+
+side effect after the change:
+Only trace data originating from AOSS can reach the ETF_SWAO and EUD sinks.
+
+Fixes: bf469630552a ("arm64: dts: qcom: qcs615: Add coresight nodes")
+Signed-off-by: Jie Gan <jie.gan@oss.qualcomm.com>
+Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250522005016.2148-1-jie.gan@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/platform-vsc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/qcom/qcs615.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
-index 20a11b299bcd..ab80bd3271b2 100644
---- a/drivers/misc/mei/platform-vsc.c
-+++ b/drivers/misc/mei/platform-vsc.c
-@@ -379,6 +379,8 @@ static int mei_vsc_probe(struct platform_device *pdev)
- err_cancel:
- 	mei_cancel_work(mei_dev);
+diff --git a/arch/arm64/boot/dts/qcom/qcs615.dtsi b/arch/arm64/boot/dts/qcom/qcs615.dtsi
+index bb8b6c3ebd03..559d3a4ba605 100644
+--- a/arch/arm64/boot/dts/qcom/qcs615.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs615.dtsi
+@@ -1902,6 +1902,7 @@ replicator@604a000 {
  
-+	vsc_tp_register_event_cb(tp, NULL, NULL);
-+
- 	mei_disable_interrupts(mei_dev);
+ 			clocks = <&aoss_qmp>;
+ 			clock-names = "apb_pclk";
++			status = "disabled";
  
- 	return ret;
-@@ -387,11 +389,14 @@ static int mei_vsc_probe(struct platform_device *pdev)
- static void mei_vsc_remove(struct platform_device *pdev)
- {
- 	struct mei_device *mei_dev = platform_get_drvdata(pdev);
-+	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
- 
- 	pm_runtime_disable(mei_dev->dev);
- 
- 	mei_stop(mei_dev);
- 
-+	vsc_tp_register_event_cb(hw->tp, NULL, NULL);
-+
- 	mei_disable_interrupts(mei_dev);
- 
- 	mei_deregister(mei_dev);
+ 			in-ports {
+ 				port {
 -- 
 2.39.5
 
