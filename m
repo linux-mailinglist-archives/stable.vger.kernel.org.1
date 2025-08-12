@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C32CB2315B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33591B2328E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E14CF1AA4C11
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A0A97B58B2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155262FE59B;
-	Tue, 12 Aug 2025 18:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39C62ED17F;
+	Tue, 12 Aug 2025 18:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="co4CJG8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGQ2wZeg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C272FE56B;
-	Tue, 12 Aug 2025 18:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725643F9D2;
+	Tue, 12 Aug 2025 18:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021648; cv=none; b=M+N5g/mPrzZa/PauZiHbRNX7LfUQkcncWZHHNljy/d2AuSbDdoRzyvticCJMnpqXjr5MxAU4v0x7wVTT0G1WeuB9pHF2T5sJFKoDgIexL1sK8JflGOautSY8/yY7Yl4nAYdKBYdKJIfqfhbtGxB/wE5c+k4EKvZiKH37/8jdv3c=
+	t=1755022773; cv=none; b=WjdZxFvrQLXyrK67SNFfTY8iM9u3Ah/Dqpcdp8wbnM8P3SlD6/s39sUmeOmulpR5OxGck1jcSQ+aypou9gj3vspVMCwbW+y3eiFLTLjKMpLy8xI/k6cqWjjAfm+GhTfvKQonkB9kmAUb3kopLyJUXiL52z7GeCX2eHg5IwFu4IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021648; c=relaxed/simple;
-	bh=q1kmf0i1xPAW0uMuM5F08Z0H/7zookg53dw4Pkal9Mk=;
+	s=arc-20240116; t=1755022773; c=relaxed/simple;
+	bh=a7pogepNtFPCe3hgqAtiqEbSNvUem9m6ju6u/uAB4wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apvK/15na4RuEJFMaAGT4FgtkA8z8mq8orf22Chs8vyC6t6dujkUQ5h7L4v/vhzu6yNEUXLGUO5ssAdqqrVPCof90WiTa7odK1lmJ6jJ13mR47CFCiguvWpT4CCjGTgHwqkfJzWCuL+de7mXEBX9i3wpJJN1JepLQJ50s/7xhYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=co4CJG8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3813BC4CEF0;
-	Tue, 12 Aug 2025 18:00:47 +0000 (UTC)
+	 MIME-Version; b=TY74x/1/16kZ9gA20DVl2DC8Ao+4vrNXYG8uc1Ak0Ps6tDf/wVia+lAFkEwFSwz/d27rGdkfpxE4cg1xlrs+sVIM3p/0rw4uOM0gnIwQFM+WmJuY7yKXMQMgqquswByYnkpkVfj448DfG2uQQrdy/AadK/P3Arcx+BBjHkfYGlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGQ2wZeg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79398C4CEF6;
+	Tue, 12 Aug 2025 18:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021648;
-	bh=q1kmf0i1xPAW0uMuM5F08Z0H/7zookg53dw4Pkal9Mk=;
+	s=korg; t=1755022773;
+	bh=a7pogepNtFPCe3hgqAtiqEbSNvUem9m6ju6u/uAB4wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=co4CJG8idtsZPTmqonTE0B+xPQQRuPjm4ohmBomPFk3oZ8mXgb9LIqmBINay6z8pU
-	 lRH86OvPynndj0MivLaaVZ1hLcNZLlsu9KWEvtJYo7BOmGBmNaJYpw1rgntebupCRN
-	 QmWmgosNUocwp6HoqARIhU7K+fqUoUMYhKFusvkM=
+	b=uGQ2wZeg1rO1qkbf7RVT/zdlyMzyfiTJgMyz1jl9U0fbNzP7Bt9oZf8z+U3vANIm2
+	 pr7uqcDmhJNhX2e6JBSfhXmGcr/B2WeTL/0c39FCgjJVuifzaIRlJqyyX2wCaFPVQS
+	 DBImJhjMmsPqGLet2ExYuM4FjswBFYNkuKPg3UCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/262] mtd: rawnand: atmel: Fix dma_mapping_error() address
+Subject: [PATCH 6.12 247/369] rtc: pcf8563: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:04 +0200
-Message-ID: <20250812172959.744754752@linuxfoundation.org>
+Message-ID: <20250812173024.059714932@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit e1e6b933c56b1e9fda93caa0b8bae39f3f421e5c ]
+[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
 
-It seems like what was intended is to test if the dma_map of the
-previous line failed but the wrong dma address was passed.
+When pcf8563_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250702064515.18145-2-fourier.thomas%40gmail.com
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
+ drivers/rtc/rtc-pcf8563.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 3f494f7c7ecb..d4fd1302008e 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -373,7 +373,7 @@ static int atmel_nand_dma_transfer(struct atmel_nand_controller *nc,
- 	dma_cookie_t cookie;
+diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
+index 647d52f1f5c5..23b21b908915 100644
+--- a/drivers/rtc/rtc-pcf8563.c
++++ b/drivers/rtc/rtc-pcf8563.c
+@@ -386,7 +386,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
- 	buf_dma = dma_map_single(nc->dev, buf, len, dir);
--	if (dma_mapping_error(nc->dev, dev_dma)) {
-+	if (dma_mapping_error(nc->dev, buf_dma)) {
- 		dev_err(nc->dev,
- 			"Failed to prepare a buffer for DMA access\n");
- 		goto err;
+-	return 0;
++	return clkout_rates[0];
+ }
+ 
+ static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
