@@ -1,115 +1,123 @@
-Return-Path: <stable+bounces-167134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CCEB22502
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 12:54:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37226B21DD6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 08:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82F9D3ACECC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 10:52:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 269662A5762
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 06:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807062ECD26;
-	Tue, 12 Aug 2025 10:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D892DCF74;
+	Tue, 12 Aug 2025 06:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g30y1D3M"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="X1wAZwZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB032EBDDA
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 10:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21442D2398;
+	Tue, 12 Aug 2025 06:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754995939; cv=none; b=NCUSfSfU245HPJOC9J+UGzMgLr9yoD+VQYg8gVPSE1GxiB2yawYp7J2xAWqO8tBSWTn0Jqv2kUsJWtYEyGGYUsiFNmCpbJPyj9IkthGeJwVnd4nzRJizqizYIOo/GqCf0zjAn+GRiBFx39JiAKjbPbEcBg8vo9f7agZkSiY8IMc=
+	t=1754978486; cv=none; b=D76/raBnQfzT5X7Fr65Q2uQpnEUGvLQpC0o9FwDR6SW45BajuoqBm9xA58Iil1NrpqCj3afPbGxVRRI0//h5myoIafe1s2nt2Q8sn83/eW0gGgBLWKWbqsabu9nht7iTBmyADU+gW051HoWS+kptpsY7LdRpo7sy0PcquxIlcWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754995939; c=relaxed/simple;
-	bh=X4zNCBkFlzCtK2wcE77U7OX7cZ/L8P3LOy1/OLuL38c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j1JOv51O/bDT7xh29e9p0Jh4r3WpEz/XgkQhFeWkVQVtYSS1aRsCmQCGU078NmuVlgL+tJjW9MGG6Td+DPPWixuhE2lsLqztric3uGtvEdPiRI/WCPAvXyXjiu9Mrif0kJ8ERc9cubh9qGYwiahnBMgo4KGL0cZ6L7uld69nN0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g30y1D3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C98AC4CEF0;
-	Tue, 12 Aug 2025 10:52:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754995939;
-	bh=X4zNCBkFlzCtK2wcE77U7OX7cZ/L8P3LOy1/OLuL38c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g30y1D3M1eRPhaq4Z5cuE75oQAAfsSj/OS3UuGYaRDHxH+9qoBMIGNLJyOaUQRYFg
-	 vB6GGCCnYWAm/Fu0gIP6e/KLKt3UBU60Xu6yQ+Wh50+0bBmUfjNA1Y6t3QjlcpDREW
-	 bsF9LarRho68GSvZ7d9aDQUpbxsqmSw5n+gm9JQOVlmVOM6lbz+f6qpsZ1kR1w+PD6
-	 9bGf0Lc5WekLR9lEQCie9mqgxg8106V2t4X+lei08TdAb5b+lQTAxmSucO+ImWcKJa
-	 jNifYbj0edL4eLkCF0Qg7d1K+xgh0RkWWe9dIVoJNahBc0x5sjJJptF7bnRA5ciKlG
-	 FQRcXKXk/9Bow==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4 3/6] mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
-Date: Tue, 12 Aug 2025 00:12:36 -0400
-Message-Id: <1754967414-14a4ea6d@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250811235151.1108688-4-nathan@kernel.org>
-References: 
+	s=arc-20240116; t=1754978486; c=relaxed/simple;
+	bh=dUZxxbghhnPxpoxwe3WugKrFrejjzumMUPTmvJoixVY=;
+	h=Date:To:From:Subject:Message-Id; b=tkpVp9xC6BwOnfOyYpoYoBRL0Wv2pclHIHdET/10cW8AIQjkOLvZFIakxpNobe5unVmmhaadzT131tkRQmkAxP0xbx0zXCjeARgttOWIOb8PIP4zFVVPwXXEVs+YVKI/Fl7+BT/al5KPhIQuy+3dbgj55Wa04XT21PDs/218jjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=X1wAZwZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F551C4CEF0;
+	Tue, 12 Aug 2025 06:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754978486;
+	bh=dUZxxbghhnPxpoxwe3WugKrFrejjzumMUPTmvJoixVY=;
+	h=Date:To:From:Subject:From;
+	b=X1wAZwZTNcb3A38eCJbXWKgrsLUAF9p01p1Dh8b7+HB9nCxuaTBZj2eFjEnRT3Wpn
+	 SeOSPNX0TU4HVO+qZ6hBRB63UpLqJxu4x7nzylZa54W3D0xdw7Nhre1mm6t2SlPtSV
+	 EThLseTNKVT6qj7WTXhsgKGGCtjZtBsDj4zNnp/s=
+Date: Mon, 11 Aug 2025 23:01:25 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,lokeshgidra@google.com,david@redhat.com,aarcange@redhat.com,surenb@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry.patch removed from -mm tree
+Message-Id: <20250812060126.1F551C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
 
-Hi,
+The quilt patch titled
+     Subject: userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a migration entry
+has been removed from the -mm tree.  Its filename was
+     userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry.patch
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-The upstream commit SHA1 provided is correct: 08f6554ff90ef189e6b8f0303e57005bddfdd6a7
+------------------------------------------------------
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a migration entry
+Date: Wed, 6 Aug 2025 15:00:22 -0700
 
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (different SHA1: 2995dbfe98e7)
-5.15.y | Present (different SHA1: d36719f29376)
-5.10.y | Present (different SHA1: 9562b9f708e9)
+When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
+obtaining a folio and accessing it even though the entry is swp_entry_t. 
+Add the missing check and let split_huge_pmd() handle migration entries. 
+While at it also remove unnecessary folio check.
 
-Note: The patch differs from the upstream commit:
----
-1:  08f6554ff90e ! 1:  49e341f4bf2e mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
-    @@ Metadata
-      ## Commit message ##
-         mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
-     
-    +    commit 08f6554ff90ef189e6b8f0303e57005bddfdd6a7 upstream.
-    +
-         A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
-         KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
-         When that occurs, the following error appears when building ARCH=mips
-    @@ Commit message
-     
-         Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-         Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-    +    Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-     
-      ## arch/mips/Makefile ##
-     @@ arch/mips/Makefile: KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
-    @@ arch/mips/Makefile: KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
-      ifdef CONFIG_MIPS
-     -CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
-     +CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
-    - 	grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
-    + 	egrep -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
-      	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
-      endif
-
+[surenb@google.com: remove extra folio check, per David]
+  Link: https://lkml.kernel.org/r/20250807200418.1963585-1-surenb@google.com
+Link: https://lkml.kernel.org/r/20250806220022.926763-1-surenb@google.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Results of testing on various branches:
+ mm/userfaultfd.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| 5.4                       | Success     | Success    |
+--- a/mm/userfaultfd.c~userfaultfd-fix-a-crash-in-uffdio_move-when-pmd-is-a-migration-entry
++++ a/mm/userfaultfd.c
+@@ -1821,13 +1821,16 @@ ssize_t move_pages(struct userfaultfd_ct
+ 			/* Check if we can move the pmd without splitting it. */
+ 			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+ 			    !pmd_none(dst_pmdval)) {
+-				struct folio *folio = pmd_folio(*src_pmd);
++				/* Can be a migration entry */
++				if (pmd_present(*src_pmd)) {
++					struct folio *folio = pmd_folio(*src_pmd);
+ 
+-				if (!folio || (!is_huge_zero_folio(folio) &&
+-					       !PageAnonExclusive(&folio->page))) {
+-					spin_unlock(ptl);
+-					err = -EBUSY;
+-					break;
++					if (!is_huge_zero_folio(folio) &&
++					    !PageAnonExclusive(&folio->page)) {
++						spin_unlock(ptl);
++						err = -EBUSY;
++						break;
++					}
+ 				}
+ 
+ 				spin_unlock(ptl);
+_
+
+Patches currently in -mm which might be from surenb@google.com are
+
+mm-limit-the-scope-of-vma_start_read.patch
+mm-change-vma_start_read-to-drop-rcu-lock-on-failure.patch
+selftests-proc-test-procmap_query-ioctl-while-vma-is-concurrently-modified.patch
+fs-proc-task_mmu-factor-out-proc_maps_private-fields-used-by-procmap_query.patch
+fs-proc-task_mmu-execute-procmap_query-ioctl-under-per-vma-locks.patch
+
 
