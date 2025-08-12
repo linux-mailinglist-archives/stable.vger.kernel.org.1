@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93361B234D2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E743BB22FE4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D201918871CE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE441AA1069
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DE92FE571;
-	Tue, 12 Aug 2025 18:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1F02FDC32;
+	Tue, 12 Aug 2025 17:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKjAz9EA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tSgNfwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFE62FD1AD;
-	Tue, 12 Aug 2025 18:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2802F83CB;
+	Tue, 12 Aug 2025 17:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023983; cv=none; b=Zq7sqOUhzaRSp2gwnN7i46LE+0Vjgi7VtrgsQoPvdcE11loFfFZPf9RHyMS9C69jE3uxPED5I/AVmPckBGnRgTjNoD0lJEzugwwTJZIh0X5IhIRvHgNhRTYPGTVPzChCjhGXF9h8xHGRO0o0W05TFIGjRQcTY/tyBDHDYGBJR6U=
+	t=1755020654; cv=none; b=Abi1p7zy1FzrlMX0GrY3PU45fXnSwIfKrbAsDvVT74CV1TcDy6Mn6ov7oSKtGuiFaOQyaNvyuH33dT6efkyHF6zL0aXuJU1PiZ630jE0Nk2Dea3szC+LKfjR/UF/tjmlP9J4tlP4VyvAZawEm9feZHQ3N69CoR+qTXWGkB+CAz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023983; c=relaxed/simple;
-	bh=rB45pbiPqx12ToZplfUAnh/K1Ul1HZU9ijbt6/JqUzM=;
+	s=arc-20240116; t=1755020654; c=relaxed/simple;
+	bh=Mg2N8r43yHVsmkeS1ljI1+BQ1L0Fn37zCXLHwRa7UUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7aOvHjGFDaSZbt0gLyE/NrtEVNbjkkWlrKnvEHXrt1ti2x7US7nPDH3G8TbPPMcISafZqo+09eOGqmKevWIDUunT2lWL+oNPrTPrEc8zaNf/LzclvaS8OssAtC5p7+05F1HeE9rYgCeg0kctEegQ8tzXvTgvLW2CgqNZviNwh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKjAz9EA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A28FC4CEF0;
-	Tue, 12 Aug 2025 18:39:41 +0000 (UTC)
+	 MIME-Version; b=Eq9CJ+xlG5csGLUW3P8oSb6WLSa4fArDyr3stgJAylEF/wv2h6QwhZuz+F5TWpeJkEEKSE/IcBgfYr1BvGTPpZ1o3uQoX/4QZboK7d4hlNxs67RqtwW5SBbBLpRek05W/78594aDEmpPQVj6f2+Ii9u8ng8Zg3dGBMGhUY89MNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tSgNfwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD61C4CEF0;
+	Tue, 12 Aug 2025 17:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023981;
-	bh=rB45pbiPqx12ToZplfUAnh/K1Ul1HZU9ijbt6/JqUzM=;
+	s=korg; t=1755020654;
+	bh=Mg2N8r43yHVsmkeS1ljI1+BQ1L0Fn37zCXLHwRa7UUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKjAz9EA4Gvj61ITF8LNWpECZG9iMfyyz+/w7gc0h94H2l9T6/kzChprgXqUfGKTu
-	 3d01QRCOZIr621a4cJDL+OoS1Wp2SmXAB4krqkNzkV2oR5iPWvhuK/3YxYIPmnJe07
-	 nrfwJgtyt/oQ8XsgQy3tcIFOiArRySU5zfsQ2kOQ=
+	b=2tSgNfwbYHky2dywXR5kAsgv6GRHn3eAuSIIPEQDk+UlyeydlB3O/Ruy+Z0TeXEEL
+	 WPfgtTM3nAncymHlGS4LasIzNGYWUngUMNWe7wtt7xXjm0Lt78ReNSfR1lDuR2l1Nc
+	 06RlJpPqrbyyCqjhov4T4FMUKBrYZNChgjJKzTcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	James Cowgill <james.cowgill@blaize.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 237/627] wifi: mac80211: Do not schedule stopped TXQs
+Subject: [PATCH 6.1 144/253] media: v4l2-ctrls: Fix H264 SEPARATE_COLOUR_PLANE check
 Date: Tue, 12 Aug 2025 19:28:52 +0200
-Message-ID: <20250812173428.318247954@linuxfoundation.org>
+Message-ID: <20250812172954.827093811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: James Cowgill <james.cowgill@blaize.com>
 
-[ Upstream commit 11e3e22fa533f5d7cf04e32343b05a27eda3c7a5 ]
+[ Upstream commit 803b9eabc649c778986449eb0596e5ffeb7a8aed ]
 
-Ignore TXQs with the flag IEEE80211_TXQ_STOP when scheduling a queue.
+The `separate_colour_plane_flag` element is only present in the SPS if
+`chroma_format_idc == 3`, so the corresponding flag should be disabled
+whenever that is not the case and not just on profiles where
+`chroma_format_idc` is not present.
 
-The flag is only set after all fragments have been dequeued and won't
-allow dequeueing other frames as long as the flag is set.
-
-For drivers using ieee80211_txq_schedule_start() this prevents an
-loop trying to push the queued frames while IEEE80211_TXQ_STOP is set:
-
-After setting IEEE80211_TXQ_STOP the driver will call
-ieee80211_return_txq(). Which calls __ieee80211_schedule_txq(), detects
-that there sill are frames in the queue and immediately restarts the
-stopped TXQ. Which can't dequeue any frame and thus starts over the loop.
-
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
-Link: https://patch.msgid.link/20250717162547.94582-2-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: b32e48503df0 ("media: controls: Validate H264 stateless controls")
+Signed-off-by: James Cowgill <james.cowgill@blaize.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-ctrls-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index d58b80813bdd..4a9b258300fe 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4098,7 +4098,9 @@ void __ieee80211_schedule_txq(struct ieee80211_hw *hw,
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+index 29169170880a..ad5a40e4c2d5 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -651,12 +651,12 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
  
- 	spin_lock_bh(&local->active_txq_lock[txq->ac]);
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS;
+-
+-			if (p_h264_sps->chroma_format_idc < 3)
+-				p_h264_sps->flags &=
+-					~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
+ 		}
  
--	has_queue = force || txq_has_queue(txq);
-+	has_queue = force ||
-+		    (!test_bit(IEEE80211_TXQ_STOP, &txqi->flags) &&
-+		     txq_has_queue(txq));
- 	if (list_empty(&txqi->schedule_order) &&
- 	    (has_queue || ieee80211_txq_keep_active(txqi))) {
- 		/* If airtime accounting is active, always enqueue STAs at the
++		if (p_h264_sps->chroma_format_idc < 3)
++			p_h264_sps->flags &=
++				~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
++
+ 		if (p_h264_sps->flags & V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY)
+ 			p_h264_sps->flags &=
+ 				~V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD;
 -- 
 2.39.5
 
