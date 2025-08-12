@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765BCB22FFB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1142B23418
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 464367B0E89
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E597D165DAF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885662FD1CE;
-	Tue, 12 Aug 2025 17:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714152ECE93;
+	Tue, 12 Aug 2025 18:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAc+A+oJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGW/BZ36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AF72FDC34;
-	Tue, 12 Aug 2025 17:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095B1EF38C;
+	Tue, 12 Aug 2025 18:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020788; cv=none; b=gGOTE/di9tnrknfyde47i201kfgwjhjeOlWDbnpAWxnp2/Pwt8Su/iyHZ78nCyvBh1zw7DbkOeLFZilyd5r10E/IGjB/51dbFwJNr+Sn7BrbYZFoPBY/xhLePU4uJ/SZK0bI8vw6Yy4VxUZkkvA3s+XamML1mvyztgmTOA4Ug4w=
+	t=1755023532; cv=none; b=b0V7d0pKRpm1xNoVZEsQWipX6o0TPsD2JXy7WY2H1ekWZ5rpLbE7MRhCCCxtVAy0fbNCpmd1TaVLL/zUkU4mtXxGo27SvNDf3XwzljudS1Rr9BBJWGkb7rKZewnsmOnCPJhk9fcZ+6WRjyTSPYJjABSQEoYzoepG16Nc3bQEKmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020788; c=relaxed/simple;
-	bh=D2eDQYZpPJjmTsLDOugq3mspmdgiYyhd0Kvhx8l2Rg0=;
+	s=arc-20240116; t=1755023532; c=relaxed/simple;
+	bh=K/VtbLMZ9kZARIL2w46D/iXTla+rqvTr1Rf2/2X4Guk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XPj9zFmbx2a9bf2tcT6FN6MGkGWIpJ4+LEmzgsjZVYsPGFj8cSLXJL6b9HWSpxC1u5S+mu0UP8LjFAOpaTIhKBCMJkLl2kQrF0+Lw/gcz5TB9BDaCMiiwJIPOTvIuKcSm/8yw5OjuMHoT/QUoj4KEtRu4kZ2190iynYTX+UEWdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAc+A+oJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CC9C4CEF0;
-	Tue, 12 Aug 2025 17:46:27 +0000 (UTC)
+	 MIME-Version; b=DRryMDNQEVgGBn9lPQtYOcFc0+jA2eohYR44dBc9SH5FFk3lCp7M5P7Tcm0R8E28Pg0FZ+O+QOR9COlGEM0Oci1a0178FfJQjFPlA2bc4rWyYQgn4jv9liWjFEWw2TmnxkFYrmgYu+hWXktjBTGne2RtmXZ8XmYihODf9Fdr7sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGW/BZ36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F31C4CEF0;
+	Tue, 12 Aug 2025 18:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020787;
-	bh=D2eDQYZpPJjmTsLDOugq3mspmdgiYyhd0Kvhx8l2Rg0=;
+	s=korg; t=1755023532;
+	bh=K/VtbLMZ9kZARIL2w46D/iXTla+rqvTr1Rf2/2X4Guk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAc+A+oJ2kTJ/8YI4xl1VbASwbNfZTo+Yz/XnCCgS0u46CDr6impsjCXx9R/SsfS0
-	 buvRCCzxmEphsMNoOMxAAnJrSzerQeYt/5SpCwwFmXUp/PJWDggZvB6SXB9smtRRwj
-	 u3GWGMI8Eo98jwa4AMaOjWQ00evz3TXoQTZxpTZk=
+	b=CGW/BZ362+QUC1Q5LJ2JffBdxVWUBthQs6HANxjjhOBrxy8A/Noo5kVjQ8Kepo9yQ
+	 K2F55mrzywEI8/9nAVmRlaj7XYqON1ZGv8+LJJlRS7v1Z7iD/GzKcRnGfPkKvZ02KA
+	 j4A6PcyyyQBScC8VrKKxGJp2XE7MRcXeJKJWvhnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Giedrius=20Trainavi=C4=8Dius?= <giedrius@blokas.io>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/262] ASoC: soc-dai: tidyup return value of snd_soc_xlate_tdm_slot_mask()
+Subject: [PATCH 6.16 108/627] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
 Date: Tue, 12 Aug 2025 19:26:43 +0200
-Message-ID: <20250812172953.632255679@linuxfoundation.org>
+Message-ID: <20250812173423.422389733@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit f4c77d5af0a9cd0ee22617baa8b49d0e151fbda7 ]
+[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
 
-commit 7f1186a8d738661 ("ASoC: soc-dai: check return value at
-snd_soc_dai_set_tdm_slot()") checks return value of
-xlate_tdm_slot_mask() (A1)(A2).
+In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
+accordance with the target frequency to ensure delivering adequate
+performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
+indication that the desired performance level is actually equal to the
+floor one.  This may cause it to choose a performance point way above
+the desired level.
 
-	/*
-	 * ...
-(Y)	 * TDM mode can be disabled by passing 0 for @slots. In this case @tx_mask,
-	 * @rx_mask and @slot_width will be ignored.
-	 * ...
-	 */
-	int snd_soc_dai_set_tdm_slot(...)
-	{
-		...
-		if (...)
-(A1)			ret = dai->driver->ops->xlate_tdm_slot_mask(...);
-		else
-(A2)			ret = snd_soc_xlate_tdm_slot_mask(...);
-		if (ret)
-			goto err;
-		...
-	}
+Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
+actually sets HWP_DESIRED_PERF in accordance with the target performance
+value.
 
-snd_soc_xlate_tdm_slot_mask() (A2) will return -EINVAL if slots was 0 (X),
-but snd_soc_dai_set_tdm_slot() allow to use it (Y).
+Address this by adjusting intel_cpufreq_update_pstate() to pass
+target_pstate as both the minimum and the desired performance levels
+to intel_cpufreq_hwp_update().
 
-(A)	static int snd_soc_xlate_tdm_slot_mask(...)
-	{
-		...
-		if (!slots)
-(X)			return -EINVAL;
-		...
-	}
-
-Call xlate_tdm_slot_mask() only if slots was non zero.
-
-Reported-by: Giedrius Trainavičius <giedrius@blokas.io>
-Closes: https://lore.kernel.org/r/CAMONXLtSL7iKyvH6w=CzPTxQdBECf++hn8RKL6Y4=M_ou2YHow@mail.gmail.com
-Fixes: 7f1186a8d738661 ("ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()")
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/8734cdfx59.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index 507743c87e40..5a0fa8d1f38b 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -273,13 +273,15 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- 		&rx_mask,
- 	};
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 64587d318267..60326ab5475f 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -3249,8 +3249,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
+ 		int max_pstate = policy->strict_target ?
+ 					target_pstate : cpu->max_perf_ratio;
  
--	if (dai->driver->ops &&
--	    dai->driver->ops->xlate_tdm_slot_mask)
--		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	else
--		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	if (ret)
--		goto err;
-+	if (slots) {
-+		if (dai->driver->ops &&
-+		    dai->driver->ops->xlate_tdm_slot_mask)
-+			ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		else
-+			ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		if (ret)
-+			goto err;
-+	}
- 
- 	for_each_pcm_streams(stream)
- 		snd_soc_dai_tdm_mask_set(dai, stream, *tdm_mask[stream]);
+-		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
+-					 fast_switch);
++		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
++					 target_pstate, fast_switch);
+ 	} else if (target_pstate != old_pstate) {
+ 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
+ 	}
 -- 
 2.39.5
 
