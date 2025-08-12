@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20528B22FF5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84802B234DE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88E32566DBF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 979901B609CD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B0C2C15B5;
-	Tue, 12 Aug 2025 17:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166F22FFDC0;
+	Tue, 12 Aug 2025 18:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLLp6r7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvUJ0l/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715AD221FAC;
-	Tue, 12 Aug 2025 17:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89662FF176;
+	Tue, 12 Aug 2025 18:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020729; cv=none; b=nYQ3nbg4LAvodV60kywonin0HIDi5B8KOGCHfcCV8Zvco9QrsPxv/qtw0c/jRNXZV/ILfxn2AqjRfgIA7W0ji2pMCVl6geTCky8ZMc1OTadfdTLukBwcFgnJIEkA+GYXdQzvicN46kC+0kC7Dlr/C7KfxPnpo8q2U4aX6/6iR4k=
+	t=1755024026; cv=none; b=SbTD/qGIgi8zP3mA7MrGXsG5KQV+TJSLsnbLJfuaK7p2YHGrXXyt+OaN8hkkt0zG7OTMBhFwjh+4vz+Nepr2eQwq8PzALZaFJ6xcT+bpLvaJMyuAxq+yEHPEHbMrPWTmMAsG5XuDepLtHnyszwuXVlN/ZkH7Ffx//wZZmJSqLEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020729; c=relaxed/simple;
-	bh=ZdqJdCqJT4LLdk7+ekpkUUf/FkZb5NryXMAEKHOn9UA=;
+	s=arc-20240116; t=1755024026; c=relaxed/simple;
+	bh=FiMMplwRC0hv/SN1NZLscmS2+Tr0Hc96DvYLd/P+/kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ih+BRb+zXZPovvHI3Q3g2tOsmJ7xSaiVPjv/2bP4PIO+YZbSTmOTr9TQHwlt2DFmNe0jHKtoFVSlcbHOQ46uyZfRShK/m4CWlZTVeJqln21UeLrpZ3WrMPhZ3/cv8eb0KiJuH2ukY3NZuevaIx6X2PaWsF9+i4eDGXP7FpIkUwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLLp6r7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C6AC4CEF0;
-	Tue, 12 Aug 2025 17:45:28 +0000 (UTC)
+	 MIME-Version; b=Kp1VautsC+KDneaLp5GG03Ca1WTk7jDcb72Hn8IAEg9/8g2TuwRFS8U/jHPtrUmCSxNnOAOQAjOlyWuyiN/7g/vdyGrn3gH6ZwLQWaFku5Y52OVxgrt17HgNAAyYMqHFd5efT+1d2VYSn7HUYTI2kz/UuXjPxaho5NkUWm3wcN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvUJ0l/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23727C4CEF6;
+	Tue, 12 Aug 2025 18:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020729;
-	bh=ZdqJdCqJT4LLdk7+ekpkUUf/FkZb5NryXMAEKHOn9UA=;
+	s=korg; t=1755024026;
+	bh=FiMMplwRC0hv/SN1NZLscmS2+Tr0Hc96DvYLd/P+/kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLLp6r7AyspRJy7I/t5lNlXph1j8hikywIxGVrtDQ+NpNaJrbUpT7StT4zBUUhfgo
-	 WmrhtLXkHWicMafMa9oOoWh8VRi4J6TVoQSszQk6beOF2o0AOOolXmqNlaA2/npmCu
-	 m+y6gUtcejEsH5r9bFVXj7JW6b5eiLZ8q0EtsFec=
+	b=PvUJ0l/LOQQSQsVDvKXEMNAOM1sgT92dS6lRPYbDMd8ukF4NNnqJ8FDqRYnGYt0ae
+	 Zjzn/OhHF+OgDA+0e+WWUwX+ENwjbsuEltQmgSI8K0rbN6Jidy8HtfyEkJWFpaIc+m
+	 rpGoTLoz5wzrMOrvkzXKIleieEjzd1yVFOAkc+1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/253] perf tests bp_account: Fix leaked file descriptor
+Subject: [PATCH 6.16 252/627] wifi: iwlwifi: mld: decode EOF bit for AMPDUs
 Date: Tue, 12 Aug 2025 19:29:07 +0200
-Message-ID: <20250812172955.485128402@linuxfoundation.org>
+Message-ID: <20250812173428.899750700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
+[ Upstream commit bc404dfddbf6817cae9b170c34556dc72ea975e5 ]
 
-Since the commit e9846f5ead26 ("perf test: In forked mode add check that
-fds aren't leaked"), the test "Breakpoint accounting" reports the error:
+Only the EOF bit handling for single frames was ported to the MLD
+driver. The code to handle AMPDUs correctly was forgotten. Add it back
+so that the bit is reported in the radiotap headers again.
 
-  # perf test -vvv "Breakpoint accounting"
-  20: Breakpoint accounting:
-  --- start ---
-  test child forked, pid 373
-  failed opening event 0
-  failed opening event 0
-  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
-  wp 0 created
-  wp 1 created
-  wp 2 created
-  wp 3 created
-  wp 0 modified to bp
-  wp max created
-  ---- end(0) ----
-  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
-
-A watchpoint's file descriptor was not properly released. This patch
-fixes the leak.
-
-Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250723094230.195be86372d5.I4db4abf348f7b6dfc75f869770dd77655a204bc7@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/bp_account.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
-index 6f921db33cf9..855b81c3326c 100644
---- a/tools/perf/tests/bp_account.c
-+++ b/tools/perf/tests/bp_account.c
-@@ -102,6 +102,7 @@ static int bp_accounting(int wp_cnt, int share)
- 		fd_wp = wp_event((void *)&the_var, &attr_new);
- 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
- 		pr_debug("wp max created\n");
-+		close(fd_wp);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
+index ce0093d5c638..185c1a0cb47f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
+@@ -1039,6 +1039,15 @@ static void iwl_mld_rx_eht(struct iwl_mld *mld, struct sk_buff *skb,
+ 			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
  	}
  
- 	for (i = 0; i < wp_cnt; i++)
++	/* update aggregation data for monitor sake on default queue */
++	if (!queue && (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD) &&
++	    (phy_info & IWL_RX_MPDU_PHY_AMPDU) && phy_data->first_subframe) {
++		rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
++		if (phy_data->data0 &
++		    cpu_to_le32(IWL_RX_PHY_DATA0_EHT_DELIM_EOF))
++			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
++	}
++
+ 	if (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD)
+ 		iwl_mld_decode_eht_phy_data(mld, phy_data, rx_status, eht, usig);
+ 
 -- 
 2.39.5
 
