@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-169081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95784B23810
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1563DB2380F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9166E424B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:18:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271B95A052A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347A228505A;
-	Tue, 12 Aug 2025 19:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A33628640A;
+	Tue, 12 Aug 2025 19:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMhRE+Gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rnc/QreS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E691C305E2D;
-	Tue, 12 Aug 2025 19:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EDA21ABD0;
+	Tue, 12 Aug 2025 19:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026314; cv=none; b=uXwPP2RXQ+ZTDBOLMAzcT2vI2nAVT8uqMPZG+0YdK1jHMAcOanhFEYh31hZhDJNq2tefAv8pdSgKussr3puzKNm3bEWJFTaeWcY+fkBQtIbHIbe/PYp+S37+h8JddPxgcHss5kr3+qKo0MyTTy+d8juJMUCAGeWFSEAEQPheBPw=
+	t=1755026351; cv=none; b=TNrKpHetGAXOtDfPQec3xwsxob/mSEkEJmKOOyS6PyhNa3H1+efYEAz1EcWzP9b8qhm83f7nt7CiRvFgltooP/mwfqx81hi7FWfrTV1pGWtRqSZeuQCskDUaqpXP3ZguhGeJCsBdFBVnTG8Gl3vPDvGR+rk30iwVvxPVyIrFIMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026314; c=relaxed/simple;
-	bh=q9Zllc0ncdf50O0AyKN9eXj65RsY25hsGyomuhqFBrk=;
+	s=arc-20240116; t=1755026351; c=relaxed/simple;
+	bh=AxYfYi+L1+emPXuDsc2W7HSawHT6imKEfI5H4L2ZAdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMuEEnEnQTxBOLugmzr10EoVbIcMRImL26o2DJaHY9PO6AFjwg3Ed+WVMTgfAXYop622YvFHg2UN98pn/LV2OSGZQBpMxBk/dfRU+lR2eCvZXaRMDNLL0lPAQOqXZhiRUks5mdq44MmqVrOM0s4G476Eh1kq8EoY6jdTxs4o21I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMhRE+Gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5333DC4CEF0;
-	Tue, 12 Aug 2025 19:18:33 +0000 (UTC)
+	 MIME-Version; b=VUVJ+NuK3d3m11SCPac47LcQDXYipmaG+JpZxczkYZ3NH7wLl/Q4VAXK9GQGfF6I1u4NbksDRuzQJsWVgfo4J3ZZ/4DFK2YOwxaNFGIkHhesr3cA6uLO2vJ/yKEk5yKWEYd1argxx++asJlWxiBXGq2FXE5TrvFacnbm1SioM/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rnc/QreS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B81DC4CEF0;
+	Tue, 12 Aug 2025 19:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026313;
-	bh=q9Zllc0ncdf50O0AyKN9eXj65RsY25hsGyomuhqFBrk=;
+	s=korg; t=1755026351;
+	bh=AxYfYi+L1+emPXuDsc2W7HSawHT6imKEfI5H4L2ZAdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMhRE+GrahYUI1KvrDMt7cAzBzewd+Tc6pepw6VZPXcaLK9jUmEFPcfpCPuKIEuun
-	 L0cTy0BGFTx67KMgrJM88tOfzQEDzQQQA1zS/SlrRDwSAeCun9Dy6Ws4h+MfgRZp5B
-	 DagZparyzqz9vr3ZdvqpD4dL+nLjZRHYNDFoVijs=
+	b=Rnc/QreS/C5GEg3yMDUehlBSoDjeSpEQvPYwsdxKYnhHyCzgaBI8KC5WOwVAtIZE0
+	 h4cQS53UwLwIR4jrze9d8XQGwWphjaTN4rzJbelXiVSxaYi7NUtqjGk37OROWV3mA3
+	 M32dUBqur2B9otv3mXYQ0DBK1/sS76upSQPBZqfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thomas Fourier <fourier.thomas@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 293/480] crypto: keembay - Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:48:21 +0200
-Message-ID: <20250812174409.517834386@linuxfoundation.org>
+Subject: [PATCH 6.15 294/480] crypto: img-hash - Fix dma_unmap_sg() nents value
+Date: Tue, 12 Aug 2025 19:48:22 +0200
+Message-ID: <20250812174409.557573928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -68,59 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 01951a7dc5ac1a37e5fb7d86ea7eb2dfbf96e8b6 ]
+[ Upstream commit 34b283636181ce02c52633551f594fec9876bec7 ]
 
 The dma_unmap_sg() functions should be called with the same nents as the
 dma_map_sg(), not the value the map function returned.
 
-Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
+Fixes: d358f1abbf71 ("crypto: img-hash - Add Imagination Technologies hw hash accelerator")
 Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/crypto/img-hash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-index 95dc8979918d..8f9e21ced0fe 100644
---- a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-+++ b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-@@ -68,6 +68,7 @@ struct ocs_hcu_ctx {
-  * @sg_data_total:  Total data in the SG list at any time.
-  * @sg_data_offset: Offset into the data of the current individual SG node.
-  * @sg_dma_nents:   Number of sg entries mapped in dma_list.
-+ * @nents:          Number of entries in the scatterlist.
-  */
- struct ocs_hcu_rctx {
- 	struct ocs_hcu_dev	*hcu_dev;
-@@ -91,6 +92,7 @@ struct ocs_hcu_rctx {
- 	unsigned int		sg_data_total;
- 	unsigned int		sg_data_offset;
- 	unsigned int		sg_dma_nents;
-+	unsigned int		nents;
- };
+diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
+index 1dc2378aa88b..503bc1c9e3f3 100644
+--- a/drivers/crypto/img-hash.c
++++ b/drivers/crypto/img-hash.c
+@@ -436,7 +436,7 @@ static int img_hash_write_via_dma_stop(struct img_hash_dev *hdev)
+ 	struct img_hash_request_ctx *ctx = ahash_request_ctx(hdev->req);
  
- /**
-@@ -199,7 +201,7 @@ static void kmb_ocs_hcu_dma_cleanup(struct ahash_request *req,
+ 	if (ctx->flags & DRIVER_FLAGS_SG)
+-		dma_unmap_sg(hdev->dev, ctx->sg, ctx->dma_ct, DMA_TO_DEVICE);
++		dma_unmap_sg(hdev->dev, ctx->sg, 1, DMA_TO_DEVICE);
  
- 	/* Unmap req->src (if mapped). */
- 	if (rctx->sg_dma_nents) {
--		dma_unmap_sg(dev, req->src, rctx->sg_dma_nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(dev, req->src, rctx->nents, DMA_TO_DEVICE);
- 		rctx->sg_dma_nents = 0;
- 	}
- 
-@@ -260,6 +262,10 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
- 			rc = -ENOMEM;
- 			goto cleanup;
- 		}
-+
-+		/* Save the value of nents to pass to dma_unmap_sg. */
-+		rctx->nents = nents;
-+
- 		/*
- 		 * The value returned by dma_map_sg() can be < nents; so update
- 		 * nents accordingly.
+ 	return 0;
+ }
 -- 
 2.39.5
 
