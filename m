@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DC4B2301E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E82B2352D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 835C4560B14
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A91603B6BA7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180412FABE3;
-	Tue, 12 Aug 2025 17:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE5F13AA2F;
+	Tue, 12 Aug 2025 18:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1pvkLbe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/Zihosi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4E3279915;
-	Tue, 12 Aug 2025 17:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD662F291B;
+	Tue, 12 Aug 2025 18:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020893; cv=none; b=Esvn45QIX3nHAy6CoeP9bPbKRlUTIwQLCMI7radrFc9rrmxuBHSWKmkqcfPEa7P78JAE4028Loqf/BiQgyre1j7sMrB3LNi2eNr1y+FjcMR2m9bbT90f3dbCB4/oaMvkaxgz9k3d6FrN4wcxKtEH6pMipSkPd+hXu4DaPDGJaUA=
+	t=1755024201; cv=none; b=HbQCLyNw1mmbuUKmi8yLwyye8QUC0BiFYR122OdFzdXBIIewhQbhOVYuuNWVfsHGskDhsEAIpBOop6if8UMtBBxN/BpJ1chMEUXLU+VcwCegb25Xguw5efJfvi5uTY/I7eO4p+CU/E3BBU5/PN4CwYLjxrtWbby+//lCpNRn8nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020893; c=relaxed/simple;
-	bh=86Dc9U1LbpP4oHafup10qy9NzGaV0kWCvLGkThqkiBQ=;
+	s=arc-20240116; t=1755024201; c=relaxed/simple;
+	bh=xv6OklFF9XwF/TpKxcRq0PPBtATK8yglN17sEUBM1Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdLSGUSmmiOLrnf/ypWSHubqtF4D8wslXr7B//W66Patc4bf9YG6H42ZN8Kpemsmq6lAwF6YsuSL7ff9IdIVyxyIzddLS40590STWPO/J6Q+azsCTsPl03tLtDjpg75llsGaw+KX3L/qbSy9qEpIQHpmI2tVDvmedfzpuCbmySo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1pvkLbe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3855CC4CEF0;
-	Tue, 12 Aug 2025 17:48:13 +0000 (UTC)
+	 MIME-Version; b=umPeZDzs5ZtlOrpuTiBjdCAy8g11RjTQPpqwulvLw9cqSYHey1EQvF79vsEHpVaoYo/XTIUPcIfAong3/LN3E222pMW8t13BsW/ZigcxbNqM+ZpM1mdvJIUKaOfLx5xeTbbi2AlSqZYKRWIgSzREYRXciuczwzMQNX7X3n3t/Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/Zihosi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C34C4CEF0;
+	Tue, 12 Aug 2025 18:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020893;
-	bh=86Dc9U1LbpP4oHafup10qy9NzGaV0kWCvLGkThqkiBQ=;
+	s=korg; t=1755024200;
+	bh=xv6OklFF9XwF/TpKxcRq0PPBtATK8yglN17sEUBM1Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1pvkLbe2sU7jx4eUk37cqAuJrpfftFoVzwU12d0+EhHdLg5qep9jKxOh7ZFolhoR
-	 83nA+JPnR0MQuTKEB04U3amAu9Fv4YsiXgOY/cMK5lUxKcodXobE7W/dNrgTKm0V+y
-	 OejpzGaLXU51o31NiErVL3T6bBXnutbRh02FEfUM=
+	b=y/ZihositbDJVRaXUGnPRpQQsgZelk1nv0RGKst4C/NZdZChRxlcdr5CS6be5VbqO
+	 49A4Nzz/kInuvodg4IXTYEfHTVndSxXScA0GpHXsbJtey7Mf/xXD3BY+nwfwHevkpF
+	 xkpz1JZwFP1GMi0ZJAa5c2SxZ7J4V69oUXc9Bmt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Lee <ryan.lee@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/253] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
+Subject: [PATCH 6.16 276/627] net/mlx5e: Clear Read-Only port buffer size in PBMC before update
 Date: Tue, 12 Aug 2025 19:29:31 +0200
-Message-ID: <20250812172956.560449832@linuxfoundation.org>
+Message-ID: <20250812173429.808886861@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Lee <ryan.lee@canonical.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
+[ Upstream commit fd4b97246a23c1149479b88490946bcfbd28de63 ]
 
-WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
-comment in the declaration of struct match_workbuf stating it is and a
-modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
-WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
-line to ensure that any future changes to the value of WB_HISTORY_SIZE
-respect this requirement.
+When updating the PBMC register, we read its current value,
+modify desired fields, then write it back.
 
-Fixes: 136db994852a ("apparmor: increase left match history buffer size")
+The port_buffer_size field within PBMC is Read-Only (RO).
+If this RO field contains a non-zero value when read,
+attempting to write it back will cause the entire PBMC
+register update to fail.
 
-Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+This commit ensures port_buffer_size is explicitly cleared
+to zero after reading the PBMC register but before writing
+back the modified value.
+This allows updates to other fields in the PBMC register to succeed.
+
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1753256672-337784-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h | 3 ++-
- security/apparmor/match.c         | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
-index 884489590588..29306ec87fd1 100644
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -141,7 +141,8 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+index 8e25f4ef5ccc..5ae787656a7c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+@@ -331,6 +331,9 @@ static int port_set_buffer(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto out;
  
- void aa_dfa_free_kref(struct kref *kref);
- 
--#define WB_HISTORY_SIZE 24
-+/* This needs to be a power of 2 */
-+#define WB_HISTORY_SIZE 32
- struct match_workbuf {
- 	unsigned int count;
- 	unsigned int pos;
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index 3e9e1eaf990e..0e683ee323e3 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -672,6 +672,7 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
- 
- #define inc_wb_pos(wb)						\
- do {								\
-+	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
- 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
- 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
- } while (0)
++	/* RO bits should be set to 0 on write */
++	MLX5_SET(pbmc_reg, in, port_buffer_size, 0);
++
+ 	err = mlx5e_port_set_pbmc(mdev, in);
+ out:
+ 	kfree(in);
 -- 
 2.39.5
 
