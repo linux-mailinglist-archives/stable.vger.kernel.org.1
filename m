@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-168269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAD1B2343C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B40B22F6E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D16E23BD4A6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72C156550B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F532FDC49;
-	Tue, 12 Aug 2025 18:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD2D2FE58A;
+	Tue, 12 Aug 2025 17:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvjIR4uY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01KqmK2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2713327FB12;
-	Tue, 12 Aug 2025 18:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A0D2FA0FD;
+	Tue, 12 Aug 2025 17:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023608; cv=none; b=UsZzlE9pJF7K5OonD/ooalSTbBHg/aHkmU8F1RunM78Ua3jE85LSeleNFM4pi3/0CcYImQpwYxae8ycKpLv6TAjcFgMJlHM0xox8jCa09EC258DW3tJ5wfYUDk98Wl1fP4zvJbxTAEGc5BJ8mcwho5Nh6j+t2Wq0Az00KW30Ims=
+	t=1755020284; cv=none; b=XFvH5at9Udym1jdzM8nQKXVYm7DQYXq3FVMMt/sbayV4opMt+7hJOapxZA4jTqfN1UsSVJY6yIlYixoPLtQIL8+Um7TqjP4amvStUjJ2ySE6xneA1VQaCw55I6SdTGVvXBHRkZlMhYuiSiiCuxuOVw6VOZ+utzdAqoyHOZ4hX4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023608; c=relaxed/simple;
-	bh=cg/H8d86um3dpzmhhRKcJ88zspYhxIc5a/E3yt2Vpb8=;
+	s=arc-20240116; t=1755020284; c=relaxed/simple;
+	bh=aAghk7t8EA16o3OCjtT3c7XVPTuVHBW5XpnFJeRAoQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZ6qTYkPZDu7fODt5NUyFrIdWBtSc8cjtQKo23TmxziXmO2So2Qx4AzfoYeLfO1VyZM0/oP6/dKkTYV9UmI5hPjpdrIyN9BwYOuvxarUCirw36fFjhlnN3pPlOXz1P9SHjMSA1masw3cmsI+9FKEar8CMj7kLtpanQAzGJT7hFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvjIR4uY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DCEC4CEF0;
-	Tue, 12 Aug 2025 18:33:26 +0000 (UTC)
+	 MIME-Version; b=qgUzINmat4sXLnuslcF7PLe7j4WD/mGI70WV39PVuAPmNUUjoU1XVlbJ3S61waOrR3K2wG9RQyiHWExmqwz4/NqpQW03jRR7P1dCZlpL0yvy4zh21HQK7+3jkaziI+On7wSgoqLBgHwTodzGK22yOxhZiHQbpNltW+wdxGTo3jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01KqmK2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AD0C4CEF0;
+	Tue, 12 Aug 2025 17:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023607;
-	bh=cg/H8d86um3dpzmhhRKcJ88zspYhxIc5a/E3yt2Vpb8=;
+	s=korg; t=1755020283;
+	bh=aAghk7t8EA16o3OCjtT3c7XVPTuVHBW5XpnFJeRAoQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvjIR4uYTenSJ3qHG+ZInT26yxPuH3nHBStnwTYPcchKCruf75NBen4x3YUH/NsSr
-	 O6u/vfm0Z65cgZTL2kmfl6cE1VNoaL10xYq8J+kYXy8H7GAjEXSqIa3q21Vul0Uh55
-	 B8oJvD0lCUUA20h5OIOa5AlM5zWSysGl5vR6CeKE=
+	b=01KqmK2tRS3hNqlkuaDVLXDlEXuSBsA2oQ4AVyLWyifm9juDdVOUPLOuArMVlpKyQ
+	 HVDSwlMSoRGbqkrIiitFsvzNAan1Fy++2TP8ZmSmdm3bpSWQi8WnhmKNC/iTIotIjf
+	 4lgRlaicoDj91rcM3XCb06/SYqmP1njFrzHAwOoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 128/627] selftests/tracing: Fix false failure of subsystem event test
+	Jacek Kowalski <jacek@jacekk.info>,
+	Vlad URSU <vlad@ursu.me>,
+	Simon Horman <horms@kernel.org>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 035/253] e1000e: ignore uninitialized checksum word on tgp
 Date: Tue, 12 Aug 2025 19:27:03 +0200
-Message-ID: <20250812173424.191241528@linuxfoundation.org>
+Message-ID: <20250812172950.225223557@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Jacek Kowalski <jacek@jacekk.info>
 
-[ Upstream commit 213879061a9c60200ba971330dbefec6df3b4a30 ]
+commit 61114910a5f6a71d0b6ea3b95082dfe031b19dfe upstream.
 
-The subsystem event test enables all "sched" events and makes sure there's
-at least 3 different events in the output. It used to cat the entire trace
-file to | wc -l, but on slow machines, that could last a very long time.
-To solve that, it was changed to just read the first 100 lines of the
-trace file. This can cause false failures as some events repeat so often,
-that the 100 lines that are examined could possibly be of only one event.
+As described by Vitaly Lifshits:
 
-Instead, create an awk script that looks for 3 different events and will
-exit out after it finds them. This will find the 3 events the test looks
-for (eventually if it works), and still exit out after the test is
-satisfied and not cause slower machines to run forever.
+> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
+> driver cannot perform checksum validation and correction. This means
+> that all NVM images must leave the factory with correct checksum and
+> checksum valid bit set.
 
-Link: https://lore.kernel.org/r/20250721134212.53c3e140@batman.local.home
-Reported-by: Tengda Wu <wutengda@huaweicloud.com>
-Closes: https://lore.kernel.org/all/20250710130134.591066-1-wutengda@huaweicloud.com/
-Fixes: 1a4ea83a6e67 ("selftests/ftrace: Limit length in subsystem-enable tests")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unfortunately some systems have left the factory with an uninitialized
+value of 0xFFFF at register address 0x3F (checksum word location).
+So on Tiger Lake platform we ignore the computed checksum when such
+condition is encountered.
+
+Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
+Tested-by: Vlad URSU <vlad@ursu.me>
+Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ftrace/test.d/event/subsystem-enable.tc   | 28 +++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/e1000e/defines.h |    3 +++
+ drivers/net/ethernet/intel/e1000e/nvm.c     |    6 ++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-index b7c8f29c09a9..65916bb55dfb 100644
---- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-+++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-@@ -14,11 +14,35 @@ fail() { #msg
-     exit_fail
- }
+--- a/drivers/net/ethernet/intel/e1000e/defines.h
++++ b/drivers/net/ethernet/intel/e1000e/defines.h
+@@ -638,6 +638,9 @@
+ /* For checksumming, the sum of all words in the NVM should equal 0xBABA. */
+ #define NVM_SUM                    0xBABA
  
-+# As reading trace can last forever, simply look for 3 different
-+# events then exit out of reading the file. If there's not 3 different
-+# events, then the test has failed.
-+check_unique() {
-+    cat trace | grep -v '^#' | awk '
-+	BEGIN { cnt = 0; }
-+	{
-+	    for (i = 0; i < cnt; i++) {
-+		if (event[i] == $5) {
-+		    break;
-+		}
-+	    }
-+	    if (i == cnt) {
-+		event[cnt++] = $5;
-+		if (cnt > 2) {
-+		    exit;
-+		}
-+	    }
-+	}
-+	END {
-+	    printf "%d", cnt;
-+	}'
-+}
++/* Uninitialized ("empty") checksum word value */
++#define NVM_CHECKSUM_UNINITIALIZED 0xFFFF
 +
- echo 'sched:*' > set_event
+ /* PBA (printed board assembly) number words */
+ #define NVM_PBA_OFFSET_0           8
+ #define NVM_PBA_OFFSET_1           9
+--- a/drivers/net/ethernet/intel/e1000e/nvm.c
++++ b/drivers/net/ethernet/intel/e1000e/nvm.c
+@@ -558,6 +558,12 @@ s32 e1000e_validate_nvm_checksum_generic
+ 		checksum += nvm_data;
+ 	}
  
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -29,7 +53,7 @@ echo 1 > events/sched/enable
- 
- yield
- 
--count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`check_unique`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
--- 
-2.39.5
-
++	if (hw->mac.type == e1000_pch_tgp &&
++	    nvm_data == NVM_CHECKSUM_UNINITIALIZED) {
++		e_dbg("Uninitialized NVM Checksum on TGP platform - ignoring\n");
++		return 0;
++	}
++
+ 	if (checksum != (u16)NVM_SUM) {
+ 		e_dbg("NVM Checksum Invalid\n");
+ 		return -E1000_ERR_NVM;
 
 
 
