@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-167458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9904CB23033
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 452C9B22F36
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 286176833E5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0364C621D45
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE97E2E972E;
-	Tue, 12 Aug 2025 17:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578EA2F90F9;
+	Tue, 12 Aug 2025 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLWcPArV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgyOy7Xz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E249221FAC;
-	Tue, 12 Aug 2025 17:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1453A2F7461;
+	Tue, 12 Aug 2025 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020883; cv=none; b=hRqBb1R2ekEMVNVtK02+pFzqmLusXYgtU0zU6M7hsKq/qrOOStBpcm8Bw2mnjTjYXsXbuea58t7h3EeVjawHySQldZsJayO6Fuv4LRL+J4+cYbteNykictqoCpUZNajPDRo9wPtJ2cBZQfWxsxbYubns6a84L4ayWLFR3k2qobo=
+	t=1755020209; cv=none; b=c9NSXgPBMus9y0k+CDEwi6CkOaSwvTvat9o2E/lVbmDOwHmYCAEq+F21VI73uhYRIrkEtN1H1htcn0XMUVMH4xc6WurdvW77NdN+RWnAKQRHsgkWcHSZWBLxNR0tLJ84eOqWbU1B7mNhwPScOVta4weEI2BQrHnlSooksxNLrZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020883; c=relaxed/simple;
-	bh=7tidhfcmoeoPyPNCJ18b+b4uc0cRwCGgeURsEqmlUa8=;
+	s=arc-20240116; t=1755020209; c=relaxed/simple;
+	bh=Bo7BJSoAcIdaeV8/8LTWKdnEFWhik4Ie/wAgADto+1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGAxg7LDeckURC0lffbEF7KBLVITm8SfQ+J+F4CESHRCteuZSPZ2Gc/f5QSOnnC0bBfYvZHnxX5Mjxa4GthDrMRazBtX+JXMWd2bAoLGI62Z7pOjcT0efPq1y+OnDR9hBFYwSrhqvL0MK4LT8+D3UbuT3PcugEP9N3erSlIk2zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLWcPArV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F12C4CEF0;
-	Tue, 12 Aug 2025 17:48:02 +0000 (UTC)
+	 MIME-Version; b=gGDXF/H5oT5Wk9EY2XHMyJP29bsEQMxbZ3CexiBZ4IyRvjW+g+ewIRw+cGvK1IUOxl/Q+ssB3h74H/W4T6SPlQe2g6U83a1a00QvSmt3R8ai3vRtuqZcTmcUXmVD5PMix72AVTMV1/zb8iVy+O0PLCVnii/JghyJGs51eIfy+Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgyOy7Xz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEE2C4CEF0;
+	Tue, 12 Aug 2025 17:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020883;
-	bh=7tidhfcmoeoPyPNCJ18b+b4uc0cRwCGgeURsEqmlUa8=;
+	s=korg; t=1755020208;
+	bh=Bo7BJSoAcIdaeV8/8LTWKdnEFWhik4Ie/wAgADto+1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLWcPArVDAbV7WLbVLNy3VRgxGAdwQbxuXBswVeTC5mwWSR/xhIZyZScHzm4PqQ4n
-	 4jPnW/40Rxf8emPsroCLOdBeauxep0maxbDZCpiHyj+3i5K0XugJlyA7Z8Kk0JBlWT
-	 Z3BPmelzSK4ps2rsvml2TuHZj1BMtOur/8wHgU5A=
+	b=ZgyOy7XzPJ/ANQls9qVEBuYCAStU1Ph5TQiASVKuLfllxVv9eDEdTbIDdZnkRRTAx
+	 kebxea3ooczZHiqrgiBpkWoMrVgbNZnUvqZ3pdWqZHnGWNC2bcC+BZnIeaR2fwU10l
+	 7nIrsHhGZL8ZVUEQZbbxYbK5jN7CFG21sLl+HTwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/262] hfs: make splice write available again
+Subject: [PATCH 6.1 011/253] staging: vchiq_arm: Make vchiq_shutdown never fail
 Date: Tue, 12 Aug 2025 19:26:39 +0200
-Message-ID: <20250812172953.463921841@linuxfoundation.org>
+Message-ID: <20250812172949.182892749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 4c831f30475a222046ded25560c3810117a6cff6 ]
+[ Upstream commit f2b8ebfb867011ddbefbdf7b04ad62626cbc2afd ]
 
-Since 5.10, splice() or sendfile() return EINVAL. This was
-caused by commit 36e2c7421f02 ("fs: don't allow splice read/write
-without explicit ops").
+Most of the users of vchiq_shutdown ignore the return value,
+which is bad because this could lead to resource leaks.
+So instead of changing all calls to vchiq_shutdown, it's easier
+to make vchiq_shutdown never fail.
 
-This patch initializes the splice_write field in file_operations, like
-most file systems do, to restore the functionality.
-
-Fixes: 36e2c7421f02 ("fs: don't allow splice read/write without explicit ops")
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250529140033.2296791-2-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 71bad7f08641 ("staging: add bcm2708 vchiq driver")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250715161108.3411-4-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/hfs/inode.c b/fs/hfs/inode.c
-index 61ed76d10392..6a89f22d8967 100644
---- a/fs/hfs/inode.c
-+++ b/fs/hfs/inode.c
-@@ -697,6 +697,7 @@ static const struct file_operations hfs_file_operations = {
- 	.write_iter	= generic_file_write_iter,
- 	.mmap		= generic_file_mmap,
- 	.splice_read	= filemap_splice_read,
-+	.splice_write	= iter_file_splice_write,
- 	.fsync		= hfs_file_fsync,
- 	.open		= hfs_file_open,
- 	.release	= hfs_file_release,
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index 44ab7ea42fc85..3fafc94deb476 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -714,8 +714,7 @@ enum vchiq_status vchiq_shutdown(struct vchiq_instance *instance)
+ 	int status = 0;
+ 	struct vchiq_state *state = instance->state;
+ 
+-	if (mutex_lock_killable(&state->mutex))
+-		return -EAGAIN;
++	mutex_lock(&state->mutex);
+ 
+ 	/* Remove all services */
+ 	vchiq_shutdown_internal(state, instance);
 -- 
 2.39.5
 
