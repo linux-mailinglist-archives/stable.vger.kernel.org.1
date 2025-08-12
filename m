@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0A8B23424
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE4BB230CF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D93D7AC83E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3E5F3B0D9B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F08F2F5481;
-	Tue, 12 Aug 2025 18:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322F22F83CB;
+	Tue, 12 Aug 2025 17:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLS0d5Yv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0qdoHUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7082FA0CD;
-	Tue, 12 Aug 2025 18:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62F72F8BE7;
+	Tue, 12 Aug 2025 17:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023788; cv=none; b=lmEv0bd7rOtSvED3fi8jcyC8vE6KMkBwF5J/i6JJGlxXODp74lex/50d7wA7lWdKHe4CqXiGTUaYblS/9JCyEDQSTO5bUH7AM74m/D51uEq/8oWhw19F6dWj36eR9dute6oqLdoqB8OIp6CthDJ8lrZJtsQaIVVFtMGhcPoNIfQ=
+	t=1755021343; cv=none; b=YC+g54/PJ36afiQKJDUnXqowB7vc/o7iEGl6rjBiCx9jMxGMWkDqaNWgWXRKfAWEfwyk+O/TisZGpu2MEhJ9UEVNn1i/b2PfgUltul3J+HMIcJ9HUj0NfLTzv6s3tjMNsakLDizyUpuGbvYRBYZqi65QHlmXuQwhSEDIqicf7+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023788; c=relaxed/simple;
-	bh=WLHwEpyUMgQdpUBOL4yoFVAm3VGk0cMdjSRAhRdbThs=;
+	s=arc-20240116; t=1755021343; c=relaxed/simple;
+	bh=2rkDWEW1p09t9H1CwlR1nZp5QHmJ5PRtSF7ErPbeDY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fg/6LErUub7/2QRl8FcHOBuht3jt9tvEbWSzYIcoN2uFo1WKSSlO8zEj7hVA/JkNw7Ka6mEBNLdZP2xaldFLQgly2qpcphiF4yybQfWIRUZnpJoRHy8b83n8FDoagd6V/A8JhXZHncGa9xHDXSwjYj6GXHAX7E1GB0sSCw3jkXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLS0d5Yv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899F2C4CEF0;
-	Tue, 12 Aug 2025 18:36:27 +0000 (UTC)
+	 MIME-Version; b=Wb2JrZ/Zjh+2WQqFKzCWKeLyjlVB7Yau3J5An8gDvHWpMIaurU9R6MBxuuM8i+aenzzp2ehtJpuLxLMboJGCsZzUjWNv3xeB7lPyDmCfNO7OLGDAXZuFGgdq6lvByXuPdC4485B4V2mT/0LcPj1OpxmOQ3wFjAtMLAQjGLi+uAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0qdoHUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55771C4CEF1;
+	Tue, 12 Aug 2025 17:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023788;
-	bh=WLHwEpyUMgQdpUBOL4yoFVAm3VGk0cMdjSRAhRdbThs=;
+	s=korg; t=1755021342;
+	bh=2rkDWEW1p09t9H1CwlR1nZp5QHmJ5PRtSF7ErPbeDY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLS0d5Yvz/ya29tCzonwOb/HPWfEEhYvzH5Hi71IIkFMfDw3NAm3zaO46mnLI8Fx6
-	 3qCrGkvaGw8X7aaOKxRZXHqCPz4qYPzjDlR5cRmBReivQv8I/+ssFkMq3Buboxaewh
-	 4ybo0c6JCC5mjKJcfjbFeGptkMvDlmuhIznknwKc=
+	b=y0qdoHUtRmBpfv3slLKn2vZYUljQVeHOUXfdtbLUvIXeHS3X/VCFB+1xrawMTgPGf
+	 GPZTOwXd06sEr0AZHvkxn7Vt6hAgZvP/4PY00WQ+o4jl0Y/JI6j9HC67mDKJ2WYlLC
+	 pAlcoIYlulDFsCI5Bie5uLw60elgvv10TrKzf300=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 182/627] m68k: Dont unregister boot console needlessly
+Subject: [PATCH 6.6 089/262] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
 Date: Tue, 12 Aug 2025 19:27:57 +0200
-Message-ID: <20250812173426.202931474@linuxfoundation.org>
+Message-ID: <20250812172956.853881606@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
+[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
 
-When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
-generate console output. That will continue to work even after
-debug_cons_nputs() becomes unavailable so there's no need to
-unregister the boot console.
+After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
+IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
+got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
 
-Take the opportunity to remove a repeated MACH_IS_* test. Use the
-actual .write method (instead of a wrapper) and test that pointer
-instead. This means adding an unused parameter to debug_cons_nputs() for
-consistency with the struct console API.
+Because of this, as part of the scan request handler for the P2P Discovery,
+vif struct used for adding the Probe Request P2P IE in firmware got changed
+from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
+So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
+requests frames and the other P2P peers were unable to discover this device
+causing a regression on the P2P feature.
 
-early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
-head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
-depend on the latter, to obviate some ifdef conditionals.
+To fix this, while setting the P2P IE in firmware, properly use the vif of
+the P2P discovery wdev on which the driver received the P2P scan request.
+This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
+is completed.
 
-Cc: Daniel Palmer <daniel@0x0f.com>
-Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/Kconfig.debug         |  2 +-
- arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
- arch/m68k/kernel/head.S         |  8 +++----
- 3 files changed, 19 insertions(+), 33 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
-index 30638a6e8edc..d036f903864c 100644
---- a/arch/m68k/Kconfig.debug
-+++ b/arch/m68k/Kconfig.debug
-@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index c708ae91c3ce..e883cf80f506 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1541,10 +1541,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 		return -EAGAIN;
+ 	}
  
- config EARLY_PRINTK
- 	bool "Early printk"
--	depends on !(SUN3 || M68000 || COLDFIRE)
-+	depends on MMU_MOTOROLA
- 	help
- 	  Write kernel log output directly to a serial port.
- 	  Where implemented, output goes to the framebuffer as well.
-diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index f11ef9f1f56f..521cbb8a150c 100644
---- a/arch/m68k/kernel/early_printk.c
-+++ b/arch/m68k/kernel/early_printk.c
-@@ -16,25 +16,10 @@
- #include "../mvme147/mvme147.h"
- #include "../mvme16x/mvme16x.h"
- 
--asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
+-	/* If scan req comes for p2p0, send it over primary I/F */
+-	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
+-		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
 -
--static void __ref debug_cons_write(struct console *c,
--				   const char *s, unsigned n)
--{
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--	if (MACH_IS_MVME147)
--		mvme147_scc_write(c, s, n);
--	else if (MACH_IS_MVME16x)
--		mvme16x_cons_write(c, s, n);
--	else
--		debug_cons_nputs(s, n);
--#endif
--}
-+asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
+ 	brcmf_dbg(SCAN, "START ESCAN\n");
  
- static struct console early_console_instance = {
- 	.name  = "debug",
--	.write = debug_cons_write,
- 	.flags = CON_PRINTBUFFER | CON_BOOT,
- 	.index = -1
- };
-@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
- 	if (early_console || buf)
- 		return 0;
+ 	cfg->scan_request = request;
+@@ -1560,6 +1556,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 	if (err)
+ 		goto scan_out;
  
-+	if (MACH_IS_MVME147)
-+		early_console_instance.write = mvme147_scc_write;
-+	else if (MACH_IS_MVME16x)
-+		early_console_instance.write = mvme16x_cons_write;
-+	else
-+		early_console_instance.write = debug_cons_nputs;
- 	early_console = &early_console_instance;
- 	register_console(early_console);
- 
-@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
- }
- early_param("earlyprintk", setup_early_printk);
- 
--/*
-- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
-- * after init sections are discarded (for platforms that use it).
-- */
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--
- static int __init unregister_early_console(void)
- {
--	if (!early_console || MACH_IS_MVME16x)
--		return 0;
-+	/*
-+	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
-+	 * called after init sections are discarded (for platforms that use it).
-+	 */
-+	if (early_console && early_console->write == debug_cons_nputs)
-+		return unregister_console(early_console);
- 
--	return unregister_console(early_console);
-+	return 0;
- }
- late_initcall(unregister_early_console);
--
--#endif
-diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
-index 852255cf60de..ba22bc2f3d6d 100644
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3263,8 +3263,8 @@ func_return	putn
-  *	turns around and calls the internal routines.  This routine
-  *	is used by the boot console.
-  *
-- *	The calling parameters are:
-- *		void debug_cons_nputs(const char *str, unsigned length)
-+ *	The function signature is -
-+ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
-  *
-  *	This routine does NOT understand variable arguments only
-  *	simple strings!
-@@ -3273,8 +3273,8 @@ ENTRY(debug_cons_nputs)
- 	moveml	%d0/%d1/%a0,%sp@-
- 	movew	%sr,%sp@-
- 	ori	#0x0700,%sr
--	movel	%sp@(18),%a0		/* fetch parameter */
--	movel	%sp@(22),%d1		/* fetch parameter */
-+	movel	%sp@(22),%a0		/* char *s */
-+	movel	%sp@(26),%d1		/* unsigned int n */
- 	jra	2f
- 1:
- #ifdef CONSOLE_DEBUG
++	/* If scan req comes for p2p0, send it over primary I/F */
++	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++
+ 	err = brcmf_do_escan(vif->ifp, request);
+ 	if (err)
+ 		goto scan_out;
 -- 
 2.39.5
 
