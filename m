@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A86B232F2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF92FB234F4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4581B188B027
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73991188532A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CEE3F9D2;
-	Tue, 12 Aug 2025 18:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772C62FE571;
+	Tue, 12 Aug 2025 18:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nrv8A7VU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FioOQRq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98BC2E7BD4;
-	Tue, 12 Aug 2025 18:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364532E9EDE;
+	Tue, 12 Aug 2025 18:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022722; cv=none; b=Oo8N7mIUG+eLNUcB2VX2RKw3I5ppLoiUKtumV2rvcD71nNuB8vDS282E6m93r32eteDyOLIXK4LSHVCBNCa2kw4Kq0s/Nzirbe7QfKOd7nS1e+B/1rqf1fKJW2gRTyS90EuROdLhowv6sJii2Nf6Y0nZs2NZWn+32Rld8xLmFpk=
+	t=1755024083; cv=none; b=d0mK/PyszFSN+yvl4ZrBAmt9EgcHIWbnnmLSUYxCGHJsk6mMyciGXQ4Wj/JF+OPDSi95ES05ZUlRywFqh50zUcXjt9URUf8i3eoppp1/CjQQbVCZ3n4B6PdQQh9urj2i6r1cFx8zhqex9CB+9kRItaBmFwnj3hgP2ciAcqHXlO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022722; c=relaxed/simple;
-	bh=GRTAQF3nq/WMnV4q3Bgzy7D6C0wjd2KlMsbLruDjMNM=;
+	s=arc-20240116; t=1755024083; c=relaxed/simple;
+	bh=QLGKUq3UaOclg+gRxcqi0UmcvguF+taFouN4D97ugzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ksv5A3a/XL+5vkXXoLbIW0Ga5MtLr/YcJjeimQJ2G9bhrU3PlXf0AVtxt1xJFbDoMgo5J0q2NHrLXp8h4HvAwtAR2zLwEWdITYMNQfbYS9ihzKs293XT048E+MdTwXdj9GrCBy8cqEHHstQi4wk8AI+Hes1TMNU4lGuS3atvK9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nrv8A7VU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AE6C4CEF1;
-	Tue, 12 Aug 2025 18:18:42 +0000 (UTC)
+	 MIME-Version; b=pucDZSBBHb+4dEhv0X4HT8v2nsYPl4IbM4SCwiRv2t8HAUma6LovotVTZqiRNDic7of3TyaCDQn+jV4ge1OPzYnuueF77gGEhpfWqNixNer5shtJHcGKNVJuzdJ3Tsax6ro3iKSNQVArvU1j9LqGzrxpFexC0wPosmClFV0Qyik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FioOQRq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB39C4CEF0;
+	Tue, 12 Aug 2025 18:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022722;
-	bh=GRTAQF3nq/WMnV4q3Bgzy7D6C0wjd2KlMsbLruDjMNM=;
+	s=korg; t=1755024083;
+	bh=QLGKUq3UaOclg+gRxcqi0UmcvguF+taFouN4D97ugzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nrv8A7VUTHKHRF156oiK4z1dIsMZ/Mbbogh1v0q8SAI/m9yUf0wHdMh1MhPcFSj/K
-	 qf1747KxAUGemBbOH8zHjHbpb+VUsZCF/UYDor+pHmosRNlfdTSLTVXjXY4nA8NaTP
-	 oIXW9LBxjBmAiz/hZIr1RIL6CUDGVFMXZZFCijPQ=
+	b=FioOQRq3PGRwZ/pk7zzSiNhySXC7p1gDo58rSQBMdu9PdeovRcYR+jgGzywREVN0Z
+	 Wevx25XVPYrkLu8/7ONuJcbv3dK8CEhGDCsz6MwXkEnfHvM7ADV7yDZ5TtFGkoQeUX
+	 BsiUys1gVQ4xVRiEY5NXi/XI2DdFF/hggbXL8ViU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Lee <ryan.lee@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/369] apparmor: fix loop detection used in conflicting attachment resolution
+Subject: [PATCH 6.16 241/627] wifi: ath12k: fix endianness handling while accessing wmi service bit
 Date: Tue, 12 Aug 2025 19:28:56 +0200
-Message-ID: <20250812173023.767791112@linuxfoundation.org>
+Message-ID: <20250812173428.466998248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Lee <ryan.lee@canonical.com>
+From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
 
-[ Upstream commit a88db916b8c77552f49f7d9f8744095ea01a268f ]
+[ Upstream commit 8f1a078842d4af4877fb686f3907788024d0d1b7 ]
 
-Conflicting attachment resolution is based on the number of states
-traversed to reach an accepting state in the attachment DFA, accounting
-for DFA loops traversed during the matching process. However, the loop
-counting logic had multiple bugs:
+Currently there is no endian conversion in ath12k_wmi_tlv_services_parser()
+so the service bit parsing will be incorrect on a big endian platform and
+to fix this by using appropriate endian conversion.
 
- - The inc_wb_pos macro increments both position and length, but length
-   is supposed to saturate upon hitting buffer capacity, instead of
-   wrapping around.
- - If no revisited state is found when traversing the history, is_loop
-   would still return true, as if there was a loop found the length of
-   the history buffer, instead of returning false and signalling that
-   no loop was found. As a result, the adjustment step of
-   aa_dfa_leftmatch would sometimes produce negative counts with loop-
-   free DFAs that traversed enough states.
- - The iteration in the is_loop for loop is supposed to stop before
-   i = wb->len, so the conditional should be < instead of <=.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00217-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-This patch fixes the above bugs as well as the following nits:
- - The count and size fields in struct match_workbuf were not used,
-   so they can be removed.
- - The history buffer in match_workbuf semantically stores aa_state_t
-   and not unsigned ints, even if aa_state_t is currently unsigned int.
- - The local variables in is_loop are counters, and thus should be
-   unsigned ints instead of aa_state_t's.
-
-Fixes: 21f606610502 ("apparmor: improve overlapping domain attachment resolution")
-
-Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
-Co-developed-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 342527f35338 ("wifi: ath12k: Add support to parse new WMI event for 6 GHz regulatory")
+Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250717173539.2523396-2-tamizh.raja@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h |  5 +----
- security/apparmor/match.c         | 22 +++++++++++-----------
- 2 files changed, 12 insertions(+), 15 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
-index 0539abda328d..ae31a8a631fc 100644
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -138,15 +138,12 @@ void aa_dfa_free_kref(struct kref *kref);
- /* This needs to be a power of 2 */
- #define WB_HISTORY_SIZE 32
- struct match_workbuf {
--	unsigned int count;
- 	unsigned int pos;
- 	unsigned int len;
--	unsigned int size;	/* power of 2, same as history size */
--	unsigned int history[WB_HISTORY_SIZE];
-+	aa_state_t history[WB_HISTORY_SIZE];
- };
- #define DEFINE_MATCH_WB(N)		\
- struct match_workbuf N = {		\
--	.count = 0,			\
- 	.pos = 0,			\
- 	.len = 0,			\
- }
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index 0f791a58d933..12e036f8ce0f 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -624,35 +624,35 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
- 	return state;
- }
- 
--#define inc_wb_pos(wb)						\
--do {								\
-+#define inc_wb_pos(wb)							\
-+do {									\
- 	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
- 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
--	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
-+	wb->len = (wb->len + 1) > WB_HISTORY_SIZE ? WB_HISTORY_SIZE :	\
-+				wb->len + 1;				\
- } while (0)
- 
- /* For DFAs that don't support extended tagging of states */
-+/* adjust is only set if is_loop returns true */
- static bool is_loop(struct match_workbuf *wb, aa_state_t state,
- 		    unsigned int *adjust)
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index e19803bfba75..745d017c5aa8 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -7491,7 +7491,7 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 					  void *data)
  {
--	aa_state_t pos = wb->pos;
--	aa_state_t i;
-+	int pos = wb->pos;
-+	int i;
+ 	const struct wmi_service_available_event *ev;
+-	u32 *wmi_ext2_service_bitmap;
++	__le32 *wmi_ext2_service_bitmap;
+ 	int i, j;
+ 	u16 expected_len;
  
- 	if (wb->history[pos] < state)
- 		return false;
+@@ -7523,12 +7523,12 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 			   ev->wmi_service_segment_bitmap[3]);
+ 		break;
+ 	case WMI_TAG_ARRAY_UINT32:
+-		wmi_ext2_service_bitmap = (u32 *)ptr;
++		wmi_ext2_service_bitmap = (__le32 *)ptr;
+ 		for (i = 0, j = WMI_MAX_EXT_SERVICE;
+ 		     i < WMI_SERVICE_SEGMENT_BM_SIZE32 && j < WMI_MAX_EXT2_SERVICE;
+ 		     i++) {
+ 			do {
+-				if (wmi_ext2_service_bitmap[i] &
++				if (__le32_to_cpu(wmi_ext2_service_bitmap[i]) &
+ 				    BIT(j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32))
+ 					set_bit(j, ab->wmi_ab.svc_map);
+ 			} while (++j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32);
+@@ -7536,8 +7536,10 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
  
--	for (i = 0; i <= wb->len; i++) {
-+	for (i = 0; i < wb->len; i++) {
- 		if (wb->history[pos] == state) {
- 			*adjust = i;
- 			return true;
- 		}
--		if (pos == 0)
--			pos = WB_HISTORY_SIZE;
--		pos--;
-+		/* -1 wraps to WB_HISTORY_SIZE - 1 */
-+		pos = (pos - 1) & (WB_HISTORY_SIZE - 1);
+ 		ath12k_dbg(ab, ATH12K_DBG_WMI,
+ 			   "wmi_ext2_service_bitmap 0x%04x 0x%04x 0x%04x 0x%04x",
+-			   wmi_ext2_service_bitmap[0], wmi_ext2_service_bitmap[1],
+-			   wmi_ext2_service_bitmap[2], wmi_ext2_service_bitmap[3]);
++			   __le32_to_cpu(wmi_ext2_service_bitmap[0]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[1]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[2]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[3]));
+ 		break;
  	}
- 
--	*adjust = i;
--	return true;
-+	return false;
- }
- 
- static aa_state_t leftmatch_fb(struct aa_dfa *dfa, aa_state_t start,
+ 	return 0;
 -- 
 2.39.5
 
