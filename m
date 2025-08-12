@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071A1B2347C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1ACB22F85
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 571EF3ABE6E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F0A54E1B72
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BCE2FAC11;
-	Tue, 12 Aug 2025 18:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B419D2FD1D6;
+	Tue, 12 Aug 2025 17:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOAhWAQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCWyXMtA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D742D3ED6;
-	Tue, 12 Aug 2025 18:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B952F7461;
+	Tue, 12 Aug 2025 17:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023785; cv=none; b=EGQIyJ4/wdzXmVlCq2TJzZCXaUofbXv+H3otJZlvUcRDbulXYZYGPopgbC3ugsP86bAquiVrKg+JfjCVf7g0bP79MsyOsup1y/vj//YF5yVL9gErI0EE8pJEDJRcS1NfX2B9gCGj5RMSJlefRTOzy1rOtlkmMwTlCKnQ/1ymJRk=
+	t=1755020469; cv=none; b=Rwt+9RzBJSezf4VqiLDTkEfySD4OVwuLbnGZhJXaV5aULZzTNA0CH9V9hiihZ2QwoCT+AbCh4kdGCwR09KwP28FCJGPu9/wkrpBQxT9WIGd9tASg1E5OlY2HHZl9x4vobGq49g8+2NahuPcmI8761PWZAjZReBMeNece/AQuAGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023785; c=relaxed/simple;
-	bh=4+TP+vDaANsfEdrN8dJA6q07wBeSD83ftfk1OycsK0g=;
+	s=arc-20240116; t=1755020469; c=relaxed/simple;
+	bh=CdXDwK+pGXmEBLuVE32bcG0TEchCBrINYZpM9UlUDTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KILUm5pZlVzCc/Oz1wWLnNJh7zHyIkTTDjxv9I6q8rCgWVTmTXVShXlHmzen8O9/gDtSouZYRfOEd0kbwRR1SxzViEsGvhJl/F66E/qSMFDNJ90F3ht723D6Q5KXwgLzPse7ju3hhTglLGmV1HoCp7cMetT5Ut9KdKCYtBJnKZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOAhWAQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874C3C4CEF1;
-	Tue, 12 Aug 2025 18:36:24 +0000 (UTC)
+	 MIME-Version; b=KAMckvna35q5QjnwKSZyqrOdEahM6SIG4409h8LeYo8QiL1VZa4UeM0CcvgTtHPuqIyo/LQuoyK2eO6dZ+viw7un/ft3toQiTLCBiDA1gu7nzVLN/b/8XE+Ex2cwCpnuEkK0OrKbTdwWX5SwsFu9rSgNKjbbmwpvrl++VX8/VNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCWyXMtA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE278C4CEF0;
+	Tue, 12 Aug 2025 17:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023784;
-	bh=4+TP+vDaANsfEdrN8dJA6q07wBeSD83ftfk1OycsK0g=;
+	s=korg; t=1755020469;
+	bh=CdXDwK+pGXmEBLuVE32bcG0TEchCBrINYZpM9UlUDTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOAhWAQBiXNU/oy6l7g/C/+r+cMEOPxH+swds+zeHcyaclbAxKQsXSDtfaL6a907D
-	 zIwL74ofOstzO0bLXKc9xGJoaWdYKwbnsiF/u9BWJ+jAzUcz0QxK8mo7ffJ5b5siMl
-	 GiphBSoLox0FAbMvJ5bY/vGY6tSnWg3lwqwmx7oc=
+	b=kCWyXMtAbsDDkw+VZW4pT/fbHP6wyoO3PNs7+YOf983cyBWsPZwmVpqCkOEEtvlWM
+	 dW0cv2LpL+WabmWBORyaare9AeDpSD6A22qviXCrW1So9JAZvOqtKMQlTun3CzHlkq
+	 gyP6ceRmicmXNUq0oXwYMslOoIo9xa3Y/ivc/48Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 181/627] drm/msm/dpu: Fill in min_prefill_lines for SC8180X
+Subject: [PATCH 6.1 088/253] PM / devfreq: Check governor before using governor->name
 Date: Tue, 12 Aug 2025 19:27:56 +0200
-Message-ID: <20250812173426.166093013@linuxfoundation.org>
+Message-ID: <20250812172952.480188813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 5136acc40afc0261802e5cb01b04f871bf6d876b ]
+[ Upstream commit bab7834c03820eb11269bc48f07c3800192460d2 ]
 
-Based on the downstream release, predictably same value as for SM8150.
+Commit 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from
+struct devfreq") removes governor_name and uses governor->name to replace
+it. But devfreq->governor may be NULL and directly using
+devfreq->governor->name may cause null pointer exception. Move the check of
+governor to before using governor->name.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: f3af2d6ee9ab ("drm/msm/dpu: Add SC8180x to hw catalog")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/657794/
-Link: https://lore.kernel.org/r/20250610-topic-dpu_8180_mpl-v1-1-f480cd22f11c@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from struct devfreq")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/lkml/20250421030020.3108405-5-zhenglifeng1@huawei.com/
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/devfreq/devfreq.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-index d6f8b1030c68..6c04f41f9bac 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-@@ -383,6 +383,7 @@ static const struct dpu_perf_cfg sc8180x_perf_data = {
- 	.min_core_ib = 2400000,
- 	.min_llcc_ib = 800000,
- 	.min_dram_ib = 800000,
-+	.min_prefill_lines = 24,
- 	.danger_lut_tbl = {0xf, 0xffff, 0x0},
- 	.safe_lut_tbl = {0xfff0, 0xf000, 0xffff},
- 	.qos_lut_tbl = {
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 344e276165e4..9ab97164443e 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -1381,15 +1381,11 @@ int devfreq_remove_governor(struct devfreq_governor *governor)
+ 		int ret;
+ 		struct device *dev = devfreq->dev.parent;
+ 
++		if (!devfreq->governor)
++			continue;
++
+ 		if (!strncmp(devfreq->governor->name, governor->name,
+ 			     DEVFREQ_NAME_LEN)) {
+-			/* we should have a devfreq governor! */
+-			if (!devfreq->governor) {
+-				dev_warn(dev, "%s: Governor %s NOT present\n",
+-					 __func__, governor->name);
+-				continue;
+-				/* Fall through */
+-			}
+ 			ret = devfreq->governor->event_handler(devfreq,
+ 						DEVFREQ_GOV_STOP, NULL);
+ 			if (ret) {
 -- 
 2.39.5
 
