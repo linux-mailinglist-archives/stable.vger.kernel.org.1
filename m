@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B2FB23127
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF95B232E5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7640F58097A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:00:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D48E2A3215
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE692FFDEC;
-	Tue, 12 Aug 2025 17:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA712EAB97;
+	Tue, 12 Aug 2025 18:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONW/+/n8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPjjcy8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1ED2FE574;
-	Tue, 12 Aug 2025 17:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC5F2DBF5E;
+	Tue, 12 Aug 2025 18:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021548; cv=none; b=NTRSBsM7bufdtxrLx9wMGytUhZL7VCO4uUaIWXOAQFEswDzgu5j1U7drRIGY6MFWZrywJifk4fHD2BKz5hPXF9qUUIPx9RUzQc7VelAPfMLBUp2NWwyBltjMqbw3pO9e2Wr/fKiQYbgIeTvYtnCTv4bfr1qF/NFN6wLzfROgHdY=
+	t=1755022688; cv=none; b=W4mbVavTaECnSxyvsbhUMCEgzGhv4Qb53iYTKvpiveQ+4t6y6cdEns863Owv0QpqkeICfLrLYyVVx4xhaGw9RSH2HBvMMQiOKda60xesjSVSm/awC+5RvtLknqcMh91HtUQpQuc/f+hXuaMwkgwYoU/1Q6X2VQ9iFv0YBjNf+0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021548; c=relaxed/simple;
-	bh=VduRq5Me+FmBqkiTL8hjYPVzduzEz6c3Y61mSb/ZRWI=;
+	s=arc-20240116; t=1755022688; c=relaxed/simple;
+	bh=KkD0PxD+TjM0lWl4DhxK6672ArDHeG0OwjRvYtevp4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pBjmJRWroZmfeb35dflCtjEyQHaGY7TvK/c1Ao6kiU/iNBbG2t3nyW+Muimm+9h3ikx+lpofs6TF0wr/S0tDRXa46nHIwc9Yw7BtIWie+9G3oXlWKtdiWOfan2G9oNaOUJyl/0ohxD1HL7lZJRsidYc5GJRQmv5hb3/pgua/jes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONW/+/n8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428DBC113D0;
-	Tue, 12 Aug 2025 17:59:07 +0000 (UTC)
+	 MIME-Version; b=nVv7f+CbUdS0ejtVBccGmGgo5DeeVSJdRYVVriV3xBN3HS/ojB1u39XExi4UL9JcPnpTl9XYOCkGSsBBKeJHbbjChM1SCXrr/gyfOP9BHTaD1bLStbQ9DNcVbAGoY3LEPLDAxs3t/IQQkWlLn86fRW0CvuTwAJWYpDn/YUkj1xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPjjcy8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD88C4CEF0;
+	Tue, 12 Aug 2025 18:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021547;
-	bh=VduRq5Me+FmBqkiTL8hjYPVzduzEz6c3Y61mSb/ZRWI=;
+	s=korg; t=1755022688;
+	bh=KkD0PxD+TjM0lWl4DhxK6672ArDHeG0OwjRvYtevp4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONW/+/n88e0uBNCiDp4DAbv7ppxRJtj75nYd4qwa+jyJtas4BX53jKmPWW7ZcSStI
-	 ru70CpMqwXFa2lXGLPYdGxN8QudVTkRcoVh5oHTWnOHBTCaIsbfWLLGSn45vdSoykk
-	 CMBsWt9XzdDEwCEcba2kZfFqhzplwRDw4rg06u94=
+	b=YPjjcy8dAYIm1qW68w6pXOmVgpmC6E2ALC+jnoIVetxZvtgkfdcUUbkfhJEUih+ke
+	 yZG4RYZAbVeZMZ9gVyD/uusbTfvJ4wA/Nnni3fY9jMd97tKPJTva+f1TNazdbPj5Bm
+	 DHQbsKYQEJjqdVQe501c0wDu8kGIJjqUdOpLGyAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/262] clk: clk-axi-clkgen: fix fpfd_max frequency for zynq
+Subject: [PATCH 6.12 212/369] PCI: endpoint: pci-epf-vntb: Fix the incorrect usage of __iomem attribute
 Date: Tue, 12 Aug 2025 19:28:29 +0200
-Message-ID: <20250812172958.262236373@linuxfoundation.org>
+Message-ID: <20250812173022.733244268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Manivannan Sadhasivam <mani@kernel.org>
 
-[ Upstream commit ce8a9096699500e2c5bca09dde27b16edda5f636 ]
+[ Upstream commit 61ae7f8694fb4b57a8c02a1a8d2b601806afc999 ]
 
-The fpfd_max frequency should be set to 450 MHz instead of 300 MHz.
-Well, it actually depends on the platform speed grade but we are being
-conservative for ultrascale so let's be consistent. In a following
-change we will set these limits at runtime.
+__iomem attribute is supposed to be used only with variables holding the
+MMIO pointer. But here, 'mw_addr' variable is just holding a 'void *'
+returned by pci_epf_alloc_space(). So annotating it with __iomem is clearly
+wrong. Hence, drop the attribute.
 
-Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20250519-dev-axi-clkgen-limits-v6-1-bc4b3b61d1d4@analog.com
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+This also fixes the below sparse warning:
+
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17: warning: incorrect type in assignment (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    expected void [noderef] __iomem *mw_addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    got void *
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21: warning: incorrect type in assignment (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    expected unsigned int [usertype] *epf_db
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    got void [noderef] __iomem *mw_addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38: warning: incorrect type in argument 2 (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    expected void *addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    got void [noderef] __iomem *mw_addr
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250709125022.22524-1-mani@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-axi-clkgen.c | 2 +-
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index 934e53a96ddd..00bf799964c6 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -118,7 +118,7 @@ static const struct axi_clkgen_limits axi_clkgen_zynqmp_default_limits = {
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 3cddfdd04029..62d09a528e68 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -530,7 +530,7 @@ static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
+ 	struct device *dev = &ntb->epf->dev;
+ 	int ret;
+ 	struct pci_epf_bar *epf_bar;
+-	void __iomem *mw_addr;
++	void *mw_addr;
+ 	enum pci_barno barno;
+ 	size_t size = sizeof(u32) * ntb->db_count;
  
- static const struct axi_clkgen_limits axi_clkgen_zynq_default_limits = {
- 	.fpfd_min = 10000,
--	.fpfd_max = 300000,
-+	.fpfd_max = 450000,
- 	.fvco_min = 600000,
- 	.fvco_max = 1200000,
- };
 -- 
 2.39.5
 
