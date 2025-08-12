@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA37EB231E6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7431B233B8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1563A189990F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7445A3B9A06
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF921C8621;
-	Tue, 12 Aug 2025 18:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90FBF2FD1C5;
+	Tue, 12 Aug 2025 18:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ji578aj5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LURhCB0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0A62FD1DC;
-	Tue, 12 Aug 2025 18:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4531EF38C;
+	Tue, 12 Aug 2025 18:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021973; cv=none; b=Hna4zdEACdzW7QYdr8OI7KvwFmVNZVDsD7FdL+miptjKG161P1Vb130m8urNb3PklEck0EIsSi4gDbCnFj49bFKEokiQ+ia6p498Anstof2n4hxK1GngiuUiPWcVQhrBaAzBX89KoQUtdfMOw6tTMb9HiAdpBsAMRgyLFBnH5Ns=
+	t=1755023235; cv=none; b=akL4aYHFcF4dQbLtvkvU0VVrcRhztvla2P0ZQICkUcw2MM+q+ePoRVqi/x3SRbpAQEM/iQHLNuC2w2pp0lsJ/zvEr2aUq/2i7oB6cshE+x5dqILu7RqsI+fioGYWKBMC0sqGdP9oetI708yp5dU4KEYYEGDmysvaLmYeayIVHzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021973; c=relaxed/simple;
-	bh=6rBSJ5WIoHeanF8rYktXPYtY9MbwCHSdk7T2iG914Oc=;
+	s=arc-20240116; t=1755023235; c=relaxed/simple;
+	bh=Be/bPe5Z5gORVTNAQvgACKZc278ZzujneRgdFCkzyhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JK+sM8fgHmFSXjuUIhAs6NI9CW+YFW2cXbt/+0DmhdOwmU+oYla4eMlrCs+nvJvsIJomI7zoKpONZyEh5MnpDKSpgLLKaFGgS5/UZpgxz+6GkasPxj+r3CUS8zFmz5gmtfquH5oK0j/V06Lh3CTSgAZ4hmYKqsVtGT9hUIKL+q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ji578aj5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C15C4CEF0;
-	Tue, 12 Aug 2025 18:06:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qz2/Ujl7YAnyWa9k3DEEXdID0Q8EKVqyiOiJO4jWdrEQXr8o2g6aU0tqVKOcfv4Z2Wrb5lJlZ3eP0zzPZXGR/ncXTeZ1Emp6abx505vd/gLDoVhL1G2cmCW6luiMlWmDKqe9Ud+zKtQERGdmGH2rMMO84QQ5s/FWK9tmBge5XZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LURhCB0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DE1C4CEF0;
+	Tue, 12 Aug 2025 18:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021972;
-	bh=6rBSJ5WIoHeanF8rYktXPYtY9MbwCHSdk7T2iG914Oc=;
+	s=korg; t=1755023235;
+	bh=Be/bPe5Z5gORVTNAQvgACKZc278ZzujneRgdFCkzyhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ji578aj5LXYSc6XeBXNNE9mqvCIHiaazvqVKBM4oE0k+WP0SsQGUwIxCkJHsyKObr
-	 n8zbMsCmZA5osPD/v7l5NlKxWcbmr4IwzGyorkj4ftjxaMUkrEAv6QSsc5L7BAWKvl
-	 HBhk0pFbyDzZASRM1y0TJFqFQfzFiG1h3KxqM4yg=
+	b=LURhCB0ApHL2huBKvgAuRQVNUNAItXD7u2uawXSH2YBSm9/J1N5jW3lEXEK+eImRD
+	 FgkxBZ2vr6l7yz9StvjCofzEVjFCg2WIKEXz6v3s02iXAuq26ACCskGkdp7DyUCi6t
+	 MdnIJ6bqSLTF0Irgd4zyIpF8qTYfPut7olNFQIew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Giedrius=20Trainavi=C4=8Dius?= <giedrius@blokas.io>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Yu Kuai <yukuai@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/369] ASoC: soc-dai: tidyup return value of snd_soc_xlate_tdm_slot_mask()
+Subject: [PATCH 6.16 020/627] md/raid10: fix set but not used variable in sync_request_write()
 Date: Tue, 12 Aug 2025 19:25:15 +0200
-Message-ID: <20250812173015.426132142@linuxfoundation.org>
+Message-ID: <20250812173420.088762011@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit f4c77d5af0a9cd0ee22617baa8b49d0e151fbda7 ]
+[ Upstream commit bc1c2f0ae355f7e30b5baecdfb89d2b148aa0515 ]
 
-commit 7f1186a8d738661 ("ASoC: soc-dai: check return value at
-snd_soc_dai_set_tdm_slot()") checks return value of
-xlate_tdm_slot_mask() (A1)(A2).
+Building with W=1 reports the following:
 
-	/*
-	 * ...
-(Y)	 * TDM mode can be disabled by passing 0 for @slots. In this case @tx_mask,
-	 * @rx_mask and @slot_width will be ignored.
-	 * ...
-	 */
-	int snd_soc_dai_set_tdm_slot(...)
-	{
-		...
-		if (...)
-(A1)			ret = dai->driver->ops->xlate_tdm_slot_mask(...);
-		else
-(A2)			ret = snd_soc_xlate_tdm_slot_mask(...);
-		if (ret)
-			goto err;
-		...
-	}
+drivers/md/raid10.c: In function ‘sync_request_write’:
+drivers/md/raid10.c:2441:21: error: variable ‘d’ set but not used [-Werror=unused-but-set-variable]
+ 2441 |                 int d;
+      |                     ^
+cc1: all warnings being treated as errors
 
-snd_soc_xlate_tdm_slot_mask() (A2) will return -EINVAL if slots was 0 (X),
-but snd_soc_dai_set_tdm_slot() allow to use it (Y).
+Remove the usage of that variable.
 
-(A)	static int snd_soc_xlate_tdm_slot_mask(...)
-	{
-		...
-		if (!slots)
-(X)			return -EINVAL;
-		...
-	}
-
-Call xlate_tdm_slot_mask() only if slots was non zero.
-
-Reported-by: Giedrius Trainavičius <giedrius@blokas.io>
-Closes: https://lore.kernel.org/r/CAMONXLtSL7iKyvH6w=CzPTxQdBECf++hn8RKL6Y4=M_ou2YHow@mail.gmail.com
-Fixes: 7f1186a8d738661 ("ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()")
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/8734cdfx59.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 752d0464b78a ("md: clean up accounting for issued sync IO")
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/linux-raid/20250709104814.2307276-1-john.g.garry@oracle.com
+Signed-off-by: Yu Kuai <yukuai@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/md/raid10.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index de09d21add45..ad106087dd4b 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -273,13 +273,15 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- 		&rx_mask,
- 	};
- 
--	if (dai->driver->ops &&
--	    dai->driver->ops->xlate_tdm_slot_mask)
--		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	else
--		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	if (ret)
--		goto err;
-+	if (slots) {
-+		if (dai->driver->ops &&
-+		    dai->driver->ops->xlate_tdm_slot_mask)
-+			ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		else
-+			ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		if (ret)
-+			goto err;
-+	}
- 
- 	for_each_pcm_streams(stream)
- 		snd_soc_dai_tdm_mask_set(dai, stream, *tdm_mask[stream]);
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index c9bd2005bfd0..d2b237652d7e 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -2446,15 +2446,12 @@ static void sync_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ 	 * that are active
+ 	 */
+ 	for (i = 0; i < conf->copies; i++) {
+-		int d;
+-
+ 		tbio = r10_bio->devs[i].repl_bio;
+ 		if (!tbio || !tbio->bi_end_io)
+ 			continue;
+ 		if (r10_bio->devs[i].bio->bi_end_io != end_sync_write
+ 		    && r10_bio->devs[i].bio != fbio)
+ 			bio_copy_data(tbio, fbio);
+-		d = r10_bio->devs[i].devnum;
+ 		atomic_inc(&r10_bio->remaining);
+ 		submit_bio_noacct(tbio);
+ 	}
 -- 
 2.39.5
 
