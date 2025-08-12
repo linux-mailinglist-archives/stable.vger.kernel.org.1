@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-168189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E994B233DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2E3B23227
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76EFD166630
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE9971AA7266
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026082EE5E8;
-	Tue, 12 Aug 2025 18:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2D72E3B06;
+	Tue, 12 Aug 2025 18:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yibzcSSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thRohy7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68FB2E4248;
-	Tue, 12 Aug 2025 18:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE811EBFE0;
+	Tue, 12 Aug 2025 18:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023345; cv=none; b=kWahfLD8mnKjMijzvh3NjIcUMjPdLEgBTuhQ1URYeUareHpdnRvb9NSh61OJeV9T4c8mbKSpvbeJsrYsy1ZxVehOYXHmBa5WmjPdWL3w8SoLil02NUKRqZ5qD2wHGuGdFBol1KenFjMdDtF9rkOp0imYIrrBHnNffpLzfngokLo=
+	t=1755022087; cv=none; b=raPaUEZ6IaG/j1O6rTLrCBf/l3ub+FO/IP9GW/krCkE5s7EE+qJlAaTjMxcWhXOHwkQETeFzXRDIGeXlumUurTiqfnqMH1i2gtIQsegljWK9GuEOOvv0Fj0kbdw/1HSfaqr4CE+eWHEsHwvoxkmBhw1y8zFkpcQZnXW20vueEcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023345; c=relaxed/simple;
-	bh=1A96BMW6HjeXJ9PpN1kSwLciFm1sucgxxiVr59q2xy4=;
+	s=arc-20240116; t=1755022087; c=relaxed/simple;
+	bh=JzFWGxDp+124GwR8FQqn6zwYbsqnTKGOVfnkw3ys5Og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QE4FdZaHRAbM7xoErKqY2W5VX4ZcEKpOQ9gLsuE66zt22yfZhKtl8OGBXuumRHFpWT+n3QXXNZHb3/OW9nElUc819g8r2O3/2q6OMEsYnS/LLelCRMGIMNk9+RcIc3s9Z7vkehx+F5pzGXX6VJAWWExBVpRN1SgiD1qMGp2CYNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yibzcSSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C851DC4CEF0;
-	Tue, 12 Aug 2025 18:29:04 +0000 (UTC)
+	 MIME-Version; b=A5qk3rTqplfa32M+WlUjGN+GaNpkM8GpjAtayL9/g95Rhhiywe/fzvlObZX9df7yy/R+dv5523ui+Xb27+5aWpiHpgimlnxjFN040ovI0wGR3gfXmDCmjNXFFMKJj6gcx999cZ+NdLstv6Q9hODZ/+X4oPLzZDJ6Kdf5gkY5daw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thRohy7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5E7C4CEF0;
+	Tue, 12 Aug 2025 18:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023345;
-	bh=1A96BMW6HjeXJ9PpN1kSwLciFm1sucgxxiVr59q2xy4=;
+	s=korg; t=1755022086;
+	bh=JzFWGxDp+124GwR8FQqn6zwYbsqnTKGOVfnkw3ys5Og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yibzcSSJE/eDPqDaqOxesNBiSrW8agFPppQyl8SXOTE2q69TIJYN2Ymgk04p458Ya
-	 CTClqPaaGq0muVe2OughwR1MyaShiJF+rXMTdxnap7TqMMSfJ433cskOP1KBaKPM22
-	 SW9ZY7K912TOK7LnL7RGggxboELPYwX7Ld02ZHBw=
+	b=thRohy7qjZlQ3Tck8EPDKyLwAZ6lfpbawWVaC8Ck3nQoBYF6lpgDJ0OvF7iX1xT5P
+	 IOb6FL5E6P6XPzOCHiOCHZ7N1/c1NyAbq/m/5Ztk2nEV/LwUpckKy0AjujZ69cubLE
+	 jR5tUjOWWMFvcRklEWPYuw2Z+ESnRu0/z+WiPtYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 052/627] usb: misc: apple-mfi-fastcharge: Make power supply names unique
-Date: Tue, 12 Aug 2025 19:25:47 +0200
-Message-ID: <20250812173421.310516128@linuxfoundation.org>
+Subject: [PATCH 6.12 051/369] selftests: breakpoints: use suspend_stats to reliably check suspend success
+Date: Tue, 12 Aug 2025 19:25:48 +0200
+Message-ID: <20250812173016.681913562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit 43007b89fb2de746443fbbb84aedd1089afdf582 ]
+[ Upstream commit 07b7c2b4eca3f83ce9cd5ee3fa1c7c001d721c69 ]
 
-When multiple Apple devices are connected concurrently, the
-apple-mfi-fastcharge driver fails to probe the subsequent devices with
-the following error:
+The step_after_suspend_test verifies that the system successfully
+suspended and resumed by setting a timerfd and checking whether the
+timer fully expired. However, this method is unreliable due to timing
+races.
 
-    sysfs: cannot create duplicate filename '/class/power_supply/apple_mfi_fastcharge'
-    apple-mfi-fastcharge 5-2.4.3.3: probe of 5-2.4.3.3 failed with error -17
+In practice, the system may take time to enter suspend, during which the
+timer may expire just before or during the transition. As a result,
+the remaining time after resume may show non-zero nanoseconds, even if
+suspend/resume completed successfully. This leads to false test failures.
 
-This happens because the driver uses a fixed power supply name
-("apple_mfi_fastcharge") for all devices, causing a sysfs name
-conflict when a second device is connected.
+Replace the timer-based check with a read from
+/sys/power/suspend_stats/success. This counter is incremented only
+after a full suspend/resume cycle, providing a reliable and race-free
+indicator.
 
-Fix this by generating unique names using the USB bus and device
-number (e.g., "apple_mfi_fastcharge_5-12"). This ensures each
-connected device gets a unique power supply entry in sysfs.
+Also remove the unused file descriptor for /sys/power/state, which
+remained after switching to a system() call to trigger suspend [1].
 
-The change requires storing a copy of the power_supply_desc structure
-in the per-device mfi_device struct, since the name pointer needs to
-remain valid for the lifetime of the power supply registration.
+[1] https://lore.kernel.org/all/20240930224025.2858767-1-yifei.l.liu@oracle.com/
 
-Fixes: 249fa8217b84 ("USB: Add driver to control USB fast charge for iOS devices")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/r/20250602-apple-mfi-fastcharge-duplicate-sysfs-v1-1-5d84de34fac6@posteo.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250626191626.36794-1-moonhee.lee.ca@gmail.com
+Fixes: c66be905cda2 ("selftests: breakpoints: use remaining time to check if suspend succeed")
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/apple-mfi-fastcharge.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ .../breakpoints/step_after_suspend_test.c     | 41 ++++++++++++++-----
+ 1 file changed, 31 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c b/drivers/usb/misc/apple-mfi-fastcharge.c
-index ac8695195c13..8e852f4b8262 100644
---- a/drivers/usb/misc/apple-mfi-fastcharge.c
-+++ b/drivers/usb/misc/apple-mfi-fastcharge.c
-@@ -44,6 +44,7 @@ MODULE_DEVICE_TABLE(usb, mfi_fc_id_table);
- struct mfi_device {
- 	struct usb_device *udev;
- 	struct power_supply *battery;
-+	struct power_supply_desc battery_desc;
- 	int charge_type;
- };
- 
-@@ -178,6 +179,7 @@ static int mfi_fc_probe(struct usb_device *udev)
- {
- 	struct power_supply_config battery_cfg = {};
- 	struct mfi_device *mfi = NULL;
-+	char *battery_name;
- 	int err;
- 
- 	if (!mfi_fc_match(udev))
-@@ -187,23 +189,38 @@ static int mfi_fc_probe(struct usb_device *udev)
- 	if (!mfi)
- 		return -ENOMEM;
- 
-+	battery_name = kasprintf(GFP_KERNEL, "apple_mfi_fastcharge_%d-%d",
-+				 udev->bus->busnum, udev->devnum);
-+	if (!battery_name) {
-+		err = -ENOMEM;
-+		goto err_free_mfi;
-+	}
-+
-+	mfi->battery_desc = apple_mfi_fc_desc;
-+	mfi->battery_desc.name = battery_name;
-+
- 	battery_cfg.drv_data = mfi;
- 
- 	mfi->charge_type = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
- 	mfi->battery = power_supply_register(&udev->dev,
--						&apple_mfi_fc_desc,
-+						&mfi->battery_desc,
- 						&battery_cfg);
- 	if (IS_ERR(mfi->battery)) {
- 		dev_err(&udev->dev, "Can't register battery\n");
- 		err = PTR_ERR(mfi->battery);
--		kfree(mfi);
--		return err;
-+		goto err_free_name;
- 	}
- 
- 	mfi->udev = usb_get_dev(udev);
- 	dev_set_drvdata(&udev->dev, mfi);
- 
- 	return 0;
-+
-+err_free_name:
-+	kfree(battery_name);
-+err_free_mfi:
-+	kfree(mfi);
-+	return err;
+diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+index 8d275f03e977..8d233ac95696 100644
+--- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
++++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+@@ -127,22 +127,42 @@ int run_test(int cpu)
+ 	return KSFT_PASS;
  }
  
- static void mfi_fc_disconnect(struct usb_device *udev)
-@@ -213,6 +230,7 @@ static void mfi_fc_disconnect(struct usb_device *udev)
- 	mfi = dev_get_drvdata(&udev->dev);
- 	if (mfi->battery)
- 		power_supply_unregister(mfi->battery);
-+	kfree(mfi->battery_desc.name);
- 	dev_set_drvdata(&udev->dev, NULL);
- 	usb_put_dev(mfi->udev);
- 	kfree(mfi);
++/*
++ * Reads the suspend success count from sysfs.
++ * Returns the count on success or exits on failure.
++ */
++static int get_suspend_success_count_or_fail(void)
++{
++	FILE *fp;
++	int val;
++
++	fp = fopen("/sys/power/suspend_stats/success", "r");
++	if (!fp)
++		ksft_exit_fail_msg(
++			"Failed to open suspend_stats/success: %s\n",
++			strerror(errno));
++
++	if (fscanf(fp, "%d", &val) != 1) {
++		fclose(fp);
++		ksft_exit_fail_msg(
++			"Failed to read suspend success count\n");
++	}
++
++	fclose(fp);
++	return val;
++}
++
+ void suspend(void)
+ {
+-	int power_state_fd;
+ 	int timerfd;
+ 	int err;
++	int count_before;
++	int count_after;
+ 	struct itimerspec spec = {};
+ 
+ 	if (getuid() != 0)
+ 		ksft_exit_skip("Please run the test as root - Exiting.\n");
+ 
+-	power_state_fd = open("/sys/power/state", O_RDWR);
+-	if (power_state_fd < 0)
+-		ksft_exit_fail_msg(
+-			"open(\"/sys/power/state\") failed %s)\n",
+-			strerror(errno));
+-
+ 	timerfd = timerfd_create(CLOCK_BOOTTIME_ALARM, 0);
+ 	if (timerfd < 0)
+ 		ksft_exit_fail_msg("timerfd_create() failed\n");
+@@ -152,14 +172,15 @@ void suspend(void)
+ 	if (err < 0)
+ 		ksft_exit_fail_msg("timerfd_settime() failed\n");
+ 
++	count_before = get_suspend_success_count_or_fail();
++
+ 	system("(echo mem > /sys/power/state) 2> /dev/null");
+ 
+-	timerfd_gettime(timerfd, &spec);
+-	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
++	count_after = get_suspend_success_count_or_fail();
++	if (count_after <= count_before)
+ 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
+ 
+ 	close(timerfd);
+-	close(power_state_fd);
+ }
+ 
+ int main(int argc, char **argv)
 -- 
 2.39.5
 
