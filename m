@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7056B23062
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27869B22F95
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C59F685F04
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D43C68380D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D962FDC5D;
-	Tue, 12 Aug 2025 17:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE172FDC2E;
+	Tue, 12 Aug 2025 17:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BA7VQ9De"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHGkSKrl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEB92868AF;
-	Tue, 12 Aug 2025 17:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9A92F7461;
+	Tue, 12 Aug 2025 17:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021083; cv=none; b=SEj/k/fZ93/pVMLm5HuWL1wPdajYdAvcW4m4SPGLgpilkm604LTBfzvGHcVZ1tYP5Et0n4thpMez4fap7kw5cCWVyiDNN6RvUFQgpIuoVNH3VBxr1aVNMBhUUqd4ks0LOOjGeRnzYTnb18ek7N1oLuqlVMnK3F6OilHH+lOwVqQ=
+	t=1755020482; cv=none; b=lU0fIzvd5x3KLcSYVjwLyFxMT2Fj1/95uQLaCsvfbU0jzHnu/CDfnoe7ioK5t3Z4u2SVPXpFJOBo0ijaoKluV4+rSohkFlzETtgtD+emMbWJbx2KagbOv9wW/09HZyBdZGUMNxPx/bSxzpci/aFdrsWP1oAr2MgbGuUj4IEvkIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021083; c=relaxed/simple;
-	bh=KKowj8qTjl+83B5sqog4dOWNZe/6+SzoY+6rWTuNr9M=;
+	s=arc-20240116; t=1755020482; c=relaxed/simple;
+	bh=yMLjHIfix4O5TL/qOu0CmoC4oNtME40kO7hUMEKTRjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gV7PX61hKqLTxsShKlJGA0JzSZ08FKSoZ14DeWycAPSZM8M3wkiIp4aCTIJiAWw9by97eizeVT83jFeHBM+qVVrIMx4AjNKFia9fWotDRDDL3HyArjoe+oo1BDd5qz9JaqxFNy/+bZPZ4e0TLfsOLKD577zQCzsIjTkoBhSW6QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BA7VQ9De; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374C7C4CEF0;
-	Tue, 12 Aug 2025 17:51:23 +0000 (UTC)
+	 MIME-Version; b=ovph63eax5Q5E9lLn/E6qbJZz3Wy/OPlMwcznuccsg7E3N+aW2x2CKS+++0lAsfayFUoOuB1K7ucqB2/8F6HpbiXzANugL38G4ULLGzjXnWOAgGg3sLCTZXtZF80ecwuULkMDpfycDDfa+Di37iZIY9EKK3GRpFqC5aaXuH6tww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHGkSKrl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A472FC4CEF0;
+	Tue, 12 Aug 2025 17:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021083;
-	bh=KKowj8qTjl+83B5sqog4dOWNZe/6+SzoY+6rWTuNr9M=;
+	s=korg; t=1755020482;
+	bh=yMLjHIfix4O5TL/qOu0CmoC4oNtME40kO7hUMEKTRjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BA7VQ9De/Ie2O/0er1UXs1OjZOIFQDgxi8Cinbn3vGYmYGH+aZhTvEJqIfxix8EXK
-	 yPhvcSCiDyQIpSAdnBECF0mCPIeJdn6I5mRDwIPCPlFG1hRR1BethIrkpCvA9ODUPO
-	 FAsTd3Gc4MdnXeGANj1krwxsJtGAG/mhF0Bo7FHk=
+	b=CHGkSKrlc9h5xj4HXPjyRglA6i6fRSEqbRuclylftb/iKeZCTkOOejl6VYuJdhXva
+	 zNi/0Km8rjuGZRwyypCZ2ForurFj3j64echivF8zv1ST96FPrAMq46QAH8Vbn16xZ6
+	 lU4yLE+2+t/FxDkky98T0//omLEe7PIZcBwQUvxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/262] iwlwifi: Add missing check for alloc_ordered_workqueue
+Subject: [PATCH 6.1 059/253] usb: chipidea: add USB PHY event
 Date: Tue, 12 Aug 2025 19:27:27 +0200
-Message-ID: <20250812172955.498211640@linuxfoundation.org>
+Message-ID: <20250812172951.237993266@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
+[ Upstream commit b7a62611fab72e585c729a7fcf666aa9c4144214 ]
 
-Add check for the return value of alloc_ordered_workqueue since it may
-return NULL pointer.
+Add USB PHY event for below situation:
+- usb role changed
+- vbus connect
+- vbus disconnect
+- gadget driver is enumerated
 
-Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+USB PHY driver can get the last event after above situation occurs
+and deal with different situations.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230627110353.1879477-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/ci.h  | 18 ++++++++++++++++--
+ drivers/usb/chipidea/udc.c | 10 ++++++++++
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index a873be109f43..b490a88b97ca 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1048,9 +1048,11 @@ static void iwl_bg_restart(struct work_struct *data)
-  *
-  *****************************************************************************/
+diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
+index 2ff83911219f..de23e10470d3 100644
+--- a/drivers/usb/chipidea/ci.h
++++ b/drivers/usb/chipidea/ci.h
+@@ -278,8 +278,19 @@ static inline int ci_role_start(struct ci_hdrc *ci, enum ci_role role)
+ 		return -ENXIO;
  
--static void iwl_setup_deferred_work(struct iwl_priv *priv)
-+static int iwl_setup_deferred_work(struct iwl_priv *priv)
- {
- 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
-+	if (!priv->workqueue)
-+		return -ENOMEM;
- 
- 	INIT_WORK(&priv->restart, iwl_bg_restart);
- 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
-@@ -1067,6 +1069,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
- 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
- 
- 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
+ 	ret = ci->roles[role]->start(ci);
+-	if (!ret)
+-		ci->role = role;
++	if (ret)
++		return ret;
 +
-+	return 0;
++	ci->role = role;
++
++	if (ci->usb_phy) {
++		if (role == CI_ROLE_HOST)
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_ID);
++		else
++			/* in device mode but vbus is invalid*/
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_NONE);
++	}
++
+ 	return ret;
  }
  
- void iwl_cancel_deferred_work(struct iwl_priv *priv)
-@@ -1456,7 +1460,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	/********************
- 	 * 6. Setup services
- 	 ********************/
--	iwl_setup_deferred_work(priv);
-+	if (iwl_setup_deferred_work(priv))
-+		goto out_uninit_drv;
-+
- 	iwl_setup_rx_handlers(priv);
+@@ -293,6 +304,9 @@ static inline void ci_role_stop(struct ci_hdrc *ci)
+ 	ci->role = CI_ROLE_END;
  
- 	iwl_power_initialize(priv);
-@@ -1494,6 +1500,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	iwl_cancel_deferred_work(priv);
- 	destroy_workqueue(priv->workqueue);
- 	priv->workqueue = NULL;
-+out_uninit_drv:
- 	iwl_uninit_drv(priv);
- out_free_eeprom_blob:
- 	kfree(priv->eeprom_blob);
+ 	ci->roles[role]->stop(ci);
++
++	if (ci->usb_phy)
++		usb_phy_set_event(ci->usb_phy, USB_EVENT_NONE);
+ }
+ 
+ static inline enum usb_role ci_role_to_usb_role(struct ci_hdrc *ci)
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 3795c70a3155..e7a02d9e1c07 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -1724,6 +1724,13 @@ static int ci_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
+ 		ret = ci->platdata->notify_event(ci,
+ 				CI_HDRC_CONTROLLER_VBUS_EVENT);
+ 
++	if (ci->usb_phy) {
++		if (is_active)
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_VBUS);
++		else
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_NONE);
++	}
++
+ 	if (ci->driver)
+ 		ci_hdrc_gadget_connect(_gadget, is_active);
+ 
+@@ -2040,6 +2047,9 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
+ 		if (USBi_PCI & intr) {
+ 			ci->gadget.speed = hw_port_is_high_speed(ci) ?
+ 				USB_SPEED_HIGH : USB_SPEED_FULL;
++			if (ci->usb_phy)
++				usb_phy_set_event(ci->usb_phy,
++					USB_EVENT_ENUMERATED);
+ 			if (ci->suspended) {
+ 				if (ci->driver->resume) {
+ 					spin_unlock(&ci->lock);
 -- 
 2.39.5
 
