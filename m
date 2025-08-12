@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16495B23552
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91927B233A9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 100AF1894ABD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9206E122C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB26C2C21D4;
-	Tue, 12 Aug 2025 18:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222932FFDCC;
+	Tue, 12 Aug 2025 18:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uwf+Y7hY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZygCchs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31F61A9F89;
-	Tue, 12 Aug 2025 18:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54752EE5E8;
+	Tue, 12 Aug 2025 18:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024394; cv=none; b=GtuQeJqI9OVhUqXDzBElrqtnNVvDl7wR5Wvxcn/W7OuJ5t3OtoS3jJKYJ6F83UscekiolWxzYCanzyc4WCueIaRIJjaB9nkK0KD7t8h0yBJZyDpjmzoUbnaN/CHBuxRAX+6Ryxhrnyn4YjGJGqlu7IeFFrAdcDDZ5oraVg7ViRA=
+	t=1755023179; cv=none; b=pRCjudKsF5FuTfhCw3fM8zwX7bn3vzayW/LHO12kqaKofEaRZ+PnHe8XaabhO0VBAuEQ5LvSu+6Oi1aQghmw7MRRocbE5bzu+73GrUxuBKfnFM88oB478f7O1PXq20RtghrCbdg6142QSGfMLumv/Bjq2WnAdOzDpp9QwAeB7ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024394; c=relaxed/simple;
-	bh=ujQjUvphOy8SHHsh1FleeTZcDBhFczL3JE42kXUxEXE=;
+	s=arc-20240116; t=1755023179; c=relaxed/simple;
+	bh=/xWrYALAHaejhGBv0Pq8JYDFhlOTAfP2IowSPWMMBcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dU5vVrx09bLgHqLKtZgyocvy76fZHKBFWBfQ8MfUWWEOeB5ugW4xEE7gAvrSJBbS99l3fhaysueNhafsfNCxzdKBhNuzKAe5dZziXZ+T+s6A2rc6zlJtbL5AqKhJ6eDlkf9DSMHDqzMQsJgfL7Vp5a3MQSQS4cOvup2dt+98MmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uwf+Y7hY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD812C4CEF0;
-	Tue, 12 Aug 2025 18:46:33 +0000 (UTC)
+	 MIME-Version; b=TAx1IY5PyrGmafLP2KSpn4c/0iQnk5OSwMgQBQl+dM7BUvudMGPH91ZzQzx/2qNb2ZBHTUD7+0D2G1oR069Oz6wZ9OoQZ88O0PHtz3V+Dgz24orEEQQacjZt7cmcGuE/dRTC78y358jXF3wKCVYlq/zXfpjkN0cXYUqD4pyghs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZygCchs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BCCC4CEF0;
+	Tue, 12 Aug 2025 18:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024394;
-	bh=ujQjUvphOy8SHHsh1FleeTZcDBhFczL3JE42kXUxEXE=;
+	s=korg; t=1755023179;
+	bh=/xWrYALAHaejhGBv0Pq8JYDFhlOTAfP2IowSPWMMBcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uwf+Y7hYrAb3o+258KlcC7d+Ye7N4Y6LObkHxi3fxWfNdeQxqp3cawmiz1ntlg5qj
-	 ZtSOoBK5G+IKMoSjarOOnkjCPcknyJluskstjcXnSthmkgIIXbyvquuRh2+3Jlwi1B
-	 kqAJ9AG+4FHAIrB7m64SHf+5mExBirnXwCjbze/o=
+	b=SZygCchsaes+BRxZMfhrzphRPwncuKVNFCBwFJ5fvu2i5BkvX8oIIXU2DVZsZT75B
+	 2BjlopVoYe3o2mhKe+ZoHQzr4J3K2++XkvXPzPhKNun1pHGzreFMPKQuP2DdUbuNTx
+	 Eu7y9RQQBVkFL0/JNEiRu4tY6W+3H1BF9OzR/xPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 361/627] perf sched: Fix memory leaks for evsel->priv in timehist
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.12 359/369] x86/fpu: Delay instruction pointer fixup until after warning
 Date: Tue, 12 Aug 2025 19:30:56 +0200
-Message-ID: <20250812173433.025463035@linuxfoundation.org>
+Message-ID: <20250812173030.193134057@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-[ Upstream commit 117e5c33b1c44037af016d77ce6c0b086d55535f ]
+commit 1cec9ac2d071cfd2da562241aab0ef701355762a upstream.
 
-It uses evsel->priv to save per-cpu timing information.  It should be
-freed when the evsel is released.
+Right now, if XRSTOR fails a console message like this is be printed:
 
-Add the priv destructor for evsel same as thread to handle that.
+	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
 
-Fixes: 49394a2a24c78ce0 ("perf sched timehist: Introduce timehist command")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-6-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the text location (...+0x9a in this case) is the instruction
+*AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
+also points one instruction late.
+
+The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
+keep on running after returning from the #GP handler. But it does this
+fixup before warning.
+
+The resulting warning output is nonsensical because it looks like the
+non-FPU-related instruction is #GP'ing.
+
+Do not fix up RIP until after printing the warning. Do this by using
+the more generic and standard ex_handler_default().
+
+Fixes: d5c8028b4788 ("x86/fpu: Reinitialize FPU registers if restoring FPU state fails")
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Acked-by: Alison Schofield <alison.schofield@intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250624210148.97126F9E%40davehans-spike.ostc.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c | 12 ++++++++++++
- tools/perf/util/evsel.c    | 11 +++++++++++
- tools/perf/util/evsel.h    |  2 ++
- 3 files changed, 25 insertions(+)
+ arch/x86/mm/extable.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 83b5a85a91b7..a6eb0462dd5b 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -2020,6 +2020,16 @@ static u64 evsel__get_time(struct evsel *evsel, u32 cpu)
- 	return r->last_time[cpu];
- }
- 
-+static void timehist__evsel_priv_destructor(void *priv)
-+{
-+	struct evsel_runtime *r = priv;
-+
-+	if (r) {
-+		free(r->last_time);
-+		free(r);
-+	}
-+}
-+
- static int comm_width = 30;
- 
- static char *timehist_get_commstr(struct thread *thread)
-@@ -3314,6 +3324,8 @@ static int perf_sched__timehist(struct perf_sched *sched)
- 
- 	setup_pager();
- 
-+	evsel__set_priv_destructor(timehist__evsel_priv_destructor);
-+
- 	/* prefer sched_waking if it is captured */
- 	if (evlist__find_tracepoint_by_name(session->evlist, "sched:sched_waking"))
- 		handlers[1].handler = timehist_sched_wakeup_ignore;
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index d55482f094bf..1dc1f7b3bfb8 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -1656,6 +1656,15 @@ static void evsel__free_config_terms(struct evsel *evsel)
- 	free_config_terms(&evsel->config_terms);
- }
- 
-+static void (*evsel__priv_destructor)(void *priv);
-+
-+void evsel__set_priv_destructor(void (*destructor)(void *priv))
-+{
-+	assert(evsel__priv_destructor == NULL);
-+
-+	evsel__priv_destructor = destructor;
-+}
-+
- void evsel__exit(struct evsel *evsel)
+--- a/arch/x86/mm/extable.c
++++ b/arch/x86/mm/extable.c
+@@ -122,13 +122,12 @@ static bool ex_handler_sgx(const struct
+ static bool ex_handler_fprestore(const struct exception_table_entry *fixup,
+ 				 struct pt_regs *regs)
  {
- 	assert(list_empty(&evsel->core.node));
-@@ -1686,6 +1695,8 @@ void evsel__exit(struct evsel *evsel)
- 	hashmap__free(evsel->per_pkg_mask);
- 	evsel->per_pkg_mask = NULL;
- 	zfree(&evsel->metric_events);
-+	if (evsel__priv_destructor)
-+		evsel__priv_destructor(evsel->priv);
- 	perf_evsel__object.fini(evsel);
- 	if (evsel__tool_event(evsel) == TOOL_PMU__EVENT_SYSTEM_TIME ||
- 	    evsel__tool_event(evsel) == TOOL_PMU__EVENT_USER_TIME)
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 6dbc9690e0c9..b84ee274602d 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -280,6 +280,8 @@ void evsel__init(struct evsel *evsel, struct perf_event_attr *attr, int idx);
- void evsel__exit(struct evsel *evsel);
- void evsel__delete(struct evsel *evsel);
+-	regs->ip = ex_fixup_addr(fixup);
+-
+ 	WARN_ONCE(1, "Bad FPU state detected at %pB, reinitializing FPU registers.",
+ 		  (void *)instruction_pointer(regs));
  
-+void evsel__set_priv_destructor(void (*destructor)(void *priv));
+ 	fpu_reset_from_exception_fixup();
+-	return true;
 +
- struct callchain_param;
++	return ex_handler_default(fixup, regs);
+ }
  
- void evsel__config(struct evsel *evsel, struct record_opts *opts,
--- 
-2.39.5
-
+ /*
 
 
 
