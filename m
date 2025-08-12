@@ -1,103 +1,119 @@
-Return-Path: <stable+bounces-167153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E93BB226C0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 14:29:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48DBB22791
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 14:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C373B845D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 12:29:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABD9A16617C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 12:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AAA1E5B7B;
-	Tue, 12 Aug 2025 12:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7766623B627;
+	Tue, 12 Aug 2025 12:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KzilRiWk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIY+lz+E"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A671DD9AD;
-	Tue, 12 Aug 2025 12:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECC9218827;
+	Tue, 12 Aug 2025 12:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755001736; cv=none; b=C2nAPu/vh+uEZZNy45dgPsY6xTUTtmxf1JYccAPd4iucX/897u/bpAiDbSbFSKpofNe9zEYPe6Nl4ZUrG8eaedO5t9IRfjoWlW8+HlV5sX6iBVDDY4i39NBHf9AmqFXx+iWxENV3SpVI94te7m+z7XgUyUOde3bfS0qJGXLthh4=
+	t=1755003233; cv=none; b=pcH5FVZYd5AtQIVQIYQ9DQfrfnT5ZMsedGmV+/0Qda2kZenb+v8JygP7AMjl5JSu0rKpbwWmSBb5wNmNXvcKyPHbKs6/EtgQavVj7RwAI9hvKpV+MrsAe/89kw+AnqdMsbZ3eO5WBRFFuSf5xTKDzPdqRRJYSU9+lWf4DlWBwiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755001736; c=relaxed/simple;
-	bh=Do8TP74zsTocFwZxbJEBG/WGS4Ap/H1rqwzrryCxk28=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sVIqbPxFNLmxe4OJeLWmzyOs7MCRKbdyhxY+hd5/YneegYcU9ff4oM5pDaolcdJNeQGU/edj+DIzhLlpAnsB691+93wzIR9G/O7lMEmTeR+BRIWlWbru3EiICdJiK3TISxuPwae8R1bKthTTQLHVebqo58rkdxdrRxIVLtGszNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KzilRiWk; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755001735; x=1786537735;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=Do8TP74zsTocFwZxbJEBG/WGS4Ap/H1rqwzrryCxk28=;
-  b=KzilRiWkn1z3fw6QbhvtU5gdvRcX6cdjl+o/oJEXyJc5KzAQt+/ee61m
-   usbTuI1Oq66k/wzRldlKVgsp3jGgS/G9WvqQBPD0eCLePr3b4BCMxD1gB
-   5cRdUx2No5XdjHVEDFovQny2YndJA155zwbbGjm7/HlZ52iQjSV92n5Ts
-   BP9gBiSor6SZWyB3blErKxQtSmApXtnLXMSGppn3PcbARAi82mazCr9d5
-   Gx8eYQfVGZM+5IydOKA3puAl6snGiJcHHp2dosiabu1BXdL1gDx8p9r0a
-   R6fJknNz6E1k1ee9AoSyskaSly2WmuaVGfGsUk7E12OQyJJpsPAgIAuR7
-   A==;
-X-CSE-ConnectionGUID: aKKKYWnXSVilGyCMYPIDXQ==
-X-CSE-MsgGUID: WxPsfgt1Q6yVs4kGepZuCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="68648809"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="68648809"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 05:28:54 -0700
-X-CSE-ConnectionGUID: q3oNydLhQ2S2V0cR6oMVUg==
-X-CSE-MsgGUID: ve+5hnwrTjiuylti3+WO+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="166472045"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.96])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 05:28:52 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Hans de Goede <hansg@kernel.org>, 
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20250727210513.2898630-1-srinivas.pandruvada@linux.intel.com>
-References: <20250727210513.2898630-1-srinivas.pandruvada@linux.intel.com>
-Subject: Re: [PATCH] platform/x86/intel-uncore-freq: Check write blocked
- for ELC
-Message-Id: <175500172739.2252.7473012408128770590.b4-ty@linux.intel.com>
-Date: Tue, 12 Aug 2025 15:28:47 +0300
+	s=arc-20240116; t=1755003233; c=relaxed/simple;
+	bh=666ZXj4AcCGhbJLahDGjx1GCcakbB28RNTMrqfv6E4A=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=T+4M+RPjrdVwV3kODgNPKxkoUjQ7i7266BdRBCntsrxLlyGhZyeUF4kNa88Pt+jl4mButCq+JptYTklY5uP0C5ZlIoXfYWeGXRSci3RwFz2GHuJT/beCadPJN2Y/tYQjcqLFZo3/0F7Hel6Ws7Lg0+Y+ECSA5jX53wW8KKWHtOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIY+lz+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA18C4CEF0;
+	Tue, 12 Aug 2025 12:53:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755003232;
+	bh=666ZXj4AcCGhbJLahDGjx1GCcakbB28RNTMrqfv6E4A=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=TIY+lz+ET3rAnLo6IC2MSXSkyN40+y5baa98nZ4mi8hqGfVOmvx6ctMH0Zd2zzFJC
+	 V714BBgc9tXAt6G3uRGjF2ypx17i50VgvT0o1szzHhJmU+KjWPeWf/JEQWH08Ds+DN
+	 doY38n3tDWyZSOV7vavq0iwxxJL8gN0uUmt3CCUgB43L9bXyBk8X7eqke6pWArvG6G
+	 rNa2qDensbtOKY+ppdRMyYMjWM6vfImXKlKRebHuqf4JiY5hS3+f3VAKILt5cTQUA5
+	 L0LZAvWkG+ibNC4tM8ITMYiCqw2qfnA6dtSuDq/CkHNUlYWuSgJcBzo4mJPOHc80f+
+	 pslRSOpSk7/lA==
+Date: Tue, 12 Aug 2025 14:53:50 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Qasim Ijaz <qasdev00@gmail.com>
+cc: bentiss@kernel.org, linux-input@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+    Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH v2 RESEND] HID: multitouch: fix slab out-of-bounds access
+ in mt_report_fixup()
+In-Reply-To: <20250810180924.44582-1-qasdev00@gmail.com>
+Message-ID: <6o42n3q5-sq57-q7nq-rpn6-50np33r5ssqp@xreary.bet>
+References: <20250810180924.44582-1-qasdev00@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=US-ASCII
 
-On Sun, 27 Jul 2025 14:05:13 -0700, Srinivas Pandruvada wrote:
+On Sun, 10 Aug 2025, Qasim Ijaz wrote:
 
-> Add the missing write_blocked check for updating sysfs related to uncore
-> efficiency latency control (ELC). If write operation is blocked return
-> error.
+> A malicious HID device can trigger a slab out-of-bounds during
+> mt_report_fixup() by passing in report descriptor smaller than
+> 607 bytes. mt_report_fixup() attempts to patch byte offset 607
+> of the descriptor with 0x25 by first checking if byte offset
+> 607 is 0x15 however it lacks bounds checks to verify if the
+> descriptor is big enough before conducting this check. Fix
+> this bug by ensuring the descriptor size is at least 608
+> bytes before accessing it.
 > 
+> Below is the KASAN splat after the out of bounds access happens:
 > 
+> [   13.671954] ==================================================================
+> [   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
+> [   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
+> [   13.673297]
+> [   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
+> [   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
+> [   13.673297] Call Trace:
+> [   13.673297]  <TASK>
+> [   13.673297]  dump_stack_lvl+0x5f/0x80
+> [   13.673297]  print_report+0xd1/0x660
+> [   13.673297]  kasan_report+0xe5/0x120
+> [   13.673297]  __asan_report_load1_noabort+0x18/0x20
+> [   13.673297]  mt_report_fixup+0x103/0x110
+> [   13.673297]  hid_open_report+0x1ef/0x810
+> [   13.673297]  mt_probe+0x422/0x960
+> [   13.673297]  hid_device_probe+0x2e2/0x6f0
+> [   13.673297]  really_probe+0x1c6/0x6b0
+> [   13.673297]  __driver_probe_device+0x24f/0x310
+> [   13.673297]  driver_probe_device+0x4e/0x220
+> [   13.673297]  __device_attach_driver+0x169/0x320
+> [   13.673297]  bus_for_each_drv+0x11d/0x1b0
+> [   13.673297]  __device_attach+0x1b8/0x3e0
+> [   13.673297]  device_initial_probe+0x12/0x20
+> [   13.673297]  bus_probe_device+0x13d/0x180
+> [   13.673297]  device_add+0xe3a/0x1670
+> [   13.673297]  hid_add_device+0x31d/0xa40
+> [...]
+> 
+> Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+> Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+> ---
+> v2:
+> - Simplify fix with a if-size check after discussion with Jiri Slaby
+> - Change explanation of bug to reflect inclusion of a if-size check
 
+Applied to hid.git#for-6.17/upstream-fixes, thanks.
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
-
-The list of commits applied:
-[1/1] platform/x86/intel-uncore-freq: Check write blocked for ELC
-      commit: dff6f36878799a5ffabd15336ce993dc737374dc
-
---
- i.
+-- 
+Jiri Kosina
+SUSE Labs
 
 
