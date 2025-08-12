@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3BFB233BE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E515B231D1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97FF86E2617
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79DC73A2A7C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152C82FA0DF;
-	Tue, 12 Aug 2025 18:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBBF2DE6E9;
+	Tue, 12 Aug 2025 18:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3ujw1if"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0epKeytN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FCA2E7BD4;
-	Tue, 12 Aug 2025 18:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7912BEC2F;
+	Tue, 12 Aug 2025 18:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023251; cv=none; b=TuCD3E3vf2o0iteMOPWgbg8zUvG49r4xSKN9EmSRWn8MoCBo9ZYsd0ZTJ1HfsIbBHwOC+fji9KHg0V2iZwGkh2mcCvWKiQilrvCDv6whN5czNzoKF9iYdxpdKcIDCDK72vbfNlpDytP0Mtm7DBdf3vhh9+sPXTfEqkPtcFoA3IA=
+	t=1755022012; cv=none; b=GFzsI65vmjTcjVmFqhgTLjBLkRZkQ5Fb8fWcYVx7SOnAxpwhW2PgbAhZeAawiUMjzcvV4RVvA9EMD9zemNaLq3riY0Mhk0jiKYsaMqn26Jx3i23vrCfwt0bPW0K8yPi3tXTXp6TKq8vmfcmYaQn6ijVgts85yozzp6znfaXQEPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023251; c=relaxed/simple;
-	bh=yjD3ud9trxCsm/dBfmg22jHOIRlt0yf0dJ0BOifYSPE=;
+	s=arc-20240116; t=1755022012; c=relaxed/simple;
+	bh=hsVWuIzjyF+wpB8RtLSIqD1ixvgxz45OUnfapmp9XQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=glKCDqTMZ1pjneNv+pICkpfbDXLUXrUyny8UJZAybx9Tf2/y8jZHwSgIr4N/IlqCFqg06qErCzXDiYo/Ua/CjGcRAeJfd41rrwKMAJIzXh6LLLohb7YX8OjIzXRtX86D0cwkRChIj2vXRZ0n7I0Cc9K50mHkSJv9tLlHN4iJREU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3ujw1if; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373E6C4CEF1;
-	Tue, 12 Aug 2025 18:27:31 +0000 (UTC)
+	 MIME-Version; b=e9Fi7JMt+oQ3+xjnMY29WfHkS68+vTqg5PEPmWGh2+6u+xn4aAZMkPU/HWHyLWaISeaCcpCYK0oX9yyzNO2Gi7yX9f9FHdUjVSdo+9Xk3n2606d/z5zdWi2OmTslEYMVATQpXuMOL9uRNp4Utht9MjuAlIjZZyyqYQWxLBLJ+hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0epKeytN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8EBC4CEF7;
+	Tue, 12 Aug 2025 18:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023251;
-	bh=yjD3ud9trxCsm/dBfmg22jHOIRlt0yf0dJ0BOifYSPE=;
+	s=korg; t=1755022012;
+	bh=hsVWuIzjyF+wpB8RtLSIqD1ixvgxz45OUnfapmp9XQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3ujw1if0p+BaGjlrrs+YESjLKqn20INoLqED30mUuqXLmybx9iud1SpgP6F6fcCB
-	 VMPf71t+3X7yoV8vFn0pinPDkTeMhIptVudiXfy+KKpowDP6bzLJ9pTnF5hYrmJ1Ni
-	 7eJsX0dq0Yr4IRrK0P5FdLjclccJbBy44bNWmLVw=
+	b=0epKeytNwzpx8tjiPRKOCAPgcvNdXcNwQ0BNof+vHFyhH3XsRU69qxvHBo2dUE1ta
+	 7Otd3dEktMRavDOf8SM6KHqmT2kVWn/5anIRhCNZTBKTLa0T3Rquexx43IQl6FPWW5
+	 g3s93SBqFVgnt2W3mtYLSI5mFgKUEIeNfrPU/qHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Adam Queler <queler+k@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 005/627] selftests/landlock: Fix build of audit_test
+Subject: [PATCH 6.12 003/369] ASoC: amd: yc: Add DMI entries to support HP 15-fb1xxx
 Date: Tue, 12 Aug 2025 19:25:00 +0200
-Message-ID: <20250812173419.523658139@linuxfoundation.org>
+Message-ID: <20250812173014.873778286@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Adam Queler <queler@gmail.com>
 
-[ Upstream commit dc58130bc38f09b162aa3b216f8b8f1e0a56127b ]
+[ Upstream commit 949ddec3728f3a793a13c1c9003028b9b159aefc ]
 
-We are hitting build error on CentOS 9:
+This model requires an additional detection quirk to
+enable the internal microphone.
 
-audit_test.c:232:40: error: ‘O_CLOEXEC’ undeclared (...)
-
-Fix this by including fcntl.h.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20250605214416.1885878-1-song@kernel.org
-Fixes: 6b4566400a29 ("selftests/landlock: Add PID tests for audit records")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Adam Queler <queler+k@gmail.com>
+Link: https://patch.msgid.link/20250715031434.222062-1-queler+k@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/landlock/audit_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/landlock/audit_test.c b/tools/testing/selftests/landlock/audit_test.c
-index cfc571afd0eb..46d02d49835a 100644
---- a/tools/testing/selftests/landlock/audit_test.c
-+++ b/tools/testing/selftests/landlock/audit_test.c
-@@ -7,6 +7,7 @@
- 
- #define _GNU_SOURCE
- #include <errno.h>
-+#include <fcntl.h>
- #include <limits.h>
- #include <linux/landlock.h>
- #include <pthread.h>
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 42d123cb8b4c..4bde41663f42 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -528,6 +528,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16z-n000"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Victus by HP Gaming Laptop 15-fb1xxx"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.39.5
 
