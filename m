@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-168818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870F0B236E7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:06:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C77B236FE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 694C868730C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C9D3A6EFB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB55260583;
-	Tue, 12 Aug 2025 19:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A92F29BDB7;
+	Tue, 12 Aug 2025 19:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBUqPb0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFAH5cNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD09E1C1AAA;
-	Tue, 12 Aug 2025 19:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B9026FA77;
+	Tue, 12 Aug 2025 19:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025435; cv=none; b=p2r93Vo7huukcX+J0TS87D6mMP9M924QidoeEXrY3UiUqb4yAPV3H8H9J/Xbohd3Dmsldt2WZYzm0bKrfEO5BNp9eah52TBt866w8cPVQ6vS161KH/77TvzDFdU9iw4lCzb51IDU3m8UuOaGxZ7n0qjMIKt6DNI+KeMXe8If55k=
+	t=1755025581; cv=none; b=NRD+5ZJEefaUvPjDhMAjNCYWjIOI4Md23SCVe9pGN8B0E80b7sy2jvd9sBTFAdx5YPsJVDBq41XrANqns8SpmLMW5fzWuiHEj1i4kHVh5jd2UPYGpKIbjMSQCjRqVypqFsYJHyvUxon6iEUY3Hyqa4JKT4fxgtYWdwXHA3XyymM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025435; c=relaxed/simple;
-	bh=r2gkixSLj3ZEtiLBIzm9rZ2uJZiMRrr6fRZeWGvGJts=;
+	s=arc-20240116; t=1755025581; c=relaxed/simple;
+	bh=8AOco4iVg4ynueMB0/jJg8Tx1AtNlva+GqVZOTMQNFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBQLiGquwWFiEAtlGv3tiaN4uTNMQrnrvOSJodCP53ZZZJIgga4kukvqiSLxi4vZupfUmzkeVPFWt/oDJ/MIa1T2JO666pdyVxsT7ZqKos7rfcgua0a6czsbc02y0bnSgOwOndCyglkWMXR9one478JxccGlkLyg7HhNAXBAinw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBUqPb0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C41FC4CEF0;
-	Tue, 12 Aug 2025 19:03:55 +0000 (UTC)
+	 MIME-Version; b=syngs/k2hi+fiSYq5OVDTdnnsVNjpwYjmCPQPhRCgVPfsa/uHxOWeoqeA4OIgbwwiq16WMHPjZmTrXbnt7du3IYmQ4nmQ1q+YdzUfZK+Jo4/oCmO0fXRx3LvZDL0Y1r0k42L4Dx0fv1tSRzNHWO+wvVVlFZfLzzu2kPPyXyanlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFAH5cNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C58C4CEF0;
+	Tue, 12 Aug 2025 19:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025435;
-	bh=r2gkixSLj3ZEtiLBIzm9rZ2uJZiMRrr6fRZeWGvGJts=;
+	s=korg; t=1755025581;
+	bh=8AOco4iVg4ynueMB0/jJg8Tx1AtNlva+GqVZOTMQNFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBUqPb0rFN9UZfPLFas40MovYxEDqBwUozM2+KCx4+5AswDkFVAb2vItj+k3jFoIH
-	 bOMAUuuWtHMi9Ls5FqVfPYUa47VR0npgJ+SW3iFl+IGoQcbIbE/pqW2/Y9ejLI8dUQ
-	 PZue9YDyyuJ1IfcnNcjMWe894St6TvSYVVJNImfs=
+	b=bFAH5cNT7lb1lV9tiv6V9k/RRIApIS+5kJ4l0RGE9OWHfZKac8sa4DtLtV6D4qdaR
+	 yCJuRQSyMeKtadShvUcHfMqxj41AGCbCwut7ubVPZ+vFUHeI1Loqx219g6MnD6bwKz
+	 ZBSpl82lFRH8f1dEoTJBFG1VzsJrwjh5YsU8ZLOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Gan <jie.gan@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Will Deacon <willdeacon@google.com>,
+	Will McVicker <willmcvicker@google.com>,
+	Youngmin Nam <youngmin.nam@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 039/480] arm64: dts: qcom: qcs615: disable the CTI device of the camera block
-Date: Tue, 12 Aug 2025 19:44:07 +0200
-Message-ID: <20250812174359.018742919@linuxfoundation.org>
+Subject: [PATCH 6.15 040/480] arm64: dts: exynos: gs101: Add local-timer-stop to cpuidle nodes
+Date: Tue, 12 Aug 2025 19:44:08 +0200
+Message-ID: <20250812174359.059256355@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,41 +69,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jie Gan <jie.gan@oss.qualcomm.com>
+From: Will Deacon <willdeacon@google.com>
 
-[ Upstream commit 1b7fc8a281cae9e3176584558a4ac551ce0f777d ]
+[ Upstream commit b649082312dd1a4c3989bbdb7c25eb711e9b1d94 ]
 
-Disable the CTI device of the camera block to prevent potential NoC errors
-during AMBA bus device matching.
+In preparation for switching to the architected timer as the primary
+clockevents device, mark the cpuidle nodes with the 'local-timer-stop'
+property to indicate that an alternative clockevents device must be
+used for waking up from the "c2" idle state.
 
-The clocks for the Qualcomm Debug Subsystem (QDSS) are managed by aoss_qmp
-through a mailbox. However, the camera block resides outside the AP domain,
-meaning its QDSS clock cannot be controlled via aoss_qmp.
-
-Fixes: bf469630552a ("arm64: dts: qcom: qcs615: Add coresight nodes")
-Signed-off-by: Jie Gan <jie.gan@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250611030003.3801-1-jie.gan@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Will Deacon <willdeacon@google.com>
+[Original commit from https://android.googlesource.com/kernel/gs/+/a896fd98638047989513d05556faebd28a62b27c]
+Signed-off-by: Will McVicker <willmcvicker@google.com>
+Reviewed-by: Youngmin Nam <youngmin.nam@samsung.com>
+Tested-by: Youngmin Nam <youngmin.nam@samsung.com>
+Fixes: ea89fdf24fd9 ("arm64: dts: exynos: google: Add initial Google gs101 SoC support")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Tested-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250611-gs101-cpuidle-v2-1-4fa811ec404d@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs615.dtsi | 3 +++
+ arch/arm64/boot/dts/exynos/google/gs101.dtsi | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs615.dtsi b/arch/arm64/boot/dts/qcom/qcs615.dtsi
-index e1f510e5485c..3fda88b32a71 100644
---- a/arch/arm64/boot/dts/qcom/qcs615.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs615.dtsi
-@@ -2428,6 +2428,9 @@ cti@6c13000 {
- 
- 			clocks = <&aoss_qmp>;
- 			clock-names = "apb_pclk";
-+
-+			/* Not all required clocks can be enabled from the OS */
-+			status = "fail";
- 		};
- 
- 		cti@6c20000 {
+diff --git a/arch/arm64/boot/dts/exynos/google/gs101.dtsi b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
+index 3de3a758f113..fd0badf24e6f 100644
+--- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
++++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
+@@ -155,6 +155,7 @@ ananke_cpu_sleep: cpu-ananke-sleep {
+ 				idle-state-name = "c2";
+ 				compatible = "arm,idle-state";
+ 				arm,psci-suspend-param = <0x0010000>;
++				local-timer-stop;
+ 				entry-latency-us = <70>;
+ 				exit-latency-us = <160>;
+ 				min-residency-us = <2000>;
+@@ -164,6 +165,7 @@ enyo_cpu_sleep: cpu-enyo-sleep {
+ 				idle-state-name = "c2";
+ 				compatible = "arm,idle-state";
+ 				arm,psci-suspend-param = <0x0010000>;
++				local-timer-stop;
+ 				entry-latency-us = <150>;
+ 				exit-latency-us = <190>;
+ 				min-residency-us = <2500>;
+@@ -173,6 +175,7 @@ hera_cpu_sleep: cpu-hera-sleep {
+ 				idle-state-name = "c2";
+ 				compatible = "arm,idle-state";
+ 				arm,psci-suspend-param = <0x0010000>;
++				local-timer-stop;
+ 				entry-latency-us = <235>;
+ 				exit-latency-us = <220>;
+ 				min-residency-us = <3500>;
 -- 
 2.39.5
 
