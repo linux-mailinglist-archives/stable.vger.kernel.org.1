@@ -1,145 +1,173 @@
-Return-Path: <stable+bounces-169299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0A3B23B9E
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 00:05:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF2BB23BE4
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 00:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D593516D9A0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 22:04:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE1541886910
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 22:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA11F2D6E49;
-	Tue, 12 Aug 2025 22:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21472D0630;
+	Tue, 12 Aug 2025 22:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ep4Mx1/Y"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="gdlUCr3b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B89023D7F2;
-	Tue, 12 Aug 2025 22:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F308A2F0693;
+	Tue, 12 Aug 2025 22:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755036178; cv=none; b=eLvTlzsEJ47uFuM0gApQr3IPdEqSQrmCaAJdX6j7j2yY/UeIIE9ZJL1crBDEsucyi0Y2a6tnzTQtNboLf53sZ2uS8Lga5MDI01lW/YnMtxWDo7OoknPNPaPjFoF04GZuBa6DxGpWTHw/Lyi8LVk483c4w9fMeZtVtk1tHjYx774=
+	t=1755037634; cv=none; b=dyArimnlXGDIgKUwwROhcYquWZsaHj4ljctnju+8Md60IZmLvWHj7iryJS940An0BmmU4nQqH0c5RDS+LJ+Cl3W/irQSN+Bh4HRL6DTQpoRXf9f1pG/JquukdlYEjXzFQUfOlDcE0PKoj3jE6TdWlsnuP0hV2o8Vi5wwC2goOiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755036178; c=relaxed/simple;
-	bh=1x7t5wWL9HcNnaOfBsQPYQIOiskmEFP1sIHOP5Qa1Os=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GoGyNrkJhrGtqFncRVx4g7XYwfteWepex6cUdTWAVfpxL87rDTLKwUJO/3SsFMl+iHo0xKhrNEp2qXZ7qS/E2kWdTbs2MQ2hS8UHxySgW+f0D2KuK/tm4dCwW0gs8Ww4IW7CKQdcSEGZnlTR+UQ5Rn+Iv4P254ZMHGjgNMR55O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ep4Mx1/Y; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-55b797ad392so7024693e87.3;
-        Tue, 12 Aug 2025 15:02:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755036174; x=1755640974; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dNl/M0OvGwvDqjB88jNN7p0rDDZU5B8ZAYSCNldxDjU=;
-        b=ep4Mx1/YTFnICVRSmwcC1jAShO7Z6HmFucUtSgdjgzl2mSjWIKaGFIQqRE/X6rJYkQ
-         5YZ00bHd5x5MS2yqSm9kXe6RMkVKZRrLK7U0fLczZmNiQraPzeU5Hszy/SWywAFE7BMn
-         nzcUMfcfDCOcojYjtAU2TCGT+opynlSr8OkogIM1GRbDq4dOKnggTjuB+UEtRXtLrhYM
-         QoB7RnmAHS8CzE8HG6ORUeagkBFvuRJIFYIduhoVCmJzgSy7nTV1n/OUaaL/ecRimjAu
-         WsLsMQ9Zg5shAK+wcDipKC7P7oDuOKkrmJQk5wpYFvsYz+zUKIg3PFptIjzO5KgM3Few
-         W8pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755036174; x=1755640974;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dNl/M0OvGwvDqjB88jNN7p0rDDZU5B8ZAYSCNldxDjU=;
-        b=l+4+YbackvsJH8sj80unCycaqNY8wx2Z4hqDkPR7R3dhlZieiTkpWeWzaKEZ1WhsDV
-         zWs1nrCDfvv8IR3ybCyg/42yzMy6p8LC4LCtU0625FK4aZfmVEu5iE+pgNITSfQvSaRO
-         0oJ7/+JBjlwCBY2n0+IXKYvk3qag0GJ1QJrK+wkTvbLevdnYdCDrzKCaz9uXgNxFUOUy
-         Q5Xh7pHF307hiwdcHBKoGaMLSytEN/tyoe1ngZmI9nuyl2aO9+fRd+8GQkkcH7f4sXSr
-         4gy55QRhp5WBt+oXRXdiobnY3N1sHxSi4ej0DCljS+Zne7bMWAGW6FCDNU4KuRga5GGZ
-         htcg==
-X-Forwarded-Encrypted: i=1; AJvYcCVb97eUBFbnu2IuJTPtzt8iOGnb3us+9rJYnKMcxLYxnehrKjroqk5t9pfpQYa7njRqsVCrRgqk@vger.kernel.org, AJvYcCX5dSqXl9eqjRL1Si+LZUBGwsZIaoOvxutV7k3Pj/Irr8zL0w+f3EBcCDSjFQqeEEaX5NxkszqR2Tc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxguwn4F4n15gHzYM0IPMUeUMdzeMH8R3+jcVT8kq6XfSJeYf07
-	yE83bjoBvr27mGvs4bmXt6QkU6iZmyTBlPlU3gdK69No71L0RiAmTUoy
-X-Gm-Gg: ASbGnctEEC8qQh1MGLOSe8msOJZstJ/oaH5iL5JZldGpOkq741u533XI/2r1ELpWzA+
-	q9oZfawuswsFtgiTqQQ365dAxtFiPwOqKFig4vNG8o9RgtinzXJyLzssoZfglSzvOL8sCmdTaTg
-	np67cRjFuR7wJp5ENHHOsxDT2+4ebscwk2WhpYl0VAWEJEmxVZ3SqtpamFYCqwGn6fFJcSkeryd
-	K1Ie2SRvjs4wUsAVlZJg0ellct++3G6h7fA7ErSKulu/USl0pFnaIpGTRGbolF9WYzgGQGYjRyJ
-	IAWXZAf9qEjUkOrsj41wF3fQKn9EuPDmj9cKbCR4fbtlHwZcsluD97VdDGvnrxpaw+OwrhH5Mm0
-	/o9K9VQkDxoj3gmQ2y3hPBV71QFNGi3TyEEXmg9044Stukg==
-X-Google-Smtp-Source: AGHT+IE6BDQibg3kP5nW2d4pufTS7GP36fyBY6oAVySTNLlebU4AM+/FAiM86149hVO3IJ+Lo6sXTQ==
-X-Received: by 2002:a05:6512:3b0b:b0:55b:8e7b:8afe with SMTP id 2adb3069b0e04-55ce03b5e1amr191470e87.27.1755036173770;
-        Tue, 12 Aug 2025 15:02:53 -0700 (PDT)
-Received: from foxbook (bfd208.neoplus.adsl.tpnet.pl. [83.28.41.208])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88cabce5sm5012956e87.151.2025.08.12.15.02.52
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Tue, 12 Aug 2025 15:02:53 -0700 (PDT)
-Date: Wed, 13 Aug 2025 00:02:48 +0200
-From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
-To: Marcus =?UTF-8?B?UsO8Y2tlcnQ=?= <kernel@nordisch.org>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Jiri Slaby 
- <jirislaby@kernel.org>, gregkh@linuxfoundation.org,
- linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
- stable@vger.kernel.org, =?UTF-8?B?xYF1a2Fzeg==?= Bartosik
- <ukaszb@chromium.org>, Oliver Neukum <oneukum@suse.com>
-Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
- reset.
-Message-ID: <20250813000248.36d9689e@foxbook>
-In-Reply-To: <4fd2765f5454cbf57fbc3c2fe798999d1c4adccb.camel@nordisch.org>
-References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
-	<fc3e5cf5-a346-4329-a66e-5d28cb4fe763@kernel.org>
-	<5b039333-fc97-43b0-9d7a-287a9b313c34@linux.intel.com>
-	<4fd2765f5454cbf57fbc3c2fe798999d1c4adccb.camel@nordisch.org>
+	s=arc-20240116; t=1755037634; c=relaxed/simple;
+	bh=VY5Ka5lKFTywN1joTNL4CpA9sajHibbkhU+nf4Nd58Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XR2B5FCdH0rTkT5SgNzgMYZghF+qR6a05O8JFutbRThYsVFVUky924Qrf0y1TBsDtip1lZEXdEShEz5qDjW1CAQJasnPTT1D5E0SffhdG9RwYD0MccZ5hvteuOpOWaxQQq8n9BaAWuqxJN3NdMwj+x/jImFF6rptMWFwaHoWD78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=gdlUCr3b; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1755037629; x=1755642429; i=w_armin@gmx.de;
+	bh=Yo83TFZryGsnrgCIpOREWBxoCr1jDrR7cTvv7FC/rog=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=gdlUCr3b6ehbTxWu/onnomcGps346w3/HYKOquxASqSuXAexWBfztSTndpqsH7F7
+	 /vOx6yhAtjbBouahNsw8K5BSYmfMGnxGOepGvVPGSdxfnbn48OQSCm0PhsL8ZTHKa
+	 plJTfSTZyQYujPkZ8kANsZTNftxPPZgFuYIvwwCe48X9xMowV4hmGrPFUfoE/cwSl
+	 FEAS1wYNpUYZsDxa8JEbGWLqCKk9hxVtcbwUZ8JWm0gz88ZM7DZbMS7B30JSC4xQD
+	 63KEoNeiTmSZ0scqqFuLLqtsG5/tEV0mhEqlIL0pWvwssf48170uO6LMb6VNWiKvR
+	 42oPL2hKNXlX+nVF7Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([91.14.231.131]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbAcs-1uAPiP0v6m-00dQxo; Wed, 13
+ Aug 2025 00:27:09 +0200
+Message-ID: <f4de859e-3cbc-403b-b9da-12a426ba6a74@gmx.de>
+Date: Wed, 13 Aug 2025 00:27:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: EC: Relax sanity check of the ECDT ID string
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Ilya K <me@0upti.me>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250729062038.303734-1-W_Armin@gmx.de>
+ <e911ca96-fe8f-4cc5-bf68-f20ec7da46be@0upti.me>
+ <CAJZ5v0g0vjP_ST2xnDnFAmDXKR9oPn5t0sfQqamDCNwUjJt-xg@mail.gmail.com>
+ <d8c3432f-dfb7-4263-a556-2d93f22e618e@0upti.me>
+ <2025081246-raft-tattle-642c@gregkh>
+ <4e610854-d84c-4a59-9f83-422eafb40d6e@gmx.de>
+ <2025081227-humpback-garden-7a4b@gregkh>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <2025081227-humpback-garden-7a4b@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:yXmBsPSJEVg1N3/Ko18xp0wSy9HGuahKqkrItLUPFjtzZ698fY7
+ IDYH+poOERKD6AclGlMvvpphA4/MuRAFo6FRXvIiRlNnWEieSFyqy5yYf/D0WJ9CGkLLwi/
+ VXcn/bzIk62sYPqzvc62b7q+XpxaPPSKCwTT4e4kaxpDEFO8kKFi36f4Iubjqj0bTKDEFeE
+ V5NWBBJDryWgkwVOjjxMw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:WArHKKeKQNg=;TjMIHUYIY/8xW+d5p1g72XGq07H
+ 9wWIemPdXlKk6+NlO1voOsAr5GiMPzAhiJskRy8n+4WuFzmge6x7n0IVH0ytG+q0a5oHPYOpm
+ XI75CckFW57G9W9R1+s4FN1HDEWNzhBkdWqESRJkj4IpIGhJpCFRtaOnUtPBcfaSL5XRUq+Mu
+ hUELaU79ysFsiw1X2kK/zxmqiMC+KS8zf4Dd5DpQqYTeG0EO2emU6PhjVZZXHc6bkHALYbNg2
+ GOcKhVgg3Ti3yCa4VHQXiaXtuQNeDB2Az5cNuZxj89luzyVZCz37xclxyLxXBcl6k5z70Mz97
+ jbmfEnchkLp74Ozr69CGxwRtl2uJfBy/tI4nMAqPfTNbgnlelhUaxKxaLgpvRWoNOqL/5hVk8
+ 7tqBuGFVBzrpOanlA8KQ2IJ1aDeJ9X285iwZ/rURMO974fpU/UwEBtIcodLIU1W+YQyPWbvGA
+ NYQKY2BRQRYQ+ai+tJCYQI0jKzQnzQLnb0b/lk1gSsJ5nxgaifpoBKWrWf3VZGfTWaIe0RGn8
+ VwMuS8Ov5+mSUzffWiJ51NTYmMUZ3ojqowFkHPjXSBa6LbJuk/PLz6lzURSeJUWnRB2YSNXlf
+ LBMNWa0t5IngbEG1kYdlqLZhm62Ja6dKTjC8X6fkTXV/4Pk83hJj4zfpTN43yHUrNujIw5iR/
+ ZYqc+xZTsO99n8NtlBoGf9XVG8Segy+A5UxX5HGWa+DcuDKFk91HvQuEmO0iPQ0GdzBSwekYN
+ EvuTDVFziL0bABNVVB7Lcp5gsms6+5FmgpVRRT3Z7ZVfnrlZ9pwP/77blkvnjCf1zgZz9URjW
+ UvB8L7XTbpzOXEy/II7rPXPvPuw0PHMki264fcSw/o/4OtDKOM6zD1EKJ9BWnjOzbEi5UziBe
+ 4meLU/0ja07aNGbZiHAlSq8ERTnSadqLahu0WlmOlOxplXZxTBKgs5x3evVuyyPQXl37x6MYD
+ hZdFrFP/VchSsKsWgU4B4tw8jIbjXHA/PB8iFVD363X+0TVoG30vEpUgoEONfmuSCruxTFe3s
+ L8KE8kggvgRqcLVQU5DmdMRUAV7xDYn+b9JlZF/yFHJNAkMFm4hhRcaEreerNaKbiFauGVYcL
+ ofCrHBu09yDV2FZV/+0nBx0uIPPLC7t/ZSHMFCVOT+jub1Y7AxATQ+XZ7Z8B7dxrI/k3GJpgf
+ xaGn6A80y14IRoN1kJEO84C7lgv6gZVr6AcincSlCAYNx/t90TzqITkVxxI8NNc0I2NHkZFj0
+ SVo4dr+9xdzie0TOVIBWdAIISTCCIaNta2/xVjvp8Zqg3pH6nmWm67v/087D3KhX47Kz8Ok5V
+ GHTV+80Ah8fmYtD9hDwBieXwAW3u8FhCspUmemR4DrUdZffHhnw9QomAiv6Ia1jxIgJaS8KJw
+ tRPW9Z+vksRdqzJL20cTmtmzYcJu3hnzQ2W0NkOHXqlOPQp6LaSOffWtFIXlBTxPvz5f/7ONX
+ kGm8pDbmaFT5pg+dsRBLkbgxPqaX6ohkgSfhQtceWGLmYs/cIq3peByLO/mycOeoZp8XduXZd
+ IwQ3QcOHP6ic5iOv5WTBq5T1iqydaFMOe3xxaSLhOhY2SYLQQgYc7mXX00ecFs20zYQ96aGoq
+ DpPD1bytwgvGKg+3ug2DZa0YZxs8pc5WDbYcydqWpEpUG1V/REZ+XmmSPoLcAM/8eP65J3cUe
+ Hg67353ZWY7eodbOT1IQQFH6UaDqSiwvkeeffJQNYXM+S3X2Y5VzyLy4QDCW7br4EYImGYJGZ
+ ZHUeKQShHOxc/Ycaa3+uv7gert4NE2CNOj5ExDRvPqFjR8wBN7H5MkeqBQgeWoVjacRWvoPJk
+ sq06TQ6LeFk5g/AoNwSNAszo1LOy4azf3IPyGYmGdTfQJDp2Ybj9IOVol79Eyg8SF2kJq0QJP
+ kDlkGzLR71IZbsdCwftWwTrGqGmo5n+XxooUEb+6h5L5D8Uwe8Id2gAq5/RYEf67ayBw4elwT
+ Lud14wSUEwGxsawSGnbqdQSkiRFYGhJEFQif4r2iMXvbpK6wJBjR6PVvxqkZNN/jdL0Dv5wgG
+ pAOrUB6FeTWJu9qfsTL5v8EmlOGJsKSigX4UV7935ybo510uydKkozYnQsqV1vOmLeLzm3oSG
+ 6ziqiMsBdT6ip/4a1HFu5utDhvF3OhGVvzSqVTy5yRBGNMLOZ20cn2m3DFrcSvmRHNBXxrX6/
+ sfwaskouSVJVUbkOp+cV9SzlywFI2YxCcf63OEqYxzg+PEMED7LjzkZ7i8kkBNFQS6QPPip5b
+ btVf5HaNpg2vwVzrFXrqVFcsCBiqX51GsdaaSUYuAMpTvEZKakKMRy1/HpFYJuJaWur4cilAd
+ RMaBMLYxZJYcSla55oHMcTPmdXzsHUUfGSO7eS1zG3Zvr6H2P1PAnMmjmsk6JWE1DR2HL0/zx
+ MoljCwwJKLnzPqdNPNqyIZS2gxGKeBeA4o/idwc86GMUEQL0ToeWZi6MaFukh5NJ/+YeWFXcx
+ Flpgrdo8tC5xbqpBeuu20SqM9s+K/An9qpGvTh3w6nmXGwhevlKkcRxkeRn1aX46mrZdLWvGd
+ WtO06KgC6HzGOZJHnjzO9MMpdycoPpqoczcbVs6/RU2et7eHfh7gworjGX79/2SqD+UiPuqpy
+ AlOy4xb5Us9p54Kh/UMzYB2LhbdjbWIL/VDLL2Amyv2ZrQyw+PNFK9E6grWoUlEU6/BqPt9Gd
+ UHJLbeB9HSzf6DofrZs9JFULxfg29p21HT6z7xtvJu0DRRYhUEmZT1xmBIO8Ckw1mOrRD/MT/
+ HiPzCnvUwwPbRMdRcg6K2AhVA7UQS0C/DQgD6GOD3Nj/H5D8ZQz/54WDoqQzwRyT1gawdI1fm
+ FZV7Ud1O/ZNo4d788MWKG6S5h+wZ6pyzLIcFkkCHR/61fNoAXvy5/GLZuoQ35USIYj7Rq2ssm
+ 1nRndPTE7yLVX3kgHZ1/xtr5uvqknpSe8lmJuKUcwFRCufFdHrdG1Cylu7tyjGVauxgGr7ODb
+ 8X3vdxXMUastz+FedDCFEq1pgpG9uQQtII/ogv+1Vb2MdehvALcIZDEonJeLLwyNYaCvLOn6u
+ xvEYoCSsxg+/UVLwEy9hUhd6c7nxZxIbpR+CkpXq/b9YQM+gVsN/rnQSGHjkQxD9xLlUz5Gsf
+ WBjbxOO/9s4LWMw7SE4dUZDhXVtCXWAdU3FjmgR+hNrq1zlJ3WT0ZwjYqmFmZB/c+AGPpKHvv
+ wKBlzChBz6RfeaJbt/RaXTb6HKcW0bnF0dRo8vSs26TxJJ/q3QBKCWc4rCUFKKtEQuQzgi4WB
+ 5RZkp8hr0NeUfAVN0k41Yt+pS5jxS5B9fAYvlj8oniuOikpjioG7tI0ICmTBElMJ1jWxevK36
+ wuuhIwVQwGVCQ37FLQTL9/oOwQEe/DFc1yqnErWNKfQbBnWbpQcaRGe5XzhAVMyiaTnhmYzfa
+ VKGeAIYCA8u14aIZrAkA==
 
-On Tue, 12 Aug 2025 20:15:13 +0200, Marcus R=C3=BCckert wrote:
-> On Tue, 2025-08-12 at 13:48 +0300, Mathias Nyman wrote:
-> > > > [Wed Aug=C2=A0 6 16:52:50 2025] [ T362645] xhci_hcd 0000:0e:00.0: x=
-HCI
-> > > > host controller not responding, assume dead
-> > > > [Wed Aug=C2=A0 6 16:52:50 2025] [ T362645] xhci_hcd 0000:0e:00.0: HC
-> > > > died; cleaning up =20
-> >=20
-> > Tear down xhci. =20
->=20
-> so usb is not dead completely. I can connect my keyboard to the
-> charging cable of my mouse and it starts working again. but it seems
-> all my devices hanging on that part of the usb tree are dead
-> (DAC/keyboard)
+Am 12.08.25 um 19:10 schrieb Greg KH:
 
-You have multiple USB buses on multiple xHCI controllers. Controller
-responsible for bus 1 goes belly up and its devices are lost, but the
-rest keeps working.
+> On Tue, Aug 12, 2025 at 06:54:39PM +0200, Armin Wolf wrote:
+>> Am 12.08.25 um 18:40 schrieb Greg KH:
+>>
+>>> On Tue, Aug 12, 2025 at 06:51:10PM +0300, Ilya K wrote:
+>>>> On 2025-08-12 16:32, Rafael J. Wysocki wrote:
+>>>>> Applied as 6.17-rc material and sorry for the delay (I was offline).
+>>>>>
+>>>>> Thanks!
+>>>> Thanks!
+>>>>
+>>>> Tagging stable@ so we're hopefully in time for 6.16.1.
+>>> <formletter>
+>>>
+>>> This is not the correct way to submit patches for inclusion in the
+>>> stable kernel tree.  Please read:
+>>>       https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+>>> for how to do this properly.
+>>>
+>>> </formletter>
+>> Agree.
+>>
+>> AFAIK the Fixes: tag should be enough to ensure that this patch gets included
+>> in the affected stable kernels.
+> Not at all!
+>
+> Please read the above link for the full details on how to do this (hint,
+> Fixes: will not do it.)
+>
+> thanks,
+>
+> greg k-h
 
-It would make sense to figure out what was this device on port 2 of
-bus 1 which triggered the failure. Your lsusb output shows no such
-device, so it was either disconnected, connected to another port or
-it malfunctioned and failed to enumerate at the time. Do you know?
+Oops, seems that i missed something rather significant about the stable kernels.
+I will give keep that in mind when sending future patches.
 
-What's the output of these commands right now?
-  dmesg |grep 'usb 1-2'
-  dmesg |grep 'descriptor read'
+Thanks,
+Armin Wolf
 
-Do you have logs? Can you look at them to see if it was always
-"usb 1-2" causing trouble in the past?
-
-> lspci is here=20
->=20
-> https://bugzilla.opensuse.org/show_bug.cgi?id=3D1247895#c3
->=20
-> Mainboard is a ASUS ProArt X870E-CREATOR WIFI
-
-Thanks. Unfortunately I don't have this exact chipset, but it's
-an AMD chipset made by ASMedia, as suspected.
-
-The situation is somewhat similar (though different) to this bug:
-https://bugzilla.kernel.org/show_bug.cgi?id=3D220069
-Random failures for no clear reason, apparently triggered by some
-repetitive background activity. Very annoying.
 
