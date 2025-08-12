@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-168799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AC2B236BC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:04:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEBCB236CB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA91A7B8CD2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49C51899D43
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BD32222D2;
-	Tue, 12 Aug 2025 19:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEA926FA77;
+	Tue, 12 Aug 2025 19:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGnGt/Ju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSjvefbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CD71C1AAA;
-	Tue, 12 Aug 2025 19:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7A222425B;
+	Tue, 12 Aug 2025 19:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025372; cv=none; b=j/zHADNnIY37y9diKRcEgvwBXMUaiQeapKBv+cweifetAxPXm+nevlqBEix1996LpXjijmms8Z9nZJOVPeZZ8z4zPwf8ENQtDaDls9JMdM6hzlFDfoEDRAkZ2WESZsRzbIw4M0rchaqGOC1G8an4hcxy1te9iWZgOnf1k59Bsu8=
+	t=1755025377; cv=none; b=p3mJu/0brFVrLsyM/KiMGsdav9Ob70NOyNBBTHkw0ZZxBMVRBXfLZ4zhxej5SjxHXuMeqJiLTXaN5teAl7Q7/+mFzV27I9MuU297KPiYEr76DX48ga4U8AfIkRDZuY4IqHKMMVV/ux39MsEIF8dwFF4KFxWf9QEJSaNQ/znmNi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025372; c=relaxed/simple;
-	bh=y+HOdaJrZlKBfcvTXknZxXYdSAs9JZTNLwGeS0x/QvA=;
+	s=arc-20240116; t=1755025377; c=relaxed/simple;
+	bh=HkdRaZ0l2dwR+KcvzSqaJMBbvkrSsBycj/CQZNdCQ2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkxEx2uAqNjW+ezOWoWgOKU363Cm9HqVwkCuTr2VgrPQyHid/HGKwGymxexRxWYeYwiEJYKq8RuIXUWZTP+HweUShhXacDw1gc7v/P64DHFL/7eAzsr9IFHdmLSgKiB8qZSu/+aNE80XOB97ue0a68tfdMDMHseWu3VB0wBwzWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGnGt/Ju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0C5C4CEF1;
-	Tue, 12 Aug 2025 19:02:49 +0000 (UTC)
+	 MIME-Version; b=ASKzjV1nQXI2yInJurSFGx8qGcMBShkpf8VCYv+HkVzfy1z7Atol8cFF5sTDBw0xB/kOoUuxrGdwaymId0oTNv3J7/tsH2g01fShjQAS6Q57oLkp3epNZOSEPSb/lWOfFd02vetdoY7eAPmVmtV+Sf/MJeo56RRRGUvlblxoetU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSjvefbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF431C4CEF1;
+	Tue, 12 Aug 2025 19:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025370;
-	bh=y+HOdaJrZlKBfcvTXknZxXYdSAs9JZTNLwGeS0x/QvA=;
+	s=korg; t=1755025377;
+	bh=HkdRaZ0l2dwR+KcvzSqaJMBbvkrSsBycj/CQZNdCQ2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGnGt/Ju8l5/yBogjExRLUyq7yrqPytcN9qLuleKOfJgH47Xt9LZ4LAG7EGfwZ79z
-	 Vpe7h1Z6akyCUrqp4gFRzWS0JVYksamS/LK3Z/oZCB7RuSsyqxSOIKBTiqpG0h3d1y
-	 RFZo31g2UorphTgBvIs/fH4SHn6ZmO1Vjp0Q0VXc=
+	b=mSjvefbJP8DyOO49KvRQkGE4g3GbaWiyaJrt9ZBP2bRl1wcjaqJVZXL4dEMcuhrP5
+	 OXv/MnNJy4rbYMU8OdKId+X/OB7Qs7pB0rDtQrhCE16xxdnLIY89bHJME17VONodCH
+	 YAdzQtcPymWhlVd8TeuMGVe2XVWTWBnQdVI75VCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 022/480] gfs2: Minor do_xmote cancelation fix
-Date: Tue, 12 Aug 2025 19:43:50 +0200
-Message-ID: <20250812174358.221259786@linuxfoundation.org>
+Subject: [PATCH 6.15 023/480] md: allow removing faulty rdev during resync
+Date: Tue, 12 Aug 2025 19:43:51 +0200
+Message-ID: <20250812174358.261088737@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -65,34 +67,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit 75bb2ddea9640b663e4b2eaa06e15196f6f11a95 ]
+[ Upstream commit c0ffeb648000acdc932da7a9d33fd65e9263c54c ]
 
-Commit 6cb3b1c2df87 changed how finish_xmote() clears the GLF_LOCK flag,
-but it failed to adjust the equivalent code in do_xmote().  Fix that.
+During RAID resync, faulty rdev cannot be removed and will result in
+"Device or resource busy" error when attempting hot removal.
 
-Fixes: 6cb3b1c2df87 ("gfs2: Fix additional unlikely request cancelation race")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reproduction steps:
+  mdadm -Cv /dev/md0 -l1 -n3 -e1.2 /dev/sd{b..d}
+  mdadm /dev/md0 -f /dev/sdb
+  mdadm /dev/md0 -r /dev/sdb
+  -> mdadm: hot remove failed for /dev/sdb: Device or resource busy
+
+After commit 4b10a3bc67c1 ("md: ensure resync is prioritized over
+recovery"), when a device becomes faulty during resync, the
+md_choose_sync_action() function returns early without calling
+remove_and_add_spares(), preventing faulty device removal.
+
+This patch extracts a helper function remove_spares() to support
+removing faulty devices during RAID resync operations.
+
+Fixes: 4b10a3bc67c1 ("md: ensure resync is prioritized over recovery")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20250707075412.150301-1-zhengqixing@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/md.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index ba25b884169e..ea96113edbe3 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -802,7 +802,8 @@ __acquires(&gl->gl_lockref.lock)
- 			 * We skip telling dlm to do the locking, so we won't get a
- 			 * reply that would otherwise clear GLF_LOCK. So we clear it here.
- 			 */
--			clear_bit(GLF_LOCK, &gl->gl_flags);
-+			if (!test_bit(GLF_CANCELING, &gl->gl_flags))
-+				clear_bit(GLF_LOCK, &gl->gl_flags);
- 			clear_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 			gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
- 			return;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 9daa78c5fe33..0de87d451a47 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -9380,17 +9380,11 @@ static bool md_spares_need_change(struct mddev *mddev)
+ 	return false;
+ }
+ 
+-static int remove_and_add_spares(struct mddev *mddev,
+-				 struct md_rdev *this)
++static int remove_spares(struct mddev *mddev, struct md_rdev *this)
+ {
+ 	struct md_rdev *rdev;
+-	int spares = 0;
+ 	int removed = 0;
+ 
+-	if (this && test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
+-		/* Mustn't remove devices when resync thread is running */
+-		return 0;
+-
+ 	rdev_for_each(rdev, mddev) {
+ 		if ((this == NULL || rdev == this) && rdev_removeable(rdev) &&
+ 		    !mddev->pers->hot_remove_disk(mddev, rdev)) {
+@@ -9404,6 +9398,21 @@ static int remove_and_add_spares(struct mddev *mddev,
+ 	if (removed && mddev->kobj.sd)
+ 		sysfs_notify_dirent_safe(mddev->sysfs_degraded);
+ 
++	return removed;
++}
++
++static int remove_and_add_spares(struct mddev *mddev,
++				 struct md_rdev *this)
++{
++	struct md_rdev *rdev;
++	int spares = 0;
++	int removed = 0;
++
++	if (this && test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
++		/* Mustn't remove devices when resync thread is running */
++		return 0;
++
++	removed = remove_spares(mddev, this);
+ 	if (this && removed)
+ 		goto no_add;
+ 
+@@ -9446,6 +9455,7 @@ static bool md_choose_sync_action(struct mddev *mddev, int *spares)
+ 
+ 	/* Check if resync is in progress. */
+ 	if (mddev->recovery_cp < MaxSector) {
++		remove_spares(mddev, NULL);
+ 		set_bit(MD_RECOVERY_SYNC, &mddev->recovery);
+ 		clear_bit(MD_RECOVERY_RECOVER, &mddev->recovery);
+ 		return true;
 -- 
 2.39.5
 
