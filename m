@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE86AB233F1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A13B231FD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77E076213DE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105F4582D95
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED002FD1DC;
-	Tue, 12 Aug 2025 18:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2722FD1AD;
+	Tue, 12 Aug 2025 18:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hdybPXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbJpB+8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0ED1DF27F;
-	Tue, 12 Aug 2025 18:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6142E3B06;
+	Tue, 12 Aug 2025 18:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023379; cv=none; b=WPE4M49T3Ct2x7mvSeb0ZMVe4f2GFx58L2bQkFQfA7gixE3ihYauI67hjTaLZyhjLycffLilscSJnaIOBBnKSjGh87l51gn7dftJeVZpiyTlJofVn4IwRPybFnEx/XgicyqPPDys+lK2zhIrsepD9Fd8LRxG2/tiu0mqx7wnpv8=
+	t=1755022006; cv=none; b=T7ZScXJ1BzWwygVsArppbVg0Rob9DvAzLzcgywvQpYn4xMBrauHWWnNZtz2CEBD75plXgkF5gtJJArADCV5vci7vu85a++NE5BOz2CvRoxwS55Ero5Lfe81KiiADSA1DqM2DK8kjRN56p+0Bd9tda7WyvpIsEgZ2G8F6NTwZMJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023379; c=relaxed/simple;
-	bh=P3Pkvx3paTwVsh7vRToT2n30OOYM9KEg7qIZUuRq6u8=;
+	s=arc-20240116; t=1755022006; c=relaxed/simple;
+	bh=+no6iFL0K3VcFgSsKTqRvIGk+72RnHiOQpaOioG4FA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n4lVvcpz/iNq3mbvOsKgMYphtCranUJqJwVv5F7Gj+vDeVl6BuH4qAwK/3rFrBMLY4jVaYNn6+9c7YF48JyFlLvI2lLtrQ7opAicJ52DwE5DfE1JO6xz8+zP2RiFBGMw9clCsy+7GbDo3WG3yxX7xBaIXvpDr1iBQMaan09/ELU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hdybPXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CAEC4CEF7;
-	Tue, 12 Aug 2025 18:29:38 +0000 (UTC)
+	 MIME-Version; b=oO3tO3d6jIjAGdjyBNB04dpQj3gZ4IYCyv2bBivQLm8Fvnecp38S0vXeg9hTVrclcYJnnApJ2whAy0Els22wrEy0WSaFcPeQ4bDm1bkPJt+21u7y1mmMvyt9rSPCOWrBgiVqAgEGh7w+nXgfjo9P66xfy31zAXtM2Sv9emwPueM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbJpB+8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF8CC4CEF6;
+	Tue, 12 Aug 2025 18:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023379;
-	bh=P3Pkvx3paTwVsh7vRToT2n30OOYM9KEg7qIZUuRq6u8=;
+	s=korg; t=1755022005;
+	bh=+no6iFL0K3VcFgSsKTqRvIGk+72RnHiOQpaOioG4FA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hdybPXh8jTOofqOWkN7mHZDYQFceVIkQnPfNOZ2CSOTQf+QPF2QPGGYIruQKZXO3
-	 AcvjQ5jDwLqZblHxUr1genBsouidyUDU8Jkh9Zxv3gcJsKLnSlHvOUfqbbOKYrbb2X
-	 KObYSKHAvLidVLBE/vZIg5O+l9B7CfjjH6k2rSPI=
+	b=NbJpB+8v1MoDj0VOH7Y3znJflhoSLA58uvgODHj0ITtfAtVKVuQgRtu6STDe3oHLx
+	 fm9bnV3JvRwGHXQBWQ/ueR43ckN4qmeVvJCsTrVBlhM77hBMBppBX8sWeh8xcG/xZB
+	 s44Tox2UNLN3Y0rClMgIzSPELMtYw8QmKZrEqTTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Lijuan Gao <lijuan.gao@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 029/627] block: restore two stage elevator switch while running nr_hw_queue update
+Subject: [PATCH 6.12 027/369] arm64: dts: qcom: sa8775p: Correct the interrupt for remoteproc
 Date: Tue, 12 Aug 2025 19:25:24 +0200
-Message-ID: <20250812173420.436241788@linuxfoundation.org>
+Message-ID: <20250812173015.759014244@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,307 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Lijuan Gao <lijuan.gao@oss.qualcomm.com>
 
-[ Upstream commit 5989bfe6ac6bf230c2c84e118c786be0ed4be3f4 ]
+[ Upstream commit 7bd7209e9cb11c8864e601d915008da088476f0c ]
 
-The kmemleak reports memory leaks related to elevator resources that
-were originally allocated in the ->init_hctx() method. The following
-leak traces are observed after running blktests block/040:
+Fix the incorrect IRQ numbers for ready and handover on sa8775p.
+The correct values are as follows:
 
-unreferenced object 0xffff8881b82f7400 (size 512):
-  comm "check", pid 68454, jiffies 4310588881
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 5bac8b34):
-    __kvmalloc_node_noprof+0x55d/0x7a0
-    sbitmap_init_node+0x15a/0x6a0
-    kyber_init_hctx+0x316/0xb90
-    blk_mq_init_sched+0x419/0x580
-    elevator_switch+0x18b/0x630
-    elv_update_nr_hw_queues+0x219/0x2c0
-    __blk_mq_update_nr_hw_queues+0x36a/0x6f0
-    blk_mq_update_nr_hw_queues+0x3a/0x60
-    0xffffffffc09ceb80
-    0xffffffffc09d7e0b
-    configfs_write_iter+0x2b1/0x470
-    vfs_write+0x527/0xe70
-    ksys_write+0xff/0x200
-    do_syscall_64+0x98/0x3c0
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-unreferenced object 0xffff8881b82f6000 (size 512):
-  comm "check", pid 68454, jiffies 4310588881
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 5bac8b34):
-    __kvmalloc_node_noprof+0x55d/0x7a0
-    sbitmap_init_node+0x15a/0x6a0
-    kyber_init_hctx+0x316/0xb90
-    blk_mq_init_sched+0x419/0x580
-    elevator_switch+0x18b/0x630
-    elv_update_nr_hw_queues+0x219/0x2c0
-    __blk_mq_update_nr_hw_queues+0x36a/0x6f0
-    blk_mq_update_nr_hw_queues+0x3a/0x60
-    0xffffffffc09ceb80
-    0xffffffffc09d7e0b
-    configfs_write_iter+0x2b1/0x470
-    vfs_write+0x527/0xe70
-    ksys_write+0xff/0x200
-    do_syscall_64+0x98/0x3c0
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-unreferenced object 0xffff8881b82f5800 (size 512):
-  comm "check", pid 68454, jiffies 4310588881
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 5bac8b34):
-    __kvmalloc_node_noprof+0x55d/0x7a0
-    sbitmap_init_node+0x15a/0x6a0
-    kyber_init_hctx+0x316/0xb90
-    blk_mq_init_sched+0x419/0x580
-    elevator_switch+0x18b/0x630
-    elv_update_nr_hw_queues+0x219/0x2c0
-    __blk_mq_update_nr_hw_queues+0x36a/0x6f0
-    blk_mq_update_nr_hw_queues+0x3a/0x60
-    0xffffffffc09ceb80
-    0xffffffffc09d7e0b
-    configfs_write_iter+0x2b1/0x470
-    vfs_write+0x527/0xe70
+Fatal interrupt - 0
+Ready interrupt - 1
+Handover interrupt - 2
+Stop acknowledge interrupt - 3
 
-    ksys_write+0xff/0x200
-    do_syscall_64+0x98/0x3c0
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The issue arises while we run nr_hw_queue update,  Specifically, we first
-reallocate hardware contexts (hctx) via __blk_mq_realloc_hw_ctxs(), and
-then later invoke elevator_switch() (assuming q->elevator is not NULL).
-The elevator switch code would first exit old elevator (elevator_exit)
-and then switches to the new elevator. The elevator_exit loops through
-each hctx and invokes the elevator’s per-hctx exit method ->exit_hctx(),
-which releases resources allocated during ->init_hctx().
-
-This memleak manifests when we reduce the num of h/w queues - for example,
-when the initial update sets the number of queues to X, and a later update
-reduces it to Y, where Y < X. In this case, we'd loose the access to old
-hctxs while we get to elevator exit code because __blk_mq_realloc_hw_ctxs
-would have already released the old hctxs. As we don't now have any
-reference left to the old hctxs, we don't have any way to free the
-scheduler resources (which are allocate in ->init_hctx()) and kmemleak
-complains about it.
-
-This issue was caused due to the commit 596dce110b7d ("block: simplify
-elevator reattachment for updating nr_hw_queues"). That change unified
-the two-stage elevator teardown and reattachment into a single call that
-occurs after __blk_mq_realloc_hw_ctxs() has already freed the hctxs.
-
-This patch restores the previous two-stage elevator switch logic during
-nr_hw_queues updates. First, the elevator is switched to 'none', which
-ensures all scheduler resources are properly freed. Then, the hardware
-contexts (hctxs) are reallocated, and the software-to-hardware queue
-mappings are updated. Finally, the original elevator is reattached. This
-sequence prevents loss of references to old hctxs and avoids the scheduler
-resource leaks reported by kmemleak.
-
-Reported-by : Yi Zhang <yi.zhang@redhat.com>
-
-Fixes: 596dce110b7d ("block: simplify elevator reattachment for updating nr_hw_queues")
-Closes: https://lore.kernel.org/all/CAHj4cs8oJFvz=daCvjHM5dYCNQH4UXwSySPPU4v-WHce_kZXZA@mail.gmail.com/
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250724102540.1366308-1-nilay@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: df54dcb34ff2e ("arm64: dts: qcom: sa8775p: add ADSP, CDSP and GPDSP nodes")
+Signed-off-by: Lijuan Gao <lijuan.gao@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250612-correct_interrupt_for_remoteproc-v1-2-490ee6d92a1b@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c   | 84 ++++++++++++++++++++++++++++++++++++++++++------
- block/blk.h      |  2 +-
- block/elevator.c | 10 +++---
- 3 files changed, 81 insertions(+), 15 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 4806b867e37d..dec1cd4f1f5b 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4966,6 +4966,60 @@ int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr)
- 	return ret;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+index b28fa598cebb..60f3b545304b 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -3797,8 +3797,8 @@ remoteproc_gpdsp0: remoteproc@20c00000 {
  
-+/*
-+ * Switch back to the elevator type stored in the xarray.
-+ */
-+static void blk_mq_elv_switch_back(struct request_queue *q,
-+		struct xarray *elv_tbl)
-+{
-+	struct elevator_type *e = xa_load(elv_tbl, q->id);
-+
-+	/* The elv_update_nr_hw_queues unfreezes the queue. */
-+	elv_update_nr_hw_queues(q, e);
-+
-+	/* Drop the reference acquired in blk_mq_elv_switch_none. */
-+	if (e)
-+		elevator_put(e);
-+}
-+
-+/*
-+ * Stores elevator type in xarray and set current elevator to none. It uses
-+ * q->id as an index to store the elevator type into the xarray.
-+ */
-+static int blk_mq_elv_switch_none(struct request_queue *q,
-+		struct xarray *elv_tbl)
-+{
-+	int ret = 0;
-+
-+	lockdep_assert_held_write(&q->tag_set->update_nr_hwq_lock);
-+
-+	/*
-+	 * Accessing q->elevator without holding q->elevator_lock is safe here
-+	 * because we're called from nr_hw_queue update which is protected by
-+	 * set->update_nr_hwq_lock in the writer context. So, scheduler update/
-+	 * switch code (which acquires the same lock in the reader context)
-+	 * can't run concurrently.
-+	 */
-+	if (q->elevator) {
-+
-+		ret = xa_insert(elv_tbl, q->id, q->elevator->type, GFP_KERNEL);
-+		if (WARN_ON_ONCE(ret))
-+			return ret;
-+
-+		/*
-+		 * Before we switch elevator to 'none', take a reference to
-+		 * the elevator module so that while nr_hw_queue update is
-+		 * running, no one can remove elevator module. We'd put the
-+		 * reference to elevator module later when we switch back
-+		 * elevator.
-+		 */
-+		__elevator_get(q->elevator->type);
-+
-+		elevator_set_none(q);
-+	}
-+	return ret;
-+}
-+
- static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 							int nr_hw_queues)
- {
-@@ -4973,6 +5027,7 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 	int prev_nr_hw_queues = set->nr_hw_queues;
- 	unsigned int memflags;
- 	int i;
-+	struct xarray elv_tbl;
+ 			interrupts-extended = <&intc GIC_SPI 768 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_gpdsp0_in 0 0>,
+-					      <&smp2p_gpdsp0_in 2 0>,
+ 					      <&smp2p_gpdsp0_in 1 0>,
++					      <&smp2p_gpdsp0_in 2 0>,
+ 					      <&smp2p_gpdsp0_in 3 0>;
+ 			interrupt-names = "wdog", "fatal", "ready",
+ 					  "handover", "stop-ack";
+@@ -3840,8 +3840,8 @@ remoteproc_gpdsp1: remoteproc@21c00000 {
  
- 	lockdep_assert_held(&set->tag_list_lock);
+ 			interrupts-extended = <&intc GIC_SPI 624 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_gpdsp1_in 0 0>,
+-					      <&smp2p_gpdsp1_in 2 0>,
+ 					      <&smp2p_gpdsp1_in 1 0>,
++					      <&smp2p_gpdsp1_in 2 0>,
+ 					      <&smp2p_gpdsp1_in 3 0>;
+ 			interrupt-names = "wdog", "fatal", "ready",
+ 					  "handover", "stop-ack";
+@@ -3965,8 +3965,8 @@ remoteproc_cdsp0: remoteproc@26300000 {
  
-@@ -4984,6 +5039,9 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 		return;
+ 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp0_in 0 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_cdsp0_in 2 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp0_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_cdsp0_in 2 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp0_in 3 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "wdog", "fatal", "ready",
+ 					  "handover", "stop-ack";
+@@ -4097,8 +4097,8 @@ remoteproc_cdsp1: remoteproc@2a300000 {
  
- 	memflags = memalloc_noio_save();
-+
-+	xa_init(&elv_tbl);
-+
- 	list_for_each_entry(q, &set->tag_list, tag_set_list) {
- 		blk_mq_debugfs_unregister_hctxs(q);
- 		blk_mq_sysfs_unregister_hctxs(q);
-@@ -4992,11 +5050,17 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 	list_for_each_entry(q, &set->tag_list, tag_set_list)
- 		blk_mq_freeze_queue_nomemsave(q);
+ 			interrupts-extended = <&intc GIC_SPI 798 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp1_in 0 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_cdsp1_in 2 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp1_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_cdsp1_in 2 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp1_in 3 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "wdog", "fatal", "ready",
+ 					  "handover", "stop-ack";
+@@ -4253,8 +4253,8 @@ remoteproc_adsp: remoteproc@30000000 {
  
--	if (blk_mq_realloc_tag_set_tags(set, nr_hw_queues) < 0) {
--		list_for_each_entry(q, &set->tag_list, tag_set_list)
--			blk_mq_unfreeze_queue_nomemrestore(q);
--		goto reregister;
--	}
-+	/*
-+	 * Switch IO scheduler to 'none', cleaning up the data associated
-+	 * with the previous scheduler. We will switch back once we are done
-+	 * updating the new sw to hw queue mappings.
-+	 */
-+	list_for_each_entry(q, &set->tag_list, tag_set_list)
-+		if (blk_mq_elv_switch_none(q, &elv_tbl))
-+			goto switch_back;
-+
-+	if (blk_mq_realloc_tag_set_tags(set, nr_hw_queues) < 0)
-+		goto switch_back;
- 
- fallback:
- 	blk_mq_update_queue_map(set);
-@@ -5016,12 +5080,11 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 		}
- 		blk_mq_map_swqueue(q);
- 	}
--
--	/* elv_update_nr_hw_queues() unfreeze queue for us */
-+switch_back:
-+	/* The blk_mq_elv_switch_back unfreezes queue for us. */
- 	list_for_each_entry(q, &set->tag_list, tag_set_list)
--		elv_update_nr_hw_queues(q);
-+		blk_mq_elv_switch_back(q, &elv_tbl);
- 
--reregister:
- 	list_for_each_entry(q, &set->tag_list, tag_set_list) {
- 		blk_mq_sysfs_register_hctxs(q);
- 		blk_mq_debugfs_register_hctxs(q);
-@@ -5029,6 +5092,9 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 		blk_mq_remove_hw_queues_cpuhp(q);
- 		blk_mq_add_hw_queues_cpuhp(q);
- 	}
-+
-+	xa_destroy(&elv_tbl);
-+
- 	memalloc_noio_restore(memflags);
- 
- 	/* Free the excess tags when nr_hw_queues shrink. */
-diff --git a/block/blk.h b/block/blk.h
-index 37ec459fe656..fae7653a941f 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -321,7 +321,7 @@ bool blk_bio_list_merge(struct request_queue *q, struct list_head *list,
- 
- bool blk_insert_flush(struct request *rq);
- 
--void elv_update_nr_hw_queues(struct request_queue *q);
-+void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e);
- void elevator_set_default(struct request_queue *q);
- void elevator_set_none(struct request_queue *q);
- 
-diff --git a/block/elevator.c b/block/elevator.c
-index a960bdc869bc..88f8f36bed98 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -689,21 +689,21 @@ static int elevator_change(struct request_queue *q, struct elv_change_ctx *ctx)
-  * The I/O scheduler depends on the number of hardware queues, this forces a
-  * reattachment when nr_hw_queues changes.
-  */
--void elv_update_nr_hw_queues(struct request_queue *q)
-+void elv_update_nr_hw_queues(struct request_queue *q, struct elevator_type *e)
- {
- 	struct elv_change_ctx ctx = {};
- 	int ret = -ENODEV;
- 
- 	WARN_ON_ONCE(q->mq_freeze_depth == 0);
- 
--	mutex_lock(&q->elevator_lock);
--	if (q->elevator && !blk_queue_dying(q) && blk_queue_registered(q)) {
--		ctx.name = q->elevator->type->elevator_name;
-+	if (e && !blk_queue_dying(q) && blk_queue_registered(q)) {
-+		ctx.name = e->elevator_name;
- 
-+		mutex_lock(&q->elevator_lock);
- 		/* force to reattach elevator after nr_hw_queue is updated */
- 		ret = elevator_switch(q, &ctx);
-+		mutex_unlock(&q->elevator_lock);
- 	}
--	mutex_unlock(&q->elevator_lock);
- 	blk_mq_unfreeze_queue_nomemrestore(q);
- 	if (!ret)
- 		WARN_ON_ONCE(elevator_change_done(q, &ctx));
+ 			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+-					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "wdog", "fatal", "ready", "handover",
+ 					  "stop-ack";
 -- 
 2.39.5
 
