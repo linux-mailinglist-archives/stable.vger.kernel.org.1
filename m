@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDFCB232B2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 644D3B23476
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C91903B475B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC621630DC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA5B2FE560;
-	Tue, 12 Aug 2025 18:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6340A2FF140;
+	Tue, 12 Aug 2025 18:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yG2l6Yt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcvX+6tm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B1B2D29C3;
-	Tue, 12 Aug 2025 18:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C1E2FAC11;
+	Tue, 12 Aug 2025 18:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022500; cv=none; b=pWf93hJxZYU8g4N6oXOcIMhBpC7uZOjUtVYOjDvsmhlIoTCRC+A9y8AZRAzsMn4P+pLHCZ0ecqnF+7bfCOSfsGXdWko39oGG0GvfL42sn3mGquYpzyQELnaphc6n5jmJdL9OnIMH3/MRTzCVouApJZMCLqzYHalmUFzB2mqGYr4=
+	t=1755023871; cv=none; b=U/v2f+oCPn7ddemXEUdvrwwdSdxqu1vcodQB4yY5XF9bAxmzpBVmCEfZ1S9YRKSZVHS+goYZFCszsFENjKkr3yD6YXwW6PUcgvgwBtiYdK5kwsIH86QL+8yXxShzVrNeyJdxRPjhJrWV3S0XzWd6PqosVNPrE6bHqt7p/fXkJ58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022500; c=relaxed/simple;
-	bh=BETvVSMKL/1LHIaos6PsLuFhohgleCEKXavfxO3Szns=;
+	s=arc-20240116; t=1755023871; c=relaxed/simple;
+	bh=7MS+Bxux3bhxPcr/McyJl9rA9Z3dOjMZVNI7hk8eo3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3WrsJL/gMA97EKcrLxQqA1hDmim1IlTVII+n46GBcIgVB4qAYDKz0mfDKvBj5CqCOvHc2w60pri3N+Uv0QwAw1+aOZBTYl57jV/mp17XL3MpcvXqiVDdv3S3VE1O6C1CcPP+GsmecT1ytVh4ifjx2GDukClWQgy/Ke68l65cNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yG2l6Yt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE5BC4CEF1;
-	Tue, 12 Aug 2025 18:14:59 +0000 (UTC)
+	 MIME-Version; b=eeVZKxVnHXTMbrHF+fE+CUzDNdSYuuKBEO74/jUUyQdBaDscsG48z5XIFNQe/S66hxfLWLueLSZYMRsLes/JLHlLCGrAgs7HF1P2RIOIxGECNsI2No11fsJqXk8Btw3tVr0zxtiNd0FbzrmWWDM5RUoTz25Lb3JkeSy2Fdunxxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcvX+6tm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86044C4CEF0;
+	Tue, 12 Aug 2025 18:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022500;
-	bh=BETvVSMKL/1LHIaos6PsLuFhohgleCEKXavfxO3Szns=;
+	s=korg; t=1755023871;
+	bh=7MS+Bxux3bhxPcr/McyJl9rA9Z3dOjMZVNI7hk8eo3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yG2l6Yt4OonotVBfC3mBGR3Ehh9jDGX40qLcKBABWsC4qYJ/gfkVHhssp8ip7vs/s
-	 DP+bJ079hpHKeSvRr8EGW6xCroy4fE5jpX9QNqjKt9Luz/WJ2LPeBMNoVwyib2Soez
-	 Q/0vJWsL3SB27U977RNjYsLjAIQg4WkdvWJ5l97A=
+	b=TcvX+6tmVffHm5WgypAbQ73yHvdmnygnkX4Ft8GJC6SAChW5d4IVdzkTjDuHes76H
+	 hO6gmAw6D4aIuJnd3Bd+io4fbk71VVHcHXhyrQwHO7qyeh9yOxuJzfOU4BFoMDolfc
+	 p+WP4RIAPL0Bjgbv/DebnrXDmCe4ZhaNgjd6+O5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/369] fanotify: sanitize handle_type values when reporting fid
+Subject: [PATCH 6.16 174/627] net: dst: annotate data-races around dst->input
 Date: Tue, 12 Aug 2025 19:27:49 +0200
-Message-ID: <20250812173021.234585556@linuxfoundation.org>
+Message-ID: <20250812173425.898637634@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8631e01c2c5d1fe6705bcc0d733a0b7a17d3daac ]
+[ Upstream commit f1c5fd34891a1c242885f48c2e4dc52df180f311 ]
 
-Unlike file_handle, type and len of struct fanotify_fh are u8.
-Traditionally, filesystem return handle_type < 0xff, but there
-is no enforecement for that in vfs.
+dst_dev_put() can overwrite dst->input while other
+cpus might read this field (for instance from dst_input())
 
-Add a sanity check in fanotify to avoid truncating handle_type
-if its value is > 0xff.
+Add READ_ONCE()/WRITE_ONCE() annotations to suppress
+potential issues.
 
-Fixes: 7cdafe6cc4a6 ("exportfs: check for error return value from exportfs_encode_*()")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250627104835.184495-1-amir73il@gmail.com
+We will likely need full RCU protection later.
+
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250630121934.3399505-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/net/dst.h      | 2 +-
+ include/net/lwtunnel.h | 4 ++--
+ net/core/dst.c         | 2 +-
+ net/ipv4/route.c       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index 224bccaab4cc..bb00e1e16838 100644
---- a/fs/notify/fanotify/fanotify.c
-+++ b/fs/notify/fanotify/fanotify.c
-@@ -441,7 +441,13 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
- 	dwords = fh_len >> 2;
- 	type = exportfs_encode_fid(inode, buf, &dwords);
- 	err = -EINVAL;
--	if (type <= 0 || type == FILEID_INVALID || fh_len != dwords << 2)
-+	/*
-+	 * Unlike file_handle, type and len of struct fanotify_fh are u8.
-+	 * Traditionally, filesystem return handle_type < 0xff, but there
-+	 * is no enforecement for that in vfs.
-+	 */
-+	BUILD_BUG_ON(MAX_HANDLE_SZ > 0xff || FILEID_INVALID > 0xff);
-+	if (type <= 0 || type >= FILEID_INVALID || fh_len != dwords << 2)
- 		goto out_err;
+diff --git a/include/net/dst.h b/include/net/dst.h
+index 78c78cdce0e9..65d81116d6bf 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -466,7 +466,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_local_deliver(struct sk_buff *));
+ /* Input packet from network to transport.  */
+ static inline int dst_input(struct sk_buff *skb)
+ {
+-	return INDIRECT_CALL_INET(skb_dst(skb)->input,
++	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->input),
+ 				  ip6_input, ip_local_deliver, skb);
+ }
  
- 	fh->type = type;
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index c306ebe379a0..eaac07d50595 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -142,8 +142,8 @@ static inline void lwtunnel_set_redirect(struct dst_entry *dst)
+ 		dst->output = lwtunnel_output;
+ 	}
+ 	if (lwtunnel_input_redirect(dst->lwtstate)) {
+-		dst->lwtstate->orig_input = dst->input;
+-		dst->input = lwtunnel_input;
++		dst->lwtstate->orig_input = READ_ONCE(dst->input);
++		WRITE_ONCE(dst->input, lwtunnel_input);
+ 	}
+ }
+ #else
+diff --git a/net/core/dst.c b/net/core/dst.c
+index 795ca07e28a4..b46f7722a1b6 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -148,7 +148,7 @@ void dst_dev_put(struct dst_entry *dst)
+ 	dst->obsolete = DST_OBSOLETE_DEAD;
+ 	if (dst->ops->ifdown)
+ 		dst->ops->ifdown(dst, dev);
+-	dst->input = dst_discard;
++	WRITE_ONCE(dst->input, dst_discard);
+ 	dst->output = dst_discard_out;
+ 	dst->dev = blackhole_netdev;
+ 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 64ac20c27f1b..2cc88f8c3bc6 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1685,7 +1685,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
+ 		else if (rt->rt_gw_family == AF_INET6)
+ 			new_rt->rt_gw6 = rt->rt_gw6;
+ 
+-		new_rt->dst.input = rt->dst.input;
++		new_rt->dst.input = READ_ONCE(rt->dst.input);
+ 		new_rt->dst.output = rt->dst.output;
+ 		new_rt->dst.error = rt->dst.error;
+ 		new_rt->dst.lastuse = jiffies;
 -- 
 2.39.5
 
