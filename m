@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC21EB2356E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CD7B231A5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED2853A88D8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBB236E0902
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7812FDC5C;
-	Tue, 12 Aug 2025 18:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09DE2FDC5D;
+	Tue, 12 Aug 2025 18:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXs3ClaY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0ZByo/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21952FFDDC;
-	Tue, 12 Aug 2025 18:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1BF2F5E;
+	Tue, 12 Aug 2025 18:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024314; cv=none; b=cAvpSUxrSmxDd8drxbeqwU9WHMy0wUxYcD8RjmUFaOqDy6caV1r2Ngli9kgj+vgzl1yN7sh0+sQe6WLQ938ATFiZpiVw0Kki/46zrdhkmROKYBcyQticmc/NHVzkv2WfZQAMhbGgriZl+3gX5ROXsdz8VS+hUs7muIiv29277Bo=
+	t=1755021846; cv=none; b=q2mw+4Q32jt1ScSUdudNT1bICoc6aoejeou4ckPWlX35miL1XHSS+ZFkXg7Zlc7uhIMZqP50YBS+UnGiF+hh8B8efpyOesjPTnf8WCOxYa3SVDFDhvCBk8HUrl0rmkPu1AyyuPYbxG44vwu2TkUCfkQL8Hv8y54gaxgPQ6HvxYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024314; c=relaxed/simple;
-	bh=O1fn+HoTP2l91tw3oARj5BmsvbUzMYqvkDvLmkfzizE=;
+	s=arc-20240116; t=1755021846; c=relaxed/simple;
+	bh=/oArxbwcMb9PGRJNzsTbRXGsNzbYMQRmU/5niuZ+PRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYnQk42WayuyJOfaKBq1/g98pzM1yDg73SPAMsoqPsgDWwZn6xaL8yNLix3+cDHHM+7uzzrBezDXGCCI8DKAlSUGqgzXnc2rUhWTmp8gmmO/K5hypTIxTmyvXzX38G+x4e4o3FIPfNARxgOBxwLKrkMNjzGXL6oh4jq70T/Epxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXs3ClaY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F854C4CEF1;
-	Tue, 12 Aug 2025 18:45:14 +0000 (UTC)
+	 MIME-Version; b=NoEbFBWLhygtxSk5fkGcLmSYiNOfK/hO8tgUjzcVd+Oed0mSUhwmVdmS3GnEHtBFHgG2WCk/OMY3UNAyM9HecZHLNGtSFCFA53RojlUd2V+7ImvpgbOKF4T/qVsQyta5b5/6wZvAxbeFmP37hUmV3klaanXCGxqySmt+wZcFvhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0ZByo/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFCAC4CEF0;
+	Tue, 12 Aug 2025 18:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024314;
-	bh=O1fn+HoTP2l91tw3oARj5BmsvbUzMYqvkDvLmkfzizE=;
+	s=korg; t=1755021846;
+	bh=/oArxbwcMb9PGRJNzsTbRXGsNzbYMQRmU/5niuZ+PRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fXs3ClaYpFdrRqfHEDss6dDDyBroTCUiZM4dqyVU3xQxa9FIuv/rOVzeYvpKv9Hcl
-	 Z358Pl3CGeobYBoi7SqpPepgyxJVDSCFskXCQpu9px2/1sY0FV/lD4z0SdOGv7s7vj
-	 hxwk4yuFSwq5DWd22NSsCPDvDiu1yi28CsMd7T/4=
+	b=c0ZByo/iwe2j4t6XC4Fb7UMZ0FzGjHFbD1NdLvQHP4rfRLfV3d+TT3ZIezNqaQi1X
+	 z+TeiL6eC/CGyR2NnDrH+KE+ahrURrRJiiWGS4hGlQBrmnDW+KIuM4bJ/iLOiBFwcH
+	 iuyALADpMIZu2hyK8zP5BieLxmL8l3E2oRmIqjGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 336/627] dmaengine: mmp: Fix again Wvoid-pointer-to-enum-cast warning
+Subject: [PATCH 6.6 243/262] i2c: stm32f7: Use devm_clk_get_enabled()
 Date: Tue, 12 Aug 2025 19:30:31 +0200
-Message-ID: <20250812173432.067181025@linuxfoundation.org>
+Message-ID: <20250812173003.496745860@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Andi Shyti <andi.shyti@kernel.org>
 
-[ Upstream commit a0b1589b62e2fcfb112996e0f4d5593bd2edf069 ]
+[ Upstream commit 7ba2b17a87466e1410ae0ccc94d8eb381de177c2 ]
 
-This was fixed and re-introduced.  'type' is an enum, thus cast of
-pointer on 64-bit compile test with W=1 causes:
+Replace the pair of functions, devm_clk_get() and
+clk_prepare_enable(), with a single function
+devm_clk_get_enabled().
 
-  mmp_tdma.c:644:9: error: cast to smaller integer type 'enum mmp_tdma_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
-
-Fixes: a67ba97dfb30 ("dmaengine: Use device_get_match_data()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250525-dma-fixes-v1-5-89d06dac9bcb@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 6aae87fe7f18 ("i2c: stm32f7: unmap DMA mapped buffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mmp_tdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-stm32f7.c |   37 ++++++++++++-------------------------
+ 1 file changed, 12 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/dma/mmp_tdma.c b/drivers/dma/mmp_tdma.c
-index c8dc504510f1..b7fb843c67a6 100644
---- a/drivers/dma/mmp_tdma.c
-+++ b/drivers/dma/mmp_tdma.c
-@@ -641,7 +641,7 @@ static int mmp_tdma_probe(struct platform_device *pdev)
- 	int chan_num = TDMA_CHANNEL_NUM;
- 	struct gen_pool *pool = NULL;
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -2177,23 +2177,16 @@ static int stm32f7_i2c_probe(struct plat
+ 	i2c_dev->wakeup_src = of_property_read_bool(pdev->dev.of_node,
+ 						    "wakeup-source");
  
--	type = (enum mmp_tdma_type)device_get_match_data(&pdev->dev);
-+	type = (kernel_ulong_t)device_get_match_data(&pdev->dev);
+-	i2c_dev->clk = devm_clk_get(&pdev->dev, NULL);
++	i2c_dev->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(i2c_dev->clk))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(i2c_dev->clk),
+-				     "Failed to get controller clock\n");
+-
+-	ret = clk_prepare_enable(i2c_dev->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to prepare_enable clock\n");
+-		return ret;
+-	}
++				     "Failed to enable controller clock\n");
  
- 	/* always have couple channels */
- 	tdev = devm_kzalloc(&pdev->dev, sizeof(*tdev), GFP_KERNEL);
--- 
-2.39.5
-
+ 	rst = devm_reset_control_get(&pdev->dev, NULL);
+-	if (IS_ERR(rst)) {
+-		ret = dev_err_probe(&pdev->dev, PTR_ERR(rst),
+-				    "Error: Missing reset ctrl\n");
+-		goto clk_free;
+-	}
++	if (IS_ERR(rst))
++		return dev_err_probe(&pdev->dev, PTR_ERR(rst),
++				     "Error: Missing reset ctrl\n");
++
+ 	reset_control_assert(rst);
+ 	udelay(2);
+ 	reset_control_deassert(rst);
+@@ -2208,7 +2201,7 @@ static int stm32f7_i2c_probe(struct plat
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to request irq event %i\n",
+ 			irq_event);
+-		goto clk_free;
++		return ret;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq_error, stm32f7_i2c_isr_error, 0,
+@@ -2216,29 +2209,28 @@ static int stm32f7_i2c_probe(struct plat
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to request irq error %i\n",
+ 			irq_error);
+-		goto clk_free;
++		return ret;
+ 	}
+ 
+ 	setup = of_device_get_match_data(&pdev->dev);
+ 	if (!setup) {
+ 		dev_err(&pdev->dev, "Can't get device data\n");
+-		ret = -ENODEV;
+-		goto clk_free;
++		return -ENODEV;
+ 	}
+ 	i2c_dev->setup = *setup;
+ 
+ 	ret = stm32f7_i2c_setup_timing(i2c_dev, &i2c_dev->setup);
+ 	if (ret)
+-		goto clk_free;
++		return ret;
+ 
+ 	/* Setup Fast mode plus if necessary */
+ 	if (i2c_dev->bus_rate > I2C_MAX_FAST_MODE_FREQ) {
+ 		ret = stm32f7_i2c_setup_fm_plus_bits(pdev, i2c_dev);
+ 		if (ret)
+-			goto clk_free;
++			return ret;
+ 		ret = stm32f7_i2c_write_fm_plus_bits(i2c_dev, true);
+ 		if (ret)
+-			goto clk_free;
++			return ret;
+ 	}
+ 
+ 	adap = &i2c_dev->adap;
+@@ -2349,9 +2341,6 @@ clr_wakeup_capable:
+ fmp_clear:
+ 	stm32f7_i2c_write_fm_plus_bits(i2c_dev, false);
+ 
+-clk_free:
+-	clk_disable_unprepare(i2c_dev->clk);
+-
+ 	return ret;
+ }
+ 
+@@ -2385,8 +2374,6 @@ static void stm32f7_i2c_remove(struct pl
+ 	}
+ 
+ 	stm32f7_i2c_write_fm_plus_bits(i2c_dev, false);
+-
+-	clk_disable_unprepare(i2c_dev->clk);
+ }
+ 
+ static int __maybe_unused stm32f7_i2c_runtime_suspend(struct device *dev)
 
 
 
