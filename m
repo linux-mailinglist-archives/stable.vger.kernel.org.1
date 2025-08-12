@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-168642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C59B235D1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:54:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A541B235E6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A077BB3FE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:52:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 919F43ABEBA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60572FF147;
-	Tue, 12 Aug 2025 18:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79DE284685;
+	Tue, 12 Aug 2025 18:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCxY+lH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mj0sfxX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9536C284685;
-	Tue, 12 Aug 2025 18:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AB46BB5B;
+	Tue, 12 Aug 2025 18:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024850; cv=none; b=PjG39EAkvfHGMomb/qqzGnKYpQCEJNcKoTZ0SpF2ugmDNQegvI5lx5EBUUdM+Bj75uOQ6iKFHTDqH4fmcxB+CGW1KNNv7xnSR7GmBM/uWkUgh0aGN0QyOvKwiankkz158WEZ5xQAY5Bq7e3kTL2Ja1gd6WndVWy92N4qTQRinDg=
+	t=1755024730; cv=none; b=nbGM/nk90k7TjAtU2FhHQxS2ScyNK22VzhzxNmwiAybwaS+UQwRy0fSyl4ZHDCt84AnOKKZ+QePpV4f97gd/919s6/tf0aha24ycveT6QoWRpyQaX5HqaxlIdzu89SgxuTSFRFNaTWdvmCJ4P5e0V4L25j0Oz3VC4hCGxXS4VoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024850; c=relaxed/simple;
-	bh=hee5B8MHsciLHMcnNK3ufgTMQlPxB1zw0ORa9OI4JMw=;
+	s=arc-20240116; t=1755024730; c=relaxed/simple;
+	bh=ru5eiNjFUL5hovvYOj5oJRvbDH1LVhb9YsmMg8mNbMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcNhnSx2rYOWev3LxVxxW5Rf4Gkl1gGqjdgb6VJ+RQYiDDrx5ATGv+1PyUa9x2KA30iLby3wmE0FuueirjZkYCaQIeW5aszpE7bFJ3JTu0P+QsJWHAm+yqtXgOxvZYRmF56i2yOAchnGF0Kis2amZSGjChZWaDjh1TOPwBFVZpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCxY+lH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056AAC4CEF0;
-	Tue, 12 Aug 2025 18:54:09 +0000 (UTC)
+	 MIME-Version; b=i5wC6QILgJ4OvfvdraeOwCtDhhe7oSmMVJIBoFN5tkF0WcMP4o6HUvL26W13+LSzDq+yvngj9JX81gHdKPUpFQG6F/EwijZZiYkQNS98HB4Zq2gNipgqxFaWQBR6lO73hk6eExrQqLtD1fUFGtIQJPNFB5XbJNQH7ujnoPRtosE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mj0sfxX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349CDC4CEF0;
+	Tue, 12 Aug 2025 18:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024850;
-	bh=hee5B8MHsciLHMcnNK3ufgTMQlPxB1zw0ORa9OI4JMw=;
+	s=korg; t=1755024730;
+	bh=ru5eiNjFUL5hovvYOj5oJRvbDH1LVhb9YsmMg8mNbMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KCxY+lH1r1avSHdRY9S+R216vuD8/OZpMIYAOFYZAhE8ZCGgl5dHEcQphBMOIrq83
-	 nk7gTThNtjP0hc+YqbXeAQCPj6PSVFoHT9wZD5lZJIBRNEebsp7VM2HnvwLMg/Bmzn
-	 prLbGYLisa6DPxIHKL9EomHbwb+0peDQSEMBgtrg=
+	b=Mj0sfxX4IjGXSkbvMryFPSkHO2+aFt5AGuHtcsgvpzMk3k8Jg1a2QBk5X/9a56V95
+	 DCnbjPCvT8Mp4ebBlgfNPTGbyc67/KuLrfd3xUdbv/pcoXXfg/swv8o1AZm1ui1+ae
+	 mL/soN4V9FvMbmYiZWsJ+lK11Oik4drCh2jRkUMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 452/627] bpf: Check netfilter ctx accesses are aligned
-Date: Tue, 12 Aug 2025 19:32:27 +0200
-Message-ID: <20250812173437.426835416@linuxfoundation.org>
+Subject: [PATCH 6.16 453/627] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
+Date: Tue, 12 Aug 2025 19:32:28 +0200
+Message-ID: <20250812173437.618640349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -68,41 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit 9e6448f7b1efb27f8d508b067ecd33ed664a4246 ]
+[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
 
-Similarly to the previous patch fixing the flow_dissector ctx accesses,
-nf_is_valid_access also doesn't check that ctx accesses are aligned.
-Contrary to flow_dissector programs, netfilter programs don't have
-context conversion. The unaligned ctx accesses are therefore allowed by
-the verifier.
+WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
+comment in the declaration of struct match_workbuf stating it is and a
+modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
+WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
+line to ensure that any future changes to the value of WB_HISTORY_SIZE
+respect this requirement.
 
-Fixes: fd9c663b9ad6 ("bpf: minimal support for programs hooked into netfilter framework")
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/853ae9ed5edaa5196e8472ff0f1bb1cc24059214.1754039605.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 136db994852a ("apparmor: increase left match history buffer size")
+
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_bpf_link.c | 3 +++
- 1 file changed, 3 insertions(+)
+ security/apparmor/include/match.h | 3 ++-
+ security/apparmor/match.c         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
-index 25bbac8986c2..c12250e50a8b 100644
---- a/net/netfilter/nf_bpf_link.c
-+++ b/net/netfilter/nf_bpf_link.c
-@@ -295,6 +295,9 @@ static bool nf_is_valid_access(int off, int size, enum bpf_access_type type,
- 	if (off < 0 || off >= sizeof(struct bpf_nf_ctx))
- 		return false;
+diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
+index 536ce3abd598..b45fc39fa837 100644
+--- a/security/apparmor/include/match.h
++++ b/security/apparmor/include/match.h
+@@ -137,7 +137,8 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
  
-+	if (off % size != 0)
-+		return false;
-+
- 	if (type == BPF_WRITE)
- 		return false;
+ void aa_dfa_free_kref(struct kref *kref);
  
+-#define WB_HISTORY_SIZE 24
++/* This needs to be a power of 2 */
++#define WB_HISTORY_SIZE 32
+ struct match_workbuf {
+ 	unsigned int count;
+ 	unsigned int pos;
+diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+index f2d9c57f8794..1ceabde550f2 100644
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -681,6 +681,7 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
+ 
+ #define inc_wb_pos(wb)						\
+ do {								\
++	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
+ 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
+ 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
+ } while (0)
 -- 
 2.39.5
 
