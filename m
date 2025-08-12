@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B20EB23287
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7056B23062
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91307686F5A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C59F685F04
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C432E285E;
-	Tue, 12 Aug 2025 18:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D962FDC5D;
+	Tue, 12 Aug 2025 17:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtuYceHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BA7VQ9De"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65691257435;
-	Tue, 12 Aug 2025 18:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEB92868AF;
+	Tue, 12 Aug 2025 17:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022418; cv=none; b=fNKb1zfqOHQHZR/SpgznXxEQ0v69YyOe2xNWJhzgJSmzdcVs6vN7q0++1sythogZNILwbZzr0Z2Bv72ndPiglQL9PeW/aYzdaIuv4/Qqd8YunAmn710VbBNaUWzyDFXOXdDwNMi6apGSVRADG5BYR9MHj6hFV1wUaO5xYe4DOPQ=
+	t=1755021083; cv=none; b=SEj/k/fZ93/pVMLm5HuWL1wPdajYdAvcW4m4SPGLgpilkm604LTBfzvGHcVZ1tYP5Et0n4thpMez4fap7kw5cCWVyiDNN6RvUFQgpIuoVNH3VBxr1aVNMBhUUqd4ks0LOOjGeRnzYTnb18ek7N1oLuqlVMnK3F6OilHH+lOwVqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022418; c=relaxed/simple;
-	bh=C+YRNBvv8CCpn7sxIbhFPot9oiAfDy67OlfJmW7SeyM=;
+	s=arc-20240116; t=1755021083; c=relaxed/simple;
+	bh=KKowj8qTjl+83B5sqog4dOWNZe/6+SzoY+6rWTuNr9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBhiRp5Q8WlYeITZgbiR4PR/UEfHigt714VUBXGIV7+07esJU4mokFzLf3dwdQtScUQUQT07ZdTCdul7cZpO/NAC50G68xu2FCtjzg+8w9o4cxr5LGt7vj2u+coRUTn4h2Qs71o5zRDZM212qHgt/8RVAFg5vqEKNXxJdXxo4BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtuYceHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE254C4CEF1;
-	Tue, 12 Aug 2025 18:13:37 +0000 (UTC)
+	 MIME-Version; b=gV7PX61hKqLTxsShKlJGA0JzSZ08FKSoZ14DeWycAPSZM8M3wkiIp4aCTIJiAWw9by97eizeVT83jFeHBM+qVVrIMx4AjNKFia9fWotDRDDL3HyArjoe+oo1BDd5qz9JaqxFNy/+bZPZ4e0TLfsOLKD577zQCzsIjTkoBhSW6QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BA7VQ9De; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374C7C4CEF0;
+	Tue, 12 Aug 2025 17:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022418;
-	bh=C+YRNBvv8CCpn7sxIbhFPot9oiAfDy67OlfJmW7SeyM=;
+	s=korg; t=1755021083;
+	bh=KKowj8qTjl+83B5sqog4dOWNZe/6+SzoY+6rWTuNr9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtuYceHe5h05xtZ/Dn0YAPo7eZ83++Afv2mWd2osb52GrJvs7f9HwPklnIL98khXj
-	 8+3Yjpk3Y32oqWRX47cPdHRpnRN9KnbNouwixlmj/t3NDBDxxyZkYdmVp07hxd2nz+
-	 pxfLVDntK9Qtf4oek/ZRj1fo+K+R1onD72LZXQT0=
+	b=BA7VQ9De/Ie2O/0er1UXs1OjZOIFQDgxi8Cinbn3vGYmYGH+aZhTvEJqIfxix8EXK
+	 yPhvcSCiDyQIpSAdnBECF0mCPIeJdn6I5mRDwIPCPlFG1hRR1BethIrkpCvA9ODUPO
+	 FAsTd3Gc4MdnXeGANj1krwxsJtGAG/mhF0Bo7FHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Xu Kuohai <xukuohai@huawei.com>,
+	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 150/369] bpf, arm64: Fix fp initialization for exception boundary
+Subject: [PATCH 6.6 059/262] iwlwifi: Add missing check for alloc_ordered_workqueue
 Date: Tue, 12 Aug 2025 19:27:27 +0200
-Message-ID: <20250812173020.423546105@linuxfoundation.org>
+Message-ID: <20250812172955.498211640@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit b114fcee766d5101eada1aca7bb5fd0a86c89b35 ]
+[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
 
-In the ARM64 BPF JIT when prog->aux->exception_boundary is set for a BPF
-program, find_used_callee_regs() is not called because for a program
-acting as exception boundary, all callee saved registers are saved.
-find_used_callee_regs() sets `ctx->fp_used = true;` when it sees FP
-being used in any of the instructions.
+Add check for the return value of alloc_ordered_workqueue since it may
+return NULL pointer.
 
-For programs acting as exception boundary, ctx->fp_used remains false
-even if frame pointer is used by the program and therefore, FP is not
-set-up for such programs in the prologue. This can cause the kernel to
-crash due to a pagefault.
-
-Fix it by setting ctx->fp_used = true for exception boundary programs as
-fp is always saved in such programs.
-
-Fixes: 5d4fa9ec5643 ("bpf, arm64: Avoid blindly saving/restoring all callee-saved registers")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/bpf/20250722133410.54161-2-puranjay@kernel.org
+Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 515c411c2c83..5553508c3644 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -399,6 +399,7 @@ static void push_callee_regs(struct jit_ctx *ctx)
- 		emit(A64_PUSH(A64_R(23), A64_R(24), A64_SP), ctx);
- 		emit(A64_PUSH(A64_R(25), A64_R(26), A64_SP), ctx);
- 		emit(A64_PUSH(A64_R(27), A64_R(28), A64_SP), ctx);
-+		ctx->fp_used = true;
- 	} else {
- 		find_used_callee_regs(ctx);
- 		for (i = 0; i + 1 < ctx->nr_used_callee_reg; i += 2) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index a873be109f43..b490a88b97ca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1048,9 +1048,11 @@ static void iwl_bg_restart(struct work_struct *data)
+  *
+  *****************************************************************************/
+ 
+-static void iwl_setup_deferred_work(struct iwl_priv *priv)
++static int iwl_setup_deferred_work(struct iwl_priv *priv)
+ {
+ 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
++	if (!priv->workqueue)
++		return -ENOMEM;
+ 
+ 	INIT_WORK(&priv->restart, iwl_bg_restart);
+ 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
+@@ -1067,6 +1069,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
+ 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
+ 
+ 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
++
++	return 0;
+ }
+ 
+ void iwl_cancel_deferred_work(struct iwl_priv *priv)
+@@ -1456,7 +1460,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	/********************
+ 	 * 6. Setup services
+ 	 ********************/
+-	iwl_setup_deferred_work(priv);
++	if (iwl_setup_deferred_work(priv))
++		goto out_uninit_drv;
++
+ 	iwl_setup_rx_handlers(priv);
+ 
+ 	iwl_power_initialize(priv);
+@@ -1494,6 +1500,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	iwl_cancel_deferred_work(priv);
+ 	destroy_workqueue(priv->workqueue);
+ 	priv->workqueue = NULL;
++out_uninit_drv:
+ 	iwl_uninit_drv(priv);
+ out_free_eeprom_blob:
+ 	kfree(priv->eeprom_blob);
 -- 
 2.39.5
 
