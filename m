@@ -1,102 +1,77 @@
-Return-Path: <stable+bounces-169058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97C4B237F1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:17:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16414B23915
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B261B67498
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:17:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA6C3AF29F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECDB285CAA;
-	Tue, 12 Aug 2025 19:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B062DAFA0;
+	Tue, 12 Aug 2025 19:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIZsUy99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvY6BLDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3505628505A
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 19:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E113B1FF7C5;
+	Tue, 12 Aug 2025 19:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026237; cv=none; b=E52qnGy0gnRoscVfSI/UPbTy5vVQy2Cxg/RMlGwz6g/SzdXK1AlmlrzikarBanp1OjtXwwxh1gs4HSFIXMT8pxbBNWNIYIXV2mKHlumenvxwPggbHlBklGzVNp1b/hk6WuV7utRIzvTBZvh/XrbiU0TS3tYf4u4v9jISmPXYbX4=
+	t=1755027223; cv=none; b=fwOSoVH5CgamWsYjnXVkofK5LAoa6QZdyMj2Ch82YY4eyvuzJUng6JVAVACnOa5ut59NnrzoWCXai0Sd6DAKA58WdG9LU/HNYgmDX99l7RBD7M7KfHOGRN5yabDSlqATw4iZiQkeWth7osaazltj8zeXCF4B73DxuR0xi6Nirxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026237; c=relaxed/simple;
-	bh=wsOobTfT6VyMSKBaXMDuQzU6EsoJJ7eiNC2rBfB2Ly8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XKlmIiYDUV459xg2W6saEDP8N6M0Q0zGzMjl3O2HHylmUiOFTNMc2z9kXUR55o1cUwnPwvurl1N1LdHIzFEKe/egaurGmNicwoaArFZI39Duph4Qs+k8Q5yjV6Pu+9vPT5kdFOVFbkTSDCUPu88wdOCcG1SCy6vinY1ue8iSDgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIZsUy99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C18C4CEF7;
-	Tue, 12 Aug 2025 19:17:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755026236;
-	bh=wsOobTfT6VyMSKBaXMDuQzU6EsoJJ7eiNC2rBfB2Ly8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIZsUy9949FghxQxjR97GeVm8cv4BbRVEuk//U7hv0kMji6kUUfd9+HwO9B7H5Hyi
-	 +xxlSYGL0Cvr64gWmaCaBlS97KU5oJAdK9zs/8lvhOGM1EbxWInHFuyh6ZrbP/wH8x
-	 hxTJ6N4fr7jHY9OZZcf6EwgRvMge3ahAbFpg+cq4ohxLly5yRFshZfyhpvBR85QzXe
-	 i3H8KOzKK/beTf2ArvKXYovmM/lvFghg6lrkxb3HlD/hiThDEsZgXfwmtzChIphfs5
-	 Yb+DusNk+wkNHczPp5mdFw5EGbN15B3KDzRdc7Bf92Wiov9Y+jxbKyTGkAIPGtOJ5c
-	 y7Lzjj1diLK2A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] smb: server: Fix extension string in ksmbd_extract_shortname()
-Date: Tue, 12 Aug 2025 15:17:11 -0400
-Message-Id: <20250812191711.2033414-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081251-slang-colony-6d23@gregkh>
-References: <2025081251-slang-colony-6d23@gregkh>
+	s=arc-20240116; t=1755027223; c=relaxed/simple;
+	bh=jeMDSVuNsyQScORGiJeAoQZs2Hw7qdnpQqe/G2hblTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lwo1OuCLNuDdRN/fymCW2VFsuYbbxQ8Tr81nEMYSYOXVb6X7BoxcSq+AQAWsma3wTopFn7hmLt/dqurjbdKpBp+qNhmRXrbMPoh+dIhFQbChsjp0sv7Muumq/R5hIXXsTDAkOBk2QFzASJOQ6lM7OUsMe/K2qyezE+E4sVRP/zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvY6BLDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3F8C4CEF0;
+	Tue, 12 Aug 2025 19:33:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755027222;
+	bh=jeMDSVuNsyQScORGiJeAoQZs2Hw7qdnpQqe/G2hblTM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gvY6BLDZ8tUzrhQJjB8BzMta0F2qYLXS+xrE9BmvDAlSpVsHjfHy0wH4kz8+xuGin
+	 E2rivwU0HIrr4wiheJzi6+Fxdv6wYIWynk+F6fFZPEpX7WzMft3Ocn6AiN3goirs1O
+	 uwjiSJHpbZ1z74QkKLnmHGe4o4TILZ1dDbADbJFc=
+Date: Tue, 12 Aug 2025 21:31:07 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ilya K <me@0upti.me>
+Cc: Armin Wolf <W_Armin@gmx.de>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ACPI: EC: Relax sanity check of the ECDT ID string
+Message-ID: <2025081250-subsoil-tropics-91a7@gregkh>
+References: <20250729062038.303734-1-W_Armin@gmx.de>
+ <e911ca96-fe8f-4cc5-bf68-f20ec7da46be@0upti.me>
+ <CAJZ5v0g0vjP_ST2xnDnFAmDXKR9oPn5t0sfQqamDCNwUjJt-xg@mail.gmail.com>
+ <d8c3432f-dfb7-4263-a556-2d93f22e618e@0upti.me>
+ <2025081246-raft-tattle-642c@gregkh>
+ <4e610854-d84c-4a59-9f83-422eafb40d6e@gmx.de>
+ <2025081227-humpback-garden-7a4b@gregkh>
+ <d51317d4-92da-4617-970d-6a63236aec30@0upti.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d51317d4-92da-4617-970d-6a63236aec30@0upti.me>
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+On Tue, Aug 12, 2025 at 08:56:55PM +0300, Ilya K wrote:
+> On 2025-08-12 20:10, Greg KH wrote:
+> > 
+> > Please read the above link for the full details on how to do this (hint,
+> > Fixes: will not do it.)
+> > 
+> 
+> I might be missing something, but doesn't that just tell you to CC stable@?
 
-[ Upstream commit 8e7d178d06e8937454b6d2f2811fa6a15656a214 ]
-
-In ksmbd_extract_shortname(), strscpy() is incorrectly called with the
-length of the source string (excluding the NUL terminator) rather than
-the size of the destination buffer. This results in "__" being copied
-to 'extension' rather than "___" (two underscores instead of three).
-
-Use the destination buffer size instead to ensure that the string "___"
-(three underscores) is copied correctly.
-
-Cc: stable@vger.kernel.org
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ksmbd/smb_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/ksmbd/smb_common.c b/fs/ksmbd/smb_common.c
-index e90a1e8c1951..0438a634f4c2 100644
---- a/fs/ksmbd/smb_common.c
-+++ b/fs/ksmbd/smb_common.c
-@@ -508,7 +508,7 @@ int ksmbd_extract_shortname(struct ksmbd_conn *conn, const char *longname,
- 
- 	p = strrchr(longname, '.');
- 	if (p == longname) { /*name starts with a dot*/
--		strscpy(extension, "___", strlen("___"));
-+		strscpy(extension, "___", sizeof(extension));
- 	} else {
- 		if (p) {
- 			p++;
--- 
-2.39.5
-
+It must be in the patch itself, in the signed-off-by area.
 
