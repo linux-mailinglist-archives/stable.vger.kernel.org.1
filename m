@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE87B234E6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062D6B23016
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42AD1B62BE3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BFC1560960
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8991E2FF15F;
-	Tue, 12 Aug 2025 18:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD4A2F83CB;
+	Tue, 12 Aug 2025 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jx3AE7IP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1awF7f30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487B52FF14E;
-	Tue, 12 Aug 2025 18:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C27626B2C8;
+	Tue, 12 Aug 2025 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024040; cv=none; b=EIZ0AdfrwcqaZ3nXtG9gKPa3VMSc/WJRKW6UssKeJafvMGrJpoHxjQUpIge5Q6VbUUgB3qfz/pBQ9M2b2bdSFhAaXskKsNtGQwFvhD4G1uNrayq/hLEO8TvA+zL49pM7NTiXemn9QOfUlxpIUya+BhHmZcMKpxsZKzOUD1ujTJo=
+	t=1755020846; cv=none; b=CMGMTXRknjACd606BAAK7PiGjOPs2YorX4Q+HGIlRgOy7VpLlj6B/sRO7z0Rtp+vVD7grl9A2KSRj8C8itOA6e6Kyyq/UbsVDch6EggA2MsnGc3OEDjWapqYIaouPt/A88+hflvhrPHZa4iWYx+dsdgBei2y9sAT027swx8SoXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024040; c=relaxed/simple;
-	bh=QSpr2f7nqT782foikYQgSSnlTo5gKxttAMBkTQ0Gyfg=;
+	s=arc-20240116; t=1755020846; c=relaxed/simple;
+	bh=Hq6O4pTSaiLQuLQAim/UQ+SgTN9jub2ENZEvBNKZyd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skof885YudHfU5bDlgCzHMfwKNxZdeDQCdEEWVIC5aO49gUDnsbVpv7GMMpAb2IsuM+vs9dZEMJMzpuYU40Zsemf00FK14cjOiOVtOJnGgZ9fmKSBcF2IxvtoZve1ylwElFGTpukx9vw6+nvFex6llX+wrtC+W9/Y/31WptfZh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jx3AE7IP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95ED0C4CEF1;
-	Tue, 12 Aug 2025 18:40:39 +0000 (UTC)
+	 MIME-Version; b=Uew8XD7DaBaj/66Jjnyll1ICXZ8qSfe3nR9xz001K3QryRcGlR4O1/aVa5SqN3Y8zh3MAdCy3KMGwqt92KyEpCpPuCRgbz8wQNa5DxAFgIEwyoIszjF7BoTp4noXrQlL2qnw3ez7KFEbJ3G15To7ymLs1xauRxWS8H60IQzCu/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1awF7f30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38A4C4CEF1;
+	Tue, 12 Aug 2025 17:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024040;
-	bh=QSpr2f7nqT782foikYQgSSnlTo5gKxttAMBkTQ0Gyfg=;
+	s=korg; t=1755020846;
+	bh=Hq6O4pTSaiLQuLQAim/UQ+SgTN9jub2ENZEvBNKZyd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jx3AE7IP8j14GNlGWd5KagMhAaCYDlxB4CO6bMlvjTA5zoOzStWnxbY6BrmU/FFic
-	 YCwlhpXga6rBKihghj7VA4FIK7MTxC/ml98wyiTVGYii6tQHyptsLZ7jH/jX2MYoCS
-	 bEA/be+Zw+9A7xeuTNNSPkhGyu3VI+D0T0YWS+jQ=
+	b=1awF7f30tMHDK31TFpciMQbSRlvaC8ATS3GXl9ktfslGEuWAdMbz1noBIoO7/CD9h
+	 XGLgHKGw2b41Q14pW4vXCyslWHnrwBG7/SanalsntvZLYRvx3Yb34IW02Kr9XdIib8
+	 OdINrhejgDRVGFlqP1iIMjjAZes5sU5uzcmbP/RM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 256/627] Bluetooth: hci_sync: fix double free in hci_discovery_filter_clear()
+Subject: [PATCH 6.1 163/253] scsi: mvsas: Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:29:11 +0200
-Message-ID: <20250812173429.056571426@linuxfoundation.org>
+Message-ID: <20250812172955.652802095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 2935e556850e9c94d7a00adf14d3cd7fe406ac03 ]
+[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
 
-Function 'hci_discovery_filter_clear()' frees 'uuids' array and then
-sets it to NULL. There is a tiny chance of the following race:
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-'hci_cmd_sync_work()'
-
- 'update_passive_scan_sync()'
-
-   'hci_update_passive_scan_sync()'
-
-     'hci_discovery_filter_clear()'
-       kfree(uuids);
-
-       <-------------------------preempted-------------------------------->
-                                           'start_service_discovery()'
-
-                                             'hci_discovery_filter_clear()'
-                                               kfree(uuids); // DOUBLE FREE
-
-       <-------------------------preempted-------------------------------->
-
-      uuids = NULL;
-
-To fix it let's add locking around 'kfree()' call and NULL pointer
-assignment. Otherwise the following backtrace fires:
-
-[ ] ------------[ cut here ]------------
-[ ] kernel BUG at mm/slub.c:547!
-[ ] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-[ ] CPU: 3 UID: 0 PID: 246 Comm: bluetoothd Tainted: G O 6.12.19-kernel #1
-[ ] Tainted: [O]=OOT_MODULE
-[ ] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ ] pc : __slab_free+0xf8/0x348
-[ ] lr : __slab_free+0x48/0x348
-...
-[ ] Call trace:
-[ ]  __slab_free+0xf8/0x348
-[ ]  kfree+0x164/0x27c
-[ ]  start_service_discovery+0x1d0/0x2c0
-[ ]  hci_sock_sendmsg+0x518/0x924
-[ ]  __sock_sendmsg+0x54/0x60
-[ ]  sock_write_iter+0x98/0xf8
-[ ]  do_iter_readv_writev+0xe4/0x1c8
-[ ]  vfs_writev+0x128/0x2b0
-[ ]  do_writev+0xfc/0x118
-[ ]  __arm64_sys_writev+0x20/0x2c
-[ ]  invoke_syscall+0x68/0xf0
-[ ]  el0_svc_common.constprop.0+0x40/0xe0
-[ ]  do_el0_svc+0x1c/0x28
-[ ]  el0_svc+0x30/0xd0
-[ ]  el0t_64_sync_handler+0x100/0x12c
-[ ]  el0t_64_sync+0x194/0x198
-[ ] Code: 8b0002e6 eb17031f 54fffbe1 d503201f (d4210000)
-[ ] ---[ end trace 0000000000000000 ]---
-
-Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/scsi/mvsas/mv_sas.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index f79f59e67114..c371dadc6fa3 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -29,6 +29,7 @@
- #include <linux/idr.h>
- #include <linux/leds.h>
- #include <linux/rculist.h>
-+#include <linux/spinlock.h>
- #include <linux/srcu.h>
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index a6867dae0e7c..1275f3be530f 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -831,7 +831,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
+ 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (n_elem)
+-			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
++			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
+ 				     task->data_dir);
+ prep_out:
+ 	return rc;
+@@ -877,7 +877,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (slot->n_elem)
+ 			dma_unmap_sg(mvi->dev, task->scatter,
+-				     slot->n_elem, task->data_dir);
++				     task->num_scatter, task->data_dir);
  
- #include <net/bluetooth/hci.h>
-@@ -94,6 +95,7 @@ struct discovery_state {
- 	u16			uuid_count;
- 	u8			(*uuids)[16];
- 	unsigned long		name_resolve_timeout;
-+	spinlock_t		lock;
- };
- 
- #define SUSPEND_NOTIFIER_TIMEOUT	msecs_to_jiffies(2000) /* 2 seconds */
-@@ -889,6 +891,7 @@ static inline void iso_recv(struct hci_conn *hcon, struct sk_buff *skb,
- 
- static inline void discovery_init(struct hci_dev *hdev)
- {
-+	spin_lock_init(&hdev->discovery.lock);
- 	hdev->discovery.state = DISCOVERY_STOPPED;
- 	INIT_LIST_HEAD(&hdev->discovery.all);
- 	INIT_LIST_HEAD(&hdev->discovery.unknown);
-@@ -903,8 +906,11 @@ static inline void hci_discovery_filter_clear(struct hci_dev *hdev)
- 	hdev->discovery.report_invalid_rssi = true;
- 	hdev->discovery.rssi = HCI_RSSI_INVALID;
- 	hdev->discovery.uuid_count = 0;
-+
-+	spin_lock(&hdev->discovery.lock);
- 	kfree(hdev->discovery.uuids);
- 	hdev->discovery.uuids = NULL;
-+	spin_unlock(&hdev->discovery.lock);
- }
- 
- bool hci_discovery_active(struct hci_dev *hdev);
+ 	switch (task->task_proto) {
+ 	case SAS_PROTOCOL_SMP:
 -- 
 2.39.5
 
