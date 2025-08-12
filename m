@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC66B230E2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88882B23486
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730021893658
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FBAC1A24475
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DC92FD1D7;
-	Tue, 12 Aug 2025 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AFC2FD1AD;
+	Tue, 12 Aug 2025 18:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2NV6aM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rj6cPUnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143E42F8BE7;
-	Tue, 12 Aug 2025 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AFE1E500C;
+	Tue, 12 Aug 2025 18:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021416; cv=none; b=Jg+rMhRxibZX+Pe8AaN2nytuDuuegaWxMJuB/b/HRIUINrx2JmaIx3mzq3+5RWzIKux/4WFp0XKV8EGDFZDXzdr52XGb5YPNxjlcgoabUV9pft20o7TFYru7BYy+gd4TAHoC6/tUSzXMt8246GYq+L2Ztjr3LFcOx8zbar1uWfc=
+	t=1755023791; cv=none; b=EuzAU8JZOACFKDjeh0cR94obkAzRZb4RF8pFUm/6CsJZkpktE0xU9babsUs6qGajZIS6a/diBkl0QCXYrEbs8SqTH4WCzAXzE2xLmySDi2cn7za/faFRSeIc14WCfiZ9TEjMzxUuahfwjI0KYioTJ8jvzVg/zb1WMKOKPlOkFq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021416; c=relaxed/simple;
-	bh=+1DQFgswVuHo5NbejPa62AzXZmOyKCOdXNUyR7C72lU=;
+	s=arc-20240116; t=1755023791; c=relaxed/simple;
+	bh=ATQIGC593R4bZOCXte/R/RO6yDw0JXrnLJ5rJOMOujc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUMkALBbppllOdiTVYlNk9eaQrtWvyNpi7RjbKRvc7VRwgGZ0w6M4VwCtqyn1jZlpmgLEWD3yEKjAG8AsuVAz7HfnkNd/IDK8nisKdjX1dWNRBVB+vkFPMrDH6DWcdlor+idZiN1oDUSM/5nHhYiyTmhqFAGSe9IA/DQuKNfR9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2NV6aM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7399DC4CEF0;
-	Tue, 12 Aug 2025 17:56:55 +0000 (UTC)
+	 MIME-Version; b=pyAc/fZL5wti9VuoCPVWawwzcrkGzTq1sHuod+Y7oCs2VHXpu3jjqiLcOa0aySUs9B8LnIiOh6g1Imfz2UhTAIZRJgbLMBIMCmHfdqT52ERIx5hv1BmgAJUO2T20HevSWkJhtNgzFJbGyESnC1+CoZWYP9GteLSAdsGMhhD9WxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rj6cPUnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E311C4CEF0;
+	Tue, 12 Aug 2025 18:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021415;
-	bh=+1DQFgswVuHo5NbejPa62AzXZmOyKCOdXNUyR7C72lU=;
+	s=korg; t=1755023791;
+	bh=ATQIGC593R4bZOCXte/R/RO6yDw0JXrnLJ5rJOMOujc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x2NV6aM/skB88L73exKlxOQxkHKfw4Sb17zkjmewYl0VzOf9b1FKTeXRkF0hZIU2N
-	 fHNXpmkiTJjYqtOmJS6pu5haFBQg4Kz6qUrIT8CdnmyE0WILfM9zsbmvux15hP4cJH
-	 w1EtTnmD3VGZ1T9Eh0lEbJRR1BpK1YxPiJKXRPr8=
+	b=rj6cPUnuqnFX4Qd4GRxMZsiO9pLLsUdzkEcjeqeQ63eplLnN+0zBFZk2clqvM8kWP
+	 r3Xnff79K3z1VYR2oaRnoiLqfM6s7aVQZMnxI5Oi8ARPbEMw+R5HdNWkAnbwznctSS
+	 xMgUhiYD6ytLfq1LYD95WkVuMpkwBGaf6WYNK6sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/262] wifi: mac80211: Write cnt before copying in ieee80211_copy_rnr_beacon()
+Subject: [PATCH 6.16 183/627] refscale: Check that nreaders and loops multiplication doesnt overflow
 Date: Tue, 12 Aug 2025 19:27:58 +0200
-Message-ID: <20250812172956.895068724@linuxfoundation.org>
+Message-ID: <20250812173426.244007460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit a37192c432adaec9e8ef29e4ddb319ea2f443aa6 ]
+[ Upstream commit 005b6187705bc9723518ce19c5cb911fc1f7ef07 ]
 
-While I caught the need for setting cnt early in nl80211_parse_rnr_elems()
-in the original annotation of struct cfg80211_rnr_elems with __counted_by,
-I missed a similar pattern in ieee80211_copy_rnr_beacon(). Fix this by
-moving the cnt assignment to before the loop.
+The nreaders and loops variables are exposed as module parameters, which,
+in certain combinations, can lead to multiplication overflow.
 
-Fixes: 7b6d7087031b ("wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/20250721182521.work.540-kees@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Besides, loops parameter is defined as long, while through the code is
+used as int, which can cause truncation on 64-bit kernels and possible
+zeroes where they shouldn't appear.
+
+Since code uses result of multiplication as int anyway, it only makes sense
+to replace loops with int. Multiplication overflow check is also added
+due to possible multiplication between two very big numbers.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 653ed64b01dc ("refperf: Add a test to measure performance of read-side synchronization")
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/refscale.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index a3c5d4d995db..3ff7f38394a6 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1099,13 +1099,13 @@ ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
+diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
+index f11a7c2af778..ab7fcdc94cc0 100644
+--- a/kernel/rcu/refscale.c
++++ b/kernel/rcu/refscale.c
+@@ -85,7 +85,7 @@ torture_param(int, holdoff, IS_BUILTIN(CONFIG_RCU_REF_SCALE_TEST) ? 10 : 0,
+ // Number of typesafe_lookup structures, that is, the degree of concurrency.
+ torture_param(long, lookup_instances, 0, "Number of typesafe_lookup structures.");
+ // Number of loops per experiment, all readers execute operations concurrently.
+-torture_param(long, loops, 10000, "Number of loops per experiment.");
++torture_param(int, loops, 10000, "Number of loops per experiment.");
+ // Number of readers, with -1 defaulting to about 75% of the CPUs.
+ torture_param(int, nreaders, -1, "Number of readers, -1 for 75% of CPUs.");
+ // Number of runs.
+@@ -1140,7 +1140,7 @@ static void
+ ref_scale_print_module_parms(const struct ref_scale_ops *cur_ops, const char *tag)
  {
- 	int i, offset = 0;
- 
-+	dst->cnt = src->cnt;
- 	for (i = 0; i < src->cnt; i++) {
- 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
- 		dst->elem[i].len = src->elem[i].len;
- 		dst->elem[i].data = pos + offset;
- 		offset += dst->elem[i].len;
- 	}
--	dst->cnt = src->cnt;
- 
- 	return offset;
+ 	pr_alert("%s" SCALE_FLAG
+-		 "--- %s:  verbose=%d verbose_batched=%d shutdown=%d holdoff=%d lookup_instances=%ld loops=%ld nreaders=%d nruns=%d readdelay=%d\n", scale_type, tag,
++		 "--- %s:  verbose=%d verbose_batched=%d shutdown=%d holdoff=%d lookup_instances=%ld loops=%d nreaders=%d nruns=%d readdelay=%d\n", scale_type, tag,
+ 		 verbose, verbose_batched, shutdown, holdoff, lookup_instances, loops, nreaders, nruns, readdelay);
  }
+ 
+@@ -1238,12 +1238,16 @@ ref_scale_init(void)
+ 	// Reader tasks (default to ~75% of online CPUs).
+ 	if (nreaders < 0)
+ 		nreaders = (num_online_cpus() >> 1) + (num_online_cpus() >> 2);
+-	if (WARN_ONCE(loops <= 0, "%s: loops = %ld, adjusted to 1\n", __func__, loops))
++	if (WARN_ONCE(loops <= 0, "%s: loops = %d, adjusted to 1\n", __func__, loops))
+ 		loops = 1;
+ 	if (WARN_ONCE(nreaders <= 0, "%s: nreaders = %d, adjusted to 1\n", __func__, nreaders))
+ 		nreaders = 1;
+ 	if (WARN_ONCE(nruns <= 0, "%s: nruns = %d, adjusted to 1\n", __func__, nruns))
+ 		nruns = 1;
++	if (WARN_ONCE(loops > INT_MAX / nreaders,
++		      "%s: nreaders * loops will overflow, adjusted loops to %d",
++		      __func__, INT_MAX / nreaders))
++		loops = INT_MAX / nreaders;
+ 	reader_tasks = kcalloc(nreaders, sizeof(reader_tasks[0]),
+ 			       GFP_KERNEL);
+ 	if (!reader_tasks) {
 -- 
 2.39.5
 
