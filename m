@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-168463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDCDB2351F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F8DB232FF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 302DA1883CCE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDACD7AB6C5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9AB2FDC55;
-	Tue, 12 Aug 2025 18:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F331EF38C;
+	Tue, 12 Aug 2025 18:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQg14SVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zz2SJ0Fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB9E2FD1A4;
-	Tue, 12 Aug 2025 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA281FF7C5;
+	Tue, 12 Aug 2025 18:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024256; cv=none; b=IYCNwEmHJgv9Zh7pOWnCgFYd/fXGtTGBI3fvsvNYXUFLSmHRXZo6xbPdeFLvTsGRiqqXlx6nSZusLW5PDOTtiTNR+YBeZDwLo5ckDJqecGMowXD8mLCO37STrlJYyiW3jx4TyhshV76wxa6uHAqNjmRgaEc2QRANacK6Jzz4YuE=
+	t=1755023017; cv=none; b=Gs4EjC5dlCxzD7WYxmELe3oycUvMqaIyYta8Hqp5/gUocjlOtrVdkLvc5R/ZybcsdgXhlr3qokhgIFUZuGmldj4pUaOlxXtKDPLBDeBMXm75fM/yHcwTDwnF1xvD6LbQxqK+1KO16pLKxYcX/56U6Jl+cqUOSo3AHEY5pvaZzkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024256; c=relaxed/simple;
-	bh=jEPDOZtwiULrZd0gymXpe7DWfYjbDu1sCquWF83or/s=;
+	s=arc-20240116; t=1755023017; c=relaxed/simple;
+	bh=CuAAvE2BHD47gsZZ28WomOAibslkNyeyl4bbYUB7iks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SS8GtFv8FMgXBLBaZwSaci+bOhsG05sJLJg555pGhkcS48QgtGW6qrUAbJWJT+udQqWgz0kPsaQfKoQr9yHxRv+9KrDbXdl6XL0asvKLzz9yD7RoSZyo+wfbY97MEEQ7cMUXak35jp0LvnwsFwbWFWjqjVwFUCtt5+ehhC0NSVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQg14SVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B5CC4CEF0;
-	Tue, 12 Aug 2025 18:44:15 +0000 (UTC)
+	 MIME-Version; b=bLT5M5Q9zt5TnlVwXu5wWsdk6eY71iKKmx3yqXN2oWPhjSnY7bHvSLQwKA0MqDnUlmsjqSmft9hlSf3qz+FsZWwTK1jnCIuYChYRrBjOuONjsAqcQTan4tTOov44K70KAevntYyFb087zMziHOQ5g4G4VOw/iF43Ls/ADm4+DUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zz2SJ0Fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08951C4CEF6;
+	Tue, 12 Aug 2025 18:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024255;
-	bh=jEPDOZtwiULrZd0gymXpe7DWfYjbDu1sCquWF83or/s=;
+	s=korg; t=1755023017;
+	bh=CuAAvE2BHD47gsZZ28WomOAibslkNyeyl4bbYUB7iks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQg14SVAPIGxaYaVkFqNjumxTWRZ/M2YjjEKCw8a3bnCZk5A2sYnNRaGlbqXYaO3U
-	 c7/PLOgjqBfd0w07qK/fnGZnPD0WHZoDJQ1TfWP8Dngtq2AONV0cNNQa/lDeez/6aS
-	 iy5IZT7FEisk6HHRX3V3Ecy+BOtrOHLi+414eXtM=
+	b=Zz2SJ0FeBo9s+iDBmgJ6ZL9wzlPXYfwrrpAyJ7WQPrv6VwdZPEFstUeU8tzbltVYL
+	 etyodWpmkHWtY5L/w5dBW93N/c8nbIQcwkcE6ATMyqJmEpLaqW/yElvUNnfj14lfvI
+	 C/XtydDfQY0a8gvDz3PWJUeZFEdYgDTNAtgMNBvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 320/627] power: supply: qcom_pmi8998_charger: fix wakeirq
+Subject: [PATCH 6.12 318/369] smb: client: let recv_done() cleanup before notifying the callers.
 Date: Tue, 12 Aug 2025 19:30:15 +0200
-Message-ID: <20250812173431.474031386@linuxfoundation.org>
+Message-ID: <20250812173028.686241478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +67,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 6c5393771c50fac30f08dfb6d2f65f4f2cfeb8c7 ]
+[ Upstream commit bdd7afc6dca5e0ebbb75583484aa6ea9e03fbb13 ]
 
-Unloading and reloading the driver (e.g. when built as a module)
-currently leads to errors trying to enable wake IRQ since it's already
-enabled.
+We should call put_receive_buffer() before waking up the callers.
 
-Use devm to manage this for us so it correctly gets disabled when
-removing the driver.
+For the internal error case of response->type being unexpected,
+we now also call smbd_disconnect_rdma_connection() instead
+of not waking up the callers at all.
 
-Additionally, call device_init_wakeup() so that charger attach/remove
-will trigger a wakeup by default.
+Note that the SMBD_TRANSFER_DATA case still has problems,
+which will be addressed in the next commit in order to make
+it easier to review this one.
 
-Fixes: 8648aeb5d7b7 ("power: supply: add Qualcomm PMI8998 SMB2 Charger driver")
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250619-smb2-smb5-support-v1-3-ac5dec51b6e1@linaro.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/qcom_pmi8998_charger.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/client/smbdirect.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/power/supply/qcom_pmi8998_charger.c b/drivers/power/supply/qcom_pmi8998_charger.c
-index c2f8f2e24398..cd3cb473c70d 100644
---- a/drivers/power/supply/qcom_pmi8998_charger.c
-+++ b/drivers/power/supply/qcom_pmi8998_charger.c
-@@ -1016,7 +1016,9 @@ static int smb2_probe(struct platform_device *pdev)
- 	if (rc < 0)
- 		return rc;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 5690e8b3d101..d26b8cef82d6 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -454,7 +454,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
+ 		log_rdma_recv(INFO, "wc->status=%d opcode=%d\n",
+ 			wc->status, wc->opcode);
+-		smbd_disconnect_rdma_connection(info);
+ 		goto error;
+ 	}
  
--	rc = dev_pm_set_wake_irq(chip->dev, chip->cable_irq);
-+	devm_device_init_wakeup(chip->dev);
-+
-+	rc = devm_pm_set_wake_irq(chip->dev, chip->cable_irq);
- 	if (rc < 0)
- 		return dev_err_probe(chip->dev, rc, "Couldn't set wake irq\n");
+@@ -471,8 +470,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		info->full_packet_received = true;
+ 		info->negotiate_done =
+ 			process_negotiation_response(response, wc->byte_len);
++		put_receive_buffer(info, response);
+ 		complete(&info->negotiate_completion);
+-		break;
++		return;
  
+ 	/* SMBD data transfer packet */
+ 	case SMBD_TRANSFER_DATA:
+@@ -529,14 +529,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		}
+ 
+ 		return;
+-
+-	default:
+-		log_rdma_recv(ERR,
+-			"unexpected response type=%d\n", response->type);
+ 	}
+ 
++	/*
++	 * This is an internal error!
++	 */
++	log_rdma_recv(ERR, "unexpected response type=%d\n", response->type);
++	WARN_ON_ONCE(response->type != SMBD_TRANSFER_DATA);
+ error:
+ 	put_receive_buffer(info, response);
++	smbd_disconnect_rdma_connection(info);
+ }
+ 
+ static struct rdma_cm_id *smbd_create_id(
 -- 
 2.39.5
 
