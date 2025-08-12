@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF3BB23107
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED1EB22FCA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDD971AA30EB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:59:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CC7F188A2C1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648152FE562;
-	Tue, 12 Aug 2025 17:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E9D2FD1D6;
+	Tue, 12 Aug 2025 17:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITxxbiel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAK+6mgV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131372FE566;
-	Tue, 12 Aug 2025 17:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3F86331;
+	Tue, 12 Aug 2025 17:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021523; cv=none; b=uck3DL/7CPXAY5HYeb0Fseb0fKN30igpWe7kutJB+g1Ao4lMlwpyRQfWrznDyRilR1fV4N/i78/DMgneP//kK+ytbsCl6eQBJ/4qte7jCZp+mm9I8F3aVyVhTuO1sCrrD1lk6e2mv5h5w0mlEqAaQevYPmJsrEuHxUD0j8gLfdM=
+	t=1755020576; cv=none; b=PlKJETt65NAB5UtZ2O6y2jjN6bpK6Kr8EOIzHyrX4CAVCdjXSCQnY5N0pAHzC+BBywIjiGVTp4J/npnHnz17jz+3FMhCeDdivjPiPgN9574CNVHo97jS8cy56yWaydz8J7iE4ybDPARvSydiD3Lk7G0Pa5rrWjYvNjpZsn0tAnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021523; c=relaxed/simple;
-	bh=CUn8dc7wpZD3pvXI/b97ngh+f1uuRlr0y8uUkB91eY4=;
+	s=arc-20240116; t=1755020576; c=relaxed/simple;
+	bh=sqE9alErCFiyPduyPhwGLWbAHybBc941uQZ+DuqzKsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eum+mOQEbFZdgST1vZkPiYZ9Z6ndWTNMwZJi0I4AfycOsMzXYOnkYIjk5sSBtQiSKRLkR1cC/D4VbBpy0G98phr4UAXEZMXVSODgFYCGRMki4KTm0V7DAuJIIpyfJzB2K7TfF2MXNYtANRbXNY0zYBHHt23wfljjRI9+krb8jBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITxxbiel; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CC1C4CEFA;
-	Tue, 12 Aug 2025 17:58:42 +0000 (UTC)
+	 MIME-Version; b=BCo14tG6ptVB+BTVyRBC4JYvStf+Mplr4lX7m78qPhet5vsiqXNjWHNJd8a151ch9czZ9xHFvnbctp4s91H8oh/Bh7C19R3B6i2qAbb0nhHz66bwvKAjMFqRWwOeoI5sL2uuE0sNHCLIqCxL/aBWK52TWrf1UaHjH0wfFdxSXQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAK+6mgV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59C3C4CEF0;
+	Tue, 12 Aug 2025 17:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021522;
-	bh=CUn8dc7wpZD3pvXI/b97ngh+f1uuRlr0y8uUkB91eY4=;
+	s=korg; t=1755020576;
+	bh=sqE9alErCFiyPduyPhwGLWbAHybBc941uQZ+DuqzKsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITxxbieludTeChOHHufOHjCKGM7O+h+NqDU0m7TmtgwprfpQnd24oBdJpJ9Orv7AR
-	 wOuVZl1LxJdai8/B4P25pEELnUa1yjQ01550ZpdofqgGLCH9mrGVkT5scPIPCXEgA2
-	 v2gsTYACrs9q9oEtfDfVMh4dyEurDTFogXXJ/Llc=
+	b=nAK+6mgVwxl+gNWJ7R5MFlsvvLj0pfGojXhOwo4UzmvrWpO1jDX2qJPaUtgXY9NRG
+	 fXJNsYl3/lzCS0gyrTHeXRQExvwui/u/r+h7BsXJDr4EtL7gUQqE9arsnDTvcZOHrm
+	 C87Y55D8ux+EFaKtjys6nA6J26CR400n+UoBGlx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/262] fanotify: sanitize handle_type values when reporting fid
+Subject: [PATCH 6.1 120/253] mwl8k: Add missing check after DMA map
 Date: Tue, 12 Aug 2025 19:28:28 +0200
-Message-ID: <20250812172958.220082391@linuxfoundation.org>
+Message-ID: <20250812172953.811787531@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 8631e01c2c5d1fe6705bcc0d733a0b7a17d3daac ]
+[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
 
-Unlike file_handle, type and len of struct fanotify_fh are u8.
-Traditionally, filesystem return handle_type < 0xff, but there
-is no enforecement for that in vfs.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Add a sanity check in fanotify to avoid truncating handle_type
-if its value is > 0xff.
-
-Fixes: 7cdafe6cc4a6 ("exportfs: check for error return value from exportfs_encode_*()")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250627104835.184495-1-amir73il@gmail.com
+Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwl8k.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index 9dac7f6e72d2..723ff9cad9ed 100644
---- a/fs/notify/fanotify/fanotify.c
-+++ b/fs/notify/fanotify/fanotify.c
-@@ -445,7 +445,13 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
- 	dwords = fh_len >> 2;
- 	type = exportfs_encode_fid(inode, buf, &dwords);
- 	err = -EINVAL;
--	if (type <= 0 || type == FILEID_INVALID || fh_len != dwords << 2)
-+	/*
-+	 * Unlike file_handle, type and len of struct fanotify_fh are u8.
-+	 * Traditionally, filesystem return handle_type < 0xff, but there
-+	 * is no enforecement for that in vfs.
-+	 */
-+	BUILD_BUG_ON(MAX_HANDLE_SZ > 0xff || FILEID_INVALID > 0xff);
-+	if (type <= 0 || type >= FILEID_INVALID || fh_len != dwords << 2)
- 		goto out_err;
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index 61697dad4ea6..cc3a9543d255 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -1222,6 +1222,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
  
- 	fh->type = type;
+ 		addr = dma_map_single(&priv->pdev->dev, skb->data,
+ 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&priv->pdev->dev, addr)) {
++			kfree_skb(skb);
++			break;
++		}
+ 
+ 		rxq->rxd_count++;
+ 		rx = rxq->tail++;
 -- 
 2.39.5
 
