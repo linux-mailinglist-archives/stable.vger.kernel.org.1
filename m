@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99122B234C1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A69F2B232DE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAF3018859DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC282A2CC3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3552FD1AD;
-	Tue, 12 Aug 2025 18:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180872D8363;
+	Tue, 12 Aug 2025 18:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7QuvTR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRWOEmig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5AB6BB5B;
-	Tue, 12 Aug 2025 18:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92A32E3B06;
+	Tue, 12 Aug 2025 18:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023943; cv=none; b=aDTRqH4C6rrFpdR2Li7IGyYUC5l+LXj++4rC/JyXgcrdn4KPTyZ0g/FU6nacxtpugBxCrcMCL2YwMMf52NX5UCen+wmwXix7yr5ZXn5lBZ5leTqZcy+TBXNYUohHasatEZQdTaEvdpd+PM0IeUa1Ty5Jfc1NovoulV6S7OqUqh4=
+	t=1755022671; cv=none; b=dsyiOXjzUhPxdMouzalpVu2SLnUcdE1Iag/lwo+VaQWE2Dchx7yNUWc/xhsFLqYqWtOkQyG2uZk++gohCJDI8OAdREHVYe0v5b3pZ+M3BsKrrP3KXJV6VTYDKceLYfwpJuBf3czogXunFnJd23Qg2K4ZoSSOF1P10+eSBAqAQDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023943; c=relaxed/simple;
-	bh=VAEJ7hEkPFJkUJo4g40qvEdpxaXrAVtWYGEM8KwKx08=;
+	s=arc-20240116; t=1755022671; c=relaxed/simple;
+	bh=yljkFY5qh9NcIryY9Hrh+cWo58atkLae5TZAZ2RdMwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JutyG8+sYF9MosKSuR/clI3Yoyi78d0zbi2YM0WK/6jEFZmzsBVwNC2hBpr5oohMnjdcv6zZPC0G2YbjbCajZWAe3P1Fd6q9c86lJPH+3Sk5ZvAniiPA/UjKEG1MLMZosLhKL855AKF1orHqpmcrRZNhCfTQDEvQ7wHs2YqbIMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7QuvTR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C8EC4CEF0;
-	Tue, 12 Aug 2025 18:39:02 +0000 (UTC)
+	 MIME-Version; b=gYWj3BhuKECZhToF/LmyuPyfdY+QW3wVRTOclkn21CajLWNBawOe4Owt8fwH9/W76+TpUlp2jkd6vMGVZ8XB0q9rXocYhK6HOYmnRKF/3dsS8zoRjgoDy1VnfLXPTWSFNeBE6u2n5xUW/1K1KcIE+2X/oh1veKD8hO+mR/QDr9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRWOEmig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B11C4CEF0;
+	Tue, 12 Aug 2025 18:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023943;
-	bh=VAEJ7hEkPFJkUJo4g40qvEdpxaXrAVtWYGEM8KwKx08=;
+	s=korg; t=1755022671;
+	bh=yljkFY5qh9NcIryY9Hrh+cWo58atkLae5TZAZ2RdMwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7QuvTR/wVqZYuJzHQvCxQqAJCcN7ULDGe2jaejCXMnfYV7NDxlljO1u2orNvlCEQ
-	 dzC5drDXRMdJyqMAKiT/uvLDFs336hgJQQwUUmOTtPZpBWMh+klfwn1NJ4aLRkEjfQ
-	 91IMN8TEGDdVPuOKCsKrrMzV7Zn39B5KBaf2Z2sw=
+	b=wRWOEmignJPSpAySywuwqqpKJcfWDFfgCD468IswSMM+Ot9Y3IrK0ylgyW39nJben
+	 5jlatDiLB64VQoHZW8jeSTZZgaIbtm9lqPpF8vc1sxF/eAL6HWfu1Kq6rM/AH5YauM
+	 UiqC5uo+XVrrY/fht0uAz4lCI7aDMTJHe3tnL70k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 227/627] wifi: ath11k: fix sleeping-in-atomic in ath11k_mac_op_set_bitrate_mask()
+Subject: [PATCH 6.12 225/369] mtd: rawnand: atmel: Fix dma_mapping_error() address
 Date: Tue, 12 Aug 2025 19:28:42 +0200
-Message-ID: <20250812173427.923329974@linuxfoundation.org>
+Message-ID: <20250812173023.221104674@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 65c12b104cb942d588a1a093acc4537fb3d3b129 ]
+[ Upstream commit e1e6b933c56b1e9fda93caa0b8bae39f3f421e5c ]
 
-ath11k_mac_disable_peer_fixed_rate() is passed as the iterator to
-ieee80211_iterate_stations_atomic(). Note in this case the iterator is
-required to be atomic, however ath11k_mac_disable_peer_fixed_rate() does
-not follow it as it might sleep. Consequently below warning is seen:
+It seems like what was intended is to test if the dma_map of the
+previous line failed but the wrong dma address was passed.
 
-BUG: sleeping function called from invalid context at wmi.c:304
-Call Trace:
- <TASK>
- dump_stack_lvl
- __might_resched.cold
- ath11k_wmi_cmd_send
- ath11k_wmi_set_peer_param
- ath11k_mac_disable_peer_fixed_rate
- ieee80211_iterate_stations_atomic
- ath11k_mac_op_set_bitrate_mask.cold
-
-Change to ieee80211_iterate_stations_mtx() to fix this issue.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250603-ath11k-use-non-atomic-iterator-v1-1-d75762068d56@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250702064515.18145-2-fourier.thomas%40gmail.com
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 13301ca317a5..977f370fd6de 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8740,9 +8740,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 				    arvif->vdev_id, ret);
- 			return ret;
- 		}
--		ieee80211_iterate_stations_atomic(ar->hw,
--						  ath11k_mac_disable_peer_fixed_rate,
--						  arvif);
-+		ieee80211_iterate_stations_mtx(ar->hw,
-+					       ath11k_mac_disable_peer_fixed_rate,
-+					       arvif);
- 	} else if (ath11k_mac_bitrate_mask_get_single_nss(ar, arvif, band, mask,
- 							  &single_nss)) {
- 		rate = WMI_FIXED_RATE_NONE;
-@@ -8809,9 +8809,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 		}
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index f9ccfd02e804..6f8eb7fa4c59 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -373,7 +373,7 @@ static int atmel_nand_dma_transfer(struct atmel_nand_controller *nc,
+ 	dma_cookie_t cookie;
  
- 		mutex_lock(&ar->conf_mutex);
--		ieee80211_iterate_stations_atomic(ar->hw,
--						  ath11k_mac_disable_peer_fixed_rate,
--						  arvif);
-+		ieee80211_iterate_stations_mtx(ar->hw,
-+					       ath11k_mac_disable_peer_fixed_rate,
-+					       arvif);
- 
- 		arvif->bitrate_mask = *mask;
- 		ieee80211_iterate_stations_atomic(ar->hw,
+ 	buf_dma = dma_map_single(nc->dev, buf, len, dir);
+-	if (dma_mapping_error(nc->dev, dev_dma)) {
++	if (dma_mapping_error(nc->dev, buf_dma)) {
+ 		dev_err(nc->dev,
+ 			"Failed to prepare a buffer for DMA access\n");
+ 		goto err;
 -- 
 2.39.5
 
