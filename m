@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDC0B23444
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F110CB22F7E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A204416AEE6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6809C5637C5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620582EF652;
-	Tue, 12 Aug 2025 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BC22FDC3F;
+	Tue, 12 Aug 2025 17:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmdMrpIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMbJ1dNk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F60726A0EB;
-	Tue, 12 Aug 2025 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521AA2F7461;
+	Tue, 12 Aug 2025 17:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023656; cv=none; b=phfE15yfv7a6/yYIYkL/ctUKvvjW2RzzRHWi0hYVqeSWAGbAeox+nSQQq2P9J6XspQ5Jw37sn+SKYv5TZ1QbjT91Iqaw9vVnkl7LR9V63UUaGaKU1y3uPztPoT/QVxMH+K8crW+a3SItu8n5yuFpJK4r8S2Hzkekl7kG5wFQpD0=
+	t=1755020344; cv=none; b=DmigKBTnwxD6N+ix7R7N+G2Gxm23YGX4kUyczpn7ea9gWHD6VuCuXftRzVMGWQ4PJuHiEO0vNHEzsT1C3pIpeuowg1HMFuCozLUcrbUtaQZcTnLbgDIQVSYvDcxN9V1JS92E1LuMxBK7SHfB1f3dgcwSZE3UJq3QA4Y+nbt7Lp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023656; c=relaxed/simple;
-	bh=BTKL2k8LiLYJvGfpulHE3UE0c2VgMaIFZhZiqBzce4s=;
+	s=arc-20240116; t=1755020344; c=relaxed/simple;
+	bh=c3WnOb64kOTFrkfhb5bHN0IAvoecj3U3bwllern7nuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lM5A3Xv2glqgEkBPDbrX9On6Z6TXrKrNzv8o5njYz+wCI4oiMIwUNizo3KuUxis6OmSusfAvfk9OoXNj/F05K2Pz8smb9rhphXnhyxBSww+36DEPRwSGI2lq62qDv72ei4+lxLFYL5KIIYW/tHlpza1vIddQuvv9Mn14l2FevgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZmdMrpIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AE9C4CEF0;
-	Tue, 12 Aug 2025 18:34:15 +0000 (UTC)
+	 MIME-Version; b=EeB7Q86tmaLKMUm7ZiiGd+kiDMwv3woXctQ17c5NdxWmX/clJYx0KKVyTU/55Jhzmw6E5Ean7Pj2sWMZZD6lwlV1Nc6JqdaDct71EHDS27S9MSUZV8EhDvkkFGnJJODIxI34zaGZcRCsimg3lfb5J8cvBRG2OhKP+b173Q2fqMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMbJ1dNk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5431C4CEF0;
+	Tue, 12 Aug 2025 17:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023656;
-	bh=BTKL2k8LiLYJvGfpulHE3UE0c2VgMaIFZhZiqBzce4s=;
+	s=korg; t=1755020344;
+	bh=c3WnOb64kOTFrkfhb5bHN0IAvoecj3U3bwllern7nuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZmdMrpIAqPOCyxD6c+lRjRLQ4Weku5vsrO1Ucsk+V69wLgvkcbrf9rtQTJqCjJbHv
-	 cPOxR3c2YI70Yv5XChsvJkA+vsIZ9giqRxw40PAIpNTCQ9goFU41sG/ZkB7o7aWLum
-	 yPB3jrC4ptFhAuPOri1jznIEstQpw2eRSH1zYbIE=
+	b=kMbJ1dNkPehLKGFx1RSTOUTmeTyw37wE6bd+GdNxDvYSRAEP+Ryl5nSqQAkX1u9vo
+	 pw8PEWIro7ZwFe8gFvjSb3YhwPRSettdkIN7BxN5f2mcENLt5fxlXFLaSWQ51DUj45
+	 a8lbsXew8J7tKjP6PS3ppNOzB2yuFayaQ75LFDNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Daniel Dadap <ddadap@nvidia.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 144/627] net, bpf: Fix RCU usage in task_cls_state() for BPF programs
+Subject: [PATCH 6.1 051/253] ALSA: hda: Add missing NVIDIA HDA codec IDs
 Date: Tue, 12 Aug 2025 19:27:19 +0200
-Message-ID: <20250812173424.772270467@linuxfoundation.org>
+Message-ID: <20250812172950.903950240@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Daniel Dadap <ddadap@nvidia.com>
 
-[ Upstream commit 7f12c33850482521c961c5c15a50ebe9b9a88d1e ]
+commit e0a911ac86857a73182edde9e50d9b4b949b7f01 upstream.
 
-The commit ee971630f20f ("bpf: Allow some trace helpers for all prog
-types") made bpf_get_cgroup_classid_curr helper available to all BPF
-program types, not just networking programs.
+Add codec IDs for several NVIDIA products with HDA controllers to the
+snd_hda_id_hdmi[] patch table.
 
-This helper calls __task_get_classid() which internally calls
-task_cls_state() requiring rcu_read_lock_bh_held(). This works
-in networking/tc context where RCU BH is held, but triggers an RCU
-warning when called from other contexts like BPF syscall programs
-that run under rcu_read_lock_trace():
-
-  WARNING: suspicious RCU usage
-  6.15.0-rc4-syzkaller-g079e5c56a5c4 #0 Not tainted
-  -----------------------------
-  net/core/netclassid_cgroup.c:24 suspicious rcu_dereference_check() usage!
-
-Fix this by also accepting rcu_read_lock_held() and
-rcu_read_lock_trace_held() as valid RCU contexts in the
-task_cls_state() function. This ensures the helper works correctly
-in all needed RCU contexts where it might be called, regular RCU,
-RCU BH (for networking), and RCU trace (for BPF syscall programs).
-
-Fixes: ee971630f20f ("bpf: Allow some trace helpers for all prog types")
-Reported-by: syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20250611-rcu-fix-task_cls_state-v3-1-3d30e1de753f@posteo.net
-Closes: https://syzkaller.appspot.com/bug?extid=b4169a1cfb945d2ed0ec
+Signed-off-by: Daniel Dadap <ddadap@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/aF24rqwMKFWoHu12@ddadap-lakeline.nvidia.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netclassid_cgroup.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_hdmi.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/net/core/netclassid_cgroup.c b/net/core/netclassid_cgroup.c
-index d22f0919821e..dff66d8fb325 100644
---- a/net/core/netclassid_cgroup.c
-+++ b/net/core/netclassid_cgroup.c
-@@ -21,7 +21,9 @@ static inline struct cgroup_cls_state *css_cls_state(struct cgroup_subsys_state
- struct cgroup_cls_state *task_cls_state(struct task_struct *p)
- {
- 	return css_cls_state(task_css_check(p, net_cls_cgrp_id,
--					    rcu_read_lock_bh_held()));
-+					    rcu_read_lock_held() ||
-+					    rcu_read_lock_bh_held() ||
-+					    rcu_read_lock_trace_held()));
- }
- EXPORT_SYMBOL_GPL(task_cls_state);
- 
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -4556,7 +4556,9 @@ HDA_CODEC_ENTRY(0x10de002e, "Tegra186 HD
+ HDA_CODEC_ENTRY(0x10de002f, "Tegra194 HDMI/DP2", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0030, "Tegra194 HDMI/DP3", patch_tegra_hdmi),
+ HDA_CODEC_ENTRY(0x10de0031, "Tegra234 HDMI/DP", patch_tegra234_hdmi),
++HDA_CODEC_ENTRY(0x10de0033, "SoC 33 HDMI/DP",	patch_tegra234_hdmi),
+ HDA_CODEC_ENTRY(0x10de0034, "Tegra264 HDMI/DP",	patch_tegra234_hdmi),
++HDA_CODEC_ENTRY(0x10de0035, "SoC 35 HDMI/DP",	patch_tegra234_hdmi),
+ HDA_CODEC_ENTRY(0x10de0040, "GPU 40 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0041, "GPU 41 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0042, "GPU 42 HDMI/DP",	patch_nvhdmi),
+@@ -4595,15 +4597,32 @@ HDA_CODEC_ENTRY(0x10de0097, "GPU 97 HDMI
+ HDA_CODEC_ENTRY(0x10de0098, "GPU 98 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de0099, "GPU 99 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009a, "GPU 9a HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de009b, "GPU 9b HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de009c, "GPU 9c HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009d, "GPU 9d HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009e, "GPU 9e HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de009f, "GPU 9f HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a0, "GPU a0 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a1, "GPU a1 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a3, "GPU a3 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a4, "GPU a4 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a5, "GPU a5 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a8, "GPU a8 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00a9, "GPU a9 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00aa, "GPU aa HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00ab, "GPU ab HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00ad, "GPU ad HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00ae, "GPU ae HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00af, "GPU af HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00b0, "GPU b0 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00b1, "GPU b1 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c0, "GPU c0 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c1, "GPU c1 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c3, "GPU c3 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c4, "GPU c4 HDMI/DP",	patch_nvhdmi),
++HDA_CODEC_ENTRY(0x10de00c5, "GPU c5 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
+ HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
+ HDA_CODEC_ENTRY(0x67663d82, "Arise 82 HDMI/DP",	patch_gf_hdmi),
 
 
 
