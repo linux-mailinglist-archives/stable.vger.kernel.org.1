@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A25B2322E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2C0B23413
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1598C162C15
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A2D86215C0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AC6280037;
-	Tue, 12 Aug 2025 18:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1AA2EF652;
+	Tue, 12 Aug 2025 18:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiUwFITw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGPr6xKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F8020409A;
-	Tue, 12 Aug 2025 18:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CF226529E;
+	Tue, 12 Aug 2025 18:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022215; cv=none; b=bc9/AIu8PzSKBR8tIdpk7httAKBDqCFaoihFC84otug2SwDV5n7gvyqpygv8PowOR+weysF1kdJDG36sVHkGsgKfVvRuoaS7qLbKgAIkswmCjt4jqJwcWfq0FxOiWP0XjnDLPBcxXg7PIiJk80ZC7HlfzMd4ntWuvW5AlkLqpDE=
+	t=1755023481; cv=none; b=UyS8noSJ/MpnlGYLs9at8po/0pvEckWF1TUomhRZwy4BQ4H+7NJwqSvNETr4edzsNwNbq944jH2GHnNSH028tkHgjoYIoG0SoO1MsEWAmf164mCqEJH1s0pnZVkY0PgAI0UWEO7q+2jo+58/oeYuW61zckh56kdT/IMy0R5KOuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022215; c=relaxed/simple;
-	bh=k/Igswuh7S4d9liHi5t3if94lO59tZP9EHev4S4CC08=;
+	s=arc-20240116; t=1755023481; c=relaxed/simple;
+	bh=XgMyzeZILvcAAGzinworXraXW+SPB4HTXNk9MCrV6Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMKSt1f55wYntar6LHL4dc/xUZT4uBEpk/LYOMwFXJCKfLlz42B3bR4nJ2C8MvWyLDDVSgHxxhnu20pQOTsLU6HCyXul18SZzoZOZbJRuTdiAXTP13CmtH7PsJ4MvSSO7KNJC6iNwgs4C+buyxgiXXH0XkWn09Kt2Y4IcErxzgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiUwFITw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7810C4CEF0;
-	Tue, 12 Aug 2025 18:10:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nbaNKPH0nY/UK8r4EaoxvRvGfkBX2Z2MyYCVIenJ5tlRXeezDvQflDFtYcaqFQ4E52BZaGYcGBOPK9TTZiYuG1aLz1FS+GyIUFTzk5IAHwRUihVGF/WeoB4NHjsE3PCO15CVxzefxlKmrFVxW8ckoFOZkoM5tmvk5tOSmOaVvxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGPr6xKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DAEC4CEF0;
+	Tue, 12 Aug 2025 18:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022215;
-	bh=k/Igswuh7S4d9liHi5t3if94lO59tZP9EHev4S4CC08=;
+	s=korg; t=1755023480;
+	bh=XgMyzeZILvcAAGzinworXraXW+SPB4HTXNk9MCrV6Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uiUwFITwvWqVNxmuie+ceQoHShXQ9o9+caJKmDpBcnvRHyan6ofhXfwssMl+moml2
-	 2ayJ+CdFUZZ3htIpBlxf3ErNhQPDxrqIIpbyMbp2gJpKJPfMvVk0y0BnOv6ZWp6upy
-	 rYM6ez0RbSZEVRIrAvUdfy4iZBXfBNr6eOdZJKB0=
+	b=VGPr6xKTsM+x+6/JCUvoDoR/FEdobwWMQS6t8LxDhKIFagNTZ40k0C0yTrw4ZcGcn
+	 4UHEkO1ii5t9/mbkC7OcePL4vOeCzH5al+Bao1vozrxHeryKmDYdhbTQ+QnaRVnIim
+	 XutWEAvvt1o76MGAf1IeGYCdkokEfKRE+VSKWdbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Willy Tarreau <w@1wt.eu>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/369] net: dst: annotate data-races around dst->output
+Subject: [PATCH 6.16 091/627] tools/nolibc: avoid false-positive -Wmaybe-uninitialized through waitpid()
 Date: Tue, 12 Aug 2025 19:26:26 +0200
-Message-ID: <20250812173018.124469806@linuxfoundation.org>
+Message-ID: <20250812173422.769940253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 2dce8c52a98995c4719def6f88629ab1581c0b82 ]
+[ Upstream commit 31db7b6a78b7651973c66b7cf479209b20c55290 ]
 
-dst_dev_put() can overwrite dst->output while other
-cpus might read this field (for instance from dst_output())
+The compiler does not know that waitid() will only ever return 0 or -1.
+If waitid() would return a positive value than waitpid() would return that
+same value and *status would not be initialized.
+However users calling waitpid() know that the only possible return values
+of it are 0 or -1. They therefore might check for errors with
+'ret == -1' or 'ret < 0' and use *status otherwise. The compiler will then
+warn about the usage of a potentially uninitialized variable.
 
-Add READ_ONCE()/WRITE_ONCE() annotations to suppress
-potential issues.
+Example:
 
-We will likely need RCU protection in the future.
+	$ cat test.c
+	#include <stdio.h>
+	#include <unistd.h>
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250630121934.3399505-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+	int main(void)
+	{
+		int ret, status;
+
+		ret = waitpid(0, &status, 0);
+		if (ret == -1)
+			return 0;
+
+		printf("status %x\n", status);
+
+		return 0;
+	}
+
+	$ gcc --version
+	gcc (GCC) 15.1.1 20250425
+
+	$ gcc -Wall -Os -Werror -nostdlib -nostdinc -static -Iusr/include -Itools/include/nolibc/ -o /dev/null test.c
+	test.c: In function ‘main’:
+	test.c:12:9: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+	   12 |         printf("status %x\n", status);
+	      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	test.c:6:18: note: ‘status’ was declared here
+	    6 |         int ret, status;
+	      |                  ^~~~~~
+	cc1: all warnings being treated as errors
+
+Avoid the warning by normalizing waitid() errors to '-1' in waitpid().
+
+Fixes: 0c89abf5ab3f ("tools/nolibc: implement waitpid() in terms of waitid()")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Acked-by: Willy Tarreau <w@1wt.eu>
+Link: https://lore.kernel.org/r/20250707-nolibc-waitpid-uninitialized-v1-1-dcd4e70bcd8f@linutronix.de
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h      | 2 +-
- include/net/lwtunnel.h | 4 ++--
- net/core/dst.c         | 2 +-
- net/ipv4/route.c       | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ tools/include/nolibc/sys/wait.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index c844ba143b9c..e18826cd0559 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -456,7 +456,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
- /* Output packet to network from transport.  */
- static inline int dst_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	return INDIRECT_CALL_INET(skb_dst(skb)->output,
-+	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->output),
- 				  ip6_output, ip_output,
- 				  net, sk, skb);
- }
-diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
-index a4632a64daae..09791f5d9b6e 100644
---- a/include/net/lwtunnel.h
-+++ b/include/net/lwtunnel.h
-@@ -138,8 +138,8 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len,
- static inline void lwtunnel_set_redirect(struct dst_entry *dst)
- {
- 	if (lwtunnel_output_redirect(dst->lwtstate)) {
--		dst->lwtstate->orig_output = dst->output;
--		dst->output = lwtunnel_output;
-+		dst->lwtstate->orig_output = READ_ONCE(dst->output);
-+		WRITE_ONCE(dst->output, lwtunnel_output);
- 	}
- 	if (lwtunnel_input_redirect(dst->lwtstate)) {
- 		dst->lwtstate->orig_input = READ_ONCE(dst->input);
-diff --git a/net/core/dst.c b/net/core/dst.c
-index 0eef85f8f1f3..cc990706b645 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -149,7 +149,7 @@ void dst_dev_put(struct dst_entry *dst)
- 	if (dst->ops->ifdown)
- 		dst->ops->ifdown(dst, dev);
- 	WRITE_ONCE(dst->input, dst_discard);
--	dst->output = dst_discard_out;
-+	WRITE_ONCE(dst->output, dst_discard_out);
- 	dst->dev = blackhole_netdev;
- 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
- 			   GFP_ATOMIC);
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 118f01aef868..73d555593f5c 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1685,7 +1685,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
- 			new_rt->rt_gw6 = rt->rt_gw6;
+diff --git a/tools/include/nolibc/sys/wait.h b/tools/include/nolibc/sys/wait.h
+index 4d44e3da0ba8..56ddb806da7f 100644
+--- a/tools/include/nolibc/sys/wait.h
++++ b/tools/include/nolibc/sys/wait.h
+@@ -78,7 +78,7 @@ pid_t waitpid(pid_t pid, int *status, int options)
  
- 		new_rt->dst.input = READ_ONCE(rt->dst.input);
--		new_rt->dst.output = rt->dst.output;
-+		new_rt->dst.output = READ_ONCE(rt->dst.output);
- 		new_rt->dst.error = rt->dst.error;
- 		new_rt->dst.lastuse = jiffies;
- 		new_rt->dst.lwtstate = lwtstate_get(rt->dst.lwtstate);
+ 	ret = waitid(idtype, id, &info, options);
+ 	if (ret)
+-		return ret;
++		return -1;
+ 
+ 	switch (info.si_code) {
+ 	case 0:
 -- 
 2.39.5
 
