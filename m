@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC975B232E8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8419B234D1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AD6E17AD03
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 812B7681A59
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379B02E3B06;
-	Tue, 12 Aug 2025 18:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E3B2FF15D;
+	Tue, 12 Aug 2025 18:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSzl3gf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zW+K5AvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96322D8363;
-	Tue, 12 Aug 2025 18:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626642FE571;
+	Tue, 12 Aug 2025 18:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022699; cv=none; b=OMFWIQCxqJfuIE98GAx9PZrKAQnqLrOYUBZXaMfXzCmxw5kjP2BfXpEUkX40M8iiz6jmUl5oVuyIuqTC119KoAC3wvM0HazdcDxU6wxw5ns3NPTKxOKsGhY2yPx4CsM+U3ptlDZEBxxiSnGO/1EEVdTFqKD9PTw2OcvF85fDocs=
+	t=1755023971; cv=none; b=CKpsJgPrEEzJXpD7X+bK+R4t8BgR7RrpveO801RqM+eoHZkWWKXNp2lFfEH4w3n1DiFQeV98T5C+gcWVj1CQcbSuDU6iWCqMvyAMGQZfhqnAKvKsHlyP5TZGwnCJEd2XJOdhN6rCc2A1K6XUutfQ+GUhgQ64oQWKZzRls0F4p6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022699; c=relaxed/simple;
-	bh=VanRYzKz+Amo9KTrGCxzoBjMSkC61qn/1wV6+156+MQ=;
+	s=arc-20240116; t=1755023971; c=relaxed/simple;
+	bh=8EFW6m/KEGmwdkJqXQpdc9r9DWvqBQHVmH4g2i4xyik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaLMh1EroVUgm4NC37KmIZrZgC1T4P0AV4P0hYZ+Xjfl9iUhJ8Hm/5YVqZ7WtkvQGUQ1ZglU2jW2pI5UCDH7B0VUK8xGGBO1sTc8hT1gff3I6us4Aa2oO8j5ZWMJWVNqUO6XxSj1QNe0neaS4uz+scNHS5e0ug4TqgElz5Rivzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSzl3gf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580CAC4CEF0;
-	Tue, 12 Aug 2025 18:18:18 +0000 (UTC)
+	 MIME-Version; b=ITul+Q6fbSkwBxZa6oHNH+o0c9d2t/PxL1kY7KuMgeLDomPIHIlG+CyzOrxmMRvESgBGDfRszaOoWMJ7mQlNxASIfxXnnFJj2KejdAd8ttdNBQ/ZwTQkq3fgkEckdYVB9X5Co21yLy0HBSyhexOSN7Ml2/vLzbL6//+KaEDmsSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zW+K5AvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5080C4CEF0;
+	Tue, 12 Aug 2025 18:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022698;
-	bh=VanRYzKz+Amo9KTrGCxzoBjMSkC61qn/1wV6+156+MQ=;
+	s=korg; t=1755023971;
+	bh=8EFW6m/KEGmwdkJqXQpdc9r9DWvqBQHVmH4g2i4xyik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSzl3gf4a50ExcytBGUa6rmNOCRVx/g5fz/j0Jl+2g0SxvqXbWH8GiY6pqgkzyahU
-	 NuZySrIEqvCLX+3cr3NVjWLsy9bfCUvKi8sMxsGa061dl16zH9Tha5OFSSMa+cqnhL
-	 9vrbUJSHE5BuyokhAkQg+aYPbtSe996/l6rlp4GA=
+	b=zW+K5AvRgsAKB9a/ngmnrRmpwTcOpbCcLzjNnHs7zLn9ISi8bfY1tZpDVisoxRrOy
+	 +nT8ho2Ro7u+dsseCYOV6CFzjUG4m7/4Aj4mErYyDcKwWggbdBkcIRQo1xfFBYNhpg
+	 AaoDdqMIw6EL1a6Bxx2x1cALa6iboUcUwpxQeBDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 232/369] vhost-scsi: Fix log flooding with target does not exist errors
+Subject: [PATCH 6.16 234/627] wifi: mac80211: reject TDLS operations when station is not associated
 Date: Tue, 12 Aug 2025 19:28:49 +0200
-Message-ID: <20250812173023.500703720@linuxfoundation.org>
+Message-ID: <20250812173428.201672961@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit 69cd720a8a5e9ef0f05ce5dd8c9ea6e018245c82 ]
+[ Upstream commit 16ecdab5446f15a61ec88eb0d23d25d009821db0 ]
 
-As part of the normal initiator side scanning the guest's scsi layer
-will loop over all possible targets and send an inquiry. Since the
-max number of targets for virtio-scsi is 256, this can result in 255
-error messages about targets not existing if you only have a single
-target. When there's more than 1 vhost-scsi device each with a single
-target, then you get N * 255 log messages.
+syzbot triggered a WARN in ieee80211_tdls_oper() by sending
+NL80211_TDLS_ENABLE_LINK immediately after NL80211_CMD_CONNECT,
+before association completed and without prior TDLS setup.
 
-It looks like the log message was added by accident in:
+This left internal state like sdata->u.mgd.tdls_peer uninitialized,
+leading to a WARN_ON() in code paths that assumed it was valid.
 
-commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from
-control queue handler")
+Reject the operation early if not in station mode or not associated.
 
-when we added common helpers. Then in:
-
-commit 09d7583294aa ("vhost/scsi: Use common handling code in request
-queue handler")
-
-we converted the scsi command processing path to use the new
-helpers so we started to see the extra log messages during scanning.
-
-The patches were just making some code common but added the vq_err
-call and I'm guessing the patch author forgot to enable the vq_err
-call (vq_err is implemented by pr_debug which defaults to off). So
-this patch removes the call since it's expected to hit this path
-during device discovery.
-
-Fixes: 09d7583294aa ("vhost/scsi: Use common handling code in request queue handler")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20250611210113.10912-1-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reported-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f73f203f8c9b19037380
+Fixes: 81dd2b882241 ("mac80211: move TDLS data to mgd private part")
+Tested-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Link: https://patch.msgid.link/20250715230904.661092-2-moonhee.lee.ca@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/mac80211/tdls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 38d243d914d0..88f213d1106f 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1088,10 +1088,8 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
- 			/* validated at handler entry */
- 			vs_tpg = vhost_vq_get_backend(vq);
- 			tpg = READ_ONCE(vs_tpg[*vc->target]);
--			if (unlikely(!tpg)) {
--				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
-+			if (unlikely(!tpg))
- 				goto out;
--			}
- 		}
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index 94714f8ffd22..ba5fbacbeeda 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1422,7 +1422,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS))
+ 		return -EOPNOTSUPP;
  
- 		if (tpgp)
+-	if (sdata->vif.type != NL80211_IFTYPE_STATION)
++	if (sdata->vif.type != NL80211_IFTYPE_STATION || !sdata->vif.cfg.assoc)
+ 		return -EINVAL;
+ 
+ 	switch (oper) {
 -- 
 2.39.5
 
