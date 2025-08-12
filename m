@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BA9B23224
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80334B233A5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4BF316603F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B3587B744F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFCB2F659A;
-	Tue, 12 Aug 2025 18:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C95626A0EB;
+	Tue, 12 Aug 2025 18:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v84cblEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOBa68/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3492DE6E9;
-	Tue, 12 Aug 2025 18:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085A41EF38C;
+	Tue, 12 Aug 2025 18:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022174; cv=none; b=pWcGH+sdMBaqptf220msWsIkdA7MsvFskzLTLp5K4Rd8bGPQhddMait5wF7ESPdVQLxcZUFqeED2Z4sM8aLbBUYKsHAdF5gFxOpacBxhXdk2nc2JWv6hqW08dmDYzonzvI6ENC/ycNdIo3GiYHC1uMJ34wzrUXh2jG0ZoRo/48E=
+	t=1755023440; cv=none; b=YZNa5Wyr0ldQR4dfAtPDs1LpbRT2Bfp2HioJl7PzEch+meDwcBdjsThy4Pqt3yEZzJxUhe00Q1KThTESQgd0rNEhiRaLOkcDb3uWuluWlrVaav7BUDauf42cNRl+2AGAWiW5Sis1D9+wrN0qlUE/U3x56PoJ3aSkW5/CxFvIEk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022174; c=relaxed/simple;
-	bh=8gBMjsEXMl1D+NfIlVpsO3xZCb34sqJZhpoTzjkA+c4=;
+	s=arc-20240116; t=1755023440; c=relaxed/simple;
+	bh=W4hSqVJ2gyN08/mdJgaPGn7fTysXke3C+Nk7G2yt2GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8nkABJ6oBN8sCpB4MosXg4CYAGBO3Q5cNrUv31bsGRCk56Bspw3fk+ewyYNAT2yASVV+iY8rU1pNm0cQl50w02frNMxzqV+MoNJqiav50d+BKIDhl6I6lT+Awy2YIEPMDZYMi6NYE7k0sHrfR97MNqzEezlpf9Fg1diZA9oiQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v84cblEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420F5C4CEF0;
-	Tue, 12 Aug 2025 18:09:34 +0000 (UTC)
+	 MIME-Version; b=aIyYur8Np0967EFYLpgML9PpgYyzGxZj6IpmvGQu0g/G9H/oTDK81ELuTNto/ggcIeMfl2deOsvoDJuJe5kAi2zJI9AbyLePRtwYqayPHRLKbKmOm1NsvHF+Dg9qe4qoaLqZs6uC1bHgt0uqmCXw+1P0oYaFAMiwqs2anxmEi40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOBa68/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B90BC4CEF0;
+	Tue, 12 Aug 2025 18:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022174;
-	bh=8gBMjsEXMl1D+NfIlVpsO3xZCb34sqJZhpoTzjkA+c4=;
+	s=korg; t=1755023439;
+	bh=W4hSqVJ2gyN08/mdJgaPGn7fTysXke3C+Nk7G2yt2GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v84cblEYo+J2ECTiHoX5od0ZAYBkNRqtBpzgXtAugIEpkRQUSLZqJfscziWUiU9lU
-	 4Wsfw6hPv+EVksPWIQwTdSe9w1z3TcXO0/y1TjKrKKMc0Jwcrh60EvUa+UHYj2fNWV
-	 VGYDpe5gLwN/n12orbvMronnU2+GgIaYbHZjEsCw=
+	b=aOBa68/+FrB/sD1gInSW3s1K4onY4yyTg1a0hsikDNqsamlxb5mM2uXwFQ3zGKdUP
+	 J7AjqMWS29e/UOPSd5j+bDJV8zeE2YffJwAv2pVIVsnrTmTkgW0ePWMcIajz00NCLw
+	 WUiDKp9Xrbj6UhchXH27q9c+m+LKC45CXY8TrLi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/369] bpftool: Fix memory leak in dump_xx_nlmsg on realloc failure
+Subject: [PATCH 6.16 080/627] staging: fbtft: fix potential memory leak in fbtft_framebuffer_alloc()
 Date: Tue, 12 Aug 2025 19:26:15 +0200
-Message-ID: <20250812173017.721531149@linuxfoundation.org>
+Message-ID: <20250812173422.351875558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit 99fe8af069a9fa5b09140518b1364e35713a642e ]
+[ Upstream commit eb2cb7dab60f9be0b435ac4a674255429a36d72c ]
 
-In function dump_xx_nlmsg(), when realloc() fails to allocate memory,
-the original pointer to the buffer is overwritten with NULL. This causes
-a memory leak because the previously allocated buffer becomes unreachable
-without being freed.
+In the error paths after fb_info structure is successfully allocated,
+the memory allocated in fb_deferred_io_init() for info->pagerefs is not
+freed. Fix that by adding the cleanup function on the error path.
 
-Fixes: 7900efc19214 ("tools/bpf: bpftool: improve output format for bpftool net")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/r/20250620012133.14819-1-chenyuan_fl@163.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20250626172412.18355-1-abdun.nihaal@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/net.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/staging/fbtft/fbtft-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index d2242d9f8441..39f208928cdb 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -366,17 +366,18 @@ static int dump_link_nlmsg(void *cookie, void *msg, struct nlattr **tb)
- {
- 	struct bpf_netdev_t *netinfo = cookie;
- 	struct ifinfomsg *ifinfo = msg;
-+	struct ip_devname_ifindex *tmp;
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index da9c64152a60..39bced400065 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -692,6 +692,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
+ 	return info;
  
- 	if (netinfo->filter_idx > 0 && netinfo->filter_idx != ifinfo->ifi_index)
- 		return 0;
+ release_framebuf:
++	fb_deferred_io_cleanup(info);
+ 	framebuffer_release(info);
  
- 	if (netinfo->used_len == netinfo->array_len) {
--		netinfo->devices = realloc(netinfo->devices,
--			(netinfo->array_len + 16) *
--			sizeof(struct ip_devname_ifindex));
--		if (!netinfo->devices)
-+		tmp = realloc(netinfo->devices,
-+			(netinfo->array_len + 16) * sizeof(struct ip_devname_ifindex));
-+		if (!tmp)
- 			return -ENOMEM;
- 
-+		netinfo->devices = tmp;
- 		netinfo->array_len += 16;
- 	}
- 	netinfo->devices[netinfo->used_len].ifindex = ifinfo->ifi_index;
-@@ -395,6 +396,7 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
- {
- 	struct bpf_tcinfo_t *tcinfo = cookie;
- 	struct tcmsg *info = msg;
-+	struct tc_kind_handle *tmp;
- 
- 	if (tcinfo->is_qdisc) {
- 		/* skip clsact qdisc */
-@@ -406,11 +408,12 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
- 	}
- 
- 	if (tcinfo->used_len == tcinfo->array_len) {
--		tcinfo->handle_array = realloc(tcinfo->handle_array,
-+		tmp = realloc(tcinfo->handle_array,
- 			(tcinfo->array_len + 16) * sizeof(struct tc_kind_handle));
--		if (!tcinfo->handle_array)
-+		if (!tmp)
- 			return -ENOMEM;
- 
-+		tcinfo->handle_array = tmp;
- 		tcinfo->array_len += 16;
- 	}
- 	tcinfo->handle_array[tcinfo->used_len].handle = info->tcm_handle;
+ alloc_fail:
 -- 
 2.39.5
 
