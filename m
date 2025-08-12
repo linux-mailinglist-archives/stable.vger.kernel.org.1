@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F69B233F2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B826B23206
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F920621501
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F861AA2C37
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D7E2ECE93;
-	Tue, 12 Aug 2025 18:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD542882CE;
+	Tue, 12 Aug 2025 18:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAYGYs1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZM5lhN0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A46188715;
-	Tue, 12 Aug 2025 18:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642EE280037;
+	Tue, 12 Aug 2025 18:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023382; cv=none; b=hb/jF4NXud/HCJ/TF37wCvf9gAyGJCCsOOMFofnCl911Ol1L+2Kn3SQli/H1Zsmn+TZG/Prr0Kf1vxmuegiJmFqDs5Gk0tih0pDP+nTL4WUKGPX2ko32dkgtsjpwe/cuDP5tg5RgrRNOBj5bt1o4WoCCSHyhDmHOjIjufltD6cg=
+	t=1755022009; cv=none; b=hT6rAwubjRBBodR8mpPq7hj/1V3bIMNWWhPsfd6BItoUb/c+bhfxHA1pDZ1le7ZnLqvSBfv/YanOq+Qle9jVyg0sqVkIpEYQYWFOiMDjm3EbC9PHfrzBXfUUBxA++IBh3IEf46trBAsnz6loBeUlJg3+sCcRNEST6LMzAk/FhZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023382; c=relaxed/simple;
-	bh=1liWup676ECM/WZDdh3a+Vdrw7a4RY3ElJ8/gGGNabE=;
+	s=arc-20240116; t=1755022009; c=relaxed/simple;
+	bh=+q9zQldOVpW25BI6E85O7YHfUAvr9jzOZgfL4UrXBjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=du4nx1dPZOx4glKc6J8niYuUMHTl5cKlrjydzX/223rtcDsN+fC1OyHuXzahZYtRXAJK5vv700DPMc229cchSegdVZHJ5O7MJSEw00GlM4MK4urW7IGj2sMO9kYthIAr7chNvQ73uMW/+8GU5F6/0GS1W3p+5RHdHPN5LlWYL1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAYGYs1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174D7C4CEF0;
-	Tue, 12 Aug 2025 18:29:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f6t4zKJdCBO7aJMH3D3VtxfnPxDEuERrFWKTzxgHbPKPQIS10TLdkuWxTOvbJ4k5zMXPLg/9nK3hUaKRoKS+OEbbjdVHoz88589y1rGcWHu4e/e7PS+gp1UisJ/ZLu2MX2d1W6zuj2r4SSLQAFhzI5kZvZjWbPm0+gS+kLuFzXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZM5lhN0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E958C4CEF6;
+	Tue, 12 Aug 2025 18:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023382;
-	bh=1liWup676ECM/WZDdh3a+Vdrw7a4RY3ElJ8/gGGNabE=;
+	s=korg; t=1755022009;
+	bh=+q9zQldOVpW25BI6E85O7YHfUAvr9jzOZgfL4UrXBjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAYGYs1/0WIWgxWYJqKPrDnMHgiPly9d8TrcZSEgOu/DqH6SNDPzlrMvLPpvv7UyY
-	 Q3B/b/EpyURayKAEr87YbRF3SZRDG6/NXq5U+SUslczLmHkxJRpFGPEqvFJz8me1EP
-	 BF6BxYwYYQUQwP9rnPhTAifQUmhxcZp8a/tk1ecY=
+	b=ZM5lhN0ey7+i0Le3eoNVAtTc/0+A7ejFO3pv2PreIAnltpte0BC0RMONWDioRnm3T
+	 bPF1rSoQsv5eP8y3x4nPz1K9RyrZinmnK+gXGks7MtK4QfHnbv7NBwuO+ovdIQtFtg
+	 DEsa+bxTEddQS5Uvp2wg4bEitKSlcZHQu42MokD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Youling Tang <tangyouling@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Kees Cook <kees@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 030/627] sched/task_stack: Add missing const qualifier to end_of_stack()
+Subject: [PATCH 6.12 028/369] arm64: dts: qcom: msm8976: Make blsp_dma controlled-remotely
 Date: Tue, 12 Aug 2025 19:25:25 +0200
-Message-ID: <20250812173420.473831323@linuxfoundation.org>
+Message-ID: <20250812173015.796158178@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: André Apitzsch <git@apitzsch.eu>
 
-[ Upstream commit 32e42ab9fc88a884435c27527a433f61c4d2b61b ]
+[ Upstream commit 76270a18dbdf0bb50615f1b29d2cae8d683da01e ]
 
-Add missing const qualifier to the non-CONFIG_THREAD_INFO_IN_TASK
-version of end_of_stack() to match the CONFIG_THREAD_INFO_IN_TASK
-version. Fixes a warning with CONFIG_KSTACK_ERASE=y on archs that don't
-select THREAD_INFO_IN_TASK (such as LoongArch):
+The blsp_dma controller is shared between the different subsystems,
+which is why it is already initialized by the firmware. We should not
+reinitialize it from Linux to avoid potential other users of the DMA
+engine to misbehave.
 
-  error: passing 'const struct task_struct *' to parameter of type 'struct task_struct *' discards qualifiers
+In mainline this can be described using the "qcom,controlled-remotely"
+property. In the downstream/vendor kernel from Qualcomm there is an
+opposite "qcom,managed-locally" property. This property is *not* set
+for the qcom,sps-dma@7884000 and qcom,sps-dma@7ac4000 [1] so adding
+"qcom,controlled-remotely" upstream matches the behavior of the
+downstream/vendor kernel.
 
-The stackleak_task_low_bound() function correctly uses a const task
-parameter, but the legacy end_of_stack() prototype didn't like that.
+Adding this fixes booting Longcheer L9360.
 
-Build tested on loongarch (with CONFIG_KSTACK_ERASE=y) and m68k
-(with CONFIG_DEBUG_STACK_USAGE=y).
+[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.3.7.c26/arch/arm/boot/dts/qcom/msm8976.dtsi#L1149-1163
 
-Fixes: a45728fd4120 ("LoongArch: Enable HAVE_ARCH_STACKLEAK")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/all/20250726004313.GA3650901@ax162
-Cc: Youling Tang <tangyouling@kylinos.cn>
-Cc: Huacai Chen <chenhuacai@loongson.cn>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Link: https://lore.kernel.org/r/20250615-bqx5plus-v2-1-72b45c84237d@apitzsch.eu
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/task_stack.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8976.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
-index 85c5a6392e02..1fab7e9043a3 100644
---- a/include/linux/sched/task_stack.h
-+++ b/include/linux/sched/task_stack.h
-@@ -53,7 +53,7 @@ static inline void setup_thread_stack(struct task_struct *p, struct task_struct
-  * When the stack grows up, this is the highest address.
-  * Beyond that position, we corrupt data on the next page.
-  */
--static inline unsigned long *end_of_stack(struct task_struct *p)
-+static inline unsigned long *end_of_stack(const struct task_struct *p)
- {
- #ifdef CONFIG_STACK_GROWSUP
- 	return (unsigned long *)((unsigned long)task_thread_info(p) + THREAD_SIZE) - 1;
+diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+index 06af6e5ec578..884b5bb54ba8 100644
+--- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+@@ -1330,6 +1330,7 @@ blsp1_dma: dma-controller@7884000 {
+ 			clock-names = "bam_clk";
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,controlled-remotely;
+ 		};
+ 
+ 		blsp1_uart1: serial@78af000 {
+@@ -1450,6 +1451,7 @@ blsp2_dma: dma-controller@7ac4000 {
+ 			clock-names = "bam_clk";
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,controlled-remotely;
+ 		};
+ 
+ 		blsp2_uart2: serial@7af0000 {
 -- 
 2.39.5
 
