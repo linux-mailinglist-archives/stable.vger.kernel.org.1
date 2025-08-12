@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8387B22FE5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71618B234FC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04B01886F00
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E38D1B63B4A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F0E2FDC2B;
-	Tue, 12 Aug 2025 17:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0586BB5B;
+	Tue, 12 Aug 2025 18:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghPsL3RD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmNZWyDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8856F2FD1B2;
-	Tue, 12 Aug 2025 17:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1BC2FDC33;
+	Tue, 12 Aug 2025 18:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020657; cv=none; b=DbfbPIpytGEaLuYVyncW3lBcSi7vUKsyznwTb4gyWXqUI3fcnnjjsZT4eR6SfVROJITE+3drJO3tgxJmVAjcgs6ULSWtDB778XHX818UKMwU3hhFXyIp04wqQcHPHOG9qkJ3zyvf9FE89Y6Gm91SjmUxnpwzQPgbE1M3WbHSER4=
+	t=1755024122; cv=none; b=UbRVeEE+6ZT08G4s+qvQD96HZhRPbwB1KfnmOilxPpjLh3sysHN47F765osii5vij/wCRAMQX1ESpkZnb/6ULh6n3mnADSdjIxCat0MHV4yEYuTsCVeQiwGFoXav8GvulRtyY/b9N6cNdDm1IfgdRo0zJnjFl4LY91Mdq1gz1q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020657; c=relaxed/simple;
-	bh=NVpmMzjgOGk8KEmsDm08bNqzFrjjHRF3ELCQAsmaOtk=;
+	s=arc-20240116; t=1755024122; c=relaxed/simple;
+	bh=Yj/Zg5h6xqQZFYghPPk/W0UzUyWx72sOrmlZsgANgXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOw73ouQ22q2WgxEsdcQGMpzdXwFjJju/Pw4GT+TIXaUntaFZxuE5Em5tjwn13YLMm1jMOsLqJkQjlviT/wXsksz9Dv0vLdGnLy5jm1imNAHKhqsPgYsICUfICRG1uS2V1h+UORskPx7uti+e7yKHl0go85Eg3kG67UOYVjk6/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghPsL3RD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EEDC4CEF0;
-	Tue, 12 Aug 2025 17:44:16 +0000 (UTC)
+	 MIME-Version; b=eM7/gfVeee5WM6h1KYDxZEDo0YT2YyKCT7jSV9lWxnbU00/5p4aVr2JSJZmaIs4cUUWYVPu9VCIbqIrmyIAM+PUGfKfSOHe7JL5ThhvCn3biGDWWJNAHSspW7ipq/ZMYHr0J6ch7S4AohhR3nVaP0aaSp1L6lvZlOKMpcW5vFpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmNZWyDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBC0C4CEF6;
+	Tue, 12 Aug 2025 18:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020657;
-	bh=NVpmMzjgOGk8KEmsDm08bNqzFrjjHRF3ELCQAsmaOtk=;
+	s=korg; t=1755024122;
+	bh=Yj/Zg5h6xqQZFYghPPk/W0UzUyWx72sOrmlZsgANgXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghPsL3RDQ93EkNgxiauOf8UYW0tbSxhyvu3ldt0Ge7aFn0reHDE+vHhJdMazSJBTF
-	 Z3zXu/BPYMrCtb7SzjQVozPUb/HLzgQ9As/LI9PuWRKf0P4xT8siQc8VQeUsaaf00z
-	 EJIy9y5VYlA4c075EbaLuxwTcbwesV0XY/clMzH8=
+	b=LmNZWyDt+S02IK/RxIU1szDQZ8KRKE7/i87sBcnSZ6lXtN/ZU+mBWWd2oXxa+03mj
+	 dZvCi/MSMsLiBQmS9+Pe2Nle8fQwvBqD87Q3ENwkGbYSvBiDsmSAkP3shekL96ojn2
+	 2EhRKbotTjZTzcaHabrBjOH3yqMiAuEmnXY68flc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Visavalia <rohit.visavalia@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/253] clk: xilinx: vcu: unregister pll_post only if registered correctly
+Subject: [PATCH 6.16 238/627] wifi: mac80211: Dont call fq_flow_idx() for management frames
 Date: Tue, 12 Aug 2025 19:28:53 +0200
-Message-ID: <20250812172954.873456067@linuxfoundation.org>
+Message-ID: <20250812173428.356339935@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohit Visavalia <rohit.visavalia@amd.com>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-[ Upstream commit 3b0abc443ac22f7d4f61ddbbbbc5dbb06c87139d ]
+[ Upstream commit cb3bb3d88dfcd177a1050c0a009a3ee147b2e5b9 ]
 
-If registration of pll_post is failed, it will be set to NULL or ERR,
-unregistering same will fail with following call trace:
+skb_get_hash() can only be used when the skb is linked to a netdev
+device.
 
-Unable to handle kernel NULL pointer dereference at virtual address 008
-pc : clk_hw_unregister+0xc/0x20
-lr : clk_hw_unregister_fixed_factor+0x18/0x30
-sp : ffff800011923850
-...
-Call trace:
- clk_hw_unregister+0xc/0x20
- clk_hw_unregister_fixed_factor+0x18/0x30
- xvcu_unregister_clock_provider+0xcc/0xf4 [xlnx_vcu]
- xvcu_probe+0x2bc/0x53c [xlnx_vcu]
-
-Fixes: 4472e1849db7 ("soc: xilinx: vcu: make pll post divider explicit")
-Signed-off-by: Rohit Visavalia <rohit.visavalia@amd.com>
-Link: https://lore.kernel.org/r/20250210113614.4149050-2-rohit.visavalia@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Fixes: 73bc9e0af594 ("mac80211: don't apply flow control on management frames")
+Link: https://patch.msgid.link/20250717162547.94582-3-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/xilinx/xlnx_vcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
-index d66b1315114e..292d50ba0112 100644
---- a/drivers/clk/xilinx/xlnx_vcu.c
-+++ b/drivers/clk/xilinx/xlnx_vcu.c
-@@ -587,8 +587,8 @@ static void xvcu_unregister_clock_provider(struct xvcu_device *xvcu)
- 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_MCU]);
- 	if (!IS_ERR_OR_NULL(hws[CLK_XVCU_ENC_CORE]))
- 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_CORE]);
--
--	clk_hw_unregister_fixed_factor(xvcu->pll_post);
-+	if (!IS_ERR_OR_NULL(xvcu->pll_post))
-+		clk_hw_unregister_fixed_factor(xvcu->pll_post);
- }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 4a9b258300fe..04f4d574401f 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1428,7 +1428,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
+ {
+ 	struct fq *fq = &local->fq;
+ 	struct fq_tin *tin = &txqi->tin;
+-	u32 flow_idx = fq_flow_idx(fq, skb);
++	u32 flow_idx;
  
- /**
+ 	ieee80211_set_skb_enqueue_time(skb);
+ 
+@@ -1444,6 +1444,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
+ 			IEEE80211_TX_INTCFL_NEED_TXPROCESSING;
+ 		__skb_queue_tail(&txqi->frags, skb);
+ 	} else {
++		flow_idx = fq_flow_idx(fq, skb);
+ 		fq_tin_enqueue(fq, tin, flow_idx, skb,
+ 			       fq_skb_free_func);
+ 	}
 -- 
 2.39.5
 
