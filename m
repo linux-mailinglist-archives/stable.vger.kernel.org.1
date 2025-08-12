@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-167381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0A7B22FDF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E61B22FBA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EF31A203C3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8F41883790
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E172FDC24;
-	Tue, 12 Aug 2025 17:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF902FD1D6;
+	Tue, 12 Aug 2025 17:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0cxRhbE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSoQ/L7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA91086331;
-	Tue, 12 Aug 2025 17:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874B92F7461;
+	Tue, 12 Aug 2025 17:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020626; cv=none; b=RZeDUhG9IsUbnrexN3QKESEuqs0G4vAwzH1xwOX8f5lXEY+ajzgyiL71L1/Fh/YRke4nwKu9d2hda+TK8xjfGUDvVDIyZDdHwZZ2YsQE/6XwppdvO2vmMP5Q6nYnU0rZ0kE3yaZWO7io9Xg71dwRkPIstGbq7NlSCa9o4heiPww=
+	t=1755020505; cv=none; b=tmX9ObwTGRrVivUUmP4001xmWXPyWrpSCVlWq1uIPPN5pH37OGRJ6YLyp4drffa57jdURSCsx3uiAD9GGG6DavC43+PSu/RwWc1yX8vlIOVN5RY1JOYg8vUHVjrIbj7YHBoyc3ocSliUQQCd69ch9mKyS9r4k8q6XpSiNnmVmKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020626; c=relaxed/simple;
-	bh=jlGf7HlTcoWH/isAKP5gLp3CJOTUcXSFI8XEB1d6hDA=;
+	s=arc-20240116; t=1755020505; c=relaxed/simple;
+	bh=zCokfvh5qzRH51ZBdKsTyofNyVMnFVtYDyDJtQ7r97I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6NfQwE2/MhwnVQCB0jnIU4LYcXWzFMdu/x6aKcAugQv1YdvL2ZIOz5u065ggek12CJPsVABERUaQ3hatVFUKbAvd9g9kHnrNa1sJmFG1VycdCDBOFVreViIzFivScwHzrn8pGZRgbzLXGaA+2BdpWfVvR9OrZzTgkzhoYoM+hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0cxRhbE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2761FC4CEF0;
-	Tue, 12 Aug 2025 17:43:45 +0000 (UTC)
+	 MIME-Version; b=OJMOVc+PN28L1JKhOU0nFLrT3EirUeBnnr8JHJi8Vy55LOAafz9jM+TDaBMm1LbzfzP1J0eoCNRDy4tlFzvqh/NtEIi8gCES2wyEupRcNU9GJSfYDUIDPo09mvAzyu3jfP8Yx1pEb4T6y0CRQ97hhZ09VsNZ9KtOwXP2UNXfN9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSoQ/L7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE898C4CEF0;
+	Tue, 12 Aug 2025 17:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020626;
-	bh=jlGf7HlTcoWH/isAKP5gLp3CJOTUcXSFI8XEB1d6hDA=;
+	s=korg; t=1755020505;
+	bh=zCokfvh5qzRH51ZBdKsTyofNyVMnFVtYDyDJtQ7r97I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0cxRhbEKTRNEktgMX0TmO455MWzB7bTbAxp0FzAfCEjhRGUXkkedITwVyW8EhJsB
-	 3VAW+7OgJ9gZ88jQVN109f4jOKn4qogcAEdIhQMJCq0uKx15lY8vejwmCK3q+wWQcP
-	 ql5Vuiq3G/ncNy9cP+17GPIPILxPnfF/ZaXaTYcI=
+	b=HSoQ/L7Aa9i5YqLjvNJo1PicrdkXxpLPy1s/z6+UJLYyh/Muo2cEZpQbED434yOo/
+	 8d/jEj5T6baewFyk1hZvqioaiD4Gmc6plSBApokz5mmduun5vV12FmtsaOEmeMhpPM
+	 oNvbqDOf0EBqtX/p9YXtrYGlzzSbSQxdTUNftLdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <listout@listout.xyz>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/253] samples: mei: Fix building on musl libc
-Date: Tue, 12 Aug 2025 19:28:00 +0200
-Message-ID: <20250812172952.647663958@linuxfoundation.org>
+Subject: [PATCH 6.1 093/253] interconnect: qcom: sc8280xp: specify num_links for qnm_a1noc_cfg
+Date: Tue, 12 Aug 2025 19:28:01 +0200
+Message-ID: <20250812172952.690185226@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
 References: <20250812172948.675299901@linuxfoundation.org>
@@ -65,73 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 239df3e4b4752524e7c0fb3417c218d8063654b4 ]
+[ Upstream commit 02ee375506dceb7d32007821a2bff31504d64b99 ]
 
-The header bits/wordsize.h is glibc specific and on building on musl
-with allyesconfig results in
+The qnm_a1noc_cfg declaration didn't include .num_links definition, fix
+it.
 
-samples/mei/mei-amt-version.c:77:10: fatal error: bits/wordsize.h: No such file or directory
-   77 | #include <bits/wordsize.h>
-      |          ^~~~~~~~~~~~~~~~~
-
-mei-amt-version.c build file without bits/wordsize.h on musl and glibc.
-
-However on musl we get the follwing error without sys/time.h
-
-samples/mei/mei-amt-version.c: In function 'mei_recv_msg':
-samples/mei/mei-amt-version.c:159:24: error: storage size of 'tv' isn't known
-  159 |         struct timeval tv;
-      |                        ^~
-samples/mei/mei-amt-version.c:160:9: error: unknown type name 'fd_set'
-  160 |         fd_set set;
-      |         ^~~~~~
-samples/mei/mei-amt-version.c:168:9: error: implicit declaration of function 'FD_ZERO' [-Wimplicit-function-declaration]
-  168 |         FD_ZERO(&set);
-      |         ^~~~~~~
-samples/mei/mei-amt-version.c:169:9: error: implicit declaration of function 'FD_SET'; did you mean 'L_SET'? [-Wimplicit-function-declaration]
-  169 |         FD_SET(me->fd, &set);
-      |         ^~~~~~
-      |         L_SET
-samples/mei/mei-amt-version.c:170:14: error: implicit declaration of function 'select' [-Wimplicit-function-declaration]
-  170 |         rc = select(me->fd + 1, &set, NULL, NULL, &tv);
-      |              ^~~~~~
-samples/mei/mei-amt-version.c:171:23: error: implicit declaration of function 'FD_ISSET' [-Wimplicit-function-declaration]
-  171 |         if (rc > 0 && FD_ISSET(me->fd, &set)) {
-      |                       ^~~~~~~~
-samples/mei/mei-amt-version.c:159:24: warning: unused variable 'tv' [-Wunused-variable]
-  159 |         struct timeval tv;
-      |                        ^~
-
-Hence the the file has been included.
-
-Fixes: c52827cc4ddf ("staging/mei: add mei user space example")
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Link: https://lore.kernel.org/r/20250702135955.24955-1-listout@listout.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f29dabda7917 ("interconnect: qcom: Add SC8280XP interconnect provider")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250704-rework-icc-v2-1-875fac996ef5@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/mei/mei-amt-version.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/interconnect/qcom/sc8280xp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/samples/mei/mei-amt-version.c b/samples/mei/mei-amt-version.c
-index 867debd3b912..1d7254bcb44c 100644
---- a/samples/mei/mei-amt-version.c
-+++ b/samples/mei/mei-amt-version.c
-@@ -69,11 +69,11 @@
- #include <string.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
-+#include <sys/time.h>
- #include <unistd.h>
- #include <errno.h>
- #include <stdint.h>
- #include <stdbool.h>
--#include <bits/wordsize.h>
- #include <linux/mei.h>
+diff --git a/drivers/interconnect/qcom/sc8280xp.c b/drivers/interconnect/qcom/sc8280xp.c
+index 489f259a02e5..d759b04e3391 100644
+--- a/drivers/interconnect/qcom/sc8280xp.c
++++ b/drivers/interconnect/qcom/sc8280xp.c
+@@ -47,6 +47,7 @@ static struct qcom_icc_node qnm_a1noc_cfg = {
+ 	.id = SC8280XP_MASTER_A1NOC_CFG,
+ 	.channels = 1,
+ 	.buswidth = 4,
++	.num_links = 1,
+ 	.links = { SC8280XP_SLAVE_SERVICE_A1NOC },
+ };
  
- /*****************************************************************************
 -- 
 2.39.5
 
