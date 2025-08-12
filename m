@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-168271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13141B23438
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA018B22F6A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B294616855A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2B7F683BBA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A6F2FD1A2;
-	Tue, 12 Aug 2025 18:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04F52FE599;
+	Tue, 12 Aug 2025 17:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hq/IflG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRwno6ux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F124D2EE5E8;
-	Tue, 12 Aug 2025 18:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEEE2FE591;
+	Tue, 12 Aug 2025 17:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023615; cv=none; b=JC1wuR0duJEg1FMhm+zqcjFUy6Q2nfHTznBz3D9hnBTTiHyOVFd7/GeG9tSqxpQNlvfWsZVx9eiO/i18Twy1TMctATw1v6QoMJ1Mvu9mhCRG41UuIxVmCMLViXKlfffrYbNMB6wLqX5whmx5FghxuLdwUc4QqUTg16bBsoHhvQA=
+	t=1755020290; cv=none; b=hlVw34GqUrhuu6+LdilHuCZMomjix0bKjSL2AvUQ4QIuApTQ/wLhORs6y5THhz9rcSb8xqa/szQ440kxPtjPXqPwhauzbg0ncP/BM6mN8X/wfadz4dVpzz86C7E5sZBZw6i+eS3AKT30R+exGJQ/2Hhe4Mau1Jyofn5cOfQ8N28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023615; c=relaxed/simple;
-	bh=fc0DOE4LXmYg4yr1Sb39nVQaBHb/uAs4zqhqPMx3YFs=;
+	s=arc-20240116; t=1755020290; c=relaxed/simple;
+	bh=hMdCDfECN6DqbLVOiqFeqltArl/ocSHeFClJ4Z5yVWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6vVhClfgr+/LCuknCpdgWyjZFrgJIlDNxcKq35nQ2AQ/9tYzxuZYsN6IKJLWp82wzyw1Ucc0ANOxEJirpr0Zax+ullY65siRHp0upeGOTxebH1+D+kr819mPstwHTehXldbOcDGNuZXdAbzDh61mwTCrmV45e4gMVI5fVBSm8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hq/IflG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22472C4CEF0;
-	Tue, 12 Aug 2025 18:33:33 +0000 (UTC)
+	 MIME-Version; b=I1bhMhmXO87ZxY2ozUp/IOMgV51nY+xjdbA803T/Nj9Gkcqkx4y0AhP+g8e6Imj9jvF7RjCQayJU/dt9kzvTDGPWlXTsUKBxnFb/wpyhoW33M/vqvnVcRRBqGyk6SQaVwGWmwqC2WyyAjDfiUOMFGNjaAegcXfKq9ko+i+aUUvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRwno6ux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A0DC4CEF0;
+	Tue, 12 Aug 2025 17:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023614;
-	bh=fc0DOE4LXmYg4yr1Sb39nVQaBHb/uAs4zqhqPMx3YFs=;
+	s=korg; t=1755020290;
+	bh=hMdCDfECN6DqbLVOiqFeqltArl/ocSHeFClJ4Z5yVWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hq/IflG5FvU9lwMGSY5F7S9e+1oge28P+4qw62y4luW2L81A0b+NU0BuvlykMimIF
-	 0UFLQxc7fbU2G66B70Et/hPYsMrEAArVbu9sB0eibIJf+VoKAde4U8x7QehCao1Ums
-	 wZqMKvcpN7J0P8XvmLCSgUyyQbvRf23bVWHD7VVw=
+	b=fRwno6ux3sTO4vrliUJ6zrDPo/9/Mp2KuiuLrABsPMm0lxm3y1+NsakOycbpYuaOf
+	 64J/OzYanX6J5l3uqkoOPvEXV2z08JRRJefK2CQuUro2L/NjU5KKCyhGiRvxHTgITM
+	 i5X4lSYMfFhoEHu6vwo6wQYOz+4kCFMeycaChG50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huan Yang <link@vivo.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Bingbu Cao <bingbu.cao@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 130/627] Revert "udmabuf: fix vmap_udmabuf error page set"
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.1 037/253] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
 Date: Tue, 12 Aug 2025 19:27:05 +0200
-Message-ID: <20250812173424.263255354@linuxfoundation.org>
+Message-ID: <20250812172950.310613449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huan Yang <link@vivo.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit ceb7b62eaaaacfcf87473bd2e99ac73a758620cb ]
+commit 4ff12d82dac119b4b99b5a78b5af3bf2474c0a36 upstream.
 
-This reverts commit 18d7de823b7150344d242c3677e65d68c5271b04.
+Add check for the return value of devm_kmemdup()
+to prevent potential null pointer dereference.
 
-We cannot use vmap_pfn() in vmap_udmabuf() as it would fail the pfn_valid()
-check in vmap_pfn_apply(). This is because vmap_pfn() is intended to be
-used for mapping non-struct-page memory such as PCIe BARs. Since, udmabuf
-mostly works with pages/folios backed by shmem/hugetlbfs/THP, vmap_pfn()
-is not the right tool or API to invoke for implementing vmap.
-
-Signed-off-by: Huan Yang <link@vivo.com>
-Suggested-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Reported-by: Bingbu Cao <bingbu.cao@linux.intel.com>
-Closes: https://lore.kernel.org/dri-devel/eb7e0137-3508-4287-98c4-816c5fd98e10@vivo.com/T/#mbda4f64a3532b32e061f4e8763bc8e307bea3ca8
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Link: https://lore.kernel.org/r/20250428073831.19942-2-link@vivo.com
-Stable-dep-of: a26fd92b7223 ("udmabuf: fix vmap missed offset page")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/Kconfig   |  1 -
- drivers/dma-buf/udmabuf.c | 22 +++++++---------------
- 2 files changed, 7 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_flex_pipe.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/dma-buf/Kconfig b/drivers/dma-buf/Kconfig
-index fee04fdb0822..b46eb8a552d7 100644
---- a/drivers/dma-buf/Kconfig
-+++ b/drivers/dma-buf/Kconfig
-@@ -36,7 +36,6 @@ config UDMABUF
- 	depends on DMA_SHARED_BUFFER
- 	depends on MEMFD_CREATE || COMPILE_TEST
- 	depends on MMU
--	select VMAP_PFN
- 	help
- 	  A driver to let userspace turn memfd regions into dma-bufs.
- 	  Qemu can use this to create host dmabufs for guest framebuffers.
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index c9d0c68d2fcb..4cc342fb28f4 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -109,29 +109,21 @@ static int mmap_udmabuf(struct dma_buf *buf, struct vm_area_struct *vma)
- static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
- {
- 	struct udmabuf *ubuf = buf->priv;
--	unsigned long *pfns;
-+	struct page **pages;
- 	void *vaddr;
- 	pgoff_t pg;
+--- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
++++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+@@ -1753,6 +1753,8 @@ ice_copy_and_init_pkg(struct ice_hw *hw,
+ 		return ICE_DDP_PKG_ERR;
  
- 	dma_resv_assert_held(buf->resv);
+ 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
++	if (!buf_copy)
++		return ICE_DDP_PKG_ERR;
  
--	/**
--	 * HVO may free tail pages, so just use pfn to map each folio
--	 * into vmalloc area.
--	 */
--	pfns = kvmalloc_array(ubuf->pagecount, sizeof(*pfns), GFP_KERNEL);
--	if (!pfns)
-+	pages = kvmalloc_array(ubuf->pagecount, sizeof(*pages), GFP_KERNEL);
-+	if (!pages)
- 		return -ENOMEM;
- 
--	for (pg = 0; pg < ubuf->pagecount; pg++) {
--		unsigned long pfn = folio_pfn(ubuf->folios[pg]);
--
--		pfn += ubuf->offsets[pg] >> PAGE_SHIFT;
--		pfns[pg] = pfn;
--	}
-+	for (pg = 0; pg < ubuf->pagecount; pg++)
-+		pages[pg] = &ubuf->folios[pg]->page;
- 
--	vaddr = vmap_pfn(pfns, ubuf->pagecount, PAGE_KERNEL);
--	kvfree(pfns);
-+	vaddr = vm_map_ram(pages, ubuf->pagecount, -1);
-+	kvfree(pages);
- 	if (!vaddr)
- 		return -EINVAL;
- 
--- 
-2.39.5
-
+ 	state = ice_init_pkg(hw, buf_copy, len);
+ 	if (!ice_is_init_pkg_successful(state)) {
 
 
 
