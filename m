@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7927DB22FE3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16294B232F5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 732B7566524
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27DC5188BCD7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980972FDC24;
-	Tue, 12 Aug 2025 17:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF232E3B06;
+	Tue, 12 Aug 2025 18:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sn3IxHQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJjB1nty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5519C2FDC2B;
-	Tue, 12 Aug 2025 17:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13CE2DBF5E;
+	Tue, 12 Aug 2025 18:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020673; cv=none; b=FsgYWokx62D5NWYrMNvXmb8gBV4g5pTo9JKn95TBViKoiD+jvmuSiTExRiQSp2w4ykcypH/izxLwJx3MnWXQyMR88yRG6smerNnxgkqZMiW8MokAXjt01e4wOsq/zuYnjcb2vMuHxYjhu3VxbLw7yRg7DTJ0AGRcp5Dhwj5/hPM=
+	t=1755022732; cv=none; b=QY4K/GmnfNC33Jre9nwYXiv782GlhDhTsrKUXWtV4S06w7VXjpxjSi1xz4QdXhyL01/ZsU/Uk2FksX/eB24nVvA9VSKY3BXYA+3cBx01tfWbVGiq1BsBEchxYAEg6HaNu/Ck8jFwq9MtSxLlwsxbbbmi4vFx+iAI7D+auxI6Kls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020673; c=relaxed/simple;
-	bh=Pj8HLD354kpG+m5GpE3aut9MZFjV2Z8yWT2a4u8wZO0=;
+	s=arc-20240116; t=1755022732; c=relaxed/simple;
+	bh=KGNlEyd35qKlpApF8/L+Ab7lopzokvRJ0x/yDA+4xAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8HJSylikV+zXaiGQY8S47syjCRW1qCKJtxHiV/eg/4/0E83klyFcBugXVqK6K1UeRvwupPTAWuUsbKlkhLlDVaZXTR/eEL4+to3kR6JaKDRwxBGqPkZgPejnzfELNdSUt6OoWc9+Cbpu1Hgh0CeMa4RvIpTIQc/CD/FnyEMMiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sn3IxHQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9216C4CEF0;
-	Tue, 12 Aug 2025 17:44:32 +0000 (UTC)
+	 MIME-Version; b=lRP8+L9J3U+oOo5jseENM3A9AdfSgfANE7Sc3opB0NOfu2ww278hWSdkqfLA3jzqndRlz/vGzdwzAGJpL0q74Hj3qRU4MxwkK7W/yRfM7iu4UnKeoNkts8cpSOzqyKuulzHFzGziOEspmQxvkrRVqIg9qDZa4pxEmlfqVy/NJzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJjB1nty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E7BC4CEF1;
+	Tue, 12 Aug 2025 18:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020673;
-	bh=Pj8HLD354kpG+m5GpE3aut9MZFjV2Z8yWT2a4u8wZO0=;
+	s=korg; t=1755022732;
+	bh=KGNlEyd35qKlpApF8/L+Ab7lopzokvRJ0x/yDA+4xAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sn3IxHQNVF7lhn/xRq4Ht4UO6HSD+8918bOGYa7KZB1ncTtn360q1bjdxYQbUZSxk
-	 4CN8Waf5BhImqxvyWk+e3S0P0BH5mesw6iGL7mNaAvn6ILkWTSzQ2fhVGo6hv8AADw
-	 dhl2N6L3tv8T+/mHevgoIPj22knSvOMMdx03eeik=
+	b=gJjB1nty8FysBlc9ujpPXjZsdj9fUdSCvGDFi6msP3KrU/MYHs2HOFbvZcBQGX6WI
+	 Q7GjNtyaBzhMTU2QXzJ7nYzRMqkJAA/VT02M1NWYfeiAGqNvGEtjOx81K0URRi0IZR
+	 UKVJgXQW8F5RA07I4s74MYw9+3P4pUb5KKXyXO9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/253] PCI: endpoint: pci-epf-vntb: Return -ENOENT if pci_epc_get_next_free_bar() fails
-Date: Tue, 12 Aug 2025 19:28:57 +0200
-Message-ID: <20250812172955.051298143@linuxfoundation.org>
+Subject: [PATCH 6.12 241/369] module: Restore the moduleparam prefix length check
+Date: Tue, 12 Aug 2025 19:28:58 +0200
+Message-ID: <20250812173023.838019995@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 7ea488cce73263231662e426639dd3e836537068 ]
+[ Upstream commit bdc877ba6b7ff1b6d2ebeff11e63da4a50a54854 ]
 
-According the function documentation of epf_ntb_init_epc_bar(), the
-function should return an error code on error. However, it returns -1 when
-no BAR is available i.e., when pci_epc_get_next_free_bar() fails.
+The moduleparam code allows modules to provide their own definition of
+MODULE_PARAM_PREFIX, instead of using the default KBUILD_MODNAME ".".
 
-Return -ENOENT instead.
+Commit 730b69d22525 ("module: check kernel param length at compile time,
+not runtime") added a check to ensure the prefix doesn't exceed
+MODULE_NAME_LEN, as this is what param_sysfs_builtin() expects.
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-[mani: changed err code to -ENOENT]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250603-pci-vntb-bar-mapping-v2-1-fc685a22ad28@baylibre.com
+Later, commit 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking
+for sysfs perms.") removed this check, but there is no indication this was
+intentional.
+
+Since the check is still useful for param_sysfs_builtin() to function
+properly, reintroduce it in __module_param_call(), but in a modernized form
+using static_assert().
+
+While here, clean up the __module_param_call() comments. In particular,
+remove the comment "Default value instead of permissions?", which comes
+from commit 9774a1f54f17 ("[PATCH] Compile-time check re world-writeable
+module params"). This comment was related to the test variable
+__param_perm_check_##name, which was removed in the previously mentioned
+commit 58f86cc89c33.
+
+Fixes: 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking for sysfs perms.")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Link: https://lore.kernel.org/r/20250630143535.267745-4-petr.pavlu@suse.com
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/moduleparam.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 6708d2e789cb..4ed0859e2397 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -714,7 +714,7 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
- 		barno = pci_epc_get_next_free_bar(epc_features, barno);
- 		if (barno < 0) {
- 			dev_err(dev, "Fail to get NTB function BAR\n");
--			return barno;
-+			return -ENOENT;
- 		}
- 		ntb->epf_ntb_bar[bar] = barno;
- 	}
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index bfb85fd13e1f..110e9d09de24 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -282,10 +282,9 @@ struct kparam_array
+ #define __moduleparam_const const
+ #endif
+ 
+-/* This is the fundamental function for registering boot/module
+-   parameters. */
++/* This is the fundamental function for registering boot/module parameters. */
+ #define __module_param_call(prefix, name, ops, arg, perm, level, flags)	\
+-	/* Default value instead of permissions? */			\
++	static_assert(sizeof(""prefix) - 1 <= MAX_PARAM_PREFIX_LEN);	\
+ 	static const char __param_str_##name[] = prefix #name;		\
+ 	static struct kernel_param __moduleparam_const __param_##name	\
+ 	__used __section("__param")					\
 -- 
 2.39.5
 
