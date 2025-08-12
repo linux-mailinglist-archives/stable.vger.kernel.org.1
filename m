@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E96B22F73
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22C0B23079
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DFA5565F25
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8D41566797
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAC12FE59F;
-	Tue, 12 Aug 2025 17:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318DE2E4248;
+	Tue, 12 Aug 2025 17:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVDyJnFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXESs8rU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9462D9EF3;
-	Tue, 12 Aug 2025 17:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5868268C73;
+	Tue, 12 Aug 2025 17:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020303; cv=none; b=Hoath/HHwtZQAfYEQ256+1PXvB2fw9FvEYPdGC6WyUtTbg3XuxYW/N5mX7090q+gZ7TS4XA4njpnPhZfmEeke+VDr088VOrI0DjwlyR4YcvsUpiOCTTQm1R/b61MXIkjrmaO6zDTgiQb3HXCVusQezQdbQw6NFuoA7QsbSymyCU=
+	t=1755021115; cv=none; b=g11YMb3cUTc6f6WGroP/cOgjlMbNaPYENVtMJOYSdOOVREmmerlv1dkr/6GYeG8dpwiJ8QR/a9dnSNL1PIR6nk4JWIJG9g7pjsv550YEFPG3/NHDeAZbW0etMaXYGgFKy7ytsmLR/IM7zxQoOQkC8IevieqxwUHMLg2evUOBZRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020303; c=relaxed/simple;
-	bh=MeaiD6BgFjcYSl5b0SSdkFd2ugKRsTVn7rULS3ogHR0=;
+	s=arc-20240116; t=1755021115; c=relaxed/simple;
+	bh=1HIeY0ZEevQ8/40Hjis282DocBF+fekN+82GQphtYKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIH8n8tTgFiZeSYwUCxMMxGiFGLYZeS3VcSqTB3fib3Mn5DgSiOjuX9zTMs+9UhJbo/GMBJOL+cq9WUV1Y7D1dwWw2mBdAlBTO1WvT7osk+f33+KiPAOnyxDv7INgddrklf1lkRu6p6VqgqOtn0TkucWFPwjPRkZ/oTtQPflVN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVDyJnFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7921CC4CEF0;
-	Tue, 12 Aug 2025 17:38:22 +0000 (UTC)
+	 MIME-Version; b=sjivNfGRvTIdaQ3lOe02XawaillAzuK3UlGV+cji4/VqANSxoL8hnohTJ28RB9lHxTzGZ9EuOYn7N7sZv6aBYFu6Y+7smtlm5AbEqekzN/xfNI1eGpThD2lXxvi6uzqp+/McGrN31XQ3jYCCZurEkctyv3OMENbTPxmRCZWHY9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXESs8rU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578C6C4CEF0;
+	Tue, 12 Aug 2025 17:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020302;
-	bh=MeaiD6BgFjcYSl5b0SSdkFd2ugKRsTVn7rULS3ogHR0=;
+	s=korg; t=1755021114;
+	bh=1HIeY0ZEevQ8/40Hjis282DocBF+fekN+82GQphtYKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVDyJnFiEEcFkqjH3jdNWPyCcU82zQRw3mzWK0aXmbatQMs2g3gx06D/Excakwz0E
-	 eoRGuYNV9PIgWslpERH1q3tXUZmWPSCjGkDTgEYAfA0DSuIn6ahgStgJNqWQb8ViFm
-	 NQVevakTP2Q/4tFpqHVSNp3neyWTluV7LRohWu7A=
+	b=dXESs8rU3KFGqSmm9VlcCf+A6hN3YuLwa+9kK3gq1mchXnHFT6J6uMEnO/XFr8TSh
+	 PjjSm8A/z8aQKHxdufiphkuwlR6dsam0iHd7cCmiTojM2zne3QPpQDDz2hqICycN5H
+	 VYXndUOC8KZWw7x1AUZGOekS0RiuN4/flSmCeWEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 040/253] selftests: mptcp: connect: also cover alt modes
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 040/262] cpufreq: Initialize cpufreq-based frequency-invariance later
 Date: Tue, 12 Aug 2025 19:27:08 +0200
-Message-ID: <20250812172950.440467394@linuxfoundation.org>
+Message-ID: <20250812172954.666881664@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-commit 37848a456fc38c191aedfe41f662cc24db8c23d9 upstream.
+[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
 
-The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
-available from the beginning, but only tested when mptcp_connect.sh is
-manually launched with "-m mmap" or "-m sendfile", not via the
-kselftests helpers.
+The cpufreq-based invariance is enabled in cpufreq_register_driver(),
+but never disabled after registration fails. Move the invariance
+initialization to where all other initializations have been successfully
+done to solve this problem.
 
-The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
-"-m sendfile". Plus other CIs, especially the ones validating the stable
-releases, were not validating these alternate modes.
-
-To make sure these modes are validated by these CIs, add two new test
-programs executing mptcp_connect.sh with the alternate modes.
-
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile                  |    3 ++-
- tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     |    5 +++++
- tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh |    5 +++++
- 3 files changed, 12 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
- create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+ drivers/cpufreq/cpufreq.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -4,7 +4,8 @@ top_srcdir = ../../../../..
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 6682f422cadd..d48a7feba54d 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2938,15 +2938,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	cpufreq_driver = driver_data;
+ 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
  
- CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
+-	/*
+-	 * Mark support for the scheduler's frequency invariance engine for
+-	 * drivers that implement target(), target_index() or fast_switch().
+-	 */
+-	if (!cpufreq_driver->setpolicy) {
+-		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
+-		pr_debug("supports frequency invariance");
+-	}
+-
+ 	if (driver_data->setpolicy)
+ 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
  
--TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
-+TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
-+	      pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+@@ -2977,6 +2968,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	hp_online = ret;
+ 	ret = 0;
  
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
++	/*
++	 * Mark support for the scheduler's frequency invariance engine for
++	 * drivers that implement target(), target_index() or fast_switch().
++	 */
++	if (!cpufreq_driver->setpolicy) {
++		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
++		pr_debug("supports frequency invariance");
++	}
 +
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
+ 	pr_debug("driver %s up and running\n", driver_data->name);
+ 	goto out;
+ 
+-- 
+2.39.5
+
 
 
 
