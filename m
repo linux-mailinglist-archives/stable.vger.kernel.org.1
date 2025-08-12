@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB935B236EC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:06:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 878FBB236FB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B27287B887B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:03:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C16A618893A5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D0F283FE4;
-	Tue, 12 Aug 2025 19:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE893279DB6;
+	Tue, 12 Aug 2025 19:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exXLi6o0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIiO3d09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716D61C1AAA;
-	Tue, 12 Aug 2025 19:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAD9260583;
+	Tue, 12 Aug 2025 19:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025496; cv=none; b=JNTMbF0fg3rLR2AAXfDzvk2ObYdCKbUE9+O6S0YpxCgmALoeffP2lBXfzjMg+8FfLydjFnm3v2f09pwy/WPYz7txpVTfjFJVYL11MaJij+dki+Mh+ShSab8iba/8S+CW1QBs8L7g78JUz6tBiPsuyyvantd115zh8m2Vmpkct0s=
+	t=1755025503; cv=none; b=LnfGaLcOBRxQ/iNsEg47OxCsG2q5IMWvlhRG6ep44ex0fWPC2tZzc1gHqm/O57tY90tB30fVOZNJCmvLOpA0pBAO+yOYhfOAdYWxIb2C0KE8qPB8RlZUnHJcWm5azhvewX48LKOUAsNT8qF7yWhPBjJY4AT/RwIUbru4JURwefk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025496; c=relaxed/simple;
-	bh=GAGp2rrF1YFvL4N0YvTYj4IbMG44YYEhqBiWfroiQiY=;
+	s=arc-20240116; t=1755025503; c=relaxed/simple;
+	bh=rSBvEJE4kHCLBF9jsWxMm+4gtPJyjkN/13575wSzzak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Umf5FPGFQ2rWPZTMEr8IQd9ruIOiWDGiP/0rUl0tcOFhh8KpJEj3iWIRswHzC840wsKmxwYR/yOdIGa6wKsSnHtTQRrKnh4DRTMRg+tXumxz+c/jNcLc17X7xVjatFXcuVkPnZLzQkfYrMkxSSAj9+BPiDpVg9BUFrzYnGmlRUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exXLi6o0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A94C4CEF0;
-	Tue, 12 Aug 2025 19:04:55 +0000 (UTC)
+	 MIME-Version; b=PLQSU1Acxw4079fDp5NesFrRogVzY8JwgxKejzvTu6YOKHdAWPeTD2I3WI69vMnZEfDDLvk4byIvpU4A1peSCy24SeuHMzuGUbHs5HyjnZp24SP/7ofk6agbf127llChk/wf0ZtMwbmw/0DCTTOKDxfTV2uQSwxCbhIx88gHOfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIiO3d09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4BFC4CEF0;
+	Tue, 12 Aug 2025 19:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025496;
-	bh=GAGp2rrF1YFvL4N0YvTYj4IbMG44YYEhqBiWfroiQiY=;
+	s=korg; t=1755025503;
+	bh=rSBvEJE4kHCLBF9jsWxMm+4gtPJyjkN/13575wSzzak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exXLi6o07CM6VExyrLKFoasvCLnoc49DsyWr8pANYRwLzDNvrv9JTakK/gYGLtnjI
-	 QWImLJK38G+gwAHJwU7Q4v+Lr4gYYgT5cOxu1FEPzOVrGNo18WKY4aTik3ra2XKfvz
-	 BM76xD38yt1Lor2WPZEOKDvH7adnL/6HyvWfY1ak=
+	b=sIiO3d092I23sNU3UhSqpHSM5rygLekOUM7KGRjZ6cDDXxxMc72PWHcOZiRoNcOm7
+	 vnTmgrKqn9w6fSG/6uiADR1d8eMw9qkYLhTyefTWoC2JRUtX+lU83+1Iyqk56Rt47Z
+	 a40a5/xJKS2+yrdYLylAWJ6c64App3FxqlhLg99k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 059/480] drivers: misc: sram: fix up some const issues with recent attribute changes
-Date: Tue, 12 Aug 2025 19:44:27 +0200
-Message-ID: <20250812174359.850533629@linuxfoundation.org>
+Subject: [PATCH 6.15 060/480] power: sequencing: qcom-wcn: fix bluetooth-wifi copypasta for WCN6855
+Date: Tue, 12 Aug 2025 19:44:28 +0200
+Message-ID: <20250812174359.894622045@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -60,67 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit bf7b4a0e25569ce39c6749afe363aefe5723d326 ]
+[ Upstream commit 07d59dec6795428983a840de85aa02febaf7e01b ]
 
-The binary attribute const changes recently for the sram driver were
-made in a way that hid the fact that we would be casting a const pointer
-to a non-const one.  So explicitly make the cast so that it is obvious
-and preserve the const pointer in the sram_reserve_cmp() function.
+Prevent a name conflict (which is surprisingly not caught by the
+framework).
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Fixes: c3b8c358c4f3 ("misc: sram: constify 'struct bin_attribute'")
-Link: https://lore.kernel.org/r/2025052125-squid-sandstorm-a418@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd4c8bafcf50 ("power: sequencing: qcom-wcn: improve support for wcn6855")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250625-topic-wcn6855_pwrseq-v1-1-cfb96d599ff8@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/sram.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/power/sequencing/pwrseq-qcom-wcn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/sram.c b/drivers/misc/sram.c
-index e5069882457e..c69644be4176 100644
---- a/drivers/misc/sram.c
-+++ b/drivers/misc/sram.c
-@@ -28,7 +28,8 @@ static ssize_t sram_read(struct file *filp, struct kobject *kobj,
- {
- 	struct sram_partition *part;
+diff --git a/drivers/power/sequencing/pwrseq-qcom-wcn.c b/drivers/power/sequencing/pwrseq-qcom-wcn.c
+index e8f5030f2639..7d8d6b340749 100644
+--- a/drivers/power/sequencing/pwrseq-qcom-wcn.c
++++ b/drivers/power/sequencing/pwrseq-qcom-wcn.c
+@@ -155,7 +155,7 @@ static const struct pwrseq_unit_data pwrseq_qcom_wcn_bt_unit_data = {
+ };
  
--	part = container_of(attr, struct sram_partition, battr);
-+	/* Cast away the const as the attribute is part of a larger structure */
-+	part = (struct sram_partition *)container_of(attr, struct sram_partition, battr);
- 
- 	mutex_lock(&part->lock);
- 	memcpy_fromio(buf, part->base + pos, count);
-@@ -43,7 +44,8 @@ static ssize_t sram_write(struct file *filp, struct kobject *kobj,
- {
- 	struct sram_partition *part;
- 
--	part = container_of(attr, struct sram_partition, battr);
-+	/* Cast away the const as the attribute is part of a larger structure */
-+	part = (struct sram_partition *)container_of(attr, struct sram_partition, battr);
- 
- 	mutex_lock(&part->lock);
- 	memcpy_toio(part->base + pos, buf, count);
-@@ -164,8 +166,8 @@ static void sram_free_partitions(struct sram_dev *sram)
- static int sram_reserve_cmp(void *priv, const struct list_head *a,
- 					const struct list_head *b)
- {
--	struct sram_reserve *ra = list_entry(a, struct sram_reserve, list);
--	struct sram_reserve *rb = list_entry(b, struct sram_reserve, list);
-+	const struct sram_reserve *ra = list_entry(a, struct sram_reserve, list);
-+	const struct sram_reserve *rb = list_entry(b, struct sram_reserve, list);
- 
- 	return ra->start - rb->start;
- }
+ static const struct pwrseq_unit_data pwrseq_qcom_wcn6855_bt_unit_data = {
+-	.name = "wlan-enable",
++	.name = "bluetooth-enable",
+ 	.deps = pwrseq_qcom_wcn6855_unit_deps,
+ 	.enable = pwrseq_qcom_wcn_bt_enable,
+ 	.disable = pwrseq_qcom_wcn_bt_disable,
 -- 
 2.39.5
 
