@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D376B23139
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DE6B22FD9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E2118828EC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB30318979ED
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F20B30AAD9;
-	Tue, 12 Aug 2025 17:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF842FE57B;
+	Tue, 12 Aug 2025 17:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSLxZWst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNZJtxeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE5D2FE598;
-	Tue, 12 Aug 2025 17:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9E02FD1D6;
+	Tue, 12 Aug 2025 17:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021560; cv=none; b=CaZYnUyENeM/8Lhtbp/MDTe7+F4PC5itowTnnJP3RMctGNV1N4XVZ6etXhbEdCI0jhVABmzghLS/aYHKIiZjfDeNropllzBsiLrGO5PEV1Fr9vgLw7hBZFfXlEiXwLX1HZX4ZoXh6afAzoT7enhBz2Uc9dHD+X47f7IOBTE4BCc=
+	t=1755020596; cv=none; b=ZZRYIBCrIRMoeP1uLw/Prlsyl5vgkEOjeG40SvhS/FUgMGQ/2atMrRdoHz8imZI0KTTEd5fyQBl+t8CH+NiuGeP29pBFSzTZGXFAA2eELD0q7h/iWC+/lNFwEnoed8AQ5ffSy+2gITkjeeQz46tYQDWnJKYPwHGGsPYDSOwkKlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021560; c=relaxed/simple;
-	bh=5ZO34abCiuwurgN2E4EK4DdqmVWzpHEiNHhWFSJI3ow=;
+	s=arc-20240116; t=1755020596; c=relaxed/simple;
+	bh=KBWgQ69FEUqzuIExYg6sDfy0BNe0rqlblWl68TPXYug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzX6c+iddEGzk8AGl2oXjcQ3iYkYSENWS9Wwo7O41/Nj1Ipm9lY/WksT4SiKCngubOKCLRLu8zJu5Su5lqI+FEKrX5OC9+Ml7lP5R9Ls0Caehm4yDzqmUkZfxXWJjiswHUzRlxqlW/BLT+VhpSMpq0wqZIr1Be5xQRl+4M34tB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSLxZWst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB5AC4CEFC;
-	Tue, 12 Aug 2025 17:59:17 +0000 (UTC)
+	 MIME-Version; b=q3FbCTrXaaqbp7Tpz6EE4OxHF6M8O40SJu+iZ83QkYvRqX4WHzGxogJ6bZn2dTIm7kq86iG117eKNgKzZMmfd31wxOos6FOWhOtHIGq6vm+8fGvat/ERNwqsKqUflX1jW/ducCY/GR42/2jp4L5Od0VjrXlbMWO/b/BcBsZGlB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNZJtxeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523B1C4CEF9;
+	Tue, 12 Aug 2025 17:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021558;
-	bh=5ZO34abCiuwurgN2E4EK4DdqmVWzpHEiNHhWFSJI3ow=;
+	s=korg; t=1755020596;
+	bh=KBWgQ69FEUqzuIExYg6sDfy0BNe0rqlblWl68TPXYug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSLxZWstCHpI+Lbo8O3ph2MtbrACBpcQ6kJY+aGxaQ/Nxo1t6CqPzfsGSjBxZv7c0
-	 ts78QCJlNpvBW9m32KtoO1HW8xWGVDMc0ZBd0f5mIlw+CWMvgQ8VTr5QI5EjVHrAMe
-	 yiBdxIiEAxPO3oec0HXnvK/ooynenz5zxI+qvv6Q=
+	b=dNZJtxeQKIEldYVGOf2z/HLleH+FLsYSs01wkM8d12FG/bnbKWUTPJFXKOxmlHfUI
+	 U3u+ipuO1E4qhyZ/0mOJmSKkUc5X+2mTPEZtsW7mHo3etG0pbk0fv3Yy1GmWJITcrX
+	 ow68HNl6U7LIh8XVSTGD+c4iH2qIpJBA3Tj0pcQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/262] perf dso: Add missed dso__put to dso__load_kcore
-Date: Tue, 12 Aug 2025 19:28:32 +0200
-Message-ID: <20250812172958.386771625@linuxfoundation.org>
+Subject: [PATCH 6.1 125/253] wifi: mac80211: Check 802.11 encaps offloading in ieee80211_tx_h_select_key()
+Date: Tue, 12 Aug 2025 19:28:33 +0200
+Message-ID: <20250812172954.018766780@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 63a088e999de3f431f87d9a367933da894ddb613 ]
+[ Upstream commit 4037c468d1b3c508d69e6df0ef47fdee3d440e39 ]
 
-The kcore loading creates a set of list nodes that have reference
-counted references to maps of the kcore. The list node freeing in the
-success path wasn't releasing the maps, add the missing puts. It is
-unclear why this leak was being missed by leak sanitizer.
+With 802.11 encapsulation offloading, ieee80211_tx_h_select_key() is
+called on 802.3 frames. In that case do not try to use skb data as
+valid 802.11 headers.
 
-Fixes: 83720209961f ("perf map: Move map list node into symbol")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250624190326.2038704-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/1af4b5b903a5fca5ebe67333d5854f93b2be5abe.1752765971.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/tx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index ea24f21aafc3..4f0bbebcb6d6 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1366,6 +1366,7 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- 				goto out_err;
- 			}
- 		}
-+		map__zput(new_node->map);
- 		free(new_node);
- 	}
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index fe47674b83b6..e35a755b353b 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -644,6 +644,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 	else
+ 		tx->key = NULL;
+ 
++	if (info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) {
++		if (tx->key && tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
++			info->control.hw_key = &tx->key->conf;
++		return TX_CONTINUE;
++	}
++
+ 	if (tx->key) {
+ 		bool skip_hw = false;
  
 -- 
 2.39.5
