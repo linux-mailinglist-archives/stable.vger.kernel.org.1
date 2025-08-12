@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-168042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A66B23329
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBE9B2313C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B67518867E2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C5A97A8018
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680182F5481;
-	Tue, 12 Aug 2025 18:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15762FF155;
+	Tue, 12 Aug 2025 18:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3yxEqKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGRkbWc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2323D2DBF5E;
-	Tue, 12 Aug 2025 18:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB2A2FE571;
+	Tue, 12 Aug 2025 18:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022848; cv=none; b=KeWz2sNQWRW2F6gNe9yscRVgPv74JGIo4YX2TZdJqz1FZrM1Xtc4Sg8YqrgWHy3C7q5KLdvhKqbsRKNkp7kWV/bbS+usI+ZYtw23YpTji+IgyoBMBNEfttX1bQR8uJXSDg9apFTHunrI/FRf33qRPLr1806PwX3gJS1F8DaSXVs=
+	t=1755021674; cv=none; b=TfXFIg2GKmB0J/6UhMz+GlPFdpx7fMJQfUS2b2mp2ywG9brnQJGtFYOeUHj3TbbR19nd5cqxOND8fRPv3CyvKznLVVSTytuiSLdhN8Vy4R6SMOwHz7abgfPAlyVwDURcXDUBXP6D2SXuO7JEdrenBXfQJBgJdwcCv3liC0WxBWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022848; c=relaxed/simple;
-	bh=OToJF4gaRfRbxYvgA4rj1ecG7bzZ0MA64jct9Z1Ncz0=;
+	s=arc-20240116; t=1755021674; c=relaxed/simple;
+	bh=bjCge3zA8MoqHQGQbWrkN50pCoDOdpkwdCI2M/Mm7lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCtGT6KJiQDoVSa6IlrQVNAyy+9Vy/yL29QDOs4D6veFxoGtWRylgUxRVDxQmgi2gMlkqRtDXMHZboFiQPpDSKsUY3qoej+ISq0Cu3tua+M0X0H93lrjnZ6aKzFhuigEb+sWTIo6kyS19ah54/fwSr/p95oDbGBCBDQs7I0hSZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3yxEqKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A05C4CEF6;
-	Tue, 12 Aug 2025 18:20:47 +0000 (UTC)
+	 MIME-Version; b=Bs9T+LI8wp5CprdUfPKA0AZ3bBayvPJ6JJlz8Gvl/vQp+hs4GTQX2qEM/xfksDCJW4FMBjQhXExWXQNYdbR1fTqX8XITf5iOM/HqLVDsSaWrLfgyz/umqaV5QSiOTN1zzhoE2r3JVUJt9jYHkmIUTI0zHV2l70EoUYsOW4PavBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGRkbWc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B247AC4CEF0;
+	Tue, 12 Aug 2025 18:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022848;
-	bh=OToJF4gaRfRbxYvgA4rj1ecG7bzZ0MA64jct9Z1Ncz0=;
+	s=korg; t=1755021674;
+	bh=bjCge3zA8MoqHQGQbWrkN50pCoDOdpkwdCI2M/Mm7lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3yxEqKzanXr/KD9IRhmTaEdHCpFsevkqHmi3I4tpTWDyK9llkyYR+NUFFE9GGcmf
-	 UBpIbBgGtVseOUbioXz+3pF8Ei0+NS+asSVPh4duo7b0PCZEBUdtDgKDFSQW3mFc9z
-	 Or/fsmPHRWhfXmk1zieloV5JsiTxmpQWK/SHSwwM=
+	b=sGRkbWc5BG+LL770rDrXALwhQaWoH87PMsFJDIbAL5PpI0UfXG782ZGRgILbsMeuB
+	 XDUPYbQ/LXXXCcdWj0iQf4zlvgdPZqcldRpVR/NJnFxWk2Uu3Bsa79WPas7PQ++hFA
+	 7s/Ja//CmEcxz8tP4WyJebtVfJwpK4DEk1TnsLkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Zixun LI <admin@hifiphile.com>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/369] f2fs: turn off one_time when forcibly set to foreground GC
+Subject: [PATCH 6.6 158/262] mtd: rawnand: atmel: set pmecc data setup time
 Date: Tue, 12 Aug 2025 19:29:06 +0200
-Message-ID: <20250812173024.129852096@linuxfoundation.org>
+Message-ID: <20250812172959.831805592@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
 
-[ Upstream commit 8142daf8a53806689186ee255cc02f89af7f8890 ]
+[ Upstream commit f552a7c7e0a14215cb8a6fd89e60fa3932a74786 ]
 
-one_time mode is only for background GC. So, we need to set it back to
-false when foreground GC is enforced.
+Setup the pmecc data setup time as 3 clock cycles for 133MHz as recommended
+by the datasheet.
 
-Fixes: 9748c2ddea4a ("f2fs: do FG_GC when GC boosting is required for zoned devices")
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Reported-by: Zixun LI <admin@hifiphile.com>
+Closes: https://lore.kernel.org/all/c015bb20-6a57-4f63-8102-34b3d83e0f5b@microchip.com
+Suggested-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/raw/atmel/pmecc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index cd56c0e66657..c0e43d6056a0 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1899,6 +1899,7 @@ int f2fs_gc(struct f2fs_sb_info *sbi, struct f2fs_gc_control *gc_control)
- 	/* Let's run FG_GC, if we don't have enough space. */
- 	if (has_not_enough_free_secs(sbi, 0, 0)) {
- 		gc_type = FG_GC;
-+		gc_control->one_time = false;
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
+index 3c7dee1be21d..0b402823b619 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.c
++++ b/drivers/mtd/nand/raw/atmel/pmecc.c
+@@ -143,6 +143,7 @@ struct atmel_pmecc_caps {
+ 	int nstrengths;
+ 	int el_offset;
+ 	bool correct_erased_chunks;
++	bool clk_ctrl;
+ };
  
- 		/*
- 		 * For example, if there are many prefree_segments below given
+ struct atmel_pmecc {
+@@ -843,6 +844,10 @@ static struct atmel_pmecc *atmel_pmecc_create(struct platform_device *pdev,
+ 	if (IS_ERR(pmecc->regs.errloc))
+ 		return ERR_CAST(pmecc->regs.errloc);
+ 
++	/* pmecc data setup time */
++	if (caps->clk_ctrl)
++		writel(PMECC_CLK_133MHZ, pmecc->regs.base + ATMEL_PMECC_CLK);
++
+ 	/* Disable all interrupts before registering the PMECC handler. */
+ 	writel(0xffffffff, pmecc->regs.base + ATMEL_PMECC_IDR);
+ 	atmel_pmecc_reset(pmecc);
+@@ -896,6 +901,7 @@ static struct atmel_pmecc_caps at91sam9g45_caps = {
+ 	.strengths = atmel_pmecc_strengths,
+ 	.nstrengths = 5,
+ 	.el_offset = 0x8c,
++	.clk_ctrl = true,
+ };
+ 
+ static struct atmel_pmecc_caps sama5d4_caps = {
 -- 
 2.39.5
 
