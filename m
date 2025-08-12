@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DEBB232A6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB9AB230D6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFF682A0C14
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ABFB189A870
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77472FD1C1;
-	Tue, 12 Aug 2025 18:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BB02FE573;
+	Tue, 12 Aug 2025 17:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7RcCLZ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mraCItc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7424A2EAB97;
-	Tue, 12 Aug 2025 18:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F842FE569;
+	Tue, 12 Aug 2025 17:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022545; cv=none; b=qaioxp/n7Fx3DnieIg9Hcp4k2ukFbQaE4AtlO30esm4vM0o1pp/pKjg773VIODkCehim3TGN2PVmGDO6aVuGGDTep9ds8OQ6JfXUYovufN/8WNEd3lFPDGW3h2oxsV8tKT2ETQGwtRVHvuMWAITeGPkCwiZq5Iu76pMb1NrXM/I=
+	t=1755021329; cv=none; b=mja+olV1XDKQdiyhQBMZkYSrISmpFAo2WV+W22XEe7M+LsmoQOllHi9lVjffj0XT6as9k2/TZ9MUyZmU7SigE/py9FrPVP/cXgVqUn7YV6oH337s0ypFTuX+72JantF8nSvCgdwUQ98qXIZRiPQgsMEGqooASGZkk0Ktlyrx9iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022545; c=relaxed/simple;
-	bh=nNvEh+bHTrZ+Hqm3LzK7mwbB/lhQaCUTuiOrm6Le2gU=;
+	s=arc-20240116; t=1755021329; c=relaxed/simple;
+	bh=vSfhYmUwMqqFWE5B83NkzPrnI46ujqDKrG96u26DvNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDo/wp820JqJh88ONisna3I5VypWYl39zK0X+KyxyPULkFyTCvkjBDUy4Iy3Y7az8hwYrI3ClkpE3hgBNM+s/ussMYezkvsw+yWAM+PNkBsxcCqhxFrwLlbcwx0gasHYejwiQu+g9hU/c9ggtUpTHGStWgj4ATg3yz+Wxxyzsd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7RcCLZ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22E6C4CEF0;
-	Tue, 12 Aug 2025 18:15:44 +0000 (UTC)
+	 MIME-Version; b=buv9Z6ygbQ5IiOVpMv9FXLtjDXv+AaORcfa1yrs4Ay3lVR4FS/VTwe1/waFf9Jlt4ddkExHfCDZLHSW2+oDmiNRFCGQwG0qjohfvwigejaDSC8ECpCb9M3DqefPBjf1VOCeozltkIJeMUBkL+pSbdVx/uLjsKTyybxFdDzGBK9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mraCItc/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B70C4AF09;
+	Tue, 12 Aug 2025 17:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022545;
-	bh=nNvEh+bHTrZ+Hqm3LzK7mwbB/lhQaCUTuiOrm6Le2gU=;
+	s=korg; t=1755021329;
+	bh=vSfhYmUwMqqFWE5B83NkzPrnI46ujqDKrG96u26DvNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7RcCLZ2xP0qnG2/iiIIDMy+CZIZvPB9Uaa3v8iv19qTDvDoXqaBNtEtgRsjUroUx
-	 9ArIK5UzD5brhq4PHyetzn1HoH9WMyxrVI+NmDPXm2UT7BrGiS+VosFG5uCrzCd8m0
-	 5sahK11BUA5CRMjtrB8BRya43GyhVvSW6cR7d6TY=
+	b=mraCItc/RU07xMbUoVnVn4XPqbnryLXGYXic2WYtyjrIh+T1jVxARvuWpeZ6roLQf
+	 jbv4naLjM+EJ21ZYMVAPe5eIMpCIPtDxOJWH7qHnayGhPT/rapwFgEUKYUmJGjtDVW
+	 yeql2sKX8eCnGs+or4NqcH+VUocvgB0vQfSgpVKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/369] crypto: inside-secure - Fix `dma_unmap_sg()` nents value
+Subject: [PATCH 6.6 096/262] can: kvaser_pciefd: Store device channel index
 Date: Tue, 12 Aug 2025 19:28:04 +0200
-Message-ID: <20250812173021.806715616@linuxfoundation.org>
+Message-ID: <20250812172957.162538469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-[ Upstream commit cb7fa6b6fc71e0c801e271aa498e2f19e6df2931 ]
+[ Upstream commit d54b16b40ddadb7d0a77fff48af7b319a0cd6aae ]
 
-The `dma_unmap_sg()` functions should be called with the same nents as the
-`dma_map_sg()`, not the value the map function returned.
+Store device channel index in netdev.dev_port.
 
-Fixes: c957f8b3e2e5 ("crypto: inside-secure - avoid unmapping DMA memory that was not mapped")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20250725123230.8-6-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/safexcel_hash.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/can/kvaser_pciefd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
-index f44c08f5f5ec..af4b978189e5 100644
---- a/drivers/crypto/inside-secure/safexcel_hash.c
-+++ b/drivers/crypto/inside-secure/safexcel_hash.c
-@@ -249,7 +249,9 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv,
- 	safexcel_complete(priv, ring);
+diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
+index 73b448cd00f2..0b74b79b08f0 100644
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -927,6 +927,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		can->err_rep_cnt = 0;
+ 		can->bec.txerr = 0;
+ 		can->bec.rxerr = 0;
++		can->can.dev->dev_port = i;
  
- 	if (sreq->nents) {
--		dma_unmap_sg(priv->dev, areq->src, sreq->nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(priv->dev, areq->src,
-+			     sg_nents_for_len(areq->src, areq->nbytes),
-+			     DMA_TO_DEVICE);
- 		sreq->nents = 0;
- 	}
- 
-@@ -497,7 +499,9 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
- 			 DMA_FROM_DEVICE);
- unmap_sg:
- 	if (req->nents) {
--		dma_unmap_sg(priv->dev, areq->src, req->nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(priv->dev, areq->src,
-+			     sg_nents_for_len(areq->src, areq->nbytes),
-+			     DMA_TO_DEVICE);
- 		req->nents = 0;
- 	}
- cdesc_rollback:
+ 		init_completion(&can->start_comp);
+ 		init_completion(&can->flush_comp);
 -- 
 2.39.5
 
