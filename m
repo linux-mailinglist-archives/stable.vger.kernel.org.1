@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D951B23268
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F15B23437
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB26617DD19
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9814F1A24A5A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B1F2E285E;
-	Tue, 12 Aug 2025 18:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E602EF652;
+	Tue, 12 Aug 2025 18:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fv2XtBqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZ+nzWWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2119A1EBFE0;
-	Tue, 12 Aug 2025 18:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD6661FFE;
+	Tue, 12 Aug 2025 18:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022391; cv=none; b=H6KnZI9oxowee76Qj654wwvfypotlRlLruxJHKDaI1nXuStOysuPSyniykK0mbrAPMz46SL8rT3dqKo1jeN7yRm8I52VfsaWIQ6Ju9PdddLRB/CW2DsmMN2TQEnSk+KpESwhtxIjkwkdW1UUYUcnL+5xwgi5VSy010pu5TCoErY=
+	t=1755023539; cv=none; b=mQtNOviT6kRE//AORnu9rygN7VUpEgzhtIUcDNtApU3EWXJYoZSOrMa6qkUrV+T3Tqj9kyXHjvE/s1R41RU2LGwzVoZtnx/+QsDbAhmussKjIV90Sbp2hvQUFzymTODxy+4/Z4GVEh6jkFO91ey22Hi8s2MJXwIds/AFzHFHbbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022391; c=relaxed/simple;
-	bh=QeOFuwmkHd8i/dnrhxqrSU3yhjk9YTbtD2uiOanibMQ=;
+	s=arc-20240116; t=1755023539; c=relaxed/simple;
+	bh=W/vpVjoQQVe+c2Ho7uX1Ntf2JblHaU2+QVaJxYRHZPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCPA8fpAeyhbkF6IAAwZ6kBtVk+3CrHKkMGHMHuuqArfC/q62QYeyVpXXbaPaxS2Zi1A73U0vxRhqCw26zXlhoKVkw2N+ywzecQq/rscYqUghs5pZ17AdED6LqkN/nuA9YmV/7CAco5rl69XUwCDc/iWaENreaKVjhoAqqi/dcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fv2XtBqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842FFC4CEF1;
-	Tue, 12 Aug 2025 18:13:10 +0000 (UTC)
+	 MIME-Version; b=oKhf73lMSAvTD/Y+aDF5sU0C40SspIPPR3n83GZc2T6Uo6Z5u1JDS/THVjoL30zGTVjWZHRUF4r4Y5Z7nIWfpE22rrr+KB4aFEJA/QFuw0zQVRQNFTGwVjAr6Ti+1Df52Tb69SHWDnoS1Zuu7JFSNXeUfD9fnfT6hSSOT3zyPKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZ+nzWWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7187AC4CEF0;
+	Tue, 12 Aug 2025 18:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022391;
-	bh=QeOFuwmkHd8i/dnrhxqrSU3yhjk9YTbtD2uiOanibMQ=;
+	s=korg; t=1755023538;
+	bh=W/vpVjoQQVe+c2Ho7uX1Ntf2JblHaU2+QVaJxYRHZPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fv2XtBqLykZNIrNl+3hNAMZHrIbu7F3DJ0pSTF4UzK9+XTCyRPavBrCnC5q8o1FME
-	 lxWxF3j+R19otlROmes8rxg65vTfTAixlxSwt/Ogn3Ia0uwRL98/AfxlWa0l8xMMp0
-	 72DeM/Ig9vO55ydzUk9kcqM5MNw9UDEP4HLTMa8o=
+	b=SZ+nzWWatck/3TX4PUFgKNTyGDBQwiXhC+5AX9rIFvVd5T5RZLX1xRLx8oJk2KDEr
+	 KWTpG5twUNLILRz82xCx7WMV9J75qCFAdBFOtNApSI22kO1rjhTJN4zhVbJ9nHJsjg
+	 1q82kM48RnjOkdR7wCzOdeKJfdvW2KP+hJLyhrgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/369] tcp: call tcp_measure_rcv_mss() for ooo packets
+Subject: [PATCH 6.16 110/627] cpufreq: Init policy->rwsem before it may be possibly used
 Date: Tue, 12 Aug 2025 19:26:45 +0200
-Message-ID: <20250812173018.841851841@linuxfoundation.org>
+Message-ID: <20250812173423.497911060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 38d7e444336567bae1c7b21fc18b7ceaaa5643a0 ]
+[ Upstream commit d1378d1d7edb3a4c4935a44fe834ae135be03564 ]
 
-tcp_measure_rcv_mss() is used to update icsk->icsk_ack.rcv_mss
-(tcpi_rcv_mss in tcp_info) and tp->scaling_ratio.
+In cpufreq_policy_put_kobj(), policy->rwsem is used. But in
+cpufreq_policy_alloc(), if freq_qos_add_notifier() returns an error, error
+path via err_kobj_remove or err_min_qos_notifier will be reached and
+cpufreq_policy_put_kobj() will be called before policy->rwsem is
+initialized. Thus, the calling of init_rwsem() should be moved to where
+before these two error paths can be reached.
 
-Calling it from tcp_data_queue_ofo() makes sure these
-fields are updated, and permits a better tuning
-of sk->sk_rcvbuf, in the case a new flow receives many ooo
-packets.
-
-Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711114006.480026-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 67d874c3b2c6 ("cpufreq: Register notifiers with the PM QoS framework")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-3-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/cpufreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index d45a6dcc3753..30f4375f8431 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5040,6 +5040,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
- 		return;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 189e2166ddef..c1c6f11ac551 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1284,6 +1284,8 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 		goto err_free_real_cpus;
  	}
  
-+	tcp_measure_rcv_mss(sk, skb);
- 	/* Disable header prediction. */
- 	tp->pred_flags = 0;
- 	inet_csk_schedule_ack(sk);
++	init_rwsem(&policy->rwsem);
++
+ 	freq_constraints_init(&policy->constraints);
+ 
+ 	policy->nb_min.notifier_call = cpufreq_notifier_min;
+@@ -1306,7 +1308,6 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 	}
+ 
+ 	INIT_LIST_HEAD(&policy->policy_list);
+-	init_rwsem(&policy->rwsem);
+ 	spin_lock_init(&policy->transition_lock);
+ 	init_waitqueue_head(&policy->transition_wait);
+ 	INIT_WORK(&policy->update, handle_update);
 -- 
 2.39.5
 
