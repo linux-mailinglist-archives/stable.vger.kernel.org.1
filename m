@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9D5B2315C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DC4B2301E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6122D1AA3809
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 835C4560B14
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406EA2FE56D;
-	Tue, 12 Aug 2025 18:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180412FABE3;
+	Tue, 12 Aug 2025 17:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnSZUTqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1pvkLbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38202F5E;
-	Tue, 12 Aug 2025 18:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4E3279915;
+	Tue, 12 Aug 2025 17:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021652; cv=none; b=mLWihcwHSyTIE4SgkG3prOvYZfOsEKHlJlmbCdPY6TuvWoRqlpVNlEBrJ90dPcs4RYR5lWx75M1i4s+YWbVXMe5+jcTr/cch0K8AKpxZaF8Z9yEUs0ThUA+X1AsuZ/km/poOg2LbMCxybSdSlS+8npa+JnQ+GZiDkHCwpsKvJPo=
+	t=1755020893; cv=none; b=Esvn45QIX3nHAy6CoeP9bPbKRlUTIwQLCMI7radrFc9rrmxuBHSWKmkqcfPEa7P78JAE4028Loqf/BiQgyre1j7sMrB3LNi2eNr1y+FjcMR2m9bbT90f3dbCB4/oaMvkaxgz9k3d6FrN4wcxKtEH6pMipSkPd+hXu4DaPDGJaUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021652; c=relaxed/simple;
-	bh=kPtqZjg2gZTgJU2yEQhZe/RURYU7iFmoRbgsw+JkWOo=;
+	s=arc-20240116; t=1755020893; c=relaxed/simple;
+	bh=86Dc9U1LbpP4oHafup10qy9NzGaV0kWCvLGkThqkiBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXDF1fo8ogwjvfNlTjlximsOtTeLYEzQHNj7f/YEYtnUXRhept5zueMmlc+9yc5qShRhu88Bd4+45qHC1gVFsqehxS9Xa7EbgAoFphZrfFro+CUYNffg1UNp13Fo79noSN5jr8CFeSwlRPqEYy/LAUo7BLYdU7xnc4vvLBx/FPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnSZUTqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AE2C4CEF0;
-	Tue, 12 Aug 2025 18:00:51 +0000 (UTC)
+	 MIME-Version; b=YdLSGUSmmiOLrnf/ypWSHubqtF4D8wslXr7B//W66Patc4bf9YG6H42ZN8Kpemsmq6lAwF6YsuSL7ff9IdIVyxyIzddLS40590STWPO/J6Q+azsCTsPl03tLtDjpg75llsGaw+KX3L/qbSy9qEpIQHpmI2tVDvmedfzpuCbmySo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1pvkLbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3855CC4CEF0;
+	Tue, 12 Aug 2025 17:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021651;
-	bh=kPtqZjg2gZTgJU2yEQhZe/RURYU7iFmoRbgsw+JkWOo=;
+	s=korg; t=1755020893;
+	bh=86Dc9U1LbpP4oHafup10qy9NzGaV0kWCvLGkThqkiBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnSZUTqMdEkmFDH4xDFIk+yLkkKGVjETqc8KdPSunvkGH0AuGOU/eo8NJQ/Vr9LKO
-	 hEv0wHCHQoiqjOIhO1RI+IZ+TaU9kUmyGyBJQfjho8sow74aVcDiSA8Nn/HPKNIlNC
-	 4D1/FaX54SRAn52ST5Ubhgvn14pyff64SORKgtMA=
+	b=V1pvkLbe2sU7jx4eUk37cqAuJrpfftFoVzwU12d0+EhHdLg5qep9jKxOh7ZFolhoR
+	 83nA+JPnR0MQuTKEB04U3amAu9Fv4YsiXgOY/cMK5lUxKcodXobE7W/dNrgTKm0V+y
+	 OejpzGaLXU51o31NiErVL3T6bBXnutbRh02FEfUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/262] vfio/pds: Fix missing detach_ioas op
+Subject: [PATCH 6.1 183/253] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
 Date: Tue, 12 Aug 2025 19:29:31 +0200
-Message-ID: <20250812173000.915315034@linuxfoundation.org>
+Message-ID: <20250812172956.560449832@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit fe24d5bc635e103a517ec201c3cb571eeab8be2f ]
+[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
 
-When CONFIG_IOMMUFD is enabled and a device is bound to the pds_vfio_pci
-driver, the following WARN_ON() trace is seen and probe fails:
+WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
+comment in the declaration of struct match_workbuf stating it is and a
+modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
+WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
+line to ensure that any future changes to the value of WB_HISTORY_SIZE
+respect this requirement.
 
-WARNING: CPU: 0 PID: 5040 at drivers/vfio/vfio_main.c:317 __vfio_register_dev+0x130/0x140 [vfio]
-<...>
-pds_vfio_pci 0000:08:00.1: probe with driver pds_vfio_pci failed with error -22
+Fixes: 136db994852a ("apparmor: increase left match history buffer size")
 
-This is because the driver's vfio_device_ops.detach_ioas isn't set.
-
-Fix this by using the generic vfio_iommufd_physical_detach_ioas
-function.
-
-Fixes: 38fe3975b4c2 ("vfio/pds: Initial support for pds VFIO driver")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20250702163744.69767-1-brett.creeley@amd.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/pds/vfio_dev.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/apparmor/include/match.h | 3 ++-
+ security/apparmor/match.c         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/pds/vfio_dev.c b/drivers/vfio/pci/pds/vfio_dev.c
-index a286ebcc7112..69d1bcefd7c3 100644
---- a/drivers/vfio/pci/pds/vfio_dev.c
-+++ b/drivers/vfio/pci/pds/vfio_dev.c
-@@ -231,6 +231,7 @@ static const struct vfio_device_ops pds_vfio_ops = {
- 	.bind_iommufd = vfio_iommufd_physical_bind,
- 	.unbind_iommufd = vfio_iommufd_physical_unbind,
- 	.attach_ioas = vfio_iommufd_physical_attach_ioas,
-+	.detach_ioas = vfio_iommufd_physical_detach_ioas,
- };
+diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
+index 884489590588..29306ec87fd1 100644
+--- a/security/apparmor/include/match.h
++++ b/security/apparmor/include/match.h
+@@ -141,7 +141,8 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
  
- const struct vfio_device_ops *pds_vfio_ops_info(void)
+ void aa_dfa_free_kref(struct kref *kref);
+ 
+-#define WB_HISTORY_SIZE 24
++/* This needs to be a power of 2 */
++#define WB_HISTORY_SIZE 32
+ struct match_workbuf {
+ 	unsigned int count;
+ 	unsigned int pos;
+diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+index 3e9e1eaf990e..0e683ee323e3 100644
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -672,6 +672,7 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
+ 
+ #define inc_wb_pos(wb)						\
+ do {								\
++	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
+ 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
+ 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
+ } while (0)
 -- 
 2.39.5
 
