@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE92B2339A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4D3B235A0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371B55636BA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 979B7622338
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A902FE583;
-	Tue, 12 Aug 2025 18:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A50B2C21D4;
+	Tue, 12 Aug 2025 18:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwHK06GO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dd/ETcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7E22F83A1;
-	Tue, 12 Aug 2025 18:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083C82CA9;
+	Tue, 12 Aug 2025 18:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023157; cv=none; b=tBgNRdM9pg8KZElpI6xkxEWd0MdxCwQFGmJrhEVs6XoZmeL40NGJmHgSFezjYfF0KpMhVZ7u7eSNxNKoUdBwUk5kEhvxsyH8mJIvOmIXZ4RdgIydo9+oQJB6TlFK+r4XtUCbP6liNblQcar8SPh7zsjd6zHrg1gTiGfszCvUZlY=
+	t=1755024425; cv=none; b=cm6pVStNTt4/AxJQBxI9dHXwtM7gw7NvWojG91YuXe/ySuCd0nV5V15hgy1jj+MWUy2mFaH01U9vkgnNZwYh5RILOvKhBrwTStdyNQrT7xDdVFsgK+O33b4uKG9RSxrJY9bcHcYCHjwslS2lHMF/7q1V2v3FdAHqeM9MALSTBrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023157; c=relaxed/simple;
-	bh=UrTJlw2v80iwIEW6HL5MarikxIpRVDNYZbCRkm5mzdw=;
+	s=arc-20240116; t=1755024425; c=relaxed/simple;
+	bh=JnFBqjF7PfVBNcp5fai/MHDNJmVtovz4L6RaSgIdo20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbvD3WhSYMabEFv/3Q8XERcxmNCTeBKIPX8FUVa+ymxJOctzmEWMaC/wkVLfm7dZqQ9H/e+jLKtZjWNbbEu5P2meCAkZ/utBXWictLOeEYhgge/TcVVG7hzT8Zjz99i/UjtBqqFI39YOFZJS6OYQ+4/4ws92u/iFl1w8oUfBrfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwHK06GO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6407C4CEF0;
-	Tue, 12 Aug 2025 18:25:56 +0000 (UTC)
+	 MIME-Version; b=LMjp/liUcN7mSOKnJtgW5hblzn5R9xrXhHOXHgbGNCLFF+6tjzLPh+PgmJZCpw/fmvDwGbblmM3RafkMIECqrjYRPQ5xJpubvQjZbZyzqr1pkvxLeoQwHGtpz3kp2vDxRrPTOtJ/3rTwe2Q4zp0JCO0TeuKQAzBl/8n9kiEK+T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dd/ETcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D661C4CEF0;
+	Tue, 12 Aug 2025 18:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023157;
-	bh=UrTJlw2v80iwIEW6HL5MarikxIpRVDNYZbCRkm5mzdw=;
+	s=korg; t=1755024424;
+	bh=JnFBqjF7PfVBNcp5fai/MHDNJmVtovz4L6RaSgIdo20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwHK06GOUt5/2ZoDGk+2ABKOb4SK5EVMGzLqTo1+GNBIeSU+Yibiw2d4zLpcUvdhR
-	 Bc/x05A4ByuT/+k3Ox7wCIv6Eel4ENp1hVG8mutzZoC9qU1Ns/jaYVIviZ4AT00jZw
-	 3TCFXjCUWTU+1cMEUGLC3+XRvKLLK4RKEPc8YREM=
+	b=1dd/ETcn2wYZbJESdW+f5x6GPKXCuZcst43oWpMEsDXmXn9SMfG6PPr4EX10F9LcZ
+	 /UAtGoaATygpQmplPLbWbDzUiyaVggwqEXjJ9W1SPvTM0+B6gwx7oyiPzWv4d8k4UP
+	 xle5AbrV6G5cpZUQSzGDLnACxSRMnW+Kwppnec9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Orlando Chamberlain <orlandoch.dev@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.12 367/369] HID: apple: validate feature-report field count to prevent NULL pointer dereference
+	Mengbiao Xiong <xisme1998@gmail.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 369/627] crypto: ccp - Fix crash when rebind ccp device for ccp.ko
 Date: Tue, 12 Aug 2025 19:31:04 +0200
-Message-ID: <20250812173030.489883647@linuxfoundation.org>
+Message-ID: <20250812173433.349161642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Mengbiao Xiong <xisme1998@gmail.com>
 
-commit 1bb3363da862e0464ec050eea2fb5472a36ad86b upstream.
+[ Upstream commit 181698af38d3f93381229ad89c09b5bd0496661a ]
 
-A malicious HID device with quirk APPLE_MAGIC_BACKLIGHT can trigger a NULL
-pointer dereference whilst the power feature-report is toggled and sent to
-the device in apple_magic_backlight_report_set(). The power feature-report
-is expected to have two data fields, but if the descriptor declares one
-field then accessing field[1] and dereferencing it in
-apple_magic_backlight_report_set() becomes invalid
-since field[1] will be NULL.
+When CONFIG_CRYPTO_DEV_CCP_DEBUGFS is enabled, rebinding
+the ccp device causes the following crash:
 
-An example of a minimal descriptor which can cause the crash is something
-like the following where the report with ID 3 (power report) only
-references a single 1-byte field. When hid core parses the descriptor it
-will encounter the final feature tag, allocate a hid_report (all members
-of field[] will be zeroed out), create field structure and populate it,
-increasing the maxfield to 1. The subsequent field[1] access and
-dereference causes the crash.
+$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/unbind
+$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/bind
 
-  Usage Page (Vendor Defined 0xFF00)
-  Usage (0x0F)
-  Collection (Application)
-    Report ID (1)
-    Usage (0x01)
-    Logical Minimum (0)
-    Logical Maximum (255)
-    Report Size (8)
-    Report Count (1)
-    Feature (Data,Var,Abs)
+[  204.976930] BUG: kernel NULL pointer dereference, address: 0000000000000098
+[  204.978026] #PF: supervisor write access in kernel mode
+[  204.979126] #PF: error_code(0x0002) - not-present page
+[  204.980226] PGD 0 P4D 0
+[  204.981317] Oops: Oops: 0002 [#1] SMP NOPTI
+...
+[  204.997852] Call Trace:
+[  204.999074]  <TASK>
+[  205.000297]  start_creating+0x9f/0x1c0
+[  205.001533]  debugfs_create_dir+0x1f/0x170
+[  205.002769]  ? srso_return_thunk+0x5/0x5f
+[  205.004000]  ccp5_debugfs_setup+0x87/0x170 [ccp]
+[  205.005241]  ccp5_init+0x8b2/0x960 [ccp]
+[  205.006469]  ccp_dev_init+0xd4/0x150 [ccp]
+[  205.007709]  sp_init+0x5f/0x80 [ccp]
+[  205.008942]  sp_pci_probe+0x283/0x2e0 [ccp]
+[  205.010165]  ? srso_return_thunk+0x5/0x5f
+[  205.011376]  local_pci_probe+0x4f/0xb0
+[  205.012584]  pci_device_probe+0xdb/0x230
+[  205.013810]  really_probe+0xed/0x380
+[  205.015024]  __driver_probe_device+0x7e/0x160
+[  205.016240]  device_driver_attach+0x2f/0x60
+[  205.017457]  bind_store+0x7c/0xb0
+[  205.018663]  drv_attr_store+0x28/0x40
+[  205.019868]  sysfs_kf_write+0x5f/0x70
+[  205.021065]  kernfs_fop_write_iter+0x145/0x1d0
+[  205.022267]  vfs_write+0x308/0x440
+[  205.023453]  ksys_write+0x6d/0xe0
+[  205.024616]  __x64_sys_write+0x1e/0x30
+[  205.025778]  x64_sys_call+0x16ba/0x2150
+[  205.026942]  do_syscall_64+0x56/0x1e0
+[  205.028108]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  205.029276] RIP: 0033:0x7fbc36f10104
+[  205.030420] Code: 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 8d 05 e1 08 2e 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
 
-    Usage (0x02)
-    Logical Maximum (32767)
-    Report Size (16)
-    Report Count (1)
-    Feature (Data,Var,Abs)
+This patch sets ccp_debugfs_dir to NULL after destroying it in
+ccp5_debugfs_destroy, allowing the directory dentry to be
+recreated when rebinding the ccp device.
 
-    Report ID (3)
-    Usage (0x03)
-    Logical Minimum (0)
-    Logical Maximum (1)
-    Report Size (8)
-    Report Count (1)
-    Feature (Data,Var,Abs)
-  End Collection
+Tested on AMD Ryzen 7 1700X.
 
-Here we see the KASAN splat when the kernel dereferences the
-NULL pointer and crashes:
-
-  [   15.164723] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP KASAN NOPTI
-  [   15.165691] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-  [   15.165691] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0 #31 PREEMPT(voluntary)
-  [   15.165691] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-  [   15.165691] RIP: 0010:apple_magic_backlight_report_set+0xbf/0x210
-  [   15.165691] Call Trace:
-  [   15.165691]  <TASK>
-  [   15.165691]  apple_probe+0x571/0xa20
-  [   15.165691]  hid_device_probe+0x2e2/0x6f0
-  [   15.165691]  really_probe+0x1ca/0x5c0
-  [   15.165691]  __driver_probe_device+0x24f/0x310
-  [   15.165691]  driver_probe_device+0x4a/0xd0
-  [   15.165691]  __device_attach_driver+0x169/0x220
-  [   15.165691]  bus_for_each_drv+0x118/0x1b0
-  [   15.165691]  __device_attach+0x1d5/0x380
-  [   15.165691]  device_initial_probe+0x12/0x20
-  [   15.165691]  bus_probe_device+0x13d/0x180
-  [   15.165691]  device_add+0xd87/0x1510
-  [...]
-
-To fix this issue we should validate the number of fields that the
-backlight and power reports have and if they do not have the required
-number of fields then bail.
-
-Fixes: 394ba612f941 ("HID: apple: Add support for magic keyboard backlight on T2 Macs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Reviewed-by: Orlando Chamberlain <orlandoch.dev@gmail.com>
-Tested-by: Aditya Garg <gargaditya08@live.com>
-Link: https://patch.msgid.link/20250713233008.15131-1-qasdev00@gmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3cdbe346ed3f ("crypto: ccp - Add debugfs entries for CCP information")
+Signed-off-by: Mengbiao Xiong <xisme1998@gmail.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/ccp-debugfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -890,7 +890,8 @@ static int apple_magic_backlight_init(st
- 	backlight->brightness = report_enum->report_id_hash[APPLE_MAGIC_REPORT_ID_BRIGHTNESS];
- 	backlight->power = report_enum->report_id_hash[APPLE_MAGIC_REPORT_ID_POWER];
+diff --git a/drivers/crypto/ccp/ccp-debugfs.c b/drivers/crypto/ccp/ccp-debugfs.c
+index a1055554b47a..dc26bc22c91d 100644
+--- a/drivers/crypto/ccp/ccp-debugfs.c
++++ b/drivers/crypto/ccp/ccp-debugfs.c
+@@ -319,5 +319,8 @@ void ccp5_debugfs_setup(struct ccp_device *ccp)
  
--	if (!backlight->brightness || !backlight->power)
-+	if (!backlight->brightness || backlight->brightness->maxfield < 2 ||
-+	    !backlight->power || backlight->power->maxfield < 2)
- 		return -ENODEV;
- 
- 	backlight->cdev.name = ":white:" LED_FUNCTION_KBD_BACKLIGHT;
+ void ccp5_debugfs_destroy(void)
+ {
++	mutex_lock(&ccp_debugfs_lock);
+ 	debugfs_remove_recursive(ccp_debugfs_dir);
++	ccp_debugfs_dir = NULL;
++	mutex_unlock(&ccp_debugfs_lock);
+ }
+-- 
+2.39.5
+
 
 
 
