@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6668BB22FF9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27BBDB23145
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F3E0188B4FC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916FE18844FC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231212FDC2B;
-	Tue, 12 Aug 2025 17:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3242D2FD1DC;
+	Tue, 12 Aug 2025 18:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYNwvFD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1hsl55z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E122FD1B2;
-	Tue, 12 Aug 2025 17:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E523F2FDC5C;
+	Tue, 12 Aug 2025 18:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020690; cv=none; b=KZ4aP24Impp37TT1Dwhsh8fOdwUQxKjBLWvsGihhmIgjYweIT3q7F7rLlPoNS+OgsOaW2win8aGc3XxqBeq0Ymhzr6KJJCq4ZFOVyQph8DYgrjLbZKU+xNhy0ORPVWRjo+GJuljrTLZ79ITk2OaOvbQYMOALQleCWRjFJ81nEbE=
+	t=1755021611; cv=none; b=DrOEP02qVPaMblFyuiRJTvbU+m39mnD63jYker+No5bXb6zNf74lOkE+kOhx7XE/Q0wH0VcdvNn3X2gDQ5xFkVW5db60WKRdqkrr8T2QkbhZt0R0iD2i1qIWvPdxr2zZISxS9orQSs9iPklTbsnggd70M853DXlIzikefKTpP1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020690; c=relaxed/simple;
-	bh=S9X51xQMjqZ3KusggN8JNUHu35sXHCqdFQSDR97YB4Y=;
+	s=arc-20240116; t=1755021611; c=relaxed/simple;
+	bh=Ftsof7NHFMqPgBL7JjjDmJZrJcB3bEwQKTSQvMuI5CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ei70rch+LxJ5ld0kuhGDuzGbUouy9AGo16uOwtcoqTdFPQG1S+yCAP82vljPGdTCQG595LnG93Kj5cC90k+bKnSRPt+tjOTxM0Zw/73SCALEfXwL3jJS6v1LcmLfNgWeGDUYDnaUfDjZmnnqLpDkshIZnHjPlFZCHPH4byEPE0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYNwvFD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFA0C4CEF7;
-	Tue, 12 Aug 2025 17:44:49 +0000 (UTC)
+	 MIME-Version; b=Fbbmzzg2E5aBhWkMKiuF5cEb2c9moKFH2UcHVHmhdnBDoGhJwBSH+ryXApqlGwO4aye5Hz31a4xH73F+QVmc7RNWbBuYTN05Au7xKrysXk8ytY1Npm2I7dq2AN5pNvqbByo+zNK+IK5PquxQG/bcef+R8vAqW+5ZUW9XZVBFkYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1hsl55z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514E2C4CEF0;
+	Tue, 12 Aug 2025 18:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020690;
-	bh=S9X51xQMjqZ3KusggN8JNUHu35sXHCqdFQSDR97YB4Y=;
+	s=korg; t=1755021610;
+	bh=Ftsof7NHFMqPgBL7JjjDmJZrJcB3bEwQKTSQvMuI5CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYNwvFD4KF046mOxpEE3drbKuSaxbxaxO0HU9A6NiyeEzm7+RQbHwTb1qwfhnjycX
-	 IyOMhl//LBTt1KxeWPbsZH6stulJToCiXVV+soPllItV4RskwL8uP0A0ghb/WKarII
-	 O+UyH/0bRF9pNgtbV3uRJiezq3yvozwQXS2WC0LM=
+	b=p1hsl55z0iWnJt2A24y/uJuBqXmUxWR2aIPhv+PKw0AALXeGY8e776en+yEnQTm0p
+	 ngGoZPqxRE70ItiL9lY43hAWjh5Ad/7lOdXMJKKfZp6umwZlv7YZLFD2UDHJYEJ+jz
+	 2pVOLbSuTD7UCacAMO8sInMG0dvhX+PwDIvGrsv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Zheng Yu <zheng.yu@northwestern.edu>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/253] crypto: inside-secure - Fix `dma_unmap_sg()` nents value
-Date: Tue, 12 Aug 2025 19:29:02 +0200
-Message-ID: <20250812172955.273051026@linuxfoundation.org>
+Subject: [PATCH 6.6 155/262] jfs: fix metapage reference count leak in dbAllocCtl
+Date: Tue, 12 Aug 2025 19:29:03 +0200
+Message-ID: <20250812172959.703335174@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Zheng Yu <zheng.yu@northwestern.edu>
 
-[ Upstream commit cb7fa6b6fc71e0c801e271aa498e2f19e6df2931 ]
+[ Upstream commit 856db37592021e9155384094e331e2d4589f28b1 ]
 
-The `dma_unmap_sg()` functions should be called with the same nents as the
-`dma_map_sg()`, not the value the map function returned.
+In dbAllocCtl(), read_metapage() increases the reference count of the
+metapage. However, when dp->tree.budmin < 0, the function returns -EIO
+without calling release_metapage() to decrease the reference count,
+leading to a memory leak.
 
-Fixes: c957f8b3e2e5 ("crypto: inside-secure - avoid unmapping DMA memory that was not mapped")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Add release_metapage(mp) before the error return to properly manage
+the metapage reference count and prevent the leak.
+
+Fixes: a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ("jfs: fix shift-out-of-bounds in dbSplit")
+
+Signed-off-by: Zheng Yu <zheng.yu@northwestern.edu>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/safexcel_hash.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/jfs/jfs_dmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
-index ecf64cc35fff..08227d44a27b 100644
---- a/drivers/crypto/inside-secure/safexcel_hash.c
-+++ b/drivers/crypto/inside-secure/safexcel_hash.c
-@@ -249,7 +249,9 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv,
- 	safexcel_complete(priv, ring);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 35e063c9f3a4..5a877261c3fe 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1809,8 +1809,10 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
+ 			return -EIO;
+ 		dp = (struct dmap *) mp->data;
  
- 	if (sreq->nents) {
--		dma_unmap_sg(priv->dev, areq->src, sreq->nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(priv->dev, areq->src,
-+			     sg_nents_for_len(areq->src, areq->nbytes),
-+			     DMA_TO_DEVICE);
- 		sreq->nents = 0;
- 	}
+-		if (dp->tree.budmin < 0)
++		if (dp->tree.budmin < 0) {
++			release_metapage(mp);
+ 			return -EIO;
++		}
  
-@@ -497,7 +499,9 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
- 			 DMA_FROM_DEVICE);
- unmap_sg:
- 	if (req->nents) {
--		dma_unmap_sg(priv->dev, areq->src, req->nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(priv->dev, areq->src,
-+			     sg_nents_for_len(areq->src, areq->nbytes),
-+			     DMA_TO_DEVICE);
- 		req->nents = 0;
- 	}
- cdesc_rollback:
+ 		/* try to allocate the blocks.
+ 		 */
 -- 
 2.39.5
 
