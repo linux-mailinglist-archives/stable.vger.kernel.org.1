@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1FCB23114
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4ECB232EF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 269AB3B2CAB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A2961884F5C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F722FE562;
-	Tue, 12 Aug 2025 17:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578CB2E36F1;
+	Tue, 12 Aug 2025 18:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsHpQW11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxVioBt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820001EBFE0;
-	Tue, 12 Aug 2025 17:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A523F9D2;
+	Tue, 12 Aug 2025 18:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021516; cv=none; b=UONsLaFSa6o+RsxAHFDI9H2Grk0UKtf+7fs3fMTV9UrK52S4BJpS926YkCvmiKUfBhOvBC+EOu2mzKX8N9WPSQ6N+qBa5hJzvZhRQS5W30Yfi4JAZNjIplqjPwAzis1f7HmsPMhU9dGWUA4A8rXcHE58EOiDEuxgvMN2OUCAtbo=
+	t=1755022716; cv=none; b=Q1lUAwTmpGR9U3531kMDkzf973cYMpoLbLA0VHlgOX7IVNclvY1Gx655O37UA6cPxU598c7lvLeF8HSk5qDGlHJkgFd6xH7N8yQhD8QtEshpQQt8+ZYwnQAXMzw65EtQ9T5nrHvq2Sk4J4CAhgBPFcjwskfwBL2p58F/XAhhywI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021516; c=relaxed/simple;
-	bh=/Q46k/7T/Pj6x/5AOMuaFftowSBQ77OThUxBu8Gx4aY=;
+	s=arc-20240116; t=1755022716; c=relaxed/simple;
+	bh=8kVS8gbrxBGDcpIdyUmfWi2teCfZq+M7jNLmrJUMJmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQ+QCjLNpJkINEcfdztGcRYC3NKvukp/jGMvn+WUbOBG9kKWKr6u0O4vUiD9ja3jdsYcEjRgGlvTyX//cvr8nkA3a0nV19Cyz+jguLh6GMPJaCZr2B8KyGZH9QPSQjSmlZA6F7VchpmAmv8jvnDfgkxHKsGkpFTjg9kYkNNkPGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsHpQW11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A9BC4CEF1;
-	Tue, 12 Aug 2025 17:58:35 +0000 (UTC)
+	 MIME-Version; b=i27UXfSPlfimElMBh34sF+f/+JV3we8vtHStjzpKSZQfPZmhGy3DVeQkJEWt/feaWTmVCId1dipfqr0uUq1b86me2sVqK3kSlCbHoSUj3dkUPMD2bonk6utDYGz3i8E5LJOusmfDxm5VsxMyTUjOXS2wQmBd4itfSgGJZZsOAV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxVioBt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7BCC4CEF1;
+	Tue, 12 Aug 2025 18:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021516;
-	bh=/Q46k/7T/Pj6x/5AOMuaFftowSBQ77OThUxBu8Gx4aY=;
+	s=korg; t=1755022715;
+	bh=8kVS8gbrxBGDcpIdyUmfWi2teCfZq+M7jNLmrJUMJmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsHpQW11Q0/LxiTWgaf95KIWOfJJPxdXlqrR4+6CBAcgtdPoVAdXS4o8XWiET2vqR
-	 yxlpZ8e8wI2F4uqGmL0AcgxgmAnzNWmz8nsCW/j9BybcqVkoNNs5kTOThSOVA+BFif
-	 q90URw3kIIUV+sweKmFX+mmwOIcX1I8fvwfyaH54=
+	b=VxVioBt5kjDsCQSZCWN+7z11kLzEUbfjcZyul/0P8gJOlgtr3t2C9RbGe/J+tS827
+	 euoUr70EV8Q1YSKrpEPUQtd1xKe3a5o/+DjzEnS5FsV00jGQd8J6ACqYeePmPqtTfg
+	 jDtdb2Ca5mcy67nK1KVib4GhuM8GL5X0tOdpCNzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/262] PCI: endpoint: pci-epf-vntb: Fix the incorrect usage of __iomem attribute
-Date: Tue, 12 Aug 2025 19:28:53 +0200
-Message-ID: <20250812172959.274391303@linuxfoundation.org>
+Subject: [PATCH 6.12 237/369] bpf: Check netfilter ctx accesses are aligned
+Date: Tue, 12 Aug 2025 19:28:54 +0200
+Message-ID: <20250812173023.688358775@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <mani@kernel.org>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 61ae7f8694fb4b57a8c02a1a8d2b601806afc999 ]
+[ Upstream commit 9e6448f7b1efb27f8d508b067ecd33ed664a4246 ]
 
-__iomem attribute is supposed to be used only with variables holding the
-MMIO pointer. But here, 'mw_addr' variable is just holding a 'void *'
-returned by pci_epf_alloc_space(). So annotating it with __iomem is clearly
-wrong. Hence, drop the attribute.
+Similarly to the previous patch fixing the flow_dissector ctx accesses,
+nf_is_valid_access also doesn't check that ctx accesses are aligned.
+Contrary to flow_dissector programs, netfilter programs don't have
+context conversion. The unaligned ctx accesses are therefore allowed by
+the verifier.
 
-This also fixes the below sparse warning:
-
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17: warning: incorrect type in assignment (different address spaces)
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    expected void [noderef] __iomem *mw_addr
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    got void *
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21: warning: incorrect type in assignment (different address spaces)
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    expected unsigned int [usertype] *epf_db
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    got void [noderef] __iomem *mw_addr
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38: warning: incorrect type in argument 2 (different address spaces)
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    expected void *addr
-  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    got void [noderef] __iomem *mw_addr
-
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250709125022.22524-1-mani@kernel.org
+Fixes: fd9c663b9ad6 ("bpf: minimal support for programs hooked into netfilter framework")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/853ae9ed5edaa5196e8472ff0f1bb1cc24059214.1754039605.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_bpf_link.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 8bdd295f21cc..33c3f9b980e6 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -531,7 +531,7 @@ static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
- 	struct device *dev = &ntb->epf->dev;
- 	int ret;
- 	struct pci_epf_bar *epf_bar;
--	void __iomem *mw_addr;
-+	void *mw_addr;
- 	enum pci_barno barno;
- 	size_t size = sizeof(u32) * ntb->db_count;
+diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
+index be3f72fcc678..b5e4ca9026a8 100644
+--- a/net/netfilter/nf_bpf_link.c
++++ b/net/netfilter/nf_bpf_link.c
+@@ -295,6 +295,9 @@ static bool nf_is_valid_access(int off, int size, enum bpf_access_type type,
+ 	if (off < 0 || off >= sizeof(struct bpf_nf_ctx))
+ 		return false;
+ 
++	if (off % size != 0)
++		return false;
++
+ 	if (type == BPF_WRITE)
+ 		return false;
  
 -- 
 2.39.5
