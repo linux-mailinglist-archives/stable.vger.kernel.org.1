@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3DE6B22FD9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00B6B234B6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB30318979ED
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B7818893C0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF842FE57B;
-	Tue, 12 Aug 2025 17:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EE62FD1AD;
+	Tue, 12 Aug 2025 18:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNZJtxeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSksD51/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9E02FD1D6;
-	Tue, 12 Aug 2025 17:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D442F5E;
+	Tue, 12 Aug 2025 18:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020596; cv=none; b=ZZRYIBCrIRMoeP1uLw/Prlsyl5vgkEOjeG40SvhS/FUgMGQ/2atMrRdoHz8imZI0KTTEd5fyQBl+t8CH+NiuGeP29pBFSzTZGXFAA2eELD0q7h/iWC+/lNFwEnoed8AQ5ffSy+2gITkjeeQz46tYQDWnJKYPwHGGsPYDSOwkKlA=
+	t=1755023909; cv=none; b=cRQpcGF39R8JlStL9Q1D536l6ArZJvVHRJjc/strnPte0d2/3YXn2z7TKNFInRLBCeNCIRzi+EsEE/NVP3FeP+IAUIKMcLB3TvSho4TSeeILqou/Yp6pl/zO1WjZNlN2U5aeDk667iXi6s+yQFlh8+rtfyN99FZR4pha0iFZJe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020596; c=relaxed/simple;
-	bh=KBWgQ69FEUqzuIExYg6sDfy0BNe0rqlblWl68TPXYug=;
+	s=arc-20240116; t=1755023909; c=relaxed/simple;
+	bh=2SxhUKJ6DBVARi6ybYmk8pgckoLN+CCwTopYmnW3Zu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3FbCTrXaaqbp7Tpz6EE4OxHF6M8O40SJu+iZ83QkYvRqX4WHzGxogJ6bZn2dTIm7kq86iG117eKNgKzZMmfd31wxOos6FOWhOtHIGq6vm+8fGvat/ERNwqsKqUflX1jW/ducCY/GR42/2jp4L5Od0VjrXlbMWO/b/BcBsZGlB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNZJtxeQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523B1C4CEF9;
-	Tue, 12 Aug 2025 17:43:16 +0000 (UTC)
+	 MIME-Version; b=I4Yow0VRW6PAG0oIk1alKbWT70eePTxyOPnOxcT+FhgXZxksRZXYS0dCrH/6UTfZX2HI12KHqWKIGPEif7P8R75m0wmfNmssVdBpCeuVNjLSqCTXfvhLmkLAnnRbCiSN/U31g6+oNheqO1rZcjM40vKEx4HZgV9muXoBbArGjBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSksD51/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D834C4CEF0;
+	Tue, 12 Aug 2025 18:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020596;
-	bh=KBWgQ69FEUqzuIExYg6sDfy0BNe0rqlblWl68TPXYug=;
+	s=korg; t=1755023909;
+	bh=2SxhUKJ6DBVARi6ybYmk8pgckoLN+CCwTopYmnW3Zu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNZJtxeQKIEldYVGOf2z/HLleH+FLsYSs01wkM8d12FG/bnbKWUTPJFXKOxmlHfUI
-	 U3u+ipuO1E4qhyZ/0mOJmSKkUc5X+2mTPEZtsW7mHo3etG0pbk0fv3Yy1GmWJITcrX
-	 ow68HNl6U7LIh8XVSTGD+c4iH2qIpJBA3Tj0pcQM=
+	b=WSksD51/BYokFTe//C8zAuTuljSE0Mauq7IEZSTAzn4X3DuQzwTL/H4+fZOae+r4G
+	 UeXYl6WRq8xXvnjnx3I2NNbXbKXJdY3cLRIq6kDsEjFTByg8D6sLI+KbR2M8sGR05m
+	 UzSafMsaJlOWaE4gaZRO/Y6C3iHSiak3FLri8snU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ethan Milon <ethan.milon@eviden.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/253] wifi: mac80211: Check 802.11 encaps offloading in ieee80211_tx_h_select_key()
+Subject: [PATCH 6.16 218/627] iommu/vt-d: Fix missing PASID in dev TLB flush with cache_tag_flush_all
 Date: Tue, 12 Aug 2025 19:28:33 +0200
-Message-ID: <20250812172954.018766780@linuxfoundation.org>
+Message-ID: <20250812173427.575947955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Ethan Milon <ethan.milon@eviden.com>
 
-[ Upstream commit 4037c468d1b3c508d69e6df0ef47fdee3d440e39 ]
+[ Upstream commit 3141153816bf4f0257747bd4dda176d38f1a9a49 ]
 
-With 802.11 encapsulation offloading, ieee80211_tx_h_select_key() is
-called on 802.3 frames. In that case do not try to use skb data as
-valid 802.11 headers.
+The function cache_tag_flush_all() was originally implemented with
+incorrect device TLB invalidation logic that does not handle PASID, in
+commit c4d27ffaa8eb ("iommu/vt-d: Add cache tag invalidation helpers")
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/1af4b5b903a5fca5ebe67333d5854f93b2be5abe.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This causes regressions where full address space TLB invalidations occur
+with a PASID attached, such as during transparent hugepage unmapping in
+SVA configurations or when calling iommu_flush_iotlb_all(). In these
+cases, the device receives a TLB invalidation that lacks PASID.
+
+This incorrect logic was later extracted into
+cache_tag_flush_devtlb_all(), in commit 3297d047cd7f ("iommu/vt-d:
+Refactor IOTLB and Dev-IOTLB flush for batching")
+
+The fix replaces the call to cache_tag_flush_devtlb_all() with
+cache_tag_flush_devtlb_psi(), which properly handles PASID.
+
+Fixes: 4f609dbff51b ("iommu/vt-d: Use cache helpers in arch_invalidate_secondary_tlbs")
+Fixes: 4e589a53685c ("iommu/vt-d: Use cache_tag_flush_all() in flush_iotlb_all")
+Signed-off-by: Ethan Milon <ethan.milon@eviden.com>
+Link: https://lore.kernel.org/r/20250708214821.30967-1-ethan.milon@eviden.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20250714045028.958850-11-baolu.lu@linux.intel.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/intel/cache.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index fe47674b83b6..e35a755b353b 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -644,6 +644,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
- 	else
- 		tx->key = NULL;
+diff --git a/drivers/iommu/intel/cache.c b/drivers/iommu/intel/cache.c
+index 47692cbfaabd..c8b79de84d3f 100644
+--- a/drivers/iommu/intel/cache.c
++++ b/drivers/iommu/intel/cache.c
+@@ -422,22 +422,6 @@ static void cache_tag_flush_devtlb_psi(struct dmar_domain *domain, struct cache_
+ 					     domain->qi_batch);
+ }
  
-+	if (info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) {
-+		if (tx->key && tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
-+			info->control.hw_key = &tx->key->conf;
-+		return TX_CONTINUE;
-+	}
-+
- 	if (tx->key) {
- 		bool skip_hw = false;
+-static void cache_tag_flush_devtlb_all(struct dmar_domain *domain, struct cache_tag *tag)
+-{
+-	struct intel_iommu *iommu = tag->iommu;
+-	struct device_domain_info *info;
+-	u16 sid;
+-
+-	info = dev_iommu_priv_get(tag->dev);
+-	sid = PCI_DEVID(info->bus, info->devfn);
+-
+-	qi_batch_add_dev_iotlb(iommu, sid, info->pfsid, info->ats_qdep, 0,
+-			       MAX_AGAW_PFN_WIDTH, domain->qi_batch);
+-	if (info->dtlb_extra_inval)
+-		qi_batch_add_dev_iotlb(iommu, sid, info->pfsid, info->ats_qdep, 0,
+-				       MAX_AGAW_PFN_WIDTH, domain->qi_batch);
+-}
+-
+ /*
+  * Invalidates a range of IOVA from @start (inclusive) to @end (inclusive)
+  * when the memory mappings in the target domain have been modified.
+@@ -508,7 +492,7 @@ void cache_tag_flush_all(struct dmar_domain *domain)
+ 			break;
+ 		case CACHE_TAG_DEVTLB:
+ 		case CACHE_TAG_NESTING_DEVTLB:
+-			cache_tag_flush_devtlb_all(domain, tag);
++			cache_tag_flush_devtlb_psi(domain, tag, 0, MAX_AGAW_PFN_WIDTH);
+ 			break;
+ 		}
  
 -- 
 2.39.5
