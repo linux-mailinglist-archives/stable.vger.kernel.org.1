@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC24B2326E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65820B23462
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 010EA2A2DB4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E047188B7ED
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCB52FA0CD;
-	Tue, 12 Aug 2025 18:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320792FDC4B;
+	Tue, 12 Aug 2025 18:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sao1t3Hq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhSRRqc2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1FE2F5E;
-	Tue, 12 Aug 2025 18:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E732FA0CD;
+	Tue, 12 Aug 2025 18:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022408; cv=none; b=E1eFoMvDBKMQfdzOKkPR80dmyuFohBLdyTBFiSmPJ2yPEFtlVWGlRpQRcJb5Epun4LND4PJxd2rdSON04bvQAEWbUbhF80phREf6JZFfFY0hd0huT2X/ejSw3OgNqug+jGWCnG6mmqhuVxVS82NDjoTbhB++8uSa0Z2vZ47zXIg=
+	t=1755023673; cv=none; b=mdSBj3ppHuAKr7CXmDZOhymgvYZUG/pbhjsI+AIbzkMvzYG8aZ1YB1EU+3yN42/cpUQU9hhJqY3VclpZcEugUzeSjeHg3d2QG0RoiUE8KYLLYddGvBohKLBA0DDOzDAlHSfA+gD6U3pF8RKYyWP74+YCmcGJV1Rtp3IsdrmXVFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022408; c=relaxed/simple;
-	bh=1j/jHx+lscc47wRACWLwPFsWXSfB3RbPi+og7U7Srig=;
+	s=arc-20240116; t=1755023673; c=relaxed/simple;
+	bh=yvDBNq9oTx0/f2FtkqDS+IlmiObxnKLxUbT1MP+ogx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkiaWPNvzOmCZmPNMcEZY+O20Dz5MPC72CaxFmLklnhI/bnzilMT4uMEmF+134r2+l31fkwLlVzkH4D1A69zL/dCp8QNf9B9Ot6Dnviq+ZIYActfIwi1RhWQ5ZutXSQOuHMKzvfmLn5aivXYwTpCQbGm5GJ4S5494kSc/6wDh1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sao1t3Hq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BCE4C4CEF1;
-	Tue, 12 Aug 2025 18:13:27 +0000 (UTC)
+	 MIME-Version; b=lmZKLs80DzTQ05ua8b1oCLre7UVWAJYqOmCkF2JuKTmyJeRhw35DjAxGLtBp88ibZZqbF+H3rHeGq8xqVGZhiJBRO1J2nqmYpe/Y6ml6Hk6O5Y3CryQeg1y8LDsbp4UkgIfWqE6+Qwc1uENisz1dLkeBImEbFYiwoPI+W7mUAxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhSRRqc2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B590C4CEF0;
+	Tue, 12 Aug 2025 18:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022407;
-	bh=1j/jHx+lscc47wRACWLwPFsWXSfB3RbPi+og7U7Srig=;
+	s=korg; t=1755023672;
+	bh=yvDBNq9oTx0/f2FtkqDS+IlmiObxnKLxUbT1MP+ogx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sao1t3Hq6fHcPj0k26QMzHoAQ2cWd8th9sUiPRmP3PcOREI86CJzIEZ9In52Iylh/
-	 SSfbRkT6H+UIc7CE0dgDwkvcH2z1AO1qWHMIGTUVfSftSF2zhJ/fi0V8lg3T6PqgNX
-	 pWR6cob6//PStZREQ75/ZY7nG6m3ARc28dBkwuRg=
+	b=JhSRRqc2J7Zjzl7SY0htk/PdJ/p5sU2THjrLL1f0C8W8FgiwtPfoJBWGIAUKA5GXO
+	 iZQqOgVYjzsPebi/hwT2zkqOmJiTXBkqd2r7Xo6zYoNEoGhI6umZLcFBjNYIlEiDA6
+	 zybdnqXclBE64nJjku3E6/NcXVBG9nnLpQDiW/Yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 147/369] ipv6: fix possible infinite loop in fib6_info_uses_dev()
+Subject: [PATCH 6.16 149/627] drm/vmwgfx: Fix Host-Backed userspace on Guest-Backed kernel
 Date: Tue, 12 Aug 2025 19:27:24 +0200
-Message-ID: <20250812173020.314858838@linuxfoundation.org>
+Message-ID: <20250812173424.964431436@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit f8d8ce1b515a0a6af72b30502670a406cfb75073 ]
+[ Upstream commit 7872997c048e989c7689c2995d230fdca7798000 ]
 
-fib6_info_uses_dev() seems to rely on RCU without an explicit
-protection.
+Running 3D applications with SVGA_FORCE_HOST_BACKED=1 or using an
+ancient version of mesa was broken because the buffer was pinned in
+VMW_BO_DOMAIN_SYS and could not be moved to VMW_BO_DOMAIN_MOB during
+validation.
 
-Like the prior fix in rt6_nlmsg_size(),
-we need to make sure fib6_del_route() or fib6_add_rt2node()
-have not removed the anchor from the list, or we risk an infinite loop.
+The compat_shader buffer should not pinned.
 
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250725140725.3626540-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 668b206601c5 ("drm/vmwgfx: Stop using raw ttm_buffer_object's")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://lore.kernel.org/r/20250429203427.1742331-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_shader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index f1e64c1cc49b..8b84ed926cd1 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5875,16 +5875,21 @@ static bool fib6_info_uses_dev(const struct fib6_info *f6i,
- 	if (f6i->fib6_nh->fib_nh_dev == dev)
- 		return true;
- 
--	if (f6i->fib6_nsiblings) {
--		struct fib6_info *sibling, *next_sibling;
-+	if (READ_ONCE(f6i->fib6_nsiblings)) {
-+		const struct fib6_info *sibling;
- 
--		list_for_each_entry_safe(sibling, next_sibling,
--					 &f6i->fib6_siblings, fib6_siblings) {
--			if (sibling->fib6_nh->fib_nh_dev == dev)
-+		rcu_read_lock();
-+		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
-+					fib6_siblings) {
-+			if (sibling->fib6_nh->fib_nh_dev == dev) {
-+				rcu_read_unlock();
- 				return true;
-+			}
-+			if (!READ_ONCE(f6i->fib6_nsiblings))
-+				break;
- 		}
-+		rcu_read_unlock();
- 	}
--
- 	return false;
- }
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+index 7fb1c88bcc47..69dfe69ce0f8 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+@@ -896,7 +896,7 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
+ 		.busy_domain = VMW_BO_DOMAIN_SYS,
+ 		.bo_type = ttm_bo_type_device,
+ 		.size = size,
+-		.pin = true,
++		.pin = false,
+ 		.keep_resv = true,
+ 	};
  
 -- 
 2.39.5
