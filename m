@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3104DB2331D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B85C4B231B1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CFF17B0B54
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 242013A4038
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBE62F90C8;
-	Tue, 12 Aug 2025 18:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2902FDC25;
+	Tue, 12 Aug 2025 18:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXw6FtOv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIvx2OdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE8A21ABD0;
-	Tue, 12 Aug 2025 18:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF12FDC3C;
+	Tue, 12 Aug 2025 18:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023110; cv=none; b=JEHM36MPLGFDGDhPvBrDavoqsfvFUPRQHtKna51Lm2PPFLZW7vym+/Zv6KOpgSEOJbdYE07ujbvmku3YLHsMwe7Ey/djeL7exUYuES38wKF77unWyYKbP6uGg8rxtT4C2vBUinafwVj4W1eVXdUAqWCIWTV6ILeSsGigK8Wv9Og=
+	t=1755021910; cv=none; b=ZjZGdEwrrFMwDxnKyLwt635UagTQlJx5eBoWFFzyEydRC9Uvtj8Q+H/PHTvw+wuKy5rCfW7gkwtUX2ADmDBV98yJ0mW4X3WLPt77hadHf6qr3xZ3AJ3fsCLAaVao7gi3YENUFWKPjndzO94PRnx5dabN80my1j31WRbzBruQUeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023110; c=relaxed/simple;
-	bh=l382D/AKGrX5zKwFTgeHny3DKrS5XodNOw8UAEjBazE=;
+	s=arc-20240116; t=1755021910; c=relaxed/simple;
+	bh=xzPHxxALJtHkYgykxqTJAdGKSIFGrIbdXkCNrlQHJ68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TntUhRP4o5jMK6csVeyEz1VBG7huUfxbrSIP/Fmcm5MgK4pumWHnPW1ASF8jpixGz8ztPJw6D7+YXOVXVKU2zO9kowz0ukTEy1GM0NTCtMNqOGvWR9KhRYilYU3AMhSWPcE8RO4qtr6OrlDfqlUXqSav4W1V1U63L2ZCVvRsdTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXw6FtOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6AFC4CEF7;
-	Tue, 12 Aug 2025 18:25:09 +0000 (UTC)
+	 MIME-Version; b=rv6XIM/aDl0bOEaCr+HZlqIiJMUJP+BSR6mfjfmSwRin2WZesLGHSmapViwtdO/M4UAx8FPM64BrBEfHM8ZVojOsVuOsSewiS6y9oVQy1v12XhiZOiA5vF/yz0m+1YR5cOJqvnTboPslzqa02dqKUedBSRhskK5D/WwY4NQfhSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIvx2OdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EEFC4CEF0;
+	Tue, 12 Aug 2025 18:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023109;
-	bh=l382D/AKGrX5zKwFTgeHny3DKrS5XodNOw8UAEjBazE=;
+	s=korg; t=1755021910;
+	bh=xzPHxxALJtHkYgykxqTJAdGKSIFGrIbdXkCNrlQHJ68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXw6FtOvrhC7PbmEFD57B6wi9YqhElsIbxEy/ge6afhDg4RxG3TX+5wDQOygyLiDR
-	 ijfx82Mvour+N2K3Q5bgt3b8+0NmuvKzPQk29xxZ+4TlK9NhRcVgaFmD6ygKniQNWJ
-	 kSivm41ib4q8Z3kyn8fAndBQ6lQdbMkOHnyq8yrg=
+	b=GIvx2OdAiROqyzWL3c/hJOD95lGRmWK0uNwvuQ8KzyJuikMaoOvldwaOC8T15dppy
+	 Fft8ZEo7WzAIHBLTz11aKJN64ruHuiRNoKQ1WbnTa7KShoz/Kl1i8JqffFMhIPfeqs
+	 uXpbn8cNueYVqqcbYo8V2fSR+/Cm/4rbx5wfYZQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armando Budianto <sprite@gnuweeb.org>,
-	Simon Horman <horms@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Subject: [PATCH 6.12 351/369] net: usbnet: Fix the wrong netif_carrier_on() call
+	stable@kernel.org,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 260/262] MIPS: mm: tlb-r4k: Uniquify TLB entries on init
 Date: Tue, 12 Aug 2025 19:30:48 +0200
-Message-ID: <20250812173029.898520698@linuxfoundation.org>
+Message-ID: <20250812173004.202663647@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 8466d393700f9ccef68134d3349f4e0a087679b9 upstream.
+commit 35ad7e181541aa5757f9f316768d3e64403ec843 upstream.
 
-The commit referenced in the Fixes tag causes usbnet to malfunction
-(identified via git bisect). Post-commit, my external RJ45 LAN cable
-fails to connect. Linus also reported the same issue after pulling that
-commit.
+Hardware or bootloader will initialize TLB entries to any value, which
+may collide with kernel's UNIQUE_ENTRYHI value. On MIPS microAptiv/M5150
+family of cores this will trigger machine check exception and cause boot
+failure. On M5150 simulation this could happen 7 times out of 1000 boots.
 
-The code has a logic error: netif_carrier_on() is only called when the
-link is already on. Fix this by moving the netif_carrier_on() call
-outside the if-statement entirely. This ensures it is always called
-when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
-of the link state.
+Replace local_flush_tlb_all() with r4k_tlb_uniquify() which probes each
+TLB ENTRIHI unique value for collisions before it's written, and in case
+of collision try a different ASID.
 
-Cc: stable@vger.kernel.org
-Cc: Armando Budianto <sprite@gnuweeb.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/mm/tlb-r4k.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1113,6 +1113,9 @@ static void __handle_link_change(struct
- 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
- 		return;
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -506,6 +506,60 @@ static int __init set_ntlb(char *str)
  
-+	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+		netif_carrier_on(dev->net);
+ __setup("ntlb=", set_ntlb);
+ 
++/* Initialise all TLB entries with unique values */
++static void r4k_tlb_uniquify(void)
++{
++	int entry = num_wired_entries();
 +
- 	if (!netif_carrier_ok(dev->net)) {
- 		/* kill URBs for reading packets to save bus bandwidth */
- 		unlink_urbs(dev, &dev->rxq);
-@@ -1122,9 +1125,6 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
--		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
--			netif_carrier_on(dev->net);
--
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
++	htw_stop();
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
++
++	while (entry < current_cpu_data.tlbsize) {
++		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
++		unsigned long asid = 0;
++		int idx;
++
++		/* Skip wired MMID to make ginvt_mmid work */
++		if (cpu_has_mmid)
++			asid = MMID_KERNEL_WIRED + 1;
++
++		/* Check for match before using UNIQUE_ENTRYHI */
++		do {
++			if (cpu_has_mmid) {
++				write_c0_memorymapid(asid);
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
++			} else {
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
++			}
++			mtc0_tlbw_hazard();
++			tlb_probe();
++			tlb_probe_hazard();
++			idx = read_c0_index();
++			/* No match or match is on current entry */
++			if (idx < 0 || idx == entry)
++				break;
++			/*
++			 * If we hit a match, we need to try again with
++			 * a different ASID.
++			 */
++			asid++;
++		} while (asid < asid_mask);
++
++		if (idx >= 0 && idx != entry)
++			panic("Unable to uniquify TLB entry %d", idx);
++
++		write_c0_index(entry);
++		mtc0_tlbw_hazard();
++		tlb_write_indexed();
++		entry++;
++	}
++
++	tlbw_use_hazard();
++	htw_start();
++	flush_micro_tlb();
++}
++
+ /*
+  * Configure TLB (for init or after a CPU has been powered off).
+  */
+@@ -545,7 +599,7 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
+ 
+ 	/* From this point on the ARC firmware is dead.	 */
+-	local_flush_tlb_all();
++	r4k_tlb_uniquify();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+ }
 
 
 
