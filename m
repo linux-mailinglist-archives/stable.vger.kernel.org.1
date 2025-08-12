@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-167747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547ACB231A7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4825CB23570
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9286F6E0B31
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA50627632
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47FE2FDC35;
-	Tue, 12 Aug 2025 18:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D762FD1B2;
+	Tue, 12 Aug 2025 18:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuXwqTI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcuSxRjq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3E22F5E;
-	Tue, 12 Aug 2025 18:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AD5291C1F;
+	Tue, 12 Aug 2025 18:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021856; cv=none; b=DYfdoAIprCsFLQr7v74Cm0IYIRv2aDfYTWdT4Z/na96ZxB2opf3bkqNQNGb162mt4aTZAujU7qejTHGRf34d0fjkvHv1C9yQ6oN61YwpVVGIJ5ukjVwgkCfmgLBwK1PlYsIPyKulm3Rul/1bxIzzha4gCsyFZdfmLMWieDvSLGY=
+	t=1755024322; cv=none; b=ICqKZ0yiDBu9GDQ55JQd6SwUJ6ZgsZK3PmqDZSoilDFLMUP+MdOugLUrrHHyQTDS9397FmKjty+FibMxCbKELPlGlAijXQha6CZDQ4siM4w77t5stFkIgy/nphOD9rBHwx/+ldC8FRNfjvXLN1iC9tN7jd0kBG4UO7G6ok3G1c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021856; c=relaxed/simple;
-	bh=kQTPk4j5JjZsxt+TJC4ChRYNTioWVpZsbfNHsNnG3KA=;
+	s=arc-20240116; t=1755024322; c=relaxed/simple;
+	bh=sLv+JLDRt/aXWnLrvWZ2MIY8PI3j5AedVkwP3w3Pp/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLOTk6ZGismYSs4Ap0KMguCqzmDt2RSnBIRA6ED+whmGoHpUX3RH1gHfZIo1tIkMm2i9YJZFmYI2FuvCrbK+R4wo5fodbie17Merdg5WXf7B5Mj/uukdJ8O/3xeKB4/4C7VYXISXPIvS4pWzkhRfUPaYeTEZJRDRge3iLyy67cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuXwqTI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F120AC4CEF0;
-	Tue, 12 Aug 2025 18:04:15 +0000 (UTC)
+	 MIME-Version; b=oW+bLZi4F/4mhiNOMka4iUxpCCvLtWkqat8zn3nkWFbymm/8pAsox9fIg/lEpoEoK2fdJViOGue987L2yHjGd9cdzFdaQAntCdjwASEElh+yZ4lDPdZsaD4UvLMY2PDk5Xbf4ToRlCgVwEg7WchvonOlI+MY6P8oPfh2W1Rj49Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcuSxRjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B220C4CEF0;
+	Tue, 12 Aug 2025 18:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021856;
-	bh=kQTPk4j5JjZsxt+TJC4ChRYNTioWVpZsbfNHsNnG3KA=;
+	s=korg; t=1755024321;
+	bh=sLv+JLDRt/aXWnLrvWZ2MIY8PI3j5AedVkwP3w3Pp/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LuXwqTI9WVYv/sqJRLfHq8Erh6zlq1IJ+384CfO0Q8XjrSzIUhFPN0ZSlqVpOcsM9
-	 PwJ4FjOAqTEEZ57e0++Aa9DiScDk9kzKcW2fKleHU6E3x80DpHa2oOU50LQozV0mbF
-	 wmRTgQCMgi3hopb7VbYk0D4nBqHYFGAdfvLbzYNE=
+	b=gcuSxRjqqeNuAuYvkj1OV+mYRvvzTTDlcfJJIHDAsKFWTKupXi2Jt2P/PuJHl03PM
+	 ZrpCgAS+25NzYxkzr0goOVbzJn4/9EfGbt39tOH6UYp28gqvuV5luKCyRQpE2UmJ80
+	 goKXaMsWjmK6j1v+V2oFGqScOUkghsA432MH1kjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/262] i2c: stm32f7: perform most of irq job in threaded handler
+Subject: [PATCH 6.16 338/627] phy: qualcomm: phy-qcom-eusb2-repeater: Dont zero-out registers
 Date: Tue, 12 Aug 2025 19:30:33 +0200
-Message-ID: <20250812173003.582819818@linuxfoundation.org>
+Message-ID: <20250812173432.140761179@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,214 +66,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit e6103cd45ef0e14eb02f0666bc6b494902cfe821 ]
+[ Upstream commit 31bc94de76026c527f82c238f414539a14f0f3e6 ]
 
-The irq handling is currently split between the irq handler
-and the threaded irq handler.  Some of the handling (such as
-dma related stuffs) done within the irq handler might sleep or
-take some time leading to issues if the kernel is built with
-realtime constraints.  In order to fix that, perform an overall
-rework to perform most of the job within the threaded handler
-and only keep fifo access in the non threaded handler.
+Zeroing out registers does not happen in the downstream kernel, and will
+"tune" the repeater in surely unexpected ways since most registers don't
+have a reset value of 0x0.
 
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 6aae87fe7f18 ("i2c: stm32f7: unmap DMA mapped buffer")
+Stop doing that and instead just set the registers that are in the init
+sequence (though long term I don't think there's actually PMIC-specific
+init sequences, there's board specific tuning, but that's a story for
+another day).
+
+Fixes: 99a517a582fc ("phy: qualcomm: phy-qcom-eusb2-repeater: Zero out untouched tuning regs")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20250617-eusb2-repeater-tuning-v2-2-ed6c484f18ee@fairphone.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-stm32f7.c |  126 +++++++++++++++++----------------------
- 1 file changed, 56 insertions(+), 70 deletions(-)
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    | 87 +++++++------------
+ 1 file changed, 32 insertions(+), 55 deletions(-)
 
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -1496,17 +1496,11 @@ static irqreturn_t stm32f7_i2c_slave_isr
- static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
- {
- 	struct stm32f7_i2c_dev *i2c_dev = data;
--	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
--	struct stm32_i2c_dma *dma = i2c_dev->dma;
--	void __iomem *base = i2c_dev->base;
--	u32 status, mask;
--	int ret = IRQ_HANDLED;
-+	u32 status;
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index 6bd1b3c75c77..d7493c2294ef 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -37,32 +37,13 @@
+ #define EUSB2_TUNE_EUSB_EQU		0x5A
+ #define EUSB2_TUNE_EUSB_HS_COMP_CUR	0x5B
  
--	/* Check if the interrupt if for a slave device */
--	if (!i2c_dev->master_mode) {
--		ret = stm32f7_i2c_slave_isr_event(i2c_dev);
--		return ret;
--	}
-+	/* Check if the interrupt is for a slave device */
-+	if (!i2c_dev->master_mode)
-+		return IRQ_WAKE_THREAD;
- 
- 	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
- 
-@@ -1518,6 +1512,29 @@ static irqreturn_t stm32f7_i2c_isr_event
- 	if (status & STM32F7_I2C_ISR_RXNE)
- 		stm32f7_i2c_read_rx_data(i2c_dev);
- 
-+	/* Wake up the thread if other flags are raised */
-+	if (status &
-+	    (STM32F7_I2C_ISR_NACKF | STM32F7_I2C_ISR_STOPF |
-+	     STM32F7_I2C_ISR_TC | STM32F7_I2C_ISR_TCR))
-+		return IRQ_WAKE_THREAD;
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
-+{
-+	struct stm32f7_i2c_dev *i2c_dev = data;
-+	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
-+	struct stm32_i2c_dma *dma = i2c_dev->dma;
-+	void __iomem *base = i2c_dev->base;
-+	u32 status, mask;
-+	int ret;
-+
-+	if (!i2c_dev->master_mode)
-+		return stm32f7_i2c_slave_isr_event(i2c_dev);
-+
-+	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
-+
- 	/* NACK received */
- 	if (status & STM32F7_I2C_ISR_NACKF) {
- 		dev_dbg(i2c_dev->dev, "<%s>: Receive NACK (addr %x)\n",
-@@ -1530,33 +1547,28 @@ static irqreturn_t stm32f7_i2c_isr_event
- 		f7_msg->result = -ENXIO;
- 	}
- 
--	/* STOP detection flag */
--	if (status & STM32F7_I2C_ISR_STOPF) {
--		/* Disable interrupts */
--		if (stm32f7_i2c_is_slave_registered(i2c_dev))
--			mask = STM32F7_I2C_XFER_IRQ_MASK;
-+	if (status & STM32F7_I2C_ISR_TCR) {
-+		if (f7_msg->smbus)
-+			stm32f7_i2c_smbus_reload(i2c_dev);
- 		else
--			mask = STM32F7_I2C_ALL_IRQ_MASK;
--		stm32f7_i2c_disable_irq(i2c_dev, mask);
+-enum eusb2_reg_layout {
+-	TUNE_EUSB_HS_COMP_CUR,
+-	TUNE_EUSB_EQU,
+-	TUNE_EUSB_SLEW,
+-	TUNE_USB2_HS_COMP_CUR,
+-	TUNE_USB2_PREEM,
+-	TUNE_USB2_EQU,
+-	TUNE_USB2_SLEW,
+-	TUNE_SQUELCH_U,
+-	TUNE_HSDISC,
+-	TUNE_RES_FSDIF,
+-	TUNE_IUSB2,
+-	TUNE_USB2_CROSSOVER,
+-	NUM_TUNE_FIELDS,
 -
--		/* Clear STOP flag */
--		writel_relaxed(STM32F7_I2C_ICR_STOPCF, base + STM32F7_I2C_ICR);
+-	FORCE_VAL_5 = NUM_TUNE_FIELDS,
+-	FORCE_EN_5,
 -
--		if (i2c_dev->use_dma && !f7_msg->result) {
--			ret = IRQ_WAKE_THREAD;
--		} else {
--			i2c_dev->master_mode = false;
--			complete(&i2c_dev->complete);
--		}
-+			stm32f7_i2c_reload(i2c_dev);
- 	}
- 
- 	/* Transfer complete */
- 	if (status & STM32F7_I2C_ISR_TC) {
-+		/* Wait for dma transfer completion before sending next message */
-+		if (i2c_dev->use_dma && !f7_msg->result) {
-+			ret = wait_for_completion_timeout(&i2c_dev->dma->dma_complete, HZ);
-+			if (!ret) {
-+				dev_dbg(i2c_dev->dev, "<%s>: Timed out\n", __func__);
-+				stm32f7_i2c_disable_dma_req(i2c_dev);
-+				dmaengine_terminate_async(dma->chan_using);
-+				f7_msg->result = -ETIMEDOUT;
-+			}
-+		}
- 		if (f7_msg->stop) {
- 			mask = STM32F7_I2C_CR2_STOP;
- 			stm32f7_i2c_set_bits(base + STM32F7_I2C_CR2, mask);
--		} else if (i2c_dev->use_dma && !f7_msg->result) {
--			ret = IRQ_WAKE_THREAD;
- 		} else if (f7_msg->smbus) {
- 			stm32f7_i2c_smbus_rep_start(i2c_dev);
- 		} else {
-@@ -1566,47 +1578,18 @@ static irqreturn_t stm32f7_i2c_isr_event
- 		}
- 	}
- 
--	if (status & STM32F7_I2C_ISR_TCR) {
--		if (f7_msg->smbus)
--			stm32f7_i2c_smbus_reload(i2c_dev);
-+	/* STOP detection flag */
-+	if (status & STM32F7_I2C_ISR_STOPF) {
-+		/* Disable interrupts */
-+		if (stm32f7_i2c_is_slave_registered(i2c_dev))
-+			mask = STM32F7_I2C_XFER_IRQ_MASK;
- 		else
--			stm32f7_i2c_reload(i2c_dev);
--	}
+-	EN_CTL1,
 -
--	return ret;
--}
+-	RPTR_STATUS,
+-	LAYOUT_SIZE,
++struct eusb2_repeater_init_tbl_reg {
++	unsigned int reg;
++	unsigned int value;
+ };
+ 
+ struct eusb2_repeater_cfg {
+-	const u32 *init_tbl;
++	const struct eusb2_repeater_init_tbl_reg *init_tbl;
+ 	int init_tbl_num;
+ 	const char * const *vreg_list;
+ 	int num_vregs;
+@@ -82,16 +63,16 @@ static const char * const pm8550b_vreg_l[] = {
+ 	"vdd18", "vdd3",
+ };
+ 
+-static const u32 pm8550b_init_tbl[NUM_TUNE_FIELDS] = {
+-	[TUNE_IUSB2] = 0x8,
+-	[TUNE_SQUELCH_U] = 0x3,
+-	[TUNE_USB2_PREEM] = 0x5,
++static const struct eusb2_repeater_init_tbl_reg pm8550b_init_tbl[] = {
++	{ EUSB2_TUNE_IUSB2, 0x8 },
++	{ EUSB2_TUNE_SQUELCH_U, 0x3 },
++	{ EUSB2_TUNE_USB2_PREEM, 0x5 },
+ };
+ 
+-static const u32 smb2360_init_tbl[NUM_TUNE_FIELDS] = {
+-	[TUNE_IUSB2] = 0x5,
+-	[TUNE_SQUELCH_U] = 0x3,
+-	[TUNE_USB2_PREEM] = 0x2,
++static const struct eusb2_repeater_init_tbl_reg smb2360_init_tbl[] = {
++	{ EUSB2_TUNE_IUSB2, 0x5 },
++	{ EUSB2_TUNE_SQUELCH_U, 0x3 },
++	{ EUSB2_TUNE_USB2_PREEM, 0x2 },
+ };
+ 
+ static const struct eusb2_repeater_cfg pm8550b_eusb2_cfg = {
+@@ -129,17 +110,10 @@ static int eusb2_repeater_init(struct phy *phy)
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
+ 	struct device_node *np = rptr->dev->of_node;
+ 	struct regmap *regmap = rptr->regmap;
+-	const u32 *init_tbl = rptr->cfg->init_tbl;
+-	u8 tune_usb2_preem = init_tbl[TUNE_USB2_PREEM];
+-	u8 tune_hsdisc = init_tbl[TUNE_HSDISC];
+-	u8 tune_iusb2 = init_tbl[TUNE_IUSB2];
+ 	u32 base = rptr->base;
+-	u32 val;
++	u32 poll_val;
+ 	int ret;
 -
--static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
--{
--	struct stm32f7_i2c_dev *i2c_dev = data;
--	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
--	struct stm32_i2c_dma *dma = i2c_dev->dma;
--	u32 status;
--	int ret;
--
--	/*
--	 * Wait for dma transfer completion before sending next message or
--	 * notity the end of xfer to the client
--	 */
--	ret = wait_for_completion_timeout(&i2c_dev->dma->dma_complete, HZ);
--	if (!ret) {
--		dev_dbg(i2c_dev->dev, "<%s>: Timed out\n", __func__);
--		stm32f7_i2c_disable_dma_req(i2c_dev);
--		dmaengine_terminate_async(dma->chan_using);
--		f7_msg->result = -ETIMEDOUT;
--	}
-+			mask = STM32F7_I2C_ALL_IRQ_MASK;
-+		stm32f7_i2c_disable_irq(i2c_dev, mask);
+-	of_property_read_u8(np, "qcom,tune-usb2-amplitude", &tune_iusb2);
+-	of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &tune_hsdisc);
+-	of_property_read_u8(np, "qcom,tune-usb2-preem", &tune_usb2_preem);
++	u8 val;
  
--	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
-+		/* Clear STOP flag */
-+		writel_relaxed(STM32F7_I2C_ICR_STOPCF, base + STM32F7_I2C_ICR);
- 
--	if (status & STM32F7_I2C_ISR_TC) {
--		if (f7_msg->smbus) {
--			stm32f7_i2c_smbus_rep_start(i2c_dev);
--		} else {
--			i2c_dev->msg_id++;
--			i2c_dev->msg++;
--			stm32f7_i2c_xfer_msg(i2c_dev, i2c_dev->msg);
--		}
--	} else {
- 		i2c_dev->master_mode = false;
- 		complete(&i2c_dev->complete);
- 	}
-@@ -1614,7 +1597,7 @@ static irqreturn_t stm32f7_i2c_isr_event
- 	return IRQ_HANDLED;
- }
- 
--static irqreturn_t stm32f7_i2c_isr_error(int irq, void *data)
-+static irqreturn_t stm32f7_i2c_isr_error_thread(int irq, void *data)
- {
- 	struct stm32f7_i2c_dev *i2c_dev = data;
- 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
-@@ -2201,8 +2184,11 @@ static int stm32f7_i2c_probe(struct plat
+ 	ret = regulator_bulk_enable(rptr->cfg->num_vregs, rptr->vregs);
  	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "Failed to request irq event\n");
+@@ -147,21 +121,24 @@ static int eusb2_repeater_init(struct phy *phy)
  
--	ret = devm_request_irq(&pdev->dev, irq_error, stm32f7_i2c_isr_error, 0,
--			       pdev->name, i2c_dev);
-+	ret = devm_request_threaded_irq(&pdev->dev, irq_error,
-+					NULL,
-+					stm32f7_i2c_isr_error_thread,
-+					IRQF_ONESHOT,
-+					pdev->name, i2c_dev);
+ 	regmap_write(regmap, base + EUSB2_EN_CTL1, EUSB2_RPTR_EN);
+ 
+-	regmap_write(regmap, base + EUSB2_TUNE_EUSB_HS_COMP_CUR, init_tbl[TUNE_EUSB_HS_COMP_CUR]);
+-	regmap_write(regmap, base + EUSB2_TUNE_EUSB_EQU, init_tbl[TUNE_EUSB_EQU]);
+-	regmap_write(regmap, base + EUSB2_TUNE_EUSB_SLEW, init_tbl[TUNE_EUSB_SLEW]);
+-	regmap_write(regmap, base + EUSB2_TUNE_USB2_HS_COMP_CUR, init_tbl[TUNE_USB2_HS_COMP_CUR]);
+-	regmap_write(regmap, base + EUSB2_TUNE_USB2_EQU, init_tbl[TUNE_USB2_EQU]);
+-	regmap_write(regmap, base + EUSB2_TUNE_USB2_SLEW, init_tbl[TUNE_USB2_SLEW]);
+-	regmap_write(regmap, base + EUSB2_TUNE_SQUELCH_U, init_tbl[TUNE_SQUELCH_U]);
+-	regmap_write(regmap, base + EUSB2_TUNE_RES_FSDIF, init_tbl[TUNE_RES_FSDIF]);
+-	regmap_write(regmap, base + EUSB2_TUNE_USB2_CROSSOVER, init_tbl[TUNE_USB2_CROSSOVER]);
+-
+-	regmap_write(regmap, base + EUSB2_TUNE_USB2_PREEM, tune_usb2_preem);
+-	regmap_write(regmap, base + EUSB2_TUNE_HSDISC, tune_hsdisc);
+-	regmap_write(regmap, base + EUSB2_TUNE_IUSB2, tune_iusb2);
+-
+-	ret = regmap_read_poll_timeout(regmap, base + EUSB2_RPTR_STATUS, val, val & RPTR_OK, 10, 5);
++	/* Write registers from init table */
++	for (int i = 0; i < rptr->cfg->init_tbl_num; i++)
++		regmap_write(regmap, base + rptr->cfg->init_tbl[i].reg,
++			     rptr->cfg->init_tbl[i].value);
++
++	/* Override registers from devicetree values */
++	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
++		regmap_write(regmap, base + EUSB2_TUNE_USB2_PREEM, val);
++
++	if (!of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &val))
++		regmap_write(regmap, base + EUSB2_TUNE_HSDISC, val);
++
++	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
++		regmap_write(regmap, base + EUSB2_TUNE_IUSB2, val);
++
++	/* Wait for status OK */
++	ret = regmap_read_poll_timeout(regmap, base + EUSB2_RPTR_STATUS, poll_val,
++				       poll_val & RPTR_OK, 10, 5);
  	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "Failed to request irq error\n");
+ 		dev_err(rptr->dev, "initialization timed-out\n");
  
+-- 
+2.39.5
+
 
 
 
