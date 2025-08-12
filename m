@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-168394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84802B234DE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E94B23336
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 979901B609CD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C5801892F6D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166F22FFDC0;
-	Tue, 12 Aug 2025 18:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573282868AF;
+	Tue, 12 Aug 2025 18:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvUJ0l/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icfPuEpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89662FF176;
-	Tue, 12 Aug 2025 18:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167471EBFE0;
+	Tue, 12 Aug 2025 18:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024026; cv=none; b=SbTD/qGIgi8zP3mA7MrGXsG5KQV+TJSLsnbLJfuaK7p2YHGrXXyt+OaN8hkkt0zG7OTMBhFwjh+4vz+Nepr2eQwq8PzALZaFJ6xcT+bpLvaJMyuAxq+yEHPEHbMrPWTmMAsG5XuDepLtHnyszwuXVlN/ZkH7Ffx//wZZmJSqLEk=
+	t=1755022871; cv=none; b=cLW7sCfTIHhM5JOFyiccJSOXyJlyCbXoYYWNGEwbLjSUm47t+Hz3Nz3HyEIua06CU2r7yINWSrla5f+WzWK88gE7pQtEOkbBKRTi6DLzHsh8RShWDUD5YabyMnbyHxZ5TdJXCMLDUk6O0YGTGJf+ZGSXQwxzSKPxpc3WQ/kH+4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024026; c=relaxed/simple;
-	bh=FiMMplwRC0hv/SN1NZLscmS2+Tr0Hc96DvYLd/P+/kk=;
+	s=arc-20240116; t=1755022871; c=relaxed/simple;
+	bh=x+ZcKecv9focak/tnSEbHHbdYGdLGw9D9U2FAx4LfQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kp1VautsC+KDneaLp5GG03Ca1WTk7jDcb72Hn8IAEg9/8g2TuwRFS8U/jHPtrUmCSxNnOAOQAjOlyWuyiN/7g/vdyGrn3gH6ZwLQWaFku5Y52OVxgrt17HgNAAyYMqHFd5efT+1d2VYSn7HUYTI2kz/UuXjPxaho5NkUWm3wcN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvUJ0l/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23727C4CEF6;
-	Tue, 12 Aug 2025 18:40:25 +0000 (UTC)
+	 MIME-Version; b=qbL3BoIMR4SCfz/0RiJWwAyAJgsbaZA6qPjY70kHCbwb8gRnZ4GPhkGziZOKtxiC2QWcB3g8QqdJidZo18uIFRA9fteFtcUCJ82dVkv239EocC2v4mMyKtcvqv9jSfN8GCI/4gaexpGdz8iA971k7WjqntwKkWCIImWIXRnaErw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icfPuEpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79233C4CEF0;
+	Tue, 12 Aug 2025 18:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024026;
-	bh=FiMMplwRC0hv/SN1NZLscmS2+Tr0Hc96DvYLd/P+/kk=;
+	s=korg; t=1755022871;
+	bh=x+ZcKecv9focak/tnSEbHHbdYGdLGw9D9U2FAx4LfQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvUJ0l/LOQQSQsVDvKXEMNAOM1sgT92dS6lRPYbDMd8ukF4NNnqJ8FDqRYnGYt0ae
-	 Zjzn/OhHF+OgDA+0e+WWUwX+ENwjbsuEltQmgSI8K0rbN6Jidy8HtfyEkJWFpaIc+m
-	 rpGoTLoz5wzrMOrvkzXKIleieEjzd1yVFOAkc+1M=
+	b=icfPuEpV/rqN5WwW8dKR8dEruyuGfve+R2MjtyBaoBBiGrBwcCI3y7v42se5moM0F
+	 ma+TtAdUPF1uueO9H31T+awRiHgsa3IexY7UZGNaw83Iu7avvzR0UoLcLcBHsh7up+
+	 4MODVwU9ITPau07Fk7EQy2T3NPLiki/w/fm0Qb20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Abinash Singh <abinashsinghlalotra@gmail.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 252/627] wifi: iwlwifi: mld: decode EOF bit for AMPDUs
-Date: Tue, 12 Aug 2025 19:29:07 +0200
-Message-ID: <20250812173428.899750700@linuxfoundation.org>
+Subject: [PATCH 6.12 251/369] f2fs: fix KMSAN uninit-value in extent_info usage
+Date: Tue, 12 Aug 2025 19:29:08 +0200
+Message-ID: <20250812173024.204067616@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Abinash Singh <abinashlalotra@gmail.com>
 
-[ Upstream commit bc404dfddbf6817cae9b170c34556dc72ea975e5 ]
+[ Upstream commit 154467f4ad033473e5c903a03e7b9bca7df9a0fa ]
 
-Only the EOF bit handling for single frames was ported to the MLD
-driver. The code to handle AMPDUs correctly was forgotten. Add it back
-so that the bit is reported in the radiotap headers again.
+KMSAN reported a use of uninitialized value in `__is_extent_mergeable()`
+ and `__is_back_mergeable()` via the read extent tree path.
 
-Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250723094230.195be86372d5.I4db4abf348f7b6dfc75f869770dd77655a204bc7@changeid
+The root cause is that `get_read_extent_info()` only initializes three
+fields (`fofs`, `blk`, `len`) of `struct extent_info`, leaving the
+remaining fields uninitialized. This leads to undefined behavior
+when those fields are accessed later, especially during
+extent merging.
+
+Fix it by zero-initializing the `extent_info` struct before population.
+
+Reported-by: syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b8c1d60e95df65e827d4
+Fixes: 94afd6d6e525 ("f2fs: extent cache: support unaligned extent")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Abinash Singh <abinashsinghlalotra@gmail.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/rx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/f2fs/extent_cache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-index ce0093d5c638..185c1a0cb47f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-@@ -1039,6 +1039,15 @@ static void iwl_mld_rx_eht(struct iwl_mld *mld, struct sk_buff *skb,
- 			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
- 	}
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index fb09c8e9bc57..2ccc86875099 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -381,7 +381,7 @@ void f2fs_init_read_extent_tree(struct inode *inode, struct page *ipage)
+ 	struct f2fs_extent *i_ext = &F2FS_INODE(ipage)->i_ext;
+ 	struct extent_tree *et;
+ 	struct extent_node *en;
+-	struct extent_info ei;
++	struct extent_info ei = {0};
  
-+	/* update aggregation data for monitor sake on default queue */
-+	if (!queue && (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD) &&
-+	    (phy_info & IWL_RX_MPDU_PHY_AMPDU) && phy_data->first_subframe) {
-+		rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
-+		if (phy_data->data0 &
-+		    cpu_to_le32(IWL_RX_PHY_DATA0_EHT_DELIM_EOF))
-+			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
-+	}
-+
- 	if (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD)
- 		iwl_mld_decode_eht_phy_data(mld, phy_data, rx_status, eht, usig);
- 
+ 	if (!__may_extent_tree(inode, EX_READ)) {
+ 		/* drop largest read extent */
 -- 
 2.39.5
 
