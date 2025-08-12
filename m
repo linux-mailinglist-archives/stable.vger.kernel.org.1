@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-168462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF30EB23542
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C81B23165
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 284743AC248
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D97617A6411
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E2C2FE565;
-	Tue, 12 Aug 2025 18:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801622FAC11;
+	Tue, 12 Aug 2025 18:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THUUUoY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gH5cW7k/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9236513AA2F;
-	Tue, 12 Aug 2025 18:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D444BA27;
+	Tue, 12 Aug 2025 18:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024252; cv=none; b=BEQDDZN1bjN5BuFcavL+NtQd46syMepzFdeIzPJYDENb+KS5ppgEbBVkxhb9OifDb7bYorQZtfLaFYZr90bhhPDQcMGp3q/sRT9j82WlD6KyKndMZJ1f1ZogsGcoPz/+OQSQaZo4VIDXa/2PPQKQgLnmPt1qmwCdyzZMS1y9vy0=
+	t=1755021816; cv=none; b=Hl0uNI33NG8mkrJLOowsLc8mTUaGP1iIheYA+Z2adjDXOuBZ/nfziLM5bRgv7zKPrSB7bkubusZLOzqpDQRO8VWjOvYaiivCfjpVLkUVmZpzvFO76Oji/unuVhEobzPs+u28+dJUjKPb+EavoitoWen90QDDFis++nT2IWYPd2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024252; c=relaxed/simple;
-	bh=yRkXWsAk6j1EMHBwdoa9mhwToUyRfii1AOtLZwP6eK8=;
+	s=arc-20240116; t=1755021816; c=relaxed/simple;
+	bh=ERMXzgmJithhuhdIfGyTF2emsF5NQv8Lhp6dz4s1jWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8uJ8stcax599V7l08QOqE1J3J3xrXKBcRAxvcSKtwHZ62lAcwmi2z7fAfDeIPaUL/1kAYZp6Rt4J8K6ERIPDLaiqL6vGChca90zCvESS4P63cmLSMuAhoeKkdngxcsY/cxYN6lNNeaEs7U+IBF8AXdhzDFtRsmlLSd5DjK3WDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THUUUoY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F205AC4CEF0;
-	Tue, 12 Aug 2025 18:44:11 +0000 (UTC)
+	 MIME-Version; b=GyXfFW2ucEKKg+/3McVuFM4DXKLbYV+jddtP2tUp2yj0Fdp5M7imk6W8PjtYNfhDX9N0/BSiO5toDqsALqEPD49gvCbYVqQ0gNyjFBwxkFi8h6g/p0xw+STmhirBjuslNbyUed2Z6/ZmvrAd0gHUgQN5vI/Zjbj42fqruFUqDwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gH5cW7k/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EE1C4CEF6;
+	Tue, 12 Aug 2025 18:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024252;
-	bh=yRkXWsAk6j1EMHBwdoa9mhwToUyRfii1AOtLZwP6eK8=;
+	s=korg; t=1755021816;
+	bh=ERMXzgmJithhuhdIfGyTF2emsF5NQv8Lhp6dz4s1jWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THUUUoY8OK3YwIFn5CFbX7kneKaigMr73BiWqsSpdavt3wFcxUcVzQuVYRZR5kBn7
-	 r3K6etLA4BkWX+iT2JtgJShnDzWdLGnoU6/6B19by+i1WsT020jJm512PdoRm+yQrA
-	 0SB+1fxLjTQSbqdIvJX7+1vuH6Zbu4BzfnSiwbWU=
+	b=gH5cW7k/JchXFo5LjCrDn8j/xKHZiXVkMiHfcKaJlQmciLC6Lv0u/WyIvYEAy0PUP
+	 lv7diaGdJYdqFNayC8Ai17yR3V+rkM2yxxqcL9EZkxIO6dIDttWo/3bC+r7+UA05Kh
+	 nbyxbdT3AEbKzwrBefYUkPc9Edp4Sg+rPS8nHxcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 319/627] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
+Subject: [PATCH 6.6 226/262] smb: client: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
 Date: Tue, 12 Aug 2025 19:30:14 +0200
-Message-ID: <20250812173431.437220314@linuxfoundation.org>
+Message-ID: <20250812173002.776697694@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +67,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
+[ Upstream commit 047682c370b6f18fec818b57b0ed8b501bdb79f8 ]
 
-When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
-function returns NULL. Fix the max14577_charger_probe functionby returning
--ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
+In case of failures either ib_dma_map_single() might not be called yet
+or ib_dma_unmap_single() was already called.
 
-This fixes the below smatch warning:
-max14577_charger_probe() warn: passing zero to 'PTR_ERR'
+We should make sure put_receive_buffer() only calls
+ib_dma_unmap_single() if needed.
 
-Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max14577_charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
-index 1cef2f860b5f..63077d38ea30 100644
---- a/drivers/power/supply/max14577_charger.c
-+++ b/drivers/power/supply/max14577_charger.c
-@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
- static struct max14577_charger_platform_data *max14577_charger_dt_init(
- 		struct platform_device *pdev)
- {
--	return NULL;
-+	return ERR_PTR(-ENODATA);
- }
- #endif /* CONFIG_OF */
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 9aef85f3cf11..49aafb58c7df 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1043,6 +1043,7 @@ static int smbd_post_recv(
+ 	if (rc) {
+ 		ib_dma_unmap_single(sc->ib.dev, response->sge.addr,
+ 				    response->sge.length, DMA_FROM_DEVICE);
++		response->sge.length = 0;
+ 		smbd_disconnect_rdma_connection(info);
+ 		log_rdma_recv(ERR, "ib_post_recv failed rc=%d\n", rc);
+ 	}
+@@ -1202,8 +1203,13 @@ static void put_receive_buffer(
+ 	struct smbdirect_socket *sc = &info->socket;
+ 	unsigned long flags;
  
-@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
- 	chg->max14577 = max14577;
+-	ib_dma_unmap_single(sc->ib.dev, response->sge.addr,
+-		response->sge.length, DMA_FROM_DEVICE);
++	if (likely(response->sge.length != 0)) {
++		ib_dma_unmap_single(sc->ib.dev,
++				    response->sge.addr,
++				    response->sge.length,
++				    DMA_FROM_DEVICE);
++		response->sge.length = 0;
++	}
  
- 	chg->pdata = max14577_charger_dt_init(pdev);
--	if (IS_ERR_OR_NULL(chg->pdata))
-+	if (IS_ERR(chg->pdata))
- 		return PTR_ERR(chg->pdata);
+ 	spin_lock_irqsave(&info->receive_queue_lock, flags);
+ 	list_add_tail(&response->list, &info->receive_queue);
+@@ -1241,6 +1247,7 @@ static int allocate_receive_buffers(struct smbd_connection *info, int num_buf)
+ 			goto allocate_failed;
  
- 	ret = max14577_charger_reg_init(chg);
+ 		response->info = info;
++		response->sge.length = 0;
+ 		list_add_tail(&response->list, &info->receive_queue);
+ 		info->count_receive_queue++;
+ 	}
 -- 
 2.39.5
 
