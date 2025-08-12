@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBCAB234F0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 569A3B23309
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B39F1B62FDE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DFD3188FA5D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE2C2FFDC4;
-	Tue, 12 Aug 2025 18:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C2B2DFA3E;
+	Tue, 12 Aug 2025 18:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deMmhOfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh1DLLYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD5F2F4A0A;
-	Tue, 12 Aug 2025 18:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A4C2192F4;
+	Tue, 12 Aug 2025 18:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024060; cv=none; b=I0EP3fwFql2uiVBk17m9BtX7r0akkdcAowRjQOIhzzYzPm6sItFQGHPcwJlSXl5Ms6ql4Ek8ELc+V5+rs04AgKB9sxJFkRWOsNCmUJu82oJw40VXIU5aIJnv8BFeDkTmCeP0BZSqnliZ7jAMHd25A0/GBTb5QKz9A4OjFwHfwSs=
+	t=1755022787; cv=none; b=D6sPHgIUiQZ3nUN5f8n3ypVW5jCKF7xKi6PM/jdI2j77CyIz4v5VcqGhx85A5G8jt5qMboAKTiQwuKQZ34Nkh/PI1gpthfP/4DHF/LdsowYjJMKuloBcdX2YUq/cFQ1WJhTvoPGoTQsQiyZRGFtyCR7/E8CXzvJUdtjP20Wl7pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024060; c=relaxed/simple;
-	bh=RoZuLkZlIeQonh/HWzsSyPZeFX1+YQV1AQkfigNnFXE=;
+	s=arc-20240116; t=1755022787; c=relaxed/simple;
+	bh=GKPrhJW1qo2jYjiUiG6+TboYR/Iv446j0067AErCt8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fi8gq09F9Yf+79gd1XW2djCGyICixv1NhGR2ctSEoUHFuaoHjDmz4GDtG9lCBR1/oJ0KJd7c6SNZIfxKqc6EGruN9i5IehpavVPUa+gxX8olt3/42xqB1BWui4MtokmQbv1NWAOzrJVjSjswXj8RSIwB8msACQEMlB50/SgOF1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deMmhOfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75952C4CEF0;
-	Tue, 12 Aug 2025 18:40:59 +0000 (UTC)
+	 MIME-Version; b=LHNBZyIO6sW1lG8UVt57u8oEwCEvwUdAtFzn7WVd8smzBZSX71xkW2O8n2tNSm3OfrzsiPvBXmxoy8AjgCiWa73u8SJFFbSW9i65crH36Lwr/PyeoXouqKmQDONqkLoLKmhaAEEVCArLSd/GQjA1pkHGaBCWGuI8y/+nOGqllOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh1DLLYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3644EC4CEF6;
+	Tue, 12 Aug 2025 18:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024059;
-	bh=RoZuLkZlIeQonh/HWzsSyPZeFX1+YQV1AQkfigNnFXE=;
+	s=korg; t=1755022786;
+	bh=GKPrhJW1qo2jYjiUiG6+TboYR/Iv446j0067AErCt8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deMmhOfQQRjDZTGWvIO+s8tdP+sF1I8YIAfTySRe5RRPoAIRmmcZTV8/s7aJwZRSy
-	 HB9cemzuZ0TR5qOMZPGM0mAG+M2OqyDHei52vcfhhrOtAI6dqlKlLaN5ecWMmv6bmC
-	 X0dov6jNMlWR9dJQ/a4l9pwLyZ/GcMTZ/V+1JmeI=
+	b=vh1DLLYE7PRRemd5Ead28nbIBrxJcOwcb7YMCaYmJVSsoBWjNyfGi6Bdk8b1lXJgS
+	 zYOj7QJIIR28dGt7dhursihOD9+0NGG2wxoXAFSrKwvSBenXOW5mym0iSV5HFas4Q0
+	 NiLc64gDHbXkUJdBWDaChhVKUWPwFf5Bmv5wnRY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+40f772d37250b6d10efc@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Florian Westphal <fw@strlen.de>,
+	Jan Prusakowski <jprusakowski@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 261/627] bpf: Disable migration in nf_hook_run_bpf().
+Subject: [PATCH 6.12 259/369] f2fs: vm_unmap_ram() may be called from an invalid context
 Date: Tue, 12 Aug 2025 19:29:16 +0200
-Message-ID: <20250812173429.244535530@linuxfoundation.org>
+Message-ID: <20250812173024.507768107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Jan Prusakowski <jprusakowski@google.com>
 
-[ Upstream commit 17ce3e5949bc37557305ad46316f41c7875d6366 ]
+[ Upstream commit 08a7efc5b02a0620ae16aa9584060e980a69cb55 ]
 
-syzbot reported that the netfilter bpf prog can be called without
-migration disabled in xmit path.
+When testing F2FS with xfstests using UFS backed virtual disks the
+kernel complains sometimes that f2fs_release_decomp_mem() calls
+vm_unmap_ram() from an invalid context. Example trace from
+f2fs/007 test:
 
-Then the assertion in __bpf_prog_run() fails, triggering the splat
-below. [0]
+f2fs/007 5s ...  [12:59:38][    8.902525] run fstests f2fs/007
+[   11.468026] BUG: sleeping function called from invalid context at mm/vmalloc.c:2978
+[   11.471849] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 68, name: irq/22-ufshcd
+[   11.475357] preempt_count: 1, expected: 0
+[   11.476970] RCU nest depth: 0, expected: 0
+[   11.478531] CPU: 0 UID: 0 PID: 68 Comm: irq/22-ufshcd Tainted: G        W           6.16.0-rc5-xfstests-ufs-g40f92e79b0aa #9 PREEMPT(none)
+[   11.478535] Tainted: [W]=WARN
+[   11.478536] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   11.478537] Call Trace:
+[   11.478543]  <TASK>
+[   11.478545]  dump_stack_lvl+0x4e/0x70
+[   11.478554]  __might_resched.cold+0xaf/0xbe
+[   11.478557]  vm_unmap_ram+0x21/0xb0
+[   11.478560]  f2fs_release_decomp_mem+0x59/0x80
+[   11.478563]  f2fs_free_dic+0x18/0x1a0
+[   11.478565]  f2fs_finish_read_bio+0xd7/0x290
+[   11.478570]  blk_update_request+0xec/0x3b0
+[   11.478574]  ? sbitmap_queue_clear+0x3b/0x60
+[   11.478576]  scsi_end_request+0x27/0x1a0
+[   11.478582]  scsi_io_completion+0x40/0x300
+[   11.478583]  ufshcd_mcq_poll_cqe_lock+0xa3/0xe0
+[   11.478588]  ufshcd_sl_intr+0x194/0x1f0
+[   11.478592]  ufshcd_threaded_intr+0x68/0xb0
+[   11.478594]  ? __pfx_irq_thread_fn+0x10/0x10
+[   11.478599]  irq_thread_fn+0x20/0x60
+[   11.478602]  ? __pfx_irq_thread_fn+0x10/0x10
+[   11.478603]  irq_thread+0xb9/0x180
+[   11.478605]  ? __pfx_irq_thread_dtor+0x10/0x10
+[   11.478607]  ? __pfx_irq_thread+0x10/0x10
+[   11.478609]  kthread+0x10a/0x230
+[   11.478614]  ? __pfx_kthread+0x10/0x10
+[   11.478615]  ret_from_fork+0x7e/0xd0
+[   11.478619]  ? __pfx_kthread+0x10/0x10
+[   11.478621]  ret_from_fork_asm+0x1a/0x30
+[   11.478623]  </TASK>
 
-Let's use bpf_prog_run_pin_on_cpu() in nf_hook_run_bpf().
+This patch modifies in_task() check inside f2fs_read_end_io() to also
+check if interrupts are disabled. This ensures that pages are unmapped
+asynchronously in an interrupt handler.
 
-[0]:
-BUG: assuming non migratable context at ./include/linux/filter.h:703
-in_atomic(): 0, irqs_disabled(): 0, migration_disabled() 0 pid: 5829, name: sshd-session
-3 locks held by sshd-session/5829:
- #0: ffff88807b4e4218 (sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1667 [inline]
- #0: ffff88807b4e4218 (sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_sendmsg+0x20/0x50 net/ipv4/tcp.c:1395
- #1: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- #1: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
- #1: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x69/0x26c0 net/ipv4/ip_output.c:470
- #2: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- #2: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
- #2: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: nf_hook+0xb2/0x680 include/linux/netfilter.h:241
-CPU: 0 UID: 0 PID: 5829 Comm: sshd-session Not tainted 6.16.0-rc6-syzkaller-00002-g155a3c003e55 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- __cant_migrate kernel/sched/core.c:8860 [inline]
- __cant_migrate+0x1c7/0x250 kernel/sched/core.c:8834
- __bpf_prog_run include/linux/filter.h:703 [inline]
- bpf_prog_run include/linux/filter.h:725 [inline]
- nf_hook_run_bpf+0x83/0x1e0 net/netfilter/nf_bpf_link.c:20
- nf_hook_entry_hookfn include/linux/netfilter.h:157 [inline]
- nf_hook_slow+0xbb/0x200 net/netfilter/core.c:623
- nf_hook+0x370/0x680 include/linux/netfilter.h:272
- NF_HOOK_COND include/linux/netfilter.h:305 [inline]
- ip_output+0x1bc/0x2a0 net/ipv4/ip_output.c:433
- dst_output include/net/dst.h:459 [inline]
- ip_local_out net/ipv4/ip_output.c:129 [inline]
- __ip_queue_xmit+0x1d7d/0x26c0 net/ipv4/ip_output.c:527
- __tcp_transmit_skb+0x2686/0x3e90 net/ipv4/tcp_output.c:1479
- tcp_transmit_skb net/ipv4/tcp_output.c:1497 [inline]
- tcp_write_xmit+0x1274/0x84e0 net/ipv4/tcp_output.c:2838
- __tcp_push_pending_frames+0xaf/0x390 net/ipv4/tcp_output.c:3021
- tcp_push+0x225/0x700 net/ipv4/tcp.c:759
- tcp_sendmsg_locked+0x1870/0x42b0 net/ipv4/tcp.c:1359
- tcp_sendmsg+0x2e/0x50 net/ipv4/tcp.c:1396
- inet_sendmsg+0xb9/0x140 net/ipv4/af_inet.c:851
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- sock_write_iter+0x4aa/0x5b0 net/socket.c:1131
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x6c7/0x1150 fs/read_write.c:686
- ksys_write+0x1f8/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe7d365d407
-Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP:
-
-Fixes: fd9c663b9ad67 ("bpf: minimal support for programs hooked into netfilter framework")
-Reported-by: syzbot+40f772d37250b6d10efc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6879466d.a00a0220.3af5df.0022.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Tested-by: syzbot+40f772d37250b6d10efc@syzkaller.appspotmail.com
-Acked-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20250722224041.112292-1-kuniyu@google.com
+Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
+Signed-off-by: Jan Prusakowski <jprusakowski@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_bpf_link.c | 2 +-
+ fs/f2fs/data.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
-index 06b084844700..25bbac8986c2 100644
---- a/net/netfilter/nf_bpf_link.c
-+++ b/net/netfilter/nf_bpf_link.c
-@@ -17,7 +17,7 @@ static unsigned int nf_hook_run_bpf(void *bpf_prog, struct sk_buff *skb,
- 		.skb = skb,
- 	};
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 654f672639b3..4fc0ea5f69b8 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -287,7 +287,7 @@ static void f2fs_read_end_io(struct bio *bio)
+ {
+ 	struct f2fs_sb_info *sbi = F2FS_P_SB(bio_first_page_all(bio));
+ 	struct bio_post_read_ctx *ctx;
+-	bool intask = in_task();
++	bool intask = in_task() && !irqs_disabled();
  
--	return bpf_prog_run(prog, &ctx);
-+	return bpf_prog_run_pin_on_cpu(prog, &ctx);
- }
- 
- struct bpf_nf_link {
+ 	iostat_update_and_unbind_ctx(bio);
+ 	ctx = bio->bi_private;
 -- 
 2.39.5
 
