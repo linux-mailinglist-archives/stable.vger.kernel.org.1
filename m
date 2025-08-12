@@ -1,161 +1,110 @@
-Return-Path: <stable+bounces-169280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7E2B239D7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 22:15:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E47B239E1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 22:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7429E580B2E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CA81AA428B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626A4264F9C;
-	Tue, 12 Aug 2025 20:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA73F2C21E0;
+	Tue, 12 Aug 2025 20:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSYItNaT"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="GPwE0YXu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6922F068F;
-	Tue, 12 Aug 2025 20:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F3D2777E8;
+	Tue, 12 Aug 2025 20:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755029741; cv=none; b=ZNf5gQH+zriVgRwwDfSRVChqvzIWrwksVQ6H5iXCxrQAaXYOkK6n3D2vA3JrAgQJMvqbc11yRMauXT41kjifqfNXjzrgI0d1BRK8JMtYxtSIfQWeqqYd6zu1iru4rj137ut+51Tv3R5XUb+NchEe1s4l1nkm9wWXPxt7FFIbbEM=
+	t=1755030051; cv=none; b=lU22jZOHqCNZ59PrZNNp0HCeLc7Mj2i2iVzbOL2YV+uTJN7Htl7kxffrxOmjVPE/I2/o9DEoqzNI3KzjHPuxCKy+NTZMhrGB2E0oPKEv763l3hrlNFAL05YzAPOtY4bQJpPsOFG1sjTIiaZnv1DpotKEekcldyoCCu3H0hEA9pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755029741; c=relaxed/simple;
-	bh=EkRl3IJt0CeCAJlRL+5sBAuUy8C27QEY9r9+qlE9Gcg=;
+	s=arc-20240116; t=1755030051; c=relaxed/simple;
+	bh=+tF8MQexVjrJPdLLHizEV4nsnUoIOHoqc7qC4YT//+c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o8vR0lU/ZCSQcJtety26D5Q0K8IO0ANtB/tQJXmFfzVOclDzLVyUv7bocuSSs8GNzc8qCZWz7eAw6HIojw32XyHFBpzkGPQdRtJ4JfMo/Hp0xowyyZFu9Nj84X6YvUUWN+hXm2leqqYdvFOedtjFqCynpMZHzLsQUjFZwajX6kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSYItNaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18303C4CEF0;
-	Tue, 12 Aug 2025 20:15:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755029740;
-	bh=EkRl3IJt0CeCAJlRL+5sBAuUy8C27QEY9r9+qlE9Gcg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FSYItNaTzGGfcalWZeqUx64xvLKqZwiq0tp2xj6hhakS5XJwDjwK26xhmChbdJY3T
-	 BpNzHF2CmmuPPsJ6z9DPclMVgv0fZpUvoFp+6x0Dh9MCkegEj0lnavVgaGMz+ABhdh
-	 wCfCi/TcCfwo24Th0IShklnnVX7EvDukhv3NQWyt+4NoyXsRKCQklzCEJuFOXyO0Tg
-	 TGVuZzIkC4c4VbXj9Mi9KwCebvg72CNljXT6wBxCQa2rEd36ey5vYLLytoGwhrDNS/
-	 9hrI0oEgIWf7dutW4dWOWvsFA3pBMUj/AI+168Mo4y0XJkYWKHxda8xjDLRgxuIVwD
-	 bQ2UuiGDJ9IsQ==
-Date: Tue, 12 Aug 2025 22:15:37 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, 
-	nicolas.frattaroli@collabora.com, Heiko Stuebner <heiko@sntech.de>, linux-pwm@vger.kernel.org
-Subject: Re: Patch "pwm: rockchip: Round period/duty down on apply, up on
- get" has been added to the 6.16-stable tree
-Message-ID: <ztjkhfhr4oyqgarh4wrqtcgu4gh3fqnfnakdx34wlj37ggpiin@fibgy2g4zldp>
-References: <20250808223033.1417018-1-sashal@kernel.org>
- <c5s7efnva5gluplw65g6qqxjqpmcgprgtm6tsajkbdqibe73lb@lw5afb6b725i>
- <2025081236-moneyless-enigmatic-891b@gregkh>
- <tjogt2ovj4afxo3lz7ydwsqtk4b52gjvga47es6x3ogdbfopyb@weiw3effavjh>
- <2025081209-vista-preorder-bd6f@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AvnrIKhssrUx/dl7qhW9aCy4ZHdJiLp+amFY4u4RwXwKuKyE4niFASaa5pV9WlLyC4IrDofTo0KuuKEYslA/7Fp+RDeJYQhe3O7lpZ7zT4P9GSUyHLRSiSpv9f8ad0so3+ORkU3u312LMSZV6aEtefiBWB+S2ptUXMZYR1vDL6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=GPwE0YXu; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A2AFD1038C11C;
+	Tue, 12 Aug 2025 22:20:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1755030039; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=H3tyxek2HzYAbWyIkDVz6bqMHyz10AfZCUT3ToRhPE4=;
+	b=GPwE0YXu7Ga2Bwj/ovKlonpQebTULUgbX8okkVgFb1Cvf3FEN77iVzNyWwKVL+Lo5q+yc+
+	cUvDVq/Fm58niFyvz6j8tcVm8ELDMDwmwne547AU/kP4+V4I2mpBOKCV5RaC3L0Uf0NqWl
+	it9Rs8pz2dhWGFXtkfxKl3lpvo2YwdmRsP38kVwqPC2oGQVwYKyzHBGGNGZSVv/MWHoMZT
+	Zy05tgSPj+EKQkqRED9j6gSuZowB2VhNM56khsPDLXRbyWdF7KLkZoHJ981WW3RQxaPg4/
+	9ugsgx9UTunu5HUo4pjgGLVy4xb2O7C8ebBNg3ogJ0CO4V+lipSuD0uIkQUhdQ==
+Date: Tue, 12 Aug 2025 22:20:31 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org
+Subject: Re: [PATCH 6.1 000/253] 6.1.148-rc1 review
+Message-ID: <aJuiD7hke+/50/gG@duo.ucw.cz>
+References: <20250812172948.675299901@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="h2q4nioysagcscim"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="QhHZ/vbaSeeHaVxq"
 Content-Disposition: inline
-In-Reply-To: <2025081209-vista-preorder-bd6f@gregkh>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
---h2q4nioysagcscim
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+--QhHZ/vbaSeeHaVxq
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: Patch "pwm: rockchip: Round period/duty down on apply, up on
- get" has been added to the 6.16-stable tree
-MIME-Version: 1.0
 
-Hello Greg,
+Hi!
 
-On Tue, Aug 12, 2025 at 12:53:49PM +0200, Greg KH wrote:
-> On Tue, Aug 12, 2025 at 12:36:48PM +0200, Uwe Kleine-K=F6nig wrote:
-> > On Tue, Aug 12, 2025 at 10:53:11AM +0200, Greg KH wrote:
-> > > On Sat, Aug 09, 2025 at 11:45:23AM +0200, Uwe Kleine-K=F6nig wrote:
-> > > > while the new code makes the driver match the PWM rules now, I'd be
-> > > > conservative and not backport that patch because while I consider i=
-t a
-> > > > (very minor) fix that's a change in behaviour and maybe people depe=
-nd on
-> > > > that old behaviour. So let's not break our user's workflows and res=
-erve
-> > > > that for a major release. Please drop this patch from your queue.
-> > >=20
-> > > Now dropped, but note, any behavior change is ok for ANY kernel versi=
-on
-> > > as we guarantee they all work the same :)
-> >=20
-> > Your statement makes no sense, I guess you missed to add a "don't".
-> > Otherwise I'd like to know who "we" is :-)
+> This is the start of the stable review cycle for the 6.1.148 release.
+> There are 253 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >=20
-> {sigh} yes, I mean "any behavior change is NOT ok..."
+> Responses should be made by Thu, 14 Aug 2025 17:27:05 +0000.
+> Anything received after that time might be too late.
 
-Ahh I though you wanted to say "any behavior change is ok for ANY kernel
-version as we don't guarantee they all work the same". So let me explain
-a bit:
+CIP testing did not find any problems here:
 
-A PWM consumer (think fan driver) gets an opaque handle to the used PWM
-device and then requests something like: "Configure the PWM to have a
-period length of 50 ms and a duty length of 20 ms." The typical PWM
-cannot fulfill the request exactly and has to choose if it configures
-(say) period=3D46 ms + duty=3D16 ms, or period=3D52 ms and duty=3D26 ms (or
-possibly a mixture of the two, or an error code). Traditionally each
-driver implemented its own policy here and so the generic fan driver
-knows neither the possible hardware restrictions (another hardware might
-be able to do period=3D51 ms and duty=3D19 ms) nor how the driver picked one
-of the options. Making things harder, it depends on the use case which
-policy is the best, which also explains that different drivers picked
-different algorithms. And also it's unclear even what "nearest" means.
-For example a hardware might be able to configure period=3D17 ms or
-period=3D24 ms in reply to a request of period=3D20ms. You probably say that
-17 ms is nearer. But if you think in frequencies the request of
-period=3D20ms corresponds to 50 Hz and then 24 ms ~ 41.6667 Hz is better
-than 17 ms ~ 58.8235 Hz.
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
 
-To improve that situation a bit at least new PWM drivers are supposed to
-round down both values. The commit under discussion modifies an existing
-driver to align to that policy. So from a global point of view this is
-an improvement, because it makes things a bit more deterministic for a
-PWM consumer that doesn't know about the hardware details. The down side
-is that a PWM consumer that does know these details might depend on the
-actual implementation of the previously implemented policy.
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-So this is a change in behaviour, but it adds to the consistency of the
-PWM framework. If you want to make an LED blink or drive a fan, that
-(most likely) doesn't matter to you. If you drive a robot arm in a
-construction facility, it might.
+Best regards,
+                                                                Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-The mid term solution is a new PWM API that gives more control to the
-consumer. The framework bits for that are already done and three drivers
-are implementing that and two more are in the making. (And if you use
-these with the legacy consumer function you also get the round down
-behaviour.)
-
-Best regards
-Uwe
-
---h2q4nioysagcscim
+--QhHZ/vbaSeeHaVxq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmiboOYACgkQj4D7WH0S
-/k5adAgAtbv00nouwE13QCEsW2Oi0H0NXyXNfEPwFVcRvAWnY+0Ephq8i+aIYke4
-Fr7eCNHaTaHbgVyBzI0I+OXnT7tO4L/R58QR9nD+RDHeHFY11GxGZUzLeLtqYO4n
-4TpGhzhXsowS4IOw1ucgUW0qYKtnxNDJQUSB6F8RJTtbm0dM7CzotaM9aTxHPR/4
-HM+DY3LWovU0Zju5UWuPiR7L+AVGy+zaw5lQ24GKk+PM/4jPKVDqGV72PZZItZ9E
-nJT4HFgCSOfThvgA4yMy/tKe1EsPBOCaDe1rT5USyhCcGA5hO6u+oQxfygK/Tbam
-6Bf3Td6j5J0rXQvmoL5gEx9cNos9WQ==
-=qTEt
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaJuiDwAKCRAw5/Bqldv6
+8jZqAJ9P4IzM7rmI9LXSqGKiNQ//lJR9mQCeJxcbMuO9PF3Wk1xsuqC60VYd0+Q=
+=C9v4
 -----END PGP SIGNATURE-----
 
---h2q4nioysagcscim--
+--QhHZ/vbaSeeHaVxq--
 
