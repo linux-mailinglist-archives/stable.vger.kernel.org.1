@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74003B2352B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEECB2336B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 430C21888E66
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20BF41AA7811
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F302F5481;
-	Tue, 12 Aug 2025 18:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232F3280037;
+	Tue, 12 Aug 2025 18:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaVde2Uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuhBPHYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07582FDC49;
-	Tue, 12 Aug 2025 18:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A3E2E7BD4;
+	Tue, 12 Aug 2025 18:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024298; cv=none; b=hO6GX0CSm6t+L9MS+FKIIXWYrUS/SKYUcbgq5lac7/4I0N9BO8Djf02q+Z8l4DFXxEsGg3/oSEO9ShfeGW0mxExV6Rz6L6T7Ih4ZdkRRVS41tCJ9cWwizLx8ww7zzKhgxaX2I3QQAFeoqj0a8OdnUCJMQx0RaxBFlNz3RLDVFMY=
+	t=1755023027; cv=none; b=Yk5KC8zmWmwLdcC74fZehEALLEbi7HgWYeqJz/W7/P8BqjvhkRDu55sL6BzEZ/Av/blCnyZM+3r4DrsUe87lb6+V5iwlZPc3WqmOs6Q3vqZZtwYgEs3dLkYOTNdVK4SDZoWJhGENlLnlfQ0/x8PruS9+wxLIVrGHg2Yl2wF4NYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024298; c=relaxed/simple;
-	bh=nBpQO9yDoX6qW6LUMKkEZ2tWR9KwGwf9BfSLMI2ZAs8=;
+	s=arc-20240116; t=1755023027; c=relaxed/simple;
+	bh=WW8n3AN53Q8PjOEncfCWbR4mMpJOWD41alg48nHginQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fY68EGvM6ORhhbOMoNpuFQC2L0ZNl69vSTLY/2Sy9BTHkdYORfsC34HZwVEROy/HED5HJPFu4V7B6+tQNw9ha2onpuB37+9Yc1MeKNT9zrjiyDHYuU1L0WAhY+TXMNoTCWSOBdJcEhnUC0Pd5ppUh7gnggxO4ydz+LhdUJQN7A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaVde2Uv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E808AC4CEF0;
-	Tue, 12 Aug 2025 18:44:56 +0000 (UTC)
+	 MIME-Version; b=MekqzFOBnOpz4DWE4F/JbDEKeoX6tVOF0QIDglEdpsumlm8+DWioKjiybziBUiqHdAmM3PDshs4xUk8RNRqKVpe7ZjFhmegNnQPndooSdNnQOjgPrdsN4ESuyMFnSpZS29hF0B2UDdGrltCKEZhz0xXR0MUPVYAUos0UD5UhiTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuhBPHYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42997C4CEF7;
+	Tue, 12 Aug 2025 18:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024297;
-	bh=nBpQO9yDoX6qW6LUMKkEZ2tWR9KwGwf9BfSLMI2ZAs8=;
+	s=korg; t=1755023027;
+	bh=WW8n3AN53Q8PjOEncfCWbR4mMpJOWD41alg48nHginQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UaVde2UveLrENRhh+mXeCcNxcg74kE89NSzDfMvIS+xLw/P0SD2w13Xa2a45QR3f3
-	 IvtpylVxHLyNQY8jQg7n1/PHLk59G8/s6nRxozFpgWN7JoIyh3C+DlWJtHf4Smn/30
-	 A04/WP0zjkqtYIPTxZ80aCfjDg9Dh3SxtrJWa6GE=
+	b=ZuhBPHYsRUrEy3ONeqvPX0Qm1owPelBlO51Srr+1fjybBEIlZz97LVe90SfX5gMCe
+	 ghE4l1VBP4k+nljO6pPzFHHyW9y26/95ipCjQXadDlKXdacECqnu75TSkaszWGR3ma
+	 MOoBh350Ue3zHHVX/Tnsk9ZzcWHHqu5IkjcB7vDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jiwei Sun <sunjw10@lenovo.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 331/627] PCI: Adjust the position of reading the Link Control 2 register
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 329/369] vsock: Do not allow binding to VMADDR_PORT_ANY
 Date: Tue, 12 Aug 2025 19:30:26 +0200
-Message-ID: <20250812173431.884697024@linuxfoundation.org>
+Message-ID: <20250812173029.089176088@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiwei Sun <sunjw10@lenovo.com>
+From: Budimir Markovic <markovicbudimir@gmail.com>
 
-[ Upstream commit b85af48de3ece4e5bbdb2248a5360a409991cf67 ]
+commit aba0c94f61ec05315fa7815d21aefa4c87f6a9f4 upstream.
 
-In a89c82249c37 ("PCI: Work around PCIe link training failures"), if the
-speed limit is set to 2.5 GT/s and the retraining is successful, an attempt
-will be made to lift the speed limit. One condition for lifting the speed
-limit is to check whether the link speed field of the Link Control 2
-register is PCI_EXP_LNKCTL2_TLS_2_5GT.
+It is possible for a vsock to autobind to VMADDR_PORT_ANY. This can
+cause a use-after-free when a connection is made to the bound socket.
+The socket returned by accept() also has port VMADDR_PORT_ANY but is not
+on the list of unbound sockets. Binding it will result in an extra
+refcount decrement similar to the one fixed in fcdd2242c023 (vsock: Keep
+the binding until socket destruction).
 
-However, since de9a6c8d5dbf ("PCI/bwctrl: Add pcie_set_target_speed() to
-set PCIe Link Speed"), the `lnkctl2` local variable does not undergo any
-changes during the speed limit setting and retraining process. As a result,
-the code intended to lift the speed limit is not executed.
+Modify the check in __vsock_bind_connectible() to also prevent binding
+to VMADDR_PORT_ANY.
 
-To address this issue, adjust the position of the Link Control 2 register
-read operation in the code and place it before its use.
-
-Fixes: de9a6c8d5dbf ("PCI/bwctrl: Add pcie_set_target_speed() to set PCIe Link Speed")
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Jiwei Sun <sunjw10@lenovo.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250123055155.22648-3-sjiwei@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250807041811.678-1-markovicbudimir@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/vmw_vsock/af_vsock.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index d7f4ee634263..db6e142b082d 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -105,13 +105,13 @@ int pcie_failed_link_retrain(struct pci_dev *dev)
- 	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
- 		return ret;
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -689,7 +689,8 @@ static int __vsock_bind_connectible(stru
+ 		unsigned int i;
  
--	pcie_capability_read_word(dev, PCI_EXP_LNKCTL2, &lnkctl2);
- 	pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
- 	if (!(lnksta & PCI_EXP_LNKSTA_DLLLA) && pcie_lbms_seen(dev, lnksta)) {
--		u16 oldlnkctl2 = lnkctl2;
-+		u16 oldlnkctl2;
+ 		for (i = 0; i < MAX_PORT_RETRIES; i++) {
+-			if (port <= LAST_RESERVED_PORT)
++			if (port == VMADDR_PORT_ANY ||
++			    port <= LAST_RESERVED_PORT)
+ 				port = LAST_RESERVED_PORT + 1;
  
- 		pci_info(dev, "broken device, retraining non-functional downstream link at 2.5GT/s\n");
- 
-+		pcie_capability_read_word(dev, PCI_EXP_LNKCTL2, &oldlnkctl2);
- 		ret = pcie_set_target_speed(dev, PCIE_SPEED_2_5GT, false);
- 		if (ret) {
- 			pci_info(dev, "retraining failed\n");
-@@ -123,6 +123,8 @@ int pcie_failed_link_retrain(struct pci_dev *dev)
- 		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
- 	}
- 
-+	pcie_capability_read_word(dev, PCI_EXP_LNKCTL2, &lnkctl2);
-+
- 	if ((lnksta & PCI_EXP_LNKSTA_DLLLA) &&
- 	    (lnkctl2 & PCI_EXP_LNKCTL2_TLS) == PCI_EXP_LNKCTL2_TLS_2_5GT &&
- 	    pci_match_id(ids, dev)) {
--- 
-2.39.5
-
+ 			new_addr.svm_port = port++;
 
 
 
