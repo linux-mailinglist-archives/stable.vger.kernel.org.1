@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98475B23289
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC33B22F86
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9331AA6E6D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E74F6834E7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AC12FAC11;
-	Tue, 12 Aug 2025 18:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6902FDC5B;
+	Tue, 12 Aug 2025 17:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpSfXmYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0koqEWEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0729B3F9D2;
-	Tue, 12 Aug 2025 18:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23851268C73;
+	Tue, 12 Aug 2025 17:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022446; cv=none; b=C9dppOBphAciA9XhQEcz6oJ8vkWlHBCZ89Zc0bSlzNpWSzgpADOGYcHx300NStaC9+L/6NePttQCesob31Ds3PEuC6imndf+0mBGUo7+lACNFDUYhUqtc0i56cbxYTdeZKQeqp0aG2UFOhmcZ+pcaRJhVsNo08RREOQghValAyY=
+	t=1755020386; cv=none; b=VBhguBz7O9PyVuIik8UKnwLjGEl7Oybkc4yfAVdgJxBAyxhz9pcLNmRceyhmS5NR5Hb3Wp47SASLlyET8jCiYuQmRvdU0i8KDQVWFtDLQWOSr0ZYFsvxir6tN3zYPihA989pBlb1aWzTATJ//fnfUAbnrCancng8/bkXPsgzYNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022446; c=relaxed/simple;
-	bh=3iq1fGepwtavGwpuaZuSAzVURbHeX0ZLUEUl4UPMkUA=;
+	s=arc-20240116; t=1755020386; c=relaxed/simple;
+	bh=d2XOE8ZeYuaPZndmQo5jdKOXMWEMAtAjU9BDzlipSSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7ZQ9lCZvJCWJDp9D/slJvhsT63XOn2ZolX/DcVNrWXcJ4+fR2U9dhMGbMKR/Ictqij1H1I0ai+PIJtQ6vYdwDirlNmsZGe5ghI8VmqcELTHEdMkRo3OAL2S6MazKZwniB45g22JSxBX96etRlVy70S+VNcBD4zQp8h2d8CubYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpSfXmYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69439C4CEF0;
-	Tue, 12 Aug 2025 18:14:05 +0000 (UTC)
+	 MIME-Version; b=Znfsfg5xH8jy5vy408glbWPExxu9Mz7BDddxxEESGHcqXUDRefuEB5whWJxPUmzNPnOlQp4YT02xVdwLSUB4/A4mJgyxnEiH8RUvzmgKj/wwAnd3/VTcr6S3s1OXLBNLZSiPTEYVRHhxiWQnKyLqrtGXFMF2yHJ/pLH9xRd/664=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0koqEWEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C613C4CEF0;
+	Tue, 12 Aug 2025 17:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022445;
-	bh=3iq1fGepwtavGwpuaZuSAzVURbHeX0ZLUEUl4UPMkUA=;
+	s=korg; t=1755020385;
+	bh=d2XOE8ZeYuaPZndmQo5jdKOXMWEMAtAjU9BDzlipSSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpSfXmYjh3Jd2IyIJgQTSDouiaU0WbGFzNpFg6gEYNdkatYoNKCBu2CEV5qP0dbtm
-	 E42j8oes2wXSi/lFR32QIeZlThLwjkDpwDeJA23WwEgzw7qguMAuJqP+UYVXfwH7Dk
-	 e0DxjffQNaHnEsrc8jgL0u7zUlLnnMHICpnwwN9Y=
+	b=0koqEWEkYKvTpjZey82952p/QOm9h0XrTqsayW7BKLWVau12m94B575AEzmUlJNBc
+	 JKTWEUw3snv8SdTcOxDccH6QCr19ju1pbe6VvK8D4ByG3oBnK6ZkhtMF5SkbetmkvU
+	 Ryox2FgIgC4LZ0eKsnc4hYUClSL0/A/byXKcnQBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com,
+	Yangtao Li <frank.li@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/369] crypto: marvell/cesa - Fix engine load inaccuracy
+Subject: [PATCH 6.1 066/253] hfsplus: remove mutex_lock check in hfsplus_free_extents
 Date: Tue, 12 Aug 2025 19:27:34 +0200
-Message-ID: <20250812173020.676915993@linuxfoundation.org>
+Message-ID: <20250812172951.539658188@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
+[ Upstream commit fcb96956c921f1aae7e7b477f2435c56f77a31b4 ]
 
-If an error occurs during queueing the engine load will never be
-decremented.  Fix this by moving the engine load adjustment into
-the cleanup function.
+Syzbot reported an issue in hfsplus filesystem:
 
-Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 4400 at fs/hfsplus/extents.c:346
+	hfsplus_free_extents+0x700/0xad0
+Call Trace:
+<TASK>
+hfsplus_file_truncate+0x768/0xbb0 fs/hfsplus/extents.c:606
+hfsplus_write_begin+0xc2/0xd0 fs/hfsplus/inode.c:56
+cont_expand_zero fs/buffer.c:2383 [inline]
+cont_write_begin+0x2cf/0x860 fs/buffer.c:2446
+hfsplus_write_begin+0x86/0xd0 fs/hfsplus/inode.c:52
+generic_cont_expand_simple+0x151/0x250 fs/buffer.c:2347
+hfsplus_setattr+0x168/0x280 fs/hfsplus/inode.c:263
+notify_change+0xe38/0x10f0 fs/attr.c:420
+do_truncate+0x1fb/0x2e0 fs/open.c:65
+do_sys_ftruncate+0x2eb/0x380 fs/open.c:193
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+To avoid deadlock, Commit 31651c607151 ("hfsplus: avoid deadlock
+on file truncation") unlock extree before hfsplus_free_extents(),
+and add check wheather extree is locked in hfsplus_free_extents().
+
+However, when operations such as hfsplus_file_release,
+hfsplus_setattr, hfsplus_unlink, and hfsplus_get_block are executed
+concurrently in different files, it is very likely to trigger the
+WARN_ON, which will lead syzbot and xfstest to consider it as an
+abnormality.
+
+The comment above this warning also describes one of the easy
+triggering situations, which can easily trigger and cause
+xfstest&syzbot to report errors.
+
+[task A]			[task B]
+->hfsplus_file_release
+  ->hfsplus_file_truncate
+    ->hfs_find_init
+      ->mutex_lock
+    ->mutex_unlock
+				->hfsplus_write_begin
+				  ->hfsplus_get_block
+				    ->hfsplus_file_extend
+				      ->hfsplus_ext_read_extent
+				        ->hfs_find_init
+					  ->mutex_lock
+    ->hfsplus_free_extents
+      WARN_ON(mutex_is_locked) !!!
+
+Several threads could try to lock the shared extents tree.
+And warning can be triggered in one thread when another thread
+has locked the tree. This is the wrong behavior of the code and
+we need to remove the warning.
+
+Fixes: 31651c607151f ("hfsplus: avoid deadlock on file truncation")
+Reported-by: syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/00000000000057fa4605ef101c4c@google.com/
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250529061807.2213498-1-frank.li@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/cipher.c | 4 +++-
- drivers/crypto/marvell/cesa/hash.c   | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ fs/hfsplus/extents.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
-index 3876e3ce822f..eabed9d977df 100644
---- a/drivers/crypto/marvell/cesa/cipher.c
-+++ b/drivers/crypto/marvell/cesa/cipher.c
-@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
- static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
- {
- 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
+diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
+index 91354e769642..839bf83448c3 100644
+--- a/fs/hfsplus/extents.c
++++ b/fs/hfsplus/extents.c
+@@ -342,9 +342,6 @@ static int hfsplus_free_extents(struct super_block *sb,
+ 	int i;
+ 	int err = 0;
  
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_skcipher_dma_cleanup(req);
-+
-+	atomic_sub(req->cryptlen, &engine->load);
- }
- 
- static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
-@@ -212,7 +215,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
- 	struct mv_cesa_engine *engine = creq->base.engine;
- 	unsigned int ivsize;
- 
--	atomic_sub(skreq->cryptlen, &engine->load);
- 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
- 
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index 6815eddc9068..e339ce7ad533 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -110,9 +110,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
- static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
- {
- 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
- 
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_ahash_dma_cleanup(req);
-+
-+	atomic_sub(req->nbytes, &engine->load);
- }
- 
- static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
-@@ -395,8 +398,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
- 			}
- 		}
- 	}
+-	/* Mapping the allocation file may lock the extent tree */
+-	WARN_ON(mutex_is_locked(&HFSPLUS_SB(sb)->ext_tree->tree_lock));
 -
--	atomic_sub(ahashreq->nbytes, &engine->load);
- }
- 
- static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
+ 	hfsplus_dump_extent(extent);
+ 	for (i = 0; i < 8; extent++, i++) {
+ 		count = be32_to_cpu(extent->block_count);
 -- 
 2.39.5
 
