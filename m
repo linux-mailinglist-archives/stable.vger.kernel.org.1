@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF605B23453
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E96B22F73
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BBD1893300
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DFA5565F25
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC532FDC49;
-	Tue, 12 Aug 2025 18:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAC12FE59F;
+	Tue, 12 Aug 2025 17:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RS9O9KHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVDyJnFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F4E2E285E;
-	Tue, 12 Aug 2025 18:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9462D9EF3;
+	Tue, 12 Aug 2025 17:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023642; cv=none; b=Y0x5NdjlVkXXDagHpjusZYfKOMkwkq88/oTPNnPPMGy5j+WhsZDHZPYuJVQPsfr5Vms6glar/9mM5gsz1u3ENSDmaUDgV/j7NJaCj8ox7zWiaJ2sOnONz91JL96n7fTJSEAnN3Ks9ATSSogb3TxeIoj1vDFIMUSTGsurAHlmd80=
+	t=1755020303; cv=none; b=Hoath/HHwtZQAfYEQ256+1PXvB2fw9FvEYPdGC6WyUtTbg3XuxYW/N5mX7090q+gZ7TS4XA4njpnPhZfmEeke+VDr088VOrI0DjwlyR4YcvsUpiOCTTQm1R/b61MXIkjrmaO6zDTgiQb3HXCVusQezQdbQw6NFuoA7QsbSymyCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023642; c=relaxed/simple;
-	bh=CKvLHWFNb33M1tH7BiCOJyHB0yrLfjxxh+0JrOz9Zu0=;
+	s=arc-20240116; t=1755020303; c=relaxed/simple;
+	bh=MeaiD6BgFjcYSl5b0SSdkFd2ugKRsTVn7rULS3ogHR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYWgIKItKWtoQ/t2/JbJEItcO49OWS4QSSe06hp5EtI+YQfRtZUbNFqMm/WTAAKmdUKv9JgTGjk6A6iuMzktMGLpgzQuCl0RJzS26T8sevO6ojoJXyS1aO79S1kAXj146FMp3fxLPxEzhqbwcVM+lVCQ1oTQ+rBjLt9bcVy2WyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RS9O9KHX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4FEC4CEF0;
-	Tue, 12 Aug 2025 18:34:01 +0000 (UTC)
+	 MIME-Version; b=ZIH8n8tTgFiZeSYwUCxMMxGiFGLYZeS3VcSqTB3fib3Mn5DgSiOjuX9zTMs+9UhJbo/GMBJOL+cq9WUV1Y7D1dwWw2mBdAlBTO1WvT7osk+f33+KiPAOnyxDv7INgddrklf1lkRu6p6VqgqOtn0TkucWFPwjPRkZ/oTtQPflVN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVDyJnFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7921CC4CEF0;
+	Tue, 12 Aug 2025 17:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023642;
-	bh=CKvLHWFNb33M1tH7BiCOJyHB0yrLfjxxh+0JrOz9Zu0=;
+	s=korg; t=1755020302;
+	bh=MeaiD6BgFjcYSl5b0SSdkFd2ugKRsTVn7rULS3ogHR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RS9O9KHXYUIL+tpsZHZtPD9FY/FwivHHGwnmeRvkRcFIObdPMAW3YmqC9/oqW3lcQ
-	 Jz9yVDyj220UTkjfqfMza2ZUEWUUGXyiypU2ytwcSl8Oy9KTXK3eVihdjEgP+9EF85
-	 u+43N7HSVFde3VvUI4cj+wQ2llx4R0af/0fpJlNw=
+	b=OVDyJnFiEEcFkqjH3jdNWPyCcU82zQRw3mzWK0aXmbatQMs2g3gx06D/Excakwz0E
+	 eoRGuYNV9PIgWslpERH1q3tXUZmWPSCjGkDTgEYAfA0DSuIn6ahgStgJNqWQb8ViFm
+	 NQVevakTP2Q/4tFpqHVSNp3neyWTluV7LRohWu7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 132/627] drm/rockchip: cleanup fb when drm_gem_fb_afbc_init failed
-Date: Tue, 12 Aug 2025 19:27:07 +0200
-Message-ID: <20250812173424.335924655@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 040/253] selftests: mptcp: connect: also cover alt modes
+Date: Tue, 12 Aug 2025 19:27:08 +0200
+Message-ID: <20250812172950.440467394@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 099593a28138b48feea5be8ce700e5bc4565e31d ]
+commit 37848a456fc38c191aedfe41f662cc24db8c23d9 upstream.
 
-In the function drm_gem_fb_init_with_funcs, the framebuffer (fb)
-and its corresponding object ID have already been registered.
+The "mmap" and "sendfile" alternate modes for mptcp_connect.sh/.c are
+available from the beginning, but only tested when mptcp_connect.sh is
+manually launched with "-m mmap" or "-m sendfile", not via the
+kselftests helpers.
 
-So we need to cleanup the drm framebuffer if the subsequent
-execution of drm_gem_fb_afbc_init fails.
+The MPTCP CI was manually running "mptcp_connect.sh -m mmap", but not
+"-m sendfile". Plus other CIs, especially the ones validating the stable
+releases, were not validating these alternate modes.
 
-Directly call drm_framebuffer_put to ensure that all fb related
-resources are cleanup.
+To make sure these modes are validated by these CIs, add two new test
+programs executing mptcp_connect.sh with the alternate modes.
 
-Fixes: 7707f7227f09 ("drm/rockchip: Add support for afbc")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250509031607.2542187-1-andyshrk@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250715-net-mptcp-sft-connect-alt-v2-1-8230ddd82454@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_fb.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ tools/testing/selftests/net/mptcp/Makefile                  |    3 ++-
+ tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh     |    5 +++++
+ tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh |    5 +++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+ create mode 100755 tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-index dcc1f07632c3..5829ee061c61 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-@@ -52,16 +52,9 @@ rockchip_fb_create(struct drm_device *dev, struct drm_file *file,
- 	}
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -4,7 +4,8 @@ top_srcdir = ../../../../..
  
- 	if (drm_is_afbc(mode_cmd->modifier[0])) {
--		int ret, i;
--
- 		ret = drm_gem_fb_afbc_init(dev, mode_cmd, afbc_fb);
- 		if (ret) {
--			struct drm_gem_object **obj = afbc_fb->base.obj;
--
--			for (i = 0; i < info->num_planes; ++i)
--				drm_gem_object_put(obj[i]);
--
--			kfree(afbc_fb);
-+			drm_framebuffer_put(&afbc_fb->base);
- 			return ERR_PTR(ret);
- 		}
- 	}
--- 
-2.39.5
-
+ CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
+ 
+-TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
++TEST_PROGS := mptcp_connect.sh mptcp_connect_mmap.sh mptcp_connect_sendfile.sh \
++	      pm_netlink.sh mptcp_join.sh diag.sh \
+ 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
+ 
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_mmap.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m mmap "${@}"
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect_sendfile.sh
+@@ -0,0 +1,5 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
++	"$(dirname "${0}")/mptcp_connect.sh" -m sendfile "${@}"
 
 
 
