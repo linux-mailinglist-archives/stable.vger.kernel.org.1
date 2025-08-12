@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6D0B23391
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05369B231CB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D9A817DC31
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81A06166529
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971462FD1C5;
-	Tue, 12 Aug 2025 18:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042DC2EAB97;
+	Tue, 12 Aug 2025 18:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIT2IiuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkuphTCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C8D3F9D2;
-	Tue, 12 Aug 2025 18:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B527A17993;
+	Tue, 12 Aug 2025 18:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023137; cv=none; b=QYgOAVAch2S8zmyD1hRPZjnM4Y1mvLfF4fDBJ/9UeQNTfZuWyqv0/qu5KnVyJhqA+2BfUO+oT7+8aBqlvlTMThoskVrZpXUL7uiRhsE5Ad/W4/LE8u/gpmtoDY7xCvXV8Paj6fiYNPP1rSW87vfUWxrBnbo3ZbrFsbkOLMtaUWE=
+	t=1755021819; cv=none; b=TrpfnnGKKUUxlXoqPf+dVmjQKf0BVwDm5MvjLB5+9O0/0SZpKzfa1Djtnl3fbtPZhnuT2CZUA4zSl3RphNVpVHn7Bpaaozp19rQWKwvjZjNyhzMpYdBBi/Qhr/ysJGWN46HZJDO4a7X6AonWIa8I/a+5abp/OAMd8vwrILKJyRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023137; c=relaxed/simple;
-	bh=IaeS+NjT+hJub6FOI3UEhwOQ9wmrdLDW7W0UckrrUWc=;
+	s=arc-20240116; t=1755021819; c=relaxed/simple;
+	bh=V1F3mDbZneFN/pjrP+Su1Txb/WXrqERt2gKKeCBeqIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjcYYWuv0JpvIQSpQPu1Y+j2P8UpLT00j79cunGiRVIsHHemog6zB4hO0/NyXaHklhHoPfDQ4msQick0Dhk8rMiAcKCC84CFIkvDgM4NbsINQZ5Uhg3T9QiBQ3xUQ9t4rspIEV29YlcWjW/5SFMkJrSyzDfTyfmkKLmjI2v3r20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIT2IiuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC29FC4CEF1;
-	Tue, 12 Aug 2025 18:25:33 +0000 (UTC)
+	 MIME-Version; b=gUxsxW8jhaMkG3F6JUqQzlWvwkWRMV992Spl/kA6Oggjd8QM7sdSu+GXvCddzmUS1M5lV9udELe9Lfm/RwnlVWTb+GpgdwpL+xerCUHuC1YcPNaExnUMsoElTlmsOpAPMjUA+0wqwk2+f9L1jY1+1Wr1ZxFjXay8r98GKdU5Gp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkuphTCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E89C4CEF0;
+	Tue, 12 Aug 2025 18:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023134;
-	bh=IaeS+NjT+hJub6FOI3UEhwOQ9wmrdLDW7W0UckrrUWc=;
+	s=korg; t=1755021819;
+	bh=V1F3mDbZneFN/pjrP+Su1Txb/WXrqERt2gKKeCBeqIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIT2IiuSIJYux3vYxAaT1cpgnzAD/sVG806pNlw4IRHc91wPXfUtWjff0Szcd/KaF
-	 tOS6s2gdBWSua9+1x3YjpafQj5X3b3HmqWuk99McWSgOFtM3dusSAGC3n4Iw1IUhWK
-	 ZwoDd7on4wJe3fVzR6YMA+hB5/k+7xLlvdhAKo2k=
+	b=DkuphTCD0gNW3dC/OYgV7R3laVEdZk0aM3iPF/RYeJhFEFTE930SKkuuMD39pXVeL
+	 ke++FBqcAIUWIMoCIU4SfDmlGgBeojh1lahVaWhbBEC0Aa7nbjZAdRgfq6/mRbviEX
+	 /Dz4/ATi9W+PcSKHjCLfnBgNtl9fV8AA9vkskE/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.12 326/369] perf/core: Prevent VMA split of buffer mappings
+	Quang Le <quanglex97@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 235/262] net/packet: fix a race in packet_set_ring() and packet_notifier()
 Date: Tue, 12 Aug 2025 19:30:23 +0200
-Message-ID: <20250812173028.979033153@linuxfoundation.org>
+Message-ID: <20250812173003.166147511@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Quang Le <quanglex97@gmail.com>
 
-commit b024d7b56c77191cde544f838debb7f8451cd0d6 upstream.
+commit 01d3c8417b9c1b884a8a981a3b886da556512f36 upstream.
 
-The perf mmap code is careful about mmap()'ing the user page with the
-ringbuffer and additionally the auxiliary buffer, when the event supports
-it. Once the first mapping is established, subsequent mapping have to use
-the same offset and the same size in both cases. The reference counting for
-the ringbuffer and the auxiliary buffer depends on this being correct.
+When packet_set_ring() releases po->bind_lock, another thread can
+run packet_notifier() and process an NETDEV_UP event.
 
-Though perf does not prevent that a related mapping is split via mmap(2),
-munmap(2) or mremap(2). A split of a VMA results in perf_mmap_open() calls,
-which take reference counts, but then the subsequent perf_mmap_close()
-calls are not longer fulfilling the offset and size checks. This leads to
-reference count leaks.
+This race and the fix are both similar to that of commit 15fe076edea7
+("net/packet: fix a race in packet_bind() and packet_notifier()").
 
-As perf already has the requirement for subsequent mappings to match the
-initial mapping, the obvious consequence is that VMA splits, caused by
-resizing of a mapping or partial unmapping, have to be prevented.
+There too the packet_notifier NETDEV_UP event managed to run while a
+po->bind_lock critical section had to be temporarily released. And
+the fix was similarly to temporarily set po->num to zero to keep
+the socket unhooked until the lock is retaken.
 
-Implement the vm_operations_struct::may_split() callback and return
-unconditionally -EINVAL.
+The po->bind_lock in packet_set_ring and packet_notifier precede the
+introduction of git history.
 
-That ensures that the mapping offsets and sizes cannot be changed after the
-fact. Remapping to a different fixed address with the same size is still
-possible as it takes the references for the new mapping and drops those of
-the old mapping.
-
-Fixes: 45bfb2e50471 ("perf/core: Add AUX area to ring buffer for raw data streams")
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27504
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
+Signed-off-by: Quang Le <quanglex97@gmail.com>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250801175423.2970334-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/packet/af_packet.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6617,11 +6617,21 @@ out_put:
- 	ring_buffer_put(rb); /* could be last */
- }
- 
-+static int perf_mmap_may_split(struct vm_area_struct *vma, unsigned long addr)
-+{
-+	/*
-+	 * Forbid splitting perf mappings to prevent refcount leaks due to
-+	 * the resulting non-matching offsets and sizes. See open()/close().
-+	 */
-+	return -EINVAL;
-+}
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -4566,10 +4566,10 @@ static int packet_set_ring(struct sock *
+ 	spin_lock(&po->bind_lock);
+ 	was_running = packet_sock_flag(po, PACKET_SOCK_RUNNING);
+ 	num = po->num;
+-	if (was_running) {
+-		WRITE_ONCE(po->num, 0);
++	WRITE_ONCE(po->num, 0);
++	if (was_running)
+ 		__unregister_prot_hook(sk, false);
+-	}
 +
- static const struct vm_operations_struct perf_mmap_vmops = {
- 	.open		= perf_mmap_open,
- 	.close		= perf_mmap_close, /* non mergeable */
- 	.fault		= perf_mmap_fault,
- 	.page_mkwrite	= perf_mmap_fault,
-+	.may_split	= perf_mmap_may_split,
- };
+ 	spin_unlock(&po->bind_lock);
  
- static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 	synchronize_net();
+@@ -4601,10 +4601,10 @@ static int packet_set_ring(struct sock *
+ 	mutex_unlock(&po->pg_vec_lock);
+ 
+ 	spin_lock(&po->bind_lock);
+-	if (was_running) {
+-		WRITE_ONCE(po->num, num);
++	WRITE_ONCE(po->num, num);
++	if (was_running)
+ 		register_prot_hook(sk);
+-	}
++
+ 	spin_unlock(&po->bind_lock);
+ 	if (pg_vec && (po->tp_version > TPACKET_V2)) {
+ 		/* Because we don't support block-based V3 on tx-ring */
 
 
 
