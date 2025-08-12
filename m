@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604D9B2324F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C3AB233E9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 736003B731E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B11D7B84F2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86E9282E1;
-	Tue, 12 Aug 2025 18:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9F62F4A0A;
+	Tue, 12 Aug 2025 18:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IqDcJ7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOodMDBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7766D3F9D2;
-	Tue, 12 Aug 2025 18:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCE761FFE;
+	Tue, 12 Aug 2025 18:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022252; cv=none; b=dpOa9iiQgGruytFCDVkwdheQyDL2mfkXmN7V2Rl1x8KJ5ZxzhYJzs6MdjngVwjyvAfQrbbys+zFi//hxtsqSTsr21xMLSZjQsGbs187B5QaXDf0a4j+/SVibwCRflkZhLw90quI0CI0Y5wBItQSJuZjzzNIx9/vqUx1/q1V2WG4=
+	t=1755023629; cv=none; b=VRgeGl7nVjN5WwKO+Yc6wdpVOvDgWh4yujYfn9wwf/Pp5OTGaG2j5I2WPPfUbni1oFDl8Ok6ii4fWa/MPvZrWgG2QhjS2eJSvbXiQt0x4IJCvkPIaJ00FabxMghYR2kDER88fhTb5w/jf3NhnA1trrymBA2Nmi7bPT40jdGyvT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022252; c=relaxed/simple;
-	bh=aZz6ZummEWUk9HMsMFgSu1oJjH77wMeo9g8dr6RPjYw=;
+	s=arc-20240116; t=1755023629; c=relaxed/simple;
+	bh=B2D6e+46dIgFcTjTUpg/wFZcL9m94CgGe45WQuzQfjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvUGNGOM0G7Ie5MZBx9fnKQR4kTB3/R5TUYyZxJq3BbK2XW+r55OmWJLEU3wzb0gZEk0ub1jpl0t3vnbmECJxv5GYVAnSIMyUs3CrRTf0WF7XZYeTrbxbhGl7YLrwhHvqJPdKwnGXhjMPLRD51diA45IA4tVzqxdawdAehWgeow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IqDcJ7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FA1C4CEF0;
-	Tue, 12 Aug 2025 18:10:51 +0000 (UTC)
+	 MIME-Version; b=ICdW/A/Wml3hQtNDfOmrQ74AUuhcvIw/Rf6pqR5fe4kKQIIlVOCwI+imcs0rxRRoJ7aw07Q+Zlo2h1IHSUQCdRo+ahxunrQN3pDxMaE71xJaARG8sb1N2Vm0eDCUBq9360Tf5cfWCzG+MAjI+Zjge7SpYBH/qaXq9FMPW4qoDI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOodMDBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D0CC4CEF0;
+	Tue, 12 Aug 2025 18:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022252;
-	bh=aZz6ZummEWUk9HMsMFgSu1oJjH77wMeo9g8dr6RPjYw=;
+	s=korg; t=1755023628;
+	bh=B2D6e+46dIgFcTjTUpg/wFZcL9m94CgGe45WQuzQfjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IqDcJ7xE8snVoWsuXVihgyynMmYuhMMEbjUMVURKbu+36reWVwe2bnOvBhjqTIPS
-	 80OqZuTWoQxag4zwQaQ0SktwAp7S84ZEINN43AUQYkgVblT692GZf3F0z/KfanuqbS
-	 zIcssId7JEP5GC5EJUlhebYYttGeJUGqtoS1/aZY=
+	b=MOodMDBlli6JTfdyM/GMQsfADZFWitLWDnwEwWkRRcZVAgQVCzm85UGrzmuO+Ez/1
+	 xEZeUtZgMzFFlinCQ3KtwWX5qkL5+plvZYRlBAm3acO+GiIi+AWASi9ytqkwtezuqa
+	 S4OeJB+41uXDzZQvBKccRvbHY6S2BZ7HGr14msUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Adam Ford <aford173@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/369] netfilter: nf_tables: adjust lockdep assertions handling
-Date: Tue, 12 Aug 2025 19:26:36 +0200
-Message-ID: <20250812173018.502992180@linuxfoundation.org>
+Subject: [PATCH 6.16 102/627] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
+Date: Tue, 12 Aug 2025 19:26:37 +0200
+Message-ID: <20250812173423.200418863@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 8df1b40de76979bb8e975201d07b71103d5de820 ]
+[ Upstream commit f83f69097a302ed2a2775975ddcf12e6a5ac6ec3 ]
 
-It's needed to check the return value of lockdep_commit_lock_is_held(),
-otherwise there's no point in this assertion as it doesn't print any
-debug information on itself.
+The reference manual for the i.MX8MM states the clock rate in
+MMC mode is 1/2 of the input clock, therefore to properly run
+at HS400 rates, the input clock must be 400MHz to operate at
+200MHz.  Currently the clock is set to 200MHz which is half the
+rate it should be, so the throughput is half of what it should be
+for HS400 operation.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-Fixes: b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
-Reported-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8077bf0378bb..3743e4249dc8 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3874,7 +3874,7 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
- /* can only be used if rule is no longer visible to dumps */
- static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
--	lockdep_commit_lock_is_held(ctx->net);
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
- 
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
- 	nf_tables_rule_destroy(ctx, rule);
-@@ -5659,7 +5659,7 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
- {
--	lockdep_commit_lock_is_held(ctx->net);
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
- 
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE_ERROR:
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+index 21bcd82fd092..8287a7f66ed3 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+@@ -294,6 +294,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
 -- 
 2.39.5
 
