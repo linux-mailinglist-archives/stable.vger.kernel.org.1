@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61561B230F4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462DFB234BA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 848A4165465
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD9A4188C9DC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0F6268C73;
-	Tue, 12 Aug 2025 17:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88262FD1C2;
+	Tue, 12 Aug 2025 18:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxEgNL5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfaG59JP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA4C2FA0DB;
-	Tue, 12 Aug 2025 17:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FCA6BB5B;
+	Tue, 12 Aug 2025 18:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021450; cv=none; b=jxIQY2jeZkiI7J6U8/Kh0ZNxpYltaYKwGrvbyGl4pfZhhf2o+x9uX+1HgIYF2kvZnSo63lRyKtRGk1j/m0TzEeyEXM+wKjvpxYSkEGZKvWPKS2XzAnWU+oxe+Asm9cPlRajoqDsr827aLU0C68VFIcRGGe8HwpSTRFI3vc2plR8=
+	t=1755023917; cv=none; b=KlXIr1huvLP/9cEUeYFVY38lXhyohfCCmeqjTPWW1fDdka5JZDQmr/+5ELVBEp8PCrrKncujXZzWFvgRwmk1geJf245KwGsTcThPmAkv2sdZ2kpyBPO6K3sqSwBLkFqW2XTlF9hXUCiELN5iPx+7MXYA8FC5j4rO1dTg4zSPDhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021450; c=relaxed/simple;
-	bh=t0Vqmw/yfEq/osVKqZXHBtJL/EzLxLnqeX/z9SQK5V0=;
+	s=arc-20240116; t=1755023917; c=relaxed/simple;
+	bh=fr/bYhCEOwKzP0Rmh18RfS5qnxiZzxKFu3470BLZEFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQnAQ+L7nr/sPLC7PTBdUZ8g2ANubnap2uYY5AjVvFmuO/dqSlLy+MNkooTtzfPi4z9kIh7gcvAq03gN1K6D/G2oxcc1ZlUKd4Q7tEd5M52Ng98Km8xF764pzdBCzr8piQ4b3WrC1mP4YETLNto+XrFsBUo9j26JdcD+txfREMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxEgNL5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E10EC4CEF0;
-	Tue, 12 Aug 2025 17:57:29 +0000 (UTC)
+	 MIME-Version; b=TIGhG/QeqooCYRk2sslpGZGAALOgjZY+xtofki6LXmMEb/yp2jHfzcKWSNm/umHfa8WFG4pKJV96Dhni9qN29urpimT1bq80OhL1xgow1TMj9TgmA0UYMVG9aPXRwg1xn7nbOCmPAX0wIjT14SmYsyKq5XW01DB8RoZBOf9lpNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfaG59JP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC86C4CEF0;
+	Tue, 12 Aug 2025 18:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021450;
-	bh=t0Vqmw/yfEq/osVKqZXHBtJL/EzLxLnqeX/z9SQK5V0=;
+	s=korg; t=1755023916;
+	bh=fr/bYhCEOwKzP0Rmh18RfS5qnxiZzxKFu3470BLZEFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxEgNL5t9DPqUfyFWhK3kZKBaFQJx1UQ0K23GhpagRwsFuvGOXQtueT9uC5EQjXXd
-	 CRpPgJFx2pwutWLZsSCs5AKNTkRCIDH0w3dUOcTr911BchgXsmh92ZY7LGZiJnljSA
-	 9UgbkAxQIHeposAPWdEqLBKX5lM1b+77pi7d3LFE=
+	b=GfaG59JPHmdnyWfPoZJOj+HLYuyyVxKd1zijp6+RuL/DEN08jkuFztVKTmOl8Xp8r
+	 iN7v+lMx6BL/rNxgawdcSLOuSIfbVB7pgtxk4GZ0r67qJOUEsZU1xqR9aLMWsxJ5Uh
+	 hZOELmWtUNsD9d+RykRpx2tFcI1iq3Jd+eNCtAj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Abinash Singh <abinashsinghlalotra@gmail.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/262] perf sched: Fix memory leaks in perf sched latency
+Subject: [PATCH 6.16 220/627] xen/gntdev: remove struct gntdev_copy_batch from stack
 Date: Tue, 12 Aug 2025 19:28:35 +0200
-Message-ID: <20250812172958.514922124@linuxfoundation.org>
+Message-ID: <20250812173427.650073904@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit e68b1c0098b959cb88afce5c93dd6a9324e6da78 ]
+[ Upstream commit 70045cf6593cbf0740956ea9b7b4269142c6ee38 ]
 
-The work_atoms should be freed after use.  Add free_work_atoms() to
-make sure to release all.  It should use list_splice_init() when merging
-atoms to prevent accessing invalid pointers.
+When compiling the kernel with LLVM, the following warning was issued:
 
-Fixes: b1ffe8f3e0c96f552 ("perf sched: Finish latency => atom rename and misc cleanups")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-8-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+  drivers/xen/gntdev.c:991: warning: stack frame size (1160) exceeds
+  limit (1024) in function 'gntdev_ioctl'
+
+The main reason is struct gntdev_copy_batch which is located on the
+stack and has a size of nearly 1kb.
+
+For performance reasons it shouldn't by just dynamically allocated
+instead, so allocate a new instance when needed and instead of freeing
+it put it into a list of free structs anchored in struct gntdev_priv.
+
+Fixes: a4cdb556cae0 ("xen/gntdev: add ioctl for grant copy")
+Reported-by: Abinash Singh <abinashsinghlalotra@gmail.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250703073259.17356-1-jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ drivers/xen/gntdev-common.h |  4 +++
+ drivers/xen/gntdev.c        | 71 ++++++++++++++++++++++++++-----------
+ 2 files changed, 54 insertions(+), 21 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index a1fab1a52b6a..16cb7278faba 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -1125,6 +1125,21 @@ add_sched_in_event(struct work_atoms *atoms, u64 timestamp)
- 	atoms->nb_atoms++;
+diff --git a/drivers/xen/gntdev-common.h b/drivers/xen/gntdev-common.h
+index 9c286b2a1900..ac8ce3179ba2 100644
+--- a/drivers/xen/gntdev-common.h
++++ b/drivers/xen/gntdev-common.h
+@@ -26,6 +26,10 @@ struct gntdev_priv {
+ 	/* lock protects maps and freeable_maps. */
+ 	struct mutex lock;
+ 
++	/* Free instances of struct gntdev_copy_batch. */
++	struct gntdev_copy_batch *batch;
++	struct mutex batch_lock;
++
+ #ifdef CONFIG_XEN_GRANT_DMA_ALLOC
+ 	/* Device for which DMA memory is allocated. */
+ 	struct device *dma_dev;
+diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
+index 61faea1f0663..1f2160765618 100644
+--- a/drivers/xen/gntdev.c
++++ b/drivers/xen/gntdev.c
+@@ -56,6 +56,18 @@ MODULE_AUTHOR("Derek G. Murray <Derek.Murray@cl.cam.ac.uk>, "
+ 	      "Gerd Hoffmann <kraxel@redhat.com>");
+ MODULE_DESCRIPTION("User-space granted page access driver");
+ 
++#define GNTDEV_COPY_BATCH 16
++
++struct gntdev_copy_batch {
++	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
++	struct page *pages[GNTDEV_COPY_BATCH];
++	s16 __user *status[GNTDEV_COPY_BATCH];
++	unsigned int nr_ops;
++	unsigned int nr_pages;
++	bool writeable;
++	struct gntdev_copy_batch *next;
++};
++
+ static unsigned int limit = 64*1024;
+ module_param(limit, uint, 0644);
+ MODULE_PARM_DESC(limit,
+@@ -584,6 +596,8 @@ static int gntdev_open(struct inode *inode, struct file *flip)
+ 	INIT_LIST_HEAD(&priv->maps);
+ 	mutex_init(&priv->lock);
+ 
++	mutex_init(&priv->batch_lock);
++
+ #ifdef CONFIG_XEN_GNTDEV_DMABUF
+ 	priv->dmabuf_priv = gntdev_dmabuf_init(flip);
+ 	if (IS_ERR(priv->dmabuf_priv)) {
+@@ -608,6 +622,7 @@ static int gntdev_release(struct inode *inode, struct file *flip)
+ {
+ 	struct gntdev_priv *priv = flip->private_data;
+ 	struct gntdev_grant_map *map;
++	struct gntdev_copy_batch *batch;
+ 
+ 	pr_debug("priv %p\n", priv);
+ 
+@@ -620,6 +635,14 @@ static int gntdev_release(struct inode *inode, struct file *flip)
+ 	}
+ 	mutex_unlock(&priv->lock);
+ 
++	mutex_lock(&priv->batch_lock);
++	while (priv->batch) {
++		batch = priv->batch;
++		priv->batch = batch->next;
++		kfree(batch);
++	}
++	mutex_unlock(&priv->batch_lock);
++
+ #ifdef CONFIG_XEN_GNTDEV_DMABUF
+ 	gntdev_dmabuf_fini(priv->dmabuf_priv);
+ #endif
+@@ -785,17 +808,6 @@ static long gntdev_ioctl_notify(struct gntdev_priv *priv, void __user *u)
+ 	return rc;
  }
  
-+static void free_work_atoms(struct work_atoms *atoms)
-+{
-+	struct work_atom *atom, *tmp;
-+
-+	if (atoms == NULL)
-+		return;
-+
-+	list_for_each_entry_safe(atom, tmp, &atoms->work_list, list) {
-+		list_del(&atom->list);
-+		free(atom);
+-#define GNTDEV_COPY_BATCH 16
+-
+-struct gntdev_copy_batch {
+-	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
+-	struct page *pages[GNTDEV_COPY_BATCH];
+-	s16 __user *status[GNTDEV_COPY_BATCH];
+-	unsigned int nr_ops;
+-	unsigned int nr_pages;
+-	bool writeable;
+-};
+-
+ static int gntdev_get_page(struct gntdev_copy_batch *batch, void __user *virt,
+ 				unsigned long *gfn)
+ {
+@@ -953,36 +965,53 @@ static int gntdev_grant_copy_seg(struct gntdev_copy_batch *batch,
+ static long gntdev_ioctl_grant_copy(struct gntdev_priv *priv, void __user *u)
+ {
+ 	struct ioctl_gntdev_grant_copy copy;
+-	struct gntdev_copy_batch batch;
++	struct gntdev_copy_batch *batch;
+ 	unsigned int i;
+ 	int ret = 0;
+ 
+ 	if (copy_from_user(&copy, u, sizeof(copy)))
+ 		return -EFAULT;
+ 
+-	batch.nr_ops = 0;
+-	batch.nr_pages = 0;
++	mutex_lock(&priv->batch_lock);
++	if (!priv->batch) {
++		batch = kmalloc(sizeof(*batch), GFP_KERNEL);
++	} else {
++		batch = priv->batch;
++		priv->batch = batch->next;
 +	}
-+	thread__zput(atoms->thread);
-+	free(atoms);
-+}
++	mutex_unlock(&priv->batch_lock);
++	if (!batch)
++		return -ENOMEM;
 +
- static int latency_switch_event(struct perf_sched *sched,
- 				struct evsel *evsel,
- 				struct perf_sample *sample,
-@@ -3192,13 +3207,13 @@ static void __merge_work_atoms(struct rb_root_cached *root, struct work_atoms *d
- 			this->total_runtime += data->total_runtime;
- 			this->nb_atoms += data->nb_atoms;
- 			this->total_lat += data->total_lat;
--			list_splice(&data->work_list, &this->work_list);
-+			list_splice_init(&data->work_list, &this->work_list);
- 			if (this->max_lat < data->max_lat) {
- 				this->max_lat = data->max_lat;
- 				this->max_lat_start = data->max_lat_start;
- 				this->max_lat_end = data->max_lat_end;
- 			}
--			zfree(&data);
-+			free_work_atoms(data);
- 			return;
++	batch->nr_ops = 0;
++	batch->nr_pages = 0;
+ 
+ 	for (i = 0; i < copy.count; i++) {
+ 		struct gntdev_grant_copy_segment seg;
+ 
+ 		if (copy_from_user(&seg, &copy.segments[i], sizeof(seg))) {
+ 			ret = -EFAULT;
++			gntdev_put_pages(batch);
+ 			goto out;
  		}
+ 
+-		ret = gntdev_grant_copy_seg(&batch, &seg, &copy.segments[i].status);
+-		if (ret < 0)
++		ret = gntdev_grant_copy_seg(batch, &seg, &copy.segments[i].status);
++		if (ret < 0) {
++			gntdev_put_pages(batch);
+ 			goto out;
++		}
+ 
+ 		cond_resched();
  	}
-@@ -3277,7 +3292,6 @@ static int perf_sched__lat(struct perf_sched *sched)
- 		work_list = rb_entry(next, struct work_atoms, node);
- 		output_lat_thread(sched, work_list);
- 		next = rb_next(next);
--		thread__zput(work_list->thread);
- 	}
- 
- 	printf(" -----------------------------------------------------------------------------------------------------------------\n");
-@@ -3291,6 +3305,13 @@ static int perf_sched__lat(struct perf_sched *sched)
- 
- 	rc = 0;
- 
-+	while ((next = rb_first_cached(&sched->sorted_atom_root))) {
-+		struct work_atoms *data;
+-	if (batch.nr_ops)
+-		ret = gntdev_copy(&batch);
+-	return ret;
++	if (batch->nr_ops)
++		ret = gntdev_copy(batch);
 +
-+		data = rb_entry(next, struct work_atoms, node);
-+		rb_erase_cached(next, &sched->sorted_atom_root);
-+		free_work_atoms(data);
-+	}
- out_free_cpus_switch_event:
- 	free_cpus_switch_event(sched);
- 	return rc;
++ out:
++	mutex_lock(&priv->batch_lock);
++	batch->next = priv->batch;
++	priv->batch = batch;
++	mutex_unlock(&priv->batch_lock);
+ 
+-  out:
+-	gntdev_put_pages(&batch);
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
