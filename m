@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-167522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982B4B2307F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B192B231CA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8590A1AA258B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1232A58091C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA8E268C73;
-	Tue, 12 Aug 2025 17:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0D92F83B5;
+	Tue, 12 Aug 2025 18:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNaI5fAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubSBKiId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EA52868AF;
-	Tue, 12 Aug 2025 17:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D8BA27;
+	Tue, 12 Aug 2025 18:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021102; cv=none; b=K8fvlaTL2NfcJrjtK3MlC81CpiOqZ+7CWljTU76HABcxneEQQxSMdlgdtLXgG7b/+7I/yifobNAFxHXXNuQfGFfa6QgOW0BVEOjTqUutAv91d7ckDnB+tRP+qUKBuffH2AlRXMT241Kw8Xp83yWoNfzmp5mfRvltB2GbK2pHrlE=
+	t=1755021812; cv=none; b=W+vg2Tz04Seb3KdgoiebtbFqUDIPRkCGP6TqmddfiCEsNO9yRKc22tR4vncaMXK267X/k3jKCz5WflEdxUhRp+twim/+/nQ5WGbkYYg3qVrBi0YWfg0DwaxtgCVdPQaiYVYM/sd6kyy0cf01NpuvMfm7ZZ7wqz+yxg6lzW9paGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021102; c=relaxed/simple;
-	bh=BmYYfg/WYojZkjrC9SfyNMYDdqDR+PQ0IINYQt2Qs7I=;
+	s=arc-20240116; t=1755021812; c=relaxed/simple;
+	bh=twM+nb8VF6nMbGenMpK7K6HuONn4lyEMIaxp86ipGpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kr/TWvUidFMj5yuVDogfhewEAozN7lMicgrqNvd/nN2q2M2NLcf5qSjQcfsPnUThSZJZ/emRBbxllXMbuRdRzF0E45dpFQmymeiSVQnLKpbR2z+7VzRw84S7Kqy2dZZOvIrNgy4R7Hbu7SJAoG7Xtqn5piEMBVTB2mfsynKwFNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNaI5fAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74C2C4CEF7;
-	Tue, 12 Aug 2025 17:51:41 +0000 (UTC)
+	 MIME-Version; b=drwfq9yTDphWz7WZW1wy143ChV6jm8q6Lx/z19x+ZmbBX9zlC54hFQTJw8hQyxOexjmEWkuMaa61fuKukUDH2BNs3UEcZWdvn67jypMwGxrdeU2BlwQRY5xlRpqetvwwFfvBVeJHbXRpaxON6AeLHVWSxenSr+CZYB4iAVVarog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubSBKiId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBE7C4CEF0;
+	Tue, 12 Aug 2025 18:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021102;
-	bh=BmYYfg/WYojZkjrC9SfyNMYDdqDR+PQ0IINYQt2Qs7I=;
+	s=korg; t=1755021812;
+	bh=twM+nb8VF6nMbGenMpK7K6HuONn4lyEMIaxp86ipGpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNaI5fAu5n/3fdrVWJtWjzm/8ghbvu1YkZ0Q6TJpvbqlVHW5V6v39rdnQ57VFOLDB
-	 FdhnT040L2zxdYInXiTQui3fF6Y/+eIfZy23QG9smYmyd6VvLKHRRro4PzkPiq7F+c
-	 xwZ8me2kjmiTMNcj1vaDFQpPsF/UwV2tTeSm5oEE=
+	b=ubSBKiIdPZypZN/U4VJXahoS8QnyzsRl6mVGqGDey+30yE2AzvxnaENnSLynUVjNT
+	 rJBdzF7Rpswp59ILtSaHc0MPfNWjqhwUuuGWNrjx8mZAHpA5tkfuylkz1OaSJwyzAh
+	 U0ytokELi1qTe5VdWQrgvgSE5mi1Ud/r2Few9+gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/253] rtc: pcf85063: fix incorrect maximum clock rate handling
+Subject: [PATCH 6.6 189/262] kconfig: qconf: fix ConfigList::updateListAllforAll()
 Date: Tue, 12 Aug 2025 19:29:37 +0200
-Message-ID: <20250812172956.839311039@linuxfoundation.org>
+Message-ID: <20250812173001.178327908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 186ae1869880e58bb3f142d222abdb35ecb4df0f ]
+[ Upstream commit 721bfe583c52ba1ea74b3736a31a9dcfe6dd6d95 ]
 
-When pcf85063_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+ConfigList::updateListForAll() and ConfigList::updateListAllforAll()
+are identical.
 
-Fixes: 8c229ab6048b7 ("rtc: pcf85063: Add pcf85063 clkout control to common clock framework")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-4-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Commit f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All)
+to ConfigList class") was a misconversion.
+
+Fixes: f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All) to ConfigList class")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf85063.c | 2 +-
+ scripts/kconfig/qconf.cc | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
-index 4a29b44e75e6..b095663d5ebc 100644
---- a/drivers/rtc/rtc-pcf85063.c
-+++ b/drivers/rtc/rtc-pcf85063.c
-@@ -410,7 +410,7 @@ static long pcf85063_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
+index 4f3ba3debc08..119997c8bf1f 100644
+--- a/scripts/kconfig/qconf.cc
++++ b/scripts/kconfig/qconf.cc
+@@ -480,7 +480,7 @@ void ConfigList::updateListAllForAll()
+ 	while (it.hasNext()) {
+ 		ConfigList *list = it.next();
  
--	return 0;
-+	return clkout_rates[0];
+-		list->updateList();
++		list->updateListAll();
+ 	}
  }
  
- static int pcf85063_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
