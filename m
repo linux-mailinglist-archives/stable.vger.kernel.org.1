@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-167750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933E8B231C7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4112EB230BD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED7A61891229
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F2645670FA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8E823D7E6;
-	Tue, 12 Aug 2025 18:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C3A2FDC2F;
+	Tue, 12 Aug 2025 17:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlpFuJSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUx5drGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABEA2F5E;
-	Tue, 12 Aug 2025 18:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BF92F83CB;
+	Tue, 12 Aug 2025 17:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021866; cv=none; b=lXNoXP8vtISqowhE275MsZ8jcUQkMrQjlYf6wV74sTik9wFtjmhTZigTAs3XGptcJqZZP3YuC6Ae+RfpirIIiixbOZvf4IB5hu4aeZRgHwrWxZP2gnG3Qgmowv12A78FIz4L6sQyrTPivOOsCEyb2rdnUh+luZHKsDzA4r6A+fg=
+	t=1755021325; cv=none; b=o3OY8XjBKUNRvBsFLymlzQjmJWJaH2gkmFfs4SaVKXbO0DQih/HxXa1ISLVrrL+GAqVFAF4yg8onO4gBCJz2shTjY8osasZGixeP/7sn86U3FFo5t9QhCga6IH5pCMDdaV6MAY1RXifCDaMu1eVBqwZTbwLCIg860zN/E0v5mTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021866; c=relaxed/simple;
-	bh=tiL0Hoe2XcpC0Ph1/nF3+9bYaqClixfj07DYERSBeYQ=;
+	s=arc-20240116; t=1755021325; c=relaxed/simple;
+	bh=XnFMDGfGjS8olGNo9gv3/ki5FXxesjS3G1Vk0TkDPVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8Lr0DRqdR6QE8GybyvsVdzNtCSeKjWJdd8ejKFfQ94+OSPRzLfto1na9h8ildYOsP4YsNOuvF8UJ5LcMuG/4kjhPoXL1Moq6NjXG/w3e20Xnb3PNIVuWGPP8uZYIrwl/ziSxqPwZ5e54sUd/Wu6yNUrKjew9Q0X1kkD8zTAgDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlpFuJSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE86C4CEF0;
-	Tue, 12 Aug 2025 18:04:25 +0000 (UTC)
+	 MIME-Version; b=umSLgK2YuAAex8/lQv18BS14Vz6PXroBO7xzyEWapA7NrzX8qxEWSgH0iJmPLFNXxG/EtnNZtu7vKAaBNG6ylq9pySviM3IAiMaEIFcDdR/W2RbgEH+V+lyPzctUsneQ9Dwp9uozHEzhyOYuN8PzzpANKg+hC5ruXTbMeBhhxSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUx5drGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D127C4CEF1;
+	Tue, 12 Aug 2025 17:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021866;
-	bh=tiL0Hoe2XcpC0Ph1/nF3+9bYaqClixfj07DYERSBeYQ=;
+	s=korg; t=1755021325;
+	bh=XnFMDGfGjS8olGNo9gv3/ki5FXxesjS3G1Vk0TkDPVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlpFuJSOLijN6C+jjKdH6kpV6sYAx+npn9xNh5BGXCraBCU88KGDRjpN1g0YzQoXQ
-	 oO0wIpaoH4g3I+5et3oM7aYgd+0vvujC8Rd5AHKT85dUT4CTa+DqTabvG2QHiwriaA
-	 O3w8S9uLwHXtxFvmTtwdPBpt/wuQsS62jSR+8uN0=
+	b=LUx5drGmVNVm+M3v8Mmg3CB3R+biL4OH+RQOWK037GxZdJLiCQAAnmcgs2Nnk9bJi
+	 up3jI4KkwoEXbrz2NA6qHCJbYsOAPHv0vLo4Rne8qhN/RZv/IqEUZxWEsvelifhrrK
+	 hd4TB4qUJmKS6183NeCQJT+jaMYMFw7sGH5XOHsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Chen Ridong <chenridong@huawei.com>
-Subject: [PATCH 6.6 248/262] sched/core: Remove ifdeffery for saved_state
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 248/253] ALSA: intel_hdmi: Fix off-by-one error in __hdmi_lpe_audio_probe()
 Date: Tue, 12 Aug 2025 19:30:36 +0200
-Message-ID: <20250812173003.711890431@linuxfoundation.org>
+Message-ID: <20250812172959.415879410@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elliot Berman <quic_eberman@quicinc.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit fbaa6a181a4b1886cbf4214abdf9a2df68471510 upstream.
+commit 8cbe564974248ee980562be02f2b1912769562c7 upstream.
 
-In preparation for freezer to also use saved_state, remove the
-CONFIG_PREEMPT_RT compilation guard around saved_state.
+In __hdmi_lpe_audio_probe(), strscpy() is incorrectly called with the
+length of the source string (excluding the NUL terminator) rather than
+the size of the destination buffer. This results in one character less
+being copied from 'card->shortname' to 'pcm->name'.
 
-On the arm64 platform I tested which did not have CONFIG_PREEMPT_RT,
-there was no statistically significant deviation by applying this patch.
+Use the destination buffer size instead to ensure the card name is
+copied correctly.
 
-Test methodology:
-
-perf bench sched message -g 40 -l 40
-
-Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 75b1a8f9d62e ("ALSA: Convert strlcpy to strscpy when return value is unused")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20250805234156.60294-1-thorsten.blum@linux.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched.h |    2 --
- kernel/sched/core.c   |   10 ++--------
- 2 files changed, 2 insertions(+), 10 deletions(-)
+ sound/x86/intel_hdmi_audio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -753,10 +753,8 @@ struct task_struct {
- #endif
- 	unsigned int			__state;
- 
--#ifdef CONFIG_PREEMPT_RT
- 	/* saved state for "spinlock sleepers" */
- 	unsigned int			saved_state;
--#endif
- 
- 	/*
- 	 * This begins the randomizable portion of task_struct. Only
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -2238,17 +2238,15 @@ int __task_state_match(struct task_struc
- 	if (READ_ONCE(p->__state) & state)
- 		return 1;
- 
--#ifdef CONFIG_PREEMPT_RT
- 	if (READ_ONCE(p->saved_state) & state)
- 		return -1;
--#endif
-+
- 	return 0;
- }
- 
- static __always_inline
- int task_state_match(struct task_struct *p, unsigned int state)
- {
--#ifdef CONFIG_PREEMPT_RT
- 	int match;
- 
- 	/*
-@@ -2260,9 +2258,6 @@ int task_state_match(struct task_struct
- 	raw_spin_unlock_irq(&p->pi_lock);
- 
- 	return match;
--#else
--	return __task_state_match(p, state);
--#endif
- }
- 
- /*
-@@ -4059,7 +4054,6 @@ bool ttwu_state_match(struct task_struct
- 
- 	*success = !!(match = __task_state_match(p, state));
- 
--#ifdef CONFIG_PREEMPT_RT
- 	/*
- 	 * Saved state preserves the task state across blocking on
- 	 * an RT lock.  If the state matches, set p::saved_state to
-@@ -4075,7 +4069,7 @@ bool ttwu_state_match(struct task_struct
- 	 */
- 	if (match < 0)
- 		p->saved_state = TASK_RUNNING;
--#endif
-+
- 	return match > 0;
- }
+--- a/sound/x86/intel_hdmi_audio.c
++++ b/sound/x86/intel_hdmi_audio.c
+@@ -1766,7 +1766,7 @@ static int __hdmi_lpe_audio_probe(struct
+ 		/* setup private data which can be retrieved when required */
+ 		pcm->private_data = ctx;
+ 		pcm->info_flags = 0;
+-		strscpy(pcm->name, card->shortname, strlen(card->shortname));
++		strscpy(pcm->name, card->shortname, sizeof(pcm->name));
+ 		/* setup the ops for playback */
+ 		snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &had_pcm_ops);
  
 
 
