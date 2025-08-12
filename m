@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B334FB23162
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:39 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B97B2302B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 726C03A4CF9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CFB84E30CE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378932FE57B;
-	Tue, 12 Aug 2025 18:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6AB2FABE3;
+	Tue, 12 Aug 2025 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHl3ah9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znlcQ5ds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B8B2FDC55;
-	Tue, 12 Aug 2025 18:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A52F221FAC;
+	Tue, 12 Aug 2025 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021668; cv=none; b=nO7kOpF4/rxS91bEqOl2h5NCvUmz+6MkofdLb9vnUyiH/9tkir2xrb3Qffkl9q3ejJCYpKLzmP34+s+TPTcIDd6i4aYineKGInizNdGteiZWbkr9ulTjGGsoYZzwf43l5VWBB6Awno7betUIQQb0/WROwyX/8MK9pYKek3hf4eQ=
+	t=1755020931; cv=none; b=npTC0t4TZoF+bufHFAg198ffoIcfmeNXZ3Dn8SbEvfpWBv5IQFrN8xTHBWqFWi7caGAOf2tUWT0qGG1iBjH2FW5LgU8eLn6HEge5mJEXCCYZ3qD5IFfD+2wKfSoWnUsLohp/YVorC90W6oxmtP0k5SHCBE89e7WpRZbYhnNiFOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021668; c=relaxed/simple;
-	bh=9hVUpa+fV+40m5mj+BijAC0OHXF8Bh10jCB7lZvaCH8=;
+	s=arc-20240116; t=1755020931; c=relaxed/simple;
+	bh=I3JCQeZePTWV11hy8GMK2Cn3q8Pf+3VgtmGP4KNSgco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNggrDMvrS1E4sIlkQ/GHY35X7CZh9qwQJZYXffygrMq3kV04+0P6wR6jxrWl1esGuFMaiO8JBDVosgFFkUGN2fBrKyU56OqgW0OkjjOQAdli3pktV01Rz52hY49fbX017izsaah3J8bsG4CSTaEuq3yfF5rhJGLZ/WVxGgO94g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHl3ah9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7136BC4CEF0;
-	Tue, 12 Aug 2025 18:01:07 +0000 (UTC)
+	 MIME-Version; b=R5Ox3zzj/7DC5qIbgzNJPsoYNcvhREGsNMSpqo2z9EDgHfu5El8CIzQhzeFY6haoBGKtSbojPcGpLPzYZrOjKevxP4LCr/PpziDZhfCXzrYmZOAqQPxyDCo2wd39ReQ9yf8MH+C66JwLnL6a4HpZ/6NjCf0ns6mNKUMLsZcWiKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znlcQ5ds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0F1C4CEF0;
+	Tue, 12 Aug 2025 17:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021667;
-	bh=9hVUpa+fV+40m5mj+BijAC0OHXF8Bh10jCB7lZvaCH8=;
+	s=korg; t=1755020931;
+	bh=I3JCQeZePTWV11hy8GMK2Cn3q8Pf+3VgtmGP4KNSgco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHl3ah9bvFekVgnQR3Wo/PuUZ5Jz1+E2o5x/Akp2e8Tsmwa1ThSATDiABsPGA0lcC
-	 qhRRwJ1AUwlOAD33eE+nuHd/Eq6eKL6BF3C1QAy/qRO3cGetfBqkMCmCnwkiEUww6O
-	 BllUT6MTYYQ9KNsK+WPka6TyiVTM9pfbRq+TCaUc=
+	b=znlcQ5ds3R8K5I9J6Y6GyWNyr1X2FbwWbP/mCGSJIwbeAbG3Ktt2SroSpPT8zOE+2
+	 UlrevLWFDrzcER7RBvnNtMcFQiisWUTmPmPaK1tf66eDw16axCejpFNOWYbQMvZsI3
+	 xzq0uS0JJjB3HryRmI3hRC/4jpVQ7UYkrQ83ntns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salomon Dushimirimana <salomondush@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/262] scsi: sd: Make sd shutdown issue START STOP UNIT appropriately
+Subject: [PATCH 6.1 188/253] rtc: nct3018y: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:36 +0200
-Message-ID: <20250812173001.136573633@linuxfoundation.org>
+Message-ID: <20250812172956.786806305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salomon Dushimirimana <salomondush@google.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 8e48727c26c4d839ff9b4b73d1cae486bea7fe19 ]
+[ Upstream commit 437c59e4b222cd697b4cf95995d933e7d583c5f1 ]
 
-Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
-manage_system_start_stop") enabled libata EH to manage device power mode
-trasitions for system suspend/resume and removed the flag from
-ata_scsi_dev_config. However, since the sd_shutdown() function still
-relies on the manage_system_start_stop flag, a spin-down command is not
-issued to the disk with command "echo 1 > /sys/block/sdb/device/delete"
+When nct3018y_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-sd_shutdown() can be called for both system/runtime start stop
-operations, so utilize the manage_run_time_start_stop flag set in the
-ata_scsi_dev_config and issue a spin-down command during disk removal
-when the system is running. This is in addition to when the system is
-powering off and manage_shutdown flag is set. The
-manage_system_start_stop flag will still be used for drivers that still
-set the flag.
-
-Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250724214520.112927-1-salomondush@google.com
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 5adbaed16cc63 ("rtc: Add NCT3018Y real time clock driver")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-3-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-nct3018y.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index fe694fec16b5..873c920eb0cf 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3895,7 +3895,9 @@ static void sd_shutdown(struct device *dev)
- 	if ((system_state != SYSTEM_RESTART &&
- 	     sdkp->device->manage_system_start_stop) ||
- 	    (system_state == SYSTEM_POWER_OFF &&
--	     sdkp->device->manage_shutdown)) {
-+	     sdkp->device->manage_shutdown) ||
-+	    (system_state == SYSTEM_RUNNING &&
-+	     sdkp->device->manage_runtime_start_stop)) {
- 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
- 		sd_start_stop_device(sdkp, 0);
- 	}
+diff --git a/drivers/rtc/rtc-nct3018y.c b/drivers/rtc/rtc-nct3018y.c
+index 108eced8f003..43b01f3e640a 100644
+--- a/drivers/rtc/rtc-nct3018y.c
++++ b/drivers/rtc/rtc-nct3018y.c
+@@ -342,7 +342,7 @@ static long nct3018y_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
+ 
+-	return 0;
++	return clkout_rates[0];
+ }
+ 
+ static int nct3018y_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
