@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B709B23026
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDE8B2343B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F60C188CCBB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ABED1A24EC4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0518B2E4248;
-	Tue, 12 Aug 2025 17:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FEF2FAC02;
+	Tue, 12 Aug 2025 18:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLa7l9g5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7eCTJOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5055221FAC;
-	Tue, 12 Aug 2025 17:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A6C27FB12;
+	Tue, 12 Aug 2025 18:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020807; cv=none; b=Hdu7JC0glUEJfvpjmsyLpg8SPpxGx20tBZgz5APhuZognJUWuF6j+FkhIJwhY+sXxFCPw9mTHJYp6dzuJ4vnIMh3PLVpqVjACxjCX5gzw7J4KQIUQtbwEVPfSLvR7snoOcldNe1Sa0WtxqNmB0ZvJ7yyD9gbhbxlDsXQ1A6aXxE=
+	t=1755023546; cv=none; b=HyQ21GwtHhgAKwHw9T1sb7drD+WRiDVPKSoT89wWCZbp/0BrqEthx2+KtkdwR9jZvewbJYRW561UirpDo9fgzoDFxol6vNgzWP1qLzCUYfaRKXoRWnHfw2G2Gq+Zoz1KZit74gcCR+zW34VQX93i/SmITpZWvFDiWz7m4v7xsfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020807; c=relaxed/simple;
-	bh=HrVVUOfbCN1ngHPj3ieZ5H1gkoJVxIOl5hy97Fnw3Jg=;
+	s=arc-20240116; t=1755023546; c=relaxed/simple;
+	bh=lr5f4MEJP5DN/i3Gvrx7+GKpeoCRWbUitm6Sf/RKXjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7mm296tcHM46I3WQ4WeOCq3n1M0o5hJzkGtzNtv9lwQnyw1P7IWByAiTjUA6DdRiJTNd93umJ9dp2VCbcCqXV4++OycPOj+kgCOTKUIXsjN6yHjLvCc7FEXE+uWhfuyDwZUwmD9p3gPshassCrvrA33UObaF3Of/Nf0HntEP3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLa7l9g5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAC1C4CEF0;
-	Tue, 12 Aug 2025 17:46:46 +0000 (UTC)
+	 MIME-Version; b=i2YqM93v8fC5LDq5IL1nYf7lpjjaLX7rSO2k1oN6CTE6DGFynF+B+hxhI30UXGLQXjNDFYei5kOUBzLCqeKfJSjAtHwW4cPqZoXlx0uQ47JguV8TsO27CmznTEXWFb+JHY6+PS8Vq3XcAXW5GnCazERFiVw9+KQbo3eT970LUTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7eCTJOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6851AC4CEF7;
+	Tue, 12 Aug 2025 18:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020807;
-	bh=HrVVUOfbCN1ngHPj3ieZ5H1gkoJVxIOl5hy97Fnw3Jg=;
+	s=korg; t=1755023545;
+	bh=lr5f4MEJP5DN/i3Gvrx7+GKpeoCRWbUitm6Sf/RKXjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLa7l9g5WgrG5ecH/RmKwIov7fVAu5TCfdSq9PuK1j4EhzxdEqw6QfN5twn3d9dD2
-	 1eI222dnTz9GvEL3+nvR5M+FtwEhDWgPEUDNOOgTBWXSUEyUNAecgr/Zg3dJHzTRhM
-	 JfNxYqJpKrbPTWXTeYoRVTCEgYFsgOJKpWcceFOs=
+	b=R7eCTJOiIh5+3N5dRxFATvzzd4SEQZWb5WCd3K1P5FPSCIRvfAQvdptEp38k13MDD
+	 su/ir/M+CHIkiLBOAalaUxiT07SAb+NBNnkPDvc5qUmihld1FiqS5s+71j9g9ldV2d
+	 wj2l6A44NpcEeYZDYcKIdL/rdedFMchsMuMkcrN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/262] selftests: Fix errno checking in syscall_user_dispatch test
-Date: Tue, 12 Aug 2025 19:26:46 +0200
-Message-ID: <20250812172953.753408537@linuxfoundation.org>
+Subject: [PATCH 6.16 112/627] kexec_core: Fix error code path in the KEXEC_JUMP flow
+Date: Tue, 12 Aug 2025 19:26:47 +0200
+Message-ID: <20250812173423.573843423@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Vyukov <dvyukov@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit b89732c8c8357487185f260a723a060b3476144e ]
+[ Upstream commit 996afb6efd1a345736f9a888e4d6c7d4f3752aa5 ]
 
-Successful syscalls don't change errno, so checking errno is wrong
-to ensure that a syscall has failed. For example for the following
-sequence:
+If dpm_suspend_start() fails, dpm_resume_end() must be called to
+recover devices whose suspend callbacks have been called, but this
+does not happen in the KEXEC_JUMP flow's error path due to a confused
+goto target label.
 
-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
-	EXPECT_EQ(EINVAL, errno);
-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
-	EXPECT_EQ(EINVAL, errno);
+Address this by using the correct target label in the goto statement in
+question and drop the Resume_console label that is not used any more.
 
-only the first syscall may fail and set errno, but the second may succeed
-and keep errno intact, and the check will falsely pass.
-Or if errno happened to be EINVAL before, even the first check may falsely
-pass.
-
-Also use EXPECT/ASSERT consistently. Currently there is an inconsistent mix
-without obvious reasons for usage of one or another.
-
-Fixes: 179ef035992e ("selftests: Add kselftest for syscall user dispatch")
-Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/af6a04dbfef9af8570f5bab43e3ef1416b62699a.1747839857.git.dvyukov@google.com
+Fixes: 2965faa5e03d ("kexec: split kexec_load syscall from kexec core code")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/2396879.ElGaqSPkdT@rjwysocki.net
+[ rjw: Drop unused label and amend the changelog ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../syscall_user_dispatch/sud_test.c          | 50 +++++++++----------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ kernel/kexec_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-index d975a6767329..48cf01aeec3e 100644
---- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-+++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-@@ -79,6 +79,21 @@ TEST_SIGNAL(dispatch_trigger_sigsys, SIGSYS)
- 	}
- }
- 
-+static void prctl_valid(struct __test_metadata *_metadata,
-+			unsigned long op, unsigned long off,
-+			unsigned long size, void *sel)
-+{
-+	EXPECT_EQ(0, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
-+}
-+
-+static void prctl_invalid(struct __test_metadata *_metadata,
-+			  unsigned long op, unsigned long off,
-+			  unsigned long size, void *sel, int err)
-+{
-+	EXPECT_EQ(-1, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
-+	EXPECT_EQ(err, errno);
-+}
-+
- TEST(bad_prctl_param)
- {
- 	char sel = SYSCALL_DISPATCH_FILTER_ALLOW;
-@@ -86,57 +101,42 @@ TEST(bad_prctl_param)
- 
- 	/* Invalid op */
- 	op = -1;
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0, 0, &sel);
--	ASSERT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0, 0, &sel, EINVAL);
- 
- 	/* PR_SYS_DISPATCH_OFF */
- 	op = PR_SYS_DISPATCH_OFF;
- 
- 	/* offset != 0 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, 0);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x1, 0x0, 0, EINVAL);
- 
- 	/* len != 0 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x0, 0xff, 0, EINVAL);
- 
- 	/* sel != NULL */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x0, 0x0, &sel, EINVAL);
- 
- 	/* Valid parameter */
--	errno = 0;
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, 0x0);
--	EXPECT_EQ(0, errno);
-+	prctl_valid(_metadata, op, 0x0, 0x0, 0x0);
- 
- 	/* PR_SYS_DISPATCH_ON */
- 	op = PR_SYS_DISPATCH_ON;
- 
- 	/* Dispatcher region is bad (offset > 0 && len == 0) */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, &sel);
--	EXPECT_EQ(EINVAL, errno);
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, -1L, 0x0, &sel);
--	EXPECT_EQ(EINVAL, errno);
-+	prctl_invalid(_metadata, op, 0x1, 0x0, &sel, EINVAL);
-+	prctl_invalid(_metadata, op, -1L, 0x0, &sel, EINVAL);
- 
- 	/* Invalid selector */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x1, (void *) -1);
--	ASSERT_EQ(EFAULT, errno);
-+	prctl_invalid(_metadata, op, 0x0, 0x1, (void *) -1, EFAULT);
- 
- 	/*
- 	 * Dispatcher range overflows unsigned long
- 	 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, 1, -1L, &sel);
--	ASSERT_EQ(EINVAL, errno) {
--		TH_LOG("Should reject bad syscall range");
--	}
-+	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, 1, -1L, &sel, EINVAL);
- 
- 	/*
- 	 * Allowed range overflows usigned long
- 	 */
--	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel);
--	ASSERT_EQ(EINVAL, errno) {
--		TH_LOG("Should reject bad syscall range");
--	}
-+	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel, EINVAL);
- }
- 
- /*
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index 3a9a9f240dbc..554369595298 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -1080,7 +1080,7 @@ int kernel_kexec(void)
+ 		console_suspend_all();
+ 		error = dpm_suspend_start(PMSG_FREEZE);
+ 		if (error)
+-			goto Resume_console;
++			goto Resume_devices;
+ 		/*
+ 		 * dpm_suspend_end() must be called after dpm_suspend_start()
+ 		 * to complete the transition, like in the hibernation flows
+@@ -1135,7 +1135,6 @@ int kernel_kexec(void)
+ 		dpm_resume_start(PMSG_RESTORE);
+  Resume_devices:
+ 		dpm_resume_end(PMSG_RESTORE);
+- Resume_console:
+ 		pm_restore_gfp_mask();
+ 		console_resume_all();
+ 		thaw_processes();
 -- 
 2.39.5
 
