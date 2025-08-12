@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-167729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68289B23193
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:06:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F37B23240
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB78C1AA4A61
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91F202A0E4E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384F42FE583;
-	Tue, 12 Aug 2025 18:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C2D2ED17F;
+	Tue, 12 Aug 2025 18:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="xGTTGiCI"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="EBtlOOjj"
 X-Original-To: stable@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAAC2DE1E2;
-	Tue, 12 Aug 2025 18:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF63B305E08;
+	Tue, 12 Aug 2025 18:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021798; cv=none; b=EQIeFtKPun4kxtO+jyC6Pj3bE8fnsc8RUk8Ol8uefqRQvW2LGgfkm3a0bB4m1QVVnP1DtNrqfqnadow/EZV9A3zLjeXs3svwQRiEwEiqztijZKTbrFnJhchQQNBBS4x40DNgk8loIJqdJiv8eni36pjLgHL/QDm4WZB2hCjEHVM=
+	t=1755022293; cv=none; b=GP1itCRFbUROK63L4FFdfZJi+UMp5C011iunxUEpTylsdL4PM4kWJXPCPyxtXRdQv2ziQY+3h3grGBJzBg1JoBQLJnfpJh4U/LGWGCrtQzxDys07SkHJoPvh3goPTpByW9+++OT/cyFtjgyGrNtg/ohbsT0npwatlTsjh7l24z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021798; c=relaxed/simple;
-	bh=bMtOmbxE5p7nSfiC6tRT+00dIG/yVnMcG7trMtDKEgg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NDlMrwonaxnnhozOHghUYMwo6a14XV+uT4+iyfi39poE+s8J7KaKLU9FtcGmhFvnmvroOBcq0c6Zd0iuop64anVodQ+7IwAAm1sFG7HxGSqJ/mkVGfb4Q3iGiUqxGtUPgWsp3XVod5GZ1Tyql7uPGf+PtVwdnJphyRqyho+u1YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=xGTTGiCI; arc=none smtp.client-ip=198.47.23.235
+	s=arc-20240116; t=1755022293; c=relaxed/simple;
+	bh=vY/psp6pRM7f5gUdmAuJdPrf6i+r2OHtDbxkIHicgkE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=Apx38sbNEd/pKUS0mmEbGSaeUFPZYoQjBjxeVfEWIsP4HgYBUramIkxJcz/6vYh7CXjSOXtgfWl+vaTTSZmUCWq2MUCEY98ZBohl5PfZIShuFsNu3IaLYZXZNYAsslQgpU/95351fvsChQW7K8KYifScH1ZiwQjtFTwrkngU8to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=EBtlOOjj; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57CI2ZRn1965775;
-	Tue, 12 Aug 2025 13:02:35 -0500
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57CIAhtT1896346;
+	Tue, 12 Aug 2025 13:10:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1755021755;
-	bh=hMP0pJPoGHjZWTBGyFsy5GjlgQnYq7dpmd6umTXAFHw=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=xGTTGiCIuoAp4XKGSPiEFgtSLFpPc8JU8zomPTl4Ngl3OShXZwEWK3gVURvQxIQ0p
-	 ifJnTKFue/A57cyzZGpACISJD+mfDz2M1qwC5kmMivYe+0j6z+DwNpbtx68xSMSyC7
-	 57bHV1paxMK/yL/3WF0KjlDCXfMTpKrmEs0sY9hA=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57CI2ZGF3992685
+	s=ti-com-17Q1; t=1755022243;
+	bh=DTRGSr/sFqz08xTFK9XBf9uPAWALzcXmf8DmSzCh0us=;
+	h=Date:Subject:From:To:CC:References:In-Reply-To;
+	b=EBtlOOjj5xK3wwwMUOSHbhUYClQTKWCZlZlNuSgsm74hVSgN+8Qh0tM1Wx+mcmiE2
+	 Qr7esoVUrjGZ22kSvHng8LlxowAAtE6h06JA3wfMoxui/8e3CvvKwV9+QYGzMdxV/Q
+	 CYvOR1aR78/xQBLTVbetN7CLtUYbRT6bzmCh7mtQ=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57CIAhPi3655268
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Tue, 12 Aug 2025 13:02:35 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+	Tue, 12 Aug 2025 13:10:43 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 12
- Aug 2025 13:02:34 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2025 13:10:42 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Tue, 12 Aug 2025 13:02:34 -0500
+ Frontend Transport; Tue, 12 Aug 2025 13:10:42 -0500
 Received: from [172.24.233.20] (a0512632.dhcp.ti.com [172.24.233.20])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57CI2R58748582;
-	Tue, 12 Aug 2025 13:02:28 -0500
-Message-ID: <86cf7d99-1295-42ab-acda-88a8212ec4d4@ti.com>
-Date: Tue, 12 Aug 2025 23:32:27 +0530
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57CIAZNH1066109;
+	Tue, 12 Aug 2025 13:10:36 -0500
+Message-ID: <02920114-b86b-47ad-945d-1905b9117518@ti.com>
+Date: Tue, 12 Aug 2025 23:40:35 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,6 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 4/4] drm/tidss: Fix sampling edge configuration
+From: Swamil Jain <s-jain1@ti.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>, devarsh <devarsht@ti.com>,
         "Jyri Sarha" <jyri.sarha@iki.fi>,
         Tomi Valkeinen
@@ -96,136 +97,149 @@ References: <20250730-fix-edge-handling-v1-0-1bdfb3fe7922@bootlin.com>
  <71ef3203-e11d-4244-8d2d-8e47e8ba6140@ti.com>
  <f15779ad-788a-4dc6-b5a6-4187b9a9c986@ti.com>
  <e9df67f0-8fce-4fbf-8fff-c499c4a2efaf@bootlin.com>
+ <86cf7d99-1295-42ab-acda-88a8212ec4d4@ti.com>
 Content-Language: en-US
-From: Swamil Jain <s-jain1@ti.com>
-In-Reply-To: <e9df67f0-8fce-4fbf-8fff-c499c4a2efaf@bootlin.com>
+In-Reply-To: <86cf7d99-1295-42ab-acda-88a8212ec4d4@ti.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 
 
-On 8/11/25 15:26, Louis Chauvet wrote:
+On 8/12/25 23:32, Swamil Jain wrote:
 > 
 > 
-> Le 08/08/2025 à 18:26, Swamil Jain a écrit :
+> On 8/11/25 15:26, Louis Chauvet wrote:
 >>
 >>
->> On 8/8/25 19:16, devarsh wrote:
->>> Hi Louis,
+>> Le 08/08/2025 à 18:26, Swamil Jain a écrit :
 >>>
->>> Thanks for the patch.
 >>>
->>> On 30/07/25 22:32, Louis Chauvet wrote:
->>>> As stated in the AM62x Technical Reference Manual (SPRUIV7B), the data
->>>> sampling edge needs to be configured in two distinct registers: one 
->>>> in the
->>>> TIDSS IP and another in the memory-mapped control register modules.
+>>> On 8/8/25 19:16, devarsh wrote:
+>>>> Hi Louis,
+>>>>
+>>>> Thanks for the patch.
+>>>>
+>>>> On 30/07/25 22:32, Louis Chauvet wrote:
+>>>>> As stated in the AM62x Technical Reference Manual (SPRUIV7B), the data
+>>>>> sampling edge needs to be configured in two distinct registers: one 
+>>>>> in the
+>>>>> TIDSS IP and another in the memory-mapped control register modules.
+>>>>
+>>>> I don't think AM62x is thee only one which requires this and on the
+>>>> contrary not all SoCs require this extra setting. We had been 
+>>>> waiting on
+>>>> confirmations from hardware team and very recently they gave a list of
+>>>> SoCs which require this, as per that I think we need to limit this to
+>>>> AM62x and AM62A per current supported SoCs.
+>>>>
+>>>> Swamil,
+>>>> Please confirm on this and share if any additional details required 
+>>>> here.
+>>>>
 >>>
->>> I don't think AM62x is thee only one which requires this and on the
->>> contrary not all SoCs require this extra setting. We had been waiting on
->>> confirmations from hardware team and very recently they gave a list of
->>> SoCs which require this, as per that I think we need to limit this to
->>> AM62x and AM62A per current supported SoCs.
+>>> Yeah Devarsh, as you mentioned, this is valid for AM62X, AM62A and
+>>> AM62P. We would have upstreamed this feature, but there are some
+>>> corrections in Technical Reference Manual for these SoCs regarding
+>>> programming CTRL_MMR_DPI_CLK_CTRL register fields, we are in loop with
+>>> H/W team, waiting for their official confirmation regarding this issue.
 >>>
->>> Swamil,
->>> Please confirm on this and share if any additional details required 
->>> here.
->>>
+>>> Thanks Louis for working on this patch, but we should wait for H/W
+>>> team's confirmation.
 >>
->> Yeah Devarsh, as you mentioned, this is valid for AM62X, AM62A and
->> AM62P. We would have upstreamed this feature, but there are some
->> corrections in Technical Reference Manual for these SoCs regarding
->> programming CTRL_MMR_DPI_CLK_CTRL register fields, we are in loop with
->> H/W team, waiting for their official confirmation regarding this issue.
+>> Hello all,
 >>
->> Thanks Louis for working on this patch, but we should wait for H/W
->> team's confirmation.
+>> Thanks for the feedback. I was not aware of this current work.
+>> Do you plan to send the fix yourself? Should I wait your HW team 
+>> feedback and send a v2?
+>>
+> Hi Louis, H/W team confirmed that, CTRL_MMR_DPI0_CLK_CTRL.bit[8] should 
+> be programmed same as DSS_VP1_POL_FREQ.bit[14](IPC) and 
+> CTRL_MMR_DPI0_CLK_CTRL.bit[9] should be programmed same as 
+> DSS_VP1_POL_FREQ.bit[16](RF). Please continue with you patches.
 > 
-> Hello all,
-> 
-> Thanks for the feedback. I was not aware of this current work.
-> Do you plan to send the fix yourself? Should I wait your HW team 
-> feedback and send a v2?
-> 
-Hi Louis, H/W team confirmed that, CTRL_MMR_DPI0_CLK_CTRL.bit[8] should 
-be programmed same as DSS_VP1_POL_FREQ.bit[14](IPC) and 
-CTRL_MMR_DPI0_CLK_CTRL.bit[9] should be programmed same as 
-DSS_VP1_POL_FREQ.bit[16](RF). Please continue with you patches.
+Please go ahead and send v2.
+We are working with the documentation team to get the Technical 
+Reference Manual updated in parallel.
 
-> I also have a very similar patch ready for u-boot (depending on the same 
-> DT modifications), do you plan to fix u-boot too?
-> 
-Please fix u-boot also.
-
-Thanks and regards,
+Regards,
 Swamil.
 
-> Thanks,
-> Louis Chauvet
-> 
-> 
->> Regards,
->> Swamil.
+>> I also have a very similar patch ready for u-boot (depending on the 
+>> same DT modifications), do you plan to fix u-boot too?
 >>
->>> Regards
->>> Devarsh
+> Please fix u-boot also.
+> 
+> Thanks and regards,
+> Swamil.
+> 
+>> Thanks,
+>> Louis Chauvet
+>>
+>>
+>>> Regards,
+>>> Swamil.
 >>>
->>>    Since
->>>> the latter is not within the same address range, a phandle to a syscon
->>>> device is used to access the regmap.
+>>>> Regards
+>>>> Devarsh
 >>>>
->>>> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform 
->>>> Display SubSystem")
->>>> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+>>>>    Since
+>>>>> the latter is not within the same address range, a phandle to a syscon
+>>>>> device is used to access the regmap.
+>>>>>
+>>>>> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone 
+>>>>> platform Display SubSystem")
+>>>>> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+>>>>>
+>>>>> ---
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> ---
+>>>>>    drivers/gpu/drm/tidss/tidss_dispc.c | 14 ++++++++++++++
+>>>>>    1 file changed, 14 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c 
+>>>>> b/drivers/gpu/drm/tidss/tidss_dispc.c
+>>>>> index 
+>>>>> c0277fa36425ee1f966dccecf2b69a2d01794899..65ca7629a2e75437023bf58f8a1bddc24db5e3da 100644
+>>>>> --- a/drivers/gpu/drm/tidss/tidss_dispc.c
+>>>>> +++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+>>>>> @@ -498,6 +498,7 @@ struct dispc_device {
+>>>>>        const struct dispc_features *feat;
+>>>>>        struct clk *fclk;
+>>>>> +    struct regmap *clk_ctrl;
+>>>>>        bool is_enabled;
+>>>>> @@ -1267,6 +1268,11 @@ void dispc_vp_enable(struct dispc_device 
+>>>>> *dispc, u32 hw_videoport,
+>>>>>                   FLD_VAL(mode->vdisplay - 1, 27, 16));
+>>>>>        VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
+>>>>> +
+>>>>> +    if (dispc->clk_ctrl) {
+>>>>> +        regmap_update_bits(dispc->clk_ctrl, 0, 0x100, ipc ? 0x100 
+>>>>> : 0x000);
+>>>>> +        regmap_update_bits(dispc->clk_ctrl, 0, 0x200, rf ? 0x200 : 
+>>>>> 0x000);
+>>>>> +    }
+>>>>>    }
+>>>>>    void dispc_vp_disable(struct dispc_device *dispc, u32 hw_videoport)
+>>>>> @@ -3012,6 +3018,14 @@ int dispc_init(struct tidss_device *tidss)
+>>>>>        dispc_init_errata(dispc);
+>>>>> +    dispc->clk_ctrl = 
+>>>>> syscon_regmap_lookup_by_phandle_optional(tidss->dev->of_node,
+>>>>> +                                   "ti,clk-ctrl");
+>>>>> +    if (IS_ERR(dispc->clk_ctrl)) {
+>>>>> +        r = dev_err_probe(dispc->dev, PTR_ERR(dispc->clk_ctrl),
+>>>>> +                  "DISPC: syscon_regmap_lookup_by_phandle 
+>>>>> failed.\n");
+>>>>> +        return r;
+>>>>> +    }
+>>>>> +
+>>>>>        dispc->fourccs = devm_kcalloc(dev, 
+>>>>> ARRAY_SIZE(dispc_color_formats),
+>>>>>                          sizeof(*dispc->fourccs), GFP_KERNEL);
+>>>>>        if (!dispc->fourccs)
+>>>>>
 >>>>
->>>> ---
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> ---
->>>>    drivers/gpu/drm/tidss/tidss_dispc.c | 14 ++++++++++++++
->>>>    1 file changed, 14 insertions(+)
->>>>
->>>> diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c 
->>>> b/drivers/gpu/drm/tidss/tidss_dispc.c
->>>> index 
->>>> c0277fa36425ee1f966dccecf2b69a2d01794899..65ca7629a2e75437023bf58f8a1bddc24db5e3da 100644
->>>> --- a/drivers/gpu/drm/tidss/tidss_dispc.c
->>>> +++ b/drivers/gpu/drm/tidss/tidss_dispc.c
->>>> @@ -498,6 +498,7 @@ struct dispc_device {
->>>>        const struct dispc_features *feat;
->>>>        struct clk *fclk;
->>>> +    struct regmap *clk_ctrl;
->>>>        bool is_enabled;
->>>> @@ -1267,6 +1268,11 @@ void dispc_vp_enable(struct dispc_device 
->>>> *dispc, u32 hw_videoport,
->>>>                   FLD_VAL(mode->vdisplay - 1, 27, 16));
->>>>        VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
->>>> +
->>>> +    if (dispc->clk_ctrl) {
->>>> +        regmap_update_bits(dispc->clk_ctrl, 0, 0x100, ipc ? 0x100 : 
->>>> 0x000);
->>>> +        regmap_update_bits(dispc->clk_ctrl, 0, 0x200, rf ? 0x200 : 
->>>> 0x000);
->>>> +    }
->>>>    }
->>>>    void dispc_vp_disable(struct dispc_device *dispc, u32 hw_videoport)
->>>> @@ -3012,6 +3018,14 @@ int dispc_init(struct tidss_device *tidss)
->>>>        dispc_init_errata(dispc);
->>>> +    dispc->clk_ctrl = 
->>>> syscon_regmap_lookup_by_phandle_optional(tidss->dev->of_node,
->>>> +                                   "ti,clk-ctrl");
->>>> +    if (IS_ERR(dispc->clk_ctrl)) {
->>>> +        r = dev_err_probe(dispc->dev, PTR_ERR(dispc->clk_ctrl),
->>>> +                  "DISPC: syscon_regmap_lookup_by_phandle failed.\n");
->>>> +        return r;
->>>> +    }
->>>> +
->>>>        dispc->fourccs = devm_kcalloc(dev, 
->>>> ARRAY_SIZE(dispc_color_formats),
->>>>                          sizeof(*dispc->fourccs), GFP_KERNEL);
->>>>        if (!dispc->fourccs)
->>>>
->>>
+>>
 > 
 
