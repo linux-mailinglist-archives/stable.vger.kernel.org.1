@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DCBB231FA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0A9B23435
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EC317ACE1B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3274117A451
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10122EAB97;
-	Tue, 12 Aug 2025 18:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31A827FB12;
+	Tue, 12 Aug 2025 18:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cX2le/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06YRwhjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604C41C8621;
-	Tue, 12 Aug 2025 18:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737112EE5E8;
+	Tue, 12 Aug 2025 18:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022322; cv=none; b=cmwou0vCkbivBk0RovKlwzkzhHQEaOLFyyPhS6eRfIIa0ZrOHliz/iD68O7y+43q5mSmWhpwpiUkvWpzpFwXN/29n3hxnG8wvzXAj1Wj4dAQexICwVJSFi+CCR/eAPiotu2RHJnCL0UH5T3ufhc3VOL167uZ9AyB8WAYZFEIHFI=
+	t=1755023587; cv=none; b=p7ZmWTaPyH4mvSEaIHuDxl9EIWryKurczpT6S7/bbJ57u6LllLGe2xgS5/q3gHa3W8w7+0SeBasLGEUkimNgttxDPG6O56VdlONUVHX+C5Z1LDRA5lgX24K78wcMm2eVVocnioXeA1j7+dc/PcI+f1VhK3Cy+rQd1EiRCPtTjdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022322; c=relaxed/simple;
-	bh=0nO6TdEhY1YUrNkzEZn7lZ7oquang42w3Ru+jSSl19A=;
+	s=arc-20240116; t=1755023587; c=relaxed/simple;
+	bh=x/3dgUm0te+Wwx2/rJ0nYp7EXK7mDSa514M3FY5bzDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUrOUdc3JDYRVViPxwCjipTEl3sC7jYIWssZ2BGH9nZxN5LKuEzYRiYgTaug8J6DMumDz/tOGbcE85P0KeRBQo+VtzEVVv044v4uHI8HASU+RA0x7xQa97Z1HU27bD9AuPgY5KkAD5Go3vyfMvJPBowbV2lLASIvp7CuKXW5UTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cX2le/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D58BC4CEF0;
-	Tue, 12 Aug 2025 18:12:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hkfhODxd+L1dIPqFbk1C3ls38d7sk+fOj48t7XAmPT0/sCE6RlN/4BS3q7pFF6944f7OCW1DLLobnI+hsbPweCTskSdlK6T6XdwemQ3ALpv/TLA79oLifInv556f3a717/flDBzw0kTwCQLmyrTpeuniAKjy7JEJY+nqeGbmIpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06YRwhjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E3FC4CEF1;
+	Tue, 12 Aug 2025 18:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022322;
-	bh=0nO6TdEhY1YUrNkzEZn7lZ7oquang42w3Ru+jSSl19A=;
+	s=korg; t=1755023587;
+	bh=x/3dgUm0te+Wwx2/rJ0nYp7EXK7mDSa514M3FY5bzDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cX2le/QJ+DDUgSm57oSuho8fIBKqmkmjNsOMacHhmviDmJJVJkdta5pFEA2blJvL
-	 rezhEKZ+AecY9b4DnnX8nut2R6MF5b9zHJovi03vcG3kVE7wSORQnd6lbET4DeWrMk
-	 8E8vrcPJg0LQU7z2O/mEiD24BiLiAKgQ/W0HaSZ4=
+	b=06YRwhjWS9/NYGwaB4l0bV6ef25Qb5sqwopg7HAruUJSNllE64Fq34uS2k/P+uu0q
+	 ENJIXP7W4lwaTJ8Nz+YZC46OOZavXzsdtVci6HaZcQ2g50AgneJlpLsLdHmUcwqXN+
+	 +MSJABcapshOeB0EMGJFgadaMUZ+6zkpCJoC4Xrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/369] wifi: mac80211: Dont call fq_flow_idx() for management frames
+Subject: [PATCH 6.16 123/627] drm/xe: Correct the rev value for the DVSEC entries
 Date: Tue, 12 Aug 2025 19:26:58 +0200
-Message-ID: <20250812173019.318852239@linuxfoundation.org>
+Message-ID: <20250812173424.000077510@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Michael J. Ruhl <michael.j.ruhl@intel.com>
 
-[ Upstream commit cb3bb3d88dfcd177a1050c0a009a3ee147b2e5b9 ]
+[ Upstream commit 0ba9e9cf76f2487654bc9bca38218780fa53030e ]
 
-skb_get_hash() can only be used when the skb is linked to a netdev
-device.
+By definition, the Designated Vendor Specific Extended Capability
+(DVSEC) revision should be 1.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Fixes: 73bc9e0af594 ("mac80211: don't apply flow control on management frames")
-Link: https://patch.msgid.link/20250717162547.94582-3-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Add the rev value to be correct.
+
+Fixes: 0c45e76fcc62 ("drm/xe/vsec: Support BMG devices")
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Reviewed-by: David E. Box <david.e.box@linux.intel.com>
+Link: https://lore.kernel.org/r/20250713172943.7335-3-michael.j.ruhl@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_vsec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 0386810be520..16f8b24820ae 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1437,7 +1437,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
- {
- 	struct fq *fq = &local->fq;
- 	struct fq_tin *tin = &txqi->tin;
--	u32 flow_idx = fq_flow_idx(fq, skb);
-+	u32 flow_idx;
+diff --git a/drivers/gpu/drm/xe/xe_vsec.c b/drivers/gpu/drm/xe/xe_vsec.c
+index b378848d3b7b..1bf7e709e110 100644
+--- a/drivers/gpu/drm/xe/xe_vsec.c
++++ b/drivers/gpu/drm/xe/xe_vsec.c
+@@ -24,6 +24,7 @@
+ #define BMG_DEVICE_ID 0xE2F8
  
- 	ieee80211_set_skb_enqueue_time(skb);
+ static struct intel_vsec_header bmg_telemetry = {
++	.rev = 1,
+ 	.length = 0x10,
+ 	.id = VSEC_ID_TELEMETRY,
+ 	.num_entries = 2,
+@@ -33,6 +34,7 @@ static struct intel_vsec_header bmg_telemetry = {
+ };
  
-@@ -1453,6 +1453,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
- 			IEEE80211_TX_INTCFL_NEED_TXPROCESSING;
- 		__skb_queue_tail(&txqi->frags, skb);
- 	} else {
-+		flow_idx = fq_flow_idx(fq, skb);
- 		fq_tin_enqueue(fq, tin, flow_idx, skb,
- 			       fq_skb_free_func);
- 	}
+ static struct intel_vsec_header bmg_punit_crashlog = {
++	.rev = 1,
+ 	.length = 0x10,
+ 	.id = VSEC_ID_CRASHLOG,
+ 	.num_entries = 1,
+@@ -42,6 +44,7 @@ static struct intel_vsec_header bmg_punit_crashlog = {
+ };
+ 
+ static struct intel_vsec_header bmg_oobmsm_crashlog = {
++	.rev = 1,
+ 	.length = 0x10,
+ 	.id = VSEC_ID_CRASHLOG,
+ 	.num_entries = 1,
 -- 
 2.39.5
 
