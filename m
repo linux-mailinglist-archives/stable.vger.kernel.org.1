@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E8DB23028
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F224B23449
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6DA6560FA2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0A2188BC9F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8B22F7477;
-	Tue, 12 Aug 2025 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930B061FFE;
+	Tue, 12 Aug 2025 18:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6SBweRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSOf9pZ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA092F8BE6;
-	Tue, 12 Aug 2025 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1522F745D;
+	Tue, 12 Aug 2025 18:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020928; cv=none; b=a5Tt/NVxwb3/CwoHjufcAj5XEceNb/nn4ihLz3aHY/kmvjI4oclTANVOgobI8O0GM0A3M6C+WyQG+dBUlHOaoa+nctSIC5eZwc2JRLsZWV59Ru9kX39kyLKXfe2G5iqp76Br2bVDb9qUe3qRpH1/3+VLj9QAP2ckKI5fOkR0VWM=
+	t=1755023604; cv=none; b=Kz6gucU17EE1nvY0PGX2r9jAynbGfZDEsywfNsjHUOx3vHod/BIgk01F80J+nowNQA0K0xlEkHv7hQMRSRYwo/dINcypZIY2HXDXvjjAvYfasm3VhBW36Tu4tkJoFiPRKLZBC8VblgmPuq6lH/+7p1DkxERhf9Oo9PMuqfMjUHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020928; c=relaxed/simple;
-	bh=e4OldpH+/PQkkk8DoDQGDrOj6SDBCIJ/5wi9AeMPDEI=;
+	s=arc-20240116; t=1755023604; c=relaxed/simple;
+	bh=IBXbcSSyflIoytEVv83Y52qyU2xZv1tT+Xy5JPcSsZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VDjfbUAC+dzwv4g1r/4lHrYhBZ4JcLlpk/N/yIS+qdh50fCXoQoAKJBbEXPTaZgTw31k5lDNPeovNmk1apoErj1iYONrfegGL9KZPcHlu2VIql7FW7cfOl9Tt9OxZl2ubexSFta1xFBPhSEGA8IEceGUeSmb2wDt0gRwUjgE55c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6SBweRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804EBC4CEF0;
-	Tue, 12 Aug 2025 17:48:47 +0000 (UTC)
+	 MIME-Version; b=ur5PVoht3t6GyaUJXRbwaRfRjQQ2uKzqsio8Q//FUVe30i/mvp8quUseNaVdVMo+5AB6oFeXwBTq880CuqddGcSeO/t0QYhjL5K5VF8LTNxw99o1jiEQrS+tZsxoX3wwFBHmqnrMajk1qNU/7n0GOkt5MFPkMxa6P+LQ/p4xYfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSOf9pZ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA746C4CEF0;
+	Tue, 12 Aug 2025 18:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020928;
-	bh=e4OldpH+/PQkkk8DoDQGDrOj6SDBCIJ/5wi9AeMPDEI=;
+	s=korg; t=1755023604;
+	bh=IBXbcSSyflIoytEVv83Y52qyU2xZv1tT+Xy5JPcSsZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6SBweRrb8sksNR3wr43m8h0/s6WzUoU60KzpZtUYvX2qvzqsM7ii5gVd3b2W0kM5
-	 4+EHpQcBKtyiTaKV+JPl2J1Vb4rkc51FURouqkmD+lHoX3cSi56ceVTNiCghy3OLvW
-	 78yqyuheG3HtBXcakZbD+zSsfDPZmMdn9TAmPw7k=
+	b=GSOf9pZ05T5s7XTYmQE2kXhzs2qRK4hh1aMDHBcBXwl3ritdkGU4Ly9woNwb9lPdU
+	 uvLiRdImX7w60OAQ8ahUyFyv2VXUsvak6TlixtjBniBbSkOwE6CIbNJVy4bXv1MgFh
+	 MNjacDJel12mrHhKssUc4cy0AkAJBG64fdGvRTck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/262] soc/tegra: cbb: Clear ERR_FORCE register with ERR_STATUS
+Subject: [PATCH 6.16 127/627] staging: nvec: Fix incorrect null termination of battery manufacturer
 Date: Tue, 12 Aug 2025 19:27:02 +0200
-Message-ID: <20250812172954.416078789@linuxfoundation.org>
+Message-ID: <20250812173424.153767582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit a0647bca8966db04b79af72851ebd04224a4da40 ]
+[ Upstream commit a8934352ba01081c51d2df428e9d540aae0e88b5 ]
 
-When error is injected with the ERR_FORCE register, then this register
-is not auto cleared on clearing the ERR_STATUS register. This causes
-repeated interrupts on error injection. To fix, set the ERR_FORCE to
-zero along with clearing the ERR_STATUS register after handling error.
+The battery manufacturer string was incorrectly null terminated using
+bat_model instead of bat_manu. This could result in an unintended
+write to the wrong field and potentially incorrect behavior.
 
-Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+fixe the issue by correctly null terminating the bat_manu string.
+
+Fixes: 32890b983086 ("Staging: initial version of the nvec driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20250719080755.3954373-1-alok.a.tiwari@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/cbb/tegra234-cbb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/nvec/nvec_power.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
-index 5cf0e8c34164..e8cc46874c72 100644
---- a/drivers/soc/tegra/cbb/tegra234-cbb.c
-+++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
-@@ -185,6 +185,8 @@ static void tegra234_cbb_error_clear(struct tegra_cbb *cbb)
- {
- 	struct tegra234_cbb *priv = to_tegra234_cbb(cbb);
- 
-+	writel(0, priv->mon + FABRIC_MN_MASTER_ERR_FORCE_0);
-+
- 	writel(0x3f, priv->mon + FABRIC_MN_MASTER_ERR_STATUS_0);
- 	dsb(sy);
- }
+diff --git a/drivers/staging/nvec/nvec_power.c b/drivers/staging/nvec/nvec_power.c
+index e0e67a3eb722..2faab9fdedef 100644
+--- a/drivers/staging/nvec/nvec_power.c
++++ b/drivers/staging/nvec/nvec_power.c
+@@ -194,7 +194,7 @@ static int nvec_power_bat_notifier(struct notifier_block *nb,
+ 		break;
+ 	case MANUFACTURER:
+ 		memcpy(power->bat_manu, &res->plc, res->length - 2);
+-		power->bat_model[res->length - 2] = '\0';
++		power->bat_manu[res->length - 2] = '\0';
+ 		break;
+ 	case MODEL:
+ 		memcpy(power->bat_model, &res->plc, res->length - 2);
 -- 
 2.39.5
 
