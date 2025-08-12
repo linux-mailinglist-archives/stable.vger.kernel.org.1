@@ -1,110 +1,88 @@
-Return-Path: <stable+bounces-167156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2973DB227F3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 15:13:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AB5B2289B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 15:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7C23A4AAB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 13:06:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC9C1567062
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 13:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9FE238142;
-	Tue, 12 Aug 2025 13:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDE627F003;
+	Tue, 12 Aug 2025 13:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnCiiRUn"
+	dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b="cmU3yd3e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout02.platinum-mail.de (mx02.platinum-mail.de [89.58.18.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46611531E8;
-	Tue, 12 Aug 2025 13:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CB8AD51
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 13:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.18.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755004011; cv=none; b=AZH00qLsgxFTVFQdzBDd+OUEFfRFf02hxNeHiRaV8eqvJYs6F6RrmhXFvPID5fwRHbZV41Y1uSEqAjYOJ7B1QorjweDhhXwt7jCkL21v8OQmw2ohucg1hd3ENYYbxAwXW43C80XGCZG7YwIit37wP3bxMWI/SzMbtUOBiFK93EY=
+	t=1755005133; cv=none; b=KVz+q9nNrn8+EhTK0UPyKJ9YDgm3th6RpXyExiWn4PsY00HeOz5/JCxnI9rurwJ1XXaCM7EEGSVfpQujB4Eimwg6ljTNioAA1+zh0iOWH4EWM2x7s4Uj8KSd3BpOFG8tUsK93AT/M7auPl1JS04wD+CYsQkuQj2c2CZXMV7BkhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755004011; c=relaxed/simple;
-	bh=kgcdZRlgzMs6r2fHQPsEJ3bWbY/Y1L0QseyEFWl+2rE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JPh5IJ7j9BWr8lGJxrGdsAOZd4BzJTAvPH5yET/IK1Vej+tx1dthIsYaVjkJuPd7+5J5BzKSsLJ4Z1DWLQTQtM2Ebz9FDnpW1DfsR0Bc8mNLt40ZZo5nbmv94FDGwQzltpP9JWgyMPWFVkXsAwSw9akkIXLVwRma54lipkM644U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnCiiRUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C80C4CEF0;
-	Tue, 12 Aug 2025 13:06:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755004010;
-	bh=kgcdZRlgzMs6r2fHQPsEJ3bWbY/Y1L0QseyEFWl+2rE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jnCiiRUnryd0zHRPHwaoptE+p9429pB1BJ4W4ppiGk2pKejMyLYDBI8d/l7HxASiZ
-	 rff4PlFYvZWMaWByz3tLj0ROSnJsf5dcwb1QmRO9bO8vFa3Kzu1oBeaPjebM8aNrH5
-	 rAoTGLtuTI2Mf3Am/vBFwOtTZ68TQ0hKvZ0nfivI=
-Date: Tue, 12 Aug 2025 15:06:47 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Jian-Hong Pan <jhp@endlessos.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH 6.13 445/623] PCI/ASPM: Save parent L1SS config in
- pci_save_aspm_l1ss_state()
-Message-ID: <2025081241-reverence-margarine-76dd@gregkh>
-References: <20250205134456.221272033@linuxfoundation.org>
- <20250205134513.241757556@linuxfoundation.org>
- <7a41907d-14d0-a1a4-47d6-90ff572d5af9@linux.intel.com>
- <2025020621-remindful-occultist-b433@gregkh>
- <aIpPWZ5eS1gEeAwm@google.com>
+	s=arc-20240116; t=1755005133; c=relaxed/simple;
+	bh=OWb+eIgrSbBeQwDYF1sSJlRfu7SDrhZWQ1XWI8XOtIA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E10Z82iV9JdisgUS6cz2bisOIYBr3X7agAlCRhlkpikPk2R52wJmYvBXcm6v5uYKrrzAg5jp/we+9oRGII33XbvQwV1Vkfv51dbRhio1MVzQd6A2kd5Mwz19duiO4vFIOuV5VCKYVsCX9a817LBJbzix5XG7Y1gENkjrBLiv0VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org; spf=pass smtp.mailfrom=achill.org; dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b=cmU3yd3e; arc=none smtp.client-ip=89.58.18.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=achill.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mailout02.platinum-mail.de (Mail Service) with ESMTPS id 1B5BC9A294A
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 13:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; d=achill.org; s=mail; c=relaxed/simple;
+	t=1755005118; h=date:message-id:subject:from:to;
+	bh=OWb+eIgrSbBeQwDYF1sSJlRfu7SDrhZWQ1XWI8XOtIA=;
+	b=cmU3yd3ejQQ6Cpmc2uEXLl18L4CCY+5463/KGmERFGKsDUJSZ7wj7uVs1epq03c49bEQCDP5iF8
+	lDwbSZfH1sAUhZGp6MXmK/PSoGADlF5nnG6MKit60tNos/6G3xpkWYGri3btKzlKQ3QdD2EKnx9M7
+	7BDRj+vvWuPnAc5Mar7zQJG+1+UdnA8GunwA9TgbdwYbnnFSj1NF11aRyZT2f+Rpeo/Q4XPrQVor8
+	WjnDhv5ybHIODxYEz/3Ivn+Q87Dv1AC/LCMmAS3FdDHYgyPySeYrTEYa4s+QS7aoEXvm7/98P6+DP
+	NHEPWTL39Y/DqscgzMh8mbqwaqZcTXqKEyQg==
+From: Achill Gilgenast <achill@achill.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	Achill Gilgenast <achill@achill.org>
+Subject: [PATCH stable-queue] scripts/quilt-mail: add my email address to the 0th mail CC list
+Date: Tue, 12 Aug 2025 15:24:30 +0200
+Message-ID: <20250812132440.423727-1-achill@achill.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aIpPWZ5eS1gEeAwm@google.com>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
 
-On Wed, Jul 30, 2025 at 09:59:05AM -0700, Brian Norris wrote:
-> Hello,
-> 
-> On Thu, Feb 06, 2025 at 03:29:35PM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Feb 06, 2025 at 11:00:18AM +0200, Ilpo Järvinen wrote:
-> > > On Wed, 5 Feb 2025, Greg Kroah-Hartman wrote:
-> > > 
-> > > > 6.13-stable review patch.  If anyone has any objections, please let me know.
-> > > > 
-> > > > ------------------
-> > > > 
-> > > > From: Jian-Hong Pan <jhp@endlessos.org>
-> > > > 
-> > > > [ Upstream commit 1db806ec06b7c6e08e8af57088da067963ddf117 ]
-> > > > 
-> > > > After 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for
-> > > > suspend/resume"), pci_save_aspm_l1ss_state(dev) saves the L1SS state for
-> > > > "dev", and pci_restore_aspm_l1ss_state(dev) restores the state for both
-> > > > "dev" and its parent.
-> [...]
-> > > Please withhold this commit from stable until its fix ("PCI/ASPM: Fix L1SS 
-> > > saving") can be pushed at the same as having this commit alone can causes 
-> > > PCIe devices to becomes unavailable and hang the system during PM 
-> > > transitions.
-> > > 
-> > > The fix is currently in pci/for-linus as the commit c312f005dedc, but 
-> > > Bjorn might add more reported-by/tested-by tags if more people hit it 
-> > > before the commit makes into Linus' tree so don't expect that commit id to 
-> > > be stable just yet.
-> > 
-> > Ok, now dropped from all stable queues, thanks for letting us know.
-> 
-> Any chance these can be re-included? That's:
-> 
-> 1db806ec06b7 ("PCI/ASPM: Save parent L1SS config in pci_save_aspm_l1ss_state()")
-> 7507eb3e7bfa ("PCI/ASPM: Fix L1SS saving")
-> 
-> We've independently backported them into kernels we're using, but it
-> seems wise to get 6.12.y, etc., back up to date.
+Now that I have a proper email address, add me to the CC list so I don't
+have to subscribe to <stable@vger.kernel.org> only to get this mail.
 
-Now queued up, thanks.
+Signed-off-by: Achill Gilgenast <achill@achill.org>
+---
+ scripts/quilt-mail | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-greg k-h
+diff --git a/scripts/quilt-mail b/scripts/quilt-mail
+index e0df3d935f..531d9fafb9 100755
+--- a/scripts/quilt-mail
++++ b/scripts/quilt-mail
+@@ -181,7 +181,8 @@ CC_NAMES=("linux-kernel@vger\.kernel\.org"
+ 	  "rwarsow@gmx\.de"
+ 	  "conor@kernel\.org"
+ 	  "hargar@microsoft\.com"
+-	  "broonie@kernel\.org")
++	  "broonie@kernel\.org"
++	  "achill@achill\.org")
+ 
+ #CC_LIST="stable@vger\.kernel\.org"
+ CC_LIST="patches@lists.linux.dev"
+-- 
+2.50.1
 
