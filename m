@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCF0B230DD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90296B22F9B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A8F1885AD5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C0793B1ACB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9A02FDC2F;
-	Tue, 12 Aug 2025 17:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D922FD1CE;
+	Tue, 12 Aug 2025 17:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFPlXY1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpI0WcMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA072FA0DB;
-	Tue, 12 Aug 2025 17:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BE22F7461;
+	Tue, 12 Aug 2025 17:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021393; cv=none; b=q9dTitfdmkMUD46XB2RLdxspkmltj5cWZWPTLnbrFmJJyHYPEN2bjWjgVPMRcOy6BXjZFtUm8V2Zv+r1AE94RNVMfGG5thLigPRZw+iE5y46F6KhwmsJeRrGCr6lcz+BnO6XAOrkb4mTqhKDjVRPi7P02PUEKXOzRcRnrDjbJA8=
+	t=1755020530; cv=none; b=H60pSZHdln3Cr31DbK6jPOj6c6SHWma6qUqDcjBoND3Ff1XCIShga7Qt30GIZwroGesPXAxpp47vGlcfj1iRvtzGtwMRhveszbXXuZdCYfMAAxL+GgLWoyDcofSKpMukZBvzw9OyPd0xgoImRg51SW75jLF3+9ZNzkEhU8R4Ui8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021393; c=relaxed/simple;
-	bh=Lkq53+noy8fEIdk/opS7hP5JZXR6RCFKFVADQ++2fWg=;
+	s=arc-20240116; t=1755020530; c=relaxed/simple;
+	bh=Ke/d58eQ8JcsnMHp/ZnrRPcfWILsH9r6PPx4QJlW6Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ro3eMsuxp65UrpEf1Db1G4cbCewQVQTfF6T2B2shaI+GbNK+B/LZLO2F4uqB6QEHdrE8Xa+GX+Hd+wowotGOtQtNTLHqhMW3VBHQhvsSfsdIT268OFtGR62aJw3+BR+1H2aNoZoic2nCduqupZXO31I65YuDq2CVKex31+kovDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFPlXY1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B539AC4CEF0;
-	Tue, 12 Aug 2025 17:56:32 +0000 (UTC)
+	 MIME-Version; b=bzJUJAwej/BewME8uVJ2BMWG6+t6qAuYrTLxUfcifWqIqBtlF/s12XnzVjuR+Ib7vBMkFek9j/PfHGxnSTU9ooJT7dNDa/xMlzNNABYtLx710lti/4wBPmLsFlYmIZmvJsd91x3J01P3jIqRSq3LrATbCY7Mm2BR+r056geHLPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpI0WcMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1729DC4CEF0;
+	Tue, 12 Aug 2025 17:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021393;
-	bh=Lkq53+noy8fEIdk/opS7hP5JZXR6RCFKFVADQ++2fWg=;
+	s=korg; t=1755020529;
+	bh=Ke/d58eQ8JcsnMHp/ZnrRPcfWILsH9r6PPx4QJlW6Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFPlXY1pxw8YTkHf9/juLcZ9Axi/GPvEOT/Sm+07uIqttsA6w1op6UIIYyu1MOQGy
-	 8yTLLUQF5N3PqusNLXD87cQzSn9UGU6FCgRGpN+bPL2/UW/1UEboNkkKBYHmIwSLB+
-	 auC364zPdSr+VnpY50Z4Kyih7OOihdOmSP75LYDc=
+	b=mpI0WcMnk34+ILom8w0OFMLWigkh7eD55DUsuENlFTxXPIjZ7prO0gih7ifd0XgZv
+	 euUxcgFp+2sAaG29RvlUNATUA61u540a4TOhBR8rwNLKpLpT24G4Mmvv5/P1UX96SA
+	 DYda3ZSIhu2V9pcRJPzcbDST4eYb7QSkvmIZc09I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Stav Aviram <saviram@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/262] crypto: sun8i-ce - fix nents passed to dma_unmap_sg()
+Subject: [PATCH 6.1 108/253] net/mlx5: Check device memory pointer before usage
 Date: Tue, 12 Aug 2025 19:28:16 +0200
-Message-ID: <20250812172957.688012678@linuxfoundation.org>
+Message-ID: <20250812172953.321759391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Stav Aviram <saviram@nvidia.com>
 
-[ Upstream commit b6cd3cfb5afe49952f8f6be947aeeca9ba0faebb ]
+[ Upstream commit 70f238c902b8c0461ae6fbb8d1a0bbddc4350eea ]
 
-In sun8i_ce_cipher_unprepare(), dma_unmap_sg() is incorrectly called with
-the number of entries returned by dma_map_sg(), rather than using the
-original number of entries passed when mapping the scatterlist.
+Add a NULL check before accessing device memory to prevent a crash if
+dev->dm allocation in mlx5_init_once() fails.
 
-To fix this, stash the original number of entries passed to dma_map_sg()
-in the request context.
-
-Fixes: 0605fa0f7826 ("crypto: sun8i-ce - split into prepare/run/unprepare")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c9b9dcb430b3 ("net/mlx5: Move device memory management to mlx5_core")
+Signed-off-by: Stav Aviram <saviram@nvidia.com>
+Link: https://patch.msgid.link/c88711327f4d74d5cebc730dc629607e989ca187.1751370035.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/dm.c                  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c | 4 ++--
+ drivers/net/ethernet/mellanox/mlx5/core/main.c   | 3 ---
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-index 70434601f99b..9e093d44a066 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-@@ -265,8 +265,8 @@ static int sun8i_ce_cipher_prepare(struct crypto_engine *engine, void *async_req
+diff --git a/drivers/infiniband/hw/mlx5/dm.c b/drivers/infiniband/hw/mlx5/dm.c
+index 3669c90b2dad..672e5cfd2fca 100644
+--- a/drivers/infiniband/hw/mlx5/dm.c
++++ b/drivers/infiniband/hw/mlx5/dm.c
+@@ -282,7 +282,7 @@ static struct ib_dm *handle_alloc_dm_memic(struct ib_ucontext *ctx,
+ 	int err;
+ 	u64 address;
+ 
+-	if (!MLX5_CAP_DEV_MEM(dm_db->dev, memic))
++	if (!dm_db || !MLX5_CAP_DEV_MEM(dm_db->dev, memic))
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+index 9482e51ac82a..bdbbfaf504d9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/dm.c
+@@ -28,7 +28,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ 
+ 	dm = kzalloc(sizeof(*dm), GFP_KERNEL);
+ 	if (!dm)
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 
+ 	spin_lock_init(&dm->lock);
+ 
+@@ -80,7 +80,7 @@ struct mlx5_dm *mlx5_dm_create(struct mlx5_core_dev *dev)
+ err_steering:
+ 	kfree(dm);
+ 
+-	return ERR_PTR(-ENOMEM);
++	return NULL;
+ }
+ 
+ void mlx5_dm_cleanup(struct mlx5_core_dev *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 8c9633f740b4..a53f222e3fee 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1022,9 +1022,6 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
  	}
  
- 	chan->timeout = areq->cryptlen;
--	rctx->nr_sgs = nr_sgs;
--	rctx->nr_sgd = nr_sgd;
-+	rctx->nr_sgs = ns;
-+	rctx->nr_sgd = nd;
- 	return 0;
- 
- theend_sgs:
+ 	dev->dm = mlx5_dm_create(dev);
+-	if (IS_ERR(dev->dm))
+-		mlx5_core_warn(dev, "Failed to init device memory %ld\n", PTR_ERR(dev->dm));
+-
+ 	dev->tracer = mlx5_fw_tracer_create(dev);
+ 	dev->hv_vhca = mlx5_hv_vhca_create(dev);
+ 	dev->rsc_dump = mlx5_rsc_dump_create(dev);
 -- 
 2.39.5
 
