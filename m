@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-167772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A002EB231D7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A2EB2358A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46B611897245
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A79B3B9F5E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550CF2FE595;
-	Tue, 12 Aug 2025 18:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2401726CE2B;
+	Tue, 12 Aug 2025 18:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3wjnWUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoP8pEia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE02BEC2F;
-	Tue, 12 Aug 2025 18:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41522CA9;
+	Tue, 12 Aug 2025 18:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021941; cv=none; b=YFD6B7SZkRfWJYx54RjMZHGZyAQoiOhJ7ZS6kZ+Nvj8d5PLExdrKBuqjElZpSuXcLCCdS8OCWzMiQpGy8LbCbGYD/iex/w5w+w967wHJlKt6C+BCL+XdW6NqelvklNt/uhC2zAesppkyf19haYw07dgRdi1B3vaJGG7Aw/fDYhQ=
+	t=1755024371; cv=none; b=HEyXuELt7TanOVesOZ6W4H4SNKcPDYKg6+lA9Z65ZENszGzq0KyzLuHLGkb0mNf6hGft3yByudl43oj1H9IkPtchZx5Zw+nHRNPioGmdGK4RhfDcR5QWwF/ioU+C9MEM8wvbZODNfm9+N6Af0Ajn+FAPLYVUTh/xU7BAj80XIEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021941; c=relaxed/simple;
-	bh=6XQPgq4ntDbXdCxCK1P+lTImIEVC9zQmls9I5pXfSnY=;
+	s=arc-20240116; t=1755024371; c=relaxed/simple;
+	bh=wv+KjdMEneBr/bfsar0VKcm3MtTKE4dD8ApQg9eSf64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVBwGfpXztN1Upz4Er9WXvhgUEPYO7eWmWIWHHX26rovajp2YfsKrs6MTxrzloCPhzyP3CZQX05Jy173n4ZJwVqJfKvhe3cys7WRJnpCyq792G4eXAcfmXyc91ogU4I124bnHvl6IpVYyP4AlPic591Qro5YGEJ5TfRfiSjcQA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3wjnWUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77987C4CEF0;
-	Tue, 12 Aug 2025 18:05:40 +0000 (UTC)
+	 MIME-Version; b=FqENODC0ylOst1XjaGDYtkKbAHz30kf9ngAvgmP0Q5ARIiNw0FlhO8BVCoIXj222iQnxJhrKfr4zzR+1n1lgbQEA/V+bpdOGFseKgvWDoCe2UBL6YqIRelkW9cWc8Gp5MPFYoGuT9XCru5GPUueO8Wx6Del8H9mM32suy4TFoXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoP8pEia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E69C4CEF0;
+	Tue, 12 Aug 2025 18:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021940;
-	bh=6XQPgq4ntDbXdCxCK1P+lTImIEVC9zQmls9I5pXfSnY=;
+	s=korg; t=1755024371;
+	bh=wv+KjdMEneBr/bfsar0VKcm3MtTKE4dD8ApQg9eSf64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m3wjnWUNAcOfLortOE9TTRYND4xdDVB9JiOaiqG96FQ9qAVmvrCn7JW8mQkD5dm8U
-	 HvWuAgHciHIzQlulHtVckinY9j/AGOYD2Uynoqhmqrn4a8cv2/UgDxecroiORgRO13
-	 jg3hDvqT5vy9yqVzQFX1W1LWwcEzb8vHQN3Pqtn4=
+	b=RoP8pEiaW/vmoIhJbVnW1z/X68WMRMWnXssbbG10AK8+CdiInb4dIXm2niOZJWmrS
+	 2lHwniRMV4weQryj/0daF7iCoKTG+/6HW/icdf4Vu00e1baErBbB4w0n5xEC2L3Iwz
+	 fZszxPFP5fNvMVqEDgdCkU2ExM3GIBx2T+NiHg6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Bill Wendling <morbo@google.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 261/262] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 354/627] perf tools: Fix use-after-free in help_unknown_cmd()
 Date: Tue, 12 Aug 2025 19:30:49 +0200
-Message-ID: <20250812173004.245064336@linuxfoundation.org>
+Message-ID: <20250812173432.761129230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 upstream.
+[ Upstream commit 1fdf938168c4d26fa279d4f204768690d1f9c4ae ]
 
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
+Currently perf aborts when it finds an invalid command.  I guess it
+depends on the environment as I have some custom commands in the path.
 
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
+  $ perf bad-command
+  perf: 'bad-command' is not a perf-command. See 'perf --help'.
+  Aborted (core dumped)
 
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
+It's because the exclude_cmds() in libsubcmd has a use-after-free when
+it removes some entries.  After copying one to another entry, it keeps
+the pointer in the both position.  And the next copy operation will free
+the later one but it's the same entry in the previous one.
 
-See also:
+For example, let's say cmds = { A, B, C, D, E } and excludes = { B, E }.
 
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
+  ci  cj  ei   cmds-name  excludes
+  -----------+--------------------
+   0   0   0 |     A         B       :    cmp < 0, ci == cj
+   1   1   0 |     B         B       :    cmp == 0
+   2   1   1 |     C         E       :    cmp < 0, ci != cj
 
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At this point, it frees cmds->names[1] and cmds->names[1] is assigned to
+cmds->names[2].
+
+   3   2   1 |     D         E       :    cmp < 0, ci != cj
+
+Now it frees cmds->names[2] but it's the same as cmds->names[1].  So
+accessing cmds->names[1] will be invalid.
+
+This makes the subcmd tests succeed.
+
+  $ perf test subcmd
+   69: libsubcmd help tests                                            :
+   69.1: Load subcmd names                                             : Ok
+   69.2: Uniquify subcmd names                                         : Ok
+   69.3: Exclude duplicate subcmd names                                : Ok
+
+Fixes: 4b96679170c6 ("libsubcmd: Avoid SEGV/use-after-free when commands aren't excluded")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250701201027.1171561-3-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hmm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/subcmd/help.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -173,6 +173,7 @@ static inline unsigned long hmm_pfn_flag
- 	return order << HMM_PFN_ORDER_SHIFT;
+diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
+index 8561b0f01a24..9ef569492560 100644
+--- a/tools/lib/subcmd/help.c
++++ b/tools/lib/subcmd/help.c
+@@ -9,6 +9,7 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ #include <dirent.h>
++#include <assert.h>
+ #include "subcmd-util.h"
+ #include "help.h"
+ #include "exec-cmd.h"
+@@ -82,10 +83,11 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
+ 				ci++;
+ 				cj++;
+ 			} else {
+-				zfree(&cmds->names[cj]);
+-				cmds->names[cj++] = cmds->names[ci++];
++				cmds->names[cj++] = cmds->names[ci];
++				cmds->names[ci++] = NULL;
+ 			}
+ 		} else if (cmp == 0) {
++			zfree(&cmds->names[ci]);
+ 			ci++;
+ 			ei++;
+ 		} else if (cmp > 0) {
+@@ -94,12 +96,12 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
+ 	}
+ 	if (ci != cj) {
+ 		while (ci < cmds->cnt) {
+-			zfree(&cmds->names[cj]);
+-			cmds->names[cj++] = cmds->names[ci++];
++			cmds->names[cj++] = cmds->names[ci];
++			cmds->names[ci++] = NULL;
+ 		}
+ 	}
+ 	for (ci = cj; ci < cmds->cnt; ci++)
+-		zfree(&cmds->names[ci]);
++		assert(cmds->names[ci] == NULL);
+ 	cmds->cnt = cj;
  }
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
- 						 pmd_t pmd)
- {
-@@ -183,7 +184,6 @@ static inline unsigned long pmd_to_hmm_p
- 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
- }
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 			      unsigned long end, unsigned long hmm_pfns[],
- 			      pmd_t pmd)
+-- 
+2.39.5
+
 
 
 
