@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BA4B23278
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1E9B2304B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29233AE3D0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3AB685F2D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751092D46B3;
-	Tue, 12 Aug 2025 18:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D2B2F83CB;
+	Tue, 12 Aug 2025 17:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xj0Cw5/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJLIp/s3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3252F1C8621;
-	Tue, 12 Aug 2025 18:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CA2221FAC;
+	Tue, 12 Aug 2025 17:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022377; cv=none; b=NXlrUVEaQLSUV6YIuHtZRspU1BpyQf/TJYJ2QfUexIyfysyu1+xclvzJB9WDey8RG+b1yPI7+TdplHFNcy2RfeUngtsFUMC4l89nJ8vg2uKAoDNvt0VVEFW3UCfWHR5HTmqbIIUHwPSLGSQgTZWrB8OvLGyVuSMpegZwbVa1Sog=
+	t=1755020976; cv=none; b=bYK3zA4BO9c5uzuqinls5Wwn9R4LCOaJ+JRy/Rpu+x/hVZiKFZYf2yJv872bfmzzpN8xYxa4rOwmT9tKT6TDy84A6UbrjbWzdxkJUtAIN2niJtZvmeuuYu/XpbIjQupFGQ5/CQuDsDqRdONMJJqkIfOQz/JsfpCbEv4JZfDfZaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022377; c=relaxed/simple;
-	bh=3J80/BW7Nb46ty2s98eItm9llRyVJA2RQHEHufEBmOs=;
+	s=arc-20240116; t=1755020976; c=relaxed/simple;
+	bh=S9JmgrnmhaipQmEThAJXhtnZc2OSoAzyBQUqSry40YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DePPPRO5+i1W8o58EpzLUvXdpgFjz1UV4HacAIIEY9E9tJvrupGIgCRSGeDo3j51sUZuv36HQECSJMpcTrAmiumRWZUWmu7plEhk32qm23LYNztME6UX2Pbq9H2Lt5r74xyjC1KVEySZPomJKlAtmlyJlnSyGAHlq48mPxrV1Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xj0Cw5/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96297C4CEF0;
-	Tue, 12 Aug 2025 18:12:56 +0000 (UTC)
+	 MIME-Version; b=uBkGaw6JTek3sXZRt6raryzSsr9l7ZH3uwYHzyOmDwwAk9kyv0Lr0lzqBTdBuVEEPnTAnfVo2wt8Wq0sGmPK9clk6pnCqyJSo4OsubsN5CAc3hyLHtamF9orJjtP+jgsK+FoAUrPQDmqAVj6xbMAo/3wz9hUWeusXsib8xnOHhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJLIp/s3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1474C4CEF0;
+	Tue, 12 Aug 2025 17:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022377;
-	bh=3J80/BW7Nb46ty2s98eItm9llRyVJA2RQHEHufEBmOs=;
+	s=korg; t=1755020976;
+	bh=S9JmgrnmhaipQmEThAJXhtnZc2OSoAzyBQUqSry40YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xj0Cw5/S04RLqTLlezydYENZdJZ/ymO/DjYXhkB9kSVmOka/CTPvjp6g98ZO/+f3L
-	 pAd7g280edd6541AgWHgmwSrtZIPmFczGe0b3EspwFzFSZitngcEXkfVt6IqMtYVbL
-	 H7U/cObGDKV6BZn3Q3qKxJQrULtBnR0UPGT+5hwM=
+	b=nJLIp/s3pw6zTbcUSCRCfA59WYWuksA7TlkwKVrLbVtazqQteOpyS2nO3FkGc2x10
+	 bhhk3nPxvpuNqOuoRF1+TbziPBiDxmwNXK9LvhaAi795tVrOKiRnKO6Akb7KLrLTol
+	 BkK9qXpgN0SuwWU0DWX1gjo/0l5GI4Hcvhx1m0K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephane Grosjean <stephane.grosjean@hms-networks.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/369] can: peak_usb: fix USB FD devices potential malfunction
+Subject: [PATCH 6.6 045/262] interconnect: qcom: sc8180x: specify num_nodes
 Date: Tue, 12 Aug 2025 19:27:13 +0200
-Message-ID: <20250812173019.884940040@linuxfoundation.org>
+Message-ID: <20250812172954.885053288@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephane Grosjean <stephane.grosjean@hms-networks.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 788199b73b6efe4ee2ade4d7457b50bb45493488 ]
+[ Upstream commit 7e0b59496a02d25828612721e846ea4b717a97b9 ]
 
-The latest firmware versions of USB CAN FD interfaces export the EP numbers
-to be used to dialog with the device via the "type" field of a response to
-a vendor request structure, particularly when its value is greater than or
-equal to 2.
+Specify .num_nodes for several BCMs which missed this declaration.
 
-Correct the driver's test of this field.
-
-Fixes: 4f232482467a ("can: peak_usb: include support for a new MCU")
-Signed-off-by: Stephane Grosjean <stephane.grosjean@hms-networks.com>
-Link: https://patch.msgid.link/20250724081550.11694-1-stephane.grosjean@free.fr
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-[mkl: rephrase commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 04548d4e2798 ("interconnect: qcom: sc8180x: Reformat node and bcm definitions")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250704-rework-icc-v2-2-875fac996ef5@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/interconnect/qcom/sc8180x.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-index 4d85b29a17b7..ebefc274b50a 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-@@ -49,7 +49,7 @@ struct __packed pcan_ufd_fw_info {
- 	__le32	ser_no;		/* S/N */
- 	__le32	flags;		/* special functions */
+diff --git a/drivers/interconnect/qcom/sc8180x.c b/drivers/interconnect/qcom/sc8180x.c
+index a741badaa966..4dd1d2f2e821 100644
+--- a/drivers/interconnect/qcom/sc8180x.c
++++ b/drivers/interconnect/qcom/sc8180x.c
+@@ -1492,34 +1492,40 @@ static struct qcom_icc_bcm bcm_sh3 = {
  
--	/* extended data when type == PCAN_USBFD_TYPE_EXT */
-+	/* extended data when type >= PCAN_USBFD_TYPE_EXT */
- 	u8	cmd_out_ep;	/* ep for cmd */
- 	u8	cmd_in_ep;	/* ep for replies */
- 	u8	data_out_ep[2];	/* ep for CANx TX */
-@@ -982,10 +982,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
- 			dev->can.ctrlmode |= CAN_CTRLMODE_FD_NON_ISO;
- 		}
+ static struct qcom_icc_bcm bcm_sn0 = {
+ 	.name = "SN0",
++	.num_nodes = 1,
+ 	.nodes = { &slv_qns_gemnoc_sf }
+ };
  
--		/* if vendor rsp is of type 2, then it contains EP numbers to
--		 * use for cmds pipes. If not, then default EP should be used.
-+		/* if vendor rsp type is greater than or equal to 2, then it
-+		 * contains EP numbers to use for cmds pipes. If not, then
-+		 * default EP should be used.
- 		 */
--		if (fw_info->type != cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
-+		if (le16_to_cpu(fw_info->type) < PCAN_USBFD_TYPE_EXT) {
- 			fw_info->cmd_out_ep = PCAN_USBPRO_EP_CMDOUT;
- 			fw_info->cmd_in_ep = PCAN_USBPRO_EP_CMDIN;
- 		}
-@@ -1018,11 +1019,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
- 	dev->can_channel_id =
- 		le32_to_cpu(pdev->usb_if->fw_info.dev_id[dev->ctrl_idx]);
+ static struct qcom_icc_bcm bcm_sn1 = {
+ 	.name = "SN1",
++	.num_nodes = 1,
+ 	.nodes = { &slv_qxs_imem }
+ };
  
--	/* if vendor rsp is of type 2, then it contains EP numbers to
--	 * use for data pipes. If not, then statically defined EP are used
--	 * (see peak_usb_create_dev()).
-+	/* if vendor rsp type is greater than or equal to 2, then it contains EP
-+	 * numbers to use for data pipes. If not, then statically defined EP are
-+	 * used (see peak_usb_create_dev()).
- 	 */
--	if (fw_info->type == cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
-+	if (le16_to_cpu(fw_info->type) >= PCAN_USBFD_TYPE_EXT) {
- 		dev->ep_msg_in = fw_info->data_in_ep;
- 		dev->ep_msg_out = fw_info->data_out_ep[dev->ctrl_idx];
- 	}
+ static struct qcom_icc_bcm bcm_sn2 = {
+ 	.name = "SN2",
+ 	.keepalive = true,
++	.num_nodes = 1,
+ 	.nodes = { &slv_qns_gemnoc_gc }
+ };
+ 
+ static struct qcom_icc_bcm bcm_co2 = {
+ 	.name = "CO2",
++	.num_nodes = 1,
+ 	.nodes = { &mas_qnm_npu }
+ };
+ 
+ static struct qcom_icc_bcm bcm_sn3 = {
+ 	.name = "SN3",
+ 	.keepalive = true,
++	.num_nodes = 2,
+ 	.nodes = { &slv_srvc_aggre1_noc,
+ 		  &slv_qns_cnoc }
+ };
+ 
+ static struct qcom_icc_bcm bcm_sn4 = {
+ 	.name = "SN4",
++	.num_nodes = 1,
+ 	.nodes = { &slv_qxs_pimem }
+ };
+ 
 -- 
 2.39.5
 
