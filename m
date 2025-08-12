@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741B4B23166
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F61B2331C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C1C13A5C63
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBDEF3B3937
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1423E2FF15D;
-	Tue, 12 Aug 2025 18:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807E22E7BD4;
+	Tue, 12 Aug 2025 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIW31vWY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zd5BHpZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EBE2882CE;
-	Tue, 12 Aug 2025 18:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4061A2DFA3E;
+	Tue, 12 Aug 2025 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021677; cv=none; b=ssJrNteNEwNUZWIipfHF162JwzWnI3NWAfakv4YYwFvxQu75+WiKlstptgI9Fz/jBk0h2anVZOv9Ht7D68k2/zybRwH2vgVPG4Uq1gZ4lBMwto4W55d6ftyFMRE10O67gfyARIwhlJezLB0IkbGIAQ7/5BWaOgOECy98QGQtpKA=
+	t=1755022868; cv=none; b=LC+wqyXEukZ9zpkkqbjc/dbMpzLG5jWMpM16Q3bF3Os7//u76g8O7pD90pL4wO/zA/ZwM1XZod9gZUiRpWRmEGYBjdSLughJeCMZDV/KwKfidgp2IebxS7jF5c9nRuGEdp/mpJLzdQa2dvb/SX/hDsFo/gs8Wtxm5BJb4hxqe7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021677; c=relaxed/simple;
-	bh=HAIjS9mACo0ISIlDIZDU3qcL8uLo5zSwF3ikrmZLl6o=;
+	s=arc-20240116; t=1755022868; c=relaxed/simple;
+	bh=nqYFghbd0MwTZbW9bBJXTKv48FBnXLNWbHeUsve52+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRDC+6YRshI91IM4umc6IA831v6i2e2vVwitcdYAvuhchTMcoUQ5TtrgRJNbb/XvuDeUNYSZZDjufAcf2ohmNVEpUTIq3SGPvL4HUFhUaM0MTLQbLagPzDw7AV8V+XvhvSogdQANXgFdKpSR3wbqjQ1uace8yPdJR28N/wPB1vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIW31vWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3473BC4CEF1;
-	Tue, 12 Aug 2025 18:01:16 +0000 (UTC)
+	 MIME-Version; b=HuEz2kMGr50az9hARb0ZaJ4zq2zkR0J8VJBZUaqTtCzzREqCZfM4XEKFHhvZ2DTYb53gP3ct7uyDujQpaRvZ/dHVDHMm/uv7IXAnFdeqVVrStC+fDVlYYXtyN/18YwTwB30iM54NHueJtQt0SFPN0izJpI0Fj4QTLaJeloJnfy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zd5BHpZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BBDC4CEF1;
+	Tue, 12 Aug 2025 18:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021677;
-	bh=HAIjS9mACo0ISIlDIZDU3qcL8uLo5zSwF3ikrmZLl6o=;
+	s=korg; t=1755022867;
+	bh=nqYFghbd0MwTZbW9bBJXTKv48FBnXLNWbHeUsve52+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIW31vWYukehS6LVNoZpdJqhENXhKQbMiZKLR7i4BbXID9ou7XilbaBFAlJJlBPax
-	 fBoq2CQivqOZSwxLyvGbK0+sPhICuZLITpIU0Wm/7WTWUhUASgr0DSM6e4dDbU9Rrk
-	 UksIlRBn6fbznwwpzYgeunefTlMAQGDXNP3s51Rs=
+	b=Zd5BHpZ/8BS25H/QKGSeqaCNey/BeiusKColH/sW25litt2dSEISGsXn2KQBVmJK6
+	 ERo4o7wlpilhw+yltk/fI2eK/fGALwhlmnGe8Sepaihl51BdMuTN9iTtEW2RFyKDHj
+	 PRZ81vE/m8KZU4iRTk7/Ra62he3MZB2qGytIAA4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sheng Yong <shengyong1@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/262] vhost-scsi: Fix log flooding with target does not exist errors
+Subject: [PATCH 6.12 250/369] f2fs: fix bio memleak when committing super block
 Date: Tue, 12 Aug 2025 19:29:07 +0200
-Message-ID: <20250812172959.874078442@linuxfoundation.org>
+Message-ID: <20250812173024.167430367@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Sheng Yong <shengyong1@xiaomi.com>
 
-[ Upstream commit 69cd720a8a5e9ef0f05ce5dd8c9ea6e018245c82 ]
+[ Upstream commit 554d9b7242a73d701ce121ac81bb578a3fca538e ]
 
-As part of the normal initiator side scanning the guest's scsi layer
-will loop over all possible targets and send an inquiry. Since the
-max number of targets for virtio-scsi is 256, this can result in 255
-error messages about targets not existing if you only have a single
-target. When there's more than 1 vhost-scsi device each with a single
-target, then you get N * 255 log messages.
+When committing new super block, bio is allocated but not freed, and
+kmemleak complains:
 
-It looks like the log message was added by accident in:
+  unreferenced object 0xffff88801d185600 (size 192):
+    comm "kworker/3:2", pid 128, jiffies 4298624992
+    hex dump (first 32 bytes):
+      00 00 00 00 00 00 00 00 80 67 c3 00 81 88 ff ff  .........g......
+      01 08 06 00 00 00 00 00 00 00 00 00 01 00 00 00  ................
+    backtrace (crc 650ecdb1):
+      kmem_cache_alloc_noprof+0x3a9/0x460
+      mempool_alloc_noprof+0x12f/0x310
+      bio_alloc_bioset+0x1e2/0x7e0
+      __f2fs_commit_super+0xe0/0x370
+      f2fs_commit_super+0x4ed/0x8c0
+      f2fs_record_error_work+0xc7/0x190
+      process_one_work+0x7db/0x1970
+      worker_thread+0x518/0xea0
+      kthread+0x359/0x690
+      ret_from_fork+0x34/0x70
+      ret_from_fork_asm+0x1a/0x30
 
-commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from
-control queue handler")
+The issue can be reproduced by:
 
-when we added common helpers. Then in:
+  mount /dev/vda /mnt
+  i=0
+  while :; do
+      echo '[h]abc' > /sys/fs/f2fs/vda/extension_list
+      echo '[h]!abc' > /sys/fs/f2fs/vda/extension_list
+      echo scan > /sys/kernel/debug/kmemleak
+      dmesg | grep "new suspected memory leaks"
+      [ $? -eq 0 ] && break
+      i=$((i + 1))
+      echo "$i"
+  done
+  umount /mnt
 
-commit 09d7583294aa ("vhost/scsi: Use common handling code in request
-queue handler")
-
-we converted the scsi command processing path to use the new
-helpers so we started to see the extra log messages during scanning.
-
-The patches were just making some code common but added the vq_err
-call and I'm guessing the patch author forgot to enable the vq_err
-call (vq_err is implemented by pr_debug which defaults to off). So
-this patch removes the call since it's expected to hit this path
-during device discovery.
-
-Fixes: 09d7583294aa ("vhost/scsi: Use common handling code in request queue handler")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20250611210113.10912-1-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 5bcde4557862 ("f2fs: get rid of buffer_head use")
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/f2fs/super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 662351511157..90a3c0fc5ab0 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1032,10 +1032,8 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
- 			/* validated at handler entry */
- 			vs_tpg = vhost_vq_get_backend(vq);
- 			tpg = READ_ONCE(vs_tpg[*vc->target]);
--			if (unlikely(!tpg)) {
--				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
-+			if (unlikely(!tpg))
- 				goto out;
--			}
- 		}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 3f2c6fa3623b..875aef2fc520 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3388,6 +3388,7 @@ static int __f2fs_commit_super(struct f2fs_sb_info *sbi, struct folio *folio,
+ 		f2fs_bug_on(sbi, 1);
  
- 		if (tpgp)
+ 	ret = submit_bio_wait(bio);
++	bio_put(bio);
+ 	folio_end_writeback(folio);
+ 
+ 	return ret;
 -- 
 2.39.5
 
