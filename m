@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99333B22F66
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CC7B2326C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A62F1A25691
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1506C1A207EF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634262FE582;
-	Tue, 12 Aug 2025 17:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ACE2D46B3;
+	Tue, 12 Aug 2025 18:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acrn5Fr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnNnuhJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1D32FE57F;
-	Tue, 12 Aug 2025 17:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D1D18FC91;
+	Tue, 12 Aug 2025 18:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020271; cv=none; b=K3M9iV2HenJOE83kIfYUXcWyS/eC7H2KOdM5ch8ukkIXXJEm4mTmXt7JbEkF5hlsmnP73d30kHefMug7YdhT71nQdoF+OG3ioM2YEtdQBt/kuYN/FqOrCTjNy7FmhkX5ne4PK2uMUm2c9Wt5XkUjZQTquxxRbuGAvhEW0AkZEFE=
+	t=1755022325; cv=none; b=NTuxM1AcrcLdTHae3IMmIJo7uFcfNYdZ5oiMcsoN0GAlC8XI6W7e0Qw1/UUCy6Wr9yeGyTyTY+16kfjumY71IGdy63XZcViuiN+oEaKeoZyd2Kzoa1XV3Scy/U44+D8JsVnfpNP8TWPTYFaeB744VhJ4N9vmOlycp46IHKYgjtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020271; c=relaxed/simple;
-	bh=fhpysE4mw2RKahjtN/x5tiMNibloNVKVVwMJmHnZkKk=;
+	s=arc-20240116; t=1755022325; c=relaxed/simple;
+	bh=RvspUgmIdjhxTl/gl111J/ZfXe+UUT3y7sJG4TaqDVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tK/SkCR8wrXN0Cp9Uzm7yJtbaBXsD5w8/n86VCYaG+euvaCJEPcNo7nZuwocWG9bnbZ/p/9yZ1wWPOgkhn/T35hbo+WnvRSfeYfBuBoKRyGXUngUwBzTtXYWDMqxn9WmcVMPVKGq3BASGk1oQwjwhgxBdl6wbVBmSaEUkmlErOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acrn5Fr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93240C4CEF0;
-	Tue, 12 Aug 2025 17:37:50 +0000 (UTC)
+	 MIME-Version; b=uPBzmVaS8gZYOYf63NbVd8L1HRlOoB7mOJb4slia9SvpmEtAPgOXb4basZVXcuvZiBxVaPJB0TKULej9MUGjHFFB3cFMp+iXu2UzDkvSWAqDM2HCHgppd+pNp/bk9LCPSw4oVqKD9AzMlWO9gXrO73RIIF8XtpAcRh8J6m49Wlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnNnuhJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A389C4CEF6;
+	Tue, 12 Aug 2025 18:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020271;
-	bh=fhpysE4mw2RKahjtN/x5tiMNibloNVKVVwMJmHnZkKk=;
+	s=korg; t=1755022325;
+	bh=RvspUgmIdjhxTl/gl111J/ZfXe+UUT3y7sJG4TaqDVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=acrn5Fr58/sE3xUCPOioNQtCdHyxkcawnXkjkcYtM0/pCn8rp3Jg8LWCXj9kP5HyX
-	 24hVizuPOn1ovWyW5mc8S4IBf79WgxXmev2nSZ0Rtcw9maqq4fGYK5aKIE14KMqXPU
-	 +nNmJU4FC9N9VQe+A/Tn0QKxmCf/rBYKXiZ2BUl8=
+	b=FnNnuhJrJv5P5/nmVnnUVU10DPy2xz+1di4TjWgMoUUAqTwGczuJv8wagnWs4/HFJ
+	 nJ7ChPPayteSn2uGzQePX6Z9KmDhZJ0FcQ0q/08FdfeRkM+o5K/l1fx3cMGFvzlJl6
+	 SJKzraJh8XUFfKtAq1HTY3RJvA7z++KGi15MOe4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawid Rezler <dawidrezler.patches@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 031/253] ALSA: hda/realtek - Add mute LED support for HP Pavilion 15-eg0xxx
+	Bert Karwatzki <spasswolf@web.de>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 122/369] wifi: mac80211: Check 802.11 encaps offloading in ieee80211_tx_h_select_key()
 Date: Tue, 12 Aug 2025 19:26:59 +0200
-Message-ID: <20250812172950.057748202@linuxfoundation.org>
+Message-ID: <20250812173019.356060682@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawid Rezler <dawidrezler.patches@gmail.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit 9744ede7099e8a69c04aa23fbea44c15bc390c04 upstream.
+[ Upstream commit 4037c468d1b3c508d69e6df0ef47fdee3d440e39 ]
 
-The mute LED on the HP Pavilion Laptop 15-eg0xxx,
-which uses the ALC287 codec, didn't work.
-This patch fixes the issue by enabling the ALC287_FIXUP_HP_GPIO_LED quirk.
+With 802.11 encapsulation offloading, ieee80211_tx_h_select_key() is
+called on 802.3 frames. In that case do not try to use skb data as
+valid 802.11 headers.
 
-Tested on a physical device, the LED now works as intended.
-
-Signed-off-by: Dawid Rezler <dawidrezler.patches@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250720154907.80815-2-dawidrezler.patches@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/1af4b5b903a5fca5ebe67333d5854f93b2be5abe.1752765971.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/tx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9947,6 +9947,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x87cc, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 16f8b24820ae..16a997d8442a 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -622,6 +622,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 	else
+ 		tx->key = NULL;
+ 
++	if (info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) {
++		if (tx->key && tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
++			info->control.hw_key = &tx->key->conf;
++		return TX_CONTINUE;
++	}
++
+ 	if (tx->key) {
+ 		bool skip_hw = false;
+ 
+-- 
+2.39.5
+
 
 
 
