@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46807B22F8D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4FDB23094
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA9C7682A0B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F01B156603B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F164E2FD1D6;
-	Tue, 12 Aug 2025 17:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCDE2FDC2C;
+	Tue, 12 Aug 2025 17:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKU1sgYm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIuqBbhQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD182F7461;
-	Tue, 12 Aug 2025 17:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B422221FAC;
+	Tue, 12 Aug 2025 17:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020428; cv=none; b=GeSb5H8jr2wM4CzpPBDgfO61rOPUtwAtzEjw32LRZXIcJSwygj7+2iq9KPzhkna2xYcX9GqFBvl9IdlsEG2LTQ5LSiuk8Pc0YWUd4h8n+RJ6ZZzcRuSCE/olBCPcfXb8XkROEmnC4v6dj71BSoxQmqZHb78avhbC8DxWA9FKG+k=
+	t=1755021210; cv=none; b=gQJeo0X2qvauVtmWLJ1fD89BpnkkXzF4vGbMvdWPmVcS16YTEv3e68LEC5EgI/VTEi4b4dty7dO3vnUJSjhe/YjRrM2SJl19Kt0Fry5E8/899JJDRGoVcLYZf0FBYncZ9dNgeFhu6wCEs8TRWG2tbFasypXu49Q1BvsZLQgfqZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020428; c=relaxed/simple;
-	bh=NGplUrI3WimMACrB3RGJi9vlXpB8mkMAe8lXlpMqfoU=;
+	s=arc-20240116; t=1755021210; c=relaxed/simple;
+	bh=o1qyW3BnBO4bevlilRmACezvOT3ousSxF4bhIRhmM84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JN5zeN7IZQ5JAlHEMo1qQ8mLIV4jwIbQEeRWCTaMBb3Gkx/rmeHw9Kn1bwq40EUecKtVVj8SmF+qDKUYegt6BOOlPab5tERAJUfOhqURVjViadu6h6KXRXEjYWMpkAgh+OX3t7FymxqTW7TTJMfTx2tgUZ1PjYJv8Izw8ikSWEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKU1sgYm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D472C4CEF1;
-	Tue, 12 Aug 2025 17:40:27 +0000 (UTC)
+	 MIME-Version; b=BbxVYWjyg+UuD3pehrMzaEnnFKK8PMXdj2uUhYEFrg7X+DfabEpBgEqCk0j/O9FBL2Y3jSXUgZu2j1OLz3L7Nbe7rVuHyu+yehD/2J+OqJ9poc5sgVZvH/vVjD8BwXXVwUB+RTjcG4+z4TejrRSiqYb5H6XILeg7UEedNKZNASs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIuqBbhQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E095C4CEF6;
+	Tue, 12 Aug 2025 17:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020428;
-	bh=NGplUrI3WimMACrB3RGJi9vlXpB8mkMAe8lXlpMqfoU=;
+	s=korg; t=1755021210;
+	bh=o1qyW3BnBO4bevlilRmACezvOT3ousSxF4bhIRhmM84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKU1sgYmYay+iktWTBEY4/T5Wzz0+0gK8i8bR1NdNhhvJvYqN3rUMzGzJ12OUUqXP
-	 meRNMxBQh0iNgWq+5DAE3vWMny7cEmTMbAwjok8F/mGIwyIxiFCSiG7cO4+VivOoSw
-	 +tuOOBYpvEd/L26QylnlWOQUkXyLQYssZcLwsPvA=
+	b=MIuqBbhQ5+zNQhwGzd6gk7AjmU2F75UhbENJg2nU8l+EbjT9YnHjrJpC31/RDNbyJ
+	 sGwb6qRLZxUxd/kyV0IkBWFMN16B/ZrX9Wgagcl8ujP8pVqDVLJvBoGnAX4DVizjpM
+	 5wZSm4zj7reHPcKK9x2FiIm6XDYc4mdYax2gGT/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/253] vmci: Prevent the dispatching of uninitialized payloads
+Subject: [PATCH 6.6 078/262] tcp: call tcp_measure_rcv_mss() for ooo packets
 Date: Tue, 12 Aug 2025 19:27:46 +0200
-Message-ID: <20250812172952.050653269@linuxfoundation.org>
+Message-ID: <20250812172956.359881959@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031 ]
+[ Upstream commit 38d7e444336567bae1c7b21fc18b7ceaaa5643a0 ]
 
-The reproducer executes the host's unlocked_ioctl call in two different
-tasks. When init_context fails, the struct vmci_event_ctx is not fully
-initialized when executing vmci_datagram_dispatch() to send events to all
-vm contexts. This affects the datagram taken from the datagram queue of
-its context by another task, because the datagram payload is not initialized
-according to the size payload_size, which causes the kernel data to leak
-to the user space.
+tcp_measure_rcv_mss() is used to update icsk->icsk_ack.rcv_mss
+(tcpi_rcv_mss in tcp_info) and tp->scaling_ratio.
 
-Before dispatching the datagram, and before setting the payload content,
-explicitly set the payload content to 0 to avoid data leakage caused by
-incomplete payload initialization.
+Calling it from tcp_data_queue_ofo() makes sure these
+fields are updated, and permits a better tuning
+of sk->sk_rcvbuf, in the case a new flow receives many ooo
+packets.
 
-Fixes: 28d6692cd8fb ("VMCI: context implementation.")
-Reported-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9b9124ae9b12d5af5d95
-Tested-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20250627055214.2967129-1-lizhi.xu@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250711114006.480026-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_context.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_input.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
-index 172696abce31..ab5060df80aa 100644
---- a/drivers/misc/vmw_vmci/vmci_context.c
-+++ b/drivers/misc/vmw_vmci/vmci_context.c
-@@ -251,6 +251,8 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
- 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
- 						  VMCI_CONTEXT_RESOURCE_ID);
- 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
-+		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
-+			ev.msg.hdr.payload_size);
- 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
- 		ev.payload.context_id = context_id;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 8520c43726e2..c6d00817ad3f 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4941,6 +4941,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
+ 		return;
+ 	}
  
++	tcp_measure_rcv_mss(sk, skb);
+ 	/* Disable header prediction. */
+ 	tp->pred_flags = 0;
+ 	inet_csk_schedule_ack(sk);
 -- 
 2.39.5
 
