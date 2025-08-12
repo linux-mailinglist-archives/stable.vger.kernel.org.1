@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71987B23041
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F70B2332F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC7CB68156B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B6661A22FD2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E956221FAC;
-	Tue, 12 Aug 2025 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB781D416C;
+	Tue, 12 Aug 2025 18:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWcJ8ajS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCIidV97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10C7279915;
-	Tue, 12 Aug 2025 17:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB092DBF5E;
+	Tue, 12 Aug 2025 18:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020925; cv=none; b=pIUcecq6c/eHx1YPyMdHM6eNiC4KxzxIYXYS0jZXz1zK7PSzeNVcnB6HHmRX1aBX0DwUV+ls6LoAUhqvpVYIzfYHVD2iknAPtQ9nqXbTWLGGUh7CAxwzRTkN2rGVcgbLu6IIcgb0M6itTp0FBLBlAq9jl6O/4qPevxH+1vSsKIY=
+	t=1755022858; cv=none; b=EBrlHIBP1F+X3WKvdihJ0O01Q9p3iqLpoCo0VI9cSWeTObH46URm4WDAiM8FCauOYfuF5fpLX74ZUF6ZCAv2FW7AaTtMUjSN2YlUPmY6HW4TSpOrUDKdIaEmXxb2R3VCc6TQ8kEbtA1DBpu/8YWEC7r4sakrgngDonqMd4nAKeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020925; c=relaxed/simple;
-	bh=kObonQ8jr/vVVHLx7qvHCVxOsKzafBfbvVK9QrPnUdQ=;
+	s=arc-20240116; t=1755022858; c=relaxed/simple;
+	bh=7lbq0Iid/kNfePSk/IdVQmpVkiOEM6hGfbbMKLITvsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dErOzqjaiJbVYbtoiWeyQb0uK2P/DwzfeOZ7Sk6tG7NiYGnHqDhv1/e44yzqIwcLxoNrYfKCmYJsUCvZ470O/UoTChiWn9hW4iRRDjjblrNgHkgSXV73uvwHUOIwps4Pcl8F5wKs0M+UX5fTgjfVb0a+lvMBQu54k+PEoRPzPnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWcJ8ajS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550E0C4CEF0;
-	Tue, 12 Aug 2025 17:48:44 +0000 (UTC)
+	 MIME-Version; b=QqrdhTMjznSdfcUr7mGhg9s697GdidT5U2lBtvbMUQ4yEJQFboU4o5vdyqSbSbiixvWUPJrX/E6tHLPtOopwhtQSJSpuoZMvGD22U6OzFiqNpDWGlStvPJOpUHfiSRIPGrUI4uGtKq9n6Ju7axr7f3kRl4TLv7dbmQbkzHF4tgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCIidV97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D288C4CEF1;
+	Tue, 12 Aug 2025 18:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020924;
-	bh=kObonQ8jr/vVVHLx7qvHCVxOsKzafBfbvVK9QrPnUdQ=;
+	s=korg; t=1755022857;
+	bh=7lbq0Iid/kNfePSk/IdVQmpVkiOEM6hGfbbMKLITvsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mWcJ8ajSuz5jKfKhPMHQi1vDUcJL+F+JlQZpGzDEHWP/H8ZTdI+kgmxDEw0+llNxc
-	 HrvxtYt7wVMz0N/325mQBubkRiWX0zurxhSyCGsbsenMfajL7G0hYx4gif6TSx+vZ3
-	 AMKc2C+E+SvpiI0kYOsC0eFUj9Y6E0qgxMLrWxJs=
+	b=hCIidV97O5/cNno1Fc8f2wCYv2BDXlCmfHa3VeYepEmXOSE8NogG/w5Nez5EWI5LD
+	 AqZ4hNyC+LTWVpBO4n13o9Zs4+bx4l/HL9NSZ0rSMnyzg6Yo0RngbiXvVUTq3s2X+A
+	 6oarlOoQLxi0BiigWR+QE/aBlIf8J54TLwphyKoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/253] rtc: hym8563: fix incorrect maximum clock rate handling
+Subject: [PATCH 6.12 278/369] powerpc/eeh: Make EEH driver device hotplug safe
 Date: Tue, 12 Aug 2025 19:29:35 +0200
-Message-ID: <20250812172956.745610667@linuxfoundation.org>
+Message-ID: <20250812173026.236960203@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit d0a518eb0a692a2ab8357e844970660c5ea37720 ]
+[ Upstream commit 1010b4c012b0d78dfb9d3132b49aa2ef024a07a7 ]
 
-When hym8563_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+Multiple race conditions existed between the PCIe hotplug driver and the
+EEH driver, leading to a variety of kernel oopses of the same general
+nature:
 
-Fixes: dcaf038493525 ("rtc: add hym8563 rtc-driver")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-2-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+<pcie device unplug>
+<eeh driver trigger>
+<hotplug removal trigger>
+<pcie tree reconfiguration>
+<eeh recovery next step>
+<oops in EEH driver bus iteration loop>
+
+A second class of oops is also seen when the underlying bus disappears
+during device recovery.
+
+Refactor the EEH module to be PCI rescan and remove safe.  Also clean
+up a few minor formatting / readability issues.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/1334208367.1359861.1752615503144.JavaMail.zimbra@raptorengineeringinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-hym8563.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/eeh_driver.c | 48 +++++++++++++++++++++-----------
+ arch/powerpc/kernel/eeh_pe.c     | 10 ++++---
+ 2 files changed, 38 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/rtc/rtc-hym8563.c b/drivers/rtc/rtc-hym8563.c
-index cc710d682121..2f52aabd129a 100644
---- a/drivers/rtc/rtc-hym8563.c
-+++ b/drivers/rtc/rtc-hym8563.c
-@@ -294,7 +294,7 @@ static long hym8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 7efe04c68f0f..dd50de91c438 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -257,13 +257,12 @@ static void eeh_pe_report_edev(struct eeh_dev *edev, eeh_report_fn fn,
+ 	struct pci_driver *driver;
+ 	enum pci_ers_result new_result;
  
--	return 0;
-+	return clkout_rates[0];
+-	pci_lock_rescan_remove();
+ 	pdev = edev->pdev;
+ 	if (pdev)
+ 		get_device(&pdev->dev);
+-	pci_unlock_rescan_remove();
+ 	if (!pdev) {
+ 		eeh_edev_info(edev, "no device");
++		*result = PCI_ERS_RESULT_DISCONNECT;
+ 		return;
+ 	}
+ 	device_lock(&pdev->dev);
+@@ -304,8 +303,9 @@ static void eeh_pe_report(const char *name, struct eeh_pe *root,
+ 	struct eeh_dev *edev, *tmp;
+ 
+ 	pr_info("EEH: Beginning: '%s'\n", name);
+-	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp)
+-		eeh_pe_report_edev(edev, fn, result);
++	eeh_for_each_pe(root, pe)
++		eeh_pe_for_each_dev(pe, edev, tmp)
++			eeh_pe_report_edev(edev, fn, result);
+ 	if (result)
+ 		pr_info("EEH: Finished:'%s' with aggregate recovery state:'%s'\n",
+ 			name, pci_ers_result_name(*result));
+@@ -383,6 +383,8 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
+ 	if (!edev)
+ 		return;
+ 
++	pci_lock_rescan_remove();
++
+ 	/*
+ 	 * The content in the config space isn't saved because
+ 	 * the blocked config space on some adapters. We have
+@@ -393,14 +395,19 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
+ 		if (list_is_last(&edev->entry, &edev->pe->edevs))
+ 			eeh_pe_restore_bars(edev->pe);
+ 
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+ 	pdev = eeh_dev_to_pci_dev(edev);
+-	if (!pdev)
++	if (!pdev) {
++		pci_unlock_rescan_remove();
+ 		return;
++	}
+ 
+ 	pci_restore_state(pdev);
++
++	pci_unlock_rescan_remove();
  }
  
- static int hym8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ /**
+@@ -647,9 +654,7 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	if (any_passed || driver_eeh_aware || (pe->type & EEH_PE_VF)) {
+ 		eeh_pe_dev_traverse(pe, eeh_rmv_device, rmv_data);
+ 	} else {
+-		pci_lock_rescan_remove();
+ 		pci_hp_remove_devices(bus);
+-		pci_unlock_rescan_remove();
+ 	}
+ 
+ 	/*
+@@ -665,8 +670,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	if (rc)
+ 		return rc;
+ 
+-	pci_lock_rescan_remove();
+-
+ 	/* Restore PE */
+ 	eeh_ops->configure_bridge(pe);
+ 	eeh_pe_restore_bars(pe);
+@@ -674,7 +677,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	/* Clear frozen state */
+ 	rc = eeh_clear_pe_frozen_state(pe, false);
+ 	if (rc) {
+-		pci_unlock_rescan_remove();
+ 		return rc;
+ 	}
+ 
+@@ -709,7 +711,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	pe->tstamp = tstamp;
+ 	pe->freeze_count = cnt;
+ 
+-	pci_unlock_rescan_remove();
+ 	return 0;
+ }
+ 
+@@ -843,10 +844,13 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		{LIST_HEAD_INIT(rmv_data.removed_vf_list), 0};
+ 	int devices = 0;
+ 
++	pci_lock_rescan_remove();
++
+ 	bus = eeh_pe_bus_get(pe);
+ 	if (!bus) {
+ 		pr_err("%s: Cannot find PCI bus for PHB#%x-PE#%x\n",
+ 			__func__, pe->phb->global_number, pe->addr);
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+@@ -1094,10 +1098,15 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
+ 		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
+ 
+-		pci_lock_rescan_remove();
+-		pci_hp_remove_devices(bus);
+-		pci_unlock_rescan_remove();
++		bus = eeh_pe_bus_get(pe);
++		if (bus)
++			pci_hp_remove_devices(bus);
++		else
++			pr_err("%s: PCI bus for PHB#%x-PE#%x disappeared\n",
++				__func__, pe->phb->global_number, pe->addr);
++
+ 		/* The passed PE should no longer be used */
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+@@ -1114,6 +1123,8 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 			eeh_clear_slot_attention(edev->pdev);
+ 
+ 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
++
++	pci_unlock_rescan_remove();
+ }
+ 
+ /**
+@@ -1132,6 +1143,7 @@ void eeh_handle_special_event(void)
+ 	unsigned long flags;
+ 	int rc;
+ 
++	pci_lock_rescan_remove();
+ 
+ 	do {
+ 		rc = eeh_ops->next_error(&pe);
+@@ -1171,10 +1183,12 @@ void eeh_handle_special_event(void)
+ 
+ 			break;
+ 		case EEH_NEXT_ERR_NONE:
++			pci_unlock_rescan_remove();
+ 			return;
+ 		default:
+ 			pr_warn("%s: Invalid value %d from next_error()\n",
+ 				__func__, rc);
++			pci_unlock_rescan_remove();
+ 			return;
+ 		}
+ 
+@@ -1186,7 +1200,9 @@ void eeh_handle_special_event(void)
+ 		if (rc == EEH_NEXT_ERR_FROZEN_PE ||
+ 		    rc == EEH_NEXT_ERR_FENCED_PHB) {
+ 			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
++			pci_unlock_rescan_remove();
+ 			eeh_handle_normal_event(pe);
++			pci_lock_rescan_remove();
+ 		} else {
+ 			eeh_for_each_pe(pe, tmp_pe)
+ 				eeh_pe_for_each_dev(tmp_pe, edev, tmp_edev)
+@@ -1199,7 +1215,6 @@ void eeh_handle_special_event(void)
+ 				eeh_report_failure, NULL);
+ 			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+ 
+-			pci_lock_rescan_remove();
+ 			list_for_each_entry(hose, &hose_list, list_node) {
+ 				phb_pe = eeh_phb_pe_get(hose);
+ 				if (!phb_pe ||
+@@ -1218,7 +1233,6 @@ void eeh_handle_special_event(void)
+ 				}
+ 				pci_hp_remove_devices(bus);
+ 			}
+-			pci_unlock_rescan_remove();
+ 		}
+ 
+ 		/*
+@@ -1228,4 +1242,6 @@ void eeh_handle_special_event(void)
+ 		if (rc == EEH_NEXT_ERR_DEAD_IOC)
+ 			break;
+ 	} while (rc != EEH_NEXT_ERR_NONE);
++
++	pci_unlock_rescan_remove();
+ }
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index d283d281d28e..e740101fadf3 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -671,10 +671,12 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
+ 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
+ 
+ 	/* Check link */
+-	if (!edev->pdev->link_active_reporting) {
+-		eeh_edev_dbg(edev, "No link reporting capability\n");
+-		msleep(1000);
+-		return;
++	if (edev->pdev) {
++		if (!edev->pdev->link_active_reporting) {
++			eeh_edev_dbg(edev, "No link reporting capability\n");
++			msleep(1000);
++			return;
++		}
+ 	}
+ 
+ 	/* Wait the link is up until timeout (5s) */
 -- 
 2.39.5
 
