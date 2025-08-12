@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-167881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7A4B23246
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945A8B23036
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 116042A18A9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB15E1885A11
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AA81EF38C;
-	Tue, 12 Aug 2025 18:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3932DE1E2;
+	Tue, 12 Aug 2025 17:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxmtUl7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3bX5hNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553A2305E08;
-	Tue, 12 Aug 2025 18:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A427221FAC;
+	Tue, 12 Aug 2025 17:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022302; cv=none; b=S8UL84q/EWeQVRW/aqwxnx8PwoPU7HSoS58oIfJxSW6t58HoNnGhxzjfv5I0tV3K30JtyJA54jmmLkgRjZvu4f4b8ZgRZhA/T1pnCu9L5l3bhOWB7M+yqQ5t54rwGBLrGjrkSaFsN203DIJBeFRYxhZt6sD5x8aWj40WU9q0aNo=
+	t=1755020860; cv=none; b=kRx6iIzLYUU4uqwwEwNv4OWh736OSCDkZF/468TrsYbIgtmhHVo4s9LU9E2j+39R1teZ6+Ka8sLFUYvNJ8GDqIysiNFjled7C+NdIxVGNP6YTLyp+0Zb7MJOJmtANfLDvmuD72KWcwXQ43XYG6btX52npBZ1XQbnD4MESjBWXDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022302; c=relaxed/simple;
-	bh=YSjymwP1CZ229tw8JTLBG0mZGI9H278f42wAsitl++s=;
+	s=arc-20240116; t=1755020860; c=relaxed/simple;
+	bh=prFEsRv0VJxNL5Coafvn1YRSQFY0pTCOyig4BvZOnyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UyfGWnFLnGpUN6Gs06KFbt5T0efe9BtMEz1yNZbA3dmlYdt8ZMojCs8cHPTSRsQpHxEwsoJ/XsybO4kIOPKlVyygWIYvYV2F4PwK5JhifcQGgAOSvnGUSJUKYpsL3HciMaXsm6CtgKI/R6/iz2avxc01IAAnRqPqsPORkBWm85M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxmtUl7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98BFC4CEF0;
-	Tue, 12 Aug 2025 18:11:41 +0000 (UTC)
+	 MIME-Version; b=Nb1V1hoeAuLcBvanoTGb3VS6HaqUV5qN6k/E/oIG1OR6GGki5sOk4Ai8l3mrwQnI0GHuBj/nf2b5bTwWMRwnWXITCWNKL1Wcvo73r2f0bNz2mrUGwgH8h1qYJo6pLcuFyZhjyFwDdqK8WvjVcZVEGM61xWkwJwkd6uBuc2rlJbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3bX5hNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E3CC4CEF0;
+	Tue, 12 Aug 2025 17:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022302;
-	bh=YSjymwP1CZ229tw8JTLBG0mZGI9H278f42wAsitl++s=;
+	s=korg; t=1755020860;
+	bh=prFEsRv0VJxNL5Coafvn1YRSQFY0pTCOyig4BvZOnyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxmtUl7ynzT5OgRUrFsiYP538+c2+80/ru3ovkpOLn7Dp6LPwPYNhTI6PsUgF0Av3
-	 zEKxbagfxLqQQ1BxJtNULV8/RTWQOaXeQTMq1fIxN+6Ozd2TUbIeWV9mkC0sjRTwy4
-	 wNPNxrvtsRPMgZreqIo6OexIagYfuQx3sWj7DzEQ=
+	b=R3bX5hNWPI/jAolQrbB6zOZjGc+F7/xE/6mNUV/aeHN7Vusk8Y8eYisX3J2e8sF4J
+	 o+TNoceBJY7z96SbLYYnuDkuwOSKKTyzJwefGvQFODfRqfKPR+bNnCrogStv0NVQEE
+	 YBHLXgF9NLmIr5U/IbXtWw2A9ClWR6vchfPApuMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Will Deacon <will@kernel.org>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/369] iommu/amd: Fix geometry.aperture_end for V2 tables
+Subject: [PATCH 6.6 025/262] usb: misc: apple-mfi-fastcharge: Make power supply names unique
 Date: Tue, 12 Aug 2025 19:26:53 +0200
-Message-ID: <20250812173019.131207313@linuxfoundation.org>
+Message-ID: <20250812172954.044812408@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit 8637afa79cfa6123f602408cfafe8c9a73620ff1 ]
+[ Upstream commit 43007b89fb2de746443fbbb84aedd1089afdf582 ]
 
-The AMD IOMMU documentation seems pretty clear that the V2 table follows
-the normal CPU expectation of sign extension. This is shown in
+When multiple Apple devices are connected concurrently, the
+apple-mfi-fastcharge driver fails to probe the subsequent devices with
+the following error:
 
-  Figure 25: AMD64 Long Mode 4-Kbyte Page Address Translation
+    sysfs: cannot create duplicate filename '/class/power_supply/apple_mfi_fastcharge'
+    apple-mfi-fastcharge 5-2.4.3.3: probe of 5-2.4.3.3 failed with error -17
 
-Where bits Sign-Extend [63:57] == [56]. This is typical for x86 which
-would have three regions in the page table: lower, non-canonical, upper.
+This happens because the driver uses a fixed power supply name
+("apple_mfi_fastcharge") for all devices, causing a sysfs name
+conflict when a second device is connected.
 
-The manual describes that the V1 table does not sign extend in section
-2.2.4 Sharing AMD64 Processor and IOMMU Page Tables GPA-to-SPA
+Fix this by generating unique names using the USB bus and device
+number (e.g., "apple_mfi_fastcharge_5-12"). This ensures each
+connected device gets a unique power supply entry in sysfs.
 
-Further, Vasant has checked this and indicates the HW has an addtional
-behavior that the manual does not yet describe. The AMDv2 table does not
-have the sign extended behavior when attached to PASID 0, which may
-explain why this has gone unnoticed.
+The change requires storing a copy of the power_supply_desc structure
+in the per-device mfi_device struct, since the name pointer needs to
+remain valid for the lifetime of the power supply registration.
 
-The iommu domain geometry does not directly support sign extended page
-tables. The driver should report only one of the lower/upper spaces. Solve
-this by removing the top VA bit from the geometry to use only the lower
-space.
-
-This will also make the iommu_domain work consistently on all PASID 0 and
-PASID != 1.
-
-Adjust dma_max_address() to remove the top VA bit. It now returns:
-
-5 Level:
-  Before 0x1ffffffffffffff
-  After  0x0ffffffffffffff
-4 Level:
-  Before 0xffffffffffff
-  After  0x7fffffffffff
-
-Fixes: 11c439a19466 ("iommu/amd/pgtbl_v2: Fix domain max address")
-Link: https://lore.kernel.org/all/8858d4d6-d360-4ef0-935c-bfd13ea54f42@amd.com/
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 249fa8217b84 ("USB: Add driver to control USB fast charge for iOS devices")
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Link: https://lore.kernel.org/r/20250602-apple-mfi-fastcharge-duplicate-sysfs-v1-1-5d84de34fac6@posteo.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/usb/misc/apple-mfi-fastcharge.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index e315e3045a3d..6a019670efc7 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2352,8 +2352,21 @@ static inline u64 dma_max_address(void)
- 	if (amd_iommu_pgtable == AMD_IOMMU_V1)
- 		return ~0ULL;
+diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c b/drivers/usb/misc/apple-mfi-fastcharge.c
+index ac8695195c13..8e852f4b8262 100644
+--- a/drivers/usb/misc/apple-mfi-fastcharge.c
++++ b/drivers/usb/misc/apple-mfi-fastcharge.c
+@@ -44,6 +44,7 @@ MODULE_DEVICE_TABLE(usb, mfi_fc_id_table);
+ struct mfi_device {
+ 	struct usb_device *udev;
+ 	struct power_supply *battery;
++	struct power_supply_desc battery_desc;
+ 	int charge_type;
+ };
  
--	/* V2 with 4/5 level page table */
--	return ((1ULL << PM_LEVEL_SHIFT(amd_iommu_gpt_level)) - 1);
-+	/*
-+	 * V2 with 4/5 level page table. Note that "2.2.6.5 AMD64 4-Kbyte Page
-+	 * Translation" shows that the V2 table sign extends the top of the
-+	 * address space creating a reserved region in the middle of the
-+	 * translation, just like the CPU does. Further Vasant says the docs are
-+	 * incomplete and this only applies to non-zero PASIDs. If the AMDv2
-+	 * page table is assigned to the 0 PASID then there is no sign extension
-+	 * check.
-+	 *
-+	 * Since the IOMMU must have a fixed geometry, and the core code does
-+	 * not understand sign extended addressing, we have to chop off the high
-+	 * bit to get consistent behavior with attachments of the domain to any
-+	 * PASID.
-+	 */
-+	return ((1ULL << (PM_LEVEL_SHIFT(amd_iommu_gpt_level) - 1)) - 1);
+@@ -178,6 +179,7 @@ static int mfi_fc_probe(struct usb_device *udev)
+ {
+ 	struct power_supply_config battery_cfg = {};
+ 	struct mfi_device *mfi = NULL;
++	char *battery_name;
+ 	int err;
+ 
+ 	if (!mfi_fc_match(udev))
+@@ -187,23 +189,38 @@ static int mfi_fc_probe(struct usb_device *udev)
+ 	if (!mfi)
+ 		return -ENOMEM;
+ 
++	battery_name = kasprintf(GFP_KERNEL, "apple_mfi_fastcharge_%d-%d",
++				 udev->bus->busnum, udev->devnum);
++	if (!battery_name) {
++		err = -ENOMEM;
++		goto err_free_mfi;
++	}
++
++	mfi->battery_desc = apple_mfi_fc_desc;
++	mfi->battery_desc.name = battery_name;
++
+ 	battery_cfg.drv_data = mfi;
+ 
+ 	mfi->charge_type = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+ 	mfi->battery = power_supply_register(&udev->dev,
+-						&apple_mfi_fc_desc,
++						&mfi->battery_desc,
+ 						&battery_cfg);
+ 	if (IS_ERR(mfi->battery)) {
+ 		dev_err(&udev->dev, "Can't register battery\n");
+ 		err = PTR_ERR(mfi->battery);
+-		kfree(mfi);
+-		return err;
++		goto err_free_name;
+ 	}
+ 
+ 	mfi->udev = usb_get_dev(udev);
+ 	dev_set_drvdata(&udev->dev, mfi);
+ 
+ 	return 0;
++
++err_free_name:
++	kfree(battery_name);
++err_free_mfi:
++	kfree(mfi);
++	return err;
  }
  
- static bool amd_iommu_hd_support(struct amd_iommu *iommu)
+ static void mfi_fc_disconnect(struct usb_device *udev)
+@@ -213,6 +230,7 @@ static void mfi_fc_disconnect(struct usb_device *udev)
+ 	mfi = dev_get_drvdata(&udev->dev);
+ 	if (mfi->battery)
+ 		power_supply_unregister(mfi->battery);
++	kfree(mfi->battery_desc.name);
+ 	dev_set_drvdata(&udev->dev, NULL);
+ 	usb_put_dev(mfi->udev);
+ 	kfree(mfi);
 -- 
 2.39.5
 
