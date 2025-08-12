@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-168606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A541B235E6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:55:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795BEB235B1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 919F43ABEBA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:52:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7AA87BA9D5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79DE284685;
-	Tue, 12 Aug 2025 18:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D482FE59E;
+	Tue, 12 Aug 2025 18:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mj0sfxX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15RrHuTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AB46BB5B;
-	Tue, 12 Aug 2025 18:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308112FE593;
+	Tue, 12 Aug 2025 18:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024730; cv=none; b=nbGM/nk90k7TjAtU2FhHQxS2ScyNK22VzhzxNmwiAybwaS+UQwRy0fSyl4ZHDCt84AnOKKZ+QePpV4f97gd/919s6/tf0aha24ycveT6QoWRpyQaX5HqaxlIdzu89SgxuTSFRFNaTWdvmCJ4P5e0V4L25j0Oz3VC4hCGxXS4VoA=
+	t=1755024768; cv=none; b=ljAC0gN+92fkmv0O36xwqIRq5U0NYLT7bgRS1EcFDoF9C96Z0HRajumdqYRED+XieXG7ITRAlfB4XCFxv82cH1gE2pGFC1ptFi1TlMwUZ8p2a9AUo5erOQqwpV5okGox+wx6g+5kRSf4tiCLn768Wd5PuTAbmYCIH3Xv+eCgR+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024730; c=relaxed/simple;
-	bh=ru5eiNjFUL5hovvYOj5oJRvbDH1LVhb9YsmMg8mNbMI=;
+	s=arc-20240116; t=1755024768; c=relaxed/simple;
+	bh=/8l2bYbaNL1JHtVSLB9cF4ijCDRorN+Pno8vh2KC41o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5wC6QILgJ4OvfvdraeOwCtDhhe7oSmMVJIBoFN5tkF0WcMP4o6HUvL26W13+LSzDq+yvngj9JX81gHdKPUpFQG6F/EwijZZiYkQNS98HB4Zq2gNipgqxFaWQBR6lO73hk6eExrQqLtD1fUFGtIQJPNFB5XbJNQH7ujnoPRtosE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mj0sfxX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349CDC4CEF0;
-	Tue, 12 Aug 2025 18:52:10 +0000 (UTC)
+	 MIME-Version; b=YQH0u1JEHMR/mMNaWDy6K6FXBx4ODkIpyj+hWI7Vt+5iPcFkQALTmd3YApv/xvC7TE7OQP63BwmfjYRzEMxCubZ5FhpN1WpWajpHKY3VexqCQYNfJtD/i0+DJaDuh2UM2+CCSDgMawoCcQX4W0dUSdz8i8GrVEByj3iXGurMaKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15RrHuTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F64AC4CEF0;
+	Tue, 12 Aug 2025 18:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024730;
-	bh=ru5eiNjFUL5hovvYOj5oJRvbDH1LVhb9YsmMg8mNbMI=;
+	s=korg; t=1755024768;
+	bh=/8l2bYbaNL1JHtVSLB9cF4ijCDRorN+Pno8vh2KC41o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mj0sfxX4IjGXSkbvMryFPSkHO2+aFt5AGuHtcsgvpzMk3k8Jg1a2QBk5X/9a56V95
-	 DCnbjPCvT8Mp4ebBlgfNPTGbyc67/KuLrfd3xUdbv/pcoXXfg/swv8o1AZm1ui1+ae
-	 mL/soN4V9FvMbmYiZWsJ+lK11Oik4drCh2jRkUMg=
+	b=15RrHuTWojXDueWGrKzY4aH0fxpKbBoPa1dPz89i4+8eJGC1isUtSBv4z8D4svDUt
+	 2gmjCojQs34l/Y0HAYKhflQBDXmIQePZjXLuMXhsW+pAAdexUw0/GDrtar04jMu/aP
+	 NOmDl3CXsVOf8p6GUXqyW9cwGioYxdPLVzXz5qzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ryan Lee <ryan.lee@canonical.com>,
 	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 453/627] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
-Date: Tue, 12 Aug 2025 19:32:28 +0200
-Message-ID: <20250812173437.618640349@linuxfoundation.org>
+Subject: [PATCH 6.16 454/627] apparmor: fix loop detection used in conflicting attachment resolution
+Date: Tue, 12 Aug 2025 19:32:29 +0200
+Message-ID: <20250812173437.841392492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -68,51 +68,116 @@ Content-Transfer-Encoding: 8bit
 
 From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
+[ Upstream commit a88db916b8c77552f49f7d9f8744095ea01a268f ]
 
-WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
-comment in the declaration of struct match_workbuf stating it is and a
-modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
-WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
-line to ensure that any future changes to the value of WB_HISTORY_SIZE
-respect this requirement.
+Conflicting attachment resolution is based on the number of states
+traversed to reach an accepting state in the attachment DFA, accounting
+for DFA loops traversed during the matching process. However, the loop
+counting logic had multiple bugs:
 
-Fixes: 136db994852a ("apparmor: increase left match history buffer size")
+ - The inc_wb_pos macro increments both position and length, but length
+   is supposed to saturate upon hitting buffer capacity, instead of
+   wrapping around.
+ - If no revisited state is found when traversing the history, is_loop
+   would still return true, as if there was a loop found the length of
+   the history buffer, instead of returning false and signalling that
+   no loop was found. As a result, the adjustment step of
+   aa_dfa_leftmatch would sometimes produce negative counts with loop-
+   free DFAs that traversed enough states.
+ - The iteration in the is_loop for loop is supposed to stop before
+   i = wb->len, so the conditional should be < instead of <=.
+
+This patch fixes the above bugs as well as the following nits:
+ - The count and size fields in struct match_workbuf were not used,
+   so they can be removed.
+ - The history buffer in match_workbuf semantically stores aa_state_t
+   and not unsigned ints, even if aa_state_t is currently unsigned int.
+ - The local variables in is_loop are counters, and thus should be
+   unsigned ints instead of aa_state_t's.
+
+Fixes: 21f606610502 ("apparmor: improve overlapping domain attachment resolution")
 
 Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Co-developed-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h | 3 ++-
- security/apparmor/match.c         | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ security/apparmor/include/match.h |  5 +----
+ security/apparmor/match.c         | 22 +++++++++++-----------
+ 2 files changed, 12 insertions(+), 15 deletions(-)
 
 diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
-index 536ce3abd598..b45fc39fa837 100644
+index b45fc39fa837..27cf23b0396b 100644
 --- a/security/apparmor/include/match.h
 +++ b/security/apparmor/include/match.h
-@@ -137,7 +137,8 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
- 
- void aa_dfa_free_kref(struct kref *kref);
- 
--#define WB_HISTORY_SIZE 24
-+/* This needs to be a power of 2 */
-+#define WB_HISTORY_SIZE 32
+@@ -140,15 +140,12 @@ void aa_dfa_free_kref(struct kref *kref);
+ /* This needs to be a power of 2 */
+ #define WB_HISTORY_SIZE 32
  struct match_workbuf {
- 	unsigned int count;
+-	unsigned int count;
  	unsigned int pos;
+ 	unsigned int len;
+-	unsigned int size;	/* power of 2, same as history size */
+-	unsigned int history[WB_HISTORY_SIZE];
++	aa_state_t history[WB_HISTORY_SIZE];
+ };
+ #define DEFINE_MATCH_WB(N)		\
+ struct match_workbuf N = {		\
+-	.count = 0,			\
+ 	.pos = 0,			\
+ 	.len = 0,			\
+ }
 diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index f2d9c57f8794..1ceabde550f2 100644
+index 1ceabde550f2..c5a91600842a 100644
 --- a/security/apparmor/match.c
 +++ b/security/apparmor/match.c
-@@ -681,6 +681,7 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
+@@ -679,35 +679,35 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
+ 	return state;
+ }
  
- #define inc_wb_pos(wb)						\
- do {								\
-+	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
+-#define inc_wb_pos(wb)						\
+-do {								\
++#define inc_wb_pos(wb)							\
++do {									\
+ 	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
  	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
- 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
+-	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
++	wb->len = (wb->len + 1) > WB_HISTORY_SIZE ? WB_HISTORY_SIZE :	\
++				wb->len + 1;				\
  } while (0)
+ 
+ /* For DFAs that don't support extended tagging of states */
++/* adjust is only set if is_loop returns true */
+ static bool is_loop(struct match_workbuf *wb, aa_state_t state,
+ 		    unsigned int *adjust)
+ {
+-	aa_state_t pos = wb->pos;
+-	aa_state_t i;
++	int pos = wb->pos;
++	int i;
+ 
+ 	if (wb->history[pos] < state)
+ 		return false;
+ 
+-	for (i = 0; i <= wb->len; i++) {
++	for (i = 0; i < wb->len; i++) {
+ 		if (wb->history[pos] == state) {
+ 			*adjust = i;
+ 			return true;
+ 		}
+-		if (pos == 0)
+-			pos = WB_HISTORY_SIZE;
+-		pos--;
++		/* -1 wraps to WB_HISTORY_SIZE - 1 */
++		pos = (pos - 1) & (WB_HISTORY_SIZE - 1);
+ 	}
+ 
+-	*adjust = i;
+-	return true;
++	return false;
+ }
+ 
+ static aa_state_t leftmatch_fb(struct aa_dfa *dfa, aa_state_t start,
 -- 
 2.39.5
 
