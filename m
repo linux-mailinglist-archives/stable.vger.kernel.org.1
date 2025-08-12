@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-167900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3DCB23260
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B56A1B23472
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E410B165BF6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF3383A17C3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1F02882CE;
-	Tue, 12 Aug 2025 18:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26D42E285E;
+	Tue, 12 Aug 2025 18:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvsoW2Nx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/E9airV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C85C1C8621;
-	Tue, 12 Aug 2025 18:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607EB26A0EB;
+	Tue, 12 Aug 2025 18:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022367; cv=none; b=PwDbKxC4Dimvg+H2S0nM8KsFMjbkTfFiWTiOYJVVRz3CBvPZidewULzHMaBGGNNOqwIBEIkI1S8BX9P52FjcgzdVYPrAsFIB51BIlFSn4MlF2sd9ak2SqsrhrHkWAA+tmCgH6rLTyddgtRU26LIAYRNtwwRfHT7+ieb6YJtTEGc=
+	t=1755023745; cv=none; b=GjfGfZ9tBhHbCH6z/fHmZNdflfPkrpMzMEthIvLgJ4J8ZcZa+Tyal/ldThRy7v4GLBfduE82w0PyEYz9AbNjyvQkik/i3htAzj51leCAIw1y0XFJgzeHnSI4cv6IUXr7UzrN+Y/1OZ3aTKkZS1BGcr4wTcd0xT4Nxo0NtKEz2Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022367; c=relaxed/simple;
-	bh=pMGCVBI2mvjmHMCm8GCO6tVhQe6kuYN49vwbLGgnjmg=;
+	s=arc-20240116; t=1755023745; c=relaxed/simple;
+	bh=dwJcXpVPdgKzCJJehrNm+mM22XynnYAWYN/P73G1QqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F640gvs6P98CPfXFRf5tbx6+R6pE7hw76WMnq9n9JkcmevaSh+YjYVuNRoKL4A3MRZ3n1mhhgfU29TBD+NMUMS6no8Qzta4l7mo6cnxi+8XcC40aO4HWAQYXSZSQfFfNEPYl91BSB2Pu6e/CYpzky5lRan2I6h9ahNTlcgvTXME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvsoW2Nx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6847C4CEF0;
-	Tue, 12 Aug 2025 18:12:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pX5taKEpMJOdWjCRnZa1EcnY9k18GzZb2sQKbIfg0iNaU9DdUNwhntn3ZymrEvqUN0Jk6ujgJQsCQg2NpgV0FUq5ZhUEX77D1pf0jnb0bUITpzkOpTiNUpNFag2jaGooaREp9d7o5sGjbCY5S7J0LVj25AnMy5NMyx4+GuaI91Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/E9airV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C353FC4CEF0;
+	Tue, 12 Aug 2025 18:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022367;
-	bh=pMGCVBI2mvjmHMCm8GCO6tVhQe6kuYN49vwbLGgnjmg=;
+	s=korg; t=1755023745;
+	bh=dwJcXpVPdgKzCJJehrNm+mM22XynnYAWYN/P73G1QqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvsoW2Nx6KkBwOoG3f+R+ndmBEgHuOMChGcrtokV6AXv+PokXH6IiJRXZe4Bbj6hW
-	 b0QJ6pVpTWhx8ENTrbt8SN4dSAdI+S8dw7gl7/OEUX3163NueaF/MhhqqDseRs+67Q
-	 /d1cOAhb7XsQUwLn2qZqJc+xDBD2OE3KE1zVneb8=
+	b=d/E9airVXs5Pir/3CQe2f2dM7Wr0kmfOgsvtiCKAzl4Ds1VRCfSPP5qTYXLF8eTaq
+	 5zBrNaUdRdYosKZ1gEimkvyhVp5CGQJwqtfrLJzaAyMOcn4iJp56Gn21fyV3Nm367B
+	 Kp9ST2LkTLBWRNyITJ+rJ/E6ElAF49x8cdC2YH7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+40f772d37250b6d10efc@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Florian Westphal <fw@strlen.de>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/369] bpf: Disable migration in nf_hook_run_bpf().
-Date: Tue, 12 Aug 2025 19:27:10 +0200
-Message-ID: <20250812173019.773557997@linuxfoundation.org>
+Subject: [PATCH 6.16 136/627] drm/panthor: Add missing explicit padding in drm_panthor_gpu_info
+Date: Tue, 12 Aug 2025 19:27:11 +0200
+Message-ID: <20250812173424.478785217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 17ce3e5949bc37557305ad46316f41c7875d6366 ]
+[ Upstream commit 95cbab48782bf62e4093837dc15ac6133902c12f ]
 
-syzbot reported that the netfilter bpf prog can be called without
-migration disabled in xmit path.
+drm_panthor_gpu_info::shader_present is currently automatically offset
+by 4 byte to meet Arm's 32-bit/64-bit field alignment rules, but those
+constraints don't stand on 32-bit x86 and cause a mismatch when running
+an x86 binary in a user emulated environment like FEX. It's also
+generally agreed that uAPIs should explicitly pad their struct fields,
+which we originally intended to do, but a mistake slipped through during
+the submission process, leading drm_panthor_gpu_info::shader_present to
+be misaligned.
 
-Then the assertion in __bpf_prog_run() fails, triggering the splat
-below. [0]
+This uAPI change doesn't break any of the existing users of panthor
+which are either arm32 or arm64 where the 64-bit alignment of
+u64 fields is already enforced a the compiler level.
 
-Let's use bpf_prog_run_pin_on_cpu() in nf_hook_run_bpf().
+Changes in v2:
+- Rename the garbage field into pad0 and adjust the comment accordingly
+- Add Liviu's A-b
 
-[0]:
-BUG: assuming non migratable context at ./include/linux/filter.h:703
-in_atomic(): 0, irqs_disabled(): 0, migration_disabled() 0 pid: 5829, name: sshd-session
-3 locks held by sshd-session/5829:
- #0: ffff88807b4e4218 (sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1667 [inline]
- #0: ffff88807b4e4218 (sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_sendmsg+0x20/0x50 net/ipv4/tcp.c:1395
- #1: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- #1: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
- #1: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: __ip_queue_xmit+0x69/0x26c0 net/ipv4/ip_output.c:470
- #2: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- #2: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
- #2: ffffffff8e5c4e00 (rcu_read_lock){....}-{1:3}, at: nf_hook+0xb2/0x680 include/linux/netfilter.h:241
-CPU: 0 UID: 0 PID: 5829 Comm: sshd-session Not tainted 6.16.0-rc6-syzkaller-00002-g155a3c003e55 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- __cant_migrate kernel/sched/core.c:8860 [inline]
- __cant_migrate+0x1c7/0x250 kernel/sched/core.c:8834
- __bpf_prog_run include/linux/filter.h:703 [inline]
- bpf_prog_run include/linux/filter.h:725 [inline]
- nf_hook_run_bpf+0x83/0x1e0 net/netfilter/nf_bpf_link.c:20
- nf_hook_entry_hookfn include/linux/netfilter.h:157 [inline]
- nf_hook_slow+0xbb/0x200 net/netfilter/core.c:623
- nf_hook+0x370/0x680 include/linux/netfilter.h:272
- NF_HOOK_COND include/linux/netfilter.h:305 [inline]
- ip_output+0x1bc/0x2a0 net/ipv4/ip_output.c:433
- dst_output include/net/dst.h:459 [inline]
- ip_local_out net/ipv4/ip_output.c:129 [inline]
- __ip_queue_xmit+0x1d7d/0x26c0 net/ipv4/ip_output.c:527
- __tcp_transmit_skb+0x2686/0x3e90 net/ipv4/tcp_output.c:1479
- tcp_transmit_skb net/ipv4/tcp_output.c:1497 [inline]
- tcp_write_xmit+0x1274/0x84e0 net/ipv4/tcp_output.c:2838
- __tcp_push_pending_frames+0xaf/0x390 net/ipv4/tcp_output.c:3021
- tcp_push+0x225/0x700 net/ipv4/tcp.c:759
- tcp_sendmsg_locked+0x1870/0x42b0 net/ipv4/tcp.c:1359
- tcp_sendmsg+0x2e/0x50 net/ipv4/tcp.c:1396
- inet_sendmsg+0xb9/0x140 net/ipv4/af_inet.c:851
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- sock_write_iter+0x4aa/0x5b0 net/socket.c:1131
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x6c7/0x1150 fs/read_write.c:686
- ksys_write+0x1f8/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe7d365d407
-Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP:
+Changes in v3:
+- Add R-bs
 
-Fixes: fd9c663b9ad67 ("bpf: minimal support for programs hooked into netfilter framework")
-Reported-by: syzbot+40f772d37250b6d10efc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6879466d.a00a0220.3af5df.0022.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Tested-by: syzbot+40f772d37250b6d10efc@syzkaller.appspotmail.com
-Acked-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20250722224041.112292-1-kuniyu@google.com
+Fixes: 0f25e493a246 ("drm/panthor: Add uAPI")
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250606080932.4140010-2-boris.brezillon@collabora.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_bpf_link.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/drm/panthor_drm.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
-index 3d64a4511fcf..be3f72fcc678 100644
---- a/net/netfilter/nf_bpf_link.c
-+++ b/net/netfilter/nf_bpf_link.c
-@@ -17,7 +17,7 @@ static unsigned int nf_hook_run_bpf(void *bpf_prog, struct sk_buff *skb,
- 		.skb = skb,
- 	};
+diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
+index ad9a70afea6c..3a76c4f2882b 100644
+--- a/include/uapi/drm/panthor_drm.h
++++ b/include/uapi/drm/panthor_drm.h
+@@ -296,6 +296,9 @@ struct drm_panthor_gpu_info {
+ 	/** @as_present: Bitmask encoding the number of address-space exposed by the MMU. */
+ 	__u32 as_present;
  
--	return bpf_prog_run(prog, &ctx);
-+	return bpf_prog_run_pin_on_cpu(prog, &ctx);
- }
++	/** @pad0: MBZ. */
++	__u32 pad0;
++
+ 	/** @shader_present: Bitmask encoding the shader cores exposed by the GPU. */
+ 	__u64 shader_present;
  
- struct bpf_nf_link {
 -- 
 2.39.5
 
