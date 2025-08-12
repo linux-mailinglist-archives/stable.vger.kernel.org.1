@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700DFB2322A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F70B23398
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C1C188F946
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA12F7B2596
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E082FA0DF;
-	Tue, 12 Aug 2025 18:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522EA2FF170;
+	Tue, 12 Aug 2025 18:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rK9ITyUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHO8fmWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBD11EBFE0;
-	Tue, 12 Aug 2025 18:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7DD2FE588;
+	Tue, 12 Aug 2025 18:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022100; cv=none; b=DZcLH/jTWP+JXSraaa++N3UpM68JiDGyQ/AZxtuJM+Mm6o8+aHDFnb2rmcIjajnl5id4qsC4ri4fMRk/RNy2e1U1pwCuyytGE5enpa5bljhYIbV338tCtx5b2JyQEdY193YpNYHqKzHJ1jMq82oniXf/xCdanT4buXkfAvq/kTQ=
+	t=1755023369; cv=none; b=p/mkycE/9Nnd7k0CV3B5bS5SdQ7gmGsNZ0H3ZmJwXsSG3KDD17p6Rw9iDfKG4fsh5COKtp1rpYvIDvXpOn3KvzPV50BmOslZn1HMXMF2KnaYutSeG7ffx7Y8Lij85FeqwaCZBIonrXdI7pYkb86/Bt0cSut78+sh0OtSy3O9+f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022100; c=relaxed/simple;
-	bh=Tdeih4V1AA69ZohvDF/SXP80bZFMvnEYFzWPamb4my0=;
+	s=arc-20240116; t=1755023369; c=relaxed/simple;
+	bh=yuVbMOpHP6N2+Dg6qBSSGNtWXk7YB7QtYu1bH/ScvIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apiw72PMrdAVBYqdvJxAmThmGxH1mTe38jecpX74peQBF+NpqHRaQnCmFIx0yaEDYd5jdiCDyRD9amsY3/RWWJCZvaikRDQRw832QH1YUH53Be/8Dr8O34n8ba07TDUG7xtdyYqpKQEkIvt4/7CqNMGzkO+KWvg4aDxaVXOdVqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rK9ITyUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9043C4CEF7;
-	Tue, 12 Aug 2025 18:08:19 +0000 (UTC)
+	 MIME-Version; b=LMu5GZhNSZ8R96AVGh2qGgcNqgzuNo6NXSsWJJ4R+bvTDXgeW9lVRLkGneohEm/WIrGkpJP70QHKcTSLL/i0uRC4GKF//UdMe25PN4WppOU76Z8JuTjV3w1aHH4NOjoiIXhiAYnLxFWhk8+GxwASpbhm3So2tLlg4TBbCpC5vjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHO8fmWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D261C4CEF0;
+	Tue, 12 Aug 2025 18:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022100;
-	bh=Tdeih4V1AA69ZohvDF/SXP80bZFMvnEYFzWPamb4my0=;
+	s=korg; t=1755023368;
+	bh=yuVbMOpHP6N2+Dg6qBSSGNtWXk7YB7QtYu1bH/ScvIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rK9ITyUjlRilAUPwTwThuGO2DytKjCpAbWlHUfjd6VnOb+N98mcSSFU1/cMF5QaO4
-	 jujJzwv9eSkg1BLd56nzjZanybsXcMx8cg+Dnj8B0yH7fFdByYMjeqAZiqtSHgHQtr
-	 xiucfSAlZ8y+WtpKdqTVN9jVGKoMGi6U2uve+Gdc=
+	b=LHO8fmWJQif99fQ8ZWR5eXy6Xw5xHhPNFeYU49Hf3orC4tR2T2fe6KG9cpVME25U8
+	 zzmZe1Fs6zF5N3yf3H6a3vVMvSLQeq9Jh+y3VfT5pj44s6R3x/QI9AhQb/85cqDsz5
+	 citzvKMU9Z6bAWs7iIp8v8G7LITTvppkhcZAY15A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Ryan Wanner <Ryan.Wanner@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/369] PM / devfreq: Check governor before using governor->name
-Date: Tue, 12 Aug 2025 19:25:52 +0200
-Message-ID: <20250812173016.833859761@linuxfoundation.org>
+Subject: [PATCH 6.16 058/627] ARM: dts: microchip: sam9x7: Add clock name property
+Date: Tue, 12 Aug 2025 19:25:53 +0200
+Message-ID: <20250812173421.538124300@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Ryan Wanner <Ryan.Wanner@microchip.com>
 
-[ Upstream commit bab7834c03820eb11269bc48f07c3800192460d2 ]
+[ Upstream commit 2e24723492b28ffdccb0e3e68725673e299e3823 ]
 
-Commit 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from
-struct devfreq") removes governor_name and uses governor->name to replace
-it. But devfreq->governor may be NULL and directly using
-devfreq->governor->name may cause null pointer exception. Move the check of
-governor to before using governor->name.
+Add clock-output-names to the xtal nodes, so the driver can correctly
+register the main and slow xtal.
 
-Fixes: 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from struct devfreq")
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://lore.kernel.org/lkml/20250421030020.3108405-5-zhenglifeng1@huawei.com/
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+This fixes the issue of the SoC clock driver not being able to find
+the main xtal and slow xtal correctly causing a bad clock tree.
+
+Fixes: 41af45af8bc3 ("ARM: dts: at91: sam9x7: add device tree for SoC")
+Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Link: https://lore.kernel.org/r/036518968ac657b93e315bb550b822b59ae6f17c.1750175453.git.Ryan.Wanner@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/devfreq.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/arm/boot/dts/microchip/sam9x7.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-index 98657d3b9435..713e6e52cca1 100644
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -1382,15 +1382,11 @@ int devfreq_remove_governor(struct devfreq_governor *governor)
- 		int ret;
- 		struct device *dev = devfreq->dev.parent;
+diff --git a/arch/arm/boot/dts/microchip/sam9x7.dtsi b/arch/arm/boot/dts/microchip/sam9x7.dtsi
+index b217a908f525..114449e90720 100644
+--- a/arch/arm/boot/dts/microchip/sam9x7.dtsi
++++ b/arch/arm/boot/dts/microchip/sam9x7.dtsi
+@@ -45,11 +45,13 @@ cpu@0 {
+ 	clocks {
+ 		slow_xtal: clock-slowxtal {
+ 			compatible = "fixed-clock";
++			clock-output-names = "slow_xtal";
+ 			#clock-cells = <0>;
+ 		};
  
-+		if (!devfreq->governor)
-+			continue;
-+
- 		if (!strncmp(devfreq->governor->name, governor->name,
- 			     DEVFREQ_NAME_LEN)) {
--			/* we should have a devfreq governor! */
--			if (!devfreq->governor) {
--				dev_warn(dev, "%s: Governor %s NOT present\n",
--					 __func__, governor->name);
--				continue;
--				/* Fall through */
--			}
- 			ret = devfreq->governor->event_handler(devfreq,
- 						DEVFREQ_GOV_STOP, NULL);
- 			if (ret) {
+ 		main_xtal: clock-mainxtal {
+ 			compatible = "fixed-clock";
++			clock-output-names = "main_xtal";
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
