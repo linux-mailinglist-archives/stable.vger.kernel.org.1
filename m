@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C3AB233E9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 972C0B23254
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B11D7B84F2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBFED189936C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9F62F4A0A;
-	Tue, 12 Aug 2025 18:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E257A305E08;
+	Tue, 12 Aug 2025 18:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOodMDBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omUyfi4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCE761FFE;
-	Tue, 12 Aug 2025 18:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0292257435;
+	Tue, 12 Aug 2025 18:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023629; cv=none; b=VRgeGl7nVjN5WwKO+Yc6wdpVOvDgWh4yujYfn9wwf/Pp5OTGaG2j5I2WPPfUbni1oFDl8Ok6ii4fWa/MPvZrWgG2QhjS2eJSvbXiQt0x4IJCvkPIaJ00FabxMghYR2kDER88fhTb5w/jf3NhnA1trrymBA2Nmi7bPT40jdGyvT0=
+	t=1755022255; cv=none; b=qRh7OU7cYGb/2Z8kXBkG+F9DXAo/puvMlpT5axcluz7yEFGwKimkrkMlzOCRWjjxsKu6S1335cLR4ZqGM8afkrx5RlhGN8MXuyPV0WS3VTP3LIb0AoT6eAclm1bcJs2rToCVN7K3ruT1Jaz0I8M2MR1Y3mrNpgqcWaxAfznnCBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023629; c=relaxed/simple;
-	bh=B2D6e+46dIgFcTjTUpg/wFZcL9m94CgGe45WQuzQfjs=;
+	s=arc-20240116; t=1755022255; c=relaxed/simple;
+	bh=XzSMrb6Q0krqkhizIa2vhA08byD3P9Wc7bUh2mJ1myE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICdW/A/Wml3hQtNDfOmrQ74AUuhcvIw/Rf6pqR5fe4kKQIIlVOCwI+imcs0rxRRoJ7aw07Q+Zlo2h1IHSUQCdRo+ahxunrQN3pDxMaE71xJaARG8sb1N2Vm0eDCUBq9360Tf5cfWCzG+MAjI+Zjge7SpYBH/qaXq9FMPW4qoDI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOodMDBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D0CC4CEF0;
-	Tue, 12 Aug 2025 18:33:48 +0000 (UTC)
+	 MIME-Version; b=UdJupLmsWJhgN2MvwmzUgXyDBOxxOgypz0pXlwThOknWmXbnoWrEBEMOXOAwYFMnnvEUbrxxSlWo2mlnHrJQ5gE2ax8+1/H0RD6Z1sJAdPBDGSaP0+h4cEHDvQquXIsqF0kzuTA/Wx1IyrHYKpPgT7fat5B9/0KzDfXeOz+wSqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omUyfi4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283CEC4CEF0;
+	Tue, 12 Aug 2025 18:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023628;
-	bh=B2D6e+46dIgFcTjTUpg/wFZcL9m94CgGe45WQuzQfjs=;
+	s=korg; t=1755022255;
+	bh=XzSMrb6Q0krqkhizIa2vhA08byD3P9Wc7bUh2mJ1myE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOodMDBlli6JTfdyM/GMQsfADZFWitLWDnwEwWkRRcZVAgQVCzm85UGrzmuO+Ez/1
-	 xEZeUtZgMzFFlinCQ3KtwWX5qkL5+plvZYRlBAm3acO+GiIi+AWASi9ytqkwtezuqa
-	 S4OeJB+41uXDzZQvBKccRvbHY6S2BZ7HGr14msUo=
+	b=omUyfi4b3K4X9VJQSYp6gyquWY8eNXxvdldBBHDVvnhUrrj1DjldIvxnUJANBPubp
+	 gDOBy6/O8UNJLbsz40FREgfhzJPKYTPYHYefXCRzX11pnpOtvP7/4oOhLl8BewPtYZ
+	 9A2FfnLLimge5xQZRJ3R/WgCaw2Rq0tljZZ3ZMZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Johan Korsnes <johan.korsnes@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 102/627] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
+Subject: [PATCH 6.12 100/369] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
 Date: Tue, 12 Aug 2025 19:26:37 +0200
-Message-ID: <20250812173423.200418863@linuxfoundation.org>
+Message-ID: <20250812173018.540957437@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Johan Korsnes <johan.korsnes@gmail.com>
 
-[ Upstream commit f83f69097a302ed2a2775975ddcf12e6a5ac6ec3 ]
+[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
 
-The reference manual for the i.MX8MM states the clock rate in
-MMC mode is 1/2 of the input clock, therefore to properly run
-at HS400 rates, the input clock must be 400MHz to operate at
-200MHz.  Currently the clock is set to 200MHz which is half the
-rate it should be, so the throughput is half of what it should be
-for HS400 operation.
+This option was removed from the Kconfig in commit
+8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
+removed from the defconfigs.
 
-Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
+Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/configs/ppc6xx_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index 21bcd82fd092..8287a7f66ed3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -294,6 +294,8 @@ &usdhc3 {
- 	pinctrl-0 = <&pinctrl_usdhc3>;
- 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
- 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
- 	bus-width = <8>;
- 	non-removable;
- 	status = "okay";
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index c06344db0eb3..1c67f64739a0 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -253,7 +253,6 @@ CONFIG_NET_SCH_DSMARK=m
+ CONFIG_NET_SCH_NETEM=m
+ CONFIG_NET_SCH_INGRESS=m
+ CONFIG_NET_CLS_BASIC=m
+-CONFIG_NET_CLS_TCINDEX=m
+ CONFIG_NET_CLS_ROUTE4=m
+ CONFIG_NET_CLS_FW=m
+ CONFIG_NET_CLS_U32=m
 -- 
 2.39.5
 
