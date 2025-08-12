@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-167317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0008B22F89
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A184B2345D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD56B6824B3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADA041752AA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E262FDC2B;
-	Tue, 12 Aug 2025 17:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DBA2E285E;
+	Tue, 12 Aug 2025 18:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm9MZHdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPhiNyAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C6B2F7461;
-	Tue, 12 Aug 2025 17:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E975C1DB92A;
+	Tue, 12 Aug 2025 18:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020404; cv=none; b=B9Qu7OJd76JYWKEE1u3izmZXZXz1zaVO1ku6v80uRIidelPSlKeLOfWSTzlWKJxGwdLOKVqbwtU1d8EzH+J6F9akFVabHSWVeJiSHB1cDjSKMKPYWuU46Z/lWQy2JtKhHiVGHx+wFXhJDjO2OJZYpH6dhS/04tg78lCdfV/Hbys=
+	t=1755023735; cv=none; b=VOkB+L2aK1808c92J+JRiXoorl/iPUEEAqEJWIRPOi73hgOvLYMzpFMx9A5vgAztY1FmlIQKcH0/Suutx5ctvK6RodPKPjiQQIKPBeNfSqpaHTg/M9PC9q9uc3EPUIQwUWoZQ2X8MM0tBOpYM6NZu/j42Gd+UPlZSaVNTqgeIOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020404; c=relaxed/simple;
-	bh=hXMdRze6KijIvA0XZYm+rYaqJWsJJKAhrbuNBoU7LZs=;
+	s=arc-20240116; t=1755023735; c=relaxed/simple;
+	bh=L1zHiVf4ybo8c/9vLwOEkJBHJh4n3uHrZmA8SWgIN4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRL+cchq9YcS9pQVPy840ZIq5e4NmWwvsMC656PxTqw4iN448au0ZVfyRBna9OABauqI1yyFeUy/56EhcPriRFQoy21ZzH1ldPnV71hQV6+p71wfuvkjFrRzJehYJMmz9kLIo1Av14YBmpxEwhTec70o6xvM5BNVxEsrFJNqnQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm9MZHdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B1CC4CEF0;
-	Tue, 12 Aug 2025 17:40:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LRyQ0/WnqVkvZmnqcqS/Q2M2FtCiGxGPxS1QAgQoHJXuatxi1z1QKOahb82lQiYUibzJ9SoFfSok2odlFEA/tu6HYuTxb+5QGpHt87xTniDwrdKZpvj5xbjy3MEvu3L5/cpXGiPrH0s6HgO7y+M8sqgu3Onzept6HPej8cu0oOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPhiNyAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5880EC4CEF0;
+	Tue, 12 Aug 2025 18:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020404;
-	bh=hXMdRze6KijIvA0XZYm+rYaqJWsJJKAhrbuNBoU7LZs=;
+	s=korg; t=1755023734;
+	bh=L1zHiVf4ybo8c/9vLwOEkJBHJh4n3uHrZmA8SWgIN4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rm9MZHdmPqb1fuZcjPMU8inCI5fOR4LGEKM3lJ3ffiwiDLDY+f4ufOMpUk2yLBbaU
-	 Jy1Uvnpxut2x19eoxWRBsIMwyiAxyD5geQTaeGLXN1m5XBHeYBXCZa7EpPYHbmB9W/
-	 KUeVnV+85Woj8yowoc4g3HoPQsM4RJaHANZj+UzM=
+	b=iPhiNyAFb17JGITiaI7CKLE3H4xciH2eqofUcTGMDDC0DbXosIij4+0wCot9vXILL
+	 HWiYkzEkFsl+XFiGkURzaR7MX7rpKfLYWsbtvwU/d6a9zNVe1Iom+mZZIKBOQDk5fD
+	 K/jAcbEYdlnjBUQSKXmq5jJfNJZSE+aggvq0SAIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Arvind Yadav <arvind.yadav@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/253] arm64: dts: qcom: sdm845: Expand IMEM region
+Subject: [PATCH 6.16 165/627] drm/amdgpu: fix slab-use-after-free in amdgpu_userq_mgr_fini+0x70c
 Date: Tue, 12 Aug 2025 19:27:40 +0200
-Message-ID: <20250812172951.796191585@linuxfoundation.org>
+Message-ID: <20250812173425.566741527@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +64,260 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-[ Upstream commit 81a4a7de3d4031e77b5796479ef21aefb0862807 ]
+[ Upstream commit 5fb90421fa0fbe0a968274912101fe917bf1c47b ]
 
-We need more than what is currently described, expand the region to its
-actual boundaries.
+The issue was reproduced on NV10 using IGT pci_unplug test.
+It is expected that `amdgpu_driver_postclose_kms()` is called prior to `amdgpu_drm_release()`.
+However, the bug is that `amdgpu_fpriv` was freed in `amdgpu_driver_postclose_kms()`, and then
+later accessed in `amdgpu_drm_release()` via a call to `amdgpu_userq_mgr_fini()`.
+As a result, KASAN detected a use-after-free condition, as shown in the log below.
+The proposed fix is to move the calls to `amdgpu_eviction_fence_destroy()` and
+`amdgpu_userq_mgr_fini()` into `amdgpu_driver_postclose_kms()`, so they are invoked before
+`amdgpu_fpriv` is freed.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: 948f6161c6ab ("arm64: dts: qcom: sdm845: Add IMEM and PIL info region")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250523-topic-ipa_mem_dts-v1-2-f7aa94fac1ab@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This also ensures symmetry with the initialization path in `amdgpu_driver_open_kms()`,
+where the following components are initialized:
+- `amdgpu_userq_mgr_init()`
+- `amdgpu_eviction_fence_init()`
+- `amdgpu_ctx_mgr_init()`
+
+Correspondingly, in `amdgpu_driver_postclose_kms()` we should clean up using:
+- `amdgpu_userq_mgr_fini()`
+- `amdgpu_eviction_fence_destroy()`
+- `amdgpu_ctx_mgr_fini()`
+
+This change eliminates the use-after-free and improves consistency in resource management between open and close paths.
+
+[  +0.094367] ==================================================================
+[  +0.000026] BUG: KASAN: slab-use-after-free in amdgpu_userq_mgr_fini+0x70c/0x730 [amdgpu]
+[  +0.000866] Write of size 8 at addr ffff88811c068c60 by task amd_pci_unplug/1737
+[  +0.000026] CPU: 3 UID: 0 PID: 1737 Comm: amd_pci_unplug Not tainted 6.14.0+ #2
+[  +0.000008] Hardware name: ASUS System Product Name/ROG STRIX B550-F GAMING (WI-FI), BIOS 1401 12/03/2020
+[  +0.000004] Call Trace:
+[  +0.000004]  <TASK>
+[  +0.000003]  dump_stack_lvl+0x76/0xa0
+[  +0.000010]  print_report+0xce/0x600
+[  +0.000009]  ? amdgpu_userq_mgr_fini+0x70c/0x730 [amdgpu]
+[  +0.000790]  ? srso_return_thunk+0x5/0x5f
+[  +0.000007]  ? kasan_complete_mode_report_info+0x76/0x200
+[  +0.000008]  ? amdgpu_userq_mgr_fini+0x70c/0x730 [amdgpu]
+[  +0.000684]  kasan_report+0xbe/0x110
+[  +0.000007]  ? amdgpu_userq_mgr_fini+0x70c/0x730 [amdgpu]
+[  +0.000601]  __asan_report_store8_noabort+0x17/0x30
+[  +0.000007]  amdgpu_userq_mgr_fini+0x70c/0x730 [amdgpu]
+[  +0.000801]  ? __pfx_amdgpu_userq_mgr_fini+0x10/0x10 [amdgpu]
+[  +0.000819]  ? srso_return_thunk+0x5/0x5f
+[  +0.000008]  amdgpu_drm_release+0xa3/0xe0 [amdgpu]
+[  +0.000604]  __fput+0x354/0xa90
+[  +0.000010]  __fput_sync+0x59/0x80
+[  +0.000005]  __x64_sys_close+0x7d/0xe0
+[  +0.000006]  x64_sys_call+0x2505/0x26f0
+[  +0.000006]  do_syscall_64+0x7c/0x170
+[  +0.000004]  ? kasan_record_aux_stack+0xae/0xd0
+[  +0.000005]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? kmem_cache_free+0x398/0x580
+[  +0.000006]  ? __fput+0x543/0xa90
+[  +0.000006]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? __fput+0x543/0xa90
+[  +0.000004]  ? __kasan_check_read+0x11/0x20
+[  +0.000007]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? __kasan_check_read+0x11/0x20
+[  +0.000003]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? fpregs_assert_state_consistent+0x21/0xb0
+[  +0.000006]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? syscall_exit_to_user_mode+0x4e/0x240
+[  +0.000005]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? do_syscall_64+0x88/0x170
+[  +0.000003]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? do_syscall_64+0x88/0x170
+[  +0.000004]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? irqentry_exit+0x43/0x50
+[  +0.000004]  ? srso_return_thunk+0x5/0x5f
+[  +0.000004]  ? exc_page_fault+0x7c/0x110
+[  +0.000006]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  +0.000005] RIP: 0033:0x7ffff7b14f67
+[  +0.000005] Code: ff e8 0d 16 02 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 73 ba f7 ff
+[  +0.000004] RSP: 002b:00007fffffffe358 EFLAGS: 00000246 ORIG_RAX: 0000000000000003
+[  +0.000006] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffff7b14f67
+[  +0.000003] RDX: 0000000000000000 RSI: 00007ffff7f5755a RDI: 0000000000000003
+[  +0.000003] RBP: 00007fffffffe380 R08: 0000555555568170 R09: 0000000000000000
+[  +0.000003] R10: 0000000000000000 R11: 0000000000000246 R12: 00007fffffffe5c8
+[  +0.000003] R13: 00005555555552a9 R14: 0000555555557d48 R15: 00007ffff7ffd040
+[  +0.000007]  </TASK>
+
+[  +0.000286] Allocated by task 425 on cpu 11 at 29.751192s:
+[  +0.000013]  kasan_save_stack+0x28/0x60
+[  +0.000008]  kasan_save_track+0x18/0x70
+[  +0.000006]  kasan_save_alloc_info+0x38/0x60
+[  +0.000006]  __kasan_kmalloc+0xc1/0xd0
+[  +0.000005]  __kmalloc_cache_noprof+0x1bd/0x430
+[  +0.000006]  amdgpu_driver_open_kms+0x172/0x760 [amdgpu]
+[  +0.000521]  drm_file_alloc+0x569/0x9a0
+[  +0.000008]  drm_client_init+0x1b7/0x410
+[  +0.000007]  drm_fbdev_client_setup+0x174/0x470
+[  +0.000007]  drm_client_setup+0x8a/0xf0
+[  +0.000006]  amdgpu_pci_probe+0x50b/0x10d0 [amdgpu]
+[  +0.000482]  local_pci_probe+0xe7/0x1b0
+[  +0.000008]  pci_device_probe+0x5bf/0x890
+[  +0.000005]  really_probe+0x1fd/0x950
+[  +0.000007]  __driver_probe_device+0x307/0x410
+[  +0.000005]  driver_probe_device+0x4e/0x150
+[  +0.000006]  __driver_attach+0x223/0x510
+[  +0.000005]  bus_for_each_dev+0x102/0x1a0
+[  +0.000006]  driver_attach+0x3d/0x60
+[  +0.000005]  bus_add_driver+0x309/0x650
+[  +0.000005]  driver_register+0x13d/0x490
+[  +0.000006]  __pci_register_driver+0x1ee/0x2b0
+[  +0.000006]  xfrm_ealg_get_byidx+0x43/0x50 [xfrm_algo]
+[  +0.000008]  do_one_initcall+0x9c/0x3e0
+[  +0.000007]  do_init_module+0x29e/0x7f0
+[  +0.000006]  load_module+0x5c75/0x7c80
+[  +0.000006]  init_module_from_file+0x106/0x180
+[  +0.000007]  idempotent_init_module+0x377/0x740
+[  +0.000006]  __x64_sys_finit_module+0xd7/0x180
+[  +0.000006]  x64_sys_call+0x1f0b/0x26f0
+[  +0.000006]  do_syscall_64+0x7c/0x170
+[  +0.000005]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[  +0.000013] Freed by task 1737 on cpu 9 at 76.455063s:
+[  +0.000010]  kasan_save_stack+0x28/0x60
+[  +0.000006]  kasan_save_track+0x18/0x70
+[  +0.000005]  kasan_save_free_info+0x3b/0x60
+[  +0.000006]  __kasan_slab_free+0x54/0x80
+[  +0.000005]  kfree+0x127/0x470
+[  +0.000006]  amdgpu_driver_postclose_kms+0x455/0x760 [amdgpu]
+[  +0.000485]  drm_file_free.part.0+0x5b1/0xba0
+[  +0.000007]  drm_file_free+0x13/0x30
+[  +0.000006]  drm_client_release+0x1c4/0x2b0
+[  +0.000006]  drm_fbdev_ttm_fb_destroy+0xd2/0x120 [drm_ttm_helper]
+[  +0.000007]  put_fb_info+0x97/0xe0
+[  +0.000006]  unregister_framebuffer+0x197/0x380
+[  +0.000005]  drm_fb_helper_unregister_info+0x94/0x100
+[  +0.000005]  drm_fbdev_client_unregister+0x3c/0x80
+[  +0.000007]  drm_client_dev_unregister+0x144/0x330
+[  +0.000006]  drm_dev_unregister+0x49/0x1b0
+[  +0.000006]  drm_dev_unplug+0x4c/0xd0
+[  +0.000006]  amdgpu_pci_remove+0x58/0x130 [amdgpu]
+[  +0.000482]  pci_device_remove+0xae/0x1e0
+[  +0.000006]  device_remove+0xc7/0x180
+[  +0.000006]  device_release_driver_internal+0x3d4/0x5a0
+[  +0.000007]  device_release_driver+0x12/0x20
+[  +0.000006]  pci_stop_bus_device+0x104/0x150
+[  +0.000006]  pci_stop_and_remove_bus_device_locked+0x1b/0x40
+[  +0.000005]  remove_store+0xd7/0xf0
+[  +0.000007]  dev_attr_store+0x3f/0x80
+[  +0.000006]  sysfs_kf_write+0x125/0x1d0
+[  +0.000005]  kernfs_fop_write_iter+0x2ea/0x490
+[  +0.000007]  vfs_write+0x90d/0xe70
+[  +0.000006]  ksys_write+0x119/0x220
+[  +0.000006]  __x64_sys_write+0x72/0xc0
+[  +0.000006]  x64_sys_call+0x18ab/0x26f0
+[  +0.000005]  do_syscall_64+0x7c/0x170
+[  +0.000005]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[  +0.000013] The buggy address belongs to the object at ffff88811c068000
+               which belongs to the cache kmalloc-rnd-01-4k of size 4096
+[  +0.000016] The buggy address is located 3168 bytes inside of
+               freed 4096-byte region [ffff88811c068000, ffff88811c069000)
+
+[  +0.000022] The buggy address belongs to the physical page:
+[  +0.000010] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88811c06e000 pfn:0x11c068
+[  +0.000006] head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  +0.000006] flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
+[  +0.000007] page_type: f5(slab)
+[  +0.000007] raw: 0017ffffc0000040 ffff88810004c140 dead000000000122 0000000000000000
+[  +0.000005] raw: ffff88811c06e000 0000000080040002 00000000f5000000 0000000000000000
+[  +0.000006] head: 0017ffffc0000040 ffff88810004c140 dead000000000122 0000000000000000
+[  +0.000005] head: ffff88811c06e000 0000000080040002 00000000f5000000 0000000000000000
+[  +0.000006] head: 0017ffffc0000003 ffffea0004701a01 ffffffffffffffff 0000000000000000
+[  +0.000005] head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
+[  +0.000004] page dumped because: kasan: bad access detected
+
+[  +0.000011] Memory state around the buggy address:
+[  +0.000009]  ffff88811c068b00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  +0.000012]  ffff88811c068b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  +0.000011] >ffff88811c068c00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  +0.000011]                                                        ^
+[  +0.000010]  ffff88811c068c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  +0.000011]  ffff88811c068d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  +0.000011] ==================================================================
+
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+Cc: Arvind Yadav <arvind.yadav@amd.com>
+
+v2: drop amdgpu_drm_release() and assign drm_release()
+    as the callback directly.(Alex)
+
+Fixes: adba0929736a ("drm/amdgpu: Fix Illegal opcode in command stream Error")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 16 +---------------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c |  3 +++
+ 2 files changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index a5df310ce7f3..b77f65a612a1 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4915,18 +4915,18 @@ spmi_bus: spmi@c440000 {
- 			cell-index = <0>;
- 		};
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 4db92e0a60da..501bb82f2a37 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2906,20 +2906,6 @@ static int amdgpu_pmops_runtime_idle(struct device *dev)
+ 	return ret;
+ }
  
--		sram@146bf000 {
-+		sram@14680000 {
- 			compatible = "qcom,sdm845-imem", "syscon", "simple-mfd";
--			reg = <0 0x146bf000 0 0x1000>;
-+			reg = <0 0x14680000 0 0x40000>;
+-static int amdgpu_drm_release(struct inode *inode, struct file *filp)
+-{
+-	struct drm_file *file_priv = filp->private_data;
+-	struct amdgpu_fpriv *fpriv = file_priv->driver_priv;
+-
+-	if (fpriv) {
+-		fpriv->evf_mgr.fd_closing = true;
+-		amdgpu_eviction_fence_destroy(&fpriv->evf_mgr);
+-		amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
+-	}
+-
+-	return drm_release(inode, filp);
+-}
+-
+ long amdgpu_drm_ioctl(struct file *filp,
+ 		      unsigned int cmd, unsigned long arg)
+ {
+@@ -2971,7 +2957,7 @@ static const struct file_operations amdgpu_driver_kms_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open = drm_open,
+ 	.flush = amdgpu_flush,
+-	.release = amdgpu_drm_release,
++	.release = drm_release,
+ 	.unlocked_ioctl = amdgpu_drm_ioctl,
+ 	.mmap = drm_gem_mmap,
+ 	.poll = drm_poll,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index d2ce7d86dbc8..195ed81d39ff 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -1501,6 +1501,9 @@ void amdgpu_driver_postclose_kms(struct drm_device *dev,
+ 		amdgpu_vm_bo_del(adev, fpriv->prt_va);
+ 		amdgpu_bo_unreserve(pd);
+ 	}
++	fpriv->evf_mgr.fd_closing = true;
++	amdgpu_eviction_fence_destroy(&fpriv->evf_mgr);
++	amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
  
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 
--			ranges = <0 0 0x146bf000 0x1000>;
-+			ranges = <0 0 0x14680000 0x40000>;
- 
--			pil-reloc@94c {
-+			pil-reloc@3f94c {
- 				compatible = "qcom,pil-reloc-info";
--				reg = <0x94c 0xc8>;
-+				reg = <0x3f94c 0xc8>;
- 			};
- 		};
- 
+ 	amdgpu_ctx_mgr_fini(&fpriv->ctx_mgr);
+ 	amdgpu_vm_fini(adev, &fpriv->vm);
 -- 
 2.39.5
 
