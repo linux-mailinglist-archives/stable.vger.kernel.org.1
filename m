@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AD9B2342C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F30BB23252
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EBCE3BA8EE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5347F1897D78
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F8E2F5481;
-	Tue, 12 Aug 2025 18:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446ED1EF38C;
+	Tue, 12 Aug 2025 18:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2s7DTBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCKOWL4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDBC2EF652;
-	Tue, 12 Aug 2025 18:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B03305E08;
+	Tue, 12 Aug 2025 18:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023556; cv=none; b=WBzVHzfQENbdu26s8ylzRX39J79lMCjKCnaSDIqIjAoxEYI8S1hXe+C7xM7Wff7L4jzfM7Tm9ZRjpXlcmDRacU/LsFVLL4lRFmOUTrTQynv2+xnTqJ8JfUc2qgs/DH27kz3s8TtlQPcRb+h7CMwflIqyPkJn/x06wIZZsrJbWWs=
+	t=1755022239; cv=none; b=A6tj3P/C2stv2hqFMqgqbnuRaMLcA6Y25IPKQa955S5yNzzA5l4u83mYGl64MQe171GXqPzsVh7L2S6p4n0KMyieIzaOkN0zBio7oElPvuLfK3+Qi658GnSq3TgtaavREDfw4WXMHuUjIeCQ/wludx2UBD+vtDQX6Wr1v91rehE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023556; c=relaxed/simple;
-	bh=1Fhs3fcyPLf63/WQXnMmYJiFpDFkJm3VSyWsl4qUI6A=;
+	s=arc-20240116; t=1755022239; c=relaxed/simple;
+	bh=6NmMwzl3y5jFUklY0tfWeV93qMJIZN10hmzqQ4i8IZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+BboSDwp9cciGOetSY1kFC7Lb4n3cBm5BUJfKa6v0gkDh9JdCRvEW5ns8NW3FfZ28fHaRTQmdZdFOPFGTlDF1vAOBYRVKweD6WRK4LfRpbzo2PFZyS4luizEmcUTPeNqXToJc3kiLFT17/sbQjuTx0VkTKFrfxQd0OevZSA8HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2s7DTBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3632C4CEF0;
-	Tue, 12 Aug 2025 18:32:35 +0000 (UTC)
+	 MIME-Version; b=OnaMO6lw1aO6AOBBAUpN4y/Zyoam4+de8BsTyLPsg8Dd88AIRoD6h+KvGbdB0e68wf05wLLBPXcuFRQBQCLIfgMaw610mCtJsJ48LHxr6uuL8xzz8dCHjkPaX6ynY5kGXYEif9FuVKa0WnnwQm4s5PK6viU3ap/SMsgVvjXRSoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCKOWL4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA02C4CEF0;
+	Tue, 12 Aug 2025 18:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023556;
-	bh=1Fhs3fcyPLf63/WQXnMmYJiFpDFkJm3VSyWsl4qUI6A=;
+	s=korg; t=1755022238;
+	bh=6NmMwzl3y5jFUklY0tfWeV93qMJIZN10hmzqQ4i8IZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2s7DTBXwHW+f+5eUmJrKBRG9awXxNgQ2BIX1g7JRpCbqVdhyQiOq8o1KZF1jn5K0
-	 5Gr6Oa3YhaBMzX2Gb9913uwgqvE04kxSFwT7zp7v+e1WFP1UAt1hmxBBX0Z8m5ewNS
-	 sBLNeFA4+nikQqobb3DtyTLrByp6ahmOA39opRfU=
+	b=dCKOWL4ciawqLbJonwh+wWZB+bD9aJBJ33P3Xxe5Whk3woGoXy8Tt01m6zFY6hTNp
+	 mjI2IqB++cJBSy5MBuQmHGR3Jx0ZYnOGKuAl0VOStH7OFk6/3dEWuU/xpc4Xfyxj71
+	 J9WWcIadjkqeaEwdPcFCNx6kOuC+rUVpZC1M81hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 097/627] soc/tegra: cbb: Clear ERR_FORCE register with ERR_STATUS
+Subject: [PATCH 6.12 095/369] drm/amd/pm/powerplay/hwmgr/smu_helper: fix order of mask and value
 Date: Tue, 12 Aug 2025 19:26:32 +0200
-Message-ID: <20250812173423.007667199@linuxfoundation.org>
+Message-ID: <20250812173018.357011220@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit a0647bca8966db04b79af72851ebd04224a4da40 ]
+[ Upstream commit a54e4639c4ef37a0241bac7d2a77f2e6ffb57099 ]
 
-When error is injected with the ERR_FORCE register, then this register
-is not auto cleared on clearing the ERR_STATUS register. This causes
-repeated interrupts on error injection. To fix, set the ERR_FORCE to
-zero along with clearing the ERR_STATUS register after handling error.
+There is a small typo in phm_wait_on_indirect_register().
 
-Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Swap mask and value arguments provided to phm_wait_on_register() so that
+they satisfy the function signature and actual usage scheme.
+
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
+
+In practice this doesn't fix any issues because the only place this
+function is used uses the same value for the value and mask.
+
+Fixes: 3bace3591493 ("drm/amd/powerplay: add hardware manager sub-component")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/cbb/tegra234-cbb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
-index c74629af9bb5..1da31ead2b5e 100644
---- a/drivers/soc/tegra/cbb/tegra234-cbb.c
-+++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
-@@ -185,6 +185,8 @@ static void tegra234_cbb_error_clear(struct tegra_cbb *cbb)
- {
- 	struct tegra234_cbb *priv = to_tegra234_cbb(cbb);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
+index 79a566f3564a..c305ea4ec17d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
+@@ -149,7 +149,7 @@ int phm_wait_on_indirect_register(struct pp_hwmgr *hwmgr,
+ 	}
  
-+	writel(0, priv->mon + FABRIC_MN_MASTER_ERR_FORCE_0);
-+
- 	writel(0x3f, priv->mon + FABRIC_MN_MASTER_ERR_STATUS_0);
- 	dsb(sy);
+ 	cgs_write_register(hwmgr->device, indirect_port, index);
+-	return phm_wait_on_register(hwmgr, indirect_port + 1, mask, value);
++	return phm_wait_on_register(hwmgr, indirect_port + 1, value, mask);
  }
+ 
+ int phm_wait_for_register_unequal(struct pp_hwmgr *hwmgr,
 -- 
 2.39.5
 
