@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27BB3B23049
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D2CB232FC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2B9564C92
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A6DB7A5607
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E182FAC02;
-	Tue, 12 Aug 2025 17:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9C32FD1C2;
+	Tue, 12 Aug 2025 18:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UE1ZeMa3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzZ/6ThZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7825A279915;
-	Tue, 12 Aug 2025 17:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792C42F7449;
+	Tue, 12 Aug 2025 18:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021003; cv=none; b=RYtk5jaI+Us4/619u0EHxf08KAJpok26gF18Cfdcz3POgLQ95eBtb0pApdsWk8Q2GRcxrFaaIofSkzGG/pgDqbeQXSiYWNgcA5BPoOb0aXpTB2i+c2EAtrSsP+vYum1l/eTLfnBfd1fjFn8TELDIsP5zVjQ5yDuRA7fetpj67NQ=
+	t=1755023007; cv=none; b=pL9FC6Xa3cHb95hMR4+E5Odq+S+V5OOfcWFfK+SjrbWLAA7jJFBztE1bGvR1LxbxhrCjA09Ecrvhr7350FgE+ClYGl1axrVN/u+htbJYLbAVVU+f4auGDUpAXBE7BjjeAYn+wlBhur+OhDh5YiP+f/JWnZ9hoV6ff9WWIYFoN8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021003; c=relaxed/simple;
-	bh=i7579eaHYR9MmV2CBviSzJsIge3z1DOwWsG7LqZb6JM=;
+	s=arc-20240116; t=1755023007; c=relaxed/simple;
+	bh=6zOwvI+j7iL3bZngdBVxoTCqIB6hG1SYddwD72S0SSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2hHta95ICkTDC3i/dUMu8Syp2DJngK870E6Z2f6BPQiVzIeb4I3Mp0ToH92u/YsQf4UQPkpL7+RInNspMpw7fUmK94ZiWNb8p8b3+M9bAazlvZXdun8SrB6rwDr4ZeqO3ktnaFpw0aqwt8mx3/+FB7UH3QrIKTaYoejmUL1VnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UE1ZeMa3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7CFC4CEF6;
-	Tue, 12 Aug 2025 17:50:02 +0000 (UTC)
+	 MIME-Version; b=rrnYjDw4Y8I+L277bRtI8lIJtbl6KQcdVO1dW/74yUaa9gytTVEAwi0gBx8Dk+DNK9agl1VF/7W4QfUYR4Qw4AiYASUbIW5x/8xoGBCw9Fkw9vH8gs56cD7sanno/TtmvmhAQP8fxljdSYKBK8uvJlh2wS3iq4BHcId94TeKGSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzZ/6ThZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFEAC4CEF6;
+	Tue, 12 Aug 2025 18:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021003;
-	bh=i7579eaHYR9MmV2CBviSzJsIge3z1DOwWsG7LqZb6JM=;
+	s=korg; t=1755023007;
+	bh=6zOwvI+j7iL3bZngdBVxoTCqIB6hG1SYddwD72S0SSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UE1ZeMa3OKVFgbF7b5Duxr0tpi88NT5TD+NDtOyc8ZNCBO5x/CtzLsnBVMvi6R1by
-	 8CFOOMi1L3nd17gPI382GHm+fyil+WZAwKcnxfUP0IQvobwyslKNiiswFupq5lcciT
-	 GQJt2QKTHwSyfpH/SHbJ5dlnFh3fivB9XhgK/T9s=
+	b=tzZ/6ThZtqz2sgKI2pEahjCRGzoqEoCcax3bdOHlnzNiVISthZjHEfHbFLISE5MSO
+	 sy5778LokCRGtWqCWA5Mf/KlXFFWee5NcUmXlkoMXsrRE0wU7uNBO6vXKYAIj4GYsd
+	 WkXqmgSVahLWpay5ZGDFq6KiMjEE+NnKALoZCKTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Alex Elder <elder@riscstar.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 198/253] f2fs: fix to update upper_p in __get_secs_required() correctly
+Subject: [PATCH 6.12 289/369] net: ipa: add IPA v5.1 and v5.5 to ipa_version_string()
 Date: Tue, 12 Aug 2025 19:29:46 +0200
-Message-ID: <20250812172957.229740328@linuxfoundation.org>
+Message-ID: <20250812173027.604117726@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 6840faddb65683b4e7bd8196f177b038a1e19faf ]
+[ Upstream commit f2aa00e4f65efcf25ff6bc8198e21f031e7b9b1b ]
 
-Commit 1acd73edbbfe ("f2fs: fix to account dirty data in __get_secs_required()")
-missed to calculate upper_p w/ data_secs, fix it.
+Handle the case for v5.1 and v5.5 instead of returning "0.0".
 
-Fixes: 1acd73edbbfe ("f2fs: fix to account dirty data in __get_secs_required()")
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Also reword the comment below since I don't see any evidence of such a
+check happening, and - since 5.5 has been missing - can happen.
+
+Fixes: 3aac8ec1c028 ("net: ipa: add some new IPA versions")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Link: https://patch.msgid.link/20250728-ipa-5-1-5-5-version_string-v1-1-d7a5623d7ece@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ipa/ipa_sysfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 5ef5a88f47a0..3f1d6cdd4ae0 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -635,7 +635,7 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 	if (lower_p)
- 		*lower_p = node_secs + dent_secs + data_secs;
- 	if (upper_p)
--		*upper_p = node_secs + dent_secs +
-+		*upper_p = node_secs + dent_secs + data_secs +
- 			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0) +
- 			(data_blocks ? 1 : 0);
- 	if (curseg_p)
+diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
+index a59bd215494c..a53e9e6f6cdf 100644
+--- a/drivers/net/ipa/ipa_sysfs.c
++++ b/drivers/net/ipa/ipa_sysfs.c
+@@ -37,8 +37,12 @@ static const char *ipa_version_string(struct ipa *ipa)
+ 		return "4.11";
+ 	case IPA_VERSION_5_0:
+ 		return "5.0";
++	case IPA_VERSION_5_1:
++		return "5.1";
++	case IPA_VERSION_5_5:
++		return "5.5";
+ 	default:
+-		return "0.0";	/* Won't happen (checked at probe time) */
++		return "0.0";	/* Should not happen */
+ 	}
+ }
+ 
 -- 
 2.39.5
 
