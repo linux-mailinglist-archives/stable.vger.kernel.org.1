@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2FBB23098
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592B3B23549
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE7B174C8D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82B2F3A1CAC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586152FDC20;
-	Tue, 12 Aug 2025 17:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31E42FD1AD;
+	Tue, 12 Aug 2025 18:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b99fRsdw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha9ZiGQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179F8221FAC;
-	Tue, 12 Aug 2025 17:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB0C2FD1A4;
+	Tue, 12 Aug 2025 18:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021234; cv=none; b=Kc+BErdA55j2hlYmeZkGg8bzwodzwJ7Ugqb8qKxPlZ/1PAp219/0y54OGz9J+IvoeObw/Iqmfklh4iKCDp85xk/5RawCRThShTwgUUEqSIMpSFVjdybarMk0YDnfKTqFSm8Jxb30aGURo4oeH3RD67+WICt+5oTCwcaWwkoQxrA=
+	t=1755024276; cv=none; b=aFNLm5p2JQLGxzxw4HcADUkJKqhO26NIaE4DNJS9cTIRqVKgNZ06O3y9pa0oG8CLmJljIPtswargptB7lxqn6KBHojuI3jugu1LDfDlX7sGv92m2mBlaLJEDY0Q7hqVrNHksk5WeCzYkYkf4bkML1SdTREs9Dk8y90PbyZf31Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021234; c=relaxed/simple;
-	bh=jMabyCC+3J+0Rm2epn1ZzXtK1Soj5Nu+RGJlmvwyPtA=;
+	s=arc-20240116; t=1755024276; c=relaxed/simple;
+	bh=8VkicDYJKB9IxIU9Wa573aeisnqQRQL3DOkEZfauy6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouCYcNainAFsrnaMHt3AKz5aEJD/qlvnt4y4WPmZEi7eUVx+aBI7zlr5zbkfOZPDDxcimAGg8mBOBoBvDKOT8yDqaSMhAhpTKFiy1xq+FeSoby0U6h5mH+WrkQ4y2/CEoNv2dWiO4lQn2xjk24GmJedgNGnCHClyG/UCGdyx93E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b99fRsdw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF39C4CEF0;
-	Tue, 12 Aug 2025 17:53:53 +0000 (UTC)
+	 MIME-Version; b=Fuz6ItOrrTLjOAySqBzilQqSzsviCoz3PIRtoZfCaxHvLaTT6Xu/En05KnxsWktmxmYwrj53mW8RjJfkzq6vV4JoL/lvA0mJK5YtnAS2UowKt4auleM9PsS6+496MkAgMoUzJc+g5BupuxvmpufSO3Br+TVGvEmhi+NkZFeOeRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha9ZiGQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B39C4CEF0;
+	Tue, 12 Aug 2025 18:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021234;
-	bh=jMabyCC+3J+0Rm2epn1ZzXtK1Soj5Nu+RGJlmvwyPtA=;
+	s=korg; t=1755024276;
+	bh=8VkicDYJKB9IxIU9Wa573aeisnqQRQL3DOkEZfauy6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b99fRsdwvN3qaxlGXpP0Vr8BrMjHikioaA8BXOfSNSsEmoWwzPtM0IH+6FHolYfZm
-	 6WatBkInzxVnEqyFi8Wg9MD+tlLafCtjJeAAA4yabkd05huiGhWTn+sZexzIvI3CYs
-	 kDEL7UbbmWTZ5Fdh/k9j5sx4V8FfkyZg0XlYWpUY=
+	b=ha9ZiGQ5IycSSVlCyWXcFkAaRsmJxocS6BtIn1Srd+z2MA98ahRE64o7xozWh8HMn
+	 2rORRuXvJZCEEA6FammgjDuqyNOiFj5qzyRB1uihkZT8Q54TtqAcLBTsa4D3+wKPr2
+	 mut3994Z8J9RPlbNLg7/UDoQSFAKlhTUlnFsvJ3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 6.1 233/253] perf/core: Dont leak AUX buffer refcount on allocation failure
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 326/627] PCI: endpoint: pci-epf-vntb: Return -ENOENT if pci_epc_get_next_free_bar() fails
 Date: Tue, 12 Aug 2025 19:30:21 +0200
-Message-ID: <20250812172958.743385730@linuxfoundation.org>
+Message-ID: <20250812173431.695599599@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit 5468c0fbccbb9d156522c50832244a8b722374fb upstream.
+[ Upstream commit 7ea488cce73263231662e426639dd3e836537068 ]
 
-Failure of the AUX buffer allocation leaks the reference count.
+According the function documentation of epf_ntb_init_epc_bar(), the
+function should return an error code on error. However, it returns -1 when
+no BAR is available i.e., when pci_epc_get_next_free_bar() fails.
 
-Set the reference count to 1 only when the allocation succeeds.
+Return -ENOENT instead.
 
-Fixes: 45bfb2e50471 ("perf/core: Add AUX area to ring buffer for raw data streams")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+[mani: changed err code to -ENOENT]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250603-pci-vntb-bar-mapping-v2-1-fc685a22ad28@baylibre.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6381,9 +6381,7 @@ static int perf_mmap(struct file *file,
- 			goto unlock;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index e4da3fdb0007..30c6c563335a 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -680,7 +680,7 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
+ 		barno = pci_epc_get_next_free_bar(epc_features, barno);
+ 		if (barno < 0) {
+ 			dev_err(dev, "Fail to get NTB function BAR\n");
+-			return barno;
++			return -ENOENT;
  		}
- 
--		atomic_set(&rb->aux_mmap_count, 1);
- 		user_extra = nr_pages;
--
- 		goto accounting;
+ 		ntb->epf_ntb_bar[bar] = barno;
  	}
- 
-@@ -6485,8 +6483,10 @@ accounting:
- 	} else {
- 		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
- 				   event->attr.aux_watermark, flags);
--		if (!ret)
-+		if (!ret) {
-+			atomic_set(&rb->aux_mmap_count, 1);
- 			rb->aux_mmap_locked = extra;
-+		}
- 	}
- 
- unlock:
-@@ -6496,6 +6496,7 @@ unlock:
- 
- 		atomic_inc(&event->mmap_count);
- 	} else if (rb) {
-+		/* AUX allocation failed */
- 		atomic_dec(&rb->mmap_count);
- 	}
- aux_unlock:
+-- 
+2.39.5
+
 
 
 
