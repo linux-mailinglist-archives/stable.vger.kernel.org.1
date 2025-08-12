@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731F1B2314E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693B8B23038
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCCEA6E0480
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FECA18987F3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AA72FFDEE;
-	Tue, 12 Aug 2025 18:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F0D2E972E;
+	Tue, 12 Aug 2025 17:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh8kdSWT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1MBd+xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1302FFDEA;
-	Tue, 12 Aug 2025 18:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCA7279915;
+	Tue, 12 Aug 2025 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021638; cv=none; b=KDrV7EEwPooq/63Hn/Os5QpmYADj+jLhkGP7VrBskrPNTJ013Kwh03SRaXOvZOqcmN4eN8OBjG6M0iGOLsNRPNzXnLwt41OEYgzHiEkWQTlH6ILgP1mWEa9Nz9px/9vToD8v+cfQK+ngsD5voB/CHv9TsqPk1OXF/tmwNDQmpN0=
+	t=1755020870; cv=none; b=mDtS61MerbK1maORJYcBFB6aEwP75hkRuNHJ6L5rAyiMZr7SZ7wBrq0A6o+uy6+Fp3+RrklIDy3hcz7draZbqeGJ27X1JtZxH/UewSl0GU0Uvwgjo28FWr8IlytByeAEk+8E3Dm6NcHNvPVZwgDp1UbgLPak9unrl4vWt4nhXK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021638; c=relaxed/simple;
-	bh=SOxXczzZ8jskg17MhiVaZxZtlqVpETJ2GMWAIV3GRFE=;
+	s=arc-20240116; t=1755020870; c=relaxed/simple;
+	bh=Q8Z9vGzVdEy2WpLEUDDW0g1am+foy8VXZAMJdxreWEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKs/P2kycfTlDAFQ9RZ8tCZr4+CsT8+g98A5AzHF5PKlmHKzuQ0PyFOQeA02Mc+MzdbLbdI+9AIinbEVaia2iR/gt/PuHswFIxst3OlC35eFXC/Mi01Qef7qTn7ELc0q4YXXpR/H3WPFqmrbUeJlu3v0y5ORWFZDJG+n8EBprqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh8kdSWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F00C4CEF0;
-	Tue, 12 Aug 2025 18:00:37 +0000 (UTC)
+	 MIME-Version; b=FYkXGZH5WlwFsOMiTZylx7YeMpWT7TK8BGGV/y8dT/foVNtwKAhXsmrVUGL6gKHdjCaQRs3wjRhTgaydRh0baKHwzcgmWIsNEZgfiRjK8Dp139HqyiFB1+zXhImwr1X+9/oIO/lyBkbDOQB6tRmhPes+0gB3GgUUcDJXqKjRhjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1MBd+xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72441C4CEF0;
+	Tue, 12 Aug 2025 17:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021638;
-	bh=SOxXczzZ8jskg17MhiVaZxZtlqVpETJ2GMWAIV3GRFE=;
+	s=korg; t=1755020869;
+	bh=Q8Z9vGzVdEy2WpLEUDDW0g1am+foy8VXZAMJdxreWEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gh8kdSWTWZl6CRtwvrnrhr/IL3+/eKzdO+QHWw8OomVyDVyLz+Pfl1Tp9PFIIbQn2
-	 POrn8g0TSYkWSQWNNZHRs/T0SVUGlaOPVM0cSVNlYsu7LBt9ZRi07cXPlVApwMkFAb
-	 1FotP3wNszgWd2uaqBFqMzeRPU3hZlx4uL5ORW/4=
+	b=u1MBd+xpYGXTqiCQ9LMr/JEyKqRw2x7Z1JgK0X2uZV5INiLwx/92HwxFzRnW5kTAt
+	 +Lei5qZzGvuv1a0rPIunYPa2DtXDXOjqeU++KDqKp0vWOc0HcUHiTIoo8Rm6R2T97i
+	 2B8dC9yJVq2QDV6peKi4LrP6rFnp6R5zafYC3tag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Zixun LI <admin@hifiphile.com>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/262] f2fs: fix to trigger foreground gc during f2fs_map_blocks() in lfs mode
+Subject: [PATCH 6.1 180/253] mtd: rawnand: atmel: set pmecc data setup time
 Date: Tue, 12 Aug 2025 19:29:28 +0200
-Message-ID: <20250812173000.791523008@linuxfoundation.org>
+Message-ID: <20250812172956.423278059@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
 
-[ Upstream commit 1005a3ca28e90c7a64fa43023f866b960a60f791 ]
+[ Upstream commit f552a7c7e0a14215cb8a6fd89e60fa3932a74786 ]
 
-w/ "mode=lfs" mount option, generic/299 will cause system panic as below:
+Setup the pmecc data setup time as 3 clock cycles for 133MHz as recommended
+by the datasheet.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.c:2835!
-Call Trace:
- <TASK>
- f2fs_allocate_data_block+0x6f4/0xc50
- f2fs_map_blocks+0x970/0x1550
- f2fs_iomap_begin+0xb2/0x1e0
- iomap_iter+0x1d6/0x430
- __iomap_dio_rw+0x208/0x9a0
- f2fs_file_write_iter+0x6b3/0xfa0
- aio_write+0x15d/0x2e0
- io_submit_one+0x55e/0xab0
- __x64_sys_io_submit+0xa5/0x230
- do_syscall_64+0x84/0x2f0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0010:new_curseg+0x70f/0x720
-
-The root cause of we run out-of-space is: in f2fs_map_blocks(), f2fs may
-trigger foreground gc only if it allocates any physical block, it will be
-a little bit later when there is multiple threads writing data w/
-aio/dio/bufio method in parallel, since we always use OPU in lfs mode, so
-f2fs_map_blocks() does block allocations aggressively.
-
-In order to fix this issue, let's give a chance to trigger foreground
-gc in prior to block allocation in f2fs_map_blocks().
-
-Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Reported-by: Zixun LI <admin@hifiphile.com>
+Closes: https://lore.kernel.org/all/c015bb20-6a57-4f63-8102-34b3d83e0f5b@microchip.com
+Suggested-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/atmel/pmecc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 942f358126e6..d37104aa847a 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1552,8 +1552,11 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
- 	end = pgofs + maxblocks;
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
+index 3c7dee1be21d..0b402823b619 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.c
++++ b/drivers/mtd/nand/raw/atmel/pmecc.c
+@@ -143,6 +143,7 @@ struct atmel_pmecc_caps {
+ 	int nstrengths;
+ 	int el_offset;
+ 	bool correct_erased_chunks;
++	bool clk_ctrl;
+ };
  
- next_dnode:
--	if (map->m_may_create)
-+	if (map->m_may_create) {
-+		if (f2fs_lfs_mode(sbi))
-+			f2fs_balance_fs(sbi, true);
- 		f2fs_map_lock(sbi, flag);
-+	}
+ struct atmel_pmecc {
+@@ -843,6 +844,10 @@ static struct atmel_pmecc *atmel_pmecc_create(struct platform_device *pdev,
+ 	if (IS_ERR(pmecc->regs.errloc))
+ 		return ERR_CAST(pmecc->regs.errloc);
  
- 	/* When reading holes, we need its node page */
- 	set_new_dnode(&dn, inode, NULL, NULL, 0);
++	/* pmecc data setup time */
++	if (caps->clk_ctrl)
++		writel(PMECC_CLK_133MHZ, pmecc->regs.base + ATMEL_PMECC_CLK);
++
+ 	/* Disable all interrupts before registering the PMECC handler. */
+ 	writel(0xffffffff, pmecc->regs.base + ATMEL_PMECC_IDR);
+ 	atmel_pmecc_reset(pmecc);
+@@ -896,6 +901,7 @@ static struct atmel_pmecc_caps at91sam9g45_caps = {
+ 	.strengths = atmel_pmecc_strengths,
+ 	.nstrengths = 5,
+ 	.el_offset = 0x8c,
++	.clk_ctrl = true,
+ };
+ 
+ static struct atmel_pmecc_caps sama5d4_caps = {
 -- 
 2.39.5
 
