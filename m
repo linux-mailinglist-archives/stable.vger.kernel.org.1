@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20677B23100
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BF6B232EC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 557C6684BB8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5563B792B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073312FDC25;
-	Tue, 12 Aug 2025 17:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7124561FFE;
+	Tue, 12 Aug 2025 18:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlM9boHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcEOSC8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD692F8BE7;
-	Tue, 12 Aug 2025 17:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3C21B87F2;
+	Tue, 12 Aug 2025 18:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021474; cv=none; b=o55R0NZ3ihJj0yNijAn7mztYrzPmm36gXramgdmjdK+Y8sBHeYYKsedvdp0JnB/4eGcCs4eI0fn7IS5FWHc8qxZgl788OYgqT+RpX5Sbb27vFjU5HgZOLT1WYV6/XABi+UQ+oZQ34t/QhMmFBxp4FCXpxxeiLuqrOnzS6MBXoCY=
+	t=1755022675; cv=none; b=Gl3BsiSucWTAh3NBsn76XuHw1w68qZyy1GMF0BTSWL94gu3HzACFE2zZFI4qRsbdRF7dnlaPV1CgH4fLb+4UNugjJ7coIcqUF8nsT59Iit6Q8tHyFkPLXpdsIhZFDznIK252aGjeOnJyBBpXJc1ca6yP80qyCIXIgGwcqiqYoxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021474; c=relaxed/simple;
-	bh=J12lc51rrIj9xua2FqQUGOn5sKght/WtcEXN8R1XgK4=;
+	s=arc-20240116; t=1755022675; c=relaxed/simple;
+	bh=UrfQNFk39M5q9uvHeT1MKNc/i7LvxBT5my1xJ3Ac0w8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWvcLQVASQk67mYGJRwLVGv3xJRAPmL9UXmjf8IRh2N5NwuTyG85CoUX8TuR/HyCI7QTJnh0yTcpehmv39+aChMQP/bspx6CjuESs7mZCK6zSNses59mkKu+ShQcVWNhGcQre42hpyaY84dGOiPCmmDAF+FAPCDq03qHA0RAcos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlM9boHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6FBC4CEF1;
-	Tue, 12 Aug 2025 17:57:53 +0000 (UTC)
+	 MIME-Version; b=edoRh/Xi1/uczR8ygkXkfmRiK1lgIqrBfVhHV/mlM4Yv65jbhKVYCZmOCYmVaZHAgYToabL4NPWl6CUE3VX4IpR2AUGmJri6rpr5FPUegDl4liEbyNL87PHkMqVIiTxYDacGHzybxYYPcbtFcgzbxbIOan3jdU+gN4TITzGm9bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcEOSC8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934C1C4CEF0;
+	Tue, 12 Aug 2025 18:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021474;
-	bh=J12lc51rrIj9xua2FqQUGOn5sKght/WtcEXN8R1XgK4=;
+	s=korg; t=1755022675;
+	bh=UrfQNFk39M5q9uvHeT1MKNc/i7LvxBT5my1xJ3Ac0w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlM9boHgxdbVKTnTSJeLB8/l3C7BU4BGOq0QIcPPuiwkuqEbsX2RvRzd7BBRYVuo3
-	 cIO2ut1bf4xZ7+2EcZ4H7v5+kBwRkDz64oHmz4TjROndpRo4abqFoM/ID1fIZzNzlE
-	 4GiOsE2LAARrW9TplfLaVpAA4ZnB91l07YTSmH9Y=
+	b=BcEOSC8Fa1R+EwToA4CMvacbQ9tuBwUxH2bHZPNBKudQoc68JH8JPKanQV38Gq+bN
+	 8qdCfiizXN6D5sauYFTtggQXBJnelFKS8Junwa8k0KWfhhkIu3JjPUEtBvqVp8+g0G
+	 dxJfXWksQqZiydihp9HlxsitUr3aoJ0ME8wLewd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/262] perf tests bp_account: Fix leaked file descriptor
-Date: Tue, 12 Aug 2025 19:28:42 +0200
-Message-ID: <20250812172958.807330147@linuxfoundation.org>
+Subject: [PATCH 6.12 226/369] mtd: rawnand: rockchip: Add missing check after DMA map
+Date: Tue, 12 Aug 2025 19:28:43 +0200
+Message-ID: <20250812173023.264403906@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
+[ Upstream commit 3b36f86dc47261828f96f826077131a35dd825fd ]
 
-Since the commit e9846f5ead26 ("perf test: In forked mode add check that
-fds aren't leaked"), the test "Breakpoint accounting" reports the error:
+The DMA map functions can fail and should be tested for errors.
 
-  # perf test -vvv "Breakpoint accounting"
-  20: Breakpoint accounting:
-  --- start ---
-  test child forked, pid 373
-  failed opening event 0
-  failed opening event 0
-  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
-  wp 0 created
-  wp 1 created
-  wp 2 created
-  wp 3 created
-  wp 0 modified to bp
-  wp max created
-  ---- end(0) ----
-  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
-
-A watchpoint's file descriptor was not properly released. This patch
-fixes the leak.
-
-Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/bp_account.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
-index 6f921db33cf9..855b81c3326c 100644
---- a/tools/perf/tests/bp_account.c
-+++ b/tools/perf/tests/bp_account.c
-@@ -102,6 +102,7 @@ static int bp_accounting(int wp_cnt, int share)
- 		fd_wp = wp_event((void *)&the_var, &attr_new);
- 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
- 		pr_debug("wp max created\n");
-+		close(fd_wp);
- 	}
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index 51c9cf9013dc..1b65b3aa6aa2 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -656,9 +656,16 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
  
- 	for (i = 0; i < wp_cnt; i++)
+ 	dma_data = dma_map_single(nfc->dev, (void *)nfc->page_buf,
+ 				  mtd->writesize, DMA_TO_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_data))
++		return -ENOMEM;
++
+ 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
+ 				 ecc->steps * oob_step,
+ 				 DMA_TO_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_oob)) {
++		dma_unmap_single(nfc->dev, dma_data, mtd->writesize, DMA_TO_DEVICE);
++		return -ENOMEM;
++	}
+ 
+ 	reinit_completion(&nfc->done);
+ 	writel(INT_DMA, nfc->regs + nfc->cfg->int_en_off);
+@@ -772,9 +779,17 @@ static int rk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *buf, int oob_on,
+ 	dma_data = dma_map_single(nfc->dev, nfc->page_buf,
+ 				  mtd->writesize,
+ 				  DMA_FROM_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_data))
++		return -ENOMEM;
++
+ 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
+ 				 ecc->steps * oob_step,
+ 				 DMA_FROM_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_oob)) {
++		dma_unmap_single(nfc->dev, dma_data, mtd->writesize,
++				 DMA_FROM_DEVICE);
++		return -ENOMEM;
++	}
+ 
+ 	/*
+ 	 * The first blocks (4, 8 or 16 depending on the device)
 -- 
 2.39.5
 
