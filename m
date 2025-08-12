@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0710FB22FA6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720AFB230DB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DB5F562821
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 864CC1886260
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F0C2FDC2B;
-	Tue, 12 Aug 2025 17:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4F52FABFF;
+	Tue, 12 Aug 2025 17:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAVQ0L8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qaRzlOLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DED2F7477;
-	Tue, 12 Aug 2025 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE662F7449;
+	Tue, 12 Aug 2025 17:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020515; cv=none; b=P6wh9cCE5xYIf/vQks64r8nTVga0s/aRDHGqBhFq898Nig+QM1eaV5dWXrTH6j/ON5mTAq2oEBwbeaSxQ2kJmxcmc1tCPndLLdID/Wr4iH0ndNN6deiUF+acZxQjPcUItJwZaeSXcM3TGM+HXdBwKbNWMhops6fB8FgynpCxT6Q=
+	t=1755021376; cv=none; b=WUcX8pMxwVTRAFT/yBEYc8upLoZTge2MvW20IclB0LFmsKkwAE237vNr4n5moLgBmuyq6srYedvfkSO0jvUBLJUql58z2vha+mJ/LGyfq53QBwJv5NA4lhx/QM/AdYWirM+h+G5H/Y+SkzHcJQdANOPiFocWMhgEGKKe0JCzz5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020515; c=relaxed/simple;
-	bh=rqQkHaaDNLC5/PyOUCqww4M5eTOfOTHpUAX+pk2xpYY=;
+	s=arc-20240116; t=1755021376; c=relaxed/simple;
+	bh=lXjllhNP1DKn5dJQPpxADpyOxs8EM0c9Ejy49MJqXVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYZyEeY3WJ+L4EOy2LStmn7nETLQG7fYAi28jU2xgtV8ELhEoEwv+XnDtm6p8j0mdS9KftlrUbQnZUQM5/klRokA3MRnZ1zLBJ07m8un1FCRfN65JJrifvcuJz+7uYhpHnqLDl2YWkqDSuNLqhOu3/udu/vmV6CbAPs+CcyOXJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAVQ0L8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246F9C4CEF1;
-	Tue, 12 Aug 2025 17:41:54 +0000 (UTC)
+	 MIME-Version; b=hRxA55am0o77LDRczCIPCKjx6RIT6WCJzWlg2A4V2szhKl4gKU297JB0LcbBVqUa841cM7bjjgRZ6h8mUBdOsLRiWnWzXIYJhP+4gw0Rb4AFE3ekpBDfs/z7zbd/XNJdgPAZCtNw1QvV+PtrxzJLV76SBSdROKYJaWFMpUGNh4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qaRzlOLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C20CC4CEF1;
+	Tue, 12 Aug 2025 17:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020515;
-	bh=rqQkHaaDNLC5/PyOUCqww4M5eTOfOTHpUAX+pk2xpYY=;
+	s=korg; t=1755021376;
+	bh=lXjllhNP1DKn5dJQPpxADpyOxs8EM0c9Ejy49MJqXVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAVQ0L8rAsXCLtUWxcwk+rV0Jd/tfPDsmHy+x5LEc0zjR80WKj9QtG474GdTz37Qj
-	 +gakRhxuQLJ4HyYhwVPyed2x+SEefQU189VYuyOYtP6GsbxHmC1L7dU+5ylEPGyhWu
-	 LheCk8ogbIt+0CNJKjhtmubg7Kr2MUFAdpl97KkQ=
+	b=qaRzlOLDtzdDFcM/sS+lBEklOIP07W2AD3ECMBcGNEjUyJI5QzjgPRY9w7WRQcgQE
+	 lMsv1wj0aATEQB85J+VCX88FNdB75QYdUyHRt/UcaFx7ZvQKuhn7Z/l87VpJ5TBBbh
+	 if4cRR3cT+ahFiTUdw06hCEF0/ZQIckNphay/7wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/253] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
+Subject: [PATCH 6.6 104/262] ipv6: fix possible infinite loop in fib6_info_uses_dev()
 Date: Tue, 12 Aug 2025 19:28:12 +0200
-Message-ID: <20250812172953.153791011@linuxfoundation.org>
+Message-ID: <20250812172957.519239924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
+[ Upstream commit f8d8ce1b515a0a6af72b30502670a406cfb75073 ]
 
-When iwl_opmode_register() fails, it does not unregster rate control,
-which will cause a memory leak issue, this patch fixes it.
+fib6_info_uses_dev() seems to rely on RCU without an explicit
+protection.
 
-Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Like the prior fix in rt6_nlmsg_size(),
+we need to make sure fib6_del_route() or fib6_add_rt2node()
+have not removed the anchor from the list, or we risk an infinite loop.
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250725140725.3626540-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/route.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 0a11ee347bf3..64cc1e1bbb47 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -64,8 +64,10 @@ static int __init iwl_mvm_init(void)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 41d358dd58c0..f180b7bc9f57 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5865,16 +5865,21 @@ static bool fib6_info_uses_dev(const struct fib6_info *f6i,
+ 	if (f6i->fib6_nh->fib_nh_dev == dev)
+ 		return true;
+ 
+-	if (f6i->fib6_nsiblings) {
+-		struct fib6_info *sibling, *next_sibling;
++	if (READ_ONCE(f6i->fib6_nsiblings)) {
++		const struct fib6_info *sibling;
+ 
+-		list_for_each_entry_safe(sibling, next_sibling,
+-					 &f6i->fib6_siblings, fib6_siblings) {
+-			if (sibling->fib6_nh->fib_nh_dev == dev)
++		rcu_read_lock();
++		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
++					fib6_siblings) {
++			if (sibling->fib6_nh->fib_nh_dev == dev) {
++				rcu_read_unlock();
+ 				return true;
++			}
++			if (!READ_ONCE(f6i->fib6_nsiblings))
++				break;
+ 		}
++		rcu_read_unlock();
  	}
- 
- 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
--	if (ret)
-+	if (ret) {
- 		pr_err("Unable to register MVM op_mode: %d\n", ret);
-+		iwl_mvm_rate_control_unregister();
-+	}
- 
- 	return ret;
+-
+ 	return false;
  }
+ 
 -- 
 2.39.5
 
