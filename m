@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D79B22FD4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA3DB230EE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAA7E566B7D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4DDB188B184
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640D02FDC2B;
-	Tue, 12 Aug 2025 17:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44EE2FA0FD;
+	Tue, 12 Aug 2025 17:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxiTGDp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHfU2VyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211E42FDC32;
-	Tue, 12 Aug 2025 17:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B452DE1E2;
+	Tue, 12 Aug 2025 17:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020630; cv=none; b=sxuB0Exh8uRZWa9YamapROiTwiN7BaurxO16D1U/VT3sUXQ3j/heBBIsVd+MAHB0W1xQdYVrxhrlOedsefF+u8m+7A3xwg/PqBbs9cpusowhk4iKFfTTBCGTy19yS9T2Apr90RO1noDRrU3mcE1fcHXBBozk6LRIQqvUeFvUrOw=
+	t=1755021457; cv=none; b=NXb3fRZCsvWODZnr57nZB1dRE/qN9sWjaxM1jlLtfl7jLWlnN322L88yrO17+ksE3SHt3QL+b3zFkYQZZ5kcki4dPBE0Ygbyno4DncjmJRDBR7oxrR2ySrGWqodW5ycEeXqnpDn5PV94QHpYrC3BJnkSRXo/KJEMv4CX12zZMC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020630; c=relaxed/simple;
-	bh=vMsiozkvRUDcrDYGFg++QOHgUpZ9c92Pz2dByYNMzhs=;
+	s=arc-20240116; t=1755021457; c=relaxed/simple;
+	bh=D6OYEeAuYtkUAW68rz2hjKM7o9tvrG5btJM3c39eEcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QosXWRHFeBvsOc1lKRpzwlbE09bqXwqjbNZ/ATeFEFdn/IRdAkI2Vn1yb7snnblv6h5aVhsT0GyBQc9lJUmyBBljQMr5qLQtVfaR7nPcDa8JxCIB4W9dE+eSuNqBdcYjuvR6WKRorYjmegLpoCK/fKF3zAP4+Mz3j4Icr0Gt01I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxiTGDp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AAAC4CEF0;
-	Tue, 12 Aug 2025 17:43:49 +0000 (UTC)
+	 MIME-Version; b=KrcQbfm+VWYoKfXEJQWYwtOND1eoyZUNPA7KzY/ktMQv0z3zC5SKSF+gb9hVr0zvJHgP4LaIqlS6hPrS1dUWK1ZdIYQjtoSZIGi352XYXIcX3b8DwXbtXOgAjL8vfHorb+B/GM3DCULmseauOqfpiA2wfsNI3dlIb/d6MyNffg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHfU2VyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8725C4CEF0;
+	Tue, 12 Aug 2025 17:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020630;
-	bh=vMsiozkvRUDcrDYGFg++QOHgUpZ9c92Pz2dByYNMzhs=;
+	s=korg; t=1755021457;
+	bh=D6OYEeAuYtkUAW68rz2hjKM7o9tvrG5btJM3c39eEcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxiTGDp0+EkFsVo5QzjZ3mek90eE3ZxTy3bn9GGXrqnXLNBEC/656RbPsoImSiGZ5
-	 ZdpX3xYoBUKURViyEV0MnHZUQNZa/BbQOSCfPEagVtegQBRXLj0c4iH/IpuJ5t/w3B
-	 A/wqQ+iuuvfinPDPIqMKlVLskWewEAZU5Eq731gw=
+	b=bHfU2VyYKbWGi/OEe3MQLjM3hf+Vy1KoAR1P0zLTKTrCQTn2UbGfQx/qDL6HepGR9
+	 Yc9IXcaAOazVswxMe8luvpG/iBJtbfU7FALJcDkDvB4vVUrCxyfOw6cCdvt1/ZB1gq
+	 bdQk+x5wS6MdEiQu2RyU5rpGIQIkUGItWMtnUihk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephane Grosjean <stephane.grosjean@hms-networks.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Mengbiao Xiong <xisme1998@gmail.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/253] can: peak_usb: fix USB FD devices potential malfunction
+Subject: [PATCH 6.6 129/262] crypto: ccp - Fix crash when rebind ccp device for ccp.ko
 Date: Tue, 12 Aug 2025 19:28:37 +0200
-Message-ID: <20250812172954.184889586@linuxfoundation.org>
+Message-ID: <20250812172958.598838400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephane Grosjean <stephane.grosjean@hms-networks.com>
+From: Mengbiao Xiong <xisme1998@gmail.com>
 
-[ Upstream commit 788199b73b6efe4ee2ade4d7457b50bb45493488 ]
+[ Upstream commit 181698af38d3f93381229ad89c09b5bd0496661a ]
 
-The latest firmware versions of USB CAN FD interfaces export the EP numbers
-to be used to dialog with the device via the "type" field of a response to
-a vendor request structure, particularly when its value is greater than or
-equal to 2.
+When CONFIG_CRYPTO_DEV_CCP_DEBUGFS is enabled, rebinding
+the ccp device causes the following crash:
 
-Correct the driver's test of this field.
+$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/unbind
+$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/bind
 
-Fixes: 4f232482467a ("can: peak_usb: include support for a new MCU")
-Signed-off-by: Stephane Grosjean <stephane.grosjean@hms-networks.com>
-Link: https://patch.msgid.link/20250724081550.11694-1-stephane.grosjean@free.fr
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-[mkl: rephrase commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+[  204.976930] BUG: kernel NULL pointer dereference, address: 0000000000000098
+[  204.978026] #PF: supervisor write access in kernel mode
+[  204.979126] #PF: error_code(0x0002) - not-present page
+[  204.980226] PGD 0 P4D 0
+[  204.981317] Oops: Oops: 0002 [#1] SMP NOPTI
+...
+[  204.997852] Call Trace:
+[  204.999074]  <TASK>
+[  205.000297]  start_creating+0x9f/0x1c0
+[  205.001533]  debugfs_create_dir+0x1f/0x170
+[  205.002769]  ? srso_return_thunk+0x5/0x5f
+[  205.004000]  ccp5_debugfs_setup+0x87/0x170 [ccp]
+[  205.005241]  ccp5_init+0x8b2/0x960 [ccp]
+[  205.006469]  ccp_dev_init+0xd4/0x150 [ccp]
+[  205.007709]  sp_init+0x5f/0x80 [ccp]
+[  205.008942]  sp_pci_probe+0x283/0x2e0 [ccp]
+[  205.010165]  ? srso_return_thunk+0x5/0x5f
+[  205.011376]  local_pci_probe+0x4f/0xb0
+[  205.012584]  pci_device_probe+0xdb/0x230
+[  205.013810]  really_probe+0xed/0x380
+[  205.015024]  __driver_probe_device+0x7e/0x160
+[  205.016240]  device_driver_attach+0x2f/0x60
+[  205.017457]  bind_store+0x7c/0xb0
+[  205.018663]  drv_attr_store+0x28/0x40
+[  205.019868]  sysfs_kf_write+0x5f/0x70
+[  205.021065]  kernfs_fop_write_iter+0x145/0x1d0
+[  205.022267]  vfs_write+0x308/0x440
+[  205.023453]  ksys_write+0x6d/0xe0
+[  205.024616]  __x64_sys_write+0x1e/0x30
+[  205.025778]  x64_sys_call+0x16ba/0x2150
+[  205.026942]  do_syscall_64+0x56/0x1e0
+[  205.028108]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  205.029276] RIP: 0033:0x7fbc36f10104
+[  205.030420] Code: 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 8d 05 e1 08 2e 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+
+This patch sets ccp_debugfs_dir to NULL after destroying it in
+ccp5_debugfs_destroy, allowing the directory dentry to be
+recreated when rebinding the ccp device.
+
+Tested on AMD Ryzen 7 1700X.
+
+Fixes: 3cdbe346ed3f ("crypto: ccp - Add debugfs entries for CCP information")
+Signed-off-by: Mengbiao Xiong <xisme1998@gmail.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/crypto/ccp/ccp-debugfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-index 2ea1500df393..a203b7fca2f3 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-@@ -49,7 +49,7 @@ struct __packed pcan_ufd_fw_info {
- 	__le32	ser_no;		/* S/N */
- 	__le32	flags;		/* special functions */
+diff --git a/drivers/crypto/ccp/ccp-debugfs.c b/drivers/crypto/ccp/ccp-debugfs.c
+index a1055554b47a..dc26bc22c91d 100644
+--- a/drivers/crypto/ccp/ccp-debugfs.c
++++ b/drivers/crypto/ccp/ccp-debugfs.c
+@@ -319,5 +319,8 @@ void ccp5_debugfs_setup(struct ccp_device *ccp)
  
--	/* extended data when type == PCAN_USBFD_TYPE_EXT */
-+	/* extended data when type >= PCAN_USBFD_TYPE_EXT */
- 	u8	cmd_out_ep;	/* ep for cmd */
- 	u8	cmd_in_ep;	/* ep for replies */
- 	u8	data_out_ep[2];	/* ep for CANx TX */
-@@ -939,10 +939,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
- 			dev->can.ctrlmode |= CAN_CTRLMODE_FD_NON_ISO;
- 		}
- 
--		/* if vendor rsp is of type 2, then it contains EP numbers to
--		 * use for cmds pipes. If not, then default EP should be used.
-+		/* if vendor rsp type is greater than or equal to 2, then it
-+		 * contains EP numbers to use for cmds pipes. If not, then
-+		 * default EP should be used.
- 		 */
--		if (fw_info->type != cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
-+		if (le16_to_cpu(fw_info->type) < PCAN_USBFD_TYPE_EXT) {
- 			fw_info->cmd_out_ep = PCAN_USBPRO_EP_CMDOUT;
- 			fw_info->cmd_in_ep = PCAN_USBPRO_EP_CMDIN;
- 		}
-@@ -975,11 +976,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
- 	dev->device_number =
- 		le32_to_cpu(pdev->usb_if->fw_info.dev_id[dev->ctrl_idx]);
- 
--	/* if vendor rsp is of type 2, then it contains EP numbers to
--	 * use for data pipes. If not, then statically defined EP are used
--	 * (see peak_usb_create_dev()).
-+	/* if vendor rsp type is greater than or equal to 2, then it contains EP
-+	 * numbers to use for data pipes. If not, then statically defined EP are
-+	 * used (see peak_usb_create_dev()).
- 	 */
--	if (fw_info->type == cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
-+	if (le16_to_cpu(fw_info->type) >= PCAN_USBFD_TYPE_EXT) {
- 		dev->ep_msg_in = fw_info->data_in_ep;
- 		dev->ep_msg_out = fw_info->data_out_ep[dev->ctrl_idx];
- 	}
+ void ccp5_debugfs_destroy(void)
+ {
++	mutex_lock(&ccp_debugfs_lock);
+ 	debugfs_remove_recursive(ccp_debugfs_dir);
++	ccp_debugfs_dir = NULL;
++	mutex_unlock(&ccp_debugfs_lock);
+ }
 -- 
 2.39.5
 
