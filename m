@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-168863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EEBB236F9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:06:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1A7B2371F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D589178E69
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:06:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF2F1B65D3F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB59285043;
-	Tue, 12 Aug 2025 19:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDF52882CE;
+	Tue, 12 Aug 2025 19:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubkEQwBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBsO4iYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F19326FA77;
-	Tue, 12 Aug 2025 19:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73A1C1AAA;
+	Tue, 12 Aug 2025 19:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025584; cv=none; b=QQIz5xpIxYZQdp83TLKarl2rO8SqJkSIQgK0UjKJKSTpkH19u9cJ3g6aqFWvlTZJUXjxqUvY8QUQUZ0r51KjFo/rxsWo5WHuu///1EmII5FdJjjGERFvUGBAFl2CJUbloSlgRaQHGGtRUL/vx+fiAWZZJ71hh6+IcgpodBgQgSw=
+	t=1755025621; cv=none; b=trgWuH6CE5b20S8uz2cyodjeJK2awz4G7M84KPOOsNfIbjdXDI4VYNbEa0cLXvkztiK8FuWvF342lFWbI7fq1oBsyI9+5+Y7scighOILvywKBISLRB8Fo58JoiJ0bz3OHNLim1XbcYYEtlTLnfqALvTYgIQ1c6Tonspp+SBzW0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025584; c=relaxed/simple;
-	bh=Vh5e5znPw5GFvtC/vmapGJrdgSogTatdbvukrJ+o8Tw=;
+	s=arc-20240116; t=1755025621; c=relaxed/simple;
+	bh=Cq7Ig1pZUZPdU61J2/K+ULtjmu0AIl3GtEq7hK6P/bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pTvt5l7XWSXHujUUIHlgbij/i5XdZ2zuQj4aRBBhfgShgnSJBL0P2GWSA9+4EEKpvJOtT91MasaOY1aNlRKh2xiUaQ120ywSq9pfolRjg4Xu26rSomRGL9ewZLEai2X3myDukHvwtbcP3fMFlTqhIyb+nwlENpH88jhM35i+5+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubkEQwBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024AEC4CEF0;
-	Tue, 12 Aug 2025 19:06:23 +0000 (UTC)
+	 MIME-Version; b=L0hR/R9MJBCtHpvL0l9nIV8SGmjQmdd3B0uP4xXJoc4YcLnDOVGCq8prkK+0P89oKxdM9YYmy1JMajIPD0nwEvQ89CMM0/aNB3l9jRnaGRZfyOzQ5dgS4GDFopWJ+/PTmPJ7IZa1nyi0TISFaH8ux6acNVMtUjZpXE0lY4JQ2R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBsO4iYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCAAC4CEF0;
+	Tue, 12 Aug 2025 19:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025584;
-	bh=Vh5e5znPw5GFvtC/vmapGJrdgSogTatdbvukrJ+o8Tw=;
+	s=korg; t=1755025621;
+	bh=Cq7Ig1pZUZPdU61J2/K+ULtjmu0AIl3GtEq7hK6P/bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubkEQwBJYGQP83rV6YsV5Uck7opJiNSBh4LO3ZPl9n0xC0wBAE8ae3Am8b2ttiVOE
-	 ksEQPS5XUiZ/d2kVDL5NcPa4e7cetaQFe+O0GowEgx16Iovg+ysZBo8TCbpfz9B+XD
-	 sZfSRobZA0vDbhpdc+YW3mtGc0Lq1zv2Z4dgb0cI=
+	b=ZBsO4iYkrS6JM9kOI3TvVKC/9Zaeu8M8ll6BNlx75yXQlamj8ptjZ0m6NvUKMTjQ6
+	 hFwU79+yFLd6aZVsVgjZm/mTF6asq+kFvWQU1SqsOKUsb7LUeX3vWh+uPSVoWwFznj
+	 ZHterm5IRWPd2tg15zpLbxyVc1EGuHdGmZToNVNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Annette Kobou <annette.kobou@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 077/480] selftests: breakpoints: use suspend_stats to reliably check suspend success
-Date: Tue, 12 Aug 2025 19:44:45 +0200
-Message-ID: <20250812174400.625378720@linuxfoundation.org>
+Subject: [PATCH 6.15 078/480] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
+Date: Tue, 12 Aug 2025 19:44:46 +0200
+Message-ID: <20250812174400.670524916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,112 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Annette Kobou <annette.kobou@kontron.de>
 
-[ Upstream commit 07b7c2b4eca3f83ce9cd5ee3fa1c7c001d721c69 ]
+[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
 
-The step_after_suspend_test verifies that the system successfully
-suspended and resumed by setting a timerfd and checking whether the
-timer fully expired. However, this method is unreliable due to timing
-races.
+The polarity of the DE signal of the transceiver is active-high for
+sending. Therefore rs485-rts-active-low is wrong and needs to be
+removed to make RS485 transmissions work.
 
-In practice, the system may take time to enter suspend, during which the
-timer may expire just before or during the transition. As a result,
-the remaining time after resume may show non-zero nanoseconds, even if
-suspend/resume completed successfully. This leads to false test failures.
-
-Replace the timer-based check with a read from
-/sys/power/suspend_stats/success. This counter is incremented only
-after a full suspend/resume cycle, providing a reliable and race-free
-indicator.
-
-Also remove the unused file descriptor for /sys/power/state, which
-remained after switching to a system() call to trigger suspend [1].
-
-[1] https://lore.kernel.org/all/20240930224025.2858767-1-yifei.l.liu@oracle.com/
-
-Link: https://lore.kernel.org/r/20250626191626.36794-1-moonhee.lee.ca@gmail.com
-Fixes: c66be905cda2 ("selftests: breakpoints: use remaining time to check if suspend succeed")
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../breakpoints/step_after_suspend_test.c     | 41 ++++++++++++++-----
- 1 file changed, 31 insertions(+), 10 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-index 8d275f03e977..8d233ac95696 100644
---- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-+++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-@@ -127,22 +127,42 @@ int run_test(int cpu)
- 	return KSFT_PASS;
- }
- 
-+/*
-+ * Reads the suspend success count from sysfs.
-+ * Returns the count on success or exits on failure.
-+ */
-+static int get_suspend_success_count_or_fail(void)
-+{
-+	FILE *fp;
-+	int val;
-+
-+	fp = fopen("/sys/power/suspend_stats/success", "r");
-+	if (!fp)
-+		ksft_exit_fail_msg(
-+			"Failed to open suspend_stats/success: %s\n",
-+			strerror(errno));
-+
-+	if (fscanf(fp, "%d", &val) != 1) {
-+		fclose(fp);
-+		ksft_exit_fail_msg(
-+			"Failed to read suspend success count\n");
-+	}
-+
-+	fclose(fp);
-+	return val;
-+}
-+
- void suspend(void)
- {
--	int power_state_fd;
- 	int timerfd;
- 	int err;
-+	int count_before;
-+	int count_after;
- 	struct itimerspec spec = {};
- 
- 	if (getuid() != 0)
- 		ksft_exit_skip("Please run the test as root - Exiting.\n");
- 
--	power_state_fd = open("/sys/power/state", O_RDWR);
--	if (power_state_fd < 0)
--		ksft_exit_fail_msg(
--			"open(\"/sys/power/state\") failed %s)\n",
--			strerror(errno));
--
- 	timerfd = timerfd_create(CLOCK_BOOTTIME_ALARM, 0);
- 	if (timerfd < 0)
- 		ksft_exit_fail_msg("timerfd_create() failed\n");
-@@ -152,14 +172,15 @@ void suspend(void)
- 	if (err < 0)
- 		ksft_exit_fail_msg("timerfd_settime() failed\n");
- 
-+	count_before = get_suspend_success_count_or_fail();
-+
- 	system("(echo mem > /sys/power/state) 2> /dev/null");
- 
--	timerfd_gettime(timerfd, &spec);
--	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
-+	count_after = get_suspend_success_count_or_fail();
-+	if (count_after <= count_before)
- 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
- 
- 	close(timerfd);
--	close(power_state_fd);
- }
- 
- int main(int argc, char **argv)
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+index 29d2f86d5e34..f4c45e964daf 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+@@ -168,7 +168,6 @@ &uart2 {
+ 	pinctrl-0 = <&pinctrl_uart2>;
+ 	linux,rs485-enabled-at-boot-time;
+ 	rs485-rx-during-tx;
+-	rs485-rts-active-low;
+ 	uart-has-rtscts;
+ 	status = "okay";
+ };
 -- 
 2.39.5
 
