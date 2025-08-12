@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A2EB23077
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73195B2327B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 628E11AA1F4D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64FD1AA6704
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E132FDC2C;
-	Tue, 12 Aug 2025 17:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F752E36F1;
+	Tue, 12 Aug 2025 18:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+4fkWHO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BT5WQEiv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A6D2868AF;
-	Tue, 12 Aug 2025 17:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A462F5E;
+	Tue, 12 Aug 2025 18:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021071; cv=none; b=POSAxMVI9LP0bgJRqmFWn+RkrLgG7MTcGcoqJsUGHeyL+BnzyRT1gf+F2IzCFPHjr18VC6CSb7EtV9Pj/ifrY5yLWspDuUkISY8cHInDcL2g5WzVLpZAlrCKKhJqqrD+MJt5m4reoKkwV0WBnwHHOTZLK9v+9l0nbl/VGp1YtSg=
+	t=1755022411; cv=none; b=U/jhziwLdRu6Cwp2azhMOsSUKBjnilfXPaWUtgvo6oRZNF7dGDzAQKwPzYpVrCv217RhV0pTK3hUf/Ulw4oT2OlXYd2lug09BuKhDjtHKL9n9b+7NyWGT1ewarz+e36Dk+qmFPvQQ4igD0mvR8eDl2L5QqvI1GRSW9kNMTzQX6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021071; c=relaxed/simple;
-	bh=ylp76rcNKym1RrUw3xasl2zDDq3xKLtW4xv84SxaNJo=;
+	s=arc-20240116; t=1755022411; c=relaxed/simple;
+	bh=tPREHKfGwQQ6CFotQSXFbPNxCisSQT2SCoh6E/YSoCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvnxDBER3O5TlOSTZ/I/zc4bQUCfs5/pxxc/+KuLoohEQaAp3NIT49L9J47/Beo6aXG88FqDzGmRcG7iymhYd0s/nxeGM37i5F8i9r1eI7ALCeAUQcrgbmXQ9l/RYUn3RoG5YOnYZxIKU+KgFRBZA5fN58AFFu8szY/734Ky2hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+4fkWHO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CDBC4CEF0;
-	Tue, 12 Aug 2025 17:51:10 +0000 (UTC)
+	 MIME-Version; b=LiUwRL+udmgDgrkEuh6yCwZdBDzh3NvfyQ6A+s4arxL7ldJ+Ant6ZutapQcA9nOJAQgLhV1vF7maoV+4AzmoM/V1ct3hh1GY4VDMYQmuXvjnV0yXRV5oH6fdhr/w4PbOkQ7J0msVby1byoin2XGPLMCdPf4ZRp1LgmIxZbA9eY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BT5WQEiv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF9AC4CEF1;
+	Tue, 12 Aug 2025 18:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021071;
-	bh=ylp76rcNKym1RrUw3xasl2zDDq3xKLtW4xv84SxaNJo=;
+	s=korg; t=1755022411;
+	bh=tPREHKfGwQQ6CFotQSXFbPNxCisSQT2SCoh6E/YSoCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+4fkWHOpP6KM6Vcl/vG/FmiAE4mbglJvcGSRVGFE5KjLI8kdN2MZTnRInoz44SDT
-	 OcncXlZoZi6nf1Vyro7vqO7nVBmXH7J4IYOuAfKXT+W2zCAXFTlrg6a/z/lV9xC6/k
-	 uq69JOmSiox7wQJoFZ2vFiCuChytEmtUexPN0imk=
+	b=BT5WQEiv4SgOspBXzpeT4jqJHLwR2z8yciNpEvW6ImS06sGnxAlEkcQ7vQ1mN+KeY
+	 ukBN0l8cV35NOIjt7+cdQY7D3AxDUaFzqLCkAzIQKHFEJc2FrV7lNOl67YHDg/J54f
+	 NXu4xcVBJ3jkEa9o38vCbO72puWuUGINLKQx/Yx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/262] wifi: rtl818x: Kill URBs before clearing tx status queue
+Subject: [PATCH 6.12 148/369] ipv6: annotate data-races around rt->fib6_nsiblings
 Date: Tue, 12 Aug 2025 19:27:25 +0200
-Message-ID: <20250812172955.413544970@linuxfoundation.org>
+Message-ID: <20250812173020.350712644@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
+[ Upstream commit 31d7d67ba1274f42494256d52e86da80ed09f3cb ]
 
-In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
-b_tx_status.queue. This change prevents callbacks from using already freed
-skb due to anchor was not killed before freeing such skb.
+rt->fib6_nsiblings can be read locklessly, add corresponding
+READ_ONCE() and WRITE_ONCE() annotations.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000080
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
- Call Trace:
-  <IRQ>
-  rtl8187_tx_cb+0x116/0x150 [rtl8187]
-  __usb_hcd_giveback_urb+0x9d/0x120
-  usb_giveback_urb_bh+0xbb/0x140
-  process_one_work+0x19b/0x3c0
-  bh_worker+0x1a7/0x210
-  tasklet_action+0x10/0x30
-  handle_softirqs+0xf0/0x340
-  __irq_exit_rcu+0xcd/0xf0
-  common_interrupt+0x85/0xa0
-  </IRQ>
-
-Tested on RTL8187BvE device.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
+Fixes: 66f5d6ce53e6 ("ipv6: replace rwlock with rcu and spinlock in fib6_table")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250725140725.3626540-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_fib.c | 20 +++++++++++++-------
+ net/ipv6/route.c   |  5 +++--
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 04945f905d6d..f6528469022b 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev)
- 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
- 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index c53303e89390..aa1046fbf28e 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -440,15 +440,17 @@ struct fib6_dump_arg {
+ static int fib6_rt_dump(struct fib6_info *rt, struct fib6_dump_arg *arg)
+ {
+ 	enum fib_event_type fib_event = FIB_EVENT_ENTRY_REPLACE;
++	unsigned int nsiblings;
+ 	int err;
  
-+	usb_kill_anchored_urbs(&priv->anchored);
-+
- 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
- 		dev_kfree_skb_any(skb);
+ 	if (!rt || rt == arg->net->ipv6.fib6_null_entry)
+ 		return 0;
  
--	usb_kill_anchored_urbs(&priv->anchored);
- 	mutex_unlock(&priv->conf_mutex);
+-	if (rt->fib6_nsiblings)
++	nsiblings = READ_ONCE(rt->fib6_nsiblings);
++	if (nsiblings)
+ 		err = call_fib6_multipath_entry_notifier(arg->nb, fib_event,
+ 							 rt,
+-							 rt->fib6_nsiblings,
++							 nsiblings,
+ 							 arg->extack);
+ 	else
+ 		err = call_fib6_entry_notifier(arg->nb, fib_event, rt,
+@@ -1126,7 +1128,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
  
- 	if (!priv->is_rtl8187b)
+ 			if (rt6_duplicate_nexthop(iter, rt)) {
+ 				if (rt->fib6_nsiblings)
+-					rt->fib6_nsiblings = 0;
++					WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 				if (!(iter->fib6_flags & RTF_EXPIRES))
+ 					return -EEXIST;
+ 				if (!(rt->fib6_flags & RTF_EXPIRES)) {
+@@ -1155,7 +1157,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 			 */
+ 			if (rt_can_ecmp &&
+ 			    rt6_qualify_for_ecmp(iter))
+-				rt->fib6_nsiblings++;
++				WRITE_ONCE(rt->fib6_nsiblings,
++					   rt->fib6_nsiblings + 1);
+ 		}
+ 
+ 		if (iter->fib6_metric > rt->fib6_metric)
+@@ -1205,7 +1208,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 		fib6_nsiblings = 0;
+ 		list_for_each_entry_safe(sibling, temp_sibling,
+ 					 &rt->fib6_siblings, fib6_siblings) {
+-			sibling->fib6_nsiblings++;
++			WRITE_ONCE(sibling->fib6_nsiblings,
++				   sibling->fib6_nsiblings + 1);
+ 			BUG_ON(sibling->fib6_nsiblings != rt->fib6_nsiblings);
+ 			fib6_nsiblings++;
+ 		}
+@@ -1250,7 +1254,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 				list_for_each_entry_safe(sibling, next_sibling,
+ 							 &rt->fib6_siblings,
+ 							 fib6_siblings)
+-					sibling->fib6_nsiblings--;
++					WRITE_ONCE(sibling->fib6_nsiblings,
++						   sibling->fib6_nsiblings - 1);
+ 				WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 				list_del_rcu(&rt->fib6_siblings);
+ 				rt6_multipath_rebalance(next_sibling);
+@@ -1968,7 +1973,8 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
+ 			notify_del = true;
+ 		list_for_each_entry_safe(sibling, next_sibling,
+ 					 &rt->fib6_siblings, fib6_siblings)
+-			sibling->fib6_nsiblings--;
++			WRITE_ONCE(sibling->fib6_nsiblings,
++				   sibling->fib6_nsiblings - 1);
+ 		WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 		list_del_rcu(&rt->fib6_siblings);
+ 		rt6_multipath_rebalance(next_sibling);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 8b84ed926cd1..22866444efc0 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5240,7 +5240,8 @@ static void ip6_route_mpath_notify(struct fib6_info *rt,
+ 	 */
+ 	rcu_read_lock();
+ 
+-	if ((nlflags & NLM_F_APPEND) && rt_last && rt_last->fib6_nsiblings) {
++	if ((nlflags & NLM_F_APPEND) && rt_last &&
++	    READ_ONCE(rt_last->fib6_nsiblings)) {
+ 		rt = list_first_or_null_rcu(&rt_last->fib6_siblings,
+ 					    struct fib6_info,
+ 					    fib6_siblings);
+@@ -5773,7 +5774,7 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+ 		if (dst->lwtstate &&
+ 		    lwtunnel_fill_encap(skb, dst->lwtstate, RTA_ENCAP, RTA_ENCAP_TYPE) < 0)
+ 			goto nla_put_failure;
+-	} else if (rt->fib6_nsiblings) {
++	} else if (READ_ONCE(rt->fib6_nsiblings)) {
+ 		struct fib6_info *sibling;
+ 		struct nlattr *mp;
+ 
 -- 
 2.39.5
 
