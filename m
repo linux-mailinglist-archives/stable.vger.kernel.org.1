@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-169245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423D5B238EF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:30:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF78B238CB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B8F188BB50
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D9345A1F91
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADAE2D3A94;
-	Tue, 12 Aug 2025 19:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B2F2D3A94;
+	Tue, 12 Aug 2025 19:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcs8SbZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+54gK5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371DF2C21F7;
-	Tue, 12 Aug 2025 19:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179B529BD9D;
+	Tue, 12 Aug 2025 19:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026868; cv=none; b=AEoqc9R4gCPtHuudOsLdIiVVp4DnxQTfKildW5iDhcaaF9igtbfpinoeo/vmnevi7LuBMYoPI36d9T8FzlZl97+HEv2RqYyb5/XB1BTLL0W+QExBFC8kJJAXtdSuHwt6gS47GQqqhI+5yDaeqANvbujYL5h8vqxzrtI+HuwEhJE=
+	t=1755026875; cv=none; b=GyhVMr9qsPQDw6KH7tF9cOAJiBnbN8OBrJfaxZpZ8M5bhMgu5CfpJ7lUy6iCr/XU5ho6XPR2eCF0gYbyTfedCmHw3+M+wrtxu2ILc8ZG6nXVD+X4/J7NDMt3ox5a7DXOlFPfmHiuYHyGnLxKcenOoLxIR8p4eMrDosASVE1f7co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026868; c=relaxed/simple;
-	bh=fwQfzrsZ+f5FGRdjZ7OgaRvjWhERUHfLchUcpdREjXc=;
+	s=arc-20240116; t=1755026875; c=relaxed/simple;
+	bh=Z0OAZlpab9KAWMoU2zKotmeBTACGrOuYGmS3quvF7L0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gr1jFcQecacuJFcTFiK+CbqQ6I4KvSje9c4yUkfin8SQ7Oycbiy9EeCKk8YyLld5igmJPFF2Z4d0QBk6+RYLyOciLqoh6rTSUGLWEezs7czPWNl/w4TXwUsMyBDZd69iYB7Vve+ix8nxLLyfHPM7CXM5lso7xzxFguEyZtKs7Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcs8SbZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD60C4CEF0;
-	Tue, 12 Aug 2025 19:27:47 +0000 (UTC)
+	 MIME-Version; b=KfKv4UBuUzH8bVaqMzviXcPC011fI0rOXNgFDy8nmHnjBWbYlh3OcMxom4GLoXBQXZdUnB8i/Gmd6LMwAFE9BP3OkV9ExEPvH1uUyM/esfiQmnU20wBH41aYHn+Xd5mjFwqJvfsED9yFxwS/d8HCs5IkABEHsxamlelqbh9oYso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+54gK5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610ABC4CEF0;
+	Tue, 12 Aug 2025 19:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026868;
-	bh=fwQfzrsZ+f5FGRdjZ7OgaRvjWhERUHfLchUcpdREjXc=;
+	s=korg; t=1755026875;
+	bh=Z0OAZlpab9KAWMoU2zKotmeBTACGrOuYGmS3quvF7L0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcs8SbZSMchsK5dlefF9YmkVzM30BLfa1rGyqzfJytmnlsVDsVZ+FOZcXxLwhK5sM
-	 K9ey1/inX3Z5k4RUTASnvjfNYbRvCKjIdSYrHbqymiWduQnckW8JvzAMUV8euEM92L
-	 5RerHxStX6B5KVNzFVv7pPlO4xQNZD1PxErPJAuI=
+	b=H+54gK5t5cmdGu/MajPypBOpezPntWFzVu+XyBF+rhO/MMvLcMVFgVuLwWrmiHzwM
+	 n8m/OvgsVnQojKMpVLQ6cWn4exhiiQ4SZ0Yu21BK8XupeObvqpqcULsY0txjzMRzru
+	 ruahq2vo9kUkqDY31xqQKfuf6ee6vX2a57pagIdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.15 464/480] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is supported
-Date: Tue, 12 Aug 2025 19:51:12 +0200
-Message-ID: <20250812174416.530544704@linuxfoundation.org>
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Subject: [PATCH 6.15 465/480] s390/mm: Remove possible false-positive warning in pte_free_defer()
+Date: Tue, 12 Aug 2025 19:51:13 +0200
+Message-ID: <20250812174416.569473373@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -64,55 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 
-commit 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 upstream.
+commit 5647f61ad9171e8f025558ed6dc5702c56a33ba3 upstream.
 
-Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
-guest CPUID model, as debug support is supposed to be available if RTM is
-supported, and there are no known downsides to letting the guest debug RTM
-aborts.
+Commit 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing
+page") added a warning to pte_free_defer(), on our request. It was meant
+to warn if this would ever be reached for KVM guest mappings, because
+the page table would be freed w/o a gmap_unlink(). THP mappings are not
+allowed for KVM guests on s390, so this should never happen.
 
-Note, there are no known bug reports related to RTM_DEBUG, the primary
-motivation is to reduce the probability of breaking existing guests when a
-future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
-(KVM currently lets L2 run with whatever hardware supports; whoops).
+However, it is possible that the warning is triggered in a valid case as
+false-positive.
 
-Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
-DR7.RTM.
+s390_enable_sie() takes the mmap_lock, marks all VMAs as VM_NOHUGEPAGE and
+splits possibly existing THP guest mappings. mm->context.has_pgste is set
+to 1 before that, to prevent races with the mm_has_pgste() check in
+MADV_HUGEPAGE.
 
-Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+khugepaged drops the mmap_lock for file mappings and might run in parallel,
+before a vma is marked VM_NOHUGEPAGE, but after mm->context.has_pgste was
+set to 1. If it finds file mappings to collapse, it will eventually call
+pte_free_defer(). This will trigger the warning, but it is a valid case
+because gmap is not yet set up, and the THP mappings will be split again.
+
+Therefore, remove the warning and the comment.
+
+Fixes: 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing page")
+Cc: <stable@vger.kernel.org> # 6.6+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/msr-index.h |    1 +
- arch/x86/kvm/vmx/vmx.c           |    4 ++++
- 2 files changed, 5 insertions(+)
+ arch/s390/mm/pgalloc.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -419,6 +419,7 @@
- #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
- #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
- #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
-+#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -176,11 +176,6 @@ void pte_free_defer(struct mm_struct *mm
+ 	struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
  
- #define MSR_PEBS_FRONTEND		0x000003f7
- 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2192,6 +2192,10 @@ static u64 vmx_get_supported_debugctl(st
- 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
- 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
- 
-+	if (boot_cpu_has(X86_FEATURE_RTM) &&
-+	    (host_initiated || guest_cpu_cap_has(vcpu, X86_FEATURE_RTM)))
-+		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
-+
- 	return debugctl;
+ 	call_rcu(&ptdesc->pt_rcu_head, pte_free_now);
+-	/*
+-	 * THPs are not allowed for KVM guests. Warn if pgste ever reaches here.
+-	 * Turn to the generic pte_free_defer() version once gmap is removed.
+-	 */
+-	WARN_ON_ONCE(mm_has_pgste(mm));
  }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
 
 
