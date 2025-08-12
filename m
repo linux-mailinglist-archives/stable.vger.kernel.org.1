@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17CCB234FA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44C2B23280
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21ED61A2448F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFA437AC3E2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE33F2FFDCD;
-	Tue, 12 Aug 2025 18:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E567C280037;
+	Tue, 12 Aug 2025 18:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vO1SdlBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsMuhDzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5D12FE59E;
-	Tue, 12 Aug 2025 18:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A042DBF5E;
+	Tue, 12 Aug 2025 18:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024102; cv=none; b=k0x+a3/zRcNv/JiwkDj2KnO1O8k/6B368xJWbqHPi2FH19ckDE46rMyToXBdQ4EfVWRNNzAKYfYFk3/wgGJm0L+ZmZ2QbffAucsnG/k88xVNszz21dgf+xlOTI1w3unSl9m3Ui53k9ZCCRBZ+ipheCzBpNOrVWU1GvArjca5Nyo=
+	t=1755022729; cv=none; b=uoQQwf0YZEG045GjmE84ekYoIMBs6+0Mug64Ouy1m6POyaAGG8ywNYiQcWImFyebOPUT0HvQLqsUrFkFrTv3DYAabSa2g9fh+vcg5S1Q6MMUpry4Hf58225/cap+z22UnctqK/brlk+dVgumD8RM/Wk+7S+4TajpW1B8LrteWe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024102; c=relaxed/simple;
-	bh=kB5l6H62mP/m1EZJXU3j+h6JYN8Q21FjCPr0e3dfp8E=;
+	s=arc-20240116; t=1755022729; c=relaxed/simple;
+	bh=0kKE/VO+Fn/Yccfhq0MdDwTMHQPRDb/GWclzSxgnsRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tf4fo+HAJgeBRyqsESTNMX37kFIzanNbSZcGAcgMKN/SyhE5Ofmmwctk9j5QOjWP3Q3cAwlKaM4yI+xwVCwMwpUOyosAmaQP0tDoez35MrtSw/IwpTKYM2F1+r622TTQJwgzRVBZpdLHTq5R7OkgpROBUTR08bwbgU3he5L0/Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vO1SdlBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE87C4CEF0;
-	Tue, 12 Aug 2025 18:41:41 +0000 (UTC)
+	 MIME-Version; b=KmyyGC+yUTcpYBGFPBlTcTKCdPhFHDuWnv92b/aZhw+cwIIgICNBE5+HnP2bqsOqaqqd2EZz/wZ/m+CYtsKihylJFHwiMKbtI7pCw2SGAktA8e+AuGGmVNSaChxbXAlYdpbVdcfb7Yc49KbnPbpUdcWeBTOGld3Y20h/z+9+rAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsMuhDzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF1AC4CEF1;
+	Tue, 12 Aug 2025 18:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024102;
-	bh=kB5l6H62mP/m1EZJXU3j+h6JYN8Q21FjCPr0e3dfp8E=;
+	s=korg; t=1755022729;
+	bh=0kKE/VO+Fn/Yccfhq0MdDwTMHQPRDb/GWclzSxgnsRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vO1SdlBhAw224gEq6kn6StQhKQdQ1y6guhEtsR2f3/gSWysv+OMgG980OwSfaaEow
-	 3YndwbGkRCh5Kbru7hrDNYiBhVNNbHcOudgSMFsoGSzQeU/c299rTQ32VlT8nGrrlh
-	 h1h5FFTpMXUThQkaPZyhxbdf43NJdC29VLj1/hX8=
+	b=XsMuhDzriyP7E7Qk3No0lXhPn/IsxsGW2qPCUY4TtbCFc9WSMO9F9CIJcAy/gtK8j
+	 L8mUBmkMqLf0HiwvhTeRTwPfnIUCytGigYezD7BT55vQ49fJOWqieHiNpuS8Plo7n7
+	 Vg6rlSyY5bDzLDu19/KipkiWOF7kAHzEcY5k/sDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Helge Deller <deller@gmx.de>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 242/627] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+Subject: [PATCH 6.12 240/369] apparmor: Fix unaligned memory accesses in KUnit test
 Date: Tue, 12 Aug 2025 19:28:57 +0200
-Message-ID: <20250812173428.504775841@linuxfoundation.org>
+Message-ID: <20250812173023.803265340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
+[ Upstream commit c68804199dd9d63868497a27b5da3c3cd15356db ]
 
-After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
-IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
-got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
+The testcase triggers some unnecessary unaligned memory accesses on the
+parisc architecture:
+  Kernel: unaligned access to 0x12f28e27 in policy_unpack_test_init+0x180/0x374 (iir 0x0cdc1280)
+  Kernel: unaligned access to 0x12f28e67 in policy_unpack_test_init+0x270/0x374 (iir 0x64dc00ce)
 
-Because of this, as part of the scan request handler for the P2P Discovery,
-vif struct used for adding the Probe Request P2P IE in firmware got changed
-from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
-So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
-requests frames and the other P2P peers were unable to discover this device
-causing a regression on the P2P feature.
+Use the existing helper functions put_unaligned_le32() and
+put_unaligned_le16() to avoid such warnings on architectures which
+prefer aligned memory accesses.
 
-To fix this, while setting the P2P IE in firmware, properly use the vif of
-the P2P discovery wdev on which the driver received the P2P scan request.
-This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
-is completed.
-
-Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 98c0cc48e27e ("apparmor: fix policy_unpack_test on big endian systems")
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ security/apparmor/policy_unpack_test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index b94c3619526c..086b9157292a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1544,10 +1544,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 		return -EAGAIN;
- 	}
+diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
+index f070902da8fc..a7ac0ccc6cfe 100644
+--- a/security/apparmor/policy_unpack_test.c
++++ b/security/apparmor/policy_unpack_test.c
+@@ -9,6 +9,8 @@
+ #include "include/policy.h"
+ #include "include/policy_unpack.h"
  
--	/* If scan req comes for p2p0, send it over primary I/F */
--	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
--		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
--
- 	brcmf_dbg(SCAN, "START ESCAN\n");
- 
- 	cfg->scan_request = request;
-@@ -1563,6 +1559,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 	if (err)
- 		goto scan_out;
- 
-+	/* If scan req comes for p2p0, send it over primary I/F */
-+	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
-+		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++#include <linux/unaligned.h>
 +
- 	err = brcmf_do_escan(vif->ifp, request);
- 	if (err)
- 		goto scan_out;
+ #define TEST_STRING_NAME "TEST_STRING"
+ #define TEST_STRING_DATA "testing"
+ #define TEST_STRING_BUF_OFFSET \
+@@ -80,7 +82,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
+ 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
+ 	strscpy(buf + 3, TEST_U32_NAME, e->end - (void *)(buf + 3));
+ 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
+-	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
++	put_unaligned_le32(TEST_U32_DATA, buf + 3 + strlen(TEST_U32_NAME) + 2);
+ 
+ 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
+ 	*buf = AA_NAME;
+@@ -103,7 +105,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
+ 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
+ 	strscpy(buf + 3, TEST_ARRAY_NAME, e->end - (void *)(buf + 3));
+ 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
+-	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
++	put_unaligned_le16(TEST_ARRAY_SIZE, buf + 3 + strlen(TEST_ARRAY_NAME) + 2);
+ 
+ 	return e;
+ }
 -- 
 2.39.5
 
