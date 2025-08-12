@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A628BB232D8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F896B23081
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 798337ADEDC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5AB31AA265F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC342F745D;
-	Tue, 12 Aug 2025 18:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE972FABF8;
+	Tue, 12 Aug 2025 17:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLwselyc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h13Y9N+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25555280037;
-	Tue, 12 Aug 2025 18:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CA82868AF;
+	Tue, 12 Aug 2025 17:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022937; cv=none; b=qM9d3cE1GuxM4YnG3zmo8VL2riuFbqE5dwdYRg92LaU3s/AYb6/ZIlAdcBIWm+v/8Gg40QbSjV9yfM/8Ic7boBy/J2p34EaShaNeYAIaGaQmrEfpDdnOnYsv+mmyjwP2oXvMNT3F3vngvyfqWKi8EMb+Rm5uzzlHaMNLKFtTgcI=
+	t=1755021108; cv=none; b=amCQ0H9griiArHMfqph5fk0D6KKiDnFESNM+KJ0img/dZQgUj1Z+rMVgfSyWAv5fusFURu3i9zhJtlrgKzGCNwOmhIDgwfT9oh/n0LXDk+mN2U9wGAgUoWCwxsP+jMM+VuTHuJCHO1gFVw4EZlo3n1wv2yHCjHZ/dVhUwSniL8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022937; c=relaxed/simple;
-	bh=8KsLHJJnQI2yIjElGneCNNJjn4xGjBU9p0/kwIJTx0I=;
+	s=arc-20240116; t=1755021108; c=relaxed/simple;
+	bh=NoSvVet8nOhxFuN39w6mCBgBkLQQTyNMjl40STqeEek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YchOMi7eVzvwQryNZP2kEg8nVnIHVVeVQN09rwZDA2IXpomp8Z9u4UL57vL8Mg2tEDFHzc/caxAtaQJ0YDpAJvVHCuOtWaJjplBjATvZbWtAcgtFRixBJzyaS8x5g+KfJjM4f/yCGNBPeshehmFq9qO9+Q+so1Edf3iE4slhnEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLwselyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A1EC4CEF0;
-	Tue, 12 Aug 2025 18:22:16 +0000 (UTC)
+	 MIME-Version; b=msCHeQDFgBcqlHQYNRoZYjYG7uJfJoQx4K8Jq5ASwIVC/PS0Ay3/M+X1iHtZXHMs11wbLRXoo1MnoUZknyKHAAcbRfeem7XHRPGCA3/QOeTyxOwgq90rYyx+P6/q0DOCGXlO873XVt95AvYPeJsiizl6senRCygATPBdzeIMIRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h13Y9N+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F128C4CEF0;
+	Tue, 12 Aug 2025 17:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022937;
-	bh=8KsLHJJnQI2yIjElGneCNNJjn4xGjBU9p0/kwIJTx0I=;
+	s=korg; t=1755021108;
+	bh=NoSvVet8nOhxFuN39w6mCBgBkLQQTyNMjl40STqeEek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLwselycFtJaFXq9Jfw7b6gOIyx2fuREmLKvmQHd/rZMyS1VO9Cj6QYx1Iz2vrs7Q
-	 mbZJ3+dwSKNx8fnQewY2CRLb+0Zr4XqG1gy41+9tmohA8PJFYaZyYQSvy841GPJjPd
-	 c3VDnOHNmb7RLXQ44wajg/36F8hpHvN4SKHxVua0=
+	b=h13Y9N+QmhdMrlWCCxidM6gdh84j1q2OLFVJxD0eILjrW8lbpiBZA/OxGxi+jntcx
+	 xhjlMcrw7vH/+tlFftxOoTXcOrJzg51jeynvfP6IBY+oHMTBtQQx+tvlcoLgu/9va3
+	 Dos9vExpqfuTutGMRBynGFOkui6INkMJ5KMX+Vvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@hammerspace.com>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Olga Kornievskaia <okorniev@redhat.com>,
+	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 303/369] sunrpc: fix client side handling of tls alerts
+Subject: [PATCH 6.1 212/253] pNFS/flexfiles: dont attempt pnfs on fatal DS errors
 Date: Tue, 12 Aug 2025 19:30:00 +0200
-Message-ID: <20250812173028.131151781@linuxfoundation.org>
+Message-ID: <20250812172957.853620459@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +62,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
 
-[ Upstream commit cc5d59081fa26506d02de2127ab822f40d88bc5a ]
+[ Upstream commit f06bedfa62d57f7b67d44aacd6badad2e13a803f ]
 
-A security exploit was discovered in NFS over TLS in tls_alert_recv
-due to its assumption that there is valid data in the msghdr's
-iterator's kvec.
+When an applications get killed (SIGTERM/SIGINT) while pNFS client performs a connection
+to DS, client ends in an infinite loop of connect-disconnect. This
+source of the issue, it that flexfilelayoutdev#nfs4_ff_layout_prepare_ds gets an error
+on nfs4_pnfs_ds_connect with status ERESTARTSYS, which is set by rpc_signal_task, but
+the error is treated as transient, thus retried.
 
-Instead, this patch proposes the rework how control messages are
-setup and used by sock_recvmsg().
+The issue is reproducible with Ctrl+C the following script(there should be ~1000 files in
+a directory, client should must not have any connections to DSes):
 
-If no control message structure is setup, kTLS layer will read and
-process TLS data record types. As soon as it encounters a TLS control
-message, it would return an error. At that point, NFS can setup a kvec
-backed control buffer and read in the control message such as a TLS
-alert. Scott found that a msg iterator can advance the kvec pointer
-as a part of the copy process thus we need to revert the iterator
-before calling into the tls_alert_recv.
+```
+echo 3 > /proc/sys/vm/drop_caches
 
-Fixes: dea034b963c8 ("SUNRPC: Capture CMSG metadata on client-side receive")
-Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
-Suggested-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Link: https://lore.kernel.org/r/20250731180058.4669-3-okorniev@redhat.com
+for i in *
+do
+   head -1 $i
+done
+```
+
+The change aims to propagate the nfs4_ff_layout_prepare_ds error state
+to the caller that can decide whatever this is a retryable error or not.
+
+Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+Link: https://lore.kernel.org/r/20250627071751.189663-1-tigran.mkrtchyan@desy.de
+Fixes: 260f32adb88d ("pNFS/flexfiles: Check the result of nfs4_pnfs_ds_connect")
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c | 40 ++++++++++++++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 10 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c    | 26 ++++++++++++++---------
+ fs/nfs/flexfilelayout/flexfilelayoutdev.c |  6 +++---
+ 2 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 67d099c7c662..1397bb48cdde 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -358,7 +358,7 @@ xs_alloc_sparse_pages(struct xdr_buf *buf, size_t want, gfp_t gfp)
- 
- static int
- xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
--		     struct cmsghdr *cmsg, int ret)
-+		     unsigned int *msg_flags, struct cmsghdr *cmsg, int ret)
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index aa55b5df065b..5dd16f4ae74d 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -745,14 +745,14 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
  {
- 	u8 content_type = tls_get_record_type(sock->sk, cmsg);
- 	u8 level, description;
-@@ -371,7 +371,7 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
- 		 * record, even though there might be more frames
- 		 * waiting to be decrypted.
- 		 */
--		msg->msg_flags &= ~MSG_EOR;
-+		*msg_flags &= ~MSG_EOR;
- 		break;
- 	case TLS_RECORD_TYPE_ALERT:
- 		tls_alert_recv(sock->sk, msg, &level, &description);
-@@ -386,19 +386,33 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
+ 	struct nfs4_ff_layout_segment *fls = FF_LAYOUT_LSEG(lseg);
+ 	struct nfs4_ff_layout_mirror *mirror;
+-	struct nfs4_pnfs_ds *ds;
++	struct nfs4_pnfs_ds *ds = ERR_PTR(-EAGAIN);
+ 	u32 idx;
+ 
+ 	/* mirrors are initially sorted by efficiency */
+ 	for (idx = start_idx; idx < fls->mirror_array_cnt; idx++) {
+ 		mirror = FF_LAYOUT_COMP(lseg, idx);
+ 		ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
+-		if (!ds)
++		if (IS_ERR(ds))
+ 			continue;
+ 
+ 		if (check_device &&
+@@ -760,10 +760,10 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
+ 			continue;
+ 
+ 		*best_idx = idx;
+-		return ds;
++		break;
+ 	}
+ 
+-	return NULL;
++	return ds;
  }
  
- static int
--xs_sock_recv_cmsg(struct socket *sock, struct msghdr *msg, int flags)
-+xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- {
- 	union {
- 		struct cmsghdr	cmsg;
- 		u8		buf[CMSG_SPACE(sizeof(u8))];
- 	} u;
-+	u8 alert[2];
-+	struct kvec alert_kvec = {
-+		.iov_base = alert,
-+		.iov_len = sizeof(alert),
-+	};
-+	struct msghdr msg = {
-+		.msg_flags = *msg_flags,
-+		.msg_control = &u,
-+		.msg_controllen = sizeof(u),
-+	};
- 	int ret;
+ static struct nfs4_pnfs_ds *
+@@ -933,7 +933,7 @@ ff_layout_pg_init_write(struct nfs_pageio_descriptor *pgio,
+ 	for (i = 0; i < pgio->pg_mirror_count; i++) {
+ 		mirror = FF_LAYOUT_COMP(pgio->pg_lseg, i);
+ 		ds = nfs4_ff_layout_prepare_ds(pgio->pg_lseg, mirror, true);
+-		if (!ds) {
++		if (IS_ERR(ds)) {
+ 			if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
+ 				goto out_mds;
+ 			pnfs_generic_pg_cleanup(pgio);
+@@ -1839,6 +1839,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
+ 	u32 idx = hdr->pgio_mirror_idx;
+ 	int vers;
+ 	struct nfs_fh *fh;
++	bool ds_fatal_error = false;
  
--	msg->msg_control = &u;
--	msg->msg_controllen = sizeof(u);
--	ret = sock_recvmsg(sock, msg, flags);
--	if (msg->msg_controllen != sizeof(u))
--		ret = xs_sock_process_cmsg(sock, msg, &u.cmsg, ret);
-+	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
-+		      alert_kvec.iov_len);
-+	ret = sock_recvmsg(sock, &msg, flags);
-+	if (ret > 0 &&
-+	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
-+		iov_iter_revert(&msg.msg_iter, ret);
-+		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
-+					   -EAGAIN);
+ 	dprintk("--> %s ino %lu pgbase %u req %zu@%llu\n",
+ 		__func__, hdr->inode->i_ino,
+@@ -1846,8 +1847,10 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
+ 
+ 	mirror = FF_LAYOUT_COMP(lseg, idx);
+ 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
+-	if (!ds)
++	if (IS_ERR(ds)) {
++		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
+ 		goto out_failed;
 +	}
- 	return ret;
- }
  
-@@ -408,7 +422,13 @@ xs_sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags, size_t seek)
- 	ssize_t ret;
- 	if (seek != 0)
- 		iov_iter_advance(&msg->msg_iter, seek);
--	ret = xs_sock_recv_cmsg(sock, msg, flags);
-+	ret = sock_recvmsg(sock, msg, flags);
-+	/* Handle TLS inband control message lazily */
-+	if (msg->msg_flags & MSG_CTRUNC) {
-+		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
-+		if (ret == 0 || ret == -EIO)
-+			ret = xs_sock_recv_cmsg(sock, &msg->msg_flags, flags);
+ 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
+ 						   hdr->inode);
+@@ -1888,7 +1891,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
+ 	return PNFS_ATTEMPTED;
+ 
+ out_failed:
+-	if (ff_layout_avoid_mds_available_ds(lseg))
++	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
+ 		return PNFS_TRY_AGAIN;
+ 	trace_pnfs_mds_fallback_read_pagelist(hdr->inode,
+ 			hdr->args.offset, hdr->args.count,
+@@ -1909,11 +1912,14 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
+ 	int vers;
+ 	struct nfs_fh *fh;
+ 	u32 idx = hdr->pgio_mirror_idx;
++	bool ds_fatal_error = false;
+ 
+ 	mirror = FF_LAYOUT_COMP(lseg, idx);
+ 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
+-	if (!ds)
++	if (IS_ERR(ds)) {
++		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
+ 		goto out_failed;
 +	}
- 	return ret > 0 ? ret + seek : ret;
- }
  
-@@ -434,7 +454,7 @@ xs_read_discard(struct socket *sock, struct msghdr *msg, int flags,
- 		size_t count)
+ 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
+ 						   hdr->inode);
+@@ -1956,7 +1962,7 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
+ 	return PNFS_ATTEMPTED;
+ 
+ out_failed:
+-	if (ff_layout_avoid_mds_available_ds(lseg))
++	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
+ 		return PNFS_TRY_AGAIN;
+ 	trace_pnfs_mds_fallback_write_pagelist(hdr->inode,
+ 			hdr->args.offset, hdr->args.count,
+@@ -1998,7 +2004,7 @@ static int ff_layout_initiate_commit(struct nfs_commit_data *data, int how)
+ 	idx = calc_ds_index_from_commit(lseg, data->ds_commit_index);
+ 	mirror = FF_LAYOUT_COMP(lseg, idx);
+ 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
+-	if (!ds)
++	if (IS_ERR(ds))
+ 		goto out_err;
+ 
+ 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
+diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+index d21c5ecfbf1c..95d5dca67145 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
++++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+@@ -370,11 +370,11 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
+ 			  struct nfs4_ff_layout_mirror *mirror,
+ 			  bool fail_return)
  {
- 	iov_iter_discard(&msg->msg_iter, ITER_DEST, count);
--	return xs_sock_recv_cmsg(sock, msg, flags);
-+	return xs_sock_recvmsg(sock, msg, flags, 0);
- }
+-	struct nfs4_pnfs_ds *ds = NULL;
++	struct nfs4_pnfs_ds *ds;
+ 	struct inode *ino = lseg->pls_layout->plh_inode;
+ 	struct nfs_server *s = NFS_SERVER(ino);
+ 	unsigned int max_payload;
+-	int status;
++	int status = -EAGAIN;
  
- #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
+ 	if (!ff_layout_init_mirror_ds(lseg->pls_layout, mirror))
+ 		goto noconnect;
+@@ -412,7 +412,7 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
+ 	ff_layout_send_layouterror(lseg);
+ 	if (fail_return || !ff_layout_has_available_ds(lseg))
+ 		pnfs_error_mark_layout_for_return(ino, lseg);
+-	ds = NULL;
++	ds = ERR_PTR(status);
+ out:
+ 	return ds;
+ }
 -- 
 2.39.5
 
