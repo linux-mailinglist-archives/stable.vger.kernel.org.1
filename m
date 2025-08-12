@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5C6B2302D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A28EB23432
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E70AF560F5D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 301D1189B34B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2A42F7449;
-	Tue, 12 Aug 2025 17:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242DC2ECE93;
+	Tue, 12 Aug 2025 18:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPf1N+uS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ43neWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13E2221FAC;
-	Tue, 12 Aug 2025 17:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ABD191F98;
+	Tue, 12 Aug 2025 18:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020935; cv=none; b=A7s/Oz84uNj25/eE6m20kK07fSyPSRfIDrPRNqiDnAiZqwzIuHRco9Uv03AoVlzWabpf51NMzUof1xWsJdVxSMTCIe9nvb5HO/yvAzKuftCjNX1xZDH5i05fTWRF5wxh6C6cmvjQJqON6dy+9Efm0eZF2dCHBezE6/Abiq5k87c=
+	t=1755023521; cv=none; b=hVvo4j0SOZGKULPa6w5xR18T0N62UcQj73Y2KscU4wSsBlYA+jIU1g+yQAw0MGcGI5SrvJDUACBVVC4pkeevFgzTjz4MOpsf4rLZqikN7JVZuKRor4/z/f6wRNIeWwCC9lBgwHXgAWmn8wPN/tRybynqHkgxH+ApEM7oMbRxsRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020935; c=relaxed/simple;
-	bh=K10sw1N5zoVri5KnROM7peCi1JqX9w7fb0fsmw3QbhE=;
+	s=arc-20240116; t=1755023521; c=relaxed/simple;
+	bh=3DBAJFTsUohV2XsA1LvEqGhKuaRHoYFp/p4ZztGii4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K8qO7wrLwC/jPZwi6k6OgeU3WzSLuwjJxVa0vAh2kRaMknleWYr5gSMuCr5VG0fD6E9k0edTehhoX+2sDP7cuq9Ez2dRKRmQsqzWOMjFyiVYVspkkd5i+fH1EOjNk+HwQdkkUsdBCmtTJnWNoJIT1WDdQcquKRxKVHfoPDoWDH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPf1N+uS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFCFC4CEF0;
-	Tue, 12 Aug 2025 17:48:54 +0000 (UTC)
+	 MIME-Version; b=MylXgRtO8PuFB7MWZJ9HiI1eh7Hz0JL8VThfv27HPP+YIT69lQv/Ruqm6PPgf+RMk2F/iOHnrHIUf2fHC2gKkmwLVvcwsuoNo7lo0mNdlZwfT80skXDIYDdeJRmfjJ8OijbVl3+7KPEmr6biG3tGPxxlZ1IJKAY//b6nlSk9wAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ43neWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC8DC4CEF0;
+	Tue, 12 Aug 2025 18:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020934;
-	bh=K10sw1N5zoVri5KnROM7peCi1JqX9w7fb0fsmw3QbhE=;
+	s=korg; t=1755023521;
+	bh=3DBAJFTsUohV2XsA1LvEqGhKuaRHoYFp/p4ZztGii4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPf1N+uSsN+yToP8ALPog3UAT/sl6FBS1Mgj3MGsWXw3Vfu8hLJxeBSZbUpf12lM+
-	 9uitQ9zH7YgNdmPhGr9aSddXKQaIv6wszm/LEOM3Gwiq4Ld1+5BCPT8Y/dQRvfpCEw
-	 TLDlwNAKtRq+4640PqVmR2YZieUKx6IiChiXaiDQ=
+	b=FZ43neWC4GhkpMviDeD15EVW+K9bQELQog+ei+jXdh+Wm6PSvsXQqIXweNM+i9WsU
+	 Un9pSQ3Ahzbfd/QTcxdD2aiIWbWdjadutaI7okhzBMLubPuKz6xeKTOoXNWOmK34Sz
+	 ZW1XXSYLUIo1PwPfMFhR8XzqpC9SAv5IIOqDLjBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/262] hfsplus: remove mutex_lock check in hfsplus_free_extents
+Subject: [PATCH 6.16 105/627] arm64: dts: rockchip: Fix pinctrl node names for RK3528
 Date: Tue, 12 Aug 2025 19:26:40 +0200
-Message-ID: <20250812172953.507489301@linuxfoundation.org>
+Message-ID: <20250812173423.310638929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit fcb96956c921f1aae7e7b477f2435c56f77a31b4 ]
+[ Upstream commit f2792bf1c7a54ef23fb3a84286b66f427bfc4853 ]
 
-Syzbot reported an issue in hfsplus filesystem:
+Following warnings can be observed with CHECK_DTBS=y for the RK3528:
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 4400 at fs/hfsplus/extents.c:346
-	hfsplus_free_extents+0x700/0xad0
-Call Trace:
-<TASK>
-hfsplus_file_truncate+0x768/0xbb0 fs/hfsplus/extents.c:606
-hfsplus_write_begin+0xc2/0xd0 fs/hfsplus/inode.c:56
-cont_expand_zero fs/buffer.c:2383 [inline]
-cont_write_begin+0x2cf/0x860 fs/buffer.c:2446
-hfsplus_write_begin+0x86/0xd0 fs/hfsplus/inode.c:52
-generic_cont_expand_simple+0x151/0x250 fs/buffer.c:2347
-hfsplus_setattr+0x168/0x280 fs/hfsplus/inode.c:263
-notify_change+0xe38/0x10f0 fs/attr.c:420
-do_truncate+0x1fb/0x2e0 fs/open.c:65
-do_sys_ftruncate+0x2eb/0x380 fs/open.c:193
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  rk3528-pinctrl.dtsi:101.36-105.5: Warning (node_name_chars_strict):
+    /pinctrl/fephy/fephym0-led_dpx: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:108.38-112.5: Warning (node_name_chars_strict):
+    /pinctrl/fephy/fephym0-led_link: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:115.36-119.5: Warning (node_name_chars_strict):
+    /pinctrl/fephy/fephym0-led_spd: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:122.36-126.5: Warning (node_name_chars_strict):
+   /pinctrl/fephy/fephym1-led_dpx: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:129.38-133.5: Warning (node_name_chars_strict):
+    /pinctrl/fephy/fephym1-led_link: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:136.36-140.5: Warning (node_name_chars_strict):
+    /pinctrl/fephy/fephym1-led_spd: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:782.32-790.5: Warning (node_name_chars_strict):
+    /pinctrl/rgmii/rgmii-rx_bus2: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:793.32-801.5: Warning (node_name_chars_strict):
+    /pinctrl/rgmii/rgmii-tx_bus2: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:804.36-810.5: Warning (node_name_chars_strict):
+    /pinctrl/rgmii/rgmii-rgmii_clk: Character '_' not recommended in node name
+  rk3528-pinctrl.dtsi:813.36-823.5: Warning (node_name_chars_strict):
+    /pinctrl/rgmii/rgmii-rgmii_bus: Character '_' not recommended in node name
 
-To avoid deadlock, Commit 31651c607151 ("hfsplus: avoid deadlock
-on file truncation") unlock extree before hfsplus_free_extents(),
-and add check wheather extree is locked in hfsplus_free_extents().
+Rename the affected nodes to fix these warnings.
 
-However, when operations such as hfsplus_file_release,
-hfsplus_setattr, hfsplus_unlink, and hfsplus_get_block are executed
-concurrently in different files, it is very likely to trigger the
-WARN_ON, which will lead syzbot and xfstest to consider it as an
-abnormality.
-
-The comment above this warning also describes one of the easy
-triggering situations, which can easily trigger and cause
-xfstest&syzbot to report errors.
-
-[task A]			[task B]
-->hfsplus_file_release
-  ->hfsplus_file_truncate
-    ->hfs_find_init
-      ->mutex_lock
-    ->mutex_unlock
-				->hfsplus_write_begin
-				  ->hfsplus_get_block
-				    ->hfsplus_file_extend
-				      ->hfsplus_ext_read_extent
-				        ->hfs_find_init
-					  ->mutex_lock
-    ->hfsplus_free_extents
-      WARN_ON(mutex_is_locked) !!!
-
-Several threads could try to lock the shared extents tree.
-And warning can be triggered in one thread when another thread
-has locked the tree. This is the wrong behavior of the code and
-we need to remove the warning.
-
-Fixes: 31651c607151f ("hfsplus: avoid deadlock on file truncation")
-Reported-by: syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000057fa4605ef101c4c@google.com/
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250529061807.2213498-1-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: a31fad19ae39 ("arm64: dts: rockchip: Add pinctrl and gpio nodes for RK3528")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20250621113859.2146400-1-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/extents.c | 3 ---
- 1 file changed, 3 deletions(-)
+ .../boot/dts/rockchip/rk3528-pinctrl.dtsi     | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
-index 9c51867dddc5..f6ac98b0d44f 100644
---- a/fs/hfsplus/extents.c
-+++ b/fs/hfsplus/extents.c
-@@ -342,9 +342,6 @@ static int hfsplus_free_extents(struct super_block *sb,
- 	int i;
- 	int err = 0;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi b/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi
+index ea051362fb26..59b75c91bbb7 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi
+@@ -98,42 +98,42 @@ eth_pins: eth-pins {
  
--	/* Mapping the allocation file may lock the extent tree */
--	WARN_ON(mutex_is_locked(&HFSPLUS_SB(sb)->ext_tree->tree_lock));
--
- 	hfsplus_dump_extent(extent);
- 	for (i = 0; i < 8; extent++, i++) {
- 		count = be32_to_cpu(extent->block_count);
+ 	fephy {
+ 		/omit-if-no-ref/
+-		fephym0_led_dpx: fephym0-led_dpx {
++		fephym0_led_dpx: fephym0-led-dpx {
+ 			rockchip,pins =
+ 				/* fephy_led_dpx_m0 */
+ 				<4 RK_PB5 2 &pcfg_pull_none>;
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		fephym0_led_link: fephym0-led_link {
++		fephym0_led_link: fephym0-led-link {
+ 			rockchip,pins =
+ 				/* fephy_led_link_m0 */
+ 				<4 RK_PC0 2 &pcfg_pull_none>;
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		fephym0_led_spd: fephym0-led_spd {
++		fephym0_led_spd: fephym0-led-spd {
+ 			rockchip,pins =
+ 				/* fephy_led_spd_m0 */
+ 				<4 RK_PB7 2 &pcfg_pull_none>;
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		fephym1_led_dpx: fephym1-led_dpx {
++		fephym1_led_dpx: fephym1-led-dpx {
+ 			rockchip,pins =
+ 				/* fephy_led_dpx_m1 */
+ 				<2 RK_PA4 5 &pcfg_pull_none>;
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		fephym1_led_link: fephym1-led_link {
++		fephym1_led_link: fephym1-led-link {
+ 			rockchip,pins =
+ 				/* fephy_led_link_m1 */
+ 				<2 RK_PA6 5 &pcfg_pull_none>;
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		fephym1_led_spd: fephym1-led_spd {
++		fephym1_led_spd: fephym1-led-spd {
+ 			rockchip,pins =
+ 				/* fephy_led_spd_m1 */
+ 				<2 RK_PA5 5 &pcfg_pull_none>;
+@@ -779,7 +779,7 @@ rgmii_miim: rgmii-miim {
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		rgmii_rx_bus2: rgmii-rx_bus2 {
++		rgmii_rx_bus2: rgmii-rx-bus2 {
+ 			rockchip,pins =
+ 				/* rgmii_rxd0 */
+ 				<3 RK_PA3 2 &pcfg_pull_none>,
+@@ -790,7 +790,7 @@ rgmii_rx_bus2: rgmii-rx_bus2 {
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		rgmii_tx_bus2: rgmii-tx_bus2 {
++		rgmii_tx_bus2: rgmii-tx-bus2 {
+ 			rockchip,pins =
+ 				/* rgmii_txd0 */
+ 				<3 RK_PA1 2 &pcfg_pull_none_drv_level_2>,
+@@ -801,7 +801,7 @@ rgmii_tx_bus2: rgmii-tx_bus2 {
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		rgmii_rgmii_clk: rgmii-rgmii_clk {
++		rgmii_rgmii_clk: rgmii-rgmii-clk {
+ 			rockchip,pins =
+ 				/* rgmii_rxclk */
+ 				<3 RK_PA5 2 &pcfg_pull_none>,
+@@ -810,7 +810,7 @@ rgmii_rgmii_clk: rgmii-rgmii_clk {
+ 		};
+ 
+ 		/omit-if-no-ref/
+-		rgmii_rgmii_bus: rgmii-rgmii_bus {
++		rgmii_rgmii_bus: rgmii-rgmii-bus {
+ 			rockchip,pins =
+ 				/* rgmii_rxd2 */
+ 				<3 RK_PA7 2 &pcfg_pull_none>,
 -- 
 2.39.5
 
