@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-167591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3FBB230CD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE12B231C6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FD968775C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 499AA1891323
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F28A2FDC55;
-	Tue, 12 Aug 2025 17:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959F72FF179;
+	Tue, 12 Aug 2025 18:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtksfO7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oe7vfvZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01ED2DE1E2;
-	Tue, 12 Aug 2025 17:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BF92F5E;
+	Tue, 12 Aug 2025 18:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021333; cv=none; b=oXk6CSRX3ffnStWmu1Ila8ZM1yOrJLss421vEgFL2KcZTM5+SFO4DepyaRSGXbIddIZS6rNfnKsdi11bWtakj9g/Z2kLP5fUrr/tm8aeodtzztTuIWAfJZV03bzkXIHG8Qs/YbqyYA5uADKndp2DCxSrWM5GjftxjyhOWlLU384=
+	t=1755021870; cv=none; b=Foe+NKkjzwtc5rZRPL7ZsM0UY8W3oCuMnnOL02nlI/N3C7bDT7rfSO+RMUKs2/evhfwRl+dkS0JAMnJKfIx5a/Ly7x76oDIY8USp68dIgBwWP+bcayxEC08lF3c+La5nnbQFm7imzeyzpJcOivcdDnRGAT9iP9xCn83KwVdTR9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021333; c=relaxed/simple;
-	bh=OQF2IZIs9VrOS3Ro2dQaMltZdxgwfXUMZoxZ3HVtOnY=;
+	s=arc-20240116; t=1755021870; c=relaxed/simple;
+	bh=gD7MV7E8BYlWUB4hGzE7nzWXsTx2T15W1O/w4BwqCK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UjpPqFvys6ic2sS5WgNcYhSvpNInMeTW8SQAmBC2IEVAqq+myUoTTCIwzbWe3xPYI8tI+RAxK4z2DfvqwXV87SXclBhBYpyI5DXb+z/EzC2CpzaWQZdToUolCQ9mdC8ix85+qekBnDUOLZfeqertSbiPK+wCg+1krtovkLMQ2LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtksfO7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0462CC4CEF1;
-	Tue, 12 Aug 2025 17:55:31 +0000 (UTC)
+	 MIME-Version; b=TJTATkzydhFu+UYcDDrm9VNy4nMOq5QceBX1/RVCu2xO6nYnwR6EP31RTzm3MVyVnDsdVUx4Vq04VLoHzHz2bFVkAQkcAmLPIsLsstiArwxQVn/BZSseGEK5AWNwu4lJW8qAcsJYzOSek+ZeOl6n+4NeZms0D9FP5ctl6a7k9gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oe7vfvZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F754C4CEF0;
+	Tue, 12 Aug 2025 18:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021332;
-	bh=OQF2IZIs9VrOS3Ro2dQaMltZdxgwfXUMZoxZ3HVtOnY=;
+	s=korg; t=1755021870;
+	bh=gD7MV7E8BYlWUB4hGzE7nzWXsTx2T15W1O/w4BwqCK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtksfO7owPWr17pahZDDGnpEj3rAkWbvGQBLfI/zpuuww152X/fcaIkvrq1hpbb+M
-	 79YXfKWYoAKT0SM4xjDcZyW+wnMVMNcUsrbYnrlwZ+gBjt/QfDfRrME5P2cmA57LaL
-	 LfZ/4dPa5lFhsrmcAhAf7L8cAjYXe74qhCDTD5Ho=
+	b=oe7vfvZaVF1TtUe72ZoK1xjOG9MET4sRJq7NSPqeUbQIWtYqSMihKulRWbhqsdr8f
+	 jaeLvi1quX1H/a9THP4fe3w7V9BI3eNO8Z5D+vWiwDKrn7X3nYgSu/G8HWDpcOC6++
+	 Fwb22agbLHHLVbTiKaWJ1TLOAjC83+RkCk0u6o6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 249/253] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
+	Prakash Viswalingam <quic_prakashv@quicinc.com>,
+	Elliot Berman <quic_eberman@quicinc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>
+Subject: [PATCH 6.6 249/262] freezer,sched: Use saved_state to reduce some spurious wakeups
 Date: Tue, 12 Aug 2025 19:30:37 +0200
-Message-ID: <20250812172959.457907251@linuxfoundation.org>
+Message-ID: <20250812173003.753251538@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +64,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Elliot Berman <quic_eberman@quicinc.com>
 
-commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 upstream.
+commit 8f0eed4a78a81668bc78923ea09f51a7a663c2b0 upstream.
 
-During communication with Focusrite Scarlett Gen 2/3/4 USB audio
-interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
-snd_usb_ctl_msg() which can cause initialisation and control
-operations to fail intermittently.
+After commit f5d39b020809 ("freezer,sched: Rewrite core freezer logic"),
+tasks that transition directly from TASK_FREEZABLE to TASK_FROZEN  are
+always woken up on the thaw path. Prior to that commit, tasks could ask
+freezer to consider them "frozen enough" via freezer_do_not_count(). The
+commit replaced freezer_do_not_count() with a TASK_FREEZABLE state which
+allows freezer to immediately mark the task as TASK_FROZEN without
+waking up the task.  This is efficient for the suspend path, but on the
+thaw path, the task is always woken up even if the task didn't need to
+wake up and goes back to its TASK_(UN)INTERRUPTIBLE state. Although
+these tasks are capable of handling of the wakeup, we can observe a
+power/perf impact from the extra wakeup.
 
-This patch adds up to 5 retries in scarlett2_usb(), with a delay
-starting at 5ms and doubling each time. This follows the same approach
-as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
-("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
-which resolved similar -EPROTO issues during device initialisation,
-and is the same approach as in fcp.c:fcp_usb().
+We observed on Android many tasks wait in the TASK_FREEZABLE state
+(particularly due to many of them being binder clients). We observed
+nearly 4x the number of tasks and a corresponding linear increase in
+latency and power consumption when thawing the system. The latency
+increased from ~15ms to ~50ms.
 
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
-Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Avoid the spurious wakeups by saving the state of TASK_FREEZABLE tasks.
+If the task was running before entering TASK_FROZEN state
+(__refrigerator()) or if the task received a wake up for the saved
+state, then the task is woken on thaw. saved_state from PREEMPT_RT locks
+can be re-used because freezer would not stomp on the rtlock wait flow:
+TASK_RTLOCK_WAIT isn't considered freezable.
+
+Reported-by: Prakash Viswalingam <quic_prakashv@quicinc.com>
+Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/freezer.c    |   41 +++++++++++++++++++----------------------
+ kernel/sched/core.c |   21 +++++++++++++--------
+ 2 files changed, 32 insertions(+), 30 deletions(-)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -1279,6 +1279,8 @@ static int scarlett2_usb(
- 	struct scarlett2_usb_packet *req, *resp = NULL;
- 	size_t req_buf_size = struct_size(req, data, req_size);
- 	size_t resp_buf_size = struct_size(resp, data, resp_size);
-+	int retries = 0;
-+	const int max_retries = 5;
- 	int err;
+--- a/kernel/freezer.c
++++ b/kernel/freezer.c
+@@ -71,7 +71,11 @@ bool __refrigerator(bool check_kthr_stop
+ 	for (;;) {
+ 		bool freeze;
  
- 	req = kmalloc(req_buf_size, GFP_KERNEL);
-@@ -1302,10 +1304,15 @@ static int scarlett2_usb(
- 	if (req_size)
- 		memcpy(req->data, req_data, req_size);
++		raw_spin_lock_irq(&current->pi_lock);
+ 		set_current_state(TASK_FROZEN);
++		/* unstale saved_state so that __thaw_task() will wake us up */
++		current->saved_state = TASK_RUNNING;
++		raw_spin_unlock_irq(&current->pi_lock);
  
-+retry:
- 	err = scarlett2_usb_tx(dev, private->bInterfaceNumber,
- 			       req, req_buf_size);
+ 		spin_lock_irq(&freezer_lock);
+ 		freeze = freezing(current) && !(check_kthr_stop && kthread_should_stop());
+@@ -129,6 +133,7 @@ static int __set_task_frozen(struct task
+ 		WARN_ON_ONCE(debug_locks && p->lockdep_depth);
+ #endif
  
- 	if (err != req_buf_size) {
-+		if (err == -EPROTO && ++retries <= max_retries) {
-+			msleep(5 * (1 << (retries - 1)));
-+			goto retry;
-+		}
- 		usb_audio_err(
- 			mixer->chip,
- 			"%s USB request result cmd %x was %d\n",
++	p->saved_state = p->__state;
+ 	WRITE_ONCE(p->__state, TASK_FROZEN);
+ 	return TASK_FROZEN;
+ }
+@@ -170,42 +175,34 @@ bool freeze_task(struct task_struct *p)
+ }
+ 
+ /*
+- * The special task states (TASK_STOPPED, TASK_TRACED) keep their canonical
+- * state in p->jobctl. If either of them got a wakeup that was missed because
+- * TASK_FROZEN, then their canonical state reflects that and the below will
+- * refuse to restore the special state and instead issue the wakeup.
++ * Restore the saved_state before the task entered freezer. For typical task
++ * in the __refrigerator(), saved_state == TASK_RUNNING so nothing happens
++ * here. For tasks which were TASK_NORMAL | TASK_FREEZABLE, their initial state
++ * is restored unless they got an expected wakeup (see ttwu_state_match()).
++ * Returns 1 if the task state was restored.
+  */
+-static int __set_task_special(struct task_struct *p, void *arg)
++static int __restore_freezer_state(struct task_struct *p, void *arg)
+ {
+-	unsigned int state = 0;
++	unsigned int state = p->saved_state;
+ 
+-	if (p->jobctl & JOBCTL_TRACED)
+-		state = TASK_TRACED;
+-
+-	else if (p->jobctl & JOBCTL_STOPPED)
+-		state = TASK_STOPPED;
+-
+-	if (state)
++	if (state != TASK_RUNNING) {
+ 		WRITE_ONCE(p->__state, state);
++		return 1;
++	}
+ 
+-	return state;
++	return 0;
+ }
+ 
+ void __thaw_task(struct task_struct *p)
+ {
+-	unsigned long flags, flags2;
++	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&freezer_lock, flags);
+ 	if (WARN_ON_ONCE(freezing(p)))
+ 		goto unlock;
+ 
+-	if (lock_task_sighand(p, &flags2)) {
+-		/* TASK_FROZEN -> TASK_{STOPPED,TRACED} */
+-		bool ret = task_call_func(p, __set_task_special, NULL);
+-		unlock_task_sighand(p, &flags2);
+-		if (ret)
+-			goto unlock;
+-	}
++	if (task_call_func(p, __restore_freezer_state, NULL))
++		goto unlock;
+ 
+ 	wake_up_state(p, TASK_FROZEN);
+ unlock:
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2251,7 +2251,7 @@ int task_state_match(struct task_struct
+ 
+ 	/*
+ 	 * Serialize against current_save_and_set_rtlock_wait_state() and
+-	 * current_restore_rtlock_saved_state().
++	 * current_restore_rtlock_saved_state(), and __refrigerator().
+ 	 */
+ 	raw_spin_lock_irq(&p->pi_lock);
+ 	match = __task_state_match(p, state);
+@@ -4034,13 +4034,17 @@ static void ttwu_queue(struct task_struc
+  * The caller holds p::pi_lock if p != current or has preemption
+  * disabled when p == current.
+  *
+- * The rules of PREEMPT_RT saved_state:
++ * The rules of saved_state:
+  *
+  *   The related locking code always holds p::pi_lock when updating
+  *   p::saved_state, which means the code is fully serialized in both cases.
+  *
+- *   The lock wait and lock wakeups happen via TASK_RTLOCK_WAIT. No other
+- *   bits set. This allows to distinguish all wakeup scenarios.
++ *   For PREEMPT_RT, the lock wait and lock wakeups happen via TASK_RTLOCK_WAIT.
++ *   No other bits set. This allows to distinguish all wakeup scenarios.
++ *
++ *   For FREEZER, the wakeup happens via TASK_FROZEN. No other bits set. This
++ *   allows us to prevent early wakeup of tasks before they can be run on
++ *   asymmetric ISA architectures (eg ARMv9).
+  */
+ static __always_inline
+ bool ttwu_state_match(struct task_struct *p, unsigned int state, int *success)
+@@ -4056,10 +4060,11 @@ bool ttwu_state_match(struct task_struct
+ 
+ 	/*
+ 	 * Saved state preserves the task state across blocking on
+-	 * an RT lock.  If the state matches, set p::saved_state to
+-	 * TASK_RUNNING, but do not wake the task because it waits
+-	 * for a lock wakeup. Also indicate success because from
+-	 * the regular waker's point of view this has succeeded.
++	 * an RT lock or TASK_FREEZABLE tasks.  If the state matches,
++	 * set p::saved_state to TASK_RUNNING, but do not wake the task
++	 * because it waits for a lock wakeup or __thaw_task(). Also
++	 * indicate success because from the regular waker's point of
++	 * view this has succeeded.
+ 	 *
+ 	 * After acquiring the lock the task will restore p::__state
+ 	 * from p::saved_state which ensures that the regular
 
 
 
