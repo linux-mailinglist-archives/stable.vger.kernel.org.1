@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB150B22F57
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:38:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EA8B2344F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8666A4E07F1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4567C1890247
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCFC2FDC5D;
-	Tue, 12 Aug 2025 17:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367A02F90DF;
+	Tue, 12 Aug 2025 18:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkXm0mr2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWVRp1Bp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2DF2FDC49;
-	Tue, 12 Aug 2025 17:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EC12E285E;
+	Tue, 12 Aug 2025 18:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020254; cv=none; b=HQHTrMjTXRA++kRWRGG6CDQM5/FOO9heCMl74rBRgatDeHHZLOFTslCLFPZwkXEOy6SdSuG5c3P3t5FWCeIzGH0xtxKiFXF05P9+bdietvmwT4FcL9S3RPpnXEebF6Fgc1mBSZ1JRnKFfZ63jlK95/IxCde8fPx77wtW2MD6qYM=
+	t=1755023626; cv=none; b=s0WvLS07KNcluaeJ3qXaLxK+EKNuuGnhWT2ObIa5wiCAzjsouSIDOogXOTzPirTaTeyziBAbD0vHRUlUwtqg1Xz/NWWkQXkAHpwfhlpYcrWpNx1DcCuivSdm9ubq2JkLBIIzxDu1HKKjxhPGNFCUEWFmmuMEu4Y/0sL8q0wku30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020254; c=relaxed/simple;
-	bh=HuI8C6V2s5xxp6wh4iYyAtmnqAAeBZ7lI0uboDcxjEM=;
+	s=arc-20240116; t=1755023626; c=relaxed/simple;
+	bh=7CUYL7XGWtNJW24IB0XzFc+2kRNdxXkhtqfpH8M7LjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFekV48S7auCYycg5SZIslZ2K+HVkM9aEmaDCt+yDafjeaZS/dgQnR15XXm0wEcizfdtvnBi3iV2QNmwl+isBfkXj/LEoV/U8/+rXuccgeRpmiFrv/PepHjD1Wvp45Y+/omMQKUBkvbaVlHtCe35jiCubrVua2AnJFe+GKMXrgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkXm0mr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D94BC4CEF7;
-	Tue, 12 Aug 2025 17:37:33 +0000 (UTC)
+	 MIME-Version; b=sTU8V9XSD3rc/7NwAKQM6YUjwIHdBKl8uybJL0IETy/uDITiuc4QA0i68i7SCTlKlEWYEhOCf1EmX1sMjQ9ydLFSXhzievki5Auk9q3uEASw4hKCylDfZ6X8dw/pJeBq+V9Kezl6sPfvKl0Kl8JDhNda2VBd5WKtGpBeEQmt+v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWVRp1Bp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DB8C4CEF0;
+	Tue, 12 Aug 2025 18:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020254;
-	bh=HuI8C6V2s5xxp6wh4iYyAtmnqAAeBZ7lI0uboDcxjEM=;
+	s=korg; t=1755023625;
+	bh=7CUYL7XGWtNJW24IB0XzFc+2kRNdxXkhtqfpH8M7LjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkXm0mr2jYXL5TVbRi95QfeRv072TtYLF/aStnE5pa0FoMIoDyUq6nnvSzRfvQ0xj
-	 annH7c7caUbCR+ZzWWypB8JcrM77Pf1Yz3tljG6b0/q2/DdvdKm4bn5h+irrV26O92
-	 4ULI7aqidexdzGqI0n+uDFOqh8xluWnwPxG78mGw=
+	b=GWVRp1BppwfrDRaBtdHNklgQLpOO8Ud6kC/nvtOWXoPVZkN9XyCHTzkohtWInwgbZ
+	 Uk+5yisZQBakTn9oSk41a1REkc+YIM+874cge8y9nc0T1Rrl/PudIrf1LzYWABz8Ap
+	 WYgKY9N5f97bqtA3pZrvg1MwxBnJHgKHtEGrRdIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Stefan Wahren <stefan.wahren@i2se.com>,
+	Annette Kobou <annette.kobou@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/253] staging: vc04_services: Drop VCHIQ_SUCCESS usage
+Subject: [PATCH 6.16 101/627] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
 Date: Tue, 12 Aug 2025 19:26:36 +0200
-Message-ID: <20250812172949.045256620@linuxfoundation.org>
+Message-ID: <20250812173423.158899982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,555 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umang Jain <umang.jain@ideasonboard.com>
+From: Annette Kobou <annette.kobou@kontron.de>
 
-[ Upstream commit 3414994ba840425b313853a47d581dd5c6c2d300 ]
+[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
 
-Drop the usage of VCHIQ_SUCCESS vchiq_status enum type. Replace it with
-0 to report the success status.
+The polarity of the DE signal of the transceiver is active-high for
+sending. Therefore rs485-rts-active-low is wrong and needs to be
+removed to make RS485 transmissions work.
 
-This patch acts as intermediatory to address the TODO item:
-	* Get rid of custom function return values
-for vc04_services/interface.
-
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-Tested-by: Stefan Wahren <stefan.wahren@i2se.com>
-Link: https://lore.kernel.org/r/20221223122404.170585-3-umang.jain@ideasonboard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f2b8ebfb8670 ("staging: vchiq_arm: Make vchiq_shutdown never fail")
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bcm2835-audio/bcm2835-vchiq.c             |  4 +-
- .../include/linux/raspberrypi/vchiq.h         |  1 -
- .../interface/vchiq_arm/vchiq_arm.c           | 36 ++++++-------
- .../interface/vchiq_arm/vchiq_core.c          | 54 +++++++++----------
- .../interface/vchiq_arm/vchiq_dev.c           | 18 +++----
- .../vc04_services/vchiq-mmal/mmal-vchiq.c     |  4 +-
- 6 files changed, 57 insertions(+), 60 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
-index f4c2c9506d863..2a5a43e7ff295 100644
---- a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
-+++ b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
-@@ -101,7 +101,7 @@ static enum vchiq_status audio_vchi_callback(struct vchiq_instance *vchiq_instan
- 	struct vc_audio_msg *m;
- 
- 	if (reason != VCHIQ_MESSAGE_AVAILABLE)
--		return VCHIQ_SUCCESS;
-+		return 0;
- 
- 	m = (void *)header->data;
- 	if (m->type == VC_AUDIO_MSG_TYPE_RESULT) {
-@@ -119,7 +119,7 @@ static enum vchiq_status audio_vchi_callback(struct vchiq_instance *vchiq_instan
- 	}
- 
- 	vchiq_release_message(vchiq_instance, instance->service_handle, header);
--	return VCHIQ_SUCCESS;
-+	return 0;
- }
- 
- static int
-diff --git a/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h b/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h
-index 690ab7165b2c1..ce73930d71d1a 100644
---- a/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h
-+++ b/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h
-@@ -19,7 +19,6 @@ enum vchiq_reason {
- 
- enum vchiq_status {
- 	VCHIQ_ERROR   = -1,
--	VCHIQ_SUCCESS = 0,
- 	VCHIQ_RETRY   = 1
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+index 29d2f86d5e34..f4c45e964daf 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
+@@ -168,7 +168,6 @@ &uart2 {
+ 	pinctrl-0 = <&pinctrl_uart2>;
+ 	linux,rs485-enabled-at-boot-time;
+ 	rs485-rx-during-tx;
+-	rs485-rts-active-low;
+ 	uart-has-rtscts;
+ 	status = "okay";
  };
- 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index 456a9508fb911..f27f5a1a23e2f 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -711,7 +711,7 @@ void free_bulk_waiter(struct vchiq_instance *instance)
- 
- enum vchiq_status vchiq_shutdown(struct vchiq_instance *instance)
- {
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 	struct vchiq_state *state = instance->state;
- 
- 	if (mutex_lock_killable(&state->mutex))
-@@ -748,7 +748,7 @@ enum vchiq_status vchiq_connect(struct vchiq_instance *instance)
- 	}
- 	status = vchiq_connect_internal(state, instance);
- 
--	if (status == VCHIQ_SUCCESS)
-+	if (!status)
- 		instance->connected = 1;
- 
- 	mutex_unlock(&state->mutex);
-@@ -780,7 +780,7 @@ vchiq_add_service(struct vchiq_instance *instance,
- 
- 	if (service) {
- 		*phandle = service->handle;
--		status = VCHIQ_SUCCESS;
-+		status = 0;
- 	} else {
- 		status = VCHIQ_ERROR;
- 	}
-@@ -809,7 +809,7 @@ vchiq_open_service(struct vchiq_instance *instance,
- 	if (service) {
- 		*phandle = service->handle;
- 		status = vchiq_open_service_internal(service, current->pid);
--		if (status != VCHIQ_SUCCESS) {
-+		if (status) {
- 			vchiq_remove_service(instance, service->handle);
- 			*phandle = VCHIQ_SERVICE_HANDLE_INVALID;
- 		}
-@@ -991,7 +991,7 @@ add_completion(struct vchiq_instance *instance, enum vchiq_reason reason,
- 			return VCHIQ_RETRY;
- 		} else if (instance->closing) {
- 			vchiq_log_info(vchiq_arm_log_level, "service_callback closing");
--			return VCHIQ_SUCCESS;
-+			return 0;
- 		}
- 		DEBUG_TRACE(SERVICE_CALLBACK_LINE);
- 	}
-@@ -1028,7 +1028,7 @@ add_completion(struct vchiq_instance *instance, enum vchiq_reason reason,
- 
- 	complete(&instance->insert_event);
- 
--	return VCHIQ_SUCCESS;
-+	return 0;
- }
- 
- enum vchiq_status
-@@ -1053,14 +1053,14 @@ service_callback(struct vchiq_instance *instance, enum vchiq_reason reason,
- 	service = handle_to_service(instance, handle);
- 	if (WARN_ON(!service)) {
- 		rcu_read_unlock();
--		return VCHIQ_SUCCESS;
-+		return 0;
- 	}
- 
- 	user_service = (struct user_service *)service->base.userdata;
- 
- 	if (!instance || instance->closing) {
- 		rcu_read_unlock();
--		return VCHIQ_SUCCESS;
-+		return 0;
- 	}
- 
- 	/*
-@@ -1097,7 +1097,7 @@ service_callback(struct vchiq_instance *instance, enum vchiq_reason reason,
- 				DEBUG_TRACE(SERVICE_CALLBACK_LINE);
- 				status = add_completion(instance, reason, NULL, user_service,
- 							bulk_userdata);
--				if (status != VCHIQ_SUCCESS) {
-+				if (status) {
- 					DEBUG_TRACE(SERVICE_CALLBACK_LINE);
- 					vchiq_service_put(service);
- 					return status;
-@@ -1145,7 +1145,7 @@ service_callback(struct vchiq_instance *instance, enum vchiq_reason reason,
- 	vchiq_service_put(service);
- 
- 	if (skip_completion)
--		return VCHIQ_SUCCESS;
-+		return 0;
- 
- 	return add_completion(instance, reason, header, user_service,
- 		bulk_userdata);
-@@ -1337,14 +1337,14 @@ vchiq_keepalive_thread_func(void *v)
- 	}
- 
- 	status = vchiq_connect(instance);
--	if (status != VCHIQ_SUCCESS) {
-+	if (status) {
- 		vchiq_log_error(vchiq_susp_log_level, "%s vchiq_connect failed %d", __func__,
- 				status);
- 		goto shutdown;
- 	}
- 
- 	status = vchiq_add_service(instance, &params, &ka_handle);
--	if (status != VCHIQ_SUCCESS) {
-+	if (status) {
- 		vchiq_log_error(vchiq_susp_log_level, "%s vchiq_open_service failed %d", __func__,
- 				status);
- 		goto shutdown;
-@@ -1373,14 +1373,14 @@ vchiq_keepalive_thread_func(void *v)
- 		while (uc--) {
- 			atomic_inc(&arm_state->ka_use_ack_count);
- 			status = vchiq_use_service(instance, ka_handle);
--			if (status != VCHIQ_SUCCESS) {
-+			if (status) {
- 				vchiq_log_error(vchiq_susp_log_level,
- 						"%s vchiq_use_service error %d", __func__, status);
- 			}
- 		}
- 		while (rc--) {
- 			status = vchiq_release_service(instance, ka_handle);
--			if (status != VCHIQ_SUCCESS) {
-+			if (status) {
- 				vchiq_log_error(vchiq_susp_log_level,
- 						"%s vchiq_release_service error %d", __func__,
- 						status);
-@@ -1433,13 +1433,13 @@ vchiq_use_internal(struct vchiq_state *state, struct vchiq_service *service,
- 	write_unlock_bh(&arm_state->susp_res_lock);
- 
- 	if (!ret) {
--		enum vchiq_status status = VCHIQ_SUCCESS;
-+		int status = 0;
- 		long ack_cnt = atomic_xchg(&arm_state->ka_use_ack_count, 0);
- 
--		while (ack_cnt && (status == VCHIQ_SUCCESS)) {
-+		while (ack_cnt && !status) {
- 			/* Send the use notify to videocore */
- 			status = vchiq_send_remote_use_active(state);
--			if (status == VCHIQ_SUCCESS)
-+			if (!status)
- 				ack_cnt--;
- 			else
- 				atomic_add(ack_cnt, &arm_state->ka_use_ack_count);
-@@ -1695,7 +1695,7 @@ vchiq_check_service(struct vchiq_service *service)
- 
- 	read_lock_bh(&arm_state->susp_res_lock);
- 	if (service->service_use_count)
--		ret = VCHIQ_SUCCESS;
-+		ret = 0;
- 	read_unlock_bh(&arm_state->susp_res_lock);
- 
- 	if (ret == VCHIQ_ERROR) {
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
-index 45ed30bfdbf56..9c4523d04bdbb 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
-@@ -478,7 +478,7 @@ make_service_callback(struct vchiq_service *service, enum vchiq_reason reason,
- 		vchiq_log_warning(vchiq_core_log_level,
- 				  "%d: ignoring ERROR from callback to service %x",
- 				  service->state->id, service->handle);
--		status = VCHIQ_SUCCESS;
-+		status = 0;
- 	}
- 
- 	if (reason != VCHIQ_MESSAGE_AVAILABLE)
-@@ -1135,7 +1135,7 @@ queue_message(struct vchiq_state *state, struct vchiq_service *service,
- 
- 	remote_event_signal(&state->remote->trigger);
- 
--	return VCHIQ_SUCCESS;
-+	return 0;
- }
- 
- /* Called by the slot handler and application threads */
-@@ -1223,7 +1223,7 @@ queue_message_sync(struct vchiq_state *state, struct vchiq_service *service,
- 	if (VCHIQ_MSG_TYPE(msgid) != VCHIQ_MSG_PAUSE)
- 		mutex_unlock(&state->sync_mutex);
- 
--	return VCHIQ_SUCCESS;
-+	return 0;
- }
- 
- static inline void
-@@ -1303,7 +1303,7 @@ static enum vchiq_status
- notify_bulks(struct vchiq_service *service, struct vchiq_bulk_queue *queue,
- 	     int retry_poll)
- {
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 
- 	vchiq_log_trace(vchiq_core_log_level, "%d: nb:%d %cx - p=%x rn=%x r=%x", service->state->id,
- 			service->localport, (queue == &service->bulk_tx) ? 't' : 'r',
-@@ -1357,7 +1357,7 @@ notify_bulks(struct vchiq_service *service, struct vchiq_bulk_queue *queue,
- 		complete(&service->bulk_remove_event);
- 	}
- 	if (!retry_poll)
--		status = VCHIQ_SUCCESS;
-+		status = 0;
- 
- 	if (status == VCHIQ_RETRY)
- 		request_poll(service->state, service, (queue == &service->bulk_tx) ?
-@@ -1398,13 +1398,12 @@ poll_services_of_group(struct vchiq_state *state, int group)
- 			 */
- 			service->public_fourcc = VCHIQ_FOURCC_INVALID;
- 
--			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD) !=
--							 VCHIQ_SUCCESS)
-+			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD))
- 				request_poll(state, service, VCHIQ_POLL_REMOVE);
- 		} else if (service_flags & BIT(VCHIQ_POLL_TERMINATE)) {
- 			vchiq_log_info(vchiq_core_log_level, "%d: ps - terminate %d<->%d",
- 				       state->id, service->localport, service->remoteport);
--			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD) != VCHIQ_SUCCESS)
-+			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD))
- 				request_poll(state, service, VCHIQ_POLL_TERMINATE);
- 		}
- 		if (service_flags & BIT(VCHIQ_POLL_TXNOTIFY))
-@@ -2495,7 +2494,7 @@ vchiq_open_service_internal(struct vchiq_service *service, int client_id)
- 		service->version,
- 		service->version_min
- 	};
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 
- 	service->client_id = client_id;
- 	vchiq_use_service_internal(service);
-@@ -2506,7 +2505,7 @@ vchiq_open_service_internal(struct vchiq_service *service, int client_id)
- 			       sizeof(payload),
- 			       QMFLAGS_IS_BLOCKING);
- 
--	if (status != VCHIQ_SUCCESS)
-+	if (status)
- 		return status;
- 
- 	/* Wait for the ACK/NAK */
-@@ -2602,11 +2601,11 @@ do_abort_bulks(struct vchiq_service *service)
- 	mutex_unlock(&service->bulk_mutex);
- 
- 	status = notify_bulks(service, &service->bulk_tx, NO_RETRY_POLL);
--	if (status != VCHIQ_SUCCESS)
-+	if (status)
- 		return 0;
- 
- 	status = notify_bulks(service, &service->bulk_rx, NO_RETRY_POLL);
--	return (status == VCHIQ_SUCCESS);
-+	return !status;
- }
- 
- static enum vchiq_status
-@@ -2678,7 +2677,7 @@ enum vchiq_status
- vchiq_close_service_internal(struct vchiq_service *service, int close_recvd)
- {
- 	struct vchiq_state *state = service->state;
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 	int is_server = (service->public_fourcc != VCHIQ_FOURCC_INVALID);
- 	int close_id = MAKE_CLOSE(service->localport,
- 				  VCHIQ_MSG_DSTPORT(service->remoteport));
-@@ -2730,11 +2729,11 @@ vchiq_close_service_internal(struct vchiq_service *service, int close_recvd)
- 
- 		release_service_messages(service);
- 
--		if (status == VCHIQ_SUCCESS)
-+		if (!status)
- 			status = queue_message(state, service, close_id, NULL,
- 					       NULL, 0, QMFLAGS_NO_MUTEX_UNLOCK);
- 
--		if (status != VCHIQ_SUCCESS) {
-+		if (status) {
- 			if (service->srvstate == VCHIQ_SRVSTATE_OPENSYNC)
- 				mutex_unlock(&state->sync_mutex);
- 			break;
-@@ -2768,7 +2767,7 @@ vchiq_close_service_internal(struct vchiq_service *service, int close_recvd)
- 			break;
- 		}
- 
--		if (status == VCHIQ_SUCCESS)
-+		if (!status)
- 			status = close_service_complete(service, VCHIQ_SRVSTATE_CLOSERECVD);
- 		break;
- 
-@@ -2862,7 +2861,7 @@ vchiq_connect_internal(struct vchiq_state *state, struct vchiq_instance *instanc
- 		complete(&state->connect);
- 	}
- 
--	return VCHIQ_SUCCESS;
-+	return 0;
- }
- 
- void
-@@ -2884,7 +2883,7 @@ vchiq_close_service(struct vchiq_instance *instance, unsigned int handle)
- {
- 	/* Unregister the service */
- 	struct vchiq_service *service = find_service_by_handle(instance, handle);
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 
- 	if (!service)
- 		return VCHIQ_ERROR;
-@@ -2926,7 +2925,7 @@ vchiq_close_service(struct vchiq_instance *instance, unsigned int handle)
- 				  srvstate_names[service->srvstate]);
- 	}
- 
--	if ((status == VCHIQ_SUCCESS) &&
-+	if (!status &&
- 	    (service->srvstate != VCHIQ_SRVSTATE_FREE) &&
- 	    (service->srvstate != VCHIQ_SRVSTATE_LISTENING))
- 		status = VCHIQ_ERROR;
-@@ -2942,7 +2941,7 @@ vchiq_remove_service(struct vchiq_instance *instance, unsigned int handle)
- {
- 	/* Unregister the service */
- 	struct vchiq_service *service = find_service_by_handle(instance, handle);
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 
- 	if (!service)
- 		return VCHIQ_ERROR;
-@@ -2987,8 +2986,7 @@ vchiq_remove_service(struct vchiq_instance *instance, unsigned int handle)
- 				  srvstate_names[service->srvstate]);
- 	}
- 
--	if ((status == VCHIQ_SUCCESS) &&
--	    (service->srvstate != VCHIQ_SRVSTATE_FREE))
-+	if (!status && (service->srvstate != VCHIQ_SRVSTATE_FREE))
- 		status = VCHIQ_ERROR;
- 
- 	vchiq_service_put(service);
-@@ -3028,7 +3026,7 @@ enum vchiq_status vchiq_bulk_transfer(struct vchiq_instance *instance, unsigned
- 	if (!offset && !uoffset)
- 		goto error_exit;
- 
--	if (vchiq_check_service(service) != VCHIQ_SUCCESS)
-+	if (vchiq_check_service(service))
- 		goto error_exit;
- 
- 	switch (mode) {
-@@ -3121,7 +3119,7 @@ enum vchiq_status vchiq_bulk_transfer(struct vchiq_instance *instance, unsigned
- 			       QMFLAGS_IS_BLOCKING |
- 			       QMFLAGS_NO_MUTEX_LOCK |
- 			       QMFLAGS_NO_MUTEX_UNLOCK);
--	if (status != VCHIQ_SUCCESS)
-+	if (status)
- 		goto unlock_both_error_exit;
- 
- 	queue->local_insert++;
-@@ -3136,7 +3134,7 @@ enum vchiq_status vchiq_bulk_transfer(struct vchiq_instance *instance, unsigned
- waiting:
- 	vchiq_service_put(service);
- 
--	status = VCHIQ_SUCCESS;
-+	status = 0;
- 
- 	if (bulk_waiter) {
- 		bulk_waiter->bulk = bulk;
-@@ -3175,7 +3173,7 @@ vchiq_queue_message(struct vchiq_instance *instance, unsigned int handle,
- 	if (!service)
- 		goto error_exit;
- 
--	if (vchiq_check_service(service) != VCHIQ_SUCCESS)
-+	if (vchiq_check_service(service))
- 		goto error_exit;
- 
- 	if (!size) {
-@@ -3286,14 +3284,14 @@ vchiq_get_peer_version(struct vchiq_instance *instance, unsigned int handle, sho
- 	if (!service)
- 		goto exit;
- 
--	if (vchiq_check_service(service) != VCHIQ_SUCCESS)
-+	if (vchiq_check_service(service))
- 		goto exit;
- 
- 	if (!peer_version)
- 		goto exit;
- 
- 	*peer_version = service->peer_version;
--	status = VCHIQ_SUCCESS;
-+	status = 0;
- 
- exit:
- 	if (service)
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c
-index 7e297494437e1..d9c4d550412e4 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c
-@@ -112,7 +112,7 @@ vchiq_ioc_queue_message(struct vchiq_instance *instance, unsigned int handle,
- 			struct vchiq_element *elements, unsigned long count)
- {
- 	struct vchiq_io_copy_callback_context context;
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 	unsigned long i;
- 	size_t total_size = 0;
- 
-@@ -142,7 +142,7 @@ static int vchiq_ioc_create_service(struct vchiq_instance *instance,
- {
- 	struct user_service *user_service = NULL;
- 	struct vchiq_service *service;
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 	struct vchiq_service_params_kernel params;
- 	int srvstate;
- 
-@@ -190,7 +190,7 @@ static int vchiq_ioc_create_service(struct vchiq_instance *instance,
- 
- 	if (args->is_open) {
- 		status = vchiq_open_service_internal(service, instance->pid);
--		if (status != VCHIQ_SUCCESS) {
-+		if (status) {
- 			vchiq_remove_service(instance, service->handle);
- 			return (status == VCHIQ_RETRY) ?
- 				-EINTR : -EIO;
-@@ -577,7 +577,7 @@ static long
- vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	struct vchiq_instance *instance = file->private_data;
--	enum vchiq_status status = VCHIQ_SUCCESS;
-+	int status = 0;
- 	struct vchiq_service *service = NULL;
- 	long ret = 0;
- 	int i, rc;
-@@ -598,12 +598,12 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 							   instance, &i))) {
- 			status = vchiq_remove_service(instance, service->handle);
- 			vchiq_service_put(service);
--			if (status != VCHIQ_SUCCESS)
-+			if (status)
- 				break;
- 		}
- 		service = NULL;
- 
--		if (status == VCHIQ_SUCCESS) {
-+		if (!status) {
- 			/* Wake the completion thread and ask it to exit */
- 			instance->closing = 1;
- 			complete(&instance->insert_event);
-@@ -627,7 +627,7 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 		status = vchiq_connect_internal(instance->state, instance);
- 		mutex_unlock(&instance->state->mutex);
- 
--		if (status == VCHIQ_SUCCESS)
-+		if (!status)
- 			instance->connected = 1;
- 		else
- 			vchiq_log_error(vchiq_arm_log_level,
-@@ -675,7 +675,7 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 			status = (cmd == VCHIQ_IOC_CLOSE_SERVICE) ?
- 				 vchiq_close_service(instance, service->handle) :
- 				 vchiq_remove_service(instance, service->handle);
--			if (status != VCHIQ_SUCCESS)
-+			if (status)
- 				break;
- 		}
- 
-@@ -868,7 +868,7 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 			ret = -EINTR;
- 	}
- 
--	if ((status == VCHIQ_SUCCESS) && (ret < 0) && (ret != -EINTR) && (ret != -EWOULDBLOCK))
-+	if (!status && (ret < 0) && (ret != -EINTR) && (ret != -EWOULDBLOCK))
- 		vchiq_log_info(vchiq_arm_log_level,
- 			       "  ioctl instance %pK, cmd %s -> status %d, %ld",
- 			       instance, (_IOC_NR(cmd) <= VCHIQ_IOC_MAX) ?
-diff --git a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-index 90eb4c5936f38..e6dea0c8eecd2 100644
---- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-@@ -560,7 +560,7 @@ static enum vchiq_status service_callback(struct vchiq_instance *vchiq_instance,
- 
- 	if (!instance) {
- 		pr_err("Message callback passed NULL instance\n");
--		return VCHIQ_SUCCESS;
-+		return 0;
- 	}
- 
- 	switch (reason) {
-@@ -644,7 +644,7 @@ static enum vchiq_status service_callback(struct vchiq_instance *vchiq_instance,
- 		break;
- 	}
- 
--	return VCHIQ_SUCCESS;
-+	return 0;
- }
- 
- static int send_synchronous_mmal_msg(struct vchiq_mmal_instance *instance,
 -- 
 2.39.5
 
