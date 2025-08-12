@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DFAB23208
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6DDB23361
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A842F3ADEEE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE3067A1479
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510F4305E08;
-	Tue, 12 Aug 2025 18:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771662FDC30;
+	Tue, 12 Aug 2025 18:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tn3Pip8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znr00gBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E66F3F9D2;
-	Tue, 12 Aug 2025 18:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3511A21ABD0;
+	Tue, 12 Aug 2025 18:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022145; cv=none; b=Wdgp5YgRGMtIOmcHvp1C2E9m3lpkbmmMg9wvT0c0NE1Wf7PL67/0R3g4K8tIrCQpc8Llld3JLrrgVL2qpbXhqCDEpqJd1DTF5ki+OhhzwzVmHkwDZTDqslTBkkeUKdtsniqHnRaAsLhyeo79AdrRvfngnZ59NAMsbEzbYh7mgvE=
+	t=1755023294; cv=none; b=Me5ne9h+TRX6woGnGbhjKT4lbPqAs045x+x9LtgeONYznVYbO+ppHrz4bXULBfyam6OBGRwTGxomq3BkRDFfK8o/zvYlaRF1p9senovxmhsKCKQrzAr7WaMi4RKgjmeJu6IMJs3i0CcAIt7mME76Upol7jcOo70Cyj5S/j3kph8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022145; c=relaxed/simple;
-	bh=FxKhPgxBBAR1zWQem+Xc14DblQkHF3gMB8PpAwiMIzg=;
+	s=arc-20240116; t=1755023294; c=relaxed/simple;
+	bh=Te8E0tYO6L218D1RLiC8C3oIXIJlpkmSVY5MgT3om0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBRbJJ5v8jXnkydhpPRioCv0GPWZ548Z3bXzs3l1+/jGBeto7iax8wL3i8dC6mLZOSUmdWQrzVHk9Qk/ndcRqLPgmCCeazippqdOVbQG1O6oijhSGNZ7pyEpKu6pAjAG1e7ukMas6f+4SHHIx1Kj5YmeLDMwXPBtEYzkDteO24Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tn3Pip8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713E3C4CEF6;
-	Tue, 12 Aug 2025 18:09:04 +0000 (UTC)
+	 MIME-Version; b=MUvngA/QzH2yUyInwgvVjcTdFOy6XhdcO23EvlvqohlioPAdg+su3TmLhP3k05WTSmNii9wBsO8ECRNamAjZ/61y3nNNJhwYdfn0JA8WFmh4rFgWNDTTMxjU3P0x3v6QGlgvgo/Fk6g7IHNdCBXqNPo3IEL2KWddZyzJSbieQ8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znr00gBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9712BC4CEF1;
+	Tue, 12 Aug 2025 18:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022144;
-	bh=FxKhPgxBBAR1zWQem+Xc14DblQkHF3gMB8PpAwiMIzg=;
+	s=korg; t=1755023294;
+	bh=Te8E0tYO6L218D1RLiC8C3oIXIJlpkmSVY5MgT3om0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tn3Pip8CXgB2bHFxF9V9OhfEywYtVazoM54HyH5Yba/OHHGsE05Oa4j/EveESn/J5
-	 1IAMzFPLzXCOal3IwWYHwX9GS7cK3k8YtC4Tk0rJ31rEUVPQ0U1cH3K2mHxeU2i51a
-	 fdoKOIeDjWWDKMitOI82pZmDOHiOSfgtvSEU0zAo=
+	b=znr00gBZYLT9H3AswdFK9tzwUE/rBPWwLq2reAiOsn9IjmpMzWqNaZI6vrxqavGAY
+	 p/6gr5t4aecKb/Ykz8T/3KuzTLgTRBVBl3LIFbYebgBFkPREr167HRXoEGZXr29ihX
+	 FKl09NKnm4tv0ocZhhXMucYWfJFV67s1Gpc2Tmmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/369] firmware: arm_scmi: Fix up turbo frequencies selection
-Date: Tue, 12 Aug 2025 19:25:32 +0200
-Message-ID: <20250812173016.072494320@linuxfoundation.org>
+Subject: [PATCH 6.16 038/627] arm64: dts: freescale: imx93-tqma9352: Limit BUCK2 to 600mV
+Date: Tue, 12 Aug 2025 19:25:33 +0200
+Message-ID: <20250812173420.782007829@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit ad28fc31dd702871764e9294d4f2314ad78d24a9 ]
+[ Upstream commit 696a4c325fad8af95da6a9d797766d1613831622 ]
 
-Sustained frequency when greater than or equal to 4Ghz on 64-bit devices
-currently result in marking all frequencies as turbo. Address the turbo
-frequency selection bug by fixing the truncation.
+TQMa9352 is only using LPDDR4X, so the BUCK2 regulator should be fixed
+at 600MV.
 
-Fixes: a897575e79d7 ("firmware: arm_scmi: Add support for marking certain frequencies as turbo")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Message-Id: <20250514214719.203607-1-quic_sibis@quicinc.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: d2858e6bd36c ("arm64: dts: freescale: imx93-tqma9352: Add PMIC node")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index c7e5a34b254b..683fd9b85c5c 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -892,7 +892,7 @@ static int scmi_dvfs_device_opps_add(const struct scmi_protocol_handle *ph,
- 			freq = dom->opp[idx].indicative_freq * dom->mult_factor;
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+index 2cabdae24227..09385b058664 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+ /*
+- * Copyright (c) 2022 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * Copyright (c) 2022-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
+  * D-82229 Seefeld, Germany.
+  * Author: Markus Niebel
+  */
+@@ -110,11 +110,11 @@ buck1: BUCK1 {
+ 				regulator-ramp-delay = <3125>;
+ 			};
  
- 		/* All OPPs above the sustained frequency are treated as turbo */
--		data.turbo = freq > dom->sustained_freq_khz * 1000;
-+		data.turbo = freq > dom->sustained_freq_khz * 1000UL;
- 
- 		data.level = dom->opp[idx].perf;
- 		data.freq = freq;
+-			/* V_DDRQ - 1.1 LPDDR4 or 0.6 LPDDR4X */
++			/* V_DDRQ - 0.6 V for LPDDR4X */
+ 			buck2: BUCK2 {
+ 				regulator-name = "BUCK2";
+ 				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <1100000>;
++				regulator-max-microvolt = <600000>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
+ 				regulator-ramp-delay = <3125>;
 -- 
 2.39.5
 
