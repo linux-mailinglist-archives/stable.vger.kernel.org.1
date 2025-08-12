@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BE4B23313
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9D5B2315C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2EB93AF102
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6122D1AA3809
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A498D2DBF5E;
-	Tue, 12 Aug 2025 18:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406EA2FE56D;
+	Tue, 12 Aug 2025 18:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0JRaWW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnSZUTqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AB1280037;
-	Tue, 12 Aug 2025 18:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38202F5E;
+	Tue, 12 Aug 2025 18:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022841; cv=none; b=Z9tbMs0n/8efnCToXCZXA3HvJTELGoydXgxx31Aj1tars7c9R2l9gyfpotsZHKjc8/MQPXgmNbodXi7mViXVMJGsLhSG965Ryl3mQhkjvwQwaWswnkNAiZxO5rdV87zCbwNhbKKB/euN7ih0APdRKuGKm7YSMd+kl4JpaqR6yi4=
+	t=1755021652; cv=none; b=mLWihcwHSyTIE4SgkG3prOvYZfOsEKHlJlmbCdPY6TuvWoRqlpVNlEBrJ90dPcs4RYR5lWx75M1i4s+YWbVXMe5+jcTr/cch0K8AKpxZaF8Z9yEUs0ThUA+X1AsuZ/km/poOg2LbMCxybSdSlS+8npa+JnQ+GZiDkHCwpsKvJPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022841; c=relaxed/simple;
-	bh=Qci8POTMxmH5xZCw1Xc+80CQ25okeg+VlexHxP4BKRQ=;
+	s=arc-20240116; t=1755021652; c=relaxed/simple;
+	bh=kPtqZjg2gZTgJU2yEQhZe/RURYU7iFmoRbgsw+JkWOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIU7d+gJQakFzrVu/HiCb9z1ki9kDU3cDfgH2AoZPstnPxFyQWSH5VQW2tERqdJvEa7WN6DpUUDgPF2uz87ONk/Hg3GdPlYRz6u8cXKeVse3hBSFVhQzavPVjT9gxN+1jeZm5UxYAehGWiFzC+FldcJhVtw9t8mZKzcmFJDz2sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0JRaWW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3677C4CEF1;
-	Tue, 12 Aug 2025 18:20:40 +0000 (UTC)
+	 MIME-Version; b=pXDF1fo8ogwjvfNlTjlximsOtTeLYEzQHNj7f/YEYtnUXRhept5zueMmlc+9yc5qShRhu88Bd4+45qHC1gVFsqehxS9Xa7EbgAoFphZrfFro+CUYNffg1UNp13Fo79noSN5jr8CFeSwlRPqEYy/LAUo7BLYdU7xnc4vvLBx/FPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnSZUTqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AE2C4CEF0;
+	Tue, 12 Aug 2025 18:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022841;
-	bh=Qci8POTMxmH5xZCw1Xc+80CQ25okeg+VlexHxP4BKRQ=;
+	s=korg; t=1755021651;
+	bh=kPtqZjg2gZTgJU2yEQhZe/RURYU7iFmoRbgsw+JkWOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0JRaWW3iBL3soV9CloCK9P/c7SBMq9q5et+DpjfiXn7zCs0RxcFRjVy0WYw1CHo9
-	 kQMjpz9p2l9gVs6kasu78XA+ESqGq1JxOo7rONzwkCKnKMPHqV95a5Zq9C8SsicLB3
-	 B8ngfpfklwQ88+G4ibBUB/3Kb57UbsFE62klH/nA=
+	b=JnSZUTqMdEkmFDH4xDFIk+yLkkKGVjETqc8KdPSunvkGH0AuGOU/eo8NJQ/Vr9LKO
+	 hEv0wHCHQoiqjOIhO1RI+IZ+TaU9kUmyGyBJQfjho8sow74aVcDiSA8Nn/HPKNIlNC
+	 4D1/FaX54SRAn52ST5Ubhgvn14pyff64SORKgtMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Beata Michalska <beata.michalska@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 274/369] sched/psi: Fix psi_seq initialization
+Subject: [PATCH 6.6 183/262] vfio/pds: Fix missing detach_ioas op
 Date: Tue, 12 Aug 2025 19:29:31 +0200
-Message-ID: <20250812173025.437395523@linuxfoundation.org>
+Message-ID: <20250812173000.915315034@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 99b773d720aeea1ef2170dce5fcfa80649e26b78 ]
+[ Upstream commit fe24d5bc635e103a517ec201c3cb571eeab8be2f ]
 
-With the seqcount moved out of the group into a global psi_seq,
-re-initializing the seqcount on group creation is causing seqcount
-corruption.
+When CONFIG_IOMMUFD is enabled and a device is bound to the pds_vfio_pci
+driver, the following WARN_ON() trace is seen and probe fails:
 
-Fixes: 570c8efd5eb7 ("sched/psi: Optimize psi_group_change() cpu_clock() usage")
-Reported-by: Chris Mason <clm@meta.com>
-Suggested-by: Beata Michalska <beata.michalska@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+WARNING: CPU: 0 PID: 5040 at drivers/vfio/vfio_main.c:317 __vfio_register_dev+0x130/0x140 [vfio]
+<...>
+pds_vfio_pci 0000:08:00.1: probe with driver pds_vfio_pci failed with error -22
+
+This is because the driver's vfio_device_ops.detach_ioas isn't set.
+
+Fix this by using the generic vfio_iommufd_physical_detach_ioas
+function.
+
+Fixes: 38fe3975b4c2 ("vfio/pds: Initial support for pds VFIO driver")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20250702163744.69767-1-brett.creeley@amd.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/psi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/vfio/pci/pds/vfio_dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 81cfefc4d892..7d0f8fdd48a3 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -172,7 +172,7 @@ struct psi_group psi_system = {
- 	.pcpu = &system_group_pcpu,
+diff --git a/drivers/vfio/pci/pds/vfio_dev.c b/drivers/vfio/pci/pds/vfio_dev.c
+index a286ebcc7112..69d1bcefd7c3 100644
+--- a/drivers/vfio/pci/pds/vfio_dev.c
++++ b/drivers/vfio/pci/pds/vfio_dev.c
+@@ -231,6 +231,7 @@ static const struct vfio_device_ops pds_vfio_ops = {
+ 	.bind_iommufd = vfio_iommufd_physical_bind,
+ 	.unbind_iommufd = vfio_iommufd_physical_unbind,
+ 	.attach_ioas = vfio_iommufd_physical_attach_ioas,
++	.detach_ioas = vfio_iommufd_physical_detach_ioas,
  };
  
--static DEFINE_PER_CPU(seqcount_t, psi_seq);
-+static DEFINE_PER_CPU(seqcount_t, psi_seq) = SEQCNT_ZERO(psi_seq);
- 
- static inline void psi_write_begin(int cpu)
- {
-@@ -200,11 +200,7 @@ static void poll_timer_fn(struct timer_list *t);
- 
- static void group_init(struct psi_group *group)
- {
--	int cpu;
--
- 	group->enabled = true;
--	for_each_possible_cpu(cpu)
--		seqcount_init(per_cpu_ptr(&psi_seq, cpu));
- 	group->avg_last_update = sched_clock();
- 	group->avg_next_update = group->avg_last_update + psi_period;
- 	mutex_init(&group->avgs_lock);
+ const struct vfio_device_ops *pds_vfio_ops_info(void)
 -- 
 2.39.5
 
