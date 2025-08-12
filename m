@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10F9B23753
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:10:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88792B23729
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9593E587129
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:10:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD40558540C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B2C2E11BF;
-	Tue, 12 Aug 2025 19:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CDB2F8BC3;
+	Tue, 12 Aug 2025 19:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhHSJUFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDzdB3sq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D888C2F4A07;
-	Tue, 12 Aug 2025 19:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61CB27781E;
+	Tue, 12 Aug 2025 19:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025824; cv=none; b=MnLzc5TFXNQYJbiqnaW9vcFee1vIaKMd0hUV8l9HWBgjZitzCza87Yf4Emp68EKUGpVOV0CJwK8PWZW4KJyHpklikR6oENITxDDlJoDFT7xVyXvz3FPfEuX6WI2ANjQrg7ivdJAEVmXpaaQoM4555PlNLV+V0HkFiCGLmnwgv2A=
+	t=1755025711; cv=none; b=iNaWXk4Sxt3wGiNutJ15hO1tmDkHxUEQpHfc+RTZA9KFSot+v4slQ8EETXl8z7Y4qu4uBDvgNozrR4MOWthFTd+qgsdN5OpkhB+UZnB3Op3J8b92r1eGVrDRbnqP0waDtypH3/Y5ZFg8aBi3chbLwG/JfAGRF4zNsk6QRFtmmSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025824; c=relaxed/simple;
-	bh=mNLSwHmE2+9mUiWkD8Jd0UJ+kkgVCEEI/uKQKTedLFs=;
+	s=arc-20240116; t=1755025711; c=relaxed/simple;
+	bh=xngX3FRdOd1aS3QrmhLumidbV6aQrMsubxHBlKPzems=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M1Cfx6MjHZCY6KlxYJTMP1j58FuhPi207wyPW34es6vUTZI9mmwZ6DRhDfHAaltb/7GiQnk2UBK8RwXkB4Ls02x2haB5Tr0kJTIfeLwxuyS9VhfZ/UimjH0NLTsOQp8GP/PAm/SG6vBYqmE8sJxMOI9gT07aBBvkc8/4vXTsTOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhHSJUFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23894C4CEF0;
-	Tue, 12 Aug 2025 19:10:22 +0000 (UTC)
+	 MIME-Version; b=hAizmwgENcfy2WJfp9Ad82uHKs22aCTomasP+GNFS4r/1mgYl9grBf7bvg77MhKMEOtdc2mvrFOTvPo9yLIReJeGVDqo0QYq+iGaNF2oQ8mmd6u1DihVb5QllYMO5G0ApPOP5haxxSgGzC/mhfXw8syj3iOvt3h0DnLiAFWWYfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDzdB3sq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48525C4CEF0;
+	Tue, 12 Aug 2025 19:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025823;
-	bh=mNLSwHmE2+9mUiWkD8Jd0UJ+kkgVCEEI/uKQKTedLFs=;
+	s=korg; t=1755025710;
+	bh=xngX3FRdOd1aS3QrmhLumidbV6aQrMsubxHBlKPzems=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UhHSJUFd87O1DCTih7WGnBT+wwy+aM5S5vHuVlipUMbWh8BXO4aNE70Ki7Lw7rsGF
-	 jST2uAtUiOeQE5NZnueNL8g8YGrCRJuwETAGtWbGMQDJ9Hkug6oWGvSvmthAh4Mutt
-	 tj1G86gniJuxF86rU20mA9aArf2BWPnUqnznD4LY=
+	b=CDzdB3sqNPBGLP/KYV+K3gkG+3PPh7JNvZLPkjG38WNl1mYPN3/fHSRJPTUbjfKNN
+	 eLj/WtP2o6XARKjt0m+K5DEOWVOJmKnbulYR6AJw/WqSZ3rR8I2RZ1sciuGBhuxsro
+	 Wg0E3KUn5RKF6RmWRtBhXqbod4fEDLyrpsPjHEY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 121/480] wifi: rtl818x: Kill URBs before clearing tx status queue
-Date: Tue, 12 Aug 2025 19:45:29 +0200
-Message-ID: <20250812174402.510851526@linuxfoundation.org>
+Subject: [PATCH 6.15 122/480] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
+Date: Tue, 12 Aug 2025 19:45:30 +0200
+Message-ID: <20250812174402.559643124@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,66 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
+[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
 
-In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
-b_tx_status.queue. This change prevents callbacks from using already freed
-skb due to anchor was not killed before freeing such skb.
+When iwl_opmode_register() fails, it does not unregster rate control,
+which will cause a memory leak issue, this patch fixes it.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000080
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
- Call Trace:
-  <IRQ>
-  rtl8187_tx_cb+0x116/0x150 [rtl8187]
-  __usb_hcd_giveback_urb+0x9d/0x120
-  usb_giveback_urb_bh+0xbb/0x140
-  process_one_work+0x19b/0x3c0
-  bh_worker+0x1a7/0x210
-  tasklet_action+0x10/0x30
-  handle_softirqs+0xf0/0x340
-  __irq_exit_rcu+0xcd/0xf0
-  common_interrupt+0x85/0xa0
-  </IRQ>
-
-Tested on RTL8187BvE device.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
+Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 220ac5bdf279..8a57d6c72335 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev, bool suspend)
- 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
- 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 76603ef02704..15617cad967f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -61,8 +61,10 @@ static int __init iwl_mvm_init(void)
+ 	}
  
-+	usb_kill_anchored_urbs(&priv->anchored);
-+
- 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
- 		dev_kfree_skb_any(skb);
+ 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
+-	if (ret)
++	if (ret) {
+ 		pr_err("Unable to register MVM op_mode: %d\n", ret);
++		iwl_mvm_rate_control_unregister();
++	}
  
--	usb_kill_anchored_urbs(&priv->anchored);
- 	mutex_unlock(&priv->conf_mutex);
- 
- 	if (!priv->is_rtl8187b)
+ 	return ret;
+ }
 -- 
 2.39.5
 
