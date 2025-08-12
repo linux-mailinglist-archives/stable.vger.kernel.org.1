@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7994B23274
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A743B22F67
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BB9B3ABB27
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E68A1AA0393
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F14B20409A;
-	Tue, 12 Aug 2025 18:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6AF2FE58D;
+	Tue, 12 Aug 2025 17:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tefhoiZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DguTJ4q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD7B3F9D2;
-	Tue, 12 Aug 2025 18:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D382FA0FD;
+	Tue, 12 Aug 2025 17:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022336; cv=none; b=c+rDL71/OwLGS0+8Nm5KFc/G48Sx49Gyaw8rNKqqtUC8YBsBPyCp8JkfDxqKGjunhUWVDEaDHVlISL4VogkyMV17UKGgCVqjf/cd6guNpezSmhqEo2y25eM4jKv9EJ1P3RzBvkZ0C3ZKlYNY/DdRk5VMa0kjGVXhl/Hjes3VT8g=
+	t=1755020281; cv=none; b=aJSoaFTgBrHtbvNB1tjNmL0E1V7R0L/s8Pul0A4ZVujRhXNaCuRZeRZ+oTjbBbuLi62PwrGZt+oirkSC0ZLG7+vg4PSIF05SlhlgLndRKEFS5599xI3y+tjawIZOEdC5oZQu79EO8bF4U8udDsed5soqIw0JKYskp5foHJbZCXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022336; c=relaxed/simple;
-	bh=93lYzAFBDxHYT7frN73aW7qIN4jRnS0t9DS/q111dWk=;
+	s=arc-20240116; t=1755020281; c=relaxed/simple;
+	bh=6TTAOKQNxvEsg59VOmjp3OAIIPegXV8aHEmI1qJaq2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K83FKfJGD+OhN3tqIKD5FCBmJ2VbIJKGfk7XQgD6fy4kz9tsDeULUXD7cgIcEHr0ZiqWFo4cOq4jUiy5zktZOsCdprEkOUv2cGXlf3uZCI0vsewES9gFxzNv6Bns64WkX9WCCsKuvBZuf8418TJ+nZrvfI9vpPo2D0O4fOciwns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tefhoiZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BE6C4CEF0;
-	Tue, 12 Aug 2025 18:12:15 +0000 (UTC)
+	 MIME-Version; b=CnvSBiYwIa5SfiTdKPdTGRs3MIWo6pzElO7hVn33515DxmqQPD/3p15+Sst/XeuqiCvs7Bi3KSMMQ49J8lqHI7gNb6G9D6bFkP2+//bqONbyNp89/s00duA6DbPZP9myd6DHWo/kQ5qji752ayr3I7KiHu2kN8Q7KTG72Gxx25M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DguTJ4q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53730C4CEF0;
+	Tue, 12 Aug 2025 17:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022336;
-	bh=93lYzAFBDxHYT7frN73aW7qIN4jRnS0t9DS/q111dWk=;
+	s=korg; t=1755020280;
+	bh=6TTAOKQNxvEsg59VOmjp3OAIIPegXV8aHEmI1qJaq2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tefhoiZchdyTB5J7NJ3zIJEHU1gYN1jLcRy+P1UXGi8xVLpKGvCcy5/dLalozEVvn
-	 fBRdMXct7kORpf9xNubtd3jd1rEajzJJXY93I1okbBgomygYz5dtBlbHGbEJ6ObRaI
-	 0HKbk4dH7Z8ssux7rGnzPizMsyZZz4E7U25/1sPg=
+	b=DguTJ4q0D2wzZLBO8WbfX/6Z2QLXtIslZGzlKVkEul2LfLj3+zOhKg8js5T8mmKS+
+	 +2k2SdAq77jbfzOkU6MGNYe2PQhFQlctyFSGGNpkgGQ8BeFfe4+5vicNumkKmNEUuy
+	 pO6rV0cSFAa5BPkVK9Yi0JFEXyKIhwmmv0MGL/oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/369] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+	Jacek Kowalski <jacek@jacekk.info>,
+	Simon Horman <horms@kernel.org>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 034/253] e1000e: disregard NVM checksum on tgp when valid checksum bit is not set
 Date: Tue, 12 Aug 2025 19:27:02 +0200
-Message-ID: <20250812173019.475648248@linuxfoundation.org>
+Message-ID: <20250812172950.182318592@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+From: Jacek Kowalski <jacek@jacekk.info>
 
-[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
+commit 536fd741c7ac907d63166cdae1081b1febfab613 upstream.
 
-After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
-IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
-got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
+As described by Vitaly Lifshits:
 
-Because of this, as part of the scan request handler for the P2P Discovery,
-vif struct used for adding the Probe Request P2P IE in firmware got changed
-from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
-So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
-requests frames and the other P2P peers were unable to discover this device
-causing a regression on the P2P feature.
+> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
+> driver cannot perform checksum validation and correction. This means
+> that all NVM images must leave the factory with correct checksum and
+> checksum valid bit set. Since Tiger Lake devices were the first to have
+> this lock, some systems in the field did not meet this requirement.
+> Therefore, for these transitional devices we skip checksum update and
+> verification, if the valid bit is not set.
 
-To fix this, while setting the P2P IE in firmware, properly use the vif of
-the P2P discovery wdev on which the driver received the P2P scan request.
-This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
-is completed.
-
-Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
+Cc: stable@vger.kernel.org
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/e1000e/ich8lan.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 349aa3439502..708a4e2ad839 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1541,10 +1541,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 		return -EAGAIN;
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -4146,6 +4146,8 @@ static s32 e1000_validate_nvm_checksum_i
+ 			ret_val = e1000e_update_nvm_checksum(hw);
+ 			if (ret_val)
+ 				return ret_val;
++		} else if (hw->mac.type == e1000_pch_tgp) {
++			return 0;
+ 		}
  	}
  
--	/* If scan req comes for p2p0, send it over primary I/F */
--	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
--		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
--
- 	brcmf_dbg(SCAN, "START ESCAN\n");
- 
- 	cfg->scan_request = request;
-@@ -1560,6 +1556,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 	if (err)
- 		goto scan_out;
- 
-+	/* If scan req comes for p2p0, send it over primary I/F */
-+	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
-+		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
-+
- 	err = brcmf_do_escan(vif->ifp, request);
- 	if (err)
- 		goto scan_out;
--- 
-2.39.5
-
 
 
 
