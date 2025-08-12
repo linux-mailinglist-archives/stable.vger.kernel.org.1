@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3B6B22FF7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40509B23446
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6725662E8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E8B3188DCCD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8162FD1BF;
-	Tue, 12 Aug 2025 17:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2061F1A9F89;
+	Tue, 12 Aug 2025 18:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLriT1Sr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtGlpZ5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1422C15B5;
-	Tue, 12 Aug 2025 17:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25042F4A0A;
+	Tue, 12 Aug 2025 18:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020732; cv=none; b=RB8o043UDZYmVUDgMsmpQmbZs61vrtJ0HgQVzxffk19tn7xegshQ98BrA68T6ZjCQF9f2c/ggDzBAznn8+JfSxkuR0lc41U9cRRkYZL9guDF7DMPHlGtsq54u3abzEopRnu1iJWSBEgqt7aLCCT+j6P2dMp87G/7bkmYS7/e9v4=
+	t=1755023593; cv=none; b=kfi4ieVEJn10XEIuPih8VBtFRx9tJfXgPbwYTw9mPBOmeYgfiHcJjZsT4LijfNDaGiozXlYXWpsSED4/Vx6sdsX9U3jrHYPsLMZLUGx8ReQGgxsnvubnaOFJErgUavuUZZF+H8e1gNO37aqa+OaGtfnRWr6+CqyeOggHLsfeZ8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020732; c=relaxed/simple;
-	bh=u+dOoLaEiQnPyUPqqj1xNpOfVnfsdQy2EMxdNLXxkAg=;
+	s=arc-20240116; t=1755023593; c=relaxed/simple;
+	bh=xHRRSuFE76k+dUciJ49s3WmV1nD0r/xHIulQiIKoF+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtpQER0R0PyRTOApvqUdiNMwtQs2khPcIyYu2GTndDPmG2rnNz5tXL1COkgF6BWdASzwIdGYoYMoI3gqc/1bkvtYlnIn+Rp2ygRwXuHHv5oDvc8n5OQlkhwBwEqm1EVVCrJuBspM2G3UIOykCVNJ5IPi4RMAMyaCvYNgWF4Hi3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLriT1Sr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E053C4CEF0;
-	Tue, 12 Aug 2025 17:45:32 +0000 (UTC)
+	 MIME-Version; b=YC0F/fXiVSuQ+n4dK3Y6XGw7AO9U2JuIxIW7SMWbELH9aRW53CJ4lxAu70iQOa2g4anxaONT5QmEzZa1QagqRGMtK17rsYvqrWrIGR5Rnxr+OPE5Q4RCmQYD0midENXtk7VERjqXBq4eOtgPDmEC3yGqv6KtjY3tIcbMqKgkOsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtGlpZ5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F74CC4CEF0;
+	Tue, 12 Aug 2025 18:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020732;
-	bh=u+dOoLaEiQnPyUPqqj1xNpOfVnfsdQy2EMxdNLXxkAg=;
+	s=korg; t=1755023593;
+	bh=xHRRSuFE76k+dUciJ49s3WmV1nD0r/xHIulQiIKoF+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLriT1SrBY9cMFGT9k8NPHOGCJnXgQ2arz/eko1i336A/OIw/83mNlVXSUFG3PDhN
-	 rKpu2bz/feiwDSwPKwzPNgZojw6hQwMw15BN6sqRj/EOQfSt5DLLoGEdU44miSmI7N
-	 etcqQB6bxwkfkBT6jNp1BlUqG/u2g8yTuyvcz3jE=
+	b=WtGlpZ5svVlG7xFgeVNfgiUUAlFj0XJYCMmObt2O9HE4ZFZBQwjGIcS2eKbS5iwlS
+	 vFc76uZ4L+oV5pBzUjzBcZqAgJXY78jTiE5uMP4clvE5NH37oj0CQrJD3AZK/iyeFC
+	 ejPKv5pV3kryjp7gc2J55q8ZaKy14UFfpcrqiWV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Andries <alex.andries.aa@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/262] ASoC: amd: yc: add DMI quirk for ASUS M6501RM
+Subject: [PATCH 6.16 098/627] arm64: dts: rockchip: fix PHY handling for ROCK 4D
 Date: Tue, 12 Aug 2025 19:26:33 +0200
-Message-ID: <20250812172953.196198560@linuxfoundation.org>
+Message-ID: <20250812173423.044154924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Andries <alex.andries.aa@gmail.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit 6f80be548588429100eb1f5e25dc2a714d583ffe ]
+[ Upstream commit cd803da7c033e376a66793a43ee98e136bc6cc25 ]
 
-add DMI entry for ASUS Vivobook PRO 15X (M6501RM)
-to make the internal microphone function
+Old revisions of the ROCK 4D board have a dedicated crystal to
+supply the RTL8211F PHY's 25MHz clock input. At least some newer
+revisions instead use REFCLKO25M_GMAC0_OUT. The DT already has
+this half-prepared, but there are some issues:
 
-Signed-off-by: Alexandru Andries <alex.andries.aa@gmail.com>
-Link: https://patch.msgid.link/20250707220730.361290-1-alex.andries.aa@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+1. The DT relies on auto-selecting the right PHY driver, which
+   requires that it works good enough to read the ID registers.
+   This does not work without the clock, which is handled by
+   the PHY driver. By updating the compatible to contain the
+   RTL8211F IDs, so that the operating system can choose the
+   right PHY driver without relying on a pre-powered PHY.
+
+2. Despite the name REFCLKO25M_GMAC0_OUT could also provide a
+   different frequency, so ensure it is explicitly set to 25
+   MHz as expected by the PHY.
+
+3. While at it switch from deprecated "enable-gpio" to standard
+   "enable-gpios".
+
+Fixes: a0fb7eca9c09 ("arm64: dts: rockchip: Add Radxa ROCK 4D device tree")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20250704-rk3576-rock4d-phy-handling-fixes-v1-1-1d64130c4139@kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dts | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 1063a19b39aa..24919e68b346 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -409,6 +409,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M6501RM"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dts b/arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dts
+index 6756403111e7..0a93853cdf43 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dts
+@@ -641,14 +641,16 @@ hym8563: rtc@51 {
+ 
+ &mdio0 {
+ 	rgmii_phy0: ethernet-phy@1 {
+-		compatible = "ethernet-phy-ieee802.3-c22";
++		compatible = "ethernet-phy-id001c.c916";
+ 		reg = <0x1>;
+ 		clocks = <&cru REFCLKO25M_GMAC0_OUT>;
++		assigned-clocks = <&cru REFCLKO25M_GMAC0_OUT>;
++		assigned-clock-rates = <25000000>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&rtl8211f_rst>;
+ 		reset-assert-us = <20000>;
+ 		reset-deassert-us = <100000>;
+-		reset-gpio = <&gpio2 RK_PB5 GPIO_ACTIVE_LOW>;
++		reset-gpios = <&gpio2 RK_PB5 GPIO_ACTIVE_LOW>;
+ 	};
+ };
+ 
 -- 
 2.39.5
 
