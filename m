@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69F2B232DE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A03FB23002
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC282A2CC3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6D2E685801
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180872D8363;
-	Tue, 12 Aug 2025 18:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9064F2FDC55;
+	Tue, 12 Aug 2025 17:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRWOEmig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lT3vfynq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92A32E3B06;
-	Tue, 12 Aug 2025 18:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E86221FAC;
+	Tue, 12 Aug 2025 17:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022671; cv=none; b=dsyiOXjzUhPxdMouzalpVu2SLnUcdE1Iag/lwo+VaQWE2Dchx7yNUWc/xhsFLqYqWtOkQyG2uZk++gohCJDI8OAdREHVYe0v5b3pZ+M3BsKrrP3KXJV6VTYDKceLYfwpJuBf3czogXunFnJd23Qg2K4ZoSSOF1P10+eSBAqAQDE=
+	t=1755020759; cv=none; b=SCleCfmLz0e+uDm1Tmvum5Gem00RLhilak5TIdEYb/2a/6qndCKCWJsH71ZKtT0dIN0K5mJc+Kai9p2aKWzNeIX3LfvTdIeechV7KDjoZb1eLvr4xPznFXEltL/xxWXr8TddWxfBoN8Pe8/Q/BhdW/BTkLwW/j8iYiQW0HiOB/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022671; c=relaxed/simple;
-	bh=yljkFY5qh9NcIryY9Hrh+cWo58atkLae5TZAZ2RdMwg=;
+	s=arc-20240116; t=1755020759; c=relaxed/simple;
+	bh=ixkx9Rj0UY9uRgviIoDICmvlZUtgcZb4eV5hrNeQ0I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYWj3BhuKECZhToF/LmyuPyfdY+QW3wVRTOclkn21CajLWNBawOe4Owt8fwH9/W76+TpUlp2jkd6vMGVZ8XB0q9rXocYhK6HOYmnRKF/3dsS8zoRjgoDy1VnfLXPTWSFNeBE6u2n5xUW/1K1KcIE+2X/oh1veKD8hO+mR/QDr9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRWOEmig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B11C4CEF0;
-	Tue, 12 Aug 2025 18:17:51 +0000 (UTC)
+	 MIME-Version; b=gidkvVyqeuCSSAM0Pg3ky0OpC3MV03OH23pChQLaR5zEo3JNzz5ixipfAIci+6OWF9luwBAYWtZOOT7bNfVb2W1/tfHVnEcqTwgfjg8n+B/VTKVSQPQ0eHTZJLhEX434Ooa1rcTPV4Sx0kQfKMyT7NhWtJSYyIZt+CRL48gRCMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lT3vfynq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD324C4CEF0;
+	Tue, 12 Aug 2025 17:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022671;
-	bh=yljkFY5qh9NcIryY9Hrh+cWo58atkLae5TZAZ2RdMwg=;
+	s=korg; t=1755020759;
+	bh=ixkx9Rj0UY9uRgviIoDICmvlZUtgcZb4eV5hrNeQ0I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRWOEmignJPSpAySywuwqqpKJcfWDFfgCD468IswSMM+Ot9Y3IrK0ylgyW39nJben
-	 5jlatDiLB64VQoHZW8jeSTZZgaIbtm9lqPpF8vc1sxF/eAL6HWfu1Kq6rM/AH5YauM
-	 UiqC5uo+XVrrY/fht0uAz4lCI7aDMTJHe3tnL70k=
+	b=lT3vfynqEF2I5CBI/6Mt8wlPNRxB/Fiyu0GHqIiNc8dex+9nq8+0tcSjVVXmmtKwa
+	 IsdM3kDCenzLQY2iePNWlttBJyPpp/s++hC/hGY6FP43eL+F5Rif8uq92SiiifXsCE
+	 //qZ9rp6drb2a1OXRBw86yw01lQAPcqYh34zyrlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/369] mtd: rawnand: atmel: Fix dma_mapping_error() address
+Subject: [PATCH 6.1 134/253] vrf: Drop existing dst reference in vrf_ip6_input_dst
 Date: Tue, 12 Aug 2025 19:28:42 +0200
-Message-ID: <20250812173023.221104674@linuxfoundation.org>
+Message-ID: <20250812172954.394871918@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit e1e6b933c56b1e9fda93caa0b8bae39f3f421e5c ]
+[ Upstream commit f388f807eca1de9e6e70f9ffb1a573c3811c4215 ]
 
-It seems like what was intended is to test if the dma_map of the
-previous line failed but the wrong dma address was passed.
+Commit ff3fbcdd4724 ("selftests: tc: Add generic erspan_opts matching support
+for tc-flower") started triggering the following kmemleak warning:
 
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250702064515.18145-2-fourier.thomas%40gmail.com
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+unreferenced object 0xffff888015fb0e00 (size 512):
+  comm "softirq", pid 0, jiffies 4294679065
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 40 d2 85 9e ff ff ff ff  ........@.......
+    41 69 59 9d ff ff ff ff 00 00 00 00 00 00 00 00  AiY.............
+  backtrace (crc 30b71e8b):
+    __kmalloc_noprof+0x359/0x460
+    metadata_dst_alloc+0x28/0x490
+    erspan_rcv+0x4f1/0x1160 [ip_gre]
+    gre_rcv+0x217/0x240 [ip_gre]
+    gre_rcv+0x1b8/0x400 [gre]
+    ip_protocol_deliver_rcu+0x31d/0x3a0
+    ip_local_deliver_finish+0x37d/0x620
+    ip_local_deliver+0x174/0x460
+    ip_rcv+0x52b/0x6b0
+    __netif_receive_skb_one_core+0x149/0x1a0
+    process_backlog+0x3c8/0x1390
+    __napi_poll.constprop.0+0xa1/0x390
+    net_rx_action+0x59b/0xe00
+    handle_softirqs+0x22b/0x630
+    do_softirq+0xb1/0xf0
+    __local_bh_enable_ip+0x115/0x150
+
+vrf_ip6_input_dst unconditionally sets skb dst entry, add a call to
+skb_dst_drop to drop any existing entry.
+
+Cc: David Ahern <dsahern@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 9ff74384600a ("net: vrf: Handle ipv6 multicast and link-local addresses")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250725160043.350725-1-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vrf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index f9ccfd02e804..6f8eb7fa4c59 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -373,7 +373,7 @@ static int atmel_nand_dma_transfer(struct atmel_nand_controller *nc,
- 	dma_cookie_t cookie;
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index c8a1009d659e..75e95f6dd816 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1355,6 +1355,8 @@ static void vrf_ip6_input_dst(struct sk_buff *skb, struct net_device *vrf_dev,
+ 	struct net *net = dev_net(vrf_dev);
+ 	struct rt6_info *rt6;
  
- 	buf_dma = dma_map_single(nc->dev, buf, len, dir);
--	if (dma_mapping_error(nc->dev, dev_dma)) {
-+	if (dma_mapping_error(nc->dev, buf_dma)) {
- 		dev_err(nc->dev,
- 			"Failed to prepare a buffer for DMA access\n");
- 		goto err;
++	skb_dst_drop(skb);
++
+ 	rt6 = vrf_ip6_route_lookup(net, vrf_dev, &fl6, ifindex, skb,
+ 				   RT6_LOOKUP_F_HAS_SADDR | RT6_LOOKUP_F_IFACE);
+ 	if (unlikely(!rt6))
 -- 
 2.39.5
 
