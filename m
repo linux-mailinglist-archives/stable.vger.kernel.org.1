@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6568EB23047
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E69B23356
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFD6D18984AF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 961271AA1A73
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C7A2F7477;
-	Tue, 12 Aug 2025 17:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254D42F4A02;
+	Tue, 12 Aug 2025 18:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdmdZ0Se"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yx7phGR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9DF23D7E5;
-	Tue, 12 Aug 2025 17:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CF9280037;
+	Tue, 12 Aug 2025 18:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020965; cv=none; b=foZDDWk+K4CfTU7B6RYdykwQT4/4gbeCmGsYg2EC3Ff1Ej7INdlTl/si0WMat8eqFwvIBTiLE7bcx4o3pvgmhNpQ8mnE5TfBZFJ0Dhhgnh+wIuEqtFcyjfD7e9HIxwuYcsT0KawHIy5O5NrDbb+9JcCL9J8GERBPB1qFAdaOo6A=
+	t=1755022969; cv=none; b=alPbo9ZuKt1Df3cDzRmSLDZ9GZgRgxagJ68oVhuGWm1WhheroHBCdG5QMq6eNMwAg9+izAdohxhPGJNJcI6FDlEZ17P3RDCwm3pFdvdhck7V83pqQ92/3MPCafUadpc3LB1CiZoiM35jmocxeKewwkbY7cwro3K0gZXu5praUkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020965; c=relaxed/simple;
-	bh=eR3Wo1KeXAxO3l007SfkuQL73mkDXittDUAnmZasOH0=;
+	s=arc-20240116; t=1755022969; c=relaxed/simple;
+	bh=0eQlujl/pxO10JDcKRedcmqGHfP5y4tfiawdLXJNOCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qP7JN+OMRXaPfE0VONBobZm7LFMjOc2qLKYBjZ1kwy2yd4BbLiO2E+fq0SR+Lhbr/RopLfiS0jW/d1zQRuwctkISdUON5nbMLxPE1ujHeFmnpcNcvBfaidMSyWG6IBLzJMHXksHTXNa6FPUHvSDQfCkz90WD6qV5gT+jgyA0e8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdmdZ0Se; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB13C4CEF1;
-	Tue, 12 Aug 2025 17:49:24 +0000 (UTC)
+	 MIME-Version; b=jAQRvKv7SwFeDLB7trKifj4J0ZQgIXm7YBqUHi6I12CnYObZUTAktel3lk2NF87T+M/ryK3IgimCb9phjhtPS5SW+kh+ms3GikFuPXXBKEddpSqykK3ntkToUID80VE53UwjXR5TwOCOhQ/MnPB4V+6cUnO3D3IzSMyhhcSrm0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yx7phGR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7C0C4CEF6;
+	Tue, 12 Aug 2025 18:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020965;
-	bh=eR3Wo1KeXAxO3l007SfkuQL73mkDXittDUAnmZasOH0=;
+	s=korg; t=1755022969;
+	bh=0eQlujl/pxO10JDcKRedcmqGHfP5y4tfiawdLXJNOCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdmdZ0Sex2FPbr3s/EhY5/Sa1x2yqWKySRB2olTrq2DmSxshIBQ0t9PNJ1zUvMtLz
-	 uqnNCr/Q6K/yokELNerwTkQrNNhLxZe70TCgk0aA/3rcT4zlmzA8r0tnLGinlXKILX
-	 e8NOO6QW+KRvPPDjdlTKpiK4HGKzOEuE1GgQbZuo=
+	b=yx7phGR2fXgqHS91cGBz2QHkUv7llG+PL7MRdMqXtWHUUsslVuDh+5ePbDB6fj0FS
+	 vxc34lUunohJ6avZVBpP8iNTERqBj2Rh87GOgWrwhfojQmZM0SkwKn6f6QlPemovh9
+	 TrC0s1xR/5CpCvNqaaikpB6odW71pHWUTCVN0+rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/253] f2fs: doc: fix wrong quota mount option description
+Subject: [PATCH 6.12 284/369] NFSv4.2: another fix for listxattr
 Date: Tue, 12 Aug 2025 19:29:41 +0200
-Message-ID: <20250812172957.012538506@linuxfoundation.org>
+Message-ID: <20250812173027.390274641@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 81b6ecca2f15922e8d653dc037df5871e754be6e ]
+[ Upstream commit 9acb237deff7667b0f6b10fe6b1b70c4429ea049 ]
 
-We should use "{usr,grp,prj}jquota=" to disable journaled quota,
-rather than using off{usr,grp,prj}jquota.
+Currently, when the server supports NFS4.1 security labels then
+security.selinux label in included twice. Instead, only add it
+when the server doesn't possess security label support.
 
-Fixes: 4b2414d04e99 ("f2fs: support journalled quota")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 243fea134633 ("NFSv4.2: fix listxattr to return selinux security label")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Link: https://lore.kernel.org/r/20250722205641.79394-1-okorniev@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/f2fs.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4proc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
-index 17df9a02ccff..0625d5bce596 100644
---- a/Documentation/filesystems/f2fs.rst
-+++ b/Documentation/filesystems/f2fs.rst
-@@ -230,9 +230,9 @@ usrjquota=<file>	 Appoint specified file and type during mount, so that quota
- grpjquota=<file>	 information can be properly updated during recovery flow,
- prjjquota=<file>	 <quota file>: must be in root directory;
- jqfmt=<quota type>	 <quota type>: [vfsold,vfsv0,vfsv1].
--offusrjquota		 Turn off user journalled quota.
--offgrpjquota		 Turn off group journalled quota.
--offprjjquota		 Turn off project journalled quota.
-+usrjquota=		 Turn off user journalled quota.
-+grpjquota=		 Turn off group journalled quota.
-+prjjquota=		 Turn off project journalled quota.
- quota			 Enable plain user disk quota accounting.
- noquota			 Disable all plain disk quota option.
- alloc_mode=%s		 Adjust block allocation policy, which supports "reuse"
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 77b239b10d41..e27cd2c7cfd1 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -10819,7 +10819,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
+ 
+ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ {
+-	ssize_t error, error2, error3, error4;
++	ssize_t error, error2, error3, error4 = 0;
+ 	size_t left = size;
+ 
+ 	error = generic_listxattr(dentry, list, left);
+@@ -10847,9 +10847,11 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ 		left -= error3;
+ 	}
+ 
+-	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
+-	if (error4 < 0)
+-		return error4;
++	if (!nfs_server_capable(d_inode(dentry), NFS_CAP_SECURITY_LABEL)) {
++		error4 = security_inode_listsecurity(d_inode(dentry), list, left);
++		if (error4 < 0)
++			return error4;
++	}
+ 
+ 	error += error2 + error3 + error4;
+ 	if (size && error > size)
 -- 
 2.39.5
 
