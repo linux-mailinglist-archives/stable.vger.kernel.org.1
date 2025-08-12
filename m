@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE22B2301B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB95DB23104
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7279C1883E2B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795005671DF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BC42FE56A;
-	Tue, 12 Aug 2025 17:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDA32FDC2F;
+	Tue, 12 Aug 2025 17:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvKWuB0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m02Iip6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630BB2FE563;
-	Tue, 12 Aug 2025 17:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEDC2FAC02;
+	Tue, 12 Aug 2025 17:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020769; cv=none; b=Wbj2y3I/37IEng2ujG9k1nxJoxLSgm8598+zPyvrznplHKAeQem/wnZVt2HF6w8M0ZddcSot/Ys48aR+fb1xlKfxRdXPUYp85NX86MzaiSLuZrqe/82EQmR5Ojcp6oSrPGfZ7g9j9McnTaiq5LYb5iAsA/NlIvNBS+ib85utfn4=
+	t=1755021488; cv=none; b=MaO8d3e4EzkHBekwUdd9iaWvTbeKekq5R4DewI/e4wW51eon6POF+o8mCTfZK7robViO0IgxeB/o7XAX8Af0+YOFuIIMD0kzvaKdaGnCs5jkME+kCl82Y44lYMty4Ov+7C+PqU3kHorx1O3REaXI1znBchA/bEoshONAe8VEMFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020769; c=relaxed/simple;
-	bh=9jgQegY9ny910J0BB9McIbNPfnhU3F5yN8J+tDazDRQ=;
+	s=arc-20240116; t=1755021488; c=relaxed/simple;
+	bh=HnqV6fWkbcTphMIiToW9ApFLMVIkNirX0P3tTL/RXeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9JddSPZZTZwLNe3ZJlqqfMsK5+BTYwtU11YzAHzbssCkFukwaPSJD6Wwz9ozE12FAPGVibxNZyIzfuI+1zhWvDQvVIw5yjWpK5QpuVMECwzgNK0IcsZ7Ai6nOayXzhqkMHiZdRoQfcp/uSS7HjJ91JodW4pCe47e96UuqhDFJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvKWuB0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A160C4CEF0;
-	Tue, 12 Aug 2025 17:46:08 +0000 (UTC)
+	 MIME-Version; b=tvp3xgTNATOEZTOMEqvAygJmVTZXih+QnPtpoAdzFvEKxo6mC24lAHgAvJavPGJ/Ho9L+VJkEEg8FA8/eNqYxSoKHmZvZI2/PdK3BLnVLyFXdo6k2Kp62AGGG7x/eMzjU0OvhQuMEyz8/6RgYZm8mAywLe30h+m+G1PdWm8RM+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m02Iip6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EEAC4CEF0;
+	Tue, 12 Aug 2025 17:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020768;
-	bh=9jgQegY9ny910J0BB9McIbNPfnhU3F5yN8J+tDazDRQ=;
+	s=korg; t=1755021487;
+	bh=HnqV6fWkbcTphMIiToW9ApFLMVIkNirX0P3tTL/RXeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvKWuB0iPmaPaK+GxNN3Gpi4NqjY6CDnMfaNe4j1NfE50MIMSPtNU3ekR6anVzX65
-	 6vMiPoO6y9e/m5zI40SmAT4p4WQ6Kz0MV/+sx1BWt2D+nSJT4SGt4msuagMTlAXB9N
-	 7QwM9RdaCHyXehJnebE81l18Iqzn/Hel1/Q4mZ/I=
+	b=m02Iip6pVOisRPFGEFTwV+dGp+wlIyUC1DjgJYwYhWx5zFv4s7pZHld4Rsq8u2sKH
+	 arAgebuLwEJO9sv7IxJlzjKgVVj6RaYJpT2FKiBXffQWco2/iw3fMJnmbGAC9oIRYT
+	 oJ8KX1Xe5TgIYnMHUOKxmL/LBKTdaEL50EW68zkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/253] ipv6: annotate data-races around rt->fib6_nsiblings
+Subject: [PATCH 6.6 137/262] scsi: elx: efct: Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:45 +0200
-Message-ID: <20250812172954.522510963@linuxfoundation.org>
+Message-ID: <20250812172958.931094333@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 31d7d67ba1274f42494256d52e86da80ed09f3cb ]
+[ Upstream commit 3a988d0b65d7d1713ce7596eae288a293f3b938e ]
 
-rt->fib6_nsiblings can be read locklessly, add corresponding
-READ_ONCE() and WRITE_ONCE() annotations.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Fixes: 66f5d6ce53e6 ("ipv6: replace rwlock with rcu and spinlock in fib6_table")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250725140725.3626540-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 692e5d73a811 ("scsi: elx: efct: LIO backend interface routines")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627114117.188480-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 20 +++++++++++++-------
- net/ipv6/route.c   |  5 +++--
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ drivers/scsi/elx/efct/efct_lio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index bc70380eb437..bb51a911a6ce 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -438,15 +438,17 @@ struct fib6_dump_arg {
- static int fib6_rt_dump(struct fib6_info *rt, struct fib6_dump_arg *arg)
- {
- 	enum fib_event_type fib_event = FIB_EVENT_ENTRY_REPLACE;
-+	unsigned int nsiblings;
- 	int err;
+diff --git a/drivers/scsi/elx/efct/efct_lio.c b/drivers/scsi/elx/efct/efct_lio.c
+index a982b9cf9870..49d7fe150684 100644
+--- a/drivers/scsi/elx/efct/efct_lio.c
++++ b/drivers/scsi/elx/efct/efct_lio.c
+@@ -382,7 +382,7 @@ efct_lio_sg_unmap(struct efct_io *io)
+ 		return;
  
- 	if (!rt || rt == arg->net->ipv6.fib6_null_entry)
- 		return 0;
- 
--	if (rt->fib6_nsiblings)
-+	nsiblings = READ_ONCE(rt->fib6_nsiblings);
-+	if (nsiblings)
- 		err = call_fib6_multipath_entry_notifier(arg->nb, fib_event,
- 							 rt,
--							 rt->fib6_nsiblings,
-+							 nsiblings,
- 							 arg->extack);
- 	else
- 		err = call_fib6_entry_notifier(arg->nb, fib_event, rt,
-@@ -1119,7 +1121,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 
- 			if (rt6_duplicate_nexthop(iter, rt)) {
- 				if (rt->fib6_nsiblings)
--					rt->fib6_nsiblings = 0;
-+					WRITE_ONCE(rt->fib6_nsiblings, 0);
- 				if (!(iter->fib6_flags & RTF_EXPIRES))
- 					return -EEXIST;
- 				if (!(rt->fib6_flags & RTF_EXPIRES))
-@@ -1145,7 +1147,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 			 */
- 			if (rt_can_ecmp &&
- 			    rt6_qualify_for_ecmp(iter))
--				rt->fib6_nsiblings++;
-+				WRITE_ONCE(rt->fib6_nsiblings,
-+					   rt->fib6_nsiblings + 1);
- 		}
- 
- 		if (iter->fib6_metric > rt->fib6_metric)
-@@ -1195,7 +1198,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 		fib6_nsiblings = 0;
- 		list_for_each_entry_safe(sibling, temp_sibling,
- 					 &rt->fib6_siblings, fib6_siblings) {
--			sibling->fib6_nsiblings++;
-+			WRITE_ONCE(sibling->fib6_nsiblings,
-+				   sibling->fib6_nsiblings + 1);
- 			BUG_ON(sibling->fib6_nsiblings != rt->fib6_nsiblings);
- 			fib6_nsiblings++;
- 		}
-@@ -1240,7 +1244,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 				list_for_each_entry_safe(sibling, next_sibling,
- 							 &rt->fib6_siblings,
- 							 fib6_siblings)
--					sibling->fib6_nsiblings--;
-+					WRITE_ONCE(sibling->fib6_nsiblings,
-+						   sibling->fib6_nsiblings - 1);
- 				WRITE_ONCE(rt->fib6_nsiblings, 0);
- 				list_del_rcu(&rt->fib6_siblings);
- 				rt6_multipath_rebalance(next_sibling);
-@@ -1953,7 +1958,8 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
- 			notify_del = true;
- 		list_for_each_entry_safe(sibling, next_sibling,
- 					 &rt->fib6_siblings, fib6_siblings)
--			sibling->fib6_nsiblings--;
-+			WRITE_ONCE(sibling->fib6_nsiblings,
-+				   sibling->fib6_nsiblings - 1);
- 		WRITE_ONCE(rt->fib6_nsiblings, 0);
- 		list_del_rcu(&rt->fib6_siblings);
- 		rt6_multipath_rebalance(next_sibling);
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 061a7a524e5e..07e3d59c2405 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5233,7 +5233,8 @@ static void ip6_route_mpath_notify(struct fib6_info *rt,
- 	 */
- 	rcu_read_lock();
- 
--	if ((nlflags & NLM_F_APPEND) && rt_last && rt_last->fib6_nsiblings) {
-+	if ((nlflags & NLM_F_APPEND) && rt_last &&
-+	    READ_ONCE(rt_last->fib6_nsiblings)) {
- 		rt = list_first_or_null_rcu(&rt_last->fib6_siblings,
- 					    struct fib6_info,
- 					    fib6_siblings);
-@@ -5766,7 +5767,7 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
- 		if (dst->lwtstate &&
- 		    lwtunnel_fill_encap(skb, dst->lwtstate, RTA_ENCAP, RTA_ENCAP_TYPE) < 0)
- 			goto nla_put_failure;
--	} else if (rt->fib6_nsiblings) {
-+	} else if (READ_ONCE(rt->fib6_nsiblings)) {
- 		struct fib6_info *sibling;
- 		struct nlattr *mp;
+ 	dma_unmap_sg(&io->efct->pci->dev, cmd->t_data_sg,
+-		     ocp->seg_map_cnt, cmd->data_direction);
++		     cmd->t_data_nents, cmd->data_direction);
+ 	ocp->seg_map_cnt = 0;
+ }
  
 -- 
 2.39.5
