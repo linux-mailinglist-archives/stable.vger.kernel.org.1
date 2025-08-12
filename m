@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-168076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5A0B23344
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 652A1B231A0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 307B23B9207
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C3C8163CE5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658402FA0DB;
-	Tue, 12 Aug 2025 18:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5979D2882CE;
+	Tue, 12 Aug 2025 18:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbD7VfMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCz/dihT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2578B280037;
-	Tue, 12 Aug 2025 18:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DEC2FE573;
+	Tue, 12 Aug 2025 18:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022963; cv=none; b=hNjYPbkl1oCPnumnWj+asIGljUV9FQzoaCPB68PDuz/myH7fFAdQFm8j1L3fVWp1ONbNJTczvBdVdR0iB+rfQ1DJi8c0HgAHDgl+h2iGsunz5U8PzVOW5n1n6k6Xe5rNJRFs2mmSN7ARRhjfBQcYywPDkjE9roRXjCGYXaN1GHY=
+	t=1755021766; cv=none; b=aQDn38d51eu68V4Qz0EyRTGPORq44cod3S0OmuehOxqIy5SXlE1tFvC4oDlsUjVas2cftMilGvG3v2HDL3ORhwCH7OA3tx68PltjMnelctcxUubKGxXbE1I2bHyBCQku+cRYyfuo8ny6/aQhendT+z6QFIjf9EjANcg2hug5if8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022963; c=relaxed/simple;
-	bh=inrgngWLQnnS52ThQAJkxw1GPVOUNyEQN2JBS180k34=;
+	s=arc-20240116; t=1755021766; c=relaxed/simple;
+	bh=zC0l+adIzMNABVjeIcqbKSOiD9CU3Hb7vmEnIStrKiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hD5QzRxkGqfZfMmkb8k7z4nHgmUUQATJBKHZmdNtGP9o3sQW53aMzPFNAn9hpFFyhxrq1Z5wNSjq3E8tHXhBKDZacGhm2QHPn5tEYLLp6VMwZm4MutqTNGYkeHD1nAlUA68FdiXwlr1exqgV0oHAdOMA9j95mGAi9AMTFIw4G4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbD7VfMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8831CC4CEF8;
-	Tue, 12 Aug 2025 18:22:42 +0000 (UTC)
+	 MIME-Version; b=qYqnQCdk4rFLdQcwiNqHTxJXdEznZdmJFeHTVWSmFJOxfPIe/2TdggxdiOvLb3sAw3GYG5UOgb8sGt1M5gKLAcwlLQt7hr5t76oYLdKi5fZ+koioMU0gW8DG3cern0gi0ji6sc6BEVXxxGJiXJOCn03Yh0jBLFeDUC46f9oQYd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCz/dihT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2841DC4CEF6;
+	Tue, 12 Aug 2025 18:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022963;
-	bh=inrgngWLQnnS52ThQAJkxw1GPVOUNyEQN2JBS180k34=;
+	s=korg; t=1755021765;
+	bh=zC0l+adIzMNABVjeIcqbKSOiD9CU3Hb7vmEnIStrKiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbD7VfMwQf+M0ywpIs4dAt0l4jK25+qQPiqDlZmmeU80S8fT6qfq2tVjU1I4vlZJQ
-	 B3wHuTlgHdRlouFYeYI/XGJtxf5Tu8GGuG87OjxshSHDU9AJ0UGOrQH6iHj97gSUAI
-	 Ib2zwXdASGmb/U5V1SriteOK5pzPhGy1Kd5ky4mg=
+	b=wCz/dihTsvOWFbwHzIlMX+9GnRXpPya628/VtOQVGxXkxYHDPIl2B2bGpNa7u6u52
+	 9/CXHVz1HbE1IIVsTv3u6Xw1VZL1MbDQFkFdJBp3zd09jFHPkSZdk8yDRMhNvq2l2Y
+	 1sJfPWU4IDq4Ju48XvYU2rbTSJxaUN/AFz4GjEL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 309/369] irqchip: Build IMX_MU_MSI only on ARM
+Subject: [PATCH 6.6 218/262] smb: server: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
 Date: Tue, 12 Aug 2025 19:30:06 +0200
-Message-ID: <20250812173028.353643632@linuxfoundation.org>
+Message-ID: <20250812173002.432817529@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +67,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 3b6a18f0da8720d612d8a682ea5c55870da068e0 ]
+[ Upstream commit afb4108c92898350e66b9a009692230bcdd2ac73 ]
 
-Compile-testing IMX_MU_MSI on x86 without PCI_MSI support results in a
-build failure:
+In case of failures either ib_dma_map_single() might not be called yet
+or ib_dma_unmap_single() was already called.
 
-drivers/gpio/gpio-sprd.c:8:
-include/linux/gpio/driver.h:41:33: error: field 'msiinfo' has incomplete type
-drivers/iommu/iommufd/viommu.c:4:
-include/linux/msi.h:528:33: error: field 'alloc_info' has incomplete type
+We should make sure put_recvmsg() only calls ib_dma_unmap_single() if needed.
 
-Tighten the dependency further to only allow compile testing on Arm.
-This could be refined further to allow certain x86 configs.
-
-This was submitted before to address a different build failure, which was
-fixed differently, but the problem has now returned in a different form.
-
-Fixes: 70afdab904d2d1e6 ("irqchip: Add IMX MU MSI controller driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250805160952.4006075-1-arnd@kernel.org
-Link: https://lore.kernel.org/all/20221215164109.761427-1-arnd@kernel.org/
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/transport_rdma.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index a799a89195c5..5d5b3cf381b9 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -506,6 +506,7 @@ config IMX_MU_MSI
- 	tristate "i.MX MU used as MSI controller"
- 	depends on OF && HAS_IOMEM
- 	depends on ARCH_MXC || COMPILE_TEST
-+	depends on ARM || ARM64
- 	default m if ARCH_MXC
- 	select IRQ_DOMAIN
- 	select IRQ_DOMAIN_HIERARCHY
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 228b7627a115..d28d85a46597 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -264,8 +264,13 @@ smb_direct_recvmsg *get_free_recvmsg(struct smb_direct_transport *t)
+ static void put_recvmsg(struct smb_direct_transport *t,
+ 			struct smb_direct_recvmsg *recvmsg)
+ {
+-	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
+-			    recvmsg->sge.length, DMA_FROM_DEVICE);
++	if (likely(recvmsg->sge.length != 0)) {
++		ib_dma_unmap_single(t->cm_id->device,
++				    recvmsg->sge.addr,
++				    recvmsg->sge.length,
++				    DMA_FROM_DEVICE);
++		recvmsg->sge.length = 0;
++	}
+ 
+ 	spin_lock(&t->recvmsg_queue_lock);
+ 	list_add(&recvmsg->list, &t->recvmsg_queue);
+@@ -637,6 +642,7 @@ static int smb_direct_post_recv(struct smb_direct_transport *t,
+ 		ib_dma_unmap_single(t->cm_id->device,
+ 				    recvmsg->sge.addr, recvmsg->sge.length,
+ 				    DMA_FROM_DEVICE);
++		recvmsg->sge.length = 0;
+ 		smb_direct_disconnect_rdma_connection(t);
+ 		return ret;
+ 	}
+@@ -1818,6 +1824,7 @@ static int smb_direct_create_pools(struct smb_direct_transport *t)
+ 		if (!recvmsg)
+ 			goto err;
+ 		recvmsg->transport = t;
++		recvmsg->sge.length = 0;
+ 		list_add(&recvmsg->list, &t->recvmsg_queue);
+ 	}
+ 	t->count_avail_recvmsg = t->recv_credit_max;
 -- 
 2.39.5
 
