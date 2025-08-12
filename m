@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6B4B23109
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE5BB232F3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A22556799C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 940D23AC4CC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CEA2F8BE7;
-	Tue, 12 Aug 2025 17:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D824A2E3B06;
+	Tue, 12 Aug 2025 18:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhe7YrM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL3lhFNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2532D2FDC25;
-	Tue, 12 Aug 2025 17:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968B8280037;
+	Tue, 12 Aug 2025 18:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021509; cv=none; b=eZsWaXW4Ibi8rGSXFv7BOn4M/tb+stBO38EfzAdtEq3srwusjwR77Yuk1XFo7rapGYU3LGPme5fxhfg2gISHOsO7vcZhgI2axqH5P+ay7vODrUUFD/KQnTQDFkvQUJ1dMBx5J7T5P2VG++IZD/Di4//mBtwqHSjCy7m/MYLGa2E=
+	t=1755022705; cv=none; b=OmB7Zp3jr+tr8WTuPKIWW4EtpmxlwsZQR9pmYi80WtHANUFPwMa6zF3jztgGhiKcDTrTfrHWXuHvYaS0WxqRV+5MT5xobcFWIwYfKsYoTKXWac2/7aInI9W8I+e06RSUbr0hXdtKPf1SNmHwkSyTAmyQPsytue/74MhmL0zrXuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021509; c=relaxed/simple;
-	bh=xWm8VpNNg2qQ9fvqIMJYNUEuAUZZC2niMfJmJAL8X3Y=;
+	s=arc-20240116; t=1755022705; c=relaxed/simple;
+	bh=lwXA0QqFBtU9+BI+YgztEiteczC9ChdbfwyXfSOw7ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttqT/W+GLKOawJOXUqnA91BiLi0q2jfF3lE+iueKq06wBO/xuyZ8uKUkZcM0oH4WZ+cHN0XNjOkkMe0AMEFQvUUFl3ejUpLiJ4UqZpyNYcnFkJ45k4wdudlcoxpufMb11k7Ayphs/AvBbvftCy7Bv2FAKj+ibzisx2KaXl8ykkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhe7YrM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88662C4CEF0;
-	Tue, 12 Aug 2025 17:58:28 +0000 (UTC)
+	 MIME-Version; b=ZjPmUO/6WclpKDpVvmalSxhUpDrs6t9GeOTnd9sMIzz4V5aOifDVvyVQyIvd2myEzVru2dRuo5q/He1q35Lc+CC2GZ0tK05kh0gp6drUL7b43BEuE/XaE9UveTPup5RYxW1gaLLpzI+sRre9JPKmXiAFPzZElgmuJxzefe4gTY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL3lhFNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AEFC4CEF6;
+	Tue, 12 Aug 2025 18:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021509;
-	bh=xWm8VpNNg2qQ9fvqIMJYNUEuAUZZC2niMfJmJAL8X3Y=;
+	s=korg; t=1755022705;
+	bh=lwXA0QqFBtU9+BI+YgztEiteczC9ChdbfwyXfSOw7ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhe7YrM5sEu6JqAtkebG7dH6s8BsapYZQSLyGke3L32FjBwgVDxBSoa2TRc/5S2E9
-	 iYlcIzADK20ygq9fAhPUIqa0gYmBZm5vPNatvihXNdBVdVIzIGzpq9rCt0cslxRzxo
-	 hU0N07MyBqOHZNYQoOHEK5uUz3JFgaJung1vm+TA=
+	b=JL3lhFNupPEqn0DsM0onBdgFFLdYjznFH0MB8ag/JvXbX9yYnVDGiC82jjgHMVUSb
+	 YMgNKhfyNfJllT6xofQUEGCwpPSVBJ3+ASy10Zrqb6Hi0HkT5gDnuS/OxQEspJsSvJ
+	 yUvI2udEpxYeYrN+gDxVpGv+u6RatY+wOBpKsaxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/262] crypto: img-hash - Fix dma_unmap_sg() nents value
+Subject: [PATCH 6.12 234/369] vdpa: Fix IDR memory leak in VDUSE module exit
 Date: Tue, 12 Aug 2025 19:28:51 +0200
-Message-ID: <20250812172959.189525275@linuxfoundation.org>
+Message-ID: <20250812173023.574628701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Anders Roxell <anders.roxell@linaro.org>
 
-[ Upstream commit 34b283636181ce02c52633551f594fec9876bec7 ]
+[ Upstream commit d9ea58b5dc6b4b50fbb6a10c73f840e8b10442b7 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Add missing idr_destroy() call in vduse_exit() to properly free the
+vduse_idr radix tree nodes. Without this, module load/unload cycles leak
+576-byte radix tree node allocations, detectable by kmemleak as:
 
-Fixes: d358f1abbf71 ("crypto: img-hash - Add Imagination Technologies hw hash accelerator")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+unreferenced object (size 576):
+  backtrace:
+    [<ffffffff81234567>] radix_tree_node_alloc+0xa0/0xf0
+    [<ffffffff81234568>] idr_get_free+0x128/0x280
+
+The vduse_idr is initialized via DEFINE_IDR() at line 136 and used throughout
+the VDUSE (vDPA Device in Userspace) driver for device ID management. The fix
+follows the documented pattern in lib/idr.c and matches the cleanup approach
+used by other drivers.
+
+This leak was discovered through comprehensive module testing with cumulative
+kmemleak detection across 10 load/unload iterations per module.
+
+Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+Message-Id: <20250704125335.1084649-1-anders.roxell@linaro.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/img-hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
-index 45063693859c..de80c95309e6 100644
---- a/drivers/crypto/img-hash.c
-+++ b/drivers/crypto/img-hash.c
-@@ -436,7 +436,7 @@ static int img_hash_write_via_dma_stop(struct img_hash_dev *hdev)
- 	struct img_hash_request_ctx *ctx = ahash_request_ctx(hdev->req);
- 
- 	if (ctx->flags & DRIVER_FLAGS_SG)
--		dma_unmap_sg(hdev->dev, ctx->sg, ctx->dma_ct, DMA_TO_DEVICE);
-+		dma_unmap_sg(hdev->dev, ctx->sg, 1, DMA_TO_DEVICE);
- 
- 	return 0;
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index 7ae99691efdf..7f569ce8fc7b 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -2215,6 +2215,7 @@ static void vduse_exit(void)
+ 	cdev_del(&vduse_ctrl_cdev);
+ 	unregister_chrdev_region(vduse_major, VDUSE_DEV_MAX);
+ 	class_unregister(&vduse_class);
++	idr_destroy(&vduse_idr);
  }
+ module_exit(vduse_exit);
+ 
 -- 
 2.39.5
 
