@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-167874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7605DB2325A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9904CB23033
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF4F3A6279
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 286176833E5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFAE2D46B3;
-	Tue, 12 Aug 2025 18:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE97E2E972E;
+	Tue, 12 Aug 2025 17:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDtAcOhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLWcPArV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21EE305E08;
-	Tue, 12 Aug 2025 18:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E249221FAC;
+	Tue, 12 Aug 2025 17:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022282; cv=none; b=YiOgQ0T6c68OolHKcUO0B863m4UnyCa0QURYxoOTwn07HMyLHSu3KUiL52YdaPeyV37KztOXqrOGBUm7GAuKbkyMiz83AaRqHCcJUdwUmZeL+G82mkKu421z2CcnrSe+f7SZaCfGuzOebv2hy67KfFV06ajIOFqCVnYdkCVMK2g=
+	t=1755020883; cv=none; b=hRqBb1R2ekEMVNVtK02+pFzqmLusXYgtU0zU6M7hsKq/qrOOStBpcm8Bw2mnjTjYXsXbuea58t7h3EeVjawHySQldZsJayO6Fuv4LRL+J4+cYbteNykictqoCpUZNajPDRo9wPtJ2cBZQfWxsxbYubns6a84L4ayWLFR3k2qobo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022282; c=relaxed/simple;
-	bh=7i8jc7EtDPqPkbh3/W523U8sKx379lJgDR6Yvzjxo04=;
+	s=arc-20240116; t=1755020883; c=relaxed/simple;
+	bh=7tidhfcmoeoPyPNCJ18b+b4uc0cRwCGgeURsEqmlUa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOOYHFbSBpIWPuNJf+ap3k6/cr2rBTNvgYypvVVeDehCX9Y25Md17w28yhDZkDmgG5w8pSyZsLmK8l6o3v0+qoVHJnwZm4WrEkbHSObceMykpq4cWVRUpO0C/Y+AI9QEsr5S/A+t5Jsm92N6KwGvbMp696K6eRQU0gvHGA7ghpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDtAcOhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F8EC4CEF0;
-	Tue, 12 Aug 2025 18:11:21 +0000 (UTC)
+	 MIME-Version; b=NGAxg7LDeckURC0lffbEF7KBLVITm8SfQ+J+F4CESHRCteuZSPZ2Gc/f5QSOnnC0bBfYvZHnxX5Mjxa4GthDrMRazBtX+JXMWd2bAoLGI62Z7pOjcT0efPq1y+OnDR9hBFYwSrhqvL0MK4LT8+D3UbuT3PcugEP9N3erSlIk2zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLWcPArV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F12C4CEF0;
+	Tue, 12 Aug 2025 17:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022282;
-	bh=7i8jc7EtDPqPkbh3/W523U8sKx379lJgDR6Yvzjxo04=;
+	s=korg; t=1755020883;
+	bh=7tidhfcmoeoPyPNCJ18b+b4uc0cRwCGgeURsEqmlUa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDtAcOhLTiKKsOIFy+YJxQcBfDMZkdckZfYlmVyMEhaqrRHaOdEay29Ax3inRz5VL
-	 m0ATb79kKjl8AKchGO3tsb9xH3PBmGQU+ByXzXOCZbknycxWwSmmNDct4GFGE4YZt0
-	 fOTlHnmII7fVaksEDJ+ABqpJKD9Om0hd/1tsM8pE=
+	b=tLWcPArVDAbV7WLbVLNy3VRgxGAdwQbxuXBswVeTC5mwWSR/xhIZyZScHzm4PqQ4n
+	 4jPnW/40Rxf8emPsroCLOdBeauxep0maxbDZCpiHyj+3i5K0XugJlyA7Z8Kk0JBlWT
+	 Z3BPmelzSK4ps2rsvml2TuHZj1BMtOur/8wHgU5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Yangtao Li <frank.li@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/369] iommu/amd: Enable PASID and ATS capabilities in the correct order
+Subject: [PATCH 6.6 011/262] hfs: make splice write available again
 Date: Tue, 12 Aug 2025 19:26:39 +0200
-Message-ID: <20250812173018.612146413@linuxfoundation.org>
+Message-ID: <20250812172953.463921841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit c694bc8b612ddd0dd70e122a00f39cb1e2e6927f ]
+[ Upstream commit 4c831f30475a222046ded25560c3810117a6cff6 ]
 
-Per the PCIe spec, behavior of the PASID capability is undefined if the
-value of the PASID Enable bit changes while the Enable bit of the
-function's ATS control register is Set. Unfortunately,
-pdev_enable_caps() does exactly that by ordering enabling ATS for the
-device before enabling PASID.
+Since 5.10, splice() or sendfile() return EINVAL. This was
+caused by commit 36e2c7421f02 ("fs: don't allow splice read/write
+without explicit ops").
 
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jerry Snitselaar <jsnitsel@redhat.com>
-Fixes: eda8c2860ab679 ("iommu/amd: Enable device ATS/PASID/PRI capabilities independently")
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20250703155433.6221-1-eahariha@linux.microsoft.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+This patch initializes the splice_write field in file_operations, like
+most file systems do, to restore the functionality.
+
+Fixes: 36e2c7421f02 ("fs: don't allow splice read/write without explicit ops")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250529140033.2296791-2-frank.li@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 23e78a034da8..e315e3045a3d 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -483,8 +483,8 @@ static inline void pdev_disable_cap_pasid(struct pci_dev *pdev)
- 
- static void pdev_enable_caps(struct pci_dev *pdev)
- {
--	pdev_enable_cap_ats(pdev);
- 	pdev_enable_cap_pasid(pdev);
-+	pdev_enable_cap_ats(pdev);
- 	pdev_enable_cap_pri(pdev);
- }
- 
+diff --git a/fs/hfs/inode.c b/fs/hfs/inode.c
+index 61ed76d10392..6a89f22d8967 100644
+--- a/fs/hfs/inode.c
++++ b/fs/hfs/inode.c
+@@ -697,6 +697,7 @@ static const struct file_operations hfs_file_operations = {
+ 	.write_iter	= generic_file_write_iter,
+ 	.mmap		= generic_file_mmap,
+ 	.splice_read	= filemap_splice_read,
++	.splice_write	= iter_file_splice_write,
+ 	.fsync		= hfs_file_fsync,
+ 	.open		= hfs_file_open,
+ 	.release	= hfs_file_release,
 -- 
 2.39.5
 
