@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-168544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9123B23553
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AF8B23560
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08147564395
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CC5D16F424
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862932FD1B6;
-	Tue, 12 Aug 2025 18:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BF1284685;
+	Tue, 12 Aug 2025 18:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UioSlpld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+BUO24d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D002C21F6;
-	Tue, 12 Aug 2025 18:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8DD2CA9;
+	Tue, 12 Aug 2025 18:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024527; cv=none; b=MzS/mPhKKCRVZlTk52yqLq6VuJsk7dCnzK7ozIxGE281DEsUPkhKLDlvtqrL2ETxcUEcUB0oZHf5GHkNDIGyZXSL9nfFPu1HkiyMDzB55tjnha+MB0oRLwPgFbH+L7l5KCJ+vZiMSfR8GBfZQH6lPC0j2hTq/ncJJHcDRDbl2eU=
+	t=1755024563; cv=none; b=aWvRsrckxVzln6gs8PfuNxlyTXId99SPPZb9toHdJZz8/0ytTbdGzKMGvmGPkMUTlrdDewlLipbqCJpcvJ2y7QdgeBaWhlCChY8sY6GPY6Qj5ujPTM1bUhWgoiE2FFnq+iekbOEfMJggjyEnypml488llmAffw7msFMKqhrwszY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024527; c=relaxed/simple;
-	bh=D/v1IojSKKjeugYF8GOTYYKPGhqGdcCbNHUjvB4CPnQ=;
+	s=arc-20240116; t=1755024563; c=relaxed/simple;
+	bh=jkPTHBJjyPFOv1n3oec1VNhoRqjDPj0ZLlipupO87Kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bc7cpYjbW1X7iNkdvOIbH+bKyiYdih1UPuuVIbAhLuL6zDp8ZQK8RluV+7mGyFFkpac7U94ptj/BG3Ol3uC+OafW83gUFEYSb0TDbjyNk7LR6+zydVvNKRDwmI1jEwOuGmv23halhcWSbztpQM0aVBOGLfZD0TaGFO8ILY/DgII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UioSlpld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7EFC4CEF0;
-	Tue, 12 Aug 2025 18:48:46 +0000 (UTC)
+	 MIME-Version; b=Ozhz8DWnFemFmsRM37U36Wv81QRHK6iMZU86ycj09JXvYvi8Ixnur8V0AdHhlZ/jLTvVnSBjxZKce4C/QmPPOJt6fcPF7nrnJ0K9RIqu14IEavFek7wAcILPUhLph0VqDz9faMfeAv6taGzPkW4O8ac+rjIzdyV5vkMeTxJnyjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+BUO24d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A16C4CEF0;
+	Tue, 12 Aug 2025 18:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024526;
-	bh=D/v1IojSKKjeugYF8GOTYYKPGhqGdcCbNHUjvB4CPnQ=;
+	s=korg; t=1755024563;
+	bh=jkPTHBJjyPFOv1n3oec1VNhoRqjDPj0ZLlipupO87Kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UioSlpldYp3CfdWLgOKdJ0Hp0VC2C+PTgNuBDgMLeySaQpkUJs14FYGnIxgq3kloG
-	 b6ONUMa2I7I2+4IjFzDktz6kpWz6KM3JbDutjrGzD1yuaA5aQY15KuenzsRbMxyYzK
-	 olfar1NspGeqjSLZ5YW9mIn48gpwBCHaP+QNMh98=
+	b=I+BUO24dG1Uv7827amV/5057bM9fShSDESwkgmjz5T/WdTXIJI23cbgtQn727vn3I
+	 11e5nuwOJ467/V6kzB3RDaB/GQAUSQyEkzISS7NTpYGekEO7/UzpLPeDBeIL3Z3N5u
+	 MJZJiXLZ0Jqp/XRjOovld63ZFUUwzZr7NSZfmTKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ian Rogers <irogers@google.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 382/627] perf hwmon_pmu: Avoid shortening hwmon PMU name
-Date: Tue, 12 Aug 2025 19:31:17 +0200
-Message-ID: <20250812173433.826782160@linuxfoundation.org>
+Subject: [PATCH 6.16 383/627] perf python: Fix thread check in pyrf_evsel__read
+Date: Tue, 12 Aug 2025 19:31:18 +0200
+Message-ID: <20250812173433.865322427@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -68,35 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 28f5aa8184c9c9b8eab35fa3884c416fe75e88e4 ]
+[ Upstream commit 64ec9b997f3a9462901a404ad60f452f76dd2d6e ]
 
-Long names like ucsi_source_psy_USBC000:001 when prefixed with hwmon_
-exceed the buffer size and the last digit is lost. This causes
-confusion with similar names like ucsi_source_psy_USBC000:002. Extend
-the buffer size to avoid this.
+The CPU index is incorrectly checked rather than the thread index.
 
-Fixes: 53cc0b351ec9 ("perf hwmon_pmu: Add a tool PMU exposing events from hwmon in sysfs")
+Fixes: 739621f65702 ("perf python: Add evsel read method")
 Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250710235126.1086011-2-irogers@google.com
+Link: https://lore.kernel.org/r/20250710235126.1086011-11-irogers@google.com
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hwmon_pmu.c | 2 +-
+ tools/perf/util/python.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/hwmon_pmu.c b/tools/perf/util/hwmon_pmu.c
-index c25e7296f1c1..75683c543994 100644
---- a/tools/perf/util/hwmon_pmu.c
-+++ b/tools/perf/util/hwmon_pmu.c
-@@ -344,7 +344,7 @@ static int hwmon_pmu__read_events(struct hwmon_pmu *pmu)
- 
- struct perf_pmu *hwmon_pmu__new(struct list_head *pmus, int hwmon_dir, const char *sysfs_name, const char *name)
- {
--	char buf[32];
-+	char buf[64];
- 	struct hwmon_pmu *hwm;
- 	__u32 type = PERF_PMU_TYPE_HWMON_START + strtoul(sysfs_name + 5, NULL, 10);
- 
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 321c333877fa..eb560e3f9e35 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -909,7 +909,7 @@ static PyObject *pyrf_evsel__read(struct pyrf_evsel *pevsel,
+ 		return NULL;
+ 	}
+ 	thread_idx = perf_thread_map__idx(evsel->core.threads, thread);
+-	if (cpu_idx < 0) {
++	if (thread_idx < 0) {
+ 		PyErr_Format(PyExc_TypeError, "Thread %d is not part of evsel's threads",
+ 			     thread);
+ 		return NULL;
 -- 
 2.39.5
 
