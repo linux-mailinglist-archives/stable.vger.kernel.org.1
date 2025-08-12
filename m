@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6684B234D3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F546B230FC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF0FC68110C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B215188C8F4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E312FFDEE;
-	Tue, 12 Aug 2025 18:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80A52FE564;
+	Tue, 12 Aug 2025 17:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6BdA5dr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzJpJa4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295C12FF17D;
-	Tue, 12 Aug 2025 18:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAB92FA0FD;
+	Tue, 12 Aug 2025 17:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023957; cv=none; b=O9l+0TARGYjcYM0C6AxPZTQPFtwxWuR200o1GPHYgIJY8fthy0NL8qvO05dTeHjRkhYj7nBQO803bj7KNPwF6zRZIhPeq4Cyrqdsyl/jjPpVcMJjz1j+V6XYy2SCNfGfgXbaDg3SLwFaANj9xruVqAhNL3wP1Jo7iCC/hPjRL7k=
+	t=1755021491; cv=none; b=D/fULs1OSjUE33Qd2SJTdTjwmSNceqQvKOwMFPxYkdyW19V3tkFFBtUeAx0xnr0OBjmll5Jjy0+5Fl1qjjbw7yk5XZQk8ytoAKeDxu/8ryz0po8WEtVpUNusEa3mWnqCKLc1VeMO9POYQEppdUbPL8mLRAlcuAUU3KZqHrmAA78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023957; c=relaxed/simple;
-	bh=VaatFkSbL0679VAI+K0ss96AyWLeXuhjVtfYL/Rq8Aw=;
+	s=arc-20240116; t=1755021491; c=relaxed/simple;
+	bh=S9rNluleaaZsMvb2qFcxUO8w1Q38+lBGNpVFHq2JHY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ce3QhQzJ44uV2m38292UNKKK7GQw7m7x9RyHJfYph9U1oOteWsalxGxgNe7Gt+MAUk3j5c+9ZS3WKDmnvO6eC8Z8l/M/ziZvIG2HjIUMyfgWOdvpyB1BbaTFTJHbH9GjTC19nCQTcSyt0ojww2EpdPKKO0yIXnByFNe1QmU7uC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6BdA5dr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A877C4CEF0;
-	Tue, 12 Aug 2025 18:39:16 +0000 (UTC)
+	 MIME-Version; b=MuWz/bGbMFPMZWDht+27M5zixa70CljA7q36P35NYRQTsk/d/xCoA0KHA6hLxv6MypraH6YNC+9iL49glLicrbWMDKlkhIJSV4vCp76fOSDBl57MOltRUmIY5TKRDpN5+FPL1ZSCOw051V9jYFWQ6alnfDHXyvHo1u7wwlzbYoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzJpJa4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDE2C4CEF0;
+	Tue, 12 Aug 2025 17:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023957;
-	bh=VaatFkSbL0679VAI+K0ss96AyWLeXuhjVtfYL/Rq8Aw=;
+	s=korg; t=1755021491;
+	bh=S9rNluleaaZsMvb2qFcxUO8w1Q38+lBGNpVFHq2JHY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6BdA5drs3TcHIp+n3DyOizhyTxKMUZZCjECwey6cfjujBIgragGfrcWR01aWe53q
-	 v6I9q2mQB0i00eytszCHzOq0mvSua6eWGRtxTsqFxhcAFfCQiElIo0SE497mYIu08Z
-	 tM1WHzROI8G/3sGkaFKJgE0fKlRZ/GZ1aWKhKQmw=
+	b=AzJpJa4d5K2PaBLwYPwyZGwC0oNJ6Ag0lQ8gZ77882AUN8o/a2QN3CP2RIMWx9SfP
+	 +TQ4n21RY2DiXkGuBldXnWz8QBHhzaHg3sgqXLR9ItIQ/WhOHChoqAWyJZ9fwHPoUh
+	 2C6puSRUGNVFjrS1gIeatoPUlBDunr06EesjVKJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 231/627] selftests/bpf: fix implementation of smp_mb()
+Subject: [PATCH 6.6 138/262] scsi: mvsas: Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:46 +0200
-Message-ID: <20250812173428.085233647@linuxfoundation.org>
+Message-ID: <20250812172958.973225865@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 0769857a07b4451a1dc1c3ad1f1c86a6f4ce136a ]
+[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
 
-As BPF doesn't include any barrier instructions, smp_mb() is implemented
-by doing a dummy value returning atomic operation. Such an operation
-acts a full barrier as enforced by LKMM and also by the work in progress
-BPF memory model.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-If the returned value is not used, clang[1] can optimize the value
-returning atomic instruction in to a normal atomic instruction which
-provides no ordering guarantees.
-
-Mark the variable as volatile so the above optimization is never
-performed and smp_mb() works as expected.
-
-[1] https://godbolt.org/z/qzze7bG6z
-
-Fixes: 88d706ba7cc5 ("selftests/bpf: Introduce arena spin lock")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20250710175434.18829-2-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/bpf_atomic.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mvsas/mv_sas.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/bpf_atomic.h b/tools/testing/selftests/bpf/bpf_atomic.h
-index a9674e544322..c550e5711967 100644
---- a/tools/testing/selftests/bpf/bpf_atomic.h
-+++ b/tools/testing/selftests/bpf/bpf_atomic.h
-@@ -61,7 +61,7 @@ extern bool CONFIG_X86_64 __kconfig __weak;
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index 1444b1f1c4c8..d6897432cf0f 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -828,7 +828,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
+ 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (n_elem)
+-			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
++			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
+ 				     task->data_dir);
+ prep_out:
+ 	return rc;
+@@ -874,7 +874,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (slot->n_elem)
+ 			dma_unmap_sg(mvi->dev, task->scatter,
+-				     slot->n_elem, task->data_dir);
++				     task->num_scatter, task->data_dir);
  
- #define smp_mb()                                 \
- 	({                                       \
--		unsigned long __val;             \
-+		volatile unsigned long __val;    \
- 		__sync_fetch_and_add(&__val, 0); \
- 	})
- 
+ 	switch (task->task_proto) {
+ 	case SAS_PROTOCOL_SMP:
 -- 
 2.39.5
 
