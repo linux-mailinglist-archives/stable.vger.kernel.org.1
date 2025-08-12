@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905C1B23375
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69500B23555
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 274E23BC8D2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A71321894D9F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5D02E7BD4;
-	Tue, 12 Aug 2025 18:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516082CA9;
+	Tue, 12 Aug 2025 18:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQx6dcwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUPTtjY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7133F9D2;
-	Tue, 12 Aug 2025 18:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E638294A17;
+	Tue, 12 Aug 2025 18:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023079; cv=none; b=Rj1GEJBYaRmAGc+fP/xy/GB4dsAiXJzZ3+VLXzBvQeAju/RHP87T5O3D4wytaCXqe4H8RRlAxCxuhVIh71u3cRvbeC5zySp+2+jrRYWUSBbtLuiTAIAQevvyb6rNxo/m/lBbvG7x5ZgvUoUPQsiwzOSAKTTXLk3HX8HOHt9MKv8=
+	t=1755024404; cv=none; b=lFNpvauIHv+Sd08fZGLtAoJzgUvTC410asPfJoKGfBDqts5EEbbbzSEQQpRiaQaj2/B7jX9RN/hkewzLK7uTjDVDciQMo/9qPc3aHz50xTyJliC/Sx9rkGoLcvphExZzDKqmLPp8ujw38SKF3RmB48BQp6hjMWT4GItJOy7fkLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023079; c=relaxed/simple;
-	bh=hHJMDxR41SQpo8UPDoLUCG+T9NdnjTuw/ED8FG7MoJk=;
+	s=arc-20240116; t=1755024404; c=relaxed/simple;
+	bh=DFFejc6Dv+RjVxfVmnLYSOiQxVT8ebhp6npg9E8czw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNxsvb0EMuMHv5Nk0mWSlp1tRx474/vbgLYIGLB6KKBeaqBLvJhPQfTAlMbYD9bI2pm1Arnq3aXwoErBfEYS/33kVo2fVBGv54QNLURPo9f7O8p4R4IwR9SxcDJErfqyWNPTc8tuzbiRGrmMn8nRmImdFr1JKGFGaVKBgmdfqbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQx6dcwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1902C4CEF0;
-	Tue, 12 Aug 2025 18:24:38 +0000 (UTC)
+	 MIME-Version; b=cyY9bEMdMBZOhzVe4YEPOlWUeTR+ieKOi9ixcpHnRuFzUrknZIBaUPpVwXF+Wsc3g2PmvT4pxL5iga0UkCxkdVX8aRRSeyDUfmqjZM3K0urwhrxzxjg4e2tLyS6nti8d3+gzsvrbJ6EZBx0eeZjM7nydjSjnqHE3lJ/TpzUE7pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUPTtjY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D231C4CEF0;
+	Tue, 12 Aug 2025 18:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023079;
-	bh=hHJMDxR41SQpo8UPDoLUCG+T9NdnjTuw/ED8FG7MoJk=;
+	s=korg; t=1755024403;
+	bh=DFFejc6Dv+RjVxfVmnLYSOiQxVT8ebhp6npg9E8czw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQx6dcwJ3pCIbsi0QdSJD3gaMLkh8ma9KtPfq1c3O5upuiI4+hcNcqw78hACyccQq
-	 nTTqYDusLImMPMBzVTAnNhq+U8Hyl4tn5UwIw1YwGX6drRWB6Z8djoSW7PMfQ0x+N+
-	 H/LBSSK6IjQrQS4wHYFBjspOKvEhpDz05D5paE0g=
+	b=oUPTtjY+CiHey9whvkFz51H1V9l7sOOtd7eGUR4NrFNPTEFFsfugvWA6ImXibCpf4
+	 BYv/AUviftY4Y/vLdkFAKimjPsuoOwZIxUCMRE5Y3WkPllh0G1Artxh8ogglZ7xvVd
+	 cA6BaEWU5QuF3I2+2C9Mk8uWkY1yoqSVX72sPXdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 343/369] ksmbd: fix corrupted mtime and ctime in smb2_open
-Date: Tue, 12 Aug 2025 19:30:40 +0200
-Message-ID: <20250812173029.602302692@linuxfoundation.org>
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 346/627] RDMA/uverbs: Check CAP_NET_RAW in user namespace for RAW QP create
+Date: Tue, 12 Aug 2025 19:30:41 +0200
+Message-ID: <20250812173432.453338289@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Parav Pandit <parav@nvidia.com>
 
-commit 4f8ff9486fd94b9d6a4932f2aefb9f2fc3bd0cf6 upstream.
+[ Upstream commit a6dca091ba7646ff5304af660c94fa51b6696476 ]
 
-If STATX_BASIC_STATS flags are not given as an argument to vfs_getattr,
-It can not get ctime and mtime in kstat.
+Currently, the capability check is done in the default
+init_user_ns user namespace. When a process runs in a
+non default user namespace, such check fails. Due to this
+when a process is running using Podman, it fails to create
+the QP.
 
-This causes a problem showing mtime and ctime outdated from cifs.ko.
-File: /xfstest.test/foo
-Size: 4096            Blocks: 8          IO Block: 1048576 regular file
-Device: 0,65    Inode: 2033391     Links: 1
-Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
-Context: system_u:object_r:cifs_t:s0
-Access: 2025-07-23 22:15:30.136051900 +0100
-Modify: 1970-01-01 01:00:00.000000000 +0100
-Change: 1970-01-01 01:00:00.000000000 +0100
-Birth: 2025-07-23 22:15:30.136051900 +0100
+Since the RDMA device is a resource within a network namespace,
+use the network namespace associated with the RDMA device to
+determine its owning user namespace.
 
-Cc: stable@vger.kernel.org
-Reported-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6d1e7ba241e9 ("IB/uverbs: Introduce create/destroy QP commands over ioctl")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Link: https://patch.msgid.link/7b6b87505ccc28a1f7b4255af94d898d2df0fff5.1750963874.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/uverbs_std_types_qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -563,7 +563,8 @@ int ksmbd_vfs_getattr(const struct path
- {
- 	int err;
- 
--	err = vfs_getattr(path, stat, STATX_BTIME, AT_STATX_SYNC_AS_STAT);
-+	err = vfs_getattr(path, stat, STATX_BASIC_STATS | STATX_BTIME,
-+			AT_STATX_SYNC_AS_STAT);
- 	if (err)
- 		pr_err("getattr failed, err %d\n", err);
- 	return err;
+diff --git a/drivers/infiniband/core/uverbs_std_types_qp.c b/drivers/infiniband/core/uverbs_std_types_qp.c
+index 7b4773fa4bc0..be0730e8509e 100644
+--- a/drivers/infiniband/core/uverbs_std_types_qp.c
++++ b/drivers/infiniband/core/uverbs_std_types_qp.c
+@@ -133,7 +133,7 @@ static int UVERBS_HANDLER(UVERBS_METHOD_QP_CREATE)(
+ 		device = xrcd->device;
+ 		break;
+ 	case IB_UVERBS_QPT_RAW_PACKET:
+-		if (!capable(CAP_NET_RAW))
++		if (!rdma_uattrs_has_raw_cap(attrs))
+ 			return -EPERM;
+ 		fallthrough;
+ 	case IB_UVERBS_QPT_RC:
+-- 
+2.39.5
+
 
 
 
