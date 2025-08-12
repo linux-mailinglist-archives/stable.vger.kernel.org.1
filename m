@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-167719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652A1B231A0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94149B23347
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C3C8163CE5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 975943B9334
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5979D2882CE;
-	Tue, 12 Aug 2025 18:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97722DFA3E;
+	Tue, 12 Aug 2025 18:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCz/dihT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH5QE4AT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DEC2FE573;
-	Tue, 12 Aug 2025 18:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D02861FFE;
+	Tue, 12 Aug 2025 18:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021766; cv=none; b=aQDn38d51eu68V4Qz0EyRTGPORq44cod3S0OmuehOxqIy5SXlE1tFvC4oDlsUjVas2cftMilGvG3v2HDL3ORhwCH7OA3tx68PltjMnelctcxUubKGxXbE1I2bHyBCQku+cRYyfuo8ny6/aQhendT+z6QFIjf9EjANcg2hug5if8=
+	t=1755022966; cv=none; b=cFeuiccCRdz0us2h1PyVxgUzcOEdE4ivGe5DnMBpNtcazP4Z+6H6s3786Jooee+IKftlTxFnsYgFEcCkAIxOJJoBXwVtXPLNcsYcEf596UpoDMD81YcpSGFkSOWjSh6D+wu7ddPUIrBMkU2tgvU6C0iGpnzHNarQ2KkpD5ap4k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021766; c=relaxed/simple;
-	bh=zC0l+adIzMNABVjeIcqbKSOiD9CU3Hb7vmEnIStrKiI=;
+	s=arc-20240116; t=1755022966; c=relaxed/simple;
+	bh=sWxBc2KhL19DrSKhoenZRd4WWCaZgnU0LTLi6Sq15sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYqnQCdk4rFLdQcwiNqHTxJXdEznZdmJFeHTVWSmFJOxfPIe/2TdggxdiOvLb3sAw3GYG5UOgb8sGt1M5gKLAcwlLQt7hr5t76oYLdKi5fZ+koioMU0gW8DG3cern0gi0ji6sc6BEVXxxGJiXJOCn03Yh0jBLFeDUC46f9oQYd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCz/dihT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2841DC4CEF6;
-	Tue, 12 Aug 2025 18:02:44 +0000 (UTC)
+	 MIME-Version; b=Zc5LdniZzvpFyGWlDowKF02qlNqcrVh7TAHKvw4J9glAOpUfTcL/TiXzjXsE+p8HUfW/BP+KuQeJQD7CrgAROvTq5qAMY1YPuQYYUyN/0qAHa+GyClUTNSewsm5DtU2es9H8fRXjGqlDWk8noCXL27pfJSe1Xm+qjcsmPJulXB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH5QE4AT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1D5C4CEF6;
+	Tue, 12 Aug 2025 18:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021765;
-	bh=zC0l+adIzMNABVjeIcqbKSOiD9CU3Hb7vmEnIStrKiI=;
+	s=korg; t=1755022966;
+	bh=sWxBc2KhL19DrSKhoenZRd4WWCaZgnU0LTLi6Sq15sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wCz/dihTsvOWFbwHzIlMX+9GnRXpPya628/VtOQVGxXkxYHDPIl2B2bGpNa7u6u52
-	 9/CXHVz1HbE1IIVsTv3u6Xw1VZL1MbDQFkFdJBp3zd09jFHPkSZdk8yDRMhNvq2l2Y
-	 1sJfPWU4IDq4Ju48XvYU2rbTSJxaUN/AFz4GjEL0=
+	b=pH5QE4ATbM6TUK7rN/mzRGy7uFNpHv6zv3KMF9HVTN69b+4GwV8zm6JNiyu/QdIFC
+	 JD+GbPwEK+UFKCJwXaAxMhnECu00NdQNECYikNDN8gc6tWdN3LkTdiTd7aKi0htmgJ
+	 5207K8mUkw7WrxZHglUZfw9B13xjfJAOCTAlVJYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/262] smb: server: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
-Date: Tue, 12 Aug 2025 19:30:06 +0200
-Message-ID: <20250812173002.432817529@linuxfoundation.org>
+Subject: [PATCH 6.12 310/369] ALSA: hda/ca0132: Fix missing error handling in ca0132_alt_select_out()
+Date: Tue, 12 Aug 2025 19:30:07 +0200
+Message-ID: <20250812173028.389614727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,69 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit afb4108c92898350e66b9a009692230bcdd2ac73 ]
+[ Upstream commit 9f320dfb0ffc555aa2eac8331dee0c2c16f67633 ]
 
-In case of failures either ib_dma_map_single() might not be called yet
-or ib_dma_unmap_single() was already called.
+There are a couple of cases where the error is ignored or the error
+code isn't propagated in ca0132_alt_select_out().  Fix those.
 
-We should make sure put_recvmsg() only calls ib_dma_unmap_single() if needed.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: def3f0a5c700 ("ALSA: hda/ca0132 - Add quirk output selection structures.")
+Link: https://patch.msgid.link/20250806094423.8843-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_ca0132.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 228b7627a115..d28d85a46597 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -264,8 +264,13 @@ smb_direct_recvmsg *get_free_recvmsg(struct smb_direct_transport *t)
- static void put_recvmsg(struct smb_direct_transport *t,
- 			struct smb_direct_recvmsg *recvmsg)
- {
--	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
--			    recvmsg->sge.length, DMA_FROM_DEVICE);
-+	if (likely(recvmsg->sge.length != 0)) {
-+		ib_dma_unmap_single(t->cm_id->device,
-+				    recvmsg->sge.addr,
-+				    recvmsg->sge.length,
-+				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
-+	}
+diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
+index d40197fb5fbd..77432e06f3e3 100644
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -4802,7 +4802,8 @@ static int ca0132_alt_select_out(struct hda_codec *codec)
+ 	if (err < 0)
+ 		goto exit;
  
- 	spin_lock(&t->recvmsg_queue_lock);
- 	list_add(&recvmsg->list, &t->recvmsg_queue);
-@@ -637,6 +642,7 @@ static int smb_direct_post_recv(struct smb_direct_transport *t,
- 		ib_dma_unmap_single(t->cm_id->device,
- 				    recvmsg->sge.addr, recvmsg->sge.length,
- 				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
- 		smb_direct_disconnect_rdma_connection(t);
- 		return ret;
- 	}
-@@ -1818,6 +1824,7 @@ static int smb_direct_create_pools(struct smb_direct_transport *t)
- 		if (!recvmsg)
- 			goto err;
- 		recvmsg->transport = t;
-+		recvmsg->sge.length = 0;
- 		list_add(&recvmsg->list, &t->recvmsg_queue);
- 	}
- 	t->count_avail_recvmsg = t->recv_credit_max;
+-	if (ca0132_alt_select_out_quirk_set(codec) < 0)
++	err = ca0132_alt_select_out_quirk_set(codec);
++	if (err < 0)
+ 		goto exit;
+ 
+ 	switch (spec->cur_out_type) {
+@@ -4892,6 +4893,8 @@ static int ca0132_alt_select_out(struct hda_codec *codec)
+ 				spec->bass_redirection_val);
+ 	else
+ 		err = ca0132_alt_surround_set_bass_redirection(codec, 0);
++	if (err < 0)
++		goto exit;
+ 
+ 	/* Unmute DSP now that we're done with output selection. */
+ 	err = dspio_set_uint_param(codec, 0x96,
 -- 
 2.39.5
 
