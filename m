@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B48B231E1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65ACDB2354B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 365F0581003
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2551F189445C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052C72F5E;
-	Tue, 12 Aug 2025 18:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADED82D47E5;
+	Tue, 12 Aug 2025 18:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yybvAKfE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SSUoqUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81062DE1E2;
-	Tue, 12 Aug 2025 18:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6B52C21D4;
+	Tue, 12 Aug 2025 18:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021880; cv=none; b=fo4ati9var2MWHEOoaavDKBj3TZuBOgKWdqDlvQgtYtvJ4yPJBsBIowz+Yqa9DZkG9wIXF24+95mfdfLSNrsE5s80j7XbzxlioU5Fia6PjFbqdtkSJwV+MdAPA9MFD1z4xVxBfND5fYJOHMpUs8H18nyABForJso02xKRl3XKW8=
+	t=1755024368; cv=none; b=B5oFp0n8ojCs3GruSGIBW9FqcADurZu1/zAWuMUIAWt5z2DXPwu8wajafZbQqJ936U8lrbru+60wiuj0O7PxBFtHkcJzUynsAuqQ4VHvK14GBVS/p7lMU/WJtLMIvoKczYGnMXAxtJf5UOUWPyn6dkTNiyJVvv6mByMgq7hk6ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021880; c=relaxed/simple;
-	bh=ebCIkZSVkBW1bW4yNPy0zan7wbjVW8DTuNsb2LPR354=;
+	s=arc-20240116; t=1755024368; c=relaxed/simple;
+	bh=9sxdf9FttpBhzLkIypetlAg+wstQpEN32w+biiEvzkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t25PXu8zjepCZf9usZ6Zt5MoHoa5AvPEMzppRAGcp/1t6k38P1u8tFeJoDW371ZMQt5CdAsT8ZnIYEaV9flUSMStNezGV55UQZv5IXxPMCnU+33CnWj8b2cCTu/HpsvObV/gi4fbzU+qD+7kgU7qGYSIAjUmyJwBwH3wyNkU4y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yybvAKfE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED51BC4CEF7;
-	Tue, 12 Aug 2025 18:04:39 +0000 (UTC)
+	 MIME-Version; b=neG2jULQWL9Y/31paDdINIOZgODg8NfUa3M1s2ZN34rPJ72CyDDngP3khmbXTSUFlpVBoR8fjTY2cZ2d999NvA2NUeCnh4b5zotyF7ACEFoPGKODhVpub2CQuPJjnMNHU/9v+6Ssmshu7Cx8mcgy2jv4B7s79Lwq+Mok0Shc1w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SSUoqUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68AAC4CEF0;
+	Tue, 12 Aug 2025 18:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021880;
-	bh=ebCIkZSVkBW1bW4yNPy0zan7wbjVW8DTuNsb2LPR354=;
+	s=korg; t=1755024368;
+	bh=9sxdf9FttpBhzLkIypetlAg+wstQpEN32w+biiEvzkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yybvAKfEuJYi8jIBdgAAijiL/+4RcjKIAupfNgCNL9HWgkZuKirwBlF3ydvQLh2SX
-	 l38rerQ9GStuvBcNWY0ON76XvLlwPOeDLxYpkSv86GXxEzvxq7EXZLadY09G80bSWE
-	 zz0Bw71eGggVS7ZJWqSs+KXI34+7Gp1GchzH9GkI=
+	b=2SSUoqUKsJIHCEQP94tQshZxpxAqNo9B3UkjQSc/wBLI0yBoARZOGwdRK3SxpBMtw
+	 26fQYJLkzZknlHngkFcPIEuetxbqQ9WV4deB4WpG+h02RBcmJA8N6gXZS7XENIk3mu
+	 PniYcvm7O2YHt+0Fd9yOc/48nT8HrB/5vTqVO3u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jiawei <zhongjiawei1@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.6 252/262] sched,freezer: Remove unnecessary warning in __thaw_task
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 345/627] RDMA/uverbs: Check CAP_NET_RAW in user namespace for QP create
 Date: Tue, 12 Aug 2025 19:30:40 +0200
-Message-ID: <20250812173003.880715224@linuxfoundation.org>
+Message-ID: <20250812173432.417207302@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Parav Pandit <parav@nvidia.com>
 
-commit 9beb8c5e77dc10e3889ff5f967eeffba78617a88 upstream.
+[ Upstream commit 0498c2d9984ed2ad75b1cd5ba6abfa1226742df5 ]
 
-Commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if not
-frozen") modified the cgroup_freezing() logic to verify that the FROZEN
-flag is not set, affecting the return value of the freezing() function,
-in order to address a warning in __thaw_task.
+Currently, the capability check is done in the default
+init_user_ns user namespace. When a process runs in a
+non default user namespace, such check fails. Due to this
+when a process is running using Podman, it fails to create
+the QP.
 
-A race condition exists that may allow tasks to escape being frozen. The
-following scenario demonstrates this issue:
+Since the RDMA device is a resource within a network namespace,
+use the network namespace associated with the RDMA device to
+determine its owning user namespace.
 
-CPU 0 (get_signal path)		CPU 1 (freezer.state reader)
-try_to_freeze			read freezer.state
-__refrigerator			freezer_read
-				update_if_frozen
-WRITE_ONCE(current->__state, TASK_FROZEN);
-				...
-				/* Task is now marked frozen */
-				/* frozen(task) == true */
-				/* Assuming other tasks are frozen */
-				freezer->state |= CGROUP_FROZEN;
-/* freezing(current) returns false */
-/* because cgroup is frozen (not freezing) */
-break out
-__set_current_state(TASK_RUNNING);
-/* Bug: Task resumes running when it should remain frozen */
-
-The existing !frozen(p) check in __thaw_task makes the
-WARN_ON_ONCE(freezing(p)) warning redundant. Removing this warning enables
-reverting commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if
-not frozen") to resolve the issue.
-
-This patch removes the warning from __thaw_task. A subsequent patch will
-revert commit cff5f49d433f ("cgroup_freezer: cgroup_freezing: Check if
-not frozen") to complete the fix.
-
-Reported-by: Zhong Jiawei<zhongjiawei1@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2dee0e545894 ("IB/uverbs: Enable QP creation with a given source QP number")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Link: https://patch.msgid.link/0e5920d1dfe836817bb07576b192da41b637130b.1750963874.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/freezer.c |   15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/infiniband/core/uverbs_cmd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/freezer.c
-+++ b/kernel/freezer.c
-@@ -196,18 +196,9 @@ static int __restore_freezer_state(struc
+diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
+index 6700c2c66167..4d96e4a678f3 100644
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -1451,7 +1451,7 @@ static int create_qp(struct uverbs_attr_bundle *attrs,
+ 	}
  
- void __thaw_task(struct task_struct *p)
- {
--	unsigned long flags;
--
--	spin_lock_irqsave(&freezer_lock, flags);
--	if (WARN_ON_ONCE(freezing(p)))
--		goto unlock;
--
--	if (!frozen(p) || task_call_func(p, __restore_freezer_state, NULL))
--		goto unlock;
--
--	wake_up_state(p, TASK_FROZEN);
--unlock:
--	spin_unlock_irqrestore(&freezer_lock, flags);
-+	guard(spinlock_irqsave)(&freezer_lock);
-+	if (frozen(p) && !task_call_func(p, __restore_freezer_state, NULL))
-+		wake_up_state(p, TASK_FROZEN);
- }
- 
- /**
+ 	if (attr.create_flags & IB_QP_CREATE_SOURCE_QPN) {
+-		if (!capable(CAP_NET_RAW)) {
++		if (!rdma_uattrs_has_raw_cap(attrs)) {
+ 			ret = -EPERM;
+ 			goto err_put;
+ 		}
+-- 
+2.39.5
+
 
 
 
