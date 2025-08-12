@@ -1,190 +1,97 @@
-Return-Path: <stable+bounces-168250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41555B233D4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B88DB23460
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 921A77B82E1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6163D7B9322
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEDE191F98;
-	Tue, 12 Aug 2025 18:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CB42FDC55;
+	Tue, 12 Aug 2025 18:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzYNiMSW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KpAgImkj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5C327FB12
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 18:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A8F2FF15F;
+	Tue, 12 Aug 2025 18:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023543; cv=none; b=tuI1cob7vI2D1BqUJJfuTOiNjsaxbzVXfAcM/WG8Y7+vccWw7J1MxnclksBLAGmL1Wj2yqxfZaZfDbd+nApITMWOg87UKqw47NKQWIb5rOvKCYvNjkz06I6t7Gh2QC9mbSC30+3+y5p8tU3/OC5nUj5YZbRZPJUcE5vvsuIKGiQ=
+	t=1755023948; cv=none; b=jjRk8sWKjhqU6XcWubPYxIAS8f++hHfsg1E0R2gWTAv/1FE+43r53qI+OUb3PoJhDD1muyPpp9FqvtEJN/h1T6kP2Nk31gCpd+Lw7t58UwBp7ZNKh5aRRDJKuLjAnNSpyRqNKZIW4m0ghcPW2EH2zTIzTulqNipTklDD30NDOUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023543; c=relaxed/simple;
-	bh=0SBcYvfXSs7kycWSFKBnaqjJuFQ60PBJ0Fsety6tA9Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tB6EFn89uaCI9Qmy1wU4eFbJXoeofSenT1UfJsNiWK9dvfTCR6kFzG4IIdLlLMk6f01P+eDPvdC0DwSfTWwgYJzTcux2cE1plXR+geWWJIIditAu0ns0VWuILNeFEbI+he2vYz+owORR1QjPTYS+Wwni3FRB/XNja5mAhbsTG3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XzYNiMSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB35C4CEF7;
-	Tue, 12 Aug 2025 18:32:22 +0000 (UTC)
+	s=arc-20240116; t=1755023948; c=relaxed/simple;
+	bh=h4IHvbxF8k2yAG7hbE3pb3p+/1nKFYweLsVeG1iW4xA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JEHUbcfVgkrcaVqtPiyHaUNDBDWU50ZDSJPQmDUeaMvDRwkB4zBhAZkIG5+rcn6oMpZQ1Y8YWW0DrTNZoQG28QRzuJgbxukgc4PpuHDgt3yzjnMXjlYDIS1hL949KIgpLS3WNL6GGgmaAD16KU6rxhy8T181j54SUo+zrwMDp/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KpAgImkj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE732C4CEF0;
+	Tue, 12 Aug 2025 18:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755023543;
-	bh=0SBcYvfXSs7kycWSFKBnaqjJuFQ60PBJ0Fsety6tA9Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XzYNiMSWriAmhJq7XPmBvuXPspb5AfoDqElMF9OtVzcKZ4NlMVmdP2KakrqZcyAtF
-	 TGyx1j/qA8ZpEQ90Xz5BEliegNK25+CJTaG7SW2a7eV0/HbAdxHo85NC9Y/nMuuLeu
-	 jFtEd96bfw1SCrAKZT7QIJ1p68AOJG/iY33xIhboyAM2HWATrXNdzQ8y8oFPaHMpTi
-	 E7OvGsZHuzNC5czyLiteYcUyBm6hn8Psmb8RGD7HO9iJCcIzeVSp68R+BycZhXOhAZ
-	 pqfa7Fk6tfTqOIQJBZ2aR+srNbZEFyeCJw+5Yt0Fjw+w5UzWYNLCPCzZ/OtFlVJlSb
-	 S4nZeC39G5EVQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] smb: client: fix netns refcount leak after net_passive changes
-Date: Tue, 12 Aug 2025 14:32:07 -0400
-Message-Id: <20250812183207.2024870-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250812183207.2024870-1-sashal@kernel.org>
-References: <2025081230-dentist-cautious-7bb4@gregkh>
- <20250812183207.2024870-1-sashal@kernel.org>
+	s=k20201202; t=1755023947;
+	bh=h4IHvbxF8k2yAG7hbE3pb3p+/1nKFYweLsVeG1iW4xA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KpAgImkjUFtX3a2kVXvOBbn3oky0F+wwimDMqPbVbMoe6zbUofrAtN3YNkUL8Xi8u
+	 RyQjUgrQjlgSBPFP+DaRHQZF0baEQW/aCMXa0wHLITIJITpO5wTrJzYyqHlUbMxIWd
+	 C3Ky268oWBY9NBLdzjdaOTmMWZoD8PlKSGyMvZYibx1xzsp6dLui21Xu2P8RcWCsZ7
+	 Ya3kYLD/AorhcPcr6kHBnNN01BnfWuHtM7oEDTbUwA/FdZH3ya9H44vYmEBz70UiPZ
+	 CighVNowSaWmQFE9/np8rn/ZN9qKY+tSgS+1IFKkVtCXS5/B6dlhlSwe/lfaOjrVVH
+	 nHFcr4xul1fxA==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-61bc52fd7a4so104281eaf.0;
+        Tue, 12 Aug 2025 11:39:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUvfJRQkpkxyW5uu1t4WXKREAdUd3ThCtq3LQLLp54HKBUuSYgIvC4OzyQ5ijDrRx3eHAXsBw8OXzoW@vger.kernel.org, AJvYcCX4XMb4FP/GtS9x2gkLp1EvspjoXU+BdxYrfu+WWfu7zwMcaaUUrs0WSbBTNGtIOFM0735Ze0BM@vger.kernel.org, AJvYcCXz9vwWqEPlCQjkHmPfmWJ2wvfKux+BiJAMzo+EC848szHi9vIIGdK21zYOZKawS9ATbROz9Er36vYdEapq@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt4RhV1eZJaOJnTW3L9Ijnc4XhUqORnty4Tci/6AgmsmtnQk/L
+	v0ETcCw4m8n7s3oEni7Y1IjbhOQRKNaDeOHBHZR0vgPz58AyaUP97vYFa8uWMTZELxKjSvZJCUz
+	6Gy1kqGrUxDr0PmI/XHtZEFFTiw63xy0=
+X-Google-Smtp-Source: AGHT+IF7F7E6Q/yD4mAd/nmxOeXMAZ9gG5D9aCHWydD1kXkZKoLffiBxSjbg30syn9qXivZlss/Bunm8AuD75hlQt1Q=
+X-Received: by 2002:a05:6871:8217:b0:30b:b4cb:936c with SMTP id
+ 586e51a60fabf-30cb383108emr507207fac.5.1755023947056; Tue, 12 Aug 2025
+ 11:39:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250729062038.303734-1-W_Armin@gmx.de> <e911ca96-fe8f-4cc5-bf68-f20ec7da46be@0upti.me>
+ <CAJZ5v0g0vjP_ST2xnDnFAmDXKR9oPn5t0sfQqamDCNwUjJt-xg@mail.gmail.com>
+ <d8c3432f-dfb7-4263-a556-2d93f22e618e@0upti.me> <2025081246-raft-tattle-642c@gregkh>
+ <4e610854-d84c-4a59-9f83-422eafb40d6e@gmx.de> <2025081227-humpback-garden-7a4b@gregkh>
+ <d51317d4-92da-4617-970d-6a63236aec30@0upti.me>
+In-Reply-To: <d51317d4-92da-4617-970d-6a63236aec30@0upti.me>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 12 Aug 2025 20:38:56 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iNYh5=0e+rdDPOfSMNH1P=g+NWWHa28ajf4_Mr6e26VA@mail.gmail.com>
+X-Gm-Features: Ac12FXxx2IsAmOw1yEab040KAvsDdaQ8JpCQ8ZtH9-S3fKCFYLA2zQDDIB50YYI
+Message-ID: <CAJZ5v0iNYh5=0e+rdDPOfSMNH1P=g+NWWHa28ajf4_Mr6e26VA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: EC: Relax sanity check of the ECDT ID string
+To: Ilya K <me@0upti.me>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Armin Wolf <W_Armin@gmx.de>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+On Tue, Aug 12, 2025 at 7:57=E2=80=AFPM Ilya K <me@0upti.me> wrote:
+>
+> On 2025-08-12 20:10, Greg KH wrote:
+> >
+> > Please read the above link for the full details on how to do this (hint=
+,
+> > Fixes: will not do it.)
+> >
+>
+> I might be missing something, but doesn't that just tell you to CC stable=
+@?
+> Or do you have to specifically have the CC on the initial patch submissio=
+n, not anywhere in the thread?
 
-[ Upstream commit 59b33fab4ca4d7dacc03367082777627e05d0323 ]
+A Cc: stable in a patch (or elsewhere in the thread following it) is
+just a hint for the maintainer anyway.
 
-After commit 5c70eb5c593d ("net: better track kernel sockets lifetime"),
-kernel sockets now use net_passive reference counting. However, commit
-95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock after rmmod"")
-restored the manual socket refcount manipulation without adapting to this
-new mechanism, causing a memory leak.
-
-The issue can be reproduced by[1]:
-1. Creating a network namespace
-2. Mounting and Unmounting CIFS within the namespace
-3. Deleting the namespace
-
-Some memory leaks may appear after a period of time following step 3.
-
-unreferenced object 0xffff9951419f6b00 (size 256):
-  comm "ip", pid 447, jiffies 4294692389 (age 14.730s)
-  hex dump (first 32 bytes):
-    1b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 80 77 c2 44 51 99 ff ff  .........w.DQ...
-  backtrace:
-    __kmem_cache_alloc_node+0x30e/0x3d0
-    __kmalloc+0x52/0x120
-    net_alloc_generic+0x1d/0x30
-    copy_net_ns+0x86/0x200
-    create_new_namespaces+0x117/0x300
-    unshare_nsproxy_namespaces+0x60/0xa0
-    ksys_unshare+0x148/0x360
-    __x64_sys_unshare+0x12/0x20
-    do_syscall_64+0x59/0x110
-    entry_SYSCALL_64_after_hwframe+0x78/0xe2
-...
-unreferenced object 0xffff9951442e7500 (size 32):
-  comm "mount.cifs", pid 475, jiffies 4294693782 (age 13.343s)
-  hex dump (first 32 bytes):
-    40 c5 38 46 51 99 ff ff 18 01 96 42 51 99 ff ff  @.8FQ......BQ...
-    01 00 00 00 6f 00 c5 07 6f 00 d8 07 00 00 00 00  ....o...o.......
-  backtrace:
-    __kmem_cache_alloc_node+0x30e/0x3d0
-    kmalloc_trace+0x2a/0x90
-    ref_tracker_alloc+0x8e/0x1d0
-    sk_alloc+0x18c/0x1c0
-    inet_create+0xf1/0x370
-    __sock_create+0xd7/0x1e0
-    generic_ip_connect+0x1d4/0x5a0 [cifs]
-    cifs_get_tcp_session+0x5d0/0x8a0 [cifs]
-    cifs_mount_get_session+0x47/0x1b0 [cifs]
-    dfs_mount_share+0xfa/0xa10 [cifs]
-    cifs_mount+0x68/0x2b0 [cifs]
-    cifs_smb3_do_mount+0x10b/0x760 [cifs]
-    smb3_get_tree+0x112/0x2e0 [cifs]
-    vfs_get_tree+0x29/0xf0
-    path_mount+0x2d4/0xa00
-    __se_sys_mount+0x165/0x1d0
-
-Root cause:
-When creating kernel sockets, sk_alloc() calls net_passive_inc() for
-sockets with sk_net_refcnt=0. The CIFS code manually converts kernel
-sockets to user sockets by setting sk_net_refcnt=1, but doesn't call
-the corresponding net_passive_dec(). This creates an imbalance in the
-net_passive counter, which prevents the network namespace from being
-destroyed when its last user reference is dropped. As a result, the
-entire namespace and all its associated resources remain allocated.
-
-Timeline of patches leading to this issue:
-- commit ef7134c7fc48 ("smb: client: Fix use-after-free of network
-  namespace.") in v6.12 fixed the original netns UAF by manually
-  managing socket refcounts
-- commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
-  rmmod") in v6.13 attempted to use kernel sockets but introduced
-  TCP timer issues
-- commit 5c70eb5c593d ("net: better track kernel sockets lifetime")
-  in v6.14-rc5 introduced the net_passive mechanism with
-  sk_net_refcnt_upgrade() for proper socket conversion
-- commit 95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock
-  after rmmod"") in v6.15-rc3 reverted to manual refcount management
-  without adapting to the new net_passive changes
-
-Fix this by using sk_net_refcnt_upgrade() which properly handles the
-net_passive counter when converting kernel sockets to user sockets.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220343 [1]
-Fixes: 95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock after rmmod"")
-Cc: stable@vger.kernel.org
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/client/connect.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index ebc380b18da7..9d93794e9c50 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3165,18 +3165,15 @@ generic_ip_connect(struct TCP_Server_Info *server)
- 		struct net *net = cifs_net_ns(server);
- 		struct sock *sk;
- 
--		rc = __sock_create(net, sfamily, SOCK_STREAM,
--				   IPPROTO_TCP, &server->ssocket, 1);
-+		rc = sock_create_kern(net, sfamily, SOCK_STREAM,
-+				      IPPROTO_TCP, &server->ssocket);
- 		if (rc < 0) {
- 			cifs_server_dbg(VFS, "Error %d creating socket\n", rc);
- 			return rc;
- 		}
- 
- 		sk = server->ssocket->sk;
--		__netns_tracker_free(net, &sk->ns_tracker, false);
--		sk->sk_net_refcnt = 1;
--		get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
--		sock_inuse_add(net, 1);
-+		sk_net_refcnt_upgrade(sk);
- 
- 		/* BB other socket options to set KEEPALIVE, NODELAY? */
- 		cifs_dbg(FYI, "Socket created\n");
--- 
-2.39.5
-
+But no worries, I've added Cc: stable to the commit.
 
