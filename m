@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39540B231E7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8987B233BD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB661899A59
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A37EC1A2494A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC372ECE9F;
-	Tue, 12 Aug 2025 18:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410252FE560;
+	Tue, 12 Aug 2025 18:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTPl31oJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zt/jIyeI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A837280037;
-	Tue, 12 Aug 2025 18:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F209B61FFE;
+	Tue, 12 Aug 2025 18:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021976; cv=none; b=Y0bxN4uvqG9uTVh6mToAUf5RWjnTFcwEgFnKiVa1+4h9kIAQj/nPJEWE/7vlJHUO5DDrWjl+no3DsF/0gPbQrN8fxmIy203jtdGbmNIPrdedARPLVlIAtLfoAOTALGWyr+GJ6lavhI/D9iTXBTcd/Fv6ILhuFzyWzIuUwFAYooM=
+	t=1755023242; cv=none; b=gZ5eDWw3CDMj1HqXDP8ZVu5R8kXNKorxwAzF6N5985vQTG4ZYtO9TXu5qN5N9FNopw5ygNS9VGtvRjEMZFPOnVlK3HbyIItn2QmF92jSgiPp+Hj+MGbgmsBSLgt/STt2uzRDRqNMkk5889XeH36eXA+Vdc1/BnVJfBtc8mn65mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021976; c=relaxed/simple;
-	bh=VeOAxdrXQa8c8LO+Jmrxx121JDwv2ahiml7AjZuOoiU=;
+	s=arc-20240116; t=1755023242; c=relaxed/simple;
+	bh=u445zBUL80Y5T3DT7UepT60W6nCzIAjIk7SgwQxoBCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUgLtwT9jheyqCPGf0szF9rMG+KEOVE1eGLzihbDHQx5/BFqigD0UoGGgfa1VSnULqkCjVHiNEo8UXCKis/GjXc4Tto5A3wJFhgpBbmEoeOhSJUeRnH10Aiva6RBccgjPYzGNgNEfz+f/6nQbQLhBPEBca4+RdwCRizdiqCFaeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTPl31oJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD92CC4CEF0;
-	Tue, 12 Aug 2025 18:06:15 +0000 (UTC)
+	 MIME-Version; b=AjHj9sUrficFtGP59Y+yx/66VUYW1sxl5Y209Yc7pG3kyygcFRnSylhDJU+oMYYnr9IdyrnSnaQWmEuEARdIpC9V2VGsWqA10bU3KxJvJ2LF33GRyzRvDRjFd/lqx22yFQDYAT58EKb68vEpchwlz0JXvf1GhWFIBv0eUA6OwnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zt/jIyeI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D25FC4CEF1;
+	Tue, 12 Aug 2025 18:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021976;
-	bh=VeOAxdrXQa8c8LO+Jmrxx121JDwv2ahiml7AjZuOoiU=;
+	s=korg; t=1755023241;
+	bh=u445zBUL80Y5T3DT7UepT60W6nCzIAjIk7SgwQxoBCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTPl31oJh25kp8pGOV6vJ4V5bx/TZQ7AHdIOsPF1ltkIbUzVoBt0HH03rhIBmefSE
-	 256xVcwIMwPBVRhSAVAPsJ9NoE0Co3YzRfaKqCXe0acuO6JNOR7Rz38lTPM6zi7h2w
-	 r00LpYlIpZXixgDZoyWnpcZjIp0iMuH48iLcEx3w=
+	b=zt/jIyeIcqTaXOEltQvIsBVnMmISgxMZ9robKxvO/ogONfZ/Zo5/tyilTN1prenW1
+	 N/w+sioeaDAxKTQFmMRVBnbGVmDFR1azoLcsF9lGKhf5NDZFT8Bz8PxmpoTAUWZ1Cf
+	 +h/jPnrOi4+rPrFAJ3g+I9oBJ+Gq5k930q5eLewE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
+	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/369] ASoC: ops: dynamically allocate struct snd_ctl_elem_value
-Date: Tue, 12 Aug 2025 19:25:16 +0200
-Message-ID: <20250812173015.465275299@linuxfoundation.org>
+Subject: [PATCH 6.16 022/627] nvmet: pci-epf: Do not complete commands twice if nvmet_req_init() fails
+Date: Tue, 12 Aug 2025 19:25:17 +0200
+Message-ID: <20250812173420.161896428@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit 7e10d7242ea8a5947878880b912ffa5806520705 ]
+[ Upstream commit 746d0ac5a07d5da952ef258dd4d75f0b26c96476 ]
 
-This structure is really too larget to be allocated on the stack:
+Have nvmet_req_init() and req->execute() complete failed commands.
 
-sound/soc/soc-ops.c:435:5: error: stack frame size (1296) exceeds limit (1280) in 'snd_soc_limit_volume' [-Werror,-Wframe-larger-than]
+Description of the problem:
+nvmet_req_init() calls __nvmet_req_complete() internally upon failure,
+e.g., unsupported opcode, which calls the "queue_response" callback,
+this results in nvmet_pci_epf_queue_response() being called, which will
+call nvmet_pci_epf_complete_iod() if data_len is 0 or if dma_dir is
+different from DMA_TO_DEVICE. This results in a double completion as
+nvmet_pci_epf_exec_iod_work() also calls nvmet_pci_epf_complete_iod()
+when nvmet_req_init() fails.
 
-Change the function to dynamically allocate it instead.
+Steps to reproduce:
+On the host send a command with an unsupported opcode with nvme-cli,
+For example the admin command "security receive"
+$ sudo nvme security-recv /dev/nvme0n1 -n1 -x4096
 
-There is probably a better way to do it since only two integer fields
-inside of that structure are actually used, but this is the simplest
-rework for the moment.
+This triggers a double completion as nvmet_req_init() fails and
+nvmet_pci_epf_queue_response() is called, here iod->dma_dir is still
+in the default state of "DMA_NONE" as set by default in
+nvmet_pci_epf_alloc_iod(), so nvmet_pci_epf_complete_iod() is called.
+Because nvmet_req_init() failed nvmet_pci_epf_complete_iod() is also
+called in nvmet_pci_epf_exec_iod_work() leading to a double completion.
+This not only sends two completions to the host but also corrupts the
+state of the PCI NVMe target leading to kernel oops.
 
-Fixes: 783db6851c18 ("ASoC: ops: Enforce platform maximum on initial value")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250610093057.2643233-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch lets nvmet_req_init() and req->execute() complete all failed
+commands, and removes the double completion case in
+nvmet_pci_epf_exec_iod_work() therefore fixing the edge cases where
+double completions occurred.
+
+Fixes: 0faa0fe6f90e ("nvmet: New NVMe PCI endpoint function target driver")
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/nvme/target/pci-epf.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index fb11003d56cf..669b95cb4850 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -642,28 +642,32 @@ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
- static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
- {
- 	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
--	struct snd_ctl_elem_value uctl;
-+	struct snd_ctl_elem_value *uctl;
- 	int ret;
+diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
+index a4295a5b8d28..6f1651183e32 100644
+--- a/drivers/nvme/target/pci-epf.c
++++ b/drivers/nvme/target/pci-epf.c
+@@ -1242,8 +1242,11 @@ static void nvmet_pci_epf_queue_response(struct nvmet_req *req)
  
- 	if (!mc->platform_max)
- 		return 0;
+ 	iod->status = le16_to_cpu(req->cqe->status) >> 1;
  
--	ret = kctl->get(kctl, &uctl);
-+	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
-+	if (!uctl)
-+		return -ENOMEM;
+-	/* If we have no data to transfer, directly complete the command. */
+-	if (!iod->data_len || iod->dma_dir != DMA_TO_DEVICE) {
++	/*
++	 * If the command failed or we have no data to transfer, complete the
++	 * command immediately.
++	 */
++	if (iod->status || !iod->data_len || iod->dma_dir != DMA_TO_DEVICE) {
+ 		nvmet_pci_epf_complete_iod(iod);
+ 		return;
+ 	}
+@@ -1604,8 +1607,13 @@ static void nvmet_pci_epf_exec_iod_work(struct work_struct *work)
+ 		goto complete;
+ 	}
+ 
++	/*
++	 * If nvmet_req_init() fails (e.g., unsupported opcode) it will call
++	 * __nvmet_req_complete() internally which will call
++	 * nvmet_pci_epf_queue_response() and will complete the command directly.
++	 */
+ 	if (!nvmet_req_init(req, &iod->sq->nvme_sq, &nvmet_pci_epf_fabrics_ops))
+-		goto complete;
++		return;
+ 
+ 	iod->data_len = nvmet_req_transfer_len(req);
+ 	if (iod->data_len) {
+@@ -1643,10 +1651,11 @@ static void nvmet_pci_epf_exec_iod_work(struct work_struct *work)
+ 
+ 	wait_for_completion(&iod->done);
+ 
+-	if (iod->status == NVME_SC_SUCCESS) {
+-		WARN_ON_ONCE(!iod->data_len || iod->dma_dir != DMA_TO_DEVICE);
+-		nvmet_pci_epf_transfer_iod_data(iod);
+-	}
++	if (iod->status != NVME_SC_SUCCESS)
++		return;
 +
-+	ret = kctl->get(kctl, uctl);
- 	if (ret < 0)
--		return ret;
-+		goto out;
++	WARN_ON_ONCE(!iod->data_len || iod->dma_dir != DMA_TO_DEVICE);
++	nvmet_pci_epf_transfer_iod_data(iod);
  
--	if (uctl.value.integer.value[0] > mc->platform_max)
--		uctl.value.integer.value[0] = mc->platform_max;
-+	if (uctl->value.integer.value[0] > mc->platform_max)
-+		uctl->value.integer.value[0] = mc->platform_max;
- 
- 	if (snd_soc_volsw_is_stereo(mc) &&
--	    uctl.value.integer.value[1] > mc->platform_max)
--		uctl.value.integer.value[1] = mc->platform_max;
-+	    uctl->value.integer.value[1] > mc->platform_max)
-+		uctl->value.integer.value[1] = mc->platform_max;
- 
--	ret = kctl->put(kctl, &uctl);
--	if (ret < 0)
--		return ret;
-+	ret = kctl->put(kctl, uctl);
- 
--	return 0;
-+out:
-+	kfree(uctl);
-+	return ret;
- }
- 
- /**
+ complete:
+ 	nvmet_pci_epf_complete_iod(iod);
 -- 
 2.39.5
 
