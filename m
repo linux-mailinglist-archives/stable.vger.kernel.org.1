@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-168082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2C9B2335D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82729B23585
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ED4C188299B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9195762740F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B4E2FD1DC;
-	Tue, 12 Aug 2025 18:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D352FD1B2;
+	Tue, 12 Aug 2025 18:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbmwnSyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5dpL3HI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8140B1EBFE0;
-	Tue, 12 Aug 2025 18:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39FF1A01BF;
+	Tue, 12 Aug 2025 18:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022983; cv=none; b=WQYf1l7MhJsuIDV6O//PYMOSRYCZOlxqUm5FgC8BZ+jHehp3ILWrIw3ZbUoDp3osAL5Y9kraHI0cPAJXO6raRzukN8Vo/8/iVL00JPm3CxdHNxjk+RX53veMPrAZ8pn0sMf2fUYPKUs69dPEBQ8qwskNF5XfPma22cxmoo65MHo=
+	t=1755024359; cv=none; b=bHn6iNKmE3UIieebQChg2fmL6xCsbCZqExX22Js1URBZvLOI9nNoCCQK2r+WD87CLeErkQLWagh7wJgM9TmNfSnG2rzBvoK24fUu5FplcfYsSwgn5Iq4Xs8qKcklcXTGqaOtBtn4O79IFAL12LOpxPM5Tfc6XoJv8QVfJhjlDyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022983; c=relaxed/simple;
-	bh=ko5GUk66oeXzE3fo1ybmu2FyiO9+VxfLpAS7Yc40Hf8=;
+	s=arc-20240116; t=1755024359; c=relaxed/simple;
+	bh=IBDFCIMUBENT9zHggZ8jfbTeAIWOgP2QAqFazH2nz7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ib1O3xyTsWon5KvTk5770zj8m3y0YByExeGsBgEf/tfpdEmjvjxfXEEaqcNm+eVhyYHAmVYM6TjOOmmiQCtOZHNKOSdBJN3HD/1yxjzMGYNfcj5Mvio9HEe3aCdgaG7OF/YO4j5Z73cu34MVeZDkMTeRcnpcm2ojbLLynlRr+vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbmwnSyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D9AC4CEF6;
-	Tue, 12 Aug 2025 18:23:02 +0000 (UTC)
+	 MIME-Version; b=AoHpaX71xnlvML9UEFeNTrZ0abh97YL9/FZMI+Khy4J6kltnb8ZiHou6xnDS4KUeoMC6JzrFgr88GpQJLoOV4yJ9sc59nSeIWjpRLOGQ3rLsq6RInlJF5hvjY2w/6nVYIzc30YQoIQOyRMxnM7VvC1SNXpzHnDhEDm1sWHtPN/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5dpL3HI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAFFC4CEF0;
+	Tue, 12 Aug 2025 18:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022983;
-	bh=ko5GUk66oeXzE3fo1ybmu2FyiO9+VxfLpAS7Yc40Hf8=;
+	s=korg; t=1755024358;
+	bh=IBDFCIMUBENT9zHggZ8jfbTeAIWOgP2QAqFazH2nz7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbmwnSylFN7nKACUTZlUrrNo49EpzTEd/aWyiO7LiMqq+duJ6wZxIjbrD0tsaDinA
-	 xNR8EDvwZB+SHngY0wU1kGxMkZECDh4mxcAsMBmQa0k8XC+Px9TV98TzYkg8Muw3Ot
-	 R0HuzPYj0D9ak7dey1l/jBgFZRt9Eo/huNUUQaW0=
+	b=e5dpL3HIklu/3ez3d/3YQkVhZp2RveNUsFDmiWe1JZHu5/KuR2RdiGVFT42RaLKrI
+	 TNausTbfQ4LPMPMMS0w7iQ7dpiJ5niXMbftiq/p/lpCNVeUpPwdvF+5qcpereYXT8N
+	 xrf5FVUP2sOzRz6FnQ9exZqTw6zAbvXrDRtdWs5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 314/369] smb: server: let recv_done() avoid touching data_transfer after cleanup/move
-Date: Tue, 12 Aug 2025 19:30:11 +0200
-Message-ID: <20250812173028.535401870@linuxfoundation.org>
+Subject: [PATCH 6.16 317/627] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
+Date: Tue, 12 Aug 2025 19:30:12 +0200
+Message-ID: <20250812173431.363306304@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit a6c015b7ac2d8c5233337e5793f50d04fac17669 ]
+[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
 
-Calling enqueue_reassembly() and wake_up_interruptible(&t->wait_reassembly_queue)
-or put_receive_buffer() means the recvmsg/data_transfer pointer might
-get re-used by another thread, which means these should be
-the last operations before calling return.
+In the cpcap_usb_detect() function, the power_supply_get_by_name()
+function may return `NULL` instead of an error pointer.
+To prevent potential null pointer dereferences, Added a null check.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/power/supply/cpcap-charger.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index b5e9fd9369e9..805c20f619b0 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -580,16 +580,11 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			else
- 				t->full_packet_received = true;
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+index 13300dc60baf..d0c3008db534 100644
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -689,9 +689,8 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 		struct power_supply *battery;
  
--			enqueue_reassembly(t, recvmsg, (int)data_length);
--			wake_up_interruptible(&t->wait_reassembly_queue);
--
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
- 			avail_recvmsg_count = t->count_avail_recvmsg;
- 			spin_unlock(&t->receive_credit_lock);
- 		} else {
--			put_recvmsg(t, recvmsg);
--
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
- 			avail_recvmsg_count = ++(t->count_avail_recvmsg);
-@@ -611,6 +606,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
- 			mod_delayed_work(smb_direct_wq,
- 					 &t->post_recv_credits_work, 0);
-+
-+		if (data_length) {
-+			enqueue_reassembly(t, recvmsg, (int)data_length);
-+			wake_up_interruptible(&t->wait_reassembly_queue);
-+		} else
-+			put_recvmsg(t, recvmsg);
-+
- 		return;
- 	}
- 	}
+ 		battery = power_supply_get_by_name("battery");
+-		if (IS_ERR_OR_NULL(battery)) {
+-			dev_err(ddata->dev, "battery power_supply not available %li\n",
+-					PTR_ERR(battery));
++		if (!battery) {
++			dev_err(ddata->dev, "battery power_supply not available\n");
+ 			return;
+ 		}
+ 
 -- 
 2.39.5
 
