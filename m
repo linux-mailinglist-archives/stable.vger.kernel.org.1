@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F546B230FC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB43EB22FD6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B215188C8F4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6336836BB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80A52FE564;
-	Tue, 12 Aug 2025 17:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8D72FDC24;
+	Tue, 12 Aug 2025 17:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzJpJa4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP1cJrSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAB92FA0FD;
-	Tue, 12 Aug 2025 17:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5CC2F83CB;
+	Tue, 12 Aug 2025 17:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021491; cv=none; b=D/fULs1OSjUE33Qd2SJTdTjwmSNceqQvKOwMFPxYkdyW19V3tkFFBtUeAx0xnr0OBjmll5Jjy0+5Fl1qjjbw7yk5XZQk8ytoAKeDxu/8ryz0po8WEtVpUNusEa3mWnqCKLc1VeMO9POYQEppdUbPL8mLRAlcuAUU3KZqHrmAA78=
+	t=1755020633; cv=none; b=T7QsRSKfGZ60S3np2J93IqjVSd1AYrFXTAN9OBh96GFTf5rJ3RwN4QaHCJRQveCxccyC1LkUWG5pXgUWVEWVnU/FoGJFY/NGdpoa6FPyXzNlkB0+T5fL7A0sTOaqdRJztVesnKtTrj5Q4kfvu/CcCBvHzPhf2h2PCQKT1ywWwkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021491; c=relaxed/simple;
-	bh=S9rNluleaaZsMvb2qFcxUO8w1Q38+lBGNpVFHq2JHY0=;
+	s=arc-20240116; t=1755020633; c=relaxed/simple;
+	bh=6ArSM2BbfhbWgiwTeCT9omFQmJvi/nrx+xCYKnYdowA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuWz/bGbMFPMZWDht+27M5zixa70CljA7q36P35NYRQTsk/d/xCoA0KHA6hLxv6MypraH6YNC+9iL49glLicrbWMDKlkhIJSV4vCp76fOSDBl57MOltRUmIY5TKRDpN5+FPL1ZSCOw051V9jYFWQ6alnfDHXyvHo1u7wwlzbYoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzJpJa4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDE2C4CEF0;
-	Tue, 12 Aug 2025 17:58:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IejZ7YOaBRNtk3BK457acDpTOowlRMz8AkXXBX3SgUwgpc2iGvoZZDQYLa3Kbe+ziRwSyJUhe35AEAeYNgnmpRdShp+n3ZYdslaUP272MrxpGtxrawjslxibHq2SNGull2ctuDi5lwJ3z+sCVS5Jvf1Cb/dz2XjkmCioxYwDlYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP1cJrSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0691BC4CEF0;
+	Tue, 12 Aug 2025 17:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021491;
-	bh=S9rNluleaaZsMvb2qFcxUO8w1Q38+lBGNpVFHq2JHY0=;
+	s=korg; t=1755020633;
+	bh=6ArSM2BbfhbWgiwTeCT9omFQmJvi/nrx+xCYKnYdowA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AzJpJa4d5K2PaBLwYPwyZGwC0oNJ6Ag0lQ8gZ77882AUN8o/a2QN3CP2RIMWx9SfP
-	 +TQ4n21RY2DiXkGuBldXnWz8QBHhzaHg3sgqXLR9ItIQ/WhOHChoqAWyJZ9fwHPoUh
-	 2C6puSRUGNVFjrS1gIeatoPUlBDunr06EesjVKJw=
+	b=aP1cJrSGpgATYlarzU/TP7Bg4MaS2EZcovrLVSjXkqxqick1e2jGPgIrI96dKaNRW
+	 fuB0F1DWCkAM2v9QS7iSutjAkUBOn0Vb6vR/mSp6Cema4L1tOa5OnD1cBG9ZTabHkO
+	 Cr/Qa5rPaFrw+6kAMogd7bVRz795pCCaVWE3cTn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/262] scsi: mvsas: Fix dma_unmap_sg() nents value
+Subject: [PATCH 6.1 138/253] bpf/preload: Dont select USERMODE_DRIVER
 Date: Tue, 12 Aug 2025 19:28:46 +0200
-Message-ID: <20250812172958.973225865@linuxfoundation.org>
+Message-ID: <20250812172954.566198040@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
+[ Upstream commit 2b03164eee20eac7ce0fe3aa4fbda7efc1e5427a ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+The usermode driver framework is not used anymore by the BPF
+preload code.
 
-Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: cb80ddc67152 ("bpf: Convert bpf_preload.ko to use light skeleton.")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/bpf/20250721-remove-usermode-driver-v1-1-0d0083334382@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mvsas/mv_sas.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/preload/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
-index 1444b1f1c4c8..d6897432cf0f 100644
---- a/drivers/scsi/mvsas/mv_sas.c
-+++ b/drivers/scsi/mvsas/mv_sas.c
-@@ -828,7 +828,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
- 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (n_elem)
--			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
-+			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
- 				     task->data_dir);
- prep_out:
- 	return rc;
-@@ -874,7 +874,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (slot->n_elem)
- 			dma_unmap_sg(mvi->dev, task->scatter,
--				     slot->n_elem, task->data_dir);
-+				     task->num_scatter, task->data_dir);
- 
- 	switch (task->task_proto) {
- 	case SAS_PROTOCOL_SMP:
+diff --git a/kernel/bpf/preload/Kconfig b/kernel/bpf/preload/Kconfig
+index c9d45c9d6918..f9b11d01c3b5 100644
+--- a/kernel/bpf/preload/Kconfig
++++ b/kernel/bpf/preload/Kconfig
+@@ -10,7 +10,6 @@ menuconfig BPF_PRELOAD
+ 	# The dependency on !COMPILE_TEST prevents it from being enabled
+ 	# in allmodconfig or allyesconfig configurations
+ 	depends on !COMPILE_TEST
+-	select USERMODE_DRIVER
+ 	help
+ 	  This builds kernel module with several embedded BPF programs that are
+ 	  pinned into BPF FS mount point as human readable files that are
 -- 
 2.39.5
 
