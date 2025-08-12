@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBEDB22F9D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783EBB2324A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5231889306
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 223C92A1B96
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC882F7477;
-	Tue, 12 Aug 2025 17:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841902FA0CD;
+	Tue, 12 Aug 2025 18:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwIuXUMV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2Dp2qJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E112FDC36;
-	Tue, 12 Aug 2025 17:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E1118FC91;
+	Tue, 12 Aug 2025 18:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020371; cv=none; b=Nnic2eRdVZJnxFj4vvGSvwMA4Z6gmlCjlPrueq07Hq1s8ZUNYa3qULolwmQmEpBg7hjzP3dd68pSSsjdpptft2YWVSW0DPBNvxsxsnSLCDWM6nINsr+xRaHSnm4Y2ReN9KbcVofMkHqwbikP7XWHvn53eicN00b8GnLAAgLMoOk=
+	t=1755022312; cv=none; b=K4BUiHe/3QDDYz1aOor9u15UiGY8daA6gXgQg99mI2P5Pog4uAz2dHEWDDFJEyALLjC27N/9xeOldjkl6bQegpghm00Kg1ECz4WRoT/yO9p2ndsZb4XcC0p5htMiaW3C3jL4Ms+dsDUz30hfrD4Xaq9wgKUJKCnuJAm7r7NZzHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020371; c=relaxed/simple;
-	bh=JvA8HAgGOE03s6/zjgbVQVRJIOQmtabco0lVZzHkCl4=;
+	s=arc-20240116; t=1755022312; c=relaxed/simple;
+	bh=KIJjS0lKWz+fCMRsiYoynwh7V3DLSnxgKKnzlBEfnjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g25wYhOFonbgHpG2mmG1nyFsSiKCaCOR3yPqdJQ8Pd2kudluocE5/RfHR1JOUxrHACmlYBWmRDbD4ZTnrHoy+m1wEbEThX3vpE2ZSaMPgj1y2NvQy+luG8oQ326WhBeffGlsztEVo2paMDnpeW1IHf8CzXZolTJthEag/Jguusw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwIuXUMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A0AC4CEF0;
-	Tue, 12 Aug 2025 17:39:30 +0000 (UTC)
+	 MIME-Version; b=qKPPJ89Wr/yiEMS1igGYn9NTJgiVQrfc3gW1m8DV9hdCPzp9DXLiuk1R1wUoqQjJCHn3sGCy47k9kNbfOCuoNKROnTjBkP820s0ILKpPob3VwalPL20i7U9e+KFYp4ygfZCAenOKI3CLrt4YQ0zbJiLhHjHr0C3WjBtftFGk80Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2Dp2qJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DF7C4CEF7;
+	Tue, 12 Aug 2025 18:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020370;
-	bh=JvA8HAgGOE03s6/zjgbVQVRJIOQmtabco0lVZzHkCl4=;
+	s=korg; t=1755022311;
+	bh=KIJjS0lKWz+fCMRsiYoynwh7V3DLSnxgKKnzlBEfnjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwIuXUMVjZ8/v6mV1Sj8AOXhxudjzQyImE6M61jgHnAmuxrIdjpYQjO7/6m12Bf4D
-	 YiAy5JfQa7/+JlIK40AJcarg4oxmOnqxztFj3LKdtqG3JUKtREuJcQ5ePWVMV/xueX
-	 dCITzfNDZ/CgEGHTqbczcDfUioZIjA382MPg5Y6Q=
+	b=H2Dp2qJS/1ta639DMPp0ptGvA3SKsh70RiTzNcXeKxEQI6kIlnzG/NbQwOJqoFh0H
+	 MpihGAQj4whuX8al/jqe3E7tFCeOh8cH53woNvHJBrObl4XOSQXroGcFaCiFjTi6Sk
+	 OYWyyLyj/5UynrkAk+b9pkucjEdbDYE2V/Tc95VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 028/253] i2c: tegra: Fix reset error handling with ACPI
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 119/369] wifi: plfxlc: Fix error handling in usb driver probe
 Date: Tue, 12 Aug 2025 19:26:56 +0200
-Message-ID: <20250812172949.929745632@linuxfoundation.org>
+Message-ID: <20250812173019.242475128@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 56344e241c543f17e8102fa13466ad5c3e7dc9ff upstream.
+[ Upstream commit 3fe79a25c3cd54d25d30bc235c0c57f8a123d9d5 ]
 
-The acpi_evaluate_object() returns an ACPI error code and not
-Linux one. For the some platforms the err will have positive code
-which may be interpreted incorrectly. Use device_reset() for
-reset control which handles it correctly.
+If probe fails before ieee80211_register_hw() is successfully done,
+ieee80211_unregister_hw() will be called anyway. This may lead to various
+bugs as the implementation of ieee80211_unregister_hw() assumes that
+ieee80211_register_hw() has been called.
 
-Fixes: bd2fdedbf2ba ("i2c: tegra: Add the ACPI support")
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Cc: <stable@vger.kernel.org> # v5.17+
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250710131206.2316-2-akhilrajeev@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Divide error handling section into relevant subsections, so that
+ieee80211_unregister_hw() is called only when it is appropriate. Correct
+the order of the calls: ieee80211_unregister_hw() should go before
+plfxlc_mac_release(). Also move ieee80211_free_hw() to plfxlc_mac_release()
+as it supposed to be the opposite to plfxlc_mac_alloc_hw() that calls
+ieee80211_alloc_hw().
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250321185226.71-3-m.masimov@mt-integration.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tegra.c |   24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
+ drivers/net/wireless/purelifi/plfxlc/mac.c | 11 ++++----
+ drivers/net/wireless/purelifi/plfxlc/mac.h |  2 +-
+ drivers/net/wireless/purelifi/plfxlc/usb.c | 29 +++++++++++-----------
+ 3 files changed, 21 insertions(+), 21 deletions(-)
 
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -623,7 +623,6 @@ static int tegra_i2c_wait_for_config_loa
- static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
- {
- 	u32 val, clk_divisor, clk_multiplier, tsu_thd, tlow, thigh, non_hs_mode;
--	acpi_handle handle = ACPI_HANDLE(i2c_dev->dev);
- 	struct i2c_timings *t = &i2c_dev->timings;
- 	int err;
- 
-@@ -635,11 +634,7 @@ static int tegra_i2c_init(struct tegra_i
- 	 * emit a noisy warning on error, which won't stay unnoticed and
- 	 * won't hose machine entirely.
- 	 */
--	if (handle)
--		err = acpi_evaluate_object(handle, "_RST", NULL, NULL);
--	else
--		err = reset_control_reset(i2c_dev->rst);
--
-+	err = device_reset(i2c_dev->dev);
- 	WARN_ON_ONCE(err);
- 
- 	if (IS_DVC(i2c_dev))
-@@ -1696,19 +1691,6 @@ static void tegra_i2c_parse_dt(struct te
- 		i2c_dev->is_vi = true;
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
+index 82d1bf7edba2..a7f5d287e369 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.c
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
+@@ -99,11 +99,6 @@ int plfxlc_mac_init_hw(struct ieee80211_hw *hw)
+ 	return r;
  }
  
--static int tegra_i2c_init_reset(struct tegra_i2c_dev *i2c_dev)
+-void plfxlc_mac_release(struct plfxlc_mac *mac)
 -{
--	if (ACPI_HANDLE(i2c_dev->dev))
--		return 0;
--
--	i2c_dev->rst = devm_reset_control_get_exclusive(i2c_dev->dev, "i2c");
--	if (IS_ERR(i2c_dev->rst))
--		return dev_err_probe(i2c_dev->dev, PTR_ERR(i2c_dev->rst),
--				      "failed to get reset control\n");
--
--	return 0;
+-	plfxlc_chip_release(&mac->chip);
 -}
 -
- static int tegra_i2c_init_clocks(struct tegra_i2c_dev *i2c_dev)
+ int plfxlc_op_start(struct ieee80211_hw *hw)
  {
- 	int err;
-@@ -1818,10 +1800,6 @@ static int tegra_i2c_probe(struct platfo
+ 	plfxlc_hw_mac(hw)->chip.usb.initialized = 1;
+@@ -755,3 +750,9 @@ struct ieee80211_hw *plfxlc_mac_alloc_hw(struct usb_interface *intf)
+ 	SET_IEEE80211_DEV(hw, &intf->dev);
+ 	return hw;
+ }
++
++void plfxlc_mac_release_hw(struct ieee80211_hw *hw)
++{
++	plfxlc_chip_release(&plfxlc_hw_mac(hw)->chip);
++	ieee80211_free_hw(hw);
++}
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.h b/drivers/net/wireless/purelifi/plfxlc/mac.h
+index 9384acddcf26..56da502999c1 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.h
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.h
+@@ -168,7 +168,7 @@ static inline u8 *plfxlc_mac_get_perm_addr(struct plfxlc_mac *mac)
+ }
  
- 	tegra_i2c_parse_dt(i2c_dev);
+ struct ieee80211_hw *plfxlc_mac_alloc_hw(struct usb_interface *intf);
+-void plfxlc_mac_release(struct plfxlc_mac *mac);
++void plfxlc_mac_release_hw(struct ieee80211_hw *hw);
  
--	err = tegra_i2c_init_reset(i2c_dev);
--	if (err)
--		return err;
--
- 	err = tegra_i2c_init_clocks(i2c_dev);
- 	if (err)
- 		return err;
+ int plfxlc_mac_preinit_hw(struct ieee80211_hw *hw, const u8 *hw_address);
+ int plfxlc_mac_init_hw(struct ieee80211_hw *hw);
+diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
+index 7e7bfa532ed2..966a9e211963 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/usb.c
++++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
+@@ -604,7 +604,7 @@ static int probe(struct usb_interface *intf,
+ 	r = plfxlc_upload_mac_and_serial(intf, hw_address, serial_number);
+ 	if (r) {
+ 		dev_err(&intf->dev, "MAC and Serial upload failed (%d)\n", r);
+-		goto error;
++		goto error_free_hw;
+ 	}
+ 
+ 	chip->unit_type = STA;
+@@ -613,13 +613,13 @@ static int probe(struct usb_interface *intf,
+ 	r = plfxlc_mac_preinit_hw(hw, hw_address);
+ 	if (r) {
+ 		dev_err(&intf->dev, "Init mac failed (%d)\n", r);
+-		goto error;
++		goto error_free_hw;
+ 	}
+ 
+ 	r = ieee80211_register_hw(hw);
+ 	if (r) {
+ 		dev_err(&intf->dev, "Register device failed (%d)\n", r);
+-		goto error;
++		goto error_free_hw;
+ 	}
+ 
+ 	if ((le16_to_cpu(interface_to_usbdev(intf)->descriptor.idVendor) ==
+@@ -632,7 +632,7 @@ static int probe(struct usb_interface *intf,
+ 	}
+ 	if (r != 0) {
+ 		dev_err(&intf->dev, "FPGA download failed (%d)\n", r);
+-		goto error;
++		goto error_unreg_hw;
+ 	}
+ 
+ 	tx->mac_fifo_full = 0;
+@@ -642,21 +642,21 @@ static int probe(struct usb_interface *intf,
+ 	r = plfxlc_usb_init_hw(usb);
+ 	if (r < 0) {
+ 		dev_err(&intf->dev, "usb_init_hw failed (%d)\n", r);
+-		goto error;
++		goto error_unreg_hw;
+ 	}
+ 
+ 	msleep(PLF_MSLEEP_TIME);
+ 	r = plfxlc_chip_switch_radio(chip, PLFXLC_RADIO_ON);
+ 	if (r < 0) {
+ 		dev_dbg(&intf->dev, "chip_switch_radio_on failed (%d)\n", r);
+-		goto error;
++		goto error_unreg_hw;
+ 	}
+ 
+ 	msleep(PLF_MSLEEP_TIME);
+ 	r = plfxlc_chip_set_rate(chip, 8);
+ 	if (r < 0) {
+ 		dev_dbg(&intf->dev, "chip_set_rate failed (%d)\n", r);
+-		goto error;
++		goto error_unreg_hw;
+ 	}
+ 
+ 	msleep(PLF_MSLEEP_TIME);
+@@ -664,7 +664,7 @@ static int probe(struct usb_interface *intf,
+ 			    hw_address, ETH_ALEN, USB_REQ_MAC_WR);
+ 	if (r < 0) {
+ 		dev_dbg(&intf->dev, "MAC_WR failure (%d)\n", r);
+-		goto error;
++		goto error_unreg_hw;
+ 	}
+ 
+ 	plfxlc_chip_enable_rxtx(chip);
+@@ -691,12 +691,12 @@ static int probe(struct usb_interface *intf,
+ 	plfxlc_mac_init_hw(hw);
+ 	usb->initialized = true;
+ 	return 0;
++
++error_unreg_hw:
++	ieee80211_unregister_hw(hw);
++error_free_hw:
++	plfxlc_mac_release_hw(hw);
+ error:
+-	if (hw) {
+-		plfxlc_mac_release(plfxlc_hw_mac(hw));
+-		ieee80211_unregister_hw(hw);
+-		ieee80211_free_hw(hw);
+-	}
+ 	dev_err(&intf->dev, "pureLifi:Device error");
+ 	return r;
+ }
+@@ -730,8 +730,7 @@ static void disconnect(struct usb_interface *intf)
+ 	 */
+ 	usb_reset_device(interface_to_usbdev(intf));
+ 
+-	plfxlc_mac_release(mac);
+-	ieee80211_free_hw(hw);
++	plfxlc_mac_release_hw(hw);
+ }
+ 
+ static void plfxlc_usb_resume(struct plfxlc_usb *usb)
+-- 
+2.39.5
+
 
 
 
