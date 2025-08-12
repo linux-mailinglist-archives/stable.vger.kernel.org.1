@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-168946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B765B23769
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:11:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57459B2376C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F51B163C1E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:11:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36D9B6E6BE5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC607279DB6;
-	Tue, 12 Aug 2025 19:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A47C29BDB7;
+	Tue, 12 Aug 2025 19:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tPYQUe7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaMlD+yY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8CF1A3029;
-	Tue, 12 Aug 2025 19:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3995B260583;
+	Tue, 12 Aug 2025 19:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025863; cv=none; b=ZiANuqWI+k4JirJcEmirB5TUkpbdfW9EL7pUrvVVs8Fr2oAMJnV76kMrRMiUT99xHF5ZB4v2SzUBeHAorRbIJalFBuFz2xTk4D/OJ8Yv0lWFFHU/SktdsZWzMegF7sPqZ/Ktxe9yyWwQqqdw8ahlV9dAsPRHILI9stCs5DFYPeI=
+	t=1755025870; cv=none; b=YG5/GeZxJLPQyiEgsRutjqaUdvWmO7K/otpqsV4xqUhYRmsbpP7JuY1w/pgPZEW6bTJ68hmcBPvqU9sSliC9SW8xSTPPLucEKkOjMu14MCBGCoVrAI7UYlMTlR+x2x74mDAAU4lS6SxDzDRbdhEvwqTiU/+n5WPSMHAgsJ6ZZZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025863; c=relaxed/simple;
-	bh=un4sE5Aoim2MJwjam80op8ry7Cd39jBUaRaZeAwFmkw=;
+	s=arc-20240116; t=1755025870; c=relaxed/simple;
+	bh=F1OBx+nR+eSLfnRwHF19LRoGMDRPkExIL3aX3de0LdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwsUAscMrLcgO0aRt8/USJBln4nUGopYlURTeNYZogU/pUlmYMzj8PYqw3UUKaAv1GsRy/HD3lZQ/stSNcmRcq7Z8elUy7Y7SL1dv7qvAPtC8eN/gm6oHZNlFmeCrJMOVVw8qQvLtMlvBr5aMeNSbuLuJciuCEqVKD1UZEo6YJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tPYQUe7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B80C4CEF0;
-	Tue, 12 Aug 2025 19:11:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uoFOSmqAcHy2KIu/UQ0hcADTbXZiiinL8X/YX1MpXcLxU1VEx/05az4MOf7265eHvOruPOzqUMoiQn2GQ0lkdoiGtyt4qH7zAcWehc4DsB3vO+FJji0fVsogCCR4X7n0PyjN9lNIfQ/rCKqW5N5JocDjtxfQYv9v8gfSFxub/m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaMlD+yY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B390EC4CEF0;
+	Tue, 12 Aug 2025 19:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025863;
-	bh=un4sE5Aoim2MJwjam80op8ry7Cd39jBUaRaZeAwFmkw=;
+	s=korg; t=1755025870;
+	bh=F1OBx+nR+eSLfnRwHF19LRoGMDRPkExIL3aX3de0LdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tPYQUe7qf2v8uOlQ2D3OBWmpX6+MSHXmgeQLuAsf6TJ4uUVmkSSGjXpbfaX3hB7y
-	 8TLvxfyPRMv0B8NL/ytQABjki19OxD5TAcybuiOVfetD3fRyRF/io7YuIkjxrCgnq/
-	 ikkRbHC3sW3BUbn0HoSDVodmCUiC7Jg/DMfeXAMo=
+	b=aaMlD+yYfbb/Sh5RyJrg130kdpJ1aLOMtUI6o9rgwZQiFE+FtvbevSazmKBdl9RUm
+	 SqeFZiEXw9YPQUB8rlUCojz5Eam/eDxmKnOJJcqvYTBOw99HnB1p1DcFFfrWUkiJjN
+	 17TSl/iMFrcZ09OlPpJhLaiX2D4NrAT1Yd7zwHAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jiadong Zhu <Jiadong.Zhu@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 167/480] wifi: ath11k: fix sleeping-in-atomic in ath11k_mac_op_set_bitrate_mask()
-Date: Tue, 12 Aug 2025 19:46:15 +0200
-Message-ID: <20250812174404.411208041@linuxfoundation.org>
+Subject: [PATCH 6.15 168/480] drm/amdgpu/gfx9: fix kiq locking in KCQ reset
+Date: Tue, 12 Aug 2025 19:46:16 +0200
+Message-ID: <20250812174404.449981451@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -60,75 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 65c12b104cb942d588a1a093acc4537fb3d3b129 ]
+[ Upstream commit 730ea5074dac1b105717316be5d9c18b09829385 ]
 
-ath11k_mac_disable_peer_fixed_rate() is passed as the iterator to
-ieee80211_iterate_stations_atomic(). Note in this case the iterator is
-required to be atomic, however ath11k_mac_disable_peer_fixed_rate() does
-not follow it as it might sleep. Consequently below warning is seen:
+The ring test needs to be inside the lock.
 
-BUG: sleeping function called from invalid context at wmi.c:304
-Call Trace:
- <TASK>
- dump_stack_lvl
- __might_resched.cold
- ath11k_wmi_cmd_send
- ath11k_wmi_set_peer_param
- ath11k_mac_disable_peer_fixed_rate
- ieee80211_iterate_stations_atomic
- ath11k_mac_op_set_bitrate_mask.cold
-
-Change to ieee80211_iterate_stations_mtx() to fix this issue.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250603-ath11k-use-non-atomic-iterator-v1-1-d75762068d56@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: fdbd69486b46 ("drm/amdgpu/gfx9: wait for reset done before remap")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Jiadong Zhu <Jiadong.Zhu@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 4763b271309a..9514e95d5020 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8734,9 +8734,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 				    arvif->vdev_id, ret);
- 			return ret;
- 		}
--		ieee80211_iterate_stations_atomic(ar->hw,
--						  ath11k_mac_disable_peer_fixed_rate,
--						  arvif);
-+		ieee80211_iterate_stations_mtx(ar->hw,
-+					       ath11k_mac_disable_peer_fixed_rate,
-+					       arvif);
- 	} else if (ath11k_mac_bitrate_mask_get_single_nss(ar, arvif, band, mask,
- 							  &single_nss)) {
- 		rate = WMI_FIXED_RATE_NONE;
-@@ -8803,9 +8803,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 		}
- 
- 		mutex_lock(&ar->conf_mutex);
--		ieee80211_iterate_stations_atomic(ar->hw,
--						  ath11k_mac_disable_peer_fixed_rate,
--						  arvif);
-+		ieee80211_iterate_stations_mtx(ar->hw,
-+					       ath11k_mac_disable_peer_fixed_rate,
-+					       arvif);
- 
- 		arvif->bitrate_mask = *mask;
- 		ieee80211_iterate_stations_atomic(ar->hw,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index d725e2e230a3..59ea6e88bd9e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -7299,8 +7299,8 @@ static int gfx_v9_0_reset_kcq(struct amdgpu_ring *ring,
+ 	}
+ 	kiq->pmf->kiq_map_queues(kiq_ring, ring);
+ 	amdgpu_ring_commit(kiq_ring);
+-	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	if (r) {
+ 		DRM_ERROR("fail to remap queue\n");
+ 		return r;
 -- 
 2.39.5
 
