@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652E9B2304F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDC0B23444
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77FE156526B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A204416AEE6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFF42F7449;
-	Tue, 12 Aug 2025 17:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620582EF652;
+	Tue, 12 Aug 2025 18:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFm1ZxRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmdMrpIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD26279915;
-	Tue, 12 Aug 2025 17:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F60726A0EB;
+	Tue, 12 Aug 2025 18:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021021; cv=none; b=oxksssoyYPgWtkCwUFN8V80OLOnNn0A+WuI5q8r2n+GsEhGkbnsqgV3fp7svwcLkg1/nMNRpJiWYJVgOVrPBvPSYZeTTXwkEq8/rqolA+Yyb400V2w/sr3dVbFczbE64jUB0F4ZK7REAP/ZwkwdJxIJbX9hOANl6Ntr2U7cgeLE=
+	t=1755023656; cv=none; b=phfE15yfv7a6/yYIYkL/ctUKvvjW2RzzRHWi0hYVqeSWAGbAeox+nSQQq2P9J6XspQ5Jw37sn+SKYv5TZ1QbjT91Iqaw9vVnkl7LR9V63UUaGaKU1y3uPztPoT/QVxMH+K8crW+a3SItu8n5yuFpJK4r8S2Hzkekl7kG5wFQpD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021021; c=relaxed/simple;
-	bh=Lo8Vc3x6dziqL0T6esg71cg7nmGMlqH+ooS29O1IHZQ=;
+	s=arc-20240116; t=1755023656; c=relaxed/simple;
+	bh=BTKL2k8LiLYJvGfpulHE3UE0c2VgMaIFZhZiqBzce4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMKr4qamXMo+7jB7vWySbba+WJMax2tc95d7fOuivdAhhCb4dNQR+USDLs7wxKf9qPRoDfEe3QdLDWx9S1GLHTyfWz5RmWc/zIJGcDmeUSOywpdtNdDDIu+ua07YaAY/Lx9gVQTyQZtBz1mAqnXzIiJWL5N9TahHQQT4T9SOPkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFm1ZxRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C91DC4CEF0;
-	Tue, 12 Aug 2025 17:50:20 +0000 (UTC)
+	 MIME-Version; b=lM5A3Xv2glqgEkBPDbrX9On6Z6TXrKrNzv8o5njYz+wCI4oiMIwUNizo3KuUxis6OmSusfAvfk9OoXNj/F05K2Pz8smb9rhphXnhyxBSww+36DEPRwSGI2lq62qDv72ei4+lxLFYL5KIIYW/tHlpza1vIddQuvv9Mn14l2FevgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZmdMrpIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AE9C4CEF0;
+	Tue, 12 Aug 2025 18:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021021;
-	bh=Lo8Vc3x6dziqL0T6esg71cg7nmGMlqH+ooS29O1IHZQ=;
+	s=korg; t=1755023656;
+	bh=BTKL2k8LiLYJvGfpulHE3UE0c2VgMaIFZhZiqBzce4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFm1ZxRDDq7Q5h41fIqQsfWxX0K/pX2Sditih1UJf8U7pSHEdHmg8O3kj5U/Zz+Xh
-	 F6Rs6YduCmQF8F3ufSJtMh5rswGYFFwSiftoi3o/vOOcwfqS03I8UiP8UqH7RjVq3U
-	 1J1n5XzUbyNZ2cjYuOsc/7hgUbWJOTQs1Vg1eB0A=
+	b=ZmdMrpIAqPOCyxD6c+lRjRLQ4Weku5vsrO1Ucsk+V69wLgvkcbrf9rtQTJqCjJbHv
+	 cPOxR3c2YI70Yv5XChsvJkA+vsIZ9giqRxw40PAIpNTCQ9goFU41sG/ZkB7o7aWLum
+	 yPB3jrC4ptFhAuPOri1jznIEstQpw2eRSH1zYbIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/262] selftests/bpf: fix signedness bug in redir_partial()
+Subject: [PATCH 6.16 144/627] net, bpf: Fix RCU usage in task_cls_state() for BPF programs
 Date: Tue, 12 Aug 2025 19:27:19 +0200
-Message-ID: <20250812172955.149781835@linuxfoundation.org>
+Message-ID: <20250812173424.772270467@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit 6a4bd31f680a1d1cf06492fe6dc4f08da09769e6 ]
+[ Upstream commit 7f12c33850482521c961c5c15a50ebe9b9a88d1e ]
 
-When xsend() returns -1 (error), the check 'n < sizeof(buf)' incorrectly
-treats it as success due to unsigned promotion. Explicitly check for -1
-first.
+The commit ee971630f20f ("bpf: Allow some trace helpers for all prog
+types") made bpf_get_cgroup_classid_curr helper available to all BPF
+program types, not just networking programs.
 
-Fixes: a4b7193d8efd ("selftests/bpf: Add sockmap test for redirecting partial skb data")
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Link: https://lore.kernel.org/r/20250612084208.27722-1-wangfushuai@baidu.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+This helper calls __task_get_classid() which internally calls
+task_cls_state() requiring rcu_read_lock_bh_held(). This works
+in networking/tc context where RCU BH is held, but triggers an RCU
+warning when called from other contexts like BPF syscall programs
+that run under rcu_read_lock_trace():
+
+  WARNING: suspicious RCU usage
+  6.15.0-rc4-syzkaller-g079e5c56a5c4 #0 Not tainted
+  -----------------------------
+  net/core/netclassid_cgroup.c:24 suspicious rcu_dereference_check() usage!
+
+Fix this by also accepting rcu_read_lock_held() and
+rcu_read_lock_trace_held() as valid RCU contexts in the
+task_cls_state() function. This ensures the helper works correctly
+in all needed RCU contexts where it might be called, regular RCU,
+RCU BH (for networking), and RCU trace (for BPF syscall programs).
+
+Fixes: ee971630f20f ("bpf: Allow some trace helpers for all prog types")
+Reported-by: syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20250611-rcu-fix-task_cls_state-v3-1-3d30e1de753f@posteo.net
+Closes: https://syzkaller.appspot.com/bug?extid=b4169a1cfb945d2ed0ec
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/sockmap_listen.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/netclassid_cgroup.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-index 84d59419e4eb..a6d8aa8c2a9a 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-@@ -894,6 +894,8 @@ static void redir_partial(int family, int sotype, int sock_map, int parser_map)
- 		goto close;
- 
- 	n = xsend(c1, buf, sizeof(buf), 0);
-+	if (n == -1)
-+		goto close;
- 	if (n < sizeof(buf))
- 		FAIL("incomplete write");
+diff --git a/net/core/netclassid_cgroup.c b/net/core/netclassid_cgroup.c
+index d22f0919821e..dff66d8fb325 100644
+--- a/net/core/netclassid_cgroup.c
++++ b/net/core/netclassid_cgroup.c
+@@ -21,7 +21,9 @@ static inline struct cgroup_cls_state *css_cls_state(struct cgroup_subsys_state
+ struct cgroup_cls_state *task_cls_state(struct task_struct *p)
+ {
+ 	return css_cls_state(task_css_check(p, net_cls_cgrp_id,
+-					    rcu_read_lock_bh_held()));
++					    rcu_read_lock_held() ||
++					    rcu_read_lock_bh_held() ||
++					    rcu_read_lock_trace_held()));
+ }
+ EXPORT_SYMBOL_GPL(task_cls_state);
  
 -- 
 2.39.5
