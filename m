@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7A4B233A2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039E5B23550
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A1D562E5D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F1191888297
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A382FFDCD;
-	Tue, 12 Aug 2025 18:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675F62C21F6;
+	Tue, 12 Aug 2025 18:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/MEw9KU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5oBo76W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4802EE5E8;
-	Tue, 12 Aug 2025 18:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DCE26CE2B;
+	Tue, 12 Aug 2025 18:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023176; cv=none; b=b/o2bHhl+xqN8VqdZSdPAWKHjiOyMprYu3Qeg5iiyPSRxZ/DbpU57+ewLREn8bXRCQ9CWcQ/ESzu+5UyAbVCsbbVuMhfBAUM3QJQNpiRK9XUWwnB36pB9o5rDeAB0xxB0MMe+gJ8ubMlGJpFRvUEmV6h+QdJawWs8aUZbiHcAC0=
+	t=1755024391; cv=none; b=RrnYJ9y39Kk73N3gqtg43h9m+t/cDyG6P1DqXKBwgT+6eDBJNu1vOiJwKv5ggaCkB2GX9f41IxtkdmqEYNTXhvBXedZQP9sZV/UScguxfA2+P7zQ8OLZGnwFbsIPjChtdRMDsqRePxvlUUy6IG+sgtpDSS7SJ4SzSDgYNB4yMy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023176; c=relaxed/simple;
-	bh=9T+blBjNtIqK//m2viQYYKF84iKzWWwiVFoZsqn4SCc=;
+	s=arc-20240116; t=1755024391; c=relaxed/simple;
+	bh=UPuo8bZXSJkV9BAQUwed12fhPKG76XgBSi901c+m/1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jyhKBc18InEup3ocv/4X2mEIHD3ayPvbVIC4dS1ZZm6woywdg+t5lpE0TAgOGMU8A40iL1/TM9m1bEOXhQI1HcbeeSvQ25/2a124gAt0mo+xIKsQDrkXjVxu/kDyRDHyD8vlqUwkbWtwcQDJfxF5S0amCOJ64mGzdpUFJLdbTI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/MEw9KU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2738DC4CEF0;
-	Tue, 12 Aug 2025 18:26:15 +0000 (UTC)
+	 MIME-Version; b=Qj0kqKINW8avAmnT7Jzgnlv4G+b5if8iIkefJaUmkd7P+YcOOmlF91t+RbAMyISNFKF/pkTqaCkiu/EWAtyM5/2ixgh/xEono/BDn2ONuorOgKWtVsbCBFWmZ79xHhJLbS1gcRWymGsmmJ0IypPE2WVohLNg1LsyqmHJSxaUk5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5oBo76W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D38EC4CEF0;
+	Tue, 12 Aug 2025 18:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023176;
-	bh=9T+blBjNtIqK//m2viQYYKF84iKzWWwiVFoZsqn4SCc=;
+	s=korg; t=1755024391;
+	bh=UPuo8bZXSJkV9BAQUwed12fhPKG76XgBSi901c+m/1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/MEw9KUVXdiUHh2CmR4WO2tf2wKx2Z/SveJqom4FdpV2dthDGgScCAOaWyZ5Pa7d
-	 TTScAuDybwgZE+TBKZW9w6VkxstDxoa9VtdGC0jSVdXPag3TJ8tag6qUtnjSVZEW6l
-	 bS687cZVByx4jCCJbI98y9J/Z30P+bB5dJ/aHAJY=
+	b=H5oBo76WyfrPoqC4DlmCizJXnvhPyErSR6spfvJXtksddXYDL8Yhl833heShFuVAT
+	 woWdO5BOz7lDZ3I25SwoLNu56RdWnV/8EpLFuFnGSUqbrFtQ3ADr9rG8qdEeBiUL+d
+	 NXhb/cRpz0FueIb9h5BXyzPhWR1/DNLCNa+TL3UU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 358/369] platform/x86/intel/pmt: fix a crashlog NULL pointer access
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 360/627] perf sched: Fix thread leaks in perf sched timehist
 Date: Tue, 12 Aug 2025 19:30:55 +0200
-Message-ID: <20250812173030.156847095@linuxfoundation.org>
+Message-ID: <20250812173432.989638205@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,205 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael J. Ruhl <michael.j.ruhl@intel.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 54d5cd4719c5e87f33d271c9ac2e393147d934f8 upstream.
+[ Upstream commit e2eb59260c4f6bac403491d0112891766b8650d1 ]
 
-Usage of the intel_pmt_read() for binary sysfs, requires a pcidev. The
-current use of the endpoint value is only valid for telemetry endpoint
-usage.
+Add missing thread__put() after machine__findnew_thread() or
+timehist_get_thread().  Also idle threads' last_thread should be
+refcounted properly.
 
-Without the ep, the crashlog usage causes the following NULL pointer
-exception:
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Oops: Oops: 0000 [#1] SMP NOPTI
-RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
-Code:
-Call Trace:
- <TASK>
- ? sysfs_kf_bin_read+0xc0/0xe0
- kernfs_fop_read_iter+0xac/0x1a0
- vfs_read+0x26d/0x350
- ksys_read+0x6b/0xe0
- __x64_sys_read+0x1d/0x30
- x64_sys_call+0x1bc8/0x1d70
- do_syscall_64+0x6d/0x110
-
-Augment struct intel_pmt_entry with a pointer to the pcidev to avoid
-the NULL pointer exception.
-
-Fixes: 045a513040cc ("platform/x86/intel/pmt: Use PMT callbacks")
-Cc: stable@vger.kernel.org
-Reviewed-by: David E. Box <david.e.box@linux.intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Link: https://lore.kernel.org/r/20250713172943.7335-2-michael.j.ruhl@intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 699b5b920db04a6f ("perf sched timehist: Save callchain when entering idle")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-5-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmt/class.c |    3 ++-
- drivers/platform/x86/intel/pmt/class.h |    1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/builtin-sched.c | 48 +++++++++++++++++++++++++++++---------
+ 1 file changed, 37 insertions(+), 11 deletions(-)
 
---- a/drivers/platform/x86/intel/pmt/class.c
-+++ b/drivers/platform/x86/intel/pmt/class.c
-@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct
- 	if (count > entry->size - off)
- 		count = entry->size - off;
- 
--	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
-+	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
- 				    entry->base, off, count);
- 
- 	return count;
-@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(stru
- 		return -EINVAL;
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index b73989fb6ace..83b5a85a91b7 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -2313,8 +2313,10 @@ static void save_task_callchain(struct perf_sched *sched,
+ 		return;
  	}
  
-+	entry->pcidev = pci_dev;
- 	entry->guid = header->guid;
- 	entry->size = header->size;
- 	entry->cb = ivdev->priv_data;
---- a/drivers/platform/x86/intel/pmt/class.h
-+++ b/drivers/platform/x86/intel/pmt/class.h
-@@ -39,6 +39,7 @@ struct intel_pmt_header {
+-	if (!sched->show_callchain || sample->callchain == NULL)
++	if (!sched->show_callchain || sample->callchain == NULL) {
++		thread__put(thread);
+ 		return;
++	}
  
- struct intel_pmt_entry {
- 	struct telem_endpoint	*ep;
-+	struct pci_dev		*pcidev;
- 	struct intel_pmt_header	header;
- 	struct bin_attribute	pmt_bin_attr;
- 	struct kobject		*kobj;
+ 	cursor = get_tls_callchain_cursor();
+ 
+@@ -2323,10 +2325,12 @@ static void save_task_callchain(struct perf_sched *sched,
+ 		if (verbose > 0)
+ 			pr_err("Failed to resolve callchain. Skipping\n");
+ 
++		thread__put(thread);
+ 		return;
+ 	}
+ 
+ 	callchain_cursor_commit(cursor);
++	thread__put(thread);
+ 
+ 	while (true) {
+ 		struct callchain_cursor_node *node;
+@@ -2403,8 +2407,17 @@ static void free_idle_threads(void)
+ 		return;
+ 
+ 	for (i = 0; i < idle_max_cpu; ++i) {
+-		if ((idle_threads[i]))
+-			thread__delete(idle_threads[i]);
++		struct thread *idle = idle_threads[i];
++
++		if (idle) {
++			struct idle_thread_runtime *itr;
++
++			itr = thread__priv(idle);
++			if (itr)
++				thread__put(itr->last_thread);
++
++			thread__delete(idle);
++		}
+ 	}
+ 
+ 	free(idle_threads);
+@@ -2441,7 +2454,7 @@ static struct thread *get_idle_thread(int cpu)
+ 		}
+ 	}
+ 
+-	return idle_threads[cpu];
++	return thread__get(idle_threads[cpu]);
+ }
+ 
+ static void save_idle_callchain(struct perf_sched *sched,
+@@ -2496,7 +2509,8 @@ static struct thread *timehist_get_thread(struct perf_sched *sched,
+ 			if (itr == NULL)
+ 				return NULL;
+ 
+-			itr->last_thread = thread;
++			thread__put(itr->last_thread);
++			itr->last_thread = thread__get(thread);
+ 
+ 			/* copy task callchain when entering to idle */
+ 			if (evsel__intval(evsel, sample, "next_pid") == 0)
+@@ -2567,6 +2581,7 @@ static void timehist_print_wakeup_event(struct perf_sched *sched,
+ 	/* show wakeup unless both awakee and awaker are filtered */
+ 	if (timehist_skip_sample(sched, thread, evsel, sample) &&
+ 	    timehist_skip_sample(sched, awakened, evsel, sample)) {
++		thread__put(thread);
+ 		return;
+ 	}
+ 
+@@ -2583,6 +2598,8 @@ static void timehist_print_wakeup_event(struct perf_sched *sched,
+ 	printf("awakened: %s", timehist_get_commstr(awakened));
+ 
+ 	printf("\n");
++
++	thread__put(thread);
+ }
+ 
+ static int timehist_sched_wakeup_ignore(const struct perf_tool *tool __maybe_unused,
+@@ -2611,8 +2628,10 @@ static int timehist_sched_wakeup_event(const struct perf_tool *tool,
+ 		return -1;
+ 
+ 	tr = thread__get_runtime(thread);
+-	if (tr == NULL)
++	if (tr == NULL) {
++		thread__put(thread);
+ 		return -1;
++	}
+ 
+ 	if (tr->ready_to_run == 0)
+ 		tr->ready_to_run = sample->time;
+@@ -2622,6 +2641,7 @@ static int timehist_sched_wakeup_event(const struct perf_tool *tool,
+ 	    !perf_time__skip_sample(&sched->ptime, sample->time))
+ 		timehist_print_wakeup_event(sched, evsel, sample, machine, thread);
+ 
++	thread__put(thread);
+ 	return 0;
+ }
+ 
+@@ -2649,6 +2669,7 @@ static void timehist_print_migration_event(struct perf_sched *sched,
+ 
+ 	if (timehist_skip_sample(sched, thread, evsel, sample) &&
+ 	    timehist_skip_sample(sched, migrated, evsel, sample)) {
++		thread__put(thread);
+ 		return;
+ 	}
+ 
+@@ -2676,6 +2697,7 @@ static void timehist_print_migration_event(struct perf_sched *sched,
+ 	printf(" cpu %d => %d", ocpu, dcpu);
+ 
+ 	printf("\n");
++	thread__put(thread);
+ }
+ 
+ static int timehist_migrate_task_event(const struct perf_tool *tool,
+@@ -2695,8 +2717,10 @@ static int timehist_migrate_task_event(const struct perf_tool *tool,
+ 		return -1;
+ 
+ 	tr = thread__get_runtime(thread);
+-	if (tr == NULL)
++	if (tr == NULL) {
++		thread__put(thread);
+ 		return -1;
++	}
+ 
+ 	tr->migrations++;
+ 	tr->migrated = sample->time;
+@@ -2706,6 +2730,7 @@ static int timehist_migrate_task_event(const struct perf_tool *tool,
+ 		timehist_print_migration_event(sched, evsel, sample,
+ 							machine, thread);
+ 	}
++	thread__put(thread);
+ 
+ 	return 0;
+ }
+@@ -2728,10 +2753,10 @@ static void timehist_update_task_prio(struct evsel *evsel,
+ 		return;
+ 
+ 	tr = thread__get_runtime(thread);
+-	if (tr == NULL)
+-		return;
++	if (tr != NULL)
++		tr->prio = next_prio;
+ 
+-	tr->prio = next_prio;
++	thread__put(thread);
+ }
+ 
+ static int timehist_sched_change_event(const struct perf_tool *tool,
+@@ -2743,7 +2768,7 @@ static int timehist_sched_change_event(const struct perf_tool *tool,
+ 	struct perf_sched *sched = container_of(tool, struct perf_sched, tool);
+ 	struct perf_time_interval *ptime = &sched->ptime;
+ 	struct addr_location al;
+-	struct thread *thread;
++	struct thread *thread = NULL;
+ 	struct thread_runtime *tr = NULL;
+ 	u64 tprev, t = sample->time;
+ 	int rc = 0;
+@@ -2867,6 +2892,7 @@ static int timehist_sched_change_event(const struct perf_tool *tool,
+ 
+ 	evsel__save_time(evsel, sample->time, sample->cpu);
+ 
++	thread__put(thread);
+ 	addr_location__exit(&al);
+ 	return rc;
+ }
+-- 
+2.39.5
+
 
 
 
