@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73FBB22FF4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FA7B2313F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E5918898EE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B1B7A2EDD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8642D2FDC2E;
-	Tue, 12 Aug 2025 17:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1E72DCF46;
+	Tue, 12 Aug 2025 18:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNNZx2Z9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8KiUP7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4382D2FD1B2;
-	Tue, 12 Aug 2025 17:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6E4282E1;
+	Tue, 12 Aug 2025 18:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020687; cv=none; b=o/t9SZuxoVxYGoUD4H5ucy7kwRRlfz5lLl4h7IrE93f4Bku0pHYoIwia8UatE7J91FPe47zyrgavLUhmRE6y4/jswkIB/VTyhGNhIwCCuY1DYcwL3DxyIRNsQxvXEfmZwBXex+aHXSGtJEvCoGQ09gpmaVGETiTHm3nenr+H3xY=
+	t=1755021691; cv=none; b=kVsZoL34aplGzB0UfaLuekNwXF8lKbtqiz60SfcbQBA3Up29fwgGT1atrEhIzZEyp6wCKMqlCOxgvpMczIqnZSYhyzPShVB96Af4XsVaUAo/J8C61QnASfF3t88zDXk5MR578J2XZ0YfMHSJmXiozNw/OJBurahapdKbLJ6KZuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020687; c=relaxed/simple;
-	bh=VYz0UpScIK9brFKBRZsOQsbxoSo3qyGTkSnik7KjksM=;
+	s=arc-20240116; t=1755021691; c=relaxed/simple;
+	bh=I9usJA+My72Ws5ApLUmgSA+Zhhc197hCqSAMogiJ8a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7MSQF1FCwd4kdrFUtaYsIyA2eXHkNZjeCD7QxXoCzTMpZxY08gZl6Xg/m455seCsVLzp7z5XNZ5aJofSEFExcV4LX9ePGeypljMzOg2XtIu1vq6Lws3Ch4PgRVozr3Oe4SnvgBPpMCz1RmnmLbpUkEB0xzH+Pti5+5TY+hVOP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNNZx2Z9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3C8C4CEF0;
-	Tue, 12 Aug 2025 17:44:46 +0000 (UTC)
+	 MIME-Version; b=rIoLeKyKMKwG5WZNSioQs9CNfoixTqVnAzxI1R+j9wHilZOBfGECEqXgr1LqLm7YacVCaeXDsg2/UEBVyQauMg4g1R4H5swm1G/eAXj/hndgTI1iVi9Ak8ATMvPzElmeWwCqo/LAM947+hUkskEhgXxJDbYAsqswFrkAwt2tCgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8KiUP7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B216DC4CEF0;
+	Tue, 12 Aug 2025 18:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020687;
-	bh=VYz0UpScIK9brFKBRZsOQsbxoSo3qyGTkSnik7KjksM=;
+	s=korg; t=1755021691;
+	bh=I9usJA+My72Ws5ApLUmgSA+Zhhc197hCqSAMogiJ8a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNNZx2Z9W7YnqPQz9fMtVNfJDOpeu6566NkWFIANrMp09T9KOeanT4vi+fG4a+ZMc
-	 rT9lyve8LL8N3j4qXmtUeY4ipXEQQ0fG64yeCJDjjhhWDtAYS71kGldXEZTslo21jH
-	 rO+CaaD+8XmzCk5Chk8CugVbVrO9BeQLpV7cuOrY=
+	b=V8KiUP7cNAMy27XJj2Eyfg1KxIjCEryivVe3ahAyh/6YWFQydTTDJaBDvGjSJAAId
+	 nMJIuiyvOgOYrlOkjbdcliuvKdEw8ri0Ix0tjc8algLn/+El/soV5BoJIn+EuWGSUE
+	 zMvOqYD+M/QCbqt2rggcy0CEK08+Yocf5kUbBfkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/253] perf sched: Fix memory leaks in perf sched latency
+Subject: [PATCH 6.6 153/262] crypto: qat - fix seq_file position update in adf_ring_next()
 Date: Tue, 12 Aug 2025 19:29:01 +0200
-Message-ID: <20250812172955.223667316@linuxfoundation.org>
+Message-ID: <20250812172959.615014506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit e68b1c0098b959cb88afce5c93dd6a9324e6da78 ]
+[ Upstream commit 6908c5f4f066a0412c3d9a6f543a09fa7d87824b ]
 
-The work_atoms should be freed after use.  Add free_work_atoms() to
-make sure to release all.  It should use list_splice_init() when merging
-atoms to prevent accessing invalid pointers.
+The `adf_ring_next()` function in the QAT debug transport interface
+fails to correctly update the position index when reaching the end of
+the ring elements. This triggers the following kernel warning when
+reading ring files, such as
+/sys/kernel/debug/qat_c6xx_<D:B:D:F>/transport/bank_00/ring_00:
 
-Fixes: b1ffe8f3e0c96f552 ("perf sched: Finish latency => atom rename and misc cleanups")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-8-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+   [27725.022965] seq_file: buggy .next function adf_ring_next [intel_qat] did not update position index
+
+Ensure that the `*pos` index is incremented before returning NULL when
+after the last element in the ring is found, satisfying the seq_file API
+requirements and preventing the warning.
+
+Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ drivers/crypto/intel/qat/qat_common/adf_transport_debug.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 244f9c6f61ae..3ffb41fa82b8 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -1125,6 +1125,21 @@ add_sched_in_event(struct work_atoms *atoms, u64 timestamp)
- 	atoms->nb_atoms++;
- }
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
+index e2dd568b87b5..621b5d3dfcef 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
+@@ -31,8 +31,10 @@ static void *adf_ring_next(struct seq_file *sfile, void *v, loff_t *pos)
+ 	struct adf_etr_ring_data *ring = sfile->private;
  
-+static void free_work_atoms(struct work_atoms *atoms)
-+{
-+	struct work_atom *atom, *tmp;
-+
-+	if (atoms == NULL)
-+		return;
-+
-+	list_for_each_entry_safe(atom, tmp, &atoms->work_list, list) {
-+		list_del(&atom->list);
-+		free(atom);
+ 	if (*pos >= (ADF_SIZE_TO_RING_SIZE_IN_BYTES(ring->ring_size) /
+-		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size)))
++		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size))) {
++		(*pos)++;
+ 		return NULL;
 +	}
-+	thread__zput(atoms->thread);
-+	free(atoms);
-+}
-+
- static int latency_switch_event(struct perf_sched *sched,
- 				struct evsel *evsel,
- 				struct perf_sample *sample,
-@@ -3180,13 +3195,13 @@ static void __merge_work_atoms(struct rb_root_cached *root, struct work_atoms *d
- 			this->total_runtime += data->total_runtime;
- 			this->nb_atoms += data->nb_atoms;
- 			this->total_lat += data->total_lat;
--			list_splice(&data->work_list, &this->work_list);
-+			list_splice_init(&data->work_list, &this->work_list);
- 			if (this->max_lat < data->max_lat) {
- 				this->max_lat = data->max_lat;
- 				this->max_lat_start = data->max_lat_start;
- 				this->max_lat_end = data->max_lat_end;
- 			}
--			zfree(&data);
-+			free_work_atoms(data);
- 			return;
- 		}
- 	}
-@@ -3265,7 +3280,6 @@ static int perf_sched__lat(struct perf_sched *sched)
- 		work_list = rb_entry(next, struct work_atoms, node);
- 		output_lat_thread(sched, work_list);
- 		next = rb_next(next);
--		thread__zput(work_list->thread);
- 	}
  
- 	printf(" -----------------------------------------------------------------------------------------------------------------\n");
-@@ -3279,6 +3293,13 @@ static int perf_sched__lat(struct perf_sched *sched)
- 
- 	rc = 0;
- 
-+	while ((next = rb_first_cached(&sched->sorted_atom_root))) {
-+		struct work_atoms *data;
-+
-+		data = rb_entry(next, struct work_atoms, node);
-+		rb_erase_cached(next, &sched->sorted_atom_root);
-+		free_work_atoms(data);
-+	}
- out_free_cpus_switch_event:
- 	free_cpus_switch_event(sched);
- 	return rc;
+ 	return ring->base_addr +
+ 		(ADF_MSG_SIZE_TO_BYTES(ring->msg_size) * (*pos)++);
 -- 
 2.39.5
 
