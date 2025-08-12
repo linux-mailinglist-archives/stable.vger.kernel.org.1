@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-168103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93E0B23371
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF74B23181
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89C551B60334
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B5167AA6AD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7FE2F291B;
-	Tue, 12 Aug 2025 18:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106B12F83B5;
+	Tue, 12 Aug 2025 18:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3WyPeAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qo2B7pJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A113F9D2;
-	Tue, 12 Aug 2025 18:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34041C8621;
+	Tue, 12 Aug 2025 18:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023055; cv=none; b=Afaorm68SHRQ96QFS/ArqU/ua5P0haOoTFPEKg49qjwZMCyHgS8Yl9LPLZ+rfWisk24CpWeixY8AwmvAUo/lgsMMazXduHdVMNGLEUAQtkmeT4p8brwD5eh4HsVmvNn3oVW7fHt2ZueEuX45C3U0mR8y+khaBT5/G1ULFrDRgFw=
+	t=1755021890; cv=none; b=IksbmsSjFEwPL9s4DMfALRWDyBo7006iZkihjp9beisR3NWEFEIT7dQD59M5oeQfi0Q0Pj0lrVGYtvYjt1fYyouM9kmNS/zsPTzO5IGLei98x/8zG2o6fE0zfhmGDtErohEy7jFD5IfQavicwBoYZAurJQOqhDdp0habX0rWzyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023055; c=relaxed/simple;
-	bh=bmLUoJo3qUmcFz7gcTTZhPs7xfjk+ZFwHGTc1/+bozQ=;
+	s=arc-20240116; t=1755021890; c=relaxed/simple;
+	bh=MNtNQ4ZxOEhFd5AxI8apyR20QuhRQ6+dUgXfoXklR0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBf7QlKCE0i3bG/poDVdchmStJ/brtoYMup+kORvfw54GbaOqMbXROauS5T3UMQm7Zm4Ff0fi8xiY6fyPDkReHgo9q3yAtM8gkT4+n2adSi2a7jhUIIgvfwvyJ1mnGb7K6kSb1jG0Wfe1hYA6yb7okYcQzr3TfRk1r1F6HPpUc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3WyPeAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374AFC4CEF0;
-	Tue, 12 Aug 2025 18:24:14 +0000 (UTC)
+	 MIME-Version; b=NzkooET/6jncg8y/hlQtrBWmQp8z8Q7kE1iuF9KZohDyHXDdW5RtoKO6jgK4VnfTbgCWfqynqntxPXSeW6B+H4ZvluFCoVsw6pb/VZqVBbjWuSzxA2rX0WHfd5JT1ZleeQR4hL/CniNaXlIzyafrpWD+0yt7/No1rDbHK5gTW9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qo2B7pJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328E2C4CEF0;
+	Tue, 12 Aug 2025 18:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023055;
-	bh=bmLUoJo3qUmcFz7gcTTZhPs7xfjk+ZFwHGTc1/+bozQ=;
+	s=korg; t=1755021890;
+	bh=MNtNQ4ZxOEhFd5AxI8apyR20QuhRQ6+dUgXfoXklR0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3WyPeAARqQs4q3lr8PAKXCurTN47e342KrrbH7CDZjTHeFQSA3d+gyWVvRlLr2eJ
-	 5M27xMGCcTsYa/DEvkOynebApbMOQ4YDWIkJRuWaKPhbKsHGoWemE2c4pX28y7DmSp
-	 y6NqzAbxgVrCDFIWGmVOYs5H5Uoe9fh7eGRWTY2U=
+	b=Qo2B7pJfECzZM/la0flz6qozANkjrYajnJxCInFd+m9ciGznBuHWab7w0B88mK/oh
+	 L0mn7RyubALMNT+QhEEox6VkRJTERm3i9sEnQZU1nk/j0dojkbgFGg463QBj4NzSlF
+	 W+BGs2e5nkzC3bR4A+lSj7MUN7rJQv49nKXcAwAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 319/369] smb: client: let recv_done() avoid touching data_transfer after cleanup/move
+Subject: [PATCH 6.6 228/262] pptp: fix pptp_xmit() error path
 Date: Tue, 12 Aug 2025 19:30:16 +0200
-Message-ID: <20250812173028.721934716@linuxfoundation.org>
+Message-ID: <20250812173002.865209671@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,82 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 24eff17887cb45c25a427e662dda352973c5c171 ]
+[ Upstream commit ae633388cae349886f1a3cfb27aa092854b24c1b ]
 
-Calling enqueue_reassembly() and wake_up_interruptible(&info->wait_reassembly_queue)
-or put_receive_buffer() means the response/data_transfer pointer might
-get re-used by another thread, which means these should be
-the last operations before calling return.
+I accidentally added a bug in pptp_xmit() that syzbot caught for us.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Only call ip_rt_put() if a route has been allocated.
+
+BUG: unable to handle page fault for address: ffffffffffffffdb
+PGD df3b067 P4D df3b067 PUD df3d067 PMD 0
+Oops: Oops: 0002 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6346 Comm: syz.0.336 Not tainted 6.16.0-next-20250804-syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:arch_atomic_add_return arch/x86/include/asm/atomic.h:85 [inline]
+RIP: 0010:raw_atomic_sub_return_release include/linux/atomic/atomic-arch-fallback.h:846 [inline]
+RIP: 0010:atomic_sub_return_release include/linux/atomic/atomic-instrumented.h:327 [inline]
+RIP: 0010:__rcuref_put include/linux/rcuref.h:109 [inline]
+RIP: 0010:rcuref_put+0x172/0x210 include/linux/rcuref.h:173
+Call Trace:
+ <TASK>
+ dst_release+0x24/0x1b0 net/core/dst.c:167
+ ip_rt_put include/net/route.h:285 [inline]
+ pptp_xmit+0x14b/0x1a90 drivers/net/ppp/pptp.c:267
+ __ppp_channel_push+0xf2/0x1c0 drivers/net/ppp/ppp_generic.c:2166
+ ppp_channel_push+0x123/0x660 drivers/net/ppp/ppp_generic.c:2198
+ ppp_write+0x2b0/0x400 drivers/net/ppp/ppp_generic.c:544
+ vfs_write+0x27b/0xb30 fs/read_write.c:684
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: de9c4861fb42 ("pptp: ensure minimal skb length in pptp_xmit()")
+Reported-by: syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/689095a5.050a0220.1fc43d.0009.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250807142146.2877060-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/net/ppp/pptp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index d26b8cef82d6..47f2a6cc1c0c 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -479,10 +479,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		data_transfer = smbd_response_payload(response);
- 		data_length = le32_to_cpu(data_transfer->data_length);
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index 4455d99be767..3a10303eb756 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -159,17 +159,17 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	int len;
+ 	unsigned char *data;
+ 	__u32 seq_recv;
+-	struct rtable *rt = NULL;
++	struct rtable *rt;
+ 	struct net_device *tdev;
+ 	struct iphdr  *iph;
+ 	int    max_headroom;
  
--		/*
--		 * If this is a packet with data playload place the data in
--		 * reassembly queue and wake up the reading thread
--		 */
- 		if (data_length) {
- 			if (info->full_packet_received)
- 				response->first_segment = true;
-@@ -491,16 +487,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 				info->full_packet_received = false;
- 			else
- 				info->full_packet_received = true;
--
--			enqueue_reassembly(
--				info,
--				response,
--				data_length);
--		} else
--			put_receive_buffer(info, response);
--
--		if (data_length)
--			wake_up_interruptible(&info->wait_reassembly_queue);
-+		}
+ 	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
+-		goto tx_error;
++		goto tx_drop;
  
- 		atomic_dec(&info->receive_credits);
- 		info->receive_credit_target =
-@@ -528,6 +515,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			info->keep_alive_requested = KEEP_ALIVE_PENDING;
- 		}
+ 	rt = pptp_route_output(po, &fl4);
+ 	if (IS_ERR(rt))
+-		goto tx_error;
++		goto tx_drop;
  
-+		/*
-+		 * If this is a packet with data playload place the data in
-+		 * reassembly queue and wake up the reading thread
-+		 */
-+		if (data_length) {
-+			enqueue_reassembly(info, response, data_length);
-+			wake_up_interruptible(&info->wait_reassembly_queue);
-+		} else
-+			put_receive_buffer(info, response);
-+
- 		return;
- 	}
+ 	tdev = rt->dst.dev;
  
+@@ -265,6 +265,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 
+ tx_error:
+ 	ip_rt_put(rt);
++tx_drop:
+ 	kfree_skb(skb);
+ 	return 1;
+ }
 -- 
 2.39.5
 
