@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-168427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A07B2351C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7736AB231A1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7CC6E5ED9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B77DF1760CF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F682FD1AD;
-	Tue, 12 Aug 2025 18:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B165820409A;
+	Tue, 12 Aug 2025 18:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnBTRLjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQt7tkf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CB62FFDC4;
-	Tue, 12 Aug 2025 18:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703352E3B06;
+	Tue, 12 Aug 2025 18:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024132; cv=none; b=iN7wPDC3DZ202Y2KXqnt2b4UWB0X+bJBHMk0emK1H2J5WRt/idN1OQY9vXzT1QER3ma0j32soDxRHroo6ZPN8e4Aeo790Wb3ajKNt9py+Pbq/WZ/z1Li/GbfyyhcpfP0sjfKr+zyEal8d3SCxQGW3teFsauxIYgp1fMAtWz/Q5s=
+	t=1755021769; cv=none; b=NBH0fYS0xMEILggrmMrZnC1maHvOx+vY9hCOr8hyV454iAsJupn0afSBRh1J2EFOTN/I4it94TGMHuphZQX+3XViVfkHeyTbrH2kC9FFOdFXSHHgUWcpy5usbp/ZNj+Q8+zOpzf6dcHJ2V0xU6THhKLp/qCnfJwszi+R4jSum6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024132; c=relaxed/simple;
-	bh=4tt3ChfpQ6VYC1uqaQGcMr5T9DBIhrmdRPSeSUtrEk8=;
+	s=arc-20240116; t=1755021769; c=relaxed/simple;
+	bh=VS4tWZk0tS6aBa3lA9h2+Vu9v03nj25OpDwHyqsjHXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilk/OX6jw8TWNDfh+l7d0axQ0VOQ2TsIeHJLsL6FEMMf4kWqs0BtMw/cBt5RMRAzDEgQs4Cry6ACOFCecXeiKGwROJzkN16DMvWKn9ezxoqBzAryT8lr06RenZFKE249/CqmdoJ3ndIaRHUQk1nCgioQd8uNca6pODQIyz7+pW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnBTRLjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C3EC4CEF0;
-	Tue, 12 Aug 2025 18:42:11 +0000 (UTC)
+	 MIME-Version; b=JseDUL9BBh7zhSU22Gj4ffwra7QSaWrVR/8iqh1r9I3Dr3anxE3DjKppmjRXMwvNaIdNSbq3XfqpqZ6NySnUaQh1d1mnxz+1p7z1zau1uyiZ73dke/7D3OIXZJdxP+qkwNiaIkMY783dlfdu3S8j0u4vBBs+xydpKYrP86Xec6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQt7tkf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871EFC4CEF0;
+	Tue, 12 Aug 2025 18:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024131;
-	bh=4tt3ChfpQ6VYC1uqaQGcMr5T9DBIhrmdRPSeSUtrEk8=;
+	s=korg; t=1755021769;
+	bh=VS4tWZk0tS6aBa3lA9h2+Vu9v03nj25OpDwHyqsjHXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnBTRLjvojaRFWnN1KzlH6IcmjHwSO8D58GVq/sUzprrhCc+RxBKhqOjBm1HHsqhq
-	 smfUAVPJ8db0PeVNa+VExaa3UuAZXz/kzRhSJPKPfd1jSVdtDEMb+A/Skoy7wXmnLz
-	 LlD7aoELt4tT+HlU+7dLwVwexnEI9wmo4KIE1Jac=
+	b=dQt7tkf9eK5L6E4K7JiMlp5OptgmqhCeZGb1VW31XzRxPdji1B5rvi9D8lJSAcCzU
+	 oXYrN/B6CAi7ULqOweBU0sKKgF0NqadfD5fHRjWQs3gyN/DvtJB1Pfs9IjhCgh5Bn8
+	 9lJl6JM8zlZEssZ9f6Im9ubuH/y56pEbqK6POePI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Shannon Nelson <sln@onemain.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 284/627] selftests: rtnetlink.sh: remove esp4_offload after test
-Date: Tue, 12 Aug 2025 19:29:39 +0200
-Message-ID: <20250812173430.119494927@linuxfoundation.org>
+Subject: [PATCH 6.6 192/262] PCI: pnv_php: Work around switches with broken presence detection
+Date: Tue, 12 Aug 2025 19:29:40 +0200
+Message-ID: <20250812173001.305695634@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiumei Mu <xmu@redhat.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 5b32321fdaf3fd1a92ec726af18765e225b0ee2b ]
+[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
 
-The esp4_offload module, loaded during IPsec offload tests, should
-be reset to its default settings after testing.
-Otherwise, leaving it enabled could unintentionally affect subsequence
-test cases by keeping offload active.
+The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
+was observed to incorrectly assert the Presence Detect Set bit in its
+capabilities when tested on a Raptor Computing Systems Blackbird system,
+resulting in the hot insert path never attempting a rescan of the bus
+and any downstream devices not being re-detected.
 
-Without this fix:
-$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
-PASS: ipsec_offload
-esp4_offload           12288  0
-esp4                   32768  1 esp4_offload
+Work around this by additionally checking whether the PCIe data link is
+active or not when performing presence detection on downstream switches'
+ports, similar to the pciehp_hpc.c driver.
 
-With this fix:
-$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
-PASS: ipsec_offload
-
-Fixes: 2766a11161cc ("selftests: rtnetlink: add ipsec offload API test")
-Signed-off-by: Xiumei Mu <xmu@redhat.com>
-Reviewed-by: Shannon Nelson <sln@onemain.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/6d3a1d777c4de4eb0ca94ced9e77be8d48c5b12f.1753415428.git.xmu@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/rtnetlink.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
-index 2e8243a65b50..d2298da320a6 100755
---- a/tools/testing/selftests/net/rtnetlink.sh
-+++ b/tools/testing/selftests/net/rtnetlink.sh
-@@ -673,6 +673,11 @@ kci_test_ipsec_offload()
- 	sysfsf=$sysfsd/ipsec
- 	sysfsnet=/sys/bus/netdevsim/devices/netdevsim0/net/
- 	probed=false
-+	esp4_offload_probed_default=false
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 6989b8a0dc6b..d37faa53bcd8 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -390,6 +390,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
+ 	return 0;
+ }
+ 
++static int pcie_check_link_active(struct pci_dev *pdev)
++{
++	u16 lnk_status;
++	int ret;
 +
-+	if lsmod | grep -q esp4_offload; then
-+		esp4_offload_probed_default=true
-+	fi
- 
- 	if ! mount | grep -q debugfs; then
- 		mount -t debugfs none /sys/kernel/debug/ &> /dev/null
-@@ -766,6 +771,7 @@ EOF
- 	fi
- 
- 	# clean up any leftovers
-+	! "$esp4_offload_probed_default" && lsmod | grep -q esp4_offload && rmmod esp4_offload
- 	echo 0 > /sys/bus/netdevsim/del_device
- 	$probed && rmmod netdevsim
- 
++	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
++	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
++		return -ENODEV;
++
++	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
++
++	return ret;
++}
++
+ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ {
+ 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
+@@ -402,6 +416,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ 	 */
+ 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
+ 	if (ret >= 0) {
++		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
++			presence == OPAL_PCI_SLOT_EMPTY) {
++			/*
++			 * Similar to pciehp_hpc, check whether the Link Active
++			 * bit is set to account for broken downstream bridges
++			 * that don't properly assert Presence Detect State, as
++			 * was observed on the Microsemi Switchtec PM8533 PFX
++			 * [11f8:8533].
++			 */
++			if (pcie_check_link_active(php_slot->pdev) > 0)
++				presence = OPAL_PCI_SLOT_PRESENT;
++		}
++
+ 		*state = presence;
+ 		ret = 0;
+ 	} else {
 -- 
 2.39.5
 
