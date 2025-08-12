@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D3EB23072
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38679B23288
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB41565770
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E2F268757C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DB52FDC55;
-	Tue, 12 Aug 2025 17:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8BB2F5E;
+	Tue, 12 Aug 2025 18:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TooewLlf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wI575v/x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BA62868AF;
-	Tue, 12 Aug 2025 17:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4572E285E;
+	Tue, 12 Aug 2025 18:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021095; cv=none; b=YGh2CyffOPQAR2bYSlgErjqUWWBtTKFldoEpkM3Ri9+aCAROlhrDERsd1oSodwCVUjOuQ+09LkBFP9GFxpKxRam+jm1KS0lqA0xSuoR6y3fYHVClPLDO8v8N4GiBRkXF5UEoNbooP5x1WlOwb1EJKaGvAjRYqkW1BCbJeuaE9EY=
+	t=1755022425; cv=none; b=nlX6TupsR0H3EF49WdYWJCmhoMFtWjsvw1S1o6ASfemryDOAz0WF07o7+2hClTXwwX8XDbOstrlsAvPbwpxZwjHWf+SdC8P6uZXypQ+5cTirMlphwJnwhanKiCiI6THNuvMcjCdxl/sFOMzUhXnRJeNLyw0jNU6ALBcGphhidfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021095; c=relaxed/simple;
-	bh=98wHyz+mvFXTOm+I+3lbO4eOY5Y1hlklNMCVR0/LQH0=;
+	s=arc-20240116; t=1755022425; c=relaxed/simple;
+	bh=kT6iuwzzeIoNjsuktMt75ZdAAZlEvBv2pJo/rJT3IvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGDkfVKsEXdMHmq3Mol/VBRpcGklnE9AW9+p5ueNT4VF7C464yamoc25Iq860AR1QZpEI90jBholOB8Eqzrk/fImBRx2dEf2rusl492zrly7r7bXfsX9Ag8sNR9XL2dWGCYaVjErNeRwEeRFjDBYj0xlCDEyY9HKj0TshizWXSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TooewLlf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F085CC4CEF1;
-	Tue, 12 Aug 2025 17:51:34 +0000 (UTC)
+	 MIME-Version; b=B9mbBDh1wLAjPpbl5NFsV0mcftWbOaUESfsckG8/uSx0eZtfK5kBu0Vjpi5Isccgy7XAVrKJep6w5IeRE/6LDVtheBWP3jknNb1R9q731NJcMONoUXQw0DT289PuuLaG++Nl9j3SoreXqxgc8zR/FRwKZ1J1FCrVUIYhLDUgVPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wI575v/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD68C4CEF1;
+	Tue, 12 Aug 2025 18:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021095;
-	bh=98wHyz+mvFXTOm+I+3lbO4eOY5Y1hlklNMCVR0/LQH0=;
+	s=korg; t=1755022425;
+	bh=kT6iuwzzeIoNjsuktMt75ZdAAZlEvBv2pJo/rJT3IvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TooewLlfe1/muk3BkEkhM5jpIe4bimIF7Z+Dj4XjZk2I83KLXzfZTsq7adEwXSlEf
-	 vds4xJ/ihk4kIgapO6MECY7C4BJf97lNldm8Cst3/AqZDh6eZMENCTDGVOkTG9Rjdn
-	 VLAUWzi6LTQRuSsrFIuTIG5/P0bjq1uupuH4J18k=
+	b=wI575v/xwSCBPI3ua8/l64veb8hXyjV29MYYEO8L9oI40QT5q3ZxRFbSFy8X/9ykk
+	 qU41q1wmhoHB3FbpMqgXXPFU7sb7oFDeniovcHPgd9T4u6DB/0JyT0FLM84Bj1+aXE
+	 Fw5vq+MR6wccIyR5yYkn7hf19+H8NHT+EGI5AVRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"xin.guo" <guoxin0309@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/262] tcp: fix tcp_ofo_queue() to avoid including too much DUP SACK range
+Subject: [PATCH 6.12 152/369] fortify: Fix incorrect reporting of read buffer size
 Date: Tue, 12 Aug 2025 19:27:29 +0200
-Message-ID: <20250812172955.586844297@linuxfoundation.org>
+Message-ID: <20250812173020.497353708@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xin.guo <guoxin0309@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit a041f70e573e185d5d5fdbba53f0db2fbe7257ad ]
+[ Upstream commit 94fd44648dae2a5b6149a41faa0b07928c3e1963 ]
 
-If the new coming segment covers more than one skbs in the ofo queue,
-and which seq is equal to rcv_nxt, then the sequence range
-that is duplicated will be sent as DUP SACK, the detail as below,
-in step6, the {501,2001} range is clearly including too much
-DUP SACK range, in violation of RFC 2883 rules.
+When FORTIFY_SOURCE reports about a run-time buffer overread, the wrong
+buffer size was being shown in the error message. (The bounds checking
+was correct.)
 
-1. client > server: Flags [.], seq 501:1001, ack 1325288529, win 20000, length 500
-2. server > client: Flags [.], ack 1, [nop,nop,sack 1 {501:1001}], length 0
-3. client > server: Flags [.], seq 1501:2001, ack 1325288529, win 20000, length 500
-4. server > client: Flags [.], ack 1, [nop,nop,sack 2 {1501:2001} {501:1001}], length 0
-5. client > server: Flags [.], seq 1:2001, ack 1325288529, win 20000, length 2000
-6. server > client: Flags [.], ack 2001, [nop,nop,sack 1 {501:2001}], length 0
-
-After this fix, the final ACK is as below:
-
-6. server > client: Flags [.], ack 2001, options [nop,nop,sack 1 {501:1001}], length 0
-
-[edumazet] added a new packetdrill test in the following patch.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: xin.guo <guoxin0309@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250626123420.1933835-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3d965b33e40d ("fortify: Improve buffer overflow reporting")
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20250729231817.work.023-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/fortify-string.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index f7b95bc8ad60..8520c43726e2 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4872,8 +4872,9 @@ static void tcp_ofo_queue(struct sock *sk)
+diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
+index 0d99bf11d260..71f9dcf56128 100644
+--- a/include/linux/fortify-string.h
++++ b/include/linux/fortify-string.h
+@@ -596,7 +596,7 @@ __FORTIFY_INLINE bool fortify_memcpy_chk(__kernel_size_t size,
+ 	if (p_size != SIZE_MAX && p_size < size)
+ 		fortify_panic(func, FORTIFY_WRITE, p_size, size, true);
+ 	else if (q_size != SIZE_MAX && q_size < size)
+-		fortify_panic(func, FORTIFY_READ, p_size, size, true);
++		fortify_panic(func, FORTIFY_READ, q_size, size, true);
  
- 		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
- 			__u32 dsack = dsack_high;
-+
- 			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))
--				dsack_high = TCP_SKB_CB(skb)->end_seq;
-+				dsack = TCP_SKB_CB(skb)->end_seq;
- 			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
- 		}
- 		p = rb_next(p);
+ 	/*
+ 	 * Warn when writing beyond destination field size.
 -- 
 2.39.5
 
