@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D28B23350
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDBBB2303D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D908E189BB1E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7006A4E32E2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258DD2FA0DF;
-	Tue, 12 Aug 2025 18:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DB52F7449;
+	Tue, 12 Aug 2025 17:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aqdqc3IY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftTr0uVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CD22DFA3E;
-	Tue, 12 Aug 2025 18:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB15221FAC;
+	Tue, 12 Aug 2025 17:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022926; cv=none; b=nsuPSJnBwFnSfVE26EgN+CSkZcpQos5mqKAsiZViGJR7zwTeGh5NGKFjuqosn4INsRA4uLDsW2CAZVWOxwXl+M1aq+MhtClCtoR9/FsCDnALGd589B+nGcaBVHoVYOTJ45VERL2QdcimJNuvqdmvHYL0CvwLWChHSQssxxcTBPo=
+	t=1755020958; cv=none; b=flD7LsYGf1O1m1ZYeK3UUObnAGT1dr1DKARjPe0rAHURe0MUl/5ewATRu5l9PoYQ8X1uHABIlY2UYHLjzuV6MYckIs+/6qacxNsW6n3bsHAwTno6EolX8Utzks11t3okKn6lvQhWO/AlNjyChDl8y+LK8nWt7OjKHtjyDRM4mNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022926; c=relaxed/simple;
-	bh=ctovTAIE7IkEIsRC3YmaFPmyigl81iPacyuyjjcs+Jc=;
+	s=arc-20240116; t=1755020958; c=relaxed/simple;
+	bh=7MJf73FmpiYvPbqVa9wLbkE8fLjyJ8otz/i+gSzmAGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RADuH0LRQtkX4tg1H5b7Z1puroPlKE+uvihLiTkn9r3FnhBwfiN9mQ5W040eACa3xzs69Si1x+vEndcSOqE4RHpyJEE7RAVRWPQ4S/nouKgUVYXfXlAJ/nA+G0SskfFz9P9wdUBmCeRIZC191tAL1SYBU5I82u69d57QnEuDUaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aqdqc3IY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4898FC4CEF0;
-	Tue, 12 Aug 2025 18:22:06 +0000 (UTC)
+	 MIME-Version; b=MRORjbB846HkcHIXeWGrZsS+BAqEVXsmMt2QFnFYKbMe8phIjFrmvtlSP/Uo92eLzBlOA2ZLcZbugAAEMCY1EcyJCBlqYAi0AX/5SIZ9bzaDgdbz+4zRX+rh6gLpjMSm3A1hFZKMZ15c1bfh5NLSPrmBmkVm+pQdUVlFovc6OKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftTr0uVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1A3C4CEF0;
+	Tue, 12 Aug 2025 17:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022926;
-	bh=ctovTAIE7IkEIsRC3YmaFPmyigl81iPacyuyjjcs+Jc=;
+	s=korg; t=1755020958;
+	bh=7MJf73FmpiYvPbqVa9wLbkE8fLjyJ8otz/i+gSzmAGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aqdqc3IYJvxDaKYgwpeUEihdJEj0LJ1wYnKFa0peQxcyoH52ee6xMlllhJMorvHEV
-	 VjPWGGe85mYU0tMAYwLjyof+tsi76MLM5/3MJtn65cq1f0FOIz7ND22MB9iSTSgB8c
-	 tZuUabrKoitgEWBjdPwv7KHnlmFpBfMiREKKZMZs=
+	b=ftTr0uVsUKDM7f7WI7WZs7CkmtakckZ3exBkSzQr20s0CYQtUz+9PNwDQ00kv08r+
+	 JqMFQjfSEBbdvbIE5wxcTmU9++ePSI4yhpqGYzFGZS92Tr97T563X0zC57JwnW34Jb
+	 KJE6L4yZP+f7bCD3W48+qTAWRUoaNdRyJFLPsOGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhangjian <zhangjian496@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Abinash Singh <abinashsinghlalotra@gmail.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 283/369] NFS: Fix filehandle bounds checking in nfs_fh_to_dentry()
+Subject: [PATCH 6.1 192/253] f2fs: fix KMSAN uninit-value in extent_info usage
 Date: Tue, 12 Aug 2025 19:29:40 +0200
-Message-ID: <20250812173027.294414955@linuxfoundation.org>
+Message-ID: <20250812172956.969296234@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Abinash Singh <abinashlalotra@gmail.com>
 
-[ Upstream commit ef93a685e01a281b5e2a25ce4e3428cf9371a205 ]
+[ Upstream commit 154467f4ad033473e5c903a03e7b9bca7df9a0fa ]
 
-The function needs to check the minimal filehandle length before it can
-access the embedded filehandle.
+KMSAN reported a use of uninitialized value in `__is_extent_mergeable()`
+ and `__is_back_mergeable()` via the read extent tree path.
 
-Reported-by: zhangjian <zhangjian496@huawei.com>
-Fixes: 20fa19027286 ("nfs: add export operations")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+The root cause is that `get_read_extent_info()` only initializes three
+fields (`fofs`, `blk`, `len`) of `struct extent_info`, leaving the
+remaining fields uninitialized. This leads to undefined behavior
+when those fields are accessed later, especially during
+extent merging.
+
+Fix it by zero-initializing the `extent_info` struct before population.
+
+Reported-by: syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b8c1d60e95df65e827d4
+Fixes: 94afd6d6e525 ("f2fs: extent cache: support unaligned extent")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Abinash Singh <abinashsinghlalotra@gmail.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/export.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/f2fs/extent_cache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/export.c b/fs/nfs/export.c
-index be686b8e0c54..aeb17adcb2b6 100644
---- a/fs/nfs/export.c
-+++ b/fs/nfs/export.c
-@@ -66,14 +66,21 @@ nfs_fh_to_dentry(struct super_block *sb, struct fid *fid,
- {
- 	struct nfs_fattr *fattr = NULL;
- 	struct nfs_fh *server_fh = nfs_exp_embedfh(fid->raw);
--	size_t fh_size = offsetof(struct nfs_fh, data) + server_fh->size;
-+	size_t fh_size = offsetof(struct nfs_fh, data);
- 	const struct nfs_rpc_ops *rpc_ops;
- 	struct dentry *dentry;
- 	struct inode *inode;
--	int len = EMBED_FH_OFF + XDR_QUADLEN(fh_size);
-+	int len = EMBED_FH_OFF;
- 	u32 *p = fid->raw;
- 	int ret;
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index f13143efc4b1..a5c63c7da299 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -440,7 +440,7 @@ void f2fs_init_read_extent_tree(struct inode *inode, struct page *ipage)
+ 	struct f2fs_extent *i_ext = &F2FS_INODE(ipage)->i_ext;
+ 	struct extent_tree *et;
+ 	struct extent_node *en;
+-	struct extent_info ei;
++	struct extent_info ei = {0};
  
-+	/* Initial check of bounds */
-+	if (fh_len < len + XDR_QUADLEN(fh_size) ||
-+	    fh_len > XDR_QUADLEN(NFS_MAXFHSIZE))
-+		return NULL;
-+	/* Calculate embedded filehandle size */
-+	fh_size += server_fh->size;
-+	len += XDR_QUADLEN(fh_size);
- 	/* NULL translates to ESTALE */
- 	if (fh_len < len || fh_type != len)
- 		return NULL;
+ 	if (!__may_extent_tree(inode, EX_READ)) {
+ 		/* drop largest read extent */
 -- 
 2.39.5
 
