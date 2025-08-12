@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6DDB23361
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC6CB23209
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE3067A1479
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334A53AE30F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771662FDC30;
-	Tue, 12 Aug 2025 18:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2631EF38C;
+	Tue, 12 Aug 2025 18:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znr00gBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJi4bgLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3511A21ABD0;
-	Tue, 12 Aug 2025 18:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9708C18FC91;
+	Tue, 12 Aug 2025 18:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023294; cv=none; b=Me5ne9h+TRX6woGnGbhjKT4lbPqAs045x+x9LtgeONYznVYbO+ppHrz4bXULBfyam6OBGRwTGxomq3BkRDFfK8o/zvYlaRF1p9senovxmhsKCKQrzAr7WaMi4RKgjmeJu6IMJs3i0CcAIt7mME76Upol7jcOo70Cyj5S/j3kph8=
+	t=1755022148; cv=none; b=su2T5EnOQ7JytX/Y6O98LBnWOq/1JC18nLymciWyYtyDhp0RTXYozjPaxUSTBkMOI068oyjt0O2dAM3uoIOefHdawDtmyWU4yN+DesdHow5MmtJbGAYiox6+5ol4WkJofZNQG5bCKAmDh0Fn88qRP4fy/rwdCW/hlN04BfEn/Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023294; c=relaxed/simple;
-	bh=Te8E0tYO6L218D1RLiC8C3oIXIJlpkmSVY5MgT3om0Q=;
+	s=arc-20240116; t=1755022148; c=relaxed/simple;
+	bh=bJBTfyDhzyW4FpBoagvAoxRnIvRIYTa7Con22ehus6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUvngA/QzH2yUyInwgvVjcTdFOy6XhdcO23EvlvqohlioPAdg+su3TmLhP3k05WTSmNii9wBsO8ECRNamAjZ/61y3nNNJhwYdfn0JA8WFmh4rFgWNDTTMxjU3P0x3v6QGlgvgo/Fk6g7IHNdCBXqNPo3IEL2KWddZyzJSbieQ8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znr00gBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9712BC4CEF1;
-	Tue, 12 Aug 2025 18:28:13 +0000 (UTC)
+	 MIME-Version; b=NL4z8q/hhsSfx/Yocdc2oK1cjmM07nudAM270OXa/qCIrQulOpJuVv7hKdQxnd8aHQBN70gPb5RbQfilQLzh+qJeDsfs1fObH4xoemBxCL8rtagCPO/oGlcUy87vcObvssvjrtnxfhj8kky9anmA3CLmv9BbZz/v0yo5zGtEbdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJi4bgLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63D0C4CEF9;
+	Tue, 12 Aug 2025 18:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023294;
-	bh=Te8E0tYO6L218D1RLiC8C3oIXIJlpkmSVY5MgT3om0Q=;
+	s=korg; t=1755022148;
+	bh=bJBTfyDhzyW4FpBoagvAoxRnIvRIYTa7Con22ehus6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znr00gBZYLT9H3AswdFK9tzwUE/rBPWwLq2reAiOsn9IjmpMzWqNaZI6vrxqavGAY
-	 p/6gr5t4aecKb/Ykz8T/3KuzTLgTRBVBl3LIFbYebgBFkPREr167HRXoEGZXr29ihX
-	 FKl09NKnm4tv0ocZhhXMucYWfJFV67s1Gpc2Tmmw=
+	b=kJi4bgLeobLdevo2fGKUreaRgvQUH5Q1tekhtUnrxKZnd5MV5skhTRVUZ+59QWK86
+	 pfeKa6rW/CeNkmAysmPPgBSGMMEVxPD2Ckal7mESUsuCU4z00zoN4f+4Z4lXu/0sTg
+	 l5VtNGgRZb6Q/SMbDt/ybsT7r1iEymoGpwdwH0js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 038/627] arm64: dts: freescale: imx93-tqma9352: Limit BUCK2 to 600mV
+Subject: [PATCH 6.12 036/369] usb: typec: ucsi: yoga-c630: fix error and remove paths
 Date: Tue, 12 Aug 2025 19:25:33 +0200
-Message-ID: <20250812173420.782007829@linuxfoundation.org>
+Message-ID: <20250812173016.115565834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 696a4c325fad8af95da6a9d797766d1613831622 ]
+[ Upstream commit 168c3896f32e78e7b87f6aa9e85af36e47a9f96c ]
 
-TQMa9352 is only using LPDDR4X, so the BUCK2 regulator should be fixed
-at 600MV.
+Fix memory leak and call ucsi_destroy() from the driver's remove
+function and probe's error path in order to remove debugfs files and
+free the memory. Also call yoga_c630_ec_unregister_notify() in the
+probe's error path.
 
-Fixes: d2858e6bd36c ("arm64: dts: freescale: imx93-tqma9352: Add PMIC node")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 2ea6d07efe53 ("usb: typec: ucsi: add Lenovo Yoga C630 glue driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250621-c630-ucsi-v1-1-a86de5e11361@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_yoga_c630.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-index 2cabdae24227..09385b058664 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
- /*
-- * Copyright (c) 2022 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * Copyright (c) 2022-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
-  * D-82229 Seefeld, Germany.
-  * Author: Markus Niebel
-  */
-@@ -110,11 +110,11 @@ buck1: BUCK1 {
- 				regulator-ramp-delay = <3125>;
- 			};
+diff --git a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
+index 40e5da4fd2a4..080b6369a88c 100644
+--- a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
++++ b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
+@@ -133,17 +133,30 @@ static int yoga_c630_ucsi_probe(struct auxiliary_device *adev,
  
--			/* V_DDRQ - 1.1 LPDDR4 or 0.6 LPDDR4X */
-+			/* V_DDRQ - 0.6 V for LPDDR4X */
- 			buck2: BUCK2 {
- 				regulator-name = "BUCK2";
- 				regulator-min-microvolt = <600000>;
--				regulator-max-microvolt = <1100000>;
-+				regulator-max-microvolt = <600000>;
- 				regulator-boot-on;
- 				regulator-always-on;
- 				regulator-ramp-delay = <3125>;
+ 	ret = yoga_c630_ec_register_notify(ec, &uec->nb);
+ 	if (ret)
+-		return ret;
++		goto err_destroy;
++
++	ret = ucsi_register(uec->ucsi);
++	if (ret)
++		goto err_unregister;
++
++	return 0;
+ 
+-	return ucsi_register(uec->ucsi);
++err_unregister:
++	yoga_c630_ec_unregister_notify(uec->ec, &uec->nb);
++
++err_destroy:
++	ucsi_destroy(uec->ucsi);
++
++	return ret;
+ }
+ 
+ static void yoga_c630_ucsi_remove(struct auxiliary_device *adev)
+ {
+ 	struct yoga_c630_ucsi *uec = auxiliary_get_drvdata(adev);
+ 
+-	yoga_c630_ec_unregister_notify(uec->ec, &uec->nb);
+ 	ucsi_unregister(uec->ucsi);
++	yoga_c630_ec_unregister_notify(uec->ec, &uec->nb);
++	ucsi_destroy(uec->ucsi);
+ }
+ 
+ static const struct auxiliary_device_id yoga_c630_ucsi_id_table[] = {
 -- 
 2.39.5
 
