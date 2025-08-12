@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE11B22FB9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550DDB23064
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C1961AA0CF0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95E51686069
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F18D2FDC31;
-	Tue, 12 Aug 2025 17:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAD42F8BE7;
+	Tue, 12 Aug 2025 17:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttW1ymK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpmxr//r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC852FA0FD;
-	Tue, 12 Aug 2025 17:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6405268C73;
+	Tue, 12 Aug 2025 17:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020495; cv=none; b=gkddr1iYfcu6ywM+AUXrVfS7UoWS7C6PDy1O5HhHgv1yn25rlfWk5/ytFncmNDZwnmWKmSoadGBBPV/QXHqNwx3rgE4lJFhHyIG5mpD8WkxgOySP64Pj2gaq5AStzFbzQPheU9hfDIdCQ+OQ/cs5SqNI9vwUDFzKdlilKduRCXo=
+	t=1755021112; cv=none; b=MbEl8fGLhWzsFAdKBOwVDd671Yh3DaDzslyqchy+pOr5G6fqbp08hG9/H9t+B8A9X/7SqlyLJQSB3Oc/uGUrleSoSYvH7XMdJlJfI/2f+zddVLoN+Roa/08lWNKe4Br8uitlG6lT7AqePMmgggZvM37ZuICBmNNTq6kjPPM5D2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020495; c=relaxed/simple;
-	bh=mQQRcfFVy8TEr9ouEiF5jJHnTe+Ubca4bQcSmv6hmCE=;
+	s=arc-20240116; t=1755021112; c=relaxed/simple;
+	bh=TxE9UeQhmfJyFG0uhkZqseaCQaDbdPs6yOyK5wOcIgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGupRXOFKuWjh6uRY69YiBzmcnlVONrjh+hfiRJz1f+yFg9rFlpfmfFCRcN7oktE6lrDWlIzI0jns6QHrrf0GDIKxqpn1Ww2NiY1DovJxEG1kclp71RtDjxE0p5xHwD0eXN6RJ37yJSDusFNFXPREW9MwsVCNmbccbbnPQIGuCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttW1ymK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F07C4CEF0;
-	Tue, 12 Aug 2025 17:41:34 +0000 (UTC)
+	 MIME-Version; b=gv5BrvYvL0Mz97thNdJxyOyQ5Yq7pdqY/+MTzoOBJcyq6cAUbvRnznMuh96oLiJxEX7Kd82HZFVlPj3Ef4eeC0uBx0Khbkvm0QFFdSYyNCMpa2vyoc99+Lv1uFJArkXdt2qkhH6b9t72TX8+oH3knsfJq22an6ZiojJ/m3k88bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpmxr//r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530E5C4CEF0;
+	Tue, 12 Aug 2025 17:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020495;
-	bh=mQQRcfFVy8TEr9ouEiF5jJHnTe+Ubca4bQcSmv6hmCE=;
+	s=korg; t=1755021111;
+	bh=TxE9UeQhmfJyFG0uhkZqseaCQaDbdPs6yOyK5wOcIgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttW1ymK6+0VvNdw4iiWhidasdXDYWf2dBRjSnZ7/3XnWBZdSgrtnjvUqZzStKgn9O
-	 vdAa0X/i85aF57BNQicuV1I9DpiTu7YvFnmgpmAJFDWqg3bjrAEUNL1LK0PuP0PILn
-	 CoPomUrNhn8RAhvlV3HmfW0fhN2ElrdL74Z/48W4=
+	b=zpmxr//r5MM9eEQk7rt6wHV2KBC5RHBSRseC+LIe7oNDrXr8f7e0tgVDQhyfHe4M5
+	 ExV9bDRsTRu+HCrMFDzRXA2ASDVuPp9kw5MW3MCX85iECqfHIO27hrDCdrZMv2ofeo
+	 VduhIJTqmCJwX37kg+v4y0ClMHN9PjcqHnNGsNfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/253] ASoC: Intel: fix SND_SOC_SOF dependencies
+Subject: [PATCH 6.6 063/262] net: dst: annotate data-races around dst->input
 Date: Tue, 12 Aug 2025 19:27:31 +0200
-Message-ID: <20250812172951.407668752@linuxfoundation.org>
+Message-ID: <20250812172955.670642353@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e837b59f8b411b5baf5e3de7a5aea10b1c545a63 ]
+[ Upstream commit f1c5fd34891a1c242885f48c2e4dc52df180f311 ]
 
-It is currently possible to configure a kernel with all Intel SoC
-configs as loadable modules, but the board config as built-in. This
-causes a link failure in the reference to the snd_soc_sof.ko module:
+dst_dev_put() can overwrite dst->input while other
+cpus might read this field (for instance from dst_input())
 
-x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_hw_params':
-sof_rt5682.c:(.text+0x1f9): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sof_rt5682.c:(.text+0x234): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_codec_init':
-sof_rt5682.c:(.text+0x3e0): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_cs42l42.o: in function `sof_cs42l42_hw_params':
-sof_cs42l42.c:(.text+0x2a): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_nau8825.o: in function `sof_nau8825_hw_params':
-sof_nau8825.c:(.text+0x7f): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_da7219.o: in function `da7219_codec_init':
-sof_da7219.c:(.text+0xbf): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_maxim_common.o: in function `max_98373_hw_params':
-sof_maxim_common.c:(.text+0x6f9): undefined reference to `sof_dai_get_tdm_slots'
-x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1015_hw_params':
-sof_realtek_common.c:(.text+0x54c): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1308_hw_params':
-sof_realtek_common.c:(.text+0x702): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_cirrus_common.o: in function `cs35l41_hw_params':
-sof_cirrus_common.c:(.text+0x2f): undefined reference to `sof_dai_get_bclk'
+Add READ_ONCE()/WRITE_ONCE() annotations to suppress
+potential issues.
 
-Add an optional dependency on SND_SOC_SOF_INTEL_COMMON, to ensure that whenever
-the SOF support is in a loadable module, none of the board code can be built-in.
+We will likely need full RCU protection later.
 
-This may be be a little heavy-handed, but I also don't see a reason why one would
-want the boards to be built-in but not the SoC, so it shouldn't actually cause
-any usability problems.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250709145626.64125-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250630121934.3399505-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/dst.h      | 2 +-
+ include/net/lwtunnel.h | 4 ++--
+ net/core/dst.c         | 2 +-
+ net/ipv4/route.c       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
-index ca49cc49c378..109efda305bf 100644
---- a/sound/soc/intel/boards/Kconfig
-+++ b/sound/soc/intel/boards/Kconfig
-@@ -11,7 +11,7 @@ menuconfig SND_SOC_INTEL_MACH
- 	 kernel: saying N will just cause the configurator to skip all
- 	 the questions about Intel ASoC machine drivers.
+diff --git a/include/net/dst.h b/include/net/dst.h
+index 16b7b99b5f30..ef7f88f01881 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -474,7 +474,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_local_deliver(struct sk_buff *));
+ /* Input packet from network to transport.  */
+ static inline int dst_input(struct sk_buff *skb)
+ {
+-	return INDIRECT_CALL_INET(skb_dst(skb)->input,
++	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->input),
+ 				  ip6_input, ip_local_deliver, skb);
+ }
  
--if SND_SOC_INTEL_MACH
-+if SND_SOC_INTEL_MACH && (SND_SOC_SOF_INTEL_COMMON || !SND_SOC_SOF_INTEL_COMMON)
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index 53bd2d02a4f0..a4632a64daae 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -142,8 +142,8 @@ static inline void lwtunnel_set_redirect(struct dst_entry *dst)
+ 		dst->output = lwtunnel_output;
+ 	}
+ 	if (lwtunnel_input_redirect(dst->lwtstate)) {
+-		dst->lwtstate->orig_input = dst->input;
+-		dst->input = lwtunnel_input;
++		dst->lwtstate->orig_input = READ_ONCE(dst->input);
++		WRITE_ONCE(dst->input, lwtunnel_input);
+ 	}
+ }
+ #else
+diff --git a/net/core/dst.c b/net/core/dst.c
+index aad197e761cb..def3dbbd37e3 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -150,7 +150,7 @@ void dst_dev_put(struct dst_entry *dst)
+ 	dst->obsolete = DST_OBSOLETE_DEAD;
+ 	if (dst->ops->ifdown)
+ 		dst->ops->ifdown(dst, dev);
+-	dst->input = dst_discard;
++	WRITE_ONCE(dst->input, dst_discard);
+ 	dst->output = dst_discard_out;
+ 	dst->dev = blackhole_netdev;
+ 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 8ee1ad2d8c13..f8538507ce3f 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1699,7 +1699,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
+ 		else if (rt->rt_gw_family == AF_INET6)
+ 			new_rt->rt_gw6 = rt->rt_gw6;
  
- config SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
- 	bool "Use more user friendly long card names"
+-		new_rt->dst.input = rt->dst.input;
++		new_rt->dst.input = READ_ONCE(rt->dst.input);
+ 		new_rt->dst.output = rt->dst.output;
+ 		new_rt->dst.error = rt->dst.error;
+ 		new_rt->dst.lastuse = jiffies;
 -- 
 2.39.5
 
