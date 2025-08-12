@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38196B232C2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B9AB234AB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD595583255
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6845188ABDF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECF62F90C8;
-	Tue, 12 Aug 2025 18:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444D62FE571;
+	Tue, 12 Aug 2025 18:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJd8ACBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbbYNNJN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24C01D416C;
-	Tue, 12 Aug 2025 18:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033AE2F5481;
+	Tue, 12 Aug 2025 18:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022585; cv=none; b=Vyt4tMcOZOoyGZXHGfkdcksC0Qyv1cceCKyz+vUIB2tkI2PbTO2lkCrkDctQ7xvyC2dVynaauN8IK0opAmL2m0spZe88oBnRVE7Z4dF8DCHdzb0QBX06XXwQlBe2UYhpSqw2CJzdWf8IiTIJ/a43xFD5vmzyZ5FyAZy8aI0YRv0=
+	t=1755023857; cv=none; b=Y+uMZkxrzdLA7Ma2Pcn90TCWDH9H+/bFhrJTj2+yOQ6XXJnJumE+5UnqtVpd3fqfUVvmUge86ZopqSXEwyn95xQxQCxOErhJdZ+FEwUf0vzPtEfm7S2MYyWcyWr80i0ht4Q/98mU5dRv+UzQF4a7/Lhoid8aqE/KSV01Pw0ZgyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022585; c=relaxed/simple;
-	bh=WvaXSOv9KWVShmQHlSRSePCjIhS0plahTT6EhKuvJ4Q=;
+	s=arc-20240116; t=1755023857; c=relaxed/simple;
+	bh=ugD+9sHDj+gRJR9p7c6tYK/JllUk8RzkqtpKrjLDUB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRiHsQnDhDpOu3oJxTKEziwm648q2VQ4hdkzAZ48tDeGspbpYZM5NPSUVDH3tij0CNxcSPutIUc522Ia/zqfJnv92wMkimSHs18WrLNI9IOa+AAZHSP6pdI3P/la3rsN+VVvsLtq5RqQxVMVY2hy0h7j4AgWF7PHXax1yPsLbvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJd8ACBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F71DC4CEF1;
-	Tue, 12 Aug 2025 18:16:25 +0000 (UTC)
+	 MIME-Version; b=nEhUyR6lCDSTxGceK/gaJiAtsn67zZzhmiRxlc/d4AqHXkqtP2R8azbBOrt57GkDTETFxF7yJyGZe8HSLw2GTYOTq2JTdFLXv06Bmb8KSYXnolGxp/wJbKG+M/N2pxhYKRk0EkQczc1n6/uuBwEJamDftg10VuoWWBoP11WhVjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbbYNNJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B42C4CEF0;
+	Tue, 12 Aug 2025 18:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022585;
-	bh=WvaXSOv9KWVShmQHlSRSePCjIhS0plahTT6EhKuvJ4Q=;
+	s=korg; t=1755023856;
+	bh=ugD+9sHDj+gRJR9p7c6tYK/JllUk8RzkqtpKrjLDUB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJd8ACBsAEQHgR9eHzOur+jgpH8kvNQP5pDYqmq5DTfIPYn8nRuRjcE7CTAyaxkYP
-	 sphQC1VIfpTnEpz5pm3pdQmVOt+2z0Rl0RmyPhA2EjcfjAiUAVWy8eLXdyvHdflGC/
-	 Tvkp6OBxF5mngs3inNYyYuQsofFajvLKiTmOpStA=
+	b=gbbYNNJN6ZkY6NTo89WdyP46EouGiysVMNieRuKj8qgiAy3r/PJiXIqd0gv+hCHgn
+	 KrDkZoJbnD9pIzTU8FEVUHQQP+ymr0I4bHbolUveeA+mAkoLy7caDXNAgcspHG87ok
+	 ZfpwoqannzjpFLYfCrM2F2dkoUG0Xep2Q6tV1J3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Drew Fustini <fustini@kernel.org>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/369] clk: thead: th1520-ap: Correctly refer the parent of osc_12m
-Date: Tue, 12 Aug 2025 19:28:15 +0200
-Message-ID: <20250812173022.214339535@linuxfoundation.org>
+Subject: [PATCH 6.16 201/627] netfilter: nf_tables: Drop dead code from fill_*_info routines
+Date: Tue, 12 Aug 2025 19:28:16 +0200
+Message-ID: <20250812173426.928212305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit d274c77ffa202b70ad01d579f33b73b4de123375 ]
+[ Upstream commit 8080357a8c6cf4905bbd8969412c19d34be3395e ]
 
-The "osc_12m" fixed factor clock refers the external oscillator by
-setting clk_parent_data.fw_name to osc_24m, which is obviously wrong
-since no clock-names property is allowed for compatible
-thead,th1520-clk-ap.
+This practically reverts commit 28339b21a365 ("netfilter: nf_tables: do
+not send complete notification of deletions"): The feature was never
+effective, due to prior modification of 'event' variable the conditional
+early return never happened.
 
-Refer the oscillator as parent by index instead.
+User space also relies upon the current behaviour, so better reintroduce
+the shortened deletion notifications once it is fixed.
 
-Fixes: ae81b69fd2b1 ("clk: thead: Add support for T-Head TH1520 AP_SUBSYS clocks")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Drew Fustini <fustini@kernel.org>
-Signed-off-by: Drew Fustini <fustini@kernel.org>
+Fixes: 28339b21a365 ("netfilter: nf_tables: do not send complete notification of deletions")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 25 -------------------------
+ 1 file changed, 25 deletions(-)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index 4c9555fc6184..6ab89245af12 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -582,7 +582,14 @@ static const struct clk_parent_data peri2sys_apb_pclk_pd[] = {
- 	{ .hw = &peri2sys_apb_pclk.common.hw }
- };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index a7240736f98e..9ebda0248d20 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1165,11 +1165,6 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_TABLE_PAD))
+ 		goto nla_put_failure;
  
--static CLK_FIXED_FACTOR_FW_NAME(osc12m_clk, "osc_12m", "osc_24m", 2, 1, 0);
-+static struct clk_fixed_factor osc12m_clk = {
-+	.div		= 2,
-+	.mult		= 1,
-+	.hw.init	= CLK_HW_INIT_PARENTS_DATA("osc_12m",
-+						   osc_24m_clk,
-+						   &clk_fixed_factor_ops,
-+						   0),
-+};
+-	if (event == NFT_MSG_DELTABLE) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
+ 			 htonl(table->flags & NFT_TABLE_F_MASK)))
+ 		goto nla_put_failure;
+@@ -2028,11 +2023,6 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_CHAIN_PAD))
+ 		goto nla_put_failure;
  
- static const char * const out_parents[] = { "osc_24m", "osc_12m" };
+-	if (event == NFT_MSG_DELCHAIN && !hook_list) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nft_is_base_chain(chain)) {
+ 		const struct nft_base_chain *basechain = nft_base_chain(chain);
+ 		struct nft_stats __percpu *stats;
+@@ -4859,11 +4849,6 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			 NFTA_SET_PAD))
+ 		goto nla_put_failure;
  
+-	if (event == NFT_MSG_DELSET) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (set->flags != 0)
+ 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
+ 			goto nla_put_failure;
+@@ -8350,11 +8335,6 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_OBJ_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELOBJ) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
+ 	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
+ 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
+@@ -9394,11 +9374,6 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_FLOWTABLE_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELFLOWTABLE && !hook_list) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
+ 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
+ 		goto nla_put_failure;
 -- 
 2.39.5
 
