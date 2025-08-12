@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712CFB230C8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C246B23529
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257FF188A222
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2332188F842
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9FE2FD1D7;
-	Tue, 12 Aug 2025 17:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2E02FDC33;
+	Tue, 12 Aug 2025 18:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2exskgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAvZM4GZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EB72D5C76;
-	Tue, 12 Aug 2025 17:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5402F291B;
+	Tue, 12 Aug 2025 18:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021294; cv=none; b=TkBzousokqdngSY2wQkbPm3KyXgQytAcXyEnrAxK+eTRZBNWF4mYgPssKosNZ36O+pRnEmVINRz2EE09eJaLvja9eqn0xgSi8ab4Xf92Rtk89uEENkTaQBnpbmZniIXU+Q2vR/YcU+6IlYljzQFV9qP+2JQREX2/pv2ZcGmXNXc=
+	t=1755024286; cv=none; b=TM+8nowu8teSgs3dFe7RFdQ0eQngjtOCSJnY8YcU8EwJEerL1aFg4Pt6hOddk+tbEpQh2GCvEQouqzy+6BBsp8U9k2dzZywZ3uMoz0w7zwrtrtG+B9vXuFM3N5Tk38Bqt4G9e4c7FfRvyqbz00y2i60uOqsDxCj+BshDRgoXJ4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021294; c=relaxed/simple;
-	bh=Mk0T2+1NknJOs+m74u6SxXoHjGrBFY+PTOceAVxtgRY=;
+	s=arc-20240116; t=1755024286; c=relaxed/simple;
+	bh=qMZVtVyq3X/AV+eqwjZbigx9gtFQNV1A0svROlJhqrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AieQ3dLYU1YtUCMPsEATtAzjw2qVwRRwPx2i4Kg8FIpD65UFRi102nzfwIA0hgP6p7AiYB1oKYm3MVElv4XOiVVjGFS9d4wmYlzbj0Zvo2VUX4+tbG3GCmpr3Aa2S9iJQOxNwme5RPq6GOdtniygAY7egHx7INu1UQtRSCcIm2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2exskgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3932DC4CEF0;
-	Tue, 12 Aug 2025 17:54:54 +0000 (UTC)
+	 MIME-Version; b=XmWgryYIYaY3Y2xcCGwSm4+uMwt7RxEN1KtJ4IHUbsqDCNEwMolv6DNo9QOs3bQX6NkJz/CdQ+4jEDGktXlOeJN2iHQrJVMpuhsofNENOzDxa3AROUSpjDf7ZJNB9z6/op0VxOPfsk8yZDgtOlUonGUtkk60gnvmYRP5pVzNSq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAvZM4GZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1743BC4CEF0;
+	Tue, 12 Aug 2025 18:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021294;
-	bh=Mk0T2+1NknJOs+m74u6SxXoHjGrBFY+PTOceAVxtgRY=;
+	s=korg; t=1755024286;
+	bh=qMZVtVyq3X/AV+eqwjZbigx9gtFQNV1A0svROlJhqrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2exskgM89BNv6z7JDUHcB0GfQRVc0O5PlQwtBhoC9Qwdpk670i7i4bjoG6I2P8A7
-	 U34M6tsknk88KaVhzLytGxoDQG7Lqs+lMzPjhGB1f2WiNEy9N8YdVu8jErJ/4gxTdB
-	 DJUpiWsmMCuUovr5rkrv61K3IZFOlSAuh8BWgd+U=
+	b=VAvZM4GZ1TT1sIw2IefyTCUBVUViyHVW9tC3SnmHhUaHcgJNsKaOvomZxXiHsYw1t
+	 Mp6KT+6QvoWsyCTqsZvd0LvLSXEaBwqsajneEu2QPZJAuhtxrwLthMBzO2LIx50eG+
+	 kqtBZtewhNbeZ0lKZipAPE87K31IodHHmDtDRUG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 218/253] netpoll: prevent hanging NAPI when netcons gets enabled
+Subject: [PATCH 6.16 311/627] mtd: fix possible integer overflow in erase_xfer()
 Date: Tue, 12 Aug 2025 19:30:06 +0200
-Message-ID: <20250812172958.115384882@linuxfoundation.org>
+Message-ID: <20250812173431.135194665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-[ Upstream commit 2da4def0f487f24bbb0cece3bb2bcdcb918a0b72 ]
+[ Upstream commit 9358bdb9f9f54d94ceafc650deffefd737d19fdd ]
 
-Paolo spotted hangs in NIPA running driver tests against virtio.
-The tests hang in virtnet_close() -> virtnet_napi_tx_disable().
+The expression '1 << EraseUnitSize' is evaluated in int, which causes
+a negative result when shifting by 31 - the upper bound of the valid
+range [10, 31], enforced by scan_header(). This leads to incorrect
+extension when storing the result in 'erase->len' (uint64_t), producing
+a large unexpected value.
 
-The problem is only reproducible if running multiple of our tests
-in sequence (I used TEST_PROGS="xdp.py ping.py netcons_basic.sh \
-netpoll_basic.py stats.py"). Initial suspicion was that this is
-a simple case of double-disable of NAPI, but instrumenting the
-code reveals:
-
- Deadlocked on NAPI ffff888007cd82c0 (virtnet_poll_tx):
-   state: 0x37, disabled: false, owner: 0, listed: false, weight: 64
-
-The NAPI was not in fact disabled, owner is 0 (rather than -1),
-so the NAPI "thinks" it's scheduled for CPU 0 but it's not listed
-(!list_empty(&n->poll_list) => false). It seems odd that normal NAPI
-processing would wedge itself like this.
-
-Better suspicion is that netpoll gets enabled while NAPI is polling,
-and also grabs the NAPI instance. This confuses napi_complete_done():
-
-  [netpoll]                                   [normal NAPI]
-                                        napi_poll()
-                                          have = netpoll_poll_lock()
-                                            rcu_access_pointer(dev->npinfo)
-                                              return NULL # no netpoll
-                                          __napi_poll()
-					    ->poll(->weight)
-  poll_napi()
-    cmpxchg(->poll_owner, -1, cpu)
-      poll_one_napi()
-        set_bit(NAPI_STATE_NPSVC, ->state)
-                                              napi_complete_done()
-                                                if (NAPIF_STATE_NPSVC)
-                                                  return false
-                                           # exit without clearing SCHED
-
-This feels very unlikely, but perhaps virtio has some interactions
-with the hypervisor in the NAPI ->poll that makes the race window
-larger?
-
-Best I could to to prove the theory was to add and trigger this
-warning in napi_poll (just before netpoll_poll_unlock()):
-
-      WARN_ONCE(!have && rcu_access_pointer(n->dev->npinfo) &&
-                napi_is_scheduled(n) && list_empty(&n->poll_list),
-                "NAPI race with netpoll %px", n);
-
-If this warning hits the next virtio_close() will hang.
-
-This patch survived 30 test iterations without a hang (without it
-the longest clean run was around 10). Credit for triggering this
-goes to Breno's recent netconsole tests.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/c5a93ed1-9abe-4880-a3bb-8d1678018b1d@redhat.com
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20250726010846.1105875-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/ftl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 657abbb7d0d7..89f5358d7a1b 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -800,6 +800,13 @@ int netpoll_setup(struct netpoll *np)
- 		goto put;
- 	netdev_tracker_alloc(ndev, &np->dev_tracker, GFP_KERNEL);
- 	rtnl_unlock();
-+
-+	/* Make sure all NAPI polls which started before dev->npinfo
-+	 * was visible have exited before we start calling NAPI poll.
-+	 * NAPI skips locking if dev->npinfo is NULL.
-+	 */
-+	synchronize_rcu();
-+
- 	return 0;
+diff --git a/drivers/mtd/ftl.c b/drivers/mtd/ftl.c
+index 8c22064ead38..f2bd1984609c 100644
+--- a/drivers/mtd/ftl.c
++++ b/drivers/mtd/ftl.c
+@@ -344,7 +344,7 @@ static int erase_xfer(partition_t *part,
+             return -ENOMEM;
  
- put:
+     erase->addr = xfer->Offset;
+-    erase->len = 1 << part->header.EraseUnitSize;
++    erase->len = 1ULL << part->header.EraseUnitSize;
+ 
+     ret = mtd_erase(part->mbd.mtd, erase);
+     if (!ret) {
 -- 
 2.39.5
 
