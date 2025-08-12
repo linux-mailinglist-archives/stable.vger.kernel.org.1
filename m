@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE251B232BF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24163B23479
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90036E3A9A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6685A3B4583
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99181D416C;
-	Tue, 12 Aug 2025 18:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1949C26A0EB;
+	Tue, 12 Aug 2025 18:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkENKph0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXPBc0pL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AA71B87F2;
-	Tue, 12 Aug 2025 18:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB26361FFE;
+	Tue, 12 Aug 2025 18:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022569; cv=none; b=R2T1RMjGL/H4dm8eystu+DdwKCdVn6NgwsnM5pLeq1JWRONR7QCMzB5AfsiZIXHZbitzT7Pl+rCO1PjiVaQlLYWmaYjPlwrjFbz7dchtrvzKCMngOxy26t3oD/GnKBOLEokPMTrnz/4a1bSxK8X1cNY8KF4j2p8vVoB2b/vC2Hk=
+	t=1755023774; cv=none; b=OZrKF5M4SBPxza8qkn1VJN1nes+wp0yRyTRR7I2u/I/DxHLqgmNF2BhMSN0gz59wip+nJeXudxSmUZ9zzIYF8HS7hy6QU3Ei30EhNWdCVazTRLTsqwcb6PxIX+v/3ARbBek8b4SCMg6ZD4/dMaqeFvtj7rwY8teI2QOrz90TK0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022569; c=relaxed/simple;
-	bh=cgwxmKbDbbBdDikd7wQ/wR4KyMtZl8YLYfQ5IJl77Vo=;
+	s=arc-20240116; t=1755023774; c=relaxed/simple;
+	bh=NZ9NfTGdvgmKvE8q/1YL/8qlbhAqK+ZSOiuViwyv0tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVKt6lf1Uu8z7iYjtxVD/t6H+x8+KrwrRcDXY5oUXMVaHT7eEAIMJPBZVK0jeCu8OBRIz2/rx+t0hbjy/k40anHnE+yxIIw+GwJnKYg15QipSF7eElWJ50XKIbJFjwykjdyArfZReCucgx3s3DoruOOOF0DCuaZq+UilvOo2yJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkENKph0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D0BC4CEF1;
-	Tue, 12 Aug 2025 18:16:08 +0000 (UTC)
+	 MIME-Version; b=JM4aVj4L2KFsD5Ohx8KL4bcHGvj8ZFJrmJFZg5LwI+QcLOMMwYG1SKpDO4jMN6QZOO3569lh3D8hxNl0lvEp1D47Dcy1HgsihZpbHhbKxT91dLHxuVv9S9HIkkC3LLxUQaxDPIwHuR3295XPE2bSVYH3jztyVlB4Gl0jG2jS0Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXPBc0pL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47331C4CEF0;
+	Tue, 12 Aug 2025 18:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022569;
-	bh=cgwxmKbDbbBdDikd7wQ/wR4KyMtZl8YLYfQ5IJl77Vo=;
+	s=korg; t=1755023774;
+	bh=NZ9NfTGdvgmKvE8q/1YL/8qlbhAqK+ZSOiuViwyv0tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkENKph0PUOXyYzowLlIshjH651xCtaJT21fUwZe9O3NvK9FfCJj5+aiCI6I1PyQZ
-	 REuB6lAu/eWZkV0mNmqukjga4d2R7BngFGzVwDkotKPbGZyK0n5C8Y2ZTg6dN52i53
-	 SlAO7PcyNTsBjVqgTyBLN7mkEpdvhMMr7wcwfF6A=
+	b=lXPBc0pLBCSR7aFLeyj4Ax5rhz7Nm3ZSiSKez21aKalejvSDR6gIJsCsNev7Gotzl
+	 OcPZs1I9f092p+WEuSd3kUFy4/02Ok0gaEsbj40sUVojV1clSyH/+UFKnv2OKNOWkE
+	 kREtNuaBPg8+1336k6JSjz75ums4YHyWPl5MDZUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 176/369] perf dso: Add missed dso__put to dso__load_kcore
+Subject: [PATCH 6.16 178/627] kselftest/arm64: Fix check for setting new VLs in sve-ptrace
 Date: Tue, 12 Aug 2025 19:27:53 +0200
-Message-ID: <20250812173021.398175546@linuxfoundation.org>
+Message-ID: <20250812173426.047848494@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 63a088e999de3f431f87d9a367933da894ddb613 ]
+[ Upstream commit 867446f090589626497638f70b10be5e61a0b925 ]
 
-The kcore loading creates a set of list nodes that have reference
-counted references to maps of the kcore. The list node freeing in the
-success path wasn't releasing the maps, add the missing puts. It is
-unclear why this leak was being missed by leak sanitizer.
+The check that the new vector length we set was the expected one was typoed
+to an assignment statement which for some reason the compilers didn't spot,
+most likely due to the macros involved.
 
-Fixes: 83720209961f ("perf map: Move map list node into symbol")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250624190326.2038704-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: a1d7111257cd ("selftests: arm64: More comprehensively test the SVE ptrace interface")
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-1-998fcfa6f240@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/arm64/fp/sve-ptrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 3bbf173ad822..c0ec5ed4f1aa 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1405,6 +1405,7 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- 				goto out_err;
- 			}
- 		}
-+		map__zput(new_node->map);
- 		free(new_node);
+diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+index 577b6e05e860..c499d5789dd5 100644
+--- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
++++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+@@ -253,7 +253,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
+ 		return;
  	}
  
+-	ksft_test_result(new_sve->vl = prctl_vl, "Set %s VL %u\n",
++	ksft_test_result(new_sve->vl == prctl_vl, "Set %s VL %u\n",
+ 			 type->name, vl);
+ 
+ 	free(new_sve);
 -- 
 2.39.5
 
