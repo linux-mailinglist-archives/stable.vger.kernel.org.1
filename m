@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-167556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67F3B230AB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A9D5B23545
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86AEF68683D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B9E03B105F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C022FD1D7;
-	Tue, 12 Aug 2025 17:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BF92FD1A4;
+	Tue, 12 Aug 2025 18:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IulfaEgc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8xLvlGJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCFE221FAC;
-	Tue, 12 Aug 2025 17:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B232F4A0A;
+	Tue, 12 Aug 2025 18:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021213; cv=none; b=WOQe1jVV1INE13kBZoargsWfDJAx1ix7h4pGOUp3dSwQkqgWTFD0pa4EjxR+QZtRuPMKdJQUIS/WUPLnzK2ojp70Edd0WWVurEPGL1LfEF84/0z7TznO5WoPHvWOH7MV4RFFsla8Me1+L5mflJktRa4mT2aL/gHKAyJmj48GWcY=
+	t=1755024266; cv=none; b=UAjSi22LME1JvyeX6+wj+MW7TQCzqJKH19C+/UNsMSVK6mcMNYHg8v/gAcgpw6a4lCKDKCgykV90k6CYGLc7KR/eBYRtgOj90PxmxPIk12gdEhsx1O7VPg3rXdbdLQUs/tnjnnVpgdPSa5yUtusTdrjS56pLg5R5YRG74FIp9gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021213; c=relaxed/simple;
-	bh=vyzGuyCMqI0jejvqSwSWtBPabPSGR4SaDiRz4QxIrOM=;
+	s=arc-20240116; t=1755024266; c=relaxed/simple;
+	bh=2w5TGnYDvWnJJtDTurhE6ycpxJt9Gzsaz8Ydpltfm6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/rGr+bwrotDOrN82W774RzPh5Nvzcere1qpREFOX8mz6fHmQw+Oh6ak75aBazUXe7aomxT+2MfZpi5ahDVfQYNq+ENkdZIO8aFz5tKmLSEU9BOhW9o65haLeNB6Q7ENbBke/eEZ8LyZ5yibV7jraRXXfYFm0WXponhIzFavHnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IulfaEgc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCC2C4CEF0;
-	Tue, 12 Aug 2025 17:53:32 +0000 (UTC)
+	 MIME-Version; b=siQtxvZYvSy93U2ANz4UIaAbqDq7+k7Z8DYcm54P20oIN3ZR9/+NdbDFx8OWOVwhMrgPEXf35VPP3ZzKOaHEo93Rq99bgiRgDfvvTeXPoPZLQpKbuiSyfvSTdM4Z3YqxYlNpMWTBvqYVYQjMl7HRFFK1WkbzditmVJRMCWmaLNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8xLvlGJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64689C4CEF0;
+	Tue, 12 Aug 2025 18:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021213;
-	bh=vyzGuyCMqI0jejvqSwSWtBPabPSGR4SaDiRz4QxIrOM=;
+	s=korg; t=1755024265;
+	bh=2w5TGnYDvWnJJtDTurhE6ycpxJt9Gzsaz8Ydpltfm6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IulfaEgc3Hwb2x7ezxBbDEx1W8chlVImUnGwne9BZbioWXDKzHbm/T3sFscQl+ct4
-	 O9OMt+cmvGku/UQZXyqp2ITvznTSE635t4ySxqR3XIN7nFtTic7bxO1c0iazjY0sOr
-	 piVviI9JNtQt0p18+dcjRoViw8d401EaU0C41KWs=
+	b=n8xLvlGJmbOZFzR0vUjvWEmkeMjUWjAzHzZLONPdGwXKW1y0gkTbSTxpU8D6Ww2r2
+	 7uM8J7GY7tq1HOUkKqcDTXsvqut/Sj9B/DgsLA8Oub6BqFoQ4+aE3cFghHYR15JshY
+	 bMFuPxXpgbHCbviJHbsqzHmdUorkldNdwfVJhrRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Harald Freudenberger <freude@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 230/253] smb: server: let recv_done() avoid touching data_transfer after cleanup/move
+Subject: [PATCH 6.16 323/627] crypto: ahash - Add support for drivers with no fallback
 Date: Tue, 12 Aug 2025 19:30:18 +0200
-Message-ID: <20250812172958.617141494@linuxfoundation.org>
+Message-ID: <20250812173431.583297700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit a6c015b7ac2d8c5233337e5793f50d04fac17669 ]
+[ Upstream commit 4ccd065a69df163cd9fe0dd8e0f609f1eeb4723d ]
 
-Calling enqueue_reassembly() and wake_up_interruptible(&t->wait_reassembly_queue)
-or put_receive_buffer() means the recvmsg/data_transfer pointer might
-get re-used by another thread, which means these should be
-the last operations before calling return.
+Some drivers cannot have a fallback, e.g., because the key is held
+in hardware.  Allow these to be used with ahash by adding the bit
+CRYPTO_ALG_NO_FALLBACK.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Tested-by: Harald Freudenberger <freude@linux.ibm.com>
+Stable-dep-of: 1e2b7fcd3f07 ("crypto: ahash - Stop legacy tfms from using the set_virt fallback path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ crypto/ahash.c         | 10 +++++++++-
+ include/linux/crypto.h |  3 +++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index f9c0c5267e6e..7d59ed6e1383 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -575,16 +575,11 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			else
- 				t->full_packet_received = true;
+diff --git a/crypto/ahash.c b/crypto/ahash.c
+index bc84a07c924c..3878b4da3cfd 100644
+--- a/crypto/ahash.c
++++ b/crypto/ahash.c
+@@ -347,6 +347,9 @@ static int ahash_do_req_chain(struct ahash_request *req,
+ 	if (crypto_ahash_statesize(tfm) > HASH_MAX_STATESIZE)
+ 		return -ENOSYS;
  
--			enqueue_reassembly(t, recvmsg, (int)data_length);
--			wake_up_interruptible(&t->wait_reassembly_queue);
--
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
- 			avail_recvmsg_count = t->count_avail_recvmsg;
- 			spin_unlock(&t->receive_credit_lock);
- 		} else {
--			put_recvmsg(t, recvmsg);
--
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
- 			avail_recvmsg_count = ++(t->count_avail_recvmsg);
-@@ -606,6 +601,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
- 			mod_delayed_work(smb_direct_wq,
- 					 &t->post_recv_credits_work, 0);
++	if (!crypto_ahash_need_fallback(tfm))
++		return -ENOSYS;
 +
-+		if (data_length) {
-+			enqueue_reassembly(t, recvmsg, (int)data_length);
-+			wake_up_interruptible(&t->wait_reassembly_queue);
-+		} else
-+			put_recvmsg(t, recvmsg);
+ 	{
+ 		u8 state[HASH_MAX_STATESIZE];
+ 
+@@ -954,6 +957,10 @@ static int ahash_prepare_alg(struct ahash_alg *alg)
+ 	    base->cra_reqsize > MAX_SYNC_HASH_REQSIZE)
+ 		return -EINVAL;
+ 
++	if (base->cra_flags & CRYPTO_ALG_NEED_FALLBACK &&
++	    base->cra_flags & CRYPTO_ALG_NO_FALLBACK)
++		return -EINVAL;
 +
- 		return;
- 	}
- 	}
+ 	err = hash_prepare_alg(&alg->halg);
+ 	if (err)
+ 		return err;
+@@ -962,7 +969,8 @@ static int ahash_prepare_alg(struct ahash_alg *alg)
+ 	base->cra_flags |= CRYPTO_ALG_TYPE_AHASH;
+ 
+ 	if ((base->cra_flags ^ CRYPTO_ALG_REQ_VIRT) &
+-	    (CRYPTO_ALG_ASYNC | CRYPTO_ALG_REQ_VIRT))
++	    (CRYPTO_ALG_ASYNC | CRYPTO_ALG_REQ_VIRT) &&
++	    !(base->cra_flags & CRYPTO_ALG_NO_FALLBACK))
+ 		base->cra_flags |= CRYPTO_ALG_NEED_FALLBACK;
+ 
+ 	if (!alg->setkey)
+diff --git a/include/linux/crypto.h b/include/linux/crypto.h
+index b50f1954d1bb..a2137e19be7d 100644
+--- a/include/linux/crypto.h
++++ b/include/linux/crypto.h
+@@ -136,6 +136,9 @@
+ /* Set if the algorithm supports virtual addresses. */
+ #define CRYPTO_ALG_REQ_VIRT		0x00040000
+ 
++/* Set if the algorithm cannot have a fallback (e.g., phmac). */
++#define CRYPTO_ALG_NO_FALLBACK		0x00080000
++
+ /* The high bits 0xff000000 are reserved for type-specific flags. */
+ 
+ /*
 -- 
 2.39.5
 
