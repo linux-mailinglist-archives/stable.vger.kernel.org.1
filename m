@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA03B232F4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FFEDB2312F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:01:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B47C2A4AE8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3EDF1890F3F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8432EAB97;
-	Tue, 12 Aug 2025 18:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57A0302CDB;
+	Tue, 12 Aug 2025 17:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0T4Q/QL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGe5krkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D2D2DFA3E;
-	Tue, 12 Aug 2025 18:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15F6302CCE;
+	Tue, 12 Aug 2025 17:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022726; cv=none; b=VLauCbHxwzjJgQoEYFa9Wsjlt+eV7oqcUqSWlDOZ+FL+LxCUggpNJ8PgYLPmG+oV3nC3OjLlWen9wDQtiNDpUXc2ln4A5JOgo2wPlR+cfyKrIGuDEaKUg6hU4vLgggE0KojnxtFEeSZxj/KPAtkKzN8QV4tzMhIEXvIyruY4cGM=
+	t=1755021551; cv=none; b=jn37EAcbbXDWkMQzxu8klNh/ZxM7fdPQQiRZ1wHNCyl/6NLkSJSahvc1nA5vwDJENMlcVMfN34PToKoPzDdVwp7eMxro7cliUdNzmx4zOX5vC0qGerLWy9uV6z13Alb2Pw8lel5fT+hfSxpqVTqs2IWAKW5Tp8cPVDTDbuGpeeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022726; c=relaxed/simple;
-	bh=K18LIoCdy3RvGZHMpLJ2gEoUf+wyO77U+gWU4IccIv0=;
+	s=arc-20240116; t=1755021551; c=relaxed/simple;
+	bh=3Ed1A4+0ggbzdZ0ibisARZoaiplzFwLRWMVOGxN1VmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrSFqj5MAfoBPNTIvPuxl6nrmCMJysN6siSMCLb3sQYZDwKwjsVmdT2+lhDE/uHBzOMcqM5BOhuZ9GbI5GCejJcfPjCixRt3ZwiVrkeJZ1JSSGZEki1YV8YGHnCn/SD+kI6HqAwsmESheQEbyHbKOF0q9rJ6SST+yiwjeEtwMBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0T4Q/QL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE7BC4CEF1;
-	Tue, 12 Aug 2025 18:18:45 +0000 (UTC)
+	 MIME-Version; b=NjeJZdheJUR49oT73526i3GtKLOnpes1XRROFssGO8vh4eV3wrPtQ3ID4E62oc0fXqh7sdvK19yvwAcHo2ze9xT96UGusgoDsLepCxpS9dZP8uCxEiGBqbNEVTuY/hIFapK8cXcXUYUmoqe9Uu4CSurcCbgblDHMFKZcLFfmfAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGe5krkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B443FC116C6;
+	Tue, 12 Aug 2025 17:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022726;
-	bh=K18LIoCdy3RvGZHMpLJ2gEoUf+wyO77U+gWU4IccIv0=;
+	s=korg; t=1755021551;
+	bh=3Ed1A4+0ggbzdZ0ibisARZoaiplzFwLRWMVOGxN1VmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0T4Q/QLdAF2YbXMJPQ7cdeEZclq51LnqY/d6gugvU4vOdxD5TuCU8eLlzJcnCO6H
-	 sonZTDeH6hzprmVDIz938u/+kGC6DkUJllnXcNa5BPn4SMMDhmKugCWhwwQi2D6C7s
-	 E0Oj0+Z+dnwvGgiKQcUndYRB/HH5UJe7WJpGseyc=
+	b=tGe5krkgmk+ICL5U4iymvoDQ/HDo4Bxg6pCPsEIRUCO+hrkKV4s5EUPm6woUZq+Q9
+	 ZEM38HBq48d/23uSY6GXMVMch83COF74WOczY3J31BZtqij3J7dVyfHvhpxOkj+luE
+	 ySG2pDURkaoZT8VwHP/s+FD2z4SeqeKRONy/xNk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 213/369] clk: imx95-blk-ctl: Fix synchronous abort
+Subject: [PATCH 6.6 122/262] Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:30 +0200
-Message-ID: <20250812173022.769490930@linuxfoundation.org>
+Message-ID: <20250812172958.304172507@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit b08217a257215ed9130fce93d35feba66b49bf0a ]
+[ Upstream commit 1db50f7b7a793670adcf062df9ff27798829d963 ]
 
-When enabling runtime PM for clock suppliers that also belong to a power
-domain, the following crash is thrown:
-error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : clk_mux_get_parent+0x60/0x90
-lr : clk_core_reparent_orphans_nolock+0x58/0xd8
-  Call trace:
-   clk_mux_get_parent+0x60/0x90
-   clk_core_reparent_orphans_nolock+0x58/0xd8
-   of_clk_add_hw_provider.part.0+0x90/0x100
-   of_clk_add_hw_provider+0x1c/0x38
-   imx95_bc_probe+0x2e0/0x3f0
-   platform_probe+0x70/0xd8
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Enabling runtime PM without explicitly resuming the device caused
-the power domain cut off after clk_register() is called. As a result,
-a crash happens when the clock hardware provider is added and attempts
-to access the BLK_CTL register.
-
-Fix this by using devm_pm_runtime_enable() instead of pm_runtime_enable()
-and getting rid of the pm_runtime_disable() in the cleanup path.
-
-Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20250707-imx95-blk-ctl-7-1-v3-2-c1b676ec13be@nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: ed10435d3583 ("RDMA/erdma: Implement hierarchical MTT")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250630092346.81017-2-fourier.thomas@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx95-blk-ctl.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/erdma/erdma_verbs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
-index 564e9f3f7508..5030e6e60b66 100644
---- a/drivers/clk/imx/clk-imx95-blk-ctl.c
-+++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-@@ -323,8 +323,10 @@ static int imx95_bc_probe(struct platform_device *pdev)
- 	if (!clk_hw_data)
- 		return -ENOMEM;
- 
--	if (bc_data->rpm_enabled)
--		pm_runtime_enable(&pdev->dev);
-+	if (bc_data->rpm_enabled) {
-+		devm_pm_runtime_enable(&pdev->dev);
-+		pm_runtime_resume_and_get(&pdev->dev);
-+	}
- 
- 	clk_hw_data->num = bc_data->num_clks;
- 	hws = clk_hw_data->hws;
-@@ -364,8 +366,10 @@ static int imx95_bc_probe(struct platform_device *pdev)
- 		goto cleanup;
- 	}
- 
--	if (pm_runtime_enabled(bc->dev))
-+	if (pm_runtime_enabled(bc->dev)) {
-+		pm_runtime_put_sync(&pdev->dev);
- 		clk_disable_unprepare(bc->clk_apb);
-+	}
- 
- 	return 0;
- 
-@@ -376,9 +380,6 @@ static int imx95_bc_probe(struct platform_device *pdev)
- 		clk_hw_unregister(hws[i]);
- 	}
- 
--	if (bc_data->rpm_enabled)
--		pm_runtime_disable(&pdev->dev);
--
- 	return ret;
+diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
+index b010c4209ea3..29ad2f5ffabe 100644
+--- a/drivers/infiniband/hw/erdma/erdma_verbs.c
++++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
+@@ -585,7 +585,8 @@ static struct erdma_mtt *erdma_create_cont_mtt(struct erdma_dev *dev,
+ static void erdma_destroy_mtt_buf_sg(struct erdma_dev *dev,
+ 				     struct erdma_mtt *mtt)
+ {
+-	dma_unmap_sg(&dev->pdev->dev, mtt->sglist, mtt->nsg, DMA_TO_DEVICE);
++	dma_unmap_sg(&dev->pdev->dev, mtt->sglist,
++		     DIV_ROUND_UP(mtt->size, PAGE_SIZE), DMA_TO_DEVICE);
+ 	vfree(mtt->sglist);
  }
  
 -- 
