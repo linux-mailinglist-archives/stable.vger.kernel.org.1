@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0850B232F7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B73FBB22FF4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BAFF1A20ACF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E5918898EE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFCC2E7BD4;
-	Tue, 12 Aug 2025 18:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8642D2FDC2E;
+	Tue, 12 Aug 2025 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUWs5Rsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNNZx2Z9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8644280037;
-	Tue, 12 Aug 2025 18:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4382D2FD1B2;
+	Tue, 12 Aug 2025 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022739; cv=none; b=jwRA3PYMWJOlUTJaV6dcCdHnb7OayuN1L4gmwQIzgTeCCF01v7qnj844RR4hbMWwFtXy/nbh2ADUaMcYkWW+sdBPGGum5ogyHoPZ/7kdYR9omLtrG8IqrWurcjggY9oO10nP1d6qJQ7MRTW8umyEHtqSrJqIgDZcMrr51whL6L4=
+	t=1755020687; cv=none; b=o/t9SZuxoVxYGoUD4H5ucy7kwRRlfz5lLl4h7IrE93f4Bku0pHYoIwia8UatE7J91FPe47zyrgavLUhmRE6y4/jswkIB/VTyhGNhIwCCuY1DYcwL3DxyIRNsQxvXEfmZwBXex+aHXSGtJEvCoGQ09gpmaVGETiTHm3nenr+H3xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022739; c=relaxed/simple;
-	bh=JCZzoOIXsAJKH9sCie+IRhxiNmXbA4ygYf2HLe9xb2Q=;
+	s=arc-20240116; t=1755020687; c=relaxed/simple;
+	bh=VYz0UpScIK9brFKBRZsOQsbxoSo3qyGTkSnik7KjksM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFGbrz0CeBYxP3fdTQLlzXOFCpAn4zv/z9aWd/kzFcK9WST/BNtOo3KzEOyCT3UREVRPRLdNlvn7rsB1lnoj04zDyLXN+gaew7Wgj8Nz4xKLmLVlwZ78PGcy4vFGhaosVCq3uJ3AQbApxvXexbmE4lBVERfIzI4TWc8WzDhCz8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUWs5Rsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C928C4CEF1;
-	Tue, 12 Aug 2025 18:18:58 +0000 (UTC)
+	 MIME-Version; b=f7MSQF1FCwd4kdrFUtaYsIyA2eXHkNZjeCD7QxXoCzTMpZxY08gZl6Xg/m455seCsVLzp7z5XNZ5aJofSEFExcV4LX9ePGeypljMzOg2XtIu1vq6Lws3Ch4PgRVozr3Oe4SnvgBPpMCz1RmnmLbpUkEB0xzH+Pti5+5TY+hVOP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNNZx2Z9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3C8C4CEF0;
+	Tue, 12 Aug 2025 17:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022739;
-	bh=JCZzoOIXsAJKH9sCie+IRhxiNmXbA4ygYf2HLe9xb2Q=;
+	s=korg; t=1755020687;
+	bh=VYz0UpScIK9brFKBRZsOQsbxoSo3qyGTkSnik7KjksM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUWs5Rslg47K9ItiR5YKP3bZJQAtOyENIZb0Isj7swp6jKrWztWtyrAhgbay2vQZY
-	 0F2PCHTRzPbMO3MMmIW5M0F+z2XinWMCs30/5fe43Yqx92pWebuKs4iko/IZxGin9O
-	 dTKaF2E6iKRcsM8gkXZt2+Myakdu8fJePpsdWczQ=
+	b=tNNZx2Z9W7YnqPQz9fMtVNfJDOpeu6566NkWFIANrMp09T9KOeanT4vi+fG4a+ZMc
+	 rT9lyve8LL8N3j4qXmtUeY4ipXEQQ0fG64yeCJDjjhhWDtAYS71kGldXEZTslo21jH
+	 rO+CaaD+8XmzCk5Chk8CugVbVrO9BeQLpV7cuOrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 243/369] rtc: ds1307: fix incorrect maximum clock rate handling
-Date: Tue, 12 Aug 2025 19:29:00 +0200
-Message-ID: <20250812173023.910019193@linuxfoundation.org>
+Subject: [PATCH 6.1 153/253] perf sched: Fix memory leaks in perf sched latency
+Date: Tue, 12 Aug 2025 19:29:01 +0200
+Message-ID: <20250812172955.223667316@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit cf6eb547a24af7ad7bbd2abe9c5327f956bbeae8 ]
+[ Upstream commit e68b1c0098b959cb88afce5c93dd6a9324e6da78 ]
 
-When ds3231_clk_sqw_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+The work_atoms should be freed after use.  Add free_work_atoms() to
+make sure to release all.  It should use list_splice_init() when merging
+atoms to prevent accessing invalid pointers.
 
-Fixes: 6c6ff145b3346 ("rtc: ds1307: add clock provider support for DS3231")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-1-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: b1ffe8f3e0c96f552 ("perf sched: Finish latency => atom rename and misc cleanups")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-8-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-sched.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 5efbe69bf5ca..c8a666de9cbe 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1466,7 +1466,7 @@ static long ds3231_clk_sqw_round_rate(struct clk_hw *hw, unsigned long rate,
- 			return ds3231_clk_sqw_rates[i];
- 	}
- 
--	return 0;
-+	return ds3231_clk_sqw_rates[ARRAY_SIZE(ds3231_clk_sqw_rates) - 1];
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 244f9c6f61ae..3ffb41fa82b8 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -1125,6 +1125,21 @@ add_sched_in_event(struct work_atoms *atoms, u64 timestamp)
+ 	atoms->nb_atoms++;
  }
  
- static int ds3231_clk_sqw_set_rate(struct clk_hw *hw, unsigned long rate,
++static void free_work_atoms(struct work_atoms *atoms)
++{
++	struct work_atom *atom, *tmp;
++
++	if (atoms == NULL)
++		return;
++
++	list_for_each_entry_safe(atom, tmp, &atoms->work_list, list) {
++		list_del(&atom->list);
++		free(atom);
++	}
++	thread__zput(atoms->thread);
++	free(atoms);
++}
++
+ static int latency_switch_event(struct perf_sched *sched,
+ 				struct evsel *evsel,
+ 				struct perf_sample *sample,
+@@ -3180,13 +3195,13 @@ static void __merge_work_atoms(struct rb_root_cached *root, struct work_atoms *d
+ 			this->total_runtime += data->total_runtime;
+ 			this->nb_atoms += data->nb_atoms;
+ 			this->total_lat += data->total_lat;
+-			list_splice(&data->work_list, &this->work_list);
++			list_splice_init(&data->work_list, &this->work_list);
+ 			if (this->max_lat < data->max_lat) {
+ 				this->max_lat = data->max_lat;
+ 				this->max_lat_start = data->max_lat_start;
+ 				this->max_lat_end = data->max_lat_end;
+ 			}
+-			zfree(&data);
++			free_work_atoms(data);
+ 			return;
+ 		}
+ 	}
+@@ -3265,7 +3280,6 @@ static int perf_sched__lat(struct perf_sched *sched)
+ 		work_list = rb_entry(next, struct work_atoms, node);
+ 		output_lat_thread(sched, work_list);
+ 		next = rb_next(next);
+-		thread__zput(work_list->thread);
+ 	}
+ 
+ 	printf(" -----------------------------------------------------------------------------------------------------------------\n");
+@@ -3279,6 +3293,13 @@ static int perf_sched__lat(struct perf_sched *sched)
+ 
+ 	rc = 0;
+ 
++	while ((next = rb_first_cached(&sched->sorted_atom_root))) {
++		struct work_atoms *data;
++
++		data = rb_entry(next, struct work_atoms, node);
++		rb_erase_cached(next, &sched->sorted_atom_root);
++		free_work_atoms(data);
++	}
+ out_free_cpus_switch_event:
+ 	free_cpus_switch_event(sched);
+ 	return rc;
 -- 
 2.39.5
 
