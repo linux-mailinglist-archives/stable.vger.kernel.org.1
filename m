@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F35B23115
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A392B22FE6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9B1B18921F4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:59:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14BCA5653CB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB1E2FF15B;
-	Tue, 12 Aug 2025 17:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2DD2FDC32;
+	Tue, 12 Aug 2025 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWuEIZF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVZjLdmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F1F2FF14E;
-	Tue, 12 Aug 2025 17:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9002FD1CE;
+	Tue, 12 Aug 2025 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021540; cv=none; b=TeS886/1en85XXCAPy/K0MNL0cxExyl/X2Hm0/QDR7wivQFK0StIM2vly4JnHiviW0jgxiscBUt5DT7pAzdZc59wGqQogclJ2Bhyy9EPZSIQlZgeC67dE0v/v9R2Yfjb0vH2F4Is4JpDs4pz20xGExkE0bE6fIySPGW60e1LCJ0=
+	t=1755020680; cv=none; b=o5X0WJ3KeVWKFjbWFbbhs6yf/OpAN56txroTi4oi+q70KHx3IrVtqZq2yVizz63X4EwAByqiI6B4nEb6/m4/+zdQpohYQ3GEk7psfkoOa/SQUeaWr4uCHqqP/fedWKHKxBZ2vlloRGjbner+/C7zMVHSj+JZNRWcozCYgGI6ZlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021540; c=relaxed/simple;
-	bh=qxuBUodC7vtnNSk7JxgqTQyxirqo7D7NZL918L+L4sg=;
+	s=arc-20240116; t=1755020680; c=relaxed/simple;
+	bh=1U+OmkFcTQVYKRkwlvESBRjDAsDNbcukpudv++YZJXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIG9Xsy6M1BJkxiNlyxi8Tz6Nsz/3I3MESdvgApNd4eQnIzYJtpURgZ8UCPsl3Xa3uOM1Gt1ZTBbsrdo9TuFHfiq8eB/XvLVjj5TgEmGPxqcoOWCASEZXNxxO+pam0CC662tzx5l7izKMNBuNxaMTkpa09mNW9bO28o5+zoJz4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWuEIZF7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7E8C113D0;
-	Tue, 12 Aug 2025 17:58:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RttaMk+Hde/BO7wotyRY4x7x3ELwDKH4Sbpdu6Ji3cEUb3egkcnF6oZJtxd9GctQtvGUvbse7Wizk/qGlKtNpokFMspkGzmaGsoLFXQlCCpld8hS3oSf60rtybtvUNSlSPCJaXFXvRilKxom9Pi0t5N9Fqi42OsneBDbCDYJJT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVZjLdmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF654C4CEF0;
+	Tue, 12 Aug 2025 17:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021540;
-	bh=qxuBUodC7vtnNSk7JxgqTQyxirqo7D7NZL918L+L4sg=;
+	s=korg; t=1755020680;
+	bh=1U+OmkFcTQVYKRkwlvESBRjDAsDNbcukpudv++YZJXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWuEIZF7YYH6Chb+eQaX+XjYyaySt0YIK9FVv0y2xNpp/mRzKMJXsQaYm/ydLf3Rx
-	 iicuBWTIQQ5Jd9ZGhGSzjhFmJRuSTdsLmWKcUYC+QLFN01CPw4Teshv3xTDs0z+Lbs
-	 NDJkZauTWytmIB0oOYYyCMEEusiZF1LzSVp1Kris=
+	b=hVZjLdmZMtThSE4zqDL/dRvQQOlMFIIDjFjS1JVKfQJNlWcXk6DC+/Zh/ETCBlayV
+	 T41G9KnMqSwdjjS0VNOy4tI+Urf7QYQXN8XrKz1utyEnn4J5HJwFmxdbo2WbehOo+M
+	 Sph8ppwg5ub62HYqx6vdqx0LJI+oijQS8Ygqz3xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/262] perf tools: Remove libtraceevent in .gitignore
+Subject: [PATCH 6.1 151/253] clk: clk-axi-clkgen: fix fpfd_max frequency for zynq
 Date: Tue, 12 Aug 2025 19:28:59 +0200
-Message-ID: <20250812172959.530397305@linuxfoundation.org>
+Message-ID: <20250812172955.135511346@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Pei <cp0613@linux.alibaba.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-[ Upstream commit af470fb532fc803c4c582d15b4bd394682a77a15 ]
+[ Upstream commit ce8a9096699500e2c5bca09dde27b16edda5f636 ]
 
-The libtraceevent has been removed from the source tree, and .gitignore
-needs to be updated as well.
+The fpfd_max frequency should be set to 450 MHz instead of 300 MHz.
+Well, it actually depends on the platform speed grade but we are being
+conservative for ultrascale so let's be consistent. In a following
+change we will set these limits at runtime.
 
-Fixes: 4171925aa9f3f7bf ("tools lib traceevent: Remove libtraceevent")
-Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250726111532.8031-1-cp0613@linux.alibaba.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20250519-dev-axi-clkgen-limits-v6-1-bc4b3b61d1d4@analog.com
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/.gitignore | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/clk/clk-axi-clkgen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/.gitignore b/tools/perf/.gitignore
-index f533e76fb480..5a8617eb5419 100644
---- a/tools/perf/.gitignore
-+++ b/tools/perf/.gitignore
-@@ -45,7 +45,5 @@ libbpf/
- libperf/
- libsubcmd/
- libsymbol/
--libtraceevent/
--libtraceevent_plugins/
- fixdep
- Documentation/doc.dep
+diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
+index bb5cd9d38993..df9a4c778351 100644
+--- a/drivers/clk/clk-axi-clkgen.c
++++ b/drivers/clk/clk-axi-clkgen.c
+@@ -118,7 +118,7 @@ static const struct axi_clkgen_limits axi_clkgen_zynqmp_default_limits = {
+ 
+ static const struct axi_clkgen_limits axi_clkgen_zynq_default_limits = {
+ 	.fpfd_min = 10000,
+-	.fpfd_max = 300000,
++	.fpfd_max = 450000,
+ 	.fvco_min = 600000,
+ 	.fvco_max = 1200000,
+ };
 -- 
 2.39.5
 
