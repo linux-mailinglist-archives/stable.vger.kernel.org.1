@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427B7B23200
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD3EB22F5B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 322C77AD189
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE06D4E107A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D1C1C8621;
-	Tue, 12 Aug 2025 18:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFC62FE588;
+	Tue, 12 Aug 2025 17:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK58Dee6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDlrx5+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45272F83B5;
-	Tue, 12 Aug 2025 18:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90002FA0FD;
+	Tue, 12 Aug 2025 17:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022332; cv=none; b=STNDLWHggAaIXZ1Se/1ZLz3T9SlxEd1XzBHmP5+G0xs9gu7+Y/Mi91wYgDq2/E0UWl1FG0VdqmErOCKZ9YLIe3FEMSuB+mUPshzPMI5XbvZcjC+YqiIggyRjzLrPcaJ4IKsajo9y+X9NiWmB90iLSWk7+9O+wwG0RtQ4LFEKAss=
+	t=1755020277; cv=none; b=K5Oumv+V8fM+A782Zvl5CJWG/MT1bxeL90d1v8i/uqDxoLNFHzYFE9ytqNsIvtCK6s8h9C8SCKqnxCTxDo0pDpifN2s8V/xOu5TLHGY0kZV5Xe6FFKKX969upz5iHr8g9lAv87LF03brQdqUXEfcpKS2v5LuRbnjoZyyWli8lL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022332; c=relaxed/simple;
-	bh=5oF7Ohd3y1ojJ0ZJSUUV6MFImMu4WWJrw8l+jQQsJ6c=;
+	s=arc-20240116; t=1755020277; c=relaxed/simple;
+	bh=arEqBiHFuH6ODIb9AEMEFDlwR84cvZGpCh4u0nFHKIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKHOTh70ueEauYzgUsdAdeQmWsTcarVRUwYSrk8+WnOyEURHAGk6kpZS5xL4/u4y6OLHTZ15Uf7spyCftFYFCMYVMbZ4QRJz95kw8dOD0aUIHZBdjWGVXawW+Fgo+lq55ZgBnZ9fgLNBQ/Wh1FhXIl0L/+MvBZQtzqc6uAc5BpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK58Dee6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B3AC4CEF0;
-	Tue, 12 Aug 2025 18:12:11 +0000 (UTC)
+	 MIME-Version; b=n5v1gESvjfms7Cwp6JjJlpWusd5RIVtJfSK1BC02OLaJf9LT5sfY+gLDAN9sQEvl70iKqXdyvv7PCtDtqljAEG6CH8m2xIhgv9qH999isXdsmcASj5vfnSWot1M/pnFj9xBtR9vfXFOMn0vD0mvCIu50Y/owScK15AmcEn1mh/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDlrx5+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FAD5C4CEF0;
+	Tue, 12 Aug 2025 17:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022332;
-	bh=5oF7Ohd3y1ojJ0ZJSUUV6MFImMu4WWJrw8l+jQQsJ6c=;
+	s=korg; t=1755020277;
+	bh=arEqBiHFuH6ODIb9AEMEFDlwR84cvZGpCh4u0nFHKIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PK58Dee6JErBE0mrb25Ftidvrw2lrCzUiRV+bg+j5KQLsr8bG2al88L3YnhHleKRn
-	 mBsDApCQQ0AHQPOX7qNZIGv6XTdg8GOviIlrGchZgxXtYbG39aaVkzZLYSay3TWVXp
-	 tG5jQz/1sU1UkNzt+TWhRGGepFTD3iUavtjRDk6E=
+	b=gDlrx5+xMLDJTD1NwhJ/mboPjWI/taX6/MULhxic9f4OkeUgtfy6mLNitgAxo0ClP
+	 VTvSkj6J9xwcww+VIzw0XMT2f+kaz213Z2KOROglaOV4WwVwR1PTKIKw22MYme3d4V
+	 yCeZrooK4qkIlYA/7pm1SjU73aMkULopFhB89Scs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/369] wifi: ath12k: fix endianness handling while accessing wmi service bit
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 033/253] dpaa2-switch: Fix device reference count leak in MAC endpoint handling
 Date: Tue, 12 Aug 2025 19:27:01 +0200
-Message-ID: <20250812173019.429683397@linuxfoundation.org>
+Message-ID: <20250812172950.140833444@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 8f1a078842d4af4877fb686f3907788024d0d1b7 ]
+commit 96e056ffba912ef18a72177f71956a5b347b5177 upstream.
 
-Currently there is no endian conversion in ath12k_wmi_tlv_services_parser()
-so the service bit parsing will be incorrect on a big endian platform and
-to fix this by using appropriate endian conversion.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_switch_port_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00217-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
-Fixes: 342527f35338 ("wifi: ath12k: Add support to parse new WMI event for 6 GHz regulatory")
-Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250717173539.2523396-2-tamizh.raja@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-3-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 5c2130f77dac..d5892e17494f 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6589,7 +6589,7 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
- 					  void *data)
- {
- 	const struct wmi_service_available_event *ev;
--	u32 *wmi_ext2_service_bitmap;
-+	__le32 *wmi_ext2_service_bitmap;
- 	int i, j;
- 	u16 expected_len;
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -1439,12 +1439,19 @@ static int dpaa2_switch_port_connect_mac
+ 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
+ 		return PTR_ERR(dpmac_dev);
  
-@@ -6621,12 +6621,12 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
- 			   ev->wmi_service_segment_bitmap[3]);
- 		break;
- 	case WMI_TAG_ARRAY_UINT32:
--		wmi_ext2_service_bitmap = (u32 *)ptr;
-+		wmi_ext2_service_bitmap = (__le32 *)ptr;
- 		for (i = 0, j = WMI_MAX_EXT_SERVICE;
- 		     i < WMI_SERVICE_SEGMENT_BM_SIZE32 && j < WMI_MAX_EXT2_SERVICE;
- 		     i++) {
- 			do {
--				if (wmi_ext2_service_bitmap[i] &
-+				if (__le32_to_cpu(wmi_ext2_service_bitmap[i]) &
- 				    BIT(j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32))
- 					set_bit(j, ab->wmi_ab.svc_map);
- 			} while (++j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32);
-@@ -6634,8 +6634,10 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
  
- 		ath12k_dbg(ab, ATH12K_DBG_WMI,
- 			   "wmi_ext2_service_bitmap 0x%04x 0x%04x 0x%04x 0x%04x",
--			   wmi_ext2_service_bitmap[0], wmi_ext2_service_bitmap[1],
--			   wmi_ext2_service_bitmap[2], wmi_ext2_service_bitmap[3]);
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[0]),
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[1]),
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[2]),
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[3]));
- 		break;
- 	}
- 	return 0;
--- 
-2.39.5
-
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
++
+ 	mac = kzalloc(sizeof(*mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
+ 
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = port_priv->ethsw_data->mc_io;
+@@ -1472,6 +1479,8 @@ err_close_mac:
+ 	port_priv->mac = NULL;
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
+ }
+ 
 
 
 
