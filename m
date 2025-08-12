@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-167543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C2FB23089
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4CCB232EE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10D8B56732E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3680D7B5ED3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001822FDC34;
-	Tue, 12 Aug 2025 17:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9B8280037;
+	Tue, 12 Aug 2025 18:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZvzi0Ul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW0jTAl4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24E92DE1E2;
-	Tue, 12 Aug 2025 17:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054471EBFE0;
+	Tue, 12 Aug 2025 18:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021171; cv=none; b=Jt+RFG4Q9BaFZgWt8lJ9l/eomfi5MOR7yvkYfXa1Z3QA1sX6G6byxtzS96b6MKKuZEbR8NqGMpf8iBlY5NqsaDs7z++2hQY8/+KTMJjE57AIskWqv+eHcEZLuICrPtcBQYHdpQ7iJ8OL0JCJbXC9aCEoptdo3l1P4Z3+/Rqk9kg=
+	t=1755022987; cv=none; b=Epq0GJLq6xblhZmc62l6ZW+mI3QPFST1YvMlzUQa9ATLKyByA4viAWG2mmJfmnol3A5aG/Dp2yEpiFZXxCfGFd59TV13+8WPL9MjUQP+98ZRnMalsTy7CGCLpPmBVazSJcnjgcExAW4sNA3qDBCsLGn42DrClm3SWR7gugzi1oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021171; c=relaxed/simple;
-	bh=2EbYQxtbUKGkzgz/xl8yqAuQQL1/joJ3Fxq1uAx70og=;
+	s=arc-20240116; t=1755022987; c=relaxed/simple;
+	bh=1ZMXanmFcdJVzqUl0qbysP6TMcLSsO/W9EP9NRLLmJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVpKrW9OPCZNhQbEKDexVW+WlwKNnafdlv1/nQ5gQEZZzHaOJLZanUpV/MJmEyuLbjojT1Mp7pob9vtqpHfN+SZi/DSvlt0A2tafEnxnCZ6L+iV9P5vneXYyOmKiO4bl9rbH1A9L/3LalTvZaAEIiykKqDtPIrMhOaSU8L0Nvfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZvzi0Ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35504C4CEF0;
-	Tue, 12 Aug 2025 17:52:51 +0000 (UTC)
+	 MIME-Version; b=HVWKyRD2Osn/vrJmEtHhG6IoZV9WbUfqY2WIHzhdodl7B4RGKBAKJnlyrvaz8dDsE7xnqYejex+8KI1wZdwnSs7OZIdeH1p8TU/9++sLW3BU9MCkOxUpUA+UxDMWFIpnoFfPNxuHMqS3M9Dw8VKNXCUufstqmW4hV0cKlNYbNKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW0jTAl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E81C4CEF6;
+	Tue, 12 Aug 2025 18:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021171;
-	bh=2EbYQxtbUKGkzgz/xl8yqAuQQL1/joJ3Fxq1uAx70og=;
+	s=korg; t=1755022986;
+	bh=1ZMXanmFcdJVzqUl0qbysP6TMcLSsO/W9EP9NRLLmJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZvzi0Ul3cPPQ8AuXAicpa8gYaVh31kc3jGM6CTp5j9iXd95A+/ojN0yIKP4I60ZT
-	 HecDM2ksWe8FUp/zhz+BvObONaL1Du8KCtDkNu/CwASk2vp+HI9Mo/jD0CYcY2eFwR
-	 OeAoS2EXvHF1EwGFsVnZcHAVoSXawlAAa8SvYNzM=
+	b=SW0jTAl4QuCFh1ky4IOvara+HJrZlBxauKTb/nktXRC3tqZ0TPlwqK2OUV91ld7PT
+	 ACitfzoFLZ+MnVaqIQg7YFfN1KPl90vni1krKNL+Z72l5FwSrPsaQKrsUUYRSeM7Tr
+	 q17kURX4FFef5mCBQGHkpdGfDyLfuqI++hPYzelE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 224/253] benet: fix BUG when creating VFs
+Subject: [PATCH 6.12 315/369] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
 Date: Tue, 12 Aug 2025 19:30:12 +0200
-Message-ID: <20250812172958.366482756@linuxfoundation.org>
+Message-ID: <20250812173028.572992070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +67,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 5a40f8af2ba1b9bdf46e2db10e8c9710538fbc63 ]
+[ Upstream commit 5349ae5e05fa37409fd48a1eb483b199c32c889b ]
 
-benet crashes as soon as SRIOV VFs are created:
+We should call ib_dma_unmap_single() and mempool_free() before calling
+smbd_disconnect_rdma_connection().
 
- kernel BUG at mm/vmalloc.c:3457!
- Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
- CPU: 4 UID: 0 PID: 7408 Comm: test.sh Kdump: loaded Not tainted 6.16.0+ #1 PREEMPT(voluntary)
- [...]
- RIP: 0010:vunmap+0x5f/0x70
- [...]
- Call Trace:
-  <TASK>
-  __iommu_dma_free+0xe8/0x1c0
-  be_cmd_set_mac_list+0x3fe/0x640 [be2net]
-  be_cmd_set_mac+0xaf/0x110 [be2net]
-  be_vf_eth_addr_config+0x19f/0x330 [be2net]
-  be_vf_setup+0x4f7/0x990 [be2net]
-  be_pci_sriov_configure+0x3a1/0x470 [be2net]
-  sriov_numvfs_store+0x20b/0x380
-  kernfs_fop_write_iter+0x354/0x530
-  vfs_write+0x9b9/0xf60
-  ksys_write+0xf3/0x1d0
-  do_syscall_64+0x8c/0x3d0
+And smbd_disconnect_rdma_connection() needs to be the last function to
+call as all other state might already be gone after it returns.
 
-be_cmd_set_mac_list() calls dma_free_coherent() under a spin_lock_bh.
-Fix it by freeing only after the lock has been released.
-
-Fixes: 1a82d19ca2d6 ("be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250801101338.72502-1-mschmidt@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smbdirect.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index 17098cd89dff..e764d2be4948 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -3851,8 +3851,8 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
- 	status = be_mcc_notify_wait(adapter);
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 754e94a0e07f..e99e783f1b0e 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -281,18 +281,20 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
+ 		request, wc->status);
  
- err:
--	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
- 	spin_unlock_bh(&adapter->mcc_lock);
-+	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
- 	return status;
- }
+-	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
+-		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
+-			wc->status, wc->opcode);
+-		smbd_disconnect_rdma_connection(request->info);
+-	}
+-
+ 	for (i = 0; i < request->num_sge; i++)
+ 		ib_dma_unmap_single(sc->ib.dev,
+ 			request->sge[i].addr,
+ 			request->sge[i].length,
+ 			DMA_TO_DEVICE);
+ 
++	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
++		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
++			wc->status, wc->opcode);
++		mempool_free(request, info->request_mempool);
++		smbd_disconnect_rdma_connection(info);
++		return;
++	}
++
+ 	if (atomic_dec_and_test(&request->info->send_pending))
+ 		wake_up(&request->info->wait_send_pending);
  
 -- 
 2.39.5
