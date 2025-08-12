@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-169222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DC6B238D3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:29:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FF3B238AF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 998051893048
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:26:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E80E723758
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A803F2D781B;
-	Tue, 12 Aug 2025 19:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFAA2FF16F;
+	Tue, 12 Aug 2025 19:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGk/LvIq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yi1gmnE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656BD29BD9D;
-	Tue, 12 Aug 2025 19:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BE22E7656;
+	Tue, 12 Aug 2025 19:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026790; cv=none; b=SlomBOdQYynqmdVNWO/f3pCV7aKQUdl/zgPjThH+XJA7f4XunliNH90R0Pfz9B33SGwSeeksFHC2B4IDKNFHm/a7R0oKwL5aE5hHAzRE07sm8aCPEEgFLqJRoS2ct5Cws/DjBGVLXQhF2Sdh6aROZudKBYGoMn7wvHR6ph8ETn8=
+	t=1755026683; cv=none; b=Oygcl+GVRaqFoGGkrtVYyZytRqE/gEBE7/qQ7OSFvEpHvXOOYzRaqUFo01X0iu2Vt3UjYSqFMXjloUpU2S7WD0Oyi1iGeT3V5edCTbaqhQdQRW6Q0/3jfT66IZGyR7hf0XRLS27oAF0+NSQxupmwklFNRx7r/xwPbmYjOOjWEAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026790; c=relaxed/simple;
-	bh=Wzn0hxnVVQxg9BAA69bhzo5FaQpiHlIA8D3/NFtmOig=;
+	s=arc-20240116; t=1755026683; c=relaxed/simple;
+	bh=xJNphrtQizt5KTaXkBW/zSkfFn1dLFd1/o2BFDS7Fyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ltHXsHfXwccCEtK9bSdm9Q09UQG2/ZBs7PP18KMnAltjn2+8kW22aP+BOU/wia1ZCGOPKu7cddKY8c0McpGZ2Bg5WfBYByncysLlLUEg50MXfhyKIKkNv9CQlwo+UwznvWqpjsiR6ZYwUXscWU+VmnSChvBeD2FX4wGyZ33d570=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGk/LvIq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7430C4CEF1;
-	Tue, 12 Aug 2025 19:26:29 +0000 (UTC)
+	 MIME-Version; b=H9FJ4tFgTvNqn1oUzLbj1kJvUbSKyli2FpPqdPFtBYNBI/LCG0Bz3895F9mEiS4RjH7cutxsj16EHGzsd1mOZMlZDv7xWPGHHdmRDDS8YAjGkByoP6uBvQQTKMuqVwet6Lm6tvPT1mn9Rmj3YlHnjWz5y6Xs5Gsymu+lxgkmOJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yi1gmnE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCCDC4CEF7;
+	Tue, 12 Aug 2025 19:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026790;
-	bh=Wzn0hxnVVQxg9BAA69bhzo5FaQpiHlIA8D3/NFtmOig=;
+	s=korg; t=1755026682;
+	bh=xJNphrtQizt5KTaXkBW/zSkfFn1dLFd1/o2BFDS7Fyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGk/LvIqwSdZDhH1H+3SdxTzaQQmiL70N1+jKTH3dUqFCRJVlSC4q285m0K8WF4pa
-	 BktcT4/CJSWE5B8bNqRDkSpaOAGZFNeJEkSmsZ9YbqASOiw7V2lhH3isSCoFhedlYS
-	 iPnk/MC9GqhFep4KL/bUqZbLjwrQoriSfUqOlrhw=
+	b=yi1gmnE9iCDKEd4Vqf2+cB6K2Sbn/G5kvATbiAAQ9fnYy6rDB4h/pina7Jowu3WMn
+	 +GevTlkteLpoXId7unRZsnfWbwrjLy2wk3wHZTTseqTbW/+acmvYzx3Qm5vAxtIfLB
+	 6Rga5a5GdDKNaVy5daKIsP/KxtcAinKUzawu/b3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Maher Azzouzi <maherazz04@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 409/480] net/sched: mqprio: fix stack out-of-bounds write in tc entry parsing
-Date: Tue, 12 Aug 2025 19:50:17 +0200
-Message-ID: <20250812174414.298283688@linuxfoundation.org>
+Subject: [PATCH 6.15 410/480] s390/mm: Allocate page table with PAGE_SIZE granularity
+Date: Tue, 12 Aug 2025 19:50:18 +0200
+Message-ID: <20250812174414.338070540@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -62,48 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Azzouzi <maherazz04@gmail.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-[ Upstream commit ffd2dc4c6c49ff4f1e5d34e454a6a55608104c17 ]
+[ Upstream commit daa8af80d283ee9a7d42dd6f164a65036665b9d4 ]
 
-TCA_MQPRIO_TC_ENTRY_INDEX is validated using
-NLA_POLICY_MAX(NLA_U32, TC_QOPT_MAX_QUEUE), which allows the value
-TC_QOPT_MAX_QUEUE (16). This leads to a 4-byte out-of-bounds stack
-write in the fp[] array, which only has room for 16 elements (0–15).
+Make vmem_pte_alloc() consistent by always allocating page table of
+PAGE_SIZE granularity, regardless of whether page_table_alloc() (with
+slab) or memblock_alloc() is used. This ensures page table can be fully
+freed when the corresponding page table entries are removed.
 
-Fix this by changing the policy to allow only up to TC_QOPT_MAX_QUEUE - 1.
-
-Fixes: f62af20bed2d ("net/sched: mqprio: allow per-TC user input of FP adminStatus")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Maher Azzouzi <maherazz04@gmail.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250802001857.2702497-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d08d4e7cd6bf ("s390/mm: use full 4KB page for 2KB PTE")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_mqprio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/mm/vmem.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
-index 51d4013b6121..f3e5ef9a9592 100644
---- a/net/sched/sch_mqprio.c
-+++ b/net/sched/sch_mqprio.c
-@@ -152,7 +152,7 @@ static int mqprio_parse_opt(struct net_device *dev, struct tc_mqprio_qopt *qopt,
- static const struct
- nla_policy mqprio_tc_entry_policy[TCA_MQPRIO_TC_ENTRY_MAX + 1] = {
- 	[TCA_MQPRIO_TC_ENTRY_INDEX]	= NLA_POLICY_MAX(NLA_U32,
--							 TC_QOPT_MAX_QUEUE),
-+							 TC_QOPT_MAX_QUEUE - 1),
- 	[TCA_MQPRIO_TC_ENTRY_FP]	= NLA_POLICY_RANGE(NLA_U32,
- 							   TC_FP_EXPRESS,
- 							   TC_FP_PREEMPTIBLE),
+diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
+index 448dd6ed1069..f48ef361bc83 100644
+--- a/arch/s390/mm/vmem.c
++++ b/arch/s390/mm/vmem.c
+@@ -64,13 +64,12 @@ void *vmem_crst_alloc(unsigned long val)
+ 
+ pte_t __ref *vmem_pte_alloc(void)
+ {
+-	unsigned long size = PTRS_PER_PTE * sizeof(pte_t);
+ 	pte_t *pte;
+ 
+ 	if (slab_is_available())
+-		pte = (pte_t *) page_table_alloc(&init_mm);
++		pte = (pte_t *)page_table_alloc(&init_mm);
+ 	else
+-		pte = (pte_t *) memblock_alloc(size, size);
++		pte = (pte_t *)memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+ 	if (!pte)
+ 		return NULL;
+ 	memset64((u64 *)pte, _PAGE_INVALID, PTRS_PER_PTE);
 -- 
 2.39.5
 
