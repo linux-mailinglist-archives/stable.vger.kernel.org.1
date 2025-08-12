@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7411B22FBF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6A1B234DA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B87617EE5D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4481B68250D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA24C2FD1CE;
-	Tue, 12 Aug 2025 17:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824FB2FE579;
+	Tue, 12 Aug 2025 18:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPSRTP33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l68D6i0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970AC2F83CB;
-	Tue, 12 Aug 2025 17:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5D92FD1C2;
+	Tue, 12 Aug 2025 18:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020565; cv=none; b=Am96LVrc7rvrQ+XLuj4+2FbKNv1utnDyHOWJDqcDyZAzgh/a7+dp3D8sljXxCF/pXMUl+6v7ybk54StY9zDUt4OGzVJGuAt9A/wDskEf/GlLh5tXBKIgtK4qm6dut7+uMrllkVrq2DGSGQ5marlJwb74LcqHjaZVLQjBwknCn1o=
+	t=1755023999; cv=none; b=I38f19CijJ+rGu9ml/o/2nz+aRWrvsKWon+EtatpRhVL7yXqcP4OrV7yJlB1QCS2o30NRxhairPGj2E1Prw6MeXKumDScHGwJUQJlINv8zhre5yfGmXAzBnbWku6/ToQsYXYK7TpMXFJiDOUbp1BP0lE4O0onmc1hV8p+XfI5+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020565; c=relaxed/simple;
-	bh=ewx15wlAUFN3Mrb/lR31kmKWembIsmaMusT7ZTwFXvg=;
+	s=arc-20240116; t=1755023999; c=relaxed/simple;
+	bh=ntSV+iBeg2VgZo+Dyti6oMO7KAY6RI+8QO58Z6BiVy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuqCLUusUYVaAqwfcjXqLe1Ztw4McLqCC2WrdRhqxidXLgI+0jkTs62K5MDt9Xfl2NJG0EPRznS7j8sq4LaFqZC0EDYKEDN9iTWk893JDLT5NbY7kaYmhTR00sekmdRelQnGEy6vIyUK8bq2L4+lwf8JA6O4GZurad5RzX2dAD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPSRTP33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09280C4CEF0;
-	Tue, 12 Aug 2025 17:42:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GSlpoGf32iu2Qt8XSy/SZ++NZDNqSFNaCrPZ2CkmzB7c9clOXwqcw2gntvS9pPDk3M8NmbXOJT23V4nq8yu4bnOa7DZi9rcRVi9wdHiCh7akqDN0NE8dQ/bZ8aHNe+UUPbhV88mJOoKvfsHebTdcAVJRnv1abT9h5grueweBF1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l68D6i0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEBAC4CEF0;
+	Tue, 12 Aug 2025 18:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020565;
-	bh=ewx15wlAUFN3Mrb/lR31kmKWembIsmaMusT7ZTwFXvg=;
+	s=korg; t=1755023999;
+	bh=ntSV+iBeg2VgZo+Dyti6oMO7KAY6RI+8QO58Z6BiVy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPSRTP33KtkyuubUQD91VahJcmpP4CdZZ9V8HYSfr8IP5+pOlVlwJnCQsEKST7Dqy
-	 zgeFCySedYhHDeLRUDV3q/gxv88AOXB0la1+35fnwQ9ntUyPriy5LTZUwuwS/DygNQ
-	 Y03nAD7EWUB/GmlEY/vZrCEKVxgkHrTANVpzIhGo=
+	b=l68D6i0jJiSnyjpVQpKjOcnRw4EHIv+u2Q4ctQXaZhfij62WBl3iNEvsEfHF7NBwn
+	 q6igy31BELoO/uzlh6GzMvv8kH/hJzBMrAjpWmEer/mSwl+vD6z5dzrmHYWbA9yHCh
+	 c25yI/zSPJKD3fnB8LAO/4SpL7D+a3e3Eeh3UkzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Andrew Davis <afd@ti.com>,
+	Lee Jones <lee@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/253] net_sched: act_ctinfo: use atomic64_t for three counters
+Subject: [PATCH 6.16 210/627] leds: lp8860: Check return value of devm_mutex_init()
 Date: Tue, 12 Aug 2025 19:28:25 +0200
-Message-ID: <20250812172953.690710521@linuxfoundation.org>
+Message-ID: <20250812173427.270499846@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit d300335b4e18672913dd792ff9f49e6cccf41d26 ]
+[ Upstream commit 3b07bb900af7f43f13f9ff398b4c6ca1dee217cd ]
 
-Commit 21c167aa0ba9 ("net/sched: act_ctinfo: use percpu stats")
-missed that stats_dscp_set, stats_dscp_error and stats_cpmark_set
-might be written (and read) locklessly.
+devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
+marked as unusable and trigger errors on usage.
 
-Use atomic64_t for these three fields, I doubt act_ctinfo is used
-heavily on big SMP hosts anyway.
+Add the missed check.
 
-Fixes: 24ec483cec98 ("net: sched: Introduce act_ctinfo action")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250709090204.797558-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 87a59548af95 ("leds: lp8860: Use new mutex guards to cleanup function exits")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Acked-by: Andrew Davis <afd@ti.com>
+Acked-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20250617-must_check-devm_mutex_init-v7-2-d9e449f4d224@weissschuh.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tc_act/tc_ctinfo.h |  6 +++---
- net/sched/act_ctinfo.c         | 19 +++++++++++--------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/leds/leds-lp8860.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/tc_act/tc_ctinfo.h b/include/net/tc_act/tc_ctinfo.h
-index f071c1d70a25..a04bcac7adf4 100644
---- a/include/net/tc_act/tc_ctinfo.h
-+++ b/include/net/tc_act/tc_ctinfo.h
-@@ -18,9 +18,9 @@ struct tcf_ctinfo_params {
- struct tcf_ctinfo {
- 	struct tc_action common;
- 	struct tcf_ctinfo_params __rcu *params;
--	u64 stats_dscp_set;
--	u64 stats_dscp_error;
--	u64 stats_cpmark_set;
-+	atomic64_t stats_dscp_set;
-+	atomic64_t stats_dscp_error;
-+	atomic64_t stats_cpmark_set;
- };
+diff --git a/drivers/leds/leds-lp8860.c b/drivers/leds/leds-lp8860.c
+index 52b97c9f2a03..0962c00c215a 100644
+--- a/drivers/leds/leds-lp8860.c
++++ b/drivers/leds/leds-lp8860.c
+@@ -307,7 +307,9 @@ static int lp8860_probe(struct i2c_client *client)
+ 	led->client = client;
+ 	led->led_dev.brightness_set_blocking = lp8860_brightness_set;
  
- enum {
-diff --git a/net/sched/act_ctinfo.c b/net/sched/act_ctinfo.c
-index 7275ad869f8e..34a1fb617a0f 100644
---- a/net/sched/act_ctinfo.c
-+++ b/net/sched/act_ctinfo.c
-@@ -43,9 +43,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				ipv4_change_dsfield(ip_hdr(skb),
- 						    INET_ECN_MASK,
- 						    newdscp);
--				ca->stats_dscp_set++;
-+				atomic64_inc(&ca->stats_dscp_set);
- 			} else {
--				ca->stats_dscp_error++;
-+				atomic64_inc(&ca->stats_dscp_error);
- 			}
- 		}
- 		break;
-@@ -56,9 +56,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				ipv6_change_dsfield(ipv6_hdr(skb),
- 						    INET_ECN_MASK,
- 						    newdscp);
--				ca->stats_dscp_set++;
-+				atomic64_inc(&ca->stats_dscp_set);
- 			} else {
--				ca->stats_dscp_error++;
-+				atomic64_inc(&ca->stats_dscp_error);
- 			}
- 		}
- 		break;
-@@ -71,7 +71,7 @@ static void tcf_ctinfo_cpmark_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				  struct tcf_ctinfo_params *cp,
- 				  struct sk_buff *skb)
- {
--	ca->stats_cpmark_set++;
-+	atomic64_inc(&ca->stats_cpmark_set);
- 	skb->mark = READ_ONCE(ct->mark) & cp->cpmarkmask;
- }
+-	devm_mutex_init(&client->dev, &led->lock);
++	ret = devm_mutex_init(&client->dev, &led->lock);
++	if (ret)
++		return dev_err_probe(&client->dev, ret, "Failed to initialize lock\n");
  
-@@ -321,15 +321,18 @@ static int tcf_ctinfo_dump(struct sk_buff *skb, struct tc_action *a,
- 	}
- 
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_SET,
--			      ci->stats_dscp_set, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_dscp_set),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_ERROR,
--			      ci->stats_dscp_error, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_dscp_error),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_CPMARK_SET,
--			      ci->stats_cpmark_set, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_cpmark_set),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	spin_unlock_bh(&ci->tcf_lock);
+ 	led->regmap = devm_regmap_init_i2c(client, &lp8860_regmap_config);
+ 	if (IS_ERR(led->regmap)) {
 -- 
 2.39.5
 
