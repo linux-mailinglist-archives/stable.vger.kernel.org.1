@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84828B23212
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:13:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4031B23374
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE71583DCC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD70D7AAB02
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9270B2FF145;
-	Tue, 12 Aug 2025 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460E12FAC02;
+	Tue, 12 Aug 2025 18:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+n26OG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8V5BhFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDFA2FE59D;
-	Tue, 12 Aug 2025 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F2F2FABF8;
+	Tue, 12 Aug 2025 18:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022066; cv=none; b=F8zuZLk+bx9u2+vjx7FmYd4QFcRoRKWBlIe4bQKuCJ9qpu5LPacdz9iZSihvFKCt9LpPCVPjVvOP5rV7wwG5DE8jttmIBZTYxjJmczE6SGad+a9fxbpIYQVvX7/OavVgYRoYFyO3vCiiJGp1ZADNaWKrsDeR+slfgrdkPnV3WbA=
+	t=1755023332; cv=none; b=aurdJL8v9j5Lokx7V0Rfa3lspxea/Qsx3DzKKbcWosFvah41Rup9UZRCkC84KaI/4boZbWGy8GeNKDN1rmd23iVlkwWQQS6AItShmbCJuHIIFp+4n+VC9MCYx114X1Z0Ojr/ctxuvJmFKaR4dvmflnjRLzcCrTYYnNtIXTowXDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022066; c=relaxed/simple;
-	bh=gxxnXWf12Dq1Fr7xqZGsdQXjSLPQOvXyleLzdexluXc=;
+	s=arc-20240116; t=1755023332; c=relaxed/simple;
+	bh=PCoCXkKZUe1i45X37PD7Hbpn/sziJEQoOQcwi6NeD4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibd9Y1GifahftoktD7bxwc0M+VB6Dtx3VIhDDkYgJZqp+mqkAvlUVw32bFEabJn7sLTaAuPo/4ei8X1qpHJyk1OmAstph8TqGAa03r/cCf+zI0MgGtE/xNFKmxLrmQUixfgmkUw2xURvpTHBWwzZxb2Il7cv+HezWkTfajjco+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+n26OG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06DFC4CEF0;
-	Tue, 12 Aug 2025 18:07:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O1kpcZfstD4KCQRKk7/dkjhB5Z6dVYNiLBuuHDbgCdSh0roWOEMCWCIwx9/aSVSS2XLI4hCdkVs+9pf9SNZND/gJEt9dCFqYna5HJU+PCoMksrKFytSZV61VtNsgy55nJrDzCzIit4hoET+IgFkk5xTfaB57ZU5HG34bH+rkzys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8V5BhFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C577C4CEF0;
+	Tue, 12 Aug 2025 18:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022066;
-	bh=gxxnXWf12Dq1Fr7xqZGsdQXjSLPQOvXyleLzdexluXc=;
+	s=korg; t=1755023331;
+	bh=PCoCXkKZUe1i45X37PD7Hbpn/sziJEQoOQcwi6NeD4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+n26OG5gkMhgSzz8VpYqPV33gUsh5rz4ZQCuBVt7mdQi4LzHraD/YIkOiaHj0uO7
-	 SA2dmdlSC88pX59UPkeVrXHG7+kQcu+ylAarNfYPVMSne/JyuKWTNReNxRgoA1j1qc
-	 ID1HNoeA8PKi7zgHKUahV09bWSnJVOgdti6lSn6s=
+	b=O8V5BhFhJIa8IUuGwqITHaadHho3ayjMkGo1ZsBLLBGKAmMqZe3BrGbPQDxlPXYSf
+	 lMM5vONpc5W1RWU5N0t9+sfLJbgVqRbgT9cZll0LFjSSrqncHlt/I5FfDd675qm4qW
+	 eJjb//y4thSYbBW+8qaUdOspZ6YQqLx1wcu7uYfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sivan Zohar-Kotzer <sivany32@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/369] powercap: dtpm_cpu: Fix NULL pointer dereference in get_pd_power_uw()
+Subject: [PATCH 6.16 048/627] arm64: dts: qcom: msm8976: Make blsp_dma controlled-remotely
 Date: Tue, 12 Aug 2025 19:25:43 +0200
-Message-ID: <20250812173016.493727291@linuxfoundation.org>
+Message-ID: <20250812173421.162167322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sivan Zohar-Kotzer <sivany32@gmail.com>
+From: André Apitzsch <git@apitzsch.eu>
 
-[ Upstream commit 46dc57406887dd02565cb264224194a6776d882b ]
+[ Upstream commit 76270a18dbdf0bb50615f1b29d2cae8d683da01e ]
 
-The get_pd_power_uw() function can crash with a NULL pointer dereference
-when em_cpu_get() returns NULL. This occurs when a CPU becomes impossible
-during runtime, causing get_cpu_device() to return NULL, which propagates
-through em_cpu_get() and leads to a crash when em_span_cpus() dereferences
-the NULL pointer.
+The blsp_dma controller is shared between the different subsystems,
+which is why it is already initialized by the firmware. We should not
+reinitialize it from Linux to avoid potential other users of the DMA
+engine to misbehave.
 
-Add a NULL check after em_cpu_get() and return 0 if unavailable,
-matching the existing fallback behavior in __dtpm_cpu_setup().
+In mainline this can be described using the "qcom,controlled-remotely"
+property. In the downstream/vendor kernel from Qualcomm there is an
+opposite "qcom,managed-locally" property. This property is *not* set
+for the qcom,sps-dma@7884000 and qcom,sps-dma@7ac4000 [1] so adding
+"qcom,controlled-remotely" upstream matches the behavior of the
+downstream/vendor kernel.
 
-Fixes: eb82bace8931 ("powercap/drivers/dtpm: Scale the power with the load")
-Signed-off-by: Sivan Zohar-Kotzer <sivany32@gmail.com>
-Link: https://patch.msgid.link/20250701221355.96916-1-sivany32@gmail.com
-[ rjw: Drop an excess empty code line ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Adding this fixes booting Longcheer L9360.
+
+[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.3.7.c26/arch/arm/boot/dts/qcom/msm8976.dtsi#L1149-1163
+
+Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Link: https://lore.kernel.org/r/20250615-bqx5plus-v2-1-72b45c84237d@apitzsch.eu
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/dtpm_cpu.c | 2 ++
+ arch/arm64/boot/dts/qcom/msm8976.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-index 6b6f51b21550..99390ec1481f 100644
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -96,6 +96,8 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
- 	int i;
+diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+index e2ac2fd6882f..2a3024638470 100644
+--- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+@@ -1331,6 +1331,7 @@ blsp1_dma: dma-controller@7884000 {
+ 			clock-names = "bam_clk";
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,controlled-remotely;
+ 		};
  
- 	pd = em_cpu_get(dtpm_cpu->cpu);
-+	if (!pd)
-+		return 0;
+ 		blsp1_uart1: serial@78af000 {
+@@ -1451,6 +1452,7 @@ blsp2_dma: dma-controller@7ac4000 {
+ 			clock-names = "bam_clk";
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,controlled-remotely;
+ 		};
  
- 	pd_mask = em_span_cpus(pd);
- 
+ 		blsp2_uart2: serial@7af0000 {
 -- 
 2.39.5
 
