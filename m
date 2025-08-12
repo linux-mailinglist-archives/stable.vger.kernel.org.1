@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C25B2335B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4065B230DC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2556169270
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CA32188A037
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1682E7BD4;
-	Tue, 12 Aug 2025 18:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1412FDC20;
+	Tue, 12 Aug 2025 17:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mVDqcHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJqtJYCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0A71EBFE0;
-	Tue, 12 Aug 2025 18:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04232F7449;
+	Tue, 12 Aug 2025 17:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023042; cv=none; b=AX6zSD7h7ZUCeOgen3zPLvR+HKS4pJfMcOi8CzyI0TQyDYndhm9CGrUV4EDFgIForVYT4Jr1BNESIdrqq8jJXaI9hKz+hAVZWDSlYbUYJcheJ1cBtciqjsoM+E34TYhopPDEe8OUHnMGyrvQNpIShQQPhYjNRZGOF5l2uFe+iJo=
+	t=1755021379; cv=none; b=kTSRI8SBQ/1Q1KcIbZcVWNFT3yhrEaOUFyU9p0jDqWpwXulJSR/NIz//StE8jP3UOwhR2tx8zYDuAVgUsJ6UCSpFkvPjCINE4bC8iwNsGIb5jaLsqVB2ulWrUPmQx1t3J/nr0qOPDWdbCJ3avvmiMx/XA844tg/32rsm5fZcvR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023042; c=relaxed/simple;
-	bh=qEUnqEwr9QPWDGpv1m2lR1LVBNwpPPTG6rec6G/0A/U=;
+	s=arc-20240116; t=1755021379; c=relaxed/simple;
+	bh=HEYn81TXKMwdc8ujPBrjJmuqMPEhF/k+0c5Gh5dC2LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6xT+B6PU1BnXxI3INn3cKusYsl2wfzErtOQ35vPEEKQ1PO6xHfcQua9XkEckJlyEiK3GzDBkaYO4rtr7hXHn2HhzKLtQL0Q0KxgkRoOJVFBvk2Znba/KzpRaVMl+rrt2sPC6wOIYQCl6/Mp/eVhG6ULHsCJP0WBVi/iH1kAcBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mVDqcHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0D5C4CEF7;
-	Tue, 12 Aug 2025 18:24:01 +0000 (UTC)
+	 MIME-Version; b=d6Z8yw7tyjowReUxuzpIgxkLs2qwI3unMFX/JDrK219AWKds9+VjTX37J7CscmGBMpb2CeJGgMPZSW7KllAWrum2Yh+NMi0foqImhtIlA18ww8h1f0Tqa/WaYptHejfrOZW4IUVvtp2U+f1mi0uFRgjHVdnc6/oFtK3nl9Ogkz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJqtJYCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06C9C4CEF0;
+	Tue, 12 Aug 2025 17:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023042;
-	bh=qEUnqEwr9QPWDGpv1m2lR1LVBNwpPPTG6rec6G/0A/U=;
+	s=korg; t=1755021379;
+	bh=HEYn81TXKMwdc8ujPBrjJmuqMPEhF/k+0c5Gh5dC2LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mVDqcHuBg/tx3qepeM62lb+t1jnkrhRDfBs64FQZ0aFvpCu2a44tg4nn4ACcQ23M
-	 QeIF1ngsOHaNVCVbYYJ3rIRuJ7SwZ5K1hFWxhIEcqnSvbSAA4Bl4DF+tJ3vS3LlMo6
-	 Dl6Ad3kTWsObQeysJvqeitfok5vGqexVa4+R819g=
+	b=EJqtJYCvBfIVjMdYQ8Yide4Tbkw2IWOyzAhkynCXrMP4hVoXiOddFzx+GJEzoJnzU
+	 vrBJqiDjGbcjLeZP4QSDMYKQhS42Q0GdKccKSfxc1AicMRgvK0jcAolZwaTewRWGqO
+	 WmofslzztDT9w1nJChBRZgElBbhUenroj2Fz3oHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Yifei Liu <yifei.l.liu@oracle.com>
-Subject: [PATCH 6.12 333/369] selftests/bpf: Add a test for arena range tree algorithm
+	tianshuo han <hantianshuo233@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 242/253] ksmbd: limit repeated connections from clients with the same IP
 Date: Tue, 12 Aug 2025 19:30:30 +0200
-Message-ID: <20250812173029.234535275@linuxfoundation.org>
+Message-ID: <20250812172959.151334099@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,156 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit e58358afa84e8e271a296459d35d1715c7572013 upstream.
+commit e6bb9193974059ddbb0ce7763fa3882bd60d4dc3 upstream.
 
-Add a test that verifies specific behavior of arena range tree
-algorithm and adjust existing big_alloc1 test due to use
-of global data in arena.
+Repeated connections from clients with the same IP address may exhaust
+the max connections and prevent other normal client connections.
+This patch limit repeated connections from clients with the same IP.
 
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/bpf/20241108025616.17625-3-alexei.starovoitov@gmail.com
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_arena_large.c |  110 ++++++++++++++-
- 1 file changed, 108 insertions(+), 2 deletions(-)
+ fs/smb/server/connection.h    |    1 +
+ fs/smb/server/transport_tcp.c |   17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
---- a/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
-@@ -29,12 +29,12 @@ int big_alloc1(void *ctx)
- 	if (!page1)
- 		return 1;
- 	*page1 = 1;
--	page2 = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE,
-+	page2 = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE * 2,
- 				      1, NUMA_NO_NODE, 0);
- 	if (!page2)
- 		return 2;
- 	*page2 = 2;
--	no_page = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE,
-+	no_page = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE,
- 					1, NUMA_NO_NODE, 0);
- 	if (no_page)
- 		return 3;
-@@ -66,4 +66,110 @@ int big_alloc1(void *ctx)
- #endif
- 	return 0;
- }
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -45,6 +45,7 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
++	__be32				inet_addr;
+ 	char				*request_buf;
+ 	struct ksmbd_transport		*transport;
+ 	struct nls_table		*local_nls;
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -87,6 +87,7 @@ static struct tcp_transport *alloc_trans
+ 		return NULL;
+ 	}
+ 
++	conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
+ 	conn->transport = KSMBD_TRANS(t);
+ 	KSMBD_TRANS(t)->conn = conn;
+ 	KSMBD_TRANS(t)->ops = &ksmbd_tcp_transport_ops;
+@@ -226,6 +227,8 @@ static int ksmbd_kthread_fn(void *p)
+ {
+ 	struct socket *client_sk = NULL;
+ 	struct interface *iface = (struct interface *)p;
++	struct inet_sock *csk_inet;
++	struct ksmbd_conn *conn;
+ 	int ret;
+ 
+ 	while (!kthread_should_stop()) {
+@@ -244,6 +247,20 @@ static int ksmbd_kthread_fn(void *p)
+ 			continue;
+ 		}
+ 
++		/*
++		 * Limits repeated connections from clients with the same IP.
++		 */
++		csk_inet = inet_sk(client_sk->sk);
++		down_read(&conn_list_lock);
++		list_for_each_entry(conn, &conn_list, conns_list)
++			if (csk_inet->inet_daddr == conn->inet_addr) {
++				ret = -EAGAIN;
++				break;
++			}
++		up_read(&conn_list_lock);
++		if (ret == -EAGAIN)
++			continue;
 +
-+#if defined(__BPF_FEATURE_ADDR_SPACE_CAST)
-+#define PAGE_CNT 100
-+__u8 __arena * __arena page[PAGE_CNT]; /* occupies the first page */
-+__u8 __arena *base;
-+
-+/*
-+ * Check that arena's range_tree algorithm allocates pages sequentially
-+ * on the first pass and then fills in all gaps on the second pass.
-+ */
-+__noinline int alloc_pages(int page_cnt, int pages_atonce, bool first_pass,
-+		int max_idx, int step)
-+{
-+	__u8 __arena *pg;
-+	int i, pg_idx;
-+
-+	for (i = 0; i < page_cnt; i++) {
-+		pg = bpf_arena_alloc_pages(&arena, NULL, pages_atonce,
-+					   NUMA_NO_NODE, 0);
-+		if (!pg)
-+			return step;
-+		pg_idx = (pg - base) / PAGE_SIZE;
-+		if (first_pass) {
-+			/* Pages must be allocated sequentially */
-+			if (pg_idx != i)
-+				return step + 100;
-+		} else {
-+			/* Allocator must fill into gaps */
-+			if (pg_idx >= max_idx || (pg_idx & 1))
-+				return step + 200;
-+		}
-+		*pg = pg_idx;
-+		page[pg_idx] = pg;
-+		cond_break;
-+	}
-+	return 0;
-+}
-+
-+//SEC("syscall")
-+//__success __retval(0)
-+int big_alloc2(void *ctx)
-+{
-+	__u8 __arena *pg;
-+	int i, err;
-+
-+	base = bpf_arena_alloc_pages(&arena, NULL, 1, NUMA_NO_NODE, 0);
-+	if (!base)
-+		return 1;
-+	bpf_arena_free_pages(&arena, (void __arena *)base, 1);
-+
-+	err = alloc_pages(PAGE_CNT, 1, true, PAGE_CNT, 2);
-+	if (err)
-+		return err;
-+
-+	/* Clear all even pages */
-+	for (i = 0; i < PAGE_CNT; i += 2) {
-+		pg = page[i];
-+		if (*pg != i)
-+			return 3;
-+		bpf_arena_free_pages(&arena, (void __arena *)pg, 1);
-+		page[i] = NULL;
-+		cond_break;
-+	}
-+
-+	/* Allocate into freed gaps */
-+	err = alloc_pages(PAGE_CNT / 2, 1, false, PAGE_CNT, 4);
-+	if (err)
-+		return err;
-+
-+	/* Free pairs of pages */
-+	for (i = 0; i < PAGE_CNT; i += 4) {
-+		pg = page[i];
-+		if (*pg != i)
-+			return 5;
-+		bpf_arena_free_pages(&arena, (void __arena *)pg, 2);
-+		page[i] = NULL;
-+		page[i + 1] = NULL;
-+		cond_break;
-+	}
-+
-+	/* Allocate 2 pages at a time into freed gaps */
-+	err = alloc_pages(PAGE_CNT / 4, 2, false, PAGE_CNT, 6);
-+	if (err)
-+		return err;
-+
-+	/* Check pages without freeing */
-+	for (i = 0; i < PAGE_CNT; i += 2) {
-+		pg = page[i];
-+		if (*pg != i)
-+			return 7;
-+		cond_break;
-+	}
-+
-+	pg = bpf_arena_alloc_pages(&arena, NULL, 1, NUMA_NO_NODE, 0);
-+
-+	if (!pg)
-+		return 8;
-+	/*
-+	 * The first PAGE_CNT pages are occupied. The new page
-+	 * must be above.
-+	 */
-+	if ((pg - base) / PAGE_SIZE < PAGE_CNT)
-+		return 9;
-+	return 0;
-+}
-+#endif
- char _license[] SEC("license") = "GPL";
+ 		if (server_conf.max_connections &&
+ 		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
+ 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
 
 
 
