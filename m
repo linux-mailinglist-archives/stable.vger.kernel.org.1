@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CB8B23270
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68E8B2303A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EA7E1A233FA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F029D2A3848
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447DA2D46B3;
-	Tue, 12 Aug 2025 18:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AB9279915;
+	Tue, 12 Aug 2025 17:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sovjZlFf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMZIFDQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A501C8621;
-	Tue, 12 Aug 2025 18:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D8E2D46AC;
+	Tue, 12 Aug 2025 17:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022343; cv=none; b=WGTiQ49YJfuT9bdADWOOwPITAPBtzGdHvi0VLUtx9wm/TJe0sXazDlCZx7YifrupaUfJqPSHZMSTk22BdJwaP9hIsaxWm+yM5lLHAI0cJV48eZNu0j4i83hHy6O06/S2TOVJUn4ijVZOMUApPxpYhXSMu5tQFv4ZWKRk1ykJ2Mo=
+	t=1755020952; cv=none; b=LY1t2yp/Sf0wziAvOHT/brMWAWx6nkTCzL1TC8HBzG8CWYVmYQbwL+AAH7zCXQbXvzQAc+m0OmJsCL63BHGRhZMTXkC75muo5941IyYajC7C6jt8HpRGUeQr+PQUEuQH+ALj4wPOCCkSWuwHzxG8rotbrOQAeDn2A4/v0WmX0+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022343; c=relaxed/simple;
-	bh=Ab2x/bG2qKrALfx+egnDzRZ/bForu5vEp26AIMIxQX0=;
+	s=arc-20240116; t=1755020952; c=relaxed/simple;
+	bh=2fYHmjjQoByqWcAif2I4o9Me25uFe/ImjvBEtNCUp30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moGAtju/Fi/lyqkHYaalGzsKfgxRCYIEeWksWw0vEzGRpt2xCG1FnI2WRB8I4mcjzycZ6tTGKXqM2CXo7maBNs/0OF2m1K66dNsimSxEgv11bo96xns4m58ThCbmnpzMSDTCmUbdl3suR4yFlNS/RCigYm82yeVq6VzP4ExzAKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sovjZlFf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6209CC4CEF0;
-	Tue, 12 Aug 2025 18:12:22 +0000 (UTC)
+	 MIME-Version; b=S0GRKJ7erg5LOJTKWy6CABXpoj5IFsvuHqRjAJ+kJMCaqEbHk3I80055nt9Oyf2QDKYHHS1BnbNAAKO20hTCxou8+bBj3J8Ed+b3VrXPW9w5oIvxnlBtP4ghyIREUxqMxUsEv55O+bdGT1h5pkpiSGdZFhAPKYLej+w3rXDfVZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMZIFDQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BBFC4CEF0;
+	Tue, 12 Aug 2025 17:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022342;
-	bh=Ab2x/bG2qKrALfx+egnDzRZ/bForu5vEp26AIMIxQX0=;
+	s=korg; t=1755020951;
+	bh=2fYHmjjQoByqWcAif2I4o9Me25uFe/ImjvBEtNCUp30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sovjZlFfxIQKhJBtLCjK/cbykqYf4CKuxYD0ulPATmHKuKcGHpP4rTJ9yO1V+he2W
-	 M7v9l83NP6agtgzy5q7ZIKiwgQTejWNa87NXCYETfO7LqRtzCkSFwiigmOaXBNTxnS
-	 V42O7nPW3ct0aBGI80kAMP5Y9E9ob56V5ESgQ8VU=
+	b=MMZIFDQIp1tWdutTFnWGzJCWHNsKPhfsOqLmzylNUfBqlM9wxEMXpHxjGSsWxrea3
+	 Y3kXItubHhx0b/hqdMCjY3d8mopTmoGbrVF4GlGVh1zD6UjdhTesEE450lHcTGSnOx
+	 ATTZMRpcFQa+wC3PWcxlWJO2XBZlUSLp61L9YxEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Adam Ford <aford173@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/369] wifi: nl80211: Set num_sub_specs before looping through sub_specs
+Subject: [PATCH 6.6 036/262] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
 Date: Tue, 12 Aug 2025 19:27:04 +0200
-Message-ID: <20250812173019.549128533@linuxfoundation.org>
+Message-ID: <20250812172954.499565938@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 2ed9a9fc9976262109d04f1a3c75c46de8ce4f22 ]
+[ Upstream commit f83f69097a302ed2a2775975ddcf12e6a5ac6ec3 ]
 
-The processing of the struct cfg80211_sar_specs::sub_specs flexible
-array requires its counter, num_sub_specs, to be assigned before the
-loop in nl80211_set_sar_specs(). Leave the final assignment after the
-loop in place in case fewer ended up in the array.
+The reference manual for the i.MX8MM states the clock rate in
+MMC mode is 1/2 of the input clock, therefore to properly run
+at HS400 rates, the input clock must be 400MHz to operate at
+200MHz.  Currently the clock is set to 200MHz which is half the
+rate it should be, so the throughput is half of what it should be
+for HS400 operation.
 
-Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/20250721183125.work.183-kees@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 4eb44821c70d..ec8265f2d568 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -16789,6 +16789,7 @@ static int nl80211_set_sar_specs(struct sk_buff *skb, struct genl_info *info)
- 	if (!sar_spec)
- 		return -ENOMEM;
- 
-+	sar_spec->num_sub_specs = specs;
- 	sar_spec->type = type;
- 	specs = 0;
- 	nla_for_each_nested(spec_list, tb[NL80211_SAR_ATTR_SPECS], rem) {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+index 8ab0e45f2ad3..f93c2b604c57 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+@@ -284,6 +284,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
 -- 
 2.39.5
 
