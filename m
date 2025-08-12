@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-167956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EABB232AB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49312B230D1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6AA2A0EE3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41C58623465
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2F12ED17F;
-	Tue, 12 Aug 2025 18:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF3F2FDC2F;
+	Tue, 12 Aug 2025 17:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKGYMZHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4dstIhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D62B61FFE;
-	Tue, 12 Aug 2025 18:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3C72F83CB;
+	Tue, 12 Aug 2025 17:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022558; cv=none; b=B7NX9dKD67bv1oQpGH+aN9YHceIDChebkkNKBxdDT42No6dPGjvWx92jeGPb2argAVkWiICjVE0hFj41TZPEt9a8R8xmgRPGlFK2yBK180rGekqBrS5f/iDajr9bW8Jk26w5uZQHKOkfd5K1Q9bLaoZDHJCROaztOsI6CW7Pttg=
+	t=1755021360; cv=none; b=THiLjbL2dv7xN6SuevIn32UIKI9lIZeI2tZcALlNtk4fUPjm6+/vqRnOIW9gDFhSezi9dl26ZgcjuU3FIUmzevC59+6qSNKm8WqdZJAX2ZHav17x0ugpVwEYBAfJleG3iJZfyLigWM7WTdCTpgd5BYo/bz+bu/bzHH+Mj8Z8KXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022558; c=relaxed/simple;
-	bh=iYqNi5jNYihHh/RWySoqUJzGdtnuWTpt8DEXfkCAobk=;
+	s=arc-20240116; t=1755021360; c=relaxed/simple;
+	bh=GEjUM7zfUgwJ/9ycjvTQD2aMu4tCzYvOLnX6wfaivog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlHjYjAWgiFey+3XFdPhJQ8ecYC8rTbLkLvSVC2RrvRwvKhZtfGz7+5krH84DtX9DG12nqXabcc6r3fjGtwzi0b5TbPS2q3G9N+0QGnYvloR8oMUQAWGowZhS/KmWeUDSJMHyVQQULdT88QFA6OBXcVsuPPYvwaeQi7ymnv6t4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKGYMZHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A126AC4CEF0;
-	Tue, 12 Aug 2025 18:15:57 +0000 (UTC)
+	 MIME-Version; b=oE8O7+y889Gq7ImiuJn98iF6q67SseAFR0vs5Ua8zI9fBWtHxduIxvVh6kQeJ8Ny25OVij6rx9Pxoljiu87RYidSIP8bGti3ZSeBB8TFmHCJRTTLjQ1KbO7uo2haBx+nTj3xDBGgNbhqJZq9jrc17/F+ar0zhuWYttNOi1VXXKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4dstIhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8E2C4CEF1;
+	Tue, 12 Aug 2025 17:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022558;
-	bh=iYqNi5jNYihHh/RWySoqUJzGdtnuWTpt8DEXfkCAobk=;
+	s=korg; t=1755021360;
+	bh=GEjUM7zfUgwJ/9ycjvTQD2aMu4tCzYvOLnX6wfaivog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKGYMZHQLklJ1xpIWlYKMjlOVKwdYZjXPdP0yerg63EHcMKkVXUqAQBKZHfXKis1r
-	 V7p9intCL9N2kPYlLWgBWX9LDF9uu1u7qGzlZDb2di/WD4bca2kT5SS0QbUgdxBM1A
-	 Z31M7DZ5/en7m8LlmWPGBZ6tpP6kYUaqgIjLG+Os=
+	b=h4dstIhXK/53+ZxQFeY7BQXblxyc74NgDrTVo/z9I0k4LG5QdxTfPsu92pcGARuUS
+	 7iVkNs45RfDzfwB0ULHem9sRyelv6a7chu1YSZYCTbWlE4EG24gUkr+t886384HUrC
+	 kT9QCUpVcYJLVwpMf0m/B33iyZ6pump1VpG4fg+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/369] RDMA/hns: Drop GFP_NOWARN
+Subject: [PATCH 6.6 100/262] net/mlx5e: Remove skb secpath if xfrm state is not found
 Date: Tue, 12 Aug 2025 19:28:08 +0200
-Message-ID: <20250812173021.950884922@linuxfoundation.org>
+Message-ID: <20250812172957.348216480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +65,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 5338abb299f0cd764edf78a7e71a0b746af35030 ]
+[ Upstream commit 6d19c44b5c6dd72f9a357d0399604ec16a77de3c ]
 
-GFP_NOWARN silences all warnings on dma_alloc_coherent() failure,
-which might otherwise help with troubleshooting.
+Hardware returns a unique identifier for a decrypted packet's xfrm
+state, this state is looked up in an xarray. However, the state might
+have been freed by the time of this lookup.
 
-Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250703113905.3597124-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Currently, if the state is not found, only a counter is incremented.
+The secpath (sp) extension on the skb is not removed, resulting in
+sp->len becoming 0.
+
+Subsequently, functions like __xfrm_policy_check() attempt to access
+fields such as xfrm_input_state(skb)->xso.type (which dereferences
+sp->xvec[sp->len - 1]) without first validating sp->len. This leads to
+a crash when dereferencing an invalid state pointer.
+
+This patch prevents the crash by explicitly removing the secpath
+extension from the skb if the xfrm state is not found after hardware
+decryption. This ensures downstream functions do not operate on a
+zero-length secpath.
+
+ BUG: unable to handle page fault for address: ffffffff000002c8
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 282e067 P4D 282e067 PUD 0
+ Oops: Oops: 0000 [#1] SMP
+ CPU: 12 UID: 0 PID: 0 Comm: swapper/12 Not tainted 6.15.0-rc7_for_upstream_min_debug_2025_05_27_22_44 #1 NONE
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:__xfrm_policy_check+0x61a/0xa30
+ Code: b6 77 7f 83 e6 02 74 14 4d 8b af d8 00 00 00 41 0f b6 45 05 c1 e0 03 48 98 49 01 c5 41 8b 45 00 83 e8 01 48 98 49 8b 44 c5 10 <0f> b6 80 c8 02 00 00 83 e0 0c 3c 04 0f 84 0c 02 00 00 31 ff 80 fa
+ RSP: 0018:ffff88885fb04918 EFLAGS: 00010297
+ RAX: ffffffff00000000 RBX: 0000000000000002 RCX: 0000000000000000
+ RDX: 0000000000000002 RSI: 0000000000000002 RDI: 0000000000000000
+ RBP: ffffffff8311af80 R08: 0000000000000020 R09: 00000000c2eda353
+ R10: ffff88812be2bbc8 R11: 000000001faab533 R12: ffff88885fb049c8
+ R13: ffff88812be2bbc8 R14: 0000000000000000 R15: ffff88811896ae00
+ FS:  0000000000000000(0000) GS:ffff8888dca82000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: ffffffff000002c8 CR3: 0000000243050002 CR4: 0000000000372eb0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ Call Trace:
+  <IRQ>
+  ? try_to_wake_up+0x108/0x4c0
+  ? udp4_lib_lookup2+0xbe/0x150
+  ? udp_lib_lport_inuse+0x100/0x100
+  ? __udp4_lib_lookup+0x2b0/0x410
+  __xfrm_policy_check2.constprop.0+0x11e/0x130
+  udp_queue_rcv_one_skb+0x1d/0x530
+  udp_unicast_rcv_skb+0x76/0x90
+  __udp4_lib_rcv+0xa64/0xe90
+  ip_protocol_deliver_rcu+0x20/0x130
+  ip_local_deliver_finish+0x75/0xa0
+  ip_local_deliver+0xc1/0xd0
+  ? ip_protocol_deliver_rcu+0x130/0x130
+  ip_sublist_rcv+0x1f9/0x240
+  ? ip_rcv_finish_core+0x430/0x430
+  ip_list_rcv+0xfc/0x130
+  __netif_receive_skb_list_core+0x181/0x1e0
+  netif_receive_skb_list_internal+0x200/0x360
+  ? mlx5e_build_rx_skb+0x1bc/0xda0 [mlx5_core]
+  gro_receive_skb+0xfd/0x210
+  mlx5e_handle_rx_cqe_mpwrq+0x141/0x280 [mlx5_core]
+  mlx5e_poll_rx_cq+0xcc/0x8e0 [mlx5_core]
+  ? mlx5e_handle_rx_dim+0x91/0xd0 [mlx5_core]
+  mlx5e_napi_poll+0x114/0xab0 [mlx5_core]
+  __napi_poll+0x25/0x170
+  net_rx_action+0x32d/0x3a0
+  ? mlx5_eq_comp_int+0x8d/0x280 [mlx5_core]
+  ? notifier_call_chain+0x33/0xa0
+  handle_softirqs+0xda/0x250
+  irq_exit_rcu+0x6d/0xc0
+  common_interrupt+0x81/0xa0
+  </IRQ>
+
+Fixes: b2ac7541e377 ("net/mlx5e: IPsec: Add Connect-X IPsec Rx data path offload")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1753256672-337784-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index ca0798224e56..3d479c63b117 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -249,15 +249,12 @@ int hns_roce_calc_hem_mhop(struct hns_roce_dev *hr_dev,
- }
- 
- static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
--					       unsigned long hem_alloc_size,
--					       gfp_t gfp_mask)
-+					       unsigned long hem_alloc_size)
- {
- 	struct hns_roce_hem *hem;
- 	int order;
- 	void *buf;
- 
--	WARN_ON(gfp_mask & __GFP_HIGHMEM);
--
- 	order = get_order(hem_alloc_size);
- 	if (PAGE_SIZE << order != hem_alloc_size) {
- 		dev_err(hr_dev->dev, "invalid hem_alloc_size: %lu!\n",
-@@ -265,13 +262,12 @@ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
- 		return NULL;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
+index 51a144246ea6..f96e9bbf8fc6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
+@@ -333,6 +333,10 @@ void mlx5e_ipsec_offload_handle_rx_skb(struct net_device *netdev,
+ 	if (unlikely(!sa_entry)) {
+ 		rcu_read_unlock();
+ 		atomic64_inc(&ipsec->sw_stats.ipsec_rx_drop_sadb_miss);
++		/* Clear secpath to prevent invalid dereference
++		 * in downstream XFRM policy checks.
++		 */
++		secpath_reset(skb);
+ 		return;
  	}
- 
--	hem = kmalloc(sizeof(*hem),
--		      gfp_mask & ~(__GFP_HIGHMEM | __GFP_NOWARN));
-+	hem = kmalloc(sizeof(*hem), GFP_KERNEL);
- 	if (!hem)
- 		return NULL;
- 
- 	buf = dma_alloc_coherent(hr_dev->dev, hem_alloc_size,
--				 &hem->dma, gfp_mask);
-+				 &hem->dma, GFP_KERNEL);
- 	if (!buf)
- 		goto fail;
- 
-@@ -378,7 +374,6 @@ static int alloc_mhop_hem(struct hns_roce_dev *hr_dev,
- {
- 	u32 bt_size = mhop->bt_chunk_size;
- 	struct device *dev = hr_dev->dev;
--	gfp_t flag;
- 	u64 bt_ba;
- 	u32 size;
- 	int ret;
-@@ -417,8 +412,7 @@ static int alloc_mhop_hem(struct hns_roce_dev *hr_dev,
- 	 * alloc bt space chunk for MTT/CQE.
- 	 */
- 	size = table->type < HEM_TYPE_MTT ? mhop->buf_chunk_size : bt_size;
--	flag = GFP_KERNEL | __GFP_NOWARN;
--	table->hem[index->buf] = hns_roce_alloc_hem(hr_dev, size, flag);
-+	table->hem[index->buf] = hns_roce_alloc_hem(hr_dev, size);
- 	if (!table->hem[index->buf]) {
- 		ret = -ENOMEM;
- 		goto err_alloc_hem;
-@@ -546,9 +540,7 @@ int hns_roce_table_get(struct hns_roce_dev *hr_dev,
- 		goto out;
- 	}
- 
--	table->hem[i] = hns_roce_alloc_hem(hr_dev,
--				       table->table_chunk_size,
--				       GFP_KERNEL | __GFP_NOWARN);
-+	table->hem[i] = hns_roce_alloc_hem(hr_dev, table->table_chunk_size);
- 	if (!table->hem[i]) {
- 		ret = -ENOMEM;
- 		goto out;
+ 	xfrm_state_hold(sa_entry->x);
 -- 
 2.39.5
 
