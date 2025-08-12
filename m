@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF830B23482
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E98B232CE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 157551A20AE7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D2B9189ACFF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBCF2F659A;
-	Tue, 12 Aug 2025 18:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8A02F659A;
+	Tue, 12 Aug 2025 18:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiVVgmnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+gF8SZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95E061FFE;
-	Tue, 12 Aug 2025 18:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3C12F5E;
+	Tue, 12 Aug 2025 18:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023777; cv=none; b=LcV04JNkPbWznx/McyknjKtjD8a133h4f8ceGCI84n2iaqbqDYas72fsCeYqaqPf0rfw/CiCDS0TkzMR2xKynvzJOHp4xQNP1oRNbid5LPXX4RJveCRdXJPuPZ6g1D6voyFZKhhhcW8uadfjLurNTUS2QBQEFp4LODIsla4J/Go=
+	t=1755022605; cv=none; b=T3KGhaDea3DtFnScyTttiqYoS3DA69u/vBWx1RW7uVqPmgtaqzZrRVLWLExsMBNVux79m79HzGhyzSWkw1kasyabBsqGXWeqgocoZ3YfxALDZKNhAAv3dksd8cDxDx4uFxeLbL3PxgSLx58rxXmMEIk2s/kS4mdHJCi/scLgfYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023777; c=relaxed/simple;
-	bh=pRH90TvtdM5KvJo3m/LOex0gqNqVr/a4gP//qrE0cMM=;
+	s=arc-20240116; t=1755022605; c=relaxed/simple;
+	bh=o4m7S/RrpeOsHE/+oebTzB3rfDNhROOlQ8Jd18HmjRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjFPbLpkwDRb4IO1vJwmC+Gu53WG2KZraW8eOj9l5k1n7wteqqpLRy2RXPxIk4vzrBp4FHhpILK6Genq9rsTI9RhbFQQfOJtvoCmdlLZqcbp4rAcUtYNL+eIeVo96D30CNlSqKDULa5VEwW9+PAsCYwpGIobCModbAXI8W8WQVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiVVgmnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31795C4CEF0;
-	Tue, 12 Aug 2025 18:36:17 +0000 (UTC)
+	 MIME-Version; b=uz1rigETqG9xFNgTxErJ1nSxtcv/gQo8jhmKbxRdxD6iTohXJhHpRHzGDz5h0ZNHI9XrOz7wqaftZSnVjRUbD9ZO+5+MRrKL6gBimH0JPVk0uv7E8j6as3jwVaPbHq2FBru6BDD3h39mg1VV+bkh8t0XgoQu65e1Tjvrtp3pPlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+gF8SZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBE0C4CEF0;
+	Tue, 12 Aug 2025 18:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023777;
-	bh=pRH90TvtdM5KvJo3m/LOex0gqNqVr/a4gP//qrE0cMM=;
+	s=korg; t=1755022605;
+	bh=o4m7S/RrpeOsHE/+oebTzB3rfDNhROOlQ8Jd18HmjRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiVVgmnI933PdQai+Vp3zNlJY5ahUzzXFCJ/eyRS4wUmqII6K0mkQqyQPazayG6mi
-	 sklkRHD+J06hKy3n3lhc5nd3PCDpwXQnqeF1kwtsAgnzbQVQMljah83f6OLrBCstHF
-	 drJYYG56fOf3xVUpWGegO0IYr+4EemgUY9bowLgo=
+	b=V+gF8SZx90JRdB8ZFqtlM5P4GftbkQ2l57HBJWwRgKLKod0kywNtJzZ9YxmRUYTzY
+	 mxLSGDsCDk/A/3Bm1R987Kw2o/arr6Zgg82f0k4YoGv5ab4IL5SJISac1xQP+9a21N
+	 I09W+rqI8dRxwI91h8rjSnvuxn/5B5VYz/sbVs8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 179/627] wifi: mt76: mt7925: fix off by one in mt7925_mcu_hw_scan()
+Subject: [PATCH 6.12 177/369] mtd: spi-nor: spansion: Fixup params->set_4byte_addr_mode for SEMPER
 Date: Tue, 12 Aug 2025 19:27:54 +0200
-Message-ID: <20250812173426.091633228@linuxfoundation.org>
+Message-ID: <20250812173021.434768986@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-[ Upstream commit b3a431fe2e399b2e0cc5f43f7e9d63d63d3710ee ]
+[ Upstream commit a45ab839f52f3f00ac3dae18a50e902efd216de2 ]
 
-The ssid->ssids[] and sreq->ssids[] arrays have MT7925_RNR_SCAN_MAX_BSSIDS
-elements so this >= needs to be > to prevent an out of bounds access.
+Infineon SEMPER flash family does not support E9h opcode as Exit 4-byte
+mode (EX4B). Therefore, params->set_4byte_addr_mode is not determined by
+BFPT parse. Fixup it up by introducing vendor specific EX4B opcode (B8h)
+and function.
 
-Fixes: 8284815ca161 ("wifi: mt76: mt7925: add RNR scan support for 6GHz")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aDVT2tPhG_8T0Qla@stanley.mountain
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: c87c9b11c53ce ("mtd: spi-nor: spansion: Determine current address mode")
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Acked-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250612074427.22263-1-Takahiro.Kuwano@infineon.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/spansion.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 8ac6fbb736ab..300c863f0e3e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2916,7 +2916,7 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 	for (i = 0; i < sreq->n_ssids; i++) {
- 		if (!sreq->ssids[i].ssid_len)
- 			continue;
--		if (i > MT7925_RNR_SCAN_MAX_BSSIDS)
-+		if (i >= MT7925_RNR_SCAN_MAX_BSSIDS)
- 			break;
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 5a88a6096ca8..fcd081b75784 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -17,6 +17,7 @@
  
- 		ssid->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
-@@ -2933,7 +2933,7 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 		mt76_connac_mcu_build_rnr_scan_param(mdev, sreq);
+ #define SPINOR_OP_CLSR		0x30	/* Clear status register 1 */
+ #define SPINOR_OP_CLPEF		0x82	/* Clear program/erase failure flags */
++#define SPINOR_OP_CYPRESS_EX4B	0xB8	/* Exit 4-byte address mode */
+ #define SPINOR_OP_CYPRESS_DIE_ERASE		0x61	/* Chip (die) erase */
+ #define SPINOR_OP_RD_ANY_REG			0x65	/* Read any register */
+ #define SPINOR_OP_WR_ANY_REG			0x71	/* Write any register */
+@@ -58,6 +59,13 @@
+ 		   SPI_MEM_OP_DUMMY(ndummy, 0),				\
+ 		   SPI_MEM_OP_DATA_IN(1, buf, 0))
  
- 		for (j = 0; j < mdev->rnr.bssid_num; j++) {
--			if (j > MT7925_RNR_SCAN_MAX_BSSIDS)
-+			if (j >= MT7925_RNR_SCAN_MAX_BSSIDS)
- 				break;
++#define CYPRESS_NOR_EN4B_EX4B_OP(enable)				\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(enable ? SPINOR_OP_EN4B :		\
++					   SPINOR_OP_CYPRESS_EX4B, 0),	\
++		   SPI_MEM_OP_NO_ADDR,					\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_NO_DATA)
++
+ #define SPANSION_OP(opcode)						\
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(opcode, 0),				\
+ 		   SPI_MEM_OP_NO_ADDR,					\
+@@ -356,6 +364,20 @@ static int cypress_nor_quad_enable_volatile(struct spi_nor *nor)
+ 	return 0;
+ }
  
- 			tlv = mt76_connac_mcu_add_tlv(skb, UNI_SCAN_BSSID,
++static int cypress_nor_set_4byte_addr_mode(struct spi_nor *nor, bool enable)
++{
++	int ret;
++	struct spi_mem_op op = CYPRESS_NOR_EN4B_EX4B_OP(enable);
++
++	spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
++
++	ret = spi_mem_exec_op(nor->spimem, &op);
++	if (ret)
++		dev_dbg(nor->dev, "error %d setting 4-byte mode\n", ret);
++
++	return ret;
++}
++
+ /**
+  * cypress_nor_determine_addr_mode_by_sr1() - Determine current address mode
+  *                                            (3 or 4-byte) by querying status
+@@ -526,6 +548,9 @@ s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
+ 	struct spi_mem_op op;
+ 	int ret;
+ 
++	/* Assign 4-byte address mode method that is not determined in BFPT */
++	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
++
+ 	ret = cypress_nor_set_addr_mode_nbytes(nor);
+ 	if (ret)
+ 		return ret;
+@@ -591,6 +616,9 @@ s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ {
+ 	int ret;
+ 
++	/* Assign 4-byte address mode method that is not determined in BFPT */
++	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
++
+ 	ret = cypress_nor_set_addr_mode_nbytes(nor);
+ 	if (ret)
+ 		return ret;
+@@ -718,6 +746,9 @@ static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ 				   const struct sfdp_parameter_header *bfpt_header,
+ 				   const struct sfdp_bfpt *bfpt)
+ {
++	/* Assign 4-byte address mode method that is not determined in BFPT */
++	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
++
+ 	return cypress_nor_set_addr_mode_nbytes(nor);
+ }
+ 
 -- 
 2.39.5
 
