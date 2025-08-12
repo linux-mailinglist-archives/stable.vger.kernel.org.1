@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-168533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC48B23535
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9123B23553
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B37247B5FA9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08147564395
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A41B2FA0FD;
-	Tue, 12 Aug 2025 18:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862932FD1B6;
+	Tue, 12 Aug 2025 18:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btWO8ktw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UioSlpld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDBA2CA9;
-	Tue, 12 Aug 2025 18:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D002C21F6;
+	Tue, 12 Aug 2025 18:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024489; cv=none; b=hgjknmfkcJc63AnxlurjsCIErJnogS72/ffemHI1GIUgVOysozWYhT22GUH+KIzs7M3qQ45PbCiQoL7BXu6rsmOwk+H/fHOZTzyXZNiH+uRDZTietpPPEILVVlI2kDVrpKJT3E4Ph2SBOisl/46XNcIZ8A4oMWKhcE7kW1CZ0h8=
+	t=1755024527; cv=none; b=MzS/mPhKKCRVZlTk52yqLq6VuJsk7dCnzK7ozIxGE281DEsUPkhKLDlvtqrL2ETxcUEcUB0oZHf5GHkNDIGyZXSL9nfFPu1HkiyMDzB55tjnha+MB0oRLwPgFbH+L7l5KCJ+vZiMSfR8GBfZQH6lPC0j2hTq/ncJJHcDRDbl2eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024489; c=relaxed/simple;
-	bh=mi5b6+bK0zyoxSZvBn87hNLv3fZjOb6cI/GmIqA9Ojg=;
+	s=arc-20240116; t=1755024527; c=relaxed/simple;
+	bh=D/v1IojSKKjeugYF8GOTYYKPGhqGdcCbNHUjvB4CPnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/joWb3NZaZRldQwAiHFhQqzDFd8QoqAxMCiQXWAC8drFPjqHe5D/0M94iGZyId8CFYeDzb/PdkpFnUObtwUfbIYcwzV84Mb8JQnUiIEfs2X4/lsbgHLwYNPgraW7Fn2XA/6fxftIXR0Rbs+0OC8e2RFlNf/DD1Vu56Wlfp9T4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btWO8ktw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3AFC4CEF0;
-	Tue, 12 Aug 2025 18:48:08 +0000 (UTC)
+	 MIME-Version; b=bc7cpYjbW1X7iNkdvOIbH+bKyiYdih1UPuuVIbAhLuL6zDp8ZQK8RluV+7mGyFFkpac7U94ptj/BG3Ol3uC+OafW83gUFEYSb0TDbjyNk7LR6+zydVvNKRDwmI1jEwOuGmv23halhcWSbztpQM0aVBOGLfZD0TaGFO8ILY/DgII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UioSlpld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7EFC4CEF0;
+	Tue, 12 Aug 2025 18:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024488;
-	bh=mi5b6+bK0zyoxSZvBn87hNLv3fZjOb6cI/GmIqA9Ojg=;
+	s=korg; t=1755024526;
+	bh=D/v1IojSKKjeugYF8GOTYYKPGhqGdcCbNHUjvB4CPnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btWO8ktwfnAhUdCH5shPvU3Vrd5gqxb3LZsoheSWayTdwWL6nGeBZKf+iy3na6HN2
-	 F//CNWAeIuS7Rjc8xYNd+PJEyG4MAzzQCesoENb8VSyUQf5Wxo/rsiBTGyyUGtX5rI
-	 WjJyo7H16Ieg6inf6shyaFj2TyM2g37C3xFFNT8I=
+	b=UioSlpldYp3CfdWLgOKdJ0Hp0VC2C+PTgNuBDgMLeySaQpkUJs14FYGnIxgq3kloG
+	 b6ONUMa2I7I2+4IjFzDktz6kpWz6KM3JbDutjrGzD1yuaA5aQY15KuenzsRbMxyYzK
+	 olfar1NspGeqjSLZ5YW9mIn48gpwBCHaP+QNMh98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
 	Ian Rogers <irogers@google.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 381/627] perf tests bp_account: Fix leaked file descriptor
-Date: Tue, 12 Aug 2025 19:31:16 +0200
-Message-ID: <20250812173433.788919538@linuxfoundation.org>
+Subject: [PATCH 6.16 382/627] perf hwmon_pmu: Avoid shortening hwmon PMU name
+Date: Tue, 12 Aug 2025 19:31:17 +0200
+Message-ID: <20250812173433.826782160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -68,55 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
+[ Upstream commit 28f5aa8184c9c9b8eab35fa3884c416fe75e88e4 ]
 
-Since the commit e9846f5ead26 ("perf test: In forked mode add check that
-fds aren't leaked"), the test "Breakpoint accounting" reports the error:
+Long names like ucsi_source_psy_USBC000:001 when prefixed with hwmon_
+exceed the buffer size and the last digit is lost. This causes
+confusion with similar names like ucsi_source_psy_USBC000:002. Extend
+the buffer size to avoid this.
 
-  # perf test -vvv "Breakpoint accounting"
-  20: Breakpoint accounting:
-  --- start ---
-  test child forked, pid 373
-  failed opening event 0
-  failed opening event 0
-  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
-  wp 0 created
-  wp 1 created
-  wp 2 created
-  wp 3 created
-  wp 0 modified to bp
-  wp max created
-  ---- end(0) ----
-  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
-
-A watchpoint's file descriptor was not properly released. This patch
-fixes the leak.
-
-Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
+Fixes: 53cc0b351ec9 ("perf hwmon_pmu: Add a tool PMU exposing events from hwmon in sysfs")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250710235126.1086011-2-irogers@google.com
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/bp_account.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/hwmon_pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
-index 4cb7d486b5c1..047433c977bc 100644
---- a/tools/perf/tests/bp_account.c
-+++ b/tools/perf/tests/bp_account.c
-@@ -104,6 +104,7 @@ static int bp_accounting(int wp_cnt, int share)
- 		fd_wp = wp_event((void *)&the_var, &attr_new);
- 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
- 		pr_debug("wp max created\n");
-+		close(fd_wp);
- 	}
+diff --git a/tools/perf/util/hwmon_pmu.c b/tools/perf/util/hwmon_pmu.c
+index c25e7296f1c1..75683c543994 100644
+--- a/tools/perf/util/hwmon_pmu.c
++++ b/tools/perf/util/hwmon_pmu.c
+@@ -344,7 +344,7 @@ static int hwmon_pmu__read_events(struct hwmon_pmu *pmu)
  
- 	for (i = 0; i < wp_cnt; i++)
+ struct perf_pmu *hwmon_pmu__new(struct list_head *pmus, int hwmon_dir, const char *sysfs_name, const char *name)
+ {
+-	char buf[32];
++	char buf[64];
+ 	struct hwmon_pmu *hwm;
+ 	__u32 type = PERF_PMU_TYPE_HWMON_START + strtoul(sysfs_name + 5, NULL, 10);
+ 
 -- 
 2.39.5
 
