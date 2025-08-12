@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A6EB2329D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C581B230AE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61312188B939
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A2AD686986
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24E12F83B5;
-	Tue, 12 Aug 2025 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4E42FD1D7;
+	Tue, 12 Aug 2025 17:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PN5eYxJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6WQ7Tzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC812D46B3;
-	Tue, 12 Aug 2025 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADA8221FAC;
+	Tue, 12 Aug 2025 17:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022490; cv=none; b=Ac3VCK+N2SuauLsev4n4JYih44htYaejyNrzs3FgbjfO1mDln3UllEpNBVUHqdR4WEniRWiVbGtS2wI7UPkX+5I6cQ7WMfsIAF97405clG2hQUwqFcFbftQ48klwiLBN9AOejbyBbARuw/GrKVXarab050WHH8PcGORZH8nMcXE=
+	t=1755021217; cv=none; b=WR+brVA3l6PNciiuqxwEeWJ/oD4NkfEK91Q1gadky95v/Mwog6w4u48vs/hlPVmTXxarch/lPeFQakWjlLNFatgUQX/8x7GCC19ooIU3D1FMppX7qWNsveBTd8BX4HHweaTeuDZVLR1eSyNhg4//34mvH8PQxPoawWYfhl6cJEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022490; c=relaxed/simple;
-	bh=D4QzpAs0Def+j6MgDDbIxmEBcjumqEn5S5LYBOyjMLs=;
+	s=arc-20240116; t=1755021217; c=relaxed/simple;
+	bh=gIwpxsZ8zMHPDmxUMd5ePgvj+EAV5o+37PRdUZHxjj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmCfSJ7rQms8sa0cBJc/2AGgcwgi4uVQuDJ7r/tg+Tq6s5szk4TF7aQ8da4+QDMTBGZ30ea+4UDAWWhZOFMosYqOFiQZxzuyxZDSM26nL7XmXyDvW9ztczDG/XIONYpZC8xNvNDEIlsxK6pK2h+tcARGELrRquhUsxkEaYMW14g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PN5eYxJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6C9C4CEF1;
-	Tue, 12 Aug 2025 18:14:49 +0000 (UTC)
+	 MIME-Version; b=uh5pDcf6LKq1AJ5KqXDj8iFxL8uLW51AHKjaswUzWK6mo3woRjuYzZN4HWu6oQvV5JRDLPvq9K/eoZuRHApu5WsmrCrtiMCHGYlwTgNE8irABE21mV/fXStV4oHOKzwlNCVUkJf/NUPJXxF+eIYBfKHNff69dA7jCZHTSVIk69o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6WQ7Tzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDE4C4CEF0;
+	Tue, 12 Aug 2025 17:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022490;
-	bh=D4QzpAs0Def+j6MgDDbIxmEBcjumqEn5S5LYBOyjMLs=;
+	s=korg; t=1755021217;
+	bh=gIwpxsZ8zMHPDmxUMd5ePgvj+EAV5o+37PRdUZHxjj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PN5eYxJ9jyoUnHS8BggnMlt8qnFQey5+BpJmD75/3OARRPxNDRZlalbWtOBDA3j1z
-	 Smo9fTZogchQxrLHbc60MLSVzus/iefamKDPikCFBSFcp9Ujl6wW+cAV8x4zhiS/zx
-	 FtTFuu8EbSbiK5a01pJBV1pkz/srpjQMqesurgRs=
+	b=v6WQ7TzbF4C5gcl+Vb+VyQlek+Qtm+fE6ZrWeB7hjj3KC4Zennrp4QkJYZTl4xs9E
+	 uu0DcFJ+q2CRHYBt7v45UTZDt9O4IPoGwpUZ1TZzqx2ZXZ/Zy+o87T103Nw/VISw6f
+	 2eg0q323hV/SxnQA3QxFyGDaH6uamRMHCaHcAlLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 169/369] pinctrl: berlin: fix memory leak in berlin_pinctrl_build_state()
-Date: Tue, 12 Aug 2025 19:27:46 +0200
-Message-ID: <20250812173021.123763778@linuxfoundation.org>
+Subject: [PATCH 6.6 079/262] wifi: rtl8xxxu: Fix RX skb size for aggregation disabled
+Date: Tue, 12 Aug 2025 19:27:47 +0200
+Message-ID: <20250812172956.403851164@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
 
-[ Upstream commit 8f6f303551100291bf2c1e1ccc66b758fffb1168 ]
+[ Upstream commit d76a1abcf57734d2bcd4a7ec051617edd4513d7f ]
 
-In the original implementation, krealloc() failure handling incorrectly
-assigned the original memory pointer to NULL after kfree(), causing a
-memory leak when reallocation failed.
+Commit 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for
+phystats") increased the skb size when aggregation is enabled but decreased
+it for the aggregation disabled case.
 
-Fixes: de845036f997 ("pinctrl: berlin: fix error return code of berlin_pinctrl_build_state()")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Link: https://lore.kernel.org/20250620015343.21494-1-chenyuan_fl@163.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+As a result, if a frame near the maximum size is received,
+rtl8xxxu_rx_complete() is called with status -EOVERFLOW and then the
+driver starts to malfunction and no further communication is possible.
+
+Restore the skb size in the aggregation disabled case.
+
+Fixes: 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for phystats")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250709121522.1992366-1-martin.kaistra@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/berlin/berlin.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/berlin/berlin.c b/drivers/pinctrl/berlin/berlin.c
-index c372a2a24be4..9dc2da8056b7 100644
---- a/drivers/pinctrl/berlin/berlin.c
-+++ b/drivers/pinctrl/berlin/berlin.c
-@@ -204,6 +204,7 @@ static int berlin_pinctrl_build_state(struct platform_device *pdev)
- 	const struct berlin_desc_group *desc_group;
- 	const struct berlin_desc_function *desc_function;
- 	int i, max_functions = 0;
-+	struct pinfunction *new_functions;
- 
- 	pctrl->nfunctions = 0;
- 
-@@ -229,12 +230,15 @@ static int berlin_pinctrl_build_state(struct platform_device *pdev)
- 		}
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 05e77d2bda37..03aacb7a4317 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6501,7 +6501,7 @@ static int rtl8xxxu_submit_rx_urb(struct rtl8xxxu_priv *priv,
+ 		skb_size = fops->rx_agg_buf_size;
+ 		skb_size += (rx_desc_sz + sizeof(struct rtl8723au_phy_stats));
+ 	} else {
+-		skb_size = IEEE80211_MAX_FRAME_LEN;
++		skb_size = IEEE80211_MAX_FRAME_LEN + rx_desc_sz;
  	}
  
--	pctrl->functions = krealloc(pctrl->functions,
-+	new_functions = krealloc(pctrl->functions,
- 				    pctrl->nfunctions * sizeof(*pctrl->functions),
- 				    GFP_KERNEL);
--	if (!pctrl->functions)
-+	if (!new_functions) {
-+		kfree(pctrl->functions);
- 		return -ENOMEM;
-+	}
- 
-+	pctrl->functions = new_functions;
- 	/* map functions to theirs groups */
- 	for (i = 0; i < pctrl->desc->ngroups; i++) {
- 		desc_group = pctrl->desc->groups + i;
+ 	skb = __netdev_alloc_skb(NULL, skb_size, GFP_KERNEL);
 -- 
 2.39.5
 
