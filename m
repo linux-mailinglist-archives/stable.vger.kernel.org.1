@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-168038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB78B23314
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2555EB2302F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925A2165940
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6516E6825D3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB3B1D416C;
-	Tue, 12 Aug 2025 18:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019CF2F7477;
+	Tue, 12 Aug 2025 17:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmaeasaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/kNBYjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD53C6BB5B;
-	Tue, 12 Aug 2025 18:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B42221FAC;
+	Tue, 12 Aug 2025 17:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022834; cv=none; b=hsEEEZyhmI8IbJPpfIplC5o/WYmRu+hoxTNS06EiJKDeKJzcESCKL8UhQ3A9vMxE+FxAUaw0BPh8BGZM9vpVFB+o+ClJOR/trRX+TsR77CIHXJs/P80zTWqLijHTC5UkUxMQ/G0G4RPCnC8VVZP97zrKvqep5wnKpVBIlWwYHzw=
+	t=1755020876; cv=none; b=k4KjjJT48aFGetufpCSzjaPfA/OgRQXbO1UIMI5ghZ22kXwJD85fBqPZJU7kRbfQVoQkzpbwbiuavUCWA8ji22SFWTPHT7op4QPHYYQqtzXxOI/rJKEi1KD/nMEacAdsDgPCnq0e2fUBLNRLdOn9DDML+0MnwE/JaVto0e8R0WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022834; c=relaxed/simple;
-	bh=AwKgnszTQSgjIkIxCRc9+1X6+mbbYLvLq3cmsaaMAxA=;
+	s=arc-20240116; t=1755020876; c=relaxed/simple;
+	bh=1WoYnugmbp6iWRHxZthgA83odREM1UMh2X1EAlOIJYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q08QkbokkFRAWqwQ1PFTFA2O7SOGJ8XitrctV07J/4Cc+2X8KeVUtObxCWK1wU5c/zV1YaurU65GncENDJilXK9s9tTXVnG4ShvK2P48Xrm7vKOJ4wF5HCm5CdhW3gzUrNUdgFL4pbu5lDdAyZ/T3ii8h1VTxr2XXJpfiWod7A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmaeasaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E611BC4CEF1;
-	Tue, 12 Aug 2025 18:20:33 +0000 (UTC)
+	 MIME-Version; b=Hcw4dCsLWr3jYZX5YkPYGNEP1aWrvw9/helVW4J8HsAiOiOn45CHImO4HMIDZiUpzpVF/NaktjyAiGKfcHxsrTLPi1wpytoha1ZyKnh0O28Kfn/gIGEV+xGW6h7T32uNWy9tseSP8GYQsPGECmThLheLz81jTLi1+tojT+T6bZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/kNBYjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEC7C4CEF0;
+	Tue, 12 Aug 2025 17:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022834;
-	bh=AwKgnszTQSgjIkIxCRc9+1X6+mbbYLvLq3cmsaaMAxA=;
+	s=korg; t=1755020876;
+	bh=1WoYnugmbp6iWRHxZthgA83odREM1UMh2X1EAlOIJYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmaeasaPnDuYODLrlHOBLTsRHYKq1gJflJgFtC7orPHVQlw+94p+SoBRwqzHCqP52
-	 Q9Dn9i699kBCdbTeQZp9mFeM+57Ae5fS5OFWbIZzV0pJaOUKVJHhuXdJUD8v1MlKg7
-	 yVkAcViDEnbnxrvpzpogvfo+/dHZ6WzSY8eef+o4=
+	b=u/kNBYjge+mcOChMX9y+GoUZe/eJB5POWkLIIp/eyEmfiVv10pCvUvZgMt6iTwGsD
+	 3xrXxB6HyGyrKptcR/7DAKmcK0iqv6oIDL7YUZ8ql8MReYDoRkmiTXVDWGqTEH51Lx
+	 un0ZBjIzpFGAMHqnZk4pk+t5XugFIm1FL29699us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salomon Dushimirimana <salomondush@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/369] scsi: sd: Make sd shutdown issue START STOP UNIT appropriately
+Subject: [PATCH 6.1 181/253] vhost-scsi: Fix log flooding with target does not exist errors
 Date: Tue, 12 Aug 2025 19:29:29 +0200
-Message-ID: <20250812173025.021520455@linuxfoundation.org>
+Message-ID: <20250812172956.467668062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salomon Dushimirimana <salomondush@google.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 8e48727c26c4d839ff9b4b73d1cae486bea7fe19 ]
+[ Upstream commit 69cd720a8a5e9ef0f05ce5dd8c9ea6e018245c82 ]
 
-Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
-manage_system_start_stop") enabled libata EH to manage device power mode
-trasitions for system suspend/resume and removed the flag from
-ata_scsi_dev_config. However, since the sd_shutdown() function still
-relies on the manage_system_start_stop flag, a spin-down command is not
-issued to the disk with command "echo 1 > /sys/block/sdb/device/delete"
+As part of the normal initiator side scanning the guest's scsi layer
+will loop over all possible targets and send an inquiry. Since the
+max number of targets for virtio-scsi is 256, this can result in 255
+error messages about targets not existing if you only have a single
+target. When there's more than 1 vhost-scsi device each with a single
+target, then you get N * 255 log messages.
 
-sd_shutdown() can be called for both system/runtime start stop
-operations, so utilize the manage_run_time_start_stop flag set in the
-ata_scsi_dev_config and issue a spin-down command during disk removal
-when the system is running. This is in addition to when the system is
-powering off and manage_shutdown flag is set. The
-manage_system_start_stop flag will still be used for drivers that still
-set the flag.
+It looks like the log message was added by accident in:
 
-Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250724214520.112927-1-salomondush@google.com
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from
+control queue handler")
+
+when we added common helpers. Then in:
+
+commit 09d7583294aa ("vhost/scsi: Use common handling code in request
+queue handler")
+
+we converted the scsi command processing path to use the new
+helpers so we started to see the extra log messages during scanning.
+
+The patches were just making some code common but added the vq_err
+call and I'm guessing the patch author forgot to enable the vq_err
+call (vq_err is implemented by pr_debug which defaults to off). So
+this patch removes the call since it's expected to hit this path
+during device discovery.
+
+Fixes: 09d7583294aa ("vhost/scsi: Use common handling code in request queue handler")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20250611210113.10912-1-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/vhost/scsi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 86dde3e7debb..e1b06f803a94 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -4179,7 +4179,9 @@ static void sd_shutdown(struct device *dev)
- 	if ((system_state != SYSTEM_RESTART &&
- 	     sdkp->device->manage_system_start_stop) ||
- 	    (system_state == SYSTEM_POWER_OFF &&
--	     sdkp->device->manage_shutdown)) {
-+	     sdkp->device->manage_shutdown) ||
-+	    (system_state == SYSTEM_RUNNING &&
-+	     sdkp->device->manage_runtime_start_stop)) {
- 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
- 		sd_start_stop_device(sdkp, 0);
- 	}
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 87f2f56fd20a..de6f108a50a9 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -913,10 +913,8 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
+ 			/* validated at handler entry */
+ 			vs_tpg = vhost_vq_get_backend(vq);
+ 			tpg = READ_ONCE(vs_tpg[*vc->target]);
+-			if (unlikely(!tpg)) {
+-				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
++			if (unlikely(!tpg))
+ 				goto out;
+-			}
+ 		}
+ 
+ 		if (tpgp)
 -- 
 2.39.5
 
