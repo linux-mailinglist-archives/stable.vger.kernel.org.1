@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295B9B22FFC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6E8B23286
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1614E4E2D68
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 473A617B732
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523242FDC2C;
-	Tue, 12 Aug 2025 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BC92FE583;
+	Tue, 12 Aug 2025 18:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fXeX4aw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8JjcOqj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103F72FABE3;
-	Tue, 12 Aug 2025 17:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF232F90C8;
+	Tue, 12 Aug 2025 18:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020392; cv=none; b=OMw5pPfpbyjILDB1KBYKkuqZfLHWiBVTn2PgTEsuEbLm5JYbHvaR7XI4kw+CfPey6Zc8D25RM16qZn2E0GTzypSVXVpoooIh+G9jdpXleH7dJg2q8tM+PLhIo50geEmcjy2fdkFWCFvqSVUEMkb7skEra9mMoqjtKHslKTLUwbM=
+	t=1755022453; cv=none; b=eHWs2+8rEIEn4eq4wSwckIqAMKLLTrPYFHQZZMv/mY9aweRyFwZNiO5w0JRMNMWf9miISlKZfzah3PYc79rLHq+0/A0yZJRVgi55d4FlzjLYMcY7lEr1zd4a5y4tW/QM/lZ67KAzRRa/eX25yMtyIlL+vD8HrA9sPscI508BzJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020392; c=relaxed/simple;
-	bh=UdoFW+h9V3mYba8VT1cA7vuQVGJMlrpZlO8pvgJ/1FQ=;
+	s=arc-20240116; t=1755022453; c=relaxed/simple;
+	bh=83jB/9jPyWL8b72FpOtLBqjemlAQn9BAjHhTwgsXvCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pD8FPwD0Lmf0KsbioH6B7gQeeXMKMOw3KWKEjPgOHvzpbEqeXhh7TL5A0/QA2+JQo/sVXmUVNw4rKVLj8sYxBkTl1bF3/IYvBnYFOcg32kMN776+hAX6MAvz25lirY6J3xiG5cc49RiYBl5KXNFo9vkOKNoGLi1ldp9eHj+85Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fXeX4aw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B15C4CEF0;
-	Tue, 12 Aug 2025 17:39:51 +0000 (UTC)
+	 MIME-Version; b=SBgccyDK+xbTlX84X+0qvNwIti4k4np8Ydn1IkThkw3zXNdUCksJYPycODb5jEFZKlribC6fxrJkuPOkthpGQnw28l3GInu6d40QXNqbX8bwdc5sETdb6gVSpNoNOKEVGi2BdOF+m7TKVV4n1BxgO755hNp5ytphyolEFrLAD48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8JjcOqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7911BC4CEF7;
+	Tue, 12 Aug 2025 18:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020391;
-	bh=UdoFW+h9V3mYba8VT1cA7vuQVGJMlrpZlO8pvgJ/1FQ=;
+	s=korg; t=1755022453;
+	bh=83jB/9jPyWL8b72FpOtLBqjemlAQn9BAjHhTwgsXvCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0fXeX4awAIfyxWoNuO0I/JjZVYnwynTZzldDu5Yk40OB2IMwbRWPAR2kjH4LvypxF
-	 micBOEvf/ZgNTb22XdFuuNYv7HCxNBoxoe/7zaxW4NtwHiDOJFWDbIxDbW6dbboSBI
-	 323GIVF/EGMWiCFXA9/C4fdK9cFiJkxDV+kxghis=
+	b=u8JjcOqjP0p6on3Avbiyq4j9UIxPpsm9jt4Rpr9znjw4jhtTYyR6eMLkuWv015qRn
+	 BqnQVeNPz7M+jfV7Dxv3CGvG90jWTYUZu6BQqHlLJrZ3inuT3PJFVzu/Kw8C54Edxv
+	 11wAUPzoC+cyfholaDFRro4PgIcmC6WQnX6IeGtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Giedrius=20Trainavi=C4=8Dius?= <giedrius@blokas.io>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/253] ASoC: soc-dai: tidyup return value of snd_soc_xlate_tdm_slot_mask()
+Subject: [PATCH 6.12 159/369] crypto: qat - fix state restore for banks with exceptions
 Date: Tue, 12 Aug 2025 19:27:36 +0200
-Message-ID: <20250812172951.621950757@linuxfoundation.org>
+Message-ID: <20250812173020.748547244@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
 
-[ Upstream commit f4c77d5af0a9cd0ee22617baa8b49d0e151fbda7 ]
+[ Upstream commit 254923ca8715f623704378266815b6d14eb26194 ]
 
-commit 7f1186a8d738661 ("ASoC: soc-dai: check return value at
-snd_soc_dai_set_tdm_slot()") checks return value of
-xlate_tdm_slot_mask() (A1)(A2).
+Change the logic in the restore function to properly handle bank
+exceptions.
 
-	/*
-	 * ...
-(Y)	 * TDM mode can be disabled by passing 0 for @slots. In this case @tx_mask,
-	 * @rx_mask and @slot_width will be ignored.
-	 * ...
-	 */
-	int snd_soc_dai_set_tdm_slot(...)
-	{
-		...
-		if (...)
-(A1)			ret = dai->driver->ops->xlate_tdm_slot_mask(...);
-		else
-(A2)			ret = snd_soc_xlate_tdm_slot_mask(...);
-		if (ret)
-			goto err;
-		...
-	}
+The check for exceptions in the saved state should be performed before
+conducting any other ringstat register checks.
+If a bank was saved with an exception, the ringstat will have the
+appropriate rp_halt/rp_exception bits set, causing the driver to exit
+the restore process with an error. Instead, the restore routine should
+first check the ringexpstat register, and if any exception was raised,
+it should stop further checks and return without any error. In other
+words, if a ring pair is in an exception state at the source, it should
+be restored the same way at the destination but without raising an error.
 
-snd_soc_xlate_tdm_slot_mask() (A2) will return -EINVAL if slots was 0 (X),
-but snd_soc_dai_set_tdm_slot() allow to use it (Y).
+Even though this approach might lead to losing the exception state
+during migration, the driver will log the exception from the saved state
+during the restore process.
 
-(A)	static int snd_soc_xlate_tdm_slot_mask(...)
-	{
-		...
-		if (!slots)
-(X)			return -EINVAL;
-		...
-	}
-
-Call xlate_tdm_slot_mask() only if slots was non zero.
-
-Reported-by: Giedrius Trainavičius <giedrius@blokas.io>
-Closes: https://lore.kernel.org/r/CAMONXLtSL7iKyvH6w=CzPTxQdBECf++hn8RKL6Y4=M_ou2YHow@mail.gmail.com
-Fixes: 7f1186a8d738661 ("ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()")
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/8734cdfx59.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+Fixes: bbfdde7d195f ("crypto: qat - add bank save and restore flows")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ .../intel/qat/qat_common/adf_gen4_hw_data.c   | 29 ++++++++++++++-----
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index ba38b6e6b264..ba8a99124869 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -268,13 +268,15 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- {
- 	int ret = -ENOTSUPP;
- 
--	if (dai->driver->ops &&
--	    dai->driver->ops->xlate_tdm_slot_mask)
--		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	else
--		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	if (ret)
--		goto err;
-+	if (slots) {
-+		if (dai->driver->ops &&
-+		    dai->driver->ops->xlate_tdm_slot_mask)
-+			ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		else
-+			ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		if (ret)
-+			goto err;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c
+index 41a0979e68c1..e70adb90e5e4 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.c
+@@ -585,6 +585,28 @@ static int bank_state_restore(struct adf_hw_csr_ops *ops, void __iomem *base,
+ 	ops->write_csr_int_srcsel_w_val(base, bank, state->iaintflagsrcsel0);
+ 	ops->write_csr_exp_int_en(base, bank, state->ringexpintenable);
+ 	ops->write_csr_int_col_ctl(base, bank, state->iaintcolctl);
++
++	/*
++	 * Verify whether any exceptions were raised during the bank save process.
++	 * If exceptions occurred, the status and exception registers cannot
++	 * be directly restored. Consequently, further restoration is not
++	 * feasible, and the current state of the ring should be maintained.
++	 */
++	val = state->ringexpstat;
++	if (val) {
++		pr_info("QAT: Bank %u state not fully restored due to exception in saved state (%#x)\n",
++			bank, val);
++		return 0;
 +	}
++
++	/* Ensure that the restoration process completed without exceptions */
++	tmp_val = ops->read_csr_exp_stat(base, bank);
++	if (tmp_val) {
++		pr_err("QAT: Bank %u restored with exception: %#x\n",
++		       bank, tmp_val);
++		return -EFAULT;
++	}
++
+ 	ops->write_csr_ring_srv_arb_en(base, bank, state->ringsrvarben);
  
- 	dai->tx_mask = tx_mask;
- 	dai->rx_mask = rx_mask;
+ 	/* Check that all ring statuses match the saved state. */
+@@ -618,13 +640,6 @@ static int bank_state_restore(struct adf_hw_csr_ops *ops, void __iomem *base,
+ 	if (ret)
+ 		return ret;
+ 
+-	tmp_val = ops->read_csr_exp_stat(base, bank);
+-	val = state->ringexpstat;
+-	if (tmp_val && !val) {
+-		pr_err("QAT: Bank was restored with exception: 0x%x\n", val);
+-		return -EINVAL;
+-	}
+-
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
