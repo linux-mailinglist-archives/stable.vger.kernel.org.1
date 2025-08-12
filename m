@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-167670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B01DB23147
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70310B234C9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB2F2162F6E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B98FC1678E8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2D72FF167;
-	Tue, 12 Aug 2025 18:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E892FE598;
+	Tue, 12 Aug 2025 18:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Woq9hNlY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWWPyJU8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5432FE571;
-	Tue, 12 Aug 2025 17:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F89B6BB5B;
+	Tue, 12 Aug 2025 18:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021600; cv=none; b=C82ieD5KDzLcOxHk3Vd4r9hOQT8bFJUi0bDys/9x79xEJ/Dm7qPcUM+K9DnNgAe85ZeP66rnG2pPcOUQD/ha8iby8sQxxdR/eA7YnJxoqSzPfdeRzF/tUxDTzzFcyoGTwilsO52phn1HJsLnQzOp+dgbVc9mDzM9P+czIT9QK38=
+	t=1755024066; cv=none; b=di5YBbK6/9vVGeVx2JYNlPD/2elgD8NYRmD36EjRlp3ZiuaYfYDkr64cRJu+Yiqm9JAOJXPftzgKT2VcwLvBYmK4iFaObefO5DmLYjALwLmPsfFVPQsHNF7gkeX2gMy36RZ4RRfBUdeod4Ut2XRQg7cA83D61VS/epgia6jU11c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021600; c=relaxed/simple;
-	bh=GPWpdyQqvJfOAKWpm9l6XXf/KU/OEw88mf2Eaxll1yE=;
+	s=arc-20240116; t=1755024066; c=relaxed/simple;
+	bh=Xj5vxuqsEnVxCbkUgx5SsVXmYfyXXsxl+gCu7mT1pNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rt6NWxufjWCkEASAvg14UlqSj3yKLJIvh4+uxie95KxsQjKXrLjguEPvmQ5srvyXzw0/oB5tt66eBL0TOqBmyhom3sIfisZIXchycHiMXYZT8rlYOTUWJIooZXPteRFCnFvSnP8Eyi/gDwviz1Rm6ifgITK7lDfvO40SyQ6hOMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Woq9hNlY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4637AC4CEF0;
-	Tue, 12 Aug 2025 17:59:59 +0000 (UTC)
+	 MIME-Version; b=HPje0aNKFJR6NhUtelzLDHlCZvCvNO+g3wGtz2MTVPJAmBXqcKg5y8gtdSvi0IzIF2ex16TqUq/CbYZLRCmxlNK8NX7RSO8WLp/utaaS1DOieHvLE41bjNQXRonRAj1Ta2T1yO/ncefr8LuaFOI1wsPrHB6O3/DT1466T3G4ogo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWWPyJU8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BA6C4CEF0;
+	Tue, 12 Aug 2025 18:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021599;
-	bh=GPWpdyQqvJfOAKWpm9l6XXf/KU/OEw88mf2Eaxll1yE=;
+	s=korg; t=1755024066;
+	bh=Xj5vxuqsEnVxCbkUgx5SsVXmYfyXXsxl+gCu7mT1pNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Woq9hNlYcH7V2rlGFu3NgCB2dlQE8pTOr1ldApKdxbl8CtGcFJzfTZaSxjFhcEXct
-	 V6gIy87vZ96CGcw4RuB/msplYCeggZzuz7STwTqypPEicLu/qDAChKC084pfqhicyH
-	 /b8/2YHZrEnPf7EB28Hp/ePaa+2fzh8sjabVTiOQ=
+	b=TWWPyJU86Ztq1ezzlgnjbpcEi0brjumaS5hUx2ot2w/XWBwF8NVWybf81IyWmcS4q
+	 WVELX+3ZSR6o7nhooGXO7+UMMYBYbkaJrK+LOpZJmFQ87eyDBCRfwBaMOuh40K563k
+	 QjSz159LFJvSGrTJEtap3YO5mcW16K4p4MPF0cb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Tomas Glozar <tglozar@redhat.com>,
+	Juri Lelli <jlelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	John Kacur <jkacur@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/262] rtc: pcf8563: fix incorrect maximum clock rate handling
+Subject: [PATCH 6.16 263/627] tools/rv: Do not skip idle in trace
 Date: Tue, 12 Aug 2025 19:29:18 +0200
-Message-ID: <20250812173000.344681179@linuxfoundation.org>
+Message-ID: <20250812173429.320051198@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +67,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
+[ Upstream commit f60227f3448911b682c45041c3fbd94f6d3b15a2 ]
 
-When pcf8563_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+Currently, the userspace RV tool skips trace events triggered by the RV
+tool itself, this can be changed by passing the parameter -s, which sets
+the variable config_my_pid to 0 (instead of the tool's PID).
+This has the side effect of skipping events generated by idle (PID 0).
 
-Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Set config_my_pid to -1 (an invalid pid) to avoid skipping idle.
+
+Cc: Nam Cao <namcao@linutronix.de>
+Cc: Tomas Glozar <tglozar@redhat.com>
+Cc: Juri Lelli <jlelli@redhat.com>
+Cc: Clark Williams <williams@redhat.com>
+Cc: John Kacur <jkacur@redhat.com>
+Link: https://lore.kernel.org/20250723161240.194860-2-gmonaco@redhat.com
+Fixes: 6d60f89691fc ("tools/rv: Add in-kernel monitor interface")
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf8563.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/verification/rv/src/in_kernel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
-index ea82b89d8929..61be91c25cf1 100644
---- a/drivers/rtc/rtc-pcf8563.c
-+++ b/drivers/rtc/rtc-pcf8563.c
-@@ -386,7 +386,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
+index c0dcee795c0d..4bb746ea6e17 100644
+--- a/tools/verification/rv/src/in_kernel.c
++++ b/tools/verification/rv/src/in_kernel.c
+@@ -431,7 +431,7 @@ ikm_event_handler(struct trace_seq *s, struct tep_record *record,
  
--	return 0;
-+	return clkout_rates[0];
- }
+ 	if (config_has_id && (config_my_pid == id))
+ 		return 0;
+-	else if (config_my_pid && (config_my_pid == pid))
++	else if (config_my_pid == pid)
+ 		return 0;
  
- static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	tep_print_event(trace_event->tep, s, record, "%16s-%-8d [%.3d] ",
+@@ -734,7 +734,7 @@ static int parse_arguments(char *monitor_name, int argc, char **argv)
+ 			config_reactor = optarg;
+ 			break;
+ 		case 's':
+-			config_my_pid = 0;
++			config_my_pid = -1;
+ 			break;
+ 		case 't':
+ 			config_trace = 1;
 -- 
 2.39.5
 
