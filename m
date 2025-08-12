@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-168150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B126B233B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB85B231DF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 635105630EE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5D41898C43
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FE92FF176;
-	Tue, 12 Aug 2025 18:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4BA17993;
+	Tue, 12 Aug 2025 18:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oqb5HVoE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Upzi/7Gu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83EA2FF167;
-	Tue, 12 Aug 2025 18:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A832F5E;
+	Tue, 12 Aug 2025 18:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023211; cv=none; b=Mvk2p7jkPPHAsrsQAqC4Qt6mak/Gk4sgtpqfSPLSngRF1SQpO8enohrRQFZQcIiwuUNehIep3b+LW/O8eXG7QTjWwo6waJc2E1OdoQUiLNzObxkB/H3iph7Z5ZfNOIzyn7vNHMe/4WItvubwkEIlUB9iQxZ9//Y5BDLv3j4tAUQ=
+	t=1755021954; cv=none; b=m+T352apg+vDpyY5sG9AnwkIdWJghxlwN+UHL2AJqLp9ihrpkyz7dAWiVkN2jAeM7mtmW+D6Efjm+bcLcVr7nltMq9znrDK07y3BNR43yJqqVBkRYeGp7omlrseei55vbuDuf7RAoCgkYMJoCIp707vWtxv/sAg6xoRzYM0YYps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023211; c=relaxed/simple;
-	bh=EtSiShqkbYiteKX2uyCF4fV77+I9VT2wiZk092IxbEY=;
+	s=arc-20240116; t=1755021954; c=relaxed/simple;
+	bh=9XO3yXDdMmdmgOof/Thr97TenBk1qiBGXbUu4RUhFWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPwYiNccr4iXK4TYC1oGnyoJU1csOwnTHqc+NwD8ya6YiA3ymwLMi3gJ7X3T7kjKWpkN3KsbQuFlbvhpbq+1NDr1vBaolYJ0nf/mRs1+QDGfQVp7CrnmixR8YawG1/MW7bPraPB3vtp6b2m+ecaRnIqm5UhzjxunlbmNgUoXOpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oqb5HVoE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F846C4CEF0;
-	Tue, 12 Aug 2025 18:26:51 +0000 (UTC)
+	 MIME-Version; b=p9FytJTnDGwyFV2n/s1KjmtNy6meW4/moQAY1CVkQ62x5i8FugJs9NywG7+u8oA0g5Z8Fralg2W4995U7M/MrlC1c6wWxbNH1nbxRy7S1bXIwYMZZLc8KVMM5gOxaROEVBlePqKB0ZYp83RFZiTgY1EvT5nZ0FUZr+5cG9DXlFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upzi/7Gu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7861AC4CEF0;
+	Tue, 12 Aug 2025 18:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023211;
-	bh=EtSiShqkbYiteKX2uyCF4fV77+I9VT2wiZk092IxbEY=;
+	s=korg; t=1755021954;
+	bh=9XO3yXDdMmdmgOof/Thr97TenBk1qiBGXbUu4RUhFWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oqb5HVoEZ17PJx80vQKE1ZwLc3ybEwMShrao9+B50vIMOC0lGqNu0tHNraKI0wybM
-	 01QctfEVBrEdIvVU1lLuq1zcJC3XW3LVAMXaa/bRlX3vi/j7QeKTFiYFYKcfYHhg8N
-	 hfv9CnHwsmIa84PrdKHsLX5jjAPql/+yLQmK1BCs=
+	b=Upzi/7GuAzoepTrtqQ6eiNuqhN5YHa6xJG/rNKQQ3MTdsm4tuakQ7VJkfHF2AC5dX
+	 aR4HfojN/On8OM+hNC5cB9yzFe/Qj8sZYGl2CxSXUn6UvwNjslkmc/PUzPWDGWZm06
+	 9SqVgqSkj2Yf7LtiL9zX9rfeIuDiU5elD9OQSY0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Yangtao Li <frank.li@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 014/627] gfs2: Minor do_xmote cancelation fix
+Subject: [PATCH 6.12 012/369] hfsplus: make splice write available again
 Date: Tue, 12 Aug 2025 19:25:09 +0200
-Message-ID: <20250812173419.863585799@linuxfoundation.org>
+Message-ID: <20250812173015.204879582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit 75bb2ddea9640b663e4b2eaa06e15196f6f11a95 ]
+[ Upstream commit 2eafb669da0bf71fac0838bff13594970674e2b4 ]
 
-Commit 6cb3b1c2df87 changed how finish_xmote() clears the GLF_LOCK flag,
-but it failed to adjust the equivalent code in do_xmote().  Fix that.
+Since 5.10, splice() or sendfile() return EINVAL. This was
+caused by commit 36e2c7421f02 ("fs: don't allow splice read/write
+without explicit ops").
 
-Fixes: 6cb3b1c2df87 ("gfs2: Fix additional unlikely request cancelation race")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+This patch initializes the splice_write field in file_operations, like
+most file systems do, to restore the functionality.
+
+Fixes: 36e2c7421f02 ("fs: don't allow splice read/write without explicit ops")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250529140033.2296791-1-frank.li@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/hfsplus/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index ba25b884169e..ea96113edbe3 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -802,7 +802,8 @@ __acquires(&gl->gl_lockref.lock)
- 			 * We skip telling dlm to do the locking, so we won't get a
- 			 * reply that would otherwise clear GLF_LOCK. So we clear it here.
- 			 */
--			clear_bit(GLF_LOCK, &gl->gl_flags);
-+			if (!test_bit(GLF_CANCELING, &gl->gl_flags))
-+				clear_bit(GLF_LOCK, &gl->gl_flags);
- 			clear_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 			gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
- 			return;
+diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
+index f331e9574217..c85b5802ec0f 100644
+--- a/fs/hfsplus/inode.c
++++ b/fs/hfsplus/inode.c
+@@ -368,6 +368,7 @@ static const struct file_operations hfsplus_file_operations = {
+ 	.write_iter	= generic_file_write_iter,
+ 	.mmap		= generic_file_mmap,
+ 	.splice_read	= filemap_splice_read,
++	.splice_write	= iter_file_splice_write,
+ 	.fsync		= hfsplus_file_fsync,
+ 	.open		= hfsplus_file_open,
+ 	.release	= hfsplus_file_release,
 -- 
 2.39.5
 
