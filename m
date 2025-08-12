@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A13B231FD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F69B233F2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105F4582D95
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F920621501
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2722FD1AD;
-	Tue, 12 Aug 2025 18:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D7E2ECE93;
+	Tue, 12 Aug 2025 18:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbJpB+8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAYGYs1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6142E3B06;
-	Tue, 12 Aug 2025 18:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A46188715;
+	Tue, 12 Aug 2025 18:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022006; cv=none; b=T7ZScXJ1BzWwygVsArppbVg0Rob9DvAzLzcgywvQpYn4xMBrauHWWnNZtz2CEBD75plXgkF5gtJJArADCV5vci7vu85a++NE5BOz2CvRoxwS55Ero5Lfe81KiiADSA1DqM2DK8kjRN56p+0Bd9tda7WyvpIsEgZ2G8F6NTwZMJY=
+	t=1755023382; cv=none; b=hb/jF4NXud/HCJ/TF37wCvf9gAyGJCCsOOMFofnCl911Ol1L+2Kn3SQli/H1Zsmn+TZG/Prr0Kf1vxmuegiJmFqDs5Gk0tih0pDP+nTL4WUKGPX2ko32dkgtsjpwe/cuDP5tg5RgrRNOBj5bt1o4WoCCSHyhDmHOjIjufltD6cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022006; c=relaxed/simple;
-	bh=+no6iFL0K3VcFgSsKTqRvIGk+72RnHiOQpaOioG4FA8=;
+	s=arc-20240116; t=1755023382; c=relaxed/simple;
+	bh=1liWup676ECM/WZDdh3a+Vdrw7a4RY3ElJ8/gGGNabE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oO3tO3d6jIjAGdjyBNB04dpQj3gZ4IYCyv2bBivQLm8Fvnecp38S0vXeg9hTVrclcYJnnApJ2whAy0Els22wrEy0WSaFcPeQ4bDm1bkPJt+21u7y1mmMvyt9rSPCOWrBgiVqAgEGh7w+nXgfjo9P66xfy31zAXtM2Sv9emwPueM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbJpB+8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF8CC4CEF6;
-	Tue, 12 Aug 2025 18:06:45 +0000 (UTC)
+	 MIME-Version; b=du4nx1dPZOx4glKc6J8niYuUMHTl5cKlrjydzX/223rtcDsN+fC1OyHuXzahZYtRXAJK5vv700DPMc229cchSegdVZHJ5O7MJSEw00GlM4MK4urW7IGj2sMO9kYthIAr7chNvQ73uMW/+8GU5F6/0GS1W3p+5RHdHPN5LlWYL1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAYGYs1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174D7C4CEF0;
+	Tue, 12 Aug 2025 18:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022005;
-	bh=+no6iFL0K3VcFgSsKTqRvIGk+72RnHiOQpaOioG4FA8=;
+	s=korg; t=1755023382;
+	bh=1liWup676ECM/WZDdh3a+Vdrw7a4RY3ElJ8/gGGNabE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbJpB+8v1MoDj0VOH7Y3znJflhoSLA58uvgODHj0ITtfAtVKVuQgRtu6STDe3oHLx
-	 fm9bnV3JvRwGHXQBWQ/ueR43ckN4qmeVvJCsTrVBlhM77hBMBppBX8sWeh8xcG/xZB
-	 s44Tox2UNLN3Y0rClMgIzSPELMtYw8QmKZrEqTTA=
+	b=ZAYGYs1/0WIWgxWYJqKPrDnMHgiPly9d8TrcZSEgOu/DqH6SNDPzlrMvLPpvv7UyY
+	 Q3B/b/EpyURayKAEr87YbRF3SZRDG6/NXq5U+SUslczLmHkxJRpFGPEqvFJz8me1EP
+	 BF6BxYwYYQUQwP9rnPhTAifQUmhxcZp8a/tk1ecY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijuan Gao <lijuan.gao@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Youling Tang <tangyouling@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/369] arm64: dts: qcom: sa8775p: Correct the interrupt for remoteproc
-Date: Tue, 12 Aug 2025 19:25:24 +0200
-Message-ID: <20250812173015.759014244@linuxfoundation.org>
+Subject: [PATCH 6.16 030/627] sched/task_stack: Add missing const qualifier to end_of_stack()
+Date: Tue, 12 Aug 2025 19:25:25 +0200
+Message-ID: <20250812173420.473831323@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijuan Gao <lijuan.gao@oss.qualcomm.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 7bd7209e9cb11c8864e601d915008da088476f0c ]
+[ Upstream commit 32e42ab9fc88a884435c27527a433f61c4d2b61b ]
 
-Fix the incorrect IRQ numbers for ready and handover on sa8775p.
-The correct values are as follows:
+Add missing const qualifier to the non-CONFIG_THREAD_INFO_IN_TASK
+version of end_of_stack() to match the CONFIG_THREAD_INFO_IN_TASK
+version. Fixes a warning with CONFIG_KSTACK_ERASE=y on archs that don't
+select THREAD_INFO_IN_TASK (such as LoongArch):
 
-Fatal interrupt - 0
-Ready interrupt - 1
-Handover interrupt - 2
-Stop acknowledge interrupt - 3
+  error: passing 'const struct task_struct *' to parameter of type 'struct task_struct *' discards qualifiers
 
-Fixes: df54dcb34ff2e ("arm64: dts: qcom: sa8775p: add ADSP, CDSP and GPDSP nodes")
-Signed-off-by: Lijuan Gao <lijuan.gao@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250612-correct_interrupt_for_remoteproc-v1-2-490ee6d92a1b@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The stackleak_task_low_bound() function correctly uses a const task
+parameter, but the legacy end_of_stack() prototype didn't like that.
+
+Build tested on loongarch (with CONFIG_KSTACK_ERASE=y) and m68k
+(with CONFIG_DEBUG_STACK_USAGE=y).
+
+Fixes: a45728fd4120 ("LoongArch: Enable HAVE_ARCH_STACKLEAK")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/all/20250726004313.GA3650901@ax162
+Cc: Youling Tang <tangyouling@kylinos.cn>
+Cc: Huacai Chen <chenhuacai@loongson.cn>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/sched/task_stack.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-index b28fa598cebb..60f3b545304b 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -3797,8 +3797,8 @@ remoteproc_gpdsp0: remoteproc@20c00000 {
- 
- 			interrupts-extended = <&intc GIC_SPI 768 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_gpdsp0_in 0 0>,
--					      <&smp2p_gpdsp0_in 2 0>,
- 					      <&smp2p_gpdsp0_in 1 0>,
-+					      <&smp2p_gpdsp0_in 2 0>,
- 					      <&smp2p_gpdsp0_in 3 0>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -3840,8 +3840,8 @@ remoteproc_gpdsp1: remoteproc@21c00000 {
- 
- 			interrupts-extended = <&intc GIC_SPI 624 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_gpdsp1_in 0 0>,
--					      <&smp2p_gpdsp1_in 2 0>,
- 					      <&smp2p_gpdsp1_in 1 0>,
-+					      <&smp2p_gpdsp1_in 2 0>,
- 					      <&smp2p_gpdsp1_in 3 0>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -3965,8 +3965,8 @@ remoteproc_cdsp0: remoteproc@26300000 {
- 
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp0_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp0_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp0_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp0_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp0_in 3 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -4097,8 +4097,8 @@ remoteproc_cdsp1: remoteproc@2a300000 {
- 
- 			interrupts-extended = <&intc GIC_SPI 798 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp1_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp1_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp1_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp1_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp1_in 3 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -4253,8 +4253,8 @@ remoteproc_adsp: remoteproc@30000000 {
- 
- 			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "wdog", "fatal", "ready", "handover",
- 					  "stop-ack";
+diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+index 85c5a6392e02..1fab7e9043a3 100644
+--- a/include/linux/sched/task_stack.h
++++ b/include/linux/sched/task_stack.h
+@@ -53,7 +53,7 @@ static inline void setup_thread_stack(struct task_struct *p, struct task_struct
+  * When the stack grows up, this is the highest address.
+  * Beyond that position, we corrupt data on the next page.
+  */
+-static inline unsigned long *end_of_stack(struct task_struct *p)
++static inline unsigned long *end_of_stack(const struct task_struct *p)
+ {
+ #ifdef CONFIG_STACK_GROWSUP
+ 	return (unsigned long *)((unsigned long)task_thread_info(p) + THREAD_SIZE) - 1;
 -- 
 2.39.5
 
