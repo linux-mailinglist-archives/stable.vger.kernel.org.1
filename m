@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-167183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D924B22D01
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81CAB22D08
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 572C7165307
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:13:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 283011883F12
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DB827932F;
-	Tue, 12 Aug 2025 16:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2282299950;
+	Tue, 12 Aug 2025 16:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPcMTdjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ho9hhixT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B258D305E08
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF6123D7DD
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015225; cv=none; b=nkb0d3zx3TZ9Au2+kCi80f681bVOFS+xYQWMhhKcAy8fiaG6GQZiCvSjJluxQlMD59xXwjvw/NhQHx61aQB8WXDZJFBxFeQ7I3t08xk6gxWwko2lFK5bBI77S3dBlODzVNVNot2o0JvMEdQYuX/PDMfydHxfbk6qVFkZkqS/E8U=
+	t=1755015249; cv=none; b=YE3n/s/+NalWmR6OJ5XFKN4VoPN/co2ObjDgPeDxJHqsIw4W8PqnvNLrt8XLxZgXYnGcNfD9oXZnE7RpTjZlyumhlYVo0XV6iWzsMpxpQfocQMXnsL8pSk5lQ+A7IeLHJRsj61FD6aQTrhJ4NCbgMxo6hE0s3H7lYKMVSg4nIUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015225; c=relaxed/simple;
-	bh=ZUnDSmbC4WdYxCyEDN4zpiCEfOuALlwska0vdu13xb4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GvKrgk+HdcciRLYUSwhzujy/i8Wj3NKfjAcSQURfglj59BgvNPg93WaOcfUxUDEr6VSlhNje72+qKWqQmpfwR/4W+UnMJnxxt6jN3pK/AwS3adirBxZ/5BqdntzVBR8oAu7eez5fp2QqRqy/Ev5ITjgsQnDG3NC5R7wVzjA5sBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPcMTdjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADD4C4CEF0;
-	Tue, 12 Aug 2025 16:13:44 +0000 (UTC)
+	s=arc-20240116; t=1755015249; c=relaxed/simple;
+	bh=5UaM0p9bUqh2NrhInFup9nR2k/p4rH/AOi7aLbCbFhc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oarKLoL85e+V0AO0wyFOFtl5vOe9aTieRITqOH4vIgoYtPUAnLXDpsZ4bkQEOMirvE9198MQmkN6s5+xZqZyS9CD/29SmzSeDy6E7lunBB9H2rR+1eLc5J7OIVTt8U6u7SHItF56PJucMM5NJ3ZXQPBTmpSDKo7aOF2l9MvRUjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ho9hhixT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC09C4CEF0;
+	Tue, 12 Aug 2025 16:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755015225;
-	bh=ZUnDSmbC4WdYxCyEDN4zpiCEfOuALlwska0vdu13xb4=;
+	s=korg; t=1755015249;
+	bh=5UaM0p9bUqh2NrhInFup9nR2k/p4rH/AOi7aLbCbFhc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pPcMTdjQVXjizA6QsukAjO6Avdjq9Zz8tKq/w+C9EXr/Uxu2wrK4q1Kid+UefkW8H
-	 YtnYboKovLAYXQHOL61nshvuHTnEDiXziVai/lwDvlG5owxM1jnHQElpw1AbASs3HS
-	 raVEaf1PeWForMCV4HPOgLxVJRSWKdOjGh03MSYM=
-Subject: FAILED: patch "[PATCH] KVM: x86: Drop kvm_x86_ops.set_dr6() in favor of a new" failed to apply to 6.15-stable tree
+	b=Ho9hhixTvm9Domh3meGLEH95mVvcSBum7g+cin9YquZsqh5CtLnfVPcaHytxvfJjt
+	 eSEt7aF+7M4k1EQ/O3lxL23ujo7CyCpEafuaouvfDfWJrPr3AIMswO0Nul5sg2rF33
+	 2/k8S5u9KrQfrVs1JBrldBtNy/qYQZHZvo1R6QaY=
+Subject: FAILED: patch "[PATCH] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is" failed to apply to 5.10-stable tree
 To: seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Aug 2025 18:13:42 +0200
-Message-ID: <2025081242-polygon-exploring-2a87@gregkh>
+Date: Tue, 12 Aug 2025 18:14:05 +0200
+Message-ID: <2025081205-resurface-filler-e78b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 80c64c7afea1da6a93ebe88d3d29d8a60377ef80
+git cherry-pick -x 17ec2f965344ee3fd6620bef7ef68792f4ac3af0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081242-polygon-exploring-2a87@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081205-resurface-filler-e78b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,152 +77,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 80c64c7afea1da6a93ebe88d3d29d8a60377ef80 Mon Sep 17 00:00:00 2001
+From 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 Mon Sep 17 00:00:00 2001
 From: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Jun 2025 16:20:05 -0700
-Subject: [PATCH] KVM: x86: Drop kvm_x86_ops.set_dr6() in favor of a new
- KVM_RUN flag
+Date: Tue, 10 Jun 2025 16:20:06 -0700
+Subject: [PATCH] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is
+ supported
 
-Instruct vendor code to load the guest's DR6 into hardware via a new
-KVM_RUN flag, and remove kvm_x86_ops.set_dr6(), whose sole purpose was to
-load vcpu->arch.dr6 into hardware when DR6 can be read/written directly
-by the guest.
+Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
+guest CPUID model, as debug support is supposed to be available if RTM is
+supported, and there are no known downsides to letting the guest debug RTM
+aborts.
 
-Note, TDX already WARNs on any run_flag being set, i.e. will yell if KVM
-thinks DR6 needs to be reloaded.  TDX vCPUs force KVM_DEBUGREG_AUTO_SWITCH
-and never clear the flag, i.e. should never observe KVM_RUN_LOAD_GUEST_DR6.
+Note, there are no known bug reports related to RTM_DEBUG, the primary
+motivation is to reduce the probability of breaking existing guests when a
+future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
+(KVM currently lets L2 run with whatever hardware supports; whoops).
 
+Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
+DR7.RTM.
+
+Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-4-seanjc@google.com
+Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 8d50e3e0a19b..9e0c37ea267e 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -49,7 +49,6 @@ KVM_X86_OP(set_idt)
- KVM_X86_OP(get_gdt)
- KVM_X86_OP(set_gdt)
- KVM_X86_OP(sync_dirty_debug_regs)
--KVM_X86_OP(set_dr6)
- KVM_X86_OP(set_dr7)
- KVM_X86_OP(cache_reg)
- KVM_X86_OP(get_rflags)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 8d81684fa15d..4f7ee2dbf10e 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1676,6 +1676,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index b7dded3c8113..fa878b136eba 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -419,6 +419,7 @@
+ #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
+ #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
+ #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
++#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
  
- enum kvm_x86_run_flags {
- 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
-+	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
- };
+ #define MSR_PEBS_FRONTEND		0x000003f7
  
- struct kvm_x86_ops {
-@@ -1728,7 +1729,6 @@ struct kvm_x86_ops {
- 	void (*get_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
- 	void (*set_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
- 	void (*sync_dirty_debug_regs)(struct kvm_vcpu *vcpu);
--	void (*set_dr6)(struct kvm_vcpu *vcpu, unsigned long value);
- 	void (*set_dr7)(struct kvm_vcpu *vcpu, unsigned long value);
- 	void (*cache_reg)(struct kvm_vcpu *vcpu, enum kvm_reg reg);
- 	unsigned long (*get_rflags)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 83d1b62130b1..be8c43049f4d 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4438,10 +4438,13 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	svm_hv_update_vp_id(svm->vmcb, vcpu);
- 
- 	/*
--	 * Run with all-zero DR6 unless needed, so that we can get the exact cause
--	 * of a #DB.
-+	 * Run with all-zero DR6 unless the guest can write DR6 freely, so that
-+	 * KVM can get the exact cause of a #DB.  Note, loading guest DR6 from
-+	 * KVM's snapshot is only necessary when DR accesses won't exit.
- 	 */
--	if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
-+	if (unlikely(run_flags & KVM_RUN_LOAD_GUEST_DR6))
-+		svm_set_dr6(vcpu, vcpu->arch.dr6);
-+	else if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
- 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
- 
- 	clgi();
-@@ -5252,7 +5255,6 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.set_idt = svm_set_idt,
- 	.get_gdt = svm_get_gdt,
- 	.set_gdt = svm_set_gdt,
--	.set_dr6 = svm_set_dr6,
- 	.set_dr7 = svm_set_dr7,
- 	.sync_dirty_debug_regs = svm_sync_dirty_debug_regs,
- 	.cache_reg = svm_cache_reg,
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index fef3e3803707..c85cbce6d2f6 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -489,14 +489,6 @@ static void vt_set_gdt(struct kvm_vcpu *vcpu, struct desc_ptr *dt)
- 	vmx_set_gdt(vcpu, dt);
- }
- 
--static void vt_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
--{
--	if (is_td_vcpu(vcpu))
--		return;
--
--	vmx_set_dr6(vcpu, val);
--}
--
- static void vt_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
- {
- 	if (is_td_vcpu(vcpu))
-@@ -943,7 +935,6 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.set_idt = vt_op(set_idt),
- 	.get_gdt = vt_op(get_gdt),
- 	.set_gdt = vt_op(set_gdt),
--	.set_dr6 = vt_op(set_dr6),
- 	.set_dr7 = vt_op(set_dr7),
- 	.sync_dirty_debug_regs = vt_op(sync_dirty_debug_regs),
- 	.cache_reg = vt_op(cache_reg),
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index a61a28944de6..4ee6cc796855 100644
+index 4ee6cc796855..311f6fa53b67 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5606,12 +5606,6 @@ void vmx_sync_dirty_debug_regs(struct kvm_vcpu *vcpu)
- 	set_debugreg(DR6_RESERVED, 6);
+@@ -2186,6 +2186,10 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
+ 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
+ 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
+ 
++	if (boot_cpu_has(X86_FEATURE_RTM) &&
++	    (host_initiated || guest_cpu_cap_has(vcpu, X86_FEATURE_RTM)))
++		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
++
+ 	return debugctl;
  }
  
--void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
--{
--	lockdep_assert_irqs_disabled();
--	set_debugreg(vcpu->arch.dr6, 6);
--}
--
- void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
- {
- 	vmcs_writel(GUEST_DR7, val);
-@@ -7370,6 +7364,9 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vmcs_writel(GUEST_RIP, vcpu->arch.regs[VCPU_REGS_RIP]);
- 	vcpu->arch.regs_dirty = 0;
- 
-+	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
-+		set_debugreg(vcpu->arch.dr6, 6);
-+
- 	/*
- 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
- 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 07ff02eed399..7fe3549bbd93 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11046,7 +11046,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		set_debugreg(vcpu->arch.eff_db[3], 3);
- 		/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
- 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
--			kvm_x86_call(set_dr6)(vcpu, vcpu->arch.dr6);
-+			run_flags |= KVM_RUN_LOAD_GUEST_DR6;
- 	} else if (unlikely(hw_breakpoint_active())) {
- 		set_debugreg(0, 7);
- 	}
 
 
