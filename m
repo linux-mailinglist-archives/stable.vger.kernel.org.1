@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-167565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3174EB2309A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AC2B23527
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18DE1566C0D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07F281887453
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9610B2FD1D7;
-	Tue, 12 Aug 2025 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EF22F4A0A;
+	Tue, 12 Aug 2025 18:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2LVkEj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svmQ1f2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5508A2DE1E2;
-	Tue, 12 Aug 2025 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B294D2F291B;
+	Tue, 12 Aug 2025 18:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021244; cv=none; b=p+IV8SD4ypW8SV5tKYXFDIZQXbw2F7CvoYiUBFMctsoHGQMQgjmGL6DrQ8NeYUGHMuJqjjpI/+t3AZg90n5g3yXIe+Dlxljrg6s86bM+8jEGnSz7pYOpYoHzLUXf1pyGm1T52fvfRifkXPpaSphKuZ8jrx2gSsgIQFCJClS8mAQ=
+	t=1755024279; cv=none; b=jRZps2En14gPhBxaTcpCc2AAbFUBNnB5hg8ymz6nIbrWPPtAwx7DWNWbIsUa02FZTbMXCm8tdY1zaZUUdKEAcNqwtLyf3xjN58MTiQC596yZjbXh7ZKwUVMYqeCSbHhraLLdelYcwj9L5itAeg6oqG/E/5JqNHoafe5e5+6X/Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021244; c=relaxed/simple;
-	bh=Q4iNIx5fO3wqdTP/N7ky7yQ7fgqefLAb/iFipwSUUx8=;
+	s=arc-20240116; t=1755024279; c=relaxed/simple;
+	bh=GJRgE58j8nEGf2YPiQi744n28Sq8g6AigGeTe1EuLgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4x08EsTNdZ8wIcsRODZQs/6uGX4V9si4cPLIWBoly0uJHh4zGkyPQP/7Ak5VZNNfQPDtyvi82BuaQhqpbmx8oODeiW/7LRzHwzmWha4I01WS8P9fUrbyMWDTFGDgu3/nQxeeT/5ONFaz1S/oDgTGgBuGU78bUlfzvWDH6/Spwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2LVkEj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A7AC4CEF0;
-	Tue, 12 Aug 2025 17:54:03 +0000 (UTC)
+	 MIME-Version; b=XUmnJLGo1eAWqvkMlrL9pTCw2NuBCzpzsuNfx5rOvWKjV/M86Zn/BOgme0ojOrbWk/rLwKaZuvLOJsk+oEUxpGZXLRhotwZci4mLDDtsuPsUTAcP0+f+ealULsHA38xRRlBtesk1LH/kr6TUCX3JviPeioBnb2bw6umsDGV6PM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svmQ1f2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B8CC4CEF0;
+	Tue, 12 Aug 2025 18:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021244;
-	bh=Q4iNIx5fO3wqdTP/N7ky7yQ7fgqefLAb/iFipwSUUx8=;
+	s=korg; t=1755024279;
+	bh=GJRgE58j8nEGf2YPiQi744n28Sq8g6AigGeTe1EuLgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2LVkEj7iQ5Mo0LlVnt8fwDiv7fRIRep3VSfMDOEByudRoHs9c0PLzlrX4FejQhlZ
-	 JOYz6OgQMzvgPBkWN8M8AOwoSxOLx5hSoKcgRRVAqP79L4Qio/eJq5SeHRs/Iz1UVY
-	 NLsx7HlxWJdvw1gVI4NGfLdhsYQBLQteM23P1dMk=
+	b=svmQ1f2HmnVF5L2vj9Vss+cqxUfC6pPHEqYDZ2LSyL7TGPqYSJhr6bX9unV6lyLC2
+	 PXp3hUktgAtXMndYTN8StMvVyoWZvwd8rVwb9Rz/nFU1Pn9nAuyx7k55cxt/3UPMb9
+	 pU+2+jSUb8vMUDW/3z3fU7QuhV6iWZjbroiC3JjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 6.1 234/253] perf/core: Exit early on perf_mmap() fail
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 327/627] pinctrl: sunxi: Fix memory leak on krealloc failure
 Date: Tue, 12 Aug 2025 19:30:22 +0200
-Message-ID: <20250812172958.786080936@linuxfoundation.org>
+Message-ID: <20250812173431.731433069@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-commit 07091aade394f690e7b655578140ef84d0e8d7b0 upstream.
+[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
 
-When perf_mmap() fails to allocate a buffer, it still invokes the
-event_mapped() callback of the related event. On X86 this might increase
-the perf_rdpmc_allowed reference counter. But nothing undoes this as
-perf_mmap_close() is never called in this case, which causes another
-reference count leak.
+In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
+the pinctrl_map array, the function returns -ENOMEM directly
+without freeing the previously allocated *map buffer. This results
+in a memory leak of the original kmalloc_array allocation.
 
-Return early on failure to prevent that.
-
-Fixes: 1e0fb9ec679c ("perf/core: Add pmu callbacks to track event mapping and unmapping")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6504,6 +6504,9 @@ aux_unlock:
- 		mutex_unlock(aux_mutex);
- 	mutex_unlock(&event->mmap_mutex);
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+index bf8612d72daa..d63859a2a64e 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -408,6 +408,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	const char *function, *pin_prop;
+ 	const char *group;
+ 	int ret, npins, nmaps, configlen = 0, i = 0;
++	struct pinctrl_map *new_map;
  
-+	if (ret)
-+		return ret;
+ 	*map = NULL;
+ 	*num_maps = 0;
+@@ -482,9 +483,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	 * We know have the number of maps we need, we can resize our
+ 	 * map array
+ 	 */
+-	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
+-	if (!*map)
+-		return -ENOMEM;
++	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
++	if (!new_map) {
++		ret = -ENOMEM;
++		goto err_free_map;
++	}
 +
- 	/*
- 	 * Since pinned accounting is per vm we cannot allow fork() to copy our
- 	 * vma.
++	*map = new_map;
+ 
+ 	return 0;
+ 
+-- 
+2.39.5
+
 
 
 
