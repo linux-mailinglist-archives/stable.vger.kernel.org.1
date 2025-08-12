@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE5BB232F3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95132B22FDA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 940D23AC4CC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ABD617F62F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D824A2E3B06;
-	Tue, 12 Aug 2025 18:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159162FDC24;
+	Tue, 12 Aug 2025 17:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL3lhFNu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElmjnBH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968B8280037;
-	Tue, 12 Aug 2025 18:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C102FD1B2;
+	Tue, 12 Aug 2025 17:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022705; cv=none; b=OmB7Zp3jr+tr8WTuPKIWW4EtpmxlwsZQR9pmYi80WtHANUFPwMa6zF3jztgGhiKcDTrTfrHWXuHvYaS0WxqRV+5MT5xobcFWIwYfKsYoTKXWac2/7aInI9W8I+e06RSUbr0hXdtKPf1SNmHwkSyTAmyQPsytue/74MhmL0zrXuM=
+	t=1755020650; cv=none; b=WIs3SYQFUMO2qxy7421tjrkuZnAk9jWJ0z+WkHwPP7qS6Ui/zsGe3zjrAZ1X07c4+tC4xsRonFI00Q3530lOJNKJtYdb6K9wPwGT+ZvpY2TyOXtopL/B7C/G4HQ753zHMeS7u7nOgAzmJeJBGJlsBNltiE1kpShCc/5WG90kGjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022705; c=relaxed/simple;
-	bh=lwXA0QqFBtU9+BI+YgztEiteczC9ChdbfwyXfSOw7ts=;
+	s=arc-20240116; t=1755020650; c=relaxed/simple;
+	bh=Mfud8kKay1I5pXQeI3CuR/B77/f30/Qf7kfmQgVUJec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjPmUO/6WclpKDpVvmalSxhUpDrs6t9GeOTnd9sMIzz4V5aOifDVvyVQyIvd2myEzVru2dRuo5q/He1q35Lc+CC2GZ0tK05kh0gp6drUL7b43BEuE/XaE9UveTPup5RYxW1gaLLpzI+sRre9JPKmXiAFPzZElgmuJxzefe4gTY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL3lhFNu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AEFC4CEF6;
-	Tue, 12 Aug 2025 18:18:24 +0000 (UTC)
+	 MIME-Version; b=GZln0ISbLbG2Rxk+H6g0tvxTMoPENX7FlDihIf0nBIxn/m9OvDhh5KNSG2rU783ThagU74bj1CXVXU+GHCyGZY5G0et1X5+AzF6eG0dBODx/pk4EQ4uSEpwY8AmW90vLXceF7Br+USktIuragd7r33cGgPZJN+bzY99ZlcHI1nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElmjnBH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3628DC4CEF0;
+	Tue, 12 Aug 2025 17:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022705;
-	bh=lwXA0QqFBtU9+BI+YgztEiteczC9ChdbfwyXfSOw7ts=;
+	s=korg; t=1755020650;
+	bh=Mfud8kKay1I5pXQeI3CuR/B77/f30/Qf7kfmQgVUJec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JL3lhFNupPEqn0DsM0onBdgFFLdYjznFH0MB8ag/JvXbX9yYnVDGiC82jjgHMVUSb
-	 YMgNKhfyNfJllT6xofQUEGCwpPSVBJ3+ASy10Zrqb6Hi0HkT5gDnuS/OxQEspJsSvJ
-	 yUvI2udEpxYeYrN+gDxVpGv+u6RatY+wOBpKsaxY=
+	b=ElmjnBH6VkTlYmtGvUSwobRPIIHc9fSMzk942SvoEIqBLg148Xn15llhaJm0P8l74
+	 LtP3knkXfTRA50ACp+omGBwwxiP3IiyugCjbOAz//XmG3xq36o9rcK07xhciq+03Vo
+	 QKQw4QNqcdHSJbKsTgBWokin4bPCqIUOnDu5THso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anders Roxell <anders.roxell@linaro.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/369] vdpa: Fix IDR memory leak in VDUSE module exit
+Subject: [PATCH 6.1 143/253] clk: davinci: Add NULL check in davinci_lpsc_clk_register()
 Date: Tue, 12 Aug 2025 19:28:51 +0200
-Message-ID: <20250812173023.574628701@linuxfoundation.org>
+Message-ID: <20250812172954.783724900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anders Roxell <anders.roxell@linaro.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit d9ea58b5dc6b4b50fbb6a10c73f840e8b10442b7 ]
+[ Upstream commit 13de464f445d42738fe18c9a28bab056ba3a290a ]
 
-Add missing idr_destroy() call in vduse_exit() to properly free the
-vduse_idr radix tree nodes. Without this, module load/unload cycles leak
-576-byte radix tree node allocations, detectable by kmemleak as:
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+davinci_lpsc_clk_register() does not check for this case, which results
+in a NULL pointer dereference.
 
-unreferenced object (size 576):
-  backtrace:
-    [<ffffffff81234567>] radix_tree_node_alloc+0xa0/0xf0
-    [<ffffffff81234568>] idr_get_free+0x128/0x280
+Add NULL check after devm_kasprintf() to prevent this issue and ensuring
+no resources are left allocated.
 
-The vduse_idr is initialized via DEFINE_IDR() at line 136 and used throughout
-the VDUSE (vDPA Device in Userspace) driver for device ID management. The fix
-follows the documented pattern in lib/idr.c and matches the cleanup approach
-used by other drivers.
-
-This leak was discovered through comprehensive module testing with cumulative
-kmemleak detection across 10 load/unload iterations per module.
-
-Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-Message-Id: <20250704125335.1084649-1-anders.roxell@linaro.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: c6ed4d734bc7 ("clk: davinci: New driver for davinci PSC clocks")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://lore.kernel.org/r/20250401131341.26800-1-bsdhenrymartin@gmail.com
+Reviewed-by: David Lechner <david@lechnology.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/vdpa_user/vduse_dev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/davinci/psc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index 7ae99691efdf..7f569ce8fc7b 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -2215,6 +2215,7 @@ static void vduse_exit(void)
- 	cdev_del(&vduse_ctrl_cdev);
- 	unregister_chrdev_region(vduse_major, VDUSE_DEV_MAX);
- 	class_unregister(&vduse_class);
-+	idr_destroy(&vduse_idr);
- }
- module_exit(vduse_exit);
+diff --git a/drivers/clk/davinci/psc.c b/drivers/clk/davinci/psc.c
+index 42a59dbd49c8..ecb111be56f7 100644
+--- a/drivers/clk/davinci/psc.c
++++ b/drivers/clk/davinci/psc.c
+@@ -278,6 +278,11 @@ davinci_lpsc_clk_register(struct device *dev, const char *name,
  
+ 	lpsc->pm_domain.name = devm_kasprintf(dev, GFP_KERNEL, "%s: %s",
+ 					      best_dev_name(dev), name);
++	if (!lpsc->pm_domain.name) {
++		clk_hw_unregister(&lpsc->hw);
++		kfree(lpsc);
++		return ERR_PTR(-ENOMEM);
++	}
+ 	lpsc->pm_domain.attach_dev = davinci_psc_genpd_attach_dev;
+ 	lpsc->pm_domain.detach_dev = davinci_psc_genpd_detach_dev;
+ 	lpsc->pm_domain.flags = GENPD_FLAG_PM_CLK;
 -- 
 2.39.5
 
