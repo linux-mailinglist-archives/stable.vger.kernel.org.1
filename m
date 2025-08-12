@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1142B23418
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32B5B22F4B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E597D165DAF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BC81161E80
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714152ECE93;
-	Tue, 12 Aug 2025 18:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C0E2FA0FD;
+	Tue, 12 Aug 2025 17:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGW/BZ36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ii181WKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095B1EF38C;
-	Tue, 12 Aug 2025 18:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32E6221277;
+	Tue, 12 Aug 2025 17:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023532; cv=none; b=b0V7d0pKRpm1xNoVZEsQWipX6o0TPsD2JXy7WY2H1ekWZ5rpLbE7MRhCCCxtVAy0fbNCpmd1TaVLL/zUkU4mtXxGo27SvNDf3XwzljudS1Rr9BBJWGkb7rKZewnsmOnCPJhk9fcZ+6WRjyTSPYJjABSQEoYzoepG16Nc3bQEKmo=
+	t=1755020221; cv=none; b=FbYAaSrzwGR8vhMT/B0OH0eTzI1CwpT6Sfh1PzCeWr7qiMVPhgVcMDLnwx6KvOjZsyO+hAuIgbTbJ+Vmd3CX06LsvMigAmebSj1eQtE86QA5nm+ix64oi2T8d+nv9CF8eGs1Y2rb4BmKmPVWVRBTSotmoS4SXh7XE93a9oFFb0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023532; c=relaxed/simple;
-	bh=K/VtbLMZ9kZARIL2w46D/iXTla+rqvTr1Rf2/2X4Guk=;
+	s=arc-20240116; t=1755020221; c=relaxed/simple;
+	bh=WhwPpo9NAq7wMVUSfj+AKer2d8KIUSh+i45yJcsj3+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRryMDNQEVgGBn9lPQtYOcFc0+jA2eohYR44dBc9SH5FFk3lCp7M5P7Tcm0R8E28Pg0FZ+O+QOR9COlGEM0Oci1a0178FfJQjFPlA2bc4rWyYQgn4jv9liWjFEWw2TmnxkFYrmgYu+hWXktjBTGne2RtmXZ8XmYihODf9Fdr7sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGW/BZ36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F31C4CEF0;
-	Tue, 12 Aug 2025 18:32:11 +0000 (UTC)
+	 MIME-Version; b=Jia7OKjftD8UFT6eRK+qUqXW9kGiUNPbWZ00P3fvPFTqjkmnSIojitFSCg/z9mC5BjzCQypqvBL4RrT9nRXydLIBVA7hYxq0WIX50g1v9/zLfgul6nsO71ZoigwhzxlGWhGJ/VxARHbgv6s6CyfKINiLxNeY1C/xexrEA3o2tTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ii181WKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F2FC4CEF1;
+	Tue, 12 Aug 2025 17:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023532;
-	bh=K/VtbLMZ9kZARIL2w46D/iXTla+rqvTr1Rf2/2X4Guk=;
+	s=korg; t=1755020221;
+	bh=WhwPpo9NAq7wMVUSfj+AKer2d8KIUSh+i45yJcsj3+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGW/BZ362+QUC1Q5LJ2JffBdxVWUBthQs6HANxjjhOBrxy8A/Noo5kVjQ8Kepo9yQ
-	 K2F55mrzywEI8/9nAVmRlaj7XYqON1ZGv8+LJJlRS7v1Z7iD/GzKcRnGfPkKvZ02KA
-	 j4A6PcyyyQBScC8VrKKxGJp2XE7MRcXeJKJWvhnE=
+	b=Ii181WKrN1HwLdmm6ZQuBTwlRLtdvrQ2vP/l9zJmO/LkpLaZB2CeLjEKbckv9GmLh
+	 EuZmYRQ3+dRiAeDeKl0oF8e2Ps7q+EsdgzsYGuz4DUdfYvKtTvVzFwC/l9N/BxNSrJ
+	 nPV4w3x/4pJAsNE7Li9bj4fSVky2ndcqS9sl5bM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	Dennis Chen <dechen@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 108/627] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
+Subject: [PATCH 6.1 015/253] i40e: report VF tx_dropped with tx_errors instead of tx_discards
 Date: Tue, 12 Aug 2025 19:26:43 +0200
-Message-ID: <20250812173423.422389733@linuxfoundation.org>
+Message-ID: <20250812172949.355160533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Dennis Chen <dechen@redhat.com>
 
-[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
+[ Upstream commit 50b2af451597ca6eefe9d4543f8bbf8de8aa00e7 ]
 
-In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
-accordance with the target frequency to ensure delivering adequate
-performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
-indication that the desired performance level is actually equal to the
-floor one.  This may cause it to choose a performance point way above
-the desired level.
+Currently the tx_dropped field in VF stats is not updated correctly
+when reading stats from the PF. This is because it reads from
+i40e_eth_stats.tx_discards which seems to be unused for per VSI stats,
+as it is not updated by i40e_update_eth_stats() and the corresponding
+register, GLV_TDPC, is not implemented[1].
 
-Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
-actually sets HWP_DESIRED_PERF in accordance with the target performance
-value.
+Use i40e_eth_stats.tx_errors instead, which is actually updated by
+i40e_update_eth_stats() by reading from GLV_TEPC.
 
-Address this by adjusting intel_cpufreq_update_pstate() to pass
-target_pstate as both the minimum and the desired performance levels
-to intel_cpufreq_hwp_update().
+To test, create a VF and try to send bad packets through it:
 
-Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
+$ echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
+$ cat test.py
+from scapy.all import *
+
+vlan_pkt = Ether(dst="ff:ff:ff:ff:ff:ff") / Dot1Q(vlan=999) / IP(dst="192.168.0.1") / ICMP()
+ttl_pkt = IP(dst="8.8.8.8", ttl=0) / ICMP()
+
+print("Send packet with bad VLAN tag")
+sendp(vlan_pkt, iface="enp2s0f0v0")
+print("Send packet with TTL=0")
+sendp(ttl_pkt, iface="enp2s0f0v0")
+$ ip -s link show dev enp2s0f0
+16: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
+    RX:  bytes packets errors dropped  missed   mcast
+             0       0      0       0       0       0
+    TX:  bytes packets errors dropped carrier collsns
+             0       0      0       0       0       0
+    vf 0     link/ether e2:c6:fd:c1:1e:92 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+    RX: bytes  packets  mcast   bcast   dropped
+             0        0       0       0        0
+    TX: bytes  packets   dropped
+             0        0        0
+$ python test.py
+Send packet with bad VLAN tag
+.
+Sent 1 packets.
+Send packet with TTL=0
+.
+Sent 1 packets.
+$ ip -s link show dev enp2s0f0
+16: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
+    RX:  bytes packets errors dropped  missed   mcast
+             0       0      0       0       0       0
+    TX:  bytes packets errors dropped carrier collsns
+             0       0      0       0       0       0
+    vf 0     link/ether e2:c6:fd:c1:1e:92 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+    RX: bytes  packets  mcast   bcast   dropped
+             0        0       0       0        0
+    TX: bytes  packets   dropped
+             0        0        0
+
+A packet with non-existent VLAN tag and a packet with TTL = 0 are sent,
+but tx_dropped is not incremented.
+
+After patch:
+
+$ ip -s link show dev enp2s0f0
+19: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
+    RX:  bytes packets errors dropped  missed   mcast
+             0       0      0       0       0       0
+    TX:  bytes packets errors dropped carrier collsns
+             0       0      0       0       0       0
+    vf 0     link/ether 4a:b7:3d:37:f7:56 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+    RX: bytes  packets  mcast   bcast   dropped
+             0        0       0       0        0
+    TX: bytes  packets   dropped
+             0        0        2
+
+Fixes: dc645daef9af5bcbd9c ("i40e: implement VF stats NDO")
+Signed-off-by: Dennis Chen <dechen@redhat.com>
+Link: https://www.intel.com/content/www/us/en/content-details/596333/intel-ethernet-controller-x710-tm4-at2-carlsville-datasheet.html
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 64587d318267..60326ab5475f 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -3249,8 +3249,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
- 		int max_pstate = policy->strict_target ?
- 					target_pstate : cpu->max_perf_ratio;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 64bcffe75fbda..7f8899a0ae80d 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -4935,7 +4935,7 @@ int i40e_get_vf_stats(struct net_device *netdev, int vf_id,
+ 	vf_stats->broadcast  = stats->rx_broadcast;
+ 	vf_stats->multicast  = stats->rx_multicast;
+ 	vf_stats->rx_dropped = stats->rx_discards + stats->rx_discards_other;
+-	vf_stats->tx_dropped = stats->tx_discards;
++	vf_stats->tx_dropped = stats->tx_errors;
  
--		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
--					 fast_switch);
-+		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
-+					 target_pstate, fast_switch);
- 	} else if (target_pstate != old_pstate) {
- 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
- 	}
+ 	return 0;
+ }
 -- 
 2.39.5
 
