@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-168183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26A6B233DD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84269B231BA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F55B1AA73F3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 114A07B3435
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1BB2FD1AD;
-	Tue, 12 Aug 2025 18:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E262EF662;
+	Tue, 12 Aug 2025 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBzx7kKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qpi7pxcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0912FABF8;
-	Tue, 12 Aug 2025 18:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8CA2E3B06;
+	Tue, 12 Aug 2025 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023325; cv=none; b=YatsS/higy7QCoPUUr11SqwXaTSG1ov9jM/lrDctst/VxuSp7QKvTStRf84BUyEbBEelghGcBPRTpOMRkPBXNpJDm7FldGUdzTKpkjdJblr+G6mqGjKlUVlb+x/w0kmeYqhgYoFLmaDg/83K4r9QoDowC3AsJo2LNLW06SJoY7Q=
+	t=1755022059; cv=none; b=SdcMDTlcdjWD9nKvX86wZR1CtWTtk4T9RWHgsszxu1RctUWnYHQDRxNG7a0hJA6ye3JGueKSj39IoJLYqEarmq1Cs/Q9+dHH9/5YcGkxHdwmA/FtPWo+lJL5fTyRp9utxbTrtaGkdm4UKZ2UDAA+1V4rqqe7CwC1ggzTF5+nNIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023325; c=relaxed/simple;
-	bh=NQ4rHcU3S59cS5bWrH4yDSyEV3NS5VBfVNP/dWpgsU8=;
+	s=arc-20240116; t=1755022059; c=relaxed/simple;
+	bh=9t+FDXPyKwPUEb7Dw1MR65ivZ3Xezy8TsiaffxTH8Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zd2NnoIKpo2tFLeoIUwgrdeeWdTJlQ8U0SVkO0ZcQRiLZpw6/hSj8SrAxYEj3Sod/W0vTXUFMzxEpu0ncjORV9ToBHitahy+5Sb9JiHaHKcyToeQl17qNR7O+awgSVCMpXdsWs/yAHBq//2prQyBxMOH9wsB68E9C3rUJp5wLBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBzx7kKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51668C4CEF0;
-	Tue, 12 Aug 2025 18:28:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dCqPTtc23KU/osWo8Qjj7qG0cik7LrDGB49fHB7E5o5kutl9y29Eifje9gfA7oMlmQ2Bdw2eoPmvvelaSN3S9fH/SNcfa5H0TOU8dsgTriX/C0YO0VntBMPnFHyEDZch+SZUL9y26nseznpXYgaj019TfbUC0HPruVVqvD0/rAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qpi7pxcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC3BC4CEF0;
+	Tue, 12 Aug 2025 18:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023324;
-	bh=NQ4rHcU3S59cS5bWrH4yDSyEV3NS5VBfVNP/dWpgsU8=;
+	s=korg; t=1755022059;
+	bh=9t+FDXPyKwPUEb7Dw1MR65ivZ3Xezy8TsiaffxTH8Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBzx7kKp0CZScKCjqU8WPXep5iWZT2oNT0OGaF1Ur1l6tA1tw/KruQpSY/RGOOpI+
-	 1ZvdbzHFXDIpQ5S0OgX66J+GNmQuHLfQpTQiDO66DibYBdp1+EEkwhVGftDuHMyxxc
-	 wowE5akYqY2BT0EharKhq72z5otEu/4LZXOZ68bs=
+	b=Qpi7pxcfJUyRncTiLdmypR7bqHQuij6Xydw0dTM9RO5TZm2qr3VV+ytLBxnUgLCql
+	 2sgWsL0OpZQappZy2HJ/dmB8CTAdt/iVfIAd0GRshr0jogVzFK6QEZdX0DEimaF6aD
+	 Yyu4ezZTmgVPea+UQsMb5/6ObNzg+u2MdSrO/KBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <willdeacon@google.com>,
-	Will McVicker <willmcvicker@google.com>,
-	Youngmin Nam <youngmin.nam@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 046/627] arm64: dts: exynos: gs101: Add local-timer-stop to cpuidle nodes
+Subject: [PATCH 6.12 044/369] selftests: vDSO: chacha: Correctly skip test if necessary
 Date: Tue, 12 Aug 2025 19:25:41 +0200
-Message-ID: <20250812173421.089391531@linuxfoundation.org>
+Message-ID: <20250812173016.418886926@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <willdeacon@google.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit b649082312dd1a4c3989bbdb7c25eb711e9b1d94 ]
+[ Upstream commit 2c0a4428f5d6005ff0db12057cc35273593fc040 ]
 
-In preparation for switching to the architected timer as the primary
-clockevents device, mark the cpuidle nodes with the 'local-timer-stop'
-property to indicate that an alternative clockevents device must be
-used for waking up from the "c2" idle state.
+According to kselftest.h ksft_exit_skip() is not meant to be called when
+a plan has already been printed.
 
-Signed-off-by: Will Deacon <willdeacon@google.com>
-[Original commit from https://android.googlesource.com/kernel/gs/+/a896fd98638047989513d05556faebd28a62b27c]
-Signed-off-by: Will McVicker <willmcvicker@google.com>
-Reviewed-by: Youngmin Nam <youngmin.nam@samsung.com>
-Tested-by: Youngmin Nam <youngmin.nam@samsung.com>
-Fixes: ea89fdf24fd9 ("arm64: dts: exynos: google: Add initial Google gs101 SoC support")
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Tested-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250611-gs101-cpuidle-v2-1-4fa811ec404d@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Use the recommended function ksft_test_result_skip().
+
+This fixes a bug, where the TAP output would be invalid when skipping:
+
+	TAP version 13
+	1..1
+	ok 2 # SKIP Not implemented on architecture
+
+The SKIP line should start with "ok 1" as the plan only contains one test.
+
+Fixes: 3b5992eaf730 ("selftests: vDSO: unconditionally build chacha test")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/all/20250611-selftests-vdso-fixes-v3-1-e62e37a6bcf5@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/exynos/google/gs101.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/vDSO/vdso_test_chacha.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/exynos/google/gs101.dtsi b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-index 48c691fd0a3a..94aa0ffb9a97 100644
---- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-+++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-@@ -155,6 +155,7 @@ ananke_cpu_sleep: cpu-ananke-sleep {
- 				idle-state-name = "c2";
- 				compatible = "arm,idle-state";
- 				arm,psci-suspend-param = <0x0010000>;
-+				local-timer-stop;
- 				entry-latency-us = <70>;
- 				exit-latency-us = <160>;
- 				min-residency-us = <2000>;
-@@ -164,6 +165,7 @@ enyo_cpu_sleep: cpu-enyo-sleep {
- 				idle-state-name = "c2";
- 				compatible = "arm,idle-state";
- 				arm,psci-suspend-param = <0x0010000>;
-+				local-timer-stop;
- 				entry-latency-us = <150>;
- 				exit-latency-us = <190>;
- 				min-residency-us = <2500>;
-@@ -173,6 +175,7 @@ hera_cpu_sleep: cpu-hera-sleep {
- 				idle-state-name = "c2";
- 				compatible = "arm,idle-state";
- 				arm,psci-suspend-param = <0x0010000>;
-+				local-timer-stop;
- 				entry-latency-us = <235>;
- 				exit-latency-us = <220>;
- 				min-residency-us = <3500>;
+diff --git a/tools/testing/selftests/vDSO/vdso_test_chacha.c b/tools/testing/selftests/vDSO/vdso_test_chacha.c
+index 8757f738b0b1..0aad682b12c8 100644
+--- a/tools/testing/selftests/vDSO/vdso_test_chacha.c
++++ b/tools/testing/selftests/vDSO/vdso_test_chacha.c
+@@ -76,7 +76,8 @@ static void reference_chacha20_blocks(uint8_t *dst_bytes, const uint32_t *key, u
+ 
+ void __weak __arch_chacha20_blocks_nostack(uint8_t *dst_bytes, const uint32_t *key, uint32_t *counter, size_t nblocks)
+ {
+-	ksft_exit_skip("Not implemented on architecture\n");
++	ksft_test_result_skip("Not implemented on architecture\n");
++	ksft_finished();
+ }
+ 
+ int main(int argc, char *argv[])
 -- 
 2.39.5
 
