@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-168093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F40B2335E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618ABB2354F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1DA23BB916
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 229A73AF01D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F351EBFE0;
-	Tue, 12 Aug 2025 18:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6E82FE579;
+	Tue, 12 Aug 2025 18:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7mRfg8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxTwJlN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFFD280037;
-	Tue, 12 Aug 2025 18:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8844E2FD1AD;
+	Tue, 12 Aug 2025 18:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023021; cv=none; b=YrvoI01D1F1RMrk1kA+MWTtZAzZJCwHyegWh1RdzwScr6xPI4phFWITXeZjD3k+rdzZZQTIg6Lk0FwNbXWeqSFzl58Ejko+t2r+BXZ4csW2rE+KmDUg1R95PGF9uri+bt7BTAYWrZ2cWEbHs2y92Lt1q0Kd/Z1loaILhwVQ9+BY=
+	t=1755024293; cv=none; b=sKhk8Ta9P1EhaDWJ3MiIiiawWyaDOt47StrE7tOfjbbzvTEeSPzt46NyuO6pWNCLVcEd0r4IGQMEWjBNgwq1t1e6UegdCgYGKVpntEA0/Nzr6V/Ss5aZuM5o+PVAXPB4igEkxbhystFykt2kdvUhkwTmCOjoKg1rlgtaZWb45DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023021; c=relaxed/simple;
-	bh=XC5IKstZllg+DwV6WdCBKYi+2vqPTDJCi1qTQb8bBLo=;
+	s=arc-20240116; t=1755024293; c=relaxed/simple;
+	bh=ZQHZNurwaOeVW9bY50mZfU2yCkXRh9o5hxu06OShF7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShoK1KDtrw328yZbUlRwYQ5TqWUQJvXPezyzknhs/zfNOet/uFBkrMBp58YK8iLx9+SDYC7FTvrT4gQX025PO62zsS8XsvwZu9saAFL78AIGgMsti+aqxsdoahkej0zzViYwJOSu3CDrzHBtQHMlDFheqDOlQn0zmxijeNIYZi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7mRfg8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D418C4CEF8;
-	Tue, 12 Aug 2025 18:23:40 +0000 (UTC)
+	 MIME-Version; b=dbIZDd33JspoFzXKL0BDd0gJsjQlL/dM6m6cwYHhCnT2UpJqczua7c1CegxOKY8sZljPllaRtUkWiFtp4xy0zhPXaGhbmQRVXC0/jBNLhv/HLdlSOmFtH3vhh5ZxKWnOr5Dm5krIOfGSFeGFD8zdYBvsKCQDCZuRnAmEQwVrOsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxTwJlN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98BFC4CEF0;
+	Tue, 12 Aug 2025 18:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023021;
-	bh=XC5IKstZllg+DwV6WdCBKYi+2vqPTDJCi1qTQb8bBLo=;
+	s=korg; t=1755024293;
+	bh=ZQHZNurwaOeVW9bY50mZfU2yCkXRh9o5hxu06OShF7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7mRfg8uoTWporX9m+H05Lx7D83Djx1uzy+ETOBwEkGTIWLU09a0dbXLQy1ZaYWMO
-	 taWNHiI5VhgecW0je6T3p2R4OjuVRKmqMcFw2WunsKZJ8Q0ntZEle3Zx1CwsErFyyd
-	 IBCKZOncHWFDb5pCmeZBqfvI2WN060RBDNceuYeU=
+	b=DxTwJlN3TCV60pi8leh5ZXNXRbPTY/TlhE8akUaheKij1qMkWWMx+YgSPeapyoT9f
+	 ymHiLLr88jw1oF6Mh7LA+98h6i9x++nxvkpqFH64DO9d4Kr8LLiBq+ys5aCJc6Y17K
+	 oBz3ImvAEGdm23QGOObWAqQURsAMfIjq4QEiGJWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.12 327/369] selftests/perf_events: Add a mmap() correctness test
-Date: Tue, 12 Aug 2025 19:30:24 +0200
-Message-ID: <20250812173029.016244077@linuxfoundation.org>
+	Yao Zi <ziyao@disroot.org>,
+	Ze Huang <huangze@whut.edu.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 330/627] pinctrl: canaan: k230: Fix order of DT parse and pinctrl register
+Date: Tue, 12 Aug 2025 19:30:25 +0200
+Message-ID: <20250812173431.848800536@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,297 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Ze Huang <huangze@whut.edu.cn>
 
-commit 084d2ac4030c5919e85bba1f4af26e33491469cb upstream.
+[ Upstream commit d94a32ac688f953dc9a9f12b5b4139ecad841bbb ]
 
-Exercise various mmap(), munmap() and mremap() invocations, which might
-cause a perf buffer mapping to be split or truncated.
+Move DT parse before pinctrl register. This ensures that device tree
+parsing is done before calling devm_pinctrl_register() to prevent using
+uninitialized pin resources.
 
-To avoid hard coding the perf event and having dependencies on
-architectures and configuration options, scan through event types in sysfs
-and try to open them. On success, try to mmap() and if that succeeds try to
-mmap() the AUX buffer.
-
-In case that no AUX buffer supporting event is found, only test the base
-buffer mapping. If no mappable event is found or permissions are not
-sufficient, skip the tests.
-
-Reserve a PROT_NONE region for both rb and aux tests to allow testing the
-case where mremap unmaps beyond the end of a mapped VMA to prevent it from
-unmapping unrelated mappings.
-
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Co-developed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 545887eab6f6 ("pinctrl: canaan: Add support for k230 SoC")
+Reported-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Ze Huang <huangze@whut.edu.cn>
+Link: https://lore.kernel.org/20250624-k230-return-check-v1-2-6b4fc5ba0c41@whut.edu.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/perf_events/.gitignore |    1 
- tools/testing/selftests/perf_events/Makefile   |    2 
- tools/testing/selftests/perf_events/mmap.c     |  236 +++++++++++++++++++++++++
- 3 files changed, 238 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/perf_events/mmap.c
+ drivers/pinctrl/pinctrl-k230.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/perf_events/.gitignore
-+++ b/tools/testing/selftests/perf_events/.gitignore
-@@ -2,3 +2,4 @@
- sigtrap_threads
- remove_on_exec
- watermark_signal
-+mmap
---- a/tools/testing/selftests/perf_events/Makefile
-+++ b/tools/testing/selftests/perf_events/Makefile
-@@ -2,5 +2,5 @@
- CFLAGS += -Wl,-no-as-needed -Wall $(KHDR_INCLUDES)
- LDFLAGS += -lpthread
+diff --git a/drivers/pinctrl/pinctrl-k230.c b/drivers/pinctrl/pinctrl-k230.c
+index 4976308e6237..d716f23d837f 100644
+--- a/drivers/pinctrl/pinctrl-k230.c
++++ b/drivers/pinctrl/pinctrl-k230.c
+@@ -590,6 +590,7 @@ static int k230_pinctrl_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct k230_pinctrl *info;
+ 	struct pinctrl_desc *pctl;
++	int ret;
  
--TEST_GEN_PROGS := sigtrap_threads remove_on_exec watermark_signal
-+TEST_GEN_PROGS := sigtrap_threads remove_on_exec watermark_signal mmap
- include ../lib.mk
---- /dev/null
-+++ b/tools/testing/selftests/perf_events/mmap.c
-@@ -0,0 +1,236 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#define _GNU_SOURCE
+ 	info = devm_kzalloc(dev, sizeof(*info), GFP_KERNEL);
+ 	if (!info)
+@@ -615,13 +616,15 @@ static int k230_pinctrl_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, PTR_ERR(info->regmap_base),
+ 				     "failed to init regmap\n");
+ 
++	ret = k230_pinctrl_parse_dt(pdev, info);
++	if (ret)
++		return ret;
 +
-+#include <dirent.h>
-+#include <sched.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <unistd.h>
-+
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+
-+#include <linux/perf_event.h>
-+
-+#include "../kselftest_harness.h"
-+
-+#define RB_SIZE		0x3000
-+#define AUX_SIZE	0x10000
-+#define AUX_OFFS	0x4000
-+
-+#define HOLE_SIZE	0x1000
-+
-+/* Reserve space for rb, aux with space for shrink-beyond-vma testing. */
-+#define REGION_SIZE	(2 * RB_SIZE + 2 * AUX_SIZE)
-+#define REGION_AUX_OFFS (2 * RB_SIZE)
-+
-+#define MAP_BASE	1
-+#define MAP_AUX		2
-+
-+#define EVENT_SRC_DIR	"/sys/bus/event_source/devices"
-+
-+FIXTURE(perf_mmap)
-+{
-+	int		fd;
-+	void		*ptr;
-+	void		*region;
-+};
-+
-+FIXTURE_VARIANT(perf_mmap)
-+{
-+	bool		aux;
-+	unsigned long	ptr_size;
-+};
-+
-+FIXTURE_VARIANT_ADD(perf_mmap, rb)
-+{
-+	.aux = false,
-+	.ptr_size = RB_SIZE,
-+};
-+
-+FIXTURE_VARIANT_ADD(perf_mmap, aux)
-+{
-+	.aux = true,
-+	.ptr_size = AUX_SIZE,
-+};
-+
-+static bool read_event_type(struct dirent *dent, __u32 *type)
-+{
-+	char typefn[512];
-+	FILE *fp;
-+	int res;
-+
-+	snprintf(typefn, sizeof(typefn), "%s/%s/type", EVENT_SRC_DIR, dent->d_name);
-+	fp = fopen(typefn, "r");
-+	if (!fp)
-+		return false;
-+
-+	res = fscanf(fp, "%u", type);
-+	fclose(fp);
-+	return res > 0;
-+}
-+
-+FIXTURE_SETUP(perf_mmap)
-+{
-+	struct perf_event_attr attr = {
-+		.size		= sizeof(attr),
-+		.disabled	= 1,
-+		.exclude_kernel	= 1,
-+		.exclude_hv	= 1,
-+	};
-+	struct perf_event_attr attr_ok = {};
-+	unsigned int eacces = 0, map = 0;
-+	struct perf_event_mmap_page *rb;
-+	struct dirent *dent;
-+	void *aux, *region;
-+	DIR *dir;
-+
-+	self->ptr = NULL;
-+
-+	dir = opendir(EVENT_SRC_DIR);
-+	if (!dir)
-+		SKIP(return, "perf not available.");
-+
-+	region = mmap(NULL, REGION_SIZE, PROT_NONE, MAP_ANON | MAP_PRIVATE, -1, 0);
-+	ASSERT_NE(region, MAP_FAILED);
-+	self->region = region;
-+
-+	// Try to find a suitable event on this system
-+	while ((dent = readdir(dir))) {
-+		int fd;
-+
-+		if (!read_event_type(dent, &attr.type))
-+			continue;
-+
-+		fd = syscall(SYS_perf_event_open, &attr, 0, -1, -1, 0);
-+		if (fd < 0) {
-+			if (errno == EACCES)
-+				eacces++;
-+			continue;
-+		}
-+
-+		// Check whether the event supports mmap()
-+		rb = mmap(region, RB_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED, fd, 0);
-+		if (rb == MAP_FAILED) {
-+			close(fd);
-+			continue;
-+		}
-+
-+		if (!map) {
-+			// Save the event in case that no AUX capable event is found
-+			attr_ok = attr;
-+			map = MAP_BASE;
-+		}
-+
-+		if (!variant->aux)
-+			continue;
-+
-+		rb->aux_offset = AUX_OFFS;
-+		rb->aux_size = AUX_SIZE;
-+
-+		// Check whether it supports a AUX buffer
-+		aux = mmap(region + REGION_AUX_OFFS, AUX_SIZE, PROT_READ | PROT_WRITE,
-+			   MAP_SHARED | MAP_FIXED, fd, AUX_OFFS);
-+		if (aux == MAP_FAILED) {
-+			munmap(rb, RB_SIZE);
-+			close(fd);
-+			continue;
-+		}
-+
-+		attr_ok = attr;
-+		map = MAP_AUX;
-+		munmap(aux, AUX_SIZE);
-+		munmap(rb, RB_SIZE);
-+		close(fd);
-+		break;
-+	}
-+	closedir(dir);
-+
-+	if (!map) {
-+		if (!eacces)
-+			SKIP(return, "No mappable perf event found.");
-+		else
-+			SKIP(return, "No permissions for perf_event_open()");
-+	}
-+
-+	self->fd = syscall(SYS_perf_event_open, &attr_ok, 0, -1, -1, 0);
-+	ASSERT_NE(self->fd, -1);
-+
-+	rb = mmap(region, RB_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED, self->fd, 0);
-+	ASSERT_NE(rb, MAP_FAILED);
-+
-+	if (!variant->aux) {
-+		self->ptr = rb;
-+		return;
-+	}
-+
-+	if (map != MAP_AUX)
-+		SKIP(return, "No AUX event found.");
-+
-+	rb->aux_offset = AUX_OFFS;
-+	rb->aux_size = AUX_SIZE;
-+	aux = mmap(region + REGION_AUX_OFFS, AUX_SIZE, PROT_READ | PROT_WRITE,
-+		   MAP_SHARED | MAP_FIXED, self->fd, AUX_OFFS);
-+	ASSERT_NE(aux, MAP_FAILED);
-+	self->ptr = aux;
-+}
-+
-+FIXTURE_TEARDOWN(perf_mmap)
-+{
-+	ASSERT_EQ(munmap(self->region, REGION_SIZE), 0);
-+	if (self->fd != -1)
-+		ASSERT_EQ(close(self->fd), 0);
-+}
-+
-+TEST_F(perf_mmap, remap)
-+{
-+	void *tmp, *ptr = self->ptr;
-+	unsigned long size = variant->ptr_size;
-+
-+	// Test the invalid remaps
-+	ASSERT_EQ(mremap(ptr, size, HOLE_SIZE, MREMAP_MAYMOVE), MAP_FAILED);
-+	ASSERT_EQ(mremap(ptr + HOLE_SIZE, size, HOLE_SIZE, MREMAP_MAYMOVE), MAP_FAILED);
-+	ASSERT_EQ(mremap(ptr + size - HOLE_SIZE, HOLE_SIZE, size, MREMAP_MAYMOVE), MAP_FAILED);
-+	// Shrink the end of the mapping such that we only unmap past end of the VMA,
-+	// which should succeed and poke a hole into the PROT_NONE region
-+	ASSERT_NE(mremap(ptr + size - HOLE_SIZE, size, HOLE_SIZE, MREMAP_MAYMOVE), MAP_FAILED);
-+
-+	// Remap the whole buffer to a new address
-+	tmp = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(tmp, MAP_FAILED);
-+
-+	// Try splitting offset 1 hole size into VMA, this should fail
-+	ASSERT_EQ(mremap(ptr + HOLE_SIZE, size - HOLE_SIZE, size - HOLE_SIZE,
-+			 MREMAP_MAYMOVE | MREMAP_FIXED, tmp), MAP_FAILED);
-+	// Remapping the whole thing should succeed fine
-+	ptr = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, tmp);
-+	ASSERT_EQ(ptr, tmp);
-+	ASSERT_EQ(munmap(tmp, size), 0);
-+}
-+
-+TEST_F(perf_mmap, unmap)
-+{
-+	unsigned long size = variant->ptr_size;
-+
-+	// Try to poke holes into the mappings
-+	ASSERT_NE(munmap(self->ptr, HOLE_SIZE), 0);
-+	ASSERT_NE(munmap(self->ptr + HOLE_SIZE, HOLE_SIZE), 0);
-+	ASSERT_NE(munmap(self->ptr + size - HOLE_SIZE, HOLE_SIZE), 0);
-+}
-+
-+TEST_F(perf_mmap, map)
-+{
-+	unsigned long size = variant->ptr_size;
-+
-+	// Try to poke holes into the mappings by mapping anonymous memory over it
-+	ASSERT_EQ(mmap(self->ptr, HOLE_SIZE, PROT_READ | PROT_WRITE,
-+		       MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0), MAP_FAILED);
-+	ASSERT_EQ(mmap(self->ptr + HOLE_SIZE, HOLE_SIZE, PROT_READ | PROT_WRITE,
-+		       MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0), MAP_FAILED);
-+	ASSERT_EQ(mmap(self->ptr + size - HOLE_SIZE, HOLE_SIZE, PROT_READ | PROT_WRITE,
-+		       MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0), MAP_FAILED);
-+}
-+
-+TEST_HARNESS_MAIN
+ 	info->pctl_dev = devm_pinctrl_register(dev, pctl, info);
+ 	if (IS_ERR(info->pctl_dev))
+ 		return dev_err_probe(dev, PTR_ERR(info->pctl_dev),
+ 				     "devm_pinctrl_register failed\n");
+ 
+-	k230_pinctrl_parse_dt(pdev, info);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
