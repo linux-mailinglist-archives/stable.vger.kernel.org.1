@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-167721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD133B2317F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FE8B2308B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19E331AA4553
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870B33B3CD5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAAA2ED17F;
-	Tue, 12 Aug 2025 18:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F292F83CB;
+	Tue, 12 Aug 2025 17:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YB2MJG+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEpYIR3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380841C8621;
-	Tue, 12 Aug 2025 18:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C17268C73;
+	Tue, 12 Aug 2025 17:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021772; cv=none; b=Ja1qwaOmnb1jvkRj8ZnJ/REaELJeqXTKSw4BvOjOxHzxjjsrCQQSIfPLtRcbW3+eiRMImDRJRECHYK1zZWW91BUXaOte1xOu6XYdQK127uJJKpobGi+pZkrxRu43i/HxYyAS3d0zXDDY+KGBF6s0W9hrkO47gs0tLiDDYx5IiY0=
+	t=1755021142; cv=none; b=Ffsqmcv2LgRmQfFiEeldJZaaahfluy7QwFWY2FfEdjNrMIokPYCoDxgX7YYqlu04G0UGxORU/06dCh4l5XdWOymj5DujMrHcrVb0Cxv9DMo/mmh+PGEOg2DuxKthg0brNeYHaLXsqf3xtY7iGwhlMWuh1R56z0AS9vplDQoTqVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021772; c=relaxed/simple;
-	bh=OWA3aIS7LFl+m+zbAjl7xTcgHFOodQ26Ux3paJUS0d0=;
+	s=arc-20240116; t=1755021142; c=relaxed/simple;
+	bh=4Bi6NSqX5URXxojy9dmOEz/F5Tl3K7xa6Sy/Tujh3sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bn3VEhEkxxvrK4WgPYAkLK5E8quY3Dm4+FxXWP2PoqByop+X8JLqJ6xKH7pr8VqRsbXC/yqMvxiQ9hXXfeT9zwiarOnU1ZPs5tICIkiBqbNhsOoHfXhErO+ml8kR8ut/7cF3euxaFw2keijNrCQnUUj4BI8SX+hcab0TryUkCSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YB2MJG+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A663CC4CEF6;
-	Tue, 12 Aug 2025 18:02:51 +0000 (UTC)
+	 MIME-Version; b=EVNTfVjqn/7G4EbdExmHsKlfDCK+H+ocTAVXV0+0FnvWSwk3UOEGdMuLEJ3eQlRxuMJy8Bq91NmEA5rQdoBITy7pOhQ41x9B/jVG5OdIhs/+1u7AkyE7GOe4jUTyU58ixN/SVHQdY3xjBEiF6MrZ++WvyF01j10HliuHEpzQkhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEpYIR3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54449C4CEF0;
+	Tue, 12 Aug 2025 17:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021772;
-	bh=OWA3aIS7LFl+m+zbAjl7xTcgHFOodQ26Ux3paJUS0d0=;
+	s=korg; t=1755021141;
+	bh=4Bi6NSqX5URXxojy9dmOEz/F5Tl3K7xa6Sy/Tujh3sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YB2MJG+yH29ucEE9ODlPyhlgEu79uD+b4rMaCf+JXF1m1ILtXXamoHrc3FuTAAdbY
-	 /kdH1vbLEdofgK4CfSVtM5Fl9nlIu8ZtvxY2JjVlVgyqqzzticuRU07G4E0X9fcYsT
-	 rQnRJlIkq6l5GAyQGp+YHBNKo1uTKtra8OLJS2pg=
+	b=oEpYIR3+c2tQyr/wY9blIfHUYmyGUeLrERucWh3q9x7Z6DlspPxcgBuYBNTaBfFpU
+	 tlB+4zoge1KwEgXpsHFCbepQ1V9U6fg93/S4iMl8dfrVRhWSBu4+c1VIRez+GkNfnO
+	 ctbFP9GWOGqN0L8jW7veRSv7jkmurnO8FPSIp00M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 219/262] smb: server: let recv_done() consistently call put_recvmsg/smb_direct_disconnect_rdma_connection
-Date: Tue, 12 Aug 2025 19:30:07 +0200
-Message-ID: <20250812173002.474885300@linuxfoundation.org>
+Subject: [PATCH 6.1 220/253] pptp: ensure minimal skb length in pptp_xmit()
+Date: Tue, 12 Aug 2025 19:30:08 +0200
+Message-ID: <20250812172958.198808513@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,106 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cfe76fdbb9729c650f3505d9cfb2f70ddda2dbdc ]
+[ Upstream commit de9c4861fb42f0cd72da844c3c34f692d5895b7b ]
 
-We should call put_recvmsg() before smb_direct_disconnect_rdma_connection()
-in order to call it before waking up the callers.
+Commit aabc6596ffb3 ("net: ppp: Add bound checking for skb data
+on ppp_sync_txmung") fixed ppp_sync_txmunge()
 
-In all error cases we should call smb_direct_disconnect_rdma_connection()
-in order to avoid stale connections.
+We need a similar fix in pptp_xmit(), otherwise we might
+read uninit data as reported by syzbot.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+BUG: KMSAN: uninit-value in pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
+  pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
+  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2290 [inline]
+  ppp_input+0x1d6/0xe60 drivers/net/ppp/ppp_generic.c:2314
+  pppoe_rcv_core+0x1e8/0x760 drivers/net/ppp/pppoe.c:379
+  sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
+  __release_sock+0x1d3/0x330 net/core/sock.c:3213
+  release_sock+0x6b/0x270 net/core/sock.c:3767
+  pppoe_sendmsg+0x15d/0xcb0 drivers/net/ppp/pppoe.c:904
+  sock_sendmsg_nosec net/socket.c:712 [inline]
+  __sock_sendmsg+0x330/0x3d0 net/socket.c:727
+  ____sys_sendmsg+0x893/0xd80 net/socket.c:2566
+  ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
+  __sys_sendmmsg+0x2d9/0x7c0 net/socket.c:2709
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68887d86.a00a0220.b12ec.00cd.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Link: https://patch.msgid.link/20250729080207.1863408-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/ppp/pptp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index d28d85a46597..b22fe18212cf 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -520,13 +520,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	t = recvmsg->transport;
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index 32183f24e63f..951dac268adb 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -159,9 +159,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	int len;
+ 	unsigned char *data;
+ 	__u32 seq_recv;
+-
+-
+-	struct rtable *rt;
++	struct rtable *rt = NULL;
+ 	struct net_device *tdev;
+ 	struct iphdr  *iph;
+ 	int    max_headroom;
+@@ -179,16 +177,20 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
  
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
-+		put_recvmsg(t, recvmsg);
- 		if (wc->status != IB_WC_WR_FLUSH_ERR) {
- 			pr_err("Recv error. status='%s (%d)' opcode=%d\n",
- 			       ib_wc_status_msg(wc->status), wc->status,
- 			       wc->opcode);
- 			smb_direct_disconnect_rdma_connection(t);
- 		}
--		put_recvmsg(t, recvmsg);
- 		return;
- 	}
- 
-@@ -541,6 +541,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
- 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
- 			put_recvmsg(t, recvmsg);
-+			smb_direct_disconnect_rdma_connection(t);
- 			return;
- 		}
- 		t->negotiation_requested = true;
-@@ -548,7 +549,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		t->status = SMB_DIRECT_CS_CONNECTED;
- 		enqueue_reassembly(t, recvmsg, 0);
- 		wake_up_interruptible(&t->wait_status);
--		break;
-+		return;
- 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
- 		struct smb_direct_data_transfer *data_transfer =
- 			(struct smb_direct_data_transfer *)recvmsg->packet;
-@@ -558,6 +559,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (wc->byte_len <
- 		    offsetof(struct smb_direct_data_transfer, padding)) {
- 			put_recvmsg(t, recvmsg);
-+			smb_direct_disconnect_rdma_connection(t);
- 			return;
- 		}
- 
-@@ -566,6 +568,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
- 			    (u64)data_length) {
- 				put_recvmsg(t, recvmsg);
-+				smb_direct_disconnect_rdma_connection(t);
- 				return;
- 			}
- 
-@@ -608,11 +611,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
- 			mod_delayed_work(smb_direct_wq,
- 					 &t->post_recv_credits_work, 0);
--		break;
-+		return;
- 	}
--	default:
--		break;
- 	}
+ 	if (skb_headroom(skb) < max_headroom || skb_cloned(skb) || skb_shared(skb)) {
+ 		struct sk_buff *new_skb = skb_realloc_headroom(skb, max_headroom);
+-		if (!new_skb) {
+-			ip_rt_put(rt);
 +
-+	/*
-+	 * This is an internal error!
-+	 */
-+	WARN_ON_ONCE(recvmsg->type != SMB_DIRECT_MSG_DATA_TRANSFER);
-+	put_recvmsg(t, recvmsg);
-+	smb_direct_disconnect_rdma_connection(t);
- }
++		if (!new_skb)
+ 			goto tx_error;
+-		}
++
+ 		if (skb->sk)
+ 			skb_set_owner_w(new_skb, skb->sk);
+ 		consume_skb(skb);
+ 		skb = new_skb;
+ 	}
  
- static int smb_direct_post_recv(struct smb_direct_transport *t,
++	/* Ensure we can safely access protocol field and LCP code */
++	if (!pskb_may_pull(skb, 3))
++		goto tx_error;
++
+ 	data = skb->data;
+ 	islcp = ((data[0] << 8) + data[1]) == PPP_LCP && 1 <= data[2] && data[2] <= 7;
+ 
+@@ -262,6 +264,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	return 1;
+ 
+ tx_error:
++	ip_rt_put(rt);
+ 	kfree_skb(skb);
+ 	return 1;
+ }
 -- 
 2.39.5
 
