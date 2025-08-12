@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3663DB2313D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFFE9B232B8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59E8F1AA3B96
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF1EE7A944C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DE02FF15A;
-	Tue, 12 Aug 2025 17:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475922DFA3E;
+	Tue, 12 Aug 2025 18:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0a1SgONE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtQBSak8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC692FF14E;
-	Tue, 12 Aug 2025 17:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BAF1EBFE0;
+	Tue, 12 Aug 2025 18:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021576; cv=none; b=IdPGftRjQ11MUqPrDeywHdhdy/IVmTAcc92iXjOHlMTQZ1GIKdml2Wv/D0IkjSlOh77QvaHew18xqiyyVMLY+RZA97Tqg83MNRTZkknXfdVZI3HK9Pj45CPJuDSnsA6dhmLsfEY+IdIUMK1e5FfUZTgJfHwtbKhlig2WcSFJhQI=
+	t=1755022881; cv=none; b=mh6FJA/BdiQb54mJYgtf7NXh0RZpZRSMciGmSf8hoLdUFfLMaoibVx4gNpuTEbTpy31L2vDgsezVNmCgZXv/wOnnbbIaTlHAA0QsyH3sm/UkHrzU1Xd1OQQFR2ijqVwK6DrvWw0ep8saWDNC7jmEQs28cebPaoOoXc4yyXTUQkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021576; c=relaxed/simple;
-	bh=LzysyYqjFvxqdHVIxdWIRrFqRCrRnmwOckFE8k6B7pI=;
+	s=arc-20240116; t=1755022881; c=relaxed/simple;
+	bh=64r630jbVa5PLttT0srOWBAHtoWF0bTf4iEpcnjeNaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1iTj/QCoBwjHbhsOWVFn2vVPurO0AjEmdvC7No0dno/qIh0GbibKT64KQ6e09yPsIFOnUc8QHoTnu7Y4efONV74G5zRajtleCDy5ApMofAy5kaAddQKKrTYZ1yzmoPLe2m6Nn5dgRUiQHrOMNQr1NOGQtiibmfjZmDHGOmWkZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0a1SgONE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802A9C4CEF0;
-	Tue, 12 Aug 2025 17:59:35 +0000 (UTC)
+	 MIME-Version; b=M1RH9OH0YgB0I7to+81aZbcpTE4NtmIip7JIb5oH5m4yL8zwWh5yblWvZmu3QjQmlnC4dcYqxkFXG1NpKzENE/LKoOxp/VDAragnLtsdSaZyoQrdE9OxDWaG9xPXwqCtnZcFcEeduUHaYME2XuE2mVMzNnM5kj/82LqX4vanR4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtQBSak8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5AAC4CEF0;
+	Tue, 12 Aug 2025 18:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021576;
-	bh=LzysyYqjFvxqdHVIxdWIRrFqRCrRnmwOckFE8k6B7pI=;
+	s=korg; t=1755022880;
+	bh=64r630jbVa5PLttT0srOWBAHtoWF0bTf4iEpcnjeNaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0a1SgONEb12k1NS6UlpKpjOgJXZH4sH5uRejJVruGaeCGbv01lQmJ20+xj9+62jOa
-	 iz+r4G3T7+MxMNMzDYM08IvhOYWrC8A2PZzRA4EEKXdSAr/nWcgfBOmrkmofgTJHZS
-	 6hBTR/7yoSUIRnZEox99uazWBRx1mlk7XXdftVaY=
+	b=vtQBSak8A0UW11vDV0MI/X6QOrzwTt5l/Q9Qia+zo4SJBbvIVOZfc0NLLX6mx1wIg
+	 mOFrhWv7H7rV6mMvPMotBWcjNzROuEo6+jyBX+ykl2k/7i8en8t4UclG8yCTly8XDz
+	 EyIiH9QrKOslRQ/C0pEV3CUYQUUomo2VvHJnZN1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Lee <ryan.lee@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/262] apparmor: fix loop detection used in conflicting attachment resolution
+Subject: [PATCH 6.12 254/369] f2fs: fix to check upper boundary for gc_no_zoned_gc_percent
 Date: Tue, 12 Aug 2025 19:29:11 +0200
-Message-ID: <20250812173000.040490506@linuxfoundation.org>
+Message-ID: <20250812173024.314097272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Lee <ryan.lee@canonical.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a88db916b8c77552f49f7d9f8744095ea01a268f ]
+[ Upstream commit a919ae794ad2dc6d04b3eea2f9bc86332c1630cc ]
 
-Conflicting attachment resolution is based on the number of states
-traversed to reach an accepting state in the attachment DFA, accounting
-for DFA loops traversed during the matching process. However, the loop
-counting logic had multiple bugs:
+This patch adds missing upper boundary check while setting
+gc_no_zoned_gc_percent via sysfs.
 
- - The inc_wb_pos macro increments both position and length, but length
-   is supposed to saturate upon hitting buffer capacity, instead of
-   wrapping around.
- - If no revisited state is found when traversing the history, is_loop
-   would still return true, as if there was a loop found the length of
-   the history buffer, instead of returning false and signalling that
-   no loop was found. As a result, the adjustment step of
-   aa_dfa_leftmatch would sometimes produce negative counts with loop-
-   free DFAs that traversed enough states.
- - The iteration in the is_loop for loop is supposed to stop before
-   i = wb->len, so the conditional should be < instead of <=.
-
-This patch fixes the above bugs as well as the following nits:
- - The count and size fields in struct match_workbuf were not used,
-   so they can be removed.
- - The history buffer in match_workbuf semantically stores aa_state_t
-   and not unsigned ints, even if aa_state_t is currently unsigned int.
- - The local variables in is_loop are counters, and thus should be
-   unsigned ints instead of aa_state_t's.
-
-Fixes: 21f606610502 ("apparmor: improve overlapping domain attachment resolution")
-
-Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
-Co-developed-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 9a481a1c16f4 ("f2fs: create gc_no_zoned_gc_percent and gc_boost_zoned_gc_percent")
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h |  5 +----
- security/apparmor/match.c         | 22 +++++++++++-----------
- 2 files changed, 12 insertions(+), 15 deletions(-)
+ fs/f2fs/sysfs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
-index 5b6f16242e60..e59305abb85a 100644
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -144,15 +144,12 @@ void aa_dfa_free_kref(struct kref *kref);
- /* This needs to be a power of 2 */
- #define WB_HISTORY_SIZE 32
- struct match_workbuf {
--	unsigned int count;
- 	unsigned int pos;
- 	unsigned int len;
--	unsigned int size;	/* power of 2, same as history size */
--	unsigned int history[WB_HISTORY_SIZE];
-+	aa_state_t history[WB_HISTORY_SIZE];
- };
- #define DEFINE_MATCH_WB(N)		\
- struct match_workbuf N = {		\
--	.count = 0,			\
- 	.pos = 0,			\
- 	.len = 0,			\
- }
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index 76709b7c6519..3667b79e9366 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -668,35 +668,35 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
- 	return state;
- }
- 
--#define inc_wb_pos(wb)						\
--do {								\
-+#define inc_wb_pos(wb)							\
-+do {									\
- 	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
- 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
--	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
-+	wb->len = (wb->len + 1) > WB_HISTORY_SIZE ? WB_HISTORY_SIZE :	\
-+				wb->len + 1;				\
- } while (0)
- 
- /* For DFAs that don't support extended tagging of states */
-+/* adjust is only set if is_loop returns true */
- static bool is_loop(struct match_workbuf *wb, aa_state_t state,
- 		    unsigned int *adjust)
- {
--	aa_state_t pos = wb->pos;
--	aa_state_t i;
-+	int pos = wb->pos;
-+	int i;
- 
- 	if (wb->history[pos] < state)
- 		return false;
- 
--	for (i = 0; i <= wb->len; i++) {
-+	for (i = 0; i < wb->len; i++) {
- 		if (wb->history[pos] == state) {
- 			*adjust = i;
- 			return true;
- 		}
--		if (pos == 0)
--			pos = WB_HISTORY_SIZE;
--		pos--;
-+		/* -1 wraps to WB_HISTORY_SIZE - 1 */
-+		pos = (pos - 1) & (WB_HISTORY_SIZE - 1);
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index d79d8041b8b7..eb84b9418ac1 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -623,6 +623,13 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
+ 		return count;
  	}
  
--	*adjust = i;
--	return true;
-+	return false;
- }
- 
- static aa_state_t leftmatch_fb(struct aa_dfa *dfa, aa_state_t start,
++	if (!strcmp(a->attr.name, "gc_no_zoned_gc_percent")) {
++		if (t > 100)
++			return -EINVAL;
++		*ui = (unsigned int)t;
++		return count;
++	}
++
+ 	if (!strcmp(a->attr.name, "gc_boost_zoned_gc_percent")) {
+ 		if (t > 100)
+ 			return -EINVAL;
 -- 
 2.39.5
 
