@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B85B23330
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77210B230AD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7091775F1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFFC41771BA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A682DFA3E;
-	Tue, 12 Aug 2025 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC692FA0DB;
+	Tue, 12 Aug 2025 17:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VArWYTUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thZAAxjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984BF1EBFE0;
-	Tue, 12 Aug 2025 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69842D5C76;
+	Tue, 12 Aug 2025 17:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022940; cv=none; b=aZyEO3hX4YJ1rR8Lbp1bEwJNwbils4WzNJr+KUybg4m9VlLMK0ra2sDRi9cg0XM1tbk5nVxOAYmSpo85oQSx9pciwxruYZ8nnmocF7Ah0QWAh7Bq5gOEAOsSYHbTa+mlULkgRo5NkzrDVaoeHz9iOmFvCCiCH6tPT/hV12ohW0U=
+	t=1755021303; cv=none; b=As3UxLBkg2PrcWLOdQl5iIAYdXKeZ/WN0l9Oc87/sfYhwSkVmzmoB1w9XYjhKBRrOGPtwgQ4tUugTiEhk3a1RnaljM5f5BmWM/Mv6+Y1zy+kbHqZIneVUFXuE+EJOMllFN8rliR/BBVKwMdQS4is6xhCfs3qMAgwaBVxB/O28WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022940; c=relaxed/simple;
-	bh=l5PEFLqZABTvPwPnB5Ke9bjvvmx4uREpI8CiYE3b+Lw=;
+	s=arc-20240116; t=1755021303; c=relaxed/simple;
+	bh=gTt4MFo1xX7X+9AByw3S/9mdbUtzIwa473mtOD043LA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPZxmOeRi6mMxJH7Pq4HJlfJ+KP/rPrNCRRuJ0MsiUyVXGhzzwPHcc/aaplnieirZ6WiMjbqgbZqfYcC2kUX9j+nV4HQp2skLW6RpbLbx9WFeKNfH6OwhEoQa0G+wG4Uaq6lUo4RnxCqQPk/Ljmju1h5w8NXbI6SsQ6UQGg3RT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VArWYTUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A19C4CEF0;
-	Tue, 12 Aug 2025 18:22:19 +0000 (UTC)
+	 MIME-Version; b=QkcQ3eORl8yrjxYqel6BYr80r5NcrnZ6vhCWiH4eRxe/W3pWfZB2cI0oIevX9UiAbhVrcVAW5KtbDePp9Qkaw4axXfhG3mbD4KNAmoYXy1FxHkFNTPzKY9Pz97fFPrtt1EIV/JPKNY1sNcf1eEiJftujIebIZWwgq0A+lOGGJjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thZAAxjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63094C4CEF0;
+	Tue, 12 Aug 2025 17:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022940;
-	bh=l5PEFLqZABTvPwPnB5Ke9bjvvmx4uREpI8CiYE3b+Lw=;
+	s=korg; t=1755021302;
+	bh=gTt4MFo1xX7X+9AByw3S/9mdbUtzIwa473mtOD043LA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VArWYTUYw3BiEkill6iBhvTKQkT/hUfYlyGBGBo0IYCxb0sMagiR9EyClnECiG4A4
-	 f+0nAT/6XVr7suPZBwqPB5U5aHdCCzNjmTr4BRGrD65TJ0wP4qwQS+2mg+6LSkYcuK
-	 cUxd6euYSftBAR89LE4N89XBt+XtQoVflV0+Igy0=
+	b=thZAAxjg7l4FfwZTrakz9V0UgGWAUBp74+69wz4IVB0CHEjLGg3w5wF+mO3Er7Gu5
+	 tAo5ZmtJGqojL7wqrZGgMymzOP/xCZhFZYkiIuJJ+8DdCllK7kRHktTeMIi9Buufu8
+	 lnCn9dLFFjqTdVVyqeysf76C4mXbgDSilC9XGbSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hogan Wang <hogan.wang@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	NeilBrown <neilb@suse.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/369] x86/irq: Plug vector setup race
+Subject: [PATCH 6.1 213/253] sched: Add test_and_clear_wake_up_bit() and atomic_dec_and_wake_up()
 Date: Tue, 12 Aug 2025 19:30:01 +0200
-Message-ID: <20250812173028.167851479@linuxfoundation.org>
+Message-ID: <20250812172957.895996089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,186 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit ce0b5eedcb753697d43f61dd2e27d68eb5d3150f ]
+[ Upstream commit 52d633def56c10fe3e82a2c5d88c3ecb3f4e4852 ]
 
-Hogan reported a vector setup race, which overwrites the interrupt
-descriptor in the per CPU vector array resulting in a disfunctional device.
+There are common patterns in the kernel of using test_and_clear_bit()
+before wake_up_bit(), and atomic_dec_and_test() before wake_up_var().
 
-CPU0				CPU1
-				interrupt is raised in APIC IRR
-				but not handled
-  free_irq()
-    per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
+These combinations don't need extra barriers but sometimes include them
+unnecessarily.
 
-  request_irq()			common_interrupt()
-  				  d = this_cpu_read(vector_irq[vector]);
+To help avoid the unnecessary barriers and to help discourage the
+general use of wake_up_bit/var (which is a fragile interface) introduce
+two combined functions which implement these patterns.
 
-    per_cpu(vector_irq, CPU1)[vector] = desc;
+Also add store_release_wake_up() which supports the task of simply
+setting a non-atomic variable and sending a wakeup.  This pattern
+requires barriers which are often omitted.
 
-    				  if (d == VECTOR_SHUTDOWN)
-				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-
-free_irq() cannot observe the pending vector in the CPU1 APIC as there is
-no way to query the remote CPUs APIC IRR.
-
-This requires that request_irq() uses the same vector/CPU as the one which
-was freed, but this also can be triggered by a spurious interrupt.
-
-Interestingly enough this problem managed to be hidden for more than a
-decade.
-
-Prevent this by reevaluating vector_irq under the vector lock, which is
-held by the interrupt activation code when vector_irq is updated.
-
-To avoid ifdeffery or IS_ENABLED() nonsense, move the
-[un]lock_vector_lock() declarations out under the
-CONFIG_IRQ_DOMAIN_HIERARCHY guard as it's only provided when
-CONFIG_X86_LOCAL_APIC=y.
-
-The current CONFIG_IRQ_DOMAIN_HIERARCHY guard is selected by
-CONFIG_X86_LOCAL_APIC, but can also be selected by other parts of the
-Kconfig system, which makes 32-bit UP builds with CONFIG_X86_LOCAL_APIC=n
-fail.
-
-Can we just get rid of this !APIC nonsense once and forever?
-
-Fixes: 9345005f4eed ("x86/irq: Fix do_IRQ() interrupt warning for cpu hotplug retriggered irqs")
-Reported-by: Hogan Wang <hogan.wang@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Hogan Wang <hogan.wang@huawei.com>
-Link: https://lore.kernel.org/all/draft-87ikjhrhhh.ffs@tglx
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240925053405.3960701-5-neilb@suse.de
+Stable-dep-of: 1db3a48e83bb ("NFS: Fix wakeup of __nfs_lookup_revalidate() in unblock_revalidate()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/hw_irq.h | 12 ++++---
- arch/x86/kernel/irq.c         | 63 ++++++++++++++++++++++++++---------
- 2 files changed, 55 insertions(+), 20 deletions(-)
+ include/linux/wait_bit.h | 60 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/arch/x86/include/asm/hw_irq.h b/arch/x86/include/asm/hw_irq.h
-index edebf1020e04..6bb3d9a86abe 100644
---- a/arch/x86/include/asm/hw_irq.h
-+++ b/arch/x86/include/asm/hw_irq.h
-@@ -92,8 +92,6 @@ struct irq_cfg {
- 
- extern struct irq_cfg *irq_cfg(unsigned int irq);
- extern struct irq_cfg *irqd_cfg(struct irq_data *irq_data);
--extern void lock_vector_lock(void);
--extern void unlock_vector_lock(void);
- #ifdef CONFIG_SMP
- extern void vector_schedule_cleanup(struct irq_cfg *);
- extern void irq_complete_move(struct irq_cfg *cfg);
-@@ -101,12 +99,16 @@ extern void irq_complete_move(struct irq_cfg *cfg);
- static inline void vector_schedule_cleanup(struct irq_cfg *c) { }
- static inline void irq_complete_move(struct irq_cfg *c) { }
- #endif
--
- extern void apic_ack_edge(struct irq_data *data);
--#else	/*  CONFIG_IRQ_DOMAIN_HIERARCHY */
-+#endif /* CONFIG_IRQ_DOMAIN_HIERARCHY */
-+
-+#ifdef CONFIG_X86_LOCAL_APIC
-+extern void lock_vector_lock(void);
-+extern void unlock_vector_lock(void);
-+#else
- static inline void lock_vector_lock(void) {}
- static inline void unlock_vector_lock(void) {}
--#endif	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
-+#endif
- 
- /* Statistics */
- extern atomic_t irq_err_count;
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 85fa2db38dc4..9400730e538e 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -251,26 +251,59 @@ static __always_inline void handle_irq(struct irq_desc *desc,
- 		__handle_irq(desc, regs);
+diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
+index 7725b7579b78..2209c227e859 100644
+--- a/include/linux/wait_bit.h
++++ b/include/linux/wait_bit.h
+@@ -335,4 +335,64 @@ static inline void clear_and_wake_up_bit(int bit, void *word)
+ 	wake_up_bit(word, bit);
  }
  
--static __always_inline int call_irq_handler(int vector, struct pt_regs *regs)
-+static struct irq_desc *reevaluate_vector(int vector)
- {
--	struct irq_desc *desc;
--	int ret = 0;
-+	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
-+
-+	if (!IS_ERR_OR_NULL(desc))
-+		return desc;
-+
-+	if (desc == VECTOR_UNUSED)
-+		pr_emerg_ratelimited("No irq handler for %d.%u\n", smp_processor_id(), vector);
-+	else
-+		__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-+	return NULL;
++/**
++ * test_and_clear_wake_up_bit - clear a bit if it was set: wake up anyone waiting on that bit
++ * @bit: the bit of the word being waited on
++ * @word: the address of memory containing that bit
++ *
++ * If the bit is set and can be atomically cleared, any tasks waiting in
++ * wait_on_bit() or similar will be woken.  This call has the same
++ * complete ordering semantics as test_and_clear_bit().  Any changes to
++ * memory made before this call are guaranteed to be visible after the
++ * corresponding wait_on_bit() completes.
++ *
++ * Returns %true if the bit was successfully set and the wake up was sent.
++ */
++static inline bool test_and_clear_wake_up_bit(int bit, unsigned long *word)
++{
++	if (!test_and_clear_bit(bit, word))
++		return false;
++	/* no extra barrier required */
++	wake_up_bit(word, bit);
++	return true;
 +}
 +
-+static __always_inline bool call_irq_handler(int vector, struct pt_regs *regs)
++/**
++ * atomic_dec_and_wake_up - decrement an atomic_t and if zero, wake up waiters
++ * @var: the variable to dec and test
++ *
++ * Decrements the atomic variable and if it reaches zero, send a wake_up to any
++ * processes waiting on the variable.
++ *
++ * This function has the same complete ordering semantics as atomic_dec_and_test.
++ *
++ * Returns %true is the variable reaches zero and the wake up was sent.
++ */
++
++static inline bool atomic_dec_and_wake_up(atomic_t *var)
 +{
-+	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
- 
--	desc = __this_cpu_read(vector_irq[vector]);
- 	if (likely(!IS_ERR_OR_NULL(desc))) {
- 		handle_irq(desc, regs);
--	} else {
--		ret = -EINVAL;
--		if (desc == VECTOR_UNUSED) {
--			pr_emerg_ratelimited("%s: %d.%u No irq handler for vector\n",
--					     __func__, smp_processor_id(),
--					     vector);
--		} else {
--			__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
--		}
-+		return true;
- 	}
- 
--	return ret;
-+	/*
-+	 * Reevaluate with vector_lock held to prevent a race against
-+	 * request_irq() setting up the vector:
-+	 *
-+	 * CPU0				CPU1
-+	 *				interrupt is raised in APIC IRR
-+	 *				but not handled
-+	 * free_irq()
-+	 *   per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
-+	 *
-+	 * request_irq()		common_interrupt()
-+	 *				  d = this_cpu_read(vector_irq[vector]);
-+	 *
-+	 * per_cpu(vector_irq, CPU1)[vector] = desc;
-+	 *
-+	 *				  if (d == VECTOR_SHUTDOWN)
-+	 *				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-+	 *
-+	 * This requires that the same vector on the same target CPU is
-+	 * handed out or that a spurious interrupt hits that CPU/vector.
-+	 */
-+	lock_vector_lock();
-+	desc = reevaluate_vector(vector);
-+	unlock_vector_lock();
-+
-+	if (!desc)
++	if (!atomic_dec_and_test(var))
 +		return false;
-+
-+	handle_irq(desc, regs);
++	/* No extra barrier required */
++	wake_up_var(var);
 +	return true;
- }
- 
- /*
-@@ -284,7 +317,7 @@ DEFINE_IDTENTRY_IRQ(common_interrupt)
- 	/* entry code tells RCU that we're not quiescent.  Check it. */
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(), "IRQ failed to wake up RCU");
- 
--	if (unlikely(call_irq_handler(vector, regs)))
-+	if (unlikely(!call_irq_handler(vector, regs)))
- 		apic_eoi();
- 
- 	set_irq_regs(old_regs);
++}
++
++/**
++ * store_release_wake_up - update a variable and send a wake_up
++ * @var: the address of the variable to be updated and woken
++ * @val: the value to store in the variable.
++ *
++ * Store the given value in the variable send a wake up to any tasks
++ * waiting on the variable.  All necessary barriers are included to ensure
++ * the task calling wait_var_event() sees the new value and all values
++ * written to memory before this call.
++ */
++#define store_release_wake_up(var, val)					\
++do {									\
++	smp_store_release(var, val);					\
++	smp_mb();							\
++	wake_up_var(var);						\
++} while (0)
++
+ #endif /* _LINUX_WAIT_BIT_H */
 -- 
 2.39.5
 
