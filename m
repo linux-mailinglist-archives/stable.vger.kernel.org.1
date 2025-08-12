@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280BDB230FE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99122B234C1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C2B36846A4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAF3018859DA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47C52FAC02;
-	Tue, 12 Aug 2025 17:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3552FD1AD;
+	Tue, 12 Aug 2025 18:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un9/Satm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7QuvTR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747882F8BE7;
-	Tue, 12 Aug 2025 17:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5AB6BB5B;
+	Tue, 12 Aug 2025 18:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021471; cv=none; b=Nn1pfhJkW5VHvOnybhTmjr6LeMw1w25fJ9Z1reoosPS0T8IwD0wUZUHP/8uzIzg2Of7imXE4ScG99wfj3gGALiHKa6ozK63tdTLKt+1Fu9vzPtQrFcU1JsW/8lt8aS9TkLMebw9GGj0ZZOyMtI05+W76YhVCqwMhtu6beRWoPeY=
+	t=1755023943; cv=none; b=aDTRqH4C6rrFpdR2Li7IGyYUC5l+LXj++4rC/JyXgcrdn4KPTyZ0g/FU6nacxtpugBxCrcMCL2YwMMf52NX5UCen+wmwXix7yr5ZXn5lBZ5leTqZcy+TBXNYUohHasatEZQdTaEvdpd+PM0IeUa1Ty5Jfc1NovoulV6S7OqUqh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021471; c=relaxed/simple;
-	bh=w8AgA+sFE9/hgjryxE3DoRWahfjLeqV3NLEXzIDjM/c=;
+	s=arc-20240116; t=1755023943; c=relaxed/simple;
+	bh=VAEJ7hEkPFJkUJo4g40qvEdpxaXrAVtWYGEM8KwKx08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncB0POiTq81Jiai0fDSe7XNANuao5tnAyenZLmJ6T51/9JawiNQX4IXV/1ztlWXoj7k+HceWyEoApvJbVlwvs19P+0n7sjnvPC4FBT6hMVwfNoFyqwbCoqM5FEv50zNqdfL/QPXqEo/FNaRM6p4dDA68qeoosl6B25Pn3sAPElM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un9/Satm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71636C4CEF0;
-	Tue, 12 Aug 2025 17:57:50 +0000 (UTC)
+	 MIME-Version; b=JutyG8+sYF9MosKSuR/clI3Yoyi78d0zbi2YM0WK/6jEFZmzsBVwNC2hBpr5oohMnjdcv6zZPC0G2YbjbCajZWAe3P1Fd6q9c86lJPH+3Sk5ZvAniiPA/UjKEG1MLMZosLhKL855AKF1orHqpmcrRZNhCfTQDEvQ7wHs2YqbIMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7QuvTR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C8EC4CEF0;
+	Tue, 12 Aug 2025 18:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021470;
-	bh=w8AgA+sFE9/hgjryxE3DoRWahfjLeqV3NLEXzIDjM/c=;
+	s=korg; t=1755023943;
+	bh=VAEJ7hEkPFJkUJo4g40qvEdpxaXrAVtWYGEM8KwKx08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=un9/SatmebNF4xdv2KUBvqlfhyz02egGWtGQx0xv+E9m/WefguiVhoUkySfjBVw5z
-	 ifadgJYbkXWnhPBSW0UDAjHmDno4tEJpVfAOGYtk3h4Fqr7Z+487kybfBo6d/e1bBO
-	 bergZIwXym4+/gvEk6Tq+Klw5PJWW0AzB/NLZVME=
+	b=v7QuvTR/wVqZYuJzHQvCxQqAJCcN7ULDGe2jaejCXMnfYV7NDxlljO1u2orNvlCEQ
+	 dzC5drDXRMdJyqMAKiT/uvLDFs336hgJQQwUUmOTtPZpBWMh+klfwn1NJ4aLRkEjfQ
+	 91IMN8TEGDdVPuOKCsKrrMzV7Zn39B5KBaf2Z2sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/262] pinmux: fix race causing mux_owner NULL with active mux_usecount
-Date: Tue, 12 Aug 2025 19:28:41 +0200
-Message-ID: <20250812172958.765898959@linuxfoundation.org>
+Subject: [PATCH 6.16 227/627] wifi: ath11k: fix sleeping-in-atomic in ath11k_mac_op_set_bitrate_mask()
+Date: Tue, 12 Aug 2025 19:28:42 +0200
+Message-ID: <20250812173427.923329974@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 0b075c011032f88d1cfde3b45d6dcf08b44140eb ]
+[ Upstream commit 65c12b104cb942d588a1a093acc4537fb3d3b129 ]
 
-commit 5a3e85c3c397 ("pinmux: Use sequential access to access
-desc->pinmux data") tried to address the issue when two client of the
-same gpio calls pinctrl_select_state() for the same functionality, was
-resulting in NULL pointer issue while accessing desc->mux_owner.
-However, issue was not completely fixed due to the way it was handled
-and it can still result in the same NULL pointer.
+ath11k_mac_disable_peer_fixed_rate() is passed as the iterator to
+ieee80211_iterate_stations_atomic(). Note in this case the iterator is
+required to be atomic, however ath11k_mac_disable_peer_fixed_rate() does
+not follow it as it might sleep. Consequently below warning is seen:
 
-The issue occurs due to the following interleaving:
+BUG: sleeping function called from invalid context at wmi.c:304
+Call Trace:
+ <TASK>
+ dump_stack_lvl
+ __might_resched.cold
+ ath11k_wmi_cmd_send
+ ath11k_wmi_set_peer_param
+ ath11k_mac_disable_peer_fixed_rate
+ ieee80211_iterate_stations_atomic
+ ath11k_mac_op_set_bitrate_mask.cold
 
-     cpu0 (process A)                   cpu1 (process B)
+Change to ieee80211_iterate_stations_mtx() to fix this issue.
 
-      pin_request() {                   pin_free() {
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
 
-                                         mutex_lock()
-                                         desc->mux_usecount--; //becomes 0
-                                         ..
-                                         mutex_unlock()
-
-  mutex_lock(desc->mux)
-  desc->mux_usecount++; // becomes 1
-  desc->mux_owner = owner;
-  mutex_unlock(desc->mux)
-
-                                         mutex_lock(desc->mux)
-                                         desc->mux_owner = NULL;
-                                         mutex_unlock(desc->mux)
-
-This sequence leads to a state where the pin appears to be in use
-(`mux_usecount == 1`) but has no owner (`mux_owner == NULL`), which can
-cause NULL pointer on next pin_request on the same pin.
-
-Ensure that updates to mux_usecount and mux_owner are performed
-atomically under the same lock. Only clear mux_owner when mux_usecount
-reaches zero and no new owner has been assigned.
-
-Fixes: 5a3e85c3c397 ("pinmux: Use sequential access to access desc->pinmux data")
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Link: https://lore.kernel.org/20250708-pinmux-race-fix-v2-1-8ae9e8a0d1a1@oss.qualcomm.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250603-ath11k-use-non-atomic-iterator-v1-1-d75762068d56@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinmux.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
-index 97e8af88df85..ab853d6c586b 100644
---- a/drivers/pinctrl/pinmux.c
-+++ b/drivers/pinctrl/pinmux.c
-@@ -238,18 +238,7 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
- 			if (desc->mux_usecount)
- 				return NULL;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 13301ca317a5..977f370fd6de 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8740,9 +8740,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
+ 				    arvif->vdev_id, ret);
+ 			return ret;
  		}
--	}
--
--	/*
--	 * If there is no kind of request function for the pin we just assume
--	 * we got it by default and proceed.
--	 */
--	if (gpio_range && ops->gpio_disable_free)
--		ops->gpio_disable_free(pctldev, gpio_range, pin);
--	else if (ops->free)
--		ops->free(pctldev, pin);
- 
--	scoped_guard(mutex, &desc->mux_lock) {
- 		if (gpio_range) {
- 			owner = desc->gpio_owner;
- 			desc->gpio_owner = NULL;
-@@ -260,6 +249,15 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
+-		ieee80211_iterate_stations_atomic(ar->hw,
+-						  ath11k_mac_disable_peer_fixed_rate,
+-						  arvif);
++		ieee80211_iterate_stations_mtx(ar->hw,
++					       ath11k_mac_disable_peer_fixed_rate,
++					       arvif);
+ 	} else if (ath11k_mac_bitrate_mask_get_single_nss(ar, arvif, band, mask,
+ 							  &single_nss)) {
+ 		rate = WMI_FIXED_RATE_NONE;
+@@ -8809,9 +8809,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
  		}
- 	}
  
-+	/*
-+	 * If there is no kind of request function for the pin we just assume
-+	 * we got it by default and proceed.
-+	 */
-+	if (gpio_range && ops->gpio_disable_free)
-+		ops->gpio_disable_free(pctldev, gpio_range, pin);
-+	else if (ops->free)
-+		ops->free(pctldev, pin);
-+
- 	module_put(pctldev->owner);
+ 		mutex_lock(&ar->conf_mutex);
+-		ieee80211_iterate_stations_atomic(ar->hw,
+-						  ath11k_mac_disable_peer_fixed_rate,
+-						  arvif);
++		ieee80211_iterate_stations_mtx(ar->hw,
++					       ath11k_mac_disable_peer_fixed_rate,
++					       arvif);
  
- 	return owner;
+ 		arvif->bitrate_mask = *mask;
+ 		ieee80211_iterate_stations_atomic(ar->hw,
 -- 
 2.39.5
 
