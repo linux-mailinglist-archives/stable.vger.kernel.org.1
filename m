@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CC2B2307A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC7AB23326
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8CB566813
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5097A3A00C3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3242F8BE7;
-	Tue, 12 Aug 2025 17:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CEA1EBFE0;
+	Tue, 12 Aug 2025 18:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvfS+mFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fjd4LbZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293E1268C73;
-	Tue, 12 Aug 2025 17:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B116D1FF7C5;
+	Tue, 12 Aug 2025 18:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021118; cv=none; b=fSbNjTmHbBGmNQZZQO5EcL1jiKmzW/apCIUUWGVQGv869l5qbPoi45DyUNCOvh4bMm2xXBVeESA/wM6d4LFMOqN9MVf/LCcZBarV8DMEZFNfqqS0hjAb0tRHH7QiETIJ49fpjY1PmmcHJ10kc5kuV3KIz9sX4Ryd3TUgZz4IweY=
+	t=1755022890; cv=none; b=J9b1DBKzEd8QQbMADUxMpHuDQXeMuob3v9j73ZGt6E5pFxBPfCrXNi/NM6Fc20RbdT6oitOra3BX60GvWhFpI9XJlDaApDkSpNUIW8nn+EGKE9//MD5PHxJTZKUyD6EN4CLPVCutJC/zFYjed4KqIIVfLLUFGWoNPWzXe6leMI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021118; c=relaxed/simple;
-	bh=XT6kuFWE4yXWZx2yPPjNDiD71k2QS75QQ6IKmNeWaOk=;
+	s=arc-20240116; t=1755022890; c=relaxed/simple;
+	bh=nOt6LPaLCoVVLwV0mB7bEYZXtS0T2cAHQEGchzkmd7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlGs90Yf0uqSDc25zcdY7Px33xL2LbC83D52nR2D2WqTRSjCAeGNx7LlQb44JNQDZCe0wQgEmb5WHmp7Cw14D3t0RZm+3ZXgXmDsruIRHk1UAthcZVdP9PTKuhFPx5A90Ava456oDNN3I6njET7MRfdFV097+uRmVz9QrcfL1T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvfS+mFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A115C4CEF0;
-	Tue, 12 Aug 2025 17:51:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IiCkY4lcbxe8WHONdwJGDIpx2E2vhtJ7JxDLjKEfChPNkfoxbD8aue4sJyLuIlo1CsL5Xg/lK4ovF2DiB4wMBCQcbd0tHJgfyHKjbXQhGqVOSDYs2mrk2hvcDT7kqAvERgIrBC5IxLte9+sxwy2p2x1ye4SUo47Q4izgI1DIKZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fjd4LbZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E0AC4CEF0;
+	Tue, 12 Aug 2025 18:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021118;
-	bh=XT6kuFWE4yXWZx2yPPjNDiD71k2QS75QQ6IKmNeWaOk=;
+	s=korg; t=1755022890;
+	bh=nOt6LPaLCoVVLwV0mB7bEYZXtS0T2cAHQEGchzkmd7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvfS+mFnw8ezWudlj/fJzkUb+1imoUXOlUXxZI0Pb2/itpDaAQUSqC7+WDoD2eQdl
-	 dEbOl39xYRcFgM6gDh/xn2cKpy4uu9qUthk5jfFBN4ixpo+SrkmkQSHnXks+jbHHgI
-	 HFV7R/9/pHjuNG2vEzRRRHDHkGC9QtvUDi0moh30=
+	b=Fjd4LbZLVDb3OXCJGhjfr3joEODAz9dgmHMncI+yVV45d4NdoF0P2bhL5YWJeYfCn
+	 bFd4MgzfJI27XHT3czxv4rT7oi0DyonMzID/RvUFN55Ka6Iw3fl3vxHe2ZMiQNyXki
+	 3OtT4K14ELx8yOfxtCyiZY+HDfWnS0/4caffVFfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Luk=C3=A1=C5=A1=20Hejtm=C3=A1nek?= <xhejtman@ics.muni.cz>,
+	Santosh Pradhan <santosh.pradhan@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/253] rtc: pcf8563: fix incorrect maximum clock rate handling
-Date: Tue, 12 Aug 2025 19:29:38 +0200
-Message-ID: <20250812172956.881406831@linuxfoundation.org>
+Subject: [PATCH 6.12 282/369] NFS: Fix wakeup of __nfs_lookup_revalidate() in unblock_revalidate()
+Date: Tue, 12 Aug 2025 19:29:39 +0200
+Message-ID: <20250812173027.097319678@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
+[ Upstream commit 1db3a48e83bb64a70bf27263b7002585574a9c2d ]
 
-When pcf8563_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+Use store_release_wake_up() to add the appropriate memory barrier before
+calling wake_up_var(&dentry->d_fsdata).
 
-Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reported-by: Lukáš Hejtmánek<xhejtman@ics.muni.cz>
+Suggested-by: Santosh Pradhan <santosh.pradhan@gmail.com>
+Link: https://lore.kernel.org/all/18945D18-3EDB-4771-B019-0335CE671077@ics.muni.cz/
+Fixes: 99bc9f2eb3f7 ("NFS: add barriers when testing for NFS_FSDATA_BLOCKED")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf8563.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/dir.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
-index 11fa9788558b..dd27acae137c 100644
---- a/drivers/rtc/rtc-pcf8563.c
-+++ b/drivers/rtc/rtc-pcf8563.c
-@@ -386,7 +386,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index f9f4a92f63e9..bbc625e742aa 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1837,9 +1837,7 @@ static void block_revalidate(struct dentry *dentry)
  
--	return 0;
-+	return clkout_rates[0];
+ static void unblock_revalidate(struct dentry *dentry)
+ {
+-	/* store_release ensures wait_var_event() sees the update */
+-	smp_store_release(&dentry->d_fsdata, NULL);
+-	wake_up_var(&dentry->d_fsdata);
++	store_release_wake_up(&dentry->d_fsdata, NULL);
  }
  
- static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ /*
 -- 
 2.39.5
 
