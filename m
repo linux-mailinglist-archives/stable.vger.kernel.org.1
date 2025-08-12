@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7865EB231E9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7E5B2340E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 816897A9867
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 205321A25E6F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53132882CE;
-	Tue, 12 Aug 2025 18:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACF02FF141;
+	Tue, 12 Aug 2025 18:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13NA8Kh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNfGK9dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75135282E1;
-	Tue, 12 Aug 2025 18:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7E7188715;
+	Tue, 12 Aug 2025 18:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022273; cv=none; b=HUXIFP1COPJeZaORQSssv9q9Xz//0umAD9bmY/2oE6LGljOIdtFeXrjPfPoxMqi7rFWGmaaPQZ3US94KHEISEJNUq7PiieJ4t04lQElPGTM7jBwelh80SzQ3Bd7j6Cg6/M9JkXEIFzo1CftO0bkig1qFffdpkHdMLm5htlASBVI=
+	t=1755023420; cv=none; b=oN4EiuhWEkZ71ZGLV2nfZTTVwA3mrwbbXVw2OOXvvakbh7zl213EkyOXxJ/ATkqmFYudat1gqzfct1AUfW9xLl+3O3bSLDo9nt2R/t/lxMY16y6PiLNFnbgsVgIl09bggx1YHmC5ooAJTv4wBsInxpHaLGRVt/MQ/ZEzZJXs3pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022273; c=relaxed/simple;
-	bh=Fk7azpVQSqtvabN38vwqJyl+H13w8dmmeBcxF4aVunI=;
+	s=arc-20240116; t=1755023420; c=relaxed/simple;
+	bh=U6dx0xSNl1GB8cfzj104sXvapvTIjOMeVN3pONnQEr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdeTmfMlVD/nHytraTDDkHFyj7Awn8mb5ec1IXWhk8trLu/tYHmwi8G5LjJibQymjj46XnwmmPsnyjzGONMcq3+dVO9sk/1SdInrEIK45dpNz0lCoqoCpc9cnvw9ikqSlgpYPqKlswglXUiZGRq7pd7uja3Qzgf7Azfkrs3RA8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13NA8Kh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98782C4CEF0;
-	Tue, 12 Aug 2025 18:11:12 +0000 (UTC)
+	 MIME-Version; b=JrX3HE03dBcw4ne24UuZopBjuQkXPSUeTj6g3m3GJKsa8J8fDWBy1fb9nOaM4aecFoNznTZeVuzBHUOXjw3Xwy4ghmTR9CTMMod7/jqwwvQ9/jk5m9BnOhVp+iCXqTY88hqlZC/lMkkxGZCvgUSmR9uceeoe9ysM/SLxAlCbaG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNfGK9dd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9D8C4CEF0;
+	Tue, 12 Aug 2025 18:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022273;
-	bh=Fk7azpVQSqtvabN38vwqJyl+H13w8dmmeBcxF4aVunI=;
+	s=korg; t=1755023419;
+	bh=U6dx0xSNl1GB8cfzj104sXvapvTIjOMeVN3pONnQEr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=13NA8Kh2HFzHyadFC2GDRCkLgHBddPwLDXR8pVETCBQRd8wfI7neA2C4r/N9Oiw44
-	 dnxM8V8Q5WVyrwEXpgEMeVfxzoU9Ko/bUJ6b6FIZnwRC/tSZ2VcHnDwCQGZtTZ2QXs
-	 WPAD1uUeomGzm1j5jGtAFw7uNJGWQk/6b471Aoow=
+	b=TNfGK9ddhlU8WkUkkwnl2oTyfogEq4vOfqPa/Dg31Y4hCM95ZdAELRigkYfCY80sp
+	 W8HVJCRHYE3jM3jbV4bVd4QKuM/B398jG3tEAzPhvevFlqnlHOAr0hFfxIBLyGGcRV
+	 6Z4KYZEhzdeYqSD/jeWf66ClAzJvIcKUSLqGrn24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Boqun Feng <boqun.fenng@gmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/369] selftests/bpf: fix signedness bug in redir_partial()
+Subject: [PATCH 6.16 075/627] rust: devres: require T: Send for Devres
 Date: Tue, 12 Aug 2025 19:26:10 +0200
-Message-ID: <20250812173017.525845352@linuxfoundation.org>
+Message-ID: <20250812173422.167339714@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 6a4bd31f680a1d1cf06492fe6dc4f08da09769e6 ]
+[ Upstream commit 0dab138d0f4c0b3ce7f835d577e52a2b5ebdd536 ]
 
-When xsend() returns -1 (error), the check 'n < sizeof(buf)' incorrectly
-treats it as success due to unsigned promotion. Explicitly check for -1
-first.
+Due to calling Revocable::revoke() from Devres::devres_callback() T may
+be dropped from Devres::devres_callback() and hence must be Send.
 
-Fixes: a4b7193d8efd ("selftests/bpf: Add sockmap test for redirecting partial skb data")
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Link: https://lore.kernel.org/r/20250612084208.27722-1-wangfushuai@baidu.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fix this by adding the corresponding bound to Devres and DevresInner.
+
+Reported-by: Boqun Feng <boqun.feng@gmail.com>
+Closes: https://lore.kernel.org/lkml/aFzI5L__OcB9hqdG@Mac.home/
+Fixes: 76c01ded724b ("rust: add devres abstraction")
+Reviewed-by: Boqun Feng <boqun.fenng@gmail.com>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Link: https://lore.kernel.org/r/20250626132544.72866-1-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/sockmap_listen.c | 2 ++
- 1 file changed, 2 insertions(+)
+ rust/kernel/devres.rs | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-index 4ee1148d22be..1cfed83156b0 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-@@ -924,6 +924,8 @@ static void redir_partial(int family, int sotype, int sock_map, int parser_map)
- 		goto close;
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 57502534d985..8ede607414fd 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -18,7 +18,7 @@
+ };
  
- 	n = xsend(c1, buf, sizeof(buf), 0);
-+	if (n == -1)
-+		goto close;
- 	if (n < sizeof(buf))
- 		FAIL("incomplete write");
+ #[pin_data]
+-struct DevresInner<T> {
++struct DevresInner<T: Send> {
+     dev: ARef<Device>,
+     callback: unsafe extern "C" fn(*mut c_void),
+     #[pin]
+@@ -95,9 +95,9 @@ struct DevresInner<T> {
+ /// # Ok(())
+ /// # }
+ /// ```
+-pub struct Devres<T>(Arc<DevresInner<T>>);
++pub struct Devres<T: Send>(Arc<DevresInner<T>>);
  
+-impl<T> DevresInner<T> {
++impl<T: Send> DevresInner<T> {
+     fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+         let inner = Arc::pin_init(
+             pin_init!( DevresInner {
+@@ -175,7 +175,7 @@ fn remove_action(this: &Arc<Self>) -> bool {
+     }
+ }
+ 
+-impl<T> Devres<T> {
++impl<T: Send> Devres<T> {
+     /// Creates a new [`Devres`] instance of the given `data`. The `data` encapsulated within the
+     /// returned `Devres` instance' `data` will be revoked once the device is detached.
+     pub fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Self> {
+@@ -247,7 +247,7 @@ pub fn try_access_with_guard<'a>(&'a self, guard: &'a rcu::Guard) -> Option<&'a
+     }
+ }
+ 
+-impl<T> Drop for Devres<T> {
++impl<T: Send> Drop for Devres<T> {
+     fn drop(&mut self) {
+         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
+         // anymore, hence it is safe not to wait for the grace period to finish.
 -- 
 2.39.5
 
