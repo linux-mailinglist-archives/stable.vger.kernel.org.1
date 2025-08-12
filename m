@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-168920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6649FB2374E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:10:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED237B23754
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5994188AE94
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:10:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3A03188C6BC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6DC2F5338;
-	Tue, 12 Aug 2025 19:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF8E21C187;
+	Tue, 12 Aug 2025 19:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MV3dh3Os"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJXhgY1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AAF26FA77;
-	Tue, 12 Aug 2025 19:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC9D285043;
+	Tue, 12 Aug 2025 19:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025779; cv=none; b=SoK5ZYnaaRlIKZyFVshN0a9xV2oN8tQ0m5DvzgKHEDTJUvgvFTltGQZfGQrVcg1F0mwhkxXe237noVDVeU1KXUajr034l5eaDRjwF2FDBXcRyXnGOPYaoc2G6BGxtgpYbzN7UNGOJaB7E43htxEnm/uaMy6oZ3yygq0sDBHGDcc=
+	t=1755025785; cv=none; b=manI4mk9JBHI7fBhBaYLRjHxrhlP1DyFLUGuUceWEbzS9T6VGPLPWNs68R/JAmAQ+6lOTp2WdNEV9xsw1aX4ii4SDl8Y9sD9Nh30InCnKNi2e3ND7qP5gF9t/K94RlqiyHTxfTjFLFBL1VLtLW+WOGpMAPHUoyYBmdaUWhGBbnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025779; c=relaxed/simple;
-	bh=LElX4a7j8CyydMwyvFp2T/63NIXHduojvla/ddlCDlg=;
+	s=arc-20240116; t=1755025785; c=relaxed/simple;
+	bh=QDIsLM6mn/ZBcQ/sgAQGDyZuZX7PHupJyBN5uTQ2cFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWlJ0P0nCiYtrTePNb9hTISS0wUCUF5P/o4NjM5J1Z47SldcWSNhUjjHmWsiwLA8CDPpIe1cf8WhyC29MCNz8v4Uh8qKdSBIeQFUIjhKE9QQ+n9NEb5R3jnfkcwH55CqgNu45N1HJURqej+TLvozIzF9ZhZfbzsSckRAvIptXD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MV3dh3Os; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CE5C4CEF1;
-	Tue, 12 Aug 2025 19:09:38 +0000 (UTC)
+	 MIME-Version; b=NiaANMGs2eyaniOiSaTkcBw50fbd9m0cKrafnKQgjGEY85JfDuEFJ56oAS2TjPI4V9ZUfvpouPl8of4VAtuJO2IAs0PPiHolOPmc3/yVORVp4o48X4M4Lnybhrcr8eub9qU7SJYddqbj2W2pJWZQiFt6zpUuIOtoucxDo9s/wj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJXhgY1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515D0C4CEF0;
+	Tue, 12 Aug 2025 19:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025779;
-	bh=LElX4a7j8CyydMwyvFp2T/63NIXHduojvla/ddlCDlg=;
+	s=korg; t=1755025785;
+	bh=QDIsLM6mn/ZBcQ/sgAQGDyZuZX7PHupJyBN5uTQ2cFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MV3dh3OsTTKiZnVFmkEA85sf5FXthkPa9LtkxTUgjiHmtywpbYkXON/Bc+c0vreP1
-	 UtqMZH60uzHoP4GKBT9DUWtq399aaJ+JF5hlT+46D2LeUwa+xXgP24U6ELTMt8HzTN
-	 BM4b7ynwf38i3M+YsJDLJBOYRGOTdfAHDE8CrAx0=
+	b=xJXhgY1Trr+2Grzu/0rjZvy/ozDiq8SfuAzaV3dxSqzRrS7tv0xRnvakuWE9V1QbB
+	 0g+Aw8rwdIM+dYAc2yDJWmCZ+h9C4DpYpwYoT+0Uy6szOJnw8ZsA99pBs14MP2K3sL
+	 e93Vi0FRPUh11lzOAsnDuoCH6R97Ary5h1HAwtRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 141/480] drm/amd/pm/powerplay/hwmgr/smu_helper: fix order of mask and value
-Date: Tue, 12 Aug 2025 19:45:49 +0200
-Message-ID: <20250812174403.338750728@linuxfoundation.org>
+Subject: [PATCH 6.15 142/480] wifi: ath12k: Block radio bring-up in FTM mode
+Date: Tue, 12 Aug 2025 19:45:50 +0200
+Message-ID: <20250812174403.378732789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,42 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 
-[ Upstream commit a54e4639c4ef37a0241bac7d2a77f2e6ffb57099 ]
+[ Upstream commit 80570587e418f361e7ce3f9200477f728b38c94b ]
 
-There is a small typo in phm_wait_on_indirect_register().
+Ensure that all radios remain down when the driver operates in Factory
+Test Mode (FTM). Reject any userspace attempts to bring up an
+interface in this mode.
 
-Swap mask and value arguments provided to phm_wait_on_register() so that
-they satisfy the function signature and actual usage scheme.
+Currently, the driver allows userspace to bring up the interface even
+though it operates in FTM mode, which violates FTM constraints and
+leads to FTM command failures.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
+Hence, block the radio start when the driver is in FTM mode. Also,
+remove ath12k_ftm_mode check from ath12k_drain_tx() because FTM mode
+check is already handled in the caller function
+(ath12k_mac_op_start()).
 
-In practice this doesn't fix any issues because the only place this
-function is used uses the same value for the value and mask.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Fixes: 3bace3591493 ("drm/amd/powerplay: add hardware manager sub-component")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 3bc374cbc49e ("wifi: ath12k: add factory test mode support")
+Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250630031502.8902-1-aaradhana.sahu@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
-index 79a566f3564a..c305ea4ec17d 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
-@@ -149,7 +149,7 @@ int phm_wait_on_indirect_register(struct pp_hwmgr *hwmgr,
- 	}
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index ccc27863f333..029376c57496 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -7689,14 +7689,9 @@ static int ath12k_mac_start(struct ath12k *ar)
  
- 	cgs_write_register(hwmgr->device, indirect_port, index);
--	return phm_wait_on_register(hwmgr, indirect_port + 1, mask, value);
-+	return phm_wait_on_register(hwmgr, indirect_port + 1, value, mask);
- }
+ static void ath12k_drain_tx(struct ath12k_hw *ah)
+ {
+-	struct ath12k *ar = ah->radio;
++	struct ath12k *ar;
+ 	int i;
  
- int phm_wait_for_register_unequal(struct pp_hwmgr *hwmgr,
+-	if (ath12k_ftm_mode) {
+-		ath12k_err(ar->ab, "fail to start mac operations in ftm mode\n");
+-		return;
+-	}
+-
+ 	lockdep_assert_wiphy(ah->hw->wiphy);
+ 
+ 	for_each_ar(ah, ar, i)
+@@ -7709,6 +7704,9 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
+ 	struct ath12k *ar;
+ 	int ret, i;
+ 
++	if (ath12k_ftm_mode)
++		return -EPERM;
++
+ 	lockdep_assert_wiphy(hw->wiphy);
+ 
+ 	ath12k_drain_tx(ah);
 -- 
 2.39.5
 
