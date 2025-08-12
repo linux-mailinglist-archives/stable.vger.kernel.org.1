@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4428B2344A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C246CB22FCB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56B167B3C9E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15A73188A83A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AAA2F5E;
-	Tue, 12 Aug 2025 18:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8B12FABF0;
+	Tue, 12 Aug 2025 17:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzyyYm4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfCGpEzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D6B6BB5B;
-	Tue, 12 Aug 2025 18:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC29786331;
+	Tue, 12 Aug 2025 17:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023892; cv=none; b=BgtcAv/pxUxvEuntCIp+nAT4pLH2gkepwEFOhWkyRr/nw4RD/xf29HrKtVkzdrk4gdeex9UaGqz/GXIyPs+Oc7KoFwzWhluWUeETNfsW5dhBeImXfPY6hjOZKBvdHYBhwRGPjoCnkHL7dTL3zQMh1I7tdE7Ww6+R/q11ERArWTE=
+	t=1755020579; cv=none; b=ububMT05norivwAS/jJJo6pZFYKD3re2wXO6kexSiSZnJ+RNxCoNlu3HYXQ45pMCVcW3pjQsWdqW3ycgSBJI9Jy1EDSrX9y+cCU0ZzJCYY29bH9h3opL6lTzGD93EZhk8ELTLkhwIYNmdzDyRsNwlnAjodH37fIdjDI3Bh2NIVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023892; c=relaxed/simple;
-	bh=VbgCIOiH69oKrdgQJ7n/7YvXdsMTwST1fZgIYA52+nQ=;
+	s=arc-20240116; t=1755020579; c=relaxed/simple;
+	bh=zo0EW7BBWP7q5z/IW3LZGD9MLsIeM8TuMTe7HmYJNdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uixNxHbtPbE4C89Ee6cI3ixTKzs1ACI3ZGvZUCjRUqmc31iq0Cih6o2FL4irTvYxPZpahUK5pFjvrwpBFtaRCgGf7PYnDqsAisnneTsN6s9VYQLjDymsVN1r4+JdVirKQX9EonGihdk+AWz5he/gucH3xsASGRrtBfjRLrS19Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzyyYm4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6248C4CEF0;
-	Tue, 12 Aug 2025 18:38:11 +0000 (UTC)
+	 MIME-Version; b=ujeYLfNMRi1HSuK2JFruYshhrkfEIQtyGGiurA86rUrkaAtIl3ZLnS3Pr8VcEEr9enFXLyUcgkdmlbjeVVl2ZSEzJTu2ZJnyyFWtskAI4xQDUnMOG8vcueej8KPvXvt5z0nz3Wj1oVtbT1A/yo3BalLRvvWnMBiJRMWrRrUHTB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfCGpEzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CBBC4CEF0;
+	Tue, 12 Aug 2025 17:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023892;
-	bh=VbgCIOiH69oKrdgQJ7n/7YvXdsMTwST1fZgIYA52+nQ=;
+	s=korg; t=1755020579;
+	bh=zo0EW7BBWP7q5z/IW3LZGD9MLsIeM8TuMTe7HmYJNdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzyyYm4e6aybxc1L9r3qsVLLRguDhbYF2Y7ArdcAhaCVBkunIwcAGNYadxSyE1BO7
-	 bQytumN3RBqZr3EqqhhW99pWvCICO2qUX5KTg8DUjpomQHfUZHGAMlVWQjLmRkSk8P
-	 mgw/ZPboy1Hmm2V/TZoeENWQ6G4ZXw46jirHVKNw=
+	b=YfCGpEzN3c+ScKHBM3mDlT+gB3UnSuzzTpHZOZvmsA0wEB31Dlgin0J+y4NyNc0cL
+	 zKFd4cuqoxrRCSzYVG/tUQLSf1uzYvxiIjc+nHLzN4B7ZonHnGsNv9Pkjzm5aANwFY
+	 DqQ+x9jDpJnk8wcaE6MHxTkOIEZCGITZVkuLM8hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Srouji <edwards@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 213/627] RDMA/mlx5: Fix UMR modifying of mkey page size
-Date: Tue, 12 Aug 2025 19:28:28 +0200
-Message-ID: <20250812173427.385636131@linuxfoundation.org>
+Subject: [PATCH 6.1 121/253] wifi: mac80211: reject TDLS operations when station is not associated
+Date: Tue, 12 Aug 2025 19:28:29 +0200
+Message-ID: <20250812172953.852937911@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Srouji <edwards@nvidia.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit c4f96972c3c206ac8f6770b5ecd5320b561d0058 ]
+[ Upstream commit 16ecdab5446f15a61ec88eb0d23d25d009821db0 ]
 
-When changing the page size on an mkey, the driver needs to set the
-appropriate bits in the mkey mask to indicate which fields are being
-modified.
-The 6th bit of a page size in mlx5 driver is considered an extension,
-and this bit has a dedicated capability and mask bits.
+syzbot triggered a WARN in ieee80211_tdls_oper() by sending
+NL80211_TDLS_ENABLE_LINK immediately after NL80211_CMD_CONNECT,
+before association completed and without prior TDLS setup.
 
-Previously, the driver was not setting this mask in the mkey mask when
-performing page size changes, regardless of its hardware support,
-potentially leading to an incorrect page size updates.
+This left internal state like sdata->u.mgd.tdls_peer uninitialized,
+leading to a WARN_ON() in code paths that assumed it was valid.
 
-This fixes the issue by setting the relevant bit in the mkey mask when
-performing page size changes on an mkey and the 6th bit of this field is
-supported by the hardware.
+Reject the operation early if not in station mode or not associated.
 
-Fixes: cef7dde8836a ("net/mlx5: Expand mkey page size to support 6 bits")
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/9f43a9c73bf2db6085a99dc836f7137e76579f09.1751979184.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f73f203f8c9b19037380
+Fixes: 81dd2b882241 ("mac80211: move TDLS data to mgd private part")
+Tested-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Link: https://patch.msgid.link/20250715230904.661092-2-moonhee.lee.ca@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/umr.c | 6 ++++--
- include/linux/mlx5/device.h      | 1 +
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ net/mac80211/tdls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/umr.c b/drivers/infiniband/hw/mlx5/umr.c
-index 5be4426a2884..25601dea9e30 100644
---- a/drivers/infiniband/hw/mlx5/umr.c
-+++ b/drivers/infiniband/hw/mlx5/umr.c
-@@ -32,13 +32,15 @@ static __be64 get_umr_disable_mr_mask(void)
- 	return cpu_to_be64(result);
- }
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index f4b4d25eef95..04531d18fa93 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1351,7 +1351,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS))
+ 		return -ENOTSUPP;
  
--static __be64 get_umr_update_translation_mask(void)
-+static __be64 get_umr_update_translation_mask(struct mlx5_ib_dev *dev)
- {
- 	u64 result;
+-	if (sdata->vif.type != NL80211_IFTYPE_STATION)
++	if (sdata->vif.type != NL80211_IFTYPE_STATION || !sdata->vif.cfg.assoc)
+ 		return -EINVAL;
  
- 	result = MLX5_MKEY_MASK_LEN |
- 		 MLX5_MKEY_MASK_PAGE_SIZE |
- 		 MLX5_MKEY_MASK_START_ADDR;
-+	if (MLX5_CAP_GEN_2(dev->mdev, umr_log_entity_size_5))
-+		result |= MLX5_MKEY_MASK_PAGE_SIZE_5;
- 
- 	return cpu_to_be64(result);
- }
-@@ -654,7 +656,7 @@ static void mlx5r_umr_final_update_xlt(struct mlx5_ib_dev *dev,
- 		flags & MLX5_IB_UPD_XLT_ENABLE || flags & MLX5_IB_UPD_XLT_ADDR;
- 
- 	if (update_translation) {
--		wqe->ctrl_seg.mkey_mask |= get_umr_update_translation_mask();
-+		wqe->ctrl_seg.mkey_mask |= get_umr_update_translation_mask(dev);
- 		if (!mr->ibmr.length)
- 			MLX5_SET(mkc, &wqe->mkey_seg, length64, 1);
- 	}
-diff --git a/include/linux/mlx5/device.h b/include/linux/mlx5/device.h
-index 6822cfa5f4ad..9d2467f982ad 100644
---- a/include/linux/mlx5/device.h
-+++ b/include/linux/mlx5/device.h
-@@ -280,6 +280,7 @@ enum {
- 	MLX5_MKEY_MASK_SMALL_FENCE	= 1ull << 23,
- 	MLX5_MKEY_MASK_RELAXED_ORDERING_WRITE	= 1ull << 25,
- 	MLX5_MKEY_MASK_FREE			= 1ull << 29,
-+	MLX5_MKEY_MASK_PAGE_SIZE_5		= 1ull << 42,
- 	MLX5_MKEY_MASK_RELAXED_ORDERING_READ	= 1ull << 47,
- };
- 
+ 	switch (oper) {
 -- 
 2.39.5
 
