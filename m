@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-169200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21660B2387B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:25:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD16B238CC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0DA0F4E52C8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE093B56B5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4012B2D6619;
-	Tue, 12 Aug 2025 19:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AEC2D663D;
+	Tue, 12 Aug 2025 19:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AuDWMTVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DycJf/h/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20E92D2391;
-	Tue, 12 Aug 2025 19:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36DB2D3A94;
+	Tue, 12 Aug 2025 19:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026717; cv=none; b=Y7JVOi5ll51XrSy1HkhI4OMh4miExV27bgsC0XM1xRIWOi31T0zPsl8zCQHqcm5NArT6J0HmPTcX09mziweqazZbM5HHhondBoE6L0kbtqJqIOuMHLQxChKrYxkYskAlDC9kYqygn+E9Tvl8XK2WV5LUPFTvR9QOCZTphwx5ipg=
+	t=1755026756; cv=none; b=CU2obotcKuGh5Y1k2PuxVdietU4+A+o2cn55sDaKMQzuOwOJfvCVPx80lafmr6iJMvSPha4MGQmLaSpllboPyWQDU6UBL4xHy4iJAjvHXhutXWdeuGAmiUO+/jaPVYihYdGiGfpqXEeXcPP93UlmwVBQHkm+LzEJrw1x6HHB51M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026717; c=relaxed/simple;
-	bh=wtnG3s0vWX67ME73ZO/W+S5aP0F+u9WDDxxqLxYckY8=;
+	s=arc-20240116; t=1755026756; c=relaxed/simple;
+	bh=Ingi3AJcjVmyqs//y95xStnIa4RsKb7p91ZNkLLB4CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpZoTUkUg01zl+WLpNS5wOQYbGO5YwPVBxWpmCq8nNbeQFJdHb0E72GUfnlmgMZrv8SPuoewp2rpjBg2ZiUjfqcTFqAUnyISJ2s/ncAaHSbivzVyHcZo4T+MEsWorOWJhD6FbQhof+fvzqGL3y7vVVdeCYvUASiOzLD9VMiu7D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AuDWMTVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6026CC4CEF0;
-	Tue, 12 Aug 2025 19:25:16 +0000 (UTC)
+	 MIME-Version; b=AjOCp97ujedq9ukFkvBYNMEZJgQGlRLXjNtR0rV2ncoNiBPn4BpF2pALdZwRz46BUQ92taBQmW1VcgwBRzRRV06ij4eqjgMsGT5hFFC+EnL/qmk2UVFiecgveAxyFl0U47dSJlc3MnHD+cilgT3gQNNmc+SE0hElRQn5G74XlVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DycJf/h/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3B9C4CEF0;
+	Tue, 12 Aug 2025 19:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026716;
-	bh=wtnG3s0vWX67ME73ZO/W+S5aP0F+u9WDDxxqLxYckY8=;
+	s=korg; t=1755026754;
+	bh=Ingi3AJcjVmyqs//y95xStnIa4RsKb7p91ZNkLLB4CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AuDWMTVzeH2MLNwxrpBvLJZtzfQApWYAfJZ+Kb/G/YYKtbXjSnv3PB4lgIOWeaoHZ
-	 FAXOuWrcpVBnILklQjM0e7id9BxBdoomeAEiZFMJv9CQ1H6KnUG62Cubt35KMaEJz/
-	 CxOtCw2IdrNomUugkKsUmanOGceaClCCH98kj6ZE=
+	b=DycJf/h/v2ypUjTRRAyFmqI2OlIvohwkhbDUZeYidquT8Siv6IFxRLwSlibWCDI7N
+	 WYpEgUy+bXo7xMnZ7hMgsaVbWUQKgsBmtn01jeOaLozaFMjlxO67MMwErcTrY1bXk6
+	 esBp3Qgm0QROrV7oVXc0ajuEBffYPQEL813SWx4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com,
-	Takamitsu Iwai <takamitz@amazon.co.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trondmy@hammerspace.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 402/480] net/sched: taprio: enforce minimum value for picos_per_byte
-Date: Tue, 12 Aug 2025 19:50:10 +0200
-Message-ID: <20250812174414.013078583@linuxfoundation.org>
+Subject: [PATCH 6.15 403/480] sunrpc: fix client side handling of tls alerts
+Date: Tue, 12 Aug 2025 19:50:11 +0200
+Message-ID: <20250812174414.055198715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,101 +68,122 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit ae8508b25def57982493c48694ef135973bfabe0 ]
+[ Upstream commit cc5d59081fa26506d02de2127ab822f40d88bc5a ]
 
-Syzbot reported a WARNING in taprio_get_start_time().
+A security exploit was discovered in NFS over TLS in tls_alert_recv
+due to its assumption that there is valid data in the msghdr's
+iterator's kvec.
 
-When link speed is 470,589 or greater, q->picos_per_byte becomes too
-small, causing length_to_duration(q, ETH_ZLEN) to return zero.
+Instead, this patch proposes the rework how control messages are
+setup and used by sock_recvmsg().
 
-This zero value leads to validation failures in fill_sched_entry() and
-parse_taprio_schedule(), allowing arbitrary values to be assigned to
-entry->interval and cycle_time. As a result, sched->cycle can become zero.
+If no control message structure is setup, kTLS layer will read and
+process TLS data record types. As soon as it encounters a TLS control
+message, it would return an error. At that point, NFS can setup a kvec
+backed control buffer and read in the control message such as a TLS
+alert. Scott found that a msg iterator can advance the kvec pointer
+as a part of the copy process thus we need to revert the iterator
+before calling into the tls_alert_recv.
 
-Since SPEED_800000 is the largest defined speed in
-include/uapi/linux/ethtool.h, this issue can occur in realistic scenarios.
-
-To ensure length_to_duration() returns a non-zero value for minimum-sized
-Ethernet frames (ETH_ZLEN = 60), picos_per_byte must be at least 17
-(60 * 17 > PSEC_PER_NSEC which is 1000).
-
-This patch enforces a minimum value of 17 for picos_per_byte when the
-calculated value would be lower, and adds a warning message to inform
-users that scheduling accuracy may be affected at very high link speeds.
-
-Fixes: fb66df20a720 ("net/sched: taprio: extend minimum interval restriction to entire cycle too")
-Reported-by: syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=398e1ee4ca2cac05fddb
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
-Link: https://patch.msgid.link/20250728173149.45585-1-takamitz@amazon.co.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: dea034b963c8 ("SUNRPC: Capture CMSG metadata on client-side receive")
+Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
+Suggested-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Link: https://lore.kernel.org/r/20250731180058.4669-3-okorniev@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ net/sunrpc/xprtsock.c | 40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 2b14c81a87e5..85d84f39e220 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -43,6 +43,11 @@ static struct static_key_false taprio_have_working_mqprio;
- #define TAPRIO_SUPPORTED_FLAGS \
- 	(TCA_TAPRIO_ATTR_FLAG_TXTIME_ASSIST | TCA_TAPRIO_ATTR_FLAG_FULL_OFFLOAD)
- #define TAPRIO_FLAGS_INVALID U32_MAX
-+/* Minimum value for picos_per_byte to ensure non-zero duration
-+ * for minimum-sized Ethernet frames (ETH_ZLEN = 60).
-+ * 60 * 17 > PSEC_PER_NSEC (1000)
-+ */
-+#define TAPRIO_PICOS_PER_BYTE_MIN 17
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 4b10ecf4c265..9b2328b727b6 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -358,7 +358,7 @@ xs_alloc_sparse_pages(struct xdr_buf *buf, size_t want, gfp_t gfp)
  
- struct sched_entry {
- 	/* Durations between this GCL entry and the GCL entry where the
-@@ -1284,7 +1289,8 @@ static void taprio_start_sched(struct Qdisc *sch,
+ static int
+ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
+-		     struct cmsghdr *cmsg, int ret)
++		     unsigned int *msg_flags, struct cmsghdr *cmsg, int ret)
+ {
+ 	u8 content_type = tls_get_record_type(sock->sk, cmsg);
+ 	u8 level, description;
+@@ -371,7 +371,7 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
+ 		 * record, even though there might be more frames
+ 		 * waiting to be decrypted.
+ 		 */
+-		msg->msg_flags &= ~MSG_EOR;
++		*msg_flags &= ~MSG_EOR;
+ 		break;
+ 	case TLS_RECORD_TYPE_ALERT:
+ 		tls_alert_recv(sock->sk, msg, &level, &description);
+@@ -386,19 +386,33 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
  }
  
- static void taprio_set_picos_per_byte(struct net_device *dev,
--				      struct taprio_sched *q)
-+				      struct taprio_sched *q,
-+				      struct netlink_ext_ack *extack)
+ static int
+-xs_sock_recv_cmsg(struct socket *sock, struct msghdr *msg, int flags)
++xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
  {
- 	struct ethtool_link_ksettings ecmd;
- 	int speed = SPEED_10;
-@@ -1300,6 +1306,15 @@ static void taprio_set_picos_per_byte(struct net_device *dev,
+ 	union {
+ 		struct cmsghdr	cmsg;
+ 		u8		buf[CMSG_SPACE(sizeof(u8))];
+ 	} u;
++	u8 alert[2];
++	struct kvec alert_kvec = {
++		.iov_base = alert,
++		.iov_len = sizeof(alert),
++	};
++	struct msghdr msg = {
++		.msg_flags = *msg_flags,
++		.msg_control = &u,
++		.msg_controllen = sizeof(u),
++	};
+ 	int ret;
  
- skip:
- 	picos_per_byte = (USEC_PER_SEC * 8) / speed;
-+	if (picos_per_byte < TAPRIO_PICOS_PER_BYTE_MIN) {
-+		if (!extack)
-+			pr_warn("Link speed %d is too high. Schedule may be inaccurate.\n",
-+				speed);
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "Link speed %d is too high. Schedule may be inaccurate.",
-+				       speed);
-+		picos_per_byte = TAPRIO_PICOS_PER_BYTE_MIN;
+-	msg->msg_control = &u;
+-	msg->msg_controllen = sizeof(u);
+-	ret = sock_recvmsg(sock, msg, flags);
+-	if (msg->msg_controllen != sizeof(u))
+-		ret = xs_sock_process_cmsg(sock, msg, &u.cmsg, ret);
++	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
++		      alert_kvec.iov_len);
++	ret = sock_recvmsg(sock, &msg, flags);
++	if (ret > 0 &&
++	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
++		iov_iter_revert(&msg.msg_iter, ret);
++		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
++					   -EAGAIN);
 +	}
+ 	return ret;
+ }
  
- 	atomic64_set(&q->picos_per_byte, picos_per_byte);
- 	netdev_dbg(dev, "taprio: set %s's picos_per_byte to: %lld, linkspeed: %d\n",
-@@ -1324,7 +1339,7 @@ static int taprio_dev_notifier(struct notifier_block *nb, unsigned long event,
- 		if (dev != qdisc_dev(q->root))
- 			continue;
+@@ -408,7 +422,13 @@ xs_sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags, size_t seek)
+ 	ssize_t ret;
+ 	if (seek != 0)
+ 		iov_iter_advance(&msg->msg_iter, seek);
+-	ret = xs_sock_recv_cmsg(sock, msg, flags);
++	ret = sock_recvmsg(sock, msg, flags);
++	/* Handle TLS inband control message lazily */
++	if (msg->msg_flags & MSG_CTRUNC) {
++		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
++		if (ret == 0 || ret == -EIO)
++			ret = xs_sock_recv_cmsg(sock, &msg->msg_flags, flags);
++	}
+ 	return ret > 0 ? ret + seek : ret;
+ }
  
--		taprio_set_picos_per_byte(dev, q);
-+		taprio_set_picos_per_byte(dev, q, NULL);
+@@ -434,7 +454,7 @@ xs_read_discard(struct socket *sock, struct msghdr *msg, int flags,
+ 		size_t count)
+ {
+ 	iov_iter_discard(&msg->msg_iter, ITER_DEST, count);
+-	return xs_sock_recv_cmsg(sock, msg, flags);
++	return xs_sock_recvmsg(sock, msg, flags, 0);
+ }
  
- 		stab = rtnl_dereference(q->root->stab);
- 
-@@ -1848,7 +1863,7 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 	q->flags = taprio_flags;
- 
- 	/* Needed for length_to_duration() during netlink attribute parsing */
--	taprio_set_picos_per_byte(dev, q);
-+	taprio_set_picos_per_byte(dev, q, extack);
- 
- 	err = taprio_parse_mqprio_opt(dev, mqprio, extack, q->flags);
- 	if (err < 0)
+ #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
 -- 
 2.39.5
 
