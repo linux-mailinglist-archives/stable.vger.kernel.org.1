@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D65B2316C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41EEB23523
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BE2216A7F3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7908C6E62B0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD491302CD5;
-	Tue, 12 Aug 2025 18:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCB92FF14D;
+	Tue, 12 Aug 2025 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kO3eg/Ik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTDC34o+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBD92F5E;
-	Tue, 12 Aug 2025 18:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27C52FE57E;
+	Tue, 12 Aug 2025 18:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021645; cv=none; b=SoAF05feZDIYdso2cbQ95ggqU5VKe7w3sPCBLi1A5oMt748h1E0gmg3acHh/JpiWW9dfi/JclTXP/FOqjQUkA+9JU+tvQ9NWAPvyVfdv2KaKvSC+4i/MqjENHlMXyCh95VqoSHJgUVRtozovU+/HRmDBbn7/t+tp28QvQur+TMw=
+	t=1755024163; cv=none; b=kuxBRqzbcqVjmO9zg0SeCrf8tTFXTFeGMDF+eJcejBj1nav/v+j0T7v8DPdOL/+SWk+Dfq7En0GAelUQ31VZEevtsnHBzbILMDne6iDp+hiDQfTOhAyznFKLEDExf2Uubz7lU8TDw9u4FQE8EKcpTXs/1FIZiyGjk1vvbRv/ZK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021645; c=relaxed/simple;
-	bh=eSdGM69uLh9t/NqLFBy85KizdA34I8UR+GmwWtijDmo=;
+	s=arc-20240116; t=1755024163; c=relaxed/simple;
+	bh=lfQcjPaNQfDNEx2cdYpPZem0Yp6vRxtpZ8QJJxm8YxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUz9Y360LaIn6uvYqBC5tYPUVadLgNNtFoB2FxGnp0P1x0S+Io8adsmc/SynbMJ0pcM7w42jCIfVQSXPm5JzsoF2XCWFdvfwiKiERi1edG6TvmotO/53IHR1Bq7bKAmwySmD2a5GarDHaHnym8Lc+hs4o+8aLr+cA9s8pyi9UPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kO3eg/Ik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6EBC4CEF0;
-	Tue, 12 Aug 2025 18:00:44 +0000 (UTC)
+	 MIME-Version; b=bx8Y6HC6IuAbsB20vDSZPo9iVx0LnxbtFOJPXLc42nMktAzck3AEBLSqVoOFwLT+LMJBKEH+tyPnJ82FtuahbLiwPcRuzI7e4Ujw0f2NY+sYv2DeBNnPNgDFJEa/x8379zfHYEN10c1CJL+9T0W+rK/+Jhv0UkVJUf8xigqO25U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTDC34o+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3735AC4CEF0;
+	Tue, 12 Aug 2025 18:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021645;
-	bh=eSdGM69uLh9t/NqLFBy85KizdA34I8UR+GmwWtijDmo=;
+	s=korg; t=1755024162;
+	bh=lfQcjPaNQfDNEx2cdYpPZem0Yp6vRxtpZ8QJJxm8YxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kO3eg/Ikyb4oFM4v+A/qOpBGdaMfDh/ne0pzIeD1sCOeN7UOCNo/uA7E2e3vGYypH
-	 ByN/GzQM2Jh/4yxlVUOJrfp+s5wdbwhzIF/YMXka2zznQVXtAcxqr6NTjWcCE977xg
-	 gEUfrBRIFEKo6Gc2nYF1czK4MAc7iwG93Dsst1qw=
+	b=yTDC34o+srLW4ubmrSgEDRE4kTCFO+K0CF8WPMufnctU3llaQdXLxZxbI/9kF8t6f
+	 Xn3IotES/B787jrPSViPf4cBvOYoi0DYvZTlXFOFRCSvoOsap/Pe5fw16ccCU1ROs8
+	 Kv1mmkZNOMoeRnHtEHQDdLWb2us9RTiuM/G1BO9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Yi Chen <yiche@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/262] vfio: Prevent open_count decrement to negative
+Subject: [PATCH 6.16 275/627] selftests: netfilter: ipvs.sh: Explicity disable rp_filter on interface tunl0
 Date: Tue, 12 Aug 2025 19:29:30 +0200
-Message-ID: <20250812173000.874359364@linuxfoundation.org>
+Message-ID: <20250812173429.772268828@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
+From: Yi Chen <yiche@redhat.com>
 
-[ Upstream commit 982ddd59ed97dc7e63efd97ed50273ffb817bd41 ]
+[ Upstream commit 8b4a1a46e84a17f5d6fde5c506cc6bb141a24772 ]
 
-When vfio_df_close() is called with open_count=0, it triggers a warning in
-vfio_assert_device_open() but still decrements open_count to -1. This allows
-a subsequent open to incorrectly pass the open_count == 0 check, leading to
-unintended behavior, such as setting df->access_granted = true.
+Although setup_ns() set net.ipv4.conf.default.rp_filter=0,
+loading certain module such as ipip will automatically create a tunl0 interface
+in all netns including new created ones. In the script, this is before than
+default.rp_filter=0 applied, as a result tunl0.rp_filter remains set to 1
+which causes the test report FAIL when ipip module is preloaded.
 
-For example, running an IOMMUFD compat no-IOMMU device with VFIO tests
-(https://github.com/awilliam/tests/blob/master/vfio-noiommu-pci-device-open.c)
-results in a warning and a failed VFIO_GROUP_GET_DEVICE_FD ioctl on the first
-run, but the second run succeeds incorrectly.
+Before fix:
+Testing DR mode...
+Testing NAT mode...
+Testing Tunnel mode...
+ipvs.sh: FAIL
 
-Add checks to avoid decrementing open_count below zero.
+After fix:
+Testing DR mode...
+Testing NAT mode...
+Testing Tunnel mode...
+ipvs.sh: PASS
 
-Fixes: 05f37e1c03b6 ("vfio: Pass struct vfio_device_file * to vfio_device_open/close()")
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250618234618.1910456-2-jacob.pan@linux.microsoft.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 7c8b89ec506e ("selftests: netfilter: remove rp_filter configuration")
+Signed-off-by: Yi Chen <yiche@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/netfilter/ipvs.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 40732e8ed4c6..edb631e5e7ec 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -537,7 +537,8 @@ void vfio_df_close(struct vfio_device_file *df)
+diff --git a/tools/testing/selftests/net/netfilter/ipvs.sh b/tools/testing/selftests/net/netfilter/ipvs.sh
+index 6af2ea3ad6b8..9c9d5b38ab71 100755
+--- a/tools/testing/selftests/net/netfilter/ipvs.sh
++++ b/tools/testing/selftests/net/netfilter/ipvs.sh
+@@ -151,7 +151,7 @@ test_nat() {
+ test_tun() {
+ 	ip netns exec "${ns0}" ip route add "${vip_v4}" via "${gip_v4}" dev br0
  
- 	lockdep_assert_held(&device->dev_set->lock);
+-	ip netns exec "${ns1}" modprobe -q ipip
++	modprobe -q ipip
+ 	ip netns exec "${ns1}" ip link set tunl0 up
+ 	ip netns exec "${ns1}" sysctl -qw net.ipv4.ip_forward=0
+ 	ip netns exec "${ns1}" sysctl -qw net.ipv4.conf.all.send_redirects=0
+@@ -160,10 +160,10 @@ test_tun() {
+ 	ip netns exec "${ns1}" ipvsadm -a -i -t "${vip_v4}:${port}" -r ${rip_v4}:${port}
+ 	ip netns exec "${ns1}" ip addr add ${vip_v4}/32 dev lo:1
  
--	vfio_assert_device_open(device);
-+	if (!vfio_assert_device_open(device))
-+		return;
- 	if (device->open_count == 1)
- 		vfio_df_device_last_close(df);
- 	device->open_count--;
+-	ip netns exec "${ns2}" modprobe -q ipip
+ 	ip netns exec "${ns2}" ip link set tunl0 up
+ 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_ignore=1
+ 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_announce=2
++	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.tunl0.rp_filter=0
+ 	ip netns exec "${ns2}" ip addr add "${vip_v4}/32" dev lo:1
+ 
+ 	test_service
 -- 
 2.39.5
 
