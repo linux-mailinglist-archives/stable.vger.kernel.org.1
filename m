@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3FDB23010
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B76C5B2344D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB191A23C57
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068D8188D968
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6202FD1D7;
-	Tue, 12 Aug 2025 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024D72FD1AD;
+	Tue, 12 Aug 2025 18:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdFcLkiY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hv3piyH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1752E4248;
-	Tue, 12 Aug 2025 17:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A162F4A0A;
+	Tue, 12 Aug 2025 18:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020750; cv=none; b=qw9EI5mqoGkq1+Z68d1i08+76K6Wd3j/sM3XtVqTGNJEKkgoSRpfBEBMILytKTmS1cxRYgqej0qjzDGbvBN1iqLTcaX+b+ih2CYCUisBzDFT4EsHnsIIiIq+xuuYK3hqKA8SfqX0D4i0moOO9eCdrK3ASv4e1bYbHsm1hys8bJQ=
+	t=1755023621; cv=none; b=pMW29tPXUPjHRyLoAIFYaESUnWSY9aCw9H2uewoL+o3djrE5/ynjl+q7niH/dm18NGX4gCvPmHbP/P3nV0xjb3YWh4juI4C9enLhJrONSv10AlV5F/Pz0a+wumypyD/Io9VRR9hvR2FQnGkCLI1pjUpnHPokQ8Nc/vvA7IOQb7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020750; c=relaxed/simple;
-	bh=Vn7aCdDZWQ7Kg4A1sLI/2t2ARggEIddigYwsQFn1HMs=;
+	s=arc-20240116; t=1755023621; c=relaxed/simple;
+	bh=QFXvNRLpqzn5O900b/XEXTyfxMhYD4vyL5GCsFWkv+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R2XcfnWgvkTq96F9/Cd6Qhm6BQLWjZKiJLqYwSHiUOPVDY9FPJQE8QEiuF3ID4JE3mclrRon5PHdyvEOAqYttwBoTOx8F8o0CryEfRgGJioI8u8RxDiGOd9RNlg2QvqvO5QkIXEHikD5h7kvgaI2t112GzfX1UM8ARS6oFPqtxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdFcLkiY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2B9C4CEF0;
-	Tue, 12 Aug 2025 17:45:49 +0000 (UTC)
+	 MIME-Version; b=DYGGF+d8GzHpkU92pv0LUyBa+uOefGQqmgnaEujYuD5JdhIahDwdkEFrqj9/2n/oUjz0b7tUtA8UpdsaqXBl6CEaqKHC4kfCDnkyhiBTPWBPYezpGK6hjJtVMAOmqSwt6BQQB1AZ4icHMALpSjbCXLiKAwP2Y2xsQMyQQ66yRs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hv3piyH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18918C4CEF6;
+	Tue, 12 Aug 2025 18:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020749;
-	bh=Vn7aCdDZWQ7Kg4A1sLI/2t2ARggEIddigYwsQFn1HMs=;
+	s=korg; t=1755023621;
+	bh=QFXvNRLpqzn5O900b/XEXTyfxMhYD4vyL5GCsFWkv+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wdFcLkiYVurGnBca/ksa4ZJazJ0Oi7MDChX6HPfmVT10qN+ntiy94UGnn0GXCHWiG
-	 maFeoxvcES8OubyY8RJbAg3HMDMOxsPqmcQ7vli0RVR7M5NJKMMluO09WJ1Z/DWWvC
-	 0v2OGoEjXV8zXO2IDpD26yDDV4+D2m0T0sNR+tOs=
+	b=Hv3piyH3GH/6ucWVDyprVNmPnNeUWwd/c2yIMFhVJf5S4qGTMvYC8R0rC5F6FhnPE
+	 +2KpK1B5QeofBNJF+jpItJfQ40Js3UFXfei5csKT0YKifo0q80hKldFYzCtCHUSUGZ
+	 CqJvymnc/g7v214GbPQCfWbnfwChDjyTSgoLQJzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RubenKelevra <rubenkelevra@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/262] fs_context: fix parameter name in infofc() macro
+Subject: [PATCH 6.16 100/627] selftests: breakpoints: use suspend_stats to reliably check suspend success
 Date: Tue, 12 Aug 2025 19:26:35 +0200
-Message-ID: <20250812172953.284688506@linuxfoundation.org>
+Message-ID: <20250812173423.122967573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RubenKelevra <rubenkelevra@gmail.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit ffaf1bf3737f706e4e9be876de4bc3c8fc578091 ]
+[ Upstream commit 07b7c2b4eca3f83ce9cd5ee3fa1c7c001d721c69 ]
 
-The macro takes a parameter called "p" but references "fc" internally.
-This happens to compile as long as callers pass a variable named fc,
-but breaks otherwise. Rename the first parameter to “fc” to match the
-usage and to be consistent with warnfc() / errorfc().
+The step_after_suspend_test verifies that the system successfully
+suspended and resumed by setting a timerfd and checking whether the
+timer fully expired. However, this method is unreliable due to timing
+races.
 
-Fixes: a3ff937b33d9 ("prefix-handling analogues of errorf() and friends")
-Signed-off-by: RubenKelevra <rubenkelevra@gmail.com>
-Link: https://lore.kernel.org/20250617230927.1790401-1-rubenkelevra@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+In practice, the system may take time to enter suspend, during which the
+timer may expire just before or during the transition. As a result,
+the remaining time after resume may show non-zero nanoseconds, even if
+suspend/resume completed successfully. This leads to false test failures.
+
+Replace the timer-based check with a read from
+/sys/power/suspend_stats/success. This counter is incremented only
+after a full suspend/resume cycle, providing a reliable and race-free
+indicator.
+
+Also remove the unused file descriptor for /sys/power/state, which
+remained after switching to a system() call to trigger suspend [1].
+
+[1] https://lore.kernel.org/all/20240930224025.2858767-1-yifei.l.liu@oracle.com/
+
+Link: https://lore.kernel.org/r/20250626191626.36794-1-moonhee.lee.ca@gmail.com
+Fixes: c66be905cda2 ("selftests: breakpoints: use remaining time to check if suspend succeed")
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fs_context.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../breakpoints/step_after_suspend_test.c     | 41 ++++++++++++++-----
+ 1 file changed, 31 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
-index c13e99cbbf81..c9eae7117001 100644
---- a/include/linux/fs_context.h
-+++ b/include/linux/fs_context.h
-@@ -196,7 +196,7 @@ void logfc(struct fc_log *log, const char *prefix, char level, const char *fmt,
-  */
- #define infof(fc, fmt, ...) __logfc(fc, 'i', fmt, ## __VA_ARGS__)
- #define info_plog(p, fmt, ...) __plog(p, 'i', fmt, ## __VA_ARGS__)
--#define infofc(p, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
-+#define infofc(fc, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
+diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+index 8d275f03e977..8d233ac95696 100644
+--- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
++++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+@@ -127,22 +127,42 @@ int run_test(int cpu)
+ 	return KSFT_PASS;
+ }
  
- /**
-  * warnf - Store supplementary warning message
++/*
++ * Reads the suspend success count from sysfs.
++ * Returns the count on success or exits on failure.
++ */
++static int get_suspend_success_count_or_fail(void)
++{
++	FILE *fp;
++	int val;
++
++	fp = fopen("/sys/power/suspend_stats/success", "r");
++	if (!fp)
++		ksft_exit_fail_msg(
++			"Failed to open suspend_stats/success: %s\n",
++			strerror(errno));
++
++	if (fscanf(fp, "%d", &val) != 1) {
++		fclose(fp);
++		ksft_exit_fail_msg(
++			"Failed to read suspend success count\n");
++	}
++
++	fclose(fp);
++	return val;
++}
++
+ void suspend(void)
+ {
+-	int power_state_fd;
+ 	int timerfd;
+ 	int err;
++	int count_before;
++	int count_after;
+ 	struct itimerspec spec = {};
+ 
+ 	if (getuid() != 0)
+ 		ksft_exit_skip("Please run the test as root - Exiting.\n");
+ 
+-	power_state_fd = open("/sys/power/state", O_RDWR);
+-	if (power_state_fd < 0)
+-		ksft_exit_fail_msg(
+-			"open(\"/sys/power/state\") failed %s)\n",
+-			strerror(errno));
+-
+ 	timerfd = timerfd_create(CLOCK_BOOTTIME_ALARM, 0);
+ 	if (timerfd < 0)
+ 		ksft_exit_fail_msg("timerfd_create() failed\n");
+@@ -152,14 +172,15 @@ void suspend(void)
+ 	if (err < 0)
+ 		ksft_exit_fail_msg("timerfd_settime() failed\n");
+ 
++	count_before = get_suspend_success_count_or_fail();
++
+ 	system("(echo mem > /sys/power/state) 2> /dev/null");
+ 
+-	timerfd_gettime(timerfd, &spec);
+-	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
++	count_after = get_suspend_success_count_or_fail();
++	if (count_after <= count_before)
+ 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
+ 
+ 	close(timerfd);
+-	close(power_state_fd);
+ }
+ 
+ int main(int argc, char **argv)
 -- 
 2.39.5
 
