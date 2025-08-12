@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-168406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DB4B234C8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DC5B23021
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A80F2167798
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E444188AF1F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF92FFDD0;
-	Tue, 12 Aug 2025 18:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1C32E972E;
+	Tue, 12 Aug 2025 17:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8awz1kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EagPXAl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DCF2F4A0A;
-	Tue, 12 Aug 2025 18:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD35C2F8BE6;
+	Tue, 12 Aug 2025 17:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024063; cv=none; b=Q3hV2HOmzTD3H5kK/VBlKRaRZ0Q7VfvHrmhqUiSKOadnGPxSZ+dqU+8VG549NAaJa7keQerX6U0Dbt4TJ/cZQNbBlfIs+gJ41ngsa7cWWZE8K5gEkWIAa9+6iU4hgbNpgfkTkxFtILFBf+gE29UZI7wgQcF3bO/3pYasBH2yWT8=
+	t=1755020791; cv=none; b=XmPuTAMmF99Th+ytuDIsU+JG09PIZjz7Zo2bO8aouZSyPUqw9LwGvPRsqHoECpd8re2PePXnPxNKsZR2OzzoQHB5spO9na7rPWTecqrA0Km0XZ2A9UAmfPj3fUMtnCiLBp0Y7t6CbbDpMExof+Z2lPJh8B5kl3sY50m/PIaYDlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024063; c=relaxed/simple;
-	bh=ERHIsji9gqL1E/SnrHFAIxMB4AGH9/qJ9BPdVinrxcE=;
+	s=arc-20240116; t=1755020791; c=relaxed/simple;
+	bh=CcFSHaDcIryAl15vp/HPKHGlIE5/td6+3wk/vcPj5n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnFAYzv91okAmHefkrEl8ybdESi5EAbkZJlfZQPzPWgMbgsQE3zx0p30Q6KbM6dlnlGN+bzpk+DnzMPFyjoBqVkPXshT9Bw8FoRX+QfWUgXgjHEUoNX4U6u7KuEbTKbR6s5a+wBd6X//Vmpmm/OeagUlXFTEmwpsnCq9NsslB3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8awz1kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2018C4CEF0;
-	Tue, 12 Aug 2025 18:41:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DokkTmItOh3184XxBIkOG398OQijWXYcvrSF3vtwBYL2hKzr7+x4OPo78MxtmEn94qzcMSRJS2wVY8WhC7c0Kn9TCN/Av46ET0yKjqN/gTs00N6rIdhEPBlAgewdWyHwUj2rNElS0snB2GEzw+2+ef3MWX1inVyfqFeF7AAaG5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EagPXAl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51266C4CEF0;
+	Tue, 12 Aug 2025 17:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024063;
-	bh=ERHIsji9gqL1E/SnrHFAIxMB4AGH9/qJ9BPdVinrxcE=;
+	s=korg; t=1755020790;
+	bh=CcFSHaDcIryAl15vp/HPKHGlIE5/td6+3wk/vcPj5n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8awz1kfNLhilCsTkliDTi2dK0AYz+lvYf3oxywuNDO58GqFf6nvaTOPi3AbMyuCB
-	 jylkqrLsM0UpHUE+swoc4rhaDY7wnw3AJEg2H2h/MVCU5WIQxlcjccRUbyCaZdVBCZ
-	 WPzc6Jj7RvEGsjB0sNcX6zGKhAjaJWYng9nU/FW8=
+	b=EagPXAl72yOXu5QojeJDuyqVeowq1aB4GIm3qkx3Irs6QQwLjk7pCukjoLVdWC3OB
+	 glI6KQZpxYHXO+nKxcnHhfsNKq9OJt5QMjUE8lbvZ3LVRwFA5Rdgw85mScsuiJ+8Xz
+	 VMz8i+NZhXF6SmzrDKIpQj+pDlgzESeMCEmBg/xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 262/627] bpf: Reject narrower access to pointer ctx fields
+Subject: [PATCH 6.1 169/253] soundwire: stream: restore params when prepare ports fail
 Date: Tue, 12 Aug 2025 19:29:17 +0200
-Message-ID: <20250812173429.282959908@linuxfoundation.org>
+Message-ID: <20250812172955.915655708@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,173 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit e09299225d5ba3916c91ef70565f7d2187e4cca0 ]
+[ Upstream commit dba7d9dbfdc4389361ff3a910e767d3cfca22587 ]
 
-The following BPF program, simplified from a syzkaller repro, causes a
-kernel warning:
+The bus->params should be restored if the stream is failed to prepare.
+The issue exists since beginning. The Fixes tag just indicates the
+first commit that the commit can be applied to.
 
-    r0 = *(u8 *)(r1 + 169);
-    exit;
-
-With pointer field sk being at offset 168 in __sk_buff. This access is
-detected as a narrower read in bpf_skb_is_valid_access because it
-doesn't match offsetof(struct __sk_buff, sk). It is therefore allowed
-and later proceeds to bpf_convert_ctx_access. Note that for the
-"is_narrower_load" case in the convert_ctx_accesses(), the insn->off
-is aligned, so the cnt may not be 0 because it matches the
-offsetof(struct __sk_buff, sk) in the bpf_convert_ctx_access. However,
-the target_size stays 0 and the verifier errors with a kernel warning:
-
-    verifier bug: error during ctx access conversion(1)
-
-This patch fixes that to return a proper "invalid bpf_context access
-off=X size=Y" error on the load instruction.
-
-The same issue affects multiple other fields in context structures that
-allow narrow access. Some other non-affected fields (for sk_msg,
-sk_lookup, and sockopt) were also changed to use bpf_ctx_range_ptr for
-consistency.
-
-Note this syzkaller crash was reported in the "Closes" link below, which
-used to be about a different bug, fixed in
-commit fce7bd8e385a ("bpf/verifier: Handle BPF_LOAD_ACQ instructions
-in insn_def_regno()"). Because syzbot somehow confused the two bugs,
-the new crash and repro didn't get reported to the mailing list.
-
-Fixes: f96da09473b52 ("bpf: simplify narrower ctx access")
-Fixes: 0df1a55afa832 ("bpf: Warn on internal verifier errors")
-Reported-by: syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0ef84a7bdf5301d4cbec
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://patch.msgid.link/3b8dcee67ff4296903351a974ddd9c4dca768b64.1753194596.git.paul.chaignon@gmail.com
+Fixes: 17ed5bef49f4 ("soundwire: add missing newlines in dynamic debug logs")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626060952.405996-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cgroup.c |  8 ++++----
- net/core/filter.c   | 20 ++++++++++----------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/soundwire/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index f4885514f007..deb88fade249 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -2440,22 +2440,22 @@ static bool cg_sockopt_is_valid_access(int off, int size,
- 	}
- 
- 	switch (off) {
--	case offsetof(struct bpf_sockopt, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, sk):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	case offsetof(struct bpf_sockopt, optval):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, optval):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_PACKET;
- 		break;
--	case offsetof(struct bpf_sockopt, optval_end):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, optval_end):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_PACKET_END;
- 		break;
--	case offsetof(struct bpf_sockopt, retval):
-+	case bpf_ctx_range(struct bpf_sockopt, retval):
- 		if (size != size_default)
- 			return false;
- 		return prog->expected_attach_type == BPF_CGROUP_GETSOCKOPT;
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 7a72f766aacf..47073a0180a4 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -8690,7 +8690,7 @@ static bool bpf_skb_is_valid_access(int off, int size, enum bpf_access_type type
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct __sk_buff, sk):
-+	case bpf_ctx_range_ptr(struct __sk_buff, sk):
- 		if (type == BPF_WRITE || size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCK_COMMON_OR_NULL;
-@@ -9268,7 +9268,7 @@ static bool sock_addr_is_valid_access(int off, int size,
- 				return false;
+diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
+index 2624441d2fa9..3f23d9f0f726 100644
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1402,7 +1402,7 @@ static int _sdw_prepare_stream(struct sdw_stream_runtime *stream,
+ 		if (ret < 0) {
+ 			dev_err(bus->dev, "Prepare port(s) failed ret = %d\n",
+ 				ret);
+-			return ret;
++			goto restore_params;
  		}
- 		break;
--	case offsetof(struct bpf_sock_addr, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sock_addr, sk):
- 		if (type != BPF_READ)
- 			return false;
- 		if (size != sizeof(__u64))
-@@ -9318,17 +9318,17 @@ static bool sock_ops_is_valid_access(int off, int size,
- 			if (size != sizeof(__u64))
- 				return false;
- 			break;
--		case offsetof(struct bpf_sock_ops, sk):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, sk):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_SOCKET_OR_NULL;
- 			break;
--		case offsetof(struct bpf_sock_ops, skb_data):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_PACKET;
- 			break;
--		case offsetof(struct bpf_sock_ops, skb_data_end):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data_end):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_PACKET_END;
-@@ -9337,7 +9337,7 @@ static bool sock_ops_is_valid_access(int off, int size,
- 			bpf_ctx_record_field_size(info, size_default);
- 			return bpf_ctx_narrow_access_ok(off, size,
- 							size_default);
--		case offsetof(struct bpf_sock_ops, skb_hwtstamp):
-+		case bpf_ctx_range(struct bpf_sock_ops, skb_hwtstamp):
- 			if (size != sizeof(__u64))
- 				return false;
- 			break;
-@@ -9407,17 +9407,17 @@ static bool sk_msg_is_valid_access(int off, int size,
- 		return false;
- 
- 	switch (off) {
--	case offsetof(struct sk_msg_md, data):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, data):
- 		info->reg_type = PTR_TO_PACKET;
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct sk_msg_md, data_end):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, data_end):
- 		info->reg_type = PTR_TO_PACKET_END;
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct sk_msg_md, sk):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, sk):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
-@@ -11623,7 +11623,7 @@ static bool sk_lookup_is_valid_access(int off, int size,
- 		return false;
- 
- 	switch (off) {
--	case offsetof(struct bpf_sk_lookup, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sk_lookup, sk):
- 		info->reg_type = PTR_TO_SOCKET_OR_NULL;
- 		return size == sizeof(__u64);
+ 	}
  
 -- 
 2.39.5
