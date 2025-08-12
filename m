@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EEAB23478
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392EEB23277
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19C991A2297B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 585703B9117
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24722ECE93;
-	Tue, 12 Aug 2025 18:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7382882CE;
+	Tue, 12 Aug 2025 18:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZtmgu8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4933rIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95761FFE;
-	Tue, 12 Aug 2025 18:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC93C2F5E;
+	Tue, 12 Aug 2025 18:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023748; cv=none; b=dh/EXrHPNRsKgpBe1VZPI6awbCEzV3nxVfC7whWbbhZx2JwgXzujP0Qi9imOu2Hc9Wjajazf5/kRh26ZtjywDzCn6Oxpx5VW1ADYJCEXn0zQ840/rpDnHL6d1kcymR0iCAwTImhubodMtcDJVBT8UApEhmshboOjdBL62kah5pg=
+	t=1755022373; cv=none; b=R5md+nDj8Iv+BjVKvUJlYF+fbSG0a7cH036lI2uuAhpGKGGn67cQ25Gc/ppokPM8bwGHYO6x1pEvNOniBkFspuOo8jVIqcygp3bCtgheb4Fb5KB0hLKInMubZ48hoxbIo7/EM0/4WGB0I3TaLV6qHWvQhwWjob2jYB90u2zZwW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023748; c=relaxed/simple;
-	bh=0W/wXZk5n+3jpkga1XcjdYTYICu5I2Yqw/TRIRZ0A/0=;
+	s=arc-20240116; t=1755022373; c=relaxed/simple;
+	bh=2sYpUym9xdXu5yr4NAZeaU1Db7Rn+d5ecZOP7ivHzUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bq/UfdmTaRdfGsH+HPngpDlpK2yu2z7zJSMqzxuf7rNgNDT94Tw/j8pCrE3L/peLmycctO68o9ZTtOvDjuExUr0IXYEp5StadFXEYHLkNjA2PrbN7keNWO3cQ+mrkPazB6gUkC68VPvXuTNKYYEWGgq9AaFy1DnwEJckdH6X3Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZtmgu8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3F9C4CEF0;
-	Tue, 12 Aug 2025 18:35:47 +0000 (UTC)
+	 MIME-Version; b=N+UMQb4AFOEhBeX/QiS4jKYAf997YcCdFE/cYvX6CtkT9Cgyt6cxTGTJ9oVGNCRy9Fr1l7WPh20lqYlj/jATdsOHx6/gnwn0ECOqpXhA5PIL57ib53raVJwPNgoosxGgQmyDHGm7pNo6MJSI0sC2V1/MvuQ7dRi8ydfUUBACb00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4933rIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393A6C4CEF0;
+	Tue, 12 Aug 2025 18:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023748;
-	bh=0W/wXZk5n+3jpkga1XcjdYTYICu5I2Yqw/TRIRZ0A/0=;
+	s=korg; t=1755022373;
+	bh=2sYpUym9xdXu5yr4NAZeaU1Db7Rn+d5ecZOP7ivHzUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZtmgu8lMnninONTXWEjjZLfP04eEyNKYguCb1EHHVeOsR/D8uXKV2huDYmvxRjvx
-	 f/yz78Pzu55xJEgTQT6L5fkPmTo9nh44EFJuq7LUnDp1trspWUlpB8vjUQZhRaGzTj
-	 wBoBEX2BoDPl6sNx9veH5ipAI+/U5zPOg4X1TxrI=
+	b=M4933rIFnDDDwOc/8c5Ic0XP5/JufdMQo9Um2LWSc8yjr1iFj0yGGUP88i/qNnUbs
+	 vPS1Y4BaDCQ93Cj22ybd5eV8jmA1SZZK9Jy4HisGQqZJaeC26mQHQQGp1I9Nk65hhS
+	 wQdZ35Bm5lXij20liwxGSYEn9aHb3wuAjnwMT/CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 137/627] wifi: rtw89: mcc: prevent shift wrapping in rtw89_core_mlsr_switch()
+Subject: [PATCH 6.12 135/369] selftests: drv-net: Fix remote command checking in require_cmd()
 Date: Tue, 12 Aug 2025 19:27:12 +0200
-Message-ID: <20250812173424.514777256@linuxfoundation.org>
+Message-ID: <20250812173019.846463227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 53cf488927a0f79968f9c03c4d1e00d2a79731c3 ]
+[ Upstream commit b4d52c698210ae1a3ceb487b189701bc70551a48 ]
 
-The "link_id" value comes from the user via debugfs.  If it's larger
-than BITS_PER_LONG then that would result in shift wrapping and
-potentially an out of bounds access later.  In fact, we can limit it
-to IEEE80211_MLD_MAX_NUM_LINKS (15).
+The require_cmd() method was checking for command availability locally
+even when remote=True was specified, due to a missing host parameter.
 
-Fortunately, only root can write to debugfs files so the security
-impact is minimal.
+Fix by passing host=self.remote when checking remote command
+availability, ensuring commands are verified on the correct host.
 
-Fixes: 9dd85e739ce0 ("wifi: rtw89: debug: add mlo_mode dbgfs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/aDbFFkX09K7FrL9h@stanley.mountain
+Fixes: f1e68a1a4a40 ("selftests: drv-net: add require_XYZ() helpers for validating env")
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20250723135454.649342-2-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/lib/py/env.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 49447668cbf3..3604a8e15df0 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -5239,7 +5239,8 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 	if (unlikely(!ieee80211_vif_is_mld(vif)))
- 		return -EOPNOTSUPP;
+diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
+index 1ea9bb695e94..3f35faca6559 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/env.py
++++ b/tools/testing/selftests/drivers/net/lib/py/env.py
+@@ -224,7 +224,7 @@ class NetDrvEpEnv:
+             if not self._require_cmd(comm, "local"):
+                 raise KsftSkipEx("Test requires command: " + comm)
+         if remote:
+-            if not self._require_cmd(comm, "remote"):
++            if not self._require_cmd(comm, "remote", host=self.remote):
+                 raise KsftSkipEx("Test requires (remote) command: " + comm)
  
--	if (unlikely(!(usable_links & BIT(link_id)))) {
-+	if (unlikely(link_id >= IEEE80211_MLD_MAX_NUM_LINKS ||
-+		     !(usable_links & BIT(link_id)))) {
- 		rtw89_warn(rtwdev, "%s: link id %u is not usable\n", __func__,
- 			   link_id);
- 		return -ENOLINK;
+     def wait_hw_stats_settle(self):
 -- 
 2.39.5
 
