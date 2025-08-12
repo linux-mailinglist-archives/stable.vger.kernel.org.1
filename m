@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5537AB23039
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F941B233DF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DA5318891C8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07A0C7B8169
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706122F7477;
-	Tue, 12 Aug 2025 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826B42FDC49;
+	Tue, 12 Aug 2025 18:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obDV30BI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2n6duHan"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2B7221FAC;
-	Tue, 12 Aug 2025 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E482F4A0A;
+	Tue, 12 Aug 2025 18:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020880; cv=none; b=eEu6ubjRN840ebjNvqCAMpfv+RRpy2ANVCx90JjooQBPL7y7WqvFSTBhUpoCuw/PmXMPAH6cHfD5Y5NDNix/3Qr+9TVhkWR8UhadF+9xBKuF79oaCYpCngiD0NC8PsCBFOww7mShD36tmglmp24l789uH2VPY2Kf5aIoKNUolrM=
+	t=1755023584; cv=none; b=YP/tmMad8ZkN0x4wV4T1MSzIwB7Csa7SGh4BesEg1oERyvUj80pq9xRI63Vlf2vFLxd1Q3HodWwal6P8sSUEfLFb8bBjAFHoZsr0bXbGKyXlJSwGbbifDT/88cPxwZNVceK5c5gsMSVDAcoTHUudrijegE61TTdhXiMi7o5RQc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020880; c=relaxed/simple;
-	bh=74xquVVdInnN3oqr70iRnSAorD7rNqfXg9AKCgDD6WE=;
+	s=arc-20240116; t=1755023584; c=relaxed/simple;
+	bh=zaSFBsORC13myHODCbOm4UYKW/UjCyZ3zAtXG78W0lE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYEl4Q5FTvy0zD/CQAd9HdDxPCPuhtY5bwAeifVE/i4tyWq1J97JCpHDdHpNI+W46YeRM0kKbsokbeWmrsueSiartOgj6WatVjfYmJeZTjfSzKHgj4JJ64FlDMVt4CsuYXwXcDxVHEnRZwBoCUyE+kwjezYHv+OuupgnNNuMW1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obDV30BI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94987C4CEF0;
-	Tue, 12 Aug 2025 17:47:59 +0000 (UTC)
+	 MIME-Version; b=LxBdzUChDRWw2EtL3lZRnpXmTdg3JuuYLwBa3QCaj31HO5UBsyUMsds6ox7Q9CsVEI8VAVDHe/1GkCXPxzn0WYkafO9mePckmmmUWHl9uu9WgqhzRVesAdxUeJA3l1+/CK1FkUGQTDdSnHe0qzn3PFSScfwZYhhfCbYkti6a1ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2n6duHan; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34113C4CEF0;
+	Tue, 12 Aug 2025 18:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020880;
-	bh=74xquVVdInnN3oqr70iRnSAorD7rNqfXg9AKCgDD6WE=;
+	s=korg; t=1755023583;
+	bh=zaSFBsORC13myHODCbOm4UYKW/UjCyZ3zAtXG78W0lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obDV30BIV7p5bpd19vbNI3qKdX44kmIAuzRn4bQ+pE17/z7munLcIUhPp18RkOAah
-	 UQTZlaAoId9bqQNwFOIrMkEIBuxXzA7vJDoy7hpRxHPH+Xa5QuLCUOksdxv6ZnmkKj
-	 3SU5ZuDQYEkdmEbdYH1dyThvYwRqit5KxC0V5DhM=
+	b=2n6duHanLw9l82Kz1YsOiOPQJYPCwiKfkAkHZVYkHGP/n8QdpCkwFJMh3FIiDzM9r
+	 5PDy7Qoq13yB+1t7LUVcdI2eKCACfKKop5+AJeDfaeeLw/PlhfS17Ol6UZstSBUGyG
+	 w7VT8pgNGzbQTWGVgFp2CjpTM7aP5aFlS3srcNgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
+	Slark Xiao <slark_xiao@163.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/262] vmci: Prevent the dispatching of uninitialized payloads
-Date: Tue, 12 Aug 2025 19:26:56 +0200
-Message-ID: <20250812172954.168121618@linuxfoundation.org>
+Subject: [PATCH 6.16 122/627] bus: mhi: host: pci_generic: Fix the modem name of Foxconn T99W640
+Date: Tue, 12 Aug 2025 19:26:57 +0200
+Message-ID: <20250812173423.964608697@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031 ]
+[ Upstream commit ae5a34264354087aef38cdd07961827482a51c5a ]
 
-The reproducer executes the host's unlocked_ioctl call in two different
-tasks. When init_context fails, the struct vmci_event_ctx is not fully
-initialized when executing vmci_datagram_dispatch() to send events to all
-vm contexts. This affects the datagram taken from the datagram queue of
-its context by another task, because the datagram payload is not initialized
-according to the size payload_size, which causes the kernel data to leak
-to the user space.
+T99W640 was mistakenly mentioned as T99W515. T99W515 is a LGA device, not
+a M.2 modem device. So correct it's name to avoid name mismatch issue.
 
-Before dispatching the datagram, and before setting the payload content,
-explicitly set the payload content to 0 to avoid data leakage caused by
-incomplete payload initialization.
-
-Fixes: 28d6692cd8fb ("VMCI: context implementation.")
-Reported-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9b9124ae9b12d5af5d95
-Tested-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20250627055214.2967129-1-lizhi.xu@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bf30a75e6e00 ("bus: mhi: host: Add support for Foxconn SDX72 modems")
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+[mani: commit message fixup]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20250606095019.383992-1-slark_xiao@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_context.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bus/mhi/host/pci_generic.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
-index f22b44827e92..d566103caa27 100644
---- a/drivers/misc/vmw_vmci/vmci_context.c
-+++ b/drivers/misc/vmw_vmci/vmci_context.c
-@@ -251,6 +251,8 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
- 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
- 						  VMCI_CONTEXT_RESOURCE_ID);
- 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
-+		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
-+			ev.msg.hdr.payload_size);
- 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
- 		ev.payload.context_id = context_id;
+diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
+index 589cb6722316..92bd133e7c45 100644
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -593,8 +593,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_dw5932e_info = {
+ 	.sideband_wake = false,
+ };
  
+-static const struct mhi_pci_dev_info mhi_foxconn_t99w515_info = {
+-	.name = "foxconn-t99w515",
++static const struct mhi_pci_dev_info mhi_foxconn_t99w640_info = {
++	.name = "foxconn-t99w640",
+ 	.edl = "qcom/sdx72m/foxconn/edl.mbn",
+ 	.edl_trigger = true,
+ 	.config = &modem_foxconn_sdx72_config,
+@@ -920,9 +920,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
+ 	/* DW5932e (sdx62), Non-eSIM */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_FOXCONN, 0xe0f9),
+ 		.driver_data = (kernel_ulong_t) &mhi_foxconn_dw5932e_info },
+-	/* T99W515 (sdx72) */
++	/* T99W640 (sdx72) */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_FOXCONN, 0xe118),
+-		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w515_info },
++		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w640_info },
+ 	/* DW5934e(sdx72), With eSIM */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_FOXCONN, 0xe11d),
+ 		.driver_data = (kernel_ulong_t) &mhi_foxconn_dw5934e_info },
 -- 
 2.39.5
 
