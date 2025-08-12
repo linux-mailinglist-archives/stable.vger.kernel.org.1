@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF891B22FAA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E59B234AE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A177188C63C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFF03188F239
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51052FDC3F;
-	Tue, 12 Aug 2025 17:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F1F2FD1A2;
+	Tue, 12 Aug 2025 18:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgWubKDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqGnwnfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CC52FDC25;
-	Tue, 12 Aug 2025 17:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002102F5E;
+	Tue, 12 Aug 2025 18:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020411; cv=none; b=a1F5TxtqMOabMf/tiC8jh/MAR/+EXo3/p8KRJfVRmClXAEZ6vH0skiEHpjBMsV1r9HnNIsuDbyAiM63vzkRaNgyjGIRt2Qtlli3+qfY05MXQSVomOJ9/ggx2oCitLchD9e7Is2JeeH0D0b9VWTH19zUKe5vR1Nf8wnZG5eZTONE=
+	t=1755023882; cv=none; b=GMyJfDw3di2UVC+bMNicJNzDvd2GlrWM2mW5bBfkCCSpWwIuplnq8Pb2OTOgDZ5x56t2dL572vc6N9eM+dW8CpOc3XqJ4VVnT3HPRW0lqBi5ZE/6FWp70mJbeiWDHaKkHSXo365/sJBOriuTK7pGH0giW3AXlSVDk0stkqu7wtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020411; c=relaxed/simple;
-	bh=stBtWMfdzY8dAn6zhIn0f1OYTGWBfesdL+odJ4YLRt8=;
+	s=arc-20240116; t=1755023882; c=relaxed/simple;
+	bh=mGjvi31KJqGPeLRzBFP3QzF8dZ11jTmcg4X+eOXCAVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOl7LTOE4PrV4GWFSeH5KdbyIcE/NiZPpd02I0NPcFV8A0jo+yPNbc2ug6uuM9Z1L5qI+drgNRAAaGilVV2JUcY0aIGryLRK0p1xhaDeOr5Jkf5tcnb995alcvldwAHCW+bWvB+sbL+66frmZldBTPclHKIZ6o9wjc6qBZiOPQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgWubKDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FBEC4CEF6;
-	Tue, 12 Aug 2025 17:40:10 +0000 (UTC)
+	 MIME-Version; b=EUcwjnM+4p5pmJPf5exhR2LMJ5O6qKdaOmgjeTfyRFfx4TPsQThMqiRKvcd7FZCk0PeMrxn+VWKDdtqtw1EqMshS23b4k/fv8X4nwsFykPeFmDjjDC7Y62iPRlkJs+XED02N1RMqd9TeVMZOjqtS5DwYH3iaccCWGF5j57y75pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqGnwnfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D5DC4CEF1;
+	Tue, 12 Aug 2025 18:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020411;
-	bh=stBtWMfdzY8dAn6zhIn0f1OYTGWBfesdL+odJ4YLRt8=;
+	s=korg; t=1755023881;
+	bh=mGjvi31KJqGPeLRzBFP3QzF8dZ11jTmcg4X+eOXCAVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zgWubKDCW132PJfGPs4Xo58iUPnDPGPPKtm+XeXBC/EwUI6MVVrkx/phjrFuFfXQF
-	 bdfbFrG0igedEYNssHSc9uqf1TUG2MWFYPe+QU8vmkYDDYWG473fToS1SiG9bgjLyv
-	 Ua+5ct+iCkb6ai7R8HgXj+v0Lz85HCpm/mf3cdpA=
+	b=ZqGnwnfL8AGNZh0Azy6O3z/Pq6lCie5lrJw1NkK0kcSduK7h+7k3LZuxNsgfoVDW/
+	 icGUSR1kFJ9ZJpLkLk5qjdP0bGy4ncNk1jxKZMvkNgzlnBydlWirgmfFv64UYuvcFn
+	 kDpx4de545p5U6v1RsFTAt2adf8HEiW3uMTHv37Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/253] ARM: dts: vfxxx: Correctly use two tuples for timer address
+Subject: [PATCH 6.16 167/627] iwlwifi: Add missing check for alloc_ordered_workqueue
 Date: Tue, 12 Aug 2025 19:27:42 +0200
-Message-ID: <20250812172951.883182825@linuxfoundation.org>
+Message-ID: <20250812173425.637193836@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
+[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
 
-Address and size-cells are 1 and the ftm timer node takes two address
-spaces in "reg" property, so this should be in two <> tuples.  Change
-has no functional impact, but original code is confusing/less readable.
+Add check for the return value of alloc_ordered_workqueue since it may
+return NULL pointer.
 
-Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/vfxxx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
-index d53f9c9db8bf..eb7973fb4713 100644
---- a/arch/arm/boot/dts/vfxxx.dtsi
-+++ b/arch/arm/boot/dts/vfxxx.dtsi
-@@ -617,7 +617,7 @@ usbmisc1: usb@400b4800 {
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index 66211426aa3a..e015b83bb6e9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1049,9 +1049,11 @@ static void iwl_bg_restart(struct work_struct *data)
+  *
+  *****************************************************************************/
  
- 			ftm: ftm@400b8000 {
- 				compatible = "fsl,ftm-timer";
--				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
-+				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
- 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
- 				clock-names = "ftm-evt", "ftm-src",
- 					"ftm-evt-counter-en", "ftm-src-counter-en";
+-static void iwl_setup_deferred_work(struct iwl_priv *priv)
++static int iwl_setup_deferred_work(struct iwl_priv *priv)
+ {
+ 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
++	if (!priv->workqueue)
++		return -ENOMEM;
+ 
+ 	INIT_WORK(&priv->restart, iwl_bg_restart);
+ 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
+@@ -1068,6 +1070,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
+ 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
+ 
+ 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
++
++	return 0;
+ }
+ 
+ void iwl_cancel_deferred_work(struct iwl_priv *priv)
+@@ -1463,7 +1467,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	/********************
+ 	 * 6. Setup services
+ 	 ********************/
+-	iwl_setup_deferred_work(priv);
++	if (iwl_setup_deferred_work(priv))
++		goto out_uninit_drv;
++
+ 	iwl_setup_rx_handlers(priv);
+ 
+ 	iwl_power_initialize(priv);
+@@ -1502,6 +1508,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	iwl_cancel_deferred_work(priv);
+ 	destroy_workqueue(priv->workqueue);
+ 	priv->workqueue = NULL;
++out_uninit_drv:
+ 	iwl_uninit_drv(priv);
+ out_free_eeprom_blob:
+ 	kfree(priv->eeprom_blob);
 -- 
 2.39.5
 
