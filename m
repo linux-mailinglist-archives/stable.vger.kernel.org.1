@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD3EB22F5B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:39:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7994B23274
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AE06D4E107A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BB9B3ABB27
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFC62FE588;
-	Tue, 12 Aug 2025 17:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F14B20409A;
+	Tue, 12 Aug 2025 18:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDlrx5+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tefhoiZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90002FA0FD;
-	Tue, 12 Aug 2025 17:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD7B3F9D2;
+	Tue, 12 Aug 2025 18:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020277; cv=none; b=K5Oumv+V8fM+A782Zvl5CJWG/MT1bxeL90d1v8i/uqDxoLNFHzYFE9ytqNsIvtCK6s8h9C8SCKqnxCTxDo0pDpifN2s8V/xOu5TLHGY0kZV5Xe6FFKKX969upz5iHr8g9lAv87LF03brQdqUXEfcpKS2v5LuRbnjoZyyWli8lL4=
+	t=1755022336; cv=none; b=c+rDL71/OwLGS0+8Nm5KFc/G48Sx49Gyaw8rNKqqtUC8YBsBPyCp8JkfDxqKGjunhUWVDEaDHVlISL4VogkyMV17UKGgCVqjf/cd6guNpezSmhqEo2y25eM4jKv9EJ1P3RzBvkZ0C3ZKlYNY/DdRk5VMa0kjGVXhl/Hjes3VT8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020277; c=relaxed/simple;
-	bh=arEqBiHFuH6ODIb9AEMEFDlwR84cvZGpCh4u0nFHKIg=;
+	s=arc-20240116; t=1755022336; c=relaxed/simple;
+	bh=93lYzAFBDxHYT7frN73aW7qIN4jRnS0t9DS/q111dWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5v1gESvjfms7Cwp6JjJlpWusd5RIVtJfSK1BC02OLaJf9LT5sfY+gLDAN9sQEvl70iKqXdyvv7PCtDtqljAEG6CH8m2xIhgv9qH999isXdsmcASj5vfnSWot1M/pnFj9xBtR9vfXFOMn0vD0mvCIu50Y/owScK15AmcEn1mh/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDlrx5+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FAD5C4CEF0;
-	Tue, 12 Aug 2025 17:37:56 +0000 (UTC)
+	 MIME-Version; b=K83FKfJGD+OhN3tqIKD5FCBmJ2VbIJKGfk7XQgD6fy4kz9tsDeULUXD7cgIcEHr0ZiqWFo4cOq4jUiy5zktZOsCdprEkOUv2cGXlf3uZCI0vsewES9gFxzNv6Bns64WkX9WCCsKuvBZuf8418TJ+nZrvfI9vpPo2D0O4fOciwns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tefhoiZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BE6C4CEF0;
+	Tue, 12 Aug 2025 18:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020277;
-	bh=arEqBiHFuH6ODIb9AEMEFDlwR84cvZGpCh4u0nFHKIg=;
+	s=korg; t=1755022336;
+	bh=93lYzAFBDxHYT7frN73aW7qIN4jRnS0t9DS/q111dWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDlrx5+xMLDJTD1NwhJ/mboPjWI/taX6/MULhxic9f4OkeUgtfy6mLNitgAxo0ClP
-	 VTvSkj6J9xwcww+VIzw0XMT2f+kaz213Z2KOROglaOV4WwVwR1PTKIKw22MYme3d4V
-	 yCeZrooK4qkIlYA/7pm1SjU73aMkULopFhB89Scs=
+	b=tefhoiZchdyTB5J7NJ3zIJEHU1gYN1jLcRy+P1UXGi8xVLpKGvCcy5/dLalozEVvn
+	 fBRdMXct7kORpf9xNubtd3jd1rEajzJJXY93I1okbBgomygYz5dtBlbHGbEJ6ObRaI
+	 0HKbk4dH7Z8ssux7rGnzPizMsyZZz4E7U25/1sPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 033/253] dpaa2-switch: Fix device reference count leak in MAC endpoint handling
-Date: Tue, 12 Aug 2025 19:27:01 +0200
-Message-ID: <20250812172950.140833444@linuxfoundation.org>
+	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 125/369] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+Date: Tue, 12 Aug 2025 19:27:02 +0200
+Message-ID: <20250812173019.475648248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-commit 96e056ffba912ef18a72177f71956a5b347b5177 upstream.
+[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
 
-The fsl_mc_get_endpoint() function uses device_find_child() for
-localization, which implicitly calls get_device() to increment the
-device's reference count before returning the pointer. However, the
-caller dpaa2_switch_port_connect_mac() fails to properly release this
-reference in multiple scenarios. We should call put_device() to
-decrement reference count properly.
+After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
+IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
+got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+Because of this, as part of the scan request handler for the P2P Discovery,
+vif struct used for adding the Probe Request P2P IE in firmware got changed
+from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
+So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
+requests frames and the other P2P peers were unable to discover this device
+causing a regression on the P2P feature.
 
-Found by code review.
+To fix this, while setting the P2P IE in firmware, properly use the vif of
+the P2P discovery wdev on which the driver received the P2P scan request.
+This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
+is completed.
 
-Cc: stable@vger.kernel.org
-Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717022309.3339976-3-make24@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -1439,12 +1439,19 @@ static int dpaa2_switch_port_connect_mac
- 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
- 		return PTR_ERR(dpmac_dev);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 349aa3439502..708a4e2ad839 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1541,10 +1541,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 		return -EAGAIN;
+ 	}
  
--	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
-+	if (IS_ERR(dpmac_dev))
- 		return 0;
+-	/* If scan req comes for p2p0, send it over primary I/F */
+-	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
+-		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+-
+ 	brcmf_dbg(SCAN, "START ESCAN\n");
  
-+	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
-+		err = 0;
-+		goto out_put_device;
-+	}
+ 	cfg->scan_request = request;
+@@ -1560,6 +1556,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 	if (err)
+ 		goto scan_out;
+ 
++	/* If scan req comes for p2p0, send it over primary I/F */
++	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
 +
- 	mac = kzalloc(sizeof(*mac), GFP_KERNEL);
--	if (!mac)
--		return -ENOMEM;
-+	if (!mac) {
-+		err = -ENOMEM;
-+		goto out_put_device;
-+	}
- 
- 	mac->mc_dev = dpmac_dev;
- 	mac->mc_io = port_priv->ethsw_data->mc_io;
-@@ -1472,6 +1479,8 @@ err_close_mac:
- 	port_priv->mac = NULL;
- err_free_mac:
- 	kfree(mac);
-+out_put_device:
-+	put_device(&dpmac_dev->dev);
- 	return err;
- }
- 
+ 	err = brcmf_do_escan(vif->ifp, request);
+ 	if (err)
+ 		goto scan_out;
+-- 
+2.39.5
+
 
 
 
