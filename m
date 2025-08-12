@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A9BB23345
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8CFB231DD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 654607A54EA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CEDC1897AEF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FDD2FDC57;
-	Tue, 12 Aug 2025 18:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1362FA0CD;
+	Tue, 12 Aug 2025 18:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X90Kgy3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARseTTjE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E77C61FFE;
-	Tue, 12 Aug 2025 18:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1B42F5487;
+	Tue, 12 Aug 2025 18:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023202; cv=none; b=eTNDjVFjf/FtAD854TFzCE5Moe3R4xO7GHIP9LJsZNb7Q6UVt0tmgU7KyA/xcRLKrUnCoY+lkPVgfUV79GOv3FvKLhKEgK40PSrq9/av2tmQbhGCLBgSopALfLQm+ZW5RNaPy+T2yFymYrBmHc0GRUjWQGe5WB7+hdpmXNNvvMs=
+	t=1755021948; cv=none; b=K2varPTgEhHg2pZaO/j+DriCZ1qx5AZiR3am5wEZJ34bft0kogdO+SCNC5Ip0bX6ehA54SBBZvQ2Qer7wnykeTO3EuPfOtCmtUtq/Et2D16lTc4EJcx0zkAEFc3OmTRZr89wi7m4+483Dwclx/dR+bbSby51akpwN7ZM2HOUhOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023202; c=relaxed/simple;
-	bh=97bAZiUdVvzMEfrFqunKEFeDVotUXlTjYACziFB3UCQ=;
+	s=arc-20240116; t=1755021948; c=relaxed/simple;
+	bh=ipUJ5Xf6Q1vBoOBHJKl2C53DyNDYYPXwby318x6bVcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osl7RT/ccmPFLHvMMDxlb5/p+53fTcXd2RMTQAYf7ep/8LkfCw4jKEIYxy+t/z5CbYccwsBCs1xLEoZzFmM8DQ2At5ah+5bE1d2geqfJ6dJDW7G/RIT0pVOjOO/X9q+Qb0PJ9ms0XfWsbIdWfCnLu2EhmoGn+jqMJzT8q1AgX8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X90Kgy3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD6BC4CEF0;
-	Tue, 12 Aug 2025 18:26:41 +0000 (UTC)
+	 MIME-Version; b=JynpoKRnv11HCkofpRxYexq4DQqFN3psW4PZyS2LYqGG1LoOJWQcdHoRKXcjOD8kFhTJs5U53u/OVePHN7JgfzZCP0pAhLxY/KG81vmrzmxdN2mAQ6yD/ze2eDdnOdBudpsN4Zs02YpsQXxpmziMwTSj6M/5YFAk4yPvUwENWeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARseTTjE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED8FC4CEF0;
+	Tue, 12 Aug 2025 18:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023202;
-	bh=97bAZiUdVvzMEfrFqunKEFeDVotUXlTjYACziFB3UCQ=;
+	s=korg; t=1755021947;
+	bh=ipUJ5Xf6Q1vBoOBHJKl2C53DyNDYYPXwby318x6bVcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X90Kgy3Rsfaq0TjWTHShB9bC6umPLT1nJJaqAan/ehhlLSiEF7/onHLXBSOX0skFj
-	 EQkbRT6fJgKiaAq4LzE5B09pTuUSibriVLvC6+e0e45wLz1AEVJBY0zmKhUwOg5B6f
-	 0iR/Lv0ctqDUsIDlfpVj78PGG67xUAOjqSpXDI+4=
+	b=ARseTTjEI0ytuTcdnpnaT11t6c+xYn92Dx4vmvzZRY8RbyocE7HWr/AkXRikke42o
+	 RuCt3uwBLGrGC9AoYNymyvSEvDhumS8OaJTJ4XtamBnpqHx5LOrfxMG5OXXnMj0ne7
+	 PCYYGIZbD0rkCzq9ARB1YhBIxGppS85oNcc9j89Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	syzbot+1aa90f0eb1fc3e77d969@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 011/627] hfsplus: remove mutex_lock check in hfsplus_free_extents
-Date: Tue, 12 Aug 2025 19:25:06 +0200
-Message-ID: <20250812173419.752824918@linuxfoundation.org>
+Subject: [PATCH 6.12 010/369] fs/ntfs3: cancle set bad inode after removing name fails
+Date: Tue, 12 Aug 2025 19:25:07 +0200
+Message-ID: <20250812173015.131105628@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit fcb96956c921f1aae7e7b477f2435c56f77a31b4 ]
+[ Upstream commit d99208b91933fd2a58ed9ed321af07dacd06ddc3 ]
 
-Syzbot reported an issue in hfsplus filesystem:
+The reproducer uses a file0 on a ntfs3 file system with a corrupted i_link.
+When renaming, the file0's inode is marked as a bad inode because the file
+name cannot be deleted.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 4400 at fs/hfsplus/extents.c:346
-	hfsplus_free_extents+0x700/0xad0
-Call Trace:
-<TASK>
-hfsplus_file_truncate+0x768/0xbb0 fs/hfsplus/extents.c:606
-hfsplus_write_begin+0xc2/0xd0 fs/hfsplus/inode.c:56
-cont_expand_zero fs/buffer.c:2383 [inline]
-cont_write_begin+0x2cf/0x860 fs/buffer.c:2446
-hfsplus_write_begin+0x86/0xd0 fs/hfsplus/inode.c:52
-generic_cont_expand_simple+0x151/0x250 fs/buffer.c:2347
-hfsplus_setattr+0x168/0x280 fs/hfsplus/inode.c:263
-notify_change+0xe38/0x10f0 fs/attr.c:420
-do_truncate+0x1fb/0x2e0 fs/open.c:65
-do_sys_ftruncate+0x2eb/0x380 fs/open.c:193
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+The underlying bug is that make_bad_inode() is called on a live inode.
+In some cases it's "icache lookup finds a normal inode, d_splice_alias()
+is called to attach it to dentry, while another thread decides to call
+make_bad_inode() on it - that would evict it from icache, but we'd already
+found it there earlier".
+In some it's outright "we have an inode attached to dentry - that's how we
+got it in the first place; let's call make_bad_inode() on it just for shits
+and giggles".
 
-To avoid deadlock, Commit 31651c607151 ("hfsplus: avoid deadlock
-on file truncation") unlock extree before hfsplus_free_extents(),
-and add check wheather extree is locked in hfsplus_free_extents().
-
-However, when operations such as hfsplus_file_release,
-hfsplus_setattr, hfsplus_unlink, and hfsplus_get_block are executed
-concurrently in different files, it is very likely to trigger the
-WARN_ON, which will lead syzbot and xfstest to consider it as an
-abnormality.
-
-The comment above this warning also describes one of the easy
-triggering situations, which can easily trigger and cause
-xfstest&syzbot to report errors.
-
-[task A]			[task B]
-->hfsplus_file_release
-  ->hfsplus_file_truncate
-    ->hfs_find_init
-      ->mutex_lock
-    ->mutex_unlock
-				->hfsplus_write_begin
-				  ->hfsplus_get_block
-				    ->hfsplus_file_extend
-				      ->hfsplus_ext_read_extent
-				        ->hfs_find_init
-					  ->mutex_lock
-    ->hfsplus_free_extents
-      WARN_ON(mutex_is_locked) !!!
-
-Several threads could try to lock the shared extents tree.
-And warning can be triggered in one thread when another thread
-has locked the tree. This is the wrong behavior of the code and
-we need to remove the warning.
-
-Fixes: 31651c607151f ("hfsplus: avoid deadlock on file truncation")
-Reported-by: syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000057fa4605ef101c4c@google.com/
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250529061807.2213498-1-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
+Reported-by: syzbot+1aa90f0eb1fc3e77d969@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1aa90f0eb1fc3e77d969
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/extents.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/ntfs3/frecord.c |  7 +++----
+ fs/ntfs3/namei.c   | 10 +++-------
+ fs/ntfs3/ntfs_fs.h |  3 +--
+ 3 files changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
-index a6d61685ae79..b1699b3c246a 100644
---- a/fs/hfsplus/extents.c
-+++ b/fs/hfsplus/extents.c
-@@ -342,9 +342,6 @@ static int hfsplus_free_extents(struct super_block *sb,
- 	int i;
- 	int err = 0;
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 608634361a30..ed38014d1750 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -3057,8 +3057,7 @@ int ni_add_name(struct ntfs_inode *dir_ni, struct ntfs_inode *ni,
+  * ni_rename - Remove one name and insert new name.
+  */
+ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
+-	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de,
+-	      bool *is_bad)
++	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de)
+ {
+ 	int err;
+ 	struct NTFS_DE *de2 = NULL;
+@@ -3081,8 +3080,8 @@ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
+ 	err = ni_add_name(new_dir_ni, ni, new_de);
+ 	if (!err) {
+ 		err = ni_remove_name(dir_ni, ni, de, &de2, &undo);
+-		if (err && ni_remove_name(new_dir_ni, ni, new_de, &de2, &undo))
+-			*is_bad = true;
++		WARN_ON(err && ni_remove_name(new_dir_ni, ni, new_de, &de2,
++			&undo));
+ 	}
  
--	/* Mapping the allocation file may lock the extent tree */
--	WARN_ON(mutex_is_locked(&HFSPLUS_SB(sb)->ext_tree->tree_lock));
--
- 	hfsplus_dump_extent(extent);
- 	for (i = 0; i < 8; extent++, i++) {
- 		count = be32_to_cpu(extent->block_count);
+ 	/*
+diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
+index abf7e81584a9..71a5a959a48c 100644
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -244,7 +244,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
+ 	struct ntfs_inode *ni = ntfs_i(inode);
+ 	struct inode *new_inode = d_inode(new_dentry);
+ 	struct NTFS_DE *de, *new_de;
+-	bool is_same, is_bad;
++	bool is_same;
+ 	/*
+ 	 * de		- memory of PATH_MAX bytes:
+ 	 * [0-1024)	- original name (dentry->d_name)
+@@ -313,12 +313,8 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
+ 	if (dir_ni != new_dir_ni)
+ 		ni_lock_dir2(new_dir_ni);
+ 
+-	is_bad = false;
+-	err = ni_rename(dir_ni, new_dir_ni, ni, de, new_de, &is_bad);
+-	if (is_bad) {
+-		/* Restore after failed rename failed too. */
+-		_ntfs_bad_inode(inode);
+-	} else if (!err) {
++	err = ni_rename(dir_ni, new_dir_ni, ni, de, new_de);
++	if (!err) {
+ 		simple_rename_timestamp(dir, dentry, new_dir, new_dentry);
+ 		mark_inode_dirty(inode);
+ 		mark_inode_dirty(dir);
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index cd8e8374bb5a..ff7f241a25b2 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -584,8 +584,7 @@ int ni_add_name(struct ntfs_inode *dir_ni, struct ntfs_inode *ni,
+ 		struct NTFS_DE *de);
+ 
+ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
+-	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de,
+-	      bool *is_bad);
++	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de);
+ 
+ bool ni_is_dirty(struct inode *inode);
+ int ni_set_compress(struct inode *inode, bool compr);
 -- 
 2.39.5
 
