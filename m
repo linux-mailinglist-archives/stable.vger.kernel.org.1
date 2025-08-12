@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4859CB23276
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4491B233FD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133D63B8324
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB2317B8B30
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B835D20409A;
-	Tue, 12 Aug 2025 18:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CCF2F4A0A;
+	Tue, 12 Aug 2025 18:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kU+0iiZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nN84bO42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9B02F5E;
-	Tue, 12 Aug 2025 18:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBCD1DB92A;
+	Tue, 12 Aug 2025 18:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022360; cv=none; b=nGwyCF9jRkaUe3iHATF7riyRviUmIDIOp//zUgywBROLJAnFQhwX3t+XM8HyviyjMzShFUjYt1h2DhxBY8Sgn2S0zb/z0hL5iAdBvPmb6dIFUEKCeA9j29u2wna2C/CVvZvTeXxGLrPfvnU92vhJPD+BO0WTxtGxRthxCxLGXCQ=
+	t=1755023680; cv=none; b=EZ18HsZhjzwO540ixfCYzxIF2c3S24/boZRlU+7GRMSvSi+4zNkJVG7GWWnMSxQO090KVYJSr2x0YAeLX9RMqkKpxVpVKSPa/m1MwkIyEk8/m9f70gFhosyHano6Dee9xwPOKWRZR6aFvKb+B8C8RHcTDPejrsnch9TwP7cOBjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022360; c=relaxed/simple;
-	bh=XYzbOHXoNquyyTtVJAZ/nkc5qr8fjLEG3/7NQcveKYk=;
+	s=arc-20240116; t=1755023680; c=relaxed/simple;
+	bh=3WK1qTxPhRYeSXzIfLVsmBJqm4cUnzgN79uBGoykzz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fd+PJ3cQs82VMLOV+68/uoWDc52ibxdgkgxzM6sCO+dIWD1T2jdSy1nF+wohR1Y5wFPuSZ3dekaSwZGtxwwKvp01I+PpWCoooONOpwhBfVOJney0KZtVW2zhcCUCZ0zl/KWDmXU+/LGphJEGjXn1SbPm1fZ2wouFnidwebNcJFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kU+0iiZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E3DC4CEF0;
-	Tue, 12 Aug 2025 18:12:39 +0000 (UTC)
+	 MIME-Version; b=PD2tox5cGLQ5oEFeapeJ+FvaBJqLznXrpwp2Qg2Xg5XBHJ0DnaN1xyUIpBjESJlUzeV82N5l46LpXQdmizs1kexyX8sUxB0Qtx+sJE6AbX/K9PS73a9NHquHmAl98Z1rGBcg4MmwhUqFDZHQO6tTpmPvSWQBRM1aYmXaAC7ASrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nN84bO42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F46C4CEF0;
+	Tue, 12 Aug 2025 18:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022360;
-	bh=XYzbOHXoNquyyTtVJAZ/nkc5qr8fjLEG3/7NQcveKYk=;
+	s=korg; t=1755023679;
+	bh=3WK1qTxPhRYeSXzIfLVsmBJqm4cUnzgN79uBGoykzz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kU+0iiZyAdqPK+1iT6elRtIOV7bziN9XdFxfvObsR8bTi58R9EvHE4t0IuW9ZZX6c
-	 wpUOkwqWpgXgmptZC4E5/fs5vd2xhFzqWEfbpw9qECejEYCiOirNEnVv2l4HX0976D
-	 6Z+klicwCGJXJ2OvdA9PMyIkkFhQxadEp+DUuy5c=
+	b=nN84bO42yl8V2mcsKnA92zi+QGe8qV7c0iCfM0Ar6lB0pGLMTP9DEUx1KKe9hm/F4
+	 VKQ/6P7Os48ai3U1hGYXtbzF4O0ickmjg+pDoWevhKp5trS2zvpJOtAxLtNI6YTEjz
+	 dJPio2J5DfX5lQ8GzyE+0ZJO4pKdIxP+tTmkrYOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/369] Bluetooth: hci_sync: fix double free in hci_discovery_filter_clear()
+Subject: [PATCH 6.16 133/627] drm/sitronix: Remove broken backwards-compatibility layer
 Date: Tue, 12 Aug 2025 19:27:08 +0200
-Message-ID: <20250812173019.698933451@linuxfoundation.org>
+Message-ID: <20250812173424.372450659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 2935e556850e9c94d7a00adf14d3cd7fe406ac03 ]
+[ Upstream commit a3f7d26dfce9e2d547a58f4941881843a391a6cc ]
 
-Function 'hci_discovery_filter_clear()' frees 'uuids' array and then
-sets it to NULL. There is a tiny chance of the following race:
+When moving the Sitronix DRM drivers and renaming their Kconfig symbols,
+the old symbols were kept, aiming to provide a seamless migration path
+when running "make olddefconfig" or "make oldconfig".
 
-'hci_cmd_sync_work()'
+However, the old compatibility symbols are not visible.  Hence unless
+they are selected by another symbol (which they are not), they can never
+be enabled, and no backwards compatibility is provided.
 
- 'update_passive_scan_sync()'
+Drop the broken mechanism and the old symbols.
 
-   'hci_update_passive_scan_sync()'
-
-     'hci_discovery_filter_clear()'
-       kfree(uuids);
-
-       <-------------------------preempted-------------------------------->
-                                           'start_service_discovery()'
-
-                                             'hci_discovery_filter_clear()'
-                                               kfree(uuids); // DOUBLE FREE
-
-       <-------------------------preempted-------------------------------->
-
-      uuids = NULL;
-
-To fix it let's add locking around 'kfree()' call and NULL pointer
-assignment. Otherwise the following backtrace fires:
-
-[ ] ------------[ cut here ]------------
-[ ] kernel BUG at mm/slub.c:547!
-[ ] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-[ ] CPU: 3 UID: 0 PID: 246 Comm: bluetoothd Tainted: G O 6.12.19-kernel #1
-[ ] Tainted: [O]=OOT_MODULE
-[ ] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ ] pc : __slab_free+0xf8/0x348
-[ ] lr : __slab_free+0x48/0x348
-...
-[ ] Call trace:
-[ ]  __slab_free+0xf8/0x348
-[ ]  kfree+0x164/0x27c
-[ ]  start_service_discovery+0x1d0/0x2c0
-[ ]  hci_sock_sendmsg+0x518/0x924
-[ ]  __sock_sendmsg+0x54/0x60
-[ ]  sock_write_iter+0x98/0xf8
-[ ]  do_iter_readv_writev+0xe4/0x1c8
-[ ]  vfs_writev+0x128/0x2b0
-[ ]  do_writev+0xfc/0x118
-[ ]  __arm64_sys_writev+0x20/0x2c
-[ ]  invoke_syscall+0x68/0xf0
-[ ]  el0_svc_common.constprop.0+0x40/0xe0
-[ ]  do_el0_svc+0x1c/0x28
-[ ]  el0_svc+0x30/0xd0
-[ ]  el0t_64_sync_handler+0x100/0x12c
-[ ]  el0t_64_sync+0x194/0x198
-[ ] Code: 8b0002e6 eb17031f 54fffbe1 d503201f (d4210000)
-[ ] ---[ end trace 0000000000000000 ]---
-
-Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 9b8f32002cddf792 ("drm/sitronix: move tiny Sitronix drivers to their own subdir")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://lore.kernel.org/r/20395b14effe5e2e05a4f0856fdcda51c410329d.1747751592.git.geert+renesas@glider.be
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/sitronix/Kconfig | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 3d1d7296aed9..df4af45f8603 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -29,6 +29,7 @@
- #include <linux/idr.h>
- #include <linux/leds.h>
- #include <linux/rculist.h>
-+#include <linux/spinlock.h>
- #include <linux/srcu.h>
+diff --git a/drivers/gpu/drm/sitronix/Kconfig b/drivers/gpu/drm/sitronix/Kconfig
+index 741d1bb4b83f..6de7d92d9b74 100644
+--- a/drivers/gpu/drm/sitronix/Kconfig
++++ b/drivers/gpu/drm/sitronix/Kconfig
+@@ -11,10 +11,6 @@ config DRM_ST7571_I2C
  
- #include <net/bluetooth/hci.h>
-@@ -93,6 +94,7 @@ struct discovery_state {
- 	u16			uuid_count;
- 	u8			(*uuids)[16];
- 	unsigned long		name_resolve_timeout;
-+	spinlock_t		lock;
- };
+ 	  if M is selected the module will be called st7571-i2c.
  
- #define SUSPEND_NOTIFIER_TIMEOUT	msecs_to_jiffies(2000) /* 2 seconds */
-@@ -873,6 +875,7 @@ static inline void iso_recv(struct hci_conn *hcon, struct sk_buff *skb,
+-config TINYDRM_ST7586
+-	tristate
+-	default n
+-
+ config DRM_ST7586
+ 	tristate "DRM support for Sitronix ST7586 display panels"
+ 	depends on DRM && SPI
+@@ -22,17 +18,12 @@ config DRM_ST7586
+ 	select DRM_KMS_HELPER
+ 	select DRM_GEM_DMA_HELPER
+ 	select DRM_MIPI_DBI
+-	default TINYDRM_ST7586
+ 	help
+ 	  DRM driver for the following Sitronix ST7586 panels:
+ 	  * LEGO MINDSTORMS EV3
  
- static inline void discovery_init(struct hci_dev *hdev)
- {
-+	spin_lock_init(&hdev->discovery.lock);
- 	hdev->discovery.state = DISCOVERY_STOPPED;
- 	INIT_LIST_HEAD(&hdev->discovery.all);
- 	INIT_LIST_HEAD(&hdev->discovery.unknown);
-@@ -887,8 +890,11 @@ static inline void hci_discovery_filter_clear(struct hci_dev *hdev)
- 	hdev->discovery.report_invalid_rssi = true;
- 	hdev->discovery.rssi = HCI_RSSI_INVALID;
- 	hdev->discovery.uuid_count = 0;
-+
-+	spin_lock(&hdev->discovery.lock);
- 	kfree(hdev->discovery.uuids);
- 	hdev->discovery.uuids = NULL;
-+	spin_unlock(&hdev->discovery.lock);
- }
+ 	  If M is selected the module will be called st7586.
  
- bool hci_discovery_active(struct hci_dev *hdev);
+-config TINYDRM_ST7735R
+-	tristate
+-	default n
+-
+ config DRM_ST7735R
+ 	tristate "DRM support for Sitronix ST7715R/ST7735R display panels"
+ 	depends on DRM && SPI
+@@ -41,7 +32,6 @@ config DRM_ST7735R
+ 	select DRM_GEM_DMA_HELPER
+ 	select DRM_MIPI_DBI
+ 	select BACKLIGHT_CLASS_DEVICE
+-	default TINYDRM_ST7735R
+ 	help
+ 	  DRM driver for Sitronix ST7715R/ST7735R with one of the following
+ 	  LCDs:
 -- 
 2.39.5
 
