@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-168064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12537B2334D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F73B23078
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2E2A1A2412A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63297188505E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA24F2FDC54;
-	Tue, 12 Aug 2025 18:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B752FDC34;
+	Tue, 12 Aug 2025 17:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqpRd7UN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hy4/PVqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F0A2FDC55;
-	Tue, 12 Aug 2025 18:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9C62868AF;
+	Tue, 12 Aug 2025 17:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022916; cv=none; b=LQcLHz0D5r7jBQ4E7Sfap7DTj4L1kRiTswVmMxpxJ/LXPZTmhKyfmkqUAmY0D3vKYvK/watlOY2E35YGC5SwlT4oKL48cusAD260HumnLXnSU/Rj6jMvvzmEyPNudyAHt5AzgDNxT1L3Lib6gQuAOpbIE3YFS/Y4Ix318Ak2HUc=
+	t=1755021074; cv=none; b=Ox397H/lGxMcyk98ViHhaB/z8R8mUtq3W0T/q6MPmueYoifcqMGRsn4TAHeA+4P+S7S4hUG8SVo+uqcwYhSyYXwHpqc3dDDCZbLMLWe8LIT8xdamk51k6/XaDVnTI0YWzvuQGhTOxA/VqpwZ101oRPxuZiiDf3lYjCyBc1DjPSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022916; c=relaxed/simple;
-	bh=cYdCNHoZkth8cT1ZDXrj5LssL7COAob4GL1U8HfO3kw=;
+	s=arc-20240116; t=1755021074; c=relaxed/simple;
+	bh=0SBZzTgDdY36JZqBhq7WfLqqhLp6wGLJos5sBo8kfv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+L6CAwqVT443mI7aet/k7i8sGXicAvWCajAN896kCUeplf7MLcITdDiEFWXmKhCClun4u3UaV0VAj5Xs1aaRWgt2iPtk2cpdG05CyA/AhWI7F3Pek5E/9A1BiLIakOuao89CGax9oySxSkt01ePeZXRyj2hrSIE5yQZDQC1N0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqpRd7UN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF0DC4CEF6;
-	Tue, 12 Aug 2025 18:21:55 +0000 (UTC)
+	 MIME-Version; b=g7qfjDPg6xEiK20hzsL0R/LLEEPRXliJ5IM3RuZFSAf3PyzEChTQwelrpj+Zh2DZ1pJA0SxQSdLTkkldpkRXSRoLLraobel46NNoNhSDxync0co4tdR/XmaxtSS4GFm2uhtxJ6hzNiJb139Ir1SyH0prIENsLIGTrmsJxIR4Dv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hy4/PVqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052A6C4CEF0;
+	Tue, 12 Aug 2025 17:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022916;
-	bh=cYdCNHoZkth8cT1ZDXrj5LssL7COAob4GL1U8HfO3kw=;
+	s=korg; t=1755021074;
+	bh=0SBZzTgDdY36JZqBhq7WfLqqhLp6wGLJos5sBo8kfv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqpRd7UNpto3ZYElVjdNeWry3fKQjo4NWFTJPzJ27FBtrNHPyE6ZworXCqabG1dMg
-	 EP82NblL19+Lv98qxnaP72GTE7Degcqdr/uVsq8uw4F5M+9mMgp6dLpGQq50peSeJu
-	 Ev9MBp0yzaTDq6v0d8KAT8VnqujmcFIzDcNt23cY=
+	b=Hy4/PVqKmhnhne7X++q6m3SwZ9zjnlZ5YLfmvPMwDA/ZgS+8/3ZiAZS+inoF+RlDC
+	 Pa1c0JhzXu+wgyiKQZxUlqaxpUDTCrLa0JxvbjmwGD4zDFXKwPDPO8YU5doKK5V0de
+	 2W50kuc0UNvRPM4IMNB6Z3WCL6PAFwYUiMAajYgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Christoph Paasch <cpaasch@openai.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 298/369] net/mlx5: Correctly set gso_segs when LRO is used
+Subject: [PATCH 6.1 207/253] PCI: pnv_php: Work around switches with broken presence detection
 Date: Tue, 12 Aug 2025 19:29:55 +0200
-Message-ID: <20250812173027.938240319@linuxfoundation.org>
+Message-ID: <20250812172957.632331602@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 77bf1c55b2acc7fa3734b14f4561e3d75aea1a90 ]
+[ Upstream commit 80f9fc2362797538ebd4fd70a1dfa838cc2c2cdb ]
 
-When gso_segs is left at 0, a number of assumptions will end up being
-incorrect throughout the stack.
+The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
+was observed to incorrectly assert the Presence Detect Set bit in its
+capabilities when tested on a Raptor Computing Systems Blackbird system,
+resulting in the hot insert path never attempting a rescan of the bus
+and any downstream devices not being re-detected.
 
-For example, in the GRO-path, we set NAPI_GRO_CB()->count to gso_segs.
-So, if a non-LRO'ed packet followed by an LRO'ed packet is being
-processed in GRO, the first one will have NAPI_GRO_CB()->count set to 1 and
-the next one to 0 (in dev_gro_receive()).
-Since commit 531d0d32de3e
-("net/mlx5: Correctly set gso_size when LRO is used")
-these packets will get merged (as their gso_size now matches).
-So, we end up in gro_complete() with NAPI_GRO_CB()->count == 1 and thus
-don't call inet_gro_complete(). Meaning, checksum-validation in
-tcp_checksum_complete() will fail with a "hw csum failure".
+Work around this by additionally checking whether the PCIe data link is
+active or not when performing presence detection on downstream switches'
+ports, similar to the pciehp_hpc.c driver.
 
-Even before the above mentioned commit, incorrect gso_segs means that other
-things like TCP's accounting of incoming packets (tp->segs_in,
-data_segs_in, rcv_ooopack) will be incorrect. Which means that if one
-does bytes_received/data_segs_in, the result will be bigger than the
-MTU.
-
-Fix this by initializing gso_segs correctly when LRO is used.
-
-Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
-Reported-by: Gal Pressman <gal@nvidia.com>
-Closes: https://lore.kernel.org/netdev/6583783f-f0fb-4fb1-a415-feec8155bc69@nvidia.com/
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250729-mlx5_gso_segs-v1-1-b48c480c1c12@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/505981576.1359853.1752615415117.JavaMail.zimbra@raptorengineeringinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/hotplug/pnv_php.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 8ed47e7a7515..673043d9ed11 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -1569,6 +1569,7 @@ static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
- 		unsigned int hdrlen = mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 6989b8a0dc6b..d37faa53bcd8 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -390,6 +390,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
+ 	return 0;
+ }
  
- 		skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt - hdrlen, lro_num_seg);
-+		skb_shinfo(skb)->gso_segs = lro_num_seg;
- 		/* Subtract one since we already counted this as one
- 		 * "regular" packet in mlx5e_complete_rx_cqe()
- 		 */
++static int pcie_check_link_active(struct pci_dev *pdev)
++{
++	u16 lnk_status;
++	int ret;
++
++	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
++	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
++		return -ENODEV;
++
++	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
++
++	return ret;
++}
++
+ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ {
+ 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
+@@ -402,6 +416,19 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ 	 */
+ 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
+ 	if (ret >= 0) {
++		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
++			presence == OPAL_PCI_SLOT_EMPTY) {
++			/*
++			 * Similar to pciehp_hpc, check whether the Link Active
++			 * bit is set to account for broken downstream bridges
++			 * that don't properly assert Presence Detect State, as
++			 * was observed on the Microsemi Switchtec PM8533 PFX
++			 * [11f8:8533].
++			 */
++			if (pcie_check_link_active(php_slot->pdev) > 0)
++				presence = OPAL_PCI_SLOT_PRESENT;
++		}
++
+ 		*state = presence;
+ 		ret = 0;
+ 	} else {
 -- 
 2.39.5
 
