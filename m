@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-169259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81392B23900
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:32:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36531B238D9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D983B2DA9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 524391894C98
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE712D6E68;
-	Tue, 12 Aug 2025 19:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485EF2D4804;
+	Tue, 12 Aug 2025 19:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9RP1EU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nONwGVj+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCE027FB35;
-	Tue, 12 Aug 2025 19:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063D8217F35;
+	Tue, 12 Aug 2025 19:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026916; cv=none; b=hDRg1eJqtSR07HUleFSc1zzapJEY13oGU33qR0lOEmJqXEEUsYEO6dvSL0Q0KdfCk4C+VSbq5F0nNjH1Eh9HsU3o3zuS8DwJHJ3m1Q6iWo4WO1eiPuIOFjiyPYqecDoJYq7XiQVpcRGF9RKUEz0l5L97eKgQ8z49GB/0+balLMM=
+	t=1755026800; cv=none; b=ME9joxMmK3V0dxX7iaQaYf/HAQVl06Bdh+QubGbJRHu5U0ZD75LxmJntvohyBjUlvgB4yfXuAIt8rk2o2pfBamrDo8Kp2LGnSJ8Ae5iZN5u6pvQg/Ji5N0y9JExOwiZ6wmYuDscSAmbtSKLWF+zeVEswsNIC4nfd3jnXnjHw/s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026916; c=relaxed/simple;
-	bh=rGDNg7lbjAHy0atLvMF8dxwI0nvrqcz3GjOBx4PR65M=;
+	s=arc-20240116; t=1755026800; c=relaxed/simple;
+	bh=2py0gSPKoWKURHj+lc7hHOVTGYKqFpjx0L7F4Gi6vRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YqvJS0PFeyXV1Ajky6bfgSYre2Nv0g19glVJhYp12g+Hjf4SedBN+qeEsguTvbke2kmQ1CG43cA3c+tjwPo/of3Fov09NlQCyvGTsgLbXa2XouW7ATLtejPR/DC11PLs64Wy8+PFNH+I4s29CA2uKPgscUjp4P6jzBfaqdS3oLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9RP1EU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7047BC4CEF0;
-	Tue, 12 Aug 2025 19:28:35 +0000 (UTC)
+	 MIME-Version; b=h5zOnQUUKgqA1tSDMT880rr5wu1k3CYAWOMVarriXDraHMATz48WKk1GFFpsSU+pAjr3DFxzGnS8xPlqnLTm5f08usvWGl8SOQEi81zJwsJVngY7XCG2elNH3G6z2+qXu+JKTcudGZyex3RBYe3GijzrbxDU+BHHEpFmEAgUdBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nONwGVj+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5EBC4CEF0;
+	Tue, 12 Aug 2025 19:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026915;
-	bh=rGDNg7lbjAHy0atLvMF8dxwI0nvrqcz3GjOBx4PR65M=;
+	s=korg; t=1755026799;
+	bh=2py0gSPKoWKURHj+lc7hHOVTGYKqFpjx0L7F4Gi6vRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9RP1EU3QV6pB0iPTM8KekX/H1Yg1/7Gxx3mr+tNK9a/JjQJMNQszONIBDuYtZqFv
-	 zdlPX737Bh6ElpVBA9lmDmw6is/dW6Lvpb6M4YADAthsuPE5LwjCx2IJh3KZ19t2I7
-	 cqz+E2qYKd/YSYpywBFe8yehw5r8IL8E/K+JkX/U=
+	b=nONwGVj+jKjmGSwX+RYYgM3JGKvJL+8eF/mZKwYTXqC7yRJaYLFnhnYu/pNlmJMr3
+	 KMEYnaXeQ8vQ6A/BYbIpeWQfQ/riXHlZrr7UDFRbHpncLX/no1FPchYeizf2vyQ1kZ
+	 b29LCNYzPA8R5c+5mOsVptwhiyj/X/mqaYaT8GZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.15 444/480] ksmbd: fix null pointer dereference error in generate_encryptionkey
-Date: Tue, 12 Aug 2025 19:50:52 +0200
-Message-ID: <20250812174415.701447841@linuxfoundation.org>
+Subject: [PATCH 6.15 445/480] ksmbd: fix Preauh_HashValue race condition
+Date: Tue, 12 Aug 2025 19:50:53 +0200
+Message-ID: <20250812174415.745755935@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -68,59 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 9b493ab6f35178afd8d619800df9071992f715de upstream.
+commit 44a3059c4c8cc635a1fb2afd692d0730ca1ba4b6 upstream.
 
-If client send two session setups with krb5 authenticate to ksmbd,
-null pointer dereference error in generate_encryptionkey could happen.
-sess->Preauth_HashValue is set to NULL if session is valid.
-So this patch skip generate encryption key if session is valid.
+If client send multiple session setup requests to ksmbd,
+Preauh_HashValue race condition could happen.
+There is no need to free sess->Preauh_HashValue at session setup phase.
+It can be freed together with session at connection termination phase.
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27654
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27661
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -1621,11 +1621,24 @@ static int krb5_authenticate(struct ksmb
- 
- 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
- 
--	if ((conn->sign || server_conf.enforced_signing) ||
-+	/*
-+	 * If session state is SMB2_SESSION_VALID, We can assume
-+	 * that it is reauthentication. And the user/password
-+	 * has been verified, so return it here.
-+	 */
-+	if (sess->state == SMB2_SESSION_VALID) {
-+		if (conn->binding)
-+			goto binding_session;
-+		return 0;
-+	}
-+
-+	if ((rsp->SessionFlags != SMB2_SESSION_FLAG_IS_GUEST_LE &&
-+	    (conn->sign || server_conf.enforced_signing)) ||
- 	    (req->SecurityMode & SMB2_NEGOTIATE_SIGNING_REQUIRED))
- 		sess->sign = true;
- 
--	if (smb3_encryption_negotiated(conn)) {
-+	if (smb3_encryption_negotiated(conn) &&
-+	    !(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
- 		retval = conn->ops->generate_encryptionkey(conn, sess);
- 		if (retval) {
- 			ksmbd_debug(SMB,
-@@ -1638,6 +1651,7 @@ static int krb5_authenticate(struct ksmb
- 		sess->sign = false;
- 	}
- 
-+binding_session:
- 	if (conn->dialect >= SMB30_PROT_ID) {
- 		chann = lookup_chann_list(sess, conn);
- 		if (!chann) {
+@@ -1847,8 +1847,6 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 				ksmbd_conn_set_good(conn);
+ 				sess->state = SMB2_SESSION_VALID;
+ 			}
+-			kfree(sess->Preauth_HashValue);
+-			sess->Preauth_HashValue = NULL;
+ 		} else if (conn->preferred_auth_mech == KSMBD_AUTH_NTLMSSP) {
+ 			if (negblob->MessageType == NtLmNegotiate) {
+ 				rc = ntlm_negotiate(work, negblob, negblob_len, rsp);
+@@ -1875,8 +1873,6 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 						kfree(preauth_sess);
+ 					}
+ 				}
+-				kfree(sess->Preauth_HashValue);
+-				sess->Preauth_HashValue = NULL;
+ 			} else {
+ 				pr_info_ratelimited("Unknown NTLMSSP message type : 0x%x\n",
+ 						le32_to_cpu(negblob->MessageType));
 
 
 
