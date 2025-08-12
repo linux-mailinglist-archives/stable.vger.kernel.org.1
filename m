@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E13B234C3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B184B2310E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96E68165814
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A068F17B4B8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E062FE579;
-	Tue, 12 Aug 2025 18:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC36E2FDC3C;
+	Tue, 12 Aug 2025 17:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhAWJeha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/sTK0R8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AF16BB5B;
-	Tue, 12 Aug 2025 18:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EC02DE1E2;
+	Tue, 12 Aug 2025 17:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024047; cv=none; b=hrOCn9Qnntxh44g63XVYyPXOT5eJ/fuQjgztCKHYH7hgz4wBPmwnpGE3F9hxZiguIG6WSANwT63NtpXoUVMlRrTwX19hekiXLHe9O6gKpQxQ2pRYdGI061sndMoxX/bM+g3bDwRayzoiaWuQI1ZrL5BcGWnGunk6jOcrr120sO8=
+	t=1755021526; cv=none; b=BUKS254lHVrt68/eWohPnBQZ7ECSZTA4V0uQBP8U/BeIEkMT5DrlSwQuffFUFCzYK8PKXQ1l5I1TeF1j6t82Zf3PPaYnDCXE/7UWQii61HaxrmQvvUTxJfuOGlpZFA5A4pZ33YcXyHUa9XDN4FzFjElc7PD0eSR4znuUIPQtgkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024047; c=relaxed/simple;
-	bh=q6hUYXmFUffVKa1Def1xkf2qPjL5lQ6L8fl1Ptqyk6I=;
+	s=arc-20240116; t=1755021526; c=relaxed/simple;
+	bh=HYNmXVwUClfekyy1W6o8+DWmbWH21d315PS6MUtbFHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUAsg3i6InFpP9bOQqiA2Hio43PGtepVUV222fjJEKYQzx5h69CQ6W0N5VBZeg+jI8+NreWfbohg4GexMYYLW7o/mdqFmsBP/RsR4bbpOVO70tuCbcCyLuJ4USyJxvv5QbhuHmslSWQxqeeExmZQU22vgiU89uB2QQetp7FTAE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhAWJeha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74DAC4CEF1;
-	Tue, 12 Aug 2025 18:40:46 +0000 (UTC)
+	 MIME-Version; b=XfGJo7soQQRTLUmUb2+UgN3j9wrricb91ygrICxO6MzuobQmaK1DSuv2hsdB51pt7vcevwCSlUKbPb1Md8SkOKVodu8niLJ/hQ13p3NTp/CtpCCIRprsbhMGs49JNVhskvob/ubmAxnXno/tLW0O87pgLueYKT+E4u10naLowgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/sTK0R8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC908C4CEF7;
+	Tue, 12 Aug 2025 17:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024047;
-	bh=q6hUYXmFUffVKa1Def1xkf2qPjL5lQ6L8fl1Ptqyk6I=;
+	s=korg; t=1755021526;
+	bh=HYNmXVwUClfekyy1W6o8+DWmbWH21d315PS6MUtbFHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhAWJehaprbqmlluNS5lgPvswFDIfXl9rUU3gwwbebIViAQZ+qirNrfJ6lXpm3FSB
-	 xK/iVCjvsMROvhXkHfUboxGEBa/dXZURt+9h3uxfhkPAufl0r2xhLJsB8wPVw2PtVB
-	 2FNAWqXV11FrgSOnUy1Rx8AlNALtfwUThS2HFEWY=
+	b=v/sTK0R8Ogr0N/OLOQu2Ep3PqIvT5bR0VX2BVM8tnqi5POffwYswQOk0dPPwZv4zR
+	 K6RVMsWDAbImgc4ldPeB2ibHo37f8g5JIlAtb6kgnVHKlfA/C/mJYDL7lchSAhPWYc
+	 hBuYB72sFa6LysyY+urkm+rs7h0AxMaV13OiU9uE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 240/627] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 6.6 147/262] dmaengine: mv_xor: Fix missing check after DMA map and missing unmap
 Date: Tue, 12 Aug 2025 19:28:55 +0200
-Message-ID: <20250812173428.431074029@linuxfoundation.org>
+Message-ID: <20250812172959.356581293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
+[ Upstream commit 60095aca6b471b7b7a79c80b7395f7e4e414b479 ]
 
-This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
-skb's control block key in ieee80211_tx_dequeue()"").
+The DMA map functions can fail and should be tested for errors.
 
-This commit broke TX with 802.11 encapsulation HW offloading, now that
-this is fixed, reapply it.
+In case of error, unmap the already mapped regions.
 
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 22843545b200 ("dma: mv_xor: Add support for DMA_INTERRUPT")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250701123753.46935-2-fourier.thomas@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/mv_xor.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 73304a5cf6fc..8aaa59a27bc4 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3883,6 +3883,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index ea48661e87ea..ca0ba1d46283 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1061,8 +1061,16 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
  	 */
-+	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+ 	mv_chan->dummy_src_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_src, MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_src_addr))
++		return ERR_PTR(-ENOMEM);
++
+ 	mv_chan->dummy_dst_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_dst, MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_dst_addr)) {
++		ret = -ENOMEM;
++		goto err_unmap_src;
++	}
++
+ 
+ 	/* allocate coherent memory for hardware descriptors
+ 	 * note: writecombine gives slightly better performance, but
+@@ -1071,8 +1079,10 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ 	mv_chan->dma_desc_pool_virt =
+ 	  dma_alloc_wc(&pdev->dev, MV_XOR_POOL_SIZE, &mv_chan->dma_desc_pool,
+ 		       GFP_KERNEL);
+-	if (!mv_chan->dma_desc_pool_virt)
+-		return ERR_PTR(-ENOMEM);
++	if (!mv_chan->dma_desc_pool_virt) {
++		ret = -ENOMEM;
++		goto err_unmap_dst;
++	}
+ 
+ 	/* discover transaction capabilites from the platform data */
+ 	dma_dev->cap_mask = cap_mask;
+@@ -1155,6 +1165,13 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ err_free_dma:
+ 	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
++err_unmap_dst:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++err_unmap_src:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_src_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++
+ 	return ERR_PTR(ret);
+ }
+ 
 -- 
 2.39.5
 
