@@ -1,132 +1,150 @@
-Return-Path: <stable+bounces-167171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5353AB22B93
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:22:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43FEB22BE7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45FEE4E2462
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 15:22:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 554026202F8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 15:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F84E32C85;
-	Tue, 12 Aug 2025 15:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189D3302CB9;
+	Tue, 12 Aug 2025 15:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqd5wc7C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G9+g9b4q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28452ED850
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 15:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699D12F5326;
+	Tue, 12 Aug 2025 15:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755012138; cv=none; b=Lt2f8nEnPTq7H1PzcBXnemEyRXPtdgMu6yFhEFYpaL1BXkcJVgCxrvk5FfQ6fQXr4htwPqoKA7IQ1OCz++uUmFzvkt+Gkm2OUpO/+HJyVO2gCQbrid6ynf/KkUoRtm+aOEvFlrSG/PyWev505KOPeHFg+A2NjschBNajyi25s8s=
+	t=1755013385; cv=none; b=Dr4pc617Ct0y1BHJvLFaj48gYpgjn1F+znnlcyADdDlbMaWw4HijUH/dYYsUEbdUaPTqtNEeSNBxniEjj31uUbzeZL+vwygxaKFEtZXWMyugOFV8n3wMs95hG3eGQ/wOaG1p/reI/x8aVfoS2klYmHwSiv/muGwiQXm8BypWBV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755012138; c=relaxed/simple;
-	bh=OegmPpfYkMAf9JWqwYqgsu8Xy44T/NAEMoOMmmXN1uY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ftjJ/XpqLFSmoLVYjiVsFe3wi0japBARpJLoUqRwLkk2koqxn4AK4gisBlgk3I3NWLvpkVWB0JFW4SQ7RR71TZij8mEZNkBqOuF3WCDMdfN3/hQFId7ezlPSxqQM7y/lDySAeKbXYDBGh9aFZ1E7xoUq8rJtHPmYNzyQJ0kcz9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqd5wc7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DFCC4CEF0;
-	Tue, 12 Aug 2025 15:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755012137;
-	bh=OegmPpfYkMAf9JWqwYqgsu8Xy44T/NAEMoOMmmXN1uY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=hqd5wc7CbecN1WD8k3PkMAnw5zPgn/Pg9KNk/RzmT/GpscFyPbcMB9vizUNmzIkxs
-	 CyRMLHWAXCAJMyGJQmypZQf3Jx2wZUUd6L3rXmVWT+ntTsUUz/3LxmAkkoNLgFMrJM
-	 JTjSsRblmHvue6Bbdj0nWjNF6ccAkoY2JMyaP5wc=
-Subject: FAILED: patch "[PATCH] net: usbnet: Fix the wrong netif_carrier_on() call" failed to apply to 5.4-stable tree
-To: ammarfaizi2@gnuweeb.org,horms@kernel.org,sprite@gnuweeb.org,torvalds@linux-foundation.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Aug 2025 17:22:06 +0200
-Message-ID: <2025081206-rejoicing-democrat-be9e@gregkh>
+	s=arc-20240116; t=1755013385; c=relaxed/simple;
+	bh=4KwjGWINkvuaTEm3Y5vsr81fdJDEP3gscF5WZRv+MQM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NJSzSIqt+fffLsIF8OlcBjcN1fcAUPkYW4Gb5MH6pMZjmC/pqCClfvGUkz6FyH3X2jO74fO0t1jwIxJAU8+THAhhXZ2JU45XpgmyCft0zgmq9Mde+ZD/DVbga4eFMtpzq335wIcevvBRiu9y6uVXolizIeVlo8jOD1OviGlzfws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G9+g9b4q; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76b77a97a04so5171199b3a.1;
+        Tue, 12 Aug 2025 08:43:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755013383; x=1755618183; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5TlR2dm45zB3zDxV9k31EaXpgNol1Ph4sZyH3/scZbw=;
+        b=G9+g9b4qrMntZFOkojOcjvYPRwb/32ZfFyJx/XHBmHrLUPfVY7cwIbCUu347wQhmY1
+         CO3JnBl9ElTpZHFQAbskRH/LL/LzC9oM8BUQ9iFr6/ZFGxjiQRofJXwrhW30NPWzDDwF
+         dFTuJGhj/4SKzrS77t7GBdDS0phLAgJLLo2y5LsKs66364npyEPSxfPQUqg6H9l3oOvj
+         JRajPa9XWrq4fAP4sMrKG6XkJR8Mn3yZPmmDb4a4M+S7o61eFF8b0YzdWAZtt8gZz0fU
+         maXL2EhsiN75g3zuu3MmfEC/HcQCUivcCZwePG6AEtA9sdT5yDPddnBaGoHkMW0D7XP3
+         J6WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755013383; x=1755618183;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5TlR2dm45zB3zDxV9k31EaXpgNol1Ph4sZyH3/scZbw=;
+        b=JCuB9705QUdh+Eg5OJWeJPrVIKVQw1/CAcHyJUxgZrorgBVnH2/mgwhyl2d/IoKlYG
+         ashL5b4PK2Mp2ktlws8fPbGK3syf7OELIeRTUXErqabIslZQX6uVKTU3rOr0hqQZPG3F
+         JRA8jtVVZ7BrDieAooDv7AU35XU8n2YTeccVceJIeQr/MrOYETbWgMcfWUAhLYWasb4E
+         Z8040yP8Pvu/MEhRe/HAE5jNWSzVSRIKJ4RxPRsmDjIgPZzMzP6TJLLmiXXkDiABieEM
+         I7NxUsfV07O6BRw+Pl+z3GWazq/yY0swZVl1VG/VWWc/tRbvLMmZgILMAmOveN0o8D4n
+         t84A==
+X-Forwarded-Encrypted: i=1; AJvYcCWZFjOuelPb0I5AICNUWQ1Jmk+JfjJIjYuIxjpKHaWdwI7ivg5Seiclqk9GzLooEjkCLwLVRb4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUMykB866QH9FgQLBnKxRloRUVhWJFflm8RLFin2UrLe2cv1y9
+	+FE21UqvIUygP+CEDiUi86FCcKI5XJX2BSfwrZd1zX2ymPyc0MvHs2H7Cmyq1jS5JOg=
+X-Gm-Gg: ASbGncvOY5nX7pNA2H2PpMwcCvDTx4OJ9K/rm3+sWjLUv/wG8B6KIGMiXEdkDt/vJrr
+	8j/Kf6HheW2auqgVKNlSpeFN8PTgBj4Za0Xx4oz6R3iX7kAm4I//tK808X4CXz5Qowl2IAmIb0x
+	p0aRuOyClRxD4WMOlfWOoG37fGzL96qTE3ygjb2E2GqcYcEmFW6DD+J0etFqPpg2CBqWm6aWVgX
+	R3ZPJpUhPaQ7Mg/23gfYjSb0eEjyzv691jmrVOG+euxP7erT74Y+cLb5ZZvw2jZXvW9+v5C/Kcb
+	6x+b6gTvk5zHaiHGx0gbhhirirYZsbmDjgZocZNC5pYKZYciBVMe6XwNcoDqC9iNGzyLxGFHkG0
+	jZyiDpR8lIwahMNS/053ncBPg6w==
+X-Google-Smtp-Source: AGHT+IG4BZ8IR5xS4UjYPhb4pAe8SqTn4uufDEIytT+ZLG2o2fNILp7p2TDdhh0IxCmthRfKc2jeRA==
+X-Received: by 2002:a05:6a00:3d4e:b0:76b:f24d:6d67 with SMTP id d2e1a72fcca58-76c46193b4fmr24071426b3a.13.1755013383244;
+        Tue, 12 Aug 2025 08:43:03 -0700 (PDT)
+Received: from localhost ([101.82.110.149])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce6f319sm29815344b3a.18.2025.08.12.08.43.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 08:43:02 -0700 (PDT)
+From: Julian Sun <sunjunchao2870@gmail.com>
+X-Google-Original-From: Julian Sun <sunjunchao@bytedance.com>
+To: linux-block@vger.kernel.org
+Cc: axboe@kernel.dk,
+	nilay@linux.ibm.com,
+	ming.lei@redhat.com,
+	Julian Sun <sunjunchao@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] block: restore default wbt enablement
+Date: Tue, 12 Aug 2025 23:42:57 +0800
+Message-Id: <20250812154257.57540-1-sunjunchao@bytedance.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+The commit 245618f8e45f ("block: protect wbt_lat_usec using
+q->elevator_lock") protected wbt_enable_default() with
+q->elevator_lock; however, it also placed wbt_enable_default()
+before blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);, resulting
+in wbt failing to be enabled.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Moreover, the protection of wbt_enable_default() by q->elevator_lock
+was removed in commit 78c271344b6f ("block: move wbt_enable_default()
+out of queue freezing from sched ->exit()"), so we can directly fix
+this issue by placing wbt_enable_default() after
+blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Additionally, this issue also causes the inability to read the
+wbt_lat_usec file, and the scenario is as follows:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 8466d393700f9ccef68134d3349f4e0a087679b9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081206-rejoicing-democrat-be9e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+root@q:/sys/block/sda/queue# cat wbt_lat_usec
+cat: wbt_lat_usec: Invalid argument
 
-Possible dependencies:
+root@q:/data00/sjc/linux# ls /sys/kernel/debug/block/sda/rqos
+cannot access '/sys/kernel/debug/block/sda/rqos': No such file or directory
 
+root@q:/data00/sjc/linux# find /sys -name wbt
+/sys/kernel/debug/tracing/events/wbt
 
+After testing with this patch, wbt can be enabled normally.
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 8466d393700f9ccef68134d3349f4e0a087679b9 Mon Sep 17 00:00:00 2001
-From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Date: Wed, 6 Aug 2025 07:31:05 +0700
-Subject: [PATCH] net: usbnet: Fix the wrong netif_carrier_on() call
-
-The commit referenced in the Fixes tag causes usbnet to malfunction
-(identified via git bisect). Post-commit, my external RJ45 LAN cable
-fails to connect. Linus also reported the same issue after pulling that
-commit.
-
-The code has a logic error: netif_carrier_on() is only called when the
-link is already on. Fix this by moving the netif_carrier_on() call
-outside the if-statement entirely. This ensures it is always called
-when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
-of the link state.
-
+Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
 Cc: stable@vger.kernel.org
-Cc: Armando Budianto <sprite@gnuweeb.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 245618f8e45f ("block: protect wbt_lat_usec using q->elevator_lock")
+---
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index a38ffbf4b3f0..511c4154cf74 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1120,6 +1120,9 @@ static void __handle_link_change(struct usbnet *dev)
- 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
- 		return;
+Changed in v2:
+- Improved commit message and comment
+- Added Fixes and Cc stable
+
+ block/blk-sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index 396cded255ea..979f01bbca01 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -903,9 +903,9 @@ int blk_register_queue(struct gendisk *disk)
  
-+	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+		netif_carrier_on(dev->net);
-+
- 	if (!netif_carrier_ok(dev->net)) {
- 		/* kill URBs for reading packets to save bus bandwidth */
- 		unlink_urbs(dev, &dev->rxq);
-@@ -1129,9 +1132,6 @@ static void __handle_link_change(struct usbnet *dev)
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
--		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
--			netif_carrier_on(dev->net);
--
- 		/* submitting URBs for reading packets */
- 		queue_work(system_bh_wq, &dev->bh_work);
- 	}
+ 	if (queue_is_mq(q))
+ 		elevator_set_default(q);
+-	wbt_enable_default(disk);
+ 
+ 	blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);
++	wbt_enable_default(disk);
+ 
+ 	/* Now everything is ready and send out KOBJ_ADD uevent */
+ 	kobject_uevent(&disk->queue_kobj, KOBJ_ADD);
+-- 
+2.39.5
 
 
