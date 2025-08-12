@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC58B233E1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26092B23023
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 315FE7B8588
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EE52560B14
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E5A2FDC3F;
-	Tue, 12 Aug 2025 18:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2769C2F8BE6;
+	Tue, 12 Aug 2025 17:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4KyvK+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBS/OzDX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307E527FB12;
-	Tue, 12 Aug 2025 18:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93002E972E;
+	Tue, 12 Aug 2025 17:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023602; cv=none; b=pw+j7hYlfP5kxPVxacf15sgSMP1ySkVOtQm/FKdkiIFy0qihZiDG828gCZCTOu1ZMl/PyoOFdlD6Xv85/FiCSFzGEV22kcsXPwrQb91MEHMHZUA+ou+JyqIi89XuGNzSQINiOcLqZdqXC7xkJLoQ+aRLcY06+jFUlBNxcWU88Vk=
+	t=1755020917; cv=none; b=I1GrgEPYDLmffR5BpNKxmn8s/6irxXd4hTERLRBF/FyfiZRopxJTgwtFGeSlS2SRFKraIyhBYupfALP3lQNd95GrERiCdaBksohWB6KUy34+lJVBk1MfcOO851sRTXWer6UKGlxKdPjlqrR1XjME2Tas8mTWKhFdj1NfSrMkVoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023602; c=relaxed/simple;
-	bh=X0LRG7b3wBMXhwfbrTOJz9wvKMKgp0cMZVcd5SM+uP0=;
+	s=arc-20240116; t=1755020917; c=relaxed/simple;
+	bh=0SkzHn1prwQxcOUUw93R5zlKNlY9lGUxesoBYUASDYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5wA3c9azlJ9/L6FJls5pY8mFlL9X4m0BKMS6IxWc90yOGhjuNwIoDLNQWSQpHvHpWMnRvRnrUGWphFExo33oMkKwjs2OcKLkQKqsXe1boMwXfSA7yA//8O5Lx8kgjlzKhKE4JId+0xSVe0i8tfMK3o1FOj/AKqEOVN82u+v/oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4KyvK+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025F3C4CEF0;
-	Tue, 12 Aug 2025 18:33:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lgo1p2HLedfBxfnXQydQKRcN0eNztZUbuC4uJDvalvmo/vIoK6yhExzMmq1TJt01Z+uwENLzKQK4jO4sjhgwWjNKM47eIk05OMMPU5y9tlpndyYxl1Fa+GgHuEGazrADdnTHJA3gfMhTwnuz0MgzENQCJ1lGwkp/BkHkjzrMTqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBS/OzDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4759BC4CEF0;
+	Tue, 12 Aug 2025 17:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023600;
-	bh=X0LRG7b3wBMXhwfbrTOJz9wvKMKgp0cMZVcd5SM+uP0=;
+	s=korg; t=1755020917;
+	bh=0SkzHn1prwQxcOUUw93R5zlKNlY9lGUxesoBYUASDYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4KyvK+vaHSjn2AXOHWv2eFiWc2vdDTDS9Y3d5P+2yrllWTnk/ztIfnIK4QcUbsZd
-	 5Navmi6DHbEsens5q0UjaD6CgnEYLZF6dSl3L9I6xNhLPSXw5t95NJpVpXF8UQx7Av
-	 ++SF9qjoDdcbL5HY7qi3qvokOfIdnK/LgKgscno4=
+	b=wBS/OzDXNac0pGdPXeXtJJ4izsWVxhvpRgEBWN34aa8c5Nz7L5iVoJnjDhL1lexdp
+	 DRRdk6gyJGqHFTu0ev5hdjMm7SyMGzMyUCwDL72svCiXDXhjfAqhDV8453SHW8NsUm
+	 4uGkcFq/9ph3OjXuRpUxOYy6gKuWlYSVGmSka5v0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Chen Wang <wangchen20@iscas.ac.cn>,
+	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 126/627] riscv: dts: sophgo: sg2044: Add missing riscv,cbop-block-size property
+Subject: [PATCH 6.6 033/262] arm: dts: ti: omap: Fixup pinheader typo
 Date: Tue, 12 Aug 2025 19:27:01 +0200
-Message-ID: <20250812173424.118368668@linuxfoundation.org>
+Message-ID: <20250812172954.375439484@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,545 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Albin Törnqvist <albin.tornqvist@codiax.se>
 
-[ Upstream commit 02d548e553d161813b7d3702a311b9067806057d ]
+[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
 
-The kernel complains no "riscv,cbop-block-size" and disables the Zicbop
-extension. Add the missing property to keep it functional.
+This commit fixes a typo introduced in commit
+ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
+gpio0_7 is located on the P9 header on the BBB.
+This was verified with a BeagleBone Black by toggling the pin and
+checking with a multimeter that it corresponds to pin 42 on the P9
+header.
 
-Fixes: ae5bac370ed4 ("riscv: dts: sophgo: Add initial device tree of Sophgo SRD3-10")
-Link: https://lore.kernel.org/r/20250613074513.1683624-1-inochiama@gmail.com
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
-Signed-off-by: Chen Wang <wangchen20@iscas.ac.cn>
+Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
+Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
+Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/sophgo/sg2044-cpus.dtsi | 64 +++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ arch/arm/boot/dts/ti/omap/am335x-boneblack.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/boot/dts/sophgo/sg2044-cpus.dtsi b/arch/riscv/boot/dts/sophgo/sg2044-cpus.dtsi
-index 2a4267078ce6..6a35ed8f253c 100644
---- a/arch/riscv/boot/dts/sophgo/sg2044-cpus.dtsi
-+++ b/arch/riscv/boot/dts/sophgo/sg2044-cpus.dtsi
-@@ -38,6 +38,7 @@ cpu0: cpu@0 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu0_intc: interrupt-controller {
-@@ -73,6 +74,7 @@ cpu1: cpu@1 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu1_intc: interrupt-controller {
-@@ -108,6 +110,7 @@ cpu2: cpu@2 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu2_intc: interrupt-controller {
-@@ -143,6 +146,7 @@ cpu3: cpu@3 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu3_intc: interrupt-controller {
-@@ -178,6 +182,7 @@ cpu4: cpu@4 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu4_intc: interrupt-controller {
-@@ -213,6 +218,7 @@ cpu5: cpu@5 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu5_intc: interrupt-controller {
-@@ -248,6 +254,7 @@ cpu6: cpu@6 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu6_intc: interrupt-controller {
-@@ -283,6 +290,7 @@ cpu7: cpu@7 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu7_intc: interrupt-controller {
-@@ -318,6 +326,7 @@ cpu8: cpu@8 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu8_intc: interrupt-controller {
-@@ -353,6 +362,7 @@ cpu9: cpu@9 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu9_intc: interrupt-controller {
-@@ -388,6 +398,7 @@ cpu10: cpu@10 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu10_intc: interrupt-controller {
-@@ -423,6 +434,7 @@ cpu11: cpu@11 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu11_intc: interrupt-controller {
-@@ -458,6 +470,7 @@ cpu12: cpu@12 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu12_intc: interrupt-controller {
-@@ -493,6 +506,7 @@ cpu13: cpu@13 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu13_intc: interrupt-controller {
-@@ -528,6 +542,7 @@ cpu14: cpu@14 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu14_intc: interrupt-controller {
-@@ -563,6 +578,7 @@ cpu15: cpu@15 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu15_intc: interrupt-controller {
-@@ -598,6 +614,7 @@ cpu16: cpu@16 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu16_intc: interrupt-controller {
-@@ -633,6 +650,7 @@ cpu17: cpu@17 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu17_intc: interrupt-controller {
-@@ -668,6 +686,7 @@ cpu18: cpu@18 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu18_intc: interrupt-controller {
-@@ -703,6 +722,7 @@ cpu19: cpu@19 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu19_intc: interrupt-controller {
-@@ -738,6 +758,7 @@ cpu20: cpu@20 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu20_intc: interrupt-controller {
-@@ -773,6 +794,7 @@ cpu21: cpu@21 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu21_intc: interrupt-controller {
-@@ -808,6 +830,7 @@ cpu22: cpu@22 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu22_intc: interrupt-controller {
-@@ -843,6 +866,7 @@ cpu23: cpu@23 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu23_intc: interrupt-controller {
-@@ -878,6 +902,7 @@ cpu24: cpu@24 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu24_intc: interrupt-controller {
-@@ -913,6 +938,7 @@ cpu25: cpu@25 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu25_intc: interrupt-controller {
-@@ -948,6 +974,7 @@ cpu26: cpu@26 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu26_intc: interrupt-controller {
-@@ -983,6 +1010,7 @@ cpu27: cpu@27 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu27_intc: interrupt-controller {
-@@ -1018,6 +1046,7 @@ cpu28: cpu@28 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu28_intc: interrupt-controller {
-@@ -1053,6 +1082,7 @@ cpu29: cpu@29 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu29_intc: interrupt-controller {
-@@ -1088,6 +1118,7 @@ cpu30: cpu@30 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu30_intc: interrupt-controller {
-@@ -1123,6 +1154,7 @@ cpu31: cpu@31 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu31_intc: interrupt-controller {
-@@ -1158,6 +1190,7 @@ cpu32: cpu@32 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu32_intc: interrupt-controller {
-@@ -1193,6 +1226,7 @@ cpu33: cpu@33 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu33_intc: interrupt-controller {
-@@ -1228,6 +1262,7 @@ cpu34: cpu@34 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu34_intc: interrupt-controller {
-@@ -1263,6 +1298,7 @@ cpu35: cpu@35 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu35_intc: interrupt-controller {
-@@ -1298,6 +1334,7 @@ cpu36: cpu@36 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu36_intc: interrupt-controller {
-@@ -1333,6 +1370,7 @@ cpu37: cpu@37 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu37_intc: interrupt-controller {
-@@ -1368,6 +1406,7 @@ cpu38: cpu@38 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu38_intc: interrupt-controller {
-@@ -1403,6 +1442,7 @@ cpu39: cpu@39 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu39_intc: interrupt-controller {
-@@ -1438,6 +1478,7 @@ cpu40: cpu@40 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu40_intc: interrupt-controller {
-@@ -1473,6 +1514,7 @@ cpu41: cpu@41 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu41_intc: interrupt-controller {
-@@ -1508,6 +1550,7 @@ cpu42: cpu@42 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu42_intc: interrupt-controller {
-@@ -1543,6 +1586,7 @@ cpu43: cpu@43 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu43_intc: interrupt-controller {
-@@ -1578,6 +1622,7 @@ cpu44: cpu@44 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu44_intc: interrupt-controller {
-@@ -1613,6 +1658,7 @@ cpu45: cpu@45 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu45_intc: interrupt-controller {
-@@ -1648,6 +1694,7 @@ cpu46: cpu@46 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu46_intc: interrupt-controller {
-@@ -1683,6 +1730,7 @@ cpu47: cpu@47 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu47_intc: interrupt-controller {
-@@ -1718,6 +1766,7 @@ cpu48: cpu@48 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu48_intc: interrupt-controller {
-@@ -1753,6 +1802,7 @@ cpu49: cpu@49 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu49_intc: interrupt-controller {
-@@ -1788,6 +1838,7 @@ cpu50: cpu@50 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu50_intc: interrupt-controller {
-@@ -1823,6 +1874,7 @@ cpu51: cpu@51 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu51_intc: interrupt-controller {
-@@ -1858,6 +1910,7 @@ cpu52: cpu@52 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu52_intc: interrupt-controller {
-@@ -1893,6 +1946,7 @@ cpu53: cpu@53 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu53_intc: interrupt-controller {
-@@ -1928,6 +1982,7 @@ cpu54: cpu@54 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu54_intc: interrupt-controller {
-@@ -1963,6 +2018,7 @@ cpu55: cpu@55 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu55_intc: interrupt-controller {
-@@ -1998,6 +2054,7 @@ cpu56: cpu@56 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu56_intc: interrupt-controller {
-@@ -2033,6 +2090,7 @@ cpu57: cpu@57 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu57_intc: interrupt-controller {
-@@ -2068,6 +2126,7 @@ cpu58: cpu@58 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu58_intc: interrupt-controller {
-@@ -2103,6 +2162,7 @@ cpu59: cpu@59 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu59_intc: interrupt-controller {
-@@ -2138,6 +2198,7 @@ cpu60: cpu@60 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu60_intc: interrupt-controller {
-@@ -2173,6 +2234,7 @@ cpu61: cpu@61 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu61_intc: interrupt-controller {
-@@ -2208,6 +2270,7 @@ cpu62: cpu@62 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu62_intc: interrupt-controller {
-@@ -2243,6 +2306,7 @@ cpu63: cpu@63 {
- 					       "zvfbfmin", "zvfbfwma", "zvfh",
- 					       "zvfhmin";
- 			riscv,cbom-block-size = <64>;
-+			riscv,cbop-block-size = <64>;
- 			riscv,cboz-block-size = <64>;
- 
- 			cpu63_intc: interrupt-controller {
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
+index 16b567e3cb47..b4fdcf9c02b5 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
+@@ -35,7 +35,7 @@ &gpio0 {
+ 		"P9_18 [spi0_d1]",
+ 		"P9_17 [spi0_cs0]",
+ 		"[mmc0_cd]",
+-		"P8_42A [ecappwm0]",
++		"P9_42A [ecappwm0]",
+ 		"P8_35 [lcd d12]",
+ 		"P8_33 [lcd d13]",
+ 		"P8_31 [lcd d14]",
 -- 
 2.39.5
 
