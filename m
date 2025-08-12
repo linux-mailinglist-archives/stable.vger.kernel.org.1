@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-167341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858A2B22F8A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A40CCB23400
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 789EE7A8A48
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 543CD7A2597
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CF22FDC25;
-	Tue, 12 Aug 2025 17:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCA82F4A0A;
+	Tue, 12 Aug 2025 18:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwV1fIiz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5BxdYHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA8A2F7461;
-	Tue, 12 Aug 2025 17:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7AF2D3ED6;
+	Tue, 12 Aug 2025 18:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020488; cv=none; b=ITuQaZfiWpGIb4feMLaUFmDwuwa4XwgQakIvGB2svCHRceiwE0Xl30V8LmYVfb8fAWzDyQzqmwEif1r5DPQ7iMnYSel1xNTMG/ckTusXb+ajM0Jk7+v09JZcUL+dUCvK+ZUBR/BWmPoyPHfAYzIo0JCtRH1e9sfPq1MvpI/x1Fo=
+	t=1755023693; cv=none; b=gqi3vKOvAtcYIE/MhP+KQ0+X+GT33/nozlQNEKd0kafcskwFO+ifM/seOkofFAwt2MI3HraYLKjLVYN0YokHkPW5n2gokxft3rjxnd+zJ8rM8bxWC+DxvvYDpWz/wFUQ31JY1lBiVnDLG9yo/eIw4Bcv/KH9o/CuCFHB36xZPko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020488; c=relaxed/simple;
-	bh=zRa9sIQ6764zCA/BVTFkV2t8Gtbj0R69sI5hnZUGp8U=;
+	s=arc-20240116; t=1755023693; c=relaxed/simple;
+	bh=6V1YHLkg9MHbI/QhvSk7zX+/g/a9ZqO+21ZmHq/i9vA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X1kn0kFbr8MvyRce2Ezh1q6zfgop6pEBiNcJUQhvoD4rgvcxTf9fIMmratq6diDXo3iUA8hZdppqOzKi+B8ED4Una/JU6u56Bi8yaCu+o+ZpjQeBozdAXK5nswLlHvMUd7QMh9h1GIYwBC+pTxxvAJgW+7BA4ZBpmt5SgtIe4CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwV1fIiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4F9C4CEF0;
-	Tue, 12 Aug 2025 17:41:27 +0000 (UTC)
+	 MIME-Version; b=H6/fGZMWzlVZc7b5mIgr8yu7ejlLVmHNhvZKsv7S7TnjPhfKzYcyKJFAONJlWlJJzs1MKx+XwTuUEBu2BCgKNd8280HGCphKk+B6OtT8M+XF2DgMG1VtNfOlK6rHADPFs2wCdbceXh6pVOUr65DHo/Zr5J7bK5rcod3ofZ9uUZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5BxdYHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D71C4CEF0;
+	Tue, 12 Aug 2025 18:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020488;
-	bh=zRa9sIQ6764zCA/BVTFkV2t8Gtbj0R69sI5hnZUGp8U=;
+	s=korg; t=1755023693;
+	bh=6V1YHLkg9MHbI/QhvSk7zX+/g/a9ZqO+21ZmHq/i9vA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwV1fIizo+d1tAMmHbtfXjnrr4Z2uMiknfQrtjcj9zFVI4dbaMCVpWJyTj/Z50YNp
-	 S/oxF3ZIMXK3l+ocsHWJWENorQkY8mm404EvjIGutB9wxp2sQKYScgFtkNVz7rvb5N
-	 oeUBmX0qzMzIVqiF8hmp9SFiMWRPfjZ9o3TOLi2Y=
+	b=X5BxdYHprTcehdZqpty6VgGLZYmJpzL4lMD9laihwNnyoLsHEqg2K0L7qW89GfCu7
+	 vCnohYFbBfbY0MY6QcSD01f5abtNtrihVqVkKeirhcx3/IXZLYgKrzXra91GnZ79MD
+	 kvmaiUGBRzLmxf5FhhzaCQueXMZ8wiUQ8waomAgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH 6.1 061/253] ethernet: intel: fix building with large NR_CPUS
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 154/627] wifi: mac80211: Fix bssid_indicator for MBSSID in AP mode
 Date: Tue, 12 Aug 2025 19:27:29 +0200
-Message-ID: <20250812172951.321470565@linuxfoundation.org>
+Message-ID: <20250812173425.147071455@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
-[ Upstream commit 24171a5a4a952c26568ff0d2a0bc8c4708a95e1d ]
+[ Upstream commit 2eb7c1baf46aea134e908cd6d37907d92f823251 ]
 
-With large values of CONFIG_NR_CPUS, three Intel ethernet drivers fail to
-compile like:
+Currently, in ieee80211_assign_beacon() mbssid count is updated as link's
+bssid_indicator. mbssid count is the total number of MBSSID elements in
+the beacon instead of Max BSSID indicator of the Multiple BSS set.
+This will result in drivers obtaining an invalid bssid_indicator for BSSes
+in a Multiple BSS set.
+Fix this by updating link's bssid_indicator from MBSSID element for
+Transmitting BSS and update the same for all of its Non-Transmitting BSSes.
 
-In function ‘i40e_free_q_vector’,
-    inlined from ‘i40e_vsi_alloc_q_vectors’ at drivers/net/ethernet/intel/i40e/i40e_main.c:12112:3:
-  571 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-include/linux/rcupdate.h:1084:17: note: in expansion of macro ‘BUILD_BUG_ON’
- 1084 |                 BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);    \
-drivers/net/ethernet/intel/i40e/i40e_main.c:5113:9: note: in expansion of macro ‘kfree_rcu’
- 5113 |         kfree_rcu(q_vector, rcu);
-      |         ^~~~~~~~~
-
-The problem is that the 'rcu' member in 'q_vector' is too far from the start
-of the structure. Move this member before the CPU mask instead, in all three
-drivers.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: David S. Miller <davem@davemloft.net>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: dde78aa52015 ("mac80211: update bssid_indicator in ieee80211_assign_beacon")
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250530040940.3188537-1-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/fm10k/fm10k.h | 3 ++-
- drivers/net/ethernet/intel/i40e/i40e.h   | 2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe.h | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ net/mac80211/cfg.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k.h b/drivers/net/ethernet/intel/fm10k/fm10k.h
-index 6119a4108838..65a2816142d9 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k.h
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k.h
-@@ -189,13 +189,14 @@ struct fm10k_q_vector {
- 	struct fm10k_ring_container rx, tx;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 954795b0fe48..bc64c1b83a6e 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -178,6 +178,7 @@ static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
  
- 	struct napi_struct napi;
-+	struct rcu_head rcu;	/* to avoid race with update stats on free */
-+
- 	cpumask_t affinity_mask;
- 	char name[IFNAMSIZ + 9];
+ 		link_conf->nontransmitted = true;
+ 		link_conf->bssid_index = params->index;
++		link_conf->bssid_indicator = tx_bss_conf->bssid_indicator;
+ 	}
+ 	if (params->ema)
+ 		link_conf->ema_ap = true;
+@@ -1218,8 +1219,11 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 			ieee80211_copy_rnr_beacon(pos, new->rnr_ies, rnr);
+ 		}
+ 		/* update bssid_indicator */
+-		link_conf->bssid_indicator =
+-			ilog2(__roundup_pow_of_two(mbssid->cnt + 1));
++		if (new->mbssid_ies->cnt && new->mbssid_ies->elem[0].len > 2)
++			link_conf->bssid_indicator =
++					*(new->mbssid_ies->elem[0].data + 2);
++		else
++			link_conf->bssid_indicator = 0;
+ 	}
  
- #ifdef CONFIG_DEBUG_FS
- 	struct dentry *dbg_q_vector;
- #endif /* CONFIG_DEBUG_FS */
--	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 
- 	/* for dynamic allocation of rings associated with this q_vector */
- 	struct fm10k_ring ring[] ____cacheline_internodealigned_in_smp;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 22ac8c48ca34..61590e92f3ab 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -980,6 +980,7 @@ struct i40e_q_vector {
- 	u16 reg_idx;		/* register index of the interrupt */
- 
- 	struct napi_struct napi;
-+	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 
- 	struct i40e_ring_container rx;
- 	struct i40e_ring_container tx;
-@@ -990,7 +991,6 @@ struct i40e_q_vector {
- 	cpumask_t affinity_mask;
- 	struct irq_affinity_notify affinity_notify;
- 
--	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 	char name[I40E_INT_NAME_STR_LEN];
- 	bool arm_wb_state;
- 	bool in_busy_poll;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 2bf387e52e20..f49b99b175ef 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -498,9 +498,10 @@ struct ixgbe_q_vector {
- 	struct ixgbe_ring_container rx, tx;
- 
- 	struct napi_struct napi;
-+	struct rcu_head rcu;	/* to avoid race with update stats on free */
-+
- 	cpumask_t affinity_mask;
- 	int numa_node;
--	struct rcu_head rcu;	/* to avoid race with update stats on free */
- 	char name[IFNAMSIZ + 9];
- 
- 	/* for dynamic allocation of rings associated with this q_vector */
+ 	if (csa) {
 -- 
 2.39.5
 
