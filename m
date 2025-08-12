@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-168218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225BAB2339F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD43B231D5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACE6A7B2BB8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 362A87A5651
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B96273D6B;
-	Tue, 12 Aug 2025 18:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0D03F9D2;
+	Tue, 12 Aug 2025 18:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT7uO2v3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ee3R4b8n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D75B1EF38C;
-	Tue, 12 Aug 2025 18:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4700A2FD1DC;
+	Tue, 12 Aug 2025 18:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023443; cv=none; b=E/Rf1Ff8c0SEwSBarpwMSVn78NdNq6P26cLHA3dDz4FF99pZQLhWDHxfVqj7WWr1LWAGvLuxotFx3qpNbU/Xlrk2orSJGt0nyNJkh2qAHoKhvsZQR6niZ3OfpgLT320xPF4NYC+EnIx2cpcN5Zb3Y2z9CJEUR8PIROo/EZ2FQcQ=
+	t=1755022178; cv=none; b=uhjaNPioJIwtbukWt6+HAbrhCuJaJiLEgjK+AH7KPLgdlEnP3CLP7aSuoRAuDq/vEOF5+BQF2GVzYUWMSjIVB7HD2z6JKgjb3P/MPwUe76jP3atHih08siNS798mu80c50PnVWs+esgokrX3cEE7EKHNfw889pvA1nK0HRTDfJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023443; c=relaxed/simple;
-	bh=AvYCfMcBencV3esKvdMQbXB/UInFP4XUJ62zWCIefzw=;
+	s=arc-20240116; t=1755022178; c=relaxed/simple;
+	bh=jxlr0+36lBJ/0pP2efXL74lDzUjfsKv0rueeDwbXAck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SilJJe2VUf6gM1nKkKQvA+xNA2lfKDSNFLprb1a5OgIGrS4sk4M9jXZfy52c9scAh3SYtEByLXqCSSdv2wbpiImR+kBfkTU//C/K+qMuRe+FDnI5I0DgGT2Z1y5mBWbUW+msoImNHlj+9BQaVLkE4hFgRtXK0rkMUVqHCwH3Ijs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT7uO2v3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F83C4CEF6;
-	Tue, 12 Aug 2025 18:30:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aLaAEYieY7W94Pla4wyvIokeNL/6Ouoa9BSVT1y8iLyAEsbGlrAxgUGo+VKdJW/U76+AyHpcnWxIRGpp7qlpDvB0DONEcAxSC6LFh1sQASPp3kTErmz3YbpKTYqCqYnp7kpSq4D41b+oGS3YkcOwosuTCsXDC1MURzeUJ4io36U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ee3R4b8n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEB4C4CEF0;
+	Tue, 12 Aug 2025 18:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023443;
-	bh=AvYCfMcBencV3esKvdMQbXB/UInFP4XUJ62zWCIefzw=;
+	s=korg; t=1755022178;
+	bh=jxlr0+36lBJ/0pP2efXL74lDzUjfsKv0rueeDwbXAck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cT7uO2v3TVwEnerfF5GcAXShvxzzkU6Z/IsxETX1+MDsSANue6tveXIpIkPD1+YDE
-	 2WzIJNCjtglz8h6B9nE7ISIVN/orAN2aJ2DXOBIQfjjX8s8cdmHh0YRoKXAcd+/q2V
-	 H/sOxK4Xd4w0JgWY/3f13HykD2UkoiLGe9QseVIg=
+	b=Ee3R4b8nP+RcweJw9N0TZYgRBO9ptmJ2HVipljGCCAdAVRUDPqTOHZNZmi3lSoOSw
+	 DWOg33lvf0BEqTTK1BDMnwTtGyAZSooGUykGGkjyXPlR3qCvEiRGLIWg9GCUmEUzoB
+	 JDw/bJ2suJQP/v8EqyON61ocBt04RRxAuYitsMXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
+	Kowshik Jois <kowsjois@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 081/627] rust: miscdevice: clarify invariant for `MiscDeviceRegistration`
+Subject: [PATCH 6.12 079/369] powerpc/pseries/dlpar: Search DRC index from ibm,drc-indexes for IO add
 Date: Tue, 12 Aug 2025 19:26:16 +0200
-Message-ID: <20250812173422.388218072@linuxfoundation.org>
+Message-ID: <20250812173017.758989911@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shankari Anand <shankari.ak0208@gmail.com>
+From: Haren Myneni <haren@linux.ibm.com>
 
-[ Upstream commit b9ff1c2a26fa31216be18e9b14c419ff8fe39e72 ]
+[ Upstream commit 41a1452759a8b1121df9cf7310acf31d766ba70b ]
 
-Reword and expand the invariant documentation for `MiscDeviceRegistration`
-to clarify what it means for the inner device to be "registered".
-It expands to explain:
-- `inner` points to a `miscdevice` registered via `misc_register`.
-- This registration stays valid for the entire lifetime of the object.
-- Deregistration is guaranteed on `Drop`, via `misc_deregister`.
+IO hotplug add event is handled in the user space with drmgr tool.
+After the device is enabled, the user space uses /sys/kernel/dlpar
+interface with “dt add index <drc_index>” to update the device tree.
+The kernel interface (dlpar_hp_dt_add()) finds the parent node for
+the specified ‘drc_index’ from ibm,drc-info property. The recent FW
+provides this property from 2017 onwards. But KVM guest code in
+some releases is still using the older SLOF firmware which has
+ibm,drc-indexes property instead of ibm,drc-info.
 
-Reported-by: Benno Lossin <lossin@kernel.org>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1168
-Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Link: https://lore.kernel.org/r/20250626104520.563036-1-shankari.ak0208@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the ibm,drc-info is not available, this patch adds changes to
+search ‘drc_index’ from the indexes array in ibm,drc-indexes
+property to support old FW.
+
+Fixes: 02b98ff44a57 ("powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add")
+Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250531235002.239213-1-haren@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/miscdevice.rs | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/dlpar.c | 52 +++++++++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index 939278bc7b03..4f7a8714ad36 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -45,7 +45,13 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
- ///
- /// # Invariants
- ///
--/// `inner` is a registered misc device.
-+/// - `inner` contains a `struct miscdevice` that is registered using
-+///   `misc_register()`.
-+/// - This registration remains valid for the entire lifetime of the
-+///   [`MiscDeviceRegistration`] instance.
-+/// - Deregistration occurs exactly once in [`Drop`] via `misc_deregister()`.
-+/// - `inner` wraps a valid, pinned `miscdevice` created using
-+///   [`MiscDeviceOptions::into_raw`].
- #[repr(transparent)]
- #[pin_data(PinnedDrop)]
- pub struct MiscDeviceRegistration<T> {
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 213aa26dc8b3..979487da6522 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -404,6 +404,45 @@ get_device_node_with_drc_info(u32 index)
+ 	return NULL;
+ }
+ 
++static struct device_node *
++get_device_node_with_drc_indexes(u32 drc_index)
++{
++	struct device_node *np = NULL;
++	u32 nr_indexes, index;
++	int i, rc;
++
++	for_each_node_with_property(np, "ibm,drc-indexes") {
++		/*
++		 * First element in the array is the total number of
++		 * DRC indexes returned.
++		 */
++		rc = of_property_read_u32_index(np, "ibm,drc-indexes",
++				0, &nr_indexes);
++		if (rc)
++			goto out_put_np;
++
++		/*
++		 * Retrieve DRC index from the list and return the
++		 * device node if matched with the specified index.
++		 */
++		for (i = 0; i < nr_indexes; i++) {
++			rc = of_property_read_u32_index(np, "ibm,drc-indexes",
++							i+1, &index);
++			if (rc)
++				goto out_put_np;
++
++			if (drc_index == index)
++				return np;
++		}
++	}
++
++	return NULL;
++
++out_put_np:
++	of_node_put(np);
++	return NULL;
++}
++
+ static int dlpar_hp_dt_add(u32 index)
+ {
+ 	struct device_node *np, *nodes;
+@@ -423,10 +462,19 @@ static int dlpar_hp_dt_add(u32 index)
+ 		goto out;
+ 	}
+ 
++	/*
++	 * Recent FW provides ibm,drc-info property. So search
++	 * for the user specified DRC index from ibm,drc-info
++	 * property. If this property is not available, search
++	 * in the indexes array from ibm,drc-indexes property.
++	 */
+ 	np = get_device_node_with_drc_info(index);
+ 
+-	if (!np)
+-		return -EIO;
++	if (!np) {
++		np = get_device_node_with_drc_indexes(index);
++		if (!np)
++			return -EIO;
++	}
+ 
+ 	/* Next, configure the connector. */
+ 	nodes = dlpar_configure_connector(cpu_to_be32(index), np);
 -- 
 2.39.5
 
