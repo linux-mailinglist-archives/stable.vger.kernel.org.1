@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E77B23008
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFACB2342A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CAC044E3017
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FA201699F1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171F52DE1E2;
-	Tue, 12 Aug 2025 17:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FC02F5481;
+	Tue, 12 Aug 2025 18:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWYGaTJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeOtqXAi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C803E221FAC;
-	Tue, 12 Aug 2025 17:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73B42ECE93;
+	Tue, 12 Aug 2025 18:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020842; cv=none; b=Iqc/lF24tQ1awYH249o5W7Mj3hVPeH80g/AvCzU5HEfvEnMTzmnNNnca/zdgesAZxkdziN5uUk08nAd4AsZIvmt4T3avwQwtLIEW8wLk7bWgy+wD4dtFVTtJ2NtZxxJOsdGH065UioTUbdRyRUMxvg9mS3Lu+BUoxq1XMMtEG9I=
+	t=1755023563; cv=none; b=KYkjjtLA0vJHIGVMMRYaW7N1JQp7yLLKqvmLX28EFM8BAhArcdJe5trEMTTTtyiqBNnO2ArTazthfofakeJb5zQdPH4L0znxsclejD7NMEVZKZUOLbm00zPkj3rbJmmsd/ARV/Gh95TW65iA4f/qaIkpLn/XK99UNQd4XE4OGM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020842; c=relaxed/simple;
-	bh=qZBqCsmbbPm4MHKoG9OEBLAWUAnx96o90fY0kGltm/E=;
+	s=arc-20240116; t=1755023563; c=relaxed/simple;
+	bh=b/3HdGOXCm8LsMGICslh74doxhZMtmAiLVyNXj5l4LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQI76lanuYgXheokeSKNxMxs21TOqrdt+MpVmy5Q8szbqKFyhnYLzC3qXZ0wKPozwEoJCx0eM88KN3gXhnZGGfiJuq/3TAIm8CJin2Jo0JrlMu/YYQLNSVofmf9dSiTNWsUvg5jwqoOqgSwi0DBHlTl1xpq4Ag5PEZpAe9NC7cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWYGaTJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37311C4CEF0;
-	Tue, 12 Aug 2025 17:47:22 +0000 (UTC)
+	 MIME-Version; b=u2lLav/03tywAi0yQHDswtkADMMTcnSoTClPtrB+acZAu2huUbLltXpKHTB+cTLHmq3QSyM8tqSBj7IZdMNpu2ObRVSrV/N6x0AK2xAwD/6r0n/8iPcaEaqcJ14Ozeekjb7fNym+VjFbTyPxXeUGg/4ywgvnB6M9+5e16K1x8p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeOtqXAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58E6C4CEF1;
+	Tue, 12 Aug 2025 18:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020842;
-	bh=qZBqCsmbbPm4MHKoG9OEBLAWUAnx96o90fY0kGltm/E=;
+	s=korg; t=1755023563;
+	bh=b/3HdGOXCm8LsMGICslh74doxhZMtmAiLVyNXj5l4LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWYGaTJgSUwFGiroFVgqLhRzg+ieIUOA18gUneSxGynOWkPP4bycNh3TMvN3UYjFr
-	 Mtjv3cgNLRR18nd3+ydMNGL3gjFQOoKRAlhcmJNJoVILx2AmQrEP5ZEgC8VBx9ca0l
-	 0OdOKLUMek2vIQAHIj4V7daMbXr4CZh3R5/OCixE=
+	b=DeOtqXAiIlTjzMuORSqVMZMp0V219YVsSVhd+ZKCwps3mAYnD07X6Q+yGj6Ac4d/2
+	 xuNm85zraoO9PEF6nqEzjBrMXmPhkhZVNFh8cRAnFuaa4FZzAMEHXonNBQ1F6/8ts6
+	 QujSoIr+FBHsjRf0S2FCGUkiinSXH7AvsjG8mSgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Johan Hovold <johan@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/262] ARM: dts: vfxxx: Correctly use two tuples for timer address
+Subject: [PATCH 6.16 116/627] driver core: auxiliary bus: fix OF node leak
 Date: Tue, 12 Aug 2025 19:26:51 +0200
-Message-ID: <20250812172953.956070603@linuxfoundation.org>
+Message-ID: <20250812173423.731562621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
+[ Upstream commit 6beb4ec0f9fdff4c4c6eb8ed8654fe8396c2b6e0 ]
 
-Address and size-cells are 1 and the ftm timer node takes two address
-spaces in "reg" property, so this should be in two <> tuples.  Change
-has no functional impact, but original code is confusing/less readable.
+Make sure to drop the OF node reference taken when creating an auxiliary
+device using auxiliary_device_create() when the device is later
+released.
 
-Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: eaa0d30216c1 ("driver core: auxiliary bus: add device creation helpers")
+Cc: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20250708084654.15145-1-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/vf/vfxxx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/auxiliary.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-index d1095b700c56..d96148abf5bb 100644
---- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-+++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-@@ -612,7 +612,7 @@ usbmisc1: usb@400b4800 {
+diff --git a/drivers/base/auxiliary.c b/drivers/base/auxiliary.c
+index dba7c8e13a53..6bdefebf3609 100644
+--- a/drivers/base/auxiliary.c
++++ b/drivers/base/auxiliary.c
+@@ -399,6 +399,7 @@ static void auxiliary_device_release(struct device *dev)
+ {
+ 	struct auxiliary_device *auxdev = to_auxiliary_dev(dev);
  
- 			ftm: ftm@400b8000 {
- 				compatible = "fsl,ftm-timer";
--				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
-+				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
- 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
- 				clock-names = "ftm-evt", "ftm-src",
- 					"ftm-evt-counter-en", "ftm-src-counter-en";
++	of_node_put(dev->of_node);
+ 	kfree(auxdev);
+ }
+ 
+@@ -435,6 +436,7 @@ struct auxiliary_device *auxiliary_device_create(struct device *dev,
+ 
+ 	ret = auxiliary_device_init(auxdev);
+ 	if (ret) {
++		of_node_put(auxdev->dev.of_node);
+ 		kfree(auxdev);
+ 		return NULL;
+ 	}
 -- 
 2.39.5
 
