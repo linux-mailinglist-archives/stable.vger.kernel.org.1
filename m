@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2005B22FCE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61561B230F4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61F8856694F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 848A4165465
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8622FDC4F;
-	Tue, 12 Aug 2025 17:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0F6268C73;
+	Tue, 12 Aug 2025 17:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+99iFPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxEgNL5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773582FD1D1;
-	Tue, 12 Aug 2025 17:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA4C2FA0DB;
+	Tue, 12 Aug 2025 17:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020603; cv=none; b=m2r7O2uNQYJdL8tZSF3XZasZEkybUojKYUtSTtOzpWSt+sPgisvp0HNRdaAweg+V48jQBfa/Ar/qpPUuyZaNxXckRmo//cc12quu1iF6XTunXQzRSgzMekMPjfxt9uLGqjEPqHqWXe0aDFbw4oUIgO4bhndJVP326nI5+VpNok4=
+	t=1755021450; cv=none; b=jxIQY2jeZkiI7J6U8/Kh0ZNxpYltaYKwGrvbyGl4pfZhhf2o+x9uX+1HgIYF2kvZnSo63lRyKtRGk1j/m0TzEeyEXM+wKjvpxYSkEGZKvWPKS2XzAnWU+oxe+Asm9cPlRajoqDsr827aLU0C68VFIcRGGe8HwpSTRFI3vc2plR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020603; c=relaxed/simple;
-	bh=Qm6fA73OhwkGPy5VL+tBc62vLBtXOTsX0GOkZl2AHFQ=;
+	s=arc-20240116; t=1755021450; c=relaxed/simple;
+	bh=t0Vqmw/yfEq/osVKqZXHBtJL/EzLxLnqeX/z9SQK5V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYuAl8QM3u5Wv1oyH12vTUhYuTh+Yo4DhbJFV/vNOONUUYUlFYCq7y3swmG1/I/1fXjzgBw0ggNP9CA7ZJ+TzKb0R/Hm3U7FooMnJP5A1unOKsw7HTQh3HHg6LUpk94Zm0s10rrTr1xa60heB0bw8ju/Jj1nkCyY9t8TajclCPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+99iFPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF602C4CEF0;
-	Tue, 12 Aug 2025 17:43:22 +0000 (UTC)
+	 MIME-Version; b=CQnAQ+L7nr/sPLC7PTBdUZ8g2ANubnap2uYY5AjVvFmuO/dqSlLy+MNkooTtzfPi4z9kIh7gcvAq03gN1K6D/G2oxcc1ZlUKd4Q7tEd5M52Ng98Km8xF764pzdBCzr8piQ4b3WrC1mP4YETLNto+XrFsBUo9j26JdcD+txfREMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxEgNL5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E10EC4CEF0;
+	Tue, 12 Aug 2025 17:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020603;
-	bh=Qm6fA73OhwkGPy5VL+tBc62vLBtXOTsX0GOkZl2AHFQ=;
+	s=korg; t=1755021450;
+	bh=t0Vqmw/yfEq/osVKqZXHBtJL/EzLxLnqeX/z9SQK5V0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+99iFPv423Cfc63yHj4oojv8j4q87+tsRYBdLs/Nza7Un/tgVG8XRAvyOSTuklQs
-	 btYLUT2pGsq9jXEQppSJnj8aODRkrVCQA8HShjrC8NsY72DEprbKZXI6bW+d1sHVdz
-	 FwRgh7+OSpqjLaIk3BKOPghjfB3aryq1k/Pa3D9M=
+	b=kxEgNL5t9DPqUfyFWhK3kZKBaFQJx1UQ0K23GhpagRwsFuvGOXQtueT9uC5EQjXXd
+	 CRpPgJFx2pwutWLZsSCs5AKNTkRCIDH0w3dUOcTr911BchgXsmh92ZY7LGZiJnljSA
+	 9UgbkAxQIHeposAPWdEqLBKX5lM1b+77pi7d3LFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/253] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+Subject: [PATCH 6.6 127/262] perf sched: Fix memory leaks in perf sched latency
 Date: Tue, 12 Aug 2025 19:28:35 +0200
-Message-ID: <20250812172954.100088477@linuxfoundation.org>
+Message-ID: <20250812172958.514922124@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
+[ Upstream commit e68b1c0098b959cb88afce5c93dd6a9324e6da78 ]
 
-After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
-IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
-got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
+The work_atoms should be freed after use.  Add free_work_atoms() to
+make sure to release all.  It should use list_splice_init() when merging
+atoms to prevent accessing invalid pointers.
 
-Because of this, as part of the scan request handler for the P2P Discovery,
-vif struct used for adding the Probe Request P2P IE in firmware got changed
-from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
-So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
-requests frames and the other P2P peers were unable to discover this device
-causing a regression on the P2P feature.
-
-To fix this, while setting the P2P IE in firmware, properly use the vif of
-the P2P discovery wdev on which the driver received the P2P scan request.
-This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
-is completed.
-
-Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: b1ffe8f3e0c96f552 ("perf sched: Finish latency => atom rename and misc cleanups")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-8-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/builtin-sched.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 24a3d5a593f1..8b6e3cbaf463 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1200,10 +1200,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 		return -EAGAIN;
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index a1fab1a52b6a..16cb7278faba 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -1125,6 +1125,21 @@ add_sched_in_event(struct work_atoms *atoms, u64 timestamp)
+ 	atoms->nb_atoms++;
+ }
+ 
++static void free_work_atoms(struct work_atoms *atoms)
++{
++	struct work_atom *atom, *tmp;
++
++	if (atoms == NULL)
++		return;
++
++	list_for_each_entry_safe(atom, tmp, &atoms->work_list, list) {
++		list_del(&atom->list);
++		free(atom);
++	}
++	thread__zput(atoms->thread);
++	free(atoms);
++}
++
+ static int latency_switch_event(struct perf_sched *sched,
+ 				struct evsel *evsel,
+ 				struct perf_sample *sample,
+@@ -3192,13 +3207,13 @@ static void __merge_work_atoms(struct rb_root_cached *root, struct work_atoms *d
+ 			this->total_runtime += data->total_runtime;
+ 			this->nb_atoms += data->nb_atoms;
+ 			this->total_lat += data->total_lat;
+-			list_splice(&data->work_list, &this->work_list);
++			list_splice_init(&data->work_list, &this->work_list);
+ 			if (this->max_lat < data->max_lat) {
+ 				this->max_lat = data->max_lat;
+ 				this->max_lat_start = data->max_lat_start;
+ 				this->max_lat_end = data->max_lat_end;
+ 			}
+-			zfree(&data);
++			free_work_atoms(data);
+ 			return;
+ 		}
+ 	}
+@@ -3277,7 +3292,6 @@ static int perf_sched__lat(struct perf_sched *sched)
+ 		work_list = rb_entry(next, struct work_atoms, node);
+ 		output_lat_thread(sched, work_list);
+ 		next = rb_next(next);
+-		thread__zput(work_list->thread);
  	}
  
--	/* If scan req comes for p2p0, send it over primary I/F */
--	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
--		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
--
- 	brcmf_dbg(SCAN, "START ESCAN\n");
+ 	printf(" -----------------------------------------------------------------------------------------------------------------\n");
+@@ -3291,6 +3305,13 @@ static int perf_sched__lat(struct perf_sched *sched)
  
- 	cfg->scan_request = request;
-@@ -1219,6 +1215,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 	if (err)
- 		goto scan_out;
+ 	rc = 0;
  
-+	/* If scan req comes for p2p0, send it over primary I/F */
-+	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
-+		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++	while ((next = rb_first_cached(&sched->sorted_atom_root))) {
++		struct work_atoms *data;
 +
- 	err = brcmf_do_escan(vif->ifp, request);
- 	if (err)
- 		goto scan_out;
++		data = rb_entry(next, struct work_atoms, node);
++		rb_erase_cached(next, &sched->sorted_atom_root);
++		free_work_atoms(data);
++	}
+ out_free_cpus_switch_event:
+ 	free_cpus_switch_event(sched);
+ 	return rc;
 -- 
 2.39.5
 
