@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84593B23230
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB88BB233CC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F3381891152
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FADC3BB8D3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014CC20409A;
-	Tue, 12 Aug 2025 18:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2252B2FD1DA;
+	Tue, 12 Aug 2025 18:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRQ2kBqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dedox2yQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B328B282E1;
-	Tue, 12 Aug 2025 18:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA47C2FAC02;
+	Tue, 12 Aug 2025 18:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022141; cv=none; b=NCQ8O13f2GgYoeGSDSTNgA0j38sbw9syXbbEqWGM4xZ8mnYU5FF1L5AJnDhPmWLzHHa7QpZCxvDTC1pC2Fe8UkFbcBAQQy5BNV3eGQgsaJ0rQuW1F/E8VEbSDkKcSfXO7aSAtBGFFuh/v7lLsNgqGsNTTEnJQtVv5J6a7azpTLI=
+	t=1755023290; cv=none; b=uuHZwdHveGPebM85gGf9RUlrMK3uAvLTehBvXc2WCOIBlYiZ/LN68k6RNaux1B8q7wL7i8fxLOFTjvi1Dfw+QBUCJR+qnHlra/CNCJEtg/bpcqyPn7JOzM5aiJCPl+jCVctGgDntYJu97Z+M/QPqxoFFHnzzlzv/J6zUcEZqt30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022141; c=relaxed/simple;
-	bh=MRANuy0rcoT4SxOZv2PgwQz1b8vS+R2Ioua9U/klHio=;
+	s=arc-20240116; t=1755023290; c=relaxed/simple;
+	bh=qQjEu7JTvNc5XT9soXb0DSCuwaup1dfEIb0Wu+fkeMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9R7UuMIVV4qg1ucyBRw8ujq2dV1JQG7bsZBd9tHnCAqZC5nEte9WT1fzVUB6OxBE2WwKRwgWZYrewhDZR7Mochq8y5Qy7LmA9i/N0+HewF/s7Oz+Gp0+KZrYOZ0ECNhaFlMK5pk3ncEljT4LJsbzmFpVpHgJAbjh8MA1ggJEuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRQ2kBqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1618AC4CEF6;
-	Tue, 12 Aug 2025 18:09:00 +0000 (UTC)
+	 MIME-Version; b=RDFkzcPACY0uYr4QIOpigzHSCOP6UPEeqker0rNomtd93iA19IFkN4+lWp/EAvk/E37eIn0SZPL4n9ihrQc5r95+Sl7S+qnBOp3tIrM9KocirtcY6bHmC8Qphne/IL/yHlh18fPFQrlGNATElZ7/rNg6H6fwAMWuft6crip5koo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dedox2yQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A434C4CEF0;
+	Tue, 12 Aug 2025 18:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022141;
-	bh=MRANuy0rcoT4SxOZv2PgwQz1b8vS+R2Ioua9U/klHio=;
+	s=korg; t=1755023290;
+	bh=qQjEu7JTvNc5XT9soXb0DSCuwaup1dfEIb0Wu+fkeMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRQ2kBqFVRZOMA3mRYgzNfLsn1FsD1A2ed9af2OPn18tHEQoDiZdJrlRlsyIiHfN2
-	 O/vK4KLW6RHJV9P7s9tIYY1SBvv84BKby90sLlXHu5duKqMTTBNVb5thWvW8Hvhxd6
-	 aOtNXdhgCJO9S/LgnGrCpN2EhrjZ1H92gdo7ZL2g=
+	b=dedox2yQk7F6jleBA9J0x87cwZMZgdn+2PWQZtPx+BGtpGEJPqAky5ipMFgirwfHr
+	 Uy17igKXMEOuWTyIeidLwI6Mv7KIXBkAmANN0XTvYsMvm38s6wiPuaT5Ees7+xc1As
+	 kirukEK5YUZYyEzrU6GyMaPkLTSKR60cwjZTxBXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/369] cpufreq: armada-8k: make both cpu masks static
-Date: Tue, 12 Aug 2025 19:25:31 +0200
-Message-ID: <20250812173016.035327166@linuxfoundation.org>
+Subject: [PATCH 6.16 037/627] ASoC: mediatek: mt8183-afe-pcm: Support >32 bit DMA addresses
+Date: Tue, 12 Aug 2025 19:25:32 +0200
+Message-ID: <20250812173420.737070496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit b1b41bc072baf7301b1ae95fe417de09a5ad47e2 ]
+[ Upstream commit 9e7bc5cb8d089d9799e17a9ac99c5da9b13b02e3 ]
 
-An earlier patch marked one of the two CPU masks as 'static' to reduce stack
-usage, but if CONFIG_NR_CPUS is large enough, the function still produces
-a warning for compile testing:
+The AFE DMA hardware supports up to 34 bits for DMA addresses. This is
+missing from the driver and prevents reserved memory regions from
+working properly when the allocated region is above the 4GB line.
 
-drivers/cpufreq/armada-8k-cpufreq.c: In function 'armada_8k_cpufreq_init':
-drivers/cpufreq/armada-8k-cpufreq.c:203:1: error: the frame size of 1416 bytes is larger than 1408 bytes [-Werror=frame-larger-than=]
+Fill in the related register offsets for each DAI, and also set the
+DMA mask. Also fill in the LSB end register offsets for completeness.
 
-Normally this should be done using alloc_cpumask_var(), but since the
-driver already has a static mask and the probe function is not called
-concurrently, use the same trick for both.
-
-Fixes: 1ffec650d07f ("cpufreq: armada-8k: Avoid excessive stack usage")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: a94aec035a12 ("ASoC: mediatek: mt8183: add platform driver")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20250612074901.4023253-8-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/armada-8k-cpufreq.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/mediatek/mt8183/mt8183-afe-pcm.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/cpufreq/armada-8k-cpufreq.c b/drivers/cpufreq/armada-8k-cpufreq.c
-index 7a979db81f09..ccbc826cc4c0 100644
---- a/drivers/cpufreq/armada-8k-cpufreq.c
-+++ b/drivers/cpufreq/armada-8k-cpufreq.c
-@@ -132,7 +132,7 @@ static int __init armada_8k_cpufreq_init(void)
- 	int ret = 0, opps_index = 0, cpu, nb_cpus;
- 	struct freq_table *freq_tables;
- 	struct device_node *node;
--	static struct cpumask cpus;
-+	static struct cpumask cpus, shared_cpus;
+diff --git a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
+index 9b6b45c646e6..7383184097a4 100644
+--- a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
++++ b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
+@@ -6,6 +6,7 @@
+ // Author: KaiChieh Chuang <kaichieh.chuang@mediatek.com>
  
- 	node = of_find_matching_node_and_match(NULL, armada_8k_cpufreq_of_match,
- 					       NULL);
-@@ -154,7 +154,6 @@ static int __init armada_8k_cpufreq_init(void)
- 	 * divisions of it).
- 	 */
- 	for_each_cpu(cpu, &cpus) {
--		struct cpumask shared_cpus;
- 		struct device *cpu_dev;
- 		struct clk *clk;
+ #include <linux/delay.h>
++#include <linux/dma-mapping.h>
+ #include <linux/module.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/of.h>
+@@ -432,6 +433,9 @@ static const struct snd_soc_component_driver mt8183_afe_pcm_dai_component = {
+ 		.reg_ofs_base = AFE_##_id##_BASE,	\
+ 		.reg_ofs_cur = AFE_##_id##_CUR,		\
+ 		.reg_ofs_end = AFE_##_id##_END,		\
++		.reg_ofs_base_msb = AFE_##_id##_BASE_MSB,	\
++		.reg_ofs_cur_msb = AFE_##_id##_CUR_MSB,		\
++		.reg_ofs_end_msb = AFE_##_id##_END_MSB,		\
+ 		.fs_reg = (_fs_reg),			\
+ 		.fs_shift = _id##_MODE_SFT,		\
+ 		.fs_maskbit = _id##_MODE_MASK,		\
+@@ -463,11 +467,17 @@ static const struct snd_soc_component_driver mt8183_afe_pcm_dai_component = {
+ #define AFE_VUL12_BASE		AFE_VUL_D2_BASE
+ #define AFE_VUL12_CUR		AFE_VUL_D2_CUR
+ #define AFE_VUL12_END		AFE_VUL_D2_END
++#define AFE_VUL12_BASE_MSB	AFE_VUL_D2_BASE_MSB
++#define AFE_VUL12_CUR_MSB	AFE_VUL_D2_CUR_MSB
++#define AFE_VUL12_END_MSB	AFE_VUL_D2_END_MSB
+ #define AWB2_HD_ALIGN_SFT	AWB2_ALIGN_SFT
+ #define VUL12_DATA_SFT		VUL12_MONO_SFT
+ #define AFE_HDMI_BASE		AFE_HDMI_OUT_BASE
+ #define AFE_HDMI_CUR		AFE_HDMI_OUT_CUR
+ #define AFE_HDMI_END		AFE_HDMI_OUT_END
++#define AFE_HDMI_BASE_MSB	AFE_HDMI_OUT_BASE_MSB
++#define AFE_HDMI_CUR_MSB	AFE_HDMI_OUT_CUR_MSB
++#define AFE_HDMI_END_MSB	AFE_HDMI_OUT_END_MSB
  
+ static const struct mtk_base_memif_data memif_data[MT8183_MEMIF_NUM] = {
+ 	MT8183_MEMIF(DL1, AFE_DAC_CON1, AFE_DAC_CON1),
+@@ -764,6 +774,10 @@ static int mt8183_afe_pcm_dev_probe(struct platform_device *pdev)
+ 	struct reset_control *rstc;
+ 	int i, irq_id, ret;
+ 
++	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(34));
++	if (ret)
++		return ret;
++
+ 	afe = devm_kzalloc(&pdev->dev, sizeof(*afe), GFP_KERNEL);
+ 	if (!afe)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
