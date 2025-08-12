@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-168205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F3EB23407
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1D0B23237
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2221218837B4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FB243B3535
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43CD2FE57A;
-	Tue, 12 Aug 2025 18:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3955A3F9D2;
+	Tue, 12 Aug 2025 18:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ro5VyD5B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clFqAvkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A182FD1C5;
-	Tue, 12 Aug 2025 18:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4FF257435;
+	Tue, 12 Aug 2025 18:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023399; cv=none; b=ncaDY1NFf1Nb6kR7gfpqb+jEPoszV0I59JN8ksLz1aqE+sVwI+/bBItaOC7kKoFwkZojHzhvj928XKzCZ+upMTSCJDUf9GqsKf/jDJYzXCDtvk9kYUy2UJ7IVZ/n6Xvdb5Fm0UHCdzNwoTSZQyzVQIyoWRcKOXzA3YKLK5AzZDw=
+	t=1755022199; cv=none; b=nQEvzY2ajCuzR5KdgCehWUgHGtl08OIJ/vjx9j4yIpp+5QTIve0G50QH64wMEmDVOx2bvpxPkzCvV+e7u5dDHaepyz7jKpyz1c/2gH1GV5U28ZwvgHNLn8VL3GKE4ELUaasaAP4LC63znVpShlHxrtzEAyusolo1YSEoR8bfwak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023399; c=relaxed/simple;
-	bh=yAET7+pTvC/UkuE/O/F/2clUjXnBDzDvTN582lD3OZQ=;
+	s=arc-20240116; t=1755022199; c=relaxed/simple;
+	bh=TqlP5+mHH6P1eLtp+c+Y5VpEvupWn80kVff7JTvBQp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCmQ1EC5gmnXJPou/wQ7OO50Q8h0zd3nHW4bSSFqRDTpB1vwGv6sWY7/djbr9wFpDWRXXakHFahUf7AjhL8pwsYTcsZLf1JIfXqDTsnOWcIXyQPxFnZuqVKiTjTx0Hb3n/aolFBJRWl+i2YIlMlBSFAQ6oHUKsm/v1UCfABkeT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ro5VyD5B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F280BC4CEF0;
-	Tue, 12 Aug 2025 18:29:58 +0000 (UTC)
+	 MIME-Version; b=oPGrCjsLrOLOGk+zdEn1TUMx4FrleUhtSw8OJx4Y7GOjTGRrPzEYmTwZ1a75Lgi1kMOKGZ4UUlpIxGTmKaUZjKsYKnCULUSCYjxyhQYeaC0dtmHtUYMg7cvF6yTGryIzJAmrKygv0N00KDVmKE+EKRPrti84Jqzn4m0SG+As0as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=clFqAvkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AC6C4CEF0;
+	Tue, 12 Aug 2025 18:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023399;
-	bh=yAET7+pTvC/UkuE/O/F/2clUjXnBDzDvTN582lD3OZQ=;
+	s=korg; t=1755022198;
+	bh=TqlP5+mHH6P1eLtp+c+Y5VpEvupWn80kVff7JTvBQp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ro5VyD5BR2Brp5MHNcmstFoT6wZ5GcQUhCpGki+WURrm4M4c+o2VdM0CSl3ZmRVyQ
-	 EsOUIi97y3LFBLacegICkaetFeSEGOgpGZFd0h4i6Fd9iUa4UPiLLvPJ11MhRCviP4
-	 s/aHHyi7xkhDyaTBRH6Xs4Y2mU/o+g2XCQ8wSe3g=
+	b=clFqAvkHsEmjjVwVoNe8HdfVZ+8q+BrByY5jB8CzzXOP/Jdm1hEefm9oXA3k4ioSX
+	 c13o5GIiRPywB0TwCfKjRL3RpHjGBLPUuqsqECmM6pxB8x04+ActjALx2DzxiTA2K+
+	 7Ak9uGs9PwqnQHRYKjDrjqFPvcrKUfOumv19c6VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 069/627] mei: vsc: Unset the event callback on remove and probe errors
+Subject: [PATCH 6.12 067/369] selftests/tracing: Fix false failure of subsystem event test
 Date: Tue, 12 Aug 2025 19:26:04 +0200
-Message-ID: <20250812173421.942629968@linuxfoundation.org>
+Message-ID: <20250812173017.285748941@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 6175c6974095f8ca7e5f8d593171512f3e5bd453 ]
+[ Upstream commit 213879061a9c60200ba971330dbefec6df3b4a30 ]
 
-Make mei_vsc_remove() properly unset the callback to avoid a dead callback
-sticking around after probe errors or unbinding of the platform driver.
+The subsystem event test enables all "sched" events and makes sure there's
+at least 3 different events in the output. It used to cat the entire trace
+file to | wc -l, but on slow machines, that could last a very long time.
+To solve that, it was changed to just read the first 100 lines of the
+trace file. This can cause false failures as some events repeat so often,
+that the 100 lines that are examined could possibly be of only one event.
 
-Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250623085052.12347-8-hansg@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, create an awk script that looks for 3 different events and will
+exit out after it finds them. This will find the 3 events the test looks
+for (eventually if it works), and still exit out after the test is
+satisfied and not cause slower machines to run forever.
+
+Link: https://lore.kernel.org/r/20250721134212.53c3e140@batman.local.home
+Reported-by: Tengda Wu <wutengda@huaweicloud.com>
+Closes: https://lore.kernel.org/all/20250710130134.591066-1-wutengda@huaweicloud.com/
+Fixes: 1a4ea83a6e67 ("selftests/ftrace: Limit length in subsystem-enable tests")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/platform-vsc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../ftrace/test.d/event/subsystem-enable.tc   | 28 +++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
-index 1ac85f0251c5..b2b5a20ae3fa 100644
---- a/drivers/misc/mei/platform-vsc.c
-+++ b/drivers/misc/mei/platform-vsc.c
-@@ -380,6 +380,8 @@ static int mei_vsc_probe(struct platform_device *pdev)
- err_cancel:
- 	mei_cancel_work(mei_dev);
+diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
+index b7c8f29c09a9..65916bb55dfb 100644
+--- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
++++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
+@@ -14,11 +14,35 @@ fail() { #msg
+     exit_fail
+ }
  
-+	vsc_tp_register_event_cb(tp, NULL, NULL);
++# As reading trace can last forever, simply look for 3 different
++# events then exit out of reading the file. If there's not 3 different
++# events, then the test has failed.
++check_unique() {
++    cat trace | grep -v '^#' | awk '
++	BEGIN { cnt = 0; }
++	{
++	    for (i = 0; i < cnt; i++) {
++		if (event[i] == $5) {
++		    break;
++		}
++	    }
++	    if (i == cnt) {
++		event[cnt++] = $5;
++		if (cnt > 2) {
++		    exit;
++		}
++	    }
++	}
++	END {
++	    printf "%d", cnt;
++	}'
++}
 +
- 	mei_disable_interrupts(mei_dev);
+ echo 'sched:*' > set_event
  
- 	return ret;
-@@ -388,11 +390,14 @@ static int mei_vsc_probe(struct platform_device *pdev)
- static void mei_vsc_remove(struct platform_device *pdev)
- {
- 	struct mei_device *mei_dev = platform_get_drvdata(pdev);
-+	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
+ yield
  
- 	pm_runtime_disable(mei_dev->dev);
+-count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`check_unique`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -29,7 +53,7 @@ echo 1 > events/sched/enable
  
- 	mei_stop(mei_dev);
+ yield
  
-+	vsc_tp_register_event_cb(hw->tp, NULL, NULL);
-+
- 	mei_disable_interrupts(mei_dev);
- 
- 	mei_deregister(mei_dev);
+-count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`check_unique`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
 -- 
 2.39.5
 
