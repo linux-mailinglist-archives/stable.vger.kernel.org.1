@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FDFB23455
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D79B22FD4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C16B67B9153
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAA7E566B7D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D672FDC4F;
-	Tue, 12 Aug 2025 18:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640D02FDC2B;
+	Tue, 12 Aug 2025 17:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLrXbzOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxiTGDp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8092F5E;
-	Tue, 12 Aug 2025 18:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211E42FDC32;
+	Tue, 12 Aug 2025 17:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023919; cv=none; b=InobvH87AWGm8B1cTDaXV7z3OjfxW0WhzXRIWAV3agsva8Qk7kkNEORbZo7iwqi2i05cwdqyCoPeZkthhudfhEnkiiNGd9Q9EINkB/98Y2CtSsPgFPAdPAAHtwaSbz7G+3/8nGQ41uwXpaXcBp7fTQxCj+jda70AJI/4CAvR82Y=
+	t=1755020630; cv=none; b=sxuB0Exh8uRZWa9YamapROiTwiN7BaurxO16D1U/VT3sUXQ3j/heBBIsVd+MAHB0W1xQdYVrxhrlOedsefF+u8m+7A3xwg/PqBbs9cpusowhk4iKFfTTBCGTy19yS9T2Apr90RO1noDRrU3mcE1fcHXBBozk6LRIQqvUeFvUrOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023919; c=relaxed/simple;
-	bh=hIlfwxS6e2iaXvexqIrQOKUq7leLoBsbGwhdRlhS2bQ=;
+	s=arc-20240116; t=1755020630; c=relaxed/simple;
+	bh=vMsiozkvRUDcrDYGFg++QOHgUpZ9c92Pz2dByYNMzhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jC2xwUadZye+Qe1fIUs8JJ+04oeHI84dgab73cdXdO8j7hoJnN3lgAONVCIkVYHnDuXjijSW4/dhkmYc0v7CFGMZwyWKDW61VjDTMgJ5J44IlOQTIILmC+lByM/5GIV5zBVCegT47EImeV3FK4WlHZvGp9R2XUWyt1GbM3+95+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLrXbzOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1044C4CEF0;
-	Tue, 12 Aug 2025 18:38:38 +0000 (UTC)
+	 MIME-Version; b=QosXWRHFeBvsOc1lKRpzwlbE09bqXwqjbNZ/ATeFEFdn/IRdAkI2Vn1yb7snnblv6h5aVhsT0GyBQc9lJUmyBBljQMr5qLQtVfaR7nPcDa8JxCIB4W9dE+eSuNqBdcYjuvR6WKRorYjmegLpoCK/fKF3zAP4+Mz3j4Icr0Gt01I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxiTGDp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AAAC4CEF0;
+	Tue, 12 Aug 2025 17:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023919;
-	bh=hIlfwxS6e2iaXvexqIrQOKUq7leLoBsbGwhdRlhS2bQ=;
+	s=korg; t=1755020630;
+	bh=vMsiozkvRUDcrDYGFg++QOHgUpZ9c92Pz2dByYNMzhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLrXbzOaPECupqAc8kjBMIDofyGb+D1715GTO6XD8dZuUi01SAvrZw4Rt90xmezW3
-	 F8gZUmKWgY6wiE8DNpT3qnDzmcPVJrasRBEQZmWy8H9AfoFUwwGx9Qr72AodGlJOc5
-	 Qat0zVlKo0Do0puIHfJ2CudjlNMXE6FsUL2U8kIk=
+	b=fxiTGDp0+EkFsVo5QzjZ3mek90eE3ZxTy3bn9GGXrqnXLNBEC/656RbPsoImSiGZ5
+	 ZdpX3xYoBUKURViyEV0MnHZUQNZa/BbQOSCfPEagVtegQBRXLj0c4iH/IpuJ5t/w3B
+	 A/wqQ+iuuvfinPDPIqMKlVLskWewEAZU5Eq731gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephane Grosjean <stephane.grosjean@hms-networks.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 221/627] tcp: call tcp_measure_rcv_mss() for ooo packets
-Date: Tue, 12 Aug 2025 19:28:36 +0200
-Message-ID: <20250812173427.686453620@linuxfoundation.org>
+Subject: [PATCH 6.1 129/253] can: peak_usb: fix USB FD devices potential malfunction
+Date: Tue, 12 Aug 2025 19:28:37 +0200
+Message-ID: <20250812172954.184889586@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stephane Grosjean <stephane.grosjean@hms-networks.com>
 
-[ Upstream commit 38d7e444336567bae1c7b21fc18b7ceaaa5643a0 ]
+[ Upstream commit 788199b73b6efe4ee2ade4d7457b50bb45493488 ]
 
-tcp_measure_rcv_mss() is used to update icsk->icsk_ack.rcv_mss
-(tcpi_rcv_mss in tcp_info) and tp->scaling_ratio.
+The latest firmware versions of USB CAN FD interfaces export the EP numbers
+to be used to dialog with the device via the "type" field of a response to
+a vendor request structure, particularly when its value is greater than or
+equal to 2.
 
-Calling it from tcp_data_queue_ofo() makes sure these
-fields are updated, and permits a better tuning
-of sk->sk_rcvbuf, in the case a new flow receives many ooo
-packets.
+Correct the driver's test of this field.
 
-Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711114006.480026-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4f232482467a ("can: peak_usb: include support for a new MCU")
+Signed-off-by: Stephane Grosjean <stephane.grosjean@hms-networks.com>
+Link: https://patch.msgid.link/20250724081550.11694-1-stephane.grosjean@free.fr
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+[mkl: rephrase commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 76b01df70e56..94391f32a5d8 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5055,6 +5055,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
- 		return;
- 	}
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+index 2ea1500df393..a203b7fca2f3 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+@@ -49,7 +49,7 @@ struct __packed pcan_ufd_fw_info {
+ 	__le32	ser_no;		/* S/N */
+ 	__le32	flags;		/* special functions */
  
-+	tcp_measure_rcv_mss(sk, skb);
- 	/* Disable header prediction. */
- 	tp->pred_flags = 0;
- 	inet_csk_schedule_ack(sk);
+-	/* extended data when type == PCAN_USBFD_TYPE_EXT */
++	/* extended data when type >= PCAN_USBFD_TYPE_EXT */
+ 	u8	cmd_out_ep;	/* ep for cmd */
+ 	u8	cmd_in_ep;	/* ep for replies */
+ 	u8	data_out_ep[2];	/* ep for CANx TX */
+@@ -939,10 +939,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 			dev->can.ctrlmode |= CAN_CTRLMODE_FD_NON_ISO;
+ 		}
+ 
+-		/* if vendor rsp is of type 2, then it contains EP numbers to
+-		 * use for cmds pipes. If not, then default EP should be used.
++		/* if vendor rsp type is greater than or equal to 2, then it
++		 * contains EP numbers to use for cmds pipes. If not, then
++		 * default EP should be used.
+ 		 */
+-		if (fw_info->type != cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++		if (le16_to_cpu(fw_info->type) < PCAN_USBFD_TYPE_EXT) {
+ 			fw_info->cmd_out_ep = PCAN_USBPRO_EP_CMDOUT;
+ 			fw_info->cmd_in_ep = PCAN_USBPRO_EP_CMDIN;
+ 		}
+@@ -975,11 +976,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 	dev->device_number =
+ 		le32_to_cpu(pdev->usb_if->fw_info.dev_id[dev->ctrl_idx]);
+ 
+-	/* if vendor rsp is of type 2, then it contains EP numbers to
+-	 * use for data pipes. If not, then statically defined EP are used
+-	 * (see peak_usb_create_dev()).
++	/* if vendor rsp type is greater than or equal to 2, then it contains EP
++	 * numbers to use for data pipes. If not, then statically defined EP are
++	 * used (see peak_usb_create_dev()).
+ 	 */
+-	if (fw_info->type == cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++	if (le16_to_cpu(fw_info->type) >= PCAN_USBFD_TYPE_EXT) {
+ 		dev->ep_msg_in = fw_info->data_in_ep;
+ 		dev->ep_msg_out = fw_info->data_out_ep[dev->ctrl_idx];
+ 	}
 -- 
 2.39.5
 
