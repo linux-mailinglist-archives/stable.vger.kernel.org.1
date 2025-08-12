@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B850B23600
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E08B23603
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39BC3A9B9E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:53:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B1F16E1AEB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B92B2FE598;
-	Tue, 12 Aug 2025 18:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F7D2FF172;
+	Tue, 12 Aug 2025 18:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBYNjUYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VM8/5OKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE1E305E13;
-	Tue, 12 Aug 2025 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34E42FD1C2;
+	Tue, 12 Aug 2025 18:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024806; cv=none; b=PhKmY1aRMeq8UUJqSaLm4nJ4TG7DNGTuCuWsqgv+TQeoCjn26cOTeizAVD4Pi9hAawjvRBtePJNiErqwb7tasnfLIiKG4434KKItMJ/HlXkXZIBe0CipdE7mBl1ZQqCFcEQZl5Q61pHBc+jyH42/Dygg1WvrgGO3laQ0GYhCwGw=
+	t=1755024830; cv=none; b=JMpKab7UCAjHCfBnwH8lnQ4cQh5scS1+uI9d3ipNYQj5fv6vccpIGSTeFfosI5HUu61rbszc4uDglAToD9+RmMvf0Sn/BmZbX3qOY7JLz8xBPIYkucY/TIxl2qt13BR2IyWmXqWGasmf69rUicu2fpk2hzKp9xTYVW1dzIziYhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024806; c=relaxed/simple;
-	bh=Si5eeOWI8/babYodwWttdSmi4NKi3CXPXD+fbcCTB0g=;
+	s=arc-20240116; t=1755024830; c=relaxed/simple;
+	bh=+ctIGOz8Sx3lVHUXNQ0Jo7UTaARWe2N20e0p0gu3d74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAyMYyKoxHN5R7rzo7MH6P+ey3YcnjZ16wfED+sgTIndq1FLBUniseIbX/r2p5pCvHiEmpJCSl64Bpow+coX93FEtW2FO9sR6PFH7D0c8foQdz1yLcPOXPpfm+vFo0c/cg1TDNdVD1897EMNXWiAUuMOjYKq55EZ4C2GmdIjqtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBYNjUYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F3FC4CEF0;
-	Tue, 12 Aug 2025 18:53:24 +0000 (UTC)
+	 MIME-Version; b=Cc1cldAqGuAeDH+hkR3YwqA/alQXZaYXt9ncfvz/Qf7L678zW3Q6vDtP76xBOGyJMwBeFmqbc0mPzGHv8+SXU+INfCb1beSqOc4B4D+esk8o2+y0LS6OxLYvzXQM1SHQkZNbxc3n7dEQJ8dZX8H7NQjBcfNr/Y53AA+dOqNxVZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VM8/5OKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07118C4CEF0;
+	Tue, 12 Aug 2025 18:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024805;
-	bh=Si5eeOWI8/babYodwWttdSmi4NKi3CXPXD+fbcCTB0g=;
+	s=korg; t=1755024829;
+	bh=+ctIGOz8Sx3lVHUXNQ0Jo7UTaARWe2N20e0p0gu3d74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBYNjUYermeb82tq0VbCaZIj+hZS0HZzSARmUjneZS4lnTqq+RLi/0VMCSYaKO5RF
-	 rFslQlMYrXNKiBAvP9p0MwApwUhcNzeE71jmVeWs5NtYNqIg9QYV+STTcfFImFnku9
-	 DIa1PP6W72dwv0BtaIGplLMhF3SscutdQdZZIdEw=
+	b=VM8/5OKVZtg98m9PHC1FNXYzqzVCDYMi2uUKLw6jlps5x7k+yiH6UCKzBVtWXLWlU
+	 AoTWH6psvbl4aUgNbRssy1AC6ePdo/fJk3R9TTWqnlEprJqDkZhGmb9qMWZ03C0v/l
+	 g+s+sqcSuciE9zWiNHMLr8LAwYO4gpD4MSGyh8/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	dm-devel@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 455/627] dm-flakey: Fix corrupt_bio_byte setup checks
-Date: Tue, 12 Aug 2025 19:32:30 +0200
-Message-ID: <20250812173438.041883323@linuxfoundation.org>
+Subject: [PATCH 6.16 456/627] uprobes: revert ref_ctr_offset in uprobe_unregister error path
+Date: Tue, 12 Aug 2025 19:32:31 +0200
+Message-ID: <20250812173438.250944031@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -69,53 +71,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Jiri Olsa <olsajiri@gmail.com>
 
-[ Upstream commit 75227ed6812cb869380c8fb6d41a845ae571781e ]
+[ Upstream commit aa644c405291a419e92b112e2279c01c410e9a26 ]
 
-Fix the error_reads mode - it's incompatible with corrupt_bio_byte, but
-that's only enabled if corrupt_bio_byte is nonzero.
+There's error path that could lead to inactive uprobe:
 
-Cc: Benjamin Marzinski <bmarzins@redhat.com>
-Cc: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Mike Snitzer <snitzer@kernel.org>
-Cc: dm-devel@lists.linux.dev
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
-Fixes: 19da6b2c9e8e ("dm-flakey: Clean up parsing messages")
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+  1) uprobe_register succeeds - updates instruction to int3 and
+     changes ref_ctr from 0 to 1
+  2) uprobe_unregister fails  - int3 stays in place, but ref_ctr
+     is changed to 0 (it's not restored to 1 in the fail path)
+     uprobe is leaked
+  3) another uprobe_register comes and re-uses the leaked uprobe
+     and succeds - but int3 is already in place, so ref_ctr update
+     is skipped and it stays 0 - uprobe CAN NOT be triggered now
+  4) uprobe_unregister fails because ref_ctr value is unexpected
+
+Fix this by reverting the updated ref_ctr value back to 1 in step 2),
+which is the case when uprobe_unregister fails (int3 stays in place), but
+we have already updated refctr.
+
+The new scenario will go as follows:
+
+  1) uprobe_register succeeds - updates instruction to int3 and
+     changes ref_ctr from 0 to 1
+  2) uprobe_unregister fails  - int3 stays in place and ref_ctr
+     is reverted to 1..  uprobe is leaked
+  3) another uprobe_register comes and re-uses the leaked uprobe
+     and succeds - but int3 is already in place, so ref_ctr update
+     is skipped and it stays 1 - uprobe CAN be triggered now
+  4) uprobe_unregister succeeds
+
+Link: https://lkml.kernel.org/r/20250514101809.2010193-1-jolsa@kernel.org
+Fixes: 1cc33161a83d ("uprobes: Support SDT markers having reference count (semaphore)")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Suggested-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-flakey.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ kernel/events/uprobes.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-flakey.c b/drivers/md/dm-flakey.c
-index c711db6f8f5c..cf17fd46e255 100644
---- a/drivers/md/dm-flakey.c
-+++ b/drivers/md/dm-flakey.c
-@@ -215,16 +215,19 @@ static int parse_features(struct dm_arg_set *as, struct flakey_c *fc,
- 	}
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 4c965ba77f9f..84ee7b590861 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -581,8 +581,8 @@ int uprobe_write_opcode(struct arch_uprobe *auprobe, struct vm_area_struct *vma,
  
- 	if (test_bit(DROP_WRITES, &fc->flags) &&
--	    (fc->corrupt_bio_rw == WRITE || fc->random_write_corrupt)) {
-+	    ((fc->corrupt_bio_byte && fc->corrupt_bio_rw == WRITE) ||
-+	     fc->random_write_corrupt)) {
- 		ti->error = "drop_writes is incompatible with random_write_corrupt or corrupt_bio_byte with the WRITE flag set";
- 		return -EINVAL;
+ out:
+ 	/* Revert back reference counter if instruction update failed. */
+-	if (ret < 0 && is_register && ref_ctr_updated)
+-		update_ref_ctr(uprobe, mm, -1);
++	if (ret < 0 && ref_ctr_updated)
++		update_ref_ctr(uprobe, mm, is_register ? -1 : 1);
  
- 	} else if (test_bit(ERROR_WRITES, &fc->flags) &&
--		   (fc->corrupt_bio_rw == WRITE || fc->random_write_corrupt)) {
-+		   ((fc->corrupt_bio_byte && fc->corrupt_bio_rw == WRITE) ||
-+		    fc->random_write_corrupt)) {
- 		ti->error = "error_writes is incompatible with random_write_corrupt or corrupt_bio_byte with the WRITE flag set";
- 		return -EINVAL;
- 	} else if (test_bit(ERROR_READS, &fc->flags) &&
--		   (fc->corrupt_bio_rw == READ || fc->random_read_corrupt)) {
-+		   ((fc->corrupt_bio_byte && fc->corrupt_bio_rw == READ) ||
-+		    fc->random_read_corrupt)) {
- 		ti->error = "error_reads is incompatible with random_read_corrupt or corrupt_bio_byte with the READ flag set";
- 		return -EINVAL;
- 	}
+ 	/* try collapse pmd for compound page */
+ 	if (ret > 0)
 -- 
 2.39.5
 
