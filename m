@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75796B230C0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75F0B23490
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 63E4A4E395E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B7B189B34B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9D52FDC2F;
-	Tue, 12 Aug 2025 17:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541562FD1C2;
+	Tue, 12 Aug 2025 18:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRspyM/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2agyOjiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE7F2F8BE7;
-	Tue, 12 Aug 2025 17:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1201F1DB92A;
+	Tue, 12 Aug 2025 18:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021366; cv=none; b=C2h5Eq9adnh9Zqzn3QEg98zUtuL9E98FsNziP07w7jba2QkPCApOmWkmniW3ZKSRTMHH0k8c78waaKfAugpxs3YwbYuDeUasiKIFOkSGUEzXguW5ISqZ7tzjGsNuOkzagw5hQmNPBAqQi3vo8ZlquIpWSOpNM/wjfhldPMY2FkA=
+	t=1755023830; cv=none; b=WGm4AfDJyafI2Cwtan3XYSzASJc616pVTCjmzgxyr9/uAzxiumr4RLtuxb1EM+5qChhIAXtfYpDrzQeqD8vuEuPBeUHoLUjivbh7s56ezK+Qv4zM/oPoKjroKKn8ulKVi5MNG+K6UrFhGYxrZvWEIxSjYOb20T9TTXYDEjXDp1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021366; c=relaxed/simple;
-	bh=4Fj6jzC+LExe/SF10wm4FAnlriFIko3mSbyky6fS7/o=;
+	s=arc-20240116; t=1755023830; c=relaxed/simple;
+	bh=YiSjxrf0Nb7PpnruA4eGfOWjqQfQSMYKDnrAO6WUxtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npmxR0CSR1PLfdsNoNQUsV4se9Rsl0Xwzl86iCE4WX5Wy+7szHYEswnHgPg9KrW/gB2n2gvBbqSg4cKDIC26C2ujGTHZoRhHbZSkl5vT7TFMBMIkWex65WhL78odcIw+Pt0ndxsI6OKO7n+rHwV8SQttkFqQJLTZ78K28gdGvCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRspyM/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EA4C4CEF6;
-	Tue, 12 Aug 2025 17:56:05 +0000 (UTC)
+	 MIME-Version; b=SUiFMto9cNFWN6ZsdvcCJ2u1/SuL9arcUY8LecdgRVUoL9w9VRvriPX7pR6UbiO0bUdyjM+RakFcj5lR50GHSNSZTva/HXNmwNJTHqzU4+U9KrCxIyOd/y8O3Jlf94sW2yU6F3vSxi8rqkuzHbxTV9kOfSKdQ2c+FTWxSCekOKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2agyOjiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448A9C4CEF0;
+	Tue, 12 Aug 2025 18:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021366;
-	bh=4Fj6jzC+LExe/SF10wm4FAnlriFIko3mSbyky6fS7/o=;
+	s=korg; t=1755023829;
+	bh=YiSjxrf0Nb7PpnruA4eGfOWjqQfQSMYKDnrAO6WUxtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRspyM/K4M5+wz1iy1PnLqiDXcY3yhZDvPwTsPZclQhIKcz6RFSUhOZhBAVmlksok
-	 +NMytWsCNlZJ+lSDeFx8xmBekptzs6wUUjTxKksNb/v7UYlSVjKPR0bEILkUM+ZTrX
-	 BHUQzh5XYJG4iLYFsVlzgrVGxvxAG+teJt6yMDOc=
+	b=2agyOjiP8ICmDeoOJiTOKeMyyFMqje3iznXSjBtjswH4fKFclEnLZbnvKjB4t/HM9
+	 pkRlfEQ4D7zcHOWiVozWpg1oku94tggqzoKM36S+km5BBdKvssdP4Mwequni5VQbdg
+	 xspLDCXGT25q7t3Qm08W9So6E9zIVa2nILMpnZmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Shannon Nelson <sln@onemain.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/262] selftests: rtnetlink.sh: remove esp4_offload after test
+Subject: [PATCH 6.16 194/627] wifi: ath12k: Block radio bring-up in FTM mode
 Date: Tue, 12 Aug 2025 19:28:09 +0200
-Message-ID: <20250812172957.389948445@linuxfoundation.org>
+Message-ID: <20250812173426.649019536@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiumei Mu <xmu@redhat.com>
+From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 
-[ Upstream commit 5b32321fdaf3fd1a92ec726af18765e225b0ee2b ]
+[ Upstream commit 80570587e418f361e7ce3f9200477f728b38c94b ]
 
-The esp4_offload module, loaded during IPsec offload tests, should
-be reset to its default settings after testing.
-Otherwise, leaving it enabled could unintentionally affect subsequence
-test cases by keeping offload active.
+Ensure that all radios remain down when the driver operates in Factory
+Test Mode (FTM). Reject any userspace attempts to bring up an
+interface in this mode.
 
-Without this fix:
-$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
-PASS: ipsec_offload
-esp4_offload           12288  0
-esp4                   32768  1 esp4_offload
+Currently, the driver allows userspace to bring up the interface even
+though it operates in FTM mode, which violates FTM constraints and
+leads to FTM command failures.
 
-With this fix:
-$ lsmod | grep offload; ./rtnetlink.sh -t kci_test_ipsec_offload ; lsmod | grep offload;
-PASS: ipsec_offload
+Hence, block the radio start when the driver is in FTM mode. Also,
+remove ath12k_ftm_mode check from ath12k_drain_tx() because FTM mode
+check is already handled in the caller function
+(ath12k_mac_op_start()).
 
-Fixes: 2766a11161cc ("selftests: rtnetlink: add ipsec offload API test")
-Signed-off-by: Xiumei Mu <xmu@redhat.com>
-Reviewed-by: Shannon Nelson <sln@onemain.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/6d3a1d777c4de4eb0ca94ced9e77be8d48c5b12f.1753415428.git.xmu@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: 3bc374cbc49e ("wifi: ath12k: add factory test mode support")
+Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250630031502.8902-1-aaradhana.sahu@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/rtnetlink.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath12k/mac.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
-index 855505c40ed8..c9ba4d269c38 100755
---- a/tools/testing/selftests/net/rtnetlink.sh
-+++ b/tools/testing/selftests/net/rtnetlink.sh
-@@ -854,6 +854,11 @@ kci_test_ipsec_offload()
- 	sysfsf=$sysfsd/ipsec
- 	sysfsnet=/sys/bus/netdevsim/devices/netdevsim0/net/
- 	probed=false
-+	esp4_offload_probed_default=false
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 0feb800a4921..43464853a01d 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -8167,14 +8167,9 @@ static int ath12k_mac_start(struct ath12k *ar)
+ 
+ static void ath12k_drain_tx(struct ath12k_hw *ah)
+ {
+-	struct ath12k *ar = ah->radio;
++	struct ath12k *ar;
+ 	int i;
+ 
+-	if (ath12k_ftm_mode) {
+-		ath12k_err(ar->ab, "fail to start mac operations in ftm mode\n");
+-		return;
+-	}
+-
+ 	lockdep_assert_wiphy(ah->hw->wiphy);
+ 
+ 	for_each_ar(ah, ar, i)
+@@ -8187,6 +8182,9 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
+ 	struct ath12k *ar;
+ 	int ret, i;
+ 
++	if (ath12k_ftm_mode)
++		return -EPERM;
 +
-+	if lsmod | grep -q esp4_offload; then
-+		esp4_offload_probed_default=true
-+	fi
+ 	lockdep_assert_wiphy(hw->wiphy);
  
- 	# setup netdevsim since dummydev doesn't have offload support
- 	if [ ! -w /sys/bus/netdevsim/new_device ] ; then
-@@ -943,6 +948,7 @@ EOF
- 	fi
- 
- 	# clean up any leftovers
-+	! "$esp4_offload_probed_default" && lsmod | grep -q esp4_offload && rmmod esp4_offload
- 	echo 0 > /sys/bus/netdevsim/del_device
- 	$probed && rmmod netdevsim
- 
+ 	ath12k_drain_tx(ah);
 -- 
 2.39.5
 
