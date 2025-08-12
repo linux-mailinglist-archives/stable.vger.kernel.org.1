@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0721B2340F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA991B23257
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F0E01A219D4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7893A5C09
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF342FE57E;
-	Tue, 12 Aug 2025 18:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923501EF38C;
+	Tue, 12 Aug 2025 18:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKmDk/eu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMTkfGb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A73D6BB5B;
-	Tue, 12 Aug 2025 18:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51596282E1;
+	Tue, 12 Aug 2025 18:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023423; cv=none; b=CnHpjUpboPvupq5XXONcq3PPoQJ+/789XwiST0ih/DKAA94ounYLQvKqh2XU+ag4l+8nNJR59Y9VtwyFJyl9CouIwjnWatX4TLi5+ES710mqtTpS6jtIazUddFLvoq8VoYIV9mU4AFnS5nMfKfyaFPspJ/lqLWEYFnGo/V8KfP4=
+	t=1755022276; cv=none; b=SudCM5Phjz0/o5yjwB+VTot5U29ht+ktkMiEHMjbiJ2YKRy6Cf8Pv7cKn4KAkwqr7MUnVxAiIUbPnmxndbgoLhCMo+VOR4f9Y+eUMX8jFdQhuO9DjN/xqzUY2vWjvMriRPrzm4eFLRBSf7+z+6ws2AfF8ma7v5aQPPwQO9of16o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023423; c=relaxed/simple;
-	bh=uJ/WCcCV56kabmSdPNJpGP3RM91O3aphHulCz8sr3aI=;
+	s=arc-20240116; t=1755022276; c=relaxed/simple;
+	bh=rfdm8pBdpFY+qCcu8P8ryTDH7zTwwzgwHHkD+t0i3uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auN7liB8XHKtzxBUMZ3WVR3EfRQ89FLwrSvKbj8ADvH0G7M8vuC7PNrkwmOc13EL4SkdScRGP6gTDn1pxeNUNW0cc5Jf8+dJMUSY2umKLmJhpqcz+7pEJcOH52EMDb0SLL1+yUZY3IESKVh/iO7+hhHB7l/MWM98j0BRNYqnNfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKmDk/eu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E25CC4CEF0;
-	Tue, 12 Aug 2025 18:30:22 +0000 (UTC)
+	 MIME-Version; b=QgQyhyl2MlD1jiw7BRWdzgb0emJYP6oTyyhd5eftdqo95l0FTg/0OzLSzk8/Ap3YvGYz2d5f/uPIXDhx0gVbZxSd4C3DNGkVyyoJFHZ1ZKYWxPWN7W93VNGPOkCb6VBgfQzdOh2N3zL/Az5ZEPTLBII6h3GwLqb+91m+dnyIhuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMTkfGb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DBCC4CEF9;
+	Tue, 12 Aug 2025 18:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023423;
-	bh=uJ/WCcCV56kabmSdPNJpGP3RM91O3aphHulCz8sr3aI=;
+	s=korg; t=1755022276;
+	bh=rfdm8pBdpFY+qCcu8P8ryTDH7zTwwzgwHHkD+t0i3uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKmDk/euyIASbe/A+QqaXfZrC1cv1bt48hBeqa4TzJ6qr9kmODIvDsaxJW9tG5idg
-	 1cx49PGL2Qg/EvSzgbzN+vkGDpiXxanY3kuI8a/0rmMOcB9aAmql9kUCz4OQnbl3FS
-	 ZpYeyL35EBJ9mgbjagu7OsolIPf1ZU1j/fU4QIOQ=
+	b=sMTkfGb1c9wUelVG2EV2aenjwOtF7jevF6eGwyP2bPS+89TZxQ2+lChhpvoheP4uv
+	 74Kq4g53Ztpq4+xR3p/v5N1HTZT2kFuAgiDRAqFt0vUpkp8ukR5aPTfAdU7KjDy+6F
+	 7hQO4URy8mH9AfG3oMclptYURVli6rlo0XZrnjpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 076/627] power: sequencing: qcom-wcn: fix bluetooth-wifi copypasta for WCN6855
+Subject: [PATCH 6.12 074/369] selftests/bpf: Fix unintentional switch case fall through
 Date: Tue, 12 Aug 2025 19:26:11 +0200
-Message-ID: <20250812173422.204359694@linuxfoundation.org>
+Message-ID: <20250812173017.563205825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Mykyta Yatsenko <yatsenko@meta.com>
 
-[ Upstream commit 07d59dec6795428983a840de85aa02febaf7e01b ]
+[ Upstream commit 66ab68c9de89672366fdc474f4f185bb58cecf2d ]
 
-Prevent a name conflict (which is surprisingly not caught by the
-framework).
+Break from switch expression after parsing -n CLI argument in veristat,
+instead of falling through and enabling comparison mode.
 
-Fixes: bd4c8bafcf50 ("power: sequencing: qcom-wcn: improve support for wcn6855")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250625-topic-wcn6855_pwrseq-v1-1-cfb96d599ff8@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: a5c57f81eb2b ("veristat: add ability to set BPF_F_TEST_SANITY_STRICT flag with -r flag")
+Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/20250617121536.1320074-1-mykyta.yatsenko5@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/sequencing/pwrseq-qcom-wcn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/veristat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/sequencing/pwrseq-qcom-wcn.c b/drivers/power/sequencing/pwrseq-qcom-wcn.c
-index e8f5030f2639..7d8d6b340749 100644
---- a/drivers/power/sequencing/pwrseq-qcom-wcn.c
-+++ b/drivers/power/sequencing/pwrseq-qcom-wcn.c
-@@ -155,7 +155,7 @@ static const struct pwrseq_unit_data pwrseq_qcom_wcn_bt_unit_data = {
- };
- 
- static const struct pwrseq_unit_data pwrseq_qcom_wcn6855_bt_unit_data = {
--	.name = "wlan-enable",
-+	.name = "bluetooth-enable",
- 	.deps = pwrseq_qcom_wcn6855_unit_deps,
- 	.enable = pwrseq_qcom_wcn_bt_enable,
- 	.disable = pwrseq_qcom_wcn_bt_disable,
+diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
+index 1ec5c4c47235..7b6b9c4cadb5 100644
+--- a/tools/testing/selftests/bpf/veristat.c
++++ b/tools/testing/selftests/bpf/veristat.c
+@@ -309,6 +309,7 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
+ 			fprintf(stderr, "invalid top N specifier: %s\n", arg);
+ 			argp_usage(state);
+ 		}
++		break;
+ 	case 'C':
+ 		env.comparison_mode = true;
+ 		break;
 -- 
 2.39.5
 
