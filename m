@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FA7B2313F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB72DB232F8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B1B7A2EDD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796FE1A20CA4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1E72DCF46;
-	Tue, 12 Aug 2025 18:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2C22DBF5E;
+	Tue, 12 Aug 2025 18:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8KiUP7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwAa6wq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6E4282E1;
-	Tue, 12 Aug 2025 18:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183233F9D2;
+	Tue, 12 Aug 2025 18:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021691; cv=none; b=kVsZoL34aplGzB0UfaLuekNwXF8lKbtqiz60SfcbQBA3Up29fwgGT1atrEhIzZEyp6wCKMqlCOxgvpMczIqnZSYhyzPShVB96Af4XsVaUAo/J8C61QnASfF3t88zDXk5MR578J2XZ0YfMHSJmXiozNw/OJBurahapdKbLJ6KZuc=
+	t=1755022743; cv=none; b=BkBoBuwfyNIT1Qk0TviDNdiF5Qupw2qKE5yQAdHyue+wjOc4dKyUEfJftq3w2yG+m7oGQCEPEoAgEp6BVSdyTHcfkX4ca1A4gBtUNRQx3aug6lb9Gjx/SOKDz6hjTaAvo6yJGqCs73++sS2dsWETiyimWT/AgAdtx7MgHkRHAAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021691; c=relaxed/simple;
-	bh=I9usJA+My72Ws5ApLUmgSA+Zhhc197hCqSAMogiJ8a8=;
+	s=arc-20240116; t=1755022743; c=relaxed/simple;
+	bh=Jq/79yVNFY4Icmv8XEw/gLv86tNn5hYPivfchhxZy1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rIoLeKyKMKwG5WZNSioQs9CNfoixTqVnAzxI1R+j9wHilZOBfGECEqXgr1LqLm7YacVCaeXDsg2/UEBVyQauMg4g1R4H5swm1G/eAXj/hndgTI1iVi9Ak8ATMvPzElmeWwCqo/LAM947+hUkskEhgXxJDbYAsqswFrkAwt2tCgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8KiUP7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B216DC4CEF0;
-	Tue, 12 Aug 2025 18:01:30 +0000 (UTC)
+	 MIME-Version; b=V3y7spKOpFiCLnep0oi6FMr3jKMVMG3H5rH4qVCwEKfVHUVL2Wk+Bd64qPBlNSxQNarR2Wh8Mave4SLvlECi4P4N+zb3jtTmp1OY0f2nTTN44+dG5TxQc2xBhvFq0M+5uAwZ0wSHymo3X0NZF1lJS88gPjUvkxZXu8zzsnsNd9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwAa6wq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EDEC4CEF1;
+	Tue, 12 Aug 2025 18:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021691;
-	bh=I9usJA+My72Ws5ApLUmgSA+Zhhc197hCqSAMogiJ8a8=;
+	s=korg; t=1755022743;
+	bh=Jq/79yVNFY4Icmv8XEw/gLv86tNn5hYPivfchhxZy1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8KiUP7cNAMy27XJj2Eyfg1KxIjCEryivVe3ahAyh/6YWFQydTTDJaBDvGjSJAAId
-	 nMJIuiyvOgOYrlOkjbdcliuvKdEw8ri0Ix0tjc8algLn/+El/soV5BoJIn+EuWGSUE
-	 zMvOqYD+M/QCbqt2rggcy0CEK08+Yocf5kUbBfkA=
+	b=CwAa6wq50Bsg6F7EEhaYMUOh/cml9+hjiiHKRKy2yqGeRA41YNN2v1eaOfhyYS2np
+	 8a+hBN8n6oSDeSuwxn6iPRkBhFVeOf2AXTjQ6n6M+auuuK2BsoPgiHrRPe5QLa9IAZ
+	 vaiiot+GyBWP/Sm/c58y6AyM8yPaIvCJDRlNMbw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/262] crypto: qat - fix seq_file position update in adf_ring_next()
+Subject: [PATCH 6.12 244/369] rtc: hym8563: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:01 +0200
-Message-ID: <20250812172959.615014506@linuxfoundation.org>
+Message-ID: <20250812173023.947780503@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 6908c5f4f066a0412c3d9a6f543a09fa7d87824b ]
+[ Upstream commit d0a518eb0a692a2ab8357e844970660c5ea37720 ]
 
-The `adf_ring_next()` function in the QAT debug transport interface
-fails to correctly update the position index when reaching the end of
-the ring elements. This triggers the following kernel warning when
-reading ring files, such as
-/sys/kernel/debug/qat_c6xx_<D:B:D:F>/transport/bank_00/ring_00:
+When hym8563_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-   [27725.022965] seq_file: buggy .next function adf_ring_next [intel_qat] did not update position index
-
-Ensure that the `*pos` index is incremented before returning NULL when
-after the last element in the ring is found, satisfying the seq_file API
-requirements and preventing the warning.
-
-Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: dcaf038493525 ("rtc: add hym8563 rtc-driver")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-2-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_transport_debug.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-hym8563.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-index e2dd568b87b5..621b5d3dfcef 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-@@ -31,8 +31,10 @@ static void *adf_ring_next(struct seq_file *sfile, void *v, loff_t *pos)
- 	struct adf_etr_ring_data *ring = sfile->private;
+diff --git a/drivers/rtc/rtc-hym8563.c b/drivers/rtc/rtc-hym8563.c
+index 63f11ea3589d..759dc2ad6e3b 100644
+--- a/drivers/rtc/rtc-hym8563.c
++++ b/drivers/rtc/rtc-hym8563.c
+@@ -294,7 +294,7 @@ static long hym8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
- 	if (*pos >= (ADF_SIZE_TO_RING_SIZE_IN_BYTES(ring->ring_size) /
--		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size)))
-+		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size))) {
-+		(*pos)++;
- 		return NULL;
-+	}
+-	return 0;
++	return clkout_rates[0];
+ }
  
- 	return ring->base_addr +
- 		(ADF_MSG_SIZE_TO_BYTES(ring->msg_size) * (*pos)++);
+ static int hym8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
