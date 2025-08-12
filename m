@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65112B230CE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B18B234F8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EFEA6877CD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BDB7A6644
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47082DE1E2;
-	Tue, 12 Aug 2025 17:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCD72FDC5C;
+	Tue, 12 Aug 2025 18:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkPvSwi9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs7yPd3C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7215A2F83CB;
-	Tue, 12 Aug 2025 17:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6DF20409A;
+	Tue, 12 Aug 2025 18:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021339; cv=none; b=FS6inkJVfzK1qRvKifREuhsG4D5Fxn0LyJwz6m0VHj6pbuYo4bDd17dkdsrnVgBCy3LCi0vy9fkRSeNMCzCdh3W+0QaidnDrwQwh0I9IDyzZR4NjOXWo5suZKkb7Tg7KR0hm4Ihzg7YUaGUOO3MhG5hMinTJqInVQ22MCxH7rSM=
+	t=1755024342; cv=none; b=f8c1MNVOCjS4P8c4ziGUTP/nLq9iEmoO7iPNffyyyQmKBK6sdS5BzNsIzF7tvpd1pgkXDLJk9xeiw2Og+V0NY0ZXU0MN1KfRkaSzLVs68N4Rfm7NGfY3dHgKgDZXp0i+tYYOrEM4MxHl9yKcA1uqkuX9GZ8EH8A96RA7h38r3qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021339; c=relaxed/simple;
-	bh=OjRFGQ6WABinM/uiTfPTWvBA1IOZYBoXVukGYDrPjyA=;
+	s=arc-20240116; t=1755024342; c=relaxed/simple;
+	bh=2eX1rRPDXGXwaW/LDnGCGfw4EmGdUlLlnyQUwbtXMTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6PzI2Oeb7vosWQU2spF/FeKiBPvu7sYUtWoZBVLOTGVOuUgayq8KpvyR4eUA6amKbGdrU/Z7tJRgGGn+Xh0WwKL2Bn8iz+k5ozbmRiyiw+lTmGlOmxs2yfZskeW579sKgydpnEG0neZ0MkqZJyRp4Wj/QXwpOdrIoVrPFLTf70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkPvSwi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57DDC4CEF1;
-	Tue, 12 Aug 2025 17:55:38 +0000 (UTC)
+	 MIME-Version; b=PLYOqjEK4BdbUF69nwGijZQP+Y9KdAonL2tb4q/504RHiDZCLoADLcTsZfAG+PGn1ptQRF2JRyyLF0qM2uUamMfUrYQN7OJlJlv0Lbb31UQiWRkApPyrSEg6UV0WZgbSMqpNWvB7fCYZyVeI/p2uqpGfgXrFHIAaN7IJPvPFbBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs7yPd3C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F6CC4CEF0;
+	Tue, 12 Aug 2025 18:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021339;
-	bh=OjRFGQ6WABinM/uiTfPTWvBA1IOZYBoXVukGYDrPjyA=;
+	s=korg; t=1755024342;
+	bh=2eX1rRPDXGXwaW/LDnGCGfw4EmGdUlLlnyQUwbtXMTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkPvSwi9QkpWWna5rLbtWCV9Y2A9OFt3fnROpUEN7B3CnlGS3FkHmFB6Gclv09xE1
-	 lPIr2VdY5AcqPSfAvnSD4LsIguFodrB17m8SF8QJ2KZDQH6ALTEgbdUnKhv/XoKAqT
-	 ShZ8FL6kFoTDqCdWiYzkAREWjQhH6FYnYjalgI+8=
+	b=Bs7yPd3CNML64mhzwx5IL8JjcXS2svQrzNX4gtjWk3QGiTbf1KwQlcwIv+YORGb1o
+	 Z3X641ls/U+1/ArvEh0l6RwQIeQkAiM5szZKyIZjCC30NyhZyN5pXuXonrRxh1DKDk
+	 4WyLMOrTgFQao6J7TDYtPaYZuh4gcsZAQ3O6mSvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 250/253] x86/fpu: Delay instruction pointer fixup until after warning
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 343/627] RDMA/mlx5: Check CAP_NET_RAW in user namespace for flow create
 Date: Tue, 12 Aug 2025 19:30:38 +0200
-Message-ID: <20250812172959.505614566@linuxfoundation.org>
+Message-ID: <20250812173432.330183501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Parav Pandit <parav@nvidia.com>
 
-commit 1cec9ac2d071cfd2da562241aab0ef701355762a upstream.
+[ Upstream commit 95a89ec304c38f7447cdbf271f2d1cbad4c3bf81 ]
 
-Right now, if XRSTOR fails a console message like this is be printed:
+Currently, the capability check is done in the default
+init_user_ns user namespace. When a process runs in a
+non default user namespace, such check fails. Due to this
+when a process is running using Podman, it fails to create
+the flow.
 
-	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
+Since the RDMA device is a resource within a network namespace,
+use the network namespace associated with the RDMA device to
+determine its owning user namespace.
 
-However, the text location (...+0x9a in this case) is the instruction
-*AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
-also points one instruction late.
-
-The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
-keep on running after returning from the #GP handler. But it does this
-fixup before warning.
-
-The resulting warning output is nonsensical because it looks like the
-non-FPU-related instruction is #GP'ing.
-
-Do not fix up RIP until after printing the warning. Do this by using
-the more generic and standard ex_handler_default().
-
-Fixes: d5c8028b4788 ("x86/fpu: Reinitialize FPU registers if restoring FPU state fails")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Acked-by: Alison Schofield <alison.schofield@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250624210148.97126F9E%40davehans-spike.ostc.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 322694412400 ("IB/mlx5: Introduce driver create and destroy flow methods")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Link: https://patch.msgid.link/a4dcd5e3ac6904ef50b19e56942ca6ab0728794c.1750963874.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/extable.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/mlx5/fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/mm/extable.c
-+++ b/arch/x86/mm/extable.c
-@@ -121,13 +121,12 @@ static bool ex_handler_sgx(const struct
- static bool ex_handler_fprestore(const struct exception_table_entry *fixup,
- 				 struct pt_regs *regs)
- {
--	regs->ip = ex_fixup_addr(fixup);
--
- 	WARN_ONCE(1, "Bad FPU state detected at %pB, reinitializing FPU registers.",
- 		  (void *)instruction_pointer(regs));
+diff --git a/drivers/infiniband/hw/mlx5/fs.c b/drivers/infiniband/hw/mlx5/fs.c
+index 680627f1de33..de8114ba9c1f 100644
+--- a/drivers/infiniband/hw/mlx5/fs.c
++++ b/drivers/infiniband/hw/mlx5/fs.c
+@@ -2458,7 +2458,7 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_CREATE_FLOW)(
+ 	struct mlx5_ib_dev *dev;
+ 	u32 flags;
  
- 	fpu_reset_from_exception_fixup();
--	return true;
-+
-+	return ex_handler_default(fixup, regs);
- }
+-	if (!capable(CAP_NET_RAW))
++	if (!rdma_uattrs_has_raw_cap(attrs))
+ 		return -EPERM;
  
- static bool ex_handler_uaccess(const struct exception_table_entry *fixup,
+ 	fs_matcher = uverbs_attr_get_obj(attrs,
+-- 
+2.39.5
+
 
 
 
