@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE085B23414
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE27B2324E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C40703A93EA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A064A1897B51
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8802FA0F9;
-	Tue, 12 Aug 2025 18:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663E920409A;
+	Tue, 12 Aug 2025 18:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Clkw8EGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJdS/4E0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2A91E500C;
-	Tue, 12 Aug 2025 18:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254A1305E08;
+	Tue, 12 Aug 2025 18:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023484; cv=none; b=PS3wzxYJg8tPLcAY/7kG8VyDe/9xxMA8sA82t6cTUBx5GNlkf3who3tTfT1p7J3fMBJ+IL4Sy7KoB4BYWOEiMhrjr9G1XsAo8+paxvKGDlRqQ7SlQIubPYj0V3Ic2OztaaLRsOdsDx6izcEZHh2I88/0kqh26TSyvCoJr7W+lxA=
+	t=1755022222; cv=none; b=M64cz3M3DFDNeZ/ZOOpTY3MKydHbRYSkrBVJHbpQCGO4k37qW+yxJWfuiyDBku7SLKxC0eDNjxgTbjs8Q85vd/B5nN3jmg4TVZyBzFc6AM7YQeipx7cWUgdocAZzmzsWi51kWQVlfgGMeZ9D8cqXJLarRr2Mqu6LeBOYYnzcNwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023484; c=relaxed/simple;
-	bh=iRh3fCEanC6n5Kw6eIN1tuWQTPvJjj+lJkWuIOEFMEI=;
+	s=arc-20240116; t=1755022222; c=relaxed/simple;
+	bh=CUv5/hizawQt55LGG15Bd+79KF3Jhl8X3W1qyK1cmRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G+HXNzI9j/t3KsTvk1isxn2JfcW/GyLVa2QR3g3lnnQfN3dBuUA+fY2oCuwUqljzcCxlv4y3UXnoRu0lBd27oKFkvRMzn+42JjUrvGXHnnqJ6vV1L/wv1EyWdAiTtopr07vhNkuEHqqagieX5bRc4I3iAiIUvTwpR1y+2CycdLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Clkw8EGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60ADC4CEF0;
-	Tue, 12 Aug 2025 18:31:23 +0000 (UTC)
+	 MIME-Version; b=hQNqPlS2+Em2LcTamhrp+Fjz0+n9TRYe/iAere/ReAu1oG9XwTHPIyW+oFKOe0xdG/4lJBTkXTkLpt29kD9HGNkdlDx5fMoy/vA1ExNRIH29a8U6949F9/3hCFwbTrAaNvwkHJueW1nzFzr0FBzGpPNxa/LGdadEBYXOkZj8lOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJdS/4E0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABABC4CEF0;
+	Tue, 12 Aug 2025 18:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023484;
-	bh=iRh3fCEanC6n5Kw6eIN1tuWQTPvJjj+lJkWuIOEFMEI=;
+	s=korg; t=1755022222;
+	bh=CUv5/hizawQt55LGG15Bd+79KF3Jhl8X3W1qyK1cmRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Clkw8EGvSF7IJ80NSsYpe1VHtqvp6zO8t7wZ6s3gYtJB+hDPyQgn3e/dgl67JxvPj
-	 yxen1+700QnThZb1kvYnGwHarJIZD/HbAbLTz1sVqtEcc8g6W+HfQ5FEDjJGikLgyJ
-	 z6DDfgxP7rybjyz9qxSwyuSLFIS8UR1agddbEPP0=
+	b=rJdS/4E0g6Zm084HKRkYiZieMrnba9cHwNyUi/xp8Jhi7pXuJRTTwx9kwjUlMolUQ
+	 6oZOePtt8H8x6lVCo3UIG7HRZVH1GJau1jeX0i5m0q5acc+tjr1PDvMW1Ipn+w9WVu
+	 tUw8e1klHm3B2HLZmglmXT3P6kKK13yR0WMFALpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 092/627] arm: dts: ti: omap: Fixup pinheader typo
-Date: Tue, 12 Aug 2025 19:26:27 +0200
-Message-ID: <20250812173422.811577643@linuxfoundation.org>
+Subject: [PATCH 6.12 091/369] bpf: Ensure RCU lock is held around bpf_prog_ksym_find
+Date: Tue, 12 Aug 2025 19:26:28 +0200
+Message-ID: <20250812173018.198892364@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Törnqvist <albin.tornqvist@codiax.se>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
+[ Upstream commit d090326860096df9dac6f27cff76d3f8df44d4f1 ]
 
-This commit fixes a typo introduced in commit
-ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
-gpio0_7 is located on the P9 header on the BBB.
-This was verified with a BeagleBone Black by toggling the pin and
-checking with a multimeter that it corresponds to pin 42 on the P9
-header.
+Add a warning to ensure RCU lock is held around tree lookup, and then
+fix one of the invocations in bpf_stack_walker. The program has an
+active stack frame and won't disappear. Use the opportunity to remove
+unneeded invocation of is_bpf_text_address.
 
-Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
-Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
-Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: f18b03fabaa9 ("bpf: Implement BPF exceptions")
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20250703204818.925464-5-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-boneblack.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/core.c    |  5 ++++-
+ kernel/bpf/helpers.c | 11 +++++++++--
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-index 16b567e3cb47..b4fdcf9c02b5 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-@@ -35,7 +35,7 @@ &gpio0 {
- 		"P9_18 [spi0_d1]",
- 		"P9_17 [spi0_cs0]",
- 		"[mmc0_cd]",
--		"P8_42A [ecappwm0]",
-+		"P9_42A [ecappwm0]",
- 		"P8_35 [lcd d12]",
- 		"P8_33 [lcd d13]",
- 		"P8_31 [lcd d14]",
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 68a327158989..767dcb8471f6 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -778,7 +778,10 @@ bool is_bpf_text_address(unsigned long addr)
+ 
+ struct bpf_prog *bpf_prog_ksym_find(unsigned long addr)
+ {
+-	struct bpf_ksym *ksym = bpf_ksym_find(addr);
++	struct bpf_ksym *ksym;
++
++	WARN_ON_ONCE(!rcu_read_lock_held());
++	ksym = bpf_ksym_find(addr);
+ 
+ 	return ksym && ksym->prog ?
+ 	       container_of(ksym, struct bpf_prog_aux, ksym)->prog :
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 6cf165c55bda..be4429463599 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2781,9 +2781,16 @@ static bool bpf_stack_walker(void *cookie, u64 ip, u64 sp, u64 bp)
+ 	struct bpf_throw_ctx *ctx = cookie;
+ 	struct bpf_prog *prog;
+ 
+-	if (!is_bpf_text_address(ip))
+-		return !ctx->cnt;
++	/*
++	 * The RCU read lock is held to safely traverse the latch tree, but we
++	 * don't need its protection when accessing the prog, since it has an
++	 * active stack frame on the current stack trace, and won't disappear.
++	 */
++	rcu_read_lock();
+ 	prog = bpf_prog_ksym_find(ip);
++	rcu_read_unlock();
++	if (!prog)
++		return !ctx->cnt;
+ 	ctx->cnt++;
+ 	if (bpf_is_subprog(prog))
+ 		return true;
 -- 
 2.39.5
 
