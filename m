@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3965B22F40
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:37:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3B6B22FF7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19AD262765C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6725662E8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF062FD1D1;
-	Tue, 12 Aug 2025 17:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8162FD1BF;
+	Tue, 12 Aug 2025 17:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmdIE1sc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLriT1Sr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7092F83CB;
-	Tue, 12 Aug 2025 17:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1422C15B5;
+	Tue, 12 Aug 2025 17:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020242; cv=none; b=r5c/vHezlitS027AMWwUvcNVnfbORR/LXYWVCIDYvpkCLHCy9cZ1eGttNlk2pK/n5iZksSCyjrMPmikidhqLKccarRcpRE/6+IyeecfBgCJGIfygYIt6hfDY7Rd4aHxCpdiWpyN8MeMfhRbzjYxE1UqA64qob9qWaFZUCggqLfM=
+	t=1755020732; cv=none; b=RB8o043UDZYmVUDgMsmpQmbZs61vrtJ0HgQVzxffk19tn7xegshQ98BrA68T6ZjCQF9f2c/ggDzBAznn8+JfSxkuR0lc41U9cRRkYZL9guDF7DMPHlGtsq54u3abzEopRnu1iJWSBEgqt7aLCCT+j6P2dMp87G/7bkmYS7/e9v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020242; c=relaxed/simple;
-	bh=3VgTp6HSQMThG9jLFd4iC3ZJv2VEjMG0iJXBRKulCj8=;
+	s=arc-20240116; t=1755020732; c=relaxed/simple;
+	bh=u+dOoLaEiQnPyUPqqj1xNpOfVnfsdQy2EMxdNLXxkAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRJolDa8i2U5ZjYQYVzYek9RwLk1F9SB0NIPfqijBrXRoLul7HsFNGAq5M0aOjiHT9V1qS52ZA6JKYhULVvlDtnro/1G1Up/WECnGb/0RbaEgGbXAoh+rKV7uIOzepAFZB5frgorAZeXVdK0XcucbvvvQaIOLJu03iVDnDUoRMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmdIE1sc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0033EC4CEF0;
-	Tue, 12 Aug 2025 17:37:21 +0000 (UTC)
+	 MIME-Version; b=GtpQER0R0PyRTOApvqUdiNMwtQs2khPcIyYu2GTndDPmG2rnNz5tXL1COkgF6BWdASzwIdGYoYMoI3gqc/1bkvtYlnIn+Rp2ygRwXuHHv5oDvc8n5OQlkhwBwEqm1EVVCrJuBspM2G3UIOykCVNJ5IPi4RMAMyaCvYNgWF4Hi3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLriT1Sr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E053C4CEF0;
+	Tue, 12 Aug 2025 17:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020242;
-	bh=3VgTp6HSQMThG9jLFd4iC3ZJv2VEjMG0iJXBRKulCj8=;
+	s=korg; t=1755020732;
+	bh=u+dOoLaEiQnPyUPqqj1xNpOfVnfsdQy2EMxdNLXxkAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmdIE1scFhRF2YNEWm+sFMcYZSHTSP2cQHNlq2/4mqQwCfhn9tWPXj8m7+oiLYjCS
-	 2qDa2HK15KET95oyHqfqZbcjdhE52Kv4lQispO4ODModsN5wZFyrBxlx+5BY0YlL3Z
-	 I8n1Pdyhj3TTH7gigu2k4MNd7IYEywUdWIgLvKxg=
+	b=BLriT1SrBY9cMFGT9k8NPHOGCJnXgQ2arz/eko1i336A/OIw/83mNlVXSUFG3PDhN
+	 rKpu2bz/feiwDSwPKwzPNgZojw6hQwMw15BN6sqRj/EOQfSt5DLLoGEdU44miSmI7N
+	 etcqQB6bxwkfkBT6jNp1BlUqG/u2g8yTuyvcz3jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xilin Wu <sophon@radxa.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
+	Alexandru Andries <alex.andries.aa@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/253] interconnect: qcom: sc7280: Add missing num_links to xm_pcie3_1 node
-Date: Tue, 12 Aug 2025 19:26:32 +0200
-Message-ID: <20250812172948.871641649@linuxfoundation.org>
+Subject: [PATCH 6.6 005/262] ASoC: amd: yc: add DMI quirk for ASUS M6501RM
+Date: Tue, 12 Aug 2025 19:26:33 +0200
+Message-ID: <20250812172953.196198560@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xilin Wu <sophon@radxa.com>
+From: Alexandru Andries <alex.andries.aa@gmail.com>
 
-[ Upstream commit 886a94f008dd1a1702ee66dd035c266f70fd9e90 ]
+[ Upstream commit 6f80be548588429100eb1f5e25dc2a714d583ffe ]
 
-This allows adding interconnect paths for PCIe 1 in device tree later.
+add DMI entry for ASUS Vivobook PRO 15X (M6501RM)
+to make the internal microphone function
 
-Fixes: 46bdcac533cc ("interconnect: qcom: Add SC7280 interconnect provider driver")
-Signed-off-by: Xilin Wu <sophon@radxa.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250613-sc7280-icc-pcie1-fix-v1-1-0b09813e3b09@radxa.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Signed-off-by: Alexandru Andries <alex.andries.aa@gmail.com>
+Link: https://patch.msgid.link/20250707220730.361290-1-alex.andries.aa@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sc7280.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/interconnect/qcom/sc7280.c b/drivers/interconnect/qcom/sc7280.c
-index 3c39edd21b6ca..79794d8fd711f 100644
---- a/drivers/interconnect/qcom/sc7280.c
-+++ b/drivers/interconnect/qcom/sc7280.c
-@@ -164,6 +164,7 @@ static struct qcom_icc_node xm_pcie3_1 = {
- 	.id = SC7280_MASTER_PCIE_1,
- 	.channels = 1,
- 	.buswidth = 8,
-+	.num_links = 1,
- 	.links = { SC7280_SLAVE_ANOC_PCIE_GEM_NOC },
- };
- 
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 1063a19b39aa..24919e68b346 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -409,6 +409,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "M6501RM"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.39.5
 
