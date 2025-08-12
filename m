@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-168671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA128B23613
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:57:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC43B23664
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:00:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EDC97BBC1D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:54:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD8CE6823A8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E16B2FD1B2;
-	Tue, 12 Aug 2025 18:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF602FF152;
+	Tue, 12 Aug 2025 18:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hu1Vo5CZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhcVxyoc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3332FE57E;
-	Tue, 12 Aug 2025 18:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4575A2FE595;
+	Tue, 12 Aug 2025 18:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024950; cv=none; b=u/hJdOoTxCsFHzR2+KhmFjKYD6L0n+V3ID4g2ezhRobUjpVbMLiKaQUu7ddOZ/IQRTRupOqWGVxMEo2w+9XC+/r0ie4EaqLlojXpznipv54PO8put1vaa9C1DDg+ihyZU8Svog291K+y967uPxa8Fsk5v7do6btroyTPZko+tiA=
+	t=1755025092; cv=none; b=T36XeLTywZjdFPApcpeEN1E6xMsKaKt6EpEhjG+ohXUmvuqbcg5qSInD/EZbHZuV5aHKF+QVd+zj6C+cIbAUwagUTiTZL2t1hwYxmxPzxH1oAO97td4GqzZ9KAqy27pbBoY8WpxjZ0dXXqGpio1Y989wvE1ogNZUhMjVxQNCi+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024950; c=relaxed/simple;
-	bh=bZ35k29J1YI0vFe3OlV/jo3pz/42ihOXXpNeYpLoRgY=;
+	s=arc-20240116; t=1755025092; c=relaxed/simple;
+	bh=cKsQeSkm+Hlu5OqGDI3IuZHjSkvingSfceLq1nLS9IQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKjrUh3YV7AEiEKcBVwhTtsuY3Q1Fa0QIyHh6kRgoQB5Y5Uo1kv4B8Cx+ilnuhapsubKDxexXiX6577K/G3Y/gfdJE1brUU01BRJRW8hISlev6fFQ9UPF56bIGgy6Cf8co1SXb6gqoVdHUIaXn4/8UqybuVyMppvhqytGeyuk60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hu1Vo5CZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8255BC4CEF0;
-	Tue, 12 Aug 2025 18:55:49 +0000 (UTC)
+	 MIME-Version; b=O/cbf7xqHme66ytUCPGd1Q4goRHAnt/T84TZ42BHGjBDjRasJYQ7KDxBnRDG2k3KBpOWL507BRjtXEUN1SfT9tqagMG8VXXQhBy+cVBt6J9JP/20MxA8NHJ0o3a45etNib8TuytiQN0DAVxGQsVNpBZysXdXgXADCmbbEtLTTzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhcVxyoc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9208C4CEF0;
+	Tue, 12 Aug 2025 18:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024949;
-	bh=bZ35k29J1YI0vFe3OlV/jo3pz/42ihOXXpNeYpLoRgY=;
+	s=korg; t=1755025092;
+	bh=cKsQeSkm+Hlu5OqGDI3IuZHjSkvingSfceLq1nLS9IQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hu1Vo5CZ/Y5lOcQm4mk7vCaeb1PnPUblFQGwLwyLN47hniv9Xzu4u1/VVEtzuxjbw
-	 1NAMFK44tF4Xbv6leL7cJHju0rra05uRBdRtupCCAsmUc1aeThl3Xa2xSHg9fqntOO
-	 8QbUrluZZdsvksQAej3GTmWHe07+iLQR4ucUpr/8=
+	b=lhcVxyocsn35CE2FeeXRMGaOZhDp/RONh9nHJUAJWs6hXiGq3jsvIoc9KLQcCVmb/
+	 oel5RzgSrwqhX7gY8lgKmQSQcbl2B4kCyYORywCEqMKM4o0m8zg7ceHCnmxl03UW2d
+	 tAzBat4bhjLteFEbHcZtbEG0q8V7LZwb4Vq/lPQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Duo Yi <duo@meta.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 523/627] s390/mm: Set high_memory at the end of the identity mapping
-Date: Tue, 12 Aug 2025 19:33:38 +0200
-Message-ID: <20250812173451.663989658@linuxfoundation.org>
+Subject: [PATCH 6.16 524/627] netlink: specs: ethtool: fix module EEPROM input/output arguments
+Date: Tue, 12 Aug 2025 19:33:39 +0200
+Message-ID: <20250812173451.778191331@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -68,85 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 56f4cfab1c93b14da422cdcd23898eb008033696 ]
+[ Upstream commit 01051012887329ea78eaca19b1d2eac4c9f601b5 ]
 
-The value of high_memory variable is set by set_high_memory() function
-to a value returned by memblock_end_of_DRAM(). The latter function
-returns by default the upper bound of the last online memory block,
-not the upper bound of the directly mapped memory region. As result,
-in case the end of memory happens to be offline, high_memory variable
-is set to a value that is short on the last offline memory blocks size:
+Module (SFP) eeprom GET has a lot of input params, they are all
+mistakenly listed as output in the spec. Looks like kernel doesn't
+output them at all. Correct what are the inputs and what the outputs.
 
-RANGE                                  SIZE   STATE REMOVABLE   BLOCK
-0x0000000000000000-0x000000ffffffffff    1T  online       yes   0-511
-0x0000010000000000-0x0000011fffffffff  128G offline           512-575
-
-Memory block size:         2G
-Total online memory:       1T
-Total offline memory:    128G
-
-crash> p/x vm_layout
-$1 = {
-  kaslr_offset = 0x3453e918000,
-  kaslr_offset_phys = 0xa534218000,
-  identity_base = 0x0,
-  identity_size = 0x12000000000
-}
-crash> p/x high_memory
-$2 = 0x10000000000
-
-In the past the value of high_memory was derived from max_low_pfn,
-which in turn was derived from the identity_size. Since identity_size
-accommodates the whole memory size - including tailing offline blocks,
-the offlined blocks did not impose any problem. But since commit
-e120d1bc12da ("arch, mm: set high_memory in free_area_init()") the
-value of high_memory is derived from the last memblock online region,
-and that is where the problem comes from.
-
-The value of high_memory is used by several drivers and by external
-tools (e.g. crash tool aborts while loading a dump).
-
-Similarily to ARM, use the override path provided by set_high_memory()
-function and set the value of high_memory at the end of the identity
-mapping early. That forces set_high_memory() to leave in high_memory
-the correct value, even when the end of available memory is offline.
-
-Fixes: e120d1bc12da ("arch, mm: set high_memory in free_area_init()")
-Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: Duo Yi <duo@meta.com>
+Fixes: a353318ebf24 ("tools: ynl: populate most of the ethtool spec")
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250730172137.1322351-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/setup.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ Documentation/netlink/specs/ethtool.yaml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-index f244c5560e7f..5c9789804120 100644
---- a/arch/s390/kernel/setup.c
-+++ b/arch/s390/kernel/setup.c
-@@ -719,6 +719,11 @@ static void __init memblock_add_physmem_info(void)
- 	memblock_set_node(0, ULONG_MAX, &memblock.memory, 0);
- }
+diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+index 348c6ad548f5..d1ee5307160f 100644
+--- a/Documentation/netlink/specs/ethtool.yaml
++++ b/Documentation/netlink/specs/ethtool.yaml
+@@ -2107,9 +2107,6 @@ operations:
  
-+static void __init setup_high_memory(void)
-+{
-+	high_memory = __va(ident_map_size);
-+}
-+
- /*
-  * Reserve memory used for lowcore.
-  */
-@@ -951,6 +956,7 @@ void __init setup_arch(char **cmdline_p)
- 
- 	free_physmem_info();
- 	setup_memory_end();
-+	setup_high_memory();
- 	memblock_dump_all();
- 	setup_memory();
- 
+       do: &module-eeprom-get-op
+         request:
+-          attributes:
+-            - header
+-        reply:
+           attributes:
+             - header
+             - offset
+@@ -2117,6 +2114,9 @@ operations:
+             - page
+             - bank
+             - i2c-address
++        reply:
++          attributes:
++            - header
+             - data
+       dump: *module-eeprom-get-op
+     -
 -- 
 2.39.5
 
