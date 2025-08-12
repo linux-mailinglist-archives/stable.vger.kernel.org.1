@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-168453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DAEB23537
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FDCB232E0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FE743BD025
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4833D7AE674
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519D12FD1A4;
-	Tue, 12 Aug 2025 18:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC30A2F291B;
+	Tue, 12 Aug 2025 18:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjpoSZmt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhF1ShH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED432F291B;
-	Tue, 12 Aug 2025 18:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A522E7BD4;
+	Tue, 12 Aug 2025 18:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024221; cv=none; b=IOM6eXFNP6VxHMc4CDr6usx+Y2zTmObCi2DW3TIJ4Tp9YCrmUJloBdxrRt2VCPQ0gUii14CyDh52ltLVtE+4rUvhp4e2K3JMsHuMfah5FxeVOdOpiV9hJjOGrzj5cfK+PMozE7+Jy023hRPiabSU9phVQL7xdk9yCVzrLF9wr8k=
+	t=1755022952; cv=none; b=IGa9/wxZT03Rdz41teaFLGbMpllb3dTL4OIhUtb1t/c1SsazjVuzlCURuZSqj+VNeK7dER6kyJrIHdohvDmD7UyctKM/SSfI/ZZ1ylwUcT4eMUj0nIBg4aKZs+RqLr449aBuV8eJk3EXXg4O7IGPiaxec65TI7uI15VKveDctow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024221; c=relaxed/simple;
-	bh=GrXUKaDnexGNPhnkTP2p/ooloyFRSsYnEpzynJlYavU=;
+	s=arc-20240116; t=1755022952; c=relaxed/simple;
+	bh=poXzssY3S7rEvxo8kG7TmDjOqJjZM+d7gUxIH8bUwlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEELuOHUxRxZitPvkQW23Ay9p90+s+hObJ8gQ+vEXHYemUcWpQrSLWcxZdzBvY3QuGOvQorGbrJBq3e9p8PHWvLsExE4SqYbtXCtvOjWPQV8clR10a/yuHXKIx4LNjlFGHMqgTcNZL+8ei+zrPclg/XUlLuVaPZJ4JnoiK1cbGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjpoSZmt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700F8C4CEF0;
-	Tue, 12 Aug 2025 18:43:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o5oYGIegvry+cQbx1jiA1fmI3VCzmR2+aaPyzk7jP8VNHFbZkLYTHj9os4pnxmlC5SNbmUBxl1lLWOC/ZzETBjEDr3SC1WXvDg0rxY1NpyAytpp9u+K6KwKPiqKU7o5Ks32kNNFzdsW7MFaGi+R5R8q5rFG+RXOOMPBa11Z50Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhF1ShH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024E0C4CEF0;
+	Tue, 12 Aug 2025 18:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024220;
-	bh=GrXUKaDnexGNPhnkTP2p/ooloyFRSsYnEpzynJlYavU=;
+	s=korg; t=1755022952;
+	bh=poXzssY3S7rEvxo8kG7TmDjOqJjZM+d7gUxIH8bUwlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjpoSZmtdDBcxVW90+kN612pTv4q+LhPqYu+Q6jR2dDigJmqJRTMPQwX7yjJuMm37
-	 j23KjqZsZumHgn7NJpdy584PUAVb5d4oxJ4lSiVkDRZPjRIGtGa0Kga5T9tx8jWAw6
-	 PnjFXJp43zgupPCxTet/xBzA8Zd1STfYwX3YhNus=
+	b=nhF1ShH3bn7/JqtoxxQd9MxN+MqkDM2YmJgBnMgwLWW+VxZ3fgkyPquEwuDoXIpJD
+	 Xbp6ykZreWaqooG3nkpvIfxFZ0opS0SpZ84vJnltl4TRjrzyshLy5wHklj4lXYWSx7
+	 dMTczYRAIu3MPLGcw4YFFqXvDRUIUK6r/l+K/eSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Dumazet <edumazet@google.com>,
+	Maher Azzouzi <maherazz04@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 308/627] crypto: ccp - Fix dereferencing uninitialized error pointer
+Subject: [PATCH 6.12 306/369] net/sched: mqprio: fix stack out-of-bounds write in tc entry parsing
 Date: Tue, 12 Aug 2025 19:30:03 +0200
-Message-ID: <20250812173431.025774193@linuxfoundation.org>
+Message-ID: <20250812173028.242665265@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Maher Azzouzi <maherazz04@gmail.com>
 
-[ Upstream commit 0fa766726c091ff0ec7d26874f6e4724d23ecb0e ]
+[ Upstream commit ffd2dc4c6c49ff4f1e5d34e454a6a55608104c17 ]
 
-Fix below smatch warnings:
-drivers/crypto/ccp/sev-dev.c:1312 __sev_platform_init_locked()
-error: we previously assumed 'error' could be null
+TCA_MQPRIO_TC_ENTRY_INDEX is validated using
+NLA_POLICY_MAX(NLA_U32, TC_QOPT_MAX_QUEUE), which allows the value
+TC_QOPT_MAX_QUEUE (16). This leads to a 4-byte out-of-bounds stack
+write in the fp[] array, which only has room for 16 elements (0–15).
 
-Fixes: 9770b428b1a2 ("crypto: ccp - Move dev_info/err messages for SEV/SNP init and shutdown")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202505071746.eWOx5QgC-lkp@intel.com/
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fix this by changing the policy to allow only up to TC_QOPT_MAX_QUEUE - 1.
+
+Fixes: f62af20bed2d ("net/sched: mqprio: allow per-TC user input of FP adminStatus")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Maher Azzouzi <maherazz04@gmail.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250802001857.2702497-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/sched/sch_mqprio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 3451bada884e..8fb94c5f006a 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1276,9 +1276,11 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
- 
- static int __sev_platform_init_locked(int *error)
- {
--	int rc, psp_ret = SEV_RET_NO_FW_CALL;
-+	int rc, psp_ret, dfflush_error;
- 	struct sev_device *sev;
- 
-+	psp_ret = dfflush_error = SEV_RET_NO_FW_CALL;
-+
- 	if (!psp_master || !psp_master->sev_data)
- 		return -ENODEV;
- 
-@@ -1320,10 +1322,10 @@ static int __sev_platform_init_locked(int *error)
- 
- 	/* Prepare for first SEV guest launch after INIT */
- 	wbinvd_on_all_cpus();
--	rc = __sev_do_cmd_locked(SEV_CMD_DF_FLUSH, NULL, error);
-+	rc = __sev_do_cmd_locked(SEV_CMD_DF_FLUSH, NULL, &dfflush_error);
- 	if (rc) {
- 		dev_err(sev->dev, "SEV: DF_FLUSH failed %#x, rc %d\n",
--			*error, rc);
-+			dfflush_error, rc);
- 		return rc;
- 	}
- 
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index 51d4013b6121..f3e5ef9a9592 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -152,7 +152,7 @@ static int mqprio_parse_opt(struct net_device *dev, struct tc_mqprio_qopt *qopt,
+ static const struct
+ nla_policy mqprio_tc_entry_policy[TCA_MQPRIO_TC_ENTRY_MAX + 1] = {
+ 	[TCA_MQPRIO_TC_ENTRY_INDEX]	= NLA_POLICY_MAX(NLA_U32,
+-							 TC_QOPT_MAX_QUEUE),
++							 TC_QOPT_MAX_QUEUE - 1),
+ 	[TCA_MQPRIO_TC_ENTRY_FP]	= NLA_POLICY_RANGE(NLA_U32,
+ 							   TC_FP_EXPRESS,
+ 							   TC_FP_PREEMPTIBLE),
 -- 
 2.39.5
 
