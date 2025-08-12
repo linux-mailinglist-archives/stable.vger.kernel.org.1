@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59245B23483
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B36FB230D5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 409F916F093
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 507663B249F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3392FD1AD;
-	Tue, 12 Aug 2025 18:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925882FDC34;
+	Tue, 12 Aug 2025 17:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xb+a5b/e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxeyV86R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170842F5E;
-	Tue, 12 Aug 2025 18:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A51268C73;
+	Tue, 12 Aug 2025 17:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023923; cv=none; b=DPB7VPX/z/TDCOxfwcRPeiLX3PydXw0KP39kzYkssTYyC8yM3M9wHZzQhJMm7vdC9myhUS5w5yxtKZXVu1DHKEzc9VJye/Jbguh6FkoGdKEeRgD2amn6KmMmuxR80hSxvghw6dGv28IKubnfmn/TU9LKYfc+lvUYgBiUBgWMjrk=
+	t=1755021406; cv=none; b=RzqFNVOIZ/g4SIYnOBOEUeFPSXVaRxxeKt1uTIYRxDKZm4FRGZtaP9lOaVM+VF0x+Th9O6Mt0vmt/mJozFy24Hg7C20VZ8vu71KvLsRkw7BtqL3f++xd89I9LW63xjZnwXTfS4whi/cgZ0qATPCvwueXa4EmfvGCNl0vQ9eXPao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023923; c=relaxed/simple;
-	bh=JOBSHtg74LFGLT0EzlADvK2tLLfszUYLIl/5GpRLlQY=;
+	s=arc-20240116; t=1755021406; c=relaxed/simple;
+	bh=d3E8ZLOT2ej5yykEszbxUJsSLH5paAX192ar0IBfwAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5xTxfNeEHEN+YQEPC95vwrJuB6ehdZVjTYx+zUAxIfa/Jmc7DpR1dTYBoXmZymhCWXqtcLDF9DgiLxNZ48q7CU5PRkY/z432RdOwPkEKGf030XbgwEPbErWoLz/U5QiHlSqWVqcnWXP+0c13pFoof6MY1H1gzfWgTz7pEprZd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xb+a5b/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728BCC4CEF0;
-	Tue, 12 Aug 2025 18:38:42 +0000 (UTC)
+	 MIME-Version; b=sKl3bcH/wcoa9BwtWHKxs2gpTMgY4nNbBVvztoMqYvvntC1AAdGaNmL1L8Jh2XuwBBV9kl11R4/MvYtPxL3KDLMdnA8LHPSNexnF52QvgyXjQ0gSqbnOOB9HbeYtC50oggO4Kdw4kZ2DTGyEHQEt2DKt05rGV3oqpdCSyicLtBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxeyV86R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B091DC4CEF0;
+	Tue, 12 Aug 2025 17:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023922;
-	bh=JOBSHtg74LFGLT0EzlADvK2tLLfszUYLIl/5GpRLlQY=;
+	s=korg; t=1755021406;
+	bh=d3E8ZLOT2ej5yykEszbxUJsSLH5paAX192ar0IBfwAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xb+a5b/eqaMC8FpFkTkk+iwwACw2WldCcNuY4G9jwv5+7AnQrZJOahJSGI6A+Ofjr
-	 cIlvnQ3duXhAOpBx0pli51PyvDzenttmYS3HSLwll79luDDb/aLyV3H1brn8AHA65N
-	 1ezypNL2ACzcX9W5rlcXpFRUOpncIpe1dvhIbzTk=
+	b=zxeyV86RqXV0+GGimRirgWNzRCsitCW//H7BJsc/YZPuS0PNNpuWqI6LVBlW9Bl22
+	 zS6WGisRI/fBvZEbHCcTL1BMqeOTWn8HoUkZegR/p9xh3C3V6zoW7TbIu2v2KJeZcR
+	 7CQzR+oHslXAFDf/sKlPB2jot+2jnRkhhRn2RyCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshitha Prem <quic_hprem@quicinc.com>,
-	Amith A <quic_amitajit@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 204/627] wifi: ath12k: update unsupported bandwidth flags in reg rules
-Date: Tue, 12 Aug 2025 19:28:19 +0200
-Message-ID: <20250812173427.045175625@linuxfoundation.org>
+Subject: [PATCH 6.6 112/262] clk: davinci: Add NULL check in davinci_lpsc_clk_register()
+Date: Tue, 12 Aug 2025 19:28:20 +0200
+Message-ID: <20250812172957.863972712@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshitha Prem <quic_hprem@quicinc.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 2109e98503bc1c01c399feac68cc8b7faf6d0a4a ]
+[ Upstream commit 13de464f445d42738fe18c9a28bab056ba3a290a ]
 
-The maximum bandwidth an interface can operate in is defined by the
-configured country. However, currently, it is able to operate in
-bandwidths greater than the allowed bandwidth. For example,
-the Central African Republic (CF) supports a maximum bandwidth of 40 MHz
-in both the 2 GHz and 5 GHz bands, but an interface is still able to
-operate in bandwidths higher than 40 MHz. This issue arises because the
-regulatory rules in the regd are not updated with these restrictions
-received from firmware on the maximum bandwidth.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+davinci_lpsc_clk_register() does not check for this case, which results
+in a NULL pointer dereference.
 
-Hence, update the regulatory rules with unsupported bandwidth flags based
-on the maximum bandwidth to ensure compliance with country-specific
-regulations.
+Add NULL check after devm_kasprintf() to prevent this issue and ensuring
+no resources are left allocated.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
-Signed-off-by: Amith A <quic_amitajit@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250701135902.722851-1-quic_amitajit@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: c6ed4d734bc7 ("clk: davinci: New driver for davinci PSC clocks")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://lore.kernel.org/r/20250401131341.26800-1-bsdhenrymartin@gmail.com
+Reviewed-by: David Lechner <david@lechnology.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/reg.c | 31 ++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ drivers/clk/davinci/psc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
-index 0fc7f209956d..743552abf149 100644
---- a/drivers/net/wireless/ath/ath12k/reg.c
-+++ b/drivers/net/wireless/ath/ath12k/reg.c
-@@ -398,6 +398,29 @@ ath12k_map_fw_dfs_region(enum ath12k_dfs_region dfs_region)
- 	}
- }
+diff --git a/drivers/clk/davinci/psc.c b/drivers/clk/davinci/psc.c
+index cd85d9f158b0..6f7b8f082ad3 100644
+--- a/drivers/clk/davinci/psc.c
++++ b/drivers/clk/davinci/psc.c
+@@ -278,6 +278,11 @@ davinci_lpsc_clk_register(struct device *dev, const char *name,
  
-+static u32 ath12k_get_bw_reg_flags(u16 max_bw)
-+{
-+	switch (max_bw) {
-+	case 20:
-+		return NL80211_RRF_NO_HT40 |
-+			NL80211_RRF_NO_80MHZ |
-+			NL80211_RRF_NO_160MHZ |
-+			NL80211_RRF_NO_320MHZ;
-+	case 40:
-+		return NL80211_RRF_NO_80MHZ |
-+			NL80211_RRF_NO_160MHZ |
-+			NL80211_RRF_NO_320MHZ;
-+	case 80:
-+		return NL80211_RRF_NO_160MHZ |
-+			NL80211_RRF_NO_320MHZ;
-+	case 160:
-+		return NL80211_RRF_NO_320MHZ;
-+	case 320:
-+	default:
-+		return 0;
+ 	lpsc->pm_domain.name = devm_kasprintf(dev, GFP_KERNEL, "%s: %s",
+ 					      best_dev_name(dev), name);
++	if (!lpsc->pm_domain.name) {
++		clk_hw_unregister(&lpsc->hw);
++		kfree(lpsc);
++		return ERR_PTR(-ENOMEM);
 +	}
-+}
-+
- static u32 ath12k_map_fw_reg_flags(u16 reg_flags)
- {
- 	u32 flags = 0;
-@@ -676,7 +699,7 @@ ath12k_reg_build_regd(struct ath12k_base *ab,
- 			reg_rule = reg_info->reg_rules_2g_ptr + i;
- 			max_bw = min_t(u16, reg_rule->max_bw,
- 				       reg_info->max_bw_2g);
--			flags = 0;
-+			flags = ath12k_get_bw_reg_flags(reg_info->max_bw_2g);
- 			ath12k_reg_update_freq_range(&ab->reg_freq_2ghz, reg_rule);
- 		} else if (reg_info->num_5g_reg_rules &&
- 			   (j < reg_info->num_5g_reg_rules)) {
-@@ -690,13 +713,15 @@ ath12k_reg_build_regd(struct ath12k_base *ab,
- 			 * BW correction if required and applies flags as
- 			 * per other BW rule flags we pass from here
- 			 */
--			flags = NL80211_RRF_AUTO_BW;
-+			flags = NL80211_RRF_AUTO_BW |
-+				ath12k_get_bw_reg_flags(reg_info->max_bw_5g);
- 			ath12k_reg_update_freq_range(&ab->reg_freq_5ghz, reg_rule);
- 		} else if (reg_info->is_ext_reg_event && reg_6ghz_number &&
- 			   (k < reg_6ghz_number)) {
- 			reg_rule = reg_rule_6ghz + k++;
- 			max_bw = min_t(u16, reg_rule->max_bw, max_bw_6ghz);
--			flags = NL80211_RRF_AUTO_BW;
-+			flags = NL80211_RRF_AUTO_BW |
-+				ath12k_get_bw_reg_flags(max_bw_6ghz);
- 			if (reg_rule->psd_flag)
- 				flags |= NL80211_RRF_PSD;
- 			ath12k_reg_update_freq_range(&ab->reg_freq_6ghz, reg_rule);
+ 	lpsc->pm_domain.attach_dev = davinci_psc_genpd_attach_dev;
+ 	lpsc->pm_domain.detach_dev = davinci_psc_genpd_detach_dev;
+ 	lpsc->pm_domain.flags = GENPD_FLAG_PM_CLK;
 -- 
 2.39.5
 
