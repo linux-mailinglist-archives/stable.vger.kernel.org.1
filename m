@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B77B23450
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 570EAB2326D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:17:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF76B1881D2C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AAA42A2C48
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2712EF652;
-	Tue, 12 Aug 2025 18:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8477B2ECE9F;
+	Tue, 12 Aug 2025 18:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNmjH8/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCWi6S1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2CC61FFE;
-	Tue, 12 Aug 2025 18:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EE32ED17F;
+	Tue, 12 Aug 2025 18:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023632; cv=none; b=kJ1HkWHmPPweizQ0W0lY0XJTE9+vrQq6oH2mjMQ3N4qH40uARz6ZMZWmLzY3/WZa+i81J/zRyBCmvixhk0HLOfK2sM9klj6z1Nc3DzZPoMM+OxfSupn2dg8jyQ+FHY+RHm5OmyiMgMTjptkxjUrEokSyp8EflOtemfYBgJLYQRI=
+	t=1755022401; cv=none; b=MYIA84SFrgQyQ/dewEyznCgJvXnJiyfryvKSJ1PK67jIp4nNBJ8no0LY470XLghA6dJpzNqJa++h/QGUGk4f/elBzEidMuK145qNF6hjfGuL8+cCr1eiXe5Dra7I6u2WAV+Iki1yU0rS4Pls2ObFO8jltETjwH86SUPc1x7O91M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023632; c=relaxed/simple;
-	bh=8WgV1UU30JQ0ZhzUZXwhwP5wQp+Ul5leQ0C0UidO/UY=;
+	s=arc-20240116; t=1755022401; c=relaxed/simple;
+	bh=Oqz+03HEHkZK2atNDgB/gr2pNd7ssI7FNeBYSaWTfO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHghzJxFVdKD6ljpdkJajraw1LFXPilJxlteDlm2Y3LMSGYqDwDXE9pOz5Bdm197fSpdJee0FTyHA2UpwmoBRcnZhep1oFEIBRma/hzgFt+BpbwMLXpiAwdOLEnOSHAKwilpfgo4tmqpvFze5nCtq0iXrNyeYOBZH/TQ14KQLuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNmjH8/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D28C4CEF0;
-	Tue, 12 Aug 2025 18:33:51 +0000 (UTC)
+	 MIME-Version; b=WWZWNCj9EWz499fRVbqYiu5JIR/uM7ok3X1Vga4nzr4WQCDQilcGITgeWOoH64+FVLhfVyDzb62luGtZfu9i4+CYZEVCbFc/BDUcua9ATS+iK/GUrDvUSg489srHpGlhriJJoXjRKqm0+U3muG5chdSknRxaJYLkQWjZIw6hpEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCWi6S1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37E0C4CEF1;
+	Tue, 12 Aug 2025 18:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023632;
-	bh=8WgV1UU30JQ0ZhzUZXwhwP5wQp+Ul5leQ0C0UidO/UY=;
+	s=korg; t=1755022401;
+	bh=Oqz+03HEHkZK2atNDgB/gr2pNd7ssI7FNeBYSaWTfO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gNmjH8/aSSaKrPEFS+Xpin6GBWO8Fv76BF3OgNP7nIf+JVGWNb91I2Hh6noQNDvFm
-	 gUYwFlhKORM2W5tTAkbnuz5q13CksnXeBuTC1ee5aCe5+40p8sXcYkT11nYzGcWt45
-	 Ql5ykJKDL463KBmQfvTjj9l+j6+AfNh/wALtJEIM=
+	b=GCWi6S1CKIQJZYfnktvtqppbtWgZiREqs3ifYkHgzNvvAhZj/eAGWG8WvIL3341rL
+	 VuAzkX2C7bqUW/4sVCZg2hRFto4DM8tcoIhY4Sv84scOzzuO5NIPcQ8wDYdL1XId4B
+	 2ZCj+m5oIwTXd7Y4PUIeqLaLT/fMIpFDgG7xxtqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 103/627] arm64: dts: imx8mn-beacon: Fix HS400 USDHC clock speed
+Subject: [PATCH 6.12 101/369] um: rtc: Avoid shadowing err in uml_rtc_start()
 Date: Tue, 12 Aug 2025 19:26:38 +0200
-Message-ID: <20250812173423.235812367@linuxfoundation.org>
+Message-ID: <20250812173018.576527125@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit e16ad6c79906bba5e2ac499492b6a5b29ab19d6c ]
+[ Upstream commit 4c916e3b224a02019b3cc3983a15f32bfd9a22df ]
 
-The reference manual for the i.MX8MN states the clock rate in
-MMC mode is 1/2 of the input clock, therefore to properly run
-at HS400 rates, the input clock must be 400MHz to operate at
-200MHz.  Currently the clock is set to 200MHz which is half the
-rate it should be, so the throughput is half of what it should be
-for HS400 operation.
+Remove the declaration of 'err' inside the 'if (timetravel)' block,
+as it would otherwise be unavailable outside that block, potentially
+leading to uml_rtc_start() returning an uninitialized value.
 
-Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: dde8b58d5127 ("um: add a pseudo RTC")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250708090403.1067440-5-tiwei.bie@linux.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/um/drivers/rtc_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-index 67a99383a632..917b7d0007a7 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-@@ -305,6 +305,8 @@ &usdhc3 {
- 	pinctrl-0 = <&pinctrl_usdhc3>;
- 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
- 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MN_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
- 	bus-width = <8>;
- 	non-removable;
- 	status = "okay";
+diff --git a/arch/um/drivers/rtc_user.c b/arch/um/drivers/rtc_user.c
+index 7c3cec4c68cf..006a5a164ea9 100644
+--- a/arch/um/drivers/rtc_user.c
++++ b/arch/um/drivers/rtc_user.c
+@@ -28,7 +28,7 @@ int uml_rtc_start(bool timetravel)
+ 	int err;
+ 
+ 	if (timetravel) {
+-		int err = os_pipe(uml_rtc_irq_fds, 1, 1);
++		err = os_pipe(uml_rtc_irq_fds, 1, 1);
+ 		if (err)
+ 			goto fail;
+ 	} else {
 -- 
 2.39.5
 
