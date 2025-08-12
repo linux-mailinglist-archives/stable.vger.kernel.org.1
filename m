@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B4DB234CC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C52B1B2330F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8737167F54
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD002188DD26
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D512FE579;
-	Tue, 12 Aug 2025 18:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BCE2ED17F;
+	Tue, 12 Aug 2025 18:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Obx6wXSS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLs8gjQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202F62FDC4F;
-	Tue, 12 Aug 2025 18:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7555C3F9D2;
+	Tue, 12 Aug 2025 18:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024080; cv=none; b=GhKi3xZZMcFe7yH4/w1evbctS5oKav1d60pt8Z0GeHd8dOC7X2TDKWzOnI6fpfshKGYxXHLyo943/DCZJIn08YFOMDPbWycZKDypDC9d71M44C7dwkXct7H4Ss+126MOKQwk9IhfJU+J2fwVCz6jYW4s9tq6gcxKykskh0wn1DY=
+	t=1755022807; cv=none; b=u9wfnOK4U5c788FG9cA/W9C+OZ7iuEhDeHhpcPBpsnn8/qT2wBiTsY2C0M+3QW2ynfurYqt2vn4LHefk/WT/OexBAUhjDD/V7zC9z9Q/hnUbTZFQQ0NQolfxbH3xQoGXJFaaEk8IfaPPFKJxI5wWi7eYFADTDVIssDhdLixohP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024080; c=relaxed/simple;
-	bh=amfLlVlbKNislitfMwK+gq4rJw4v7oN98V8llIiLD6w=;
+	s=arc-20240116; t=1755022807; c=relaxed/simple;
+	bh=GKDfQgWPhT3DOH4H/SK3r1h86r3m2mzSMeg18pzcfkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIx3f+A/DxCD8hmER937wgXNiE1QPm7lvnuuifTt129XWRKjIm59REr1gpUEKGmrp0VX8hGekO+Gqp6LpRa9P0Dmq5rojeuiYFkhK2HL+7fNzdntalopaTnHDMmQ+lKYYEurFg1NUjMM58d8R8St71TAqUwlrJtsYsU9Xk+kpOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Obx6wXSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84827C4CEF0;
-	Tue, 12 Aug 2025 18:41:19 +0000 (UTC)
+	 MIME-Version; b=iEbBQSZ9XT0BxqdPmgqghRO1XNI6+lNIjA4dHpTHg7rhvJj8p1okUz0+je3ebtVIJVpyItUWxeSLO4jyvQ8cEZfvaOJZrQT48T/h6T322bnsxebKlER/yJ3mNvdMFgP5V7/sKNOaa6hRtMb3xJygIIPTAwplc/ZknZYSZQTSIgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLs8gjQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6F4C4CEF6;
+	Tue, 12 Aug 2025 18:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024080;
-	bh=amfLlVlbKNislitfMwK+gq4rJw4v7oN98V8llIiLD6w=;
+	s=korg; t=1755022807;
+	bh=GKDfQgWPhT3DOH4H/SK3r1h86r3m2mzSMeg18pzcfkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Obx6wXSSm7hfD6ZJwaqE4YrVmSKXKoBFIPVUidHK9rCVj2EE4u4grGq8Obt7Fg3u2
-	 Un8K0z1C6/alIg5p3NdNdvDO6Tg+KJq8yXCO96T+LgvuQsyVbfkZ5BU40MBXbLaoyG
-	 M+8DzxbBmi/NTH5xQH9NT+112iTuSbxmOTBTKHMM=
+	b=PLs8gjQMKsRJiybuGlhoP5Uj17tzszkNdwxqZcbfCKxca3DU7G2m77u3T+lO0rKxM
+	 G9CKjHZYrrW0HvFu+mRYIAMbNXLgu5cc3cS1qkkzL4LCHZ8Jr6pUyLOTaBtMLIDtBk
+	 d1Re2I97BgpJmiCCMzSriuPCKvNeWRY4E9m/eJk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 267/627] selftests: drv-net: tso: fix non-tunneled tso6 test case name
+Subject: [PATCH 6.12 265/369] vfio: Fix unbalanced vfio_df_close call in no-iommu mode
 Date: Tue, 12 Aug 2025 19:29:22 +0200
-Message-ID: <20250812173429.470080870@linuxfoundation.org>
+Message-ID: <20250812173024.731959853@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Zahka <daniel.zahka@gmail.com>
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
 
-[ Upstream commit b25b44cd178cc54277f2dc0ff3b3d5a37ae4b26b ]
+[ Upstream commit b25e271b377999191b12f0afbe1861edcf57e3fe ]
 
-The non-tunneled tso6 test case was showing up as:
-ok 8 tso.ipv4
+For devices with no-iommu enabled in IOMMUFD VFIO compat mode, the group open
+path skips vfio_df_open(), leaving open_count at 0. This causes a warning in
+vfio_assert_device_open(device) when vfio_df_close() is called during group
+close.
 
-This is because of the way test_builder() uses the inner_ipver arg in
-test naming, and how test_info is iterated over in main(). Given that
-some tunnels not supported yet, e.g. ipip or sit, only support ipv4 or
-ipv6 as the inner network protocol, I think the best fix here is to
-call test_builder() in separate branches for tunneled and non-tunneled
-tests, and to make supported inner l3 types an explicit attribute of
-tunnel test cases.
+The correct behavior is to skip only the IOMMUFD bind in the device open path
+for no-iommu devices. Commit 6086efe73498 omitted vfio_df_open(), which was
+too broad. This patch restores the previous behavior, ensuring
+the vfio_df_open is called in the group open path.
 
-  # Detected qstat for LSO wire-packets
-  TAP version 13
-  1..14
-  ok 1 tso.ipv4
-  # Testing with mangleid enabled
-  ok 2 tso.vxlan4_ipv4
-  ok 3 tso.vxlan4_ipv6
-  # Testing with mangleid enabled
-  ok 4 tso.vxlan_csum4_ipv4
-  ok 5 tso.vxlan_csum4_ipv6
-  # Testing with mangleid enabled
-  ok 6 tso.gre4_ipv4
-  ok 7 tso.gre4_ipv6
-  ok 8 tso.ipv6
-  # Testing with mangleid enabled
-  ok 9 tso.vxlan6_ipv4
-  ok 10 tso.vxlan6_ipv6
-  # Testing with mangleid enabled
-  ok 11 tso.vxlan_csum6_ipv4
-  ok 12 tso.vxlan_csum6_ipv6
-  # Testing with mangleid enabled
-  ok 13 tso.gre6_ipv4
-  ok 14 tso.gre6_ipv6
-  # Totals: pass:14 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Fixes: 0d0f4174f6c8 ("selftests: drv-net: add a simple TSO test")
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-Link: https://patch.msgid.link/20250723184740.4075410-4-daniel.zahka@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6086efe73498 ("vfio-iommufd: Move noiommu compat validation out of vfio_iommufd_bind()")
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250618234618.1910456-1-jacob.pan@linux.microsoft.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/hw/tso.py | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/vfio/group.c   | 7 +++----
+ drivers/vfio/iommufd.c | 4 ++++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/tso.py b/tools/testing/selftests/drivers/net/hw/tso.py
-index 6461a83b3d0e..5fddb5056a20 100755
---- a/tools/testing/selftests/drivers/net/hw/tso.py
-+++ b/tools/testing/selftests/drivers/net/hw/tso.py
-@@ -227,14 +227,14 @@ def main() -> None:
-         query_nic_features(cfg)
+diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
+index 95b336de8a17..5f2b2c950bbc 100644
+--- a/drivers/vfio/group.c
++++ b/drivers/vfio/group.c
+@@ -194,11 +194,10 @@ static int vfio_df_group_open(struct vfio_device_file *df)
+ 		 * implies they expected translation to exist
+ 		 */
+ 		if (!capable(CAP_SYS_RAWIO) ||
+-		    vfio_iommufd_device_has_compat_ioas(device, df->iommufd))
++		    vfio_iommufd_device_has_compat_ioas(device, df->iommufd)) {
+ 			ret = -EPERM;
+-		else
+-			ret = 0;
+-		goto out_put_kvm;
++			goto out_put_kvm;
++		}
+ 	}
  
-         test_info = (
--            # name,       v4/v6  ethtool_feature              tun:(type,     args)
--            ("",            "4", "tx-tcp-segmentation",           None),
--            ("",            "6", "tx-tcp6-segmentation",          None),
--            ("vxlan",       "4", "tx-udp_tnl-segmentation",       ("vxlan",  "id 100 dstport 4789 noudpcsum")),
--            ("vxlan",       "6", "tx-udp_tnl-segmentation",       ("vxlan",  "id 100 dstport 4789 udp6zerocsumtx udp6zerocsumrx")),
--            ("vxlan_csum",   "", "tx-udp_tnl-csum-segmentation",  ("vxlan",  "id 100 dstport 4789 udpcsum")),
--            ("gre",         "4", "tx-gre-segmentation",           ("gre",    "")),
--            ("gre",         "6", "tx-gre-segmentation",           ("ip6gre", "")),
-+            # name,       v4/v6  ethtool_feature               tun:(type, args, inner ip versions)
-+            ("",           "4", "tx-tcp-segmentation",         None),
-+            ("",           "6", "tx-tcp6-segmentation",        None),
-+            ("vxlan",      "4", "tx-udp_tnl-segmentation",     ("vxlan", "id 100 dstport 4789 noudpcsum", ("4", "6"))),
-+            ("vxlan",      "6", "tx-udp_tnl-segmentation",     ("vxlan", "id 100 dstport 4789 udp6zerocsumtx udp6zerocsumrx", ("4", "6"))),
-+            ("vxlan_csum", "", "tx-udp_tnl-csum-segmentation", ("vxlan", "id 100 dstport 4789 udpcsum", ("4", "6"))),
-+            ("gre",        "4", "tx-gre-segmentation",         ("gre",   "", ("4", "6"))),
-+            ("gre",        "6", "tx-gre-segmentation",         ("ip6gre","", ("4", "6"))),
-         )
+ 	ret = vfio_df_open(df);
+diff --git a/drivers/vfio/iommufd.c b/drivers/vfio/iommufd.c
+index 82eba6966fa5..02852899c2ae 100644
+--- a/drivers/vfio/iommufd.c
++++ b/drivers/vfio/iommufd.c
+@@ -25,6 +25,10 @@ int vfio_df_iommufd_bind(struct vfio_device_file *df)
  
-         cases = []
-@@ -244,11 +244,13 @@ def main() -> None:
-                 if info[1] and outer_ipver != info[1]:
-                     continue
+ 	lockdep_assert_held(&vdev->dev_set->lock);
  
--                cases.append(test_builder(info[0], cfg, outer_ipver, info[2],
--                                          tun=info[3], inner_ipver="4"))
-                 if info[3]:
--                    cases.append(test_builder(info[0], cfg, outer_ipver, info[2],
--                                              tun=info[3], inner_ipver="6"))
-+                    cases += [
-+                        test_builder(info[0], cfg, outer_ipver, info[2], info[3], inner_ipver)
-+                        for inner_ipver in info[3][2]
-+                    ]
-+                else:
-+                    cases.append(test_builder(info[0], cfg, outer_ipver, info[2], None, outer_ipver))
++	/* Returns 0 to permit device opening under noiommu mode */
++	if (vfio_device_is_noiommu(vdev))
++		return 0;
++
+ 	return vdev->ops->bind_iommufd(vdev, ictx, &df->devid);
+ }
  
-         ksft_run(cases=cases, args=(cfg, ))
-     ksft_exit()
 -- 
 2.39.5
 
