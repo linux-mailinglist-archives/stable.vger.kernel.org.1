@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDD6B234CA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF0CB2330B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8997A167DCF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C673C3B0529
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF132EF652;
-	Tue, 12 Aug 2025 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4731B280037;
+	Tue, 12 Aug 2025 18:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCpf12Jr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt0kSRMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B27B2FF148;
-	Tue, 12 Aug 2025 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B991B87F2;
+	Tue, 12 Aug 2025 18:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024076; cv=none; b=fTHqVYjNQ9yvkU1Yk1BSvtPxFfXRFAwwW1b/qnxwi0evLHGTK5L4mr69+oJwCWF8Tp2iH0RVPADufYQZlpS1Mb2V7XLXj5bGjDALvDUBg7XJe4qsDS1r/ZiynUyFXPkHZ3Y3awhu/DmrTyhnoTGSl9SCQs6BMUcvZKU+obZ+YrY=
+	t=1755022804; cv=none; b=StOAy4W3tASxJHBhYVx9ACKMqtCNWc+YUWpuFcoJBhFVVmqcWDqtY6gPJDjqKPJiQaf1pRBQzz8m/y4uHsV0AxDW1mYGUGSBy1fBXprx9qBOD2GLUWEUHjhEHdY6gQZNEdJivO9tqf3ucq+nOEHDPu0LZ1czhpH/tKf9j10gCoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024076; c=relaxed/simple;
-	bh=KoF4r9imrcNFK4Z9DLvuc2wmjRSkucw3rtkCwoFiCcI=;
+	s=arc-20240116; t=1755022804; c=relaxed/simple;
+	bh=jh02Imc4Jw0Rsh9o/UJqyUmSpI/3+DAHY+xeUpRLSVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uhs62Iinz8aS1qmVElTYYnX5DGat9RGibAG8s7QumeEqgzEzvCMh90sD0e+AY1U5UKQpX+JbPVXkFBh13b8ERw+/fBQvkSlKWqEpJjnbXvlZVnuCrzX/h7gK+CcSvlqg+bho88KDwvhFG3h90LFgp3bwI5w4OaUYlc9UNOPygOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCpf12Jr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11695C4CEF0;
-	Tue, 12 Aug 2025 18:41:15 +0000 (UTC)
+	 MIME-Version; b=aqEZOX67GaEMVyOD096Y4dlv5o0uOGDNPYRHo8NeyeieERzW+OWMTSJJnCL+8fFlRnofI/rOFVHRU+DAgUnI48poRsgnVaRHnVfChztOHtX+cZo/mLpnPTZcnUutAwHAQYUWJzBA30V0Sm4Hlf5porpaWmCZ1rxbeFbtaRFtFr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt0kSRMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4AFC4CEF6;
+	Tue, 12 Aug 2025 18:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024076;
-	bh=KoF4r9imrcNFK4Z9DLvuc2wmjRSkucw3rtkCwoFiCcI=;
+	s=korg; t=1755022803;
+	bh=jh02Imc4Jw0Rsh9o/UJqyUmSpI/3+DAHY+xeUpRLSVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCpf12JrI3b2gQ8pubyzALi04gOILB3Nf+y6X9LLVLO6moxqHaloDzenbA14vRjiT
-	 nO++ljmVi1jRnEGfl+2pwps2YeFr6NzbYXdX87IShX99J6l4xVxeb/sZIPDBuRMJ8W
-	 cI+n6QjzDasJw5om64oNIoOkuaGLrFw1TuaAE6mg=
+	b=Qt0kSRMnDiuZ117L6ghFQBiUEU513rM2b+v8raYfaK8g/EmpQz61BTNiP3XwOVWEJ
+	 veInwx3HCSxW/RWazwOfc7B0jrwhl/FcGEHzOuyIzYQQfoOOZVoAwp2IW1Z1iY7VWO
+	 JvSgllCLv3yr35GczjJxEgmMKgopp1dUnjUTQIS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 266/627] selftests: drv-net: tso: fix vxlan tunnel flags to get correct gso_type
+Subject: [PATCH 6.12 264/369] i2c: muxes: mule: Fix an error handling path in mule_i2c_mux_probe()
 Date: Tue, 12 Aug 2025 19:29:21 +0200
-Message-ID: <20250812173429.433456577@linuxfoundation.org>
+Message-ID: <20250812173024.694060135@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Zahka <daniel.zahka@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 2cfbcc5d8af9199823151c21f740e476b223dd2e ]
+[ Upstream commit 33ac5155891cab165c93b51b0e22e153eacc2ee7 ]
 
-When vxlan is used with ipv6 as the outer network header, the correct
-ip link parameters for acheiving the SKB_GSO_UDP_TUNNEL gso type is
-"udp6zerocsumtx udp6zerocsumrx". Otherwise the gso type will be
-SKB_GSO_UDP_TUNNEL_CSUM.
+If an error occurs in the loop that creates the device adapters, then a
+reference to 'dev' still needs to be released.
 
-This bug was the reason for the second of the three possible
-invocations of run_one_stream() invocations, so that can be deleted as
-well. We only need to test with the feature off and on.
+Use for_each_child_of_node_scoped() to both fix the issue and save one line
+of code.
 
-Fixes: 0d0f4174f6c8 ("selftests: drv-net: add a simple TSO test")
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-Link: https://patch.msgid.link/20250723184740.4075410-3-daniel.zahka@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d0f8e97866bf ("i2c: muxes: add support for tsd,mule-i2c multiplexer")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/hw/tso.py | 37 +++++++------------
- 1 file changed, 13 insertions(+), 24 deletions(-)
+ drivers/i2c/muxes/i2c-mux-mule.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/tso.py b/tools/testing/selftests/drivers/net/hw/tso.py
-index f8386e3d88cd..6461a83b3d0e 100755
---- a/tools/testing/selftests/drivers/net/hw/tso.py
-+++ b/tools/testing/selftests/drivers/net/hw/tso.py
-@@ -102,7 +102,7 @@ def build_tunnel(cfg, outer_ipver, tun_info):
-     remote_addr = cfg.remote_addr_v[outer_ipver]
+diff --git a/drivers/i2c/muxes/i2c-mux-mule.c b/drivers/i2c/muxes/i2c-mux-mule.c
+index 284ff4afeeac..d3b32b794172 100644
+--- a/drivers/i2c/muxes/i2c-mux-mule.c
++++ b/drivers/i2c/muxes/i2c-mux-mule.c
+@@ -47,7 +47,6 @@ static int mule_i2c_mux_probe(struct platform_device *pdev)
+ 	struct mule_i2c_reg_mux *priv;
+ 	struct i2c_client *client;
+ 	struct i2c_mux_core *muxc;
+-	struct device_node *dev;
+ 	unsigned int readback;
+ 	int ndev, ret;
+ 	bool old_fw;
+@@ -95,7 +94,7 @@ static int mule_i2c_mux_probe(struct platform_device *pdev)
+ 				     "Failed to register mux remove\n");
  
-     tun_type = tun_info[0]
--    tun_arg  = tun_info[2]
-+    tun_arg  = tun_info[1]
-     ip(f"link add {tun_type}-ksft type {tun_type} {tun_arg} local {local_addr} remote {remote_addr} dev {cfg.ifname}")
-     defer(ip, f"link del {tun_type}-ksft")
-     ip(f"link set dev {tun_type}-ksft up")
-@@ -151,29 +151,17 @@ def test_builder(name, cfg, outer_ipver, feature, tun=None, inner_ipver=None):
-             remote_v4 = cfg.remote_addr_v["4"]
-             remote_v6 = cfg.remote_addr_v["6"]
+ 	/* Create device adapters */
+-	for_each_child_of_node(mux_dev->of_node, dev) {
++	for_each_child_of_node_scoped(mux_dev->of_node, dev) {
+ 		u32 reg;
  
--        tun_partial = tun and tun[1]
--        # Tunnel which can silently fall back to gso-partial
--        has_gso_partial = tun and 'tx-gso-partial' in cfg.hw_features
--
--        # For TSO4 via partial we need mangleid
--        if ipver == "4" and feature in cfg.partial_features:
--            ksft_pr("Testing with mangleid enabled")
--            if 'tx-tcp-mangleid-segmentation' not in cfg.hw_features:
--                ethtool(f"-K {cfg.ifname} tx-tcp-mangleid-segmentation on")
--                defer(ethtool, f"-K {cfg.ifname} tx-tcp-mangleid-segmentation off")
--
-         # First test without the feature enabled.
-         ethtool(f"-K {cfg.ifname} {feature} off")
--        if has_gso_partial:
--            ethtool(f"-K {cfg.ifname} tx-gso-partial off")
-         run_one_stream(cfg, ipver, remote_v4, remote_v6, should_lso=False)
- 
--        # Now test with the feature enabled.
--        # For compatible tunnels only - just GSO partial, not specific feature.
--        if has_gso_partial:
-+        ethtool(f"-K {cfg.ifname} tx-gso-partial off")
-+        ethtool(f"-K {cfg.ifname} tx-tcp-mangleid-segmentation off")
-+        if feature in cfg.partial_features:
-             ethtool(f"-K {cfg.ifname} tx-gso-partial on")
--            run_one_stream(cfg, ipver, remote_v4, remote_v6,
--                           should_lso=tun_partial)
-+            if ipver == "4":
-+                ksft_pr("Testing with mangleid enabled")
-+                ethtool(f"-K {cfg.ifname} tx-tcp-mangleid-segmentation on")
- 
-         # Full feature enabled.
-         ethtool(f"-K {cfg.ifname} {feature} on")
-@@ -239,13 +227,14 @@ def main() -> None:
-         query_nic_features(cfg)
- 
-         test_info = (
--            # name,       v4/v6  ethtool_feature              tun:(type,    partial, args)
-+            # name,       v4/v6  ethtool_feature              tun:(type,     args)
-             ("",            "4", "tx-tcp-segmentation",           None),
-             ("",            "6", "tx-tcp6-segmentation",          None),
--            ("vxlan",        "", "tx-udp_tnl-segmentation",       ("vxlan",  True,  "id 100 dstport 4789 noudpcsum")),
--            ("vxlan_csum",   "", "tx-udp_tnl-csum-segmentation",  ("vxlan",  False, "id 100 dstport 4789 udpcsum")),
--            ("gre",         "4", "tx-gre-segmentation",           ("gre",    False,  "")),
--            ("gre",         "6", "tx-gre-segmentation",           ("ip6gre", False,  "")),
-+            ("vxlan",       "4", "tx-udp_tnl-segmentation",       ("vxlan",  "id 100 dstport 4789 noudpcsum")),
-+            ("vxlan",       "6", "tx-udp_tnl-segmentation",       ("vxlan",  "id 100 dstport 4789 udp6zerocsumtx udp6zerocsumrx")),
-+            ("vxlan_csum",   "", "tx-udp_tnl-csum-segmentation",  ("vxlan",  "id 100 dstport 4789 udpcsum")),
-+            ("gre",         "4", "tx-gre-segmentation",           ("gre",    "")),
-+            ("gre",         "6", "tx-gre-segmentation",           ("ip6gre", "")),
-         )
- 
-         cases = []
+ 		ret = of_property_read_u32(dev, "reg", &reg);
 -- 
 2.39.5
 
