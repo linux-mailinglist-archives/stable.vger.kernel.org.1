@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-168958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23A9B23776
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:12:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142F4B23785
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A4FA6E618D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:11:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A707317D080
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9310B2E11BF;
-	Tue, 12 Aug 2025 19:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D9929BDA9;
+	Tue, 12 Aug 2025 19:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEVtr/UO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLtce+jk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A5521C187;
-	Tue, 12 Aug 2025 19:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D2E27781E;
+	Tue, 12 Aug 2025 19:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025902; cv=none; b=V7OXvywhbZCafC0pPJjKFeRHHd/Du8HhXRcwtogW0I+13ahhHd/EPYvS9wHpYUIvbiTTmBr3W76jcizdRzV/x3UMCyvJ5H0LL7Am8FD58NXj6lUMD9iXOKxMHSpndiuazYLa5+JuULt77qyDaZT7btInRjdNSfyVo0dYkwtWtIE=
+	t=1755025925; cv=none; b=gwwVHPKhzhQ6RWvH5N6uxz9No7UW63VeVgLzUsSuXi1PYIDHrp+HNynlkU/TQ/VzPkfWH8x0b2Y8pJ/WL/AIS6orUQ+4CkY2pRCwIoSiesI67oi9vprczKv2MSSAuB2Eap7jr51pJG7jHd2t8BmPlG70kcPogAqsugTVznK0cV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025902; c=relaxed/simple;
-	bh=r08GINLgh7Ohde41bHO+VKeyyO/4Zd/5O/lowmgru40=;
+	s=arc-20240116; t=1755025925; c=relaxed/simple;
+	bh=3iZH1ZNfO90KH1rqcqeAVwlxcoFJXwibw/iCxRBDweU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpLnUPFkT3OEpWSGdJnMhkkxtL9vA5Lso8/JxFnyn3ogwtyYpPXuV9YvMYnbjyfT6oWmNBsA2AB7c9faP6f11UMIGyj9q4vTyLYT6onYOIq73JjzvgPAP5MZ8PYCVwlQZx6RMXLcgteIAoZtXFnX7dH2YI5+VeZEXNegwt31JBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEVtr/UO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF189C4CEF6;
-	Tue, 12 Aug 2025 19:11:41 +0000 (UTC)
+	 MIME-Version; b=dTFMtTU0RwnKyNqu5UPejeLQWAvkCjXSn1AY/HUooXP1iqu9XIPCwWm7cNiWd1YCSDNXkzgzhcOHFzP6QiowFz+xtei0f0lSL5eHRq3NmeHbbD3bB2B33auEzxwIoRDY/i5KreKJNxiBT5en35WsWswCazkbCWZXDiVpEUUWnZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLtce+jk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAAEC4CEF0;
+	Tue, 12 Aug 2025 19:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025902;
-	bh=r08GINLgh7Ohde41bHO+VKeyyO/4Zd/5O/lowmgru40=;
+	s=korg; t=1755025924;
+	bh=3iZH1ZNfO90KH1rqcqeAVwlxcoFJXwibw/iCxRBDweU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEVtr/UOrAHEIo+tRyTm7ZmDaeQIslI2NqGzYYuQiTCOdjOISafScELCNmioD1iNz
-	 353m3mBnv3JmxVrox8+FHI/W3ygCYnstLVHXn8Px1Lov4neuiJcPbMwLJNhD+WPymC
-	 BS5mEwCL86Y0330Kxi5SK1Tzyuw+ohZI0w0MOVdU=
+	b=zLtce+jktz5rWOfaiL2Da0KyRntEbXXuVY70NlHfPD7QVB97zEfl/7CuQV4oqRSmK
+	 i0QZCMjJLjbw7rrwWgpJBEuJtQpTfVONddHCRziIcPvNidsNmGc8sRzYh99N7NzyWZ
+	 QrQI+Pb4m8FDeA7jn3os0fl0757tkqsEQAO5Qt5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 151/480] um: rtc: Avoid shadowing err in uml_rtc_start()
-Date: Tue, 12 Aug 2025 19:45:59 +0200
-Message-ID: <20250812174403.736535193@linuxfoundation.org>
+Subject: [PATCH 6.15 152/480] iommu/amd: Enable PASID and ATS capabilities in the correct order
+Date: Tue, 12 Aug 2025 19:46:00 +0200
+Message-ID: <20250812174403.785561538@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,36 +70,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-[ Upstream commit 4c916e3b224a02019b3cc3983a15f32bfd9a22df ]
+[ Upstream commit c694bc8b612ddd0dd70e122a00f39cb1e2e6927f ]
 
-Remove the declaration of 'err' inside the 'if (timetravel)' block,
-as it would otherwise be unavailable outside that block, potentially
-leading to uml_rtc_start() returning an uninitialized value.
+Per the PCIe spec, behavior of the PASID capability is undefined if the
+value of the PASID Enable bit changes while the Enable bit of the
+function's ATS control register is Set. Unfortunately,
+pdev_enable_caps() does exactly that by ordering enabling ATS for the
+device before enabling PASID.
 
-Fixes: dde8b58d5127 ("um: add a pseudo RTC")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250708090403.1067440-5-tiwei.bie@linux.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jerry Snitselaar <jsnitsel@redhat.com>
+Fixes: eda8c2860ab679 ("iommu/amd: Enable device ATS/PASID/PRI capabilities independently")
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250703155433.6221-1-eahariha@linux.microsoft.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/rtc_user.c | 2 +-
+ drivers/iommu/amd/iommu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/drivers/rtc_user.c b/arch/um/drivers/rtc_user.c
-index 51e79f3148cd..67912fcf7b28 100644
---- a/arch/um/drivers/rtc_user.c
-+++ b/arch/um/drivers/rtc_user.c
-@@ -28,7 +28,7 @@ int uml_rtc_start(bool timetravel)
- 	int err;
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 31f8d208dedb..cef1d2400d47 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -634,8 +634,8 @@ static inline void pdev_disable_cap_pasid(struct pci_dev *pdev)
  
- 	if (timetravel) {
--		int err = os_pipe(uml_rtc_irq_fds, 1, 1);
-+		err = os_pipe(uml_rtc_irq_fds, 1, 1);
- 		if (err)
- 			goto fail;
- 	} else {
+ static void pdev_enable_caps(struct pci_dev *pdev)
+ {
+-	pdev_enable_cap_ats(pdev);
+ 	pdev_enable_cap_pasid(pdev);
++	pdev_enable_cap_ats(pdev);
+ 	pdev_enable_cap_pri(pdev);
+ }
+ 
 -- 
 2.39.5
 
