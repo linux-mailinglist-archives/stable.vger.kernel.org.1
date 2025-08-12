@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B198B23530
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21EDB230C9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDEA1890177
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D0E9188BF72
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7844C81;
-	Tue, 12 Aug 2025 18:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9EA2FDC20;
+	Tue, 12 Aug 2025 17:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gge1Ivnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOaRjJYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0392FD1B2;
-	Tue, 12 Aug 2025 18:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1E92D5C76;
+	Tue, 12 Aug 2025 17:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024308; cv=none; b=rzPjDSMlGYTMjn72aCNTuLzGqrWiGhnc6ijcZtAb0pfg00wKMzaQaCma95j6Zc4b2VC5PKuBEqYu6Mqug5tDN8HsqUphXO4ZYJNHTAmPlVUnlvzwu4ZiRHy9hcx/ecnvfCjpU/Y7tYPzfTTd9Lrt9/X97qAnssMjG/moK86Z+3I=
+	t=1755021306; cv=none; b=eju80miVo7sM+7E72ddIS5emwvNqusGKyLQFnA146048BzYiPmno1ZOxXuRfEqPyh5Og4GvOaMPrG6UM3yS8ojJeIG0Qz19mVoHxfH8pU6+yAv9/JNAHk3Erwp5LJnfpbEngxYRGUxb5FUN1NtnA3Lk+x6NeoP6ucDfSC9ypKgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024308; c=relaxed/simple;
-	bh=VOU+ab00pTmM63Ve23ts/h5e2GEB4AingRagMFl6jTY=;
+	s=arc-20240116; t=1755021306; c=relaxed/simple;
+	bh=U+ddJ2dQxdwY08eUl+DG3KajTOH9XYPJ0SA1ln/wi/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8U0aT7+HkdN4uO73Vs0sZPmuzrx4ndz1GP5c1d8RymGPw7hUqNNX6Ro6qxEp7NSWmQobZvjtk2mWAnRFNJeslP4BhItzqBKH0EBLOw/dF+GtCH9XDBP7sRxeBtgVNAuJ7m/mgBHSZnKIM6jgerfqh6xqryEj7BB5XfxhQKcHAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gge1Ivnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FC7C4CEF1;
-	Tue, 12 Aug 2025 18:45:07 +0000 (UTC)
+	 MIME-Version; b=aiKxHtr253x3Touhx984+UROvIMzj5iRC+0XChVyeyBqqiVZGI2kOZdICQIlEgxBFJ7iJa9HVniWVTp7DoFedauD7qwmZZHwtETgdohm2Ex/g8id2lqbR3ul3u1H2Kzp+cvwRMxGN9/MpOnhMHQllRtN0ZWDugKaRDpbCMlqEU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOaRjJYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BA5C4CEF0;
+	Tue, 12 Aug 2025 17:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024308;
-	bh=VOU+ab00pTmM63Ve23ts/h5e2GEB4AingRagMFl6jTY=;
+	s=korg; t=1755021305;
+	bh=U+ddJ2dQxdwY08eUl+DG3KajTOH9XYPJ0SA1ln/wi/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gge1IvnlHvCumuOJdRU6fFTBiU3mLQStuo1c7ecfGTg3sNT1WI+/qKTqP4j3glYhn
-	 LCVjSioLWrh7WocJGkQ+qK4Gm1l2E1kDh2LAKk+Gc3/9msCIqQqsjs5iB+YCwhJovc
-	 g7c1riElUKEt4fD0tlXk03D3U98Xzs+bwMlufeQU=
+	b=jOaRjJYIH6Joq+OSc+JSH3m8McC3MN7ulK9++aXfKR5r+/S0MjZpzQN55N9wPCKNh
+	 8P9MzLoUirUq1az7YunYRF7Cd0Tu2ayjKjle+YQWiZ5icgWyeVvVMOEQp1xgVBAFfP
+	 O/D6TjDmdAg/wfTthSYDolrIQV87XFqQ2eC1wXRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 334/627] PCI: qcom: Wait PCIE_RESET_CONFIG_WAIT_MS after link-up IRQ
+	David Howells <dhowells@redhat.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 241/253] ksmbd: fix corrupted mtime and ctime in smb2_open
 Date: Tue, 12 Aug 2025 19:30:29 +0200
-Message-ID: <20250812173431.994707543@linuxfoundation.org>
+Message-ID: <20250812172959.102222727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 15b6b243cc2b1017cf89e2477aa0b4e1a306a82a ]
+commit 4f8ff9486fd94b9d6a4932f2aefb9f2fc3bd0cf6 upstream.
 
-Per PCIe r6.0, sec 6.6.1, software must generally wait a minimum of
-100ms (PCIE_RESET_CONFIG_WAIT_MS) after Link training completes before
-sending a Configuration Request.
+If STATX_BASIC_STATS flags are not given as an argument to vfs_getattr,
+It can not get ctime and mtime in kstat.
 
-Prior to 36971d6c5a9a ("PCI: qcom: Don't wait for link if we can detect
-Link Up"), qcom used dw_pcie_wait_for_link(), which waited between 0
-and 90ms after the link came up before we enumerate the bus, and this
-was apparently enough for most devices.
+This causes a problem showing mtime and ctime outdated from cifs.ko.
+File: /xfstest.test/foo
+Size: 4096            Blocks: 8          IO Block: 1048576 regular file
+Device: 0,65    Inode: 2033391     Links: 1
+Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+Context: system_u:object_r:cifs_t:s0
+Access: 2025-07-23 22:15:30.136051900 +0100
+Modify: 1970-01-01 01:00:00.000000000 +0100
+Change: 1970-01-01 01:00:00.000000000 +0100
+Birth: 2025-07-23 22:15:30.136051900 +0100
 
-After 36971d6c5a9a, qcom_pcie_global_irq_thread() started enumeration
-immediately when handling the link-up IRQ, and devices (e.g., Laszlo
-Fiat's PLEXTOR PX-256M8PeGN NVMe SSD) may not be ready to handle config
-requests yet.
-
-Delay PCIE_RESET_CONFIG_WAIT_MS after the link-up IRQ before starting
-enumeration.
-
-Fixes: 82a823833f4e ("PCI: qcom: Add Qualcomm PCIe controller driver")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Link: https://patch.msgid.link/20250625102347.1205584-13-cassel@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/vfs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index c789e3f85655..9b12f2f02042 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1564,6 +1564,7 @@ static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
- 	writel_relaxed(status, pcie->parf + PARF_INT_ALL_CLEAR);
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -562,7 +562,8 @@ int ksmbd_vfs_getattr(const struct path
+ {
+ 	int err;
  
- 	if (FIELD_GET(PARF_INT_ALL_LINK_UP, status)) {
-+		msleep(PCIE_RESET_CONFIG_WAIT_MS);
- 		dev_dbg(dev, "Received Link up event. Starting enumeration!\n");
- 		/* Rescan the bus to enumerate endpoint devices */
- 		pci_lock_rescan_remove();
--- 
-2.39.5
-
+-	err = vfs_getattr(path, stat, STATX_BTIME, AT_STATX_SYNC_AS_STAT);
++	err = vfs_getattr(path, stat, STATX_BASIC_STATS | STATX_BTIME,
++			AT_STATX_SYNC_AS_STAT);
+ 	if (err)
+ 		pr_err("getattr failed, err %d\n", err);
+ 	return err;
 
 
 
