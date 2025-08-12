@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3787CB232A8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07C2B22F80
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD36A1885EC9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5DCE566473
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247D62D8363;
-	Tue, 12 Aug 2025 18:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817A72FE564;
+	Tue, 12 Aug 2025 17:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kILzPV2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bR/OVvJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D710D1B87F2;
-	Tue, 12 Aug 2025 18:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBE02FDC5D;
+	Tue, 12 Aug 2025 17:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022520; cv=none; b=pyHjyV1KFYfBN2mg+q3eqZ+dnRL+1g5PXgqe/A9NPlpjyQDRvaaPJ0YQnXJqUpet5tZnodKfAqozvYahlFBaVk7ZcC5UvoZ84oakyTH2fioHQDXV0842qByJfUBkNPaUm1XztVW5gfMvZu9ASxq8FeyrcrrBPGEdR8WIdqNi2QI=
+	t=1755020354; cv=none; b=HgpypNuTSlBlV/anR0tX2e3LOiVLB1/D2DurQCfN2VHUfCe8Yq0T5om1+Gh05cCR8pk1rSXnxW5NgTjvfKGGZbLTwMo6VqDmrBNDeAdzD8Pfd8nPqdSdIZn4qpnkVJNOOfOS7G5KSc/2cWGOGPv5wUCqkmuIWbyT35KMKFCa2CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022520; c=relaxed/simple;
-	bh=7eqkHvcssZn7Ih6Im2SPPWM9hy7RIu/hTIzifEXddrQ=;
+	s=arc-20240116; t=1755020354; c=relaxed/simple;
+	bh=TNUXxCloo26rcRt/pEk4jjGJxKRoJmXDgivNvPvUPgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuvRMlKcNjDaVM0dOG2e8GCtAT+KJ0zrSoCZDiHRrXYhOETy+bjD+d2HGktzFOB5THaJFgC/OgnChzYG866g98hmNEprdd7ydyswx8ILTINIaBh0JAO+uLU6HeI8LEM8c2l7TlP2WSyZLmwAkltj0t5oEvLkUflR1vkQW5PJ+as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kILzPV2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A60C4CEF0;
-	Tue, 12 Aug 2025 18:15:20 +0000 (UTC)
+	 MIME-Version; b=BRuJPX3STWeNDWugwNqCMrd7xqBGd84EhAedHrHSxtdIx2dZc5d+S2EXWGo87pExxAL6ql80YnHTVyhZMWd+pJSyjCkCGSnYK60rYZ7M6wy/asF0nm3LcDjLnLyqkATuA26LJGhVazAU2L0bJYHnStv1453WDc2GEOZ5Bb2SMh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bR/OVvJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3185C4CEF0;
+	Tue, 12 Aug 2025 17:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022520;
-	bh=7eqkHvcssZn7Ih6Im2SPPWM9hy7RIu/hTIzifEXddrQ=;
+	s=korg; t=1755020354;
+	bh=TNUXxCloo26rcRt/pEk4jjGJxKRoJmXDgivNvPvUPgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kILzPV2la0T3PSpx7J9LXuIFSEhOcaSSMsOaTUCYHIfYxHDG7w47siSBZFG51kG/S
-	 CYemiXFracb9BgqX7AFGRu8+IHXIqArW1OQk7ngyeACwsOO7HavefywEzvomyvByOW
-	 Vf899NHepwNDyahHXFjQVEtM74ksAd5xHQVSO8Iw=
+	b=bR/OVvJLGCzWeHAAPxfGqSHLNMzTN7W+Dy++EUpjwO5kjAUdDnjKhpQetsMIBx9J2
+	 eRyJBtxY3FhD18xsngrmOZvFdS9/vRAcx5DLP5LNTIs0sE9uQ+cR2b6bHgGqdTCjOB
+	 +mO8833+cXbKOF+fZYs5VWVM9tPgTREpwq7o5XdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/369] vrf: Drop existing dst reference in vrf_ip6_input_dst
+	Yue Hu <huyue2@coolpad.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 054/253] erofs: get rid of debug_one_dentry()
 Date: Tue, 12 Aug 2025 19:27:22 +0200
-Message-ID: <20250812173020.235490193@linuxfoundation.org>
+Message-ID: <20250812172951.026842414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit f388f807eca1de9e6e70f9ffb1a573c3811c4215 ]
+commit e324eaa9790614577c93e819651e0a83963dac79 upstream.
 
-Commit ff3fbcdd4724 ("selftests: tc: Add generic erspan_opts matching support
-for tc-flower") started triggering the following kmemleak warning:
+Since erofsdump is available, no need to keep this debugging
+functionality at all.
 
-unreferenced object 0xffff888015fb0e00 (size 512):
-  comm "softirq", pid 0, jiffies 4294679065
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 40 d2 85 9e ff ff ff ff  ........@.......
-    41 69 59 9d ff ff ff ff 00 00 00 00 00 00 00 00  AiY.............
-  backtrace (crc 30b71e8b):
-    __kmalloc_noprof+0x359/0x460
-    metadata_dst_alloc+0x28/0x490
-    erspan_rcv+0x4f1/0x1160 [ip_gre]
-    gre_rcv+0x217/0x240 [ip_gre]
-    gre_rcv+0x1b8/0x400 [gre]
-    ip_protocol_deliver_rcu+0x31d/0x3a0
-    ip_local_deliver_finish+0x37d/0x620
-    ip_local_deliver+0x174/0x460
-    ip_rcv+0x52b/0x6b0
-    __netif_receive_skb_one_core+0x149/0x1a0
-    process_backlog+0x3c8/0x1390
-    __napi_poll.constprop.0+0xa1/0x390
-    net_rx_action+0x59b/0xe00
-    handle_softirqs+0x22b/0x630
-    do_softirq+0xb1/0xf0
-    __local_bh_enable_ip+0x115/0x150
+Also drop a useless comment since it's the VFS behavior.
 
-vrf_ip6_input_dst unconditionally sets skb dst entry, add a call to
-skb_dst_drop to drop any existing entry.
-
-Cc: David Ahern <dsahern@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Fixes: 9ff74384600a ("net: vrf: Handle ipv6 multicast and link-local addresses")
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250725160043.350725-1-sdf@fomichev.me
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230114125746.399253-1-xiang@kernel.org
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vrf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/erofs/dir.c |   17 -----------------
+ 1 file changed, 17 deletions(-)
 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index 4087f72f0d2b..89dde220058a 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1324,6 +1324,8 @@ static void vrf_ip6_input_dst(struct sk_buff *skb, struct net_device *vrf_dev,
- 	struct net *net = dev_net(vrf_dev);
- 	struct rt6_info *rt6;
+--- a/fs/erofs/dir.c
++++ b/fs/erofs/dir.c
+@@ -6,21 +6,6 @@
+  */
+ #include "internal.h"
  
-+	skb_dst_drop(skb);
-+
- 	rt6 = vrf_ip6_route_lookup(net, vrf_dev, &fl6, ifindex, skb,
- 				   RT6_LOOKUP_F_HAS_SADDR | RT6_LOOKUP_F_IFACE);
- 	if (unlikely(!rt6))
--- 
-2.39.5
-
+-static void debug_one_dentry(unsigned char d_type, const char *de_name,
+-			     unsigned int de_namelen)
+-{
+-#ifdef CONFIG_EROFS_FS_DEBUG
+-	/* since the on-disk name could not have the trailing '\0' */
+-	unsigned char dbg_namebuf[EROFS_NAME_LEN + 1];
+-
+-	memcpy(dbg_namebuf, de_name, de_namelen);
+-	dbg_namebuf[de_namelen] = '\0';
+-
+-	erofs_dbg("found dirent %s de_len %u d_type %d", dbg_namebuf,
+-		  de_namelen, d_type);
+-#endif
+-}
+-
+ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+ 			       void *dentry_blk, struct erofs_dirent *de,
+ 			       unsigned int nameoff, unsigned int maxsize)
+@@ -52,10 +37,8 @@ static int erofs_fill_dentries(struct in
+ 			return -EFSCORRUPTED;
+ 		}
+ 
+-		debug_one_dentry(d_type, de_name, de_namelen);
+ 		if (!dir_emit(ctx, de_name, de_namelen,
+ 			      le64_to_cpu(de->nid), d_type))
+-			/* stopped by some reason */
+ 			return 1;
+ 		++de;
+ 		ctx->pos += sizeof(struct erofs_dirent);
 
 
 
