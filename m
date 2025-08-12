@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-169164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261FBB23887
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFAEB2389C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C2483B754A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:23:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 041816E1F51
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEF92D2391;
-	Tue, 12 Aug 2025 19:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890072FE599;
+	Tue, 12 Aug 2025 19:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SL5JiW5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGKYTygG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C297A2C21F7;
-	Tue, 12 Aug 2025 19:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ECC29BDB7;
+	Tue, 12 Aug 2025 19:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026593; cv=none; b=XJJU9yEJ8Munmc6FxSUMSXpKP1MzxCYI2TrPe00LFcz/zHjfUU28FkOxvn2d7gQt3RwHuG1f10aZbEZrjrSyKuulBQWlc8Ty3vj2QRtmTiQgeCwsCqQeRiG1etXMwEqROqst42/t6Hk9FJKCiSfWVz6PXBtCPQWLgaFF71sFEEw=
+	t=1755026632; cv=none; b=Z5gW3n5AHhN3uumMgJXCYvHwyb1EI0rygPUHWjk7RlGfMP2o2HLFB3ju/Vg3XqUA0KpJChogc15cayWy8yFrV6sae7KZFQ3voL6CuDCraFInhAjmZ/rlGhOTzyDK8HiXx+l+1fWxDT7APDgPN1u2TyGvD/Kpnc6sGfI5iTtZKdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026593; c=relaxed/simple;
-	bh=A0+Ygd19EwUypYYncjN8ASRhD/mi5YcTaYDdtiJpIgc=;
+	s=arc-20240116; t=1755026632; c=relaxed/simple;
+	bh=buXUmTsESKWWIpQSCGZDD5JdW+4YQx4plT1W2Okgsok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ihv0BbGykYpyoEZpIldBlBwxf0W2Z4OEHucJkFreG6qFvzbFlOP3Ui3xEoc/a0hWqTdApBUjKHbtTiereJ7O+EUqf4ZxlO2/dkeHcd/j3h1+BgYKPc072qmyGEecZ5OISfgqzU4Ol1xfvitC55J4Bok6PH81HOUmDlFOEmHbh2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SL5JiW5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31510C4CEF0;
-	Tue, 12 Aug 2025 19:23:12 +0000 (UTC)
+	 MIME-Version; b=hTpSjVHyfWRDIaTpePYnFn6BdPOykhlxuokVZTc4tEr+kupZHwYR0qcQOuZCgdqZ3nPhBE4fKVkgpGnHXTN1KskRHljhE9v0XGCzkV5jQ0dYtHKrPdmvBothwuxLeuQaY6zTtQLBehfNh60TC5EivSMGi7vpjIyF+OhlgVKv/wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGKYTygG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616F5C4CEF8;
+	Tue, 12 Aug 2025 19:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026593;
-	bh=A0+Ygd19EwUypYYncjN8ASRhD/mi5YcTaYDdtiJpIgc=;
+	s=korg; t=1755026631;
+	bh=buXUmTsESKWWIpQSCGZDD5JdW+4YQx4plT1W2Okgsok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SL5JiW5qCc9CvztTMJdaQtmyAZh0Jw85Da28qG5P2kapVMvbY+9phOAtOvcucMAj4
-	 EuAT4lruhdVDh22KPf9Fq/zzXen4hx25LqgPhKJari0YpXULM5MSAmHzfkDTVUcGAT
-	 rOEgkxVR9AarqpUkQobTXuziPagmwUoAPVYElk1I=
+	b=cGKYTygGUWVqjqaVWSKLZFWmMR8qOL3VD8hMeMne4fVH3r/P0xupyVWcRbSk2Bs6+
+	 IhGwcOvKs/LVEG/9IrrP5QuqoMCn6nYUEjPkD+l+/yg9BHAfEXqelmFU6C/Rgo1EMQ
+	 2G24oMiiTam9UPpPtjG0BFo86hi4vFIV2oYTAkgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Henzl <thenzl@redhat.com>,
-	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Mike Christie <michael.christie@oracle.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 366/480] scsi: mpt3sas: Fix a fw_event memory leak
-Date: Tue, 12 Aug 2025 19:49:34 +0200
-Message-ID: <20250812174412.527034595@linuxfoundation.org>
+Subject: [PATCH 6.15 367/480] scsi: Revert "scsi: iscsi: Fix HW conn removal use after free"
+Date: Tue, 12 Aug 2025 19:49:35 +0200
+Message-ID: <20250812174412.567040865@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,37 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomas Henzl <thenzl@redhat.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 3e90b38781e3bdd651edaf789585687611638862 ]
+[ Upstream commit 7bdc68921481c19cd8c85ddf805a834211c19e61 ]
 
-In _mpt3sas_fw_work() the fw_event reference is removed, it should also
-be freed in all cases.
+This reverts commit c577ab7ba5f3bf9062db8a58b6e89d4fe370447e.
 
-Fixes: 4318c7347847 ("scsi: mpt3sas: Handle NVMe PCIe device related events generated from firmware.")
-Signed-off-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://lore.kernel.org/r/20250723153018.50518-1-thenzl@redhat.com
-Acked-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
+The invocation of iscsi_put_conn() in iscsi_iter_destory_conn_fn() is
+used to free the initial reference counter of iscsi_cls_conn.  For
+non-qla4xxx cases, the ->destroy_conn() callback (e.g.,
+iscsi_conn_teardown) will call iscsi_remove_conn() and iscsi_put_conn()
+to remove the connection from the children list of session and free the
+connection at last.  However for qla4xxx, it is not the case. The
+->destroy_conn() callback of qla4xxx will keep the connection in the
+session conn_list and doesn't use iscsi_put_conn() to free the initial
+reference counter. Therefore, it seems necessary to keep the
+iscsi_put_conn() in the iscsi_iter_destroy_conn_fn(), otherwise, there
+will be memory leak problem.
+
+Link: https://lore.kernel.org/all/88334658-072b-4b90-a949-9c74ef93cfd1@huawei.com/
+Fixes: c577ab7ba5f3 ("scsi: iscsi: Fix HW conn removal use after free")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Link: https://lore.kernel.org/r/20250715073926.3529456-1-lilingfeng3@huawei.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_scsih.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-index 508861e88d9f..0f900ddb3047 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-@@ -10790,8 +10790,7 @@ _mpt3sas_fw_work(struct MPT3SAS_ADAPTER *ioc, struct fw_event_work *fw_event)
- 		break;
- 	case MPI2_EVENT_PCIE_TOPOLOGY_CHANGE_LIST:
- 		_scsih_pcie_topology_change_event(ioc, fw_event);
--		ioc->current_event = NULL;
--		return;
-+		break;
- 	}
- out:
- 	fw_event_work_put(fw_event);
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index c75a806496d6..743b4c792ceb 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -2143,6 +2143,8 @@ static int iscsi_iter_destroy_conn_fn(struct device *dev, void *data)
+ 		return 0;
+ 
+ 	iscsi_remove_conn(iscsi_dev_to_conn(dev));
++	iscsi_put_conn(iscsi_dev_to_conn(dev));
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
