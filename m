@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB44AB23496
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4DFB230E1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB581188679F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB4DA16CAE9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E772FA0CD;
-	Tue, 12 Aug 2025 18:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AC82F7449;
+	Tue, 12 Aug 2025 17:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygNqRZ/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mx31Cy84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604481DB92A;
-	Tue, 12 Aug 2025 18:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EF02FA0DB;
+	Tue, 12 Aug 2025 17:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023843; cv=none; b=bqF58JM4pGtJKzucuZwWmhXajxBxfhufc02he533d2+LZ6uHGpr1tJmQUcd1S9fsK5/Fac+qjX2Z1n7NJZr7fmrcpg2/5Czau7TBOGVxTZzmbp2WlAw5B1WsjYgF9fsHMOmUDT6j5QxMaYjigOCId4AbGrrVh8CpJCpd0IMOV98=
+	t=1755021382; cv=none; b=SrqR/JAy5V62+EXPJZk+vdYcA5J1RJca1dKLm/ooZKUw3/wZ5JssL8HKdImAmaW8q7He0TOYLlF0T2AzpSWyATwzXVBbIua6egNU51aL8f4WuSDZbr+bKLEqQOG8X5XXOlH/osPWkEoQXM0y2Y2UEpxCp8oTeKe9LDCqm8O5v2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023843; c=relaxed/simple;
-	bh=d64VdqvU/XqvAxUGhLTRo6re6ctBsaoktsHcfGoNU0w=;
+	s=arc-20240116; t=1755021382; c=relaxed/simple;
+	bh=hAoaE51QVvkP1dwlt+TZqi0sYCNixNX+G4xol3MbWAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACzcATBzg6xaGOQSneWvCmprUKeH9DBQOYJWCstZTBaCLTdN9nhWrq0uyjH8mzX5SMuXs7aFTXznxO5xfl9OLKnIXUMQISUIOMAA2hizbsbd0Sy7dhaA4UCXTDPpKVPomqud+onfWQXRAkghBM/QGTUIE6pE+2YD6xnCHoJbzfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygNqRZ/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ACCC4CEF1;
-	Tue, 12 Aug 2025 18:37:22 +0000 (UTC)
+	 MIME-Version; b=oELIGwJt50K4O4NwnBP/98DclSZtSeJGwnEtFt8DsdMHOllojPq1fOCj4p207VTpVNIM6gulcnzS185Q9hOG33b0r28MZlc4X0PJJ1fH9wfvk0SJVdB0Zw/y0S0xL01cRBxJ4FcLqGR2Z23DWcSouA9Y0g8Mk5PPgzsZEoreZc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mx31Cy84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D04C4CEF0;
+	Tue, 12 Aug 2025 17:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023843;
-	bh=d64VdqvU/XqvAxUGhLTRo6re6ctBsaoktsHcfGoNU0w=;
+	s=korg; t=1755021382;
+	bh=hAoaE51QVvkP1dwlt+TZqi0sYCNixNX+G4xol3MbWAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ygNqRZ/A0R9vaDnS7IpmzR3nIgegkqmuDLXHm0i8ui9XBrAN20G9H1A7FGj2Hp/aH
-	 aXdlFeghBxvRg2l3MrSggIvpF/Mamwk/d2pVXFnjRyj7HECOAiGCBgT24qHArPyJrw
-	 pgaxq6RvMLLQA7w7mLcHqUjCvH9TH3EUY8+SC0oE=
+	b=mx31Cy84bd9cW16YDbbw5rioFhNXbkay40xgvJAgWtBvJmOcnzm95/M3AmW6onECe
+	 JSy45a/+QBiGoxNVcuu/N8EiEbPHFeE5sMvtiI9o3uaX4KGpu9R4TfLrR+jjzqNDGz
+	 +ecOUOQNlIeNeazZyRYuE15CT3r3Nkvjoi8A2KHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 197/627] drm/rockchip: vop2: Fix the update of LAYER/PORT select registers when there are multi display output on rk3588/rk3568
-Date: Tue, 12 Aug 2025 19:28:12 +0200
-Message-ID: <20250812173426.769473495@linuxfoundation.org>
+Subject: [PATCH 6.6 105/262] ipv6: annotate data-races around rt->fib6_nsiblings
+Date: Tue, 12 Aug 2025 19:28:13 +0200
+Message-ID: <20250812172957.562134140@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,298 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3e89a8c6835476aa782da80585dee9ddae651eea ]
+[ Upstream commit 31d7d67ba1274f42494256d52e86da80ed09f3cb ]
 
-The all video ports of rk3568/rk3588 share the same OVL_LAYER_SEL
-and OVL_PORT_SEL registers, and the configuration of these two registers
-can be set to take effect when the vsync signal arrives at a certain Video
-Port.
+rt->fib6_nsiblings can be read locklessly, add corresponding
+READ_ONCE() and WRITE_ONCE() annotations.
 
-If two threads for two display output choose to update these two registers
-simultaneously to meet their own plane adjustment requirements(change plane
-zpos or switch plane from one crtc to another), then no matter which Video
-Port'svsync signal we choose to follow for these two registers, the display
-output of the other Video Port will be abnormal.
-This is because the configuration of this Video Port does not take
-effect at the right time (its configuration should take effect when its
-VSYNC signal arrives).
-
-In order to solve this problem, when performing plane migration or
-change the zpos of planes, there are two things to be observed and
-followed:
-
-1. When a plane is migrated from one VP to another, the configuration of
-   the layer can only take effect after the Port mux configuration is
-   enabled.
-
-2. When change the zpos of planes, we must ensure that the change for
-   the previous VP takes effect before we proceed to change the next VP.
-   Otherwise, the new configuration might overwrite the previous one for
-   the previous VP, or it could lead to the configuration of the previous
-   VP being take effect along with the VSYNC of the new VP.
-
-This issue only occurs in scenarios where multi-display output is enabled.
-
-Fixes: c5996e4ab109 ("drm/rockchip: vop2: Make overlay layer select register configuration take effect by vsync")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250421102156.424480-1-andyshrk@163.com
+Fixes: 66f5d6ce53e6 ("ipv6: replace rwlock with rcu and spinlock in fib6_table")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250725140725.3626540-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 25 ++----
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.h | 33 ++++++++
- drivers/gpu/drm/rockchip/rockchip_vop2_reg.c | 89 ++++++++++++++++++--
- 3 files changed, 122 insertions(+), 25 deletions(-)
+ net/ipv6/ip6_fib.c | 20 +++++++++++++-------
+ net/ipv6/route.c   |  5 +++--
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 6b37ce3ee60b..186f6452a7d3 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -146,25 +146,6 @@ static void vop2_unlock(struct vop2 *vop2)
- 	mutex_unlock(&vop2->vop2_lock);
- }
- 
--/*
-- * Note:
-- * The write mask function is documented but missing on rk3566/8, writes
-- * to these bits have no effect. For newer soc(rk3588 and following) the
-- * write mask is needed for register writes.
-- *
-- * GLB_CFG_DONE_EN has no write mask bit.
-- *
-- */
--static void vop2_cfg_done(struct vop2_video_port *vp)
--{
--	struct vop2 *vop2 = vp->vop2;
--	u32 val = RK3568_REG_CFG_DONE__GLB_CFG_DONE_EN;
--
--	val |= BIT(vp->id) | (BIT(vp->id) << 16);
--
--	regmap_set_bits(vop2->map, RK3568_REG_CFG_DONE, val);
--}
--
- static void vop2_win_disable(struct vop2_win *win)
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 65702bddb21f..c44136cbbaa1 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -437,15 +437,17 @@ struct fib6_dump_arg {
+ static int fib6_rt_dump(struct fib6_info *rt, struct fib6_dump_arg *arg)
  {
- 	vop2_win_write(win, VOP2_WIN_ENABLE, 0);
-@@ -854,6 +835,11 @@ static void vop2_enable(struct vop2 *vop2)
- 	if (vop2->version == VOP_VERSION_RK3588)
- 		rk3588_vop2_power_domain_enable_all(vop2);
+ 	enum fib_event_type fib_event = FIB_EVENT_ENTRY_REPLACE;
++	unsigned int nsiblings;
+ 	int err;
  
-+	if (vop2->version <= VOP_VERSION_RK3588) {
-+		vop2->old_layer_sel = vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
-+		vop2->old_port_sel = vop2_readl(vop2, RK3568_OVL_PORT_SEL);
-+	}
-+
- 	vop2_writel(vop2, RK3568_REG_CFG_DONE, RK3568_REG_CFG_DONE__GLB_CFG_DONE_EN);
+ 	if (!rt || rt == arg->net->ipv6.fib6_null_entry)
+ 		return 0;
  
- 	/*
-@@ -2728,6 +2714,7 @@ static int vop2_bind(struct device *dev, struct device *master, void *data)
- 		return dev_err_probe(drm->dev, vop2->irq, "cannot find irq for vop2\n");
- 
- 	mutex_init(&vop2->vop2_lock);
-+	mutex_init(&vop2->ovl_lock);
- 
- 	ret = devm_request_irq(dev, vop2->irq, vop2_isr, IRQF_SHARED, dev_name(dev), vop2);
- 	if (ret)
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
-index fc3ecb9fcd95..fa5c56f16047 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
-@@ -334,6 +334,19 @@ struct vop2 {
- 	/* optional internal rgb encoder */
- 	struct rockchip_rgb *rgb;
- 
-+	/*
-+	 * Used to record layer selection configuration on rk356x/rk3588
-+	 * as register RK3568_OVL_LAYER_SEL and RK3568_OVL_PORT_SEL are
-+	 * shared for all the Video Ports.
-+	 */
-+	u32 old_layer_sel;
-+	u32 old_port_sel;
-+	/*
-+	 * Ensure that the updates to these two registers(RKK3568_OVL_LAYER_SEL/RK3568_OVL_PORT_SEL)
-+	 * take effect in sequence.
-+	 */
-+	struct mutex ovl_lock;
-+
- 	/* must be put at the end of the struct */
- 	struct vop2_win win[];
- };
-@@ -727,6 +740,7 @@ enum dst_factor_mode {
- #define RK3588_OVL_PORT_SEL__CLUSTER2			GENMASK(21, 20)
- #define RK3568_OVL_PORT_SEL__CLUSTER1			GENMASK(19, 18)
- #define RK3568_OVL_PORT_SEL__CLUSTER0			GENMASK(17, 16)
-+#define RK3588_OVL_PORT_SET__PORT3_MUX			GENMASK(15, 12)
- #define RK3568_OVL_PORT_SET__PORT2_MUX			GENMASK(11, 8)
- #define RK3568_OVL_PORT_SET__PORT1_MUX			GENMASK(7, 4)
- #define RK3568_OVL_PORT_SET__PORT0_MUX			GENMASK(3, 0)
-@@ -831,4 +845,23 @@ static inline struct vop2_win *to_vop2_win(struct drm_plane *p)
- 	return container_of(p, struct vop2_win, base);
- }
- 
-+/*
-+ * Note:
-+ * The write mask function is documented but missing on rk3566/8, writes
-+ * to these bits have no effect. For newer soc(rk3588 and following) the
-+ * write mask is needed for register writes.
-+ *
-+ * GLB_CFG_DONE_EN has no write mask bit.
-+ *
-+ */
-+static inline void vop2_cfg_done(struct vop2_video_port *vp)
-+{
-+	struct vop2 *vop2 = vp->vop2;
-+	u32 val = RK3568_REG_CFG_DONE__GLB_CFG_DONE_EN;
-+
-+	val |= BIT(vp->id) | (BIT(vp->id) << 16);
-+
-+	regmap_set_bits(vop2->map, RK3568_REG_CFG_DONE, val);
-+}
-+
- #endif /* _ROCKCHIP_DRM_VOP2_H */
-diff --git a/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-index 32c4ed685739..45c5e3987813 100644
---- a/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-@@ -2052,12 +2052,55 @@ static void vop2_setup_alpha(struct vop2_video_port *vp)
- 	}
- }
- 
-+static u32 rk3568_vop2_read_port_mux(struct vop2 *vop2)
-+{
-+	return vop2_readl(vop2, RK3568_OVL_PORT_SEL);
-+}
-+
-+static void rk3568_vop2_wait_for_port_mux_done(struct vop2 *vop2)
-+{
-+	u32 port_mux_sel;
-+	int ret;
-+
-+	/*
-+	 * Spin until the previous port_mux figuration is done.
-+	 */
-+	ret = readx_poll_timeout_atomic(rk3568_vop2_read_port_mux, vop2, port_mux_sel,
-+					port_mux_sel == vop2->old_port_sel, 0, 50 * 1000);
-+	if (ret)
-+		DRM_DEV_ERROR(vop2->dev, "wait port_mux done timeout: 0x%x--0x%x\n",
-+			      port_mux_sel, vop2->old_port_sel);
-+}
-+
-+static u32 rk3568_vop2_read_layer_cfg(struct vop2 *vop2)
-+{
-+	return vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
-+}
-+
-+static void rk3568_vop2_wait_for_layer_cfg_done(struct vop2 *vop2, u32 cfg)
-+{
-+	u32 atv_layer_cfg;
-+	int ret;
-+
-+	/*
-+	 * Spin until the previous layer configuration is done.
-+	 */
-+	ret = readx_poll_timeout_atomic(rk3568_vop2_read_layer_cfg, vop2, atv_layer_cfg,
-+					atv_layer_cfg == cfg, 0, 50 * 1000);
-+	if (ret)
-+		DRM_DEV_ERROR(vop2->dev, "wait layer cfg done timeout: 0x%x--0x%x\n",
-+			      atv_layer_cfg, cfg);
-+}
-+
- static void rk3568_vop2_setup_layer_mixer(struct vop2_video_port *vp)
- {
- 	struct vop2 *vop2 = vp->vop2;
- 	struct drm_plane *plane;
- 	u32 layer_sel = 0;
- 	u32 port_sel;
-+	u32 old_layer_sel = 0;
-+	u32 atv_layer_sel = 0;
-+	u32 old_port_sel = 0;
- 	u8 layer_id;
- 	u8 old_layer_id;
- 	u8 layer_sel_id;
-@@ -2069,19 +2112,18 @@ static void rk3568_vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 	struct vop2_video_port *vp2 = &vop2->vps[2];
- 	struct rockchip_crtc_state *vcstate = to_rockchip_crtc_state(vp->crtc.state);
- 
-+	mutex_lock(&vop2->ovl_lock);
- 	ovl_ctrl = vop2_readl(vop2, RK3568_OVL_CTRL);
- 	ovl_ctrl &= ~RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD;
- 	ovl_ctrl &= ~RK3568_OVL_CTRL__LAYERSEL_REGDONE_SEL;
--	ovl_ctrl |= FIELD_PREP(RK3568_OVL_CTRL__LAYERSEL_REGDONE_SEL, vp->id);
- 
- 	if (vcstate->yuv_overlay)
- 		ovl_ctrl |= RK3568_OVL_CTRL__YUV_MODE(vp->id);
+-	if (rt->fib6_nsiblings)
++	nsiblings = READ_ONCE(rt->fib6_nsiblings);
++	if (nsiblings)
+ 		err = call_fib6_multipath_entry_notifier(arg->nb, fib_event,
+ 							 rt,
+-							 rt->fib6_nsiblings,
++							 nsiblings,
+ 							 arg->extack);
  	else
- 		ovl_ctrl &= ~RK3568_OVL_CTRL__YUV_MODE(vp->id);
+ 		err = call_fib6_entry_notifier(arg->nb, fib_event, rt,
+@@ -1118,7 +1120,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
  
--	vop2_writel(vop2, RK3568_OVL_CTRL, ovl_ctrl);
--
--	port_sel = vop2_readl(vop2, RK3568_OVL_PORT_SEL);
-+	old_port_sel = vop2->old_port_sel;
-+	port_sel = old_port_sel;
- 	port_sel &= RK3568_OVL_PORT_SEL__SEL_PORT;
+ 			if (rt6_duplicate_nexthop(iter, rt)) {
+ 				if (rt->fib6_nsiblings)
+-					rt->fib6_nsiblings = 0;
++					WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 				if (!(iter->fib6_flags & RTF_EXPIRES))
+ 					return -EEXIST;
+ 				if (!(rt->fib6_flags & RTF_EXPIRES))
+@@ -1144,7 +1146,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 			 */
+ 			if (rt_can_ecmp &&
+ 			    rt6_qualify_for_ecmp(iter))
+-				rt->fib6_nsiblings++;
++				WRITE_ONCE(rt->fib6_nsiblings,
++					   rt->fib6_nsiblings + 1);
+ 		}
  
- 	if (vp0->nlayers)
-@@ -2102,7 +2144,13 @@ static void rk3568_vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 	else
- 		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX, 8);
+ 		if (iter->fib6_metric > rt->fib6_metric)
+@@ -1194,7 +1197,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 		fib6_nsiblings = 0;
+ 		list_for_each_entry_safe(sibling, temp_sibling,
+ 					 &rt->fib6_siblings, fib6_siblings) {
+-			sibling->fib6_nsiblings++;
++			WRITE_ONCE(sibling->fib6_nsiblings,
++				   sibling->fib6_nsiblings + 1);
+ 			BUG_ON(sibling->fib6_nsiblings != rt->fib6_nsiblings);
+ 			fib6_nsiblings++;
+ 		}
+@@ -1239,7 +1243,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 				list_for_each_entry_safe(sibling, next_sibling,
+ 							 &rt->fib6_siblings,
+ 							 fib6_siblings)
+-					sibling->fib6_nsiblings--;
++					WRITE_ONCE(sibling->fib6_nsiblings,
++						   sibling->fib6_nsiblings - 1);
+ 				WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 				list_del_rcu(&rt->fib6_siblings);
+ 				rt6_multipath_rebalance(next_sibling);
+@@ -1952,7 +1957,8 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
+ 			notify_del = true;
+ 		list_for_each_entry_safe(sibling, next_sibling,
+ 					 &rt->fib6_siblings, fib6_siblings)
+-			sibling->fib6_nsiblings--;
++			WRITE_ONCE(sibling->fib6_nsiblings,
++				   sibling->fib6_nsiblings - 1);
+ 		WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 		list_del_rcu(&rt->fib6_siblings);
+ 		rt6_multipath_rebalance(next_sibling);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index f180b7bc9f57..eb9e505f71f9 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5230,7 +5230,8 @@ static void ip6_route_mpath_notify(struct fib6_info *rt,
+ 	 */
+ 	rcu_read_lock();
  
--	layer_sel = vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
-+	/* Fixed value for rk3588 */
-+	if (vop2->version == VOP_VERSION_RK3588)
-+		port_sel |= FIELD_PREP(RK3588_OVL_PORT_SET__PORT3_MUX, 7);
-+
-+	atv_layer_sel = vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
-+	old_layer_sel = vop2->old_layer_sel;
-+	layer_sel = old_layer_sel;
+-	if ((nlflags & NLM_F_APPEND) && rt_last && rt_last->fib6_nsiblings) {
++	if ((nlflags & NLM_F_APPEND) && rt_last &&
++	    READ_ONCE(rt_last->fib6_nsiblings)) {
+ 		rt = list_first_or_null_rcu(&rt_last->fib6_siblings,
+ 					    struct fib6_info,
+ 					    fib6_siblings);
+@@ -5763,7 +5764,7 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+ 		if (dst->lwtstate &&
+ 		    lwtunnel_fill_encap(skb, dst->lwtstate, RTA_ENCAP, RTA_ENCAP_TYPE) < 0)
+ 			goto nla_put_failure;
+-	} else if (rt->fib6_nsiblings) {
++	} else if (READ_ONCE(rt->fib6_nsiblings)) {
+ 		struct fib6_info *sibling;
+ 		struct nlattr *mp;
  
- 	ofs = 0;
- 	for (i = 0; i < vp->id; i++)
-@@ -2186,8 +2234,37 @@ static void rk3568_vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 			     old_win->data->layer_sel_id[vp->id]);
- 	}
- 
-+	vop2->old_layer_sel = layer_sel;
-+	vop2->old_port_sel = port_sel;
-+	/*
-+	 * As the RK3568_OVL_LAYER_SEL and RK3568_OVL_PORT_SEL are shared by all Video Ports,
-+	 * and the configuration take effect by one Video Port's vsync.
-+	 * When performing layer migration or change the zpos of layers, there are two things
-+	 * to be observed and followed:
-+	 * 1. When a layer is migrated from one VP to another, the configuration of the layer
-+	 *    can only take effect after the Port mux configuration is enabled.
-+	 *
-+	 * 2. When we change the zpos of layers, we must ensure that the change for the previous
-+	 *    VP takes effect before we proceed to change the next VP. Otherwise, the new
-+	 *    configuration might overwrite the previous one for the previous VP, or it could
-+	 *    lead to the configuration of the previous VP being take effect along with the VSYNC
-+	 *    of the new VP.
-+	 */
-+	if (layer_sel != old_layer_sel || port_sel != old_port_sel)
-+		ovl_ctrl |= FIELD_PREP(RK3568_OVL_CTRL__LAYERSEL_REGDONE_SEL, vp->id);
-+	vop2_writel(vop2, RK3568_OVL_CTRL, ovl_ctrl);
-+
-+	if (port_sel != old_port_sel) {
-+		vop2_writel(vop2, RK3568_OVL_PORT_SEL, port_sel);
-+		vop2_cfg_done(vp);
-+		rk3568_vop2_wait_for_port_mux_done(vop2);
-+	}
-+
-+	if (layer_sel != old_layer_sel && atv_layer_sel != old_layer_sel)
-+		rk3568_vop2_wait_for_layer_cfg_done(vop2, vop2->old_layer_sel);
-+
- 	vop2_writel(vop2, RK3568_OVL_LAYER_SEL, layer_sel);
--	vop2_writel(vop2, RK3568_OVL_PORT_SEL, port_sel);
-+	mutex_unlock(&vop2->ovl_lock);
- }
- 
- static void rk3568_vop2_setup_dly_for_windows(struct vop2_video_port *vp)
 -- 
 2.39.5
 
