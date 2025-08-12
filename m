@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8651DB22F90
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28272B2307B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B1A068394B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 133F04E3394
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93452FDC2B;
-	Tue, 12 Aug 2025 17:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827E52F8BE7;
+	Tue, 12 Aug 2025 17:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbEsSH8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKykvr98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DF62F7461;
-	Tue, 12 Aug 2025 17:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429DE2D5C76;
+	Tue, 12 Aug 2025 17:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020435; cv=none; b=Fed0Ef5/hMnwg8i6jfHq4fdknOTODARW7vJtaISJGExQHLRZ42IXB+jXUl4bgBvrx5LNkXws8gmqr+tz3mtFQYtM3b2U7/w5Fn5iE3tM/ASs1VYfDJ2yKCIdnGDsrdzuiZs5BSTf5n2rAUO5cCAk/IpU+J/ajpyf4sExhCDyCxQ=
+	t=1755021224; cv=none; b=SuDY+CxT5o3aqozdpsx7pY8I1fSokmnded2OQLAmq1maD5bEt/2O/vTCO58rSKa4Q4VwNrZxvcJNLnX2AXJu6TH8pyCQVQVfvBJ3s8TsQzC4NU7lMmLSP5CivQGeOtWWaas+dLDbCe8hgFtD0TipNHEILoseFGf2a5bDR6hAO28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020435; c=relaxed/simple;
-	bh=AxElkGc9oG4LRjCm78P5wZRSScIUGw9tbGePWVA97t4=;
+	s=arc-20240116; t=1755021224; c=relaxed/simple;
+	bh=CjVcq/7BLyr8V7SYoLNyWah10t0e3F0yJi7wUdvF12k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVY5d7g405RIQ+NM0Pb9FZZDFxpW17tnJ7DVlCI1L6PF+pumGwrIL5Haru32H8EKwiUnpzVPFNT+qPEG+/HJ2HZmExmyFXGS38WCmUw1MXBL9ml4OPJogAeSxxfD3k1RVMK/0AtVdMUp58h0QPqxEiriylWqMxrhNjFa5Qei6Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbEsSH8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5759C4CEF0;
-	Tue, 12 Aug 2025 17:40:34 +0000 (UTC)
+	 MIME-Version; b=jqiJzlPjUAfef39wg713UzcuR6R37UuULdPdDA7NtJlI7sBwbTI9aBHZ9h9b+Uxr+1XJNjYQdjkAIvXrmPaqTibAS/AKJmZbqXyQXuF66L4RifKzHbK0kK5JUA9Ef9zRKpZNR1c6TmOMW9VmIcqGa+axtFpnN40ua+w+2wVe2PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKykvr98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4218AC4CEF0;
+	Tue, 12 Aug 2025 17:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020435;
-	bh=AxElkGc9oG4LRjCm78P5wZRSScIUGw9tbGePWVA97t4=;
+	s=korg; t=1755021223;
+	bh=CjVcq/7BLyr8V7SYoLNyWah10t0e3F0yJi7wUdvF12k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbEsSH8YNIWy6JCyXmluXQuLicBQImfb3iFBwo0OxY7dxhOawfnF0XeMp+oWEtVEv
-	 s78orI2m+a3jUOh8rl5OQRlmIeeCKn4oGYVyOt7GzvtDLKD/ngQiRpgvln/Pr+aomf
-	 s2jLeZIU+4bYd5p6SZXDtYNre98WFCXpClqaMDGc=
+	b=fKykvr98FXWzfRQp5KHktHWUwfyqR5UPWCViJ7v7bhCnj/xEXsYNi6VjcLJ22GynQ
+	 vdnDwo9vT9j5qeSTj0uhS2h3/56IWwW8EqGZpcLAUrSUc3NWmhX0Fh/rlxHvuIN/Hq
+	 cQrPZQ0o59luMZNI8iKv6NsxFDF54WhpXk9lTGLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/253] Revert "vmci: Prevent the dispatching of uninitialized payloads"
+Subject: [PATCH 6.6 080/262] mwl8k: Add missing check after DMA map
 Date: Tue, 12 Aug 2025 19:27:48 +0200
-Message-ID: <20250812172952.134568815@linuxfoundation.org>
+Message-ID: <20250812172956.450587636@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 8f5d9bed6122b8d96508436e5ad2498bb797eb6b ]
+[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
 
-This reverts commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-While the code "looks" correct, the compiler has no way to know that
-doing "fun" pointer math like this really isn't a write off the end of
-the structure as there is no hint anywhere that the structure has data
-at the end of it.
-
-This causes the following build warning:
-
-In function 'fortify_memset_chk',
-    inlined from 'ctx_fire_notification.isra' at drivers/misc/vmw_vmci/vmci_context.c:254:3:
-include/linux/fortify-string.h:480:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  480 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-So revert it for now and it can come back in the future in a "sane" way
-that either correctly makes the structure know that there is trailing
-data, OR just the payload structure is properly referenced and zeroed
-out.
-
-Fixes: bfb4cf9fb97e ("vmci: Prevent the dispatching of uninitialized payloads")
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20250703171021.0aee1482@canb.auug.org.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_context.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/marvell/mwl8k.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
-index ab5060df80aa..172696abce31 100644
---- a/drivers/misc/vmw_vmci/vmci_context.c
-+++ b/drivers/misc/vmw_vmci/vmci_context.c
-@@ -251,8 +251,6 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
- 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
- 						  VMCI_CONTEXT_RESOURCE_ID);
- 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
--		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
--			ev.msg.hdr.payload_size);
- 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
- 		ev.payload.context_id = context_id;
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index c0ecd769ada7..1a48914e6f82 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -1222,6 +1222,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
  
+ 		addr = dma_map_single(&priv->pdev->dev, skb->data,
+ 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&priv->pdev->dev, addr)) {
++			kfree_skb(skb);
++			break;
++		}
+ 
+ 		rxq->rxd_count++;
+ 		rx = rxq->tail++;
 -- 
 2.39.5
 
