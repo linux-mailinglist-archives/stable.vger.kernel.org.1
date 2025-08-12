@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF0CB2330B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5798FB2314C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C673C3B0529
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D6A163CE5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4731B280037;
-	Tue, 12 Aug 2025 18:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E232DBF5E;
+	Tue, 12 Aug 2025 18:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt0kSRMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cNKEFhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B991B87F2;
-	Tue, 12 Aug 2025 18:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C11199385;
+	Tue, 12 Aug 2025 18:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022804; cv=none; b=StOAy4W3tASxJHBhYVx9ACKMqtCNWc+YUWpuFcoJBhFVVmqcWDqtY6gPJDjqKPJiQaf1pRBQzz8m/y4uHsV0AxDW1mYGUGSBy1fBXprx9qBOD2GLUWEUHjhEHdY6gQZNEdJivO9tqf3ucq+nOEHDPu0LZ1czhpH/tKf9j10gCoA=
+	t=1755021614; cv=none; b=gfvfhbpVz5FJ8843j/vWLD67vPtGSxeWgw4fakP3AM7/9pz7nmj3lxWBnfIQcp7uvCqU9+5OulP1rwFMQvNLWnA+ZzFUa7OoUuolVJVpCyiaEcrwr/jTx+4Jz6zp3NuZEydtsRxuoWKej+dD3SxONWrItqOUcBiEjg9+Oe8r46s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022804; c=relaxed/simple;
-	bh=jh02Imc4Jw0Rsh9o/UJqyUmSpI/3+DAHY+xeUpRLSVg=;
+	s=arc-20240116; t=1755021614; c=relaxed/simple;
+	bh=e7ZobGTx0CNUH9ymHlDRk26czFtE3Z8/hufBYO9/vYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqEZOX67GaEMVyOD096Y4dlv5o0uOGDNPYRHo8NeyeieERzW+OWMTSJJnCL+8fFlRnofI/rOFVHRU+DAgUnI48poRsgnVaRHnVfChztOHtX+cZo/mLpnPTZcnUutAwHAQYUWJzBA30V0Sm4Hlf5porpaWmCZ1rxbeFbtaRFtFr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt0kSRMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4AFC4CEF6;
-	Tue, 12 Aug 2025 18:20:02 +0000 (UTC)
+	 MIME-Version; b=MXUpVVmC2XSxIP1OWHtFEDMbj+Kpyn8mTnxFo+HNDj0vlwgwXwdiXGW/ycFlh6M+k2KP4QLj2YpfSEqbkEs0t/xdgHTgy96MeOob9FC+FK3+8nPvqSIuaX3N+j++QxuDO7zE2owh/XZdOQ/4rRcSlmEiawz2/5OJZ2rF86bZF54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cNKEFhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C992DC4CEF0;
+	Tue, 12 Aug 2025 18:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022803;
-	bh=jh02Imc4Jw0Rsh9o/UJqyUmSpI/3+DAHY+xeUpRLSVg=;
+	s=korg; t=1755021614;
+	bh=e7ZobGTx0CNUH9ymHlDRk26czFtE3Z8/hufBYO9/vYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qt0kSRMnDiuZ117L6ghFQBiUEU513rM2b+v8raYfaK8g/EmpQz61BTNiP3XwOVWEJ
-	 veInwx3HCSxW/RWazwOfc7B0jrwhl/FcGEHzOuyIzYQQfoOOZVoAwp2IW1Z1iY7VWO
-	 JvSgllCLv3yr35GczjJxEgmMKgopp1dUnjUTQIS4=
+	b=0cNKEFhlmqxtuaVdu+rKmpxmG3XPQZXVny+mfmhtjCPq7IIpJ7ZRkg0TJaLpDnTM2
+	 MwSGGncLqOjIKQDYulI6Tvu3M9W6VUCgx3/fFn7PyotbCRTn1OGi5oUL764nfjxX5o
+	 vDqEC0Sl1mjPXivkaXz+foZBZngPKZXMx2veVzxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/369] i2c: muxes: mule: Fix an error handling path in mule_i2c_mux_probe()
+Subject: [PATCH 6.6 173/262] f2fs: doc: fix wrong quota mount option description
 Date: Tue, 12 Aug 2025 19:29:21 +0200
-Message-ID: <20250812173024.694060135@linuxfoundation.org>
+Message-ID: <20250812173000.478581280@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 33ac5155891cab165c93b51b0e22e153eacc2ee7 ]
+[ Upstream commit 81b6ecca2f15922e8d653dc037df5871e754be6e ]
 
-If an error occurs in the loop that creates the device adapters, then a
-reference to 'dev' still needs to be released.
+We should use "{usr,grp,prj}jquota=" to disable journaled quota,
+rather than using off{usr,grp,prj}jquota.
 
-Use for_each_child_of_node_scoped() to both fix the issue and save one line
-of code.
-
-Fixes: d0f8e97866bf ("i2c: muxes: add support for tsd,mule-i2c multiplexer")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: 4b2414d04e99 ("f2fs: support journalled quota")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/muxes/i2c-mux-mule.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Documentation/filesystems/f2fs.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/muxes/i2c-mux-mule.c b/drivers/i2c/muxes/i2c-mux-mule.c
-index 284ff4afeeac..d3b32b794172 100644
---- a/drivers/i2c/muxes/i2c-mux-mule.c
-+++ b/drivers/i2c/muxes/i2c-mux-mule.c
-@@ -47,7 +47,6 @@ static int mule_i2c_mux_probe(struct platform_device *pdev)
- 	struct mule_i2c_reg_mux *priv;
- 	struct i2c_client *client;
- 	struct i2c_mux_core *muxc;
--	struct device_node *dev;
- 	unsigned int readback;
- 	int ndev, ret;
- 	bool old_fw;
-@@ -95,7 +94,7 @@ static int mule_i2c_mux_probe(struct platform_device *pdev)
- 				     "Failed to register mux remove\n");
- 
- 	/* Create device adapters */
--	for_each_child_of_node(mux_dev->of_node, dev) {
-+	for_each_child_of_node_scoped(mux_dev->of_node, dev) {
- 		u32 reg;
- 
- 		ret = of_property_read_u32(dev, "reg", &reg);
+diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
+index dbfbbe9ab28b..961684e9466e 100644
+--- a/Documentation/filesystems/f2fs.rst
++++ b/Documentation/filesystems/f2fs.rst
+@@ -233,9 +233,9 @@ usrjquota=<file>	 Appoint specified file and type during mount, so that quota
+ grpjquota=<file>	 information can be properly updated during recovery flow,
+ prjjquota=<file>	 <quota file>: must be in root directory;
+ jqfmt=<quota type>	 <quota type>: [vfsold,vfsv0,vfsv1].
+-offusrjquota		 Turn off user journalled quota.
+-offgrpjquota		 Turn off group journalled quota.
+-offprjjquota		 Turn off project journalled quota.
++usrjquota=		 Turn off user journalled quota.
++grpjquota=		 Turn off group journalled quota.
++prjjquota=		 Turn off project journalled quota.
+ quota			 Enable plain user disk quota accounting.
+ noquota			 Disable all plain disk quota option.
+ alloc_mode=%s		 Adjust block allocation policy, which supports "reuse"
 -- 
 2.39.5
 
