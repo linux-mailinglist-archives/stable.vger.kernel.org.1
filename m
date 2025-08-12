@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDE6B230B4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD61B23477
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40375686E0C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AF6B580BC8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76E82FAC02;
-	Tue, 12 Aug 2025 17:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99012FF14D;
+	Tue, 12 Aug 2025 18:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zK3DQU1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAcIedCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76706221FAC;
-	Tue, 12 Aug 2025 17:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6864F2FE59B;
+	Tue, 12 Aug 2025 18:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021237; cv=none; b=TL6t4IPL4ynS3wLU6PQG4lqIA0tT9UiPZizAH4fM0v2CQYvus8uC2eqwUu1r3Sr3DypCT5gvB7MuQpRQgZzuVtOEaA6mT0n10ArK/JKhKyl0kMEwqEm82TAUM23sjFoeDUOMTYunIkg+7cKQOJgb7Oi5RkGC8n/EZWfdPOmfCaw=
+	t=1755023874; cv=none; b=CgFTdhzX9XUkktXME1+cz9lrT/VLjBu0K/67c+lnrJ93N1s6bNqrOeSymRzYyiIluYn3fe0+7MdFx92ZsX1A04njlacNSBL4L8Z+njY7dAclpK6UGrnFxL8YYaVUsS0aunad5SXynzLFNl34LNXP+kIBYhhJZInsGV7tx22FHJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021237; c=relaxed/simple;
-	bh=e7pOyeJ+qA8zKyrIKSt5EhbyAWanMQx27K94LKwf6z8=;
+	s=arc-20240116; t=1755023874; c=relaxed/simple;
+	bh=BWSUqOXofZJ969UJwVA9aKAhSJ3T6nfQ1s433dIYaTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ef/iVZ0QpfGVWLzKmjlBmrcqLe/NNoxVmPTjxjzCFNNrPvRl0UXUOQqtWvtLlGeMjWa6PMo16spFtL+IyphDMmGFpsCMd6DOGJifcYQ+QayfHAemVzUqRnKikO/NWOhg9elRU9sE8+V9N9WH2ac6HFbO2Qd8kykGtCH7fVN41Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zK3DQU1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C0EC4CEF0;
-	Tue, 12 Aug 2025 17:53:56 +0000 (UTC)
+	 MIME-Version; b=NFLUxGMMgWxGXqPM/c1CYHs4FNJVMlqsApJ1rcmpdcqp3Avc/zabktOdi+DJqKv3dLX/6koAjiYQ6apPJWlAcbkQ9MrSCHFqmQfEei1gVLsp8Flp8VH1HJYXXWrpfnOLQ/inxq0S1w3nwkgSLwsmFn0DDnjrgs+eZbTa77Y0oAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAcIedCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA619C4CEF0;
+	Tue, 12 Aug 2025 18:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021237;
-	bh=e7pOyeJ+qA8zKyrIKSt5EhbyAWanMQx27K94LKwf6z8=;
+	s=korg; t=1755023874;
+	bh=BWSUqOXofZJ969UJwVA9aKAhSJ3T6nfQ1s433dIYaTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zK3DQU1CpfJSWcA3gMN/TD9wTLA1/X56jATWc/OrthRZ5gPydVPJlPSfddCCVAxGS
-	 9bE5GkpTJPXyrsaQm4OtfDBaeVxaHpOR9rrj0EAka5JRJI9CQqxsZ4rGfaUqOtIl/j
-	 OplZ+AJjwmWlUmqUO0NnQKIiHscTjBjMMklnPlTk=
+	b=UAcIedCpFjW9xFPRNSSTxMcSiQTY7yYiyWpRdZ9ZIXmcB7FiHHXZTqpN3Lf85cTCf
+	 5+rvI5FGzzb6dG+teMW1gxy54jf4hg6Lrj+E8lSGJMigyKzfl2MbYxN2tHWOsFoNjD
+	 GK5X7OjSJ6Al4rW8bGxhURVYWjR+grFKgsWc/ajA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/262] wifi: mac80211: reject TDLS operations when station is not associated
+Subject: [PATCH 6.16 175/627] net: dst: annotate data-races around dst->output
 Date: Tue, 12 Aug 2025 19:27:50 +0200
-Message-ID: <20250812172956.536254838@linuxfoundation.org>
+Message-ID: <20250812173425.934867221@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 16ecdab5446f15a61ec88eb0d23d25d009821db0 ]
+[ Upstream commit 2dce8c52a98995c4719def6f88629ab1581c0b82 ]
 
-syzbot triggered a WARN in ieee80211_tdls_oper() by sending
-NL80211_TDLS_ENABLE_LINK immediately after NL80211_CMD_CONNECT,
-before association completed and without prior TDLS setup.
+dst_dev_put() can overwrite dst->output while other
+cpus might read this field (for instance from dst_output())
 
-This left internal state like sdata->u.mgd.tdls_peer uninitialized,
-leading to a WARN_ON() in code paths that assumed it was valid.
+Add READ_ONCE()/WRITE_ONCE() annotations to suppress
+potential issues.
 
-Reject the operation early if not in station mode or not associated.
+We will likely need RCU protection in the future.
 
-Reported-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f73f203f8c9b19037380
-Fixes: 81dd2b882241 ("mac80211: move TDLS data to mgd private part")
-Tested-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Link: https://patch.msgid.link/20250715230904.661092-2-moonhee.lee.ca@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250630121934.3399505-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tdls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/dst.h      | 2 +-
+ include/net/lwtunnel.h | 4 ++--
+ net/core/dst.c         | 2 +-
+ net/ipv4/route.c       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index a4af3b7675ef..f3cdbd2133f6 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1450,7 +1450,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS))
- 		return -ENOTSUPP;
+diff --git a/include/net/dst.h b/include/net/dst.h
+index 65d81116d6bf..2caf85e2ce86 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -456,7 +456,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
+ /* Output packet to network from transport.  */
+ static inline int dst_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	return INDIRECT_CALL_INET(skb_dst(skb)->output,
++	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->output),
+ 				  ip6_output, ip_output,
+ 				  net, sk, skb);
+ }
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index eaac07d50595..26232f603e33 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -138,8 +138,8 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len,
+ static inline void lwtunnel_set_redirect(struct dst_entry *dst)
+ {
+ 	if (lwtunnel_output_redirect(dst->lwtstate)) {
+-		dst->lwtstate->orig_output = dst->output;
+-		dst->output = lwtunnel_output;
++		dst->lwtstate->orig_output = READ_ONCE(dst->output);
++		WRITE_ONCE(dst->output, lwtunnel_output);
+ 	}
+ 	if (lwtunnel_input_redirect(dst->lwtstate)) {
+ 		dst->lwtstate->orig_input = READ_ONCE(dst->input);
+diff --git a/net/core/dst.c b/net/core/dst.c
+index b46f7722a1b6..e483daf17666 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -149,7 +149,7 @@ void dst_dev_put(struct dst_entry *dst)
+ 	if (dst->ops->ifdown)
+ 		dst->ops->ifdown(dst, dev);
+ 	WRITE_ONCE(dst->input, dst_discard);
+-	dst->output = dst_discard_out;
++	WRITE_ONCE(dst->output, dst_discard_out);
+ 	dst->dev = blackhole_netdev;
+ 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+ 			   GFP_ATOMIC);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 2cc88f8c3bc6..bd5d48fdd62a 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1686,7 +1686,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
+ 			new_rt->rt_gw6 = rt->rt_gw6;
  
--	if (sdata->vif.type != NL80211_IFTYPE_STATION)
-+	if (sdata->vif.type != NL80211_IFTYPE_STATION || !sdata->vif.cfg.assoc)
- 		return -EINVAL;
- 
- 	switch (oper) {
+ 		new_rt->dst.input = READ_ONCE(rt->dst.input);
+-		new_rt->dst.output = rt->dst.output;
++		new_rt->dst.output = READ_ONCE(rt->dst.output);
+ 		new_rt->dst.error = rt->dst.error;
+ 		new_rt->dst.lastuse = jiffies;
+ 		new_rt->dst.lwtstate = lwtstate_get(rt->dst.lwtstate);
 -- 
 2.39.5
 
