@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-167496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C6CB23068
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:52:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA5DB23457
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 884E71890697
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E4F83B6891
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B3426B2C8;
-	Tue, 12 Aug 2025 17:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193612FA0DF;
+	Tue, 12 Aug 2025 18:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uq6i+F5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjPEStN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EB3279915;
-	Tue, 12 Aug 2025 17:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAACB2ECE93;
+	Tue, 12 Aug 2025 18:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021014; cv=none; b=hQ19NlpJK/k6UYTF+3DOnZt2eYIhRvlStiZzBkI3j6TJtNnXtjBjW/h4+tSeIOgkq9r7569CSIIrA4hZ1KBcg8KvaVkNqJeAlBHe6vv0erIXkjmZhZjK/klE/oZdoOxioav95mkGcva37dkzmQC8PX+D22HBb3kwpYyctzow080=
+	t=1755023652; cv=none; b=djmL0am++qskicJCvUm/9Qd1jVMxvUwjhjkza/aRUuZFW8zmhWU1NLuWMG7dwUuhGX88KfUdOtcTVXq63tvAv5mo6DjFLJ4xbm6PteJefejff0NNC9gWNx1RWO96cYr/c86t7DRIYYK0Gf7lhdWju7w+7sM557DICJK1H8gY8Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021014; c=relaxed/simple;
-	bh=jwFqXhEMzGf6Gp++d8peB0Wq334D9/7JRP+ryRDNC/I=;
+	s=arc-20240116; t=1755023652; c=relaxed/simple;
+	bh=gaSaahimMuVdFxdEY66Wi/vIK0b1rcGsfpmQefK/s54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBRXYv5KC9xoUa4e7qS/KvB9bf1fR/PqDRWkhM0IPqXnE8JkExTObKPoTTRYm6aKO+JpzvdwjTwl6c2SOn+KxpHEQmCKCyVKyRnY7LaU6sHL/5bFugSOBj/k5S/z/yvxbVyzN/0jt0sGzDHqvJ6prXGo3Dx407ZYYgll9jsuhX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uq6i+F5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868FEC4CEF1;
-	Tue, 12 Aug 2025 17:50:13 +0000 (UTC)
+	 MIME-Version; b=i0k+XSCEaxF/Mf/FvL7wL5oA8S/ulhHd3VCGXsMDeY8VmeREoFt2PfCrfXVLKIPj9/gIMvCiAOrbPL3ityRsyrO6WBthdRetGBTX1lLPmPc6TVzz0WXAl1xkkj8jma0m6RNX/aylLA/EXbIefHeaKCwR6qTvD+/c0wihJxt5yi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjPEStN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D49C4CEF0;
+	Tue, 12 Aug 2025 18:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021014;
-	bh=jwFqXhEMzGf6Gp++d8peB0Wq334D9/7JRP+ryRDNC/I=;
+	s=korg; t=1755023652;
+	bh=gaSaahimMuVdFxdEY66Wi/vIK0b1rcGsfpmQefK/s54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uq6i+F5GtF9wB4waB5/qCB41FPjJ1VWiYUGUFI7wVep+9Cfw/myy2hb1Pas4yb2LV
-	 EY4Itq6fhOAdjVwP9M/immmTW5wkB1Gn27HuPMKi9iACAzyytxhkDCu24UjEdSPKg0
-	 r/3pIl5Iv56EipW2gujQuF3po7zlnE+VzGykq71o=
+	b=RjPEStN/P0xCqV9of8wW530HsW9PZmAR/jAqf6xhn/y3F/nOrO2TLOSmFnMi62jso
+	 s7krpyMkb9U8ov+TdUdXvcDmnyvJKJB+0AJAS2lklOdPbXZfD85tlf2LxVTM7SB01i
+	 IqnP6acCMoTUbBBOp2CKwvWIeW3yKTZtaC1bxFpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/262] bpf, ktls: Fix data corruption when using bpf_msg_pop_data() in ktls
+Subject: [PATCH 6.16 143/627] bpf, ktls: Fix data corruption when using bpf_msg_pop_data() in ktls
 Date: Tue, 12 Aug 2025 19:27:18 +0200
-Message-ID: <20250812172955.107663644@linuxfoundation.org>
+Message-ID: <20250812173424.736393357@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -97,7 +97,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+)
 
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 4a9a3aed5d6d..4905a81c4ac1 100644
+index fc88e34b7f33..549d1ea01a72 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
 @@ -872,6 +872,19 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
