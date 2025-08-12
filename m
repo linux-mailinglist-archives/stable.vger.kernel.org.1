@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2328B230FD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A69E3B2300A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FFEC17CA38
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99DCD685A76
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4C02FE575;
-	Tue, 12 Aug 2025 17:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC7E2FDC5B;
+	Tue, 12 Aug 2025 17:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzB8j6h4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUs8MuW5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0452FE56D;
-	Tue, 12 Aug 2025 17:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C1221FAC;
+	Tue, 12 Aug 2025 17:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021481; cv=none; b=FLHZeA+N0U5dHhsnmfDLKo5NOaH41mAwwraEGtjDjVXN3/kjDtMQ0TYZFvLNEMWqBNei+mW7U6nXEuaSjU87T0/vsH+SCmcWz1aSe0mfUVEJWTOX+LFWUerBBjIo0NwQhn7smIvFa9omuwkzNceBn+jR2MVM88X6GGb1ql3xNRg=
+	t=1755020766; cv=none; b=LbvZeY7KD2noSOZ4k+S3D06be60iJEo/lRcsKYFI2P5EvEQ4OJ1U40bRk8gK/mmcBWKoIcUrJnOl+2SEa1SlYug3cSLU/4l0+G0YgqbXzebKuj5ZyhIdZPgaaiFoNCsLTyp30HmZbQFq5+wZs2Mlj2mrU9qBPiQeMzqRRW0wVmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021481; c=relaxed/simple;
-	bh=ESwDdXCn0hQdUuPTbJEhwm9fHL5hsXVqJSSB8XMQloo=;
+	s=arc-20240116; t=1755020766; c=relaxed/simple;
+	bh=PJapiJ2ZGadMXmQOkF1O94k8huJoXw8sryTXQ+gTND4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFCQb3gzGpcp/VIsG/usdC4i5RpFvqDAUgTIkWropdNkDn6/Jpo3yBeP5mxAEcBktDAPk/cPPpZXk07bUJ4z+Tx7D/JszvHpG3DycM6tGbIc6LmQe0DiQg5ESNfuT6dhp5bjFlsPYnnzBHIiNeRbO33fdsUgnrLfkMFxipr/CYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzB8j6h4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5DAC4CEF6;
-	Tue, 12 Aug 2025 17:58:00 +0000 (UTC)
+	 MIME-Version; b=jI9gohLdd2fp88ytq1/nOOtS/Eq1wOp7ZTMO8NgoGCSwEc4MJ9Pd20TyWpB3R8Snd01wRzItOCcw1EUEvtIkfk3x9H/0d7RqvwmDjFdS/MdN25twXIFsGLWXYBDpWvppaBqfcLfdCV1ynC1doGoxs/0Ufp2re3hKjXzaxJ10ihE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUs8MuW5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052E2C4CEF7;
+	Tue, 12 Aug 2025 17:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021481;
-	bh=ESwDdXCn0hQdUuPTbJEhwm9fHL5hsXVqJSSB8XMQloo=;
+	s=korg; t=1755020765;
+	bh=PJapiJ2ZGadMXmQOkF1O94k8huJoXw8sryTXQ+gTND4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RzB8j6h4Gl1wqTK0sfY8d7zxWM8d+7ON+bNqa98PtbxDLSppcwwU0RjUuYmP3KR3z
-	 HhGvEpJY8ty+mGD8ev/I+ZRPyywCRhwn4prwXPr4KjY523oSSFMF5YrYBYTZK5H2Zb
-	 PebNV8cF3ZrYhOlFvnAaumee5ZOXN5AKTp5R+NUg=
+	b=iUs8MuW5gBJNq493Ll6djr957UC7B6m8i1ogCWP2zotwzWPrhEJZtbdRcPOEr6wD7
+	 hgvWo3nbIJKgul943hTO2kDZ1NxWfnv83NFZR+dRMy1Xm1qcJindQk3YvmgNBE1xSQ
+	 uYxym+YzuzwgvpkqBvzEn8x0MYLaYLvKcTaVXQco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/262] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
+Subject: [PATCH 6.1 136/253] ipv6: fix possible infinite loop in fib6_info_uses_dev()
 Date: Tue, 12 Aug 2025 19:28:44 +0200
-Message-ID: <20250812172958.888884532@linuxfoundation.org>
+Message-ID: <20250812172954.480822808@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
+[ Upstream commit f8d8ce1b515a0a6af72b30502670a406cfb75073 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+fib6_info_uses_dev() seems to rely on RCU without an explicit
+protection.
 
-Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Like the prior fix in rt6_nlmsg_size(),
+we need to make sure fib6_del_route() or fib6_add_rt2node()
+have not removed the anchor from the list, or we risk an infinite loop.
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250725140725.3626540-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv6/route.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-index 8a0e28aec928..0ecad398ed3d 100644
---- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
-+++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
- 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 201a0ef51a6d..061a7a524e5e 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5868,16 +5868,21 @@ static bool fib6_info_uses_dev(const struct fib6_info *f6i,
+ 	if (f6i->fib6_nh->fib_nh_dev == dev)
+ 		return true;
  
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
+-	if (f6i->fib6_nsiblings) {
+-		struct fib6_info *sibling, *next_sibling;
++	if (READ_ONCE(f6i->fib6_nsiblings)) {
++		const struct fib6_info *sibling;
  
- 	return err;
+-		list_for_each_entry_safe(sibling, next_sibling,
+-					 &f6i->fib6_siblings, fib6_siblings) {
+-			if (sibling->fib6_nh->fib_nh_dev == dev)
++		rcu_read_lock();
++		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
++					fib6_siblings) {
++			if (sibling->fib6_nh->fib_nh_dev == dev) {
++				rcu_read_unlock();
+ 				return true;
++			}
++			if (!READ_ONCE(f6i->fib6_nsiblings))
++				break;
+ 		}
++		rcu_read_unlock();
+ 	}
+-
+ 	return false;
  }
-@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
- 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
  
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- free_mem:
- 	if (token && dma_map) {
 -- 
 2.39.5
 
