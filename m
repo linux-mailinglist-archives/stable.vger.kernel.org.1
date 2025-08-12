@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52EF6B230EB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5080B232D9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89DF41A20D7E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD0053A6F5C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A984D2FDC34;
-	Tue, 12 Aug 2025 17:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EECD2F5E;
+	Tue, 12 Aug 2025 18:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15a8dooQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tS8F9LOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676622FDC25;
-	Tue, 12 Aug 2025 17:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5BF61FFE;
+	Tue, 12 Aug 2025 18:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021447; cv=none; b=hPkdXvvAwGqC+rIbgZKv/PUiQz5fhBXa96fTeBnq5IqYmt4yVvNTUWI6FadIx0ABgQDP8Ncf28sjW6xj1IxlH+yGYsWazqxDmJNhcaPBaOG+Bsv6OAl6vURKoSlOtCeqSxzZJ7GC4uI7vhfi1KBMT6027ms9f+Yf7q9qpYYqKNI=
+	t=1755022625; cv=none; b=ANGX8SpogA32fna3e68KkiG7H2ZWwCM3CmRNsYktuNFFLBIrrqRF71ZSj9609XHRvBrNmJT7hwSm83xgVKr3JivgZKpu5de6vuVo5++39xodgRNMeQqqSYSmgahkIKQlQhNPvMN0Pis+El7JMXkeAbsff1WD83zCbVqlf3IBGDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021447; c=relaxed/simple;
-	bh=er+QQFOEpXYE/IigHGfxTkWRlm627Khqh16ko2Og3YQ=;
+	s=arc-20240116; t=1755022625; c=relaxed/simple;
+	bh=7Ea624KM/+OgohTHZK7kVSM+M0R3gcY2hGwQPoqty9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNEH3B37ou18oK5Io17o5kiK6zAC6nU/H7M6VNRVublL1i0CVck1ita66K+5MGgWCx8Ug3kjL3fI6JXQcYZsoS7n0ghJG3sY4QbZQUi4EH7ZXbZxAzS+FhxwLEVzRU0G5TP5HUMmaMrwrhgrR0GOvOxxHsGnsv1lFMVwBdiCVus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15a8dooQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76958C4CEF0;
-	Tue, 12 Aug 2025 17:57:26 +0000 (UTC)
+	 MIME-Version; b=HjC1+XM95EUa7EsyQVTWxkypUPHcmxHHuYOQEzf1qPakeXJh1MGA9e9Hf9k+60goawR/vDZPruK0b6ErLX6U4XEnl9QaGTYjqoS9dBel+0h4+KC61vx26bFvuS0xZ9zmnfnDNYLSz3r+MTd9Ab6cZGu9kzRMPkoNJzs/h0BJuFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tS8F9LOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3168C4CEF0;
+	Tue, 12 Aug 2025 18:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021447;
-	bh=er+QQFOEpXYE/IigHGfxTkWRlm627Khqh16ko2Og3YQ=;
+	s=korg; t=1755022625;
+	bh=7Ea624KM/+OgohTHZK7kVSM+M0R3gcY2hGwQPoqty9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15a8dooQERBa8OWTm4jDiWzpC14o0jB45c02od/q7ukWP7S6AE2Ad0G2bH7bPn727
-	 LoCpEbHle7y6vQZJ0bFDNkKNmkHhX/ReTO2cIpvQrJ4VT36fS3cRLxu8sk4c4OLXsh
-	 F0vQh8Q+HnbrFnSTw//NvdAJl2rIK0lVM7JpBoUk=
+	b=tS8F9LObQuLLlFWVxCCYweMnWdn1+cj9OsS+zjhfACpH/HV9+SVtb6T5VajrQ7Lzr
+	 2Ps4LLObbqNq8yss8cWd5F7DTJ7BLmeno3d1uoo6TDOcvLu0J2AFCreMBRzzA5KChd
+	 rLZhbl8oWeCNtD4pJuBcEi3WtmyKNTJ7k51UvYbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/262] PCI: endpoint: pci-epf-vntb: Return -ENOENT if pci_epc_get_next_free_bar() fails
+Subject: [PATCH 6.12 209/369] crypto: img-hash - Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:26 +0200
-Message-ID: <20250812172958.136153966@linuxfoundation.org>
+Message-ID: <20250812173022.622997953@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 7ea488cce73263231662e426639dd3e836537068 ]
+[ Upstream commit 34b283636181ce02c52633551f594fec9876bec7 ]
 
-According the function documentation of epf_ntb_init_epc_bar(), the
-function should return an error code on error. However, it returns -1 when
-no BAR is available i.e., when pci_epc_get_next_free_bar() fails.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Return -ENOENT instead.
-
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-[mani: changed err code to -ENOENT]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250603-pci-vntb-bar-mapping-v2-1-fc685a22ad28@baylibre.com
+Fixes: d358f1abbf71 ("crypto: img-hash - Add Imagination Technologies hw hash accelerator")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
+ drivers/crypto/img-hash.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 3368f483f818..8bdd295f21cc 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -711,7 +711,7 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
- 		barno = pci_epc_get_next_free_bar(epc_features, barno);
- 		if (barno < 0) {
- 			dev_err(dev, "Fail to get NTB function BAR\n");
--			return barno;
-+			return -ENOENT;
- 		}
- 		ntb->epf_ntb_bar[bar] = barno;
- 	}
+diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
+index 7e93159c3b6b..d5df3d2da50c 100644
+--- a/drivers/crypto/img-hash.c
++++ b/drivers/crypto/img-hash.c
+@@ -436,7 +436,7 @@ static int img_hash_write_via_dma_stop(struct img_hash_dev *hdev)
+ 	struct img_hash_request_ctx *ctx = ahash_request_ctx(hdev->req);
+ 
+ 	if (ctx->flags & DRIVER_FLAGS_SG)
+-		dma_unmap_sg(hdev->dev, ctx->sg, ctx->dma_ct, DMA_TO_DEVICE);
++		dma_unmap_sg(hdev->dev, ctx->sg, 1, DMA_TO_DEVICE);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
