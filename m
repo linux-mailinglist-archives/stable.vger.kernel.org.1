@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97004B23461
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A385B22F84
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73AB61883C8D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EE5E6851FE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86542FF143;
-	Tue, 12 Aug 2025 18:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2182A2FE57C;
+	Tue, 12 Aug 2025 17:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBO7N7Q+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VE88QM9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6677A2FD1A2;
-	Tue, 12 Aug 2025 18:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2922FE579;
+	Tue, 12 Aug 2025 17:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023669; cv=none; b=QGtckcvLKAZgo9TMOBznXGvYFdGOsSobTETLbq+UC4oDqsYwnnJcadfP10pLO/AAVt7ca9zTlxU70YC1PB9dcqiM3TQZiujSVmD0CrrESHSVoxWOqoZXCPQJfiKkw2GO0tiv7IyJEB8eM/L6zGgJSTHWv5lRaLJq87BUj8If8rI=
+	t=1755020379; cv=none; b=ZbX/rofji4T9vIjH9APeq9sonHJFhhdBB4Cje3xXvrZfwJS1VvJ7w4ZAcDBXNYszSc0k1E+dQGTuCbVcbTSr7PTWgU9Z05slOuq07Up3BUyyqeRv9yrgxkR97nAQOzfGp5hNikokUTUeWFY2XwX9HddUoq56QrKlhAya1WiC1yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023669; c=relaxed/simple;
-	bh=/887jQYDIqUuRK20NPGA9n8hu2gtFhrJfCrTWYJR2dI=;
+	s=arc-20240116; t=1755020379; c=relaxed/simple;
+	bh=/lmcZ/Fd/83LKqPw4TbHdduzYZoAkEy5Bc0KJBbEMmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QB6sD3ksPrYvDquHMGzA7rijksbdPIngBg2Evig0EHWSkt0atjj5qG5u4IyHjRhv/oSovcTn3zh55M+Nbh6xMfvdQv2Fpdxsv591hncF6YK0f4T+aX38Q09mUsZjgp6WYMJyAw0gBCMCnIf6K32o9cXWJ6eFTOOStlGXL1AHh+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBO7N7Q+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8393C4CEF0;
-	Tue, 12 Aug 2025 18:34:28 +0000 (UTC)
+	 MIME-Version; b=UpGBX0rfrEMIvK8DFk+nmV/dU56rR+VsRvrcz+9wYExEjEmlKox0wLIMrD6Qi5tGq60A8Qxyo2izFo8r1AY/bUV6hrQtp1WPAwgaIW+L/C7mKYO6P9BN0IrsU79Splx7XhQe8io+DqwsLbz666Buniys+PQO+9Ba/pol8mQ8rOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VE88QM9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1F9C4CEF0;
+	Tue, 12 Aug 2025 17:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023669;
-	bh=/887jQYDIqUuRK20NPGA9n8hu2gtFhrJfCrTWYJR2dI=;
+	s=korg; t=1755020379;
+	bh=/lmcZ/Fd/83LKqPw4TbHdduzYZoAkEy5Bc0KJBbEMmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBO7N7Q+fVTDeJ/ilgAAQQnw9QhUx+z29jNMi1MIL5AeAC1zHZhqXMJKoZjU3lK2y
-	 SRvTAKMnnIJ0mHytho43DiM4zk85cfUbGqzCRXC0peoHsPYIPfgGnS4YNhIJCpMFf8
-	 LmY485DyJ2A7vlp3nFDSFsUCQoUASxkqK/UeoIWY=
+	b=VE88QM9qmp+SxZJvPFy3GiFGYzopVHaDf92PDQjuao2GmjjRL9zNUNkYQNsEA0h61
+	 y/OJKL2kBYFeTAtsAYry1Iyo382GEBnHgxDCjytDaEbAM1KDqLovMdhm7uL0xmXh8m
+	 pOg0g6vydWABGHSGwsJx9+nBQcmsiGDLAPrfFEEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 148/627] net: ipv6: ip6mr: Fix in/out netdev to pass to the FORWARD chain
-Date: Tue, 12 Aug 2025 19:27:23 +0200
-Message-ID: <20250812173424.929080673@linuxfoundation.org>
+	Yue Hu <huyue2@coolpad.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 056/253] erofs: drop z_erofs_page_mark_eio()
+Date: Tue, 12 Aug 2025 19:27:24 +0200
+Message-ID: <20250812172951.111571802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 3365afd3abda5f6a54f4a822dad5c9314e94c3fc ]
+commit 9a05c6a8bc26138d34e87b39e6a815603bc2a66c upstream.
 
-The netfilter hook is invoked with skb->dev for input netdevice, and
-vif_dev for output netdevice. However at the point of invocation, skb->dev
-is already set to vif_dev, and MR-forwarded packets are reported with
-in=out:
+It can be folded into z_erofs_onlinepage_endio() to simplify the code.
 
- # ip6tables -A FORWARD -j LOG --log-prefix '[forw]'
- # cd tools/testing/selftests/net/forwarding
- # ./router_multicast.sh
- # dmesg | fgrep '[forw]'
- [ 1670.248245] [forw]IN=v5 OUT=v5 [...]
-
-For reference, IPv4 MR code shows in and out as appropriate.
-Fix by caching skb->dev and using the updated value for output netdev.
-
-Fixes: 7bc570c8b4f7 ("[IPV6] MROUTE: Support multicast forwarding.")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/3141ae8386fbe13fef4b793faa75e6bae58d798a.1750113335.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230817082813.81180-5-hsiangkao@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6mr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/erofs/zdata.c |   29 +++++++++--------------------
+ 1 file changed, 9 insertions(+), 20 deletions(-)
 
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 9db31e5b998c..426859cd3409 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -2039,6 +2039,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 			  struct sk_buff *skb, int vifi)
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -144,22 +144,17 @@ static inline void z_erofs_onlinepage_sp
+ 	atomic_inc((atomic_t *)&page->private);
+ }
+ 
+-static inline void z_erofs_page_mark_eio(struct page *page)
++static void z_erofs_onlinepage_endio(struct page *page, int err)
  {
- 	struct vif_device *vif = &mrt->vif_table[vifi];
-+	struct net_device *indev = skb->dev;
- 	struct net_device *vif_dev;
- 	struct ipv6hdr *ipv6h;
- 	struct dst_entry *dst;
-@@ -2101,7 +2102,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 	IP6CB(skb)->flags |= IP6SKB_FORWARDED;
+-	int orig;
++	int orig, v;
++
++	DBG_BUGON(!PagePrivate(page));
  
- 	return NF_HOOK(NFPROTO_IPV6, NF_INET_FORWARD,
--		       net, NULL, skb, skb->dev, vif_dev,
-+		       net, NULL, skb, indev, skb->dev,
- 		       ip6mr_forward2_finish);
+ 	do {
+ 		orig = atomic_read((atomic_t *)&page->private);
+-	} while (atomic_cmpxchg((atomic_t *)&page->private, orig,
+-				orig | Z_EROFS_PAGE_EIO) != orig);
+-}
+-
+-static inline void z_erofs_onlinepage_endio(struct page *page)
+-{
+-	unsigned int v;
++		v = (orig - 1) | (err ? Z_EROFS_PAGE_EIO : 0);
++	} while (atomic_cmpxchg((atomic_t *)&page->private, orig, v) != orig);
  
- out_free:
--- 
-2.39.5
-
+-	DBG_BUGON(!PagePrivate(page));
+-	v = atomic_dec_return((atomic_t *)&page->private);
+ 	if (!(v & ~Z_EROFS_PAGE_EIO)) {
+ 		set_page_private(page, 0);
+ 		ClearPagePrivate(page);
+@@ -930,9 +925,7 @@ next_part:
+ 		goto repeat;
+ 
+ out:
+-	if (err)
+-		z_erofs_page_mark_eio(page);
+-	z_erofs_onlinepage_endio(page);
++	z_erofs_onlinepage_endio(page, err);
+ 	return err;
+ }
+ 
+@@ -1035,9 +1028,7 @@ static void z_erofs_fill_other_copies(st
+ 			cur += len;
+ 		}
+ 		kunmap_local(dst);
+-		if (err)
+-			z_erofs_page_mark_eio(bvi->bvec.page);
+-		z_erofs_onlinepage_endio(bvi->bvec.page);
++		z_erofs_onlinepage_endio(bvi->bvec.page, err);
+ 		list_del(p);
+ 		kfree(bvi);
+ 	}
+@@ -1205,9 +1196,7 @@ out:
+ 		/* recycle all individual short-lived pages */
+ 		if (z_erofs_put_shortlivedpage(be->pagepool, page))
+ 			continue;
+-		if (err)
+-			z_erofs_page_mark_eio(page);
+-		z_erofs_onlinepage_endio(page);
++		z_erofs_onlinepage_endio(page, err);
+ 	}
+ 
+ 	if (be->decompressed_pages != be->onstack_pages)
 
 
 
