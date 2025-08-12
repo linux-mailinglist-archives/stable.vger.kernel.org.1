@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A5FB231F7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83525B233E5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F94C3AA6DE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FEFC17D8E2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2C02F659A;
-	Tue, 12 Aug 2025 18:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80AD2F5481;
+	Tue, 12 Aug 2025 18:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgbvJ+mt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJPzbzw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB9A1EBFE0;
-	Tue, 12 Aug 2025 18:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666DD1EBFE0;
+	Tue, 12 Aug 2025 18:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022097; cv=none; b=XoPilZ8p1IlDkjUV1ocRjjZngMaWuppeUph5Kqppa6cfAnWsnSCUAoT0YRlyvdX+jwHAL8g65TScQycoczubMzM7Bn+8hRJLByLYI4CimVHwZb+aRpOMo33Ae6M7bKow5ATUTpvlp/yBbeC4otMrULaRNeTn4F88dLx9X7Qideg=
+	t=1755023362; cv=none; b=WWj6PUrxPMQArHzz5fu19ZFbnvJ38AJLztowt07McpFsnJyVked/7d4L1TI6/qOar0wx3K2i4jadn/F/d4y2yovz+wcQOa5/KE5GISqydq4lm1tmKnvB1IwDmiV3tIf07u8lr/JBozZGz5RbSijVPi0UhQER+/4cNbclQvdwSyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022097; c=relaxed/simple;
-	bh=Dei7Ao4yY8laWqZIlK5eO1uJGK7pSImdlghZFTJbVPM=;
+	s=arc-20240116; t=1755023362; c=relaxed/simple;
+	bh=6A7A+jVckRwY6AsZL5yUqYVQTmPq3BKk2R4ZS0Rp19g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDIriuVqU2EhdEy0JvYunNlpNMckx5h7GsfbUeI2ixrWewskWFmv1Ezcvgs8xGamfYNm3tannGIccmiEbon9Hb9CkM7SnMM2Rh1SuSFQSfkbsJMtT1Ptb65gM+KBtt4tYBfMDPxB5uKHlG366HS8hew/2WOmbVmE9BYulXMtHuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgbvJ+mt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C761C4CEF6;
-	Tue, 12 Aug 2025 18:08:16 +0000 (UTC)
+	 MIME-Version; b=aheUlC41UjZp2Wvc2pTWX3aCUAy0GyK0yeJJyl9ZU9b3162ovp48a40HM5Qa3akiRdBLNS2GcaSoE/Vgmz5UrfBZP05It9L0jOzzp9QpL/vVO1Qx4Or9Qih7xzTmF93TjXSr7rxF4t5POnikAzgdxpNuR1gBD2F3B57IINpTcwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJPzbzw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F4CC4CEF0;
+	Tue, 12 Aug 2025 18:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022096;
-	bh=Dei7Ao4yY8laWqZIlK5eO1uJGK7pSImdlghZFTJbVPM=;
+	s=korg; t=1755023362;
+	bh=6A7A+jVckRwY6AsZL5yUqYVQTmPq3BKk2R4ZS0Rp19g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgbvJ+mtcGf1sgWbGjZOTF1D7D5JQCb5vUcJVGSbbt17sa/e+uWc/egGCYmVeIesN
-	 f6608tzc94H+57zXEOxsGny1UV27EbAxQCOKYLwe3X15y+ZHkxdvR4jKn322ioTdQp
-	 R2ZMuZCGqkdOJpuuP+T4kMwjNjP3DSgeboKUMEWM=
+	b=FJPzbzw9qXRgzmSL82BRPX7RO2GeG2URAruEpTokNMFA+s9SMEUYk+GBd3IC+26Ir
+	 3a/Y0xPKvKKuhYS7MoNlVVVrcfpe3ChQ+biNr/CjK/czThWY2LEDpmjcg4whsB/SJk
+	 AFxO/VXbpT6HsAs49aBk94EQsDNZoQWrs7wCC5RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/369] arm64: dts: imx8mn-beacon: Fix HS400 USDHC clock speed
+Subject: [PATCH 6.16 056/627] arm64: dts: ti: k3-am62p-j722s: fix pinctrl-single size
 Date: Tue, 12 Aug 2025 19:25:51 +0200
-Message-ID: <20250812173016.797581829@linuxfoundation.org>
+Message-ID: <20250812173421.462422435@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit e16ad6c79906bba5e2ac499492b6a5b29ab19d6c ]
+[ Upstream commit fdc8ad019ab9a2308b8cef54fbc366f482fb746f ]
 
-The reference manual for the i.MX8MN states the clock rate in
-MMC mode is 1/2 of the input clock, therefore to properly run
-at HS400 rates, the input clock must be 400MHz to operate at
-200MHz.  Currently the clock is set to 200MHz which is half the
-rate it should be, so the throughput is half of what it should be
-for HS400 operation.
+Pinmux registers ends at 0x000f42ac (including). Thus, the size argument
+of the pinctrl-single node has to be 0x2b0. Fix it.
 
-Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+This will fix the following error:
+pinctrl-single f4000.pinctrl: mux offset out of range: 0x2ac (0x2ac)
+
+Fixes: 29075cc09f43 ("arm64: dts: ti: Introduce AM62P5 family of SoCs")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/r/20250618065239.1904953-1-mwalle@kernel.org
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-index bb11590473a4..353d0c9ff35c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-@@ -297,6 +297,8 @@ &usdhc3 {
- 	pinctrl-0 = <&pinctrl_usdhc3>;
- 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
- 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MN_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
- 	bus-width = <8>;
- 	non-removable;
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi
+index fa55c43ca28d..2e5e25a8ca86 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi
+@@ -259,7 +259,7 @@ secure_proxy_sa3: mailbox@43600000 {
+ 
+ 	main_pmx0: pinctrl@f4000 {
+ 		compatible = "pinctrl-single";
+-		reg = <0x00 0xf4000 0x00 0x2ac>;
++		reg = <0x00 0xf4000 0x00 0x2b0>;
+ 		#pinctrl-cells = <1>;
+ 		pinctrl-single,register-width = <32>;
+ 		pinctrl-single,function-mask = <0xffffffff>;
 -- 
 2.39.5
 
