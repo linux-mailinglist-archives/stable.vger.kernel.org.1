@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-168113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B52B23378
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F875B2337B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F0BF18913C6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 594D73B3E21
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6B52DFA3E;
-	Tue, 12 Aug 2025 18:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8971FF7C5;
+	Tue, 12 Aug 2025 18:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+fiDqE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlMwu3PJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26D51EF38C;
-	Tue, 12 Aug 2025 18:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D04321ABD0;
+	Tue, 12 Aug 2025 18:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023090; cv=none; b=Ho10N96VRWTA2JyfHtVHGGre5q3J2XC2v4sCQy2SN/iLRGRSo8ddzBWCPCdOztdXcS3w7N2ODP8V4cneKotantafulPue3LPsJsSjkxYnJKUXy0VFO/TB8ZJphA74jZr0+EfWJol4gRZW2eWglcU7AmNlETyNA492GVFLhPwzBM=
+	t=1755023096; cv=none; b=g2Fc1Eg22KvN32ZxM7brQf9BrImu6yJt2JtLnDCWcMUvN2gQmYKfumDusiQ97bt/fmJwD2jv0Z9XizAoMVrLB80lIZmrHIUSMs0bJpZIbCSvp1Ctvk/Hq9qzwDa2uMwCkvtarUSAw2a8+BTEvOeKHYQMOswaCDPuvdA/sMFj8ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023090; c=relaxed/simple;
-	bh=vSX9S3YwslYANIoSdHGC0CsoumHklxaFGaTXRUB+No4=;
+	s=arc-20240116; t=1755023096; c=relaxed/simple;
+	bh=wMbcoPuAPRGzJpM6BvrKG4ytGCZOgikNdDF/rzDb9+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mguHeUVhzcKjV+by0V0FDNtXV5BJ645QGhceB/bilsNIKEdslySRQzEDN2CKspCnfqfeZ6IBoGJIWB4/r4bIxSI6UvcJjhI6t++QOi0zVR5A3HesFvuNm7glc3JnxSn8YqpB5uDxN9YDHBIrxBVe5jixYSPTh36tIog/lxaTDTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+fiDqE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501B7C4CEF0;
-	Tue, 12 Aug 2025 18:24:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QxyITzeXp1utLS5cbKOxx7RD3JYE6JsjfXxkib4MbVQHLEuna71uwBLXGWAtcWqj6OT1pv0HvgHf3lx2GanABCbWLy2I17IsG87tI/h4xl4G87pnJb6ZoetIjBQqABlZpCVRQg6a11XhbiZdz7B6nKN3r4QAX5F56w5qG9Zdpu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlMwu3PJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D89C4CEF0;
+	Tue, 12 Aug 2025 18:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023089;
-	bh=vSX9S3YwslYANIoSdHGC0CsoumHklxaFGaTXRUB+No4=;
+	s=korg; t=1755023096;
+	bh=wMbcoPuAPRGzJpM6BvrKG4ytGCZOgikNdDF/rzDb9+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+fiDqE7e0skrW6aq5rc29Pl0+t8FtPgI7VTj3386QkAnnmo2jBSQ9v1adLko9Xbu
-	 EG64dQXGNOJ3HssqXd6AfaOrd6HKnXuvx4pep+JNFQ1j7+outYhG5Yw2N+RYQcC3VB
-	 oXyyG2BfcaZxAGdSfyX5rpLerqjngiZyAjR5vkJE=
+	b=KlMwu3PJtedXemmrlrqQDAFt2fQr42Wpq4dJw0bYWkYg4qTKoov8ouRycw8fUm41I
+	 fYdMawxYDTHSMB3EtNk0aZF2K7C4GXaNFHUOmi3AoHEgHfM0moMebUsQ6bSqh+xfhw
+	 ZFhTZWoQVN6aN5AefVW74HNkio2KKSXyxtZoVUhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 346/369] USB: serial: option: add Foxconn T99W709
-Date: Tue, 12 Aug 2025 19:30:43 +0200
-Message-ID: <20250812173029.710083068@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jian-Hong Pan <jhp@endlessos.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 6.12 347/369] PCI/ASPM: Save parent L1SS config in pci_save_aspm_l1ss_state()
+Date: Tue, 12 Aug 2025 19:30:44 +0200
+Message-ID: <20250812173029.746956614@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
 References: <20250812173014.736537091@linuxfoundation.org>
@@ -59,58 +61,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Jian-Hong Pan <jhp@endlessos.org>
 
-commit ad1244e1ce18f8c1a5ebad8074bfcf10eacb0311 upstream.
+commit 1db806ec06b7c6e08e8af57088da067963ddf117 upstream.
 
-T99W709 is designed based on MTK T300(5G redcap) chip. There are
-7 serial ports to be enumerated: AP_LOG, GNSS, AP_META, AT,
-MD_META, NPT, DBG. RSVD(5) for ADB port.
+After 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for
+suspend/resume"), pci_save_aspm_l1ss_state(dev) saves the L1SS state for
+"dev", and pci_restore_aspm_l1ss_state(dev) restores the state for both
+"dev" and its parent.
 
-test evidence as below:
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e15f Rev=00.01
-S:  Manufacturer=MediaTek Inc.
-S:  Product=USB DATA CARD
-S:  SerialNumber=355511220000399
-C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+The problem is that unless pci_save_state() has been used in some other
+path and has already saved the parent L1SS state, we will restore junk to
+the parent, which means the L1 Substates likely won't work correctly.
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Save the L1SS config for both the device and its parent in
+pci_save_aspm_l1ss_state().  When restoring, we need both because L1SS must
+be enabled at the parent (the Downstream Port) before being enabled at the
+child (the Upstream Port).
+
+Link: https://lore.kernel.org/r/20241115072200.37509-3-jhp@endlessos.org
+Fixes: 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for suspend/resume")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218394
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+[bhelgaas: parallel save/restore structure, simplify commit log, patch at
+https://lore.kernel.org/r/20241212230340.GA3267194@bhelgaas]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jian-Hong Pan <jhp@endlessos.org> # Asus B1400CEAE
+Cc: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/pcie/aspm.c |   33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
- 	  .driver_info = RSVD(5) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -81,24 +81,47 @@ void pci_configure_aspm_l1ss(struct pci_
+ 
+ void pci_save_aspm_l1ss_state(struct pci_dev *pdev)
+ {
++	struct pci_dev *parent = pdev->bus->self;
+ 	struct pci_cap_saved_state *save_state;
+-	u16 l1ss = pdev->l1ss;
+ 	u32 *cap;
+ 
+ 	/*
++	 * If this is a Downstream Port, we never restore the L1SS state
++	 * directly; we only restore it when we restore the state of the
++	 * Upstream Port below it.
++	 */
++	if (pcie_downstream_port(pdev) || !parent)
++		return;
++
++	if (!pdev->l1ss || !parent->l1ss)
++		return;
++
++	/*
+ 	 * Save L1 substate configuration. The ASPM L0s/L1 configuration
+ 	 * in PCI_EXP_LNKCTL_ASPMC is saved by pci_save_pcie_state().
+ 	 */
+-	if (!l1ss)
++	save_state = pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
++	if (!save_state)
+ 		return;
+ 
+-	save_state = pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
++	cap = &save_state->cap.data[0];
++	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL2, cap++);
++	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL1, cap++);
++
++	if (parent->state_saved)
++		return;
++
++	/*
++	 * Save parent's L1 substate configuration so we have it for
++	 * pci_restore_aspm_l1ss_state(pdev) to restore.
++	 */
++	save_state = pci_find_saved_ext_cap(parent, PCI_EXT_CAP_ID_L1SS);
+ 	if (!save_state)
+ 		return;
+ 
+ 	cap = &save_state->cap.data[0];
+-	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL2, cap++);
+-	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, cap++);
++	pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL2, cap++);
++	pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL1, cap++);
+ }
+ 
+ void pci_restore_aspm_l1ss_state(struct pci_dev *pdev)
 
 
 
