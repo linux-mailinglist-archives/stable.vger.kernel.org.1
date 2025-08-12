@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F6AB23573
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E92B2337A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E725188644C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B3F81A242E9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD2D2FE58F;
-	Tue, 12 Aug 2025 18:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790922F291B;
+	Tue, 12 Aug 2025 18:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDL0LxWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAHcl82O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5412CA9;
-	Tue, 12 Aug 2025 18:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B031EF38C;
+	Tue, 12 Aug 2025 18:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024472; cv=none; b=lPkCj4wlFtUe/nBKhv1eW9pVzzpA2LPuUJEUQHozf3k2w4DxjKXF3zxm2Ta1nZXM6uSAa/EnENWHBLNo3+oKdLwE06QfKxCA3ZsBwdiZFMDLuS1n/hqsTZzv7U93tw685YHMUdi5+ALY6triW8BnN6cch7vBmmc9GsRCjrnEPb0=
+	t=1755023100; cv=none; b=Z4qwH2emK15moWc+5s5E0AB4H6bY5uVrlBVL2Q7YsL1MYfhoQe2tWdUXZfnfIRQGpJNR8mArpnEa85jUVzKzd16j+AWTOFCTSgfDRMCO2SUSBxEB9n49WVK8/6oBjRDvUasvGrBm79QSYG7zN2XFXzZLi9WzG8we5aAJY8CcYik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024472; c=relaxed/simple;
-	bh=YOjYB8T6KUjQaNNQGoxwF0G1hHcrb0Yd68Sv6A+yf30=;
+	s=arc-20240116; t=1755023100; c=relaxed/simple;
+	bh=F5wrTzgbny7VIDf9kbY7m6BcHqEcqvk7PzEIv7RA/VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHl+2VmavTIUzp/ZDABT0R2xELcQLNuv+7a6YMCaQjHnGxBqMKwj125FmiCV3mhZq+1/R/SK04l6S/rTWpvLs6d3JKhoJx4x6k8aS9pK0DB/CEvHi7xqA1aFYEvDTPm3RBTig+KM7t2jOjtPXew0kWUaTGfqHUJ3Vmo9yDis1Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDL0LxWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F76C4CEF0;
-	Tue, 12 Aug 2025 18:47:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bEXtN+IENZuW0ViSUZRJo00tMzHZCJ01Z23NuHrHpHM8c2EPxym0s/72CygMVWA45pq/Hop0/jLd2Z0QMF7MsP/v2mlBjw//odb8Nc7NEBfhPn3NLk/yewMwfZgaXlDj25BNteCY8eHN8BpjIe473XXVWfCpJMnz32ZeK/YTM+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAHcl82O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C81FC4CEF0;
+	Tue, 12 Aug 2025 18:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024471;
-	bh=YOjYB8T6KUjQaNNQGoxwF0G1hHcrb0Yd68Sv6A+yf30=;
+	s=korg; t=1755023099;
+	bh=F5wrTzgbny7VIDf9kbY7m6BcHqEcqvk7PzEIv7RA/VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDL0LxWdUSBRfcRHLKo3iuiUmPIxtn3KzgrB5AGv/0tKhOhlx7M1wL18VYaX277Ak
-	 cev2l8PItOmyBuc9a9VyVzsuH+zKEptqckYiK9NR5RL8nn8nV+pHqjUtXqRJ15yUtk
-	 cjOZ6DXoLTNMk7GDPMjAVcG6qDUJjL85243MzgyU=
+	b=qAHcl82O0jtiD6TssWUVEBa1fIc2ekha5nv8fFBVd8hls9rf539/BXD2oaYOyN2B0
+	 eiW7vHa54txgYeA2jdynkJRrglF+KbT2laSSdCT3ycFbr3AQaCLA8dnrCzZ8wd8z53
+	 Vtxm1oWIK96xiSlPm5phZx+bSSaCMFvPNgcu2B7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 350/627] RDMA/counter: Check CAP_NET_RAW check in user namespace for RDMA counters
+	=?UTF-8?q?Nikl=C4=81vs=20Ko=C4=BCes=C5=86ikovs?= <pinkflames.linux@gmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 6.12 348/369] PCI/ASPM: Fix L1SS saving
 Date: Tue, 12 Aug 2025 19:30:45 +0200
-Message-ID: <20250812173432.598473603@linuxfoundation.org>
+Message-ID: <20250812173029.786603557@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 449728196d65fce513dbacf4d3696764be1c6524 ]
+commit 7507eb3e7bfac7c3baef8dd377fdf5871eefd42b upstream.
 
-Currently, the capability check is done in the default
-init_user_ns user namespace. When a process runs in a
-non default user namespace, such check fails.
+Commit 1db806ec06b7 ("PCI/ASPM: Save parent L1SS config in
+pci_save_aspm_l1ss_state()") aimed to perform L1SS config save for both the
+Upstream Port and its upstream bridge when handling an Upstream Port, which
+matches what the L1SS restore side does. However, parent->state_saved can
+be set true at an earlier time when the upstream bridge saved other parts
+of its state. Then later when attempting to save the L1SS config while
+handling the Upstream Port, parent->state_saved is true in
+pci_save_aspm_l1ss_state() resulting in early return and skipping saving
+bridge's L1SS config because it is assumed to be already saved. Later on
+restore, junk is written into L1SS config which causes issues with some
+devices.
 
-Since the RDMA device is a resource within a network namespace,
-use the network namespace associated with the RDMA device to
-determine its owning user namespace.
+Remove parent->state_saved check and unconditionally save L1SS config also
+for the upstream bridge from an Upstream Port which ought to be harmless
+from correctness point of view. With the Upstream Port check now present,
+saving the L1SS config more than once for the bridge is no longer a problem
+(unlike when the parent->state_saved check got introduced into the fix
+during its development).
 
-Fixes: 1bd8e0a9d0fd ("RDMA/counter: Allow manual mode configuration support")
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Link: https://patch.msgid.link/68e2064e72e94558a576fdbbb987681a64f6fea8.1750963874.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250131152913.2507-1-ilpo.jarvinen@linux.intel.com
+Fixes: 1db806ec06b7 ("PCI/ASPM: Save parent L1SS config in pci_save_aspm_l1ss_state()")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219731
+Reported-by: Niklāvs Koļesņikovs <pinkflames.linux@gmail.com>
+Reported by: Rafael J. Wysocki <rafael@kernel.org>
+Closes: https://lore.kernel.org/r/CAJZ5v0iKmynOQ5vKSQbg1J_FmavwZE-nRONovOZ0mpMVauheWg@mail.gmail.com
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/r/d7246feb-4f3f-4d0c-bb64-89566b170671@molgen.mpg.de
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Niklāvs Koļesņikovs <pinkflames.linux@gmail.com>
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13 9360
+Cc: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/counters.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/aspm.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/counters.c b/drivers/infiniband/core/counters.c
-index e6ec7b7a40af..c3aa6d7fc66b 100644
---- a/drivers/infiniband/core/counters.c
-+++ b/drivers/infiniband/core/counters.c
-@@ -461,7 +461,7 @@ static struct ib_qp *rdma_counter_get_qp(struct ib_device *dev, u32 qp_num)
- 		return NULL;
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -108,9 +108,6 @@ void pci_save_aspm_l1ss_state(struct pci
+ 	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL2, cap++);
+ 	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL1, cap++);
  
- 	qp = container_of(res, struct ib_qp, res);
--	if (qp->qp_type == IB_QPT_RAW_PACKET && !capable(CAP_NET_RAW))
-+	if (qp->qp_type == IB_QPT_RAW_PACKET && !rdma_dev_has_raw_cap(dev))
- 		goto err;
- 
- 	return qp;
--- 
-2.39.5
-
+-	if (parent->state_saved)
+-		return;
+-
+ 	/*
+ 	 * Save parent's L1 substate configuration so we have it for
+ 	 * pci_restore_aspm_l1ss_state(pdev) to restore.
 
 
 
