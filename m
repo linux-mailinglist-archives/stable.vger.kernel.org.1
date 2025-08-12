@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBFBB234B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CD0B23102
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D3EA1888440
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F8C85670A5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1482FDC4F;
-	Tue, 12 Aug 2025 18:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E7B2FDC5D;
+	Tue, 12 Aug 2025 17:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jM/v5CiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4WLxJ0p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3B26BB5B;
-	Tue, 12 Aug 2025 18:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43E32F8BE7;
+	Tue, 12 Aug 2025 17:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023888; cv=none; b=S8I5pLxlTaTCUqf+GiKHxmOjlbbn4kOOW/ZwlbehzR9iWbHL4y+0mlZrQAj53epQVQvNQMWp7hNyF3hGZGvkn6gnaMexzENgcgb1awj5xL/WWS91EhJwSePNtYNuu47qv/o0IFpBCve9Grvq2IJhhz8yH0egWPPhp8ka7ZIoZF0=
+	t=1755021484; cv=none; b=fR9HmSD2sl+Urp5jVaUaTZ1Le3g3D6/dyG3llDRLNoVs0SJm3HgebsoZsjNiQgXIwmX6AdSU37+rw7Ip2Ho7etiSVO3+fM/fwM++6GDzXtFLosN7lDW/XwzklEc1fBGxTGJ2uf4vi2dsPjKbsRwKuQCgKib+C68Q/DGC7QFPxcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023888; c=relaxed/simple;
-	bh=ojAeBmPtI8K1JftZb/4TRCmTflrujXz6EsHz7IjGPv4=;
+	s=arc-20240116; t=1755021484; c=relaxed/simple;
+	bh=4xc3kcAnWfKxcrmA/Q2yKhTQe/LGSDzW/1fKZji2imA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEOO66SFlomPWRswjfAxlQZ3TlM7tASVWuZI/c+1zNzc2dC7JR+xPOWmC7mf6i4XZvRPRV0ZiIcCkTXJm0mtA3dRr5AKLWnfqWAzk2Tu9fLadYyIW73nNmzb6/GbaaO8q3oAlIYlMq1mYpjvRwHYM3NtvoCbk8v7cHKLhtjH/ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jM/v5CiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4069CC4CEF0;
-	Tue, 12 Aug 2025 18:38:08 +0000 (UTC)
+	 MIME-Version; b=RRBaanhKQZaOLcSUTedtvoIVavE2uyJT9uOSBz58ckllqBZZiGs4VEOl8Wvna4zp5dXlNZeB7HHWX8CJll0Ff0QQ96MjrYOg8+y06m2DaW/HYrvbvxRE/BIvyj34z9RCNAICHwsOtzZVwmxxJTIRGZgrwz0nJF+sAFlug9ofASg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4WLxJ0p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1376DC4CEF0;
+	Tue, 12 Aug 2025 17:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023888;
-	bh=ojAeBmPtI8K1JftZb/4TRCmTflrujXz6EsHz7IjGPv4=;
+	s=korg; t=1755021484;
+	bh=4xc3kcAnWfKxcrmA/Q2yKhTQe/LGSDzW/1fKZji2imA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jM/v5CiJyPR1My4DLokLVjkN7YfvOUMvjHCGhEmZtg6uwCd//rmKWP39QkKxjW0ov
-	 WV1vB/XCbWWBhuFH2ybtC6JuT2k9YSR0B5baUTh/2GjfaMa8SUFycvNbcg0qmCjhlU
-	 Oj1WHcs6kRxFp74FwIWsCsxG9SuwDCyOrZPjRq5M=
+	b=x4WLxJ0pZCMTOypeYhEeZWWDA82tk0cvP8Pj7W4TRhquLgzOKxGvslDximRrAps8p
+	 NjuG3GVdNyBBO9M1sPHp6KjwDB0yzJn3FwqCBgw1R3iIVIkljwhma4vjkomq93iSyQ
+	 nCqrBopY2KMV+dQD0Vo673TMwxkOZG2ly5NfcpbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 212/627] net_sched: act_ctinfo: use atomic64_t for three counters
+Subject: [PATCH 6.6 119/262] pinctrl: sunxi: Fix memory leak on krealloc failure
 Date: Tue, 12 Aug 2025 19:28:27 +0200
-Message-ID: <20250812173427.347878347@linuxfoundation.org>
+Message-ID: <20250812172958.177603844@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit d300335b4e18672913dd792ff9f49e6cccf41d26 ]
+[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
 
-Commit 21c167aa0ba9 ("net/sched: act_ctinfo: use percpu stats")
-missed that stats_dscp_set, stats_dscp_error and stats_cpmark_set
-might be written (and read) locklessly.
+In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
+the pinctrl_map array, the function returns -ENOMEM directly
+without freeing the previously allocated *map buffer. This results
+in a memory leak of the original kmalloc_array allocation.
 
-Use atomic64_t for these three fields, I doubt act_ctinfo is used
-heavily on big SMP hosts anyway.
-
-Fixes: 24ec483cec98 ("net: sched: Introduce act_ctinfo action")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250709090204.797558-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tc_act/tc_ctinfo.h |  6 +++---
- net/sched/act_ctinfo.c         | 19 +++++++++++--------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/tc_act/tc_ctinfo.h b/include/net/tc_act/tc_ctinfo.h
-index f071c1d70a25..a04bcac7adf4 100644
---- a/include/net/tc_act/tc_ctinfo.h
-+++ b/include/net/tc_act/tc_ctinfo.h
-@@ -18,9 +18,9 @@ struct tcf_ctinfo_params {
- struct tcf_ctinfo {
- 	struct tc_action common;
- 	struct tcf_ctinfo_params __rcu *params;
--	u64 stats_dscp_set;
--	u64 stats_dscp_error;
--	u64 stats_cpmark_set;
-+	atomic64_t stats_dscp_set;
-+	atomic64_t stats_dscp_error;
-+	atomic64_t stats_cpmark_set;
- };
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+index 73bcf806af0e..fc11c3d55fa8 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -395,6 +395,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	const char *function, *pin_prop;
+ 	const char *group;
+ 	int ret, npins, nmaps, configlen = 0, i = 0;
++	struct pinctrl_map *new_map;
  
- enum {
-diff --git a/net/sched/act_ctinfo.c b/net/sched/act_ctinfo.c
-index 5b1241ddc758..93ab3bcd6d31 100644
---- a/net/sched/act_ctinfo.c
-+++ b/net/sched/act_ctinfo.c
-@@ -44,9 +44,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				ipv4_change_dsfield(ip_hdr(skb),
- 						    INET_ECN_MASK,
- 						    newdscp);
--				ca->stats_dscp_set++;
-+				atomic64_inc(&ca->stats_dscp_set);
- 			} else {
--				ca->stats_dscp_error++;
-+				atomic64_inc(&ca->stats_dscp_error);
- 			}
- 		}
- 		break;
-@@ -57,9 +57,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				ipv6_change_dsfield(ipv6_hdr(skb),
- 						    INET_ECN_MASK,
- 						    newdscp);
--				ca->stats_dscp_set++;
-+				atomic64_inc(&ca->stats_dscp_set);
- 			} else {
--				ca->stats_dscp_error++;
-+				atomic64_inc(&ca->stats_dscp_error);
- 			}
- 		}
- 		break;
-@@ -72,7 +72,7 @@ static void tcf_ctinfo_cpmark_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
- 				  struct tcf_ctinfo_params *cp,
- 				  struct sk_buff *skb)
- {
--	ca->stats_cpmark_set++;
-+	atomic64_inc(&ca->stats_cpmark_set);
- 	skb->mark = READ_ONCE(ct->mark) & cp->cpmarkmask;
- }
+ 	*map = NULL;
+ 	*num_maps = 0;
+@@ -469,9 +470,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	 * We know have the number of maps we need, we can resize our
+ 	 * map array
+ 	 */
+-	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
+-	if (!*map)
+-		return -ENOMEM;
++	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
++	if (!new_map) {
++		ret = -ENOMEM;
++		goto err_free_map;
++	}
++
++	*map = new_map;
  
-@@ -323,15 +323,18 @@ static int tcf_ctinfo_dump(struct sk_buff *skb, struct tc_action *a,
- 	}
+ 	return 0;
  
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_SET,
--			      ci->stats_dscp_set, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_dscp_set),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_ERROR,
--			      ci->stats_dscp_error, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_dscp_error),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_CPMARK_SET,
--			      ci->stats_cpmark_set, TCA_CTINFO_PAD))
-+			      atomic64_read(&ci->stats_cpmark_set),
-+			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
- 	spin_unlock_bh(&ci->tcf_lock);
 -- 
 2.39.5
 
