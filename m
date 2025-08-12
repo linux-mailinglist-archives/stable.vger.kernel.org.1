@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-169036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C33CB237D3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:16:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A1BB23813
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFF186E6DC5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:16:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F7D01B67E3E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993E42309BE;
-	Tue, 12 Aug 2025 19:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22B728640A;
+	Tue, 12 Aug 2025 19:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td7pqPTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxqRa9ru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566A4217F35;
-	Tue, 12 Aug 2025 19:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2C41F37A1;
+	Tue, 12 Aug 2025 19:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026167; cv=none; b=AbTUoXYcj3C3nNiQvTpB/fo17aUP5w8kNVYwoXjHwtmWx4a4rPJDziZubRyQkQaj53zkhVeU49W9PKP0m38zBlfKr1CgObc1wu/k4V93NUin4oKvzCbXcIqB/mI110aDrqFCzfhYzX0Y3X/5Wuz2aoDGuTbGL70FWprkxKS9e4I=
+	t=1755026310; cv=none; b=Zk1a3bPULGuvJNQ9sfipk1lxISGRRVjaxMeY3SdJoCOD7GN+3DqvXthx82cd5pGMI0p9wABclfxduOEEZlFnBSBSfuTzaDZW2Mr9JP7dij11RzP4sBkD+m4ayDoC0ndveWyKcUBpDlDYUhAnuhCmnoej950fOmt77ZsARjFl8gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026167; c=relaxed/simple;
-	bh=w1/pT64DPhz4pTCfeejnwuV5FihiH56IitXIlfxlBI8=;
+	s=arc-20240116; t=1755026310; c=relaxed/simple;
+	bh=L/784mn5SKStP+4bGjh691qu1bUOIF4khO7kOsbivNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdkY7QQieEHNG5b6CK60xiYrC+VPS+ZdiicHO/rWcqPM8h9OWNSAzLWnCdtS+o16DPO9NamckhFCdm8pk38bOU2/fWc9tOUeQmSBrk/YtmzR57EYJmwsmOnrTCP2GmdAUsfBIg4ME4dK0iuR7BT3cvxLhN+CSpZawsDsPcDwQQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td7pqPTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA8DC4CEF0;
-	Tue, 12 Aug 2025 19:16:06 +0000 (UTC)
+	 MIME-Version; b=jhWpDi85TxtwAxWq2H5rs8d5fl8r8u0crdcqT+FBmdkRq2uNyNwdmEmKPLjAqp5RrG7GPtjB9JuC2CYGbiHrn/6c9hkbGl2xMpdZawtOHeEh/W7O0RU1XQG25a0JwbKl6OodqqmUQwfGqEZ/clYJFeR+yHtG7eboNq+KPPJQKDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxqRa9ru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2949C4CEF0;
+	Tue, 12 Aug 2025 19:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026167;
-	bh=w1/pT64DPhz4pTCfeejnwuV5FihiH56IitXIlfxlBI8=;
+	s=korg; t=1755026310;
+	bh=L/784mn5SKStP+4bGjh691qu1bUOIF4khO7kOsbivNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Td7pqPTwKwhvzRk7MTYzMTvsCeIbigXBXtMCxqcDM7FCytEuL3+VhGeMjpoDLgg6t
-	 pJyqtNXBHpQTRZh9DTDPNd2qxrh0vCbX9QF7bnTKg+Oc1mEZ0A9a00rWK34VNtngs5
-	 MuuMZIB0YeXhqyH4dYIhiGL2T5WxBC011DFLroTA=
+	b=NxqRa9ru53orw6X9OXMIDuhI3J7zWm6FIa0hV5GihlPfIDi+FlyZ7PBXh57kRjTjS
+	 TI0XLNuWZ7/wJMW09max9N+oSxg7b+iw1KrS2ZizdVbi+E8Q+CyDaS0sIXwmUTrfeX
+	 IYXVSnyFWnpDg0hLOYhzFuydvxiAOJS+3ZFKdwKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ian Rogers <irogers@google.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 255/480] perf tools: Fix use-after-free in help_unknown_cmd()
-Date: Tue, 12 Aug 2025 19:47:43 +0200
-Message-ID: <20250812174407.963809610@linuxfoundation.org>
+Subject: [PATCH 6.15 256/480] perf dso: Add missed dso__put to dso__load_kcore
+Date: Tue, 12 Aug 2025 19:47:44 +0200
+Message-ID: <20250812174408.004681293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,96 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1fdf938168c4d26fa279d4f204768690d1f9c4ae ]
+[ Upstream commit 63a088e999de3f431f87d9a367933da894ddb613 ]
 
-Currently perf aborts when it finds an invalid command.  I guess it
-depends on the environment as I have some custom commands in the path.
+The kcore loading creates a set of list nodes that have reference
+counted references to maps of the kcore. The list node freeing in the
+success path wasn't releasing the maps, add the missing puts. It is
+unclear why this leak was being missed by leak sanitizer.
 
-  $ perf bad-command
-  perf: 'bad-command' is not a perf-command. See 'perf --help'.
-  Aborted (core dumped)
-
-It's because the exclude_cmds() in libsubcmd has a use-after-free when
-it removes some entries.  After copying one to another entry, it keeps
-the pointer in the both position.  And the next copy operation will free
-the later one but it's the same entry in the previous one.
-
-For example, let's say cmds = { A, B, C, D, E } and excludes = { B, E }.
-
-  ci  cj  ei   cmds-name  excludes
-  -----------+--------------------
-   0   0   0 |     A         B       :    cmp < 0, ci == cj
-   1   1   0 |     B         B       :    cmp == 0
-   2   1   1 |     C         E       :    cmp < 0, ci != cj
-
-At this point, it frees cmds->names[1] and cmds->names[1] is assigned to
-cmds->names[2].
-
-   3   2   1 |     D         E       :    cmp < 0, ci != cj
-
-Now it frees cmds->names[2] but it's the same as cmds->names[1].  So
-accessing cmds->names[1] will be invalid.
-
-This makes the subcmd tests succeed.
-
-  $ perf test subcmd
-   69: libsubcmd help tests                                            :
-   69.1: Load subcmd names                                             : Ok
-   69.2: Uniquify subcmd names                                         : Ok
-   69.3: Exclude duplicate subcmd names                                : Ok
-
-Fixes: 4b96679170c6 ("libsubcmd: Avoid SEGV/use-after-free when commands aren't excluded")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250701201027.1171561-3-namhyung@kernel.org
+Fixes: 83720209961f ("perf map: Move map list node into symbol")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250624190326.2038704-2-irogers@google.com
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/subcmd/help.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tools/perf/util/symbol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 8561b0f01a24..9ef569492560 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -9,6 +9,7 @@
- #include <sys/stat.h>
- #include <unistd.h>
- #include <dirent.h>
-+#include <assert.h>
- #include "subcmd-util.h"
- #include "help.h"
- #include "exec-cmd.h"
-@@ -82,10 +83,11 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 				ci++;
- 				cj++;
- 			} else {
--				zfree(&cmds->names[cj]);
--				cmds->names[cj++] = cmds->names[ci++];
-+				cmds->names[cj++] = cmds->names[ci];
-+				cmds->names[ci++] = NULL;
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 11540219481b..9c9e28bbb245 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1414,6 +1414,7 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
+ 				goto out_err;
  			}
- 		} else if (cmp == 0) {
-+			zfree(&cmds->names[ci]);
- 			ci++;
- 			ei++;
- 		} else if (cmp > 0) {
-@@ -94,12 +96,12 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 	}
- 	if (ci != cj) {
- 		while (ci < cmds->cnt) {
--			zfree(&cmds->names[cj]);
--			cmds->names[cj++] = cmds->names[ci++];
-+			cmds->names[cj++] = cmds->names[ci];
-+			cmds->names[ci++] = NULL;
  		}
++		map__zput(new_node->map);
+ 		free(new_node);
  	}
- 	for (ci = cj; ci < cmds->cnt; ci++)
--		zfree(&cmds->names[ci]);
-+		assert(cmds->names[ci] == NULL);
- 	cmds->cnt = cj;
- }
  
 -- 
 2.39.5
