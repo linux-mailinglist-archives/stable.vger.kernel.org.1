@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C7CB23239
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79326B233FA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7972C3B3958
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D23816FCDA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A922DE1E2;
-	Tue, 12 Aug 2025 18:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869A326A0EB;
+	Tue, 12 Aug 2025 18:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7qtEkHm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPjljlK5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422681C84C7;
-	Tue, 12 Aug 2025 18:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447EB6BB5B;
+	Tue, 12 Aug 2025 18:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022205; cv=none; b=Tx7C5r8Ev2jm2nQ3PT7CrpGOE2Q2YrJPbMSJJWKRrdUkENvLijCWdoTX1597Z9MtKnmiCy423xubtyTaENyWPCIUXOh2lQCR4gzug7/JJIrhK0Zj+YdN5MR9EGFjdg8wUVKoSSHWlYjVpVTC/foHlMG1JSbHut2fDOnUk9bTIxM=
+	t=1755023466; cv=none; b=bnqR0dS4keAfjDHKzA29IltVY/nH1GUAw2fFlc56nbff1geVVsFIFUqpvYvjnJxqUM+QPvbJ23lPdYjZyahe25YSdbmp0VE3Ets2dqeVLmr8jOReIarN5BVnXrhUunvCZftdQZdIJXt3K3+S97yq/fhq/CjYofJfH//e65vqABM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022205; c=relaxed/simple;
-	bh=jOzU52tJ11PkNm7ox1RjgVXtG7G3fJkDftvNoxcXVNc=;
+	s=arc-20240116; t=1755023466; c=relaxed/simple;
+	bh=2F7z+cdaTGx/oIBzd7VpHz3pZQpC3MjDjtxOuBoSPtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b2yjcAZ1cXUdxkT5EUUPhIaliwLVG0xXsdzydvaW75bIwrQDthrusRWiJS41DTQIO/TIStpAoGqYLufuaeYSmf+q+KDk9XYM6E3MV5b+uV7anAhz2V0NSS19JuumgLcff1R2t7Fb8sQVucjgWnrCfI1LfE/2ktKLszCS0HKo7bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7qtEkHm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B2FC4CEF0;
-	Tue, 12 Aug 2025 18:10:04 +0000 (UTC)
+	 MIME-Version; b=NJByDAeAFowtA1GE8Ns9Yyf8nuZkGsLyV8spHshPTphOVvWX/YePdGRqN4JnDpvSIdhdXcI/MSVmKKcoHT0IR/sMY4QeOfMbH/zxUp8AyIzO2Xo1BN/D0gNqyTnMnFTqUitSR+GJQBojuB/0ugyrOM0hMNSm59NKRnYf1tRuUmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPjljlK5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1473C4CEF0;
+	Tue, 12 Aug 2025 18:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022205;
-	bh=jOzU52tJ11PkNm7ox1RjgVXtG7G3fJkDftvNoxcXVNc=;
+	s=korg; t=1755023466;
+	bh=2F7z+cdaTGx/oIBzd7VpHz3pZQpC3MjDjtxOuBoSPtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L7qtEkHmW13p2OQaA6jRXlaZcqXMQGXayw5PIWkguyC6wdBWjM8L0uvyJcwS3mAHt
-	 AOk8CqMIZ7lqIZ8gBh+FlTiyCraiZpSR41jyEkWO3y+3gN04k50pMaRkmyOD+wAfbR
-	 8OKCuvdaNk2kSAXYHGOqrwmUl7fRsrJzyhzicISs=
+	b=TPjljlK590lJl89fN5JRrS2hXWldcb5s7JLNKe+AuTwc1lhQO1QM6jjxOO4Plg3m6
+	 j8cLxhmlgt5kx4yhwQ7666KuBNud7bnD1eEQslFgoYpEDFQLViILyz21ftJX/0JyWa
+	 22JP+dTIvgVHd0wmOAEpwnZFPnrcECgPjAn7Srqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"xin.guo" <guoxin0309@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/369] tcp: fix tcp_ofo_queue() to avoid including too much DUP SACK range
+Subject: [PATCH 6.16 088/627] arm64: dts: ti: k3-am62p-verdin: add SD_1 CD pull-up
 Date: Tue, 12 Aug 2025 19:26:23 +0200
-Message-ID: <20250812173018.017811362@linuxfoundation.org>
+Message-ID: <20250812173422.651602225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xin.guo <guoxin0309@gmail.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit a041f70e573e185d5d5fdbba53f0db2fbe7257ad ]
+[ Upstream commit fefaa8d7f8012249729a987d3abce747ffab0ca7 ]
 
-If the new coming segment covers more than one skbs in the ofo queue,
-and which seq is equal to rcv_nxt, then the sequence range
-that is duplicated will be sent as DUP SACK, the detail as below,
-in step6, the {501,2001} range is clearly including too much
-DUP SACK range, in violation of RFC 2883 rules.
+Add internal pull-up to the SD_1 card detect signal, without this the CD
+signal is floating and spurious detects events can happen.
 
-1. client > server: Flags [.], seq 501:1001, ack 1325288529, win 20000, length 500
-2. server > client: Flags [.], ack 1, [nop,nop,sack 1 {501:1001}], length 0
-3. client > server: Flags [.], seq 1501:2001, ack 1325288529, win 20000, length 500
-4. server > client: Flags [.], ack 1, [nop,nop,sack 2 {1501:2001} {501:1001}], length 0
-5. client > server: Flags [.], seq 1:2001, ack 1325288529, win 20000, length 2000
-6. server > client: Flags [.], ack 2001, [nop,nop,sack 1 {501:2001}], length 0
-
-After this fix, the final ACK is as below:
-
-6. server > client: Flags [.], ack 2001, options [nop,nop,sack 1 {501:1001}], length 0
-
-[edumazet] added a new packetdrill test in the following patch.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: xin.guo <guoxin0309@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250626123420.1933835-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 87f95ea316ac ("arm64: dts: ti: Add Toradex Verdin AM62P")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20250701081643.71406-1-francesco@dolcini.it
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index d176e7888a20..d45a6dcc3753 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4970,8 +4970,9 @@ static void tcp_ofo_queue(struct sock *sk)
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+index d90d13287076..85c001aef7e3 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+@@ -433,7 +433,7 @@ AM62PX_IOPAD(0x01b8, PIN_OUTPUT, 7) /* (E20) SPI0_CS1.GPIO1_16 */ /* SODIMM 19 *
+ 	/* Verdin SD_1_CD# */
+ 	pinctrl_sd1_cd: main-gpio1-48-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62PX_IOPAD(0x0240, PIN_INPUT, 7) /* (D23) MMC1_SDCD.GPIO1_48 */ /* SODIMM 84 */
++			AM62PX_IOPAD(0x0240, PIN_INPUT_PULLUP, 7) /* (D23) MMC1_SDCD.GPIO1_48 */ /* SODIMM 84 */
+ 		>;
+ 	};
  
- 		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
- 			__u32 dsack = dsack_high;
-+
- 			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))
--				dsack_high = TCP_SKB_CB(skb)->end_seq;
-+				dsack = TCP_SKB_CB(skb)->end_seq;
- 			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
- 		}
- 		p = rb_next(p);
 -- 
 2.39.5
 
