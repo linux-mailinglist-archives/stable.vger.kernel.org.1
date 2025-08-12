@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68E8B2303A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAE4B2344B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F029D2A3848
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00F99188FFA0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AB9279915;
-	Tue, 12 Aug 2025 17:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DEA61FFE;
+	Tue, 12 Aug 2025 18:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMZIFDQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TH5QnHMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D8E2D46AC;
-	Tue, 12 Aug 2025 17:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA341A9F89;
+	Tue, 12 Aug 2025 18:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020952; cv=none; b=LY1t2yp/Sf0wziAvOHT/brMWAWx6nkTCzL1TC8HBzG8CWYVmYQbwL+AAH7zCXQbXvzQAc+m0OmJsCL63BHGRhZMTXkC75muo5941IyYajC7C6jt8HpRGUeQr+PQUEuQH+ALj4wPOCCkSWuwHzxG8rotbrOQAeDn2A4/v0WmX0+A=
+	t=1755023611; cv=none; b=ZwTGLVLSMC3uS92DTL5H+RnvLqGoE1p+0pOWYuEttMSXmk4rfUrWJysUogEWaBAdKM8tkH3p6YAI1dMmGnO5WdOH8JtcroGOog2XwTgoNpPqCYN8cUAnIRr/F1XWXtFVcSI1b1b0aLmyLMwi8X0bg44Xlk98MLWbd1nZxQIZb/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020952; c=relaxed/simple;
-	bh=2fYHmjjQoByqWcAif2I4o9Me25uFe/ImjvBEtNCUp30=;
+	s=arc-20240116; t=1755023611; c=relaxed/simple;
+	bh=U84ytQ8rdQ7W1MTPYHtVVQdrkoKfA9/7u74zGakvOOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0GRKJ7erg5LOJTKWy6CABXpoj5IFsvuHqRjAJ+kJMCaqEbHk3I80055nt9Oyf2QDKYHHS1BnbNAAKO20hTCxou8+bBj3J8Ed+b3VrXPW9w5oIvxnlBtP4ghyIREUxqMxUsEv55O+bdGT1h5pkpiSGdZFhAPKYLej+w3rXDfVZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMZIFDQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BBFC4CEF0;
-	Tue, 12 Aug 2025 17:49:11 +0000 (UTC)
+	 MIME-Version; b=eCL6uMeCr/dGy8s+2IoGlXzBMwXUw8pOTEalmK9YbsHsA0vqo2YWEc+MxrY+0oBdbs3FEAc101XK30b9aNVj0fJEHygkN4xNbwM7ObdGzzhT3fyoZuqN4RNF5PA00f+8wK+lC4ohJHiTBDZRSiUOx8iC/jl6U2ACH3E52oquw00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TH5QnHMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A092DC4CEF0;
+	Tue, 12 Aug 2025 18:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020951;
-	bh=2fYHmjjQoByqWcAif2I4o9Me25uFe/ImjvBEtNCUp30=;
+	s=korg; t=1755023611;
+	bh=U84ytQ8rdQ7W1MTPYHtVVQdrkoKfA9/7u74zGakvOOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMZIFDQIp1tWdutTFnWGzJCWHNsKPhfsOqLmzylNUfBqlM9wxEMXpHxjGSsWxrea3
-	 Y3kXItubHhx0b/hqdMCjY3d8mopTmoGbrVF4GlGVh1zD6UjdhTesEE450lHcTGSnOx
-	 ATTZMRpcFQa+wC3PWcxlWJO2XBZlUSLp61L9YxEs=
+	b=TH5QnHMkxr89DHqgj/Vz1ahEY4WgX5gS5st93+Ibq5qFpBnVhJcvXHTjAq8BEo8hp
+	 jCOJVG3IyI97Sk7LeQQcpTeewFCNljwvPxScC20AW6+NgUZAis06DybD/rvv3aD3G8
+	 B17DeurrNuxle09hSxXJrTUGJUYfV3AcipIH56Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/262] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
+Subject: [PATCH 6.16 129/627] MIPS: alchemy: gpio: use new GPIO line value setter callbacks for the remaining chips
 Date: Tue, 12 Aug 2025 19:27:04 +0200
-Message-ID: <20250812172954.499565938@linuxfoundation.org>
+Message-ID: <20250812173424.227634022@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit f83f69097a302ed2a2775975ddcf12e6a5ac6ec3 ]
+[ Upstream commit 6b94bf976f9f9e6d4a6bf3218968a506c049702e ]
 
-The reference manual for the i.MX8MM states the clock rate in
-MMC mode is 1/2 of the input clock, therefore to properly run
-at HS400 rates, the input clock must be 400MHz to operate at
-200MHz.  Currently the clock is set to 200MHz which is half the
-rate it should be, so the throughput is half of what it should be
-for HS400 operation.
+Previous commit missed two other places that need converting, it only
+came out in tests on autobuilders now. Convert the rest of the driver.
 
-Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 68bdc4dc1130 ("MIPS: alchemy: gpio: use new line value setter callbacks")
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://lore.kernel.org/r/20250727082442.13182-1-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/alchemy/common/gpiolib.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index 8ab0e45f2ad3..f93c2b604c57 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -284,6 +284,8 @@ &usdhc3 {
- 	pinctrl-0 = <&pinctrl_usdhc3>;
- 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
- 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
- 	bus-width = <8>;
- 	non-removable;
- 	status = "okay";
+diff --git a/arch/mips/alchemy/common/gpiolib.c b/arch/mips/alchemy/common/gpiolib.c
+index 411f70ceb762..194034eba75f 100644
+--- a/arch/mips/alchemy/common/gpiolib.c
++++ b/arch/mips/alchemy/common/gpiolib.c
+@@ -40,9 +40,11 @@ static int gpio2_get(struct gpio_chip *chip, unsigned offset)
+ 	return !!alchemy_gpio2_get_value(offset + ALCHEMY_GPIO2_BASE);
+ }
+ 
+-static void gpio2_set(struct gpio_chip *chip, unsigned offset, int value)
++static int gpio2_set(struct gpio_chip *chip, unsigned offset, int value)
+ {
+ 	alchemy_gpio2_set_value(offset + ALCHEMY_GPIO2_BASE, value);
++
++	return 0;
+ }
+ 
+ static int gpio2_direction_input(struct gpio_chip *chip, unsigned offset)
+@@ -68,10 +70,12 @@ static int gpio1_get(struct gpio_chip *chip, unsigned offset)
+ 	return !!alchemy_gpio1_get_value(offset + ALCHEMY_GPIO1_BASE);
+ }
+ 
+-static void gpio1_set(struct gpio_chip *chip,
++static int gpio1_set(struct gpio_chip *chip,
+ 				unsigned offset, int value)
+ {
+ 	alchemy_gpio1_set_value(offset + ALCHEMY_GPIO1_BASE, value);
++
++	return 0;
+ }
+ 
+ static int gpio1_direction_input(struct gpio_chip *chip, unsigned offset)
+@@ -97,7 +101,7 @@ struct gpio_chip alchemy_gpio_chip[] = {
+ 		.direction_input	= gpio1_direction_input,
+ 		.direction_output	= gpio1_direction_output,
+ 		.get			= gpio1_get,
+-		.set			= gpio1_set,
++		.set_rv			= gpio1_set,
+ 		.to_irq			= gpio1_to_irq,
+ 		.base			= ALCHEMY_GPIO1_BASE,
+ 		.ngpio			= ALCHEMY_GPIO1_NUM,
+@@ -107,7 +111,7 @@ struct gpio_chip alchemy_gpio_chip[] = {
+ 		.direction_input	= gpio2_direction_input,
+ 		.direction_output	= gpio2_direction_output,
+ 		.get			= gpio2_get,
+-		.set			= gpio2_set,
++		.set_rv			= gpio2_set,
+ 		.to_irq			= gpio2_to_irq,
+ 		.base			= ALCHEMY_GPIO2_BASE,
+ 		.ngpio			= ALCHEMY_GPIO2_NUM,
 -- 
 2.39.5
 
