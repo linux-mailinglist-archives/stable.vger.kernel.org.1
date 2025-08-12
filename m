@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5425FB23501
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2B5B2330E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 027C316B8B9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0B5E7AF863
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4FB2FF14C;
-	Tue, 12 Aug 2025 18:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF772DFA3E;
+	Tue, 12 Aug 2025 18:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="di+ENN8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzvg4LCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693002C21D4;
-	Tue, 12 Aug 2025 18:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2937C1EF38C;
+	Tue, 12 Aug 2025 18:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024335; cv=none; b=IhMVnGWuJ6aPfg8SCO6ibW9fSJtz8EgVx7yrO7IHkSr1FRFGI/dLxwYdrVYRRSInFvokRswlor2dh41Xa0p7h3oSxLIwGfVsYJF9FaxSk+wVuZG6TqjMlNw0dSdeJnKolaSmvkaJfhYXQcSuAtOK0QZrJQ1yKTlJYTLKSy3DuxY=
+	t=1755023069; cv=none; b=YC7IIDMzVyOU/EIzqWbCqWQhj2Vh5AMitWZQvDwjw5qMTEXEm0NVFPJOnpCRRE8L0Jay7ZM+gpk49+LnvIacxpajCIevFB3nvT6lwms5v9uDxZtTx0FQvhqREZEgJBmGBAQryOpASOQ83pJlv8//8z0UyG3zHpsMxWGNd6TVNpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024335; c=relaxed/simple;
-	bh=j279tONBKdKHtObIst/rozWWZ2CdEY9Zwu3xqotee3U=;
+	s=arc-20240116; t=1755023069; c=relaxed/simple;
+	bh=9FS3K6pBzi5oEkI7xxLsU0iiebJXwCz3epO+QYXvBJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iE3v44POrIaNZcR9vU640aaPIyGbtJgHvKZzRFERU+3BUGpscExm7Bj4nDyVEvhYdfoGEClLPrGlrAu5YfhVZhdRUoPVf/HLnAbvHOG5MAXVeireuIYn/UvakXRzu83UGTTn8QuWjqBkwkAPORgrE4quxJznAPzUoA6MoOL+oFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=di+ENN8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD76EC4CEF0;
-	Tue, 12 Aug 2025 18:45:34 +0000 (UTC)
+	 MIME-Version; b=mjExR0KPqp333kGBLqYJK0s5LqVF3pZelw4t2u9h4ftIqmbFppY0Vqy8s2AT1dcO7Gg8WfYQ3jGdRGPmfqYB7HP1ilcE4PBONwO9u3QLFki0F74pv0WkOqarA38hpadpKVHMYu+uRr6oVYql9Ard1vlWwqP/FgbAoFgDHbhA3OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzvg4LCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84413C4CEFA;
+	Tue, 12 Aug 2025 18:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024335;
-	bh=j279tONBKdKHtObIst/rozWWZ2CdEY9Zwu3xqotee3U=;
+	s=korg; t=1755023069;
+	bh=9FS3K6pBzi5oEkI7xxLsU0iiebJXwCz3epO+QYXvBJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=di+ENN8P5nriqXSZdNV0zODLmsv62iJ6jkTtCzYi2uRxKJ6FDZO3Ip9Xuk+jkPsHU
-	 3G77JQg3ak7BArvaCE+NKQhVWT1tqy23NmKL0dIxeV6vhmyVkULCwpOQdlcPDVySgW
-	 7JNam7bDXHAOwOpAH+6ZWuIZMpCnd99/FFOfQX8g=
+	b=Vzvg4LCEGd2H66zfxK0e4RDX4b6s0gv1mi/zkoFkHjhevu9sSVH9xR2MPbyyOTlF7
+	 OLgrkYDH6Axr1KInSXYtgbRrUbkn9mpFtzz08kDoQ5eoKd0edL4CVRCUvEkQnYg9Zl
+	 25drEmj3alyQ6JyOjOoUpih05MbmlDpAmcKURbxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 341/627] RDMA/ipoib: Use parent rdma device net namespace
-Date: Tue, 12 Aug 2025 19:30:36 +0200
-Message-ID: <20250812173432.256100073@linuxfoundation.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Ville Syrjala <ville.syrjala@linux.intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.12 340/369] drm/i915/ddi: only call shutdown hooks for valid encoders
+Date: Tue, 12 Aug 2025 19:30:37 +0200
+Message-ID: <20250812173029.488620908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit f1208b05574f63c52e88109d8c75afdf4fc6bf42 ]
+commit 60a43ecbd59decb77b31c09a73f09e1d4f4d1c4c upstream.
 
-Use the net namespace of the underlying rdma device.
-After honoring the rdma device's namespace, the ipoib
-netdev now also runs in the same net namespace of the
-rdma device.
+DDI might be HDMI or DP only, leaving the other encoder
+uninitialized. Calling the shutdown hook on an uninitialized encoder may
+lead to a NULL pointer dereference. Check the encoder types (and thus
+validity via the DP output_reg or HDMI hdmi_reg checks) before calling
+the hooks.
 
-Add an API to read the net namespace of the rdma device
-so that ULP such as IPoIB can use it to initialize its
-netdev.
-
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Stable-dep-of: f458ccd2aa2c ("RDMA/uverbs: Check CAP_NET_RAW in user namespace for flow create")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Closes: https://lore.kernel.org/r/20241031105145.2140590-1-senozhatsky@chromium.org
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/8b197c50e7f3be2bbc07e3935b21e919815015d5.1735568047.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_main.c | 2 ++
- include/rdma/ib_verbs.h                   | 5 +++++
- 2 files changed, 7 insertions(+)
+ drivers/gpu/drm/i915/display/intel_ddi.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_main.c b/drivers/infiniband/ulp/ipoib/ipoib_main.c
-index f2f5465f2a90..7acafc5c0e09 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_main.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_main.c
-@@ -2577,6 +2577,8 @@ static struct net_device *ipoib_add_port(const char *format,
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -4798,8 +4798,10 @@ static void intel_ddi_tc_encoder_suspend
  
- 	ndev->rtnl_link_ops = ipoib_get_link_ops();
+ static void intel_ddi_encoder_shutdown(struct intel_encoder *encoder)
+ {
+-	intel_dp_encoder_shutdown(encoder);
+-	intel_hdmi_encoder_shutdown(encoder);
++	if (intel_encoder_is_dp(encoder))
++		intel_dp_encoder_shutdown(encoder);
++	if (intel_encoder_is_hdmi(encoder))
++		intel_hdmi_encoder_shutdown(encoder);
+ }
  
-+	dev_net_set(ndev, rdma_dev_net(hca));
-+
- 	result = register_netdev(ndev);
- 	if (result) {
- 		pr_warn("%s: couldn't register ipoib port %d; error %d\n",
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index af43a8d2a74a..c83e5a375cd6 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -4855,6 +4855,11 @@ static inline int ibdev_to_node(struct ib_device *ibdev)
- bool rdma_dev_access_netns(const struct ib_device *device,
- 			   const struct net *net);
- 
-+static inline struct net *rdma_dev_net(struct ib_device *device)
-+{
-+	return read_pnet(&device->coredev.rdma_net);
-+}
-+
- #define IB_ROCE_UDP_ENCAP_VALID_PORT_MIN (0xC000)
- #define IB_ROCE_UDP_ENCAP_VALID_PORT_MAX (0xFFFF)
- #define IB_GRH_FLOWLABEL_MASK (0x000FFFFF)
--- 
-2.39.5
-
+ static void intel_ddi_tc_encoder_shutdown_complete(struct intel_encoder *encoder)
 
 
 
