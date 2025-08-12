@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-168415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E275B23503
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA188B2329C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 178F7621A44
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE54D7A1B9E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEB22FF172;
-	Tue, 12 Aug 2025 18:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323A92EAB97;
+	Tue, 12 Aug 2025 18:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAadXylC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpSWKwDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3792FF169;
-	Tue, 12 Aug 2025 18:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05496BB5B;
+	Tue, 12 Aug 2025 18:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024093; cv=none; b=XQeutcZzlgOv5h1WZi252THM2pFxEVfB8SdH3EHWgKaQcxkUZ6wDcwXkvNY0gmdaTalaqXolap6b13DtkudLI6rpz1s/diuxD4iUbIc/0FtGym/jZmXBPW0c8Nd0JBmJ4gnJ+l+5uLgZ5u4oH+0uzAWY4o7vMHzLF1iTAU1eX14=
+	t=1755022821; cv=none; b=GzpYDVtcMRmzxSldw0yMoBXZC5JGfz1WPVh6uzQyiY+8e3qFhnkHU3mF+w+gqdu8h5rQZtcEJLTpwXrb3I983IkjFiSahMfm5YvbRpGdhO8ykc+iemasX4rq+4kdNwJSJoIZAk0gotor8D7RQlf3W7svITF12eMl1thleDcbHdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024093; c=relaxed/simple;
-	bh=j3LX5L9ElR9elkUgG/uL9ugGcYffiCiXW5SetMSLZJA=;
+	s=arc-20240116; t=1755022821; c=relaxed/simple;
+	bh=G35iTk90wbG/RkqycJxKac11I5bsoXtHg5ZCjjlHwMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKP837MjbbkVigm/Zj6DQzTrp5IjA08VDHYksKf6giYihaNgEjxLFkMd5wZLMK2YS9+4Y2Yqf8tZp5twiOSwMlvv8BAoW2jEWOksyLSsj0HWTJ4i3+VJOgxFufJ31Yd0kf0me//QQ6MPwZC33au9g6pCfJr+5VMyhNAUxTz1D6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAadXylC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F92DC4CEF0;
-	Tue, 12 Aug 2025 18:41:32 +0000 (UTC)
+	 MIME-Version; b=XXWAt7oR1TGuIXNlrO5VpTSESLdpdcTIZf+9aDncTtmxaqpHgnqZLUcHfw2laLakxoMkIj/cH3DlO4nSCuol1pO61fBhhDxC3a0HskGdlauEgM32nGBcW8fEX/zxUWxEV3A0yUDlCn53c7csHFCbzWgjTCpaXGrw5DS4OmTmZzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpSWKwDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E624C4CEF6;
+	Tue, 12 Aug 2025 18:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024092;
-	bh=j3LX5L9ElR9elkUgG/uL9ugGcYffiCiXW5SetMSLZJA=;
+	s=korg; t=1755022820;
+	bh=G35iTk90wbG/RkqycJxKac11I5bsoXtHg5ZCjjlHwMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAadXylCRmeWM4tkAzbR9roptbvrGlDUvHZONqymLvHmtfrUFvWc7W700qqyutn9c
-	 BldSUE0/tLNDxQ2uRTCl/aq5uJcPvuNouOyAeNbkOFl1JskCL0Zf4uwAbVWJVtOFiU
-	 HWTkFdMNgihaAp74K/IHxyowdt+vrMyH0JC3URp4=
+	b=JpSWKwDrWKZn3zh3E/Nz1lF+IobpcKZ58B0OXzOd7DpYGVJ80oCqKjZJtIgRFvlRC
+	 +6jPerIZmdQtrL9Jc4WTL7onW8hTnsWBIttOS7AOTJIYnabq89FxUZqPOy/5uhBopz
+	 KgU6WWas21C2ckDGgJSTfvEW9m/sD7+ARrojuCMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Aaron Lewis <aaronlewis@google.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 270/627] can: tscan1: CAN_TSCAN1 can depend on PC104
+Subject: [PATCH 6.12 268/369] vfio/pci: Separate SR-IOV VF dev_set
 Date: Tue, 12 Aug 2025 19:29:25 +0200
-Message-ID: <20250812173429.581533876@linuxfoundation.org>
+Message-ID: <20250812173024.841639161@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit b7d012e59627c1d1bb2ad5d71efc69a070ef767d ]
+[ Upstream commit e908f58b6beb337cbe4481d52c3f5c78167b1aab ]
 
-Add a dependency on PC104 to limit (restrict) this driver kconfig
-prompt to kernel configs that have PC104 set.
+In the below noted Fixes commit we introduced a reflck mutex to allow
+better scaling between devices for open and close.  The reflck was
+based on the hot reset granularity, device level for root bus devices
+which cannot support hot reset or bus/slot reset otherwise.  Overlooked
+in this were SR-IOV VFs, where there's also no bus reset option, but
+the default for a non-root-bus, non-slot-based device is bus level
+reflck granularity.
 
-Add COMPILE_TEST as a possibility for more complete build coverage.
-I tested this build config on x86_64 5 times without problems.
+The reflck mutex has since become the dev_set mutex (via commit
+2cd8b14aaa66 ("vfio/pci: Move to the device set infrastructure")) and
+is our defacto serialization for various operations and ioctls.  It
+still seems to be the case though that sets of vfio-pci devices really
+only need serialization relative to hot resets affecting the entire
+set, which is not relevant to SR-IOV VFs.  As described in the Closes
+link below, this serialization contributes to startup latency when
+multiple VFs sharing the same "bus" are opened concurrently.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250721002823.3548945-1-rdunlap@infradead.org
-[mkl: fix conflict, remove Fixes: tag]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Mark the device itself as the basis of the dev_set for SR-IOV VFs.
+
+Reported-by: Aaron Lewis <aaronlewis@google.com>
+Closes: https://lore.kernel.org/all/20250626180424.632628-1-aaronlewis@google.com
+Tested-by: Aaron Lewis <aaronlewis@google.com>
+Fixes: e309df5b0c9e ("vfio/pci: Parallelize device open and release")
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250626225623.1180952-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/sja1000/Kconfig | 2 +-
+ drivers/vfio/pci/vfio_pci_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/sja1000/Kconfig b/drivers/net/can/sja1000/Kconfig
-index ba16d7bc09ef..e061e35769bf 100644
---- a/drivers/net/can/sja1000/Kconfig
-+++ b/drivers/net/can/sja1000/Kconfig
-@@ -105,7 +105,7 @@ config CAN_SJA1000_PLATFORM
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 087c273a547f..595503fa9ca8 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2153,7 +2153,7 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
+ 		return -EBUSY;
+ 	}
  
- config CAN_TSCAN1
- 	tristate "TS-CAN1 PC104 boards"
--	depends on ISA || (COMPILE_TEST && HAS_IOPORT)
-+	depends on (ISA && PC104) || (COMPILE_TEST && HAS_IOPORT)
- 	help
- 	  This driver is for Technologic Systems' TSCAN-1 PC104 boards.
- 	  https://www.embeddedts.com/products/TS-CAN1
+-	if (pci_is_root_bus(pdev->bus)) {
++	if (pci_is_root_bus(pdev->bus) || pdev->is_virtfn) {
+ 		ret = vfio_assign_device_set(&vdev->vdev, vdev);
+ 	} else if (!pci_probe_reset_slot(pdev->slot)) {
+ 		ret = vfio_assign_device_set(&vdev->vdev, pdev->slot);
 -- 
 2.39.5
 
