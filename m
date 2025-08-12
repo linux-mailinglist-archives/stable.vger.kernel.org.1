@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5831BB2321A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE70B233D3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F7F188D434
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC531561161
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5F8280037;
-	Tue, 12 Aug 2025 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D612EE5E8;
+	Tue, 12 Aug 2025 18:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+7Efk+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGbNzecX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB95305E08;
-	Tue, 12 Aug 2025 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C82E2EF652;
+	Tue, 12 Aug 2025 18:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022052; cv=none; b=coV1RCyl6AlcFTMpWXfiNIuOOHbE3CNQanpSFjQDMK1ZGHmPz6TrGK9Kb1oGrn3eRz3s3NmI+b1IK+WpypyA8k03dC1Q3AU0tXl4+/5w1S0YR8mLVz0KDLJ0HKgcv3J5VThuI+OUVBlZivYo/TAMyllvfkz9oXuBX+fncmUAHcI=
+	t=1755023318; cv=none; b=cvSBGSWzf1sJAUpDSMDhbBKcq4WC1KkaaVXk0axXIsP9XyuXIn2hJEDiPSFwYdXxKNzQsfytd13LqERMqNn5RYjCWtXicqWKQ0kd8FT5Q/K4SFpYGFW/O7OaJjaPd/H6t8i/i5YtBl9brHunc80/ophuIPnWT0QjoTNNNVg7dqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022052; c=relaxed/simple;
-	bh=qtB9Tim6lpu09BJplISP0HvaKpiuQVz4EcHKVxm0fJE=;
+	s=arc-20240116; t=1755023318; c=relaxed/simple;
+	bh=zHtiwTU22aa2kiNYFTC8E9AXMaVE3mkZwek/OgYe56o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oc1dkEDbS+rwVeQRsT5kVop/AHTbKTLqjYXu3LXzaFR/qMfQY535DXDMMm3tNQhqTQrPTTeJ51fQrXJC5Ezk4//G1VAq0o+Ax3NpAq/wq1CVrFKG61KK/8wr7FSZXbAWBD7/DYZxhdecud8IFC4/oyly/5USoiVjz2kF509OltM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+7Efk+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C3BC4CEF0;
-	Tue, 12 Aug 2025 18:07:31 +0000 (UTC)
+	 MIME-Version; b=VkwWNmvuQ+OfPvj8KqYL9jgWmQX3Ss+ZFgz4ATWw7smvztMDm9Ak64RBS/+i7jNwB8iF7X+vpMXwk4y8DTtQxeK3FJsOm/xbNJh1Mm/9CblaEXQsy93D9wUIaKAPhpPHd/Ei1TiX3t0vWPZq4L2pjYZvadefpfyiLeetz87x+0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGbNzecX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7558CC4CEF0;
+	Tue, 12 Aug 2025 18:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022052;
-	bh=qtB9Tim6lpu09BJplISP0HvaKpiuQVz4EcHKVxm0fJE=;
+	s=korg; t=1755023317;
+	bh=zHtiwTU22aa2kiNYFTC8E9AXMaVE3mkZwek/OgYe56o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+7Efk+T9FUgHiS1Ka/LaxOxpZUwyTKQPpHxTPQmV6BPhppzaYnZIjWJCjcArX5I3
-	 26IiGxijwKs5jDHlvi/qYf0yLPos7vsyeCBEOf/bno5uMQUFSkeY6hJMJMk+Tef1oj
-	 X3EtMioQzYV433ShRkmVU8RoP3u9hDwBN21OhgJk=
+	b=VGbNzecXOVpOPVAiKBoDnjdDoIE3ClWDdIxQS+yXxS9+wU7ML7igVlZwN/R32QwjM
+	 wWqy+NljDZIKNp892AQYHfct3lsk2UeVCdV8YzQ6kFgPpFsDg+OIV48zFl9gImM3pN
+	 yJGORgCeWqqFzKE7RK0zzR0JeZW10yxiuh3Q0rm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/369] vmci: Prevent the dispatching of uninitialized payloads
+Subject: [PATCH 6.16 044/627] arm64: dts: qcom: sc7180: Expand IMEM region
 Date: Tue, 12 Aug 2025 19:25:39 +0200
-Message-ID: <20250812173016.341947210@linuxfoundation.org>
+Message-ID: <20250812173421.016169236@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031 ]
+[ Upstream commit 965e28cad4739b11f1bc58c0a9935e025938bb1f ]
 
-The reproducer executes the host's unlocked_ioctl call in two different
-tasks. When init_context fails, the struct vmci_event_ctx is not fully
-initialized when executing vmci_datagram_dispatch() to send events to all
-vm contexts. This affects the datagram taken from the datagram queue of
-its context by another task, because the datagram payload is not initialized
-according to the size payload_size, which causes the kernel data to leak
-to the user space.
+We need more than what is currently described, expand the region to its
+actual boundaries.
 
-Before dispatching the datagram, and before setting the payload content,
-explicitly set the payload content to 0 to avoid data leakage caused by
-incomplete payload initialization.
-
-Fixes: 28d6692cd8fb ("VMCI: context implementation.")
-Reported-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9b9124ae9b12d5af5d95
-Tested-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20250627055214.2967129-1-lizhi.xu@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ede638c42c82 ("arm64: dts: qcom: sc7180: Add IMEM and pil info regions")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250523-topic-ipa_mem_dts-v1-3-f7aa94fac1ab@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_context.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
-index f22b44827e92..d566103caa27 100644
---- a/drivers/misc/vmw_vmci/vmci_context.c
-+++ b/drivers/misc/vmw_vmci/vmci_context.c
-@@ -251,6 +251,8 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
- 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
- 						  VMCI_CONTEXT_RESOURCE_ID);
- 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
-+		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
-+			ev.msg.hdr.payload_size);
- 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
- 		ev.payload.context_id = context_id;
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index 01e727b021ec..3afb69921be3 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -3526,18 +3526,18 @@ spmi_bus: spmi@c440000 {
+ 			#interrupt-cells = <4>;
+ 		};
+ 
+-		sram@146aa000 {
++		sram@14680000 {
+ 			compatible = "qcom,sc7180-imem", "syscon", "simple-mfd";
+-			reg = <0 0x146aa000 0 0x2000>;
++			reg = <0 0x14680000 0 0x2e000>;
+ 
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 
+-			ranges = <0 0 0x146aa000 0x2000>;
++			ranges = <0 0 0x14680000 0x2e000>;
+ 
+-			pil-reloc@94c {
++			pil-reloc@2a94c {
+ 				compatible = "qcom,pil-reloc-info";
+-				reg = <0x94c 0xc8>;
++				reg = <0x2a94c 0xc8>;
+ 			};
+ 		};
  
 -- 
 2.39.5
