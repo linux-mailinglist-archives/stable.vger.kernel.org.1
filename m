@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-169008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A49B237B6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:14:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FE1B237C1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A2D3585584
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:14:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9836E47ED
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6843029BDA9;
-	Tue, 12 Aug 2025 19:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35E2512F5;
+	Tue, 12 Aug 2025 19:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pI4+IPnG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2X4n0nU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE9B260583;
-	Tue, 12 Aug 2025 19:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E262AE90;
+	Tue, 12 Aug 2025 19:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026073; cv=none; b=LStXEgSjNAeMy2wADpNtCPrBfdaqxZVpYoY4rr4K8MQCsw/JO1zvQXaxHSzBE2G15KnBCljYyL6C0LxPmU1R3F3PK7vdkNtjWVhBuS9sr8gKNvJGfo1Nayvk7pwafsHEum6vXAyVSHutWQ801lCslOjdWwbgr82/b4dszMjOKkM=
+	t=1755026111; cv=none; b=hkA+8f89K0BGH1luweLx/0kwcTM16qkiREHG2y3CGUyorTZe3/cl3Xy6biEmQf5PakTODcGkxajYt5RMDSFmCX3hfeQaV/tcD3aoghuA1cI3RDhPccWO6HLdrPtO27wZI/wZ4ThfHTuuq6pBNQ3UpSIEiZSw87sXQZS09erW2Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026073; c=relaxed/simple;
-	bh=qyA5U7pe0VCLQn6FjeZTE4cxlnH7dvCzmh2rqDgp95M=;
+	s=arc-20240116; t=1755026111; c=relaxed/simple;
+	bh=UtAOKYJyT9EzwditwGyFxYgRupWSHP42ZK7f9ihpI6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAhC9CBClT60U0Av5RLYfpQkzkl0QGpe7NNtm76tMhosM4okndncd9qHfe8C5hDhuz7Q13B69Ie2wQdGH/1GYvmHycCQ1DbtetXJeVasxP7lEq/Gbfqz4O5f2tU9zyFdgCojT9hO0JzmKfs8LMN64zIwK1BIoJl8OvgfNah9C7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pI4+IPnG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EC0C4CEF0;
-	Tue, 12 Aug 2025 19:14:32 +0000 (UTC)
+	 MIME-Version; b=fxokPNgrDxwSpXiZF1AHkIL3dqw07UT4bbQtcB94j2iK8v8yfcf97S3K8LgGEmnGTxNaMHliNE8SqGe++GBSmJ2D37sRR5sLirtaTSstnV4tZziGQLeSXh0unG0WWdKhmJq0SGwGUTeXz+MIGPmaEArtT/SGbgWmZ04JDs3Ykwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2X4n0nU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FCBC4CEF0;
+	Tue, 12 Aug 2025 19:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026073;
-	bh=qyA5U7pe0VCLQn6FjeZTE4cxlnH7dvCzmh2rqDgp95M=;
+	s=korg; t=1755026111;
+	bh=UtAOKYJyT9EzwditwGyFxYgRupWSHP42ZK7f9ihpI6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pI4+IPnG80YlF1/jYp3aARxvDY5afcICbOMyRgUfohxDA3F4bD1wsFdtrwcFw8ypN
-	 mZB41MygXvlVGMt4AHLGCHCdtd1WdmCK+8hQAsBZfBXOPPumcjx/TZ+80cdxJljgYe
-	 7E4A/DkmT8RlZ5RuWCmW69ZeY5e0NX96b4MdTU84=
+	b=x2X4n0nUh6ZZGFNt5Z4+I1tfCb9WqbuemgNb+FwGkTc75CuSPPrX3VDOTsofTqM3j
+	 QzKldq8H2I/GGyo98LWpNJyjvI6rsky3xseneAazkKX3BAsz6FRLB+NrCWUzVRC+83
+	 Ma8yScOwDJYxTOidZSTC1P7XzDUmtgFwhUR3fKZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zepta <z3ptaa@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 221/480] staging: media: atomisp: Fix stack buffer overflow in gmin_get_var_int()
-Date: Tue, 12 Aug 2025 19:47:09 +0200
-Message-ID: <20250812174406.564907324@linuxfoundation.org>
+Subject: [PATCH 6.15 222/480] fortify: Fix incorrect reporting of read buffer size
+Date: Tue, 12 Aug 2025 19:47:10 +0200
+Message-ID: <20250812174406.604177649@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -69,74 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit ee4cf798202d285dcbe85e4467a094c44f5ed8e6 ]
+[ Upstream commit 94fd44648dae2a5b6149a41faa0b07928c3e1963 ]
 
-When gmin_get_config_var() calls efi.get_variable() and the EFI variable
-is larger than the expected buffer size, two behaviors combine to create
-a stack buffer overflow:
+When FORTIFY_SOURCE reports about a run-time buffer overread, the wrong
+buffer size was being shown in the error message. (The bounds checking
+was correct.)
 
-1. gmin_get_config_var() does not return the proper error code when
-   efi.get_variable() fails. It returns the stale 'ret' value from
-   earlier operations instead of indicating the EFI failure.
-
-2. When efi.get_variable() returns EFI_BUFFER_TOO_SMALL, it updates
-   *out_len to the required buffer size but writes no data to the output
-   buffer. However, due to bug #1, gmin_get_var_int() believes the call
-   succeeded.
-
-The caller gmin_get_var_int() then performs:
-- Allocates val[CFG_VAR_NAME_MAX + 1] (65 bytes) on stack
-- Calls gmin_get_config_var(dev, is_gmin, var, val, &len) with len=64
-- If EFI variable is >64 bytes, efi.get_variable() sets len=required_size
-- Due to bug #1, thinks call succeeded with len=required_size
-- Executes val[len] = 0, writing past end of 65-byte stack buffer
-
-This creates a stack buffer overflow when EFI variables are larger than
-64 bytes. Since EFI variables can be controlled by firmware or system
-configuration, this could potentially be exploited for code execution.
-
-Fix the bug by returning proper error codes from gmin_get_config_var()
-based on EFI status instead of stale 'ret' value.
-
-The gmin_get_var_int() function is called during device initialization
-for camera sensor configuration on Intel Bay Trail and Cherry Trail
-platforms using the atomisp camera stack.
-
-Reported-by: zepta <z3ptaa@gmail.com>
-Closes: https://lore.kernel.org/all/CAPBS6KoQyM7FMdPwOuXteXsOe44X4H3F8Fw+y_qWq6E+OdmxQA@mail.gmail.com
-Fixes: 38d4f74bc148 ("media: atomisp_gmin_platform: stop abusing efivar API")
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250724080756.work.741-kees@kernel.org
+Fixes: 3d965b33e40d ("fortify: Improve buffer overflow reporting")
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20250729231817.work.023-kees@kernel.org
 Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../staging/media/atomisp/pci/atomisp_gmin_platform.c    | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/linux/fortify-string.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c b/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
-index e176483df301..b86494faa63a 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c
-@@ -1358,14 +1358,15 @@ static int gmin_get_config_var(struct device *maindev,
- 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
- 		status = efi.get_variable(var16, &GMIN_CFG_VAR_EFI_GUID, NULL,
- 					  (unsigned long *)out_len, out);
--	if (status == EFI_SUCCESS)
-+	if (status == EFI_SUCCESS) {
- 		dev_info(maindev, "found EFI entry for '%s'\n", var8);
--	else if (is_gmin)
-+		return 0;
-+	}
-+	if (is_gmin)
- 		dev_info(maindev, "Failed to find EFI gmin variable %s\n", var8);
- 	else
- 		dev_info(maindev, "Failed to find EFI variable %s\n", var8);
--
--	return ret;
-+	return -ENOENT;
- }
+diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
+index e4ce1cae03bf..b3b53f8c1b28 100644
+--- a/include/linux/fortify-string.h
++++ b/include/linux/fortify-string.h
+@@ -596,7 +596,7 @@ __FORTIFY_INLINE bool fortify_memcpy_chk(__kernel_size_t size,
+ 	if (p_size != SIZE_MAX && p_size < size)
+ 		fortify_panic(func, FORTIFY_WRITE, p_size, size, true);
+ 	else if (q_size != SIZE_MAX && q_size < size)
+-		fortify_panic(func, FORTIFY_READ, p_size, size, true);
++		fortify_panic(func, FORTIFY_READ, q_size, size, true);
  
- int gmin_get_var_int(struct device *dev, bool is_gmin, const char *var, int def)
+ 	/*
+ 	 * Warn when writing beyond destination field size.
 -- 
 2.39.5
 
