@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-167392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7584AB22FC7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE9EB22FC9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62CD94E2800
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55FBA7ACA4A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2862FE578;
-	Tue, 12 Aug 2025 17:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D612FD1CE;
+	Tue, 12 Aug 2025 17:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgS6EQAt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDmCiy3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D46D2FE573;
-	Tue, 12 Aug 2025 17:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121EF2FDC2E;
+	Tue, 12 Aug 2025 17:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020663; cv=none; b=OEx/rGkHCKHj67Zus2pR2zSPyd8enkWUBrhmmh4+G9995jmytuhL/4BfIFmrGgnkHKcfHaEo2ERKQPu94lhwY5dESTXFtEeNhIanOISG9JYa+AmBWwoO7yJ8+z8jRbN30ZnC/3FszgO3qHUXjITSHVoI8VEM3KnDWKjsI8pOjGE=
+	t=1755020670; cv=none; b=T36A1DCJZLDRjey2fSc+6X7BvZBuUSIQpl/Uw5DYKYYuAwSIB190WqVMSn6O4MpKXf2W3uZ42yLLwkvJeYwg3nwZAq8xOXmEqRHMMZi4+FkBFyOk9D2j/ML+si6VM59dzzyHO518Z47d0U+iaRKTz/nneB72Xy0M6kVIt8J57us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020663; c=relaxed/simple;
-	bh=SAh5jrC05a16ToYLvxEdePfkbwwXP334E+o6+LGIyW0=;
+	s=arc-20240116; t=1755020670; c=relaxed/simple;
+	bh=DerDQswGyrglqVqq+PsDvZ/ovHW3uFe+6quqaL2djL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inlCc3bQvGGR8RxPCttkX8wiLOG3LMk3RGOTiKHZUNzJkWrHqXjBpOnOMxhdAjeRyYw4jWnqm3v2CnoS/yj0iWeyf7Uv8pBx7bsCD3ztP9ANYlRol1wHI+6TLGPxPEYcqLX3drq6PXg9yTDuEHt2HZ9+TQae4c1tuCUBxEqjJTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgS6EQAt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BE2C4CEF0;
-	Tue, 12 Aug 2025 17:44:22 +0000 (UTC)
+	 MIME-Version; b=kYjRFj2u7HmYFrTFOvu+hZTYuiq7IKsgBCl8N+S3wnqmi2XkmSpMpxFED29yKLK58aH+wHLOhiQiS/udvqCTpeRVPkHbZ7fuuoo2nDKJ3YgvE3awMhXZAANHwlEAz8msup0b9igWSQdM6gl1N4zrvcd6Gw+gVxLT74ZFZmGuhUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDmCiy3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76513C4CEF0;
+	Tue, 12 Aug 2025 17:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020663;
-	bh=SAh5jrC05a16ToYLvxEdePfkbwwXP334E+o6+LGIyW0=;
+	s=korg; t=1755020669;
+	bh=DerDQswGyrglqVqq+PsDvZ/ovHW3uFe+6quqaL2djL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgS6EQAttamaK0KUxpbcCBbtrvR7AWVK5zdqh0NgS3PZ3oFKvDSxHWTOqoC1dhrQD
-	 pMlYusn0JADXenBu5C0kcgPcbdjAcBULWtanmRY/z8A+JO7bCjPW/wsZZHEgV9zsPk
-	 EhvIvPPBeQcCoAEnKzCCfQY5s3Y/IoG5L+1NkkKU=
+	b=cDmCiy3Q1LoxDjczwEQNeSzHhB4JuIJYDhtIsNGJlvJj1lnHqn4lAc1cxxdIqsoum
+	 yDfFYFBbPQN6so4URWNAaC8Xc6S8sZwImJFRX+ImRSiqBbDJXI/gWFWvyDxct17bDo
+	 osnN9+N7Pthly1JghfNPkc4bL1NZmQehyWudAYMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/253] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
-Date: Tue, 12 Aug 2025 19:28:55 +0200
-Message-ID: <20250812172954.959197986@linuxfoundation.org>
+Subject: [PATCH 6.1 148/253] crypto: arm/aes-neonbs - work around gcc-15 warning
+Date: Tue, 12 Aug 2025 19:28:56 +0200
+Message-ID: <20250812172955.008371038@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
 References: <20250812172948.675299901@linuxfoundation.org>
@@ -67,49 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
+[ Upstream commit d5fa96dc5590915f060fee3209143313e4f5b03b ]
 
-When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
-function returns NULL. Fix the max14577_charger_probe functionby returning
--ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
+I get a very rare -Wstringop-overread warning with gcc-15 for one function
+in aesbs_ctr_encrypt():
 
-This fixes the below smatch warning:
-max14577_charger_probe() warn: passing zero to 'PTR_ERR'
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:212:1446: error: '__builtin_memcpy' offset [17, 2147483647] is out of the bounds [0, 16] of object 'buf' with type 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds=]
+  212 |                         src = dst = memcpy(buf + sizeof(buf) - bytes,
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:218:17: error: 'aesbs_ctr_encrypt' reading 1 byte from a region of size 0 [-Werror=stringop-overread]
+  218 |                 aesbs_ctr_encrypt(dst, src, ctx->rk, ctx->rounds, bytes, walk.iv);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 2 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 3 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 6 of type 'u8[0]' {aka 'unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:36:17: note: in a call to function 'aesbs_ctr_encrypt'
+   36 | asmlinkage void aesbs_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
 
-Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+This could happen in theory if walk.nbytes is larger than INT_MAX and gets
+converted to a negative local variable.
+
+Keep the type unsigned like the orignal nbytes to be sure there is no
+integer overflow.
+
+Fixes: c8bf850e991a ("crypto: arm/aes-neonbs-ctr - deal with non-multiples of AES block size")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max14577_charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/crypto/aes-neonbs-glue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
-index f244cd902eb9..e4461caecea3 100644
---- a/drivers/power/supply/max14577_charger.c
-+++ b/drivers/power/supply/max14577_charger.c
-@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
- static struct max14577_charger_platform_data *max14577_charger_dt_init(
- 		struct platform_device *pdev)
- {
--	return NULL;
-+	return ERR_PTR(-ENODATA);
- }
- #endif /* CONFIG_OF */
+diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
+index 0ca94b90bc4e..ba98daeb119c 100644
+--- a/arch/arm/crypto/aes-neonbs-glue.c
++++ b/arch/arm/crypto/aes-neonbs-glue.c
+@@ -245,7 +245,7 @@ static int ctr_encrypt(struct skcipher_request *req)
+ 	while (walk.nbytes > 0) {
+ 		const u8 *src = walk.src.virt.addr;
+ 		u8 *dst = walk.dst.virt.addr;
+-		int bytes = walk.nbytes;
++		unsigned int bytes = walk.nbytes;
  
-@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
- 	chg->max14577 = max14577;
- 
- 	chg->pdata = max14577_charger_dt_init(pdev);
--	if (IS_ERR_OR_NULL(chg->pdata))
-+	if (IS_ERR(chg->pdata))
- 		return PTR_ERR(chg->pdata);
- 
- 	ret = max14577_charger_reg_init(chg);
+ 		if (unlikely(bytes < AES_BLOCK_SIZE))
+ 			src = dst = memcpy(buf + sizeof(buf) - bytes,
 -- 
 2.39.5
 
