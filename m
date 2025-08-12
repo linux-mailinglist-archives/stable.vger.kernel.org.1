@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-167465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93332B23040
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CD6B23161
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02DE018834C9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55D7E3A490B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A6E279915;
-	Tue, 12 Aug 2025 17:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6B62FE599;
+	Tue, 12 Aug 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVZl67hx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Izm/y5Gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CFC2F7449;
-	Tue, 12 Aug 2025 17:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7052FE56B;
+	Tue, 12 Aug 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020907; cv=none; b=hHpDCA6cvZLtGmpYHlhuZ5v3P6tur1mc+pNONvdSRWWEXHYVU6D3Ersc0jPj6SYn+C9x2JZaPYqAUyiT2eHT86X+oNlNiuazbwd8A70klWhpGod6p/DHLM1GGbU9FxoB1xq1+jUe3WAXA7uX/i6i5qJxNIG6FVPv9kXX+1inuIo=
+	t=1755021658; cv=none; b=e4uTxj9jL8szNLT/rbeYbxJiQVI8wdkQr5AfZpLy754idhZ2INXc5Q7kB8gKI4V3Utn0FK4Op/Y1XwVeWgn5FW8x7fnNifnPKcQdfYJJ+m7G5nEhxcXEDzyLQqjUPWLbVY52vht9XKTasI9bAXSye4oqaB7nVYv9LQ8jcN4S9t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020907; c=relaxed/simple;
-	bh=vlvPXOfuVAmqkdBBsvsoHGHJ11uU5EG/I08eJ6zcDsU=;
+	s=arc-20240116; t=1755021658; c=relaxed/simple;
+	bh=IabA50+qEhuzBlHTOINISpa6kA1CtUcvDRFVm0LWnlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o+X+99/KhmzCAQUHXTGt3SuMvhueyTQNEDpUhEsZ2SZvnjaU/vk/a/8+mb6Mr6qjzgsp2XI2tHUJukfINnA8t7G1PjXvh1/cPCD5yf42N882I236Wiu2OETgbHD3dOPh+Tcg4qWsXBvteHcRz/nu08KA+zb+jrK2X5kyIE/G5Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVZl67hx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C1BC4CEF0;
-	Tue, 12 Aug 2025 17:48:26 +0000 (UTC)
+	 MIME-Version; b=ISaB5NGLqircPWrHPYipyrO2ZGzFBkmDkw0yWMX4krTtgpMakParf0X9Igr+uMxv8+9vYpciDAyEI7wKpaqFpSJoeb9IOpV5lOVxcm4s/AfHm958J19R4lWtBUwTC8UBw9hNKtNgnNW9GiJBBvtImjMgk9Zr7Ub9p126v4EJRL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Izm/y5Gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38FCC4CEF0;
+	Tue, 12 Aug 2025 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020907;
-	bh=vlvPXOfuVAmqkdBBsvsoHGHJ11uU5EG/I08eJ6zcDsU=;
+	s=korg; t=1755021658;
+	bh=IabA50+qEhuzBlHTOINISpa6kA1CtUcvDRFVm0LWnlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVZl67hxAuFwmFyUmSuVzTLP2pPjjV3PMduJgyMDjtL3vWpdJk3+El7aZjRAha1Bf
-	 OtidHGIcSPeCENTTA24XfuPpU/qTQprQjPY+A+bZSBn4ZIJompBtj+PfxPHL2A0uNg
-	 RTT4nacBj63tXfWDmu4NpUp66PW2F+BUuybP0I+0=
+	b=Izm/y5GcM+zkNJueTKVMhSWmBYldEbRLlmoy3hLBrN372EF8QViSz0MwuIoBmlfrc
+	 eET0m8JtRFYgzZjzoA/0f05+1+rPY3v60u2d7aoQx4q/F6+CVqARxQRZ5laRttuOFL
+	 Q5ifWvbPd5zQhbzdFPHrjBbjio8kCTKL5a1hCt/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexey Gladkov <legion@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	MengEn Sun <mengensun@tencent.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Tomas Henzl <thenzl@redhat.com>,
+	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/253] ucount: fix atomic_long_inc_below() argument type
+Subject: [PATCH 6.6 185/262] scsi: mpt3sas: Fix a fw_event memory leak
 Date: Tue, 12 Aug 2025 19:29:33 +0200
-Message-ID: <20250812172956.649492534@linuxfoundation.org>
+Message-ID: <20250812173000.999786526@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Tomas Henzl <thenzl@redhat.com>
 
-[ Upstream commit f8cd9193b62e92ad25def5370ca8ea2bc7585381 ]
+[ Upstream commit 3e90b38781e3bdd651edaf789585687611638862 ]
 
-The type of u argument of atomic_long_inc_below() should be long to avoid
-unwanted truncation to int.
+In _mpt3sas_fw_work() the fw_event reference is removed, it should also
+be freed in all cases.
 
-The patch fixes the wrong argument type of an internal function to
-prevent unwanted argument truncation.  It fixes an internal locking
-primitive; it should not have any direct effect on userspace.
-
-Mark said
-
-: AFAICT there's no problem in practice because atomic_long_inc_below()
-: is only used by inc_ucount(), and it looks like the value is
-: constrained between 0 and INT_MAX.
-:
-: In inc_ucount() the limit value is taken from
-: user_namespace::ucount_max[], and AFAICT that's only written by
-: sysctls, to the table setup by setup_userns_sysctls(), where
-: UCOUNT_ENTRY() limits the value between 0 and INT_MAX.
-:
-: This is certainly a cleanup, but there might be no functional issue in
-: practice as above.
-
-Link: https://lkml.kernel.org/r/20250721174610.28361-1-ubizjak@gmail.com
-Fixes: f9c82a4ea89c ("Increase size of ucounts to atomic_long_t")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Reviewed-by: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: MengEn Sun <mengensun@tencent.com>
-Cc: "Thomas Weißschuh" <linux@weissschuh.net>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4318c7347847 ("scsi: mpt3sas: Handle NVMe PCIe device related events generated from firmware.")
+Signed-off-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://lore.kernel.org/r/20250723153018.50518-1-thenzl@redhat.com
+Acked-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/ucount.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/ucount.c b/kernel/ucount.c
-index ced99a4bb562..8afa2878422d 100644
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -212,7 +212,7 @@ void put_ucounts(struct ucounts *ucounts)
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+index f270b0d829f6..0afa485fb300 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -10818,8 +10818,7 @@ _mpt3sas_fw_work(struct MPT3SAS_ADAPTER *ioc, struct fw_event_work *fw_event)
+ 		break;
+ 	case MPI2_EVENT_PCIE_TOPOLOGY_CHANGE_LIST:
+ 		_scsih_pcie_topology_change_event(ioc, fw_event);
+-		ioc->current_event = NULL;
+-		return;
++		break;
  	}
- }
- 
--static inline bool atomic_long_inc_below(atomic_long_t *v, int u)
-+static inline bool atomic_long_inc_below(atomic_long_t *v, long u)
- {
- 	long c, old;
- 	c = atomic_long_read(v);
+ out:
+ 	fw_event_work_put(fw_event);
 -- 
 2.39.5
 
