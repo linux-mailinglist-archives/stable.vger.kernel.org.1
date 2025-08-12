@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-168518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE242B23534
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0473B235A8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70BF6167C10
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4B786813B5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDA02C21F6;
-	Tue, 12 Aug 2025 18:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E662FE570;
+	Tue, 12 Aug 2025 18:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhtDCKxz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlEhjGBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF46D291C1F;
-	Tue, 12 Aug 2025 18:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C992FD1B2;
+	Tue, 12 Aug 2025 18:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024441; cv=none; b=FPj7ZJ1CwYVLJNIai+5vfbWNZY6jzDkWy5NkqBvsANjoyR+nxZxbVkqfsmiHB2ZJvtaPbw+zln/NKq4xCybt10NAL7m9tHBV2/8Rfaa6szv4SGuPPqz5+4UBw5GKCGLukm07b40tgi02bDTKsnxF6odfjutpvQ+Pg5GXBS3EWxk=
+	t=1755024465; cv=none; b=GMde7rd39dGIeo9Y6HfqCTsv3adoTJhP8Ku2MKi3Ei86Luu7GucWneotaOHBTQ64ERk4DFfgmJ5MpijtoWBbJ+sND4KnEOjIkfvJZSo6ZA7Aoi97HbXW9QBR5lUdKF/VY9qGrF6xPn6NW2hGAX1h5RtDrqDInZTzMg3yA5C3hCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024441; c=relaxed/simple;
-	bh=SivwWfug9CQZ32SAzFw5rATmgN1o16Vnu6tzU6inqBY=;
+	s=arc-20240116; t=1755024465; c=relaxed/simple;
+	bh=uzDP5oGy9ZwBK2wgt1KoqsDe1DYbdbGbbyYKxFMHv9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ot66B0/TyKJjD1IT+0bxJyXVHsDcD5nWURe+RZggZUAkvVIMzjUgM7s3s9GKwMvcfcJJ/tvyzvzfm51mfUOKiM5nG2sOFPij2F4eB9VeQhMOBhATh6Bw6gj2FfUUr/Bybf6v3tYFML0nJI8qBY4FL8N8z9tXeSR7HCiED0/EqOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhtDCKxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87CEC4CEF0;
-	Tue, 12 Aug 2025 18:47:20 +0000 (UTC)
+	 MIME-Version; b=PF9wzBy0GhGL9zZMsL/BHn1hFSUgH1n562RneQkKawpdEvN1Vpxkv8aptIRSEEASiQr7SWAoHj61kKY+xwrkJRRclMZJ//bRVL3flECvIs3yQnBtSHA9AYsmJWlrO/JK1bABOeWr/HKrwy3fvuaPOKedrf6OxyV4QPM5Fvd/W5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlEhjGBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756E9C4CEF6;
+	Tue, 12 Aug 2025 18:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024441;
-	bh=SivwWfug9CQZ32SAzFw5rATmgN1o16Vnu6tzU6inqBY=;
+	s=korg; t=1755024464;
+	bh=uzDP5oGy9ZwBK2wgt1KoqsDe1DYbdbGbbyYKxFMHv9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhtDCKxzUbkcsHVlGoLCbe8h4/SLWKa/GuWztmbs8yMy1NFj9JXGrgC2baJILdyKd
-	 7lSuQpxHJydeo8Ca5w8hcbGJVjGSKxtA5aUd0s//FMC0hwpAWeuBWi9j8otZ6Yz6kp
-	 3wUWUzt+y84fQeGouutebDQB5YuVVziQ+OL3ahd4=
+	b=WlEhjGBs1JsGfSweXCc/tL0wAE7lgGc0O/BpObbKCBRnZZUtdjLadf7xEzGMnwFZb
+	 tX+qFTT8DJFtdkBkIKBYI7zCW14mBSrw6RndNMNMaqOFe2+uvVDPi0YoxoAo8RfQbA
+	 wlf7oTPlntCxkb1Z9JrvdlMvDix68fAF2kZNbCq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Lee Jones <lee@kernel.org>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 347/627] leds: tps6131x: Add V4L2_FLASH_LED_CLASS dependency
-Date: Tue, 12 Aug 2025 19:30:42 +0200
-Message-ID: <20250812173432.489461716@linuxfoundation.org>
+Subject: [PATCH 6.16 348/627] RDMA/mlx5: Check CAP_NET_RAW in user namespace for devx create
+Date: Tue, 12 Aug 2025 19:30:43 +0200
+Message-ID: <20250812173432.525606824@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -67,42 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit c3c38e80016548685e439b23999b4f0bd0ad7e05 ]
+[ Upstream commit bd82467f17e0940c6f6a5396278cda586c9cb6fd ]
 
-This driver can optionally use the v4l2_flash infrastructure, but fails to
-link built=in if that is in a loadable module:
+Currently, the capability check is done in the default
+init_user_ns user namespace. When a process runs in a
+non default user namespace, such check fails. Due to this
+when a process is running using Podman, it fails to create
+the devx object.
 
-ld.lld-21: error: undefined symbol: v4l2_flash_release
->>> referenced by leds-tps6131x.c:792 (drivers/leds/flash/leds-tps6131x.c:792)
+Since the RDMA device is a resource within a network namespace,
+use the network namespace associated with the RDMA device to
+determine its owning user namespace.
 
-Add the usual Kconfig dependency for it, still allowing it to be built when
-CONFIG_V4L2_FLASH_LED_CLASS is disabled.
-
-Fixes: b338a2ae9b31 ("leds: tps6131x: Add support for Texas Instruments TPS6131X flash LED driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20250620114440.4080938-1-arnd@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: a8b92ca1b0e5 ("IB/mlx5: Introduce DEVX")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Link: https://patch.msgid.link/36ee87e92defd81410c6a2b33f9d6c0d6dcfd64c.1750963874.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/flash/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/mlx5/devx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/flash/Kconfig b/drivers/leds/flash/Kconfig
-index 55ca663ca506..5e08102a6784 100644
---- a/drivers/leds/flash/Kconfig
-+++ b/drivers/leds/flash/Kconfig
-@@ -136,6 +136,7 @@ config LEDS_TPS6131X
- 	tristate "LED support for TI TPS6131x flash LED driver"
- 	depends on I2C && OF
- 	depends on GPIOLIB
-+	depends on V4L2_FLASH_LED_CLASS || !V4L2_FLASH_LED_CLASS
- 	select REGMAP_I2C
- 	help
- 	  This option enables support for Texas Instruments TPS61310/TPS61311
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 843dcd312242..c369fee33562 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -159,7 +159,7 @@ int mlx5_ib_devx_create(struct mlx5_ib_dev *dev, bool is_user, u64 req_ucaps)
+ 	uctx = MLX5_ADDR_OF(create_uctx_in, in, uctx);
+ 	if (is_user &&
+ 	    (MLX5_CAP_GEN(dev->mdev, uctx_cap) & MLX5_UCTX_CAP_RAW_TX) &&
+-	    capable(CAP_NET_RAW))
++	    rdma_dev_has_raw_cap(&dev->ib_dev))
+ 		cap |= MLX5_UCTX_CAP_RAW_TX;
+ 	if (is_user &&
+ 	    (MLX5_CAP_GEN(dev->mdev, uctx_cap) &
 -- 
 2.39.5
 
