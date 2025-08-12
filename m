@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-168101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED6FB2336D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC63B230F5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FE433A7B18
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F4B625C02
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F77280037;
-	Tue, 12 Aug 2025 18:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892B42FDC52;
+	Tue, 12 Aug 2025 17:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpJ+T6a3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yugVe1mu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93473F9D2;
-	Tue, 12 Aug 2025 18:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434D82DE1E2;
+	Tue, 12 Aug 2025 17:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023049; cv=none; b=ojsIUIQoeW5oIt7vJGv+tn+mXg7ymP+PMcwRfD27MW4AfN0/0gLndMdNOR11d1Tqj4MjQR8Z5qvDySMYYnKNMicaBwwaUdnw1Ys6lLG656hFjOcjBVsvCtfu0eN5RBK7dYrkPJ+dW+fTePb5n7LY35CNMy2wB0x25wSTddArXwA=
+	t=1755021440; cv=none; b=YdEmVM6LaAr4Gqpyz6NfJdrU37Cx3n2WkTQlpDeqvVTUL6kt1D57mFH4pvOBgoqwiC2zEBi150Jx45z4R9g74rWawHXyrw5b020Dq/WtCz8dMO843jUk0Pu98M3Lw9kf7l+FJgKLNjZ+jeIgyRK7YgsgvPtYcssq6m5bpIz17m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023049; c=relaxed/simple;
-	bh=Wki39VWw+jbe7nsim1fK4rOSxmx+lJHi9yurrxGHoIo=;
+	s=arc-20240116; t=1755021440; c=relaxed/simple;
+	bh=faonqqmgpu0lXjbxp2sCv/y8zFaIi+8aYh7RVFhB5no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9P6/Rd39vxET5DCIubKNuFgp/WX+PeNAvBScKtRA8et+pVXMlEoLDoepxFeQdAYnA1tl/knrJ1epAI2zaX5Sfzof1gZTN7D0VsiMwCFC9knySo+6i2tylI1GJ5uNq7icKXarp3k+Wft/k+BMt3KUklqAdKUN/S6+oW7TIBp+Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpJ+T6a3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577E5C4CEF0;
-	Tue, 12 Aug 2025 18:24:08 +0000 (UTC)
+	 MIME-Version; b=f9RTpwnBIkvxG6uX3wVEOpfZtFzvbd4Lq6oh0JCgTBtLjyvw7RJr+P1Fid3CcUud2AbETnc4nkByTkqqk/rb9F6LEHWTa+X6F4p9jp02exi4GwILvcSpzKO0IrD0tcQhlq9XuPcOwgq3i+PO0TMGsRnnvUDuM8A1sJ/MKtI1xFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yugVe1mu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFCFC4CEF0;
+	Tue, 12 Aug 2025 17:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023048;
-	bh=Wki39VWw+jbe7nsim1fK4rOSxmx+lJHi9yurrxGHoIo=;
+	s=korg; t=1755021440;
+	bh=faonqqmgpu0lXjbxp2sCv/y8zFaIi+8aYh7RVFhB5no=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpJ+T6a3bYqkmnAkH8ATt5MACUxn/U2v6PHYXSZkZ4F9z83V2B58DDg1h+uGGgt7J
-	 5kvorA2ka1PvgdTpDX3AzT77hze23CXTvGPjdsvea1wfy+gmSOQFo0YDb38ZOGT5rv
-	 u8os7FYFmxBQtgrbrm580fkhkyDPogXEv+lni3YY=
+	b=yugVe1mu+r1+9myQ8zAXyp1+2UtKigOzk4Hsk8Ls1WTvDqscMFxlx/w4gQtiwVcnW
+	 mAK3GtK8n4hHYEi3EDidcXYJKbmpzemHmqn81SBY69dP3rllnPnO6AEog7WTsdjDdV
+	 uaxHJvxmXS0L4sJbMHw6sQJfkcAqFJAUxBEGPRP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 335/369] drm/i915/ddi: change intel_ddi_init_{dp, hdmi}_connector() return type
-Date: Tue, 12 Aug 2025 19:30:32 +0200
-Message-ID: <20250812173029.308804404@linuxfoundation.org>
+	John Ernberg <john.ernberg@actia.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 245/253] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+Date: Tue, 12 Aug 2025 19:30:33 +0200
+Message-ID: <20250812172959.284691305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +61,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-commit e1980a977686d46dbf45687f7750f1c50d1d6cf8 upstream.
+commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f upstream.
 
-The caller doesn't actually need the returned struct intel_connector;
-it's stored in the ->attached_connector of intel_dp and
-intel_hdmi. Switch to returning an int with 0 for success and negative
-errors codes to be able to indicate success even when we don't have a
-connector.
+The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
+up and down events when the WWAN interface is activated on the modem-side.
 
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/8ef7fe838231919e85eaead640c51ad3e4550d27.1735568047.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Interrupt URBs will in consecutive polls grab:
+* Link Connected
+* Link Disconnected
+* Link Connected
+
+Where the last Connected is then a stable link state.
+
+When the system is under load this may cause the unlink_urbs() work in
+__handle_link_change() to not complete before the next usbnet_link_change()
+call turns the carrier on again, allowing rx_submit() to queue new SKBs.
+
+In that event the URB queue is filled faster than it can drain, ending up
+in a RCU stall:
+
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
+
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
+
+Get around the problem by delaying the carrier on to the scheduled work.
+
+This needs a new flag to keep track of the necessary action.
+
+The carrier ok check cannot be removed as it remains required for the
+LINK_RESET event flow.
+
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_ddi.c |   20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/net/usb/usbnet.c   |   11 ++++++++---
+ include/linux/usb/usbnet.h |    1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -4413,8 +4413,7 @@ static const struct drm_encoder_funcs in
- 	.late_register = intel_ddi_encoder_late_register,
- };
- 
--static struct intel_connector *
--intel_ddi_init_dp_connector(struct intel_digital_port *dig_port)
-+static int intel_ddi_init_dp_connector(struct intel_digital_port *dig_port)
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1124,6 +1124,9 @@ static void __handle_link_change(struct
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
++		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++			netif_carrier_on(dev->net);
++
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
+@@ -2010,10 +2013,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
+ void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
  {
- 	struct drm_i915_private *i915 = to_i915(dig_port->base.base.dev);
- 	struct intel_connector *connector;
-@@ -4422,7 +4421,7 @@ intel_ddi_init_dp_connector(struct intel
+ 	/* update link after link is reseted */
+-	if (link && !need_reset)
+-		netif_carrier_on(dev->net);
+-	else
++	if (link && !need_reset) {
++		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
++	} else {
++		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
+ 		netif_carrier_off(dev->net);
++	}
  
- 	connector = intel_connector_alloc();
- 	if (!connector)
--		return NULL;
-+		return -ENOMEM;
- 
- 	dig_port->dp.output_reg = DDI_BUF_CTL(port);
- 	if (DISPLAY_VER(i915) >= 14)
-@@ -4437,7 +4436,7 @@ intel_ddi_init_dp_connector(struct intel
- 
- 	if (!intel_dp_init_connector(dig_port, connector)) {
- 		kfree(connector);
--		return NULL;
-+		return -EINVAL;
- 	}
- 
- 	if (dig_port->base.type == INTEL_OUTPUT_EDP) {
-@@ -4453,7 +4452,7 @@ intel_ddi_init_dp_connector(struct intel
- 		}
- 	}
- 
--	return connector;
-+	return 0;
- }
- 
- static int intel_hdmi_reset_link(struct intel_encoder *encoder,
-@@ -4623,20 +4622,19 @@ static bool bdw_digital_port_connected(s
- 	return intel_de_read(dev_priv, GEN8_DE_PORT_ISR) & bit;
- }
- 
--static struct intel_connector *
--intel_ddi_init_hdmi_connector(struct intel_digital_port *dig_port)
-+static int intel_ddi_init_hdmi_connector(struct intel_digital_port *dig_port)
- {
- 	struct intel_connector *connector;
- 	enum port port = dig_port->base.port;
- 
- 	connector = intel_connector_alloc();
- 	if (!connector)
--		return NULL;
-+		return -ENOMEM;
- 
- 	dig_port->hdmi.hdmi_reg = DDI_BUF_CTL(port);
- 	intel_hdmi_init_connector(dig_port, connector);
- 
--	return connector;
-+	return 0;
- }
- 
- static bool intel_ddi_a_force_4_lanes(struct intel_digital_port *dig_port)
-@@ -5185,7 +5183,7 @@ void intel_ddi_init(struct intel_display
- 	intel_infoframe_init(dig_port);
- 
- 	if (init_dp) {
--		if (!intel_ddi_init_dp_connector(dig_port))
-+		if (intel_ddi_init_dp_connector(dig_port))
- 			goto err;
- 
- 		dig_port->hpd_pulse = intel_dp_hpd_pulse;
-@@ -5199,7 +5197,7 @@ void intel_ddi_init(struct intel_display
- 	 * but leave it just in case we have some really bad VBTs...
- 	 */
- 	if (encoder->type != INTEL_OUTPUT_EDP && init_hdmi) {
--		if (!intel_ddi_init_hdmi_connector(dig_port))
-+		if (intel_ddi_init_hdmi_connector(dig_port))
- 			goto err;
- 	}
- 
+ 	if (need_reset && link)
+ 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -76,6 +76,7 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++#		define EVENT_LINK_CARRIER_ON	14
+ /* This one is special, as it indicates that the device is going away
+  * there are cyclic dependencies between tasklet, timer and bh
+  * that must be broken
 
 
 
