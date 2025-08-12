@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-169092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1563DB2380F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1849B23830
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271B95A052A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75BEA72068B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A33628640A;
-	Tue, 12 Aug 2025 19:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA632D3A94;
+	Tue, 12 Aug 2025 19:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rnc/QreS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKEhp6Ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EDA21ABD0;
-	Tue, 12 Aug 2025 19:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978262D0C9F;
+	Tue, 12 Aug 2025 19:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026351; cv=none; b=TNrKpHetGAXOtDfPQec3xwsxob/mSEkEJmKOOyS6PyhNa3H1+efYEAz1EcWzP9b8qhm83f7nt7CiRvFgltooP/mwfqx81hi7FWfrTV1pGWtRqSZeuQCskDUaqpXP3ZguhGeJCsBdFBVnTG8Gl3vPDvGR+rk30iwVvxPVyIrFIMs=
+	t=1755026388; cv=none; b=ARcsqvHlilvOY7I6aU0rJMOyk0ZuVc7fIvlwmaYzB4vTALVvfIBhWIgUZg8c/ZBJXT/3M3jDwVwTQaYWwVlcU4LKVfWrsbxNEXdErVZlssonlEpZ3c+3acLnM+6Zoad1OAX6DGzN8rtzdbok7NqMzVVj78j31N8A21qYF6mh+WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026351; c=relaxed/simple;
-	bh=AxYfYi+L1+emPXuDsc2W7HSawHT6imKEfI5H4L2ZAdo=;
+	s=arc-20240116; t=1755026388; c=relaxed/simple;
+	bh=qSyJGY38OKNIOev6S0GRewCn66Ey5ZrMjBVGErJ4yvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUVJ+NuK3d3m11SCPac47LcQDXYipmaG+JpZxczkYZ3NH7wLl/Q4VAXK9GQGfF6I1u4NbksDRuzQJsWVgfo4J3ZZ/4DFK2YOwxaNFGIkHhesr3cA6uLO2vJ/yKEk5yKWEYd1argxx++asJlWxiBXGq2FXE5TrvFacnbm1SioM/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rnc/QreS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B81DC4CEF0;
-	Tue, 12 Aug 2025 19:19:10 +0000 (UTC)
+	 MIME-Version; b=nr1+Qr++XMLHiullobyWyR8hWcplZWvyeZfx51OqgxboAA7WZM5KMLPcyDz4ahwuGqpBPfnKzViM0H0GMyx/VSQnNZcprufiV34z4Fuvm2wcmgwGmmpm4B+BJ2OMdEifbSoeQeGwZeYE9bFcekGNe3hHV4d27++JizeKMJOrJFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKEhp6Ae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A55C4CEF0;
+	Tue, 12 Aug 2025 19:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026351;
-	bh=AxYfYi+L1+emPXuDsc2W7HSawHT6imKEfI5H4L2ZAdo=;
+	s=korg; t=1755026388;
+	bh=qSyJGY38OKNIOev6S0GRewCn66Ey5ZrMjBVGErJ4yvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rnc/QreS/C5GEg3yMDUehlBSoDjeSpEQvPYwsdxKYnhHyCzgaBI8KC5WOwVAtIZE0
-	 h4cQS53UwLwIR4jrze9d8XQGwWphjaTN4rzJbelXiVSxaYi7NUtqjGk37OROWV3mA3
-	 M32dUBqur2B9otv3mXYQ0DBK1/sS76upSQPBZqfM=
+	b=DKEhp6AeOkMprxjb/nVdaJq+FGeq+lTLmDz6k8fPjrfedsQwXXD1+nZZ8piM1WSEZ
+	 eDFqTsCM8Qka5TqnAtRzHvBl3ngh3gmWAV/rkHCQpEzcvo8o7Ith9c0jVebm8O/+R8
+	 bkTU0NhdIPxQygwz2725IiK2iJJ4p7BOosQS3fZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
+	Bairavi Alagappan <bairavix.alagappan@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 294/480] crypto: img-hash - Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:48:22 +0200
-Message-ID: <20250812174409.557573928@linuxfoundation.org>
+Subject: [PATCH 6.15 295/480] crypto: qat - disable ZUC-256 capability for QAT GEN5
+Date: Tue, 12 Aug 2025 19:48:23 +0200
+Message-ID: <20250812174409.599432343@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,34 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Bairavi Alagappan <bairavix.alagappan@intel.com>
 
-[ Upstream commit 34b283636181ce02c52633551f594fec9876bec7 ]
+[ Upstream commit d956692c7dd523b331d4556ee03def8dd02609dc ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+The ZUC-256 EEA (encryption) and EIA (integrity) algorithms are not
+supported on QAT GEN5 devices, as their current implementation does not
+align with the NIST specification. Earlier versions of the ZUC-256
+specification used a different initialization scheme, which has since
+been revised to comply with the 5G specification.
 
-Fixes: d358f1abbf71 ("crypto: img-hash - Add Imagination Technologies hw hash accelerator")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Due to this misalignment with the updated specification, remove support
+for ZUC-256 EEA and EIA for QAT GEN5 by masking out the ZUC-256
+capability.
+
+Fixes: fcf60f4bcf549 ("crypto: qat - add support for 420xx devices")
+Signed-off-by: Bairavi Alagappan <bairavix.alagappan@intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/img-hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
-index 1dc2378aa88b..503bc1c9e3f3 100644
---- a/drivers/crypto/img-hash.c
-+++ b/drivers/crypto/img-hash.c
-@@ -436,7 +436,7 @@ static int img_hash_write_via_dma_stop(struct img_hash_dev *hdev)
- 	struct img_hash_request_ctx *ctx = ahash_request_ctx(hdev->req);
+diff --git a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
+index 4feeef83f7a3..3549167a9557 100644
+--- a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
+@@ -193,7 +193,6 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
+ 			  ICP_ACCEL_CAPABILITIES_SM4 |
+ 			  ICP_ACCEL_CAPABILITIES_AES_V2 |
+ 			  ICP_ACCEL_CAPABILITIES_ZUC |
+-			  ICP_ACCEL_CAPABILITIES_ZUC_256 |
+ 			  ICP_ACCEL_CAPABILITIES_WIRELESS_CRYPTO_EXT |
+ 			  ICP_ACCEL_CAPABILITIES_EXT_ALGCHAIN;
  
- 	if (ctx->flags & DRIVER_FLAGS_SG)
--		dma_unmap_sg(hdev->dev, ctx->sg, ctx->dma_ct, DMA_TO_DEVICE);
-+		dma_unmap_sg(hdev->dev, ctx->sg, 1, DMA_TO_DEVICE);
+@@ -225,17 +224,11 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
  
- 	return 0;
- }
+ 	if (fusectl1 & ICP_ACCEL_GEN4_MASK_WCP_WAT_SLICE) {
+ 		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_ZUC;
+-		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_ZUC_256;
+ 		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_WIRELESS_CRYPTO_EXT;
+ 	}
+ 
+-	if (fusectl1 & ICP_ACCEL_GEN4_MASK_EIA3_SLICE) {
++	if (fusectl1 & ICP_ACCEL_GEN4_MASK_EIA3_SLICE)
+ 		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_ZUC;
+-		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_ZUC_256;
+-	}
+-
+-	if (fusectl1 & ICP_ACCEL_GEN4_MASK_ZUC_256_SLICE)
+-		capabilities_sym &= ~ICP_ACCEL_CAPABILITIES_ZUC_256;
+ 
+ 	capabilities_asym = ICP_ACCEL_CAPABILITIES_CRYPTO_ASYMMETRIC |
+ 			  ICP_ACCEL_CAPABILITIES_SM2 |
 -- 
 2.39.5
 
