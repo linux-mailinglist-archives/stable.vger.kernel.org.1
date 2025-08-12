@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-167733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B73B231C9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD2CB2316A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF84D165696
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9694A3A6E53
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB44D2D97BF;
-	Tue, 12 Aug 2025 18:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121E31C8621;
+	Tue, 12 Aug 2025 18:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0FNMUqH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuaWIsjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAE03F9D2;
-	Tue, 12 Aug 2025 18:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DA0220680;
+	Tue, 12 Aug 2025 18:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021809; cv=none; b=Lx+WF9Pf/1NsTKdF135x6cSSMYcGj3WgmEzqn1U2hMRyZNYV9OrLctvt0caA9OitSUPqKa4H7/suv3JFVDBOZgnoUaoIvRs/IJyOIv2JU05/vCA4d1NAU/uOBX39hY8lCjBFedEkfXJpmfaxQ+NIzHiE59AB2wSiNmmKJG540v0=
+	t=1755021697; cv=none; b=JBwVvDVawci1Hca44QVEvlEqVG9FP4k9mroupcjIM7GcWPd//JgXX2cPU1zjrv1tGG1KJamwUWxc92BJYx/joNI6+1etF1o5AI+5M1xRNkG/LVIr3Tiv1JquhVBFqY9EnbgSorNg0dr1Xeq/J95pAqupoxWH5qHU1S2zeGe4veM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021809; c=relaxed/simple;
-	bh=xTkf+UllQbSJhxrMdm/TlSo6VK8vnPtkz82cL7glQ3s=;
+	s=arc-20240116; t=1755021697; c=relaxed/simple;
+	bh=RqYXCTmfMw6XZvpFqykoA96RqT0Ityd0xo1yy7bg7Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e7zUjs9xkrs7JsnHEatDlIBXjT5aUnbBcMVpAKcfRuFfPK5ZzyWoBo2CIFd4OT99UmQhdRfURfwsq4tfUj4L8UhkWRHlC7qvWLt6fjKQhaUtgG+UYkXLLe+sAJZIUAOYpnCj46yj8XO1Z/RqVSTTrGDHLODjsNpQI1yLFI6cg0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0FNMUqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EA6C4CEF0;
-	Tue, 12 Aug 2025 18:03:28 +0000 (UTC)
+	 MIME-Version; b=rULf442797Lo2zfPcgmCL9CqDV9bApGM5V0ajH/Ck4NtQ5YGlKJWocEWxLvRHjrA4hfl6aqWAq1XjDesScbUJ09WjAzMwFTI/oiLy+bFykcd3PRrYHmqMtnk50Coeuxp6UzsnqWsUsK1QyF3x3NP3LI3Qu+v93c+U8Ofdsf2DiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuaWIsjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D596C4CEF0;
+	Tue, 12 Aug 2025 18:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021809;
-	bh=xTkf+UllQbSJhxrMdm/TlSo6VK8vnPtkz82cL7glQ3s=;
+	s=korg; t=1755021697;
+	bh=RqYXCTmfMw6XZvpFqykoA96RqT0Ityd0xo1yy7bg7Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0FNMUqHD3vV22PAJ1bDqYXggcrHHXnn72rD71LK+2oqvx4DDOBafFBwUdFk7Q372
-	 NwT5UheAu5+xp75Y6Whij6b3L98pIoWE0lqnW1NpuJDFlPdVQcsIu1VqxNroivf6yX
-	 rvFOmKWNNrJ1XqOo86L3U0WK1Jtr19bLWMTzbKwI=
+	b=zuaWIsjnnxhT4WutUgBzhy1OyHnD/hr2unvHCUeSj/LfZXLKHF0GxFTHT2tuMA/ko
+	 oyZYKsryC4D0HHIEPSj95abmpgG3OQ6bMeLBh3ilz5fgLn66CmOzEdeFqH9TBXuW2g
+	 fm6FqAwDnwuObZn6KlwpCVLFhLtmEciGrutPXlCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Luk=C3=A1=C5=A1=20Hejtm=C3=A1nek?= <xhejtman@ics.muni.cz>,
-	Santosh Pradhan <santosh.pradhan@gmail.com>,
+	zhangjian <zhangjian496@huawei.com>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/262] NFS: Fix wakeup of __nfs_lookup_revalidate() in unblock_revalidate()
-Date: Tue, 12 Aug 2025 19:29:46 +0200
-Message-ID: <20250812173001.589205543@linuxfoundation.org>
+Subject: [PATCH 6.6 199/262] NFS: Fix filehandle bounds checking in nfs_fh_to_dentry()
+Date: Tue, 12 Aug 2025 19:29:47 +0200
+Message-ID: <20250812173001.632418355@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
 References: <20250812172952.959106058@linuxfoundation.org>
@@ -61,7 +60,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -70,36 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 1db3a48e83bb64a70bf27263b7002585574a9c2d ]
+[ Upstream commit ef93a685e01a281b5e2a25ce4e3428cf9371a205 ]
 
-Use store_release_wake_up() to add the appropriate memory barrier before
-calling wake_up_var(&dentry->d_fsdata).
+The function needs to check the minimal filehandle length before it can
+access the embedded filehandle.
 
-Reported-by: Lukáš Hejtmánek<xhejtman@ics.muni.cz>
-Suggested-by: Santosh Pradhan <santosh.pradhan@gmail.com>
-Link: https://lore.kernel.org/all/18945D18-3EDB-4771-B019-0335CE671077@ics.muni.cz/
-Fixes: 99bc9f2eb3f7 ("NFS: add barriers when testing for NFS_FSDATA_BLOCKED")
+Reported-by: zhangjian <zhangjian496@huawei.com>
+Fixes: 20fa19027286 ("nfs: add export operations")
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/nfs/export.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 389186384235..385baf871800 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1835,9 +1835,7 @@ static void block_revalidate(struct dentry *dentry)
- 
- static void unblock_revalidate(struct dentry *dentry)
+diff --git a/fs/nfs/export.c b/fs/nfs/export.c
+index be686b8e0c54..aeb17adcb2b6 100644
+--- a/fs/nfs/export.c
++++ b/fs/nfs/export.c
+@@ -66,14 +66,21 @@ nfs_fh_to_dentry(struct super_block *sb, struct fid *fid,
  {
--	/* store_release ensures wait_var_event() sees the update */
--	smp_store_release(&dentry->d_fsdata, NULL);
--	wake_up_var(&dentry->d_fsdata);
-+	store_release_wake_up(&dentry->d_fsdata, NULL);
- }
+ 	struct nfs_fattr *fattr = NULL;
+ 	struct nfs_fh *server_fh = nfs_exp_embedfh(fid->raw);
+-	size_t fh_size = offsetof(struct nfs_fh, data) + server_fh->size;
++	size_t fh_size = offsetof(struct nfs_fh, data);
+ 	const struct nfs_rpc_ops *rpc_ops;
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+-	int len = EMBED_FH_OFF + XDR_QUADLEN(fh_size);
++	int len = EMBED_FH_OFF;
+ 	u32 *p = fid->raw;
+ 	int ret;
  
- /*
++	/* Initial check of bounds */
++	if (fh_len < len + XDR_QUADLEN(fh_size) ||
++	    fh_len > XDR_QUADLEN(NFS_MAXFHSIZE))
++		return NULL;
++	/* Calculate embedded filehandle size */
++	fh_size += server_fh->size;
++	len += XDR_QUADLEN(fh_size);
+ 	/* NULL translates to ESTALE */
+ 	if (fh_len < len || fh_type != len)
+ 		return NULL;
 -- 
 2.39.5
 
