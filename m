@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF50B230A5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF83B23362
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E0EC56600E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED6E03BA65F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF212FD1D7;
-	Tue, 12 Aug 2025 17:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9803A2E7BD4;
+	Tue, 12 Aug 2025 18:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/wMgdeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XotSHSiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAE02D5C76;
-	Tue, 12 Aug 2025 17:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BB11EBFE0;
+	Tue, 12 Aug 2025 18:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021281; cv=none; b=bzPkg5dYYrEk18js/oRkySd/9jmJ8rPzH2l9q/dhrGDnZIpZAZkEYNSaaPAjyRe2ZgYQjjCDIOXMe677TcSAsNk5iWnBCFUSgSwkl0rPSeI/1k8awg5omCTRvFbBT6vEWJxnSGtvQglHv/TS33EInWIzJd8k2Fq0FvjA+dwj+W4=
+	t=1755023031; cv=none; b=aGE6gwi9QKekE1GL9GLtQdba/r00J9Vwm5+NJzDunq4ZxYjjMNIxC84MbOmlLnIcOPvGfd0X58eHSUYTBm0p0ZlPluVq1aZF93gsuJpqh6SGmsXnUfFCqNi3708awWIFQXaTdqTXtVuFFh0C/GLGwPNCAmb+5mkkomQpJcujND0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021281; c=relaxed/simple;
-	bh=FTsYD5cuNLu4ihVvRm/MLI6R29yZlnkeNOi9bCdCvn0=;
+	s=arc-20240116; t=1755023031; c=relaxed/simple;
+	bh=5er8bQlFs2g5P3oNk1TbLTWjkWPkNo02hsO+/IGbn8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzUDn+qlTGxypGTtBiDzsrWYiKrFajnQwXtHioJRXF3NuXHnYIIpWfC58MGJszCuRDuqWFcQCBQXivcs9OjL8o6G0ZGZ9gSTsMIR0NhJmRFKk31i1yyjpcMVterqMrjM4HWtZoBX5hBwhJRktrip6lAd5RncdOYR020VFiLZLmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/wMgdeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF926C4CEF0;
-	Tue, 12 Aug 2025 17:54:40 +0000 (UTC)
+	 MIME-Version; b=BpMQmqfIcEvGqzWiF6d24hMp/EhzWC4UaxgeKfRQfc0WYYkJ06KlQjB32rqn6GwnL6MH3R82D0jrAqOPNPYIB/MkHFP1TwBIjB6QrcUARZ9sA5OzwioUY7V0H2metBMscxEayJ6z7/HUKPzBmGYT5HT+JBHidUywZgyQ7YMmZok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XotSHSiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75EFC4CEF7;
+	Tue, 12 Aug 2025 18:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021281;
-	bh=FTsYD5cuNLu4ihVvRm/MLI6R29yZlnkeNOi9bCdCvn0=;
+	s=korg; t=1755023031;
+	bh=5er8bQlFs2g5P3oNk1TbLTWjkWPkNo02hsO+/IGbn8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/wMgdeMlkyd5D3CMvjYWJ5YTyDiHMEhl4MjvO6IlxgomVi8FxJLRYDNi5IOYJbLh
-	 kmU6JJ7KyyvR59ETKjMJ+1tZeVhCu60EPyxbOuMT8HuMly56SAH70UaX6B8GLTiY9I
-	 OYtBHXZn8n/5m0oIqvF1PEfuuFkJVY0OmRsyuRsk=
+	b=XotSHSiPLs04Pz420Gddk7/V5jg5vwgYPGBSHQX7iez9VbAM23IN87kbdcCS9YoL9
+	 HLvsmt1deS25OL7cqTBfyAsRwsVkYVaNOBN8Z1mT/+zV92WVf3XQ53Plb1VsNhTLyq
+	 Maek+zJI1I0/uPPLD3WNw+VLtOF4sHWshX55Yr5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.1 239/253] ksmbd: fix null pointer dereference error in generate_encryptionkey
+	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>
+Subject: [PATCH 6.12 330/369] accel/ivpu: Fix reset_engine debugfs file logic
 Date: Tue, 12 Aug 2025 19:30:27 +0200
-Message-ID: <20250812172959.007356815@linuxfoundation.org>
+Message-ID: <20250812173029.124708926@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
 
-commit 9b493ab6f35178afd8d619800df9071992f715de upstream.
+commit 541a137254c71822e7a3ebdf8309c5a37b7de465 upstream.
 
-If client send two session setups with krb5 authenticate to ksmbd,
-null pointer dereference error in generate_encryptionkey could happen.
-sess->Preauth_HashValue is set to NULL if session is valid.
-So this patch skip generate encryption key if session is valid.
+The current reset_engine implementation unconditionally resets
+all engines. Improve implementation to reset only the engine
+requested by the user space to allow more granular testing.
+Also use DEFINE_DEBUGFS_ATTRIBUTE() to simplify implementation.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27654
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Same changes applied to resume_engine debugfs file for consistency.
+
+Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240930195322.461209-22-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/accel/ivpu/ivpu_debugfs.c |   42 +++++++-------------------------------
+ 1 file changed, 8 insertions(+), 34 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1621,11 +1621,24 @@ static int krb5_authenticate(struct ksmb
+--- a/drivers/accel/ivpu/ivpu_debugfs.c
++++ b/drivers/accel/ivpu/ivpu_debugfs.c
+@@ -346,49 +346,23 @@ static const struct file_operations ivpu
+ 	.write = ivpu_force_recovery_fn,
+ };
  
- 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
+-static ssize_t
+-ivpu_reset_engine_fn(struct file *file, const char __user *user_buf, size_t size, loff_t *pos)
++static int ivpu_reset_engine_fn(void *data, u64 val)
+ {
+-	struct ivpu_device *vdev = file->private_data;
++	struct ivpu_device *vdev = (struct ivpu_device *)data;
  
--	if ((conn->sign || server_conf.enforced_signing) ||
-+	/*
-+	 * If session state is SMB2_SESSION_VALID, We can assume
-+	 * that it is reauthentication. And the user/password
-+	 * has been verified, so return it here.
-+	 */
-+	if (sess->state == SMB2_SESSION_VALID) {
-+		if (conn->binding)
-+			goto binding_session;
-+		return 0;
-+	}
-+
-+	if ((rsp->SessionFlags != SMB2_SESSION_FLAG_IS_GUEST_LE &&
-+	    (conn->sign || server_conf.enforced_signing)) ||
- 	    (req->SecurityMode & SMB2_NEGOTIATE_SIGNING_REQUIRED))
- 		sess->sign = true;
+-	if (!size)
+-		return -EINVAL;
+-
+-	if (ivpu_jsm_reset_engine(vdev, DRM_IVPU_ENGINE_COMPUTE))
+-		return -ENODEV;
+-	if (ivpu_jsm_reset_engine(vdev, DRM_IVPU_ENGINE_COPY))
+-		return -ENODEV;
+-
+-	return size;
++	return ivpu_jsm_reset_engine(vdev, (u32)val);
+ }
  
--	if (smb3_encryption_negotiated(conn)) {
-+	if (smb3_encryption_negotiated(conn) &&
-+	    !(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
- 		retval = conn->ops->generate_encryptionkey(conn, sess);
- 		if (retval) {
- 			ksmbd_debug(SMB,
-@@ -1638,6 +1651,7 @@ static int krb5_authenticate(struct ksmb
- 		sess->sign = false;
- 	}
+-static const struct file_operations ivpu_reset_engine_fops = {
+-	.owner = THIS_MODULE,
+-	.open = simple_open,
+-	.write = ivpu_reset_engine_fn,
+-};
++DEFINE_DEBUGFS_ATTRIBUTE(ivpu_reset_engine_fops, NULL, ivpu_reset_engine_fn, "0x%02llx\n");
  
-+binding_session:
- 	if (conn->dialect >= SMB30_PROT_ID) {
- 		chann = lookup_chann_list(sess, conn);
- 		if (!chann) {
+-static ssize_t
+-ivpu_resume_engine_fn(struct file *file, const char __user *user_buf, size_t size, loff_t *pos)
++static int ivpu_resume_engine_fn(void *data, u64 val)
+ {
+-	struct ivpu_device *vdev = file->private_data;
++	struct ivpu_device *vdev = (struct ivpu_device *)data;
+ 
+-	if (!size)
+-		return -EINVAL;
+-
+-	if (ivpu_jsm_hws_resume_engine(vdev, DRM_IVPU_ENGINE_COMPUTE))
+-		return -ENODEV;
+-	if (ivpu_jsm_hws_resume_engine(vdev, DRM_IVPU_ENGINE_COPY))
+-		return -ENODEV;
+-
+-	return size;
++	return ivpu_jsm_hws_resume_engine(vdev, (u32)val);
+ }
+ 
+-static const struct file_operations ivpu_resume_engine_fops = {
+-	.owner = THIS_MODULE,
+-	.open = simple_open,
+-	.write = ivpu_resume_engine_fn,
+-};
++DEFINE_DEBUGFS_ATTRIBUTE(ivpu_resume_engine_fops, NULL, ivpu_resume_engine_fn, "0x%02llx\n");
+ 
+ static int dct_active_get(void *data, u64 *active_percent)
+ {
 
 
 
