@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-168465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBF8B234D9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3EFB2309B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D11AE7AE153
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 912101AA1D1E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8EE2F291B;
-	Tue, 12 Aug 2025 18:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D18F2FDC20;
+	Tue, 12 Aug 2025 17:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZKIV+ZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ijq7FM1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB3F13AA2F;
-	Tue, 12 Aug 2025 18:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B952F221FAC;
+	Tue, 12 Aug 2025 17:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024262; cv=none; b=fGdT82hnXK91ATQU7keuLvwYO4plDs3KEyqvpJ7rirdlN0yx4N+nUcuKbsFBIVFRJYcMKptdCU271hAMegKF3bLGaa+ywaB/eWDLrY9NFsMfOjMGPCNhpxKUsu9m7e77bb/d1RZWgEwe2Z0Ppj9FBCWAD7QrM6cppAh5E8i6+Eg=
+	t=1755021206; cv=none; b=iWFq0BDt4DNycAb0r8H8ORYsNYjn4vOvqjd9YfTAhooEeKAwZ2+mc5SExhOPsA2yj/BrVTWPP13cMs+mPz2BYYQVq308aWd0/0fJa6VMW6kG92AyigVfixv2tfTFN8nPJJ2QKS2xdTxRywDy9d3JXFgk3y3nFd/LcdTtD31+30Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024262; c=relaxed/simple;
-	bh=bKIbQQJdaYRFLL7Oz2Nth3t8kml3srC+OHabulpl9O4=;
+	s=arc-20240116; t=1755021206; c=relaxed/simple;
+	bh=ZOVvG48/JSStAoxl03ONiBCmvsUrXNcm84umHW+6zFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1ekcq9E9NK/OQrxos+m/6z5EiJ86WQgOuzE6GtLCaAtriY3/0mn8L+xpGirbJ85EezsyM9yHd4wrvZ6sfblGdpvRX9j2A0CWd2ln8wyzEDDmlgkEWXfJ67V1kAtFea/Uk+wpDjmgBSE5IZdXLaqidQrL3vMjJ9gwZl7y0L+ciY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZKIV+ZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DC9C4CEF0;
-	Tue, 12 Aug 2025 18:44:21 +0000 (UTC)
+	 MIME-Version; b=h0UmgOQ6VDN+VU60zf+9AVsZbazc9l8rn7RneI+M0xtPnZQPa3X8LkWOh7Yg7zruL9VvQTdCi8+g+8+ZrXIRoc6or/Ct0a5v5PCHLN3c1I3EKKo1kukBB75ezfqqQQvleZAHuJ6xcXxjuHdVAZRyxe58xbCssQe0uOftwJ6zohE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ijq7FM1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A8DC4CEF0;
+	Tue, 12 Aug 2025 17:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024262;
-	bh=bKIbQQJdaYRFLL7Oz2Nth3t8kml3srC+OHabulpl9O4=;
+	s=korg; t=1755021206;
+	bh=ZOVvG48/JSStAoxl03ONiBCmvsUrXNcm84umHW+6zFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ZKIV+ZOVU4RDTnuuJEg0LqXjAE0pFl/DLBiywROOR5AdqfDMvedF9xbLrItKzk0I
-	 V/+pmE945SdO72+iPV1r2rKotpZPD1m0TIV2oFFl7G1fCEj6j0r4BIZAjkKNl5QJoC
-	 z+ifeeqDeSpTH2BVIHV1nCW6QtIN6BWZw+89NFrY=
+	b=Ijq7FM1Md3O2jPfLW3DeRwkurBuSztoBpRO6Jrfg21QXdMcr5aDGaj+S7mV4yibXn
+	 zRl8vsI0uvB6kKc0GWlJ0pr9Jdx2LPClLsIJHgmAZiXrjMUlr5AId6MYcV6dyUbQCk
+	 Jvd0gVLq3lftt2xnJKVHWj3AqzITbhVBIsmU048Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 322/627] crypto: arm/aes-neonbs - work around gcc-15 warning
+Subject: [PATCH 6.1 229/253] smb: server: let recv_done() consistently call put_recvmsg/smb_direct_disconnect_rdma_connection
 Date: Tue, 12 Aug 2025 19:30:17 +0200
-Message-ID: <20250812173431.545368669@linuxfoundation.org>
+Message-ID: <20250812172958.573087899@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +67,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit d5fa96dc5590915f060fee3209143313e4f5b03b ]
+[ Upstream commit cfe76fdbb9729c650f3505d9cfb2f70ddda2dbdc ]
 
-I get a very rare -Wstringop-overread warning with gcc-15 for one function
-in aesbs_ctr_encrypt():
+We should call put_recvmsg() before smb_direct_disconnect_rdma_connection()
+in order to call it before waking up the callers.
 
-arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
-arch/arm/crypto/aes-neonbs-glue.c:212:1446: error: '__builtin_memcpy' offset [17, 2147483647] is out of the bounds [0, 16] of object 'buf' with type 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds=]
-  212 |                         src = dst = memcpy(buf + sizeof(buf) - bytes,
-arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
-arch/arm/crypto/aes-neonbs-glue.c:218:17: error: 'aesbs_ctr_encrypt' reading 1 byte from a region of size 0 [-Werror=stringop-overread]
-  218 |                 aesbs_ctr_encrypt(dst, src, ctx->rk, ctx->rounds, bytes, walk.iv);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 2 of type 'const u8[0]' {aka 'const unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 3 of type 'const u8[0]' {aka 'const unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 6 of type 'u8[0]' {aka 'unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:36:17: note: in a call to function 'aesbs_ctr_encrypt'
-   36 | asmlinkage void aesbs_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
+In all error cases we should call smb_direct_disconnect_rdma_connection()
+in order to avoid stale connections.
 
-This could happen in theory if walk.nbytes is larger than INT_MAX and gets
-converted to a negative local variable.
-
-Keep the type unsigned like the orignal nbytes to be sure there is no
-integer overflow.
-
-Fixes: c8bf850e991a ("crypto: arm/aes-neonbs-ctr - deal with non-multiples of AES block size")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/crypto/aes-neonbs-glue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
-index c60104dc1585..df5afe601e4a 100644
---- a/arch/arm/crypto/aes-neonbs-glue.c
-+++ b/arch/arm/crypto/aes-neonbs-glue.c
-@@ -206,7 +206,7 @@ static int ctr_encrypt(struct skcipher_request *req)
- 	while (walk.nbytes > 0) {
- 		const u8 *src = walk.src.virt.addr;
- 		u8 *dst = walk.dst.virt.addr;
--		int bytes = walk.nbytes;
-+		unsigned int bytes = walk.nbytes;
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 71a12953089c..f9c0c5267e6e 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -515,13 +515,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	t = recvmsg->transport;
  
- 		if (unlikely(bytes < AES_BLOCK_SIZE))
- 			src = dst = memcpy(buf + sizeof(buf) - bytes,
+ 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
++		put_recvmsg(t, recvmsg);
+ 		if (wc->status != IB_WC_WR_FLUSH_ERR) {
+ 			pr_err("Recv error. status='%s (%d)' opcode=%d\n",
+ 			       ib_wc_status_msg(wc->status), wc->status,
+ 			       wc->opcode);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 		}
+-		put_recvmsg(t, recvmsg);
+ 		return;
+ 	}
+ 
+@@ -536,6 +536,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
+ 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
+ 			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
+ 			return;
+ 		}
+ 		t->negotiation_requested = true;
+@@ -543,7 +544,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		t->status = SMB_DIRECT_CS_CONNECTED;
+ 		enqueue_reassembly(t, recvmsg, 0);
+ 		wake_up_interruptible(&t->wait_status);
+-		break;
++		return;
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+@@ -553,6 +554,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (wc->byte_len <
+ 		    offsetof(struct smb_direct_data_transfer, padding)) {
+ 			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
+ 			return;
+ 		}
+ 
+@@ -561,6 +563,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+ 			    (u64)data_length) {
+ 				put_recvmsg(t, recvmsg);
++				smb_direct_disconnect_rdma_connection(t);
+ 				return;
+ 			}
+ 
+@@ -603,11 +606,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
+ 			mod_delayed_work(smb_direct_wq,
+ 					 &t->post_recv_credits_work, 0);
+-		break;
++		return;
+ 	}
+-	default:
+-		break;
+ 	}
++
++	/*
++	 * This is an internal error!
++	 */
++	WARN_ON_ONCE(recvmsg->type != SMB_DIRECT_MSG_DATA_TRANSFER);
++	put_recvmsg(t, recvmsg);
++	smb_direct_disconnect_rdma_connection(t);
+ }
+ 
+ static int smb_direct_post_recv(struct smb_direct_transport *t,
 -- 
 2.39.5
 
