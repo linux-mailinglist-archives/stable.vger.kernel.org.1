@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-167396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12337B22FEB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F287B23508
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60FAD68616B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF326E56FB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173832FDC2E;
-	Tue, 12 Aug 2025 17:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346252FE579;
+	Tue, 12 Aug 2025 18:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZcGOn27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyNLDM9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C983F2FD1B2;
-	Tue, 12 Aug 2025 17:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78012FD1C2;
+	Tue, 12 Aug 2025 18:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020676; cv=none; b=o+S0IaI9uwiSd2FF3MXWuyCfa2CUwr2YNWvx4T1fuRRG2b/DKXWIjwl0q9qomGLXg7WJm7ZxgycVvZ7OqYXWc9mK7BEdvE4V/75h3q2uifxPUOANeoYQ1VFsjZbXn760UdO4y1G1KdWUCf6zrydikv9QbFcukaw4oWDJhfqQqYs=
+	t=1755024106; cv=none; b=bPXeGKdE6XP2BT9q1nAaD0uv4gOIX/dE7y4jWRpZo3H1R/8EAyUxMtarDC3Zz3mJtsFPuHyYxajRN0BGq/abEhARK31eYvt2gqz49NSZ7e3FkRKYoKfrIUQgNjKpiDUZzpTq0ti6F8X22YzkSunWA3ozerhex3R6epSSyZ1GMBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020676; c=relaxed/simple;
-	bh=0PIjDJycrFk0kcX9UUA08NNhIdfi9YfI3UZPMRMWIIQ=;
+	s=arc-20240116; t=1755024106; c=relaxed/simple;
+	bh=ZbBnPhhQegHX+Cgw7f4ImND3zJim3xudKqwRJ7iBfEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8wT8TorYyYNXMSzexfaO1NEX/8ZUzyXscaZfMXxSCOz/r57q8mO/Ndc7QK68TCh0Pzh3KbZ+YptrXehzF5zP9pphNw+k79XIsXRq5y/Y9oyFGWFaCt3TMf2Cfqv9gG+IM29PC0GHUtz/X5/OjlbUv8XWIlorMsLxIjnUgHDUVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZcGOn27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A179C4CEF0;
-	Tue, 12 Aug 2025 17:44:36 +0000 (UTC)
+	 MIME-Version; b=U/mbWXKEiwwx27xLBcVHVTK1vgR0ursObmDYzgofRrpDnSSjy+gEjpXvQSKuNtvcGm7FReWbC3/KhDTVXViU217HDJZ75ENzg13XpEt2AEsV5tXgpy1ySEvLiyY260VR5V9yQ/cg8ElPU4r6h1XtKWift3jfuTLqcqGkwrDm93c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyNLDM9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C055C4CEF0;
+	Tue, 12 Aug 2025 18:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020676;
-	bh=0PIjDJycrFk0kcX9UUA08NNhIdfi9YfI3UZPMRMWIIQ=;
+	s=korg; t=1755024105;
+	bh=ZbBnPhhQegHX+Cgw7f4ImND3zJim3xudKqwRJ7iBfEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZcGOn27ajx6DTA5JoZjgLlyZklXO5fbJN9RPoy7ZgM1c/KORGKwmygIsj1/LR8fu
-	 iIh8axZ0Hag3/KFGwq3J96YWRTOAX39F8uDISlYZAL74EQQr0hZu/oioP/a20w1wKR
-	 sCVtL1wOLPZv/C2G6YCGp4x4GYpWJ3SUHBbsKGX0=
+	b=XyNLDM9yMYYNoUTn7Fhjj/h0xXAPEMblQxiY5vxAt8KS69qbleOIvX4Glpa1dp9dy
+	 CS5MZt7XJIyIhjFO8NEFeYJ8TG7DytEQIYiDhNozcwYXyMG+eahzbNmU8MNrrIaqRK
+	 4B7iCMYRJ3MmrpoZniz6FAzysqi8Fg6+MehXSCZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/253] pinctrl: sunxi: Fix memory leak on krealloc failure
+Subject: [PATCH 6.16 243/627] PM: cpufreq: powernv/tracing: Move powernv_throttle trace event
 Date: Tue, 12 Aug 2025 19:28:58 +0200
-Message-ID: <20250812172955.092421104@linuxfoundation.org>
+Message-ID: <20250812173428.542738883@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +69,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
+[ Upstream commit 647fe16b46999258ce1aec41f4bdeabb4f0cc8e7 ]
 
-In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
-the pinctrl_map array, the function returns -ENOMEM directly
-without freeing the previously allocated *map buffer. This results
-in a memory leak of the original kmalloc_array allocation.
+As the trace event powernv_throttle is only used by the powernv code, move
+it to a separate include file and have that code directly enable it.
 
-Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Trace events can take up around 5K of memory when they are defined
+regardless if they are used or not. It wastes memory to have them defined
+in configurations where the tracepoint is not used.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/20250612145407.906308844@goodmis.org
+Fixes: 0306e481d479a ("cpufreq: powernv/tracing: Add powernv_throttle tracepoint")
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/cpufreq/Makefile          |  1 +
+ drivers/cpufreq/powernv-cpufreq.c |  4 ++-
+ drivers/cpufreq/powernv-trace.h   | 44 +++++++++++++++++++++++++++++++
+ include/trace/events/power.h      | 22 ----------------
+ kernel/trace/power-traces.c       |  1 -
+ 5 files changed, 48 insertions(+), 24 deletions(-)
+ create mode 100644 drivers/cpufreq/powernv-trace.h
 
-diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-index 6c04027d0dd9..df2e721297fc 100644
---- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-+++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
-@@ -396,6 +396,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	const char *function, *pin_prop;
- 	const char *group;
- 	int ret, npins, nmaps, configlen = 0, i = 0;
-+	struct pinctrl_map *new_map;
+diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
+index d38526b8e063..681d687b5a18 100644
+--- a/drivers/cpufreq/Makefile
++++ b/drivers/cpufreq/Makefile
+@@ -21,6 +21,7 @@ obj-$(CONFIG_CPUFREQ_VIRT)		+= virtual-cpufreq.o
  
- 	*map = NULL;
- 	*num_maps = 0;
-@@ -470,9 +471,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	 * We know have the number of maps we need, we can resize our
- 	 * map array
- 	 */
--	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
--	if (!*map)
--		return -ENOMEM;
-+	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
-+	if (!new_map) {
-+		ret = -ENOMEM;
-+		goto err_free_map;
-+	}
+ # Traces
+ CFLAGS_amd-pstate-trace.o               := -I$(src)
++CFLAGS_powernv-cpufreq.o                := -I$(src)
+ amd_pstate-y				:= amd-pstate.o amd-pstate-trace.o
+ 
+ ##################################################################################
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+index a8943e2a93be..7d9a5f656de8 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -21,7 +21,6 @@
+ #include <linux/string_choices.h>
+ #include <linux/cpu.h>
+ #include <linux/hashtable.h>
+-#include <trace/events/power.h>
+ 
+ #include <asm/cputhreads.h>
+ #include <asm/firmware.h>
+@@ -30,6 +29,9 @@
+ #include <asm/opal.h>
+ #include <linux/timer.h>
+ 
++#define CREATE_TRACE_POINTS
++#include "powernv-trace.h"
 +
-+	*map = new_map;
+ #define POWERNV_MAX_PSTATES_ORDER  8
+ #define POWERNV_MAX_PSTATES	(1UL << (POWERNV_MAX_PSTATES_ORDER))
+ #define PMSR_PSAFE_ENABLE	(1UL << 30)
+diff --git a/drivers/cpufreq/powernv-trace.h b/drivers/cpufreq/powernv-trace.h
+new file mode 100644
+index 000000000000..8cadb7c9427b
+--- /dev/null
++++ b/drivers/cpufreq/powernv-trace.h
+@@ -0,0 +1,44 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#if !defined(_POWERNV_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _POWERNV_TRACE_H
++
++#include <linux/cpufreq.h>
++#include <linux/tracepoint.h>
++#include <linux/trace_events.h>
++
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM power
++
++TRACE_EVENT(powernv_throttle,
++
++	TP_PROTO(int chip_id, const char *reason, int pmax),
++
++	TP_ARGS(chip_id, reason, pmax),
++
++	TP_STRUCT__entry(
++		__field(int, chip_id)
++		__string(reason, reason)
++		__field(int, pmax)
++	),
++
++	TP_fast_assign(
++		__entry->chip_id = chip_id;
++		__assign_str(reason);
++		__entry->pmax = pmax;
++	),
++
++	TP_printk("Chip %d Pmax %d %s", __entry->chip_id,
++		  __entry->pmax, __get_str(reason))
++);
++
++#endif /* _POWERNV_TRACE_H */
++
++/* This part must be outside protection */
++#undef TRACE_INCLUDE_PATH
++#define TRACE_INCLUDE_PATH .
++
++#undef TRACE_INCLUDE_FILE
++#define TRACE_INCLUDE_FILE powernv-trace
++
++#include <trace/define_trace.h>
+diff --git a/include/trace/events/power.h b/include/trace/events/power.h
+index 6c631eec23e3..913181cebfe9 100644
+--- a/include/trace/events/power.h
++++ b/include/trace/events/power.h
+@@ -99,28 +99,6 @@ DEFINE_EVENT(psci_domain_idle, psci_domain_idle_exit,
+ 	TP_ARGS(cpu_id, state, s2idle)
+ );
  
- 	return 0;
+-TRACE_EVENT(powernv_throttle,
+-
+-	TP_PROTO(int chip_id, const char *reason, int pmax),
+-
+-	TP_ARGS(chip_id, reason, pmax),
+-
+-	TP_STRUCT__entry(
+-		__field(int, chip_id)
+-		__string(reason, reason)
+-		__field(int, pmax)
+-	),
+-
+-	TP_fast_assign(
+-		__entry->chip_id = chip_id;
+-		__assign_str(reason);
+-		__entry->pmax = pmax;
+-	),
+-
+-	TP_printk("Chip %d Pmax %d %s", __entry->chip_id,
+-		  __entry->pmax, __get_str(reason))
+-);
+-
+ TRACE_EVENT(pstate_sample,
+ 
+ 	TP_PROTO(u32 core_busy,
+diff --git a/kernel/trace/power-traces.c b/kernel/trace/power-traces.c
+index 21bb161c2316..f2fe33573e54 100644
+--- a/kernel/trace/power-traces.c
++++ b/kernel/trace/power-traces.c
+@@ -17,5 +17,4 @@
+ EXPORT_TRACEPOINT_SYMBOL_GPL(suspend_resume);
+ EXPORT_TRACEPOINT_SYMBOL_GPL(cpu_idle);
+ EXPORT_TRACEPOINT_SYMBOL_GPL(cpu_frequency);
+-EXPORT_TRACEPOINT_SYMBOL_GPL(powernv_throttle);
  
 -- 
 2.39.5
