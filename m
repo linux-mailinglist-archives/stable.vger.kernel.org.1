@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CA1B22FED
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F974B2346A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25D35658B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7C8F44E445D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D552FDC54;
-	Tue, 12 Aug 2025 17:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE0F2FE57E;
+	Tue, 12 Aug 2025 18:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUZgZ/Ew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4+E6GTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AA42FDC4B;
-	Tue, 12 Aug 2025 17:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371746BB5B;
+	Tue, 12 Aug 2025 18:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020697; cv=none; b=cMQ1/yrSn7sYZNNCd4ba54L69L/GFwyuQGq5iG7yLt+tsy3SJh7IzDSEVfcY9nWpBO8i3dV2Zyfva4/GVIRu6vxu3dd/cqyKqyT/G/qw4E6eDTY7rJue9UNpH/+bMrXKxKE9A7ZcP5E8rtE0X9IejKUf4SnwBfVCwUwpYPHV4PE=
+	t=1755024013; cv=none; b=HW4qlBC0KsdZxsrSlh4IZKk4JtoZheB4lobH6bd/EzJI3N670I14xmGQvKDqva6qLsjk3gYI3//h+vsMEI/OLYVqqwNRoPjAcK5jubPURgzmvi+zRMXgqnh5hg6FUWJF1LJ7wjGyStZy2/nOpnq7Z4Xe5JzHm4ct7vIENTAtuxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020697; c=relaxed/simple;
-	bh=GJmSBOmPVeeVAPW+UA2O58aV311+mwC2fOwBJdzNmOc=;
+	s=arc-20240116; t=1755024013; c=relaxed/simple;
+	bh=OY7gIT7lHPzG5t74NPw1Mn0OlsSyxpFVC3DY78S5M6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkomL+pAorCD0OTi/96uFpN9/LsGbrrnN9ZUz6cCekUKXqIQsZsbCZRcAUCjUo4xYULznRPnIfEphk6Sm0vgwsqSWQF+4ucRkupC/oWPx1xfGiQ4KAlXFgBtKci1jGbj2uzWW++qlekIVNe120mnvsZeXtEEJ90mh2l/O3QkhI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUZgZ/Ew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0751BC4CEF0;
-	Tue, 12 Aug 2025 17:44:56 +0000 (UTC)
+	 MIME-Version; b=MDntm/sUJpYmxNNI2shZm8FCTu5hj7RsurPEzE2ZPYKnD3YUhl27kCVpHoot6G9HeYzve2Uz+yTPAHRLNFk92Lv9h/zEbHlk+uRfcKUqz95qR+1qcBNWVfHGygwcXq9+BBAz+IoAAix2lDZbpJQLNNgXTbwSjt5p4zvwKMyiY3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4+E6GTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F176C4CEF0;
+	Tue, 12 Aug 2025 18:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020697;
-	bh=GJmSBOmPVeeVAPW+UA2O58aV311+mwC2fOwBJdzNmOc=;
+	s=korg; t=1755024013;
+	bh=OY7gIT7lHPzG5t74NPw1Mn0OlsSyxpFVC3DY78S5M6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUZgZ/EwbnQtyWtOHCHViNYpckuzUO1AEyYyyANRSQyHA8F2TPQmtspPZo257ewXD
-	 OuD7pzQYkQ2YjcSBKUSJuZmRaA5f774MeLrbogsTCIFR0Y6xY8RzKWI1WkGB/MxVr5
-	 9pKX8L8p3WHWNrl/BaAqtjDSOBXIbjwBRT4M7UUo=
+	b=Z4+E6GTXY47ypt+dMgjssO43IpmSGuB1vGvujwWVNSG8aPGe64TRDtlwOMSQqVHck
+	 cE/61CuEFSoces5WzGOIZlDonWS5sMPfhgeww1k3n8rWsyrXu5TRj7RR8uBIhbGcIN
+	 fIcIbb7lW0rMPEVuaCQChcSP5YwaeDKhXMfxUUQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengbiao Xiong <xisme1998@gmail.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/253] crypto: ccp - Fix crash when rebind ccp device for ccp.ko
+Subject: [PATCH 6.16 248/627] memcg_slabinfo: Fix use of PG_slab
 Date: Tue, 12 Aug 2025 19:29:03 +0200
-Message-ID: <20250812172955.315682184@linuxfoundation.org>
+Message-ID: <20250812173428.737563680@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengbiao Xiong <xisme1998@gmail.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 181698af38d3f93381229ad89c09b5bd0496661a ]
+[ Upstream commit 7f770e94d7936e8e35d4b4d5fa4618301b03ea33 ]
 
-When CONFIG_CRYPTO_DEV_CCP_DEBUGFS is enabled, rebinding
-the ccp device causes the following crash:
+Check PGTY_slab instead of PG_slab.
 
-$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/unbind
-$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/bind
-
-[  204.976930] BUG: kernel NULL pointer dereference, address: 0000000000000098
-[  204.978026] #PF: supervisor write access in kernel mode
-[  204.979126] #PF: error_code(0x0002) - not-present page
-[  204.980226] PGD 0 P4D 0
-[  204.981317] Oops: Oops: 0002 [#1] SMP NOPTI
-...
-[  204.997852] Call Trace:
-[  204.999074]  <TASK>
-[  205.000297]  start_creating+0x9f/0x1c0
-[  205.001533]  debugfs_create_dir+0x1f/0x170
-[  205.002769]  ? srso_return_thunk+0x5/0x5f
-[  205.004000]  ccp5_debugfs_setup+0x87/0x170 [ccp]
-[  205.005241]  ccp5_init+0x8b2/0x960 [ccp]
-[  205.006469]  ccp_dev_init+0xd4/0x150 [ccp]
-[  205.007709]  sp_init+0x5f/0x80 [ccp]
-[  205.008942]  sp_pci_probe+0x283/0x2e0 [ccp]
-[  205.010165]  ? srso_return_thunk+0x5/0x5f
-[  205.011376]  local_pci_probe+0x4f/0xb0
-[  205.012584]  pci_device_probe+0xdb/0x230
-[  205.013810]  really_probe+0xed/0x380
-[  205.015024]  __driver_probe_device+0x7e/0x160
-[  205.016240]  device_driver_attach+0x2f/0x60
-[  205.017457]  bind_store+0x7c/0xb0
-[  205.018663]  drv_attr_store+0x28/0x40
-[  205.019868]  sysfs_kf_write+0x5f/0x70
-[  205.021065]  kernfs_fop_write_iter+0x145/0x1d0
-[  205.022267]  vfs_write+0x308/0x440
-[  205.023453]  ksys_write+0x6d/0xe0
-[  205.024616]  __x64_sys_write+0x1e/0x30
-[  205.025778]  x64_sys_call+0x16ba/0x2150
-[  205.026942]  do_syscall_64+0x56/0x1e0
-[  205.028108]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  205.029276] RIP: 0033:0x7fbc36f10104
-[  205.030420] Code: 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 8d 05 e1 08 2e 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
-
-This patch sets ccp_debugfs_dir to NULL after destroying it in
-ccp5_debugfs_destroy, allowing the directory dentry to be
-recreated when rebinding the ccp device.
-
-Tested on AMD Ryzen 7 1700X.
-
-Fixes: 3cdbe346ed3f ("crypto: ccp - Add debugfs entries for CCP information")
-Signed-off-by: Mengbiao Xiong <xisme1998@gmail.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 4ffca5a96678 (mm: support only one page_type per page)
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20250611155916.2579160-11-willy@infradead.org
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-debugfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/cgroup/memcg_slabinfo.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/ccp/ccp-debugfs.c b/drivers/crypto/ccp/ccp-debugfs.c
-index a1055554b47a..dc26bc22c91d 100644
---- a/drivers/crypto/ccp/ccp-debugfs.c
-+++ b/drivers/crypto/ccp/ccp-debugfs.c
-@@ -319,5 +319,8 @@ void ccp5_debugfs_setup(struct ccp_device *ccp)
+diff --git a/tools/cgroup/memcg_slabinfo.py b/tools/cgroup/memcg_slabinfo.py
+index 270c28a0d098..6bf4bde77903 100644
+--- a/tools/cgroup/memcg_slabinfo.py
++++ b/tools/cgroup/memcg_slabinfo.py
+@@ -146,11 +146,11 @@ def detect_kernel_config():
  
- void ccp5_debugfs_destroy(void)
- {
-+	mutex_lock(&ccp_debugfs_lock);
- 	debugfs_remove_recursive(ccp_debugfs_dir);
-+	ccp_debugfs_dir = NULL;
-+	mutex_unlock(&ccp_debugfs_lock);
- }
+ 
+ def for_each_slab(prog):
+-    PGSlab = ~prog.constant('PG_slab')
++    slabtype = prog.constant('PGTY_slab')
+ 
+     for page in for_each_page(prog):
+         try:
+-            if page.page_type.value_() == PGSlab:
++            if (page.page_type.value_() >> 24) == slabtype:
+                 yield cast('struct slab *', page)
+         except FaultError:
+             pass
 -- 
 2.39.5
 
