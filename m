@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259F5B234A0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1E7B230E5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 419B562281E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD8DB17207D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1762FF178;
-	Tue, 12 Aug 2025 18:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ADC2FD1D7;
+	Tue, 12 Aug 2025 17:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILYAVaeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ1ksHnm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A86E2FF16C;
-	Tue, 12 Aug 2025 18:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A5A2F7449;
+	Tue, 12 Aug 2025 17:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023853; cv=none; b=s1/9k7XMrwfSBk0DFBiSCP358M/VY4rlGjXeKAncdppuJAQQXElgZxlQ7hqVA35elKo9ghbo2bS4zjmKbD9jqc56zFGljom/GoJw5ZmZ2v/447Z2E9aSE54u+p+BmYMyhaLGPCLQ358KgVT8A0I3sBgE6tNWyDgqfOtbYhLMqVY=
+	t=1755021390; cv=none; b=kCxdNawkUrf0dR7PLk4cM/YZjNKkNMt9oq2vgNr4qjWn1qIpPWcveO3Jb6jnBmSiKya0ERtH7/YrjgG1BPnYaP7dz/xUU2Av5RwC7di8m/bCVzQ38Ln6IRfRs3jDenkNi/8NQjzKL/ZGOXcW4GJEf7oKdKzQ3vl6xjxvmD80rjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023853; c=relaxed/simple;
-	bh=V8XLY6vxMArv/KPHgP8fyaipaycd7r0qmac0ZWMPN9M=;
+	s=arc-20240116; t=1755021390; c=relaxed/simple;
+	bh=nhEt7OrlNAfhjCTAysMP2zYQsi2bYwIjt8+0sCT5M3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LndgzQLvs0Do51370QcJdmZF3ifM3dxiQ07g5vff0r+GOiO6t0Qne5B66BKwoghFu2FIEnBTFc4B60gMuNnJxNFAR9xwrs3NRsKr1Xnz9IyF32uianWy7Es4pzmJl8BHEHHXDtalIJH7kPsIqO+fQjmYjIWISi1Z5RTIUoPKF+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILYAVaeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4624C4CEF7;
-	Tue, 12 Aug 2025 18:37:32 +0000 (UTC)
+	 MIME-Version; b=seBQ5Su2m5zwV2fYPtPTy6lhf+0bz7iPQMKfld+4p9zOQ9au0lnXpKbZ3kplZnD7CPZwwVKAMyI29YYgMkj903rw+kJotGdEq7UOSODH1KeVIRUspidDeYSRp2tbrpcB/R2HPGjF4ai6GWrU4cjhystSUm0iZbvXdGpjLfRpwe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ1ksHnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC28C4CEF0;
+	Tue, 12 Aug 2025 17:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023853;
-	bh=V8XLY6vxMArv/KPHgP8fyaipaycd7r0qmac0ZWMPN9M=;
+	s=korg; t=1755021389;
+	bh=nhEt7OrlNAfhjCTAysMP2zYQsi2bYwIjt8+0sCT5M3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILYAVaeo/TvSOlbfrMoqJZ9lue86JStge10yiycQ4E5nF4y1ZjoBPPFqq9/Vn5co2
-	 708TLFP3TuvtV3b0UnUv1W1/Pj2P6HsO8O4zXmEkmJZF2XMPhaDFM8BDKA7oQ57R7v
-	 ocyIkHC1z4O4rjqq11X2OKV9xW+U6BzTMU1MC1iU=
+	b=QJ1ksHnmnLghVm6LQShgiKxe6Mgs3aCJ9p4OOyNaFLKmOlvfljT6nFF6b/8FzC9TO
+	 VK5u3psqfQIVrs6T6assp0ROvKzBLpPdZFI7cEZfWUlH9ez9gRyNHWciNngMxatWaB
+	 md6HLlpnH8Pp/zL4fXjrhHP8rPhJvS398EoRUdH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	Hans Zhang <18255117159@163.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 200/627] fbcon: Fix outdated registered_fb reference in comment
+Subject: [PATCH 6.6 107/262] PCI: rockchip-host: Fix "Unexpected Completion" log message
 Date: Tue, 12 Aug 2025 19:28:15 +0200
-Message-ID: <20250812173426.890183604@linuxfoundation.org>
+Message-ID: <20250812172957.646647421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shixiong Ou <oushixiong@kylinos.cn>
+From: Hans Zhang <18255117159@163.com>
 
-[ Upstream commit 0f168e7be696a17487e83d1d47e5a408a181080f ]
+[ Upstream commit fcc5f586c4edbcc10de23fb9b8c0972a84e945cd ]
 
-The variable was renamed to fbcon_registered_fb, but this comment was
-not updated along with the change. Correct it to avoid confusion.
+Fix the debug message for the PCIE_CORE_INT_UCR interrupt to clearly
+indicate "Unexpected Completion" instead of a duplicate "malformed TLP"
+message.
 
-Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
-Fixes: efc3acbc105a ("fbcon: Maintain a private array of fb_info")
-[sima: Add Fixes: line.]
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250709103438.572309-1-oushixiong1025@163.com
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Signed-off-by: Hans Zhang <18255117159@163.com>
+[mani: added fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/20250607160201.807043-2-18255117159@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pcie-rockchip-host.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 2df48037688d..2b2d36c021ba 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -952,13 +952,13 @@ static const char *fbcon_startup(void)
- 	int rows, cols;
+diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
+index afbbdccd195d..6ff20d585396 100644
+--- a/drivers/pci/controller/pcie-rockchip-host.c
++++ b/drivers/pci/controller/pcie-rockchip-host.c
+@@ -436,7 +436,7 @@ static irqreturn_t rockchip_pcie_subsys_irq_handler(int irq, void *arg)
+ 			dev_dbg(dev, "malformed TLP received from the link\n");
  
- 	/*
--	 *  If num_registered_fb is zero, this is a call for the dummy part.
-+	 *  If fbcon_num_registered_fb is zero, this is a call for the dummy part.
- 	 *  The frame buffer devices weren't initialized yet.
- 	 */
- 	if (!fbcon_num_registered_fb || info_idx == -1)
- 		return display_desc;
- 	/*
--	 * Instead of blindly using registered_fb[0], we use info_idx, set by
-+	 * Instead of blindly using fbcon_registered_fb[0], we use info_idx, set by
- 	 * fbcon_fb_registered();
- 	 */
- 	info = fbcon_registered_fb[info_idx];
+ 		if (sub_reg & PCIE_CORE_INT_UCR)
+-			dev_dbg(dev, "malformed TLP received from the link\n");
++			dev_dbg(dev, "Unexpected Completion received from the link\n");
+ 
+ 		if (sub_reg & PCIE_CORE_INT_FCE)
+ 			dev_dbg(dev, "an error was observed in the flow control advertisements from the other side\n");
 -- 
 2.39.5
 
