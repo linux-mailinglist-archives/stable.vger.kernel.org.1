@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-168228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94998B233B5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A25B2322E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2947B7B7CE4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1598C162C15
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DF12FF141;
-	Tue, 12 Aug 2025 18:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AC6280037;
+	Tue, 12 Aug 2025 18:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyGeINki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiUwFITw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA97D1E500C;
-	Tue, 12 Aug 2025 18:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F8020409A;
+	Tue, 12 Aug 2025 18:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023477; cv=none; b=ZUIL/mKvtDG61mag7929fQfeM49HxMFr8CFGWXmIPYtqgVCUUTsGrzw8HDaM5qiGFXknQtU/VB0dRPFj1L6NYSDSx0f24G/Kybo8xO4KHWguYu3WetvCH+XnrCznTrizByPXVq2mCAxRYS7rC/Uv8K8sItgE2y98zO/BqYHQmus=
+	t=1755022215; cv=none; b=bc9/AIu8PzSKBR8tIdpk7httAKBDqCFaoihFC84otug2SwDV5n7gvyqpygv8PowOR+weysF1kdJDG36sVHkGsgKfVvRuoaS7qLbKgAIkswmCjt4jqJwcWfq0FxOiWP0XjnDLPBcxXg7PIiJk80ZC7HlfzMd4ntWuvW5AlkLqpDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023477; c=relaxed/simple;
-	bh=h0hgFh+Lg88gRqLx4SWLh/iUhnLNt4dsfhFH5NAKENo=;
+	s=arc-20240116; t=1755022215; c=relaxed/simple;
+	bh=k/Igswuh7S4d9liHi5t3if94lO59tZP9EHev4S4CC08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4t0+hbc+5NDEpiRPz5GNv3Nk46yNFdlWA3fcFaH9Njlz2pBifJnhBAUz94iNcPaG5Xp6FyoUVRN8+/BDbqNYlNZ473mYscSP6mjxEFJOBk3N5Nq58ox2WVjPO+aMYGm746XZBfLdId1GaBVWau/km/DO2YlpQDjLA5MIuJh7Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyGeINki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4598BC4CEF0;
-	Tue, 12 Aug 2025 18:31:16 +0000 (UTC)
+	 MIME-Version; b=MMKSt1f55wYntar6LHL4dc/xUZT4uBEpk/LYOMwFXJCKfLlz42B3bR4nJ2C8MvWyLDDVSgHxxhnu20pQOTsLU6HCyXul18SZzoZOZbJRuTdiAXTP13CmtH7PsJ4MvSSO7KNJC6iNwgs4C+buyxgiXXH0XkWn09Kt2Y4IcErxzgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiUwFITw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7810C4CEF0;
+	Tue, 12 Aug 2025 18:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023477;
-	bh=h0hgFh+Lg88gRqLx4SWLh/iUhnLNt4dsfhFH5NAKENo=;
+	s=korg; t=1755022215;
+	bh=k/Igswuh7S4d9liHi5t3if94lO59tZP9EHev4S4CC08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyGeINkiGlhBFn3dJiHh72uif0FuFNfiROekbLGJ8k3aGVfLR9BUxFRWDRDM1q/PY
-	 n18VBIrJdZOPVtCbI+IypiTYo2hUbi1alsbCPLKVUGJbRRX6ne9D/uf4eUP+5feYEx
-	 IvkSuYvWQiI15LtHHD4Fr5o06TcI2BQGUZ1Qoob4=
+	b=uiUwFITwvWqVNxmuie+ceQoHShXQ9o9+caJKmDpBcnvRHyan6ofhXfwssMl+moml2
+	 2ayJ+CdFUZZ3htIpBlxf3ErNhQPDxrqIIpbyMbp2gJpKJPfMvVk0y0BnOv6ZWp6upy
+	 rYM6ez0RbSZEVRIrAvUdfy4iZBXfBNr6eOdZJKB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 090/627] usb: early: xhci-dbc: Fix early_ioremap leak
-Date: Tue, 12 Aug 2025 19:26:25 +0200
-Message-ID: <20250812173422.733482328@linuxfoundation.org>
+Subject: [PATCH 6.12 089/369] net: dst: annotate data-races around dst->output
+Date: Tue, 12 Aug 2025 19:26:26 +0200
+Message-ID: <20250812173018.124469806@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2b7eec2ec3015f52fc74cf45d0408925e984ecd1 ]
+[ Upstream commit 2dce8c52a98995c4719def6f88629ab1581c0b82 ]
 
-Using the kernel param earlyprintk=xdbc,keep without proper hardware
-setup leads to this:
+dst_dev_put() can overwrite dst->output while other
+cpus might read this field (for instance from dst_output())
 
-	[ ] xhci_dbc:early_xdbc_parse_parameter: dbgp_num: 0
-	...
-	[ ] xhci_dbc:early_xdbc_setup_hardware: failed to setup the connection to host
-	...
-	[ ] calling  kmemleak_late_init+0x0/0xa0 @ 1
-	[ ] kmemleak: Kernel memory leak detector initialized (mem pool available: 14919)
-	[ ] kmemleak: Automatic memory scanning thread started
-	[ ] initcall kmemleak_late_init+0x0/0xa0 returned 0 after 417 usecs
-	[ ] calling  check_early_ioremap_leak+0x0/0x70 @ 1
-	[ ] ------------[ cut here ]------------
-	[ ] Debug warning: early ioremap leak of 1 areas detected.
-	    please boot with early_ioremap_debug and report the dmesg.
-	[ ] WARNING: CPU: 11 PID: 1 at mm/early_ioremap.c:90 check_early_ioremap_leak+0x4e/0x70
+Add READ_ONCE()/WRITE_ONCE() annotations to suppress
+potential issues.
 
-When early_xdbc_setup_hardware() fails, make sure to call
-early_iounmap() since xdbc_init() won't handle it.
+We will likely need RCU protection in the future.
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Fixes: aeb9dd1de98c ("usb/early: Add driver for xhci debug capability")
-Link: https://lore.kernel.org/r/20250627-xdbc-v1-1-43cc8c317b1b@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250630121934.3399505-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/early/xhci-dbc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/dst.h      | 2 +-
+ include/net/lwtunnel.h | 4 ++--
+ net/core/dst.c         | 2 +-
+ net/ipv4/route.c       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/early/xhci-dbc.c b/drivers/usb/early/xhci-dbc.c
-index 341408410ed9..41118bba9197 100644
---- a/drivers/usb/early/xhci-dbc.c
-+++ b/drivers/usb/early/xhci-dbc.c
-@@ -681,6 +681,10 @@ int __init early_xdbc_setup_hardware(void)
- 
- 		xdbc.table_base = NULL;
- 		xdbc.out_buf = NULL;
-+
-+		early_iounmap(xdbc.xhci_base, xdbc.xhci_length);
-+		xdbc.xhci_base = NULL;
-+		xdbc.xhci_length = 0;
+diff --git a/include/net/dst.h b/include/net/dst.h
+index c844ba143b9c..e18826cd0559 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -456,7 +456,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
+ /* Output packet to network from transport.  */
+ static inline int dst_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	return INDIRECT_CALL_INET(skb_dst(skb)->output,
++	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->output),
+ 				  ip6_output, ip_output,
+ 				  net, sk, skb);
+ }
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index a4632a64daae..09791f5d9b6e 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -138,8 +138,8 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len,
+ static inline void lwtunnel_set_redirect(struct dst_entry *dst)
+ {
+ 	if (lwtunnel_output_redirect(dst->lwtstate)) {
+-		dst->lwtstate->orig_output = dst->output;
+-		dst->output = lwtunnel_output;
++		dst->lwtstate->orig_output = READ_ONCE(dst->output);
++		WRITE_ONCE(dst->output, lwtunnel_output);
  	}
+ 	if (lwtunnel_input_redirect(dst->lwtstate)) {
+ 		dst->lwtstate->orig_input = READ_ONCE(dst->input);
+diff --git a/net/core/dst.c b/net/core/dst.c
+index 0eef85f8f1f3..cc990706b645 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -149,7 +149,7 @@ void dst_dev_put(struct dst_entry *dst)
+ 	if (dst->ops->ifdown)
+ 		dst->ops->ifdown(dst, dev);
+ 	WRITE_ONCE(dst->input, dst_discard);
+-	dst->output = dst_discard_out;
++	WRITE_ONCE(dst->output, dst_discard_out);
+ 	dst->dev = blackhole_netdev;
+ 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+ 			   GFP_ATOMIC);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 118f01aef868..73d555593f5c 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1685,7 +1685,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
+ 			new_rt->rt_gw6 = rt->rt_gw6;
  
- 	return ret;
+ 		new_rt->dst.input = READ_ONCE(rt->dst.input);
+-		new_rt->dst.output = rt->dst.output;
++		new_rt->dst.output = READ_ONCE(rt->dst.output);
+ 		new_rt->dst.error = rt->dst.error;
+ 		new_rt->dst.lastuse = jiffies;
+ 		new_rt->dst.lwtstate = lwtstate_get(rt->dst.lwtstate);
 -- 
 2.39.5
 
