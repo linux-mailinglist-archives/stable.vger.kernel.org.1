@@ -1,142 +1,141 @@
-Return-Path: <stable+bounces-167233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2117B22D2A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0B4B22D8D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B67BC7A82B5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:20:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE99D3B4019
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7DE2F8BF6;
-	Tue, 12 Aug 2025 16:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193522F6579;
+	Tue, 12 Aug 2025 16:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRX1jwWu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/Wmf/fH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DF72F8BF5
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1F4156CA;
+	Tue, 12 Aug 2025 16:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015684; cv=none; b=u39lL8MuFxlVY4cAIw95K7+/hojKm5qOjIxnrcq/h0XzjDNJpVO6mgoKp2JSefglcQkgQ53QCxNRJ6LthmGpCLv9/q+bBeISNsHFazuPIcWqZ2bXercYVAMX8/wN9GoB2lwakCk+ZmxpOE69fUGXGkFnWUCFM0x1jvFJ7CfSNlU=
+	t=1755015819; cv=none; b=vF6xPBtq0WoyN/gdQLI2ykL9n+Qq2fgLzW602FzF8gCUIUQZC9WRQPsigjq7wDg8gOTj5aBEAnduwTNWFe8l9+0lkrXy5uRFacxep9TiLUXo3x05vnxXVuILYO0NMWc94A1WXWSL6R/sNOCUX8i6l66H0wbHG0S7g3RUg7oLZYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015684; c=relaxed/simple;
-	bh=KEIc+EhLyS0Tk1srYE119a/UFTVUCx3M+3rN2E0kU8Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cjuDQiKxzWObVUS3Y/v5lley0mZnWXJQ0MR+c3oydjbGLIjCkz7CneeNv8n2OZjEXDVrBKZLzLEwJSLo9OmOxBM1YA1Q+CVAQCBcSrpXlfS6esgDpTMkB/dHYhX2xyBuIVvWg90zPOEgqfo8wtKKyHP1+DD3Kxyzg0rGp2qrKLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRX1jwWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7BCC4CEF0;
-	Tue, 12 Aug 2025 16:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755015684;
-	bh=KEIc+EhLyS0Tk1srYE119a/UFTVUCx3M+3rN2E0kU8Y=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yRX1jwWu7AFXBD6buTS6K7l0mm3wfc37jNKOsEOswhPGeFWW32bUeec9tbMrZ/xSv
-	 OrcI4x7Ifyhz1Bm+i4Hhj3NzYpSLr4aNxkSSfOeX7N7KKGTolMeZ+dt+pbNOlowyTu
-	 yyQRoHbErShHoex9Tj6rUMY2+3ka8qVUnLI5hpVk=
-Subject: FAILED: patch "[PATCH] HID: apple: avoid setting up battery timer for devices" failed to apply to 6.1-stable tree
-To: gargaditya08@live.com,jkosina@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Aug 2025 18:21:02 +0200
-Message-ID: <2025081202-delirium-stubborn-aa45@gregkh>
+	s=arc-20240116; t=1755015819; c=relaxed/simple;
+	bh=lmRgp0EyHFj1i0/G+1nfVYlPsnmB8OBbP4bbzk4jrf0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cRk5LXuoqapm0eQidMRmmyrfS/FmInyVuV+XrwdZDq7/Zv3bImGtOhg8yd3gibM9vb/QiHrV5vjteRYvOr+hJzsjSHrVrF7HaKf/UT4GxOV3/jwVUxs24olwtHCnhkOt0Phr0RClea7SFMKIKi883/cN6Atu6DXJpUF4iN68L7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/Wmf/fH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB17C4CEF6;
+	Tue, 12 Aug 2025 16:23:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755015819;
+	bh=lmRgp0EyHFj1i0/G+1nfVYlPsnmB8OBbP4bbzk4jrf0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i/Wmf/fHAViTT5UG9sgOdKKl+440g8EzSCGoJRZBoDYYMxpvePPqcRw5b4f6KxPZe
+	 wvQa/vrf43V7f7KWGWI8KcE7l1QV0DgEaNLFjjdpMXes9at3k5RQVMGcmieEEqgqCp
+	 dAcQwf7V2IhDZXudlPZRxK/lo899nXLWnOtS0lIRgb5W+Xs6uKVDTyxvkv2EHQKGhx
+	 ZvGnB6lCu8mB7rlA4trZaIN0IFgTttDdEgw5ncx0SvElFGXymIh9mThP+PS2O5+30P
+	 BmehG2Z9wviyH7czVVem/Q0k3SI06o5rl+5dLVzGBfBFtlaRoc50J5m0XhbgJJuIso
+	 1TIUv2dBx4Wvg==
+Date: Tue, 12 Aug 2025 19:23:35 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>, keyrings@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	linux-integrity@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] KEYS: trusted_tpm1: Compare HMAC values in
+ constant time
+Message-ID: <aJtqhyWu83xaj8Kc@kernel.org>
+References: <20250809171941.5497-1-ebiggers@kernel.org>
+ <20250809171941.5497-2-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250809171941.5497-2-ebiggers@kernel.org>
 
+On Sat, Aug 09, 2025 at 10:19:39AM -0700, Eric Biggers wrote:
+> To prevent timing attacks, HMAC value comparison needs to be constant
+> time.  Replace the memcmp() with the correct function, crypto_memneq().
+> 
+> [For the Fixes commit I used the commit that introduced the memcmp().
+> It predates the introduction of crypto_memneq(), but it was still a bug
+> at the time even though a helper function didn't exist yet.]
+> 
+> Fixes: d00a1c72f7f4 ("keys: add new trusted key-type")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>  security/keys/trusted-keys/trusted_tpm1.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
+> index 89c9798d18007..e73f2c6c817a0 100644
+> --- a/security/keys/trusted-keys/trusted_tpm1.c
+> +++ b/security/keys/trusted-keys/trusted_tpm1.c
+> @@ -5,10 +5,11 @@
+>   *
+>   * See Documentation/security/keys/trusted-encrypted.rst
+>   */
+>  
+>  #include <crypto/hash_info.h>
+> +#include <crypto/utils.h>
+>  #include <linux/init.h>
+>  #include <linux/slab.h>
+>  #include <linux/parser.h>
+>  #include <linux/string.h>
+>  #include <linux/err.h>
+> @@ -239,11 +240,11 @@ int TSS_checkhmac1(unsigned char *buffer,
+>  			  TPM_NONCE_SIZE, enonce, TPM_NONCE_SIZE, ononce,
+>  			  1, continueflag, 0, 0);
+>  	if (ret < 0)
+>  		goto out;
+>  
+> -	if (memcmp(testhmac, authdata, SHA1_DIGEST_SIZE))
+> +	if (crypto_memneq(testhmac, authdata, SHA1_DIGEST_SIZE))
+>  		ret = -EINVAL;
+>  out:
+>  	kfree_sensitive(sdesc);
+>  	return ret;
+>  }
+> @@ -332,20 +333,20 @@ static int TSS_checkhmac2(unsigned char *buffer,
+>  	ret = TSS_rawhmac(testhmac1, key1, keylen1, SHA1_DIGEST_SIZE,
+>  			  paramdigest, TPM_NONCE_SIZE, enonce1,
+>  			  TPM_NONCE_SIZE, ononce, 1, continueflag1, 0, 0);
+>  	if (ret < 0)
+>  		goto out;
+> -	if (memcmp(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
+> +	if (crypto_memneq(testhmac1, authdata1, SHA1_DIGEST_SIZE)) {
+>  		ret = -EINVAL;
+>  		goto out;
+>  	}
+>  	ret = TSS_rawhmac(testhmac2, key2, keylen2, SHA1_DIGEST_SIZE,
+>  			  paramdigest, TPM_NONCE_SIZE, enonce2,
+>  			  TPM_NONCE_SIZE, ononce, 1, continueflag2, 0, 0);
+>  	if (ret < 0)
+>  		goto out;
+> -	if (memcmp(testhmac2, authdata2, SHA1_DIGEST_SIZE))
+> +	if (crypto_memneq(testhmac2, authdata2, SHA1_DIGEST_SIZE))
+>  		ret = -EINVAL;
+>  out:
+>  	kfree_sensitive(sdesc);
+>  	return ret;
+>  }
+> -- 
+> 2.50.1
+> 
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x c061046fe9ce3ff31fb9a807144a2630ad349c17
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081202-delirium-stubborn-aa45@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c061046fe9ce3ff31fb9a807144a2630ad349c17 Mon Sep 17 00:00:00 2001
-From: Aditya Garg <gargaditya08@live.com>
-Date: Mon, 30 Jun 2025 12:37:13 +0000
-Subject: [PATCH] HID: apple: avoid setting up battery timer for devices
- without battery
-
-Currently, the battery timer is set up for all devices using hid-apple,
-irrespective of whether they actually have a battery or not.
-
-APPLE_RDESC_BATTERY is a quirk that indicates the device has a battery
-and needs the battery timer. This patch checks for this quirk before
-setting up the timer, ensuring that only devices with a battery will
-have the timer set up.
-
-Fixes: 6e143293e17a ("HID: apple: Report Magic Keyboard battery over USB")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index 0639b1f43d88..8ab15a8f3524 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -933,10 +933,12 @@ static int apple_probe(struct hid_device *hdev,
- 		return ret;
- 	}
- 
--	timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
--	mod_timer(&asc->battery_timer,
--		  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
--	apple_fetch_battery(hdev);
-+	if (quirks & APPLE_RDESC_BATTERY) {
-+		timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
-+		mod_timer(&asc->battery_timer,
-+			  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
-+		apple_fetch_battery(hdev);
-+	}
- 
- 	if (quirks & APPLE_BACKLIGHT_CTL)
- 		apple_backlight_init(hdev);
-@@ -950,7 +952,9 @@ static int apple_probe(struct hid_device *hdev,
- 	return 0;
- 
- out_err:
--	timer_delete_sync(&asc->battery_timer);
-+	if (quirks & APPLE_RDESC_BATTERY)
-+		timer_delete_sync(&asc->battery_timer);
-+
- 	hid_hw_stop(hdev);
- 	return ret;
- }
-@@ -959,7 +963,8 @@ static void apple_remove(struct hid_device *hdev)
- {
- 	struct apple_sc *asc = hid_get_drvdata(hdev);
- 
--	timer_delete_sync(&asc->battery_timer);
-+	if (asc->quirks & APPLE_RDESC_BATTERY)
-+		timer_delete_sync(&asc->battery_timer);
- 
- 	hid_hw_stop(hdev);
- }
-
+BR, Jarkko
 
