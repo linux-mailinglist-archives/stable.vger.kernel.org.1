@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF72B23045
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB150B22F57
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC4C918902A5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8666A4E07F1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA112F7477;
-	Tue, 12 Aug 2025 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCFC2FDC5D;
+	Tue, 12 Aug 2025 17:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3zzjoFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkXm0mr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B1D2E972E;
-	Tue, 12 Aug 2025 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2DF2FDC49;
+	Tue, 12 Aug 2025 17:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020948; cv=none; b=lWN0icCowe9KLcIC07OlQZVNtEtbMvgdm4tt96bmt/lUFRuUP0Tr73ryb+llxbYcyE47LRC+TiXwW2wVw2nUaJrahDqH4aexgQdGXgoJymMPFdqlpvdyEm/jkdE+BcqJ0vFuyK4IB+byiUAB+fM5UBYbpEryvLSBNGVsRQbMQMs=
+	t=1755020254; cv=none; b=HQHTrMjTXRA++kRWRGG6CDQM5/FOO9heCMl74rBRgatDeHHZLOFTslCLFPZwkXEOy6SdSuG5c3P3t5FWCeIzGH0xtxKiFXF05P9+bdietvmwT4FcL9S3RPpnXEebF6Fgc1mBSZ1JRnKFfZ63jlK95/IxCde8fPx77wtW2MD6qYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020948; c=relaxed/simple;
-	bh=H/6dhTZH91DJT7/IRxrqOhklw+dqsKcg9L26nGLgLu8=;
+	s=arc-20240116; t=1755020254; c=relaxed/simple;
+	bh=HuI8C6V2s5xxp6wh4iYyAtmnqAAeBZ7lI0uboDcxjEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ciTyqsPvYI4mToHCcIPO1+btsS3dRfzycZJ9GdKceXAvHRyXHs0MLkxdzVs5eHqsfzkQjcwHj+dZkDOfhBMfQmsh4ym6ogNACKoQ6bypVuhIvVRbpx2rr+U5Hb1PODBdQb95MX+IVMD6epP+iBkpL9L4Agzd8b7cwfR9xSAK2VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3zzjoFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA471C4CEF1;
-	Tue, 12 Aug 2025 17:49:07 +0000 (UTC)
+	 MIME-Version; b=RFekV48S7auCYycg5SZIslZ2K+HVkM9aEmaDCt+yDafjeaZS/dgQnR15XXm0wEcizfdtvnBi3iV2QNmwl+isBfkXj/LEoV/U8/+rXuccgeRpmiFrv/PepHjD1Wvp45Y+/omMQKUBkvbaVlHtCe35jiCubrVua2AnJFe+GKMXrgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkXm0mr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D94BC4CEF7;
+	Tue, 12 Aug 2025 17:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020948;
-	bh=H/6dhTZH91DJT7/IRxrqOhklw+dqsKcg9L26nGLgLu8=;
+	s=korg; t=1755020254;
+	bh=HuI8C6V2s5xxp6wh4iYyAtmnqAAeBZ7lI0uboDcxjEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3zzjoFqUhzCKe1Ep834tJmakBWEYzQUJrMAonJf9vLjUvMLu+s+TzcQ1pkSWYPh6
-	 9FnyosNF6DcPps0Ro57ujlPTm++mVKpx9g7CAxSnwzmz+1QdOu1iAO0eFkGL7xh5UQ
-	 Joo8TnrlDDBeexv3GtHeLrxZPN+rZDxRlDWycC1I=
+	b=ZkXm0mr2jYXL5TVbRi95QfeRv072TtYLF/aStnE5pa0FoMIoDyUq6nnvSzRfvQ0xj
+	 annH7c7caUbCR+ZzWWypB8JcrM77Pf1Yz3tljG6b0/q2/DdvdKm4bn5h+irrV26O92
+	 4ULI7aqidexdzGqI0n+uDFOqh8xluWnwPxG78mGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1aa90f0eb1fc3e77d969@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Stefan Wahren <stefan.wahren@i2se.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/262] fs/ntfs3: cancle set bad inode after removing name fails
+Subject: [PATCH 6.1 008/253] staging: vc04_services: Drop VCHIQ_SUCCESS usage
 Date: Tue, 12 Aug 2025 19:26:36 +0200
-Message-ID: <20250812172953.326711829@linuxfoundation.org>
+Message-ID: <20250812172949.045256620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,555 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Umang Jain <umang.jain@ideasonboard.com>
 
-[ Upstream commit d99208b91933fd2a58ed9ed321af07dacd06ddc3 ]
+[ Upstream commit 3414994ba840425b313853a47d581dd5c6c2d300 ]
 
-The reproducer uses a file0 on a ntfs3 file system with a corrupted i_link.
-When renaming, the file0's inode is marked as a bad inode because the file
-name cannot be deleted.
+Drop the usage of VCHIQ_SUCCESS vchiq_status enum type. Replace it with
+0 to report the success status.
 
-The underlying bug is that make_bad_inode() is called on a live inode.
-In some cases it's "icache lookup finds a normal inode, d_splice_alias()
-is called to attach it to dentry, while another thread decides to call
-make_bad_inode() on it - that would evict it from icache, but we'd already
-found it there earlier".
-In some it's outright "we have an inode attached to dentry - that's how we
-got it in the first place; let's call make_bad_inode() on it just for shits
-and giggles".
+This patch acts as intermediatory to address the TODO item:
+	* Get rid of custom function return values
+for vc04_services/interface.
 
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Reported-by: syzbot+1aa90f0eb1fc3e77d969@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1aa90f0eb1fc3e77d969
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+Tested-by: Stefan Wahren <stefan.wahren@i2se.com>
+Link: https://lore.kernel.org/r/20221223122404.170585-3-umang.jain@ideasonboard.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f2b8ebfb8670 ("staging: vchiq_arm: Make vchiq_shutdown never fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c |  7 +++----
- fs/ntfs3/namei.c   | 10 +++-------
- fs/ntfs3/ntfs_fs.h |  3 +--
- 3 files changed, 7 insertions(+), 13 deletions(-)
+ .../bcm2835-audio/bcm2835-vchiq.c             |  4 +-
+ .../include/linux/raspberrypi/vchiq.h         |  1 -
+ .../interface/vchiq_arm/vchiq_arm.c           | 36 ++++++-------
+ .../interface/vchiq_arm/vchiq_core.c          | 54 +++++++++----------
+ .../interface/vchiq_arm/vchiq_dev.c           | 18 +++----
+ .../vc04_services/vchiq-mmal/mmal-vchiq.c     |  4 +-
+ 6 files changed, 57 insertions(+), 60 deletions(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 3c876c468c2c..5c45fec832b0 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -3058,8 +3058,7 @@ int ni_add_name(struct ntfs_inode *dir_ni, struct ntfs_inode *ni,
-  * ni_rename - Remove one name and insert new name.
-  */
- int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
--	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de,
--	      bool *is_bad)
-+	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de)
+diff --git a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
+index f4c2c9506d863..2a5a43e7ff295 100644
+--- a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
++++ b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
+@@ -101,7 +101,7 @@ static enum vchiq_status audio_vchi_callback(struct vchiq_instance *vchiq_instan
+ 	struct vc_audio_msg *m;
+ 
+ 	if (reason != VCHIQ_MESSAGE_AVAILABLE)
+-		return VCHIQ_SUCCESS;
++		return 0;
+ 
+ 	m = (void *)header->data;
+ 	if (m->type == VC_AUDIO_MSG_TYPE_RESULT) {
+@@ -119,7 +119,7 @@ static enum vchiq_status audio_vchi_callback(struct vchiq_instance *vchiq_instan
+ 	}
+ 
+ 	vchiq_release_message(vchiq_instance, instance->service_handle, header);
+-	return VCHIQ_SUCCESS;
++	return 0;
+ }
+ 
+ static int
+diff --git a/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h b/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h
+index 690ab7165b2c1..ce73930d71d1a 100644
+--- a/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h
++++ b/drivers/staging/vc04_services/include/linux/raspberrypi/vchiq.h
+@@ -19,7 +19,6 @@ enum vchiq_reason {
+ 
+ enum vchiq_status {
+ 	VCHIQ_ERROR   = -1,
+-	VCHIQ_SUCCESS = 0,
+ 	VCHIQ_RETRY   = 1
+ };
+ 
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index 456a9508fb911..f27f5a1a23e2f 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -711,7 +711,7 @@ void free_bulk_waiter(struct vchiq_instance *instance)
+ 
+ enum vchiq_status vchiq_shutdown(struct vchiq_instance *instance)
  {
- 	int err;
- 	struct NTFS_DE *de2 = NULL;
-@@ -3082,8 +3081,8 @@ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
- 	err = ni_add_name(new_dir_ni, ni, new_de);
- 	if (!err) {
- 		err = ni_remove_name(dir_ni, ni, de, &de2, &undo);
--		if (err && ni_remove_name(new_dir_ni, ni, new_de, &de2, &undo))
--			*is_bad = true;
-+		WARN_ON(err && ni_remove_name(new_dir_ni, ni, new_de, &de2,
-+			&undo));
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 	struct vchiq_state *state = instance->state;
+ 
+ 	if (mutex_lock_killable(&state->mutex))
+@@ -748,7 +748,7 @@ enum vchiq_status vchiq_connect(struct vchiq_instance *instance)
+ 	}
+ 	status = vchiq_connect_internal(state, instance);
+ 
+-	if (status == VCHIQ_SUCCESS)
++	if (!status)
+ 		instance->connected = 1;
+ 
+ 	mutex_unlock(&state->mutex);
+@@ -780,7 +780,7 @@ vchiq_add_service(struct vchiq_instance *instance,
+ 
+ 	if (service) {
+ 		*phandle = service->handle;
+-		status = VCHIQ_SUCCESS;
++		status = 0;
+ 	} else {
+ 		status = VCHIQ_ERROR;
+ 	}
+@@ -809,7 +809,7 @@ vchiq_open_service(struct vchiq_instance *instance,
+ 	if (service) {
+ 		*phandle = service->handle;
+ 		status = vchiq_open_service_internal(service, current->pid);
+-		if (status != VCHIQ_SUCCESS) {
++		if (status) {
+ 			vchiq_remove_service(instance, service->handle);
+ 			*phandle = VCHIQ_SERVICE_HANDLE_INVALID;
+ 		}
+@@ -991,7 +991,7 @@ add_completion(struct vchiq_instance *instance, enum vchiq_reason reason,
+ 			return VCHIQ_RETRY;
+ 		} else if (instance->closing) {
+ 			vchiq_log_info(vchiq_arm_log_level, "service_callback closing");
+-			return VCHIQ_SUCCESS;
++			return 0;
+ 		}
+ 		DEBUG_TRACE(SERVICE_CALLBACK_LINE);
+ 	}
+@@ -1028,7 +1028,7 @@ add_completion(struct vchiq_instance *instance, enum vchiq_reason reason,
+ 
+ 	complete(&instance->insert_event);
+ 
+-	return VCHIQ_SUCCESS;
++	return 0;
+ }
+ 
+ enum vchiq_status
+@@ -1053,14 +1053,14 @@ service_callback(struct vchiq_instance *instance, enum vchiq_reason reason,
+ 	service = handle_to_service(instance, handle);
+ 	if (WARN_ON(!service)) {
+ 		rcu_read_unlock();
+-		return VCHIQ_SUCCESS;
++		return 0;
+ 	}
+ 
+ 	user_service = (struct user_service *)service->base.userdata;
+ 
+ 	if (!instance || instance->closing) {
+ 		rcu_read_unlock();
+-		return VCHIQ_SUCCESS;
++		return 0;
  	}
  
  	/*
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index 61c4da8e6c3d..f5901c23ab93 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -261,7 +261,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
- 	struct ntfs_inode *ni = ntfs_i(inode);
- 	struct inode *new_inode = d_inode(new_dentry);
- 	struct NTFS_DE *de, *new_de;
--	bool is_same, is_bad;
-+	bool is_same;
- 	/*
- 	 * de		- memory of PATH_MAX bytes:
- 	 * [0-1024)	- original name (dentry->d_name)
-@@ -330,12 +330,8 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
- 	if (dir_ni != new_dir_ni)
- 		ni_lock_dir2(new_dir_ni);
+@@ -1097,7 +1097,7 @@ service_callback(struct vchiq_instance *instance, enum vchiq_reason reason,
+ 				DEBUG_TRACE(SERVICE_CALLBACK_LINE);
+ 				status = add_completion(instance, reason, NULL, user_service,
+ 							bulk_userdata);
+-				if (status != VCHIQ_SUCCESS) {
++				if (status) {
+ 					DEBUG_TRACE(SERVICE_CALLBACK_LINE);
+ 					vchiq_service_put(service);
+ 					return status;
+@@ -1145,7 +1145,7 @@ service_callback(struct vchiq_instance *instance, enum vchiq_reason reason,
+ 	vchiq_service_put(service);
  
--	is_bad = false;
--	err = ni_rename(dir_ni, new_dir_ni, ni, de, new_de, &is_bad);
--	if (is_bad) {
--		/* Restore after failed rename failed too. */
--		_ntfs_bad_inode(inode);
--	} else if (!err) {
-+	err = ni_rename(dir_ni, new_dir_ni, ni, de, new_de);
-+	if (!err) {
- 		simple_rename_timestamp(dir, dentry, new_dir, new_dentry);
- 		mark_inode_dirty(inode);
- 		mark_inode_dirty(dir);
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index c98e6868bfba..72810d8f62ee 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -577,8 +577,7 @@ int ni_add_name(struct ntfs_inode *dir_ni, struct ntfs_inode *ni,
- 		struct NTFS_DE *de);
+ 	if (skip_completion)
+-		return VCHIQ_SUCCESS;
++		return 0;
  
- int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
--	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de,
--	      bool *is_bad);
-+	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de);
+ 	return add_completion(instance, reason, header, user_service,
+ 		bulk_userdata);
+@@ -1337,14 +1337,14 @@ vchiq_keepalive_thread_func(void *v)
+ 	}
  
- bool ni_is_dirty(struct inode *inode);
+ 	status = vchiq_connect(instance);
+-	if (status != VCHIQ_SUCCESS) {
++	if (status) {
+ 		vchiq_log_error(vchiq_susp_log_level, "%s vchiq_connect failed %d", __func__,
+ 				status);
+ 		goto shutdown;
+ 	}
  
+ 	status = vchiq_add_service(instance, &params, &ka_handle);
+-	if (status != VCHIQ_SUCCESS) {
++	if (status) {
+ 		vchiq_log_error(vchiq_susp_log_level, "%s vchiq_open_service failed %d", __func__,
+ 				status);
+ 		goto shutdown;
+@@ -1373,14 +1373,14 @@ vchiq_keepalive_thread_func(void *v)
+ 		while (uc--) {
+ 			atomic_inc(&arm_state->ka_use_ack_count);
+ 			status = vchiq_use_service(instance, ka_handle);
+-			if (status != VCHIQ_SUCCESS) {
++			if (status) {
+ 				vchiq_log_error(vchiq_susp_log_level,
+ 						"%s vchiq_use_service error %d", __func__, status);
+ 			}
+ 		}
+ 		while (rc--) {
+ 			status = vchiq_release_service(instance, ka_handle);
+-			if (status != VCHIQ_SUCCESS) {
++			if (status) {
+ 				vchiq_log_error(vchiq_susp_log_level,
+ 						"%s vchiq_release_service error %d", __func__,
+ 						status);
+@@ -1433,13 +1433,13 @@ vchiq_use_internal(struct vchiq_state *state, struct vchiq_service *service,
+ 	write_unlock_bh(&arm_state->susp_res_lock);
+ 
+ 	if (!ret) {
+-		enum vchiq_status status = VCHIQ_SUCCESS;
++		int status = 0;
+ 		long ack_cnt = atomic_xchg(&arm_state->ka_use_ack_count, 0);
+ 
+-		while (ack_cnt && (status == VCHIQ_SUCCESS)) {
++		while (ack_cnt && !status) {
+ 			/* Send the use notify to videocore */
+ 			status = vchiq_send_remote_use_active(state);
+-			if (status == VCHIQ_SUCCESS)
++			if (!status)
+ 				ack_cnt--;
+ 			else
+ 				atomic_add(ack_cnt, &arm_state->ka_use_ack_count);
+@@ -1695,7 +1695,7 @@ vchiq_check_service(struct vchiq_service *service)
+ 
+ 	read_lock_bh(&arm_state->susp_res_lock);
+ 	if (service->service_use_count)
+-		ret = VCHIQ_SUCCESS;
++		ret = 0;
+ 	read_unlock_bh(&arm_state->susp_res_lock);
+ 
+ 	if (ret == VCHIQ_ERROR) {
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
+index 45ed30bfdbf56..9c4523d04bdbb 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
+@@ -478,7 +478,7 @@ make_service_callback(struct vchiq_service *service, enum vchiq_reason reason,
+ 		vchiq_log_warning(vchiq_core_log_level,
+ 				  "%d: ignoring ERROR from callback to service %x",
+ 				  service->state->id, service->handle);
+-		status = VCHIQ_SUCCESS;
++		status = 0;
+ 	}
+ 
+ 	if (reason != VCHIQ_MESSAGE_AVAILABLE)
+@@ -1135,7 +1135,7 @@ queue_message(struct vchiq_state *state, struct vchiq_service *service,
+ 
+ 	remote_event_signal(&state->remote->trigger);
+ 
+-	return VCHIQ_SUCCESS;
++	return 0;
+ }
+ 
+ /* Called by the slot handler and application threads */
+@@ -1223,7 +1223,7 @@ queue_message_sync(struct vchiq_state *state, struct vchiq_service *service,
+ 	if (VCHIQ_MSG_TYPE(msgid) != VCHIQ_MSG_PAUSE)
+ 		mutex_unlock(&state->sync_mutex);
+ 
+-	return VCHIQ_SUCCESS;
++	return 0;
+ }
+ 
+ static inline void
+@@ -1303,7 +1303,7 @@ static enum vchiq_status
+ notify_bulks(struct vchiq_service *service, struct vchiq_bulk_queue *queue,
+ 	     int retry_poll)
+ {
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 
+ 	vchiq_log_trace(vchiq_core_log_level, "%d: nb:%d %cx - p=%x rn=%x r=%x", service->state->id,
+ 			service->localport, (queue == &service->bulk_tx) ? 't' : 'r',
+@@ -1357,7 +1357,7 @@ notify_bulks(struct vchiq_service *service, struct vchiq_bulk_queue *queue,
+ 		complete(&service->bulk_remove_event);
+ 	}
+ 	if (!retry_poll)
+-		status = VCHIQ_SUCCESS;
++		status = 0;
+ 
+ 	if (status == VCHIQ_RETRY)
+ 		request_poll(service->state, service, (queue == &service->bulk_tx) ?
+@@ -1398,13 +1398,12 @@ poll_services_of_group(struct vchiq_state *state, int group)
+ 			 */
+ 			service->public_fourcc = VCHIQ_FOURCC_INVALID;
+ 
+-			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD) !=
+-							 VCHIQ_SUCCESS)
++			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD))
+ 				request_poll(state, service, VCHIQ_POLL_REMOVE);
+ 		} else if (service_flags & BIT(VCHIQ_POLL_TERMINATE)) {
+ 			vchiq_log_info(vchiq_core_log_level, "%d: ps - terminate %d<->%d",
+ 				       state->id, service->localport, service->remoteport);
+-			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD) != VCHIQ_SUCCESS)
++			if (vchiq_close_service_internal(service, NO_CLOSE_RECVD))
+ 				request_poll(state, service, VCHIQ_POLL_TERMINATE);
+ 		}
+ 		if (service_flags & BIT(VCHIQ_POLL_TXNOTIFY))
+@@ -2495,7 +2494,7 @@ vchiq_open_service_internal(struct vchiq_service *service, int client_id)
+ 		service->version,
+ 		service->version_min
+ 	};
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 
+ 	service->client_id = client_id;
+ 	vchiq_use_service_internal(service);
+@@ -2506,7 +2505,7 @@ vchiq_open_service_internal(struct vchiq_service *service, int client_id)
+ 			       sizeof(payload),
+ 			       QMFLAGS_IS_BLOCKING);
+ 
+-	if (status != VCHIQ_SUCCESS)
++	if (status)
+ 		return status;
+ 
+ 	/* Wait for the ACK/NAK */
+@@ -2602,11 +2601,11 @@ do_abort_bulks(struct vchiq_service *service)
+ 	mutex_unlock(&service->bulk_mutex);
+ 
+ 	status = notify_bulks(service, &service->bulk_tx, NO_RETRY_POLL);
+-	if (status != VCHIQ_SUCCESS)
++	if (status)
+ 		return 0;
+ 
+ 	status = notify_bulks(service, &service->bulk_rx, NO_RETRY_POLL);
+-	return (status == VCHIQ_SUCCESS);
++	return !status;
+ }
+ 
+ static enum vchiq_status
+@@ -2678,7 +2677,7 @@ enum vchiq_status
+ vchiq_close_service_internal(struct vchiq_service *service, int close_recvd)
+ {
+ 	struct vchiq_state *state = service->state;
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 	int is_server = (service->public_fourcc != VCHIQ_FOURCC_INVALID);
+ 	int close_id = MAKE_CLOSE(service->localport,
+ 				  VCHIQ_MSG_DSTPORT(service->remoteport));
+@@ -2730,11 +2729,11 @@ vchiq_close_service_internal(struct vchiq_service *service, int close_recvd)
+ 
+ 		release_service_messages(service);
+ 
+-		if (status == VCHIQ_SUCCESS)
++		if (!status)
+ 			status = queue_message(state, service, close_id, NULL,
+ 					       NULL, 0, QMFLAGS_NO_MUTEX_UNLOCK);
+ 
+-		if (status != VCHIQ_SUCCESS) {
++		if (status) {
+ 			if (service->srvstate == VCHIQ_SRVSTATE_OPENSYNC)
+ 				mutex_unlock(&state->sync_mutex);
+ 			break;
+@@ -2768,7 +2767,7 @@ vchiq_close_service_internal(struct vchiq_service *service, int close_recvd)
+ 			break;
+ 		}
+ 
+-		if (status == VCHIQ_SUCCESS)
++		if (!status)
+ 			status = close_service_complete(service, VCHIQ_SRVSTATE_CLOSERECVD);
+ 		break;
+ 
+@@ -2862,7 +2861,7 @@ vchiq_connect_internal(struct vchiq_state *state, struct vchiq_instance *instanc
+ 		complete(&state->connect);
+ 	}
+ 
+-	return VCHIQ_SUCCESS;
++	return 0;
+ }
+ 
+ void
+@@ -2884,7 +2883,7 @@ vchiq_close_service(struct vchiq_instance *instance, unsigned int handle)
+ {
+ 	/* Unregister the service */
+ 	struct vchiq_service *service = find_service_by_handle(instance, handle);
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 
+ 	if (!service)
+ 		return VCHIQ_ERROR;
+@@ -2926,7 +2925,7 @@ vchiq_close_service(struct vchiq_instance *instance, unsigned int handle)
+ 				  srvstate_names[service->srvstate]);
+ 	}
+ 
+-	if ((status == VCHIQ_SUCCESS) &&
++	if (!status &&
+ 	    (service->srvstate != VCHIQ_SRVSTATE_FREE) &&
+ 	    (service->srvstate != VCHIQ_SRVSTATE_LISTENING))
+ 		status = VCHIQ_ERROR;
+@@ -2942,7 +2941,7 @@ vchiq_remove_service(struct vchiq_instance *instance, unsigned int handle)
+ {
+ 	/* Unregister the service */
+ 	struct vchiq_service *service = find_service_by_handle(instance, handle);
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 
+ 	if (!service)
+ 		return VCHIQ_ERROR;
+@@ -2987,8 +2986,7 @@ vchiq_remove_service(struct vchiq_instance *instance, unsigned int handle)
+ 				  srvstate_names[service->srvstate]);
+ 	}
+ 
+-	if ((status == VCHIQ_SUCCESS) &&
+-	    (service->srvstate != VCHIQ_SRVSTATE_FREE))
++	if (!status && (service->srvstate != VCHIQ_SRVSTATE_FREE))
+ 		status = VCHIQ_ERROR;
+ 
+ 	vchiq_service_put(service);
+@@ -3028,7 +3026,7 @@ enum vchiq_status vchiq_bulk_transfer(struct vchiq_instance *instance, unsigned
+ 	if (!offset && !uoffset)
+ 		goto error_exit;
+ 
+-	if (vchiq_check_service(service) != VCHIQ_SUCCESS)
++	if (vchiq_check_service(service))
+ 		goto error_exit;
+ 
+ 	switch (mode) {
+@@ -3121,7 +3119,7 @@ enum vchiq_status vchiq_bulk_transfer(struct vchiq_instance *instance, unsigned
+ 			       QMFLAGS_IS_BLOCKING |
+ 			       QMFLAGS_NO_MUTEX_LOCK |
+ 			       QMFLAGS_NO_MUTEX_UNLOCK);
+-	if (status != VCHIQ_SUCCESS)
++	if (status)
+ 		goto unlock_both_error_exit;
+ 
+ 	queue->local_insert++;
+@@ -3136,7 +3134,7 @@ enum vchiq_status vchiq_bulk_transfer(struct vchiq_instance *instance, unsigned
+ waiting:
+ 	vchiq_service_put(service);
+ 
+-	status = VCHIQ_SUCCESS;
++	status = 0;
+ 
+ 	if (bulk_waiter) {
+ 		bulk_waiter->bulk = bulk;
+@@ -3175,7 +3173,7 @@ vchiq_queue_message(struct vchiq_instance *instance, unsigned int handle,
+ 	if (!service)
+ 		goto error_exit;
+ 
+-	if (vchiq_check_service(service) != VCHIQ_SUCCESS)
++	if (vchiq_check_service(service))
+ 		goto error_exit;
+ 
+ 	if (!size) {
+@@ -3286,14 +3284,14 @@ vchiq_get_peer_version(struct vchiq_instance *instance, unsigned int handle, sho
+ 	if (!service)
+ 		goto exit;
+ 
+-	if (vchiq_check_service(service) != VCHIQ_SUCCESS)
++	if (vchiq_check_service(service))
+ 		goto exit;
+ 
+ 	if (!peer_version)
+ 		goto exit;
+ 
+ 	*peer_version = service->peer_version;
+-	status = VCHIQ_SUCCESS;
++	status = 0;
+ 
+ exit:
+ 	if (service)
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c
+index 7e297494437e1..d9c4d550412e4 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_dev.c
+@@ -112,7 +112,7 @@ vchiq_ioc_queue_message(struct vchiq_instance *instance, unsigned int handle,
+ 			struct vchiq_element *elements, unsigned long count)
+ {
+ 	struct vchiq_io_copy_callback_context context;
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 	unsigned long i;
+ 	size_t total_size = 0;
+ 
+@@ -142,7 +142,7 @@ static int vchiq_ioc_create_service(struct vchiq_instance *instance,
+ {
+ 	struct user_service *user_service = NULL;
+ 	struct vchiq_service *service;
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 	struct vchiq_service_params_kernel params;
+ 	int srvstate;
+ 
+@@ -190,7 +190,7 @@ static int vchiq_ioc_create_service(struct vchiq_instance *instance,
+ 
+ 	if (args->is_open) {
+ 		status = vchiq_open_service_internal(service, instance->pid);
+-		if (status != VCHIQ_SUCCESS) {
++		if (status) {
+ 			vchiq_remove_service(instance, service->handle);
+ 			return (status == VCHIQ_RETRY) ?
+ 				-EINTR : -EIO;
+@@ -577,7 +577,7 @@ static long
+ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct vchiq_instance *instance = file->private_data;
+-	enum vchiq_status status = VCHIQ_SUCCESS;
++	int status = 0;
+ 	struct vchiq_service *service = NULL;
+ 	long ret = 0;
+ 	int i, rc;
+@@ -598,12 +598,12 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 							   instance, &i))) {
+ 			status = vchiq_remove_service(instance, service->handle);
+ 			vchiq_service_put(service);
+-			if (status != VCHIQ_SUCCESS)
++			if (status)
+ 				break;
+ 		}
+ 		service = NULL;
+ 
+-		if (status == VCHIQ_SUCCESS) {
++		if (!status) {
+ 			/* Wake the completion thread and ask it to exit */
+ 			instance->closing = 1;
+ 			complete(&instance->insert_event);
+@@ -627,7 +627,7 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 		status = vchiq_connect_internal(instance->state, instance);
+ 		mutex_unlock(&instance->state->mutex);
+ 
+-		if (status == VCHIQ_SUCCESS)
++		if (!status)
+ 			instance->connected = 1;
+ 		else
+ 			vchiq_log_error(vchiq_arm_log_level,
+@@ -675,7 +675,7 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 			status = (cmd == VCHIQ_IOC_CLOSE_SERVICE) ?
+ 				 vchiq_close_service(instance, service->handle) :
+ 				 vchiq_remove_service(instance, service->handle);
+-			if (status != VCHIQ_SUCCESS)
++			if (status)
+ 				break;
+ 		}
+ 
+@@ -868,7 +868,7 @@ vchiq_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 			ret = -EINTR;
+ 	}
+ 
+-	if ((status == VCHIQ_SUCCESS) && (ret < 0) && (ret != -EINTR) && (ret != -EWOULDBLOCK))
++	if (!status && (ret < 0) && (ret != -EINTR) && (ret != -EWOULDBLOCK))
+ 		vchiq_log_info(vchiq_arm_log_level,
+ 			       "  ioctl instance %pK, cmd %s -> status %d, %ld",
+ 			       instance, (_IOC_NR(cmd) <= VCHIQ_IOC_MAX) ?
+diff --git a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
+index 90eb4c5936f38..e6dea0c8eecd2 100644
+--- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
+@@ -560,7 +560,7 @@ static enum vchiq_status service_callback(struct vchiq_instance *vchiq_instance,
+ 
+ 	if (!instance) {
+ 		pr_err("Message callback passed NULL instance\n");
+-		return VCHIQ_SUCCESS;
++		return 0;
+ 	}
+ 
+ 	switch (reason) {
+@@ -644,7 +644,7 @@ static enum vchiq_status service_callback(struct vchiq_instance *vchiq_instance,
+ 		break;
+ 	}
+ 
+-	return VCHIQ_SUCCESS;
++	return 0;
+ }
+ 
+ static int send_synchronous_mmal_msg(struct vchiq_mmal_instance *instance,
 -- 
 2.39.5
 
