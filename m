@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65134B23061
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B985B233FC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D778C685CD4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 438BF7B8A7F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D5B2FE574;
-	Tue, 12 Aug 2025 17:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700F02FD1AD;
+	Tue, 12 Aug 2025 18:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdFENiIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GANIsmQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C0C2868AF;
-	Tue, 12 Aug 2025 17:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C01E2EF652;
+	Tue, 12 Aug 2025 18:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021077; cv=none; b=q9v5IKrrt4o+gCWXGqOu8037bYClrcQ4dLn1HYnJCTe9VqxyfWQDYDg5dpF2jtMFXqlUSVy3thmI25ckgL+XvkRNDltcrdznAI0VzKyqMXS8f5D+aPw2Zg12BvGJ0XX/vKk7qoWjFReP2VGdrkSEPjWZ6IGquUhwXlwJ0CxsGJE=
+	t=1755023683; cv=none; b=VaZim1ihJp++9tRVDFgrCCJulsqLyf3LsLgNFS5BSJHQykkoEyzAb0wkucoWNqqKVmzUg5lCZIzaO+EtjrifOkBBtSCFmClQKqY9shvCxWW3tHxSKhGbvdhqh70uvjn1khiLidXxxY7Qh1HFm1saYcciPYM7+idrtP/s2B562CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021077; c=relaxed/simple;
-	bh=fHASWCmMh0tyxsTf8XbZhsrmWp6dnCfCX41cxvSvSeQ=;
+	s=arc-20240116; t=1755023683; c=relaxed/simple;
+	bh=5yJkOZDmgMQeUhDDXtbOoxKBZJxMdWT6d8ZYzHrZXcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftglIUaR5hswbF6+TVwkMxayoBFboP+svCfAGhJ0b3j3pf06NVPbXGAPx2H8nj+toHQZVoIS4d/gpvPTIso8Tj4tvzBklYoifeS+/rXxJJa5NjANU1LNmuV3+4Bsx58tVpkna9zRBopgzWZUydXNv19sTNOOd5jNVYCWV5XocqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdFENiIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF18C4CEF0;
-	Tue, 12 Aug 2025 17:51:17 +0000 (UTC)
+	 MIME-Version; b=BJWTKLIVOGeVrlWzWmaUxmIetRBlyTyBCZzfBFokGhf+IBe+gHM+e/JD0I8qlmlVmUzF03CfN5NvN9FskRmajo+FvccymHe2KFJk2YTf+11lVvG0aT1SK6CbZzS7SbBJPXxJjDI4FFfU8Ioz7VLFSOkMHlXcexSc1cnt/or/Qso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GANIsmQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840A0C4CEF0;
+	Tue, 12 Aug 2025 18:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021077;
-	bh=fHASWCmMh0tyxsTf8XbZhsrmWp6dnCfCX41cxvSvSeQ=;
+	s=korg; t=1755023683;
+	bh=5yJkOZDmgMQeUhDDXtbOoxKBZJxMdWT6d8ZYzHrZXcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdFENiIt1RE825ceWOiKABnVOJ9QeELDpjbs8gRMo//WI1gVoqPykzWmLXSkbLIiG
-	 5y8oiybngNLLszLZY6ofFXwIfwHjGXGsynPeqamY/s+IrK3p4TR36PxRmyBf/IkTvC
-	 IMwXFURFloPc+3iNLyrxxQkaqch4MX2BTbGwiNX8=
+	b=GANIsmQbrWEopRAm/RskjHjNbVaBy363hKfcXIFN1o+QTaFP+wSVVUgbxLVl1HeID
+	 J9fYXQnvwKswAX5vUtxm3etpV54k/ji2/H9wf1sm53dXzbAltB+sCP0g69MdYeq3r2
+	 tIUoE0RA8PBE1RHgTSSuqL3SSPl7v15ERw/MvtRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mangesh Gadre <Mangesh.Gadre@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/262] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
+Subject: [PATCH 6.16 151/627] drm/amdgpu: Remove nbiov7.9 replay count reporting
 Date: Tue, 12 Aug 2025 19:27:26 +0200
-Message-ID: <20250812172955.456377686@linuxfoundation.org>
+Message-ID: <20250812173425.035689119@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
+[ Upstream commit 0f566f0e9c614aa3d95082246f5b8c9e8a09c8b3 ]
 
-When iwl_opmode_register() fails, it does not unregster rate control,
-which will cause a memory leak issue, this patch fixes it.
+Direct pcie replay count reporting is not available on nbio v7.9.
+Reporting is done through firmware.
 
-Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Acked-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Fixes: 50709d18f4a6 ("drm/amdgpu: Add pci replay count to nbio v7.9")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index b2cf5aeff7e3..d2dbbc9fe384 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -65,8 +65,10 @@ static int __init iwl_mvm_init(void)
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+index a376f072700d..1c22bc11c1f8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+@@ -31,9 +31,6 @@
+ 
+ #define NPS_MODE_MASK 0x000000FFL
+ 
+-/* Core 0 Port 0 counter */
+-#define smnPCIEP_NAK_COUNTER 0x1A340218
+-
+ static void nbio_v7_9_remap_hdp_registers(struct amdgpu_device *adev)
+ {
+ 	WREG32_SOC15(NBIO, 0, regBIF_BX0_REMAP_HDP_MEM_FLUSH_CNTL,
+@@ -467,22 +464,6 @@ static void nbio_v7_9_init_registers(struct amdgpu_device *adev)
  	}
- 
- 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
--	if (ret)
-+	if (ret) {
- 		pr_err("Unable to register MVM op_mode: %d\n", ret);
-+		iwl_mvm_rate_control_unregister();
-+	}
- 
- 	return ret;
  }
+ 
+-static u64 nbio_v7_9_get_pcie_replay_count(struct amdgpu_device *adev)
+-{
+-	u32 val, nak_r, nak_g;
+-
+-	if (adev->flags & AMD_IS_APU)
+-		return 0;
+-
+-	/* Get the number of NAKs received and generated */
+-	val = RREG32_PCIE(smnPCIEP_NAK_COUNTER);
+-	nak_r = val & 0xFFFF;
+-	nak_g = val >> 16;
+-
+-	/* Add the total number of NAKs, i.e the number of replays */
+-	return (nak_r + nak_g);
+-}
+-
+ #define MMIO_REG_HOLE_OFFSET 0x1A000
+ 
+ static void nbio_v7_9_set_reg_remap(struct amdgpu_device *adev)
+@@ -524,7 +505,6 @@ const struct amdgpu_nbio_funcs nbio_v7_9_funcs = {
+ 	.get_memory_partition_mode = nbio_v7_9_get_memory_partition_mode,
+ 	.is_nps_switch_requested = nbio_v7_9_is_nps_switch_requested,
+ 	.init_registers = nbio_v7_9_init_registers,
+-	.get_pcie_replay_count = nbio_v7_9_get_pcie_replay_count,
+ 	.set_reg_remap = nbio_v7_9_set_reg_remap,
+ };
+ 
 -- 
 2.39.5
 
