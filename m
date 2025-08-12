@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE9CB234C0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280BDB230FE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB039189DDB7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C2B36846A4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5682FDC4F;
-	Tue, 12 Aug 2025 18:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47C52FAC02;
+	Tue, 12 Aug 2025 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAOFHFHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un9/Satm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2989421ABD0;
-	Tue, 12 Aug 2025 18:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747882F8BE7;
+	Tue, 12 Aug 2025 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023940; cv=none; b=UpLBXKpUAokj1dL8mLnyvlx7tvPdJ8GT5keah1RC6nBEE2T+jA3RbIAOZPo4VzC6chpstNkfWmcLaWk7kv6BWqo5tyWycK/J2qDQvpGd4DeoOjkqrFXriSWuixLEoe5rjkZNLH0bYLB7Pd3aScQ2WhxHmFma9pvVTrFhE9VX5WQ=
+	t=1755021471; cv=none; b=Nn1pfhJkW5VHvOnybhTmjr6LeMw1w25fJ9Z1reoosPS0T8IwD0wUZUHP/8uzIzg2Of7imXE4ScG99wfj3gGALiHKa6ozK63tdTLKt+1Fu9vzPtQrFcU1JsW/8lt8aS9TkLMebw9GGj0ZZOyMtI05+W76YhVCqwMhtu6beRWoPeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023940; c=relaxed/simple;
-	bh=VJKB2iGsR3dpZMG8s0/1/5waHzn34++2Hp7enbyex8Q=;
+	s=arc-20240116; t=1755021471; c=relaxed/simple;
+	bh=w8AgA+sFE9/hgjryxE3DoRWahfjLeqV3NLEXzIDjM/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCZfwbeX0dkYPVmoaAmRbavdrxom2slPZN+403PvD3kQRiIedTkPErznswRsqUyH62AKZoI0OQK4lrmoabuPrJdw7JSkmK7Y7DoGCZ8WUIffRfKLpd4a8ajEbtTNSFNqEkt/HOG9o2pml6775TuaclDy9DM8It6/5IxY1T/b2Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAOFHFHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A314C4CEF0;
-	Tue, 12 Aug 2025 18:38:59 +0000 (UTC)
+	 MIME-Version; b=ncB0POiTq81Jiai0fDSe7XNANuao5tnAyenZLmJ6T51/9JawiNQX4IXV/1ztlWXoj7k+HceWyEoApvJbVlwvs19P+0n7sjnvPC4FBT6hMVwfNoFyqwbCoqM5FEv50zNqdfL/QPXqEo/FNaRM6p4dDA68qeoosl6B25Pn3sAPElM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un9/Satm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71636C4CEF0;
+	Tue, 12 Aug 2025 17:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023940;
-	bh=VJKB2iGsR3dpZMG8s0/1/5waHzn34++2Hp7enbyex8Q=;
+	s=korg; t=1755021470;
+	bh=w8AgA+sFE9/hgjryxE3DoRWahfjLeqV3NLEXzIDjM/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAOFHFHBL/iJHzKj3RlyG5O3HLCBChKewin9tnxr0r6z+8Ch+zFxJ8n3c2o1qH1SQ
-	 siGxusIZRpC767LAWBfjY8KlKFEckGZtaITDWgxqf/Sbg9dtTzl0DzgKCAK/aoFvHp
-	 NnrMer+U8rHwQRoPxXc4ZDzzUcowK7zFxGOA8jzI=
+	b=un9/SatmebNF4xdv2KUBvqlfhyz02egGWtGQx0xv+E9m/WefguiVhoUkySfjBVw5z
+	 ifadgJYbkXWnhPBSW0UDAjHmDno4tEJpVfAOGYtk3h4Fqr7Z+487kybfBo6d/e1bBO
+	 bergZIwXym4+/gvEk6Tq+Klw5PJWW0AzB/NLZVME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 226/627] wifi: ath12k: Use HTT_TCL_METADATA_VER_V1 in FTM mode
+Subject: [PATCH 6.6 133/262] pinmux: fix race causing mux_owner NULL with active mux_usecount
 Date: Tue, 12 Aug 2025 19:28:41 +0200
-Message-ID: <20250812173427.883487869@linuxfoundation.org>
+Message-ID: <20250812172958.765898959@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-[ Upstream commit 66b3ebc77d23d6574a965bdbfe41de8aeb7f384e ]
+[ Upstream commit 0b075c011032f88d1cfde3b45d6dcf08b44140eb ]
 
-Currently host sends HTT_TCL_METADATA_VER_V2 to the firmware
-regardless of the operating mode (Mission or FTM).
+commit 5a3e85c3c397 ("pinmux: Use sequential access to access
+desc->pinmux data") tried to address the issue when two client of the
+same gpio calls pinctrl_select_state() for the same functionality, was
+resulting in NULL pointer issue while accessing desc->mux_owner.
+However, issue was not completely fixed due to the way it was handled
+and it can still result in the same NULL pointer.
 
-Firmware expects additional software information (like peer ID, vdev
-ID, and link ID) in Tx packets when HTT_TCL_METADATA_VER_V2 is set.
-However, in FTM (Factory Test Mode) mode, no vdev is created on the
-host side (this is expected). As a result, the firmware fails to find
-the expected vdev during packet processing and ends up dropping
-packets.
+The issue occurs due to the following interleaving:
 
-To fix this, send HTT_TCL_METADATA_VER_V1 in FTM mode because FTM
-mode doesn't support HTT_TCL_METADATA_VER_V2.
+     cpu0 (process A)                   cpu1 (process B)
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+      pin_request() {                   pin_free() {
 
-Fixes: 5d964966bd3f ("wifi: ath12k: Update HTT_TCL_METADATA version and bit mask definitions")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250711035420.1509029-1-aaradhana.sahu@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+                                         mutex_lock()
+                                         desc->mux_usecount--; //becomes 0
+                                         ..
+                                         mutex_unlock()
+
+  mutex_lock(desc->mux)
+  desc->mux_usecount++; // becomes 1
+  desc->mux_owner = owner;
+  mutex_unlock(desc->mux)
+
+                                         mutex_lock(desc->mux)
+                                         desc->mux_owner = NULL;
+                                         mutex_unlock(desc->mux)
+
+This sequence leads to a state where the pin appears to be in use
+(`mux_usecount == 1`) but has no owner (`mux_owner == NULL`), which can
+cause NULL pointer on next pin_request on the same pin.
+
+Ensure that updates to mux_usecount and mux_owner are performed
+atomically under the same lock. Only clear mux_owner when mux_usecount
+reaches zero and no new owner has been assigned.
+
+Fixes: 5a3e85c3c397 ("pinmux: Use sequential access to access desc->pinmux data")
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Link: https://lore.kernel.org/20250708-pinmux-race-fix-v2-1-8ae9e8a0d1a1@oss.qualcomm.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.h    | 1 +
- drivers/net/wireless/ath/ath12k/dp_tx.c | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinmux.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index a353333f83b6..2f0718edabd2 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -469,6 +469,7 @@ enum htt_h2t_msg_type {
- };
+diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
+index 97e8af88df85..ab853d6c586b 100644
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -238,18 +238,7 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
+ 			if (desc->mux_usecount)
+ 				return NULL;
+ 		}
+-	}
+-
+-	/*
+-	 * If there is no kind of request function for the pin we just assume
+-	 * we got it by default and proceed.
+-	 */
+-	if (gpio_range && ops->gpio_disable_free)
+-		ops->gpio_disable_free(pctldev, gpio_range, pin);
+-	else if (ops->free)
+-		ops->free(pctldev, pin);
  
- #define HTT_VER_REQ_INFO_MSG_ID		GENMASK(7, 0)
-+#define HTT_OPTION_TCL_METADATA_VER_V1	1
- #define HTT_OPTION_TCL_METADATA_VER_V2	2
- #define HTT_OPTION_TAG			GENMASK(7, 0)
- #define HTT_OPTION_LEN			GENMASK(15, 8)
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index 075912eacfaa..7470731eb830 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -1182,6 +1182,7 @@ int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab)
- 	struct sk_buff *skb;
- 	struct htt_ver_req_cmd *cmd;
- 	int len = sizeof(*cmd);
-+	u32 metadata_version;
- 	int ret;
+-	scoped_guard(mutex, &desc->mux_lock) {
+ 		if (gpio_range) {
+ 			owner = desc->gpio_owner;
+ 			desc->gpio_owner = NULL;
+@@ -260,6 +249,15 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
+ 		}
+ 	}
  
- 	init_completion(&dp->htt_tgt_version_received);
-@@ -1194,12 +1195,14 @@ int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab)
- 	cmd = (struct htt_ver_req_cmd *)skb->data;
- 	cmd->ver_reg_info = le32_encode_bits(HTT_H2T_MSG_TYPE_VERSION_REQ,
- 					     HTT_OPTION_TAG);
-+	metadata_version = ath12k_ftm_mode ? HTT_OPTION_TCL_METADATA_VER_V1 :
-+			   HTT_OPTION_TCL_METADATA_VER_V2;
++	/*
++	 * If there is no kind of request function for the pin we just assume
++	 * we got it by default and proceed.
++	 */
++	if (gpio_range && ops->gpio_disable_free)
++		ops->gpio_disable_free(pctldev, gpio_range, pin);
++	else if (ops->free)
++		ops->free(pctldev, pin);
++
+ 	module_put(pctldev->owner);
  
- 	cmd->tcl_metadata_version = le32_encode_bits(HTT_TAG_TCL_METADATA_VERSION,
- 						     HTT_OPTION_TAG) |
- 				    le32_encode_bits(HTT_TCL_METADATA_VER_SZ,
- 						     HTT_OPTION_LEN) |
--				    le32_encode_bits(HTT_OPTION_TCL_METADATA_VER_V2,
-+				    le32_encode_bits(metadata_version,
- 						     HTT_OPTION_VALUE);
- 
- 	ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
+ 	return owner;
 -- 
 2.39.5
 
