@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C21AB231C8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BC6B2352F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E62D2188983F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01DFD7B4D48
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22A42FAC06;
-	Tue, 12 Aug 2025 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C811D2FA0FD;
+	Tue, 12 Aug 2025 18:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPsnvY/r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrlv0tz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF1D1C8621;
-	Tue, 12 Aug 2025 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876722CA9;
+	Tue, 12 Aug 2025 18:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021897; cv=none; b=e2j7TCu+Yt0AWgpXmTJ3ReEAy3JOQJyIPDzFbe2ZunvPkExyFAbVepiF11uiLDRHJQQujlMlBNlNWvDu7jJ5QzwcH0Ai3nmjoIo9hMJe9/FgRScQMKKaC/Xg3TLcLO1/qFxH0puTlrHqaDyOo3e06MOWzp7LSqYH4G2ING1kuxk=
+	t=1755024468; cv=none; b=ChRBi2895L/LkcFbB2opqCRacDtDriTH38oFa3H8rhVAKM8W3PAiuvC9h9WqxxGoJ34zQjGhW4F7mPOFaE8kQC/ZWT486W3Crt/jmp+BMZDS9zg8Vz0OE9AoJEiZvEY61ANsa3VByJTU6pjDHDSkLuFDr9tVESoIt1Y22S39DtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021897; c=relaxed/simple;
-	bh=bY977zTxp+Nd82NXKHA17zsDKLVGtREsc1hoFNEog/0=;
+	s=arc-20240116; t=1755024468; c=relaxed/simple;
+	bh=i4TU4hci6a2E3QWpgLgL2Tx7ffMMdxB+SkLXFSjvTRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCcmhM4v1dmOLefsa8WURWlx3M87dIF0BvIMk8jubYP8ZtUhp+B2lLu0b15uumPLZ4nHwcpc4VDEeHiEZUykYSlss/tAxQajtudb14h3NLtMxwGhN+ZFk/ZVK1IuEHM+FU+6/cw5lsT7Wu42knxeC8OJD0PUgvuA/j2B2+dMlIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPsnvY/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2901C4CEF0;
-	Tue, 12 Aug 2025 18:04:56 +0000 (UTC)
+	 MIME-Version; b=lFDSzCS3p8PICE5/2PbaJvwDbUh8ZfAOpcxcZY1QnbWnVlHowQxps1/75Y906c0ELfFMC0XFth3yu44T3h3kXrZvs2Ql8tCQFocp18v2SsiaGtwLq6Q2E7SLcNAG1QHRNa6BsCiC1/TD2OZaVb5zP1BVf8y7bRIu8Aabhhn71bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrlv0tz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3A1C4CEF0;
+	Tue, 12 Aug 2025 18:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021897;
-	bh=bY977zTxp+Nd82NXKHA17zsDKLVGtREsc1hoFNEog/0=;
+	s=korg; t=1755024468;
+	bh=i4TU4hci6a2E3QWpgLgL2Tx7ffMMdxB+SkLXFSjvTRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPsnvY/rm2UapLhw0udXtoQkwYohut3c/Li0W7SWNzNExWnbpdJblrg/UW8ugemEa
-	 F5GOeRWg7OKy8uZ96hhIPfDH03PEg9lDUlrWev/m1TxpCcfhvtgyuIyTx5/0HwDOa8
-	 bbBl01QwJ7gE4GuvYbi137VIZFtyl2upqsoTfTsI=
+	b=xrlv0tz2R1l+RgxxCuCfzf9BouYFmRX2MmdvHGAEWIo/FfSma+PPk6ldKrf1N36tZ
+	 h4tDkOVQXsVLF5+vWJFrBZ6aumoAVTAQIJ+0dhHgbyFftpsxAbJp/J5dAz4bNRYBbx
+	 9cDRx5pJ6lRh7qyHPlLrve/9yQhR1BbPZkPLhLhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Roth <michael.roth@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 256/262] x86/sev: Evict cache lines during SNP memory validation
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 349/627] RDMA/nldev: Check CAP_NET_RAW in user namespace for QP modify
 Date: Tue, 12 Aug 2025 19:30:44 +0200
-Message-ID: <20250812173004.042539199@linuxfoundation.org>
+Message-ID: <20250812173432.562314636@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Parav Pandit <parav@nvidia.com>
 
-Commit 7b306dfa326f70114312b320d083b21fa9481e1e upstream.
+[ Upstream commit 28ea058a2979f063d4b756c5d82d885fc16f5ca2 ]
 
-An SNP cache coherency vulnerability requires a cache line eviction
-mitigation when validating memory after a page state change to private.
-The specific mitigation is to touch the first and last byte of each 4K
-page that is being validated. There is no need to perform the mitigation
-when performing a page state change to shared and rescinding validation.
+Currently, the capability check is done in the default
+init_user_ns user namespace. When a process runs in a
+non default user namespace, such check fails. Due to this
+when a process is running using Podman, it fails to modify
+the QP.
 
-CPUID bit Fn8000001F_EBX[31] defines the COHERENCY_SFW_NO CPUID bit that,
-when set, indicates that the software mitigation for this vulnerability is
-not needed.
+Since the RDMA device is a resource within a network namespace,
+use the network namespace associated with the RDMA device to
+determine its owning user namespace.
 
-Implement the mitigation and invoke it when validating memory (making it
-private) and the COHERENCY_SFW_NO bit is not set, indicating the SNP guest
-is vulnerable.
-
-Co-developed-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0cadb4db79e1 ("RDMA/uverbs: Restrict usage of privileged QKEYs")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Link: https://patch.msgid.link/099eb263622ccdd27014db7e02fec824a3307829.1750963874.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/sev.c     |    7 +++++++
- arch/x86/boot/cpuflags.c           |   13 +++++++++++++
- arch/x86/include/asm/cpufeatures.h |    1 +
- arch/x86/kernel/cpu/scattered.c    |    1 +
- arch/x86/kernel/sev-shared.c       |   36 ++++++++++++++++++++++++++++++++++++
- arch/x86/kernel/sev.c              |   11 ++++++++++-
- 6 files changed, 68 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/nldev.c      | 2 +-
+ drivers/infiniband/core/uverbs_cmd.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -165,6 +165,13 @@ static void __page_state_change(unsigned
- 	 */
- 	if (op == SNP_PAGE_STATE_PRIVATE && pvalidate(paddr, RMP_PG_SIZE_4K, 1))
- 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
-+
-+	/*
-+	 * If validating memory (making it private) and affected by the
-+	 * cache-coherency vulnerability, perform the cache eviction mitigation.
-+	 */
-+	if (op == SNP_PAGE_STATE_PRIVATE && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
-+		sev_evict_cache((void *)paddr, 1);
- }
+diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
+index a872643e8039..be6b2ef0ede4 100644
+--- a/drivers/infiniband/core/nldev.c
++++ b/drivers/infiniband/core/nldev.c
+@@ -255,7 +255,7 @@ EXPORT_SYMBOL(rdma_nl_put_driver_u64_hex);
  
- void snp_set_page_private(unsigned long paddr)
---- a/arch/x86/boot/cpuflags.c
-+++ b/arch/x86/boot/cpuflags.c
-@@ -115,5 +115,18 @@ void get_cpuflags(void)
- 			cpuid(0x80000001, &ignored, &ignored, &cpu.flags[6],
- 			      &cpu.flags[1]);
- 		}
-+
-+		if (max_amd_level >= 0x8000001f) {
-+			u32 ebx;
-+
-+			/*
-+			 * The X86_FEATURE_COHERENCY_SFW_NO feature bit is in
-+			 * the virtualization flags entry (word 8) and set by
-+			 * scattered.c, so the bit needs to be explicitly set.
-+			 */
-+			cpuid(0x8000001f, &ignored, &ebx, &ignored, &ignored);
-+			if (ebx & BIT(31))
-+				set_bit(X86_FEATURE_COHERENCY_SFW_NO, cpu.flags);
-+		}
- 	}
- }
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -228,6 +228,7 @@
- #define X86_FEATURE_FLEXPRIORITY	( 8*32+ 1) /* Intel FlexPriority */
- #define X86_FEATURE_EPT			( 8*32+ 2) /* Intel Extended Page Table */
- #define X86_FEATURE_VPID		( 8*32+ 3) /* Intel Virtual Processor ID */
-+#define X86_FEATURE_COHERENCY_SFW_NO	( 8*32+ 4) /* "" SNP cache coherency software work around not needed */
- 
- #define X86_FEATURE_VMMCALL		( 8*32+15) /* Prefer VMMCALL to VMCALL */
- #define X86_FEATURE_XENPV		( 8*32+16) /* "" Xen paravirtual guest */
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -46,6 +46,7 @@ static const struct cpuid_bit cpuid_bits
- 	{ X86_FEATURE_CPB,		CPUID_EDX,  9, 0x80000007, 0 },
- 	{ X86_FEATURE_PROC_FEEDBACK,    CPUID_EDX, 11, 0x80000007, 0 },
- 	{ X86_FEATURE_MBA,		CPUID_EBX,  6, 0x80000008, 0 },
-+	{ X86_FEATURE_COHERENCY_SFW_NO,	CPUID_EBX, 31, 0x8000001f, 0 },
- 	{ X86_FEATURE_SMBA,		CPUID_EBX,  2, 0x80000020, 0 },
- 	{ X86_FEATURE_BMEC,		CPUID_EBX,  3, 0x80000020, 0 },
- 	{ X86_FEATURE_TSA_SQ_NO,	CPUID_ECX,  1, 0x80000021, 0 },
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -1068,6 +1068,24 @@ static void __head setup_cpuid_table(con
- 	}
- }
- 
-+static inline void sev_evict_cache(void *va, int npages)
-+{
-+	volatile u8 val __always_unused;
-+	u8 *bytes = va;
-+	int page_idx;
-+
-+	/*
-+	 * For SEV guests, a read from the first/last cache-lines of a 4K page
-+	 * using the guest key is sufficient to cause a flush of all cache-lines
-+	 * associated with that 4K page without incurring all the overhead of a
-+	 * full CLFLUSH sequence.
-+	 */
-+	for (page_idx = 0; page_idx < npages; page_idx++) {
-+		val = bytes[page_idx * PAGE_SIZE];
-+		val = bytes[page_idx * PAGE_SIZE + PAGE_SIZE - 1];
-+	}
-+}
-+
- static void pvalidate_pages(struct snp_psc_desc *desc)
+ bool rdma_nl_get_privileged_qkey(void)
  {
- 	struct psc_entry *e;
-@@ -1100,6 +1118,24 @@ static void pvalidate_pages(struct snp_p
- 			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
- 		}
- 	}
-+
-+	/*
-+	 * If not affected by the cache-coherency vulnerability there is no need
-+	 * to perform the cache eviction mitigation.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_COHERENCY_SFW_NO))
-+		return;
-+
-+	for (i = 0; i <= desc->hdr.end_entry; i++) {
-+		e = &desc->entries[i];
-+
-+		/*
-+		 * If validating memory (making it private) perform the cache
-+		 * eviction mitigation.
-+		 */
-+		if (e->operation == SNP_PAGE_STATE_PRIVATE)
-+			sev_evict_cache(pfn_to_kaddr(e->gfn), e->pagesize ? 512 : 1);
-+	}
+-	return privileged_qkey || capable(CAP_NET_RAW);
++	return privileged_qkey;
  }
+ EXPORT_SYMBOL(rdma_nl_get_privileged_qkey);
  
- static int vmgexit_psc(struct ghcb *ghcb, struct snp_psc_desc *desc)
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -688,12 +688,14 @@ static void __head
- early_set_pages_state(unsigned long vaddr, unsigned long paddr,
- 		      unsigned long npages, enum psc_op op)
- {
--	unsigned long paddr_end;
-+	unsigned long vaddr_begin, paddr_end;
- 	u64 val;
- 	int ret;
- 
- 	vaddr = vaddr & PAGE_MASK;
- 
-+	vaddr_begin = vaddr;
-+
- 	paddr = paddr & PAGE_MASK;
- 	paddr_end = paddr + (npages << PAGE_SHIFT);
- 
-@@ -736,6 +738,13 @@ early_set_pages_state(unsigned long vadd
- 		paddr += PAGE_SIZE;
- 	}
- 
-+	/*
-+	 * If validating memory (making it private) and affected by the
-+	 * cache-coherency vulnerability, perform the cache eviction mitigation.
-+	 */
-+	if (op == SNP_PAGE_STATE_PRIVATE && !cpu_feature_enabled(X86_FEATURE_COHERENCY_SFW_NO))
-+		sev_evict_cache((void *)vaddr_begin, npages);
-+
- 	return;
- 
- e_term:
+diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
+index 4d96e4a678f3..0807e9a00008 100644
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -1877,7 +1877,8 @@ static int modify_qp(struct uverbs_attr_bundle *attrs,
+ 		attr->path_mig_state = cmd->base.path_mig_state;
+ 	if (cmd->base.attr_mask & IB_QP_QKEY) {
+ 		if (cmd->base.qkey & IB_QP_SET_QKEY &&
+-		    !rdma_nl_get_privileged_qkey()) {
++		    !(rdma_nl_get_privileged_qkey() ||
++		      rdma_uattrs_has_raw_cap(attrs))) {
+ 			ret = -EPERM;
+ 			goto release_qp;
+ 		}
+-- 
+2.39.5
+
 
 
 
