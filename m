@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-167725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E68B231B2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:08:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A881B23548
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2206117A6E0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1BE11894013
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271D62FF15A;
-	Tue, 12 Aug 2025 18:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBA82C21D4;
+	Tue, 12 Aug 2025 18:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJkbhdsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBt/VVz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D572DE6E9;
-	Tue, 12 Aug 2025 18:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE58291C1F;
+	Tue, 12 Aug 2025 18:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021785; cv=none; b=OKxXZ1I2g+rVecOi7gjOgqn8ibPNGZCKcTwif3RiVO0j0ZDHBogo57lJZOM7OkK1iORuF6djHonw8elIYEA2jtqAD1z/awZ+iTETJ4psx898HakkGH7WH/e12Hr5E+bAe2sMfKlWLddR31IbqBP76TIC5L1vOjWd31cgPzVjhXo=
+	t=1755024355; cv=none; b=m6kWATuWCT01/Re2lozppSqUHAtcOxLkEP0bI5V7/O+LHypt9soUiT98AHoW1sBo/LUURR0xjPNOqcmpiJBaV5zL9nwFSrbeSq64F9cY3Hf6BIvhUWfHs5wjmOi6xfpVDpeJunxgQq0a0aOCxs8BjPjLU5egnkWhJPQG13QK+kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021785; c=relaxed/simple;
-	bh=m1dhUjASm09tcti22IiPVagsvrJNWx2675L8yaJeeY4=;
+	s=arc-20240116; t=1755024355; c=relaxed/simple;
+	bh=5KTNYITfp205TyDycm+sr9hxwfRkK+0FMp12dPOfF7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktnR/+jASTdGWq8Rklwp9c1zF56HBH9VjdJBpimwGcUHJvEC5AbikZcKPM71uWEk8cvWQ2WCSHLSCqHVyg5GE0LSQHzjSAsTFuwZv/T4a1aWT1VKvrb/3NAJvbPadNtjzEnm4VOhzC1kq35QXgqU31eTw4N70EkNYXOxB2GGYmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJkbhdsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E99DC4CEF8;
-	Tue, 12 Aug 2025 18:03:05 +0000 (UTC)
+	 MIME-Version; b=H0HJyqa0ASepXCKIzs1/j/aILddztCPMZc5nSY82OCYWivbuxKEt9LCEDhtRBlp5jTkyzaBnkxXqzvwHTOcK5ebVHV/f5+y82M7UFbRcgQnMe2KuAFzhWhp/hB7zRN+1DIG0nC7HSPVb6eJtEvdxm9K8aAmynql5tKUDkArqWHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBt/VVz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7F1C4CEF0;
+	Tue, 12 Aug 2025 18:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021785;
-	bh=m1dhUjASm09tcti22IiPVagsvrJNWx2675L8yaJeeY4=;
+	s=korg; t=1755024355;
+	bh=5KTNYITfp205TyDycm+sr9hxwfRkK+0FMp12dPOfF7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJkbhdsAVxaSJFKiuaa7aiJoVvvkvUUoJhbwiJa1iOcnkzo4qNBtwLQbFuLtkuN9S
-	 MQGtPrxqvJwhmR2b7effiNptxRds7i6Ib1vC6gDttUP/jmtADjF5uFnn1qPM4SvlqV
-	 AXsQD6ZkiGF8qwQLesmy6NTmIAGYhx4fJsTtSeL0=
+	b=gBt/VVz9dBBVVE6hO0DU1i5ko3aqUwmOoMrLjrsyHWEvmThm59nlTv00NrjP/EePo
+	 cUbBLbk4aGRdMsb6qkMpuBaTNTQsdvBCXD0vtrvNIxrIfsv3/5rKjBFYubRCRUC83x
+	 rIPM8ppktY2qakLwjHTaI5nV+gDRF9WRVcE6R/Mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Meetakshi Setiya <meetakshisetiyaoss@gmail.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Rohit Visavalia <rohit.visavalia@amd.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/262] smb: smbdirect: add smbdirect_socket.h
+Subject: [PATCH 6.16 316/627] clk: xilinx: vcu: unregister pll_post only if registered correctly
 Date: Tue, 12 Aug 2025 19:30:11 +0200
-Message-ID: <20250812173002.648251706@linuxfoundation.org>
+Message-ID: <20250812173431.327164237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Rohit Visavalia <rohit.visavalia@amd.com>
 
-[ Upstream commit 22234e37d7e97652cb53133009da5e14793d3c10 ]
+[ Upstream commit 3b0abc443ac22f7d4f61ddbbbbc5dbb06c87139d ]
 
-This abstracts the common smbdirect layer.
+If registration of pll_post is failed, it will be set to NULL or ERR,
+unregistering same will fail with following call trace:
 
-Currently with just a few things in it,
-but that will change over time until everything is
-in common.
+Unable to handle kernel NULL pointer dereference at virtual address 008
+pc : clk_hw_unregister+0xc/0x20
+lr : clk_hw_unregister_fixed_factor+0x18/0x30
+sp : ffff800011923850
+...
+Call trace:
+ clk_hw_unregister+0xc/0x20
+ clk_hw_unregister_fixed_factor+0x18/0x30
+ xvcu_unregister_clock_provider+0xcc/0xf4 [xlnx_vcu]
+ xvcu_probe+0x2bc/0x53c [xlnx_vcu]
 
-Will be used in client and server in the next commits
-
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
+Fixes: 4472e1849db7 ("soc: xilinx: vcu: make pll post divider explicit")
+Signed-off-by: Rohit Visavalia <rohit.visavalia@amd.com>
+Link: https://lore.kernel.org/r/20250210113614.4149050-2-rohit.visavalia@amd.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smbdirect/smbdirect_socket.h | 41 ++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 fs/smb/common/smbdirect/smbdirect_socket.h
+ drivers/clk/xilinx/xlnx_vcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
-new file mode 100644
-index 000000000000..69a55561f91a
---- /dev/null
-+++ b/fs/smb/common/smbdirect/smbdirect_socket.h
-@@ -0,0 +1,41 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ *   Copyright (c) 2025 Stefan Metzmacher
-+ */
-+
-+#ifndef __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
-+#define __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__
-+
-+enum smbdirect_socket_status {
-+	SMBDIRECT_SOCKET_CREATED,
-+	SMBDIRECT_SOCKET_CONNECTING,
-+	SMBDIRECT_SOCKET_CONNECTED,
-+	SMBDIRECT_SOCKET_NEGOTIATE_FAILED,
-+	SMBDIRECT_SOCKET_DISCONNECTING,
-+	SMBDIRECT_SOCKET_DISCONNECTED,
-+	SMBDIRECT_SOCKET_DESTROYED
-+};
-+
-+struct smbdirect_socket {
-+	enum smbdirect_socket_status status;
-+
-+	/* RDMA related */
-+	struct {
-+		struct rdma_cm_id *cm_id;
-+	} rdma;
-+
-+	/* IB verbs related */
-+	struct {
-+		struct ib_pd *pd;
-+		struct ib_cq *send_cq;
-+		struct ib_cq *recv_cq;
-+
-+		/*
-+		 * shortcuts for rdma.cm_id->{qp,device};
-+		 */
-+		struct ib_qp *qp;
-+		struct ib_device *dev;
-+	} ib;
-+};
-+
-+#endif /* __FS_SMB_COMMON_SMBDIRECT_SMBDIRECT_SOCKET_H__ */
+diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
+index 81501b48412e..88b3fd8250c2 100644
+--- a/drivers/clk/xilinx/xlnx_vcu.c
++++ b/drivers/clk/xilinx/xlnx_vcu.c
+@@ -587,8 +587,8 @@ static void xvcu_unregister_clock_provider(struct xvcu_device *xvcu)
+ 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_MCU]);
+ 	if (!IS_ERR_OR_NULL(hws[CLK_XVCU_ENC_CORE]))
+ 		xvcu_clk_hw_unregister_leaf(hws[CLK_XVCU_ENC_CORE]);
+-
+-	clk_hw_unregister_fixed_factor(xvcu->pll_post);
++	if (!IS_ERR_OR_NULL(xvcu->pll_post))
++		clk_hw_unregister_fixed_factor(xvcu->pll_post);
+ }
+ 
+ /**
 -- 
 2.39.5
 
