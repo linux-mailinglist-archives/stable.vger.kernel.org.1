@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202BAB2308F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B57AB2328C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C9B6222A7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BB4A17EFB1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0A32DE1E2;
-	Tue, 12 Aug 2025 17:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4BE2FF14D;
+	Tue, 12 Aug 2025 18:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGQz0ck8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SshD8ZFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DD62F83CB;
-	Tue, 12 Aug 2025 17:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09882FF145;
+	Tue, 12 Aug 2025 18:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021152; cv=none; b=iV0lx7OqB3BkcU1wQP+6XvFQJK2WuPkx5L6BPxhvKozwnWYR5WL8A/o9c8MQyA2hMICzpTO/KZtB/3r8LPDYXD6PiATZ3hQSK7LNX2JY9P2TmyWsxdnFq6xmp/U9QZTgoBqyHrRSi9UJTJoBscQwrtuGsP0Bf9CtxldKpjF4umU=
+	t=1755022459; cv=none; b=VNV7yFtMK3b/2V3ujyVYLCtfGfa6nhj8lQvmXHBYicDsZM7XWcW7BJxkC/2VCGoclN5l+BWamRGFc6wnyj04oyLNuamMxXO4VkKhQLuURKdCAeGff6zj+T5506nqEoHhb5ZTe2N/C05MRoSl/m0jAn+H+BInPs67CIWkPkBOSaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021152; c=relaxed/simple;
-	bh=b18cr8VyWYMJyvem1IU+abCW2fIZSmDYbQQu/9kaYUc=;
+	s=arc-20240116; t=1755022459; c=relaxed/simple;
+	bh=f84CuWNjHdrSWxtTaVTyNfLzVMhVdTj+cmrEplRSvDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqsLCC+MB1+0seeaPUJcAO7KTD3PmsGoIyhmq2v9iCNp9g67VmcsLbFHJQobIG98Wmg8Y+vfLWWScoxsYTNl1MubzSahfPxk8iwaWZN1yVeOEPuSUxm/nNm5oknwSsvnUefWxME6YW3vrpg/I9BLVKLqhmeDGkxn8oXxdlL6q4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGQz0ck8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18355C4CEF0;
-	Tue, 12 Aug 2025 17:52:31 +0000 (UTC)
+	 MIME-Version; b=fk0RVBO+i2r24vwvmkxQr5ivzfsBXXeopUOU0t2x06FmfLJlUw+YcgN26lsnBAt6UA8S565AkqU9a1TNVQ+lb8p0cstXV7iuZBWTVZCYDZWXeszBTQEt9Huvgxybvts9TPsG0hXgLnuJeQlUN64/7qpqspKclGXu5D860pL2QL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SshD8ZFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D192C4CEF0;
+	Tue, 12 Aug 2025 18:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021152;
-	bh=b18cr8VyWYMJyvem1IU+abCW2fIZSmDYbQQu/9kaYUc=;
+	s=korg; t=1755022459;
+	bh=f84CuWNjHdrSWxtTaVTyNfLzVMhVdTj+cmrEplRSvDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGQz0ck85Z3BxcZI1nFgjdqHlejhCh/uQSyHTqscN2f2iU58/izBPnuOVtHAfHJW0
-	 mTESI/BCV2e1DesT07bIh0bYjbYiiTMzUPxBR20TulhvsAgJVPJriB1aJvJXCiFoZm
-	 yHiGcrFnxxZfORY4tbPBh2fSVOup9o9kxPRl0CfA=
+	b=SshD8ZFU9kKvny1Zxi9vgqWNiXgDCGJL/aAcJMj024rymeAE+EQIsuRUas5DHNBex
+	 TxoaSuCcyaysHheo0fhOSb/HMPxTh7yV1HtE+qHjVLsxWtoDp8QO+2uaagu2e5MNov
+	 7WwxjgN16soXXzsw3t9R76y0i3MczixgILw0Xx7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/262] fbcon: Fix outdated registered_fb reference in comment
+Subject: [PATCH 6.12 161/369] clk: davinci: Add NULL check in davinci_lpsc_clk_register()
 Date: Tue, 12 Aug 2025 19:27:38 +0200
-Message-ID: <20250812172955.998158256@linuxfoundation.org>
+Message-ID: <20250812173020.826189175@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shixiong Ou <oushixiong@kylinos.cn>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 0f168e7be696a17487e83d1d47e5a408a181080f ]
+[ Upstream commit 13de464f445d42738fe18c9a28bab056ba3a290a ]
 
-The variable was renamed to fbcon_registered_fb, but this comment was
-not updated along with the change. Correct it to avoid confusion.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+davinci_lpsc_clk_register() does not check for this case, which results
+in a NULL pointer dereference.
 
-Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
-Fixes: efc3acbc105a ("fbcon: Maintain a private array of fb_info")
-[sima: Add Fixes: line.]
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250709103438.572309-1-oushixiong1025@163.com
+Add NULL check after devm_kasprintf() to prevent this issue and ensuring
+no resources are left allocated.
+
+Fixes: c6ed4d734bc7 ("clk: davinci: New driver for davinci PSC clocks")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://lore.kernel.org/r/20250401131341.26800-1-bsdhenrymartin@gmail.com
+Reviewed-by: David Lechner <david@lechnology.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/davinci/psc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 9d095fe03e18..ed68ba89b80b 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -935,13 +935,13 @@ static const char *fbcon_startup(void)
- 	int rows, cols;
+diff --git a/drivers/clk/davinci/psc.c b/drivers/clk/davinci/psc.c
+index 355d1be0b5d8..a37fea7542b2 100644
+--- a/drivers/clk/davinci/psc.c
++++ b/drivers/clk/davinci/psc.c
+@@ -277,6 +277,11 @@ davinci_lpsc_clk_register(struct device *dev, const char *name,
  
- 	/*
--	 *  If num_registered_fb is zero, this is a call for the dummy part.
-+	 *  If fbcon_num_registered_fb is zero, this is a call for the dummy part.
- 	 *  The frame buffer devices weren't initialized yet.
- 	 */
- 	if (!fbcon_num_registered_fb || info_idx == -1)
- 		return display_desc;
- 	/*
--	 * Instead of blindly using registered_fb[0], we use info_idx, set by
-+	 * Instead of blindly using fbcon_registered_fb[0], we use info_idx, set by
- 	 * fbcon_fb_registered();
- 	 */
- 	info = fbcon_registered_fb[info_idx];
+ 	lpsc->pm_domain.name = devm_kasprintf(dev, GFP_KERNEL, "%s: %s",
+ 					      best_dev_name(dev), name);
++	if (!lpsc->pm_domain.name) {
++		clk_hw_unregister(&lpsc->hw);
++		kfree(lpsc);
++		return ERR_PTR(-ENOMEM);
++	}
+ 	lpsc->pm_domain.attach_dev = davinci_psc_genpd_attach_dev;
+ 	lpsc->pm_domain.detach_dev = davinci_psc_genpd_detach_dev;
+ 	lpsc->pm_domain.flags = GENPD_FLAG_PM_CLK;
 -- 
 2.39.5
 
