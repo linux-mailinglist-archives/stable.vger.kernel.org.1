@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-168438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F49B234E5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC86BB2333E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C982D2A13B4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2792189816E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953092FE593;
-	Tue, 12 Aug 2025 18:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CD92868AF;
+	Tue, 12 Aug 2025 18:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adchXmsY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jn8Q471"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F92FDC55;
-	Tue, 12 Aug 2025 18:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833A71EBFE0;
+	Tue, 12 Aug 2025 18:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024170; cv=none; b=Ut8ZmHeRviHIjdair1QYyHcRpDubUmIuVt6ppbOFNbmINvoOzjtaogtZcEWDj3OiWYKF2AHX8yT2Uwd0w38d+NhC8Rx8XRDaKVNsxMvVIyBtIjCtVBCV72uPAXiV80ujE5Iy/FmsScrpkN6jfpR3sh1P/SiYIqrS6TJZLf2PtyI=
+	t=1755022897; cv=none; b=XrDVSOQ296pXZDjozK7j0y+5xNhGy9VcsffQvTkIjAdkVhfN/VcSyJ0GkgSoShntoPeKDQUOCETIaVsjtnxMKniF6wb9IHBDI9527wrMkz0Fi+PATZTcYXnGhuvja3utLJa5GJA4eQGxOQMyMfiwSG6OTLDBru77TuHBI+bBGbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024170; c=relaxed/simple;
-	bh=WG/tC0tUdn4YzEkJwBhMcHxtUcaui8/RT6UiQ7IYZ6I=;
+	s=arc-20240116; t=1755022897; c=relaxed/simple;
+	bh=gWW5C6ARQLcXgCpt7FifOhOuHh5hAWI7VAZySc9sMOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIgijIuDOZpQvIOJV36ob5sGxIPRMqJTjyZqljO2afPVW6SCZoWc5FJjVewCit1jgwntzOoKKtCZ6K+v/QyDwi4sSQo4GwZZK5VRIrKoPO2Sat1BQvCN744Q7OjBBSZ69ai4quOoNlvOZFpAQahL6EI2+g82Acbu54zcL4ZjENo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adchXmsY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EC1C4CEF0;
-	Tue, 12 Aug 2025 18:42:49 +0000 (UTC)
+	 MIME-Version; b=cr4TKczxd5/J5t+9GB6bWC5+qpRsOqLO0BgtD0QNdD1S2zFKqiMRrEXqbYwuUJIJrxC/mBSNeDhxVcUhz5guTVsvCb36YZLRyzA7zPVdNL3jftslycvnt5+g71Ypof4ZjE9k2zGD8fe6bfI0iI856LA7/2ZxaRFWkmZ+4OaJABQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jn8Q471; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93716C4CEF0;
+	Tue, 12 Aug 2025 18:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024169;
-	bh=WG/tC0tUdn4YzEkJwBhMcHxtUcaui8/RT6UiQ7IYZ6I=;
+	s=korg; t=1755022897;
+	bh=gWW5C6ARQLcXgCpt7FifOhOuHh5hAWI7VAZySc9sMOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adchXmsYdMFYINUV6t0BUr/KLKicPhw6MrEdLb+F+qKcvG6AqNixzgwSff++5wVgn
-	 yqOkcG7q9FjiZSSZHeFq9sjqYAkj8osX/0twhHRu2kRDPDNKMF/6/pOiGhk+iCK1tZ
-	 7HoDWmPRkSzGJGlopX7iFFWgg/J+3jMnGLzDiP78=
+	b=0jn8Q471OtCvDZoGxQo43LCITHbDEi8NjRR5zJbASXa8RkOcs8Y1BRRjH7YiPOFQf
+	 lwKrOo/AV/6B3Xg5iF2CRKtKiv1jdQIiJBZndUBZfraY4vIqrqK3/ZHeyFHG+jeg1u
+	 FebgbPPgoDyW1sbkz4IFTMBLRuQAHx3PbqqZH1A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Tomas Glozar <tglozar@redhat.com>,
-	Juri Lelli <jlelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	John Kacur <jkacur@redhat.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 294/627] rv: Use strings in da monitors tracepoints
+Subject: [PATCH 6.12 292/369] s390/ap: Unmask SLCF bit in card and queue ap functions sysfs
 Date: Tue, 12 Aug 2025 19:29:49 +0200
-Message-ID: <20250812173430.493889971@linuxfoundation.org>
+Message-ID: <20250812173027.716324623@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,191 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit 7f904ff6e58d398c4336f3c19c42b338324451f7 ]
+[ Upstream commit 123b7c7c2ba725daf3bfa5ce421d65b92cb5c075 ]
 
-Using DA monitors tracepoints with KASAN enabled triggers the following
-warning:
+The SLCF bit ("stateless command filtering") introduced with
+CEX8 cards was because of the function mask's default value
+suppressed when user space read the ap function for an AP
+card or queue. Unmask this bit so that user space applications
+like lszcrypt can evaluate and list this feature.
 
- BUG: KASAN: global-out-of-bounds in do_trace_event_raw_event_event_da_monitor+0xd6/0x1a0
- Read of size 32 at addr ffffffffaada8980 by task ...
- Call Trace:
-  <TASK>
- [...]
-  do_trace_event_raw_event_event_da_monitor+0xd6/0x1a0
-  ? __pfx_do_trace_event_raw_event_event_da_monitor+0x10/0x10
-  ? trace_event_sncid+0x83/0x200
-  trace_event_sncid+0x163/0x200
- [...]
- The buggy address belongs to the variable:
-  automaton_snep+0x4e0/0x5e0
-
-This is caused by the tracepoints reading 32 bytes __array instead of
-__string from the automata definition. Such strings are literals and
-reading 32 bytes ends up in out of bound memory accesses (e.g. the next
-automaton's data in this case).
-The error is harmless as, while printing the string, we stop at the null
-terminator, but it should still be fixed.
-
-Use the __string facilities while defining the tracepoints to avoid
-reading out of bound memory.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tomas Glozar <tglozar@redhat.com>
-Cc: Juri Lelli <jlelli@redhat.com>
-Cc: Clark Williams <williams@redhat.com>
-Cc: John Kacur <jkacur@redhat.com>
-Link: https://lore.kernel.org/20250728135022.255578-4-gmonaco@redhat.com
-Fixes: 792575348ff7 ("rv/include: Add deterministic automata monitor definition via C macros")
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: d4c53ae8e494 ("s390/ap: store TAPQ hwinfo in struct ap_card")
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/rv/rv_trace.h | 76 +++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 38 deletions(-)
+ arch/s390/include/asm/ap.h   | 2 +-
+ drivers/s390/crypto/ap_bus.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/rv/rv_trace.h b/kernel/trace/rv/rv_trace.h
-index 18fa0e358a30..01fa84824bcb 100644
---- a/kernel/trace/rv/rv_trace.h
-+++ b/kernel/trace/rv/rv_trace.h
-@@ -16,23 +16,23 @@ DECLARE_EVENT_CLASS(event_da_monitor,
- 	TP_ARGS(state, event, next_state, final_state),
+diff --git a/arch/s390/include/asm/ap.h b/arch/s390/include/asm/ap.h
+index 395b02d6a133..352108727d7e 100644
+--- a/arch/s390/include/asm/ap.h
++++ b/arch/s390/include/asm/ap.h
+@@ -103,7 +103,7 @@ struct ap_tapq_hwinfo {
+ 			unsigned int accel :  1; /* A */
+ 			unsigned int ep11  :  1; /* X */
+ 			unsigned int apxa  :  1; /* APXA */
+-			unsigned int	   :  1;
++			unsigned int slcf  :  1; /* Cmd filtering avail. */
+ 			unsigned int class :  8;
+ 			unsigned int bs	   :  2; /* SE bind/assoc */
+ 			unsigned int	   : 14;
+diff --git a/drivers/s390/crypto/ap_bus.h b/drivers/s390/crypto/ap_bus.h
+index f4622ee4d894..6111913c858c 100644
+--- a/drivers/s390/crypto/ap_bus.h
++++ b/drivers/s390/crypto/ap_bus.h
+@@ -180,7 +180,7 @@ struct ap_card {
+ 	atomic64_t total_request_count;	/* # requests ever for this AP device.*/
+ };
  
- 	TP_STRUCT__entry(
--		__array(	char,	state,		MAX_DA_NAME_LEN	)
--		__array(	char,	event,		MAX_DA_NAME_LEN	)
--		__array(	char,	next_state,	MAX_DA_NAME_LEN	)
--		__field(	bool,	final_state			)
-+		__string(	state,		state		)
-+		__string(	event,		event		)
-+		__string(	next_state,	next_state	)
-+		__field(	bool,		final_state	)
- 	),
+-#define TAPQ_CARD_HWINFO_MASK 0xFEFF0000FFFF0F0FUL
++#define TAPQ_CARD_HWINFO_MASK 0xFFFF0000FFFF0F0FUL
+ #define ASSOC_IDX_INVALID 0x10000
  
- 	TP_fast_assign(
--		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
--		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
--		memcpy(__entry->next_state,	next_state,	MAX_DA_NAME_LEN);
--		__entry->final_state		= final_state;
-+		__assign_str(state);
-+		__assign_str(event);
-+		__assign_str(next_state);
-+		__entry->final_state = final_state;
- 	),
- 
- 	TP_printk("%s x %s -> %s%s",
--		__entry->state,
--		__entry->event,
--		__entry->next_state,
-+		__get_str(state),
-+		__get_str(event),
-+		__get_str(next_state),
- 		__entry->final_state ? " (final)" : "")
- );
- 
-@@ -43,18 +43,18 @@ DECLARE_EVENT_CLASS(error_da_monitor,
- 	TP_ARGS(state, event),
- 
- 	TP_STRUCT__entry(
--		__array(	char,	state,		MAX_DA_NAME_LEN	)
--		__array(	char,	event,		MAX_DA_NAME_LEN	)
-+		__string(	state,	state	)
-+		__string(	event,	event	)
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
--		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
-+		__assign_str(state);
-+		__assign_str(event);
- 	),
- 
- 	TP_printk("event %s not expected in the state %s",
--		__entry->event,
--		__entry->state)
-+		__get_str(event),
-+		__get_str(state))
- );
- 
- #include <monitors/wip/wip_trace.h>
-@@ -75,26 +75,26 @@ DECLARE_EVENT_CLASS(event_da_monitor_id,
- 	TP_ARGS(id, state, event, next_state, final_state),
- 
- 	TP_STRUCT__entry(
--		__field(	int,	id				)
--		__array(	char,	state,		MAX_DA_NAME_LEN	)
--		__array(	char,	event,		MAX_DA_NAME_LEN	)
--		__array(	char,	next_state,	MAX_DA_NAME_LEN	)
--		__field(	bool,	final_state			)
-+		__field(	int,		id		)
-+		__string(	state,		state		)
-+		__string(	event,		event		)
-+		__string(	next_state,	next_state	)
-+		__field(	bool,		final_state	)
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
--		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
--		memcpy(__entry->next_state,	next_state,	MAX_DA_NAME_LEN);
--		__entry->id			= id;
--		__entry->final_state		= final_state;
-+		__assign_str(state);
-+		__assign_str(event);
-+		__assign_str(next_state);
-+		__entry->id		= id;
-+		__entry->final_state	= final_state;
- 	),
- 
- 	TP_printk("%d: %s x %s -> %s%s",
- 		__entry->id,
--		__entry->state,
--		__entry->event,
--		__entry->next_state,
-+		__get_str(state),
-+		__get_str(event),
-+		__get_str(next_state),
- 		__entry->final_state ? " (final)" : "")
- );
- 
-@@ -105,21 +105,21 @@ DECLARE_EVENT_CLASS(error_da_monitor_id,
- 	TP_ARGS(id, state, event),
- 
- 	TP_STRUCT__entry(
--		__field(	int,	id				)
--		__array(	char,	state,		MAX_DA_NAME_LEN	)
--		__array(	char,	event,		MAX_DA_NAME_LEN	)
-+		__field(	int,	id	)
-+		__string(	state,	state	)
-+		__string(	event,	event	)
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->state,		state,		MAX_DA_NAME_LEN);
--		memcpy(__entry->event,		event,		MAX_DA_NAME_LEN);
--		__entry->id			= id;
-+		__assign_str(state);
-+		__assign_str(event);
-+		__entry->id	= id;
- 	),
- 
- 	TP_printk("%d: event %s not expected in the state %s",
- 		__entry->id,
--		__entry->event,
--		__entry->state)
-+		__get_str(event),
-+		__get_str(state))
- );
- 
- #include <monitors/wwnr/wwnr_trace.h>
+ #define to_ap_card(x) container_of((x), struct ap_card, ap_dev.device)
 -- 
 2.39.5
 
