@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DE0B23599
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:52:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07914B233A7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4A41621A02
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0A206E1528
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8931291C1F;
-	Tue, 12 Aug 2025 18:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E082FA0F9;
+	Tue, 12 Aug 2025 18:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJUT4E1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjJddG9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E5D2CA9;
-	Tue, 12 Aug 2025 18:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603F961FFE;
+	Tue, 12 Aug 2025 18:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024397; cv=none; b=G+3bEs4Ga7VX6un2DyHeJpfAUq+XCfnqpBMmoJuSd8xPR1L1UWFUxxP+RqoMa5AF4oH8DAuAplh/mbruxNYxEehwon6EHitXr9i5cV7CkKwhmv+EYHPj//f2K3tONFqb0eQ6yv3GfG/Zg2b7IZQFiiuxr4u+o9ytEuDNvBWq3og=
+	t=1755023183; cv=none; b=gHUXt9KETJNzcgOm5PUrLjxWED7eQY8K2ED+QO847jWE2WjYkUbS+AkKw4AJENibHqr6LQVLRs3T5J2tbRbN2hcZJ3CyDdFu5GUQcim4MDwLmn80dSdHHME67h/XG/ciGeQV3N1Tkd/FNZCuAy+/Gkq1zQ+emIOzSM4oX+6tnuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024397; c=relaxed/simple;
-	bh=x3LmZTwpm12jzBZ3aQpXc956aQyqQ9moOvMUttc5ON0=;
+	s=arc-20240116; t=1755023183; c=relaxed/simple;
+	bh=5gQ+en5/HXJp16egaus4InteHj0M212Bk2F54VdYH5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsrpIeH9ek2WYyNBXgpu4y1rvl3s87V2zyDXYhLWh3gysLF1zD4ZBsWXR4ZmJPJzbeasOwWlrKtnRvetogX6MZY+PNAaBQv0Didpqevye+45hfwV88wiGxYicYf6dLKqj3oxE7EaLM9FIlzt5J/L/raUBjaDBCMYHBqj63lNpK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJUT4E1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181EFC4CEF0;
-	Tue, 12 Aug 2025 18:46:36 +0000 (UTC)
+	 MIME-Version; b=dEPVeiEoDs2+nI2bFRqkUEvvdoRk6WqJqh7spDs9EVGZE0R3l4/eZF5rrZr8vs+kMbIgyAd/XBxft2PNv1JDBF1ARCOsc3kbYB6R1VkmR2axUHtNRlTYMaj6AjNiXLB9bi+QcIT62E1CwslSuthv+sG32iyPbda1Kz76yz/ttn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjJddG9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D77C4CEF0;
+	Tue, 12 Aug 2025 18:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024397;
-	bh=x3LmZTwpm12jzBZ3aQpXc956aQyqQ9moOvMUttc5ON0=;
+	s=korg; t=1755023182;
+	bh=5gQ+en5/HXJp16egaus4InteHj0M212Bk2F54VdYH5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJUT4E1RLAOaeD6r45UeKBZyo7982JkCWvBV3wHJ0I9hc/Uw4hLAe9M8zJfTyQbtm
-	 l+m863BeRCMUUOaPzkbXmZzxBg2t6PSJwyaYQpsYErEW2oLZD21UOHE/AZckG/5Pz9
-	 fF6Y9L8miydVoJy6oAtzWpoYDYiMqpRXjK0RjCGw=
+	b=KjJddG9pJpK8vwgZBvcQ7x4WEuRyL1ElRtHaJOdpTMt3baPSsLO9N14tbT7UkMwTv
+	 uKkSBrTb67tGoV0URZRU3s/SCDA0eFwrDWbCqPVOnsoplNKyun7I41vhwfDnOSMHex
+	 dnY8TGMHvpZ378Tqn4Vr4i8lG3UNjvhD1ENm9Fdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 362/627] perf sched: Use RC_CHK_EQUAL() to compare pointers
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Subject: [PATCH 6.12 360/369] s390/mm: Remove possible false-positive warning in pte_free_defer()
 Date: Tue, 12 Aug 2025 19:30:57 +0200
-Message-ID: <20250812173433.062136598@linuxfoundation.org>
+Message-ID: <20250812173030.228840513@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 
-[ Upstream commit 7a4002ec9e0fced907179da94f67c3082d7b4162 ]
+commit 5647f61ad9171e8f025558ed6dc5702c56a33ba3 upstream.
 
-So that it can check two pointers to the same object properly when
-REFCNT_CHECKING is on.
+Commit 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing
+page") added a warning to pte_free_defer(), on our request. It was meant
+to warn if this would ever be reached for KVM guest mappings, because
+the page table would be freed w/o a gmap_unlink(). THP mappings are not
+allowed for KVM guests on s390, so this should never happen.
 
-Fixes: 78c32f4cb12f9430 ("libperf rc_check: Add RC_CHK_EQUAL")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-7-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, it is possible that the warning is triggered in a valid case as
+false-positive.
+
+s390_enable_sie() takes the mmap_lock, marks all VMAs as VM_NOHUGEPAGE and
+splits possibly existing THP guest mappings. mm->context.has_pgste is set
+to 1 before that, to prevent races with the mm_has_pgste() check in
+MADV_HUGEPAGE.
+
+khugepaged drops the mmap_lock for file mappings and might run in parallel,
+before a vma is marked VM_NOHUGEPAGE, but after mm->context.has_pgste was
+set to 1. If it finds file mappings to collapse, it will eventually call
+pte_free_defer(). This will trigger the warning, but it is a valid case
+because gmap is not yet set up, and the THP mappings will be split again.
+
+Therefore, remove the warning and the comment.
+
+Fixes: 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing page")
+Cc: <stable@vger.kernel.org> # 6.6+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/mm/pgalloc.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index a6eb0462dd5b..087d4eaba5f7 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -994,7 +994,7 @@ thread_atoms_search(struct rb_root_cached *root, struct thread *thread,
- 		else if (cmp < 0)
- 			node = node->rb_right;
- 		else {
--			BUG_ON(thread != atoms->thread);
-+			BUG_ON(!RC_CHK_EQUAL(thread, atoms->thread));
- 			return atoms;
- 		}
- 	}
--- 
-2.39.5
-
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -219,11 +219,6 @@ void pte_free_defer(struct mm_struct *mm
+ 	struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
+ 
+ 	call_rcu(&ptdesc->pt_rcu_head, pte_free_now);
+-	/*
+-	 * THPs are not allowed for KVM guests. Warn if pgste ever reaches here.
+-	 * Turn to the generic pte_free_defer() version once gmap is removed.
+-	 */
+-	WARN_ON_ONCE(mm_has_pgste(mm));
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
 
 
 
