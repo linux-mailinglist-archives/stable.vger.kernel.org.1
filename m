@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-167567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1030B230B6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6D0B23391
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B893B3B0DC2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D9A817DC31
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEA62FDC2C;
-	Tue, 12 Aug 2025 17:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971462FD1C5;
+	Tue, 12 Aug 2025 18:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS7YjFYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIT2IiuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3FD2D5C76;
-	Tue, 12 Aug 2025 17:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C8D3F9D2;
+	Tue, 12 Aug 2025 18:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021251; cv=none; b=RxIR+l+IT3GZkLmxrSXpYP+lYgQhNYoqJgfXnGMwlReciQp7F/ZqY3H/EzRrYUzwv8kzM2/rJeTIGVexY1aT1NOFOsjx/AY/p3XUlGvFU/Uir/H4mM71U1A05usI9c2lNadsH0/pbXZjkiDyxRNZcghHozIl8ypBuZ8ZwQP+hPM=
+	t=1755023137; cv=none; b=QYgOAVAch2S8zmyD1hRPZjnM4Y1mvLfF4fDBJ/9UeQNTfZuWyqv0/qu5KnVyJhqA+2BfUO+oT7+8aBqlvlTMThoskVrZpXUL7uiRhsE5Ad/W4/LE8u/gpmtoDY7xCvXV8Paj6fiYNPP1rSW87vfUWxrBnbo3ZbrFsbkOLMtaUWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021251; c=relaxed/simple;
-	bh=Q+hEZNi+9OCK+pLQ0S1aGGRo2QvMuykjdIpq7FavSr8=;
+	s=arc-20240116; t=1755023137; c=relaxed/simple;
+	bh=IaeS+NjT+hJub6FOI3UEhwOQ9wmrdLDW7W0UckrrUWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2q6kplwALHfQbYwhcYRgaBTRh2rGA5aJ1zCjzWOWTm/bAl8QgBrXnY4zg85Zz/uuMEoh18Mh4832upmgigSa7ADFj4hlDVlOiwg6NtV89MZA4rTbCxKYqsJjusx3FsscsB6N93f3oofrmMCqXsyrXoaCrNSzM5gAG8rNM9o3D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS7YjFYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9193EC4CEF0;
-	Tue, 12 Aug 2025 17:54:10 +0000 (UTC)
+	 MIME-Version; b=HjcYYWuv0JpvIQSpQPu1Y+j2P8UpLT00j79cunGiRVIsHHemog6zB4hO0/NyXaHklhHoPfDQ4msQick0Dhk8rMiAcKCC84CFIkvDgM4NbsINQZ5Uhg3T9QiBQ3xUQ9t4rspIEV29YlcWjW/5SFMkJrSyzDfTyfmkKLmjI2v3r20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIT2IiuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC29FC4CEF1;
+	Tue, 12 Aug 2025 18:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021251;
-	bh=Q+hEZNi+9OCK+pLQ0S1aGGRo2QvMuykjdIpq7FavSr8=;
+	s=korg; t=1755023134;
+	bh=IaeS+NjT+hJub6FOI3UEhwOQ9wmrdLDW7W0UckrrUWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JS7YjFYYPDoTBIwTnVNcyf5Yf8LVBllpoyTqHBt6avQW/pbIBiQAEdFOzLTYdc7gm
-	 9dcqjPzsiNX/l33pl2kjmfvnGoE69JHARqtGurNwh3EUIXw7ZAoRe7d4bzsJbNtOEh
-	 qs9APapgc5jCszjPZMugSp/+WwzGbP5E9O/jSjqE=
+	b=jIT2IiuSIJYux3vYxAaT1cpgnzAD/sVG806pNlw4IRHc91wPXfUtWjff0Szcd/KaF
+	 tOS6s2gdBWSua9+1x3YjpafQj5X3b3HmqWuk99McWSgOFtM3dusSAGC3n4Iw1IUhWK
+	 ZwoDd7on4wJe3fVzR6YMA+hB5/k+7xLlvdhAKo2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.1 235/253] perf/core: Prevent VMA split of buffer mappings
+Subject: [PATCH 6.12 326/369] perf/core: Prevent VMA split of buffer mappings
 Date: Tue, 12 Aug 2025 19:30:23 +0200
-Message-ID: <20250812172958.828530956@linuxfoundation.org>
+Message-ID: <20250812173028.979033153@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -110,7 +110,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -6285,11 +6285,21 @@ out_put:
+@@ -6617,11 +6617,21 @@ out_put:
  	ring_buffer_put(rb); /* could be last */
  }
  
