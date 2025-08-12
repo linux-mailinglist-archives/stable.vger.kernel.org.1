@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-168169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442BDB233C8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A75B23225
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6EE11A25C21
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11F8F188EDB9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB14F2FE560;
-	Tue, 12 Aug 2025 18:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01A62FDC49;
+	Tue, 12 Aug 2025 18:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4Snq0Dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZkEfCFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681F72FDC55;
-	Tue, 12 Aug 2025 18:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE07305E08;
+	Tue, 12 Aug 2025 18:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023277; cv=none; b=nxLge5Hzyil/jaIVelnn4GrP6W6RVmIeiiC+YKZN7X6+I5xeh5R+Gf7+J08gYp8qzl4cI56Vu10ymXROfS2IlciNZJ+waCK7tMC+4C+8MY18NO+zko0g0unzAu4AX2IC7o/rsocbcydLWM/7obl4gDpv+0F2Sf6I+pPjd8k+sNM=
+	t=1755022076; cv=none; b=O8WVCKUCEnbonGwMNSNYtx+JQM03PCfBFJ+WmH84ysZtVatcOvWhO1IW4A3T7TRnnmVd0vW8lsAWMl4JLt9P7sP+wI/Bl31ty0qGP4xJqLH9EqJZQmyBpkqnU/HYDwZw+9kjLlTejY2Q5zkOOABnBchq+aSm+sG2ggYOnUFDz6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023277; c=relaxed/simple;
-	bh=Uc+klOh6+HjKHSZR6tR+00HVo9ydvk2rUlfM5C6kslk=;
+	s=arc-20240116; t=1755022076; c=relaxed/simple;
+	bh=bTEe+1TcNG5tJetG/kgJFcNdAIKGyaSOnNP7b34Bzoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J38gBktvVOeVpi5WHcLzDArTYq1xIujyYpYIZgCvD4TrYjQ3bGXNXdOIL55pr/MF4ZNa8bKTe37A7EeTl79DC5mUspcH//ZKwGEm8wYBOjRQES5rux+PdTXJEnp+SZta5sF0V7vY33ifaT3gLuUNp+rKS+rbvOpLHsPLGz/24n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4Snq0Dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6CFC4CEF0;
-	Tue, 12 Aug 2025 18:27:56 +0000 (UTC)
+	 MIME-Version; b=o3h99q7EDg6cCXjgyTn7klAiUQeyGTI3OEydVMMBSuacW4fzFkuBkhY0dgVxcRtpygbEwqLJzav0Fb0tzFD36EKYtEYvFBtQ6boWIDks2Alca2TGhvfOpu2oh7rRR4IG2ArcG6Nft/dV9v1Uy7HKoHjGpJhYjyQ0Xz5kHmo1sPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZkEfCFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CE2C4CEF0;
+	Tue, 12 Aug 2025 18:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023277;
-	bh=Uc+klOh6+HjKHSZR6tR+00HVo9ydvk2rUlfM5C6kslk=;
+	s=korg; t=1755022076;
+	bh=bTEe+1TcNG5tJetG/kgJFcNdAIKGyaSOnNP7b34Bzoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4Snq0Dv8/zkdmIS/pMqiEVHySIzQYRwrGyOnMPWl9OcG3Zm3zXJaM1VtLhmp3QHp
-	 /3Ni/KvvFC6kgjJcFKUW1E5fXIFQH6nJ6t1M6oUxnQ6KIvZaEgJzi2P+jKv9h7b3bf
-	 qscDz8MNxgqRfG1swR/+WEeAh1UdqlxksXuPC6TY=
+	b=MZkEfCFzY8lzv5zf0ffE3xPbvm8HTfK2eXj1fh8QCQ+vm+BZgUC8EZePuuJh5JibE
+	 6oZJ+jZW/SZnDTqSR8dMdJYT5gv+u68hdtGsFb2+PvGlzIBmb44vgDF85CskiYcfrJ
+	 H7UEci+mza8JBB/TRpjjhaHNO0t0ifboQSFgX8Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 033/627] ASoC: amd: acp: Fix pointer assignments for snd_soc_acpi_mach structures
+Subject: [PATCH 6.12 031/369] usb: misc: apple-mfi-fastcharge: Make power supply names unique
 Date: Tue, 12 Aug 2025 19:25:28 +0200
-Message-ID: <20250812173420.585792083@linuxfoundation.org>
+Message-ID: <20250812173015.923781763@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit 0779c0ad2a7cc0ae1865860c9bc8732613cc56b1 ]
+[ Upstream commit 43007b89fb2de746443fbbb84aedd1089afdf582 ]
 
-This patch modifies the assignment of machine structure pointers in the
-acp_pci_probe function. Previously, the machine pointers were assigned
-using the address-of operator (&), which caused incompatibility issues
-in type assignments.
+When multiple Apple devices are connected concurrently, the
+apple-mfi-fastcharge driver fails to probe the subsequent devices with
+the following error:
 
-Additionally, the declarations of the machine arrays in amd.h have been
-updated to reflect that they are indeed arrays (`[]`). The code is
-further cleaned up by declaring the codec structures in
-amd-acpi-mach.c as static, reflecting their intended usage.
+    sysfs: cannot create duplicate filename '/class/power_supply/apple_mfi_fastcharge'
+    apple-mfi-fastcharge 5-2.4.3.3: probe of 5-2.4.3.3 failed with error -17
 
-error: symbol 'amp_rt1019' was not declared. Should it be static?
-error: symbol 'amp_max' was not declared. Should it be static?
-error: symbol 'snd_soc_acpi_amd_acp_machines' was not declared. Should it be static?
-error: symbol 'snd_soc_acpi_amd_rmb_acp_machines' was not declared. Should it be static?
-error: symbol 'snd_soc_acpi_amd_acp63_acp_machines' was not declared. Should it be static?
-error: symbol 'snd_soc_acpi_amd_acp70_acp_machines' was not declared. Should it be static?
+This happens because the driver uses a fixed power supply name
+("apple_mfi_fastcharge") for all devices, causing a sysfs name
+conflict when a second device is connected.
 
-Fixes: 9c2c0ef64009 ("ASoC: amd: acp: Fix snd_soc_acpi_mach id's duplicate symbol error")
+Fix this by generating unique names using the USB bus and device
+number (e.g., "apple_mfi_fastcharge_5-12"). This ensures each
+connected device gets a unique power supply entry in sysfs.
 
-Link: https://github.com/thesofproject/linux/issues/5438
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://patch.msgid.link/20250609121251.639080-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The change requires storing a copy of the power_supply_desc structure
+in the per-device mfi_device struct, since the name pointer needs to
+remain valid for the lifetime of the power supply registration.
+
+Fixes: 249fa8217b84 ("USB: Add driver to control USB fast charge for iOS devices")
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Link: https://lore.kernel.org/r/20250602-apple-mfi-fastcharge-duplicate-sysfs-v1-1-5d84de34fac6@posteo.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-pci.c       | 8 ++++----
- sound/soc/amd/acp/amd-acpi-mach.c | 4 ++--
- sound/soc/amd/acp/amd.h           | 8 ++++----
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/usb/misc/apple-mfi-fastcharge.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
-index 0b2aa33cc426..2591b1a1c5e0 100644
---- a/sound/soc/amd/acp/acp-pci.c
-+++ b/sound/soc/amd/acp/acp-pci.c
-@@ -137,26 +137,26 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
- 		chip->name = "acp_asoc_renoir";
- 		chip->rsrc = &rn_rsrc;
- 		chip->acp_hw_ops_init = acp31_hw_ops_init;
--		chip->machines = &snd_soc_acpi_amd_acp_machines;
-+		chip->machines = snd_soc_acpi_amd_acp_machines;
- 		break;
- 	case 0x6f:
- 		chip->name = "acp_asoc_rembrandt";
- 		chip->rsrc = &rmb_rsrc;
- 		chip->acp_hw_ops_init = acp6x_hw_ops_init;
--		chip->machines = &snd_soc_acpi_amd_rmb_acp_machines;
-+		chip->machines = snd_soc_acpi_amd_rmb_acp_machines;
- 		break;
- 	case 0x63:
- 		chip->name = "acp_asoc_acp63";
- 		chip->rsrc = &acp63_rsrc;
- 		chip->acp_hw_ops_init = acp63_hw_ops_init;
--		chip->machines = &snd_soc_acpi_amd_acp63_acp_machines;
-+		chip->machines = snd_soc_acpi_amd_acp63_acp_machines;
- 		break;
- 	case 0x70:
- 	case 0x71:
- 		chip->name = "acp_asoc_acp70";
- 		chip->rsrc = &acp70_rsrc;
- 		chip->acp_hw_ops_init = acp70_hw_ops_init;
--		chip->machines = &snd_soc_acpi_amd_acp70_acp_machines;
-+		chip->machines = snd_soc_acpi_amd_acp70_acp_machines;
- 		break;
- 	default:
- 		dev_err(dev, "Unsupported device revision:0x%x\n", pci->revision);
-diff --git a/sound/soc/amd/acp/amd-acpi-mach.c b/sound/soc/amd/acp/amd-acpi-mach.c
-index d95047d2ee94..27da2a862f1c 100644
---- a/sound/soc/amd/acp/amd-acpi-mach.c
-+++ b/sound/soc/amd/acp/amd-acpi-mach.c
-@@ -8,12 +8,12 @@
- 
- #include <sound/soc-acpi.h>
- 
--struct snd_soc_acpi_codecs amp_rt1019 = {
-+static struct snd_soc_acpi_codecs amp_rt1019 = {
- 	.num_codecs = 1,
- 	.codecs = {"10EC1019"}
+diff --git a/drivers/usb/misc/apple-mfi-fastcharge.c b/drivers/usb/misc/apple-mfi-fastcharge.c
+index ac8695195c13..8e852f4b8262 100644
+--- a/drivers/usb/misc/apple-mfi-fastcharge.c
++++ b/drivers/usb/misc/apple-mfi-fastcharge.c
+@@ -44,6 +44,7 @@ MODULE_DEVICE_TABLE(usb, mfi_fc_id_table);
+ struct mfi_device {
+ 	struct usb_device *udev;
+ 	struct power_supply *battery;
++	struct power_supply_desc battery_desc;
+ 	int charge_type;
  };
  
--struct snd_soc_acpi_codecs amp_max = {
-+static struct snd_soc_acpi_codecs amp_max = {
- 	.num_codecs = 1,
- 	.codecs = {"MX98360A"}
- };
-diff --git a/sound/soc/amd/acp/amd.h b/sound/soc/amd/acp/amd.h
-index 863e74fcee43..cb8d97122f95 100644
---- a/sound/soc/amd/acp/amd.h
-+++ b/sound/soc/amd/acp/amd.h
-@@ -243,10 +243,10 @@ extern struct acp_resource rmb_rsrc;
- extern struct acp_resource acp63_rsrc;
- extern struct acp_resource acp70_rsrc;
+@@ -178,6 +179,7 @@ static int mfi_fc_probe(struct usb_device *udev)
+ {
+ 	struct power_supply_config battery_cfg = {};
+ 	struct mfi_device *mfi = NULL;
++	char *battery_name;
+ 	int err;
  
--extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp_machines;
--extern struct snd_soc_acpi_mach snd_soc_acpi_amd_rmb_acp_machines;
--extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp63_acp_machines;
--extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp70_acp_machines;
-+extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp_machines[];
-+extern struct snd_soc_acpi_mach snd_soc_acpi_amd_rmb_acp_machines[];
-+extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp63_acp_machines[];
-+extern struct snd_soc_acpi_mach snd_soc_acpi_amd_acp70_acp_machines[];
+ 	if (!mfi_fc_match(udev))
+@@ -187,23 +189,38 @@ static int mfi_fc_probe(struct usb_device *udev)
+ 	if (!mfi)
+ 		return -ENOMEM;
  
- extern const struct snd_soc_dai_ops asoc_acp_cpu_dai_ops;
- extern const struct snd_soc_dai_ops acp_dmic_dai_ops;
++	battery_name = kasprintf(GFP_KERNEL, "apple_mfi_fastcharge_%d-%d",
++				 udev->bus->busnum, udev->devnum);
++	if (!battery_name) {
++		err = -ENOMEM;
++		goto err_free_mfi;
++	}
++
++	mfi->battery_desc = apple_mfi_fc_desc;
++	mfi->battery_desc.name = battery_name;
++
+ 	battery_cfg.drv_data = mfi;
+ 
+ 	mfi->charge_type = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+ 	mfi->battery = power_supply_register(&udev->dev,
+-						&apple_mfi_fc_desc,
++						&mfi->battery_desc,
+ 						&battery_cfg);
+ 	if (IS_ERR(mfi->battery)) {
+ 		dev_err(&udev->dev, "Can't register battery\n");
+ 		err = PTR_ERR(mfi->battery);
+-		kfree(mfi);
+-		return err;
++		goto err_free_name;
+ 	}
+ 
+ 	mfi->udev = usb_get_dev(udev);
+ 	dev_set_drvdata(&udev->dev, mfi);
+ 
+ 	return 0;
++
++err_free_name:
++	kfree(battery_name);
++err_free_mfi:
++	kfree(mfi);
++	return err;
+ }
+ 
+ static void mfi_fc_disconnect(struct usb_device *udev)
+@@ -213,6 +230,7 @@ static void mfi_fc_disconnect(struct usb_device *udev)
+ 	mfi = dev_get_drvdata(&udev->dev);
+ 	if (mfi->battery)
+ 		power_supply_unregister(mfi->battery);
++	kfree(mfi->battery_desc.name);
+ 	dev_set_drvdata(&udev->dev, NULL);
+ 	usb_put_dev(mfi->udev);
+ 	kfree(mfi);
 -- 
 2.39.5
 
