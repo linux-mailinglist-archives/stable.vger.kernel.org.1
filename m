@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-169115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981C1B2383E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F34B23815
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 960361AA79C2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:20:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAB681B67ED3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDED29BD9A;
-	Tue, 12 Aug 2025 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A0B285CAA;
+	Tue, 12 Aug 2025 19:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkjIk0UT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzjV6sHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5CC3D994;
-	Tue, 12 Aug 2025 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646A7305E2D;
+	Tue, 12 Aug 2025 19:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026429; cv=none; b=RiV2+EVWD8fM1Rq1DyLbUWX+rLecVZVVCpnyQe6Qe7qHAP1jervsbsbL53fhwh/AeGk2bbSWZf/7VQv5F7OqJ0usHxeVxsmv8mplDmDLlh4qT8L1naKQ/BtNv0Mo7q+Rwa6f7QXuARo0qns4Xoa49Zuwfsid1SWYAHYjUxbk7lI=
+	t=1755026317; cv=none; b=JXJlutDfdJBE11HhabFCXOl+rkWpNx9EJE/A4jHDgJRAiYAg0b43yClNYbCKcxvpkuiwbKMhGbCf7dnUPWjBTNNtSEXwMmHGeVTRePxAt/07OY0xGbV3TLE+I11eKOlDv6iaCOa0oxf+vc4ed+N4J4od0bqb4pOP+4bniGUJ8Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026429; c=relaxed/simple;
-	bh=UoHeN+Gy6LC2omSYge0Mq4KV+/u4d/onl+G/8TtRioA=;
+	s=arc-20240116; t=1755026317; c=relaxed/simple;
+	bh=s90TNxF5VrnZMPwRXJWm07yhrSZeKGPpSiekrvbrU9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUkcMgQPls/PxyAa4jptrAwqPEv+dbg4T/QqdR4XzbwaDBwdRJ3c6hOEbdDXrOaMFSvvkO2/EZ75g++EQvRY4mNQhnJhI5SFd4RMCxNspk6Sm3LOeqAv3R8hN5RwRTRCNxnMcqGr7YkDjB4r4U1WCf0XyahU1jEJ02JJEA04Xu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkjIk0UT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B0AC4CEF0;
-	Tue, 12 Aug 2025 19:20:28 +0000 (UTC)
+	 MIME-Version; b=ISsAciqrYxrwbUhwz+0EK5b50RMi0JOAzRabp9p8MngpSYohf4lmOPrBUGigBvulFLAt4gtR+1XlggbKMJvg/Nmp8B4Ncyu1gwvonsVRLRH0d1lAtKqSHBoiSZ9ZA8OpZSbbJOfkg1Bv5wFWP/sDYtZRH6kVFaFzJ1P40kY44Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzjV6sHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C810AC4CEF0;
+	Tue, 12 Aug 2025 19:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026428;
-	bh=UoHeN+Gy6LC2omSYge0Mq4KV+/u4d/onl+G/8TtRioA=;
+	s=korg; t=1755026317;
+	bh=s90TNxF5VrnZMPwRXJWm07yhrSZeKGPpSiekrvbrU9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkjIk0UTzUbNJ0n4lB4UQz+OXbmS1fF5HkltjdZbkxrATPJvgRfJPCmNFF1fKVjQS
-	 Sx7fnnMD9B3trgukhW7CERACeEDQprDsZLLh8mHxG9VGIRmtngutFUHDhPBeY0JKPg
-	 va3TpIpNZ2Hw9idfkdJi7cyoGU9kCCzhk8mELN/g=
+	b=YzjV6sHXpLyuw+8eAV41D3UNeoPimsxcofBwSYw8VY6fcTCcYHj9bFt0dRmZPMvQD
+	 JyNMrXpynpFp/RSM2jPHNhEyYYEC6/gUdvEBbkWkMFZW72Ud5GixewGZRI+l1hIrUg
+	 u71y0iDaw68ZvXOayqD5asIOx9fkeVxPEmo/ziqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mike Marshall <hubcap@omnibond.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 301/480] fs/orangefs: Allow 2 more characters in do_c_string()
-Date: Tue, 12 Aug 2025 19:48:29 +0200
-Message-ID: <20250812174409.845371341@linuxfoundation.org>
+Subject: [PATCH 6.15 302/480] tools subcmd: Tighten the filename size in check_if_command_finished
+Date: Tue, 12 Aug 2025 19:48:30 +0200
+Message-ID: <20250812174409.886083065@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,63 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 2138e89cb066b40386b1d9ddd61253347d356474 ]
+[ Upstream commit 478272d1cdd9959a6d638e9d81f70642f04290c9 ]
 
-The do_k_string() and do_c_string() functions do essentially the same
-thing which is they add a string and a comma onto the end of an existing
-string.  At the end, the caller will overwrite the last comma with a
-newline.  Later, in orangefs_kernel_debug_init(), we add a newline to
-the string.
+FILENAME_MAX is often PATH_MAX (4kb), far more than needed for the
+/proc path. Make the buffer size sufficient for the maximum integer
+plus "/proc/" and "/status" with a '\0' terminator.
 
-The change to do_k_string() is just cosmetic.  I moved the "- 1" to
-the other side of the comparison and made it "+ 1".  This has no
-effect on runtime, I just wanted the functions to match each other
-and the rest of the file.
-
-However in do_c_string(), I removed the "- 2" which allows us to print
-two extra characters.  I noticed this issue while reviewing the code
-and I doubt affects anything in real life.  My guess is that this was
-double counting the comma and the newline.  The "+ 1" accounts for
-the newline, and the caller will delete the final comma which ensures
-there is enough space for the newline.
-
-Removing the "- 2" lets us print 2 more characters, but mainly it makes
-the code more consistent and understandable for reviewers.
-
-Fixes: 44f4641073f1 ("orangefs: clean up debugfs globals")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Fixes: 5ce42b5de461 ("tools subcmd: Add non-waitpid check_if_command_finished()")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250717150855.1032526-1-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/lib/subcmd/run-command.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index f7095c91660c..e8e3badbc2ec 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -769,8 +769,8 @@ static void do_k_string(void *k_mask, int index)
+diff --git a/tools/lib/subcmd/run-command.c b/tools/lib/subcmd/run-command.c
+index 0a764c25c384..b7510f83209a 100644
+--- a/tools/lib/subcmd/run-command.c
++++ b/tools/lib/subcmd/run-command.c
+@@ -5,6 +5,7 @@
+ #include <ctype.h>
+ #include <fcntl.h>
+ #include <string.h>
++#include <linux/compiler.h>
+ #include <linux/string.h>
+ #include <errno.h>
+ #include <sys/wait.h>
+@@ -216,10 +217,20 @@ static int wait_or_whine(struct child_process *cmd, bool block)
+ 	return result;
+ }
  
- 	if (*mask & s_kmod_keyword_mask_map[index].mask_val) {
- 		if ((strlen(kernel_debug_string) +
--		     strlen(s_kmod_keyword_mask_map[index].keyword))
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 1) {
-+		     strlen(s_kmod_keyword_mask_map[index].keyword) + 1)
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(kernel_debug_string,
- 				       s_kmod_keyword_mask_map[index].keyword);
- 				strcat(kernel_debug_string, ",");
-@@ -797,7 +797,7 @@ static void do_c_string(void *c_mask, int index)
- 	    (mask->mask2 & cdm_array[index].mask2)) {
- 		if ((strlen(client_debug_string) +
- 		     strlen(cdm_array[index].keyword) + 1)
--			< ORANGEFS_MAX_DEBUG_STRING_LEN - 2) {
-+			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 				strcat(client_debug_string,
- 				       cdm_array[index].keyword);
- 				strcat(client_debug_string, ",");
++/*
++ * Conservative estimate of number of characaters needed to hold an a decoded
++ * integer, assume each 3 bits needs a character byte and plus a possible sign
++ * character.
++ */
++#ifndef is_signed_type
++#define is_signed_type(type) (((type)(-1)) < (type)1)
++#endif
++#define MAX_STRLEN_TYPE(type) (sizeof(type) * 8 / 3 + (is_signed_type(type) ? 1 : 0))
++
+ int check_if_command_finished(struct child_process *cmd)
+ {
+ #ifdef __linux__
+-	char filename[FILENAME_MAX + 12];
++	char filename[6 + MAX_STRLEN_TYPE(typeof(cmd->pid)) + 7 + 1];
+ 	char status_line[256];
+ 	FILE *status_file;
+ 
+@@ -227,7 +238,7 @@ int check_if_command_finished(struct child_process *cmd)
+ 	 * Check by reading /proc/<pid>/status as calling waitpid causes
+ 	 * stdout/stderr to be closed and data lost.
+ 	 */
+-	sprintf(filename, "/proc/%d/status", cmd->pid);
++	sprintf(filename, "/proc/%u/status", cmd->pid);
+ 	status_file = fopen(filename, "r");
+ 	if (status_file == NULL) {
+ 		/* Open failed assume finish_command was called. */
 -- 
 2.39.5
 
