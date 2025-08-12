@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-167960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F234AB232BC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702B4B230D2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2E606E3B1A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBB4F680D93
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38ADF2EAB97;
-	Tue, 12 Aug 2025 18:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9BD2FD1D7;
+	Tue, 12 Aug 2025 17:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hU6v+wjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ri5/P+AL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2961B87F2;
-	Tue, 12 Aug 2025 18:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C89F2FA0DB;
+	Tue, 12 Aug 2025 17:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022573; cv=none; b=j8nhrsFj1O006xi4tHJXNST+0iUoVZpbGHLBgy3043ft+lDnDvMYjLQm2RnfnKdGIVvXtiiMQYvQ10OpUR52kVLsag3lBn4xAQmgH1enbQorvsqPtYto1v5I1BtIX5JifF7tOuy/9/MeH2CvZLpek0mJo709ynrsqUIDZSsBx8o=
+	t=1755021373; cv=none; b=PBJlwAFGZtGAo7rzw/SUV8RRpg2GCjoBZsfboTAmdthP0dOCLTPPjb9pMdChn2prh4cIN3bOh7kd7HoUhYpetOv3a4EPwCUDWpLJLxPbaY5Bmo8JCr47V7bXzW+UfshVZdBRIXEVpW7NNrYbuuNfaX3XaE0Odc/IEZvzbrubThs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022573; c=relaxed/simple;
-	bh=WSxo0+v8URCe+Zkl3rv3decIhmlxl2NF5SAtCrCNv4w=;
+	s=arc-20240116; t=1755021373; c=relaxed/simple;
+	bh=R3QGDWalf8tOnIFXgiTu+hf9T7Ae5VKa8zcGCIx4bSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfM27IJL5DOSjfV0OaGGYLaiTKnaGtfMMHtoIXWs6nn0fqnOw/VLFyJOlWCN+bd28ujyezlVFpsl3fzFSemWC9kweeleH9SjZBsRLXwkMfNxr+quea7E6LS2pNdJQbtuc1nJomrvkxR4b4uaUJPnCSS/+6wQY5xwpocedhsi7UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hU6v+wjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64009C4CEF1;
-	Tue, 12 Aug 2025 18:16:12 +0000 (UTC)
+	 MIME-Version; b=Tr6J+zavddF2rJR77VKV4X6nGNf25XmLzblm+szsESQFRSOZ9MxswZHiVaNtQ/HGHdc9Q45XF0cdI1FiTkr9OCTmAYo0G+9dYGQRKQSOQjNgSJBhV7sDjhyjPqcbqdva7GQv4cxscqpUKrch3zLBXAE0kSZkvZXOYN5G5i627Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ri5/P+AL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACDFC4CEF1;
+	Tue, 12 Aug 2025 17:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022572;
-	bh=WSxo0+v8URCe+Zkl3rv3decIhmlxl2NF5SAtCrCNv4w=;
+	s=korg; t=1755021372;
+	bh=R3QGDWalf8tOnIFXgiTu+hf9T7Ae5VKa8zcGCIx4bSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hU6v+wjz/sqvrL/2CR3dfyhuWZrY7sLld2CJCZcYeCsvJnZED0P7VDL2shYXVz/76
-	 NTksk7zUiN9TR8dRspmupxhfLa4FzExJwKXo7aIRT2ADDr02xVblsjzS/9HE3+uUaw
-	 8yHCp3AXlm1zeC0JEevX6zeoOdynXmRNl4GkiUcI=
+	b=Ri5/P+ALieKdJ5cRh4Tq+dcZ2FXOOemLJdqpLnV/FrHdOW5hClVWKXXDUy+iIPM2D
+	 0rDuKk5fQnNdKekkqytAxubfEsX+hq8RfnMjDylWi9z5UEhBVyCQ6Ov6xn9RzljVQF
+	 +YuzmwUcgU1CFj3Jd2ABN2TvRW60EdCutoUiYnvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"Kirill A. Shuemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 194/369] proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al
+Subject: [PATCH 6.6 103/262] ipv6: prevent infinite loop in rt6_nlmsg_size()
 Date: Tue, 12 Aug 2025 19:28:11 +0200
-Message-ID: <20250812173022.061079386@linuxfoundation.org>
+Message-ID: <20250812172957.477053493@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ff7ec8dc1b646296f8d94c39339e8d3833d16c05 ]
+[ Upstream commit 54e6fe9dd3b0e7c481c2228782c9494d653546da ]
 
-Check pde->proc_ops->proc_lseek directly may cause UAF in rmmod scenario.
-It's a gap in proc_reg_open() after commit 654b33ada4ab("proc: fix UAF in
-proc_get_inode()").  Followed by AI Viro's suggestion, fix it in same
-manner.
+While testing prior patch, I was able to trigger
+an infinite loop in rt6_nlmsg_size() in the following place:
 
-Link: https://lkml.kernel.org/r/20250607021353.1127963-1-wangzijie1@honor.com
-Fixes: 3f61631d47f1 ("take care to handle NULL ->proc_lseek()")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reviewed-by: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
+			fib6_siblings) {
+	rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
+}
+
+This is because fib6_del_route() and fib6_add_rt2node()
+uses list_del_rcu(), which can confuse rcu readers,
+because they might no longer see the head of the list.
+
+Restart the loop if f6i->fib6_nsiblings is zero.
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250725140725.3626540-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/generic.c       | 2 ++
- fs/proc/inode.c         | 2 +-
- fs/proc/internal.h      | 5 +++++
- include/linux/proc_fs.h | 1 +
- 4 files changed, 9 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_fib.c |  4 ++--
+ net/ipv6/route.c   | 34 ++++++++++++++++++----------------
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 3431b083f7d0..e21d99fa9263 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -567,6 +567,8 @@ static void pde_set_flags(struct proc_dir_entry *pde)
- 	if (pde->proc_ops->proc_compat_ioctl)
- 		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
- #endif
-+	if (pde->proc_ops->proc_lseek)
-+		pde->flags |= PROC_ENTRY_proc_lseek;
- }
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 023ac39041a2..65702bddb21f 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1240,7 +1240,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 							 &rt->fib6_siblings,
+ 							 fib6_siblings)
+ 					sibling->fib6_nsiblings--;
+-				rt->fib6_nsiblings = 0;
++				WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 				list_del_rcu(&rt->fib6_siblings);
+ 				rt6_multipath_rebalance(next_sibling);
+ 				return err;
+@@ -1953,7 +1953,7 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
+ 		list_for_each_entry_safe(sibling, next_sibling,
+ 					 &rt->fib6_siblings, fib6_siblings)
+ 			sibling->fib6_nsiblings--;
+-		rt->fib6_nsiblings = 0;
++		WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 		list_del_rcu(&rt->fib6_siblings);
+ 		rt6_multipath_rebalance(next_sibling);
+ 	}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 53197087353a..41d358dd58c0 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5577,32 +5577,34 @@ static int rt6_nh_nlmsg_size(struct fib6_nh *nh, void *arg)
  
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 3604b616311c..129490151be1 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -473,7 +473,7 @@ static int proc_reg_open(struct inode *inode, struct file *file)
- 	typeof_member(struct proc_ops, proc_open) open;
- 	struct pde_opener *pdeo;
+ static size_t rt6_nlmsg_size(struct fib6_info *f6i)
+ {
++	struct fib6_info *sibling;
++	struct fib6_nh *nh;
+ 	int nexthop_len;
  
--	if (!pde->proc_ops->proc_lseek)
-+	if (!pde_has_proc_lseek(pde))
- 		file->f_mode &= ~FMODE_LSEEK;
+ 	if (f6i->nh) {
+ 		nexthop_len = nla_total_size(4); /* RTA_NH_ID */
+ 		nexthop_for_each_fib6_nh(f6i->nh, rt6_nh_nlmsg_size,
+ 					 &nexthop_len);
+-	} else {
+-		struct fib6_nh *nh = f6i->fib6_nh;
+-		struct fib6_info *sibling;
+-
+-		nexthop_len = 0;
+-		if (f6i->fib6_nsiblings) {
+-			rt6_nh_nlmsg_size(nh, &nexthop_len);
+-
+-			rcu_read_lock();
++		goto common;
++	}
  
- 	if (pde_is_permanent(pde)) {
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index 4e0c5b57ffdb..edd4eb6fa12a 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -99,6 +99,11 @@ static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
- #endif
- }
+-			list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
+-						fib6_siblings) {
+-				rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
+-			}
++	rcu_read_lock();
++retry:
++	nh = f6i->fib6_nh;
++	nexthop_len = 0;
++	if (READ_ONCE(f6i->fib6_nsiblings)) {
++		rt6_nh_nlmsg_size(nh, &nexthop_len);
  
-+static inline bool pde_has_proc_lseek(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_lseek;
-+}
-+
- extern struct kmem_cache *proc_dir_entry_cache;
- void pde_free(struct proc_dir_entry *pde);
- 
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index ea62201c74c4..703d0c76cc9a 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -27,6 +27,7 @@ enum {
- 
- 	PROC_ENTRY_proc_read_iter	= 1U << 1,
- 	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
-+	PROC_ENTRY_proc_lseek		= 1U << 3,
- };
- 
- struct proc_ops {
+-			rcu_read_unlock();
++		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
++					fib6_siblings) {
++			rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
++			if (!READ_ONCE(f6i->fib6_nsiblings))
++				goto retry;
+ 		}
+-		nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
+ 	}
+-
++	rcu_read_unlock();
++	nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
++common:
+ 	return NLMSG_ALIGN(sizeof(struct rtmsg))
+ 	       + nla_total_size(16) /* RTA_SRC */
+ 	       + nla_total_size(16) /* RTA_DST */
 -- 
 2.39.5
 
