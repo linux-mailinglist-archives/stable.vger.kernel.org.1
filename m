@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26092B23023
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427B7B23200
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EE52560B14
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 322C77AD189
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2769C2F8BE6;
-	Tue, 12 Aug 2025 17:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D1C1C8621;
+	Tue, 12 Aug 2025 18:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBS/OzDX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK58Dee6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93002E972E;
-	Tue, 12 Aug 2025 17:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45272F83B5;
+	Tue, 12 Aug 2025 18:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020917; cv=none; b=I1GrgEPYDLmffR5BpNKxmn8s/6irxXd4hTERLRBF/FyfiZRopxJTgwtFGeSlS2SRFKraIyhBYupfALP3lQNd95GrERiCdaBksohWB6KUy34+lJVBk1MfcOO851sRTXWer6UKGlxKdPjlqrR1XjME2Tas8mTWKhFdj1NfSrMkVoE=
+	t=1755022332; cv=none; b=STNDLWHggAaIXZ1Se/1ZLz3T9SlxEd1XzBHmP5+G0xs9gu7+Y/Mi91wYgDq2/E0UWl1FG0VdqmErOCKZ9YLIe3FEMSuB+mUPshzPMI5XbvZcjC+YqiIggyRjzLrPcaJ4IKsajo9y+X9NiWmB90iLSWk7+9O+wwG0RtQ4LFEKAss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020917; c=relaxed/simple;
-	bh=0SkzHn1prwQxcOUUw93R5zlKNlY9lGUxesoBYUASDYU=;
+	s=arc-20240116; t=1755022332; c=relaxed/simple;
+	bh=5oF7Ohd3y1ojJ0ZJSUUV6MFImMu4WWJrw8l+jQQsJ6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lgo1p2HLedfBxfnXQydQKRcN0eNztZUbuC4uJDvalvmo/vIoK6yhExzMmq1TJt01Z+uwENLzKQK4jO4sjhgwWjNKM47eIk05OMMPU5y9tlpndyYxl1Fa+GgHuEGazrADdnTHJA3gfMhTwnuz0MgzENQCJ1lGwkp/BkHkjzrMTqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBS/OzDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4759BC4CEF0;
-	Tue, 12 Aug 2025 17:48:37 +0000 (UTC)
+	 MIME-Version; b=LKHOTh70ueEauYzgUsdAdeQmWsTcarVRUwYSrk8+WnOyEURHAGk6kpZS5xL4/u4y6OLHTZ15Uf7spyCftFYFCMYVMbZ4QRJz95kw8dOD0aUIHZBdjWGVXawW+Fgo+lq55ZgBnZ9fgLNBQ/Wh1FhXIl0L/+MvBZQtzqc6uAc5BpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK58Dee6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B3AC4CEF0;
+	Tue, 12 Aug 2025 18:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020917;
-	bh=0SkzHn1prwQxcOUUw93R5zlKNlY9lGUxesoBYUASDYU=;
+	s=korg; t=1755022332;
+	bh=5oF7Ohd3y1ojJ0ZJSUUV6MFImMu4WWJrw8l+jQQsJ6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wBS/OzDXNac0pGdPXeXtJJ4izsWVxhvpRgEBWN34aa8c5Nz7L5iVoJnjDhL1lexdp
-	 DRRdk6gyJGqHFTu0ev5hdjMm7SyMGzMyUCwDL72svCiXDXhjfAqhDV8453SHW8NsUm
-	 4uGkcFq/9ph3OjXuRpUxOYy6gKuWlYSVGmSka5v0=
+	b=PK58Dee6JErBE0mrb25Ftidvrw2lrCzUiRV+bg+j5KQLsr8bG2al88L3YnhHleKRn
+	 mBsDApCQQ0AHQPOX7qNZIGv6XTdg8GOviIlrGchZgxXtYbG39aaVkzZLYSay3TWVXp
+	 tG5jQz/1sU1UkNzt+TWhRGGepFTD3iUavtjRDk6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/262] arm: dts: ti: omap: Fixup pinheader typo
+Subject: [PATCH 6.12 124/369] wifi: ath12k: fix endianness handling while accessing wmi service bit
 Date: Tue, 12 Aug 2025 19:27:01 +0200
-Message-ID: <20250812172954.375439484@linuxfoundation.org>
+Message-ID: <20250812173019.429683397@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Törnqvist <albin.tornqvist@codiax.se>
+From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
 
-[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
+[ Upstream commit 8f1a078842d4af4877fb686f3907788024d0d1b7 ]
 
-This commit fixes a typo introduced in commit
-ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
-gpio0_7 is located on the P9 header on the BBB.
-This was verified with a BeagleBone Black by toggling the pin and
-checking with a multimeter that it corresponds to pin 42 on the P9
-header.
+Currently there is no endian conversion in ath12k_wmi_tlv_services_parser()
+so the service bit parsing will be incorrect on a big endian platform and
+to fix this by using appropriate endian conversion.
 
-Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
-Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
-Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00217-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: 342527f35338 ("wifi: ath12k: Add support to parse new WMI event for 6 GHz regulatory")
+Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250717173539.2523396-2-tamizh.raja@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-boneblack.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-index 16b567e3cb47..b4fdcf9c02b5 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-@@ -35,7 +35,7 @@ &gpio0 {
- 		"P9_18 [spi0_d1]",
- 		"P9_17 [spi0_cs0]",
- 		"[mmc0_cd]",
--		"P8_42A [ecappwm0]",
-+		"P9_42A [ecappwm0]",
- 		"P8_35 [lcd d12]",
- 		"P8_33 [lcd d13]",
- 		"P8_31 [lcd d14]",
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 5c2130f77dac..d5892e17494f 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -6589,7 +6589,7 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 					  void *data)
+ {
+ 	const struct wmi_service_available_event *ev;
+-	u32 *wmi_ext2_service_bitmap;
++	__le32 *wmi_ext2_service_bitmap;
+ 	int i, j;
+ 	u16 expected_len;
+ 
+@@ -6621,12 +6621,12 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 			   ev->wmi_service_segment_bitmap[3]);
+ 		break;
+ 	case WMI_TAG_ARRAY_UINT32:
+-		wmi_ext2_service_bitmap = (u32 *)ptr;
++		wmi_ext2_service_bitmap = (__le32 *)ptr;
+ 		for (i = 0, j = WMI_MAX_EXT_SERVICE;
+ 		     i < WMI_SERVICE_SEGMENT_BM_SIZE32 && j < WMI_MAX_EXT2_SERVICE;
+ 		     i++) {
+ 			do {
+-				if (wmi_ext2_service_bitmap[i] &
++				if (__le32_to_cpu(wmi_ext2_service_bitmap[i]) &
+ 				    BIT(j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32))
+ 					set_bit(j, ab->wmi_ab.svc_map);
+ 			} while (++j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32);
+@@ -6634,8 +6634,10 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 
+ 		ath12k_dbg(ab, ATH12K_DBG_WMI,
+ 			   "wmi_ext2_service_bitmap 0x%04x 0x%04x 0x%04x 0x%04x",
+-			   wmi_ext2_service_bitmap[0], wmi_ext2_service_bitmap[1],
+-			   wmi_ext2_service_bitmap[2], wmi_ext2_service_bitmap[3]);
++			   __le32_to_cpu(wmi_ext2_service_bitmap[0]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[1]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[2]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[3]));
+ 		break;
+ 	}
+ 	return 0;
 -- 
 2.39.5
 
