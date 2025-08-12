@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133A5B23043
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BB3B234E9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C876D68342A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469DE1B62D01
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7940C2F8BE6;
-	Tue, 12 Aug 2025 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002B22FF167;
+	Tue, 12 Aug 2025 18:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGEyTkh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyqxLhCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385C5221FAC;
-	Tue, 12 Aug 2025 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DB32FF169;
+	Tue, 12 Aug 2025 18:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020945; cv=none; b=hSJ59bGw9moT38HaEEFOnRxV5KtkEkseZg+DiZ+PqaHnrsA4KM30VsPb8dV64HsW2dDRBxkM/G4vOJy6z0tWJnBfGX5edbN+TB5JF+eEkSFeLBl0MjqYcgOnlZsYNM0zGRwyJlNSxNKFdH9yI2cUQr2wZWikN377t//qAds8NoI=
+	t=1755024053; cv=none; b=SUYPHDJy+qpdPHvaQfhuiF5LW209uiYdDj7ezDk/BMJcUAR03bUx/c4qec6e3CKu91aeV1PGylJJel3R1FvoTsGQboM9Espmj6LZl5dcaWQeHpDjuV+mF8U7XBLTZpHK2eVQdFiDtOMa8cIJQZ1VgwB9YnxFVunvO+i5+8SH0eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020945; c=relaxed/simple;
-	bh=HtOBLVDwRSMynLZOcKIZQDwYlhNjJKtsMi9SsFWGCng=;
+	s=arc-20240116; t=1755024053; c=relaxed/simple;
+	bh=RdONG8xWdLqrLfLJzfu6R1TW/0XpUIQpMBUuG5UhxjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7ULHlk94HAt4Hc7i2wJmq8IerP9Dq5h572tyxwDx8CzXiqlOKeh8NgO6cYFcVoA67YPiQojoNNyP6wgseb+hJQRrg0Yz8RDqRtJSRQSXc3bitDGf1+hG4yISnVwn1aYpLgKNb2Kxzvsb2l79viGYDhk5ob8759LKMAfX7EBEq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGEyTkh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95547C4CEF0;
-	Tue, 12 Aug 2025 17:49:04 +0000 (UTC)
+	 MIME-Version; b=eG88TfqsLcri+MqZvHwGFgF1oLna2aCSwVTMgnvWSrokpZK90EelAAhX1/lHT4Pn+ecGZ/bEJd+9FmzLJgCd+idJJyfAjEFE5y17AsrXGpJJqM2yKTqA6qpABNVAEuOzsmfTdNi3DfJNCT3d6y6cMlm5vVAzT2DEEXGG3NjuPRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyqxLhCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21872C4CEF0;
+	Tue, 12 Aug 2025 18:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020945;
-	bh=HtOBLVDwRSMynLZOcKIZQDwYlhNjJKtsMi9SsFWGCng=;
+	s=korg; t=1755024053;
+	bh=RdONG8xWdLqrLfLJzfu6R1TW/0XpUIQpMBUuG5UhxjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGEyTkh9dCRSOLhRO8P9SeH9GISZttDQeLSgqf+szhqihJ/djQ0B8EDL/emC08aOX
-	 Hg7TRT+CDONY3t2b9UsmQt3Z8wP/Q/8AqUxg962jsuqBec07EzGD0wpsU2dxLsyqsE
-	 jfa51Y5Au/bNayHoADt0GQ2zl79MIMOTpocXqqlg=
+	b=iyqxLhCjl5mVYjdkIFpQUJ8E2GOSh1alHqXwj1fT4kJUgQRdCe1QKReXhG4+RcBy9
+	 330jzOxz03eigZb9CYEBrSVpz/vnd4UOwp7jth32LAfXJNIQ29C1eembr5a8FQaWRN
+	 +vP8RmkDjVlujfnyaRgklWyD8EGTogZgRZzOHqEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sai Teja Aluvala <aluvala.sai.teja@intel.com>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/253] hwrng: mtk - handle devm_pm_runtime_enable errors
+Subject: [PATCH 6.16 259/627] Bluetooth: btintel_pcie: Make driver wait for alive interrupt
 Date: Tue, 12 Aug 2025 19:29:14 +0200
-Message-ID: <20250812172955.781337751@linuxfoundation.org>
+Message-ID: <20250812173429.169011943@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 522a242a18adc5c63a24836715dbeec4dc3faee1 ]
+[ Upstream commit 69b3d3acf3dba21e2abad863c80c7114eb110b3d ]
 
-Although unlikely, devm_pm_runtime_enable() call might fail, so handle
-the return value.
+The firmware raises an alive interrupt upon receiving the HCI_RESET or
+BTINTEL_HCI_OP_RESET (Intel reset - 0xfc01) command. This change fixes
+the driver to properly wait for the alive interrupt to avoid driver
+sending commands to firmware before it is ready to process.
 
-Fixes: 78cb66caa6ab ("hwrng: mtk - Use devm_pm_runtime_enable")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+For details on the handshake between the driver and firmware, refer to
+commit 05c200c8f029 ("Bluetooth: btintel_pcie: Add handshake between
+driver and firmware").
+
+As the driver needs to handle two interrupts for HCI_OP_RESET and
+BTINTEL_HCI_OP_RESET, the firmware ensures that the TX completion
+interrupt is always followed by the alive interrupt.
+
+Fixes: 05c200c8f029 ("Bluetooth: btintel_pcie: Add handshake between driver and firmware")
+Signed-off-by: Sai Teja Aluvala <aluvala.sai.teja@intel.com>
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/mtk-rng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btintel_pcie.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/char/hw_random/mtk-rng.c b/drivers/char/hw_random/mtk-rng.c
-index 3e00506543b6..72269d0f2a4e 100644
---- a/drivers/char/hw_random/mtk-rng.c
-+++ b/drivers/char/hw_random/mtk-rng.c
-@@ -142,7 +142,9 @@ static int mtk_rng_probe(struct platform_device *pdev)
- 	dev_set_drvdata(&pdev->dev, priv);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
--	devm_pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		return ret;
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index 1638be0921a3..7f789937a764 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -928,11 +928,13 @@ static void btintel_pcie_msix_gp0_handler(struct btintel_pcie_data *data)
+ 	case BTINTEL_PCIE_INTEL_HCI_RESET1:
+ 		if (btintel_pcie_in_op(data)) {
+ 			submit_rx = true;
++			signal_waitq = true;
+ 			break;
+ 		}
  
- 	dev_info(&pdev->dev, "registered RNG driver\n");
+ 		if (btintel_pcie_in_iml(data)) {
+ 			submit_rx = true;
++			signal_waitq = true;
+ 			data->alive_intr_ctxt = BTINTEL_PCIE_FW_DL;
+ 			break;
+ 		}
+@@ -1963,8 +1965,11 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
+ 			if (opcode == BTINTEL_HCI_OP_RESET)
+ 				btintel_pcie_inject_cmd_complete(hdev, opcode);
+ 		}
+-		/* Firmware raises alive interrupt on HCI_OP_RESET */
+-		if (opcode == HCI_OP_RESET)
++
++		/* Firmware raises alive interrupt on HCI_OP_RESET or
++		 * BTINTEL_HCI_OP_RESET
++		 */
++		if (opcode == HCI_OP_RESET || opcode == BTINTEL_HCI_OP_RESET)
+ 			data->gp0_received = false;
  
+ 		hdev->stat.cmd_tx++;
+@@ -2003,17 +2008,16 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
+ 		bt_dev_dbg(data->hdev, "sent cmd: 0x%4.4x alive context changed: %s  ->  %s",
+ 			   opcode, btintel_pcie_alivectxt_state2str(old_ctxt),
+ 			   btintel_pcie_alivectxt_state2str(data->alive_intr_ctxt));
+-		if (opcode == HCI_OP_RESET) {
+-			ret = wait_event_timeout(data->gp0_wait_q,
+-						 data->gp0_received,
+-						 msecs_to_jiffies(BTINTEL_DEFAULT_INTR_TIMEOUT_MS));
+-			if (!ret) {
+-				hdev->stat.err_tx++;
+-				bt_dev_err(hdev, "No alive interrupt received for %s",
+-					   btintel_pcie_alivectxt_state2str(data->alive_intr_ctxt));
+-				ret = -ETIME;
+-				goto exit_error;
+-			}
++		ret = wait_event_timeout(data->gp0_wait_q,
++					 data->gp0_received,
++					 msecs_to_jiffies(BTINTEL_DEFAULT_INTR_TIMEOUT_MS));
++		if (!ret) {
++			hdev->stat.err_tx++;
++			bt_dev_err(hdev, "Timeout on alive interrupt (%u ms). Alive context: %s",
++				   BTINTEL_DEFAULT_INTR_TIMEOUT_MS,
++				   btintel_pcie_alivectxt_state2str(data->alive_intr_ctxt));
++			ret = -ETIME;
++			goto exit_error;
+ 		}
+ 	}
+ 	hdev->stat.byte_tx += skb->len;
 -- 
 2.39.5
 
