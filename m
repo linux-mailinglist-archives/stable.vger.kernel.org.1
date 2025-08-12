@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69265B233B2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBFAB231F0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 374212A62E4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C11EB5821DA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DD52F291B;
-	Tue, 12 Aug 2025 18:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EB72FAC06;
+	Tue, 12 Aug 2025 18:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylIjm5Dm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uElAmfDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8393921ABD0;
-	Tue, 12 Aug 2025 18:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812761C8621;
+	Tue, 12 Aug 2025 18:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023218; cv=none; b=Eub9++E0qZtEjQg6aovL1bL2Z+gqHO3rz48DZL9fL4q/FSKuUIwCBPh4kv9BI5pSR/NccoDrzzJ3cHf+7fU5i8wpJv5HPzHHiIqwSsO7qokUXDvSwx5cKCAED9j2BXhyCtNpTrUGTXNGxpV7g3E+T6hfy6CJHGPtSSyzVTsfoEM=
+	t=1755021960; cv=none; b=HUHnBRQ+F24WytLRvqekimXoZexwDe/PHIx4AOsZCAMEi4d6NCmbwfLE5JlJ96MZ3iDeoErth/3LV5LKDKSg9LzEQGJ8424QbEtQhR83u7w0+2h/+OL4hU8D6vcQmNu1tDRZeKD7U94IrPRElj0mQA25JlHtHLOuL4Xf7HtrIGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023218; c=relaxed/simple;
-	bh=VTsYBVMCwjBIKb1MUOUHH+1XRuigzZv6CWfhSwTkv7w=;
+	s=arc-20240116; t=1755021960; c=relaxed/simple;
+	bh=gjTk9QhfrenssCkaKfmPfg6vssYqjHBQI4zPQpusoZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJQn/sGlLc0wQru2tYjhY+MYIP4ZbxeUFJQHjJKyu99KQ4zwwbsmUCM6SFlf8ZZ+7pSGMUtchh9Jwx+YLvj/1OYyBAGVNfcqEuUbPHTYgFJop6XxW22aurAuuFLySmvJHpPDfBWZvTOVcbJXLEdbMNqVGDK2iKwO6UhCvZM8G9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylIjm5Dm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CF9C4CEF0;
-	Tue, 12 Aug 2025 18:26:57 +0000 (UTC)
+	 MIME-Version; b=i2JovZiCVIbD2pvU1y8vTqNoxdzNbiWBZ889PAhFYokhpXUnL7TZmh2iUAhhDsXXL3ttoFv2CyrbB/f/2g/kwxGL+XqUwsEjxwI4ioNOmqHgg1Ok0XuZtzskcMAEPnx2cjDY/o8QdR42LMunz+fT9NQnHKZBKCZ1yAnxWI4P4do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uElAmfDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BED6C4CEF0;
+	Tue, 12 Aug 2025 18:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023218;
-	bh=VTsYBVMCwjBIKb1MUOUHH+1XRuigzZv6CWfhSwTkv7w=;
+	s=korg; t=1755021960;
+	bh=gjTk9QhfrenssCkaKfmPfg6vssYqjHBQI4zPQpusoZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylIjm5DmWckP/ap1V9H8LmsEAq808d1r+i9KhWhVTQHUrNLWpyqlF0IFz6NBV5rFU
-	 QDUiHkSXFx/GvX+214CVl9r+4GuVAUZvHTFTjzVm/YUTEdqlSusu/fNjVOUG9jquVq
-	 z/AvLXbw+5Jw9kfMGxqVJxYd/6Gkk+ApqVQAkCok=
+	b=uElAmfDb8BRQKXXSAdNeVkKxdK+m6amEsLVjDG5liNP7JD4+HPLH6zrgGmcKaYFoj
+	 U9IAQgJyp2IN5JdiyLBu3Yql8AVBZc4smJ8Ay2ZCA9VK8iAS2uZLKpE4B4plaOaBVp
+	 /JQsgABcEtf2GQSVgSa/2ELuYsDmKJQdFXFGc/ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com,
+	Yangtao Li <frank.li@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 016/627] md: allow removing faulty rdev during resync
+Subject: [PATCH 6.12 014/369] hfsplus: remove mutex_lock check in hfsplus_free_extents
 Date: Tue, 12 Aug 2025 19:25:11 +0200
-Message-ID: <20250812173419.937897066@linuxfoundation.org>
+Message-ID: <20250812173015.278862933@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit c0ffeb648000acdc932da7a9d33fd65e9263c54c ]
+[ Upstream commit fcb96956c921f1aae7e7b477f2435c56f77a31b4 ]
 
-During RAID resync, faulty rdev cannot be removed and will result in
-"Device or resource busy" error when attempting hot removal.
+Syzbot reported an issue in hfsplus filesystem:
 
-Reproduction steps:
-  mdadm -Cv /dev/md0 -l1 -n3 -e1.2 /dev/sd{b..d}
-  mdadm /dev/md0 -f /dev/sdb
-  mdadm /dev/md0 -r /dev/sdb
-  -> mdadm: hot remove failed for /dev/sdb: Device or resource busy
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 4400 at fs/hfsplus/extents.c:346
+	hfsplus_free_extents+0x700/0xad0
+Call Trace:
+<TASK>
+hfsplus_file_truncate+0x768/0xbb0 fs/hfsplus/extents.c:606
+hfsplus_write_begin+0xc2/0xd0 fs/hfsplus/inode.c:56
+cont_expand_zero fs/buffer.c:2383 [inline]
+cont_write_begin+0x2cf/0x860 fs/buffer.c:2446
+hfsplus_write_begin+0x86/0xd0 fs/hfsplus/inode.c:52
+generic_cont_expand_simple+0x151/0x250 fs/buffer.c:2347
+hfsplus_setattr+0x168/0x280 fs/hfsplus/inode.c:263
+notify_change+0xe38/0x10f0 fs/attr.c:420
+do_truncate+0x1fb/0x2e0 fs/open.c:65
+do_sys_ftruncate+0x2eb/0x380 fs/open.c:193
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-After commit 4b10a3bc67c1 ("md: ensure resync is prioritized over
-recovery"), when a device becomes faulty during resync, the
-md_choose_sync_action() function returns early without calling
-remove_and_add_spares(), preventing faulty device removal.
+To avoid deadlock, Commit 31651c607151 ("hfsplus: avoid deadlock
+on file truncation") unlock extree before hfsplus_free_extents(),
+and add check wheather extree is locked in hfsplus_free_extents().
 
-This patch extracts a helper function remove_spares() to support
-removing faulty devices during RAID resync operations.
+However, when operations such as hfsplus_file_release,
+hfsplus_setattr, hfsplus_unlink, and hfsplus_get_block are executed
+concurrently in different files, it is very likely to trigger the
+WARN_ON, which will lead syzbot and xfstest to consider it as an
+abnormality.
 
-Fixes: 4b10a3bc67c1 ("md: ensure resync is prioritized over recovery")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250707075412.150301-1-zhengqixing@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+The comment above this warning also describes one of the easy
+triggering situations, which can easily trigger and cause
+xfstest&syzbot to report errors.
+
+[task A]			[task B]
+->hfsplus_file_release
+  ->hfsplus_file_truncate
+    ->hfs_find_init
+      ->mutex_lock
+    ->mutex_unlock
+				->hfsplus_write_begin
+				  ->hfsplus_get_block
+				    ->hfsplus_file_extend
+				      ->hfsplus_ext_read_extent
+				        ->hfs_find_init
+					  ->mutex_lock
+    ->hfsplus_free_extents
+      WARN_ON(mutex_is_locked) !!!
+
+Several threads could try to lock the shared extents tree.
+And warning can be triggered in one thread when another thread
+has locked the tree. This is the wrong behavior of the code and
+we need to remove the warning.
+
+Fixes: 31651c607151f ("hfsplus: avoid deadlock on file truncation")
+Reported-by: syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/00000000000057fa4605ef101c4c@google.com/
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250529061807.2213498-1-frank.li@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ fs/hfsplus/extents.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 0f03b21e66e4..7f5e5a16243a 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -9456,17 +9456,11 @@ static bool md_spares_need_change(struct mddev *mddev)
- 	return false;
- }
+diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
+index a6d61685ae79..b1699b3c246a 100644
+--- a/fs/hfsplus/extents.c
++++ b/fs/hfsplus/extents.c
+@@ -342,9 +342,6 @@ static int hfsplus_free_extents(struct super_block *sb,
+ 	int i;
+ 	int err = 0;
  
--static int remove_and_add_spares(struct mddev *mddev,
--				 struct md_rdev *this)
-+static int remove_spares(struct mddev *mddev, struct md_rdev *this)
- {
- 	struct md_rdev *rdev;
--	int spares = 0;
- 	int removed = 0;
- 
--	if (this && test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
--		/* Mustn't remove devices when resync thread is running */
--		return 0;
+-	/* Mapping the allocation file may lock the extent tree */
+-	WARN_ON(mutex_is_locked(&HFSPLUS_SB(sb)->ext_tree->tree_lock));
 -
- 	rdev_for_each(rdev, mddev) {
- 		if ((this == NULL || rdev == this) && rdev_removeable(rdev) &&
- 		    !mddev->pers->hot_remove_disk(mddev, rdev)) {
-@@ -9480,6 +9474,21 @@ static int remove_and_add_spares(struct mddev *mddev,
- 	if (removed && mddev->kobj.sd)
- 		sysfs_notify_dirent_safe(mddev->sysfs_degraded);
- 
-+	return removed;
-+}
-+
-+static int remove_and_add_spares(struct mddev *mddev,
-+				 struct md_rdev *this)
-+{
-+	struct md_rdev *rdev;
-+	int spares = 0;
-+	int removed = 0;
-+
-+	if (this && test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
-+		/* Mustn't remove devices when resync thread is running */
-+		return 0;
-+
-+	removed = remove_spares(mddev, this);
- 	if (this && removed)
- 		goto no_add;
- 
-@@ -9522,6 +9531,7 @@ static bool md_choose_sync_action(struct mddev *mddev, int *spares)
- 
- 	/* Check if resync is in progress. */
- 	if (mddev->recovery_cp < MaxSector) {
-+		remove_spares(mddev, NULL);
- 		set_bit(MD_RECOVERY_SYNC, &mddev->recovery);
- 		clear_bit(MD_RECOVERY_RECOVER, &mddev->recovery);
- 		return true;
+ 	hfsplus_dump_extent(extent);
+ 	for (i = 0; i < 8; extent++, i++) {
+ 		count = be32_to_cpu(extent->block_count);
 -- 
 2.39.5
 
