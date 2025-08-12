@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-168077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94149B23347
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AFCB23544
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 975943B9334
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C8D1893C1C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97722DFA3E;
-	Tue, 12 Aug 2025 18:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441C72FF152;
+	Tue, 12 Aug 2025 18:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH5QE4AT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lrx7naWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D02861FFE;
-	Tue, 12 Aug 2025 18:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B3D291C1F;
+	Tue, 12 Aug 2025 18:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022966; cv=none; b=cFeuiccCRdz0us2h1PyVxgUzcOEdE4ivGe5DnMBpNtcazP4Z+6H6s3786Jooee+IKftlTxFnsYgFEcCkAIxOJJoBXwVtXPLNcsYcEf596UpoDMD81YcpSGFkSOWjSh6D+wu7ddPUIrBMkU2tgvU6C0iGpnzHNarQ2KkpD5ap4k0=
+	t=1755024325; cv=none; b=Vh2ZxVKGUcY62tMMt/v8pUGZqR92NapbsEzbeiwA/9eF6DKB6/T9cGrMZkiAmxpeVHeL8puBKeOEXCQJH00KTlzQadKVj9UvFeb0k+cIogWnvX16/ofsWfTldsZPXIZ6X7ad5NCiU1fOiIBjap9b4jndgHN+6sfUEtSBpIm95j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022966; c=relaxed/simple;
-	bh=sWxBc2KhL19DrSKhoenZRd4WWCaZgnU0LTLi6Sq15sE=;
+	s=arc-20240116; t=1755024325; c=relaxed/simple;
+	bh=yHydd2DH4INEg4BhMlBVdapQVMoly0RPEM0uSNe/qWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zc5LdniZzvpFyGWlDowKF02qlNqcrVh7TAHKvw4J9glAOpUfTcL/TiXzjXsE+p8HUfW/BP+KuQeJQD7CrgAROvTq5qAMY1YPuQYYUyN/0qAHa+GyClUTNSewsm5DtU2es9H8fRXjGqlDWk8noCXL27pfJSe1Xm+qjcsmPJulXB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH5QE4AT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1D5C4CEF6;
-	Tue, 12 Aug 2025 18:22:45 +0000 (UTC)
+	 MIME-Version; b=UMmFcRDNapQSfGax3QddKLKn4LMinxpLkypbJa9kxvM+Q14KMrlNEuM7IdB71rVgft3BVzubuQM9FN+NLr1ysJuqUikw++J7YlC3ATOD1DO8RDtUo+ZGcfMG04LOnNyybeNM2wg5IgtXLcBBRuyQA8nb1oGIKB1h5s5BxvyJP+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lrx7naWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F34BC4CEF0;
+	Tue, 12 Aug 2025 18:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022966;
-	bh=sWxBc2KhL19DrSKhoenZRd4WWCaZgnU0LTLi6Sq15sE=;
+	s=korg; t=1755024324;
+	bh=yHydd2DH4INEg4BhMlBVdapQVMoly0RPEM0uSNe/qWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pH5QE4ATbM6TUK7rN/mzRGy7uFNpHv6zv3KMF9HVTN69b+4GwV8zm6JNiyu/QdIFC
-	 JD+GbPwEK+UFKCJwXaAxMhnECu00NdQNECYikNDN8gc6tWdN3LkTdiTd7aKi0htmgJ
-	 5207K8mUkw7WrxZHglUZfw9B13xjfJAOCTAlVJYA=
+	b=Lrx7naWsxnfSi0NqxfRs00AJHe3LQOiIjXAe2GuttD2LbPIuo1Ee0XE+KP8SKaFKT
+	 6eszQkRtCnwF8mLqNGmhng4GEiv7oYxHy85bGHT4RwHDZ0X+1exgODTbP8OREBFTSB
+	 UkRGtk89L4S4eQv2EKo3Ec+bHuggml16xVdJ4sK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 310/369] ALSA: hda/ca0132: Fix missing error handling in ca0132_alt_select_out()
+Subject: [PATCH 6.16 312/627] clk: davinci: Add NULL check in davinci_lpsc_clk_register()
 Date: Tue, 12 Aug 2025 19:30:07 +0200
-Message-ID: <20250812173028.389614727@linuxfoundation.org>
+Message-ID: <20250812173431.174829474@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 9f320dfb0ffc555aa2eac8331dee0c2c16f67633 ]
+[ Upstream commit 13de464f445d42738fe18c9a28bab056ba3a290a ]
 
-There are a couple of cases where the error is ignored or the error
-code isn't propagated in ca0132_alt_select_out().  Fix those.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+davinci_lpsc_clk_register() does not check for this case, which results
+in a NULL pointer dereference.
 
-Fixes: def3f0a5c700 ("ALSA: hda/ca0132 - Add quirk output selection structures.")
-Link: https://patch.msgid.link/20250806094423.8843-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add NULL check after devm_kasprintf() to prevent this issue and ensuring
+no resources are left allocated.
+
+Fixes: c6ed4d734bc7 ("clk: davinci: New driver for davinci PSC clocks")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://lore.kernel.org/r/20250401131341.26800-1-bsdhenrymartin@gmail.com
+Reviewed-by: David Lechner <david@lechnology.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_ca0132.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/davinci/psc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index d40197fb5fbd..77432e06f3e3 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -4802,7 +4802,8 @@ static int ca0132_alt_select_out(struct hda_codec *codec)
- 	if (err < 0)
- 		goto exit;
+diff --git a/drivers/clk/davinci/psc.c b/drivers/clk/davinci/psc.c
+index b48322176c21..f3ee9397bb0c 100644
+--- a/drivers/clk/davinci/psc.c
++++ b/drivers/clk/davinci/psc.c
+@@ -277,6 +277,11 @@ davinci_lpsc_clk_register(struct device *dev, const char *name,
  
--	if (ca0132_alt_select_out_quirk_set(codec) < 0)
-+	err = ca0132_alt_select_out_quirk_set(codec);
-+	if (err < 0)
- 		goto exit;
- 
- 	switch (spec->cur_out_type) {
-@@ -4892,6 +4893,8 @@ static int ca0132_alt_select_out(struct hda_codec *codec)
- 				spec->bass_redirection_val);
- 	else
- 		err = ca0132_alt_surround_set_bass_redirection(codec, 0);
-+	if (err < 0)
-+		goto exit;
- 
- 	/* Unmute DSP now that we're done with output selection. */
- 	err = dspio_set_uint_param(codec, 0x96,
+ 	lpsc->pm_domain.name = devm_kasprintf(dev, GFP_KERNEL, "%s: %s",
+ 					      best_dev_name(dev), name);
++	if (!lpsc->pm_domain.name) {
++		clk_hw_unregister(&lpsc->hw);
++		kfree(lpsc);
++		return ERR_PTR(-ENOMEM);
++	}
+ 	lpsc->pm_domain.attach_dev = davinci_psc_genpd_attach_dev;
+ 	lpsc->pm_domain.detach_dev = davinci_psc_genpd_detach_dev;
+ 	lpsc->pm_domain.flags = GENPD_FLAG_PM_CLK;
 -- 
 2.39.5
 
