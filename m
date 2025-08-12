@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9836AB23198
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 106B5B2305C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7126F1881F18
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1A81884A61
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3912FFDD6;
-	Tue, 12 Aug 2025 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FB32F7477;
+	Tue, 12 Aug 2025 17:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2N7Ya5VS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDbvEDl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5634D2FFDCC;
-	Tue, 12 Aug 2025 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CB7279915;
+	Tue, 12 Aug 2025 17:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021799; cv=none; b=uGw0H+1u+efvftvBvtx8eZVd0qsBTx1D3mWy800AmISsesqY87J8AFM+WhHVobrR7bEZ9dI5bnayY27K0hKft5wodskyPZWNDZKTR4qeg1UMzt5MgFbAvwlIFmqjdjJcr1MRPl23u3Yj1qqNGmQ77Re7rySaKAO+Hdg5TCfxBSA=
+	t=1755020979; cv=none; b=e/4D57t8rMELVwh501RfWSjZ1/nMxSJYilcvMdZu4rbpv3enf7dTV0hUXZ6ho4k3lJ8zZ3fPrcKfxSlA+9TYWoFRG9F2xXxFUwczMiSIMhQmsOxIwCGfxeUgG9mmZJxYawNPRuRpHudIKFTlihH1+AxgA4QA+t5AKA//zi9msKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021799; c=relaxed/simple;
-	bh=EwbQfvxdymr7MkFDkDQ3v4FaWefJqB1s60XLjKLSaqU=;
+	s=arc-20240116; t=1755020979; c=relaxed/simple;
+	bh=PswXmEvPCAzPhDz+4hJVf6qh459zLiL72rvrLwQwKM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEnKECVfl+09gnvRarQR6hpU4u7UPzwT2PyJssbGyGkp8CxL1i4MuHgfueVpS166DuCcWEZDzifh31BCl+7sZnLPB4PghcaSY+trXlw2qZsQg8XdEHkrAOkKgqYI/2SIc3EegULn7prRiNcduFIBRjwF6NL1Kee45LbK/sUK2+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2N7Ya5VS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9648C4CEF7;
-	Tue, 12 Aug 2025 18:03:18 +0000 (UTC)
+	 MIME-Version; b=LEg/7G22IAN22/F0WQKOGz/JPQ8hiUC0jBLcrirOJhrZLYyz/W7R3x0InixsIFUlk21zNH3qIRsTvwSsGKj/PBrCEqEgJCDpFjIS2yRyOAZUiZKJRQC3ZzQQ/9JjGr/H9pTtdFUkne6fYvGGVLpZyOeTLk2ci0cKmjzDWH0wOHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDbvEDl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C16C4CEF0;
+	Tue, 12 Aug 2025 17:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021799;
-	bh=EwbQfvxdymr7MkFDkDQ3v4FaWefJqB1s60XLjKLSaqU=;
+	s=korg; t=1755020979;
+	bh=PswXmEvPCAzPhDz+4hJVf6qh459zLiL72rvrLwQwKM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2N7Ya5VSELf7mH8vigFPEEnzJVarpfDXdbckbIMvMO9TwuGDnajMpY+X2uJ4yRHwg
-	 N3jtFeQLssn8HfQ4IpdViD9zbsXZD29vWHd8tm8B1wPnMRX/Z9v+KJpAFkCZv/Qgr3
-	 OCq9dY95dOUN/6thu6+EEXRFPY74NSU9cN7DMFDU=
+	b=eDbvEDl0Uvoet0dq9NNtItvu/n7vcHVehdHFO2fRSHGplIH+PWp4gPW+wkjGXlcmg
+	 yjaRpw+I9aXMPEEVSmIKH5H5keyjylEi2fn0knsHTwMg+avr4wkkKZtAnLcx3Bdpkt
+	 txEUrQy9B4q0fE+PbPmJk4wrq57Ir9/5w7mVpYT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/262] PCI: pnv_php: Fix surprise plug detection and recovery
+Subject: [PATCH 6.1 195/253] f2fs: fix to avoid panic in f2fs_evict_inode
 Date: Tue, 12 Aug 2025 19:29:43 +0200
-Message-ID: <20250812173001.442664959@linuxfoundation.org>
+Message-ID: <20250812172957.103295053@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,216 +62,284 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a2a2a6fc2469524caa713036297c542746d148dc ]
+[ Upstream commit a509a55f8eecc8970b3980c6f06886bbff0e2f68 ]
 
-The existing PowerNV hotplug code did not handle surprise plug events
-correctly, leading to a complete failure of the hotplug system after device
-removal and a required reboot to detect new devices.
+As syzbot [1] reported as below:
 
-This comes down to two issues:
+R10: 0000000000000100 R11: 0000000000000206 R12: 00007ffe17473450
+R13: 00007f28b1c10854 R14: 000000000000dae5 R15: 00007ffe17474520
+ </TASK>
+---[ end trace 0000000000000000 ]---
+==================================================================
+BUG: KASAN: use-after-free in __list_del_entry_valid+0xa6/0x130 lib/list_debug.c:62
+Read of size 8 at addr ffff88812d962278 by task syz-executor/564
 
- 1) When a device is surprise removed, often the bridge upstream
-    port will cause a PE freeze on the PHB.  If this freeze is not
-    cleared, the MSI interrupts from the bridge hotplug notification
-    logic will not be received by the kernel, stalling all plug events
-    on all slots associated with the PE.
+CPU: 1 PID: 564 Comm: syz-executor Tainted: G        W          6.1.129-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack+0x21/0x24 lib/dump_stack.c:88
+ dump_stack_lvl+0xee/0x158 lib/dump_stack.c:106
+ print_address_description+0x71/0x210 mm/kasan/report.c:316
+ print_report+0x4a/0x60 mm/kasan/report.c:427
+ kasan_report+0x122/0x150 mm/kasan/report.c:531
+ __asan_report_load8_noabort+0x14/0x20 mm/kasan/report_generic.c:351
+ __list_del_entry_valid+0xa6/0x130 lib/list_debug.c:62
+ __list_del_entry include/linux/list.h:134 [inline]
+ list_del_init include/linux/list.h:206 [inline]
+ f2fs_inode_synced+0xf7/0x2e0 fs/f2fs/super.c:1531
+ f2fs_update_inode+0x74/0x1c40 fs/f2fs/inode.c:585
+ f2fs_update_inode_page+0x137/0x170 fs/f2fs/inode.c:703
+ f2fs_write_inode+0x4ec/0x770 fs/f2fs/inode.c:731
+ write_inode fs/fs-writeback.c:1460 [inline]
+ __writeback_single_inode+0x4a0/0xab0 fs/fs-writeback.c:1677
+ writeback_single_inode+0x221/0x8b0 fs/fs-writeback.c:1733
+ sync_inode_metadata+0xb6/0x110 fs/fs-writeback.c:2789
+ f2fs_sync_inode_meta+0x16d/0x2a0 fs/f2fs/checkpoint.c:1159
+ block_operations fs/f2fs/checkpoint.c:1269 [inline]
+ f2fs_write_checkpoint+0xca3/0x2100 fs/f2fs/checkpoint.c:1658
+ kill_f2fs_super+0x231/0x390 fs/f2fs/super.c:4668
+ deactivate_locked_super+0x98/0x100 fs/super.c:332
+ deactivate_super+0xaf/0xe0 fs/super.c:363
+ cleanup_mnt+0x45f/0x4e0 fs/namespace.c:1186
+ __cleanup_mnt+0x19/0x20 fs/namespace.c:1193
+ task_work_run+0x1c6/0x230 kernel/task_work.c:203
+ exit_task_work include/linux/task_work.h:39 [inline]
+ do_exit+0x9fb/0x2410 kernel/exit.c:871
+ do_group_exit+0x210/0x2d0 kernel/exit.c:1021
+ __do_sys_exit_group kernel/exit.c:1032 [inline]
+ __se_sys_exit_group kernel/exit.c:1030 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1030
+ x64_sys_call+0x7b4/0x9a0 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x4c/0xa0 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x68/0xd2
+RIP: 0033:0x7f28b1b8e169
+Code: Unable to access opcode bytes at 0x7f28b1b8e13f.
+RSP: 002b:00007ffe174710a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007f28b1c10879 RCX: 00007f28b1b8e169
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000002 R08: 00007ffe1746ee47 R09: 00007ffe17472360
+R10: 0000000000000009 R11: 0000000000000246 R12: 00007ffe17472360
+R13: 00007f28b1c10854 R14: 000000000000dae5 R15: 00007ffe17474520
+ </TASK>
 
- 2) When a device is removed from a slot, regardless of surprise or
-    programmatic removal, the associated PHB/PE ls left frozen.
-    If this freeze is not cleared via a fundamental reset, skiboot
-    is unable to clear the freeze and cannot retrain / rescan the
-    slot.  This also requires a reboot to clear the freeze and redetect
-    the device in the slot.
+Allocated by task 569:
+ kasan_save_stack mm/kasan/common.c:45 [inline]
+ kasan_set_track+0x4b/0x70 mm/kasan/common.c:52
+ kasan_save_alloc_info+0x25/0x30 mm/kasan/generic.c:505
+ __kasan_slab_alloc+0x72/0x80 mm/kasan/common.c:328
+ kasan_slab_alloc include/linux/kasan.h:201 [inline]
+ slab_post_alloc_hook+0x4f/0x2c0 mm/slab.h:737
+ slab_alloc_node mm/slub.c:3398 [inline]
+ slab_alloc mm/slub.c:3406 [inline]
+ __kmem_cache_alloc_lru mm/slub.c:3413 [inline]
+ kmem_cache_alloc_lru+0x104/0x220 mm/slub.c:3429
+ alloc_inode_sb include/linux/fs.h:3245 [inline]
+ f2fs_alloc_inode+0x2d/0x340 fs/f2fs/super.c:1419
+ alloc_inode fs/inode.c:261 [inline]
+ iget_locked+0x186/0x880 fs/inode.c:1373
+ f2fs_iget+0x55/0x4c60 fs/f2fs/inode.c:483
+ f2fs_lookup+0x366/0xab0 fs/f2fs/namei.c:487
+ __lookup_slow+0x2a3/0x3d0 fs/namei.c:1690
+ lookup_slow+0x57/0x70 fs/namei.c:1707
+ walk_component+0x2e6/0x410 fs/namei.c:1998
+ lookup_last fs/namei.c:2455 [inline]
+ path_lookupat+0x180/0x490 fs/namei.c:2479
+ filename_lookup+0x1f0/0x500 fs/namei.c:2508
+ vfs_statx+0x10b/0x660 fs/stat.c:229
+ vfs_fstatat fs/stat.c:267 [inline]
+ vfs_lstat include/linux/fs.h:3424 [inline]
+ __do_sys_newlstat fs/stat.c:423 [inline]
+ __se_sys_newlstat+0xd5/0x350 fs/stat.c:417
+ __x64_sys_newlstat+0x5b/0x70 fs/stat.c:417
+ x64_sys_call+0x393/0x9a0 arch/x86/include/generated/asm/syscalls_64.h:7
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x4c/0xa0 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x68/0xd2
 
-Issue the appropriate unfreeze and rescan commands on hotplug events,
-and don't oops on hotplug if pci_bus_to_OF_node() returns NULL.
+Freed by task 13:
+ kasan_save_stack mm/kasan/common.c:45 [inline]
+ kasan_set_track+0x4b/0x70 mm/kasan/common.c:52
+ kasan_save_free_info+0x31/0x50 mm/kasan/generic.c:516
+ ____kasan_slab_free+0x132/0x180 mm/kasan/common.c:236
+ __kasan_slab_free+0x11/0x20 mm/kasan/common.c:244
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1724 [inline]
+ slab_free_freelist_hook+0xc2/0x190 mm/slub.c:1750
+ slab_free mm/slub.c:3661 [inline]
+ kmem_cache_free+0x12d/0x2a0 mm/slub.c:3683
+ f2fs_free_inode+0x24/0x30 fs/f2fs/super.c:1562
+ i_callback+0x4c/0x70 fs/inode.c:250
+ rcu_do_batch+0x503/0xb80 kernel/rcu/tree.c:2297
+ rcu_core+0x5a2/0xe70 kernel/rcu/tree.c:2557
+ rcu_core_si+0x9/0x10 kernel/rcu/tree.c:2574
+ handle_softirqs+0x178/0x500 kernel/softirq.c:578
+ run_ksoftirqd+0x28/0x30 kernel/softirq.c:945
+ smpboot_thread_fn+0x45a/0x8c0 kernel/smpboot.c:164
+ kthread+0x270/0x310 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
 
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-[bhelgaas: tidy comments]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/171044224.1359864.1752615546988.JavaMail.zimbra@raptorengineeringinc.com
+Last potentially related work creation:
+ kasan_save_stack+0x3a/0x60 mm/kasan/common.c:45
+ __kasan_record_aux_stack+0xb6/0xc0 mm/kasan/generic.c:486
+ kasan_record_aux_stack_noalloc+0xb/0x10 mm/kasan/generic.c:496
+ call_rcu+0xd4/0xf70 kernel/rcu/tree.c:2845
+ destroy_inode fs/inode.c:316 [inline]
+ evict+0x7da/0x870 fs/inode.c:720
+ iput_final fs/inode.c:1834 [inline]
+ iput+0x62b/0x830 fs/inode.c:1860
+ do_unlinkat+0x356/0x540 fs/namei.c:4397
+ __do_sys_unlink fs/namei.c:4438 [inline]
+ __se_sys_unlink fs/namei.c:4436 [inline]
+ __x64_sys_unlink+0x49/0x50 fs/namei.c:4436
+ x64_sys_call+0x958/0x9a0 arch/x86/include/generated/asm/syscalls_64.h:88
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x4c/0xa0 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x68/0xd2
+
+The buggy address belongs to the object at ffff88812d961f20
+ which belongs to the cache f2fs_inode_cache of size 1200
+The buggy address is located 856 bytes inside of
+ 1200-byte region [ffff88812d961f20, ffff88812d9623d0)
+
+The buggy address belongs to the physical page:
+page:ffffea0004b65800 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x12d960
+head:ffffea0004b65800 order:2 compound_mapcount:0 compound_pincount:0
+flags: 0x4000000000010200(slab|head|zone=1)
+raw: 4000000000010200 0000000000000000 dead000000000122 ffff88810a94c500
+raw: 0000000000000000 00000000800c000c 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 2, migratetype Reclaimable, gfp_mask 0x1d2050(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC|__GFP_HARDWALL|__GFP_RECLAIMABLE), pid 569, tgid 568 (syz.2.16), ts 55943246141, free_ts 0
+ set_page_owner include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x1d0/0x1f0 mm/page_alloc.c:2532
+ prep_new_page mm/page_alloc.c:2539 [inline]
+ get_page_from_freelist+0x2e63/0x2ef0 mm/page_alloc.c:4328
+ __alloc_pages+0x235/0x4b0 mm/page_alloc.c:5605
+ alloc_slab_page include/linux/gfp.h:-1 [inline]
+ allocate_slab mm/slub.c:1939 [inline]
+ new_slab+0xec/0x4b0 mm/slub.c:1992
+ ___slab_alloc+0x6f6/0xb50 mm/slub.c:3180
+ __slab_alloc+0x5e/0xa0 mm/slub.c:3279
+ slab_alloc_node mm/slub.c:3364 [inline]
+ slab_alloc mm/slub.c:3406 [inline]
+ __kmem_cache_alloc_lru mm/slub.c:3413 [inline]
+ kmem_cache_alloc_lru+0x13f/0x220 mm/slub.c:3429
+ alloc_inode_sb include/linux/fs.h:3245 [inline]
+ f2fs_alloc_inode+0x2d/0x340 fs/f2fs/super.c:1419
+ alloc_inode fs/inode.c:261 [inline]
+ iget_locked+0x186/0x880 fs/inode.c:1373
+ f2fs_iget+0x55/0x4c60 fs/f2fs/inode.c:483
+ f2fs_fill_super+0x3ad7/0x6bb0 fs/f2fs/super.c:4293
+ mount_bdev+0x2ae/0x3e0 fs/super.c:1443
+ f2fs_mount+0x34/0x40 fs/f2fs/super.c:4642
+ legacy_get_tree+0xea/0x190 fs/fs_context.c:632
+ vfs_get_tree+0x89/0x260 fs/super.c:1573
+ do_new_mount+0x25a/0xa20 fs/namespace.c:3056
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff88812d962100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88812d962180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88812d962200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                                ^
+ ffff88812d962280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88812d962300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+[1] https://syzkaller.appspot.com/x/report.txt?x=13448368580000
+
+This bug can be reproduced w/ the reproducer [2], once we enable
+CONFIG_F2FS_CHECK_FS config, the reproducer will trigger panic as below,
+so the direct reason of this bug is the same as the one below patch [3]
+fixed.
+
+kernel BUG at fs/f2fs/inode.c:857!
+RIP: 0010:f2fs_evict_inode+0x1204/0x1a20
+Call Trace:
+ <TASK>
+ evict+0x32a/0x7a0
+ do_unlinkat+0x37b/0x5b0
+ __x64_sys_unlink+0xad/0x100
+ do_syscall_64+0x5a/0xb0
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+RIP: 0010:f2fs_evict_inode+0x1204/0x1a20
+
+[2] https://syzkaller.appspot.com/x/repro.c?x=17495ccc580000
+[3] https://lore.kernel.org/linux-f2fs-devel/20250702120321.1080759-1-chao@kernel.org
+
+Tracepoints before panic:
+
+f2fs_unlink_enter: dev = (7,0), dir ino = 3, i_size = 4096, i_blocks = 8, name = file1
+f2fs_unlink_exit: dev = (7,0), ino = 7, ret = 0
+f2fs_evict_inode: dev = (7,0), ino = 7, pino = 3, i_mode = 0x81ed, i_size = 10, i_nlink = 0, i_blocks = 0, i_advise = 0x0
+f2fs_truncate_node: dev = (7,0), ino = 7, nid = 8, block_address = 0x3c05
+
+f2fs_unlink_enter: dev = (7,0), dir ino = 3, i_size = 4096, i_blocks = 8, name = file3
+f2fs_unlink_exit: dev = (7,0), ino = 8, ret = 0
+f2fs_evict_inode: dev = (7,0), ino = 8, pino = 3, i_mode = 0x81ed, i_size = 9000, i_nlink = 0, i_blocks = 24, i_advise = 0x4
+f2fs_truncate: dev = (7,0), ino = 8, pino = 3, i_mode = 0x81ed, i_size = 0, i_nlink = 0, i_blocks = 24, i_advise = 0x4
+f2fs_truncate_blocks_enter: dev = (7,0), ino = 8, i_size = 0, i_blocks = 24, start file offset = 0
+f2fs_truncate_blocks_exit: dev = (7,0), ino = 8, ret = -2
+
+The root cause is: in the fuzzed image, dnode #8 belongs to inode #7,
+after inode #7 eviction, dnode #8 was dropped.
+
+However there is dirent that has ino #8, so, once we unlink file3, in
+f2fs_evict_inode(), both f2fs_truncate() and f2fs_update_inode_page()
+will fail due to we can not load node #8, result in we missed to call
+f2fs_inode_synced() to clear inode dirty status.
+
+Let's fix this by calling f2fs_inode_synced() in error path of
+f2fs_evict_inode().
+
+PS: As I verified, the reproducer [2] can trigger this bug in v6.1.129,
+but it failed in v6.16-rc4, this is because the testcase will stop due to
+other corruption has been detected by f2fs:
+
+F2FS-fs (loop0): inconsistent node block, node_type:2, nid:8, node_footer[nid:8,ino:8,ofs:0,cpver:5013063228981249506,blkaddr:15366]
+F2FS-fs (loop0): f2fs_lookup: inode (ino=9) has zero i_nlink
+
+Fixes: 0f18b462b2e5 ("f2fs: flush inode metadata when checkpoint is doing")
+Closes: https://syzkaller.appspot.com/x/report.txt?x=13448368580000
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/pci-hotplug.c |   3 +
- drivers/pci/hotplug/pnv_php.c     | 110 +++++++++++++++++++++++++++++-
- 2 files changed, 110 insertions(+), 3 deletions(-)
+ fs/f2fs/inode.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
-index 0fe251c6ac2c..ac70e85b0df8 100644
---- a/arch/powerpc/kernel/pci-hotplug.c
-+++ b/arch/powerpc/kernel/pci-hotplug.c
-@@ -111,6 +111,9 @@ void pci_hp_add_devices(struct pci_bus *bus)
- 	struct pci_controller *phb;
- 	struct device_node *dn = pci_bus_to_OF_node(bus);
- 
-+	if (!dn)
-+		return;
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 06f82efe8770..c02b5ea43f07 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -831,6 +831,19 @@ void f2fs_evict_inode(struct inode *inode)
+ 		f2fs_update_inode_page(inode);
+ 		if (dquot_initialize_needed(inode))
+ 			set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
 +
- 	phb = pci_bus_to_host(bus);
- 
- 	mode = PCI_PROBE_NORMAL;
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index d37faa53bcd8..ec7828ad6661 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -4,11 +4,13 @@
-  *
-  * Copyright Gavin Shan, IBM Corporation 2016.
-  * Copyright (C) 2025 Raptor Engineering, LLC
-+ * Copyright (C) 2025 Raptor Computing Systems, LLC
-  */
- 
- #include <linux/libfdt.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/delay.h>
- #include <linux/pci_hotplug.h>
- #include <linux/of_fdt.h>
- 
-@@ -468,6 +470,61 @@ static int pnv_php_set_attention_state(struct hotplug_slot *slot, u8 state)
- 	return 0;
- }
- 
-+static int pnv_php_activate_slot(struct pnv_php_slot *php_slot,
-+				 struct hotplug_slot *slot)
-+{
-+	int ret, i;
-+
-+	/*
-+	 * Issue initial slot activation command to firmware
-+	 *
-+	 * Firmware will power slot on, attempt to train the link, and
-+	 * discover any downstream devices. If this process fails, firmware
-+	 * will return an error code and an invalid device tree. Failure
-+	 * can be caused for multiple reasons, including a faulty
-+	 * downstream device, poor connection to the downstream device, or
-+	 * a previously latched PHB fence.  On failure, issue fundamental
-+	 * reset up to three times before aborting.
-+	 */
-+	ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
-+	if (ret) {
-+		SLOT_WARN(
-+			php_slot,
-+			"PCI slot activation failed with error code %d, possible frozen PHB",
-+			ret);
-+		SLOT_WARN(
-+			php_slot,
-+			"Attempting complete PHB reset before retrying slot activation\n");
-+		for (i = 0; i < 3; i++) {
-+			/*
-+			 * Slot activation failed, PHB may be fenced from a
-+			 * prior device failure.
-+			 *
-+			 * Use the OPAL fundamental reset call to both try a
-+			 * device reset and clear any potentially active PHB
-+			 * fence / freeze.
-+			 */
-+			SLOT_WARN(php_slot, "Try %d...\n", i + 1);
-+			pci_set_pcie_reset_state(php_slot->pdev,
-+						 pcie_warm_reset);
-+			msleep(250);
-+			pci_set_pcie_reset_state(php_slot->pdev,
-+						 pcie_deassert_reset);
-+
-+			ret = pnv_php_set_slot_power_state(
-+				slot, OPAL_PCI_SLOT_POWER_ON);
-+			if (!ret)
-+				break;
++		/*
++		 * If both f2fs_truncate() and f2fs_update_inode_page() failed
++		 * due to fuzzed corrupted inode, call f2fs_inode_synced() to
++		 * avoid triggering later f2fs_bug_on().
++		 */
++		if (is_inode_flag_set(inode, FI_DIRTY_INODE)) {
++			f2fs_warn(sbi,
++				"f2fs_evict_inode: inode is dirty, ino:%lu",
++				inode->i_ino);
++			f2fs_inode_synced(inode);
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
 +		}
-+
-+		if (i >= 3)
-+			SLOT_WARN(php_slot,
-+				  "Failed to bring slot online, aborting!\n");
-+	}
-+
-+	return ret;
-+}
-+
- static int pnv_php_enable(struct pnv_php_slot *php_slot, bool rescan)
- {
- 	struct hotplug_slot *slot = &php_slot->slot;
-@@ -530,7 +587,7 @@ static int pnv_php_enable(struct pnv_php_slot *php_slot, bool rescan)
- 		goto scan;
- 
- 	/* Power is off, turn it on and then scan the slot */
--	ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
-+	ret = pnv_php_activate_slot(php_slot, slot);
- 	if (ret)
- 		return ret;
- 
-@@ -837,16 +894,63 @@ static int pnv_php_enable_msix(struct pnv_php_slot *php_slot)
- 	return entry.vector;
- }
- 
-+static void
-+pnv_php_detect_clear_suprise_removal_freeze(struct pnv_php_slot *php_slot)
-+{
-+	struct pci_dev *pdev = php_slot->pdev;
-+	struct eeh_dev *edev;
-+	struct eeh_pe *pe;
-+	int i, rc;
-+
-+	/*
-+	 * When a device is surprise removed from a downstream bridge slot,
-+	 * the upstream bridge port can still end up frozen due to related EEH
-+	 * events, which will in turn block the MSI interrupts for slot hotplug
-+	 * detection.
-+	 *
-+	 * Detect and thaw any frozen upstream PE after slot deactivation.
-+	 */
-+	edev = pci_dev_to_eeh_dev(pdev);
-+	pe = edev ? edev->pe : NULL;
-+	rc = eeh_pe_get_state(pe);
-+	if ((rc == -ENODEV) || (rc == -ENOENT)) {
-+		SLOT_WARN(
-+			php_slot,
-+			"Upstream bridge PE state unknown, hotplug detect may fail\n");
-+	} else {
-+		if (pe->state & EEH_PE_ISOLATED) {
-+			SLOT_WARN(
-+				php_slot,
-+				"Upstream bridge PE %02x frozen, thawing...\n",
-+				pe->addr);
-+			for (i = 0; i < 3; i++)
-+				if (!eeh_unfreeze_pe(pe))
-+					break;
-+			if (i >= 3)
-+				SLOT_WARN(
-+					php_slot,
-+					"Unable to thaw PE %02x, hotplug detect will fail!\n",
-+					pe->addr);
-+			else
-+				SLOT_WARN(php_slot,
-+					  "PE %02x thawed successfully\n",
-+					  pe->addr);
-+		}
-+	}
-+}
-+
- static void pnv_php_event_handler(struct work_struct *work)
- {
- 	struct pnv_php_event *event =
- 		container_of(work, struct pnv_php_event, work);
- 	struct pnv_php_slot *php_slot = event->php_slot;
- 
--	if (event->added)
-+	if (event->added) {
- 		pnv_php_enable_slot(&php_slot->slot);
--	else
-+	} else {
- 		pnv_php_disable_slot(&php_slot->slot);
-+		pnv_php_detect_clear_suprise_removal_freeze(php_slot);
-+	}
- 
- 	kfree(event);
- }
+ 	}
+ 	if (!is_sbi_flag_set(sbi, SBI_IS_FREEZING))
+ 		sb_end_intwrite(inode->i_sb);
 -- 
 2.39.5
 
