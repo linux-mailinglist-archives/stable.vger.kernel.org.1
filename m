@@ -1,100 +1,161 @@
-Return-Path: <stable+bounces-167103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2B6B21F08
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 09:10:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAE7B21F55
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 09:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1843AC116
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 07:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05E2A1770BF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 07:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6882D7809;
-	Tue, 12 Aug 2025 07:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9r9OFZD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6242D781F;
+	Tue, 12 Aug 2025 07:20:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77C52D6E7A;
-	Tue, 12 Aug 2025 07:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9F824BBEC;
+	Tue, 12 Aug 2025 07:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754982631; cv=none; b=cLp4rceJfnsg+1MCIa9jflBY0WkH7hv1C3Jakdn69neVmRlQQD4jmgiX5X1QM0dwL+AE8O39yWU6UBdqqgTL4vMkJ6Q4CAXCLkKXsUeXg2LB3iaW5cJFHg2fP0E5pscf6biN58yei4WYGctO6ueUDyNJrMFle0OiICpiNWJOTaE=
+	t=1754983200; cv=none; b=ZVu83mDs+FejXkjfaBTC+qoU3/SA4Uq9U0RrCf6kfFcxyA0ZbUt825tR86lcnMJGIZAQZalq9eNVdGs+7T1Z3wotud0zGCa8id01uZiukdG6sIrNpIfoOAi4894VQhrAZ3FOWHNKb1YQ5L+r3pCntI+sh5S5hwDCbW8WHlLz1LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754982631; c=relaxed/simple;
-	bh=B+eNOKNbtodD+znFABmxjT8K6g5YAEHrMgmMns8bHq0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=iW2NHyLX3YutqnQ99Dz+Hi6QzaPtFIqRfGyHPPnV/etXFFkJ8ia2JFV1QcSrp08uP5h3xKw191y4UB+z5NFBG3pYLh3m7tcNz/sS4oPE3S0PO3B5R83qvoxC/Ds9CJjwGM8KvZfClyiWLBtfmnWnVH1CC41hP/e60uDpI8+egNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9r9OFZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99431C4CEF0;
-	Tue, 12 Aug 2025 07:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754982631;
-	bh=B+eNOKNbtodD+znFABmxjT8K6g5YAEHrMgmMns8bHq0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=p9r9OFZDh2YO7Y+qTqWPJ7OiqY5xrYTnvPf35Pkc6VKkQ++qEpe/XpVt3Hv/70dVF
-	 NOqcF2aWuJW5DrI/Oi+EIBBSXpO5a+UUSUP3PdZwkrgNGGkU3C7Cd8XFKKwplxpCPa
-	 v613fn5xo5y9Ow/Yy39PWkQs01S7MKq4tGM1Efkd/5UN/MSoFQhHqbwMlrpsYFbi2f
-	 8W3/t9f32wK04WKLYMbqE7W63eIvR/bqXTYciFzkWP8e9RI/cQZm/mnS9eUqw3zjlS
-	 sSpgfIWWjPknl9L0kNpKYbY3wiYrPnzx3ZNxq9qFDvVhmlYKHJRtWAavoJBEByYVXr
-	 OTodw7RWzHCbQ==
+	s=arc-20240116; t=1754983200; c=relaxed/simple;
+	bh=rqA86ZOJ0KqOXcvwmWcBuG56Gy/DWIj6uSKpAUAyYj8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EVRjQ2TwsMq7Q9gWuZtN3w8y3J/420rz595zUMecf1iws9h1B+AqAbFdP7/bCHbNEhg7ZAqo+1jeL+TI6ZsDSPmCCIAREStc4GADAqMjtDaEgrTd5ghehIcjCK6NBCOlVxEhXaG/TGNnML+JYBatFSZXW9GWc9uYPbhbTR2rWZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
+	by APP-03 (Coremail) with SMTP id rQCowADXZngG65poj7gmCw--.9934S2;
+	Tue, 12 Aug 2025 15:19:45 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: ck.hu@mediatek.com,
+	chunkuang.hu@kernel.org,
+	p.zabel@pengutronix.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	nancy.lin@mediatek.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv
+Date: Tue, 12 Aug 2025 15:19:32 +0800
+Message-Id: <20250812071932.471730-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Aug 2025 09:10:26 +0200
-Message-Id: <DC09F4MPGE3B.1HCG1U3C0KVAA@kernel.org>
-Subject: Re: [PATCH] rust: devres: fix leaking call to devm_add_action()
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250811214619.29166-1-dakr@kernel.org>
- <DBZYO8O9YTO3.10MKWPYN8YEOB@kernel.org>
- <DBZZBNP278NH.2DR4PMWX9HKST@kernel.org>
-In-Reply-To: <DBZZBNP278NH.2DR4PMWX9HKST@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADXZngG65poj7gmCw--.9934S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCr4UCr48XrWDJw1xXw43ZFb_yoW5GryrpF
+	WUGFWFvrW8tr4UKrsYyFW8CF1YkF1xta1fWF1Igw13Cw1rZryay345t34avryDArWkAF1r
+	JwnxtFy8CFyjkFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwV
+	W8CwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
+	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
+	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
+	Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
+	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUpa0PUUUUU
+	=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Tue Aug 12, 2025 at 1:15 AM CEST, Danilo Krummrich wrote:
-> On Tue Aug 12, 2025 at 12:45 AM CEST, Benno Lossin wrote:
->> On Mon Aug 11, 2025 at 11:44 PM CEST, Danilo Krummrich wrote:
->> One solution would be to use `pin_chain` on the initializer for `Inner`
->> (not opaque). Another one would be to not use opaque, `UnsafePinned`
->> actually looks like the better fit for this use-case.
->
-> Yeah, the problem should go away with UnsafePinned. Maybe, until we have =
-it, we
-> can just do the following:
->
-> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> index bfccf4177644..1981201fa7f9 100644
-> --- a/rust/kernel/devres.rs
-> +++ b/rust/kernel/devres.rs
-> @@ -161,6 +161,9 @@ pub fn new<'a, E>(
->                  //    live at least as long as the returned `impl PinIni=
-t<Self, Error>`.
->                  to_result(unsafe {
->                      bindings::devm_add_action(dev.as_raw(), Some(callbac=
-k), inner.cast())
-> +                }).inspect_err(|_| {
-> +                    // SAFETY: `inner` is valid for dropping.
-> +                    unsafe { core::ptr::drop_in_place(inner) };
+Using device_find_child() and of_find_device_by_node() to locate
+devices could cause an imbalance in the device's reference count.
+device_find_child() and of_find_device_by_node() both call
+get_device() to increment the reference count of the found device
+before returning the pointer. In mtk_drm_get_all_drm_priv(), these
+references are never released through put_device(), resulting in
+permanent reference count increments. Additionally, the
+for_each_child_of_node() iterator fails to release node references in
+all code paths. This leaks device node references when loop
+termination occurs before reaching MAX_CRTC. These reference count
+leaks may prevent device/node resources from being properly released
+during driver unbind operations.
 
-Yeah that works too. Though I'd add a comment & improve the safety
-comment.
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
-Cheers,
-Benno
+Changes in v2:
+- added goto labels as suggestions.
+---
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index d5e6bab36414..f8a817689e16 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -387,19 +387,19 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
+ 
+ 		of_id = of_match_node(mtk_drm_of_ids, node);
+ 		if (!of_id)
+-			continue;
++			goto next_put_node;
+ 
+ 		pdev = of_find_device_by_node(node);
+ 		if (!pdev)
+-			continue;
++			goto next_put_node;
+ 
+ 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
+ 		if (!drm_dev)
+-			continue;
++			goto next_put_device_pdev_dev;
+ 
+ 		temp_drm_priv = dev_get_drvdata(drm_dev);
+ 		if (!temp_drm_priv)
+-			continue;
++			goto next_put_device_drm_dev;
+ 
+ 		if (temp_drm_priv->data->main_len)
+ 			all_drm_priv[CRTC_MAIN] = temp_drm_priv;
+@@ -411,10 +411,17 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
+ 		if (temp_drm_priv->mtk_drm_bound)
+ 			cnt++;
+ 
+-		if (cnt == MAX_CRTC) {
+-			of_node_put(node);
++next_put_device_drm_dev:
++		put_device(drm_dev);
++
++next_put_device_pdev_dev:
++		put_device(&pdev->dev);
++
++next_put_node:
++		of_node_put(node);
++
++		if (cnt == MAX_CRTC)
+ 			break;
+-		}
+ 	}
+ 
+ 	if (drm_priv->data->mmsys_dev_num == cnt) {
+-- 
+2.25.1
+
 
