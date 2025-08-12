@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5B3B23443
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 140B7B22F8E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E19B44E3BDE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D84681E48
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AE32FE597;
-	Tue, 12 Aug 2025 18:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08D82FD1CE;
+	Tue, 12 Aug 2025 17:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pimWklqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtITItjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474692F5481;
-	Tue, 12 Aug 2025 18:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5A82FDC2B;
+	Tue, 12 Aug 2025 17:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023864; cv=none; b=I68v6St6ewUhs6EJyy/gKL0kFdinmsSqSq9xAx5FwahwY1n3UMb0DtO/s7ltA3YzxSM3opH14dp1tr2RHLba1fk6yQhWyqJmlDFQznTAzTW5uqGOqa++YbOwSd9QH7eMPu0LST3OZ9GWoisB2cdJWbIe6Uav7+e5Czi15Z7k0zM=
+	t=1755020433; cv=none; b=eoGG3UfQ6UzGhVKBYUYDtHKGrBP4IrQRMkYmJqzWkdEIIr2uQzpCd6BdfV9mv2yfCc5OLCzldkrjMB00T78vRzTtKZmgPq8WOkd68bKa+WYgTLqv5Kr9XG9DNv4FtSEVzzaWnHnSZcM4JCgneoLzEmLcqdXFPPg8pCjH0iP93AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023864; c=relaxed/simple;
-	bh=Qm8gA6TotxAn8OZxpk4iVksPXEG9kO1pZHwW2hiVOTE=;
+	s=arc-20240116; t=1755020433; c=relaxed/simple;
+	bh=WaSeYj17U5X2tm+P+nq+QHR6qhMhzo0uDKq6Y/O05oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3fMc7txlu5R/LJcmIiD4uL+0htkNCoqSUryHtzDJgpPc5j/wnQxaHXaz9kjrX/9ofB+P1BqIfoCAIUjAYlpVkNdBUkCpLLXXGzfpaWxf8YGdFlqiy3MNVMPijDe4Uf3MbSP/ILrDY78VXTFu1otynBQ1yPSGzh5tkibwp+s0LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pimWklqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DDBC4CEF0;
-	Tue, 12 Aug 2025 18:37:43 +0000 (UTC)
+	 MIME-Version; b=JA+BJfGz+kE1ERiAGXd9t/s/U7xaE2BFQMEX8RCbnZswnbq2kQsJxK7lCHXcRhF6eJmyTLhQnHe/CITO8R8D1iPge1S0RPc7xoYHNSus0WFBPTah6rnosiyPDUyRLRoyPs/AGK22RPhSdIhteNxen/QA/4fKIqeKsVQlddsAK+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtITItjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91004C4CEF0;
+	Tue, 12 Aug 2025 17:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023864;
-	bh=Qm8gA6TotxAn8OZxpk4iVksPXEG9kO1pZHwW2hiVOTE=;
+	s=korg; t=1755020432;
+	bh=WaSeYj17U5X2tm+P+nq+QHR6qhMhzo0uDKq6Y/O05oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pimWklqoCLTTg03XMC1ApQw5JcZob5gjA42mJ/lhYKt6FEuCaRsT0N5pSYoj+4rnY
-	 xMFQ4Y8pHXSKzKjDfiOba4rZviSzM+xeGK9AYilMK9VtEhdwOZ08YF1UicT1tzWEHz
-	 oEyajttdZ3S/s/41acMv4ITkcX1wfW4MVwOziEnQ=
+	b=AtITItjUlxVXLPn/mKPSRTkXs75ZA3+h7mU3pCja5k3KsiAqAvMpT+GUHnE1dpZI5
+	 jQ5ieuk+hkGKiP2ZT5wv7gu1upbvHfJBCXOtw6gtL+6LMr2dCBc14ofAj8KQr4cYuf
+	 P82zsq7nGdJ6HU7fTfOuLlIE14EQGcsb+fLynMR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"xin.guo" <guoxin0309@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Denis OSTERLAND-HEIM <denis.osterland@diehl.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 172/627] tcp: fix tcp_ofo_queue() to avoid including too much DUP SACK range
+Subject: [PATCH 6.1 079/253] pps: fix poll support
 Date: Tue, 12 Aug 2025 19:27:47 +0200
-Message-ID: <20250812173425.821871068@linuxfoundation.org>
+Message-ID: <20250812172952.092556852@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xin.guo <guoxin0309@gmail.com>
+From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
 
-[ Upstream commit a041f70e573e185d5d5fdbba53f0db2fbe7257ad ]
+[ Upstream commit 12c409aa1ec2592280a2ddcc66ff8f3c7f7bb171 ]
 
-If the new coming segment covers more than one skbs in the ofo queue,
-and which seq is equal to rcv_nxt, then the sequence range
-that is duplicated will be sent as DUP SACK, the detail as below,
-in step6, the {501,2001} range is clearly including too much
-DUP SACK range, in violation of RFC 2883 rules.
+Because pps_cdev_poll() returns unconditionally EPOLLIN,
+a user space program that calls select/poll get always an immediate data
+ready-to-read response. As a result the intended use to wait until next
+data becomes ready does not work.
 
-1. client > server: Flags [.], seq 501:1001, ack 1325288529, win 20000, length 500
-2. server > client: Flags [.], ack 1, [nop,nop,sack 1 {501:1001}], length 0
-3. client > server: Flags [.], seq 1501:2001, ack 1325288529, win 20000, length 500
-4. server > client: Flags [.], ack 1, [nop,nop,sack 2 {1501:2001} {501:1001}], length 0
-5. client > server: Flags [.], seq 1:2001, ack 1325288529, win 20000, length 2000
-6. server > client: Flags [.], ack 2001, [nop,nop,sack 1 {501:2001}], length 0
+User space snippet:
 
-After this fix, the final ACK is as below:
+    struct pollfd pollfd = {
+      .fd = open("/dev/pps0", O_RDONLY),
+      .events = POLLIN|POLLERR,
+      .revents = 0 };
+    while(1) {
+      poll(&pollfd, 1, 2000/*ms*/); // returns immediate, but should wait
+      if(revents & EPOLLIN) { // always true
+        struct pps_fdata fdata;
+        memset(&fdata, 0, sizeof(memdata));
+        ioctl(PPS_FETCH, &fdata); // currently fetches data at max speed
+      }
+    }
 
-6. server > client: Flags [.], ack 2001, options [nop,nop,sack 1 {501:1001}], length 0
+Lets remember the last fetch event counter and compare this value
+in pps_cdev_poll() with most recent event counter
+and return 0 if they are equal.
 
-[edumazet] added a new packetdrill test in the following patch.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: xin.guo <guoxin0309@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250626123420.1933835-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
+Co-developed-by: Rodolfo Giometti <giometti@enneenne.com>
+Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+Fixes: eae9d2ba0cfc ("LinuxPPS: core support")
+Link: https://lore.kernel.org/all/f6bed779-6d59-4f0f-8a59-b6312bd83b4e@enneenne.com/
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/c3c50ad1eb19ef553eca8a57c17f4c006413ab70.camel@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pps/pps.c          | 11 +++++++++--
+ include/linux/pps_kernel.h |  1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 68bc79eb9019..76b01df70e56 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4985,8 +4985,9 @@ static void tcp_ofo_queue(struct sock *sk)
+diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+index 2d008e0d116a..ea966fc67d28 100644
+--- a/drivers/pps/pps.c
++++ b/drivers/pps/pps.c
+@@ -41,6 +41,9 @@ static __poll_t pps_cdev_poll(struct file *file, poll_table *wait)
  
- 		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
- 			__u32 dsack = dsack_high;
+ 	poll_wait(file, &pps->queue, wait);
+ 
++	if (pps->last_fetched_ev == pps->last_ev)
++		return 0;
 +
- 			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))
--				dsack_high = TCP_SKB_CB(skb)->end_seq;
-+				dsack = TCP_SKB_CB(skb)->end_seq;
- 			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
- 		}
- 		p = rb_next(p);
+ 	return EPOLLIN | EPOLLRDNORM;
+ }
+ 
+@@ -186,9 +189,11 @@ static long pps_cdev_ioctl(struct file *file,
+ 		if (err)
+ 			return err;
+ 
+-		/* Return the fetched timestamp */
++		/* Return the fetched timestamp and save last fetched event  */
+ 		spin_lock_irq(&pps->lock);
+ 
++		pps->last_fetched_ev = pps->last_ev;
++
+ 		fdata.info.assert_sequence = pps->assert_sequence;
+ 		fdata.info.clear_sequence = pps->clear_sequence;
+ 		fdata.info.assert_tu = pps->assert_tu;
+@@ -272,9 +277,11 @@ static long pps_cdev_compat_ioctl(struct file *file,
+ 		if (err)
+ 			return err;
+ 
+-		/* Return the fetched timestamp */
++		/* Return the fetched timestamp and save last fetched event  */
+ 		spin_lock_irq(&pps->lock);
+ 
++		pps->last_fetched_ev = pps->last_ev;
++
+ 		compat.info.assert_sequence = pps->assert_sequence;
+ 		compat.info.clear_sequence = pps->clear_sequence;
+ 		compat.info.current_mode = pps->current_mode;
+diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
+index c7abce28ed29..aab0aebb529e 100644
+--- a/include/linux/pps_kernel.h
++++ b/include/linux/pps_kernel.h
+@@ -52,6 +52,7 @@ struct pps_device {
+ 	int current_mode;			/* PPS mode at event time */
+ 
+ 	unsigned int last_ev;			/* last PPS event id */
++	unsigned int last_fetched_ev;		/* last fetched PPS event id */
+ 	wait_queue_head_t queue;		/* PPS event queue */
+ 
+ 	unsigned int id;			/* PPS source unique ID */
 -- 
 2.39.5
 
