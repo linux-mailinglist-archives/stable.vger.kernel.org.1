@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA89B23281
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23205B22F8F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6BB11AA6BD0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 113DD4E1A59
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BB22FAC11;
-	Tue, 12 Aug 2025 18:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDA62FD1D6;
+	Tue, 12 Aug 2025 17:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK223nog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKI5lV3n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AC02FA0DB;
-	Tue, 12 Aug 2025 18:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2552FD1CE;
+	Tue, 12 Aug 2025 17:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022432; cv=none; b=Oegljb0QGztOPa0caRV6LxuYgd0lt1PJJrw8fb29MzUha0G4QTFpj0QP4oDrlxn+q8wcB9SaUp5rCgRn6N/YxqwuQgwElDvyM4UNQ+KrYslG+OU2xw09+1ZCxLrPa/+V9C9Ih5fs5c9SdX+M37MrUydEA3jfhSwERxoqeC13hag=
+	t=1755020498; cv=none; b=NQbQAxZcqU5entt7IUNjS8FQMzFLUMCRuNKFsMh0T07TvZ38W8pT0ucpLkYRcxQf2lZ4md4Mb2iyod1VOWLp4qM9rfcF0LT+XvL4PgXQ5QY+u6pRGTLn9WPVk8goTa6aO2vHOiaOpJamIMjWGLuxq5uldNBJPCMxmTou1zFyZBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022432; c=relaxed/simple;
-	bh=wvyhIixYiMFHZ8yqRPwU0OtKn3FCoatEldOMfgBOQCE=;
+	s=arc-20240116; t=1755020498; c=relaxed/simple;
+	bh=zo+Hr0DuGZKx8eXxla33YenwmvBfS7BwxfRZAu5dBAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEFwNZIxh8RdSiiH0svN8oRT+loQc2ZNKxWXS/4ArXOi5ztn96/ilTZJRSqlC1Kv32v92PrG7yOnkIRi23Af3+CH7yQhquDWC9QQTDh32HxgCx/NhgC8TPb+2En0j2NTnMeRtsqwUhuCLQ/U7W56BXeoBP113+z1oiRWNSQVOkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK223nog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABD7C4CEF1;
-	Tue, 12 Aug 2025 18:13:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IIbCZbesa7oiLZ70Jp05MpbWeZdguhYrGIbvKZ4H30MS+qN6PK7nOsQGPVPRX7PPncU3Bm+vWnK9GY6Q+bBAcBU7uZekfeJ28qEfHmHUqvxQziA86MoAXxsa7rqYoeWicx3njFbGB2TJiin29hUALAYriFVGIm8y963DBujxlMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKI5lV3n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D517C4CEF1;
+	Tue, 12 Aug 2025 17:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022432;
-	bh=wvyhIixYiMFHZ8yqRPwU0OtKn3FCoatEldOMfgBOQCE=;
+	s=korg; t=1755020498;
+	bh=zo+Hr0DuGZKx8eXxla33YenwmvBfS7BwxfRZAu5dBAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iK223nogrGUXpM5see66d/wthxmZ6NYrMnq8FVsSSdRuorOjQBZFrW2ZE8Z2TMNk3
-	 cYpMDVjOG40ZcLBW/8Ai1U+hmYsGnm89YnJ2tigaV/7nH+S6LNUxPsgoDulgEFmyA+
-	 whSwe8Ys9ACGwV77dSUer4V7zS5ULYpi9eteKvyM=
+	b=SKI5lV3nRe4sFnEBcMtTPhest0YYQ1WI540ByAikP/YEHKhYECDziQCsW0b0KgcAH
+	 IXgZa4s9F0Mev24g5MQLs/bx/EtNwuhwIdE8PHTR2mgDjD4VPi4iUsz5FYz0rHzdIX
+	 feW4Bax3isMafhC4ckFtq/gCPDYhh5uufdCW1WU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	RubenKelevra <rubenkelevra@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/369] clk: renesas: rzv2h: Fix missing CLK_SET_RATE_PARENT flag for ddiv clocks
-Date: Tue, 12 Aug 2025 19:27:31 +0200
-Message-ID: <20250812173020.569853552@linuxfoundation.org>
+Subject: [PATCH 6.1 064/253] fs_context: fix parameter name in infofc() macro
+Date: Tue, 12 Aug 2025 19:27:32 +0200
+Message-ID: <20250812172951.454369534@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: RubenKelevra <rubenkelevra@gmail.com>
 
-[ Upstream commit 715676d8418062f54d746451294ccce9786c1734 ]
+[ Upstream commit ffaf1bf3737f706e4e9be876de4bc3c8fc578091 ]
 
-Commit bc4d25fdfadf ("clk: renesas: rzv2h: Add support for dynamic
-switching divider clocks") missed setting the `CLK_SET_RATE_PARENT`
-flag when registering ddiv clocks.
+The macro takes a parameter called "p" but references "fc" internally.
+This happens to compile as long as callers pass a variable named fc,
+but breaks otherwise. Rename the first parameter to “fc” to match the
+usage and to be consistent with warnfc() / errorfc().
 
-Without this flag, rate changes to the divider clock do not propagate
-to its parent, potentially resulting in incorrect clock configurations.
-
-Fix this by setting `CLK_SET_RATE_PARENT` in the clock init data.
-
-Fixes: bc4d25fdfadfa ("clk: renesas: rzv2h: Add support for dynamic switching divider clocks")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250609140341.235919-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: a3ff937b33d9 ("prefix-handling analogues of errorf() and friends")
+Signed-off-by: RubenKelevra <rubenkelevra@gmail.com>
+Link: https://lore.kernel.org/20250617230927.1790401-1-rubenkelevra@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzv2h-cpg.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/fs_context.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/rzv2h-cpg.c b/drivers/clk/renesas/rzv2h-cpg.c
-index b524a9d33610..5f8116e39e22 100644
---- a/drivers/clk/renesas/rzv2h-cpg.c
-+++ b/drivers/clk/renesas/rzv2h-cpg.c
-@@ -312,6 +312,7 @@ rzv2h_cpg_ddiv_clk_register(const struct cpg_core_clk *core,
- 	init.ops = &rzv2h_ddiv_clk_divider_ops;
- 	init.parent_names = &parent_name;
- 	init.num_parents = 1;
-+	init.flags = CLK_SET_RATE_PARENT;
+diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
+index 13fa6f3df8e4..c861b2c894ba 100644
+--- a/include/linux/fs_context.h
++++ b/include/linux/fs_context.h
+@@ -209,7 +209,7 @@ void logfc(struct fc_log *log, const char *prefix, char level, const char *fmt,
+  */
+ #define infof(fc, fmt, ...) __logfc(fc, 'i', fmt, ## __VA_ARGS__)
+ #define info_plog(p, fmt, ...) __plog(p, 'i', fmt, ## __VA_ARGS__)
+-#define infofc(p, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
++#define infofc(fc, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
  
- 	ddiv->priv = priv;
- 	ddiv->mon = cfg_ddiv.monbit;
+ /**
+  * warnf - Store supplementary warning message
 -- 
 2.39.5
 
