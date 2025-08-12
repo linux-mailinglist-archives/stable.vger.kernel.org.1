@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA3CB22FB8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92838B232C1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD2C3565AF0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF20583808
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEB72FE565;
-	Tue, 12 Aug 2025 17:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2E02FD1C1;
+	Tue, 12 Aug 2025 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evNPC9l0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnIj82Kd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC832FDC5F;
-	Tue, 12 Aug 2025 17:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B842DFA3E;
+	Tue, 12 Aug 2025 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020540; cv=none; b=srwA9Mp2Q6NYPl54PVwIF6TRBOjN8P4RsLDTzV7V6+wE4hCyJLiiPlART9g5DGQYGXVPH4Lzi82M+Uz7AH/cvShCXK4fv2YFPBwgJRX84ei/hZOwzUyu/E4B94NZxuJabqPbi48vu0n7Ijeq3FQh5zo99XxGRZg1B6ky16ntR2E=
+	t=1755022599; cv=none; b=t6775Chcm+b73HRUHPZ7zQfubLZePizFnmcmlp5tC/ym001+tvE3OhtOQqs6wvBQplBA6Cds8A5W5EZdjXxTLlIsxqKuRV/RZL71+k8RyplarZRcpDSfm2tGTlSue+nZV395xynZgAVZZzMNV4gVrm2OK1NzKHH0slnWix1O68o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020540; c=relaxed/simple;
-	bh=P/Axl7Dj0bqHP/a8Syjx6k8rKnqmgelR6G+UqfjJa1U=;
+	s=arc-20240116; t=1755022599; c=relaxed/simple;
+	bh=q9F7VSCENarbANjKHzeKI36XLN5cTadF0s8LKgPTgy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqZaWgteJTqR4+2YGzD7Xk/7YJNvY1TT2ZkWDlMcJ3Ac/8GAkRVjAvoYw7oGCnix6iFAItEDPiIOruRtHrK7qZS2PEhiMVu5YGnSlWRFRps3gWq0kXKi9RTi580Q1xxPhjuj+loK/WPMksUW+wERk5GFHmqr8er9seDcRln7ZGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evNPC9l0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AA5C4CEF0;
-	Tue, 12 Aug 2025 17:42:19 +0000 (UTC)
+	 MIME-Version; b=qp7jIhwuHPHwG9wRWcKAFADWTZ1DYLePLPhuI6+PCc8O0ZB/7TcNgl0V9xr2PPN9ufHOY9QrfcXNCHJn+BwqfbjsgYf4mp/TgJXcrHpqNVd9X5q9X3m+zrMQjQ/RidiRLTYEF48Kqvh7EVs43YLeZigqqpNX/JFqaIhLTACOcjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnIj82Kd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2811EC4CEF6;
+	Tue, 12 Aug 2025 18:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020540;
-	bh=P/Axl7Dj0bqHP/a8Syjx6k8rKnqmgelR6G+UqfjJa1U=;
+	s=korg; t=1755022599;
+	bh=q9F7VSCENarbANjKHzeKI36XLN5cTadF0s8LKgPTgy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evNPC9l0swFt35ypbR+vXdtzXcDMiN4WhqMcC8/LsY+jbE5TmQxTif5NeAUZ36QqU
-	 3UGLGuq1aGSj9hf7eUwEZtf6itkVBQbe7fy1vxf27vQr9cFrf0jo2A/FMTzdQsllqB
-	 wTFCWAvheWPzwusmefinsq6YmuNPCEcjwoobOz10=
+	b=PnIj82KdFQX2AI7HrA8jPTaQNTp0ykuCn21UPC3RW8EEbGjEpPzDlyejXD/T2jUyj
+	 tTqRCWTmZfSkqqI1AoBds8iEQzDLsC4Ua9h0N6UxH6fRAD246lGRFBWCNHAlsfNS1p
+	 ToK44JPo8jCfWH08TmW7Nuro5/4fo5JffalOhjPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/253] drm/amd/pm/powerplay/hwmgr/smu_helper: fix order of mask and value
+Subject: [PATCH 6.12 202/369] scsi: mvsas: Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:19 +0200
-Message-ID: <20250812172953.443003530@linuxfoundation.org>
+Message-ID: <20250812173022.367564803@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit a54e4639c4ef37a0241bac7d2a77f2e6ffb57099 ]
+[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
 
-There is a small typo in phm_wait_on_indirect_register().
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Swap mask and value arguments provided to phm_wait_on_register() so that
-they satisfy the function signature and actual usage scheme.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-In practice this doesn't fix any issues because the only place this
-function is used uses the same value for the value and mask.
-
-Fixes: 3bace3591493 ("drm/amd/powerplay: add hardware manager sub-component")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mvsas/mv_sas.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
-index d0b1ab6c4523..54d191b2dc20 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
-@@ -149,7 +149,7 @@ int phm_wait_on_indirect_register(struct pp_hwmgr *hwmgr,
- 	}
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index 1444b1f1c4c8..d6897432cf0f 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -828,7 +828,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
+ 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (n_elem)
+-			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
++			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
+ 				     task->data_dir);
+ prep_out:
+ 	return rc;
+@@ -874,7 +874,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (slot->n_elem)
+ 			dma_unmap_sg(mvi->dev, task->scatter,
+-				     slot->n_elem, task->data_dir);
++				     task->num_scatter, task->data_dir);
  
- 	cgs_write_register(hwmgr->device, indirect_port, index);
--	return phm_wait_on_register(hwmgr, indirect_port + 1, mask, value);
-+	return phm_wait_on_register(hwmgr, indirect_port + 1, value, mask);
- }
- 
- int phm_wait_for_register_unequal(struct pp_hwmgr *hwmgr,
+ 	switch (task->task_proto) {
+ 	case SAS_PROTOCOL_SMP:
 -- 
 2.39.5
 
