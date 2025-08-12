@@ -1,128 +1,80 @@
-Return-Path: <stable+bounces-169290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C129DB23A69
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 23:13:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13A8B23A84
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 23:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AA9E1B64854
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D897C170E0B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889D8274B29;
-	Tue, 12 Aug 2025 21:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B42B1F4CA0;
+	Tue, 12 Aug 2025 21:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fLF14kgK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERqyQvrV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD59B20C469;
-	Tue, 12 Aug 2025 21:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAAA2F068B
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 21:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755033223; cv=none; b=FQcR6SVRNzeKHsGoFUheIt+u7RtUiY1gFi/J8q1RqjasbFH3MbS0g8665m50rYneSELav31agtVWEhCwlipOA+NBjYeIbDP9sngI7P3qEEjekK/RxO7dFJjl7qjW77z6GxRMTJCaPzlD5wafdFqV1ltwuJjq6sJbUpu6uvqRI18=
+	t=1755033539; cv=none; b=o76iz2Ji0coPG5RmGmQtF8Dc8ucDluMJuNARoYE92I4dPsHA/hsElNoeFGYBtLxCa2xR7XRV2ujr4YMOQlx4cY4N6jC6XH+mdEKmlGYLQFVqUPkmo/hgJlXlrVMbjGJQ3L/1WF+AmaIpFccvbebPve69jwVtBV5X4vLWIvlIASc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755033223; c=relaxed/simple;
-	bh=89HORkpnLHhTglgmgflGAu9nmJZk/C8g3RYgN5/yEMc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=chrrGyyDtfLA5KEYPFJ0IlwW/KFPKWcIfinojsyA/CJNKFqAOShsxfUCkAYIlyGuDq+fJpioRc8nqSwE3zxcEWz5Q2lYNZcm0X7EMPJ/A1g5DcPFdYYPS8ygjyWyLLyLkeWFzUh1l0n9BCKvXits7DrHThSr7Z+KpzGqUbdjTXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fLF14kgK; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6199bd724e1so1415248eaf.2;
-        Tue, 12 Aug 2025 14:13:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755033221; x=1755638021; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kw/KFo/LHx26cL0RFRltD6D4t8qDEavgai3uT6U0q6k=;
-        b=fLF14kgKQKAAGV1TUIG2E+3B+BsupHqUXEscTzW3rLyJmmcnLi9c0FAkw/GIWy1sk6
-         ZsapmiEWK6lYz3Bh57NN9J/4Bo4kaqvhVRaLTF9gXS+KLDmonUCEA7/S3fv85Bemam0e
-         lM08NQHcOdmeS8xPBh8tmod0O2YFsL5NfBxTYlt9WqTL26G4u3YwyC3yBVg80uAIlBEa
-         SFQ3n2YouBiSX52yMCFWjf6NSKW7QqSJjWHsUGVoLLcQsexJYa3yH0YBicVahauIbTos
-         J346fd9jD4wsDr6VcSo/bES39lgT3I++qfK61lEKIpG+mMDcysQVBoEtTpcXMy9Op38s
-         lxww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755033221; x=1755638021;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kw/KFo/LHx26cL0RFRltD6D4t8qDEavgai3uT6U0q6k=;
-        b=Mn+ZJcVR6VRHYFfnluRhXlYJA/3UX6GsxmfM6uB3Di9pJZcNN9lg/WEwaY+n8eG5sm
-         xJMhZmiJyNfCgs37D3sZBfvJWkdfOr6l6RgpwQtU2TcuPM3OQ6FJOQXhuK/XMCWcgJmd
-         dg5d+X1O+tsGHdIvmcUr48+EWi8RFSg6xfaBoFL5YqBY3uONPU5UsUCNPu0xSY5dQr3b
-         EeUX0qqUI1FbULZdMwZBjSu8m3NrrgnND81aGRQ79QhVLaxlCzEVFgDHjL65IlXGPWFK
-         XPifbe52+fEGZGcnqlowv9PnfPLYGIeeZGkCqT5xXk2zNDjjfyyO2HokakJ/UciS4rhn
-         r0gw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTajevWchukjkjPUvrirn+B2Y4zi1WmlbS0m5yP5KtQiOAZ9dhFmczpmsg23Cj54SChLzMjPjJ@vger.kernel.org, AJvYcCVluUOGPv94DJrS5WBiQL0DaQIror3chA9VhGm1Lhn/orhVAnVim0wkrIY64qypOJgvb5VrYVMrIvgtefo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy58nYab1zrpF70E//4cmSnoDxGR7jstlHdZHegl6mf/paKmJr6
-	KMykroEv4zUFilBH9gAxKhBP/ECAw8DajaR5HiPMKrCgr+cQmyrpcj+s
-X-Gm-Gg: ASbGncs67XeNkMemqtjsBs5MjzAAwBViNwHpkurnexBlDXLOdQFtlk9uxf1d3KJV8LS
-	QpkDtEi8AQFgJdDf7LDyC69lYC0nX/eIsC2truB7IcmJMo3wz8TRuvljR7BKmrYIycjCmEy1aH0
-	xbMNL0pAxvTZuijvnMcEZmEX0f3baPoxqjs58tADg3NGoCS4fHHSphCeUtUt5BG99Lh41rJazH9
-	j+Hgp4ih/xOqo9F0bZl6HGdtjeZ2KS8C8y+b6bPzfRm1E83xEnj6yjbykSP++yt7FCM6uC5DeMJ
-	wJmjgzNr5lEHzN5ZCStlmbRn+v7StofT+H+IDv6sh/jri5DY+AN6EeOE3yQEurFxGey3WAKdUww
-	HHrgAgwoQx3QfCsriyRYC/bUmcIRD8OyVaYMVu+mq3pfV
-X-Google-Smtp-Source: AGHT+IEzkJqt8YXtZQ5APn2SJ9WpGNWkWGrefioWYVPwmQVZTE3E0t10Zwz+RfT3lsAU4t+v0ZuSVA==
-X-Received: by 2002:a05:6808:5192:b0:434:39d7:cb11 with SMTP id 5614622812f47-435d4165486mr499491b6e.6.1755033220795;
-        Tue, 12 Aug 2025 14:13:40 -0700 (PDT)
-Received: from [10.236.102.133] ([108.147.189.97])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ce700cbfsm357925b6e.6.2025.08.12.14.13.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Aug 2025 14:13:39 -0700 (PDT)
-Message-ID: <5f5bcc37-ff5c-4cc8-876a-b99e89e3e894@gmail.com>
-Date: Tue, 12 Aug 2025 14:13:34 -0700
+	s=arc-20240116; t=1755033539; c=relaxed/simple;
+	bh=5kzI1oDyVzFVSIU3I4B+w+YqJhhjxx+I1pSuXgGA0s8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uyX9Pvu8Krwxd7Og9ArQ+Q229gVRYe1gUJjTQoETqI1uX+PTvgKIjVP1zOqROz/YCl3J9AMcZq983LxTwxCtfG3qolmlm/uIwSK5mbWZA+dV+nHLvTgGecM7D3kszDwRFdYzZEAtzsCUP5RHXT+NsfWpxmvsEcGvzJNv/j7T80A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERqyQvrV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F20C4CEF0;
+	Tue, 12 Aug 2025 21:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755033538;
+	bh=5kzI1oDyVzFVSIU3I4B+w+YqJhhjxx+I1pSuXgGA0s8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ERqyQvrVP0zGAikqRBs9203b1khwsn5gDISL3tGOXUCQ9P9JggqLOpyEdeuOFlfbr
+	 F8uW376ba5GetqDfcpiGFU378Vf8ZuwJExv+4GqBlBW8/GpxwBxXKy85vXF2goLvJG
+	 R+FjaryP0ubi2mNEL9bCP7zkyNzPDPlBu80IRckochNi15TqyWj/LpKZn0lu7LdV5v
+	 bs/BS+c0rFz6unVLw3TZ+oTJL8qfUmUVDXZSH0Rdk44FW1UUtzYdvvOI76uY5InhwB
+	 lhvaJO1awEWTMZOgOUS6NhmMfNaZdLJY6uOsdehHiBm8et2f9cNTY1B+Y7oluE1kmF
+	 Yaw1qAPOgLvHQ==
+Date: Tue, 12 Aug 2025 14:18:55 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 5.4 2/6] kbuild: Update assembler calls to use proper
+ flags and language target
+Message-ID: <20250812211855.GC532342@ax162>
+References: <20250811235151.1108688-3-nathan@kernel.org>
+ <1754967336-37137ffc@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/253] 6.1.148-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250812172948.675299901@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1754967336-37137ffc@stable.kernel.org>
 
-
-
-On 8/12/2025 10:26 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.148 release.
-> There are 253 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Aug 12, 2025 at 12:12:27AM -0400, Sasha Levin wrote:
+> The upstream commit SHA1 provided is correct: d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0
 > 
-> Responses should be made by Thu, 14 Aug 2025 17:27:05 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.148-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> WARNING: Author mismatch between patch and upstream commit:
+> Backport author: Nathan Chancellor <nathan@kernel.org>
+> Commit author: Nick Desaulniers <ndesaulniers@google.com>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Same comment as the other change, there is a From: line in the patch, so
+shouldn't Nick still have authorship of the backport?
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+> Found fixes commits:
+> 87c4e1459e80 ARM: 9448/1: Use an absolute path to unified.h in KBUILD_AFLAGS
 
+Present as the first change of the series.
+
+Cheers,
+Nathan
 
