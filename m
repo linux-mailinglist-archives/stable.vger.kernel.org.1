@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24430B230DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC79DB22FA4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2BF164BF6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB1B2561833
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C52B2FDC52;
-	Tue, 12 Aug 2025 17:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B60F2FDC2E;
+	Tue, 12 Aug 2025 17:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hV7Jw+ag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3Bvy9jy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07022F83CB;
-	Tue, 12 Aug 2025 17:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2162F7461;
+	Tue, 12 Aug 2025 17:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021369; cv=none; b=DDrRxpH96vOoDuy9fcSQwArDV5bpc2vYWdxChcQs885oIA5fkiN7SgoUnpMPNXv1Ckx9+AI7MaW0eVqVGP8xBkWnlk1ePuuHgTrPEeyCu5+VkraC8tdDxA0R/3gm+k+uSVBFYFluAw71KmWTOkkvZI6Vxj/qgvwT8BDs5NNh7IM=
+	t=1755020509; cv=none; b=F8nkJsstQfJAg1GFjbwqZBezjIWmcxHZsZbPXYEFI/of5MXsbE2Gr52CnmX7aAsGBMozNbZNlkeLZUDf1gx3NiOekobd1TKYzFIBm57KKAb1fYgUrKWCKViLTFzD/heNKljuzGhYYVt+Qf0yaTCGwLkANUipFp+J61CXkpIkXbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021369; c=relaxed/simple;
-	bh=XWL/43R1U4ue7dMLsU22qaIRMTLpQdX9Jm0y0kPgnqM=;
+	s=arc-20240116; t=1755020509; c=relaxed/simple;
+	bh=2lvVSbBl9zeETbX/soFjQS1QwYujwjN7/7zojo4SPZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvlfLfNW9vlzDM2GXIfJ1kgPhyJwM3XCdxTYEmj9Kpyb0aCSK8tp7Twmw+eu5UAzd2BTkfpAzgTSlWYcxLxRQgono8Wr0N8ut5v+WnWCMvO+HAuiyKcb0hwMYsEGlF29UWFGZGwyNs50h6ZckukIu2rQgmqACsGS9Hfyhm1U3RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hV7Jw+ag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D04C4CEF1;
-	Tue, 12 Aug 2025 17:56:09 +0000 (UTC)
+	 MIME-Version; b=aBqlqQcKRLkxPoJqu63u9m/n07UR6EQUOa3wLInY+ADIas+Tu6UXChVrtmlSReWvifh7rNcy/gca1QQdHD+3aPE9/AlmP6IaFJJVsaBqWwEgUl0xHFBliRIl8SkIl9t51NQwVhtJq6fzoDL43pHE3QMVO+TFChH8JYff98cSoT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3Bvy9jy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497F3C4CEF1;
+	Tue, 12 Aug 2025 17:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021369;
-	bh=XWL/43R1U4ue7dMLsU22qaIRMTLpQdX9Jm0y0kPgnqM=;
+	s=korg; t=1755020508;
+	bh=2lvVSbBl9zeETbX/soFjQS1QwYujwjN7/7zojo4SPZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hV7Jw+agY6lM3Uvm6nd1vf112MbVe4zHX344JSZ2LyZ3Z30sVjZdAkjfYFL5bVIZ8
-	 cKos/sh2ZU/PRHEqWqDgmslacVxwWA90pgMZX4pgYrZ4B/S5FsOM/Xbhd+s+6mwyxS
-	 Kr4GBuMKrgc5/E9RYed45ye524blOCuPbNusIJXs=
+	b=f3Bvy9jyrK1cdmwOnvAzBbfWD+MxWcpQxYQQWOfX6vRdrfFIeQiaw5f7m+xV25RZ7
+	 hXGSGaZ3T5B5NeVaBfyV4TKixdnQ7h/hX6AVdPgr03EiPT/dkMat1Q2U+Rtekc9ik1
+	 8Zx4SZBwuNHSR7eOspV+ObmxYgjErgp8X55BCaWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/262] vrf: Drop existing dst reference in vrf_ip6_input_dst
+Subject: [PATCH 6.1 102/253] caif: reduce stack size, again
 Date: Tue, 12 Aug 2025 19:28:10 +0200
-Message-ID: <20250812172957.434672125@linuxfoundation.org>
+Message-ID: <20250812172953.067176297@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,361 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f388f807eca1de9e6e70f9ffb1a573c3811c4215 ]
+[ Upstream commit b630c781bcf6ff87657146661816d0d30a902139 ]
 
-Commit ff3fbcdd4724 ("selftests: tc: Add generic erspan_opts matching support
-for tc-flower") started triggering the following kmemleak warning:
+I tried to fix the stack usage in this function a couple of years ago,
+but there is still a problem with the latest gcc versions in some
+configurations:
 
-unreferenced object 0xffff888015fb0e00 (size 512):
-  comm "softirq", pid 0, jiffies 4294679065
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 40 d2 85 9e ff ff ff ff  ........@.......
-    41 69 59 9d ff ff ff ff 00 00 00 00 00 00 00 00  AiY.............
-  backtrace (crc 30b71e8b):
-    __kmalloc_noprof+0x359/0x460
-    metadata_dst_alloc+0x28/0x490
-    erspan_rcv+0x4f1/0x1160 [ip_gre]
-    gre_rcv+0x217/0x240 [ip_gre]
-    gre_rcv+0x1b8/0x400 [gre]
-    ip_protocol_deliver_rcu+0x31d/0x3a0
-    ip_local_deliver_finish+0x37d/0x620
-    ip_local_deliver+0x174/0x460
-    ip_rcv+0x52b/0x6b0
-    __netif_receive_skb_one_core+0x149/0x1a0
-    process_backlog+0x3c8/0x1390
-    __napi_poll.constprop.0+0xa1/0x390
-    net_rx_action+0x59b/0xe00
-    handle_softirqs+0x22b/0x630
-    do_softirq+0xb1/0xf0
-    __local_bh_enable_ip+0x115/0x150
+net/caif/cfctrl.c:553:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
 
-vrf_ip6_input_dst unconditionally sets skb dst entry, add a call to
-skb_dst_drop to drop any existing entry.
+Reduce this once again, with a separate cfctrl_link_setup() function that
+holds the bulk of all the local variables. It also turns out that the
+param[] array that takes up a large portion of the stack is write-only
+and can be left out here.
 
-Cc: David Ahern <dsahern@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Fixes: 9ff74384600a ("net: vrf: Handle ipv6 multicast and link-local addresses")
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250725160043.350725-1-sdf@fomichev.me
+Fixes: ce6289661b14 ("caif: reduce stack size with KASAN")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250620112244.3425554-1-arnd@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vrf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/caif/cfctrl.c | 294 +++++++++++++++++++++++-----------------------
+ 1 file changed, 144 insertions(+), 150 deletions(-)
 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index 5968a3ab8177..64114e98d75d 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1345,6 +1345,8 @@ static void vrf_ip6_input_dst(struct sk_buff *skb, struct net_device *vrf_dev,
- 	struct net *net = dev_net(vrf_dev);
- 	struct rt6_info *rt6;
+diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
+index 8480684f2762..10eeace2278b 100644
+--- a/net/caif/cfctrl.c
++++ b/net/caif/cfctrl.c
+@@ -351,17 +351,154 @@ int cfctrl_cancel_req(struct cflayer *layr, struct cflayer *adap_layer)
+ 	return found;
+ }
  
-+	skb_dst_drop(skb);
++static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp)
++{
++	u8 len;
++	u8 linkid = 0;
++	enum cfctrl_srv serv;
++	enum cfctrl_srv servtype;
++	u8 endpoint;
++	u8 physlinkid;
++	u8 prio;
++	u8 tmp;
++	u8 *cp;
++	int i;
++	struct cfctrl_link_param linkparam;
++	struct cfctrl_request_info rsp, *req;
 +
- 	rt6 = vrf_ip6_route_lookup(net, vrf_dev, &fl6, ifindex, skb,
- 				   RT6_LOOKUP_F_HAS_SADDR | RT6_LOOKUP_F_IFACE);
- 	if (unlikely(!rt6))
++	memset(&linkparam, 0, sizeof(linkparam));
++
++	tmp = cfpkt_extr_head_u8(pkt);
++
++	serv = tmp & CFCTRL_SRV_MASK;
++	linkparam.linktype = serv;
++
++	servtype = tmp >> 4;
++	linkparam.chtype = servtype;
++
++	tmp = cfpkt_extr_head_u8(pkt);
++	physlinkid = tmp & 0x07;
++	prio = tmp >> 3;
++
++	linkparam.priority = prio;
++	linkparam.phyid = physlinkid;
++	endpoint = cfpkt_extr_head_u8(pkt);
++	linkparam.endpoint = endpoint & 0x03;
++
++	switch (serv) {
++	case CFCTRL_SRV_VEI:
++	case CFCTRL_SRV_DBG:
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		break;
++	case CFCTRL_SRV_VIDEO:
++		tmp = cfpkt_extr_head_u8(pkt);
++		linkparam.u.video.connid = tmp;
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		break;
++
++	case CFCTRL_SRV_DATAGRAM:
++		linkparam.u.datagram.connid = cfpkt_extr_head_u32(pkt);
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		break;
++	case CFCTRL_SRV_RFM:
++		/* Construct a frame, convert
++		 * DatagramConnectionID
++		 * to network format long and copy it out...
++		 */
++		linkparam.u.rfm.connid = cfpkt_extr_head_u32(pkt);
++		cp = (u8 *) linkparam.u.rfm.volume;
++		for (tmp = cfpkt_extr_head_u8(pkt);
++		     cfpkt_more(pkt) && tmp != '\0';
++		     tmp = cfpkt_extr_head_u8(pkt))
++			*cp++ = tmp;
++		*cp = '\0';
++
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++
++		break;
++	case CFCTRL_SRV_UTIL:
++		/* Construct a frame, convert
++		 * DatagramConnectionID
++		 * to network format long and copy it out...
++		 */
++		/* Fifosize KB */
++		linkparam.u.utility.fifosize_kb = cfpkt_extr_head_u16(pkt);
++		/* Fifosize bufs */
++		linkparam.u.utility.fifosize_bufs = cfpkt_extr_head_u16(pkt);
++		/* name */
++		cp = (u8 *) linkparam.u.utility.name;
++		caif_assert(sizeof(linkparam.u.utility.name)
++			     >= UTILITY_NAME_LENGTH);
++		for (i = 0; i < UTILITY_NAME_LENGTH && cfpkt_more(pkt); i++) {
++			tmp = cfpkt_extr_head_u8(pkt);
++			*cp++ = tmp;
++		}
++		/* Length */
++		len = cfpkt_extr_head_u8(pkt);
++		linkparam.u.utility.paramlen = len;
++		/* Param Data */
++		cp = linkparam.u.utility.params;
++		while (cfpkt_more(pkt) && len--) {
++			tmp = cfpkt_extr_head_u8(pkt);
++			*cp++ = tmp;
++		}
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		/* Length */
++		len = cfpkt_extr_head_u8(pkt);
++		/* Param Data */
++		cfpkt_extr_head(pkt, NULL, len);
++		break;
++	default:
++		pr_warn("Request setup, invalid type (%d)\n", serv);
++		return -1;
++	}
++
++	rsp.cmd = CFCTRL_CMD_LINK_SETUP;
++	rsp.param = linkparam;
++	spin_lock_bh(&cfctrl->info_list_lock);
++	req = cfctrl_remove_req(cfctrl, &rsp);
++
++	if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
++		cfpkt_erroneous(pkt)) {
++		pr_err("Invalid O/E bit or parse error "
++				"on CAIF control channel\n");
++		cfctrl->res.reject_rsp(cfctrl->serv.layer.up, 0,
++				       req ? req->client_layer : NULL);
++	} else {
++		cfctrl->res.linksetup_rsp(cfctrl->serv.layer.up, linkid,
++					  serv, physlinkid,
++					  req ?  req->client_layer : NULL);
++	}
++
++	kfree(req);
++
++	spin_unlock_bh(&cfctrl->info_list_lock);
++
++	return 0;
++}
++
+ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ {
+ 	u8 cmdrsp;
+ 	u8 cmd;
+-	int ret = -1;
+-	u8 len;
+-	u8 param[255];
++	int ret = 0;
+ 	u8 linkid = 0;
+ 	struct cfctrl *cfctrl = container_obj(layer);
+-	struct cfctrl_request_info rsp, *req;
+-
+ 
+ 	cmdrsp = cfpkt_extr_head_u8(pkt);
+ 	cmd = cmdrsp & CFCTRL_CMD_MASK;
+@@ -374,150 +511,7 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ 
+ 	switch (cmd) {
+ 	case CFCTRL_CMD_LINK_SETUP:
+-		{
+-			enum cfctrl_srv serv;
+-			enum cfctrl_srv servtype;
+-			u8 endpoint;
+-			u8 physlinkid;
+-			u8 prio;
+-			u8 tmp;
+-			u8 *cp;
+-			int i;
+-			struct cfctrl_link_param linkparam;
+-			memset(&linkparam, 0, sizeof(linkparam));
+-
+-			tmp = cfpkt_extr_head_u8(pkt);
+-
+-			serv = tmp & CFCTRL_SRV_MASK;
+-			linkparam.linktype = serv;
+-
+-			servtype = tmp >> 4;
+-			linkparam.chtype = servtype;
+-
+-			tmp = cfpkt_extr_head_u8(pkt);
+-			physlinkid = tmp & 0x07;
+-			prio = tmp >> 3;
+-
+-			linkparam.priority = prio;
+-			linkparam.phyid = physlinkid;
+-			endpoint = cfpkt_extr_head_u8(pkt);
+-			linkparam.endpoint = endpoint & 0x03;
+-
+-			switch (serv) {
+-			case CFCTRL_SRV_VEI:
+-			case CFCTRL_SRV_DBG:
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				break;
+-			case CFCTRL_SRV_VIDEO:
+-				tmp = cfpkt_extr_head_u8(pkt);
+-				linkparam.u.video.connid = tmp;
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				break;
+-
+-			case CFCTRL_SRV_DATAGRAM:
+-				linkparam.u.datagram.connid =
+-				    cfpkt_extr_head_u32(pkt);
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				break;
+-			case CFCTRL_SRV_RFM:
+-				/* Construct a frame, convert
+-				 * DatagramConnectionID
+-				 * to network format long and copy it out...
+-				 */
+-				linkparam.u.rfm.connid =
+-				    cfpkt_extr_head_u32(pkt);
+-				cp = (u8 *) linkparam.u.rfm.volume;
+-				for (tmp = cfpkt_extr_head_u8(pkt);
+-				     cfpkt_more(pkt) && tmp != '\0';
+-				     tmp = cfpkt_extr_head_u8(pkt))
+-					*cp++ = tmp;
+-				*cp = '\0';
+-
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-
+-				break;
+-			case CFCTRL_SRV_UTIL:
+-				/* Construct a frame, convert
+-				 * DatagramConnectionID
+-				 * to network format long and copy it out...
+-				 */
+-				/* Fifosize KB */
+-				linkparam.u.utility.fifosize_kb =
+-				    cfpkt_extr_head_u16(pkt);
+-				/* Fifosize bufs */
+-				linkparam.u.utility.fifosize_bufs =
+-				    cfpkt_extr_head_u16(pkt);
+-				/* name */
+-				cp = (u8 *) linkparam.u.utility.name;
+-				caif_assert(sizeof(linkparam.u.utility.name)
+-					     >= UTILITY_NAME_LENGTH);
+-				for (i = 0;
+-				     i < UTILITY_NAME_LENGTH
+-				     && cfpkt_more(pkt); i++) {
+-					tmp = cfpkt_extr_head_u8(pkt);
+-					*cp++ = tmp;
+-				}
+-				/* Length */
+-				len = cfpkt_extr_head_u8(pkt);
+-				linkparam.u.utility.paramlen = len;
+-				/* Param Data */
+-				cp = linkparam.u.utility.params;
+-				while (cfpkt_more(pkt) && len--) {
+-					tmp = cfpkt_extr_head_u8(pkt);
+-					*cp++ = tmp;
+-				}
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				/* Length */
+-				len = cfpkt_extr_head_u8(pkt);
+-				/* Param Data */
+-				cfpkt_extr_head(pkt, &param, len);
+-				break;
+-			default:
+-				pr_warn("Request setup, invalid type (%d)\n",
+-					serv);
+-				goto error;
+-			}
+-
+-			rsp.cmd = cmd;
+-			rsp.param = linkparam;
+-			spin_lock_bh(&cfctrl->info_list_lock);
+-			req = cfctrl_remove_req(cfctrl, &rsp);
+-
+-			if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
+-				cfpkt_erroneous(pkt)) {
+-				pr_err("Invalid O/E bit or parse error "
+-						"on CAIF control channel\n");
+-				cfctrl->res.reject_rsp(cfctrl->serv.layer.up,
+-						       0,
+-						       req ? req->client_layer
+-						       : NULL);
+-			} else {
+-				cfctrl->res.linksetup_rsp(cfctrl->serv.
+-							  layer.up, linkid,
+-							  serv, physlinkid,
+-							  req ? req->
+-							  client_layer : NULL);
+-			}
+-
+-			kfree(req);
+-
+-			spin_unlock_bh(&cfctrl->info_list_lock);
+-		}
++		ret = cfctrl_link_setup(cfctrl, pkt, cmdrsp);
+ 		break;
+ 	case CFCTRL_CMD_LINK_DESTROY:
+ 		linkid = cfpkt_extr_head_u8(pkt);
+@@ -544,9 +538,9 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ 		break;
+ 	default:
+ 		pr_err("Unrecognized Control Frame\n");
++		ret = -1;
+ 		goto error;
+ 	}
+-	ret = 0;
+ error:
+ 	cfpkt_destroy(pkt);
+ 	return ret;
 -- 
 2.39.5
 
