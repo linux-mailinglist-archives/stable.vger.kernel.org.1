@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-168641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4B5B2360D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:57:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFE9B2359E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F3091A264B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:54:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9C4C5865C4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A392FAC06;
-	Tue, 12 Aug 2025 18:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A2D2C21E3;
+	Tue, 12 Aug 2025 18:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ou9UrRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tySQVlRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25539305E13;
-	Tue, 12 Aug 2025 18:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CB01474CC;
+	Tue, 12 Aug 2025 18:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024847; cv=none; b=NTEGCDZ6noWeTG1ddk8GSJY0IjQtWbotYF7yDQnX2UDTBWQzKcgnlqzRZcSZOXScL0Esv02IWm5ze3RobdVo843LIMf6tuH3PjtSm0tpwoGO/9ddEyzfH5UU8l3ktJksU7U2IGa9Ql8N5ORi8zVwmUk9piAYn/vAJ+iIGZVgtnk=
+	t=1755024734; cv=none; b=T2yhoMv5wf1RL8R/M+jwx5NL2XIdWbQoo6w8qA9AHdaISfOlShcoQG8fWcq7ZBlV8NgeG9SrwIrSiihNWnr2kzuQUCkNhBT+6gHA+o/JsP+eomG/jVgOdE2E3VB6Hf4FAWOC/GrQfK9k0Z8txiZJDJesBBYlI/hoCbTYXln/kPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024847; c=relaxed/simple;
-	bh=uJ/FoUlQHP5O0gmaRT5wpumkH7YkGtvuiIMQxEqzbyA=;
+	s=arc-20240116; t=1755024734; c=relaxed/simple;
+	bh=0IokeVgNMoUn1DNxw+1rt3mKXIQ9Qjn7x30rlOCj9Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kb2DmBxM4K26pgx6nSwjqH4rGTdeqxKXRWi7kUdBDCo0QwRGBAZXTJPXPfDkhPR8pjTVtp1w/ESdFvxaw5+ucWrT4qVDR/C8sasBiFiuYSPuT4zj741oS2R7qfdOO6HRvalEcLJkdjQ6uIBLG/sVJzLA/s4YHHrpSrZmmMZt0CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ou9UrRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C8FC4CEF0;
-	Tue, 12 Aug 2025 18:54:06 +0000 (UTC)
+	 MIME-Version; b=DOCMz2ChTVQnWMBLolEF0EycXDsR+4PnhpkAGPbdEP59c/EVLAzf3oEKpiklbn3YdcF41orSiTSBMlNTkWm5M86A8htcXA2EHtMcOjlddmB03Wvc5ToQ7kOtqT6QadTXZsbAjLbL5DMSmgamk5WJiN2DIuQi6G/SoO9bBkBs7og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tySQVlRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A78C4CEF0;
+	Tue, 12 Aug 2025 18:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024847;
-	bh=uJ/FoUlQHP5O0gmaRT5wpumkH7YkGtvuiIMQxEqzbyA=;
+	s=korg; t=1755024734;
+	bh=0IokeVgNMoUn1DNxw+1rt3mKXIQ9Qjn7x30rlOCj9Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Ou9UrRDhkb6J2pTFKejNKYueC9d8zdSFRdJmZeOcAZt8wlrwsGrAn3Yu8dUJAdQU
-	 fttCXXnhfUku8tql5doLOAN6RaHMVKJcd/GmucQOpxmoFHxSesUw1qSVatbmrKYZya
-	 CIWVFC0sJo17doYSMv1ZHPiK+wvrS98SkU78ImQw=
+	b=tySQVlRA3OcnhXJQ3id5CWYFK3QfHLzuPDffx+Q7Jv9T7Iy/bZ6vUpVK+HF7huvat
+	 EraLkw3do5vCNlKhuix1S+MmcAQfrGum1+xv6O0mbsS9ru7YyxBD9d/doWfcSGdByW
+	 +CDdH604wyVpF/mLAnnhBgfgRwjUDeWoV/6VCbQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Frank Li <Frank.Li@nxp.com>,
+	Stanley Chu <yschu@nuvoton.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 461/627] i3c: fix module_i3c_i2c_driver() with I3C=n
-Date: Tue, 12 Aug 2025 19:32:36 +0200
-Message-ID: <20250812173439.204636952@linuxfoundation.org>
+Subject: [PATCH 6.16 462/627] i3c: master: svc: Fix npcm845 FIFO_EMPTY quirk
+Date: Tue, 12 Aug 2025 19:32:37 +0200
+Message-ID: <20250812173439.401028636@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -69,62 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stanley Chu <yschu@nuvoton.com>
 
-[ Upstream commit 5523a466e905b6287b94654ddb364536f2f948cf ]
+[ Upstream commit bc4a09d8e79cadccdd505f47b01903a80bc666e7 ]
 
-When CONFIG_I3C is disabled and the i3c_i2c_driver_register() happens
-to not be inlined, any driver calling it still references the i3c_driver
-instance, which then causes a link failure:
+In a private write transfer, the driver pre-fills the FIFO to work around
+the FIFO_EMPTY quirk. However, if an IBIWON event occurs, the hardware
+emits a NACK and the driver initiates a retry. During the retry, driver
+attempts to pre-fill the FIFO again if there is remaining data, but since
+the FIFO is already full, this leads to data loss.
 
-x86_64-linux-ld: drivers/hwmon/lm75.o: in function `lm75_i3c_reg_read':
-lm75.c:(.text+0xc61): undefined reference to `i3cdev_to_dev'
-x86_64-linux-ld: lm75.c:(.text+0xd25): undefined reference to `i3c_device_do_priv_xfers'
-x86_64-linux-ld: lm75.c:(.text+0xdd8): undefined reference to `i3c_device_do_priv_xfers'
+Check available space in FIFO to prevent overflow.
 
-This issue was part of the original i3c code, but only now caused problems
-when i3c support got added to lm75.
-
-Change the 'inline' annotations in the header to '__always_inline' to
-ensure that the dead-code-elimination pass in the compiler can optimize
-it out as intended.
-
-Fixes: 6071d10413ff ("hwmon: (lm75) add I3C support for P3T1755")
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250725090609.2456262-1-arnd@kernel.org
+Fixes: 4008a74e0f9b ("i3c: master: svc: Fix npcm845 FIFO empty issue")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Link: https://lore.kernel.org/r/20250730003719.1825593-1-yschu@nuvoton.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/i3c/device.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
-index b674f64d0822..7f136de4b73e 100644
---- a/include/linux/i3c/device.h
-+++ b/include/linux/i3c/device.h
-@@ -245,7 +245,7 @@ void i3c_driver_unregister(struct i3c_driver *drv);
-  *
-  * Return: 0 if both registrations succeeds, a negative error code otherwise.
-  */
--static inline int i3c_i2c_driver_register(struct i3c_driver *i3cdrv,
-+static __always_inline int i3c_i2c_driver_register(struct i3c_driver *i3cdrv,
- 					  struct i2c_driver *i2cdrv)
- {
- 	int ret;
-@@ -270,7 +270,7 @@ static inline int i3c_i2c_driver_register(struct i3c_driver *i3cdrv,
-  * Note that when CONFIG_I3C is not enabled, this function only unregisters the
-  * @i2cdrv.
-  */
--static inline void i3c_i2c_driver_unregister(struct i3c_driver *i3cdrv,
-+static __always_inline void i3c_i2c_driver_unregister(struct i3c_driver *i3cdrv,
- 					     struct i2c_driver *i2cdrv)
- {
- 	if (IS_ENABLED(CONFIG_I3C))
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 7e1a7cb94b43..ece563353895 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -104,6 +104,7 @@
+ #define   SVC_I3C_MDATACTRL_TXTRIG_FIFO_NOT_FULL GENMASK(5, 4)
+ #define   SVC_I3C_MDATACTRL_RXTRIG_FIFO_NOT_EMPTY 0
+ #define   SVC_I3C_MDATACTRL_RXCOUNT(x) FIELD_GET(GENMASK(28, 24), (x))
++#define   SVC_I3C_MDATACTRL_TXCOUNT(x) FIELD_GET(GENMASK(20, 16), (x))
+ #define   SVC_I3C_MDATACTRL_TXFULL BIT(30)
+ #define   SVC_I3C_MDATACTRL_RXEMPTY BIT(31)
+ 
+@@ -1304,14 +1305,19 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
+ 		 * FIFO start filling as soon as possible after EmitStartAddr.
+ 		 */
+ 		if (svc_has_quirk(master, SVC_I3C_QUIRK_FIFO_EMPTY) && !rnw && xfer_len) {
+-			u32 end = xfer_len > SVC_I3C_FIFO_SIZE ? 0 : SVC_I3C_MWDATAB_END;
+-			u32 len = min_t(u32, xfer_len, SVC_I3C_FIFO_SIZE);
+-
+-			writesb(master->regs + SVC_I3C_MWDATAB1, out, len - 1);
+-			/* Mark END bit if this is the last byte */
+-			writel(out[len - 1] | end, master->regs + SVC_I3C_MWDATAB);
+-			xfer_len -= len;
+-			out += len;
++			u32 space, end, len;
++
++			reg = readl(master->regs + SVC_I3C_MDATACTRL);
++			space = SVC_I3C_FIFO_SIZE - SVC_I3C_MDATACTRL_TXCOUNT(reg);
++			if (space) {
++				end = xfer_len > space ? 0 : SVC_I3C_MWDATAB_END;
++				len = min_t(u32, xfer_len, space);
++				writesb(master->regs + SVC_I3C_MWDATAB1, out, len - 1);
++				/* Mark END bit if this is the last byte */
++				writel(out[len - 1] | end, master->regs + SVC_I3C_MWDATAB);
++				xfer_len -= len;
++				out += len;
++			}
+ 		}
+ 
+ 		ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
 -- 
 2.39.5
 
