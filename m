@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-167546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372F0B23097
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C483CB2309F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4B8189C725
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28C0A6849A6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697D62FAC02;
-	Tue, 12 Aug 2025 17:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6489B2FAC02;
+	Tue, 12 Aug 2025 17:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yc7QnXOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UluOo2I9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274692DE1E2;
-	Tue, 12 Aug 2025 17:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A5F26B2C8;
+	Tue, 12 Aug 2025 17:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021181; cv=none; b=DuQg59AK4RTmtT7n2k+U6pabM3C8pqhsTus/a/gTZGqk3ncMYBlpOQWCaDBKebiE2ayLTtLA1tpS03DBViECX/PSu8EEePumi2VGWRtzPSmBO7NS0OHbTg2jnL+Z8i+VKXzkwo8RSHWdQ7G+Wda+Sz6CaRcVw5Vzjk3kpV3FDq0=
+	t=1755021187; cv=none; b=qV1SuzhAeuzUDaweCZGkEeOYsIOtU83xW9Y+t6Txh640utxk09j0mPZ3ueH/15jpWpqYQYK/vYgnCqq1/fSLRdmYuA0lFfnQwqpOrQliNM62xz0msVZetqs99gyJEwhg5q2AwiDZOZK0Jg6F4kcvzoOu0PvWiJ3/vpPiQJOjz+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021181; c=relaxed/simple;
-	bh=VGKSShirpawGBOaGTJUrDedaDtX/zwSMdtL+Lw2OfTs=;
+	s=arc-20240116; t=1755021187; c=relaxed/simple;
+	bh=QSQaeNFYnvGW8muqOS8df1VgXjPKOgW3kEfimg/EbOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IU9r6ufV7P7i12R2jphUuLjt6dy5kiF1baklP/zMyVqrdMDBsAppgMbGS1cVUPhuzZ9KnqPMUKjSMoC0lCr8XEP3KnhrDqpypncvfwBTEOdqVRHk/HndOMNfOhtBFtz8VwcwrXBiu2Eu15+4F0tfrHrVnRZ48ZIv3Q8xruoZ/fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yc7QnXOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CBDC4CEF0;
-	Tue, 12 Aug 2025 17:52:59 +0000 (UTC)
+	 MIME-Version; b=oUytePcHnDSp8DkhIeoFMCE7GQG8ijGAena27KH+0DA+UV+c0HFLOAIgvTB/vz2E3vYeaLtsNDMkMw1+iFJNwhZgk6RiKA/rBNx2WCr4I5iu/ee+gSt9ktmkF5WvBoD8Za9V/YrCPUvOJOpEuVJpr7QLDfHPmBqtGPis4rt6DtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UluOo2I9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D0BC4CEF0;
+	Tue, 12 Aug 2025 17:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021181;
-	bh=VGKSShirpawGBOaGTJUrDedaDtX/zwSMdtL+Lw2OfTs=;
+	s=korg; t=1755021187;
+	bh=QSQaeNFYnvGW8muqOS8df1VgXjPKOgW3kEfimg/EbOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yc7QnXOgfMzpXtT4mILPfFjaqrFGNr69lkpBvx4HDiJO9aXKYFn9TSk5WzwT4E8+i
-	 RfE8+tcntwebC9CLrBQyL4GfQZAaTIH4UpohULbD+ckMb62K7EG8cRHD5doSfcidQI
-	 u2U552IEM7Z5m7dKB1dGcD5VXglZKjW7CbRXoZQU=
+	b=UluOo2I9NzEQ26mZFHG41k6Zx4OGPHerXmgzNklOUytfzw+DO1GLpfOoAyj/sLhq3
+	 bYjjgsPhh3yIY4sINC7OPvaoWPYhMupFjRqp4ZY16jF+Cl4rruyJag+ZCCLhvj4MEs
+	 O81B7aipq7fjOOrBMTa0xMLfldboatriTUkMihiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/262] um: rtc: Avoid shadowing err in uml_rtc_start()
-Date: Tue, 12 Aug 2025 19:27:42 +0200
-Message-ID: <20250812172956.175650146@linuxfoundation.org>
+Subject: [PATCH 6.6 075/262] net/sched: Restrict conditions for adding duplicating netems to qdisc tree
+Date: Tue, 12 Aug 2025 19:27:43 +0200
+Message-ID: <20250812172956.224706748@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
 References: <20250812172952.959106058@linuxfoundation.org>
@@ -66,36 +68,114 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit 4c916e3b224a02019b3cc3983a15f32bfd9a22df ]
+[ Upstream commit ec8e0e3d7adef940cdf9475e2352c0680189d14e ]
 
-Remove the declaration of 'err' inside the 'if (timetravel)' block,
-as it would otherwise be unavailable outside that block, potentially
-leading to uml_rtc_start() returning an uninitialized value.
+netem_enqueue's duplication prevention logic breaks when a netem
+resides in a qdisc tree with other netems - this can lead to a
+soft lockup and OOM loop in netem_dequeue, as seen in [1].
+Ensure that a duplicating netem cannot exist in a tree with other
+netems.
 
-Fixes: dde8b58d5127 ("um: add a pseudo RTC")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250708090403.1067440-5-tiwei.bie@linux.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Previous approaches suggested in discussions in chronological order:
+
+1) Track duplication status or ttl in the sk_buff struct. Considered
+too specific a use case to extend such a struct, though this would
+be a resilient fix and address other previous and potential future
+DOS bugs like the one described in loopy fun [2].
+
+2) Restrict netem_enqueue recursion depth like in act_mirred with a
+per cpu variable. However, netem_dequeue can call enqueue on its
+child, and the depth restriction could be bypassed if the child is a
+netem.
+
+3) Use the same approach as in 2, but add metadata in netem_skb_cb
+to handle the netem_dequeue case and track a packet's involvement
+in duplication. This is an overly complex approach, and Jamal
+notes that the skb cb can be overwritten to circumvent this
+safeguard.
+
+4) Prevent the addition of a netem to a qdisc tree if its ancestral
+path contains a netem. However, filters and actions can cause a
+packet to change paths when re-enqueued to the root from netem
+duplication, leading us to the current solution: prevent a
+duplicating netem from inhabiting the same tree as other netems.
+
+[1] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
+[2] https://lwn.net/Articles/719297/
+
+Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Signed-off-by: William Liu <will@willsroot.io>
+Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250708164141.875402-1-will@willsroot.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/rtc_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_netem.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/arch/um/drivers/rtc_user.c b/arch/um/drivers/rtc_user.c
-index 7c3cec4c68cf..006a5a164ea9 100644
---- a/arch/um/drivers/rtc_user.c
-+++ b/arch/um/drivers/rtc_user.c
-@@ -28,7 +28,7 @@ int uml_rtc_start(bool timetravel)
- 	int err;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 447d3e836a24..0ad231e94e14 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -972,6 +972,41 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
+ }
  
- 	if (timetravel) {
--		int err = os_pipe(uml_rtc_irq_fds, 1, 1);
-+		err = os_pipe(uml_rtc_irq_fds, 1, 1);
- 		if (err)
- 			goto fail;
- 	} else {
++static const struct Qdisc_class_ops netem_class_ops;
++
++static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
++			       struct netlink_ext_ack *extack)
++{
++	struct Qdisc *root, *q;
++	unsigned int i;
++
++	root = qdisc_root_sleeping(sch);
++
++	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
++		if (duplicates ||
++		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
++			goto err;
++	}
++
++	if (!qdisc_dev(root))
++		return 0;
++
++	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
++		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
++			if (duplicates ||
++			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
++				goto err;
++		}
++	}
++
++	return 0;
++
++err:
++	NL_SET_ERR_MSG(extack,
++		       "netem: cannot mix duplicating netems with other netems in tree");
++	return -EINVAL;
++}
++
+ /* Parse netlink message to set options */
+ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			struct netlink_ext_ack *extack)
+@@ -1030,6 +1065,11 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->gap = qopt->gap;
+ 	q->counter = 0;
+ 	q->loss = qopt->loss;
++
++	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
++	if (ret)
++		goto unlock;
++
+ 	q->duplicate = qopt->duplicate;
+ 
+ 	/* for compatibility with earlier versions.
 -- 
 2.39.5
 
