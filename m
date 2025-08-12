@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-167540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3948BB23086
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2C9B2335D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357D6567168
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ED4C188299B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7742FE575;
-	Tue, 12 Aug 2025 17:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B4E2FD1DC;
+	Tue, 12 Aug 2025 18:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9zG7+Mv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbmwnSyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E04F2FE56E;
-	Tue, 12 Aug 2025 17:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8140B1EBFE0;
+	Tue, 12 Aug 2025 18:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021162; cv=none; b=Mvkkqw+07SVqe/a59ipu54KecW4OD0xWR/HMWg9imeCRpJXmX6cVHWz/twK67qM2Cwzd6oKI5B7JSbkxQBh6sV4VOerWuuy6ofI4GTS40UqZCJFf/KyNArw5A502gkxYZC0ITLWZegbFU2yEvnpdr0PSsIu6umKD0fJ65ipDf0g=
+	t=1755022983; cv=none; b=WQYf1l7MhJsuIDV6O//PYMOSRYCZOlxqUm5FgC8BZ+jHehp3ILWrIw3ZbUoDp3osAL5Y9kraHI0cPAJXO6raRzukN8Vo/8/iVL00JPm3CxdHNxjk+RX53veMPrAZ8pn0sMf2fUYPKUs69dPEBQ8qwskNF5XfPma22cxmoo65MHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021162; c=relaxed/simple;
-	bh=kPNH982fIpBDQVF23RqlMK5Vglmmq2eF4qCV5I7r7Ks=;
+	s=arc-20240116; t=1755022983; c=relaxed/simple;
+	bh=ko5GUk66oeXzE3fo1ybmu2FyiO9+VxfLpAS7Yc40Hf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+yIaQ7zBgikJBSx2nVQ84BtK1TNLWqY+A/RLCWZIv6+RL/NMmT1i4sdP/3NAhs5dJ0QV/Y1lfYuoM3LYzaBKKYRvRTupEHGvtDw4I0ECQ9lhutmE7766hGf5BGZSgpZh68aufvijsN0GW9ykv4Rvvx0a2fV6z98p64s7UwZ3/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9zG7+Mv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01760C4CEF1;
-	Tue, 12 Aug 2025 17:52:41 +0000 (UTC)
+	 MIME-Version; b=Ib1O3xyTsWon5KvTk5770zj8m3y0YByExeGsBgEf/tfpdEmjvjxfXEEaqcNm+eVhyYHAmVYM6TjOOmmiQCtOZHNKOSdBJN3HD/1yxjzMGYNfcj5Mvio9HEe3aCdgaG7OF/YO4j5Z73cu34MVeZDkMTeRcnpcm2ojbLLynlRr+vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbmwnSyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D9AC4CEF6;
+	Tue, 12 Aug 2025 18:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021162;
-	bh=kPNH982fIpBDQVF23RqlMK5Vglmmq2eF4qCV5I7r7Ks=;
+	s=korg; t=1755022983;
+	bh=ko5GUk66oeXzE3fo1ybmu2FyiO9+VxfLpAS7Yc40Hf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9zG7+MvBGKuGRCDbYnHqyKPC7bsFUmvafiFJlF/HybV2p+5PKD3sbHnLLB46fEmt
-	 shmKCf62qC3awZrLAuJeNmPikTRCQC0jkPOlUxgEhFLFNg/3rOEutsaIsWvIaa8qK6
-	 AIiCLU5ySlhgLwX5bvOkuHYKSMxU2xHKMiAgSR+w=
+	b=VbmwnSylFN7nKACUTZlUrrNo49EpzTEd/aWyiO7LiMqq+duJ6wZxIjbrD0tsaDinA
+	 xNR8EDvwZB+SHngY0wU1kGxMkZECDh4mxcAsMBmQa0k8XC+Px9TV98TzYkg8Muw3Ot
+	 R0HuzPYj0D9ak7dey1l/jBgFZRt9Eo/huNUUQaW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Wang Liang <wangliang74@huawei.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/253] net: drop UFO packets in udp_rcv_segment()
+Subject: [PATCH 6.12 314/369] smb: server: let recv_done() avoid touching data_transfer after cleanup/move
 Date: Tue, 12 Aug 2025 19:30:11 +0200
-Message-ID: <20250812172958.324151496@linuxfoundation.org>
+Message-ID: <20250812173028.535401870@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +67,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit d46e51f1c78b9ab9323610feb14238d06d46d519 ]
+[ Upstream commit a6c015b7ac2d8c5233337e5793f50d04fac17669 ]
 
-When sending a packet with virtio_net_hdr to tun device, if the gso_type
-in virtio_net_hdr is SKB_GSO_UDP and the gso_size is less than udphdr
-size, below crash may happen.
+Calling enqueue_reassembly() and wake_up_interruptible(&t->wait_reassembly_queue)
+or put_receive_buffer() means the recvmsg/data_transfer pointer might
+get re-used by another thread, which means these should be
+the last operations before calling return.
 
-  ------------[ cut here ]------------
-  kernel BUG at net/core/skbuff.c:4572!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 0 UID: 0 PID: 62 Comm: mytest Not tainted 6.16.0-rc7 #203 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:skb_pull_rcsum+0x8e/0xa0
-  Code: 00 00 5b c3 cc cc cc cc 8b 93 88 00 00 00 f7 da e8 37 44 38 00 f7 d8 89 83 88 00 00 00 48 8b 83 c8 00 00 00 5b c3 cc cc cc cc <0f> 0b 0f 0b 66 66 2e 0f 1f 84 00 000
-  RSP: 0018:ffffc900001fba38 EFLAGS: 00000297
-  RAX: 0000000000000004 RBX: ffff8880040c1000 RCX: ffffc900001fb948
-  RDX: ffff888003e6d700 RSI: 0000000000000008 RDI: ffff88800411a062
-  RBP: ffff8880040c1000 R08: 0000000000000000 R09: 0000000000000001
-  R10: ffff888003606c00 R11: 0000000000000001 R12: 0000000000000000
-  R13: ffff888004060900 R14: ffff888004050000 R15: ffff888004060900
-  FS:  000000002406d3c0(0000) GS:ffff888084a19000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000020000040 CR3: 0000000004007000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   udp_queue_rcv_one_skb+0x176/0x4b0 net/ipv4/udp.c:2445
-   udp_queue_rcv_skb+0x155/0x1f0 net/ipv4/udp.c:2475
-   udp_unicast_rcv_skb+0x71/0x90 net/ipv4/udp.c:2626
-   __udp4_lib_rcv+0x433/0xb00 net/ipv4/udp.c:2690
-   ip_protocol_deliver_rcu+0xa6/0x160 net/ipv4/ip_input.c:205
-   ip_local_deliver_finish+0x72/0x90 net/ipv4/ip_input.c:233
-   ip_sublist_rcv_finish+0x5f/0x70 net/ipv4/ip_input.c:579
-   ip_sublist_rcv+0x122/0x1b0 net/ipv4/ip_input.c:636
-   ip_list_rcv+0xf7/0x130 net/ipv4/ip_input.c:670
-   __netif_receive_skb_list_core+0x21d/0x240 net/core/dev.c:6067
-   netif_receive_skb_list_internal+0x186/0x2b0 net/core/dev.c:6210
-   napi_complete_done+0x78/0x180 net/core/dev.c:6580
-   tun_get_user+0xa63/0x1120 drivers/net/tun.c:1909
-   tun_chr_write_iter+0x65/0xb0 drivers/net/tun.c:1984
-   vfs_write+0x300/0x420 fs/read_write.c:593
-   ksys_write+0x60/0xd0 fs/read_write.c:686
-   do_syscall_64+0x50/0x1c0 arch/x86/entry/syscall_64.c:63
-   </TASK>
-
-To trigger gso segment in udp_queue_rcv_skb(), we should also set option
-UDP_ENCAP_ESPINUDP to enable udp_sk(sk)->encap_rcv. When the encap_rcv
-hook return 1 in udp_queue_rcv_one_skb(), udp_csum_pull_header() will try
-to pull udphdr, but the skb size has been segmented to gso size, which
-leads to this crash.
-
-Previous commit cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
-introduces segmentation in UDP receive path only for GRO, which was never
-intended to be used for UFO, so drop UFO packets in udp_rcv_segment().
-
-Link: https://lore.kernel.org/netdev/20250724083005.3918375-1-wangliang74@huawei.com/
-Link: https://lore.kernel.org/netdev/20250729123907.3318425-1-wangliang74@huawei.com/
-Fixes: cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250730101458.3470788-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/udp.h | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ fs/smb/server/transport_rdma.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/udp.h b/include/net/udp.h
-index fa4cdbe55552..aba442bd1439 100644
---- a/include/net/udp.h
-+++ b/include/net/udp.h
-@@ -460,6 +460,16 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
- {
- 	netdev_features_t features = NETIF_F_SG;
- 	struct sk_buff *segs;
-+	int drop_count;
-+
-+	/*
-+	 * Segmentation in UDP receive path is only for UDP GRO, drop udp
-+	 * fragmentation offload (UFO) packets.
-+	 */
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP) {
-+		drop_count = 1;
-+		goto drop;
-+	}
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index b5e9fd9369e9..805c20f619b0 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -580,16 +580,11 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			else
+ 				t->full_packet_received = true;
  
- 	/* Avoid csum recalculation by skb_segment unless userspace explicitly
- 	 * asks for the final checksum values
-@@ -483,16 +493,18 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
- 	 */
- 	segs = __skb_gso_segment(skb, features, false);
- 	if (IS_ERR_OR_NULL(segs)) {
--		int segs_nr = skb_shinfo(skb)->gso_segs;
+-			enqueue_reassembly(t, recvmsg, (int)data_length);
+-			wake_up_interruptible(&t->wait_reassembly_queue);
 -
--		atomic_add(segs_nr, &sk->sk_drops);
--		SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, segs_nr);
--		kfree_skb(skb);
--		return NULL;
-+		drop_count = skb_shinfo(skb)->gso_segs;
-+		goto drop;
- 	}
- 
- 	consume_skb(skb);
- 	return segs;
+ 			spin_lock(&t->receive_credit_lock);
+ 			receive_credits = --(t->recv_credits);
+ 			avail_recvmsg_count = t->count_avail_recvmsg;
+ 			spin_unlock(&t->receive_credit_lock);
+ 		} else {
+-			put_recvmsg(t, recvmsg);
+-
+ 			spin_lock(&t->receive_credit_lock);
+ 			receive_credits = --(t->recv_credits);
+ 			avail_recvmsg_count = ++(t->count_avail_recvmsg);
+@@ -611,6 +606,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
+ 			mod_delayed_work(smb_direct_wq,
+ 					 &t->post_recv_credits_work, 0);
 +
-+drop:
-+	atomic_add(drop_count, &sk->sk_drops);
-+	SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, drop_count);
-+	kfree_skb(skb);
-+	return NULL;
- }
- 
- static inline void udp_post_segment_fix_csum(struct sk_buff *skb)
++		if (data_length) {
++			enqueue_reassembly(t, recvmsg, (int)data_length);
++			wake_up_interruptible(&t->wait_reassembly_queue);
++		} else
++			put_recvmsg(t, recvmsg);
++
+ 		return;
+ 	}
+ 	}
 -- 
 2.39.5
 
