@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F20B22F72
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED080B2304D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79899684369
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD85D6850B7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B606B2FF149;
-	Tue, 12 Aug 2025 17:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE162D46AC;
+	Tue, 12 Aug 2025 17:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFXM6G0u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7+23moj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F092FD1D1;
-	Tue, 12 Aug 2025 17:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF3A2F7477;
+	Tue, 12 Aug 2025 17:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020323; cv=none; b=NJtFOSUlSDXN6/3TeNBn+No7PLVwretQPCeluYo+wU8rsBtGnWF56Ht2hgFrVG9PngvfnguK/djcan0i98gghUtUjsEn33OTYqjCwONi3I2HDTuw1ZE4PlBwOM7zuLc0wyLC+aXQ38CdNK6KuuqFV4pMfUMw5lHF8Tzf/DZL0P0=
+	t=1755020993; cv=none; b=X0iXEg8oW7vgfcT9lBghUI2SRl34U2MymWOhyzEATEc9aMvtCZDf1O3sLp030jlPCnbvlBLKRWyscYWgpnaiy5JyRURwspuclbcAKrtoOuD/7eieBeaeD6naOYabtzIB006vN2EWy5FM1zRWz9sCXcwrzcumXGFC2rdJWRDWGu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020323; c=relaxed/simple;
-	bh=eZIdsPe2yBd5KOLqiNFabsr5QlLy11eSY0g1FXsHqoI=;
+	s=arc-20240116; t=1755020993; c=relaxed/simple;
+	bh=LFMbrwAhs86RvXcsvQFdtWJ/OaalH4zfUJGwsGPY2Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibtLY9wsvGPt+VLfzq7u3we6U/mJQiH6fm3sB3jOzkX/DfAc0JesdAvwjclI6ZwloVey2pLaCMAkFGFbchexJYrD+yLViLfCs5qMSSzHGmsXtEZeGWfcLF2DlIedkLMiQ22pH0WW+F3s4GSSdP4/ErwRkRLkBz6+7i1t10PxejI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFXM6G0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A2DC4CEF0;
-	Tue, 12 Aug 2025 17:38:42 +0000 (UTC)
+	 MIME-Version; b=MeIJ8Q+/e39wtmWQazX2zQkhTgXa5yKvK7ml03XKRiHsWnykGkBozEY4H3Ls/VVQnZFOzRNxZ1Nf63sVESCTQqglpXToXEMdwxeVqmXM21lMpyyHbbGeSWlx3FJ4U/SVvi3wEhDC82dckA1JbLiUIC6Fq9SULqTJv3CDKwajtnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7+23moj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E900C4CEF0;
+	Tue, 12 Aug 2025 17:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020323;
-	bh=eZIdsPe2yBd5KOLqiNFabsr5QlLy11eSY0g1FXsHqoI=;
+	s=korg; t=1755020992;
+	bh=LFMbrwAhs86RvXcsvQFdtWJ/OaalH4zfUJGwsGPY2Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFXM6G0uOi96QxTOAo9aMtjavNmHf/JpZ76HeWhVBhcRHKDSZpIedGrY1oZKElvQt
-	 nHgn9HyledA70VjPuxxYLRwpkvi5BhHR9bjx75Tbu9LRTuFKbygSSkgXMbr9Pu8nSe
-	 fkh12C8yLwAB67/kXYIdLEVPD1BHF2n5C49znPfI=
+	b=p7+23mojvd77q/1CwXshB7qI6gntid1g7jiNvdOL4h2w0Gc6Q5cgVwKEQygx+kV58
+	 2C193m7LDrQX/MY1lr1Cx+JzLfnurfVmHtxxTXo2TmvrP12Ix/HwDocgX7Dp33LdhE
+	 yrz7TufnUEJyY1b7k7KtwrMaD7EM68tezwRIkmBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/253] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
-Date: Tue, 12 Aug 2025 19:27:14 +0200
-Message-ID: <20250812172950.696738263@linuxfoundation.org>
+Subject: [PATCH 6.6 047/262] selftests/tracing: Fix false failure of subsystem event test
+Date: Tue, 12 Aug 2025 19:27:15 +0200
+Message-ID: <20250812172954.974895643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit bec15191d52300defa282e3fd83820f69e447116 upstream.
+[ Upstream commit 213879061a9c60200ba971330dbefec6df3b4a30 ]
 
-This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
-SNKAS.
+The subsystem event test enables all "sched" events and makes sure there's
+at least 3 different events in the output. It used to cat the entire trace
+file to | wc -l, but on slow machines, that could last a very long time.
+To solve that, it was changed to just read the first 100 lines of the
+trace file. This can cause false failures as some events repeat so often,
+that the 100 lines that are examined could possibly be of only one event.
 
-tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
-testers can interpret the TryWait.Src to Attached.Src transition after
-Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
-to the debounce timer.
+Instead, create an awk script that looks for 3 different events and will
+exit out after it finds them. This will find the 3 events the test looks
+for (eventually if it works), and still exit out after the test is
+satisfied and not cause slower machines to run forever.
 
-Setting the data role can be a costly operation in host mode, and when
-completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
-to fail.
-
-Turn VBUS on before tcpm_set_roles to meet timing requirement.
-
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250618230606.3272497-2-rdbabiera@google.com
+Link: https://lore.kernel.org/r/20250721134212.53c3e140@batman.local.home
+Reported-by: Tengda Wu <wutengda@huaweicloud.com>
+Closes: https://lore.kernel.org/all/20250710130134.591066-1-wutengda@huaweicloud.com/
+Fixes: 1a4ea83a6e67 ("selftests/ftrace: Limit length in subsystem-enable tests")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ .../ftrace/test.d/event/subsystem-enable.tc   | 28 +++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3686,17 +3686,6 @@ static int tcpm_src_attach(struct tcpm_p
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
--			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
--	if (ret < 0)
--		return ret;
--
--	if (port->pd_supported) {
--		ret = port->tcpc->set_pd_rx(port->tcpc, true);
--		if (ret < 0)
--			goto out_disable_mux;
--	}
--
- 	/*
- 	 * USB Type-C specification, version 1.2,
- 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
-@@ -3706,13 +3695,24 @@ static int tcpm_src_attach(struct tcpm_p
- 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
- 		ret = tcpm_set_vconn(port, true);
- 		if (ret < 0)
--			goto out_disable_pd;
-+			return ret;
- 	}
- 
- 	ret = tcpm_set_vbus(port, true);
- 	if (ret < 0)
- 		goto out_disable_vconn;
- 
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
-+			     tcpm_data_role_for_source(port));
-+	if (ret < 0)
-+		goto out_disable_vbus;
-+
-+	if (port->pd_supported) {
-+		ret = port->tcpc->set_pd_rx(port->tcpc, true);
-+		if (ret < 0)
-+			goto out_disable_mux;
-+	}
-+
- 	port->pd_capable = false;
- 
- 	port->partner = NULL;
-@@ -3722,14 +3722,14 @@ static int tcpm_src_attach(struct tcpm_p
- 
- 	return 0;
- 
--out_disable_vconn:
--	tcpm_set_vconn(port, false);
--out_disable_pd:
--	if (port->pd_supported)
--		port->tcpc->set_pd_rx(port->tcpc, false);
- out_disable_mux:
- 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
- 		     TYPEC_ORIENTATION_NONE);
-+out_disable_vbus:
-+	tcpm_set_vbus(port, false);
-+out_disable_vconn:
-+	tcpm_set_vconn(port, false);
-+
- 	return ret;
+diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
+index b7c8f29c09a9..65916bb55dfb 100644
+--- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
++++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
+@@ -14,11 +14,35 @@ fail() { #msg
+     exit_fail
  }
  
++# As reading trace can last forever, simply look for 3 different
++# events then exit out of reading the file. If there's not 3 different
++# events, then the test has failed.
++check_unique() {
++    cat trace | grep -v '^#' | awk '
++	BEGIN { cnt = 0; }
++	{
++	    for (i = 0; i < cnt; i++) {
++		if (event[i] == $5) {
++		    break;
++		}
++	    }
++	    if (i == cnt) {
++		event[cnt++] = $5;
++		if (cnt > 2) {
++		    exit;
++		}
++	    }
++	}
++	END {
++	    printf "%d", cnt;
++	}'
++}
++
+ echo 'sched:*' > set_event
+ 
+ yield
+ 
+-count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`check_unique`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -29,7 +53,7 @@ echo 1 > events/sched/enable
+ 
+ yield
+ 
+-count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`check_unique`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+-- 
+2.39.5
+
 
 
 
