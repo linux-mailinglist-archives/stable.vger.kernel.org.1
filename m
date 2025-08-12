@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-167722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B8BB231AA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8454CB2357C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19ECA177BC3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D8D680827
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62FB2FF149;
-	Tue, 12 Aug 2025 18:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E36E2FDC30;
+	Tue, 12 Aug 2025 18:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPRn0UL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCX+LS0k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921FB2FF145;
-	Tue, 12 Aug 2025 18:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D6720409A;
+	Tue, 12 Aug 2025 18:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021775; cv=none; b=s+Me4wjlwg7V4rla51To+yFvG1LtX/+9herKnwD7fW4Umkrn+JLb0WwmJkbe7pE/OKPG/s1ebRXdXaR1ql7L6VC2Kdq728G7nqCJu8mjCQs7Hsc4XWX14SjgSRe4T4FmFZrLRezmlVvWUmsOZmmAsLMdIpUKQO+JftbnUx9ITmQ=
+	t=1755024346; cv=none; b=aqjIcPDiH2cfJt1FDVZ0A/XTGS1xHfeKoov8mzmIqefndZtm4IOic0+iika9frSSF9TzYG9O0uTAYjpE+9T55+bqT2GUx7don1MxpsFUYsKldZ/WxHRmiUSOeyvBU0cS50ZZa8Kt7pU6GhV+KOhtcEBogPp0qQx8c4odIrxpf7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021775; c=relaxed/simple;
-	bh=3mDWtLAAM0IFBkSSkQkbMoDKPuk+wEpOvuEDfGrv//o=;
+	s=arc-20240116; t=1755024346; c=relaxed/simple;
+	bh=DC+Jt11nbF2Vt3eFQd2I9BaMN1r741Ge/SFctaTbqyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuK4FOuy0LdCsokZtxMiSxJkUteJlHeSCS2CB1JoPPyG33FW7v5NypK7itnjX/IgEkRYkDyBtpoGIqkK1K/vRmqJWtfvSXx8m4TsYTDTUYt0Cqfx89K3D6USdbXXEqtj/95pjhaD3/wUJhSpb/8041mNrjjjw0hJEQ9AAycqkG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPRn0UL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03729C4CEF6;
-	Tue, 12 Aug 2025 18:02:54 +0000 (UTC)
+	 MIME-Version; b=Xjn0IsIFHnc5b/e3YeT+cGt5A3MXO5jSaUcUscf4icDGWPABbESkfRCesx/cNUI0hkAMpTe/gcKIleN2GawOA2/RfLisf5V3f+6QZJmqwNz7UEVwvRH8jFPNH7OrVUmKUhmV10bF6Em6d1DBaOuFcAKkdvyRx2R8dIoPhDd8JZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCX+LS0k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478DFC4CEF0;
+	Tue, 12 Aug 2025 18:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021775;
-	bh=3mDWtLAAM0IFBkSSkQkbMoDKPuk+wEpOvuEDfGrv//o=;
+	s=korg; t=1755024345;
+	bh=DC+Jt11nbF2Vt3eFQd2I9BaMN1r741Ge/SFctaTbqyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPRn0UL4qsfUuBE//RF/pr+fxGnom9ho2UnFsV/Ota6Ix0tmW0C+AZUuvkvUg4q6b
-	 vYE0IyvdyGgP3hu9wL16OPHfQlx+J4bVdo2ACnZCNOCXiykZb4G2Z4AETRrDs9rY4s
-	 xfljwj5uomc9Qgq2BradBCI8s1FLJFGsUK42CWgA=
+	b=QCX+LS0kZ/Ka/azULDqGesAtiGt6fqEnERK0iGCjQ0pHDvda6qGe8qSxc9S1xnn1z
+	 GDZYRBO4Z2Rk95jsI0bwyBlz7Q7Er2bzJ7vfA4vRfRnlCCGaNr8uIY+62V1aYDEZtg
+	 4Bli0HaH+JxYYR4FUMeDz5mVzlp79EbuVH1Hhvo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/262] smb: server: let recv_done() avoid touching data_transfer after cleanup/move
+Subject: [PATCH 6.16 313/627] media: imx-jpeg: Account for data_offset when getting image address
 Date: Tue, 12 Aug 2025 19:30:08 +0200
-Message-ID: <20250812173002.514935139@linuxfoundation.org>
+Message-ID: <20250812173431.212036311@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +64,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit a6c015b7ac2d8c5233337e5793f50d04fac17669 ]
+[ Upstream commit 51ad3b570ea7b1916ff4db993f1aa22bb48fdac6 ]
 
-Calling enqueue_reassembly() and wake_up_interruptible(&t->wait_reassembly_queue)
-or put_receive_buffer() means the recvmsg/data_transfer pointer might
-get re-used by another thread, which means these should be
-the last operations before calling return.
+Applications may set data_offset when it refers to an output queue. So
+driver need to account for it when getting the start address of input
+image in the plane.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Meanwhile the mxc-jpeg codec requires the address (plane address +
+data_offset) to be 16-aligned.
+
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 47 ++++++++++++++-----
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |  1 +
+ 2 files changed, 37 insertions(+), 11 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index b22fe18212cf..6c3a57bff147 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -580,16 +580,11 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			else
- 				t->full_packet_received = true;
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index 5c17bc58181e..8681dd193033 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -598,6 +598,27 @@ static void _bswap16(u16 *a)
+ 	*a = ((*a & 0x00FF) << 8) | ((*a & 0xFF00) >> 8);
+ }
  
--			enqueue_reassembly(t, recvmsg, (int)data_length);
--			wake_up_interruptible(&t->wait_reassembly_queue);
--
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
- 			avail_recvmsg_count = t->count_avail_recvmsg;
- 			spin_unlock(&t->receive_credit_lock);
- 		} else {
--			put_recvmsg(t, recvmsg);
--
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
- 			avail_recvmsg_count = ++(t->count_avail_recvmsg);
-@@ -611,6 +606,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
- 			mod_delayed_work(smb_direct_wq,
- 					 &t->post_recv_credits_work, 0);
++static dma_addr_t mxc_jpeg_get_plane_dma_addr(struct vb2_buffer *buf, unsigned int plane_no)
++{
++	if (plane_no >= buf->num_planes)
++		return 0;
++	return vb2_dma_contig_plane_dma_addr(buf, plane_no) + buf->planes[plane_no].data_offset;
++}
 +
-+		if (data_length) {
-+			enqueue_reassembly(t, recvmsg, (int)data_length);
-+			wake_up_interruptible(&t->wait_reassembly_queue);
-+		} else
-+			put_recvmsg(t, recvmsg);
++static void *mxc_jpeg_get_plane_vaddr(struct vb2_buffer *buf, unsigned int plane_no)
++{
++	if (plane_no >= buf->num_planes)
++		return NULL;
++	return vb2_plane_vaddr(buf, plane_no) + buf->planes[plane_no].data_offset;
++}
 +
++static unsigned long mxc_jpeg_get_plane_payload(struct vb2_buffer *buf, unsigned int plane_no)
++{
++	if (plane_no >= buf->num_planes)
++		return 0;
++	return vb2_get_plane_payload(buf, plane_no) - buf->planes[plane_no].data_offset;
++}
++
+ static void print_mxc_buf(struct mxc_jpeg_dev *jpeg, struct vb2_buffer *buf,
+ 			  unsigned long len)
+ {
+@@ -610,11 +631,11 @@ static void print_mxc_buf(struct mxc_jpeg_dev *jpeg, struct vb2_buffer *buf,
  		return;
+ 
+ 	for (plane_no = 0; plane_no < buf->num_planes; plane_no++) {
+-		payload = vb2_get_plane_payload(buf, plane_no);
++		payload = mxc_jpeg_get_plane_payload(buf, plane_no);
+ 		if (len == 0)
+ 			len = payload;
+-		dma_addr = vb2_dma_contig_plane_dma_addr(buf, plane_no);
+-		vaddr = vb2_plane_vaddr(buf, plane_no);
++		dma_addr = mxc_jpeg_get_plane_dma_addr(buf, plane_no);
++		vaddr = mxc_jpeg_get_plane_vaddr(buf, plane_no);
+ 		v4l2_dbg(3, debug, &jpeg->v4l2_dev,
+ 			 "plane %d (vaddr=%p dma_addr=%x payload=%ld):",
+ 			  plane_no, vaddr, dma_addr, payload);
+@@ -712,16 +733,15 @@ static void mxc_jpeg_addrs(struct mxc_jpeg_desc *desc,
+ 	struct mxc_jpeg_q_data *q_data;
+ 
+ 	q_data = mxc_jpeg_get_q_data(ctx, raw_buf->type);
+-	desc->buf_base0 = vb2_dma_contig_plane_dma_addr(raw_buf, 0);
++	desc->buf_base0 = mxc_jpeg_get_plane_dma_addr(raw_buf, 0);
+ 	desc->buf_base1 = 0;
+ 	if (img_fmt == STM_CTRL_IMAGE_FORMAT(MXC_JPEG_YUV420)) {
+ 		if (raw_buf->num_planes == 2)
+-			desc->buf_base1 = vb2_dma_contig_plane_dma_addr(raw_buf, 1);
++			desc->buf_base1 = mxc_jpeg_get_plane_dma_addr(raw_buf, 1);
+ 		else
+ 			desc->buf_base1 = desc->buf_base0 + q_data->sizeimage[0];
  	}
+-	desc->stm_bufbase = vb2_dma_contig_plane_dma_addr(jpeg_buf, 0) +
+-		offset;
++	desc->stm_bufbase = mxc_jpeg_get_plane_dma_addr(jpeg_buf, 0) + offset;
+ }
+ 
+ static bool mxc_jpeg_is_extended_sequential(const struct mxc_jpeg_fmt *fmt)
+@@ -1029,8 +1049,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
+ 			vb2_set_plane_payload(&dst_buf->vb2_buf, 1, payload);
+ 		}
+ 		dev_dbg(dev, "Decoding finished, payload size: %ld + %ld\n",
+-			vb2_get_plane_payload(&dst_buf->vb2_buf, 0),
+-			vb2_get_plane_payload(&dst_buf->vb2_buf, 1));
++			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 0),
++			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 1));
  	}
+ 
+ 	/* short preview of the results */
+@@ -1889,8 +1909,8 @@ static int mxc_jpeg_parse(struct mxc_jpeg_ctx *ctx, struct vb2_buffer *vb)
+ 	struct mxc_jpeg_sof *psof = NULL;
+ 	struct mxc_jpeg_sos *psos = NULL;
+ 	struct mxc_jpeg_src_buf *jpeg_src_buf = vb2_to_mxc_buf(vb);
+-	u8 *src_addr = (u8 *)vb2_plane_vaddr(vb, 0);
+-	u32 size = vb2_get_plane_payload(vb, 0);
++	u8 *src_addr = (u8 *)mxc_jpeg_get_plane_vaddr(vb, 0);
++	u32 size = mxc_jpeg_get_plane_payload(vb, 0);
+ 	int ret;
+ 
+ 	memset(&header, 0, sizeof(header));
+@@ -2027,6 +2047,11 @@ static int mxc_jpeg_buf_prepare(struct vb2_buffer *vb)
+ 				i, vb2_plane_size(vb, i), sizeimage);
+ 			return -EINVAL;
+ 		}
++		if (!IS_ALIGNED(mxc_jpeg_get_plane_dma_addr(vb, i), MXC_JPEG_ADDR_ALIGNMENT)) {
++			dev_err(dev, "planes[%d] address is not %d aligned\n",
++				i, MXC_JPEG_ADDR_ALIGNMENT);
++			return -EINVAL;
++		}
+ 	}
+ 	if (V4L2_TYPE_IS_CAPTURE(vb->vb2_queue->type)) {
+ 		vb2_set_plane_payload(vb, 0, 0);
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+index fdde45f7e163..44e46face6d1 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+@@ -30,6 +30,7 @@
+ #define MXC_JPEG_MAX_PLANES		2
+ #define MXC_JPEG_PATTERN_WIDTH		128
+ #define MXC_JPEG_PATTERN_HEIGHT		64
++#define MXC_JPEG_ADDR_ALIGNMENT		16
+ 
+ enum mxc_jpeg_enc_state {
+ 	MXC_JPEG_ENCODING	= 0, /* jpeg encode phase */
 -- 
 2.39.5
 
