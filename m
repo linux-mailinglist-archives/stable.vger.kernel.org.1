@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-167858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D683B23233
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEEBB22FF6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96AD816FC44
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72776848B6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F912DE1E2;
-	Tue, 12 Aug 2025 18:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9152FDC5D;
+	Tue, 12 Aug 2025 17:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrvuVuQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhfZKIM1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BFF20409A;
-	Tue, 12 Aug 2025 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C67F2E4248;
+	Tue, 12 Aug 2025 17:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022228; cv=none; b=Aryg2hzGhwgr6c7kg8HtO6e2BbModKIVTzUDk7YuJEL7GpcSwvHBSKllxoAFwY7XY13tNaXlgKKpTIEwo3734ppKL/jnqYh+tmy1HKbH4teYjtuGbp8u/F/Av40s8rARjVWiJ4Kg0Oup/m1l6RFVlQb4zW8ITeimpjDfs38Ju10=
+	t=1755020712; cv=none; b=HtwNcyfQU73wzno9QKNTQB2V0yp/GJhzlZbe45lORNHskqOBZOYCAHVDNXl+jD66PBez8h/jK6bGQ2VS+X2PCpKLqZEIifDrgJlFwUAwks+ODsv8Boh9i/Qsw3Dq+2DE2Qpe81i/jS1HLZjFUnvx37iWDzwIaPgvhP1rFg3Bbu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022228; c=relaxed/simple;
-	bh=X+Onw8SnMDlaTKXBQJquT18o6sWZdPvIYzoVTscYqFE=;
+	s=arc-20240116; t=1755020712; c=relaxed/simple;
+	bh=OPxArkzImq03DWq6hvlHGZ1AIH118peFI9xYQrnZwD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CegltEbyOcK3vSmUwZAlxHh5ySadAnw227Lzu2yztoBEj2cYhx9Nq+zT7/VtX87yKmsoKBu7AxynkM8rFZcLFbiCJ2eXZdk647ATGr8Lj3Xc45WyppK+mlJ2xB8NviCMDQ5m/gCVkdr59rNBYRVnZxW4LiZkw7NiDd3luXwT+eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrvuVuQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365FEC4CEF0;
-	Tue, 12 Aug 2025 18:10:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c7e8OwxhrrKGPf0H5UuYqUFk4/J8TeiF5ekcSQaexUQrpNF0uIQAFfcMPZjUHf0Jl0Tpn4mC66qX4CV89zcaK+yK5RuiyQHNYQAfmhBLpItvTIqZ21518YdfVbaaDDDzURhAlLhc/d0hPrfSxfiOKD6ioIJGMpv/gUsQpiqOIO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhfZKIM1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2BAC4CEF6;
+	Tue, 12 Aug 2025 17:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022228;
-	bh=X+Onw8SnMDlaTKXBQJquT18o6sWZdPvIYzoVTscYqFE=;
+	s=korg; t=1755020712;
+	bh=OPxArkzImq03DWq6hvlHGZ1AIH118peFI9xYQrnZwD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrvuVuQz3PlcT6WUHKX96pmbg/BbwrxkCf1iMWEU3zzAfJJFSSmjfp5CUNXJrBHiE
-	 Sf70XA7dm35kp8Y4EOoIl1+YtnYLVRwpgugJ7TTkE3tezXWuEKLyDrw3cZjI9InV7n
-	 O2fVAY6dkTk+OtU9gyPAp4aL0U/hCHg+c+yytWaw=
+	b=YhfZKIM1GS0LBShgnJyyRE+XG8/v5+1iauu+omTeu88N/AptpC9mNGS0NjxHJQHNA
+	 irCEbyYI/+bBlEMdhnqJ3srN+5EIk5k8Ur5qqDtXX2OIjfnTM7F23IQ8lxsNYXjfbc
+	 BLRjHWMNo2UyUcYqfSYr59Bcr8HVOqWw/OziJryY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/369] m68k: Dont unregister boot console needlessly
+	Arnd Bergmann <arnd@arndb.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 6.6 002/262] ethernet: intel: fix building with large NR_CPUS
 Date: Tue, 12 Aug 2025 19:26:30 +0200
-Message-ID: <20250812173018.282698271@linuxfoundation.org>
+Message-ID: <20250812172953.072947928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,154 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
+[ Upstream commit 24171a5a4a952c26568ff0d2a0bc8c4708a95e1d ]
 
-When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
-generate console output. That will continue to work even after
-debug_cons_nputs() becomes unavailable so there's no need to
-unregister the boot console.
+With large values of CONFIG_NR_CPUS, three Intel ethernet drivers fail to
+compile like:
 
-Take the opportunity to remove a repeated MACH_IS_* test. Use the
-actual .write method (instead of a wrapper) and test that pointer
-instead. This means adding an unused parameter to debug_cons_nputs() for
-consistency with the struct console API.
+In function ‘i40e_free_q_vector’,
+    inlined from ‘i40e_vsi_alloc_q_vectors’ at drivers/net/ethernet/intel/i40e/i40e_main.c:12112:3:
+  571 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+include/linux/rcupdate.h:1084:17: note: in expansion of macro ‘BUILD_BUG_ON’
+ 1084 |                 BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);    \
+drivers/net/ethernet/intel/i40e/i40e_main.c:5113:9: note: in expansion of macro ‘kfree_rcu’
+ 5113 |         kfree_rcu(q_vector, rcu);
+      |         ^~~~~~~~~
 
-early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
-head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
-depend on the latter, to obviate some ifdef conditionals.
+The problem is that the 'rcu' member in 'q_vector' is too far from the start
+of the structure. Move this member before the CPU mask instead, in all three
+drivers.
 
-Cc: Daniel Palmer <daniel@0x0f.com>
-Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/Kconfig.debug         |  2 +-
- arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
- arch/m68k/kernel/head.S         |  8 +++----
- 3 files changed, 19 insertions(+), 33 deletions(-)
+ drivers/net/ethernet/intel/fm10k/fm10k.h | 3 ++-
+ drivers/net/ethernet/intel/i40e/i40e.h   | 2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h | 3 ++-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
-index 30638a6e8edc..d036f903864c 100644
---- a/arch/m68k/Kconfig.debug
-+++ b/arch/m68k/Kconfig.debug
-@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k.h b/drivers/net/ethernet/intel/fm10k/fm10k.h
+index 6119a4108838..65a2816142d9 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k.h
++++ b/drivers/net/ethernet/intel/fm10k/fm10k.h
+@@ -189,13 +189,14 @@ struct fm10k_q_vector {
+ 	struct fm10k_ring_container rx, tx;
  
- config EARLY_PRINTK
- 	bool "Early printk"
--	depends on !(SUN3 || M68000 || COLDFIRE)
-+	depends on MMU_MOTOROLA
- 	help
- 	  Write kernel log output directly to a serial port.
- 	  Where implemented, output goes to the framebuffer as well.
-diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index f11ef9f1f56f..521cbb8a150c 100644
---- a/arch/m68k/kernel/early_printk.c
-+++ b/arch/m68k/kernel/early_printk.c
-@@ -16,25 +16,10 @@
- #include "../mvme147/mvme147.h"
- #include "../mvme16x/mvme16x.h"
+ 	struct napi_struct napi;
++	struct rcu_head rcu;	/* to avoid race with update stats on free */
++
+ 	cpumask_t affinity_mask;
+ 	char name[IFNAMSIZ + 9];
  
--asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
--
--static void __ref debug_cons_write(struct console *c,
--				   const char *s, unsigned n)
--{
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--	if (MACH_IS_MVME147)
--		mvme147_scc_write(c, s, n);
--	else if (MACH_IS_MVME16x)
--		mvme16x_cons_write(c, s, n);
--	else
--		debug_cons_nputs(s, n);
--#endif
--}
-+asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
+ #ifdef CONFIG_DEBUG_FS
+ 	struct dentry *dbg_q_vector;
+ #endif /* CONFIG_DEBUG_FS */
+-	struct rcu_head rcu;	/* to avoid race with update stats on free */
  
- static struct console early_console_instance = {
- 	.name  = "debug",
--	.write = debug_cons_write,
- 	.flags = CON_PRINTBUFFER | CON_BOOT,
- 	.index = -1
- };
-@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
- 	if (early_console || buf)
- 		return 0;
+ 	/* for dynamic allocation of rings associated with this q_vector */
+ 	struct fm10k_ring ring[] ____cacheline_internodealigned_in_smp;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 68f403dd2f52..9fb7c5fe05d1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -953,6 +953,7 @@ struct i40e_q_vector {
+ 	u16 reg_idx;		/* register index of the interrupt */
  
-+	if (MACH_IS_MVME147)
-+		early_console_instance.write = mvme147_scc_write;
-+	else if (MACH_IS_MVME16x)
-+		early_console_instance.write = mvme16x_cons_write;
-+	else
-+		early_console_instance.write = debug_cons_nputs;
- 	early_console = &early_console_instance;
- 	register_console(early_console);
+ 	struct napi_struct napi;
++	struct rcu_head rcu;	/* to avoid race with update stats on free */
  
-@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
- }
- early_param("earlyprintk", setup_early_printk);
+ 	struct i40e_ring_container rx;
+ 	struct i40e_ring_container tx;
+@@ -963,7 +964,6 @@ struct i40e_q_vector {
+ 	cpumask_t affinity_mask;
+ 	struct irq_affinity_notify affinity_notify;
  
--/*
-- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
-- * after init sections are discarded (for platforms that use it).
-- */
--#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
--      defined(CONFIG_COLDFIRE))
--
- static int __init unregister_early_console(void)
- {
--	if (!early_console || MACH_IS_MVME16x)
--		return 0;
-+	/*
-+	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
-+	 * called after init sections are discarded (for platforms that use it).
-+	 */
-+	if (early_console && early_console->write == debug_cons_nputs)
-+		return unregister_console(early_console);
+-	struct rcu_head rcu;	/* to avoid race with update stats on free */
+ 	char name[I40E_INT_NAME_STR_LEN];
+ 	bool arm_wb_state;
+ 	bool in_busy_poll;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+index b6f0376e42f4..d15182657cea 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+@@ -503,9 +503,10 @@ struct ixgbe_q_vector {
+ 	struct ixgbe_ring_container rx, tx;
  
--	return unregister_console(early_console);
-+	return 0;
- }
- late_initcall(unregister_early_console);
--
--#endif
-diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
-index 852255cf60de..ba22bc2f3d6d 100644
---- a/arch/m68k/kernel/head.S
-+++ b/arch/m68k/kernel/head.S
-@@ -3263,8 +3263,8 @@ func_return	putn
-  *	turns around and calls the internal routines.  This routine
-  *	is used by the boot console.
-  *
-- *	The calling parameters are:
-- *		void debug_cons_nputs(const char *str, unsigned length)
-+ *	The function signature is -
-+ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
-  *
-  *	This routine does NOT understand variable arguments only
-  *	simple strings!
-@@ -3273,8 +3273,8 @@ ENTRY(debug_cons_nputs)
- 	moveml	%d0/%d1/%a0,%sp@-
- 	movew	%sr,%sp@-
- 	ori	#0x0700,%sr
--	movel	%sp@(18),%a0		/* fetch parameter */
--	movel	%sp@(22),%d1		/* fetch parameter */
-+	movel	%sp@(22),%a0		/* char *s */
-+	movel	%sp@(26),%d1		/* unsigned int n */
- 	jra	2f
- 1:
- #ifdef CONSOLE_DEBUG
+ 	struct napi_struct napi;
++	struct rcu_head rcu;	/* to avoid race with update stats on free */
++
+ 	cpumask_t affinity_mask;
+ 	int numa_node;
+-	struct rcu_head rcu;	/* to avoid race with update stats on free */
+ 	char name[IFNAMSIZ + 9];
+ 
+ 	/* for dynamic allocation of rings associated with this q_vector */
 -- 
 2.39.5
 
