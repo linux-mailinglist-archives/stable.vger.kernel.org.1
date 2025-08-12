@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F70B23398
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5CEB2322C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA12F7B2596
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F08F5188F81F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522EA2FF170;
-	Tue, 12 Aug 2025 18:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3E52FA0DB;
+	Tue, 12 Aug 2025 18:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHO8fmWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyALh9yb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7DD2FE588;
-	Tue, 12 Aug 2025 18:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFFC2F83A1;
+	Tue, 12 Aug 2025 18:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023369; cv=none; b=p/mkycE/9Nnd7k0CV3B5bS5SdQ7gmGsNZ0H3ZmJwXsSG3KDD17p6Rw9iDfKG4fsh5COKtp1rpYvIDvXpOn3KvzPV50BmOslZn1HMXMF2KnaYutSeG7ffx7Y8Lij85FeqwaCZBIonrXdI7pYkb86/Bt0cSut78+sh0OtSy3O9+f8=
+	t=1755022103; cv=none; b=mHWkTF6qc5F7ZILx0rG21DVFwNm5q8khDyE8B97GKsOIYp1e5epketJAogY5zk2nh0yyMaDZt7OAigtwQJABx/PazyE0UunrOv8WSXexMluBobDSyBCGapYT6PBmEiD+j6c/gOCXgcW53KkftPrUuvf/OyEfxJMfcDY7QmS85B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023369; c=relaxed/simple;
-	bh=yuVbMOpHP6N2+Dg6qBSSGNtWXk7YB7QtYu1bH/ScvIk=;
+	s=arc-20240116; t=1755022103; c=relaxed/simple;
+	bh=VLe2cEJAypHycOhsa6Q029BvGChAWKnFSuHHdoXNpyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMu5GZhNSZ8R96AVGh2qGgcNqgzuNo6NXSsWJJ4R+bvTDXgeW9lVRLkGneohEm/WIrGkpJP70QHKcTSLL/i0uRC4GKF//UdMe25PN4WppOU76Z8JuTjV3w1aHH4NOjoiIXhiAYnLxFWhk8+GxwASpbhm3So2tLlg4TBbCpC5vjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHO8fmWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D261C4CEF0;
-	Tue, 12 Aug 2025 18:29:28 +0000 (UTC)
+	 MIME-Version; b=Rvala1N+D2EoQfANh+ngjgmgYxAI65rmK+yZj68RFs8HJcORMDwOlPNTrtzLwrdtDppHcuAVTnMnIfAKuI1+r9HRrlE1Dh/2WXeZzvCCj7nwPYxradbIScIBaxkkcRQ/jG8cYXKvjB+9zx1BFaIWq5a/3v8TaW7krV3vq3UuYFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyALh9yb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F6BC4CEF6;
+	Tue, 12 Aug 2025 18:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023368;
-	bh=yuVbMOpHP6N2+Dg6qBSSGNtWXk7YB7QtYu1bH/ScvIk=;
+	s=korg; t=1755022103;
+	bh=VLe2cEJAypHycOhsa6Q029BvGChAWKnFSuHHdoXNpyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHO8fmWJQif99fQ8ZWR5eXy6Xw5xHhPNFeYU49Hf3orC4tR2T2fe6KG9cpVME25U8
-	 zzmZe1Fs6zF5N3yf3H6a3vVMvSLQeq9Jh+y3VfT5pj44s6R3x/QI9AhQb/85cqDsz5
-	 citzvKMU9Z6bAWs7iIp8v8G7LITTvppkhcZAY15A=
+	b=ZyALh9ybQKM2gOtssYVTGn1H45fJ1DPtUeJi2SLl7TExyP/vEmmvQ49Sid4759czA
+	 88TMdj4CQw9n0UKa9WjYWmYrjsyjVWBa+UxIiP3S2nX4kTwzgAFf4SyaXCG2QxMJKr
+	 Pn62iomJIFmmG5xfR8Hlsg4Go3+p3j6co/O82z/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Wanner <Ryan.Wanner@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	pls <pleasurefish@126.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 058/627] ARM: dts: microchip: sam9x7: Add clock name property
+Subject: [PATCH 6.12 056/369] PM / devfreq: Fix a index typo in trans_stat
 Date: Tue, 12 Aug 2025 19:25:53 +0200
-Message-ID: <20250812173421.538124300@linuxfoundation.org>
+Message-ID: <20250812173016.870589509@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Wanner <Ryan.Wanner@microchip.com>
+From: Chanwoo Choi <cw00.choi@samsung.com>
 
-[ Upstream commit 2e24723492b28ffdccb0e3e68725673e299e3823 ]
+[ Upstream commit 78c5845fbbf6aaeb9959c5fbaee5cc53ef5f38c2 ]
 
-Add clock-output-names to the xtal nodes, so the driver can correctly
-register the main and slow xtal.
-
-This fixes the issue of the SoC clock driver not being able to find
-the main xtal and slow xtal correctly causing a bad clock tree.
-
-Fixes: 41af45af8bc3 ("ARM: dts: at91: sam9x7: add device tree for SoC")
-Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Link: https://lore.kernel.org/r/036518968ac657b93e315bb550b822b59ae6f17c.1750175453.git.Ryan.Wanner@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: 4920ee6dcfaf ("PM / devfreq: Convert to use sysfs_emit_at() API")
+Signed-off-by: pls <pleasurefish@126.com>
+Link: https://patchwork.kernel.org/project/linux-pm/patch/20250515143100.17849-1-chanwoo@kernel.org/
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/sam9x7.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/devfreq/devfreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/microchip/sam9x7.dtsi b/arch/arm/boot/dts/microchip/sam9x7.dtsi
-index b217a908f525..114449e90720 100644
---- a/arch/arm/boot/dts/microchip/sam9x7.dtsi
-+++ b/arch/arm/boot/dts/microchip/sam9x7.dtsi
-@@ -45,11 +45,13 @@ cpu@0 {
- 	clocks {
- 		slow_xtal: clock-slowxtal {
- 			compatible = "fixed-clock";
-+			clock-output-names = "slow_xtal";
- 			#clock-cells = <0>;
- 		};
- 
- 		main_xtal: clock-mainxtal {
- 			compatible = "fixed-clock";
-+			clock-output-names = "main_xtal";
- 			#clock-cells = <0>;
- 		};
- 	};
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 713e6e52cca1..0d9f3d3282ec 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -1739,7 +1739,7 @@ static ssize_t trans_stat_show(struct device *dev,
+ 	for (i = 0; i < max_state; i++) {
+ 		if (len >= PAGE_SIZE - 1)
+ 			break;
+-		if (df->freq_table[2] == df->previous_freq)
++		if (df->freq_table[i] == df->previous_freq)
+ 			len += sysfs_emit_at(buf, len, "*");
+ 		else
+ 			len += sysfs_emit_at(buf, len, " ");
 -- 
 2.39.5
 
