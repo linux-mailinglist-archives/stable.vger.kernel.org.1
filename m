@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-167579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEA6B230C6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98475B23289
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EED8F1888661
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9331AA6E6D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E9F2F8BE7;
-	Tue, 12 Aug 2025 17:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AC12FAC11;
+	Tue, 12 Aug 2025 18:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMOz2dj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpSfXmYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AC32C15B5;
-	Tue, 12 Aug 2025 17:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0729B3F9D2;
+	Tue, 12 Aug 2025 18:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021291; cv=none; b=n3ar3AiinxiwDKHLBNA+K7WMDtGVY8yuLQak+je0JBjhlYMBsWeXAQ97qfmMjDQdENHW9yQ28Qmv2NRlpqpCkyOr0E0XG7AsXwvIJC7EgPuZiERL8hGNe4hmxLqlqqtBCC+Z3uVpyYT3LinbgOZj4vaQKi3CpGAQRQIr8DctdgY=
+	t=1755022446; cv=none; b=C9dppOBphAciA9XhQEcz6oJ8vkWlHBCZ89Zc0bSlzNpWSzgpADOGYcHx300NStaC9+L/6NePttQCesob31Ds3PEuC6imndf+0mBGUo7+lACNFDUYhUqtc0i56cbxYTdeZKQeqp0aG2UFOhmcZ+pcaRJhVsNo08RREOQghValAyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021291; c=relaxed/simple;
-	bh=qT/k8Xp3OuCJJjNn97zyn+Y1GrorI63buJae1ugLKfA=;
+	s=arc-20240116; t=1755022446; c=relaxed/simple;
+	bh=3iq1fGepwtavGwpuaZuSAzVURbHeX0ZLUEUl4UPMkUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJqRBh0FRYJnb3JAzykqVtl4QBGxHuoV1xAsPhsZ3u2m+uhMBt5yYE3Bbr9QQ9vdZBi6pk7m7+ozI0+864X1+gU5ZhnBw0J3uBGOYOFmQ+2NGkrNDdiJFHTpXOAO0uh2VUkMCDOiT8E3NRJCExLktk0+0ylKu+F44La/K9R2qtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMOz2dj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCB0C4CEF0;
-	Tue, 12 Aug 2025 17:54:50 +0000 (UTC)
+	 MIME-Version; b=f7ZQ9lCZvJCWJDp9D/slJvhsT63XOn2ZolX/DcVNrWXcJ4+fR2U9dhMGbMKR/Ictqij1H1I0ai+PIJtQ6vYdwDirlNmsZGe5ghI8VmqcELTHEdMkRo3OAL2S6MazKZwniB45g22JSxBX96etRlVy70S+VNcBD4zQp8h2d8CubYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpSfXmYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69439C4CEF0;
+	Tue, 12 Aug 2025 18:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021291;
-	bh=qT/k8Xp3OuCJJjNn97zyn+Y1GrorI63buJae1ugLKfA=;
+	s=korg; t=1755022445;
+	bh=3iq1fGepwtavGwpuaZuSAzVURbHeX0ZLUEUl4UPMkUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMOz2dj0PUQnbNGEggj5VgXROtcGBRNUlUI60/4aDZndMu0nIc9QXQKXdXTFmuyY/
-	 PK89t2qAsTDHYsWaNMQvJSZ2vXppnBX//dj5glul0Xi1bB4QB/WX9hPThFDOdjoAEV
-	 oQjXP0Qj/U4sUTELTkjM2oXAFyBNIBUFU7Vw8d7o=
+	b=qpSfXmYjh3Jd2IyIJgQTSDouiaU0WbGFzNpFg6gEYNdkatYoNKCBu2CEV5qP0dbtm
+	 E42j8oes2wXSi/lFR32QIeZlThLwjkDpwDeJA23WwEgzw7qguMAuJqP+UYVXfwH7Dk
+	 e0DxjffQNaHnEsrc8jgL0u7zUlLnnMHICpnwwN9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/262] drm/msm/dpu: Fill in min_prefill_lines for SC8180X
+Subject: [PATCH 6.12 157/369] crypto: marvell/cesa - Fix engine load inaccuracy
 Date: Tue, 12 Aug 2025 19:27:34 +0200
-Message-ID: <20250812172955.803079175@linuxfoundation.org>
+Message-ID: <20250812173020.676915993@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 5136acc40afc0261802e5cb01b04f871bf6d876b ]
+[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
 
-Based on the downstream release, predictably same value as for SM8150.
+If an error occurs during queueing the engine load will never be
+decremented.  Fix this by moving the engine load adjustment into
+the cleanup function.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: f3af2d6ee9ab ("drm/msm/dpu: Add SC8180x to hw catalog")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/657794/
-Link: https://lore.kernel.org/r/20250610-topic-dpu_8180_mpl-v1-1-f480cd22f11c@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/marvell/cesa/cipher.c | 4 +++-
+ drivers/crypto/marvell/cesa/hash.c   | 5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-index 427dec0cd1d3..b77ecec50733 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-@@ -378,6 +378,7 @@ static const struct dpu_perf_cfg sc8180x_perf_data = {
- 	.min_core_ib = 2400000,
- 	.min_llcc_ib = 800000,
- 	.min_dram_ib = 800000,
-+	.min_prefill_lines = 24,
- 	.danger_lut_tbl = {0xf, 0xffff, 0x0},
- 	.safe_lut_tbl = {0xfff0, 0xf000, 0xffff},
- 	.qos_lut_tbl = {
+diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
+index 3876e3ce822f..eabed9d977df 100644
+--- a/drivers/crypto/marvell/cesa/cipher.c
++++ b/drivers/crypto/marvell/cesa/cipher.c
+@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
+ static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
+ {
+ 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_skcipher_dma_cleanup(req);
++
++	atomic_sub(req->cryptlen, &engine->load);
+ }
+ 
+ static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
+@@ -212,7 +215,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
+ 	struct mv_cesa_engine *engine = creq->base.engine;
+ 	unsigned int ivsize;
+ 
+-	atomic_sub(skreq->cryptlen, &engine->load);
+ 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
+diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
+index 6815eddc9068..e339ce7ad533 100644
+--- a/drivers/crypto/marvell/cesa/hash.c
++++ b/drivers/crypto/marvell/cesa/hash.c
+@@ -110,9 +110,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
+ static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
+ {
+ 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_ahash_dma_cleanup(req);
++
++	atomic_sub(req->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
+@@ -395,8 +398,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
+ 			}
+ 		}
+ 	}
+-
+-	atomic_sub(ahashreq->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
 -- 
 2.39.5
 
