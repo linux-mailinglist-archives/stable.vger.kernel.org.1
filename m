@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F046B22FC2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 376E9B232FB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAFA8564F74
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CA08188D949
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5505C2FABF0;
-	Tue, 12 Aug 2025 17:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022863F9D2;
+	Tue, 12 Aug 2025 18:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHZv6WEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwLESAmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F1C86331;
-	Tue, 12 Aug 2025 17:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37B52DBF5E;
+	Tue, 12 Aug 2025 18:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020590; cv=none; b=GACqEYqs76wCl3dH5JB0ajacqoWb55WVrTZavsEH1WQWfkgh8qjUGoetiIZ6cLwCzwNSCuN6+KPpfnSdZLmBSW/vF+JIfo2rCn7NqaEbYILU7pDMpWty4gmbt1cBTYym17ezk3vor2F5nDmD0Ppctapuc98qn6uwCicyWNn0ySs=
+	t=1755022749; cv=none; b=qeSikYXxQ1AuawSFxHOUVQvclBlE0NMq2o6yhhFhvCvVL9NOMTFV8akwaIh6I2zC4HjgZSUgJQkehL9glioVIxNuDtbf2ZNtYjKqeAT6mVctzZ1MFoo2MAMpxVFQ5GqDFjVUTU+MfOBzXg1V/zeVKDbfKugjE+sYd/rVLDZrDdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020590; c=relaxed/simple;
-	bh=mozfj/P4NyzyGn5Ln4T9sMCAxfAyYS7cap94vpmV5tA=;
+	s=arc-20240116; t=1755022749; c=relaxed/simple;
+	bh=TphznTO4JtIyOSRDkmIZh1EZrlDutCRHuwGxZjifK4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+LxO4BThalL+2LtyVYpijHrMdw+OxnRgSksm3EBeDhUlgFtWN9ha/P1WG1XUz73oUw7Ui9vNf7p7GpmdB+s74tq2iXeYUko9EEBQfyAhFmempAH56fAtVqXB990A4d/QyXmzKlJ/LN/ltVS5OrlTrtM/tC+Jgt4FBPGGI55EZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHZv6WEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7942AC4CEF0;
-	Tue, 12 Aug 2025 17:43:09 +0000 (UTC)
+	 MIME-Version; b=DZy8wj2rk3GY28aBms9utSGMuaKzdM5UaqVrSdOVnZdrrEgUmabruDSvxzbzJEVBJSmq6V1EpdTJXZ2D/qe3oNNqWe0HSWmtv7fbFtYHe0DXYThscpAAxOZ00T5IU7MWcxe624gozsUr1aS+FF0WAsIQCTyyS6jlQJkcJXq4rD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwLESAmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A0DC4CEF6;
+	Tue, 12 Aug 2025 18:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020590;
-	bh=mozfj/P4NyzyGn5Ln4T9sMCAxfAyYS7cap94vpmV5tA=;
+	s=korg; t=1755022749;
+	bh=TphznTO4JtIyOSRDkmIZh1EZrlDutCRHuwGxZjifK4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHZv6WEfVk8JIV/3nX7xlV/w3QmWLiaPN2Ttr0hSFgR5EtNBY5NM0Xoqb5twOa/P1
-	 g+gs4l2Q9loQE0is8cGBRJRApHYpLsmdStGWRCX/fuBsR9yEZf3GthCxFiRNEHrQX+
-	 Qyr+lcLi62KVkXYxA8BtU2X0vBjvajQ2bg/2jFbo=
+	b=jwLESAmcO5A5hvCysFVLSqy+qXfhpUGKpVmzVb4+xyf6GTaq8rDK16Uvd9cEFNy0J
+	 x8Zrc/M2ICqosPw/b9aR7pA5O2xp6kqpt0IXYFeKXcojbY2jdpVbvr0bQ7jy17TZJL
+	 dXC3KKBvF/Slf5TPdsyMup+2mNWcS5+wEMF3yFEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Tanmay Shah <tanmay.shah@amd.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/253] wifi: mac80211: Do not schedule stopped TXQs
+Subject: [PATCH 6.12 214/369] remoteproc: xlnx: Disable unsupported features
 Date: Tue, 12 Aug 2025 19:28:31 +0200
-Message-ID: <20250812172953.935700556@linuxfoundation.org>
+Message-ID: <20250812173022.805177877@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Tanmay Shah <tanmay.shah@amd.com>
 
-[ Upstream commit 11e3e22fa533f5d7cf04e32343b05a27eda3c7a5 ]
+[ Upstream commit 699cdd706290208d47bd858a188b030df2e90357 ]
 
-Ignore TXQs with the flag IEEE80211_TXQ_STOP when scheduling a queue.
+AMD-Xilinx platform driver does not support iommu or recovery mechanism
+yet. Disable both features in platform driver.
 
-The flag is only set after all fragments have been dequeued and won't
-allow dequeueing other frames as long as the flag is set.
-
-For drivers using ieee80211_txq_schedule_start() this prevents an
-loop trying to push the queued frames while IEEE80211_TXQ_STOP is set:
-
-After setting IEEE80211_TXQ_STOP the driver will call
-ieee80211_return_txq(). Which calls __ieee80211_schedule_txq(), detects
-that there sill are frames in the queue and immediately restarts the
-stopped TXQ. Which can't dequeue any frame and thus starts over the loop.
-
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
-Link: https://patch.msgid.link/20250717162547.94582-2-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
+Link: https://lore.kernel.org/r/20250716213048.2316424-2-tanmay.shah@amd.com
+Fixes: 6b291e8020a8 ("drivers: remoteproc: Add Xilinx r5 remoteproc driver")
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/remoteproc/xlnx_r5_remoteproc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 62b2817df2ba..a04c7f9b2b0e 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4024,7 +4024,9 @@ void __ieee80211_schedule_txq(struct ieee80211_hw *hw,
+diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
+index 5aeedeaf3c41..c165422d0651 100644
+--- a/drivers/remoteproc/xlnx_r5_remoteproc.c
++++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+@@ -906,6 +906,8 @@ static struct zynqmp_r5_core *zynqmp_r5_add_rproc_core(struct device *cdev)
  
- 	spin_lock_bh(&local->active_txq_lock[txq->ac]);
+ 	rproc_coredump_set_elf_info(r5_rproc, ELFCLASS32, EM_ARM);
  
--	has_queue = force || txq_has_queue(txq);
-+	has_queue = force ||
-+		    (!test_bit(IEEE80211_TXQ_STOP, &txqi->flags) &&
-+		     txq_has_queue(txq));
- 	if (list_empty(&txqi->schedule_order) &&
- 	    (has_queue || ieee80211_txq_keep_active(txqi))) {
- 		/* If airtime accounting is active, always enqueue STAs at the
++	r5_rproc->recovery_disabled = true;
++	r5_rproc->has_iommu = false;
+ 	r5_rproc->auto_boot = false;
+ 	r5_core = r5_rproc->priv;
+ 	r5_core->dev = cdev;
 -- 
 2.39.5
 
