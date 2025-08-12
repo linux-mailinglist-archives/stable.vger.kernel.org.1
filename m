@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CADAB23070
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CA9B2334F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44B262A6F2B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CD761A2451F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88042FE57C;
-	Tue, 12 Aug 2025 17:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80252F7449;
+	Tue, 12 Aug 2025 18:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G72kcjZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnMIzXhZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86702868AF;
-	Tue, 12 Aug 2025 17:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C5F2DFA3E;
+	Tue, 12 Aug 2025 18:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021086; cv=none; b=SEkIX2xmXV7xk7st3ClMKKneCIzW+qfIjIrUPr8dXvCfga6ryvEBSfvRVf0xs+NN+T/+XVBjcAfXBB7AUFxI4Kpn2/qMXqVszpqGMP1GBSRgEO4jQyiK5msnDz55yVAC3RBnyuxL+wi5Vu/bxJvMUa+80gk1H3aEzQV0vvpfmHc=
+	t=1755022923; cv=none; b=BI8ZleyRQch4zLoUhRcSTONgZhOv3bqZ6gEX4UQkL2k4CmPYim+JvqaE9QTOTUjzP06MDtQ5OpHPyb9xrj6OPeG1iGLhESCBv+m4bfyI2JgnluSa+zX/cCryMJgRhfnEOyPfElbADeCoBzYm9VVgVUmRYIoaU6EXAGfLxkIwvbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021086; c=relaxed/simple;
-	bh=rLPmHNh3vlPqo3iKX1fASVz1Qy/WltCZYPxwFn/k/k4=;
+	s=arc-20240116; t=1755022923; c=relaxed/simple;
+	bh=VIDNyFxpEQWxcq6ctNCzsPeYKM+wkq/IhIk3rKZKuEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLg2c+Kynf8hV+nihjnHVDHTyWYaM4UGscuYFIsZ6EqX0yfcVFt0KJbP2RhiADoxWddZLj1MixEeE1drZgyWuv9V4f3GqHjpllPWtjjRXQPwu1j5Qgm4z5GrWIzmNDmumyRuPr0LnW0uehirn/UKX0yteHUrkR6SXs8kJGtQP6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G72kcjZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32075C4CEF0;
-	Tue, 12 Aug 2025 17:51:26 +0000 (UTC)
+	 MIME-Version; b=L/WpS2k5FSduHuI7autRu63PoKdpsrnVsS0nzcEqXTcxWewvv36lb5OFfBFhpJmgHsAob6OcX2rV56A0pWb5ty+YO3ba6V6M5buFoSndtooz/tAsVXejvn7ke+Xz8XcX7MSPhla9dubBVjsOPSIl4Oz5qB/XjO/VXMViRYehNSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnMIzXhZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06947C4CEF0;
+	Tue, 12 Aug 2025 18:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021086;
-	bh=rLPmHNh3vlPqo3iKX1fASVz1Qy/WltCZYPxwFn/k/k4=;
+	s=korg; t=1755022923;
+	bh=VIDNyFxpEQWxcq6ctNCzsPeYKM+wkq/IhIk3rKZKuEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G72kcjZRETmKkWc+5YCkiAgZyUGtHlZQK722trwv5I0NN/3a/TGw9SRrECDvk14CY
-	 lPz4N0LfUupuAIFlhWOLPZZkxUfjRDeGmdHKQMEDDRdvGwC8Ga07GwFTPD8A/NGaK8
-	 JX7dYlE4v9mth8Re1GCLYpcZj05uTI9jcHDLFmhI=
+	b=NnMIzXhZ0P9gaEPNLVxOTjvtewzP3hBrGO8ddg0YlA481yViMI6/+Llu850KJFvPA
+	 18u7ppUCic5WEuYmC12s2dVm59irbN6n4qpG8PRtfHZtBoshsj/wZblgBeN/y/OwEH
+	 jOWOsqkkY9nkZ8cuw5de9f685cfqVzx+rT1VpbVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/253] powerpc/eeh: Rely on dev->link_active_reporting
+Subject: [PATCH 6.12 300/369] net: mdio: mdio-bcm-unimac: Correct rate fallback logic
 Date: Tue, 12 Aug 2025 19:29:57 +0200
-Message-ID: <20250812172957.717862465@linuxfoundation.org>
+Message-ID: <20250812173028.016381186@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 1541a21305ceb10fcf3f7cbb23f3e1a00bbf1789 ]
+[ Upstream commit a81649a4efd382497bf3d34a623360263adc6993 ]
 
-Use dev->link_active_reporting to determine whether Data Link Layer Link
-Active Reporting is available rather than re-retrieving the capability.
+When the parent clock is a gated clock which has multiple parents, the
+clock provider (clk-scmi typically) might return a rate of 0 since there
+is not one of those particular parent clocks that should be chosen for
+returning a rate. Prior to ee975351cf0c ("net: mdio: mdio-bcm-unimac:
+Manage clock around I/O accesses"), we would not always be passing a
+clock reference depending upon how mdio-bcm-unimac was instantiated. In
+that case, we would take the fallback path where the rate is hard coded
+to 250MHz.
 
-Link: https://lore.kernel.org/r/alpine.DEB.2.21.2305310124100.59226@angie.orcam.me.uk
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 1010b4c012b0 ("powerpc/eeh: Make EEH driver device hotplug safe")
+Make sure that we still fallback to using a fixed rate for the divider
+calculation, otherwise we simply ignore the desired MDIO bus clock
+frequency which can prevent us from interfacing with Ethernet PHYs
+properly.
+
+Fixes: ee975351cf0c ("net: mdio: mdio-bcm-unimac: Manage clock around I/O accesses")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250730202533.3463529-1-florian.fainelli@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_pe.c | 5 ++---
+ drivers/net/mdio/mdio-bcm-unimac.c | 5 ++---
  1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index e4624d789629..7d1b50599dd6 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -671,9 +671,8 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
- 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
+diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
+index b7bc70586ee0..369540b43ada 100644
+--- a/drivers/net/mdio/mdio-bcm-unimac.c
++++ b/drivers/net/mdio/mdio-bcm-unimac.c
+@@ -209,10 +209,9 @@ static int unimac_mdio_clk_set(struct unimac_mdio_priv *priv)
+ 	if (ret)
+ 		return ret;
  
- 	/* Check link */
--	eeh_ops->read_config(edev, cap + PCI_EXP_LNKCAP, 4, &val);
--	if (!(val & PCI_EXP_LNKCAP_DLLLARC)) {
--		eeh_edev_dbg(edev, "No link reporting capability (0x%08x) \n", val);
-+	if (!edev->pdev->link_active_reporting) {
-+		eeh_edev_dbg(edev, "No link reporting capability\n");
- 		msleep(1000);
- 		return;
- 	}
+-	if (!priv->clk)
++	rate = clk_get_rate(priv->clk);
++	if (!rate)
+ 		rate = 250000000;
+-	else
+-		rate = clk_get_rate(priv->clk);
+ 
+ 	div = (rate / (2 * priv->clk_freq)) - 1;
+ 	if (div & ~MDIO_CLK_DIV_MASK) {
 -- 
 2.39.5
 
