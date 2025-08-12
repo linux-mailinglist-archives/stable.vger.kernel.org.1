@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC63B230F5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 547ACB231A7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F4B625C02
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9286F6E0B31
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892B42FDC52;
-	Tue, 12 Aug 2025 17:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47FE2FDC35;
+	Tue, 12 Aug 2025 18:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yugVe1mu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuXwqTI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434D82DE1E2;
-	Tue, 12 Aug 2025 17:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3E22F5E;
+	Tue, 12 Aug 2025 18:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021440; cv=none; b=YdEmVM6LaAr4Gqpyz6NfJdrU37Cx3n2WkTQlpDeqvVTUL6kt1D57mFH4pvOBgoqwiC2zEBi150Jx45z4R9g74rWawHXyrw5b020Dq/WtCz8dMO843jUk0Pu98M3Lw9kf7l+FJgKLNjZ+jeIgyRK7YgsgvPtYcssq6m5bpIz17m8=
+	t=1755021856; cv=none; b=DYfdoAIprCsFLQr7v74Cm0IYIRv2aDfYTWdT4Z/na96ZxB2opf3bkqNQNGb162mt4aTZAujU7qejTHGRf34d0fjkvHv1C9yQ6oN61YwpVVGIJ5ukjVwgkCfmgLBwK1PlYsIPyKulm3Rul/1bxIzzha4gCsyFZdfmLMWieDvSLGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021440; c=relaxed/simple;
-	bh=faonqqmgpu0lXjbxp2sCv/y8zFaIi+8aYh7RVFhB5no=;
+	s=arc-20240116; t=1755021856; c=relaxed/simple;
+	bh=kQTPk4j5JjZsxt+TJC4ChRYNTioWVpZsbfNHsNnG3KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9RTpwnBIkvxG6uX3wVEOpfZtFzvbd4Lq6oh0JCgTBtLjyvw7RJr+P1Fid3CcUud2AbETnc4nkByTkqqk/rb9F6LEHWTa+X6F4p9jp02exi4GwILvcSpzKO0IrD0tcQhlq9XuPcOwgq3i+PO0TMGsRnnvUDuM8A1sJ/MKtI1xFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yugVe1mu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFCFC4CEF0;
-	Tue, 12 Aug 2025 17:57:19 +0000 (UTC)
+	 MIME-Version; b=oLOTk6ZGismYSs4Ap0KMguCqzmDt2RSnBIRA6ED+whmGoHpUX3RH1gHfZIo1tIkMm2i9YJZFmYI2FuvCrbK+R4wo5fodbie17Merdg5WXf7B5Mj/uukdJ8O/3xeKB4/4C7VYXISXPIvS4pWzkhRfUPaYeTEZJRDRge3iLyy67cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuXwqTI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F120AC4CEF0;
+	Tue, 12 Aug 2025 18:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021440;
-	bh=faonqqmgpu0lXjbxp2sCv/y8zFaIi+8aYh7RVFhB5no=;
+	s=korg; t=1755021856;
+	bh=kQTPk4j5JjZsxt+TJC4ChRYNTioWVpZsbfNHsNnG3KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yugVe1mu+r1+9myQ8zAXyp1+2UtKigOzk4Hsk8Ls1WTvDqscMFxlx/w4gQtiwVcnW
-	 mAK3GtK8n4hHYEi3EDidcXYJKbmpzemHmqn81SBY69dP3rllnPnO6AEog7WTsdjDdV
-	 uaxHJvxmXS0L4sJbMHw6sQJfkcAqFJAUxBEGPRP0=
+	b=LuXwqTI9WVYv/sqJRLfHq8Erh6zlq1IJ+384CfO0Q8XjrSzIUhFPN0ZSlqVpOcsM9
+	 PwJ4FjOAqTEEZ57e0++Aa9DiScDk9kzKcW2fKleHU6E3x80DpHa2oOU50LQozV0mbF
+	 wmRTgQCMgi3hopb7VbYk0D4nBqHYFGAdfvLbzYNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 245/253] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 245/262] i2c: stm32f7: perform most of irq job in threaded handler
 Date: Tue, 12 Aug 2025 19:30:33 +0200
-Message-ID: <20250812172959.284691305@linuxfoundation.org>
+Message-ID: <20250812173003.582819818@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +63,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f upstream.
+[ Upstream commit e6103cd45ef0e14eb02f0666bc6b494902cfe821 ]
 
-The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-up and down events when the WWAN interface is activated on the modem-side.
+The irq handling is currently split between the irq handler
+and the threaded irq handler.  Some of the handling (such as
+dma related stuffs) done within the irq handler might sleep or
+take some time leading to issues if the kernel is built with
+realtime constraints.  In order to fix that, perform an overall
+rework to perform most of the job within the threaded handler
+and only keep fifo access in the non threaded handler.
 
-Interrupt URBs will in consecutive polls grab:
-* Link Connected
-* Link Disconnected
-* Link Connected
-
-Where the last Connected is then a stable link state.
-
-When the system is under load this may cause the unlink_urbs() work in
-__handle_link_change() to not complete before the next usbnet_link_change()
-call turns the carrier on again, allowing rx_submit() to queue new SKBs.
-
-In that event the URB queue is filled faster than it can drain, ending up
-in a RCU stall:
-
-    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
-    rcu: blocking rcu_node structures (internal RCU debug):
-    Sending NMI from CPU 1 to CPUs 0:
-    NMI backtrace for cpu 0
-
-    Call trace:
-     arch_local_irq_enable+0x4/0x8
-     local_bh_enable+0x18/0x20
-     __netdev_alloc_skb+0x18c/0x1cc
-     rx_submit+0x68/0x1f8 [usbnet]
-     rx_alloc_submit+0x4c/0x74 [usbnet]
-     usbnet_bh+0x1d8/0x218 [usbnet]
-     usbnet_bh_tasklet+0x10/0x18 [usbnet]
-     tasklet_action_common+0xa8/0x110
-     tasklet_action+0x2c/0x34
-     handle_softirqs+0x2cc/0x3a0
-     __do_softirq+0x10/0x18
-     ____do_softirq+0xc/0x14
-     call_on_irq_stack+0x24/0x34
-     do_softirq_own_stack+0x18/0x20
-     __irq_exit_rcu+0xa8/0xb8
-     irq_exit_rcu+0xc/0x30
-     el1_interrupt+0x34/0x48
-     el1h_64_irq_handler+0x14/0x1c
-     el1h_64_irq+0x68/0x6c
-     _raw_spin_unlock_irqrestore+0x38/0x48
-     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
-     unlink1+0xd4/0xdc [usbcore]
-     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
-     usb_unlink_urb+0x24/0x44 [usbcore]
-     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
-     __handle_link_change+0x34/0x70 [usbnet]
-     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
-     process_scheduled_works+0x2d0/0x48c
-     worker_thread+0x150/0x1dc
-     kthread+0xd8/0xe8
-     ret_from_fork+0x10/0x20
-
-Get around the problem by delaying the carrier on to the scheduled work.
-
-This needs a new flag to keep track of the necessary action.
-
-The carrier ok check cannot be removed as it remains required for the
-LINK_RESET event flow.
-
-Fixes: 4b49f58fff00 ("usbnet: handle link change")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 6aae87fe7f18 ("i2c: stm32f7: unmap DMA mapped buffer")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c   |   11 ++++++++---
- include/linux/usb/usbnet.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-stm32f7.c |  126 +++++++++++++++++----------------------
+ 1 file changed, 56 insertions(+), 70 deletions(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1124,6 +1124,9 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
-+		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+			netif_carrier_on(dev->net);
-+
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
-@@ -2010,10 +2013,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
- void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -1496,17 +1496,11 @@ static irqreturn_t stm32f7_i2c_slave_isr
+ static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
  {
- 	/* update link after link is reseted */
--	if (link && !need_reset)
--		netif_carrier_on(dev->net);
--	else
-+	if (link && !need_reset) {
-+		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
-+	} else {
-+		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
- 		netif_carrier_off(dev->net);
-+	}
+ 	struct stm32f7_i2c_dev *i2c_dev = data;
+-	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
+-	struct stm32_i2c_dma *dma = i2c_dev->dma;
+-	void __iomem *base = i2c_dev->base;
+-	u32 status, mask;
+-	int ret = IRQ_HANDLED;
++	u32 status;
  
- 	if (need_reset && link)
- 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -76,6 +76,7 @@ struct usbnet {
- #		define EVENT_LINK_CHANGE	11
- #		define EVENT_SET_RX_MODE	12
- #		define EVENT_NO_IP_ALIGN	13
-+#		define EVENT_LINK_CARRIER_ON	14
- /* This one is special, as it indicates that the device is going away
-  * there are cyclic dependencies between tasklet, timer and bh
-  * that must be broken
+-	/* Check if the interrupt if for a slave device */
+-	if (!i2c_dev->master_mode) {
+-		ret = stm32f7_i2c_slave_isr_event(i2c_dev);
+-		return ret;
+-	}
++	/* Check if the interrupt is for a slave device */
++	if (!i2c_dev->master_mode)
++		return IRQ_WAKE_THREAD;
+ 
+ 	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
+ 
+@@ -1518,6 +1512,29 @@ static irqreturn_t stm32f7_i2c_isr_event
+ 	if (status & STM32F7_I2C_ISR_RXNE)
+ 		stm32f7_i2c_read_rx_data(i2c_dev);
+ 
++	/* Wake up the thread if other flags are raised */
++	if (status &
++	    (STM32F7_I2C_ISR_NACKF | STM32F7_I2C_ISR_STOPF |
++	     STM32F7_I2C_ISR_TC | STM32F7_I2C_ISR_TCR))
++		return IRQ_WAKE_THREAD;
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
++{
++	struct stm32f7_i2c_dev *i2c_dev = data;
++	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
++	struct stm32_i2c_dma *dma = i2c_dev->dma;
++	void __iomem *base = i2c_dev->base;
++	u32 status, mask;
++	int ret;
++
++	if (!i2c_dev->master_mode)
++		return stm32f7_i2c_slave_isr_event(i2c_dev);
++
++	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
++
+ 	/* NACK received */
+ 	if (status & STM32F7_I2C_ISR_NACKF) {
+ 		dev_dbg(i2c_dev->dev, "<%s>: Receive NACK (addr %x)\n",
+@@ -1530,33 +1547,28 @@ static irqreturn_t stm32f7_i2c_isr_event
+ 		f7_msg->result = -ENXIO;
+ 	}
+ 
+-	/* STOP detection flag */
+-	if (status & STM32F7_I2C_ISR_STOPF) {
+-		/* Disable interrupts */
+-		if (stm32f7_i2c_is_slave_registered(i2c_dev))
+-			mask = STM32F7_I2C_XFER_IRQ_MASK;
++	if (status & STM32F7_I2C_ISR_TCR) {
++		if (f7_msg->smbus)
++			stm32f7_i2c_smbus_reload(i2c_dev);
+ 		else
+-			mask = STM32F7_I2C_ALL_IRQ_MASK;
+-		stm32f7_i2c_disable_irq(i2c_dev, mask);
+-
+-		/* Clear STOP flag */
+-		writel_relaxed(STM32F7_I2C_ICR_STOPCF, base + STM32F7_I2C_ICR);
+-
+-		if (i2c_dev->use_dma && !f7_msg->result) {
+-			ret = IRQ_WAKE_THREAD;
+-		} else {
+-			i2c_dev->master_mode = false;
+-			complete(&i2c_dev->complete);
+-		}
++			stm32f7_i2c_reload(i2c_dev);
+ 	}
+ 
+ 	/* Transfer complete */
+ 	if (status & STM32F7_I2C_ISR_TC) {
++		/* Wait for dma transfer completion before sending next message */
++		if (i2c_dev->use_dma && !f7_msg->result) {
++			ret = wait_for_completion_timeout(&i2c_dev->dma->dma_complete, HZ);
++			if (!ret) {
++				dev_dbg(i2c_dev->dev, "<%s>: Timed out\n", __func__);
++				stm32f7_i2c_disable_dma_req(i2c_dev);
++				dmaengine_terminate_async(dma->chan_using);
++				f7_msg->result = -ETIMEDOUT;
++			}
++		}
+ 		if (f7_msg->stop) {
+ 			mask = STM32F7_I2C_CR2_STOP;
+ 			stm32f7_i2c_set_bits(base + STM32F7_I2C_CR2, mask);
+-		} else if (i2c_dev->use_dma && !f7_msg->result) {
+-			ret = IRQ_WAKE_THREAD;
+ 		} else if (f7_msg->smbus) {
+ 			stm32f7_i2c_smbus_rep_start(i2c_dev);
+ 		} else {
+@@ -1566,47 +1578,18 @@ static irqreturn_t stm32f7_i2c_isr_event
+ 		}
+ 	}
+ 
+-	if (status & STM32F7_I2C_ISR_TCR) {
+-		if (f7_msg->smbus)
+-			stm32f7_i2c_smbus_reload(i2c_dev);
++	/* STOP detection flag */
++	if (status & STM32F7_I2C_ISR_STOPF) {
++		/* Disable interrupts */
++		if (stm32f7_i2c_is_slave_registered(i2c_dev))
++			mask = STM32F7_I2C_XFER_IRQ_MASK;
+ 		else
+-			stm32f7_i2c_reload(i2c_dev);
+-	}
+-
+-	return ret;
+-}
+-
+-static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
+-{
+-	struct stm32f7_i2c_dev *i2c_dev = data;
+-	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
+-	struct stm32_i2c_dma *dma = i2c_dev->dma;
+-	u32 status;
+-	int ret;
+-
+-	/*
+-	 * Wait for dma transfer completion before sending next message or
+-	 * notity the end of xfer to the client
+-	 */
+-	ret = wait_for_completion_timeout(&i2c_dev->dma->dma_complete, HZ);
+-	if (!ret) {
+-		dev_dbg(i2c_dev->dev, "<%s>: Timed out\n", __func__);
+-		stm32f7_i2c_disable_dma_req(i2c_dev);
+-		dmaengine_terminate_async(dma->chan_using);
+-		f7_msg->result = -ETIMEDOUT;
+-	}
++			mask = STM32F7_I2C_ALL_IRQ_MASK;
++		stm32f7_i2c_disable_irq(i2c_dev, mask);
+ 
+-	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
++		/* Clear STOP flag */
++		writel_relaxed(STM32F7_I2C_ICR_STOPCF, base + STM32F7_I2C_ICR);
+ 
+-	if (status & STM32F7_I2C_ISR_TC) {
+-		if (f7_msg->smbus) {
+-			stm32f7_i2c_smbus_rep_start(i2c_dev);
+-		} else {
+-			i2c_dev->msg_id++;
+-			i2c_dev->msg++;
+-			stm32f7_i2c_xfer_msg(i2c_dev, i2c_dev->msg);
+-		}
+-	} else {
+ 		i2c_dev->master_mode = false;
+ 		complete(&i2c_dev->complete);
+ 	}
+@@ -1614,7 +1597,7 @@ static irqreturn_t stm32f7_i2c_isr_event
+ 	return IRQ_HANDLED;
+ }
+ 
+-static irqreturn_t stm32f7_i2c_isr_error(int irq, void *data)
++static irqreturn_t stm32f7_i2c_isr_error_thread(int irq, void *data)
+ {
+ 	struct stm32f7_i2c_dev *i2c_dev = data;
+ 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
+@@ -2201,8 +2184,11 @@ static int stm32f7_i2c_probe(struct plat
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret, "Failed to request irq event\n");
+ 
+-	ret = devm_request_irq(&pdev->dev, irq_error, stm32f7_i2c_isr_error, 0,
+-			       pdev->name, i2c_dev);
++	ret = devm_request_threaded_irq(&pdev->dev, irq_error,
++					NULL,
++					stm32f7_i2c_isr_error_thread,
++					IRQF_ONESHOT,
++					pdev->name, i2c_dev);
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret, "Failed to request irq error\n");
+ 
 
 
 
