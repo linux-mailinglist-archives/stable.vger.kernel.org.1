@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07914B233A7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD92B2359B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0A206E1528
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A030E621C0A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E082FA0F9;
-	Tue, 12 Aug 2025 18:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212361A01BF;
+	Tue, 12 Aug 2025 18:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjJddG9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KC9F/4v+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603F961FFE;
-	Tue, 12 Aug 2025 18:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2246294A17;
+	Tue, 12 Aug 2025 18:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023183; cv=none; b=gHUXt9KETJNzcgOm5PUrLjxWED7eQY8K2ED+QO847jWE2WjYkUbS+AkKw4AJENibHqr6LQVLRs3T5J2tbRbN2hcZJ3CyDdFu5GUQcim4MDwLmn80dSdHHME67h/XG/ciGeQV3N1Tkd/FNZCuAy+/Gkq1zQ+emIOzSM4oX+6tnuI=
+	t=1755024400; cv=none; b=P+JZi+L42ee7tf5shqqwo1zdIJth7MTL3k6kM0jzJnmsgd61ptpesYOmwA776JmmWArXuU5rtR3+XEoDf2RIR6+6i2+J1H4DtCFCEXd9o5emfLUhKtH7plo56LkyBoRTRvJVQfVcxpx0vtJmtj2eLVKeGOKJ0v3lPYstYyJ/Az0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023183; c=relaxed/simple;
-	bh=5gQ+en5/HXJp16egaus4InteHj0M212Bk2F54VdYH5Y=;
+	s=arc-20240116; t=1755024400; c=relaxed/simple;
+	bh=mK2MmIur2JyfG2lf8U0M4N2pCb4r3EuVpiHh8oyKQ18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEPVeiEoDs2+nI2bFRqkUEvvdoRk6WqJqh7spDs9EVGZE0R3l4/eZF5rrZr8vs+kMbIgyAd/XBxft2PNv1JDBF1ARCOsc3kbYB6R1VkmR2axUHtNRlTYMaj6AjNiXLB9bi+QcIT62E1CwslSuthv+sG32iyPbda1Kz76yz/ttn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjJddG9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D77C4CEF0;
-	Tue, 12 Aug 2025 18:26:22 +0000 (UTC)
+	 MIME-Version; b=JhvajoRVCf8uEatFyOrP5qIOgAx8zw35IrUc/3Ch6Bb7vm/ZZpT6TSNkPHDnOOD0nGUWbO9lCGQgl6T6I5pkBpBL332iGYD2Qq6SiO8yBWq3GpShACP1iWLku3jBy8C32AXcH+Csw7PofDW7SkhtcFrGXaiOfhki/mSPSOYIoN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KC9F/4v+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E70C4CEF0;
+	Tue, 12 Aug 2025 18:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023182;
-	bh=5gQ+en5/HXJp16egaus4InteHj0M212Bk2F54VdYH5Y=;
+	s=korg; t=1755024400;
+	bh=mK2MmIur2JyfG2lf8U0M4N2pCb4r3EuVpiHh8oyKQ18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KjJddG9pJpK8vwgZBvcQ7x4WEuRyL1ElRtHaJOdpTMt3baPSsLO9N14tbT7UkMwTv
-	 uKkSBrTb67tGoV0URZRU3s/SCDA0eFwrDWbCqPVOnsoplNKyun7I41vhwfDnOSMHex
-	 dnY8TGMHvpZ378Tqn4Vr4i8lG3UNjvhD1ENm9Fdk=
+	b=KC9F/4v+CA9/KcjYGsvJiMhrUpeNr2iZeAFkJiEY8WnmNS5ptqh0uwRpS7pP++Wt9
+	 KALBB1VdM1CGegnjpMNo5pdgOPyqWAWt7igotzEG1r0AoOwKtFziTP0aMlfdAiHPUh
+	 7wwysLlIA/aZiz++8q2cNVqRQIWFeCK3X4A33//o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Subject: [PATCH 6.12 360/369] s390/mm: Remove possible false-positive warning in pte_free_defer()
-Date: Tue, 12 Aug 2025 19:30:57 +0200
-Message-ID: <20250812173030.228840513@linuxfoundation.org>
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 363/627] perf sched: Fix memory leaks in perf sched latency
+Date: Tue, 12 Aug 2025 19:30:58 +0200
+Message-ID: <20250812173433.099200617@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 5647f61ad9171e8f025558ed6dc5702c56a33ba3 upstream.
+[ Upstream commit e68b1c0098b959cb88afce5c93dd6a9324e6da78 ]
 
-Commit 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing
-page") added a warning to pte_free_defer(), on our request. It was meant
-to warn if this would ever be reached for KVM guest mappings, because
-the page table would be freed w/o a gmap_unlink(). THP mappings are not
-allowed for KVM guests on s390, so this should never happen.
+The work_atoms should be freed after use.  Add free_work_atoms() to
+make sure to release all.  It should use list_splice_init() when merging
+atoms to prevent accessing invalid pointers.
 
-However, it is possible that the warning is triggered in a valid case as
-false-positive.
-
-s390_enable_sie() takes the mmap_lock, marks all VMAs as VM_NOHUGEPAGE and
-splits possibly existing THP guest mappings. mm->context.has_pgste is set
-to 1 before that, to prevent races with the mm_has_pgste() check in
-MADV_HUGEPAGE.
-
-khugepaged drops the mmap_lock for file mappings and might run in parallel,
-before a vma is marked VM_NOHUGEPAGE, but after mm->context.has_pgste was
-set to 1. If it finds file mappings to collapse, it will eventually call
-pte_free_defer(). This will trigger the warning, but it is a valid case
-because gmap is not yet set up, and the THP mappings will be split again.
-
-Therefore, remove the warning and the comment.
-
-Fixes: 8211dad627981 ("s390: add pte_free_defer() for pgtables sharing page")
-Cc: <stable@vger.kernel.org> # 6.6+
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b1ffe8f3e0c96f552 ("perf sched: Finish latency => atom rename and misc cleanups")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-8-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/pgalloc.c |    5 -----
- 1 file changed, 5 deletions(-)
+ tools/perf/builtin-sched.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -219,11 +219,6 @@ void pte_free_defer(struct mm_struct *mm
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
- 
- 	call_rcu(&ptdesc->pt_rcu_head, pte_free_now);
--	/*
--	 * THPs are not allowed for KVM guests. Warn if pgste ever reaches here.
--	 * Turn to the generic pte_free_defer() version once gmap is removed.
--	 */
--	WARN_ON_ONCE(mm_has_pgste(mm));
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 087d4eaba5f7..4bbebd6ef2e4 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -1111,6 +1111,21 @@ add_sched_in_event(struct work_atoms *atoms, u64 timestamp)
+ 	atoms->nb_atoms++;
  }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
++static void free_work_atoms(struct work_atoms *atoms)
++{
++	struct work_atom *atom, *tmp;
++
++	if (atoms == NULL)
++		return;
++
++	list_for_each_entry_safe(atom, tmp, &atoms->work_list, list) {
++		list_del(&atom->list);
++		free(atom);
++	}
++	thread__zput(atoms->thread);
++	free(atoms);
++}
++
+ static int latency_switch_event(struct perf_sched *sched,
+ 				struct evsel *evsel,
+ 				struct perf_sample *sample,
+@@ -3426,13 +3441,13 @@ static void __merge_work_atoms(struct rb_root_cached *root, struct work_atoms *d
+ 			this->total_runtime += data->total_runtime;
+ 			this->nb_atoms += data->nb_atoms;
+ 			this->total_lat += data->total_lat;
+-			list_splice(&data->work_list, &this->work_list);
++			list_splice_init(&data->work_list, &this->work_list);
+ 			if (this->max_lat < data->max_lat) {
+ 				this->max_lat = data->max_lat;
+ 				this->max_lat_start = data->max_lat_start;
+ 				this->max_lat_end = data->max_lat_end;
+ 			}
+-			zfree(&data);
++			free_work_atoms(data);
+ 			return;
+ 		}
+ 	}
+@@ -3511,7 +3526,6 @@ static int perf_sched__lat(struct perf_sched *sched)
+ 		work_list = rb_entry(next, struct work_atoms, node);
+ 		output_lat_thread(sched, work_list);
+ 		next = rb_next(next);
+-		thread__zput(work_list->thread);
+ 	}
+ 
+ 	printf(" -----------------------------------------------------------------------------------------------------------------\n");
+@@ -3525,6 +3539,13 @@ static int perf_sched__lat(struct perf_sched *sched)
+ 
+ 	rc = 0;
+ 
++	while ((next = rb_first_cached(&sched->sorted_atom_root))) {
++		struct work_atoms *data;
++
++		data = rb_entry(next, struct work_atoms, node);
++		rb_erase_cached(next, &sched->sorted_atom_root);
++		free_work_atoms(data);
++	}
+ out_free_cpus_switch_event:
+ 	free_cpus_switch_event(sched);
+ 	return rc;
+-- 
+2.39.5
+
 
 
 
