@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47109B2306C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:52:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BB2B232B1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 017C4189A751
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A5543B4930
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846B42F83CB;
-	Tue, 12 Aug 2025 17:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6442FF151;
+	Tue, 12 Aug 2025 18:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLC3zyyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iIaopv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434D02D46AC;
-	Tue, 12 Aug 2025 17:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCC52FF140;
+	Tue, 12 Aug 2025 18:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021034; cv=none; b=SIFEqWyvBUmajEYWH9skgDg6WHpKULXS5cFcGcG95a/YfSabAhsL/tI1Z3ZNrf7sTkCBYC2N8L3Uua3rt358Q3m1k2IrDFUQnM84rmJlycKidkDvPBXkCIltrNjR+trzTrxAI+qqiNkKbEIQ1ZYoDrYdynkurptXZ7WSmA5XweQ=
+	t=1755022514; cv=none; b=JIQsSvKMyJkZ2sV5jImD1pofglSUGynezCnHMqj6jQz5lXwvP/1FtN6kkqJGUrkaQ4ZIfu4r1ANHBSGJaWDxPtUMwSJTUFf5eFmhlEQa9LB+fxeE6463WF/1CsqSu1PkQWM0ZD+FqBTd86CLYwvAKgAEAGEWSJVfSdcoxf8ipks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021034; c=relaxed/simple;
-	bh=oLw5RuTK6AYNIRfmoASi3/ora9A06EK2Yx/AnDuRNFk=;
+	s=arc-20240116; t=1755022514; c=relaxed/simple;
+	bh=6bnIt055m9ci9T9VLN9FqSK5qTviPH70pnSog6PTCTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMMISW0SwNbiDTWBUhC1XQ+VXweVN35H3qne88oRDgYHzyFo8BdVl0tcqeRbBCZkyxqGdWm0TBiPJ96Cky6plTNLQ5t4slTEaTo3LcVWkNOu7bJbfVoa0tmE9yo/Y+uwSJ9gSOlqvpJE3qmvkM0a6R0Awwa61Xmgj0SuBUAvT2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLC3zyyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC26C4CEF0;
-	Tue, 12 Aug 2025 17:50:32 +0000 (UTC)
+	 MIME-Version; b=iQR3gHWhmFtq0oh7gAqURlJyJIvp3WSWOZx6HM5LbZidgV1/jPIkskKRqaAURVcIHVIiYPfXTELcjxvWV/Xgxkcou+qEDaZm6wp4f9BoiVTrYOvFycem1vfokVtMsGcEuO1DlFxiUAgjp/TB8zr2Nch4Q1ncuzpjC+uBp2aafYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iIaopv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D41BC4CEF0;
+	Tue, 12 Aug 2025 18:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021033;
-	bh=oLw5RuTK6AYNIRfmoASi3/ora9A06EK2Yx/AnDuRNFk=;
+	s=korg; t=1755022513;
+	bh=6bnIt055m9ci9T9VLN9FqSK5qTviPH70pnSog6PTCTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLC3zyykZBVHgn8gor1z3HlBNUzZTMK8tQo4uS4tgmloz6HHooG8pOxila7a9M5jc
-	 5E+fuGCoUhBA79GoqF47MAE8p9usbdRI9cib4ELRZuUcRhMgQfRObCoLJ1ED3nrjq9
-	 6s2qmgrA+Ef0wIClNiBoNA20CabtOQYIec0d1T1o=
+	b=0iIaopv+0IlAztXGjdObA64RfQ9930l8pf0nH7gZBwxy47CworbIV/QKlOrfUWJri
+	 oYT1Oko9ib+Zdfth4NTJk1m6g3WL/t+g4nunTg9dbjjCi6hksxGT8+akIFFGnCAJFg
+	 4UMdm/wrOFOo0u7Bn4/cXn9/nrL0mxeThkcrYbLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jason Xing <kernelxing@tencent.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/262] net: ipv6: ip6mr: Fix in/out netdev to pass to the FORWARD chain
+Subject: [PATCH 6.12 143/369] stmmac: xsk: fix negative overflow of budget in zerocopy mode
 Date: Tue, 12 Aug 2025 19:27:20 +0200
-Message-ID: <20250812172955.194196856@linuxfoundation.org>
+Message-ID: <20250812173020.152362988@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 3365afd3abda5f6a54f4a822dad5c9314e94c3fc ]
+[ Upstream commit 2764ab51d5f0e8c7d3b7043af426b1883e3bde1d ]
 
-The netfilter hook is invoked with skb->dev for input netdevice, and
-vif_dev for output netdevice. However at the point of invocation, skb->dev
-is already set to vif_dev, and MR-forwarded packets are reported with
-in=out:
+A negative overflow can happen when the budget number of descs are
+consumed. as long as the budget is decreased to zero, it will again go
+into while (budget-- > 0) statement and get decreased by one, so the
+overflow issue can happen. It will lead to returning true whereas the
+expected value should be false.
 
- # ip6tables -A FORWARD -j LOG --log-prefix '[forw]'
- # cd tools/testing/selftests/net/forwarding
- # ./router_multicast.sh
- # dmesg | fgrep '[forw]'
- [ 1670.248245] [forw]IN=v5 OUT=v5 [...]
+In this case where all the budget is used up, it means zc function
+should return false to let the poll run again because normally we
+might have more data to process. Without this patch, zc function would
+return true instead.
 
-For reference, IPv4 MR code shows in and out as appropriate.
-Fix by caching skb->dev and using the updated value for output netdev.
-
-Fixes: 7bc570c8b4f7 ("[IPV6] MROUTE: Support multicast forwarding.")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/3141ae8386fbe13fef4b793faa75e6bae58d798a.1750113335.git.petrm@nvidia.com
+Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Link: https://patch.msgid.link/20250723142327.85187-2-kerneljasonxing@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6mr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 7f19868d7d6c..18451dfeae68 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -2035,6 +2035,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 			  struct sk_buff *skb, int vifi)
- {
- 	struct vif_device *vif = &mrt->vif_table[vifi];
-+	struct net_device *indev = skb->dev;
- 	struct net_device *vif_dev;
- 	struct ipv6hdr *ipv6h;
- 	struct dst_entry *dst;
-@@ -2097,7 +2098,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 	IP6CB(skb)->flags |= IP6SKB_FORWARDED;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 36328298dc9b..058cd9e9fd71 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2500,7 +2500,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
  
- 	return NF_HOOK(NFPROTO_IPV6, NF_INET_FORWARD,
--		       net, NULL, skb, skb->dev, vif_dev,
-+		       net, NULL, skb, indev, skb->dev,
- 		       ip6mr_forward2_finish);
+ 	budget = min(budget, stmmac_tx_avail(priv, queue));
  
- out_free:
+-	while (budget-- > 0) {
++	for (; budget > 0; budget--) {
+ 		struct stmmac_metadata_request meta_req;
+ 		struct xsk_tx_metadata *meta = NULL;
+ 		dma_addr_t dma_addr;
 -- 
 2.39.5
 
