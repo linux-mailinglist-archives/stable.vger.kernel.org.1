@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-167868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77855B2323C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC514B2339E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9736517051D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C85CC7B3CFD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9A52882CE;
-	Tue, 12 Aug 2025 18:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180662FAC02;
+	Tue, 12 Aug 2025 18:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoH0b7Al"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y60MtRhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD703F9D2;
-	Tue, 12 Aug 2025 18:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D5B1A9F9B;
+	Tue, 12 Aug 2025 18:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022263; cv=none; b=PTFb21JvvTQeJlQLqELcoKtLOWGkxO6h3BQPP9MmG6m1Cms16dHkAh5T1+xXwXwRJ/wBuvocCHqf5XxA2Ac7fnCtVCED81z1oT+w2Xxarc38DTUFPKoVhqrZWrDzcgOxfHcp3ZwOLwi1RzrVct26qZRP09DzCTgTZsr4+UFpuUU=
+	t=1755023409; cv=none; b=e7s4/BMCnGbBcaCrbaHfoP91i5eF2KcAeA6oXE2tx5FnbUMPRG4nxNsksAMh0I853ZsflqnIne4pOHZmsOH5aYAfxA1DKQfm3DEb4fXz5Hig/ie9BkLaTX7MrVpUWjfEHPTGioa1JgHXfLtnKzcMAFU234lyAw2iec5my+Sk7Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022263; c=relaxed/simple;
-	bh=NzZBpfAwegDoOEv+ZnXhx2l/ZxguPrZZ7Y1t1tmWY/U=;
+	s=arc-20240116; t=1755023409; c=relaxed/simple;
+	bh=fl/4GkvEPBdxd1ub4dFcpsYUCvH53O+j4SMrWEoSZj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Eh/SNhCNWZfeWsZeQCyCM21iQFCWIy8wIvUXS62OluIYVbYPGBJseI87taDo6AO1kor5deRjavmpg6cHNciPKHKibnHsuYUeMH2XG4P6rh4tFAOyzB9QM8xvaEhWhHuxU/COZ4i2NedVae9HyW5QC+Ti9otwQdsbllgaXYaPbaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoH0b7Al; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5877AC4CEF0;
-	Tue, 12 Aug 2025 18:11:01 +0000 (UTC)
+	 MIME-Version; b=qosNdemv4Kxgreul9S4h+sZkH44mSnQt/dpSCZxLeu1zpbJuc5FFFT9MRwk4zMs/AnGxtVTDwUX+TeRpBFsh+MtHOtBI+s1x4cPf/oiah2F6kCLqB0ecD8uOXIrMayZ9ue9tk4GqeFxzgufgFNGej24jk4623q3nUphtw0lS8r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y60MtRhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F34C4CEF0;
+	Tue, 12 Aug 2025 18:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022263;
-	bh=NzZBpfAwegDoOEv+ZnXhx2l/ZxguPrZZ7Y1t1tmWY/U=;
+	s=korg; t=1755023409;
+	bh=fl/4GkvEPBdxd1ub4dFcpsYUCvH53O+j4SMrWEoSZj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VoH0b7AlI4XadG6F3k7/86l9V8cgC4KCIKkkrBth54SEF+X/fG3Uo2jB+jlZgfh6A
-	 r6mwY8vqNLqScOSFr25PRTrOYUL48J8nSzPxMVBuJ56RmFQrXO4Udde2XyxM4sTQvN
-	 s/iKEeJOmfk6ZQ8dKV+AYHVS8c3pxd+Z1CrqmiBM=
+	b=y60MtRhIVDi1LM5uU+peXoWa1Sv8tn63u2F+rI/iYUy8gLzvJz9/onRPpdifVE5Cv
+	 tcD3Jw+ANrPrcvKltoS5GibErk5bXmO9KKw5thtmAjRYWhoJMECi7Rxvvowq0crgcp
+	 sPakFHoWUFdl9Wlw1khY9xIlHKdt2L315FSTOXg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/369] drm/panthor: Add missing explicit padding in drm_panthor_gpu_info
+Subject: [PATCH 6.16 072/627] mei: vsc: Fix "BUG: Invalid wait context" lockdep error
 Date: Tue, 12 Aug 2025 19:26:07 +0200
-Message-ID: <20250812173017.407406077@linuxfoundation.org>
+Message-ID: <20250812173422.049883369@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 95cbab48782bf62e4093837dc15ac6133902c12f ]
+[ Upstream commit cee3dba7b7416c02ff3cd27489f82859cc852532 ]
 
-drm_panthor_gpu_info::shader_present is currently automatically offset
-by 4 byte to meet Arm's 32-bit/64-bit field alignment rules, but those
-constraints don't stand on 32-bit x86 and cause a mismatch when running
-an x86 binary in a user emulated environment like FEX. It's also
-generally agreed that uAPIs should explicitly pad their struct fields,
-which we originally intended to do, but a mistake slipped through during
-the submission process, leading drm_panthor_gpu_info::shader_present to
-be misaligned.
+Kernels build with CONFIG_PROVE_RAW_LOCK_NESTING report the following
+tp-vsc lockdep error:
 
-This uAPI change doesn't break any of the existing users of panthor
-which are either arm32 or arm64 where the 64-bit alignment of
-u64 fields is already enforced a the compiler level.
+=============================
+ [ BUG: Invalid wait context ]
+ ...
+ swapper/10/0 is trying to lock:
+ ffff88819c271888 (&tp->xfer_wait){....}-{3:3},
+  at: __wake_up (kernel/sched/wait.c:106 kernel/sched/wait.c:127)
+ ...
+ Call Trace:
+ <IRQ>
+ ...
+ __raw_spin_lock_irqsave (./include/linux/spinlock_api_smp.h:111)
+ __wake_up (kernel/sched/wait.c:106 kernel/sched/wait.c:127)
+ vsc_tp_isr (drivers/misc/mei/vsc-tp.c:110) mei_vsc_hw
+ __handle_irq_event_percpu (kernel/irq/handle.c:158)
+ handle_irq_event (kernel/irq/handle.c:195 kernel/irq/handle.c:210)
+ handle_edge_irq (kernel/irq/chip.c:833)
+ ...
+ </IRQ>
 
-Changes in v2:
-- Rename the garbage field into pad0 and adjust the comment accordingly
-- Add Liviu's A-b
+The root-cause of this is the IRQF_NO_THREAD flag used by the intel-pinctrl
+code. Setting IRQF_NO_THREAD requires all interrupt handlers for GPIO ISRs
+to use raw-spinlocks only since normal spinlocks can sleep in PREEMPT-RT
+kernels and with IRQF_NO_THREAD the interrupt handlers will always run in
+an atomic context [1].
 
-Changes in v3:
-- Add R-bs
+vsc_tp_isr() calls wake_up(&tp->xfer_wait), which uses a regular spinlock,
+breaking the raw-spinlocks only rule for Intel GPIO ISRs.
 
-Fixes: 0f25e493a246 ("drm/panthor: Add uAPI")
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250606080932.4140010-2-boris.brezillon@collabora.com
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Make vsc_tp_isr() run as threaded ISR instead of as hard ISR to fix this.
+
+Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+Link: https://lore.kernel.org/linux-gpio/18ab52bd-9171-4667-a600-0f52ab7017ac@kernel.org/ [1]
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-10-hansg@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/drm/panthor_drm.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/mei/vsc-tp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
-index e23a7f9b0eac..21af62e3cc6f 100644
---- a/include/uapi/drm/panthor_drm.h
-+++ b/include/uapi/drm/panthor_drm.h
-@@ -327,6 +327,9 @@ struct drm_panthor_gpu_info {
- 	/** @as_present: Bitmask encoding the number of address-space exposed by the MMU. */
- 	__u32 as_present;
+diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+index b654ea59f305..0de5acc33b74 100644
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -497,7 +497,7 @@ static int vsc_tp_probe(struct spi_device *spi)
+ 	tp->spi = spi;
  
-+	/** @pad0: MBZ. */
-+	__u32 pad0;
-+
- 	/** @shader_present: Bitmask encoding the shader cores exposed by the GPU. */
- 	__u64 shader_present;
- 
+ 	irq_set_status_flags(spi->irq, IRQ_DISABLE_UNLAZY);
+-	ret = request_threaded_irq(spi->irq, vsc_tp_isr, NULL,
++	ret = request_threaded_irq(spi->irq, NULL, vsc_tp_isr,
+ 				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+ 				   dev_name(dev), tp);
+ 	if (ret)
 -- 
 2.39.5
 
