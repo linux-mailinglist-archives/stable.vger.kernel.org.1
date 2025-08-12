@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48527B232FA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C2CB234FB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 571EA3AF859
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07DAD1B63AE2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0C92ED17F;
-	Tue, 12 Aug 2025 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A282FF141;
+	Tue, 12 Aug 2025 18:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grE0ZCMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/ez7WuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7873F9D2;
-	Tue, 12 Aug 2025 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CF227FB12;
+	Tue, 12 Aug 2025 18:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022746; cv=none; b=tWtkOAVg+9VO0ZiwXx0I4wMyBwbEqPONR5256qPL35+k/yyOYcKWaleXjjRooB0vCnlkiItge5wap2ER50iIMv1EPdBSTsXLlqzrURnPrgBA4eo0xM7+ZLviY75a+YTltyg3JzmGZgDh8FN8fCfTrEcgmRH9EHU0PtOZT4SgZew=
+	t=1755024119; cv=none; b=bXnV68kZ+S+eUDcu1d0fv9iBLJJG0V/l59Zdphs1yxpDJ1dhJVCg/t79R4ZFqluU5ZmcLs8fhwT97R4QFA+SgvIRGY1I+BUiYpR+foSiynWQevdA3N/oBAdnLulti6jZlHIynXEZmbxsvGq2ctINBLGt3WWe7eUmqtjt3+97qTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022746; c=relaxed/simple;
-	bh=LLBznlxEkRjF9iBImvAEYsIQQyXo7R55ijhGrcLu4Os=;
+	s=arc-20240116; t=1755024119; c=relaxed/simple;
+	bh=X8Rw7gJFIuDm6J6BoC5pVL2VCpEx3B+e9P26cqXUqqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5FV2wMunxB4LDtfydUSrgc4eIMV9xyjZIfWFNclBYKtlMPVYDuaD0sNf8nj5SLZfl5ULJLeFrLypnIy+CuSidJRl7tsciaqu0BM9hVDxXJToEfGODfv42mEImGpnq7+kIASuiPa2ATkpKWgW4n6h2Uc/Ii1KNQ8ojDLEzHxk9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grE0ZCMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF50EC4CEF1;
-	Tue, 12 Aug 2025 18:19:05 +0000 (UTC)
+	 MIME-Version; b=ALIDmTG5Qnikam9TY3UE085AJ+IP3gLICg88fapyrJf6B/y5S3ws4ywHCE73K8kHm0tjXLXXr+/CmQcqIqCwYmhnrhpd6l/SeLaYGJ3gsyccpoEb4e2Tjlr04M1q9glg0TL24bCRUu8gbJS/K6SgxB9KF3rUObEwp5hs2mwYmi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/ez7WuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5844DC4CEF0;
+	Tue, 12 Aug 2025 18:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022746;
-	bh=LLBznlxEkRjF9iBImvAEYsIQQyXo7R55ijhGrcLu4Os=;
+	s=korg; t=1755024118;
+	bh=X8Rw7gJFIuDm6J6BoC5pVL2VCpEx3B+e9P26cqXUqqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=grE0ZCMINScZrsgzuS4voIKOtBOHQeUDY1Pe7HUV1L86GIKAOAUD/X8KWOqq/9k4b
-	 8IBySI/LjNuIcSrW4rZtgHHzKuWz4kIxIvl5qxIJ90Iwm+W2is2Gp8h429K7NW59rP
-	 1Cj0wpw831KWK0fM4qek6EQFH3nRTq4I0e5nDUew=
+	b=a/ez7WuS29xbZpZS1nqa8wt0vnmzTGt20F4Ff64X6qDGlc6h2tmj/NTMt7gDV3l2Z
+	 +ZE/uTHkZB9EoiY0cIHp10GBUvxrCVPB8VTmO23eanXoJiUsriqCHkfdOhisQfuC7Y
+	 mcR8SGlkjiF8UKKBBOEWenMOvCyO5hI4qAm62qYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 245/369] rtc: nct3018y: fix incorrect maximum clock rate handling
+Subject: [PATCH 6.16 247/627] kcsan: test: Initialize dummy variable
 Date: Tue, 12 Aug 2025 19:29:02 +0200
-Message-ID: <20250812173023.984341742@linuxfoundation.org>
+Message-ID: <20250812173428.699260211@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit 437c59e4b222cd697b4cf95995d933e7d583c5f1 ]
+[ Upstream commit 9872916ad1a1a5e7d089e05166c85dbd65e5b0e8 ]
 
-When nct3018y_clkout_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+Newer compiler versions rightfully point out:
 
-Fixes: 5adbaed16cc63 ("rtc: Add NCT3018Y real time clock driver")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-3-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+ kernel/kcsan/kcsan_test.c:591:41: error: variable 'dummy' is
+ uninitialized when passed as a const pointer argument here
+ [-Werror,-Wuninitialized-const-pointer]
+   591 |         KCSAN_EXPECT_READ_BARRIER(atomic_read(&dummy), false);
+       |                                                ^~~~~
+ 1 error generated.
+
+Although this particular test does not care about the value stored in
+the dummy atomic variable, let's silence the warning.
+
+Link: https://lkml.kernel.org/r/CA+G9fYu8JY=k-r0hnBRSkQQrFJ1Bz+ShdXNwC1TNeMt0eXaxeA@mail.gmail.com
+Fixes: 8bc32b348178 ("kcsan: test: Add test cases for memory barrier instrumentation")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-nct3018y.c | 2 +-
+ kernel/kcsan/kcsan_test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-nct3018y.c b/drivers/rtc/rtc-nct3018y.c
-index 76c5f464b2da..cea05fca0bcc 100644
---- a/drivers/rtc/rtc-nct3018y.c
-+++ b/drivers/rtc/rtc-nct3018y.c
-@@ -376,7 +376,7 @@ static long nct3018y_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
- 		if (clkout_rates[i] <= rate)
- 			return clkout_rates[i];
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index c2871180edcc..49ab81faaed9 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -533,7 +533,7 @@ static void test_barrier_nothreads(struct kunit *test)
+ 	struct kcsan_scoped_access *reorder_access = NULL;
+ #endif
+ 	arch_spinlock_t arch_spinlock = __ARCH_SPIN_LOCK_UNLOCKED;
+-	atomic_t dummy;
++	atomic_t dummy = ATOMIC_INIT(0);
  
--	return 0;
-+	return clkout_rates[0];
- }
- 
- static int nct3018y_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	KCSAN_TEST_REQUIRES(test, reorder_access != NULL);
+ 	KCSAN_TEST_REQUIRES(test, IS_ENABLED(CONFIG_SMP));
 -- 
 2.39.5
 
