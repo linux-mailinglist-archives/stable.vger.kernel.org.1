@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5A7B23447
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D7AB22F6C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F2B188F57F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AA25565338
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE81D2FA0DF;
-	Tue, 12 Aug 2025 18:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4002FE586;
+	Tue, 12 Aug 2025 17:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoeuG6ss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQBp22A9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D51E1A9F89;
-	Tue, 12 Aug 2025 18:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83052FDC2C;
+	Tue, 12 Aug 2025 17:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023599; cv=none; b=TkNvJJRT6sbN9dpgfjD6iTKj5I+u2soQR49gzeSSPoXefuO7cfQ93slQ8Z8hgd8aLUEFJEbxwnAqaG+gqVgA23eiWPnWNXAeosFHPxBRTXxHxamTZh42IzzXIgfhMPMVQZ2YxA16Ne5drgjYV+y8f5AlHKcgGpQcm0Fu/TI9BWM=
+	t=1755020275; cv=none; b=BRqw+h58Gzj1fZu1Ea1rFQRhYPmf/TS836T0QO7+xsOzcEpBXL1hGpdykStwJ5uImzh0jb7c6M/ICrXp1MMnhyzWNMpzZjEUbfM1k2idUUETCLtPAfCSCGQwt0n1MLEbBXV/VM4mkGe5F3fHOIS+XHMk95gJSIL8C+ISSZ2ewks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023599; c=relaxed/simple;
-	bh=1HMe36xwIi61NDC8EbteIqDaUdRC1Ks3OpRQ+oYeSvI=;
+	s=arc-20240116; t=1755020275; c=relaxed/simple;
+	bh=BMfFMVP65wDWRor72k1I9b2EuPB3y7/hojKdLDSufUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I+tYEMTP6axOzC/BQ6P86EbPH8bYOXQRalPfiQtWU5X+YZGkkT32LWtPNj1YLf8n1YWCUEiLQ4caXGbthgokOmp4zM6TiOCM75WjDMjDpMSvfNP5QCkOkLCNhTga4qta/DcxzVh6lEe9OGGvOOxfZkfzggVSNFR2NPDpPLvJjXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoeuG6ss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EACC4CEF1;
-	Tue, 12 Aug 2025 18:33:16 +0000 (UTC)
+	 MIME-Version; b=kNERxYc6vAbAlNzCko61quGW3Jcx1YMj26DeU0h4n3R2r557+eQEdBYDPJTu161097SRQCX3zhg8roo0jGkiZwOg8K5SBWxHjun+LVua7X4OWg1W4qJnpV8RJscH3z0w5yKbg1J7mSp+KLjWzQbPO8M9mEKI/25R05/jCwKQjPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQBp22A9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30D5C4CEF0;
+	Tue, 12 Aug 2025 17:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023597;
-	bh=1HMe36xwIi61NDC8EbteIqDaUdRC1Ks3OpRQ+oYeSvI=;
+	s=korg; t=1755020274;
+	bh=BMfFMVP65wDWRor72k1I9b2EuPB3y7/hojKdLDSufUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VoeuG6ss0qaFNNXHlTbG8ZHKLJor5Vq1/Tyl4MlD05RtVudih8NgZaWkJn1RZDF54
-	 7PnHQ4SgbM+KuCFUa1HHCNoi6ZQ4HktMibRfTFlYKSglrT3xXTmY3Wy8Y+5fKM6+5a
-	 vBWfR1YdeG0VDnKNTMkSitedCp3LRAeVzBmXUOyI=
+	b=qQBp22A97GzoeQty5C/uFgiueXTWVC1o1Vj4pto8zAi4KafVDDaXDmwLHdIUqz/yf
+	 6Rj96pW0KV8QI5Y+c5YSucIjHVNLYZiQAZU1t7RQbybK2qt4N/Dt/tplv607Jpn9yh
+	 rf6XqKadqlHJgKEnUMJqN4pZ2EJeSNwfRDWOgz0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 125/627] platform/x86: oxpec: Fix turbo register for G1 AMD
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 032/253] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
 Date: Tue, 12 Aug 2025 19:27:00 +0200
-Message-ID: <20250812173424.072449444@linuxfoundation.org>
+Message-ID: <20250812172950.099874984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,196 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 232b41d3c2ce8cf4641a174416676458bf0de5b2 ]
+commit ee9f3a81ab08dfe0538dbd1746f81fd4d5147fdc upstream.
 
-Turns out that the AMD variant of the G1 uses different EC registers
-than the Intel variant. Differentiate them and apply the correct ones
-to the AMD variant.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_eth_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-Fixes: b369395c895b ("platform/x86: oxpec: Add support for the OneXPlayer G1")
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://lore.kernel.org/r/20250718163305.159232-1-lkml@antheas.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-2-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/oxpec.c | 37 +++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/oxpec.c b/drivers/platform/x86/oxpec.c
-index 06759036945d..9839e8cb82ce 100644
---- a/drivers/platform/x86/oxpec.c
-+++ b/drivers/platform/x86/oxpec.c
-@@ -58,7 +58,8 @@ enum oxp_board {
- 	oxp_mini_amd_a07,
- 	oxp_mini_amd_pro,
- 	oxp_x1,
--	oxp_g1,
-+	oxp_g1_i,
-+	oxp_g1_a,
- };
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -4446,12 +4446,19 @@ static int dpaa2_eth_connect_mac(struct
+ 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
+ 		return PTR_ERR(dpmac_dev);
  
- static enum oxp_board board;
-@@ -247,14 +248,14 @@ static const struct dmi_system_id dmi_table[] = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
- 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "ONEXPLAYER G1 A"),
- 		},
--		.driver_data = (void *)oxp_g1,
-+		.driver_data = (void *)oxp_g1_a,
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
- 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "ONEXPLAYER G1 i"),
- 		},
--		.driver_data = (void *)oxp_g1,
-+		.driver_data = (void *)oxp_g1_i,
- 	},
- 	{
- 		.matches = {
-@@ -352,7 +353,8 @@ static umode_t tt_toggle_is_visible(struct kobject *kobj,
- 	case oxp_mini_amd_a07:
- 	case oxp_mini_amd_pro:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
-+	case oxp_g1_a:
- 		return attr->mode;
- 	default:
- 		break;
-@@ -381,12 +383,13 @@ static ssize_t tt_toggle_store(struct device *dev,
- 	case aok_zoe_a1:
- 	case oxp_fly:
- 	case oxp_mini_amd_pro:
-+	case oxp_g1_a:
- 		reg = OXP_TURBO_SWITCH_REG;
- 		mask = OXP_TURBO_TAKE_VAL;
- 		break;
- 	case oxp_2:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
- 		reg = OXP_2_TURBO_SWITCH_REG;
- 		mask = OXP_TURBO_TAKE_VAL;
- 		break;
-@@ -426,12 +429,13 @@ static ssize_t tt_toggle_show(struct device *dev,
- 	case aok_zoe_a1:
- 	case oxp_fly:
- 	case oxp_mini_amd_pro:
-+	case oxp_g1_a:
- 		reg = OXP_TURBO_SWITCH_REG;
- 		mask = OXP_TURBO_TAKE_VAL;
- 		break;
- 	case oxp_2:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
- 		reg = OXP_2_TURBO_SWITCH_REG;
- 		mask = OXP_TURBO_TAKE_VAL;
- 		break;
-@@ -520,7 +524,8 @@ static bool oxp_psy_ext_supported(void)
- {
- 	switch (board) {
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
-+	case oxp_g1_a:
- 	case oxp_fly:
- 		return true;
- 	default:
-@@ -659,7 +664,8 @@ static int oxp_pwm_enable(void)
- 	case oxp_mini_amd_a07:
- 	case oxp_mini_amd_pro:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
-+	case oxp_g1_a:
- 		return write_to_ec(OXP_SENSOR_PWM_ENABLE_REG, PWM_MODE_MANUAL);
- 	default:
- 		return -EINVAL;
-@@ -686,7 +692,8 @@ static int oxp_pwm_disable(void)
- 	case oxp_mini_amd_a07:
- 	case oxp_mini_amd_pro:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
-+	case oxp_g1_a:
- 		return write_to_ec(OXP_SENSOR_PWM_ENABLE_REG, PWM_MODE_AUTO);
- 	default:
- 		return -EINVAL;
-@@ -713,7 +720,8 @@ static int oxp_pwm_read(long *val)
- 	case oxp_mini_amd_a07:
- 	case oxp_mini_amd_pro:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
-+	case oxp_g1_a:
- 		return read_from_ec(OXP_SENSOR_PWM_ENABLE_REG, 1, val);
- 	default:
- 		return -EOPNOTSUPP;
-@@ -742,7 +750,7 @@ static int oxp_pwm_fan_speed(long *val)
- 		return read_from_ec(ORANGEPI_SENSOR_FAN_REG, 2, val);
- 	case oxp_2:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
- 		return read_from_ec(OXP_2_SENSOR_FAN_REG, 2, val);
- 	case aok_zoe_a1:
- 	case aya_neo_2:
-@@ -757,6 +765,7 @@ static int oxp_pwm_fan_speed(long *val)
- 	case oxp_mini_amd:
- 	case oxp_mini_amd_a07:
- 	case oxp_mini_amd_pro:
-+	case oxp_g1_a:
- 		return read_from_ec(OXP_SENSOR_FAN_REG, 2, val);
- 	default:
- 		return -EOPNOTSUPP;
-@@ -776,7 +785,7 @@ static int oxp_pwm_input_write(long val)
- 		return write_to_ec(ORANGEPI_SENSOR_PWM_REG, val);
- 	case oxp_2:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
- 		/* scale to range [0-184] */
- 		val = (val * 184) / 255;
- 		return write_to_ec(OXP_SENSOR_PWM_REG, val);
-@@ -796,6 +805,7 @@ static int oxp_pwm_input_write(long val)
- 	case aok_zoe_a1:
- 	case oxp_fly:
- 	case oxp_mini_amd_pro:
-+	case oxp_g1_a:
- 		return write_to_ec(OXP_SENSOR_PWM_REG, val);
- 	default:
- 		return -EOPNOTSUPP;
-@@ -816,7 +826,7 @@ static int oxp_pwm_input_read(long *val)
- 		break;
- 	case oxp_2:
- 	case oxp_x1:
--	case oxp_g1:
-+	case oxp_g1_i:
- 		ret = read_from_ec(OXP_SENSOR_PWM_REG, 1, val);
- 		if (ret)
- 			return ret;
-@@ -842,6 +852,7 @@ static int oxp_pwm_input_read(long *val)
- 	case aok_zoe_a1:
- 	case oxp_fly:
- 	case oxp_mini_amd_pro:
-+	case oxp_g1_a:
- 	default:
- 		ret = read_from_ec(OXP_SENSOR_PWM_REG, 1, val);
- 		if (ret)
--- 
-2.39.5
-
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
+ 
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
++
+ 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
+ 
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = priv->mc_io;
+@@ -4478,6 +4485,8 @@ err_close_mac:
+ 	priv->mac = NULL;
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
+ }
+ 
 
 
 
