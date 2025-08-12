@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-168884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0550B2370E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:07:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3EBB23722
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA8337B1220
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:06:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1D04626ED9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F9E29BDA9;
-	Tue, 12 Aug 2025 19:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D292D0C69;
+	Tue, 12 Aug 2025 19:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ab3WhQ3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKupqL88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926AB21C187;
-	Tue, 12 Aug 2025 19:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D4021C187;
+	Tue, 12 Aug 2025 19:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025655; cv=none; b=RKF34vs9Vi1Gmr2nJ9Je9alUPAgrLIzzni5qua7Cx8aQzJ8TniO5JV2hiRbl8pQtzw/PM5pRz00CV3nFU94IeT8liEIVL7Mu+QW3YlQ5sMpJE9q5HhkcqHqm1woOxtHLHUBDwZr0g+SWYmtv1885ukuSmGbPVsAImDNLUoDzE4c=
+	t=1755025662; cv=none; b=KoAGcYNZeCYdGdVnqVxudfcCCAz+9HE2FZRQ31TGEIWFYWK5AkJqNoE3aIiJI5UqxcG/b+UDreGyzT0Ia1J++ayOUzBRMTyV+dNxCVaKkLVX4aMt6HZEdsdLzrPUs3VJNg61+YxJgyJIwFVD62VSkVE+CowCv3kWqE2SFILWGCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025655; c=relaxed/simple;
-	bh=H9l/3bGjeZZVg/kd3rpl23mcP0YV4skb6PVzdksU/t0=;
+	s=arc-20240116; t=1755025662; c=relaxed/simple;
+	bh=HeTKE57juOfO9UGjdwikkKl9Zf4iiuK7E//UWrQ5lt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YM0mT4stY8VzxoWDRz039LIJHyJRN9Xptmjax53IUHTCcJVGMDzSZoYFGC2ORClv7jNsRLyPJSnlgZ3H2NOZI5TBTHtJxbZHj1saH/JoKIUKYWw441W9iDpbdFzH3kI6+QE9vSP+ygz6AfeYnEXlIh5e2PuuM0eYHZVkinulpoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ab3WhQ3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C24C4CEF0;
-	Tue, 12 Aug 2025 19:07:34 +0000 (UTC)
+	 MIME-Version; b=TwO0OIlOFAtuxf2I2lMrD29Sn7agoGo9lHqZL8uEnOLq/C5agE9d0Hg3AKi1yEnEwRXN59xTsw0WUos2Ig6VBsXSOi8abpkfD6o4UhSW5YG8zdrSeT25c94r22dJvT4Bl/CceYWBvOFE4rVDFWaGvko8TnuAZhT5fQokF7oTNoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKupqL88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95E9C4CEF0;
+	Tue, 12 Aug 2025 19:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025655;
-	bh=H9l/3bGjeZZVg/kd3rpl23mcP0YV4skb6PVzdksU/t0=;
+	s=korg; t=1755025662;
+	bh=HeTKE57juOfO9UGjdwikkKl9Zf4iiuK7E//UWrQ5lt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ab3WhQ3T1hIDnC88qJ7TEdQM+RrkA9txnXuTySTL5T9jFQtXc989ZA7V2VDhAd5x/
-	 s94H2gP81gNvkp4s3BKyw2dFJ6QnNXX7LlEz86RwOb0K6uAfYxBV51IEC7gtE1cySn
-	 bPYb4EU8LoLrQPBrcD7J/Vt8CJ90u2fWE6ui0orM=
+	b=yKupqL88AtCt5WtfTPxx0nFEmd0WQQW9bXJjGOywDh1p5DxK2GdI2zKuVDgR9u1MO
+	 lMzeVdUX0rzfTxoC9HM7dbVxCuR+dRmQl5OTnyleuFumbkftnfFV9d7OybJhz/xE+/
+	 jqhGwMhwHyFVEw4SCCOTv1nD+keG0DYo7K96OXTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 105/480] netconsole: Only register console drivers when targets are configured
-Date: Tue, 12 Aug 2025 19:45:13 +0200
-Message-ID: <20250812174401.809630068@linuxfoundation.org>
+Subject: [PATCH 6.15 106/480] bpf, ktls: Fix data corruption when using bpf_msg_pop_data() in ktls
+Date: Tue, 12 Aug 2025 19:45:14 +0200
+Message-ID: <20250812174401.849491878@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,125 +69,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit bc0cb64db1c765a81f69997d5a28f539e1731bc0 ]
+[ Upstream commit 178f6a5c8cb3b6be1602de0964cd440243f493c9 ]
 
-The netconsole driver currently registers the basic console driver
-unconditionally during initialization, even when only extended targets
-are configured. This results in unnecessary console registration and
-performance overhead, as the write_msg() callback is invoked for every
-log message only to return early when no matching targets are found.
+When sending plaintext data, we initially calculated the corresponding
+ciphertext length. However, if we later reduced the plaintext data length
+via socket policy, we failed to recalculate the ciphertext length.
 
-Optimize the driver by conditionally registering console drivers based
-on the actual target configuration. The basic console driver is now
-registered only when non-extended targets exist, same as the extended
-console. The implementation also handles dynamic target creation through
-the configfs interface.
+This results in transmitting buffers containing uninitialized data during
+ciphertext transmission.
 
-This change eliminates unnecessary console driver registrations,
-redundant write_msg() callbacks for unused console types, and associated
-lock contention and target list iterations. The optimization is
-particularly beneficial for systems using only the most common extended
-console type.
+This causes uninitialized bytes to be appended after a complete
+"Application Data" packet, leading to errors on the receiving end when
+parsing TLS record.
 
-Fixes: e2f15f9a79201 ("netconsole: implement extended console support")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20250609-netcons_ext-v3-1-5336fa670326@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/bpf/20250609020910.397930-2-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ net/tls/tls_sw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 176935a8645f..a35b1fd4337b 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -86,10 +86,10 @@ static DEFINE_SPINLOCK(target_list_lock);
- static DEFINE_MUTEX(target_cleanup_list_lock);
- 
- /*
-- * Console driver for extended netconsoles.  Registered on the first use to
-- * avoid unnecessarily enabling ext message formatting.
-+ * Console driver for netconsoles.  Register only consoles that have
-+ * an associated target of the same type.
-  */
--static struct console netconsole_ext;
-+static struct console netconsole_ext, netconsole;
- 
- struct netconsole_target_stats  {
- 	u64_stats_t xmit_drop_count;
-@@ -97,6 +97,11 @@ struct netconsole_target_stats  {
- 	struct u64_stats_sync syncp;
- };
- 
-+enum console_type {
-+	CONS_BASIC = BIT(0),
-+	CONS_EXTENDED = BIT(1),
-+};
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index fc88e34b7f33..549d1ea01a72 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -872,6 +872,19 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 		delta = msg->sg.size;
+ 		psock->eval = sk_psock_msg_verdict(sk, psock, msg);
+ 		delta -= msg->sg.size;
 +
- /* Features enabled in sysdata. Contrary to userdata, this data is populated by
-  * the kernel. The fields are designed as bitwise flags, allowing multiple
-  * features to be set in sysdata_fields.
-@@ -491,6 +496,12 @@ static ssize_t enabled_store(struct config_item *item,
- 		if (nt->extended && !console_is_registered(&netconsole_ext))
- 			register_console(&netconsole_ext);
- 
-+		/* User might be enabling the basic format target for the very
-+		 * first time, make sure the console is registered.
-+		 */
-+		if (!nt->extended && !console_is_registered(&netconsole))
-+			register_console(&netconsole);
++		if ((s32)delta > 0) {
++			/* It indicates that we executed bpf_msg_pop_data(),
++			 * causing the plaintext data size to decrease.
++			 * Therefore the encrypted data size also needs to
++			 * correspondingly decrease. We only need to subtract
++			 * delta to calculate the new ciphertext length since
++			 * ktls does not support block encryption.
++			 */
++			struct sk_msg *enc = &ctx->open_rec->msg_encrypted;
 +
- 		/*
- 		 * Skip netpoll_parse_options() -- all the attributes are
- 		 * already configured via configfs. Just print them out.
-@@ -1690,8 +1701,8 @@ static int __init init_netconsole(void)
- {
- 	int err;
- 	struct netconsole_target *nt, *tmp;
-+	u32 console_type_needed = 0;
- 	unsigned int count = 0;
--	bool extended = false;
- 	unsigned long flags;
- 	char *target_config;
- 	char *input = config;
-@@ -1707,9 +1718,10 @@ static int __init init_netconsole(void)
- 			}
- 			/* Dump existing printks when we register */
- 			if (nt->extended) {
--				extended = true;
-+				console_type_needed |= CONS_EXTENDED;
- 				netconsole_ext.flags |= CON_PRINTBUFFER;
- 			} else {
-+				console_type_needed |= CONS_BASIC;
- 				netconsole.flags |= CON_PRINTBUFFER;
- 			}
- 
-@@ -1728,9 +1740,10 @@ static int __init init_netconsole(void)
- 	if (err)
- 		goto undonotifier;
- 
--	if (extended)
-+	if (console_type_needed & CONS_EXTENDED)
- 		register_console(&netconsole_ext);
--	register_console(&netconsole);
-+	if (console_type_needed & CONS_BASIC)
-+		register_console(&netconsole);
- 	pr_info("network logging started\n");
- 
- 	return err;
-@@ -1760,7 +1773,8 @@ static void __exit cleanup_netconsole(void)
- 
- 	if (console_is_registered(&netconsole_ext))
- 		unregister_console(&netconsole_ext);
--	unregister_console(&netconsole);
-+	if (console_is_registered(&netconsole))
-+		unregister_console(&netconsole);
- 	dynamic_netconsole_exit();
- 	unregister_netdevice_notifier(&netconsole_netdev_notifier);
- 
++			sk_msg_trim(sk, enc, enc->sg.size - delta);
++		}
+ 	}
+ 	if (msg->cork_bytes && msg->cork_bytes > msg->sg.size &&
+ 	    !enospc && !full_record) {
 -- 
 2.39.5
 
