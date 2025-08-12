@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B1EB2324D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE085B23414
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CA97189CE41
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C40703A93EA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1032B1EF38C;
-	Tue, 12 Aug 2025 18:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8802FA0F9;
+	Tue, 12 Aug 2025 18:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REuvD9VM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Clkw8EGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D83305E08;
-	Tue, 12 Aug 2025 18:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2A91E500C;
+	Tue, 12 Aug 2025 18:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022218; cv=none; b=Om4D7YAebMmjT/bWb5fHUR52My7RI3oDAQ8W7U8GjUxDTQTEEXUyZH8PaHNH71JsTKBrQ5sob2NerrOjEoTkeyWmtYi2X5wpJzPzkZaLhX419oWT2xnwIKXvunQ4QXGYQ2Io3nU6Mltqx1GymS97eg9kneYBN9P1ivnGz/weWdo=
+	t=1755023484; cv=none; b=PS3wzxYJg8tPLcAY/7kG8VyDe/9xxMA8sA82t6cTUBx5GNlkf3who3tTfT1p7J3fMBJ+IL4Sy7KoB4BYWOEiMhrjr9G1XsAo8+paxvKGDlRqQ7SlQIubPYj0V3Ic2OztaaLRsOdsDx6izcEZHh2I88/0kqh26TSyvCoJr7W+lxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022218; c=relaxed/simple;
-	bh=xxnweZD77CcKJOEuta/z8Fa9y7v48PNsWLt1ayMU5lw=;
+	s=arc-20240116; t=1755023484; c=relaxed/simple;
+	bh=iRh3fCEanC6n5Kw6eIN1tuWQTPvJjj+lJkWuIOEFMEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYJGtzcfuiwM7XWSSfgDSUI7Y5mS2iBlGmj71xvoA5lMZZsstxhtoQfGtOY6zzrmHNTj7SuXVRKlbJ6GoOmN8stAK3+Hmf+w3x3U76/DavKr5RRGrTVel+6UlG/RsiW0tr7HFC41wzGTt2lhVfe+Hxk4FL0WS1lhCv43NqJjpI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REuvD9VM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CDAC4CEF0;
-	Tue, 12 Aug 2025 18:10:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G+HXNzI9j/t3KsTvk1isxn2JfcW/GyLVa2QR3g3lnnQfN3dBuUA+fY2oCuwUqljzcCxlv4y3UXnoRu0lBd27oKFkvRMzn+42JjUrvGXHnnqJ6vV1L/wv1EyWdAiTtopr07vhNkuEHqqagieX5bRc4I3iAiIUvTwpR1y+2CycdLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Clkw8EGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60ADC4CEF0;
+	Tue, 12 Aug 2025 18:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022218;
-	bh=xxnweZD77CcKJOEuta/z8Fa9y7v48PNsWLt1ayMU5lw=;
+	s=korg; t=1755023484;
+	bh=iRh3fCEanC6n5Kw6eIN1tuWQTPvJjj+lJkWuIOEFMEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REuvD9VMy3LeJZSO3Ir70uqinzlodZHuAeAFxBbXDo6jDGJsT9vKMSO9d6+xbqB6y
-	 s79vQO09OAhdF12koCIcJDcHqA23RYKkFYEvNsmLYHMT4hRxaZW5Z/1ggBDAbVaM+M
-	 7Fu02xA57cQJR9odROF5vSrVGF8mIcaK7pFdCX1A=
+	b=Clkw8EGvSF7IJ80NSsYpe1VHtqvp6zO8t7wZ6s3gYtJB+hDPyQgn3e/dgl67JxvPj
+	 yxen1+700QnThZb1kvYnGwHarJIZD/HbAbLTz1sVqtEcc8g6W+HfQ5FEDjJGikLgyJ
+	 z6DDfgxP7rybjyz9qxSwyuSLFIS8UR1agddbEPP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/369] kselftest/arm64: Fix check for setting new VLs in sve-ptrace
+Subject: [PATCH 6.16 092/627] arm: dts: ti: omap: Fixup pinheader typo
 Date: Tue, 12 Aug 2025 19:26:27 +0200
-Message-ID: <20250812173018.162098996@linuxfoundation.org>
+Message-ID: <20250812173422.811577643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Albin Törnqvist <albin.tornqvist@codiax.se>
 
-[ Upstream commit 867446f090589626497638f70b10be5e61a0b925 ]
+[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
 
-The check that the new vector length we set was the expected one was typoed
-to an assignment statement which for some reason the compilers didn't spot,
-most likely due to the macros involved.
+This commit fixes a typo introduced in commit
+ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
+gpio0_7 is located on the P9 header on the BBB.
+This was verified with a BeagleBone Black by toggling the pin and
+checking with a multimeter that it corresponds to pin 42 on the P9
+header.
 
-Fixes: a1d7111257cd ("selftests: arm64: More comprehensively test the SVE ptrace interface")
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-1-998fcfa6f240@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
+Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
+Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/fp/sve-ptrace.c | 2 +-
+ arch/arm/boot/dts/ti/omap/am335x-boneblack.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-index 6d61992fe8a0..c6228176dd1a 100644
---- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
-+++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-@@ -251,7 +251,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
- 		return;
- 	}
- 
--	ksft_test_result(new_sve->vl = prctl_vl, "Set %s VL %u\n",
-+	ksft_test_result(new_sve->vl == prctl_vl, "Set %s VL %u\n",
- 			 type->name, vl);
- 
- 	free(new_sve);
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
+index 16b567e3cb47..b4fdcf9c02b5 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
+@@ -35,7 +35,7 @@ &gpio0 {
+ 		"P9_18 [spi0_d1]",
+ 		"P9_17 [spi0_cs0]",
+ 		"[mmc0_cd]",
+-		"P8_42A [ecappwm0]",
++		"P9_42A [ecappwm0]",
+ 		"P8_35 [lcd d12]",
+ 		"P8_33 [lcd d13]",
+ 		"P8_31 [lcd d14]",
 -- 
 2.39.5
 
