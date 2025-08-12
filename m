@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-167189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319ABB22D11
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE5DB22D0C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E6FA1889EA9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A540D169DFE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFD12DCF44;
-	Tue, 12 Aug 2025 16:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D963A2F7469;
+	Tue, 12 Aug 2025 16:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxNVccGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1VOTlFE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFBC2F7469
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EB02F7445
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015310; cv=none; b=IcDo2zJJ5GNQFnizPds8pq3orY2SiaGR77aCNWUyQUsMubnwRuTVzazofxQlt+I7hJvZ0vf7TF1LO7saAQ/MKUDmW+u3nNa8B5zzH+bHj9xzii0DdNyPwq5KCmvog+HWQz29Cf8GBC7dxWBIOgU1zyhhz6tcS9fDiOpELCqDYdA=
+	t=1755015320; cv=none; b=HDwHLyPbQu88eT3V0CVG30GwzSEbhnG2nz7XcLSsRmOiHNlVtKXVd7NdXQIoCg4sE6SA9inXDpDdulgsAUzi/zlROZBMtBEUtaTGTXnxJwXVg8mhbQNy7NpXdemOoIjdO6pwSrNFrJZG2nHo6hRI2fT8ecNnj4Tm6yKoWx5wFtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015310; c=relaxed/simple;
-	bh=Ql/3vjDg8cxQnfol90wmTJzYFdM9KpEwAnzyzyfZEaw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZAOo3CaIZ+qEtfzWeGcR1qSUzVbxwmX7kDOHsLoL4TEjN27xYBPKsfZ20eRyqcGr604eF63BI/YnxUXRdEXNRyHFRB8fq2Sm2FzeJC52i8SQxtD8ifiAHnKIMW4ezgRXN8BbD3wJYjecd0rQliVfI4eIyol5e8k5u1SImZae4v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxNVccGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3FBC4CEF0;
-	Tue, 12 Aug 2025 16:15:08 +0000 (UTC)
+	s=arc-20240116; t=1755015320; c=relaxed/simple;
+	bh=Hxkq5ff7NpWaI4Av0fLInNekVGsVjVPwqjaWJIu38ss=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JrOzRTSYiwoa7npirMzrG3+uoHFXwCSz1XZ73/3kDDIdriTAwgX8c8XsUdKT/LDF6ZMGA6Y/vIYiaQ73J7qmXIQR9t4JfzrSHg5M1SguMmEXKJJ5+G1apAeBdIJFdMPM3P1TcBYT8d3yTvk6hejKwEbOAmWBi5ZTFi8qT/dBzdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1VOTlFE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF20FC4CEF0;
+	Tue, 12 Aug 2025 16:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755015308;
-	bh=Ql/3vjDg8cxQnfol90wmTJzYFdM9KpEwAnzyzyfZEaw=;
+	s=korg; t=1755015320;
+	bh=Hxkq5ff7NpWaI4Av0fLInNekVGsVjVPwqjaWJIu38ss=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BxNVccGcMPw583Sq/k0Vd5fdXc1Kww398fENOSpohWRnIN3Ohvuyz0N7nyQ3idisF
-	 /Meue1mj67UY0t39zx+yVPYn1vJiTvh19US6NdZCb9T6vgABgo4qODYq1pZSNiIt0C
-	 XS5nFt+Nr+LfpL6UaoJqPec+uWxQQRrBdTHsTpyk=
-Subject: FAILED: patch "[PATCH] KVM: arm64: Filter out HCR_EL2 bits when running in" failed to apply to 6.15-stable tree
-To: maz@kernel.org,oliver.upton@linux.dev
+	b=s1VOTlFEDMSQeC6SbBsk/EKt/8hJr7BoPjqW5GQjCxJVmUvEmz6a1XbYR7vg2x4sL
+	 qpZEVAipQwaz1KVFiAHfI8HY6BPNRCrF1DbSyOs5t+Vstv4yKm+Rgbbo075k0QSAPK
+	 anxUZ+pCexsXXGh3C3cDipecxwK16yFPBFJcbSH8=
+Subject: FAILED: patch "[PATCH] KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with" failed to apply to 6.16-stable tree
+To: mlevitsk@redhat.com,dapeng1.mi@linux.intel.com,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Aug 2025 18:14:59 +0200
-Message-ID: <2025081258-convent-unscrew-2e57@gregkh>
+Date: Tue, 12 Aug 2025 18:15:08 +0200
+Message-ID: <2025081208-gerbil-shelve-9cc8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.15-stable tree.
+The patch below does not apply to the 6.16-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 303084ad12767db64c84ba8fcd0450aec38c8534
+git cherry-pick -x 7d0cce6cbe71af6e9c1831bff101a2b9c249c4a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081258-convent-unscrew-2e57@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081208-gerbil-shelve-9cc8@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,69 +77,153 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 303084ad12767db64c84ba8fcd0450aec38c8534 Mon Sep 17 00:00:00 2001
-From: Marc Zyngier <maz@kernel.org>
-Date: Mon, 21 Jul 2025 11:19:50 +0100
-Subject: [PATCH] KVM: arm64: Filter out HCR_EL2 bits when running in
- hypervisor context
+From 7d0cce6cbe71af6e9c1831bff101a2b9c249c4a2 Mon Sep 17 00:00:00 2001
+From: Maxim Levitsky <mlevitsk@redhat.com>
+Date: Tue, 10 Jun 2025 16:20:09 -0700
+Subject: [PATCH] KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with
+ getter/setter APIs
 
-Most HCR_EL2 bits are not supposed to affect EL2 at all, but only
-the guest. However, we gladly merge these bits with the host's
-HCR_EL2 configuration, irrespective of entering L1 or L2.
+Introduce vmx_guest_debugctl_{read,write}() to handle all accesses to
+vmcs.GUEST_IA32_DEBUGCTL. This will allow stuffing FREEZE_IN_SMM into
+GUEST_IA32_DEBUGCTL based on the host setting without bleeding the state
+into the guest, and without needing to copy+paste the FREEZE_IN_SMM
+logic into every patch that accesses GUEST_IA32_DEBUGCTL.
 
-This leads to some funky behaviour, such as L1 trying to inject
-a virtual SError for L2, and getting a taste of its own medecine.
-Not quite what the architecture anticipated.
+No functional change intended.
 
-In the end, the only bits that matter are those we have defined as
-invariants, either because we've made them RESx (E2H, HCD...), or
-that we actively refuse to merge because the mess with KVM's own
-logic.
-
-Use the sanitisation infrastructure to get the RES1 bits, and let
-things rip in a safer way.
-
-Fixes: 04ab519bb86df ("KVM: arm64: nv: Configure HCR_EL2 for FEAT_NV2")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250721101955.535159-3-maz@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+[sean: massage changelog, make inline, use in all prepare_vmcs02() cases]
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610232010.162191-8-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 477f1580ffea..e482181c6632 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -48,8 +48,7 @@ DEFINE_PER_CPU(unsigned long, kvm_hyp_vector);
- 
- static u64 __compute_hcr(struct kvm_vcpu *vcpu)
- {
--	u64 guest_hcr = __vcpu_sys_reg(vcpu, HCR_EL2);
--	u64 hcr = vcpu->arch.hcr_el2;
-+	u64 guest_hcr, hcr = vcpu->arch.hcr_el2;
- 
- 	if (!vcpu_has_nv(vcpu))
- 		return hcr;
-@@ -68,10 +67,21 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
- 		if (!vcpu_el2_e2h_is_set(vcpu))
- 			hcr |= HCR_NV1;
- 
-+		/*
-+		 * Nothing in HCR_EL2 should impact running in hypervisor
-+		 * context, apart from bits we have defined as RESx (E2H,
-+		 * HCD and co), or that cannot be set directly (the EXCLUDE
-+		 * bits). Given that we OR the guest's view with the host's,
-+		 * we can use the 0 value as the starting point, and only
-+		 * use the config-driven RES1 bits.
-+		 */
-+		guest_hcr = kvm_vcpu_apply_reg_masks(vcpu, HCR_EL2, 0);
-+
- 		write_sysreg_s(vcpu->arch.ctxt.vncr_array, SYS_VNCR_EL2);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 1b8b0642fc2d..ef20184b8b11 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -2663,11 +2663,11 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+ 	if (vmx->nested.nested_run_pending &&
+ 	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
+ 		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl &
+-						  vmx_get_supported_debugctl(vcpu, false));
++		vmx_guest_debugctl_write(vcpu, vmcs12->guest_ia32_debugctl &
++					       vmx_get_supported_debugctl(vcpu, false));
  	} else {
- 		host_data_clear_flag(VCPU_IN_HYP_CONTEXT);
+ 		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, vmx->nested.pre_vmenter_debugctl);
++		vmx_guest_debugctl_write(vcpu, vmx->nested.pre_vmenter_debugctl);
+ 	}
+ 	if (kvm_mpx_supported() && (!vmx->nested.nested_run_pending ||
+ 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
+@@ -3532,7 +3532,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
  
-+		guest_hcr = __vcpu_sys_reg(vcpu, HCR_EL2);
- 		if (guest_hcr & HCR_NV) {
- 			u64 va = __fix_to_virt(vncr_fixmap(smp_processor_id()));
+ 	if (!vmx->nested.nested_run_pending ||
+ 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
+-		vmx->nested.pre_vmenter_debugctl = vmcs_read64(GUEST_IA32_DEBUGCTL);
++		vmx->nested.pre_vmenter_debugctl = vmx_guest_debugctl_read();
+ 	if (kvm_mpx_supported() &&
+ 	    (!vmx->nested.nested_run_pending ||
+ 	     !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
+@@ -4806,7 +4806,7 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+ 	__vmx_set_segment(vcpu, &seg, VCPU_SREG_LDTR);
  
+ 	kvm_set_dr(vcpu, 7, 0x400);
+-	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
++	vmx_guest_debugctl_write(vcpu, 0);
+ 
+ 	if (nested_vmx_load_msr(vcpu, vmcs12->vm_exit_msr_load_addr,
+ 				vmcs12->vm_exit_msr_load_count))
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index bbf4509f32d0..0b173602821b 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -653,11 +653,11 @@ static void intel_pmu_reset(struct kvm_vcpu *vcpu)
+  */
+ static void intel_pmu_legacy_freezing_lbrs_on_pmi(struct kvm_vcpu *vcpu)
+ {
+-	u64 data = vmcs_read64(GUEST_IA32_DEBUGCTL);
++	u64 data = vmx_guest_debugctl_read();
+ 
+ 	if (data & DEBUGCTLMSR_FREEZE_LBRS_ON_PMI) {
+ 		data &= ~DEBUGCTLMSR_LBR;
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
++		vmx_guest_debugctl_write(vcpu, data);
+ 	}
+ }
+ 
+@@ -730,7 +730,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
+ 
+ 	if (!lbr_desc->event) {
+ 		vmx_disable_lbr_msrs_passthrough(vcpu);
+-		if (vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR)
++		if (vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR)
+ 			goto warn;
+ 		if (test_bit(INTEL_PMC_IDX_FIXED_VLBR, pmu->pmc_in_use))
+ 			goto warn;
+@@ -752,7 +752,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
+ 
+ static void intel_pmu_cleanup(struct kvm_vcpu *vcpu)
+ {
+-	if (!(vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR))
++	if (!(vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR))
+ 		intel_pmu_release_guest_lbr_event(vcpu);
+ }
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 6a8b78e954cd..a77d325fe78b 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2149,7 +2149,7 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 			msr_info->data = vmx->pt_desc.guest.addr_a[index / 2];
+ 		break;
+ 	case MSR_IA32_DEBUGCTLMSR:
+-		msr_info->data = vmcs_read64(GUEST_IA32_DEBUGCTL);
++		msr_info->data = vmx_guest_debugctl_read();
+ 		break;
+ 	default:
+ 	find_uret_msr:
+@@ -2283,7 +2283,8 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 						VM_EXIT_SAVE_DEBUG_CONTROLS)
+ 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
+ 
+-		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
++		vmx_guest_debugctl_write(vcpu, data);
++
+ 		if (intel_pmu_lbr_is_enabled(vcpu) && !to_vmx(vcpu)->lbr_desc.event &&
+ 		    (data & DEBUGCTLMSR_LBR))
+ 			intel_pmu_create_guest_lbr_event(vcpu);
+@@ -4798,7 +4799,8 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 	vmcs_write32(GUEST_SYSENTER_CS, 0);
+ 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
+ 	vmcs_writel(GUEST_SYSENTER_EIP, 0);
+-	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
++
++	vmx_guest_debugctl_write(&vmx->vcpu, 0);
+ 
+ 	if (cpu_has_vmx_tpr_shadow()) {
+ 		vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, 0);
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 392e66c7e5fe..c20a4185d10a 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -417,6 +417,16 @@ void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
+ u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated);
+ bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated);
+ 
++static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
++{
++	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
++}
++
++static inline u64 vmx_guest_debugctl_read(void)
++{
++	return vmcs_read64(GUEST_IA32_DEBUGCTL);
++}
++
+ /*
+  * Note, early Intel manuals have the write-low and read-high bitmap offsets
+  * the wrong way round.  The bitmaps control MSRs 0x00000000-0x00001fff and
 
 
