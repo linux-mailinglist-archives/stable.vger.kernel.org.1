@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA78B23020
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6398DB23137
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 580BF561606
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5270A7AF3D1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C092FABE3;
-	Tue, 12 Aug 2025 17:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F106B2FE560;
+	Tue, 12 Aug 2025 18:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRaDACei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="np9fmf7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632C92F7477;
-	Tue, 12 Aug 2025 17:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF06E2DE1E2;
+	Tue, 12 Aug 2025 18:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020914; cv=none; b=Y0jMlErwga2JomdFj/H4M3IkGqbYOc6dAay+MteR83K9NSpImpCoPS+/RWERW3EwNilB0le0Q6SNoi0Yca13z9lAi0FWAWowycHsLagHBm1kNTdJ885RD0P8cvUp5nE/AmklnRP0KrMN8iuedhDxt+37TdQfwYcv+uC2Zhlu8Zw=
+	t=1755021664; cv=none; b=nMfoa0sFx+4ZgpRuIeU5mBEJmaB3g1WpJPmeIsVJXJc243ByDmvNzRnr5R6GI36kXseqPuo2Ab+ufbDP5nH/ZoafqHaQgkEE7yJsojWN1HMykVJxpRBM/ugI9MxzBcg12qjWu6+BhBk4AHyf2GQKbfbVwuBWHXF4buWrXH3fSps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020914; c=relaxed/simple;
-	bh=96FaAoAFeIPuNq1I9V4RKNMApEZWRyq9T2SV+LH34GE=;
+	s=arc-20240116; t=1755021664; c=relaxed/simple;
+	bh=PGvFzjrno0yKqx4kJ0OXSKUYEEDykDNU3+mNdZNN1g0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdsPnrRuFxBVXzcRslKirdTWam4qVxo4W/DAIvVzmSLCJ8c+1UaH81w4jIH5znINZdSKXIPuZhGpdY29JrNzqcPqAu/GzrTroe+Lw4fzWtYLc3MXYZGobWcPvcCNdVSg1kHYoxdjTKOmEWpbfdCLGpiWlla6SwR+iizFIoOnHnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRaDACei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C603EC4CEF0;
-	Tue, 12 Aug 2025 17:48:33 +0000 (UTC)
+	 MIME-Version; b=QG6JXuGE+DjYn7Y3dtl7TF/09FI0RX2DQnA6lcLKm0sH6c4CjVmTmJbhgpGu55wv+RkzfJaNZtZAV7AoIzRkXXXmqMRnwW4lWCoDnSkkXryF/k9d3VHQeVoU6KimOs6Di2cc5hPJHf8JNw1rCoVwzIOCds+AhT8C/wRjioJbUso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=np9fmf7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F19C4CEF0;
+	Tue, 12 Aug 2025 18:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020914;
-	bh=96FaAoAFeIPuNq1I9V4RKNMApEZWRyq9T2SV+LH34GE=;
+	s=korg; t=1755021664;
+	bh=PGvFzjrno0yKqx4kJ0OXSKUYEEDykDNU3+mNdZNN1g0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRaDACei5/IMVSsQhefhhZvtu5vMM6IubNPq4ruFeEYwk2eBp2BdsZ7Pw4LCSWfF6
-	 KsOFAytdNHRmlARzRAEaE/NNQQl6yJ/FMaGet8IiLeBiW3IU5bfk0y5Xl7eJuozRT4
-	 DSJFLz2ssDUHpIMzyF5BFbgDPGmfdHv70QeXAIAo=
+	b=np9fmf7jdlWTXlK+kt8CnWeOyPi4ezYORlE3D43EBjbpXhg76R0UtfRih/Kmrp6GM
+	 WpOdeiljCQPnH/IFbhBn05VJgQII0jIs9fzmtMKyEd0AC2Zv0qACtJX3WNmcssq5TA
+	 8xup8BVPRV8h1pqFWzzBj0CKWY2FnjRRk9PgtOzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Seunghui Lee <sh043.lee@samsung.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/253] rtc: ds1307: fix incorrect maximum clock rate handling
-Date: Tue, 12 Aug 2025 19:29:34 +0200
-Message-ID: <20250812172956.700475681@linuxfoundation.org>
+Subject: [PATCH 6.6 187/262] scsi: ufs: core: Use link recovery when h8 exit fails during runtime resume
+Date: Tue, 12 Aug 2025 19:29:35 +0200
+Message-ID: <20250812173001.094272243@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Seunghui Lee <sh043.lee@samsung.com>
 
-[ Upstream commit cf6eb547a24af7ad7bbd2abe9c5327f956bbeae8 ]
+[ Upstream commit 35dabf4503b94a697bababe94678a8bc989c3223 ]
 
-When ds3231_clk_sqw_round_rate() is called with a requested rate higher
-than the highest supported rate, it currently returns 0, which disables
-the clock. According to the clk API, round_rate() should instead return
-the highest supported rate. Update the function to return the maximum
-supported rate in this case.
+If the h8 exit fails during runtime resume process, the runtime thread
+enters runtime suspend immediately and the error handler operates at the
+same time.  It becomes stuck and cannot be recovered through the error
+handler.  To fix this, use link recovery instead of the error handler.
 
-Fixes: 6c6ff145b3346 ("rtc: ds1307: add clock provider support for DS3231")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-1-33140bb2278e@redhat.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 4db7a2360597 ("scsi: ufs: Fix concurrency of error handler and other error recovery paths")
+Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
+Link: https://lore.kernel.org/r/20250717081213.6811-1-sh043.lee@samsung.com
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Acked-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index b7f8b3f9b059..73f2dd3af4d4 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1461,7 +1461,7 @@ static long ds3231_clk_sqw_round_rate(struct clk_hw *hw, unsigned long rate,
- 			return ds3231_clk_sqw_rates[i];
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index da20bd3d46bc..7dcdaac31546 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4274,7 +4274,7 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 	hba->uic_async_done = NULL;
+ 	if (reenable_intr)
+ 		ufshcd_enable_intr(hba, UIC_COMMAND_COMPL);
+-	if (ret) {
++	if (ret && !hba->pm_op_in_progress) {
+ 		ufshcd_set_link_broken(hba);
+ 		ufshcd_schedule_eh_work(hba);
  	}
+@@ -4282,6 +4282,14 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+ 	mutex_unlock(&hba->uic_cmd_mutex);
  
--	return 0;
-+	return ds3231_clk_sqw_rates[ARRAY_SIZE(ds3231_clk_sqw_rates) - 1];
++	/*
++	 * If the h8 exit fails during the runtime resume process, it becomes
++	 * stuck and cannot be recovered through the error handler.  To fix
++	 * this, use link recovery instead of the error handler.
++	 */
++	if (ret && hba->pm_op_in_progress)
++		ret = ufshcd_link_recovery(hba);
++
+ 	return ret;
  }
  
- static int ds3231_clk_sqw_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
