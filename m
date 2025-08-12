@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B16B234F6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC89B2317C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D876E37BA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09644171A4A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787C02FF15D;
-	Tue, 12 Aug 2025 18:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D38E2F5487;
+	Tue, 12 Aug 2025 18:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2/W0QLA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg0g8rrv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F3E6BB5B;
-	Tue, 12 Aug 2025 18:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFD61A9F89;
+	Tue, 12 Aug 2025 18:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024040; cv=none; b=Km8wTg/MhIitNZ+BoP/JV598Hz8Ktweg1Ra+Uji0hYSuxwhTSPI72/kZNX7+3tUoPRrM8+OwP01jtoe7Cjt9fTMpHQKGobpn7IS0Y4rGg16PtvTvXkaVbkVgQR5Fx+MKRAkqSXztjrAnXT66mJNLCpNuxgqeTJGn8ZpjfcYlkeI=
+	t=1755021688; cv=none; b=OoECa0bJzYisuTwfBZjnIGS8QKWnOeY4r57C3rDURM6Z5cI3Dukdt22akv5ktINjlWHkq0Efzm2/bRjxwu3NwOg79DHSTMZJszOppHkvLaUDSkyu4+nKKC8Cz+qOqdw6HO5qUxWE1JoJsF1Jz6eeruQChEHG63hziY58QDjLYgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024040; c=relaxed/simple;
-	bh=6Zb6s1IkoAiY89HJxipSwT8qAwaqFBEIvmSp0iQgBZo=;
+	s=arc-20240116; t=1755021688; c=relaxed/simple;
+	bh=UoiMupQ2hCXIIRdsIRo1cuIQRLhBMuq4ejDzNdtNZrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZosAx3J4zwUzZ3b9asxZNzRtLqKMPgMjLxh9Ug3UUbwhteu+ljpeDp+FuRALQhioNyP+7TEtGm2EgcyIbKe7DUFspalTLR1IqrldHHIxXOf+kvP3vaFwzvyDxmuqxVMZpOyEj+qUmnJE3YEZfX51Y4py672PBCkfBbLh4eN/yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2/W0QLA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D9CC4CEF0;
-	Tue, 12 Aug 2025 18:40:35 +0000 (UTC)
+	 MIME-Version; b=A5uvG1fG5pCp+SJ8XV6B1NMERPK4iBIL3AWdiv1JSDymu1KtMbPL8XP+TEI3MR63fXnQ90VeXUXv1kZNJzgMaqEgszy1fbde+C7KIWCrmSgKQ0aFGI1pdcxusPaAumrNq1HdCF1iut3+hXXnw6ajBK1SQwvOVbV1qYmA9H7b9Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xg0g8rrv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E15CC4CEF0;
+	Tue, 12 Aug 2025 18:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024036;
-	bh=6Zb6s1IkoAiY89HJxipSwT8qAwaqFBEIvmSp0iQgBZo=;
+	s=korg; t=1755021687;
+	bh=UoiMupQ2hCXIIRdsIRo1cuIQRLhBMuq4ejDzNdtNZrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2/W0QLAwn3GN/mDMHb9q9NrOfL6AR3fIR4LU980Mz5Y+8dwcSyu3BQduHiZppctZ
-	 T6P5NkXnD4t8gC/dPRhi8lPn2fpuqBNsPi0MOAC3lhMeWvvHI5SMS/zPZdvvAAMLvd
-	 4/l0ZwaK8vIy22T0+tjuy9H2yQoUcbXx2bJcssbw=
+	b=Xg0g8rrvuk+QIXLG9o2tCEPb/9XSDdir8O4OYp1rlXtWbtAwLAmC8CU9bPFjPLj9E
+	 ZVeDi9P7AaG/EEcr+wiITSMSVfmQb1cJP5o25xSAq08KEio2MOHT102oa3d3YeXPD5
+	 UZPEJfj/Wjy9r4KK7SFewLwjI05zLcqEOfKuVRok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 255/627] Bluetooth: btusb: Fix potential NULL dereference on kmalloc failure
+Subject: [PATCH 6.6 162/262] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
 Date: Tue, 12 Aug 2025 19:29:10 +0200
-Message-ID: <20250812173429.020280991@linuxfoundation.org>
+Message-ID: <20250812172959.996095924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit b505902c66a282dcb01bcdc015aa1fdfaaa075db ]
+[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
 
-Avoid potential NULL pointer dereference by checking the return value of
-kmalloc and handling allocation failure properly.
+WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
+comment in the declaration of struct match_workbuf stating it is and a
+modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
+WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
+line to ensure that any future changes to the value of WB_HISTORY_SIZE
+respect this requirement.
 
-Fixes: 7d70989fcea7 ("Bluetooth: btusb: Add HCI Drv commands for configuring altsetting")
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 136db994852a ("apparmor: increase left match history buffer size")
+
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ security/apparmor/include/match.h | 3 ++-
+ security/apparmor/match.c         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index f9eeec0aed57..db27d28e8a7e 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3802,6 +3802,8 @@ static int btusb_hci_drv_supported_altsettings(struct hci_dev *hdev, void *data,
+diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
+index 58fbf67139b9..5b6f16242e60 100644
+--- a/security/apparmor/include/match.h
++++ b/security/apparmor/include/match.h
+@@ -141,7 +141,8 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
  
- 	/* There are at most 7 alt (0 - 6) */
- 	rp = kmalloc(sizeof(*rp) + 7, GFP_KERNEL);
-+	if (!rp)
-+		return -ENOMEM;
+ void aa_dfa_free_kref(struct kref *kref);
  
- 	rp->num = 0;
- 	if (!drvdata->isoc)
+-#define WB_HISTORY_SIZE 24
++/* This needs to be a power of 2 */
++#define WB_HISTORY_SIZE 32
+ struct match_workbuf {
+ 	unsigned int count;
+ 	unsigned int pos;
+diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+index b97ef5e1db73..76709b7c6519 100644
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -670,6 +670,7 @@ aa_state_t aa_dfa_matchn_until(struct aa_dfa *dfa, aa_state_t start,
+ 
+ #define inc_wb_pos(wb)						\
+ do {								\
++	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
+ 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
+ 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
+ } while (0)
 -- 
 2.39.5
 
