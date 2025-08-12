@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-168143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641A0B233A8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7480B23559
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624762A4DD6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 924921886536
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6229280037;
-	Tue, 12 Aug 2025 18:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F226294A17;
+	Tue, 12 Aug 2025 18:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2Dc97QY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZh3lb0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8527C2FD1AD;
-	Tue, 12 Aug 2025 18:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D58D1A01BF;
+	Tue, 12 Aug 2025 18:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023189; cv=none; b=MvEYDVrR8Z5cege89ZfyQE9o/APQ+ba+xY0OyC4XeIIp9bt7YuJFaqKGkQ3q4hDJ9eeNPD/ZAFF01binsYkjyXX8dKgEaNtzsytKqoemZwpkY9G67uKF5k0YbFr+NHGQXQ1kvLMTeRuW6gm9FR2X3W2/uxzAMxW+m5HQv31drqQ=
+	t=1755024407; cv=none; b=GIvG2RFq8In7UERJM7wGFJYty2C3yYk0HniBHqmiKmVkLF9mq7v5VurThtTKpH0VdgwBANOGZd6CaeT3693lMuvSfLaW6NY7cJ2bdA9aGhAwHVB4Ho9Hj2DymotCKHUFGW9YKpG6D6M+xDhSDdoF21fr4HKJ/tp6MpjMQcI9YyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023189; c=relaxed/simple;
-	bh=ali0WR53wtsWkv2c16MW8jhpVYrDFlrDFFGJPrMcZJY=;
+	s=arc-20240116; t=1755024407; c=relaxed/simple;
+	bh=V1JaOVhGLJKGQnjZQw84fbAI1C9OvlKbm/J0qk1cIDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DS8N3aK8hQ0U3Bn/LBCCtg3fRz0I0rzJXEJqvZXPF04izPEnnOUqkyq+XejjlXYSECgVLftKI1fFLN2se84TCwzYvOByJNfgPsLjdOSZdpgNWbvikzoPYOipRc456hRo18w593evnO6CkpVLw+AZxpLZ5TFDq6fZFooB2lcoXpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2Dc97QY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D275DC4CEF6;
-	Tue, 12 Aug 2025 18:26:28 +0000 (UTC)
+	 MIME-Version; b=HjPxK95nIaPj/+h9ziwOdB+PqDQnq7G63MU9wrYlxpadV5CTXlUWx0hviW/FKnjwX3gKhYgeM5rZzObyj9Wao5iKgX3CffZSxtxqv/SaKjq/u4R0YGc042CElRju/t6cWTb4PaouNHNno/k+ws4bO8iaIl/izq9oJm2AwzYXKHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZh3lb0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C1FC4CEF1;
+	Tue, 12 Aug 2025 18:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023189;
-	bh=ali0WR53wtsWkv2c16MW8jhpVYrDFlrDFFGJPrMcZJY=;
+	s=korg; t=1755024407;
+	bh=V1JaOVhGLJKGQnjZQw84fbAI1C9OvlKbm/J0qk1cIDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2Dc97QYbbXYxXdGjNwazKOFLYAxRmG/5wVSqHJqxwgyDsBUhusEaBDUylLn1BXSP
-	 jzPtgWa8O14LccIpLPacak6zapSCmOCN6Iwwcs8qDrXrxr1HiT2WXp3+hdvdaU5C9c
-	 bE+wpjGGpS5BeqWoGl7ui0xUERH6QhNQH3aARius=
+	b=NZh3lb0uh6SHahrjyX0mcfM/gsLVr2Fi4tB+QNuCwy6T5k/PsBw6nbIPhFDwi3bd6
+	 rutl3SfdDrD6N3DZL+Z3LUZ7d2STxFFnaRhGn3D+GvPzmBuQFafSMBbyEcA7DaquRS
+	 effAWhUKD7XypSsHYb9SDYVMq3dQOmg5g5Boi+9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Bill Wendling <morbo@google.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 362/369] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
+	Alex Elder <elder@riscstar.com>,
+	Guodong Xu <guodong@riscstar.com>,
+	Haylen Chu <heylenay@4d2.org>,
+	Yixun Lan <dlan@gentoo.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 364/627] clk: spacemit: mark K1 pll1_d8 as critical
 Date: Tue, 12 Aug 2025 19:30:59 +0200
-Message-ID: <20250812173030.302564737@linuxfoundation.org>
+Message-ID: <20250812173433.134374162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alex Elder <elder@riscstar.com>
 
-commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 upstream.
+[ Upstream commit 7554729de27daf6d54bcf8689d863bbe267828bf ]
 
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
+The pll1_d8 clock is enabled by the boot loader, and is ultimately a
+parent for numerous clocks, including those used by APB and AXI buses.
+Guodong Xu discovered that this clock got disabled while responding to
+getting -EPROBE_DEFER when requesting a reset controller.
 
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
+The needed clock (CLK_DMA, along with its parents) had already been
+enabled.  To respond to the probe deferral return, the CLK_DMA clock
+was disabled, and this led to parent clocks also reducing their enable
+count.  When the enable count for pll1_d8 was decremented it became 0,
+which caused it to be disabled.  This led to a system hang.
 
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
+Marking that clock critical resolves this by preventing it from being
+disabled.
 
-See also:
+Define a new macro CCU_FACTOR_GATE_DEFINE() to allow clock flags to
+be supplied for a CCU_FACTOR_GATE clock.
 
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b72c59db0add ("clk: spacemit: Add clock support for SpacemiT K1 SoC")
+Signed-off-by: Alex Elder <elder@riscstar.com>
+Tested-by: Guodong Xu <guodong@riscstar.com>
+Reviewed-by: Haylen Chu <heylenay@4d2.org>
+Link: https://lore.kernel.org/r/20250612224856.1105924-1-elder@riscstar.com
+Signed-off-by: Yixun Lan <dlan@gentoo.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hmm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/spacemit/ccu-k1.c  |  3 ++-
+ drivers/clk/spacemit/ccu_mix.h | 11 ++++++++---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -173,6 +173,7 @@ static inline unsigned long hmm_pfn_flag
- 	return order << HMM_PFN_ORDER_SHIFT;
+diff --git a/drivers/clk/spacemit/ccu-k1.c b/drivers/clk/spacemit/ccu-k1.c
+index cdde37a05235..df65009a07bb 100644
+--- a/drivers/clk/spacemit/ccu-k1.c
++++ b/drivers/clk/spacemit/ccu-k1.c
+@@ -170,7 +170,8 @@ CCU_FACTOR_GATE_DEFINE(pll1_d4, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(3), 4,
+ CCU_FACTOR_GATE_DEFINE(pll1_d5, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(4), 5, 1);
+ CCU_FACTOR_GATE_DEFINE(pll1_d6, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(5), 6, 1);
+ CCU_FACTOR_GATE_DEFINE(pll1_d7, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(6), 7, 1);
+-CCU_FACTOR_GATE_DEFINE(pll1_d8, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(7), 8, 1);
++CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d8, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(7), 8, 1,
++		CLK_IS_CRITICAL);
+ CCU_FACTOR_GATE_DEFINE(pll1_d11_223p4, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(15), 11, 1);
+ CCU_FACTOR_GATE_DEFINE(pll1_d13_189, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(16), 13, 1);
+ CCU_FACTOR_GATE_DEFINE(pll1_d23_106p8, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(20), 23, 1);
+diff --git a/drivers/clk/spacemit/ccu_mix.h b/drivers/clk/spacemit/ccu_mix.h
+index 51d19f5d6aac..54d40cd39b27 100644
+--- a/drivers/clk/spacemit/ccu_mix.h
++++ b/drivers/clk/spacemit/ccu_mix.h
+@@ -101,17 +101,22 @@ static struct ccu_mix _name = {							\
+ 	}									\
  }
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
- 						 pmd_t pmd)
- {
-@@ -183,7 +184,6 @@ static inline unsigned long pmd_to_hmm_p
- 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
+-#define CCU_FACTOR_GATE_DEFINE(_name, _parent, _reg_ctrl, _mask_gate, _div,	\
+-			       _mul)						\
++#define CCU_FACTOR_GATE_FLAGS_DEFINE(_name, _parent, _reg_ctrl, _mask_gate, _div,	\
++			       _mul, _flags)					\
+ static struct ccu_mix _name = {							\
+ 	.gate	= CCU_GATE_INIT(_mask_gate),					\
+ 	.factor	= CCU_FACTOR_INIT(_div, _mul),					\
+ 	.common = {								\
+ 		.reg_ctrl	= _reg_ctrl,					\
+-		CCU_MIX_INITHW(_name, _parent, spacemit_ccu_factor_gate_ops, 0)	\
++		CCU_MIX_INITHW(_name, _parent, spacemit_ccu_factor_gate_ops, _flags)	\
+ 	}									\
  }
  
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 			      unsigned long end, unsigned long hmm_pfns[],
- 			      pmd_t pmd)
++#define CCU_FACTOR_GATE_DEFINE(_name, _parent, _reg_ctrl, _mask_gate, _div,	\
++			       _mul)						\
++	CCU_FACTOR_GATE_FLAGS_DEFINE(_name, _parent, _reg_ctrl, _mask_gate, _div,	\
++			       _mul, 0)
++
+ #define CCU_MUX_GATE_DEFINE(_name, _parents, _reg_ctrl, _shift, _width,		\
+ 			    _mask_gate, _flags)					\
+ static struct ccu_mix _name = {							\
+-- 
+2.39.5
+
 
 
 
