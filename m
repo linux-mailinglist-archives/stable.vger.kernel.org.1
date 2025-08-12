@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-167188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD462B22D07
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64561B22D16
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1001161EB9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21DF188A814
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A432EB5C7;
-	Tue, 12 Aug 2025 16:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CE52EB5C5;
+	Tue, 12 Aug 2025 16:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As1ckXGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fERWVLjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259512D29C3
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882942F746C
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015306; cv=none; b=sIjjV5SEM5Pqii2BqKAR9eorvSMgAh4zB7k195kFlVkLLP58RKnV0PuPjF3Kd5dN+932tPmwF/h681wUAS3DgSW3MWagghrptp0bGH9/otPJ3ZtaIVpZpU/mFTtDog8B3qopwlpbHjUpOuJIFgk08eHJrr9GrTiiP78xCKWazhY=
+	t=1755015313; cv=none; b=T7+VgNmB2qQHADUJUar0qVvTNqHeENJ0bRHTMtxIXXFxkIeS6s7oAj3G2LXHYjnYlsOhJd8Nn6k679FapVccPmNXZpkkyClvMKriFtYVx0Xya8p072pr5aHXPBi+rwFWH3gAGOa/8Rc1vb5IYcuLCbe6urrKiW9UPB1EDTpV0M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015306; c=relaxed/simple;
-	bh=e+uO/06PRjU3myzFRi1reUVh+HtA2e3fuZu6MqbYfyE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tsWxmrMsx1DbJS54nM5YIFcocE3/OBcUfOyZaq78IschZVpoSFWPUZml2xIOM3L/UBwY5ZFOiNdpL5kd8yX9LqZChQyIRUCEJe4x7eoFtXEbu1JvRTDlNl0KTZs8kH6qvYkv7MfTNeCE2ruyQB13H2blLxfiulrDqBx8hyfvDLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=As1ckXGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BB7C4CEF0;
-	Tue, 12 Aug 2025 16:15:04 +0000 (UTC)
+	s=arc-20240116; t=1755015313; c=relaxed/simple;
+	bh=JrX8ICOUxuK2B/B3hTiTxrzOEvR3HV1/UCCDyKO1G5A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZDCyq3DCwd9pRdeEUKPDhiNVedtmGyev6AyddAtx1RAEHsYIwKU+5NpfKn5v/3aT4Eug2wJ6Y2CfAAfJzjLF6nV/Squ0KZ4vh7JZkuk+I9vmaWIa6kl8zcYfQWlaGgE07JEbHrJaRm4FqG2Eo+7zX1XRc89IR24jjFIqc6jW3TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fERWVLjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC1FC4CEF0;
+	Tue, 12 Aug 2025 16:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755015305;
-	bh=e+uO/06PRjU3myzFRi1reUVh+HtA2e3fuZu6MqbYfyE=;
+	s=korg; t=1755015313;
+	bh=JrX8ICOUxuK2B/B3hTiTxrzOEvR3HV1/UCCDyKO1G5A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=As1ckXGm7yNhi9EemsMErlRvm51YAqwyv1ZjQpMc87P+KnfIbOqrmAMrVxIkcL++X
-	 dXmHyPeEgGeHBH+iLOBSuWe08vupxURrc8CqSqWH97OwUlTpT6nVYzOzdon99mmKaU
-	 QqdQ11WLaQc3HCevPmDW1EWo0+2vUoU8mTAyb2u4=
-Subject: FAILED: patch "[PATCH] KVM: arm64: Check for SYSREGS_ON_CPU before accessing the CPU" failed to apply to 6.6-stable tree
-To: maz@kernel.org,broonie@kernel.org,oliver.upton@linux.dev
+	b=fERWVLjPoC+enhRwUSAVCZ0h/o9G/pOzZMgoL9bs0giKCjLTJYSiuva8OhgdaHnZo
+	 YAK5a6D/9MT3ZvnI7BwzK5kfpZu2qMEO6ldMgBT5OwQpqHzqz9MSLpnJQBbY7XAvoL
+	 XR2+d0QbTswQlYLPQMor/G3FHFLEyD1FEXcnLXdA=
+Subject: FAILED: patch "[PATCH] KVM: arm64: Filter out HCR_EL2 bits when running in" failed to apply to 6.12-stable tree
+To: maz@kernel.org,oliver.upton@linux.dev
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Aug 2025 18:14:54 +0200
-Message-ID: <2025081254-rejoicing-peroxide-4695@gregkh>
+Date: Tue, 12 Aug 2025 18:14:59 +0200
+Message-ID: <2025081259-clutter-elusive-1a09@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x c6e35dff58d348c1a9489e9b3b62b3721e62631d
+git cherry-pick -x 303084ad12767db64c84ba8fcd0450aec38c8534
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081254-rejoicing-peroxide-4695@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081259-clutter-elusive-1a09@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,78 +77,69 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c6e35dff58d348c1a9489e9b3b62b3721e62631d Mon Sep 17 00:00:00 2001
+From 303084ad12767db64c84ba8fcd0450aec38c8534 Mon Sep 17 00:00:00 2001
 From: Marc Zyngier <maz@kernel.org>
-Date: Sun, 20 Jul 2025 11:22:29 +0100
-Subject: [PATCH] KVM: arm64: Check for SYSREGS_ON_CPU before accessing the CPU
- state
+Date: Mon, 21 Jul 2025 11:19:50 +0100
+Subject: [PATCH] KVM: arm64: Filter out HCR_EL2 bits when running in
+ hypervisor context
 
-Mark Brown reports that since we commit to making exceptions
-visible without the vcpu being loaded, the external abort selftest
-fails.
+Most HCR_EL2 bits are not supposed to affect EL2 at all, but only
+the guest. However, we gladly merge these bits with the host's
+HCR_EL2 configuration, irrespective of entering L1 or L2.
 
-Upon investigation, it turns out that the code that makes registers
-affected by an exception visible to the guest is completely broken
-on VHE, as we don't check whether the system registers are loaded
-on the CPU at this point. We managed to get away with this so far,
-but that's obviously as bad as it gets,
+This leads to some funky behaviour, such as L1 trying to inject
+a virtual SError for L2, and getting a taste of its own medecine.
+Not quite what the architecture anticipated.
 
-Add the required checksm and document the absolute need to check
-for the SYSREGS_ON_CPU flag before calling into any of the
-__vcpu_write_sys_reg_to_cpu()__vcpu_read_sys_reg_from_cpu() helpers.
+In the end, the only bits that matter are those we have defined as
+invariants, either because we've made them RESx (E2H, HCD...), or
+that we actively refuse to merge because the mess with KVM's own
+logic.
 
-Reported-by: Mark Brown <broonie@kernel.org>
+Use the sanitisation infrastructure to get the RES1 bits, and let
+things rip in a safer way.
+
+Fixes: 04ab519bb86df ("KVM: arm64: nv: Configure HCR_EL2 for FEAT_NV2")
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/18535df8-e647-4643-af9a-bb780af03a70@sirena.org.uk
-Link: https://lore.kernel.org/r/20250720102229.179114-1-maz@kernel.org
+Link: https://lore.kernel.org/r/20250721101955.535159-3-maz@kernel.org
 Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index e54d29feb469..d373d555a69b 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1169,6 +1169,8 @@ static inline bool __vcpu_read_sys_reg_from_cpu(int reg, u64 *val)
- 	 * System registers listed in the switch are not saved on every
- 	 * exit from the guest but are only saved on vcpu_put.
- 	 *
-+	 * SYSREGS_ON_CPU *MUST* be checked before using this helper.
-+	 *
- 	 * Note that MPIDR_EL1 for the guest is set by KVM via VMPIDR_EL2 but
- 	 * should never be listed below, because the guest cannot modify its
- 	 * own MPIDR_EL1 and MPIDR_EL1 is accessed for VCPU A from VCPU B's
-@@ -1221,6 +1223,8 @@ static inline bool __vcpu_write_sys_reg_to_cpu(u64 val, int reg)
- 	 * System registers listed in the switch are not restored on every
- 	 * entry to the guest but are only restored on vcpu_load.
- 	 *
-+	 * SYSREGS_ON_CPU *MUST* be checked before using this helper.
-+	 *
- 	 * Note that MPIDR_EL1 for the guest is set by KVM via VMPIDR_EL2 but
- 	 * should never be listed below, because the MPIDR should only be set
- 	 * once, before running the VCPU, and never changed later.
-diff --git a/arch/arm64/kvm/hyp/exception.c b/arch/arm64/kvm/hyp/exception.c
-index 7dafd10e52e8..95d186e0bf54 100644
---- a/arch/arm64/kvm/hyp/exception.c
-+++ b/arch/arm64/kvm/hyp/exception.c
-@@ -26,7 +26,8 @@ static inline u64 __vcpu_read_sys_reg(const struct kvm_vcpu *vcpu, int reg)
+diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+index 477f1580ffea..e482181c6632 100644
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -48,8 +48,7 @@ DEFINE_PER_CPU(unsigned long, kvm_hyp_vector);
  
- 	if (unlikely(vcpu_has_nv(vcpu)))
- 		return vcpu_read_sys_reg(vcpu, reg);
--	else if (__vcpu_read_sys_reg_from_cpu(reg, &val))
-+	else if (vcpu_get_flag(vcpu, SYSREGS_ON_CPU) &&
-+		 __vcpu_read_sys_reg_from_cpu(reg, &val))
- 		return val;
- 
- 	return __vcpu_sys_reg(vcpu, reg);
-@@ -36,7 +37,8 @@ static inline void __vcpu_write_sys_reg(struct kvm_vcpu *vcpu, u64 val, int reg)
+ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
  {
- 	if (unlikely(vcpu_has_nv(vcpu)))
- 		vcpu_write_sys_reg(vcpu, val, reg);
--	else if (!__vcpu_write_sys_reg_to_cpu(val, reg))
-+	else if (!vcpu_get_flag(vcpu, SYSREGS_ON_CPU) ||
-+		 !__vcpu_write_sys_reg_to_cpu(val, reg))
- 		__vcpu_assign_sys_reg(vcpu, reg, val);
- }
+-	u64 guest_hcr = __vcpu_sys_reg(vcpu, HCR_EL2);
+-	u64 hcr = vcpu->arch.hcr_el2;
++	u64 guest_hcr, hcr = vcpu->arch.hcr_el2;
+ 
+ 	if (!vcpu_has_nv(vcpu))
+ 		return hcr;
+@@ -68,10 +67,21 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
+ 		if (!vcpu_el2_e2h_is_set(vcpu))
+ 			hcr |= HCR_NV1;
+ 
++		/*
++		 * Nothing in HCR_EL2 should impact running in hypervisor
++		 * context, apart from bits we have defined as RESx (E2H,
++		 * HCD and co), or that cannot be set directly (the EXCLUDE
++		 * bits). Given that we OR the guest's view with the host's,
++		 * we can use the 0 value as the starting point, and only
++		 * use the config-driven RES1 bits.
++		 */
++		guest_hcr = kvm_vcpu_apply_reg_masks(vcpu, HCR_EL2, 0);
++
+ 		write_sysreg_s(vcpu->arch.ctxt.vncr_array, SYS_VNCR_EL2);
+ 	} else {
+ 		host_data_clear_flag(VCPU_IN_HYP_CONTEXT);
+ 
++		guest_hcr = __vcpu_sys_reg(vcpu, HCR_EL2);
+ 		if (guest_hcr & HCR_NV) {
+ 			u64 va = __fix_to_virt(vncr_fixmap(smp_processor_id()));
  
 
 
