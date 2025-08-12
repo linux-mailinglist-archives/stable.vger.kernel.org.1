@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77210B230AD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79C9B23179
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFFC41771BA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DFCF1AA53CC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC692FA0DB;
-	Tue, 12 Aug 2025 17:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068B82FE56E;
+	Tue, 12 Aug 2025 18:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thZAAxjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5C10BsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69842D5C76;
-	Tue, 12 Aug 2025 17:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24E82FDC52;
+	Tue, 12 Aug 2025 18:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021303; cv=none; b=As3UxLBkg2PrcWLOdQl5iIAYdXKeZ/WN0l9Oc87/sfYhwSkVmzmoB1w9XYjhKBRrOGPtwgQ4tUugTiEhk3a1RnaljM5f5BmWM/Mv6+Y1zy+kbHqZIneVUFXuE+EJOMllFN8rliR/BBVKwMdQS4is6xhCfs3qMAgwaBVxB/O28WM=
+	t=1755021748; cv=none; b=fVJGpscSUl2xaNmOOu+0ctKju+7sbcDzvNebaj0xAO6gzpheLe7SKm8UOM7SqX1NuM7aISnPGrRaPX80RMcsxulXpJP8THiWROhPYQwdaJTtMIi8FFXtU0svIKOmAKwjl5+YqOP7PtEBiC5VJ9f8JtTVdvKxjqCdrv4mXIpItFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021303; c=relaxed/simple;
-	bh=gTt4MFo1xX7X+9AByw3S/9mdbUtzIwa473mtOD043LA=;
+	s=arc-20240116; t=1755021748; c=relaxed/simple;
+	bh=M2JRQNS+USDgaGb039mm7DL/jIEDh7Kg6VPeRKXsTkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkcQ3eORl8yrjxYqel6BYr80r5NcrnZ6vhCWiH4eRxe/W3pWfZB2cI0oIevX9UiAbhVrcVAW5KtbDePp9Qkaw4axXfhG3mbD4KNAmoYXy1FxHkFNTPzKY9Pz97fFPrtt1EIV/JPKNY1sNcf1eEiJftujIebIZWwgq0A+lOGGJjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thZAAxjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63094C4CEF0;
-	Tue, 12 Aug 2025 17:55:01 +0000 (UTC)
+	 MIME-Version; b=TRj5m1AqNdER/hN0mYbA5Kl6bfcFPQA8n13Eff2XMdFnZGloowTHNSai6bTB0m9te+qoIWmwHl3pn04rCWaM6JNFgLezr7d1Xzd0IrMO+EBCYZ7tYFj2a4qBSZV+PxZCED0J9+wlWzCR1eBpk9HJ+bdpnpYKjhen/iZ4o/6cuXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5C10BsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB26C4CEF0;
+	Tue, 12 Aug 2025 18:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021302;
-	bh=gTt4MFo1xX7X+9AByw3S/9mdbUtzIwa473mtOD043LA=;
+	s=korg; t=1755021748;
+	bh=M2JRQNS+USDgaGb039mm7DL/jIEDh7Kg6VPeRKXsTkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=thZAAxjg7l4FfwZTrakz9V0UgGWAUBp74+69wz4IVB0CHEjLGg3w5wF+mO3Er7Gu5
-	 tAo5ZmtJGqojL7wqrZGgMymzOP/xCZhFZYkiIuJJ+8DdCllK7kRHktTeMIi9Buufu8
-	 lnCn9dLFFjqTdVVyqeysf76C4mXbgDSilC9XGbSk=
+	b=G5C10BsXSQJ/HB8QpNM2qcrIOVd/rX0DOOa3PTYZezP0D+VEOQQ9Y/scxmA+aEAd/
+	 y8OG6R8JKo50gK+oqF/iNNpLtznKj0lOsEr6aNkDzg7VwfcCiG1znNpZvln6r52U46
+	 WtLTnMafYQOqs3QhcvF3++WQbk7RbT3EmEZL1lug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 213/253] sched: Add test_and_clear_wake_up_bit() and atomic_dec_and_wake_up()
+Subject: [PATCH 6.6 213/262] benet: fix BUG when creating VFs
 Date: Tue, 12 Aug 2025 19:30:01 +0200
-Message-ID: <20250812172957.895996089@linuxfoundation.org>
+Message-ID: <20250812173002.217817466@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit 52d633def56c10fe3e82a2c5d88c3ecb3f4e4852 ]
+[ Upstream commit 5a40f8af2ba1b9bdf46e2db10e8c9710538fbc63 ]
 
-There are common patterns in the kernel of using test_and_clear_bit()
-before wake_up_bit(), and atomic_dec_and_test() before wake_up_var().
+benet crashes as soon as SRIOV VFs are created:
 
-These combinations don't need extra barriers but sometimes include them
-unnecessarily.
+ kernel BUG at mm/vmalloc.c:3457!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 4 UID: 0 PID: 7408 Comm: test.sh Kdump: loaded Not tainted 6.16.0+ #1 PREEMPT(voluntary)
+ [...]
+ RIP: 0010:vunmap+0x5f/0x70
+ [...]
+ Call Trace:
+  <TASK>
+  __iommu_dma_free+0xe8/0x1c0
+  be_cmd_set_mac_list+0x3fe/0x640 [be2net]
+  be_cmd_set_mac+0xaf/0x110 [be2net]
+  be_vf_eth_addr_config+0x19f/0x330 [be2net]
+  be_vf_setup+0x4f7/0x990 [be2net]
+  be_pci_sriov_configure+0x3a1/0x470 [be2net]
+  sriov_numvfs_store+0x20b/0x380
+  kernfs_fop_write_iter+0x354/0x530
+  vfs_write+0x9b9/0xf60
+  ksys_write+0xf3/0x1d0
+  do_syscall_64+0x8c/0x3d0
 
-To help avoid the unnecessary barriers and to help discourage the
-general use of wake_up_bit/var (which is a fragile interface) introduce
-two combined functions which implement these patterns.
+be_cmd_set_mac_list() calls dma_free_coherent() under a spin_lock_bh.
+Fix it by freeing only after the lock has been released.
 
-Also add store_release_wake_up() which supports the task of simply
-setting a non-atomic variable and sending a wakeup.  This pattern
-requires barriers which are often omitted.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240925053405.3960701-5-neilb@suse.de
-Stable-dep-of: 1db3a48e83bb ("NFS: Fix wakeup of __nfs_lookup_revalidate() in unblock_revalidate()")
+Fixes: 1a82d19ca2d6 ("be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250801101338.72502-1-mschmidt@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/wait_bit.h | 60 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
-index 7725b7579b78..2209c227e859 100644
---- a/include/linux/wait_bit.h
-+++ b/include/linux/wait_bit.h
-@@ -335,4 +335,64 @@ static inline void clear_and_wake_up_bit(int bit, void *word)
- 	wake_up_bit(word, bit);
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index a89aa4ac0a06..779f1324bb5f 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -3852,8 +3852,8 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
+ 	status = be_mcc_notify_wait(adapter);
+ 
+ err:
+-	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	spin_unlock_bh(&adapter->mcc_lock);
++	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	return status;
  }
  
-+/**
-+ * test_and_clear_wake_up_bit - clear a bit if it was set: wake up anyone waiting on that bit
-+ * @bit: the bit of the word being waited on
-+ * @word: the address of memory containing that bit
-+ *
-+ * If the bit is set and can be atomically cleared, any tasks waiting in
-+ * wait_on_bit() or similar will be woken.  This call has the same
-+ * complete ordering semantics as test_and_clear_bit().  Any changes to
-+ * memory made before this call are guaranteed to be visible after the
-+ * corresponding wait_on_bit() completes.
-+ *
-+ * Returns %true if the bit was successfully set and the wake up was sent.
-+ */
-+static inline bool test_and_clear_wake_up_bit(int bit, unsigned long *word)
-+{
-+	if (!test_and_clear_bit(bit, word))
-+		return false;
-+	/* no extra barrier required */
-+	wake_up_bit(word, bit);
-+	return true;
-+}
-+
-+/**
-+ * atomic_dec_and_wake_up - decrement an atomic_t and if zero, wake up waiters
-+ * @var: the variable to dec and test
-+ *
-+ * Decrements the atomic variable and if it reaches zero, send a wake_up to any
-+ * processes waiting on the variable.
-+ *
-+ * This function has the same complete ordering semantics as atomic_dec_and_test.
-+ *
-+ * Returns %true is the variable reaches zero and the wake up was sent.
-+ */
-+
-+static inline bool atomic_dec_and_wake_up(atomic_t *var)
-+{
-+	if (!atomic_dec_and_test(var))
-+		return false;
-+	/* No extra barrier required */
-+	wake_up_var(var);
-+	return true;
-+}
-+
-+/**
-+ * store_release_wake_up - update a variable and send a wake_up
-+ * @var: the address of the variable to be updated and woken
-+ * @val: the value to store in the variable.
-+ *
-+ * Store the given value in the variable send a wake up to any tasks
-+ * waiting on the variable.  All necessary barriers are included to ensure
-+ * the task calling wait_var_event() sees the new value and all values
-+ * written to memory before this call.
-+ */
-+#define store_release_wake_up(var, val)					\
-+do {									\
-+	smp_store_release(var, val);					\
-+	smp_mb();							\
-+	wake_up_var(var);						\
-+} while (0)
-+
- #endif /* _LINUX_WAIT_BIT_H */
 -- 
 2.39.5
 
