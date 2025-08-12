@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A38CB232BA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24430B230DA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED376E380C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2BF164BF6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C482F659A;
-	Tue, 12 Aug 2025 18:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C52B2FDC52;
+	Tue, 12 Aug 2025 17:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4edtIvx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hV7Jw+ag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8581B87F2;
-	Tue, 12 Aug 2025 18:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07022F83CB;
+	Tue, 12 Aug 2025 17:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022561; cv=none; b=mjYH6Gv8rcdP41ALV1F5PUuRI45XfHke9/SxSSMeQWsFee7FcWTec88AWHM6dm0TvbukuYt83SHOT60kkz2aaF0Dcp+OkPsYYLng8ZfRyh82R1iie6PUxdTCP3JjfCx98JhqI2BGXcjpARG+reslj1QLPN4pLajx2hAjFr70VU8=
+	t=1755021369; cv=none; b=DDrRxpH96vOoDuy9fcSQwArDV5bpc2vYWdxChcQs885oIA5fkiN7SgoUnpMPNXv1Ckx9+AI7MaW0eVqVGP8xBkWnlk1ePuuHgTrPEeyCu5+VkraC8tdDxA0R/3gm+k+uSVBFYFluAw71KmWTOkkvZI6Vxj/qgvwT8BDs5NNh7IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022561; c=relaxed/simple;
-	bh=ZA/T6YscQtr4aD4wesSNfh/iXcbaxycR/Q0FeYd1aLk=;
+	s=arc-20240116; t=1755021369; c=relaxed/simple;
+	bh=XWL/43R1U4ue7dMLsU22qaIRMTLpQdX9Jm0y0kPgnqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RI5vbiranDzmfSTE3+XVNu4BGJjDgMNTSy3XfqD5svAnqbhARhjtcSs7Re+DtWkwe4jJpe/l/tB18YG4AYBJ+YNkCIY1JaODH/c9EvXLqCtv/67hKaU48V7B5828CNjX5+MKk8jC/5szJtThD/JMhiwjXbT74goJfg2bced/AlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4edtIvx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9529C4CEF0;
-	Tue, 12 Aug 2025 18:16:00 +0000 (UTC)
+	 MIME-Version; b=nvlfLfNW9vlzDM2GXIfJ1kgPhyJwM3XCdxTYEmj9Kpyb0aCSK8tp7Twmw+eu5UAzd2BTkfpAzgTSlWYcxLxRQgono8Wr0N8ut5v+WnWCMvO+HAuiyKcb0hwMYsEGlF29UWFGZGwyNs50h6ZckukIu2rQgmqACsGS9Hfyhm1U3RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hV7Jw+ag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D04C4CEF1;
+	Tue, 12 Aug 2025 17:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022561;
-	bh=ZA/T6YscQtr4aD4wesSNfh/iXcbaxycR/Q0FeYd1aLk=;
+	s=korg; t=1755021369;
+	bh=XWL/43R1U4ue7dMLsU22qaIRMTLpQdX9Jm0y0kPgnqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4edtIvx1CPLO4msk9Y1COyxU3296YxY+reG/tXt90U7GfyGvK9ZNcu6+MUlOhAPB
-	 NWL1yHmftwyNjbvg7hHRDaHVgbXcNiIJ7kfdB1bnIZXoaLx/IyeP4tQ7kXeOee6JRI
-	 HzMiCUYqm0kcI1JSim6kt+fD1axTGkGutrayC74c=
+	b=hV7Jw+agY6lM3Uvm6nd1vf112MbVe4zHX344JSZ2LyZ3Z30sVjZdAkjfYFL5bVIZ8
+	 cKos/sh2ZU/PRHEqWqDgmslacVxwWA90pgMZX4pgYrZ4B/S5FsOM/Xbhd+s+6mwyxS
+	 Kr4GBuMKrgc5/E9RYed45ye524blOCuPbNusIJXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/369] RDMA/hns: Fix -Wframe-larger-than issue
-Date: Tue, 12 Aug 2025 19:28:09 +0200
-Message-ID: <20250812173021.989289955@linuxfoundation.org>
+Subject: [PATCH 6.6 102/262] vrf: Drop existing dst reference in vrf_ip6_input_dst
+Date: Tue, 12 Aug 2025 19:28:10 +0200
+Message-ID: <20250812172957.434672125@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit 79d56805c5068f2bc81518043e043c3dedd1c82a ]
+[ Upstream commit f388f807eca1de9e6e70f9ffb1a573c3811c4215 ]
 
-Fix -Wframe-larger-than issue by allocating memory for qpc struct
-with kzalloc() instead of using stack memory.
+Commit ff3fbcdd4724 ("selftests: tc: Add generic erspan_opts matching support
+for tc-flower") started triggering the following kmemleak warning:
 
-Fixes: 606bf89e98ef ("RDMA/hns: Refactor for hns_roce_v2_modify_qp function")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506240032.CSgIyFct-lkp@intel.com/
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250703113905.3597124-7-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+unreferenced object 0xffff888015fb0e00 (size 512):
+  comm "softirq", pid 0, jiffies 4294679065
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 40 d2 85 9e ff ff ff ff  ........@.......
+    41 69 59 9d ff ff ff ff 00 00 00 00 00 00 00 00  AiY.............
+  backtrace (crc 30b71e8b):
+    __kmalloc_noprof+0x359/0x460
+    metadata_dst_alloc+0x28/0x490
+    erspan_rcv+0x4f1/0x1160 [ip_gre]
+    gre_rcv+0x217/0x240 [ip_gre]
+    gre_rcv+0x1b8/0x400 [gre]
+    ip_protocol_deliver_rcu+0x31d/0x3a0
+    ip_local_deliver_finish+0x37d/0x620
+    ip_local_deliver+0x174/0x460
+    ip_rcv+0x52b/0x6b0
+    __netif_receive_skb_one_core+0x149/0x1a0
+    process_backlog+0x3c8/0x1390
+    __napi_poll.constprop.0+0xa1/0x390
+    net_rx_action+0x59b/0xe00
+    handle_softirqs+0x22b/0x630
+    do_softirq+0xb1/0xf0
+    __local_bh_enable_ip+0x115/0x150
+
+vrf_ip6_input_dst unconditionally sets skb dst entry, add a call to
+skb_dst_drop to drop any existing entry.
+
+Cc: David Ahern <dsahern@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 9ff74384600a ("net: vrf: Handle ipv6 multicast and link-local addresses")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250725160043.350725-1-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/vrf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 5745231f9e3c..53fe0ef3883d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5371,11 +5371,10 @@ static int hns_roce_v2_modify_qp(struct ib_qp *ibqp,
- {
- 	struct hns_roce_dev *hr_dev = to_hr_dev(ibqp->device);
- 	struct hns_roce_qp *hr_qp = to_hr_qp(ibqp);
--	struct hns_roce_v2_qp_context ctx[2];
--	struct hns_roce_v2_qp_context *context = ctx;
--	struct hns_roce_v2_qp_context *qpc_mask = ctx + 1;
-+	struct hns_roce_v2_qp_context *context;
-+	struct hns_roce_v2_qp_context *qpc_mask;
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
--	int ret;
-+	int ret = -ENOMEM;
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index 5968a3ab8177..64114e98d75d 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1345,6 +1345,8 @@ static void vrf_ip6_input_dst(struct sk_buff *skb, struct net_device *vrf_dev,
+ 	struct net *net = dev_net(vrf_dev);
+ 	struct rt6_info *rt6;
  
- 	if (attr_mask & ~IB_QP_ATTR_STANDARD_BITS)
- 		return -EOPNOTSUPP;
-@@ -5386,7 +5385,11 @@ static int hns_roce_v2_modify_qp(struct ib_qp *ibqp,
- 	 * we should set all bits of the relevant fields in context mask to
- 	 * 0 at the same time, else set them to 0x1.
- 	 */
--	memset(context, 0, hr_dev->caps.qpc_sz);
-+	context = kvzalloc(sizeof(*context), GFP_KERNEL);
-+	qpc_mask = kvzalloc(sizeof(*qpc_mask), GFP_KERNEL);
-+	if (!context || !qpc_mask)
-+		goto out;
++	skb_dst_drop(skb);
 +
- 	memset(qpc_mask, 0xff, hr_dev->caps.qpc_sz);
- 
- 	ret = hns_roce_v2_set_abs_fields(ibqp, attr, attr_mask, cur_state,
-@@ -5428,6 +5431,8 @@ static int hns_roce_v2_modify_qp(struct ib_qp *ibqp,
- 		clear_qp(hr_qp);
- 
- out:
-+	kvfree(qpc_mask);
-+	kvfree(context);
- 	return ret;
- }
- 
+ 	rt6 = vrf_ip6_route_lookup(net, vrf_dev, &fl6, ifindex, skb,
+ 				   RT6_LOOKUP_F_HAS_SADDR | RT6_LOOKUP_F_IFACE);
+ 	if (unlikely(!rt6))
 -- 
 2.39.5
 
