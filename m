@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-168851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA7CB236F5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:06:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3ABB236E0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3A197B9072
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:04:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DC274E4E0F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C033260583;
-	Tue, 12 Aug 2025 19:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FDC2882CE;
+	Tue, 12 Aug 2025 19:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6Ol+p5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGmk1efn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1734B27604E;
-	Tue, 12 Aug 2025 19:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43966279DB6;
+	Tue, 12 Aug 2025 19:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025546; cv=none; b=XE+x90EwHixHVCWzMAIdlbg3AX+AlCMfOA6I2NYAdzvtKUu8fsUOK87MTl+JOhqTvdFPf3NBr/5gt6cbBkqxH6mfuriBSEeoSaogvOgPjj/hOJ9BWFBD6lBNDTVuJ9I7aFerUGPRMOxFR7cOvuV7p8vO3nJzjQtw9z4HN+7X4hY=
+	t=1755025548; cv=none; b=VS4/KmZnq1Se6qkkC7meuBxFdZlQiID8X5VUbYaFHx3g/FNu8pTbJDjnhH6Uk97cZLd5Otukg0D5lJP4uYQZhu76zsTO5Z6GmX0QCpmKe5PvbTY0v17fE5mXqUvTfZ2tYZ+o3IaxBjT2Iuq9b9TNXQdmv3Y0Qd9NGjI//4W4e2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025546; c=relaxed/simple;
-	bh=JCmEP3YUUR7q/b5uxrS7lnAx2d5cLeJNvAdXdaDE/Bk=;
+	s=arc-20240116; t=1755025548; c=relaxed/simple;
+	bh=fUyW9LjPQKpKcmVL8cF5N9xo9gOfR7916YJHmusMj/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GkYRNIUtzNAleaXVn/N4zPnoapNE+yNRHiYcBKLLzxSnNlKbFhdO/fenTxdA16QWbx0amRe7lMPpStppPtXuHwKejLTbs1OfmFcemGAJ4vRq/aNYO2idttnxjMHCyN8QCtCdpEveVT3bxpRt/qpXHWcx6QFb1uMSecQq4OQlrd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6Ol+p5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31954C4CEF0;
-	Tue, 12 Aug 2025 19:05:43 +0000 (UTC)
+	 MIME-Version; b=C2RYFfs5OZG8FzoEMKfxhj5NkMMJ/UALeTLQIk7NAWWAngfRUVCpldEhv+VqRc5LYGE6b3TBzK/8cBNlKe+2ctC0Ip46AuisIlP4EWLB2tUjP+13c36dbsCN0jtVRtsJusJ+6zvsGr07YmIYUS/cLRDHgJH1vrdUo7sAR4sJtMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGmk1efn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B96CC4CEF0;
+	Tue, 12 Aug 2025 19:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025544;
-	bh=JCmEP3YUUR7q/b5uxrS7lnAx2d5cLeJNvAdXdaDE/Bk=;
+	s=korg; t=1755025547;
+	bh=fUyW9LjPQKpKcmVL8cF5N9xo9gOfR7916YJHmusMj/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6Ol+p5i4jbx7Or8DEBGZj3KJK0HrwlDn9f40on0bHUGSu/bj7/hiwm4bmzHrjIWO
-	 3euOjIvsRBA+tHxoCRVJzGgqZvpgie5k7+BMtuWSZidcC9xvFqrdZ+0/DUjPNobql4
-	 qg5QnuSF2kmsuq8k0L/cCjjiHvVoRJ4wRj3TN8O8=
+	b=UGmk1efnv71T5AHqAQRItAWyYZBAk3Fge1EDG/KiP2OqzCP5KKkgAyBuCEIIEy1Ha
+	 s6z92j0ihXpccF/JocpV8+wXgOgtusRwNFuHc8W7EiapgJgEkGMpEjTeSZleKX5nx5
+	 wKvpYol41FgKUPVEGvxNnyCJrQ464EM1jGRvnofM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 071/480] arm: dts: ti: omap: Fixup pinheader typo
-Date: Tue, 12 Aug 2025 19:44:39 +0200
-Message-ID: <20250812174400.357417143@linuxfoundation.org>
+Subject: [PATCH 6.15 072/480] staging: gpib: Fix error code in board_type_ioctl()
+Date: Tue, 12 Aug 2025 19:44:40 +0200
+Message-ID: <20250812174400.397882718@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -60,46 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Törnqvist <albin.tornqvist@codiax.se>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
+[ Upstream commit aa07b790d79226f9bd0731d2c065db2823867cc5 ]
 
-This commit fixes a typo introduced in commit
-ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
-gpio0_7 is located on the P9 header on the BBB.
-This was verified with a BeagleBone Black by toggling the pin and
-checking with a multimeter that it corresponds to pin 42 on the P9
-header.
+When copy_from_user() fails it return number of bytes it wasn't able to
+copy. So the correct return value when copy_from_user() fails is
+-EFAULT.
 
-Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
-Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
-Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: 9dde4559e939 ("staging: gpib: Add GPIB common core driver")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/r/20250703064633.1955893-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-boneblack.dts | 2 +-
+ drivers/staging/gpib/common/gpib_os.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-index 16b567e3cb47..b4fdcf9c02b5 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-@@ -35,7 +35,7 @@ &gpio0 {
- 		"P9_18 [spi0_d1]",
- 		"P9_17 [spi0_cs0]",
- 		"[mmc0_cd]",
--		"P8_42A [ecappwm0]",
-+		"P9_42A [ecappwm0]",
- 		"P8_35 [lcd d12]",
- 		"P8_33 [lcd d13]",
- 		"P8_31 [lcd d14]",
+diff --git a/drivers/staging/gpib/common/gpib_os.c b/drivers/staging/gpib/common/gpib_os.c
+index 8456b97290b8..01a9099a6c16 100644
+--- a/drivers/staging/gpib/common/gpib_os.c
++++ b/drivers/staging/gpib/common/gpib_os.c
+@@ -819,7 +819,7 @@ static int board_type_ioctl(gpib_file_private_t *file_priv, struct gpib_board *b
+ 
+ 	retval = copy_from_user(&cmd, (void __user *)arg, sizeof(board_type_ioctl_t));
+ 	if (retval)
+-		return retval;
++		return -EFAULT;
+ 
+ 	for (list_ptr = registered_drivers.next; list_ptr != &registered_drivers;
+ 	     list_ptr = list_ptr->next) {
 -- 
 2.39.5
 
