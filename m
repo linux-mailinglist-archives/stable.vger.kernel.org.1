@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-169163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587F7B23885
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:25:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8023B23888
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECD5A3B73C1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6CF03B7AB3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE102D3A94;
-	Tue, 12 Aug 2025 19:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857C12C21F7;
+	Tue, 12 Aug 2025 19:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cji2U3ks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOLPD30i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCA627703A;
-	Tue, 12 Aug 2025 19:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DF929BDB7;
+	Tue, 12 Aug 2025 19:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026590; cv=none; b=Q/9Blz4vUchdifzWNsfcdUkLZl2I6bLifDfpSy8RtApf+w2ik1dgiUeagY/q75HoCmo1KVplYMpHTbzntw7Ow7sGGtQLUIEwrYQrx2dIO35RjZsn3O2I4wdwe1PLPyxv/vNcb16CIJnAolHTUlRK6GUYKvcO4ADufaDbnglzEBA=
+	t=1755026597; cv=none; b=S+1PFPJcwLSAfdgYgDFb6HD5DeWhMxiDMFDxjMPqzWflwWwEd2F40D7Pd3CQf2AfUKxvj3AASwdMUCqke/VwDnNJWgDvpUSI/RMxDqw3FVitTjcHzrBAT+GR+8FvD2D4mrthCHNrExJvVLiy8hdAGqhmvajFMBcOf7+AVIeRDPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026590; c=relaxed/simple;
-	bh=WFI/kdE7f5pivGuD63RZi5t44xpwOSekJokwYUuiRPg=;
+	s=arc-20240116; t=1755026597; c=relaxed/simple;
+	bh=hsySSo7Mn+Hl5Lw6uqVTl4mOi3EdTI5HOfdrgQygLCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olRm3ycx++I/gtxYdVwBP70R+QXArDa31rFWs8ja1XndXouk6lVvanZbYyxMOah+RFgc0k/aTcDJTl1A6I+R7O1Q88FjdxtUaHFz6jpjIB5BRPcAebl1vigDocO3BboNaBDyduKq7uoJvU10F8qTLmksfZDGxA/ZTm3otmI0aPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cji2U3ks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09A5C4CEF0;
-	Tue, 12 Aug 2025 19:23:09 +0000 (UTC)
+	 MIME-Version; b=e3JIgjyQ1e8kXtSQN2ppSW24SmiNtR3khK+T5BF0ABaerWxLjGoWs1KJ/BSzHr/odkGO2/2MyyqZ2mWngkVcqaRApqOQE0v6YMX2cxCp/Xf+3HqW5kuTMP+evr/21+AqasVPm4gXUefrOeF/u2h5e8B9/oA4SlA3CQ1iQipGA+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOLPD30i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B1DC4CEF0;
+	Tue, 12 Aug 2025 19:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026590;
-	bh=WFI/kdE7f5pivGuD63RZi5t44xpwOSekJokwYUuiRPg=;
+	s=korg; t=1755026597;
+	bh=hsySSo7Mn+Hl5Lw6uqVTl4mOi3EdTI5HOfdrgQygLCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cji2U3ks7TVeuUexQIzVgy41dFfLc6xHipl3Q7Eqj2AjeuYuqpvco/mMnE8ZRW0Ot
-	 q3OL3iovqn5P8UWxJ3kc7SnI8GAimsHFjPZEj3uhaOO+szzu6ic/PkQH4nbYKcz2Zl
-	 J6JUqRE5dmkPum8s+0jp8r+Y8IgQr0hSdHhdOcO8=
+	b=IOLPD30i8NsyqJEjEkYDV2sA+3swZNIAg/h+l8S7L6UqT3DW7EQAtltdhA+P1iLjx
+	 8pM8iDKQUgKqt2SZjZ9jSPYFqOdaeyuy5d3hC9gMuPcHLXedxzXW2QV9L0zV2dFHf1
+	 FJYT3mT36ALDxD3iUwuoJKWfGEqQXyoos5F59WNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 383/480] NFSv4.2: another fix for listxattr
-Date: Tue, 12 Aug 2025 19:49:51 +0200
-Message-ID: <20250812174413.224221357@linuxfoundation.org>
+Subject: [PATCH 6.15 384/480] NFS: Fixup allocation flags for nfsiods __GFP_NORETRY
+Date: Tue, 12 Aug 2025 19:49:52 +0200
+Message-ID: <20250812174413.264868842@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,51 +69,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 9acb237deff7667b0f6b10fe6b1b70c4429ea049 ]
+[ Upstream commit 99765233ab42bf7a4950377ad7894dce8a5c0e60 ]
 
-Currently, when the server supports NFS4.1 security labels then
-security.selinux label in included twice. Instead, only add it
-when the server doesn't possess security label support.
+If the NFS client is doing writeback from a workqueue context, avoid using
+__GFP_NORETRY for allocations if the task has set PF_MEMALLOC_NOIO or
+PF_MEMALLOC_NOFS.  The combination of these flags makes memory allocation
+failures much more likely.
 
-Fixes: 243fea134633 ("NFSv4.2: fix listxattr to return selinux security label")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Link: https://lore.kernel.org/r/20250722205641.79394-1-okorniev@redhat.com
+We've seen those allocation failures show up when the loopback driver is
+doing writeback from a workqueue to a file on NFS, where memory allocation
+failure results in errors or corruption within the loopback device's
+filesystem.
+
+Suggested-by: Trond Myklebust <trondmy@kernel.org>
+Fixes: 0bae835b63c5 ("NFS: Avoid writeback threads getting stuck in mempool_alloc()")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/f83ac1155a4bc670f2663959a7a068571e06afd9.1752111622.git.bcodding@redhat.com
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/nfs/internal.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 2f5a6aa3fd48..3c1ef174aa81 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10866,7 +10866,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 69c2c10ee658..d8f768254f16 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -671,9 +671,12 @@ nfs_write_match_verf(const struct nfs_writeverf *verf,
  
- static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ static inline gfp_t nfs_io_gfp_mask(void)
  {
--	ssize_t error, error2, error3, error4;
-+	ssize_t error, error2, error3, error4 = 0;
- 	size_t left = size;
+-	if (current->flags & PF_WQ_WORKER)
+-		return GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
+-	return GFP_KERNEL;
++	gfp_t ret = current_gfp_context(GFP_KERNEL);
++
++	/* For workers __GFP_NORETRY only with __GFP_IO or __GFP_FS */
++	if ((current->flags & PF_WQ_WORKER) && ret == GFP_KERNEL)
++		ret |= __GFP_NORETRY | __GFP_NOWARN;
++	return ret;
+ }
  
- 	error = generic_listxattr(dentry, list, left);
-@@ -10894,9 +10894,11 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
- 		left -= error3;
- 	}
- 
--	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
--	if (error4 < 0)
--		return error4;
-+	if (!nfs_server_capable(d_inode(dentry), NFS_CAP_SECURITY_LABEL)) {
-+		error4 = security_inode_listsecurity(d_inode(dentry), list, left);
-+		if (error4 < 0)
-+			return error4;
-+	}
- 
- 	error += error2 + error3 + error4;
- 	if (size && error > size)
+ /*
 -- 
 2.39.5
 
