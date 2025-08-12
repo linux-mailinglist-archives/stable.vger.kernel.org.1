@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-167757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF74B23181
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A13B230A6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B5167AA6AD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5265D686013
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106B12F83B5;
-	Tue, 12 Aug 2025 18:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F7F2FDC2C;
+	Tue, 12 Aug 2025 17:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qo2B7pJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hoT4JXlY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34041C8621;
-	Tue, 12 Aug 2025 18:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C7221FAC;
+	Tue, 12 Aug 2025 17:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021890; cv=none; b=IksbmsSjFEwPL9s4DMfALRWDyBo7006iZkihjp9beisR3NWEFEIT7dQD59M5oeQfi0Q0Pj0lrVGYtvYjt1fYyouM9kmNS/zsPTzO5IGLei98x/8zG2o6fE0zfhmGDtErohEy7jFD5IfQavicwBoYZAurJQOqhDdp0habX0rWzyg=
+	t=1755021196; cv=none; b=E/YiyYqQXBcVw0QhkEqMI/iiX4k9P8vGbnkcNWUedySBuy7vqSDYp/vv2eFCvDj2avts9t1pbg3VikcHSkGdX7Ny0oQ+Xv9BFc0zCvXEjz5bds5EneR9sm6Pmh2UI3VDQBSrGBVrIB4FrO5YL2C51Z1dRaEturCHepKLxd3EHs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021890; c=relaxed/simple;
-	bh=MNtNQ4ZxOEhFd5AxI8apyR20QuhRQ6+dUgXfoXklR0A=;
+	s=arc-20240116; t=1755021196; c=relaxed/simple;
+	bh=oEalpkgdU01IY9RnN19YES9qLUwU5jQ+JbKZGwgZffU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzkooET/6jncg8y/hlQtrBWmQp8z8Q7kE1iuF9KZohDyHXDdW5RtoKO6jgK4VnfTbgCWfqynqntxPXSeW6B+H4ZvluFCoVsw6pb/VZqVBbjWuSzxA2rX0WHfd5JT1ZleeQR4hL/CniNaXlIzyafrpWD+0yt7/No1rDbHK5gTW9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qo2B7pJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328E2C4CEF0;
-	Tue, 12 Aug 2025 18:04:49 +0000 (UTC)
+	 MIME-Version; b=jKIM76ggPqNGmEntUa9Xoc0nH1AwL7RHNGR4UL8K46VySHEoDSYD4++SggpWySwhdknKVt/f6NduW7N3kIRi+lYVjeNuHrkjNKA/vMgC9cacjAqnMKX9tUW0taMF71+kx66gRGwWJQDP7B7I0Po6QbgnJSVB/Ecsp1ZFw2ftw/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoT4JXlY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B161BC4CEF0;
+	Tue, 12 Aug 2025 17:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021890;
-	bh=MNtNQ4ZxOEhFd5AxI8apyR20QuhRQ6+dUgXfoXklR0A=;
+	s=korg; t=1755021196;
+	bh=oEalpkgdU01IY9RnN19YES9qLUwU5jQ+JbKZGwgZffU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qo2B7pJfECzZM/la0flz6qozANkjrYajnJxCInFd+m9ciGznBuHWab7w0B88mK/oh
-	 L0mn7RyubALMNT+QhEEox6VkRJTERm3i9sEnQZU1nk/j0dojkbgFGg463QBj4NzSlF
-	 W+BGs2e5nkzC3bR4A+lSj7MUN7rJQv49nKXcAwAA=
+	b=hoT4JXlYZyXTE0dEy8jbaxYbkFLuPlHRAJlLD9LidCoQsli+zVS2W2YSLKsJoiwnK
+	 nXPYmJeY9kSs3BqZo+/Y8oYGxv++3p9j3IiBE/W2trZoM/zK9bHrk3zJcKJBsPNGPo
+	 HDReHIl1Yzb/i6otkY0oGb1044mDrQcdVCTdR4ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/262] pptp: fix pptp_xmit() error path
+Subject: [PATCH 6.1 228/253] smb: server: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
 Date: Tue, 12 Aug 2025 19:30:16 +0200
-Message-ID: <20250812173002.865209671@linuxfoundation.org>
+Message-ID: <20250812172958.530525350@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +67,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit ae633388cae349886f1a3cfb27aa092854b24c1b ]
+[ Upstream commit afb4108c92898350e66b9a009692230bcdd2ac73 ]
 
-I accidentally added a bug in pptp_xmit() that syzbot caught for us.
+In case of failures either ib_dma_map_single() might not be called yet
+or ib_dma_unmap_single() was already called.
 
-Only call ip_rt_put() if a route has been allocated.
+We should make sure put_recvmsg() only calls ib_dma_unmap_single() if needed.
 
-BUG: unable to handle page fault for address: ffffffffffffffdb
-PGD df3b067 P4D df3b067 PUD df3d067 PMD 0
-Oops: Oops: 0002 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 6346 Comm: syz.0.336 Not tainted 6.16.0-next-20250804-syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:arch_atomic_add_return arch/x86/include/asm/atomic.h:85 [inline]
-RIP: 0010:raw_atomic_sub_return_release include/linux/atomic/atomic-arch-fallback.h:846 [inline]
-RIP: 0010:atomic_sub_return_release include/linux/atomic/atomic-instrumented.h:327 [inline]
-RIP: 0010:__rcuref_put include/linux/rcuref.h:109 [inline]
-RIP: 0010:rcuref_put+0x172/0x210 include/linux/rcuref.h:173
-Call Trace:
- <TASK>
- dst_release+0x24/0x1b0 net/core/dst.c:167
- ip_rt_put include/net/route.h:285 [inline]
- pptp_xmit+0x14b/0x1a90 drivers/net/ppp/pptp.c:267
- __ppp_channel_push+0xf2/0x1c0 drivers/net/ppp/ppp_generic.c:2166
- ppp_channel_push+0x123/0x660 drivers/net/ppp/ppp_generic.c:2198
- ppp_write+0x2b0/0x400 drivers/net/ppp/ppp_generic.c:544
- vfs_write+0x27b/0xb30 fs/read_write.c:684
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: de9c4861fb42 ("pptp: ensure minimal skb length in pptp_xmit()")
-Reported-by: syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/689095a5.050a0220.1fc43d.0009.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250807142146.2877060-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/pptp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/server/transport_rdma.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index 4455d99be767..3a10303eb756 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -159,17 +159,17 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	int len;
- 	unsigned char *data;
- 	__u32 seq_recv;
--	struct rtable *rt = NULL;
-+	struct rtable *rt;
- 	struct net_device *tdev;
- 	struct iphdr  *iph;
- 	int    max_headroom;
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 0a6fedac59f0..71a12953089c 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -263,8 +263,13 @@ smb_direct_recvmsg *get_free_recvmsg(struct smb_direct_transport *t)
+ static void put_recvmsg(struct smb_direct_transport *t,
+ 			struct smb_direct_recvmsg *recvmsg)
+ {
+-	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
+-			    recvmsg->sge.length, DMA_FROM_DEVICE);
++	if (likely(recvmsg->sge.length != 0)) {
++		ib_dma_unmap_single(t->cm_id->device,
++				    recvmsg->sge.addr,
++				    recvmsg->sge.length,
++				    DMA_FROM_DEVICE);
++		recvmsg->sge.length = 0;
++	}
  
- 	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
--		goto tx_error;
-+		goto tx_drop;
- 
- 	rt = pptp_route_output(po, &fl4);
- 	if (IS_ERR(rt))
--		goto tx_error;
-+		goto tx_drop;
- 
- 	tdev = rt->dst.dev;
- 
-@@ -265,6 +265,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 
- tx_error:
- 	ip_rt_put(rt);
-+tx_drop:
- 	kfree_skb(skb);
- 	return 1;
- }
+ 	spin_lock(&t->recvmsg_queue_lock);
+ 	list_add(&recvmsg->list, &t->recvmsg_queue);
+@@ -632,6 +637,7 @@ static int smb_direct_post_recv(struct smb_direct_transport *t,
+ 		ib_dma_unmap_single(t->cm_id->device,
+ 				    recvmsg->sge.addr, recvmsg->sge.length,
+ 				    DMA_FROM_DEVICE);
++		recvmsg->sge.length = 0;
+ 		smb_direct_disconnect_rdma_connection(t);
+ 		return ret;
+ 	}
+@@ -1813,6 +1819,7 @@ static int smb_direct_create_pools(struct smb_direct_transport *t)
+ 		if (!recvmsg)
+ 			goto err;
+ 		recvmsg->transport = t;
++		recvmsg->sge.length = 0;
+ 		list_add(&recvmsg->list, &t->recvmsg_queue);
+ 	}
+ 	t->count_avail_recvmsg = t->recv_credit_max;
 -- 
 2.39.5
 
