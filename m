@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8419B234D1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F2CB23111
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 812B7681A59
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FE868787E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E3B2FF15D;
-	Tue, 12 Aug 2025 18:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B383D2FA0DB;
+	Tue, 12 Aug 2025 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zW+K5AvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cd5vHOcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626642FE571;
-	Tue, 12 Aug 2025 18:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722AF2F8BF1;
+	Tue, 12 Aug 2025 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023971; cv=none; b=CKpsJgPrEEzJXpD7X+bK+R4t8BgR7RrpveO801RqM+eoHZkWWKXNp2lFfEH4w3n1DiFQeV98T5C+gcWVj1CQcbSuDU6iWCqMvyAMGQZfhqnAKvKsHlyP5TZGwnCJEd2XJOdhN6rCc2A1K6XUutfQ+GUhgQ64oQWKZzRls0F4p6w=
+	t=1755021502; cv=none; b=ThL5QAPzaEQLITfe0QH+9Fh4K6sziU2TbLDHbAT57r2Mek434boqMs6l5RU+Ak2ZjFsWUTlZOYmRQnb/XohS8q6e3SHnlbLSCGIVLqOhezvbxPuBAi6C2eWITFnlsV+ycsLMoVWQmC7nksTrNWW0o0tRoQ0GyCkN1eR4jQAEnNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023971; c=relaxed/simple;
-	bh=8EFW6m/KEGmwdkJqXQpdc9r9DWvqBQHVmH4g2i4xyik=;
+	s=arc-20240116; t=1755021502; c=relaxed/simple;
+	bh=vCj+aaJeuR99wM/3gTZmhjv+fz8P5fYlyCsH4rRVzOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITul+Q6fbSkwBxZa6oHNH+o0c9d2t/PxL1kY7KuMgeLDomPIHIlG+CyzOrxmMRvESgBGDfRszaOoWMJ7mQlNxASIfxXnnFJj2KejdAd8ttdNBQ/ZwTQkq3fgkEckdYVB9X5Co21yLy0HBSyhexOSN7Ml2/vLzbL6//+KaEDmsSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zW+K5AvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5080C4CEF0;
-	Tue, 12 Aug 2025 18:39:30 +0000 (UTC)
+	 MIME-Version; b=fB89u9dMVP3UpqT2jPP9Kejd7Sct01c9LHsschqMBjm4b5+cEs3IgF7XkL/5tHY5XE0bRF3E4U/tMULI+mARona8LIyZnlVxYT5j4LAycQhgYop0v7qBLxWc/O2niOiY/bU95x1Hh5v4pPNiInHqqJg700gQNpcNciJhingOujs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cd5vHOcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90129C4CEF0;
+	Tue, 12 Aug 2025 17:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023971;
-	bh=8EFW6m/KEGmwdkJqXQpdc9r9DWvqBQHVmH4g2i4xyik=;
+	s=korg; t=1755021502;
+	bh=vCj+aaJeuR99wM/3gTZmhjv+fz8P5fYlyCsH4rRVzOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zW+K5AvRgsAKB9a/ngmnrRmpwTcOpbCcLzjNnHs7zLn9ISi8bfY1tZpDVisoxRrOy
-	 +nT8ho2Ro7u+dsseCYOV6CFzjUG4m7/4Aj4mErYyDcKwWggbdBkcIRQo1xfFBYNhpg
-	 AaoDdqMIw6EL1a6Bxx2x1cALa6iboUcUwpxQeBDw=
+	b=Cd5vHOcMv+Ny+uAQw3EzWmIFZKibuc3TOZ5INPBHcTQkSme85RFfqCzLjmrom14Ec
+	 v8wxaIu84kBduO0Rg9f+b0nVWid6Lw9VVr/PAm5BWfGtYRid79iILsgM5AQmH61GGX
+	 23AXwdlh11x99pi6A2F6E47a+UA/dXF2VT8BgSIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 234/627] wifi: mac80211: reject TDLS operations when station is not associated
+Subject: [PATCH 6.6 141/262] hwrng: mtk - handle devm_pm_runtime_enable errors
 Date: Tue, 12 Aug 2025 19:28:49 +0200
-Message-ID: <20250812173428.201672961@linuxfoundation.org>
+Message-ID: <20250812172959.102652803@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 16ecdab5446f15a61ec88eb0d23d25d009821db0 ]
+[ Upstream commit 522a242a18adc5c63a24836715dbeec4dc3faee1 ]
 
-syzbot triggered a WARN in ieee80211_tdls_oper() by sending
-NL80211_TDLS_ENABLE_LINK immediately after NL80211_CMD_CONNECT,
-before association completed and without prior TDLS setup.
+Although unlikely, devm_pm_runtime_enable() call might fail, so handle
+the return value.
 
-This left internal state like sdata->u.mgd.tdls_peer uninitialized,
-leading to a WARN_ON() in code paths that assumed it was valid.
-
-Reject the operation early if not in station mode or not associated.
-
-Reported-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f73f203f8c9b19037380
-Fixes: 81dd2b882241 ("mac80211: move TDLS data to mgd private part")
-Tested-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Link: https://patch.msgid.link/20250715230904.661092-2-moonhee.lee.ca@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 78cb66caa6ab ("hwrng: mtk - Use devm_pm_runtime_enable")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tdls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/hw_random/mtk-rng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 94714f8ffd22..ba5fbacbeeda 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1422,7 +1422,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/char/hw_random/mtk-rng.c b/drivers/char/hw_random/mtk-rng.c
+index 1e3048f2bb38..6c4e40d0365f 100644
+--- a/drivers/char/hw_random/mtk-rng.c
++++ b/drivers/char/hw_random/mtk-rng.c
+@@ -142,7 +142,9 @@ static int mtk_rng_probe(struct platform_device *pdev)
+ 	dev_set_drvdata(&pdev->dev, priv);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+-	devm_pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
  
--	if (sdata->vif.type != NL80211_IFTYPE_STATION)
-+	if (sdata->vif.type != NL80211_IFTYPE_STATION || !sdata->vif.cfg.assoc)
- 		return -EINVAL;
+ 	dev_info(&pdev->dev, "registered RNG driver\n");
  
- 	switch (oper) {
 -- 
 2.39.5
 
