@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F78B22F94
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7727B232DC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DABB868159B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F54B3A8792
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7BE2FD1D1;
-	Tue, 12 Aug 2025 17:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BF92EAB97;
+	Tue, 12 Aug 2025 18:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B44EF+7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVXp0LCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0CD2F7461;
-	Tue, 12 Aug 2025 17:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637B72D8363;
+	Tue, 12 Aug 2025 18:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020479; cv=none; b=mL4E9YEtqSIpobHb6go3a5LNPdessIHfu+aYgJQoa7gCxw5BSLE66ZF4K1bl5hPBzkCUIyfK3GtHtTld6kGyRmrNy6OWRF35UpSvWloxKW4aM8ECnWjIfTTBbWM602toHQ24OHCEpVMRzbgJMC/Gwg2eYTMaylzXlBDXV2Ee+fo=
+	t=1755022641; cv=none; b=TfpvN96gQhHi35x8w+NXvlht/QyE5RgZp6Fw8d/zFBHjkkD5+IUlcfFai3AMd+siiWVFAdi/Nw0WTrCSxjK6bj58B1vaR3zFfE4hvHDaeanqKPasii96K7yfkDIVRfnXxXRhhNQbr/ZLofEmyzmGYexa4JyD7KsqI4aTQFFXABk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020479; c=relaxed/simple;
-	bh=dzz2gIrXURaZ7f4I04M1F+rFzXjnPF9v0crsAR45/u0=;
+	s=arc-20240116; t=1755022641; c=relaxed/simple;
+	bh=0Lu8Ye09aw7r5XnC9vyzWgmQyJ5L1Jc4+PnkVE+yGqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tk4pMzjM8w96u1RTu1hQh9aop2SLnO7wdff6YGIxphrgstSDMOrp+EdSC1GopgYVHntgApORiUm4sR/xBaxN0mG7RRVghWfz9ISvrYGVqPxn1Rv39Z4AfjmNw8X5aJv0IZlGyGRxqP7SMz5gELY9zHjX5Es+v72adnlg8P3jqCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B44EF+7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7922EC4CEF0;
-	Tue, 12 Aug 2025 17:41:18 +0000 (UTC)
+	 MIME-Version; b=gbcO17F/jxQDfcQQxB8oqdnj46av4Gwinb6BBugIZtA8WTW397PmzmDxEGh/48GrLFvD1/L1EOp3k6B+vlROD0XyF0vIqcCEtl0Km7PrB7UO2V3325XM9gQKIf+nB3ArvmOPr+RwO5eswXkaM6b84di3AJSQo1ZUuOzvl8MsEDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVXp0LCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56EAC4CEF0;
+	Tue, 12 Aug 2025 18:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020478;
-	bh=dzz2gIrXURaZ7f4I04M1F+rFzXjnPF9v0crsAR45/u0=;
+	s=korg; t=1755022641;
+	bh=0Lu8Ye09aw7r5XnC9vyzWgmQyJ5L1Jc4+PnkVE+yGqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B44EF+7I+UpOLMLELOnchok6LtyNnMQ1mq+lUK9twJp0624xA5s6vnsuP41Pi0Qzx
-	 y+R3VmZZDZpQ4umc4+RYNZjJSZiMIU4ca5ueHJxOEGx/OznpzvCKsWYGrAVwJu7x/x
-	 bTLeMmWGpXcffhkKvtFScXOh//74apcMvnXpqtpk=
+	b=tVXp0LCh9EEhnnBdeO9mb9gkfjZgDcF1RIbccD/qEtj9gjNpa/jz1FBAhytxwhs4+
+	 6mEtLqqBXnFXYuMfznxeeweQJAF6sBPnBIOEfoeRHUzaGp1kN2ZvauwcQTAw4xWNJ1
+	 lkgM9zc5Zaz/+Z7TI+mm5ELGMk5oVYuUt72278Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/253] cpufreq: Init policy->rwsem before it may be possibly used
+Subject: [PATCH 6.12 182/369] perf sched: Use RC_CHK_EQUAL() to compare pointers
 Date: Tue, 12 Aug 2025 19:27:59 +0200
-Message-ID: <20250812172952.606602758@linuxfoundation.org>
+Message-ID: <20250812173021.617601213@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit d1378d1d7edb3a4c4935a44fe834ae135be03564 ]
+[ Upstream commit 7a4002ec9e0fced907179da94f67c3082d7b4162 ]
 
-In cpufreq_policy_put_kobj(), policy->rwsem is used. But in
-cpufreq_policy_alloc(), if freq_qos_add_notifier() returns an error, error
-path via err_kobj_remove or err_min_qos_notifier will be reached and
-cpufreq_policy_put_kobj() will be called before policy->rwsem is
-initialized. Thus, the calling of init_rwsem() should be moved to where
-before these two error paths can be reached.
+So that it can check two pointers to the same object properly when
+REFCNT_CHECKING is on.
 
-Fixes: 67d874c3b2c6 ("cpufreq: Register notifiers with the PM QoS framework")
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-3-zhenglifeng1@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 78c32f4cb12f9430 ("libperf rc_check: Add RC_CHK_EQUAL")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250703014942.1369397-7-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/builtin-sched.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 1d18a56dccab..805b4d26e9d2 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1239,6 +1239,8 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
- 		goto err_free_real_cpus;
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 686747ae4cad..6e9c22c1c29d 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -999,7 +999,7 @@ thread_atoms_search(struct rb_root_cached *root, struct thread *thread,
+ 		else if (cmp < 0)
+ 			node = node->rb_right;
+ 		else {
+-			BUG_ON(thread != atoms->thread);
++			BUG_ON(!RC_CHK_EQUAL(thread, atoms->thread));
+ 			return atoms;
+ 		}
  	}
- 
-+	init_rwsem(&policy->rwsem);
-+
- 	freq_constraints_init(&policy->constraints);
- 
- 	policy->nb_min.notifier_call = cpufreq_notifier_min;
-@@ -1261,7 +1263,6 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
- 	}
- 
- 	INIT_LIST_HEAD(&policy->policy_list);
--	init_rwsem(&policy->rwsem);
- 	spin_lock_init(&policy->transition_lock);
- 	init_waitqueue_head(&policy->transition_wait);
- 	INIT_WORK(&policy->update, handle_update);
 -- 
 2.39.5
 
