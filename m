@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-169199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B3CB238AD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0977B238B3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75EB0189124A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A50E1894854
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB832FFDC3;
-	Tue, 12 Aug 2025 19:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EB22E11BF;
+	Tue, 12 Aug 2025 19:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3DMWOOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNXi2Bmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2EA2FE582;
-	Tue, 12 Aug 2025 19:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F8227703A;
+	Tue, 12 Aug 2025 19:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026713; cv=none; b=Z8k3oZutLbv1WDfWwyOcVC88jThUNwo7EyZhYBVodhICW5ymniSBGFI7elbLxOv+tVkTyY5W4Im/eTtLtXEM3ti2ITaaoMGdmnjDUxIpbyTlR3mq2Ps6d6g+u9HVYZ6yOUoZdgwgBYPK9Paow/B0Okr+O0b2J2CeQTlTsb0mX5c=
+	t=1755026720; cv=none; b=ejZrIrofifbirqHHQfV+/VNinEUn+9W4Sfi+K8MEAr6bwAKBcBV7/7O8snthAtGlfIzXpaBhySRj7wuU5mBL4bqqouIBM6YdaxDfxZg04ydJmH7DkqCNMGWXXGL4sKKlXRNGZDt0NzGBFQ6wcrT4N2uwHd1yD/oFmpLcn7vj0Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026713; c=relaxed/simple;
-	bh=/QRcsdU0Gx8j0KEXDmm1LN39z3Z2Q0zBUVojg7vERfU=;
+	s=arc-20240116; t=1755026720; c=relaxed/simple;
+	bh=ub18aQMaA97B3TnRwNpC935YmVhLV9KfpqrMjHVXpOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axHW42nmjgD4HvFyzCceZwCfkKP8wMo5Vq2XxpOsxVk/MywL9krbzgLTbiGBZVXIiSm8v2KRRjVa6qLdmpv/kO2/bOILBj2+0K9aYWzTZG+pX3ZdrxOCeSDcTtXIVGbSZjzwY8PqBtO5SwheZKn2S9caI/TF7vJyxnvNpVIvSJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3DMWOOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD9DC4CEF4;
-	Tue, 12 Aug 2025 19:25:12 +0000 (UTC)
+	 MIME-Version; b=kKsjvBKmnNLGZYs/ozBMGLuMLDF97dgppTGtiAJDULDRJQM9GtidbWSDLmPcaIBOMLbLst86nClMfL3106sISkW7Vf1PV9ttkWOyB/NnJFubpr+6Csc3ndLqtLPXUhU+4bgnkTZSmv3vNfSY5fkaG9xM9CFMyyJu8MuqNjHPZpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNXi2Bmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28F9C4CEF0;
+	Tue, 12 Aug 2025 19:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026713;
-	bh=/QRcsdU0Gx8j0KEXDmm1LN39z3Z2Q0zBUVojg7vERfU=;
+	s=korg; t=1755026720;
+	bh=ub18aQMaA97B3TnRwNpC935YmVhLV9KfpqrMjHVXpOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3DMWOORTuK/dgp6RmixhPtV8zLewF0j9ylfL7RNupFYWwRZtt1bG73Lve7+4m17H
-	 kEZ+r64gCqbxxhEvqR6ClNGtl2PPcYghUWGuxaa3c8nMY37NcpRp764Y4FSkBB887i
-	 C5YeI6sO9zMHqJG0faJVeHm9jbUMqN/rYaOrN7iU=
+	b=rNXi2BmqzHu4DWPW4JCV8xvqeMuZqVnW59TLrfFIx1l+dJeCwhLRl1Oaf1/yNvNjK
+	 +wpMuTTR98d2y7qM0ROkvu1E/F9jNsEXjxoqNOj1nqd2X1EZQPEtm38Az8GQI7HvGz
+	 RjOVu9oBxW9ePAJ8nBxXBnl+JUdt5tBYCdNMerow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 419/480] s390/boot: Fix startup debugging log
-Date: Tue, 12 Aug 2025 19:50:27 +0200
-Message-ID: <20250812174414.690142692@linuxfoundation.org>
+Subject: [PATCH 6.15 420/480] smb: server: remove separate empty_recvmsg_queue
+Date: Tue, 12 Aug 2025 19:50:28 +0200
+Message-ID: <20250812174414.730938575@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,35 +71,167 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit e29409faec87ffd2de2ed20b6109f303f129281b ]
+[ Upstream commit 01027a62b508c48c762096f347de925eedcbd008 ]
 
-Fix 'kernel image' end address for kaslr case.
+There's no need to maintain two lists, we can just
+have a single list of receive buffers, which are free to use.
 
-Fixes: ec6f9f7e5bbf ("s390/boot: Add startup debugging support")
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/boot/startup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c | 60 +++++-----------------------------
+ 1 file changed, 8 insertions(+), 52 deletions(-)
 
-diff --git a/arch/s390/boot/startup.c b/arch/s390/boot/startup.c
-index 06316fb8e0fa..6d4357441897 100644
---- a/arch/s390/boot/startup.c
-+++ b/arch/s390/boot/startup.c
-@@ -369,7 +369,7 @@ static unsigned long setup_kernel_memory_layout(unsigned long kernel_size)
- 		kernel_start = round_down(kernel_end - kernel_size, THREAD_SIZE);
- 		boot_debug("Randomization range: 0x%016lx-0x%016lx\n", vmax - kaslr_len, vmax);
- 		boot_debug("kernel image:        0x%016lx-0x%016lx (kaslr)\n", kernel_start,
--			   kernel_size + kernel_size);
-+			   kernel_start + kernel_size);
- 	} else if (vmax < __NO_KASLR_END_KERNEL || vsize > __NO_KASLR_END_KERNEL) {
- 		kernel_start = round_down(vmax - kernel_size, THREAD_SIZE);
- 		boot_debug("kernel image:        0x%016lx-0x%016lx (constrained)\n", kernel_start,
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index c6cbe0d56e32..393254109fc4 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -129,9 +129,6 @@ struct smb_direct_transport {
+ 	spinlock_t		recvmsg_queue_lock;
+ 	struct list_head	recvmsg_queue;
+ 
+-	spinlock_t		empty_recvmsg_queue_lock;
+-	struct list_head	empty_recvmsg_queue;
+-
+ 	int			send_credit_target;
+ 	atomic_t		send_credits;
+ 	spinlock_t		lock_new_recv_credits;
+@@ -276,32 +273,6 @@ static void put_recvmsg(struct smb_direct_transport *t,
+ 	spin_unlock(&t->recvmsg_queue_lock);
+ }
+ 
+-static struct
+-smb_direct_recvmsg *get_empty_recvmsg(struct smb_direct_transport *t)
+-{
+-	struct smb_direct_recvmsg *recvmsg = NULL;
+-
+-	spin_lock(&t->empty_recvmsg_queue_lock);
+-	if (!list_empty(&t->empty_recvmsg_queue)) {
+-		recvmsg = list_first_entry(&t->empty_recvmsg_queue,
+-					   struct smb_direct_recvmsg, list);
+-		list_del(&recvmsg->list);
+-	}
+-	spin_unlock(&t->empty_recvmsg_queue_lock);
+-	return recvmsg;
+-}
+-
+-static void put_empty_recvmsg(struct smb_direct_transport *t,
+-			      struct smb_direct_recvmsg *recvmsg)
+-{
+-	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
+-			    recvmsg->sge.length, DMA_FROM_DEVICE);
+-
+-	spin_lock(&t->empty_recvmsg_queue_lock);
+-	list_add_tail(&recvmsg->list, &t->empty_recvmsg_queue);
+-	spin_unlock(&t->empty_recvmsg_queue_lock);
+-}
+-
+ static void enqueue_reassembly(struct smb_direct_transport *t,
+ 			       struct smb_direct_recvmsg *recvmsg,
+ 			       int data_length)
+@@ -386,9 +357,6 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
+ 	spin_lock_init(&t->recvmsg_queue_lock);
+ 	INIT_LIST_HEAD(&t->recvmsg_queue);
+ 
+-	spin_lock_init(&t->empty_recvmsg_queue_lock);
+-	INIT_LIST_HEAD(&t->empty_recvmsg_queue);
+-
+ 	init_waitqueue_head(&t->wait_send_pending);
+ 	atomic_set(&t->send_pending, 0);
+ 
+@@ -554,7 +522,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			       wc->opcode);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 		}
+-		put_empty_recvmsg(t, recvmsg);
++		put_recvmsg(t, recvmsg);
+ 		return;
+ 	}
+ 
+@@ -568,7 +536,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	switch (recvmsg->type) {
+ 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
+ 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
+-			put_empty_recvmsg(t, recvmsg);
++			put_recvmsg(t, recvmsg);
+ 			return;
+ 		}
+ 		t->negotiation_requested = true;
+@@ -585,7 +553,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 
+ 		if (wc->byte_len <
+ 		    offsetof(struct smb_direct_data_transfer, padding)) {
+-			put_empty_recvmsg(t, recvmsg);
++			put_recvmsg(t, recvmsg);
+ 			return;
+ 		}
+ 
+@@ -593,7 +561,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (data_length) {
+ 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+ 			    (u64)data_length) {
+-				put_empty_recvmsg(t, recvmsg);
++				put_recvmsg(t, recvmsg);
+ 				return;
+ 			}
+ 
+@@ -613,7 +581,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			avail_recvmsg_count = t->count_avail_recvmsg;
+ 			spin_unlock(&t->receive_credit_lock);
+ 		} else {
+-			put_empty_recvmsg(t, recvmsg);
++			put_recvmsg(t, recvmsg);
+ 
+ 			spin_lock(&t->receive_credit_lock);
+ 			receive_credits = --(t->recv_credits);
+@@ -811,7 +779,6 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
+ 	struct smb_direct_recvmsg *recvmsg;
+ 	int receive_credits, credits = 0;
+ 	int ret;
+-	int use_free = 1;
+ 
+ 	spin_lock(&t->receive_credit_lock);
+ 	receive_credits = t->recv_credits;
+@@ -819,18 +786,9 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
+ 
+ 	if (receive_credits < t->recv_credit_target) {
+ 		while (true) {
+-			if (use_free)
+-				recvmsg = get_free_recvmsg(t);
+-			else
+-				recvmsg = get_empty_recvmsg(t);
+-			if (!recvmsg) {
+-				if (use_free) {
+-					use_free = 0;
+-					continue;
+-				} else {
+-					break;
+-				}
+-			}
++			recvmsg = get_free_recvmsg(t);
++			if (!recvmsg)
++				break;
+ 
+ 			recvmsg->type = SMB_DIRECT_MSG_DATA_TRANSFER;
+ 			recvmsg->first_segment = false;
+@@ -1806,8 +1764,6 @@ static void smb_direct_destroy_pools(struct smb_direct_transport *t)
+ 
+ 	while ((recvmsg = get_free_recvmsg(t)))
+ 		mempool_free(recvmsg, t->recvmsg_mempool);
+-	while ((recvmsg = get_empty_recvmsg(t)))
+-		mempool_free(recvmsg, t->recvmsg_mempool);
+ 
+ 	mempool_destroy(t->recvmsg_mempool);
+ 	t->recvmsg_mempool = NULL;
 -- 
 2.39.5
 
