@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39856B23014
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F6AB2325D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59FE8564AB7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372E1189AC8D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B6F2F7477;
-	Tue, 12 Aug 2025 17:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C141EF38C;
+	Tue, 12 Aug 2025 18:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6onUuvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXPBn07L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D7026B2C8;
-	Tue, 12 Aug 2025 17:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6126305E08;
+	Tue, 12 Aug 2025 18:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020823; cv=none; b=AVa2STqAZzqSSALU9tMwLGV/a3E3hl2MgL6UQUTIfKrb9J4UqUI06CB+2VbBqbOPiFaO3QJGZlOPPitP+GTG2C+PA/Qc7uWuDAHXh6IZNtA/20mnuKhdOlF5eTMYcK6fyM/OlWZOLHxvgEgLj6EAdT0xYTJ/fYI+IYbPRZf2PZk=
+	t=1755022285; cv=none; b=AcjAQ9W35DQoUOYK4lmtF319+HtD5PaSKs+g7BaWDd4VtBR96gfZsawPeLcm6/FLlBP74CisYjGd3cAyR6OO5pQbQylrll6TKVhYy4a5tL57yy0aI5/egPgG0XX+BY9+oQk1Qhe5u9/jxwndixSImlY+dQhsVzveyZH11N/DUhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020823; c=relaxed/simple;
-	bh=lzUf0sZovgzPYs5mO8ex6IhF2EVSlYfV68/7nacj3EI=;
+	s=arc-20240116; t=1755022285; c=relaxed/simple;
+	bh=qrNBCVYu3XyLwbzHB3rHaSuxbR+K9f6NwnlgeM6DhLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeCfBzrJoQLBXaK+az7/lbWrO0wOzdSI+1in7yICOdYcUl1480yUjmiuhFwfkfRjDT6HEas1UQZ5nakzZPqKgLhd7pFKfZGf8x8w9hEQDdrLd34fX5+kcGtSkA3nHFTKV09HE+z+iJNDzMwlbtAss8cNdQ8QF96YygEQLzsWGGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6onUuvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC15C4CEF0;
-	Tue, 12 Aug 2025 17:47:02 +0000 (UTC)
+	 MIME-Version; b=nifBHzWv1GVh72EyW3+F2TbnNTOw8f4L1wJb9Nf2DH84vuDLN24tUe8QHkCpThlj9tH8lnm2poB6NQhtf3CAACDwV26iNmA52yqP/cp09wfYleSJ9fOk7pBqysxtQRGxWJED+cv/jv6PKf+YRjnrqKLkTAulrcL35oICUDTHqsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXPBn07L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F32C4CEF7;
+	Tue, 12 Aug 2025 18:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020823;
-	bh=lzUf0sZovgzPYs5mO8ex6IhF2EVSlYfV68/7nacj3EI=;
+	s=korg; t=1755022285;
+	bh=qrNBCVYu3XyLwbzHB3rHaSuxbR+K9f6NwnlgeM6DhLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6onUuvKpSGlcmjnTrtuMyhguI+TAnUJ5rcj4YM3C6M2xxUZdjWtaIlBEIfv3QUNw
-	 kIF3ygv6fJZ3kh/G7j3mQNVHLjA2gmRftGCzE2bc2BBrHxrjvVDvq22C3m/KrMen6C
-	 nf0/iytsHDtbsxLcVib22Wp6nH0tMZqu3z175mTc=
+	b=gXPBn07LKhIHSVo+2hGvjKdtytbUOLnc6/5wl/UJpC0nd3FSZsqFr/p8oj7cgIJw1
+	 u/R7XcSmE4JiHHRP6tpX6nFhy/eh7SnKEz35eXXhqaha2Y3hpm2U48aH6QO0zn5Z2K
+	 BYnD7NiDUJ68dJBsT/io2K33pfyVPaTQ+URza95A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/262] arm64: dts: qcom: sdm845: Expand IMEM region
+Subject: [PATCH 6.12 111/369] mwl8k: Add missing check after DMA map
 Date: Tue, 12 Aug 2025 19:26:48 +0200
-Message-ID: <20250812172953.833712335@linuxfoundation.org>
+Message-ID: <20250812173018.949071160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 81a4a7de3d4031e77b5796479ef21aefb0862807 ]
+[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
 
-We need more than what is currently described, expand the region to its
-actual boundaries.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: 948f6161c6ab ("arm64: dts: qcom: sdm845: Add IMEM and PIL info region")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250523-topic-ipa_mem_dts-v1-2-f7aa94fac1ab@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/marvell/mwl8k.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 4ea693a07585..64ea9d73d970 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4989,18 +4989,18 @@ spmi_bus: spmi@c440000 {
- 			#interrupt-cells = <4>;
- 		};
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index bab9ef37a1ab..8bcb1d0dd618 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -1227,6 +1227,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
  
--		sram@146bf000 {
-+		sram@14680000 {
- 			compatible = "qcom,sdm845-imem", "syscon", "simple-mfd";
--			reg = <0 0x146bf000 0 0x1000>;
-+			reg = <0 0x14680000 0 0x40000>;
+ 		addr = dma_map_single(&priv->pdev->dev, skb->data,
+ 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&priv->pdev->dev, addr)) {
++			kfree_skb(skb);
++			break;
++		}
  
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 
--			ranges = <0 0 0x146bf000 0x1000>;
-+			ranges = <0 0 0x14680000 0x40000>;
- 
--			pil-reloc@94c {
-+			pil-reloc@3f94c {
- 				compatible = "qcom,pil-reloc-info";
--				reg = <0x94c 0xc8>;
-+				reg = <0x3f94c 0xc8>;
- 			};
- 		};
- 
+ 		rxq->rxd_count++;
+ 		rx = rxq->tail++;
 -- 
 2.39.5
 
