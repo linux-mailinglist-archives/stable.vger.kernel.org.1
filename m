@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934DBB22FAC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4980CB23463
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BB93A8DD6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35CB017F608
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D452FDC49;
-	Tue, 12 Aug 2025 17:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CFD2FD1A2;
+	Tue, 12 Aug 2025 18:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+++H9AO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0T2WKiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F6F2F7477;
-	Tue, 12 Aug 2025 17:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635902F90DF;
+	Tue, 12 Aug 2025 18:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020543; cv=none; b=ZxVuPhEUiAmeV97iddFDadOhAlAJRCv2B2qYABgehOs/glxEdIKwfWQoD6dx+PuNJb8dx9RFB+i8agH5LgEHolQRKDh4lElrTEfuIRa7lgRcehsjgZrbrfWeXAucjHWVC4NWKpqonAG7u1ksyiHJ4ST8QW/CAHZ+o4YyklZ4GT8=
+	t=1755023807; cv=none; b=NGDePGvhEAz5tG10sUDicKij8AxF8bl3Chuon37Vf2z6LoPqbLHbFFqOYZIK/Oy0697mvRyZeOjijhLttg/SIFBh4hD7f1vjpPvOYW0Hwwpn3ty6Dvc3dG6Cqj9F4ljCf2JQowGDvJxAXz2Im0HKj0RnwBTQ/kRwNCTbLIiigRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020543; c=relaxed/simple;
-	bh=1BGoJpxu7UYdP+AYY9fo81s8He1GI7Gem667zpux5h0=;
+	s=arc-20240116; t=1755023807; c=relaxed/simple;
+	bh=514N8JRHvZUm9L+GQP7g75Qowaf61K8A+ca6wqx73+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfl87zDR8Q4wbXm4FXgPvHJybX7uSsZ45Cps/a8qHiZZ9lUkOwwsnTpLwjfq4Ni/mkF69gJ2XqfMoMFEOHwEVhU3X7erfx4lJyWhZAKnPfy10zO9TPFVSCujyF36EfK1fRjt3HP0RdMOo7uzz+GqlEl7qdp+O/wO24PczhdBID8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+++H9AO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF166C4CEF0;
-	Tue, 12 Aug 2025 17:42:22 +0000 (UTC)
+	 MIME-Version; b=YSjC6zJC6U2/NWnMbr7dnSmMByTPmaN40ZJyBjvTkHTDPt9dMBTZbjTsShVvyR5xbsv83c0pwzZBkCDo/QXjhuBG151tYjDhHx/7PFcZLALr7E2Go1q8iNdRxB7GdECwyFyzG2LU8y+cE/4iMsc6loOUXltdB6iiVA1rFaSe90Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0T2WKiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6B0C4CEF0;
+	Tue, 12 Aug 2025 18:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020543;
-	bh=1BGoJpxu7UYdP+AYY9fo81s8He1GI7Gem667zpux5h0=;
+	s=korg; t=1755023807;
+	bh=514N8JRHvZUm9L+GQP7g75Qowaf61K8A+ca6wqx73+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+++H9AOsFemsnlFhdyUGbg34D4AzxAaTYcQ0LWBfVGtB+zREq2hTO8mOhoWpsqaq
-	 wCBFhLDyu1KU8BOl6/9620CdFaDPDm81jw1zZf2A2XUBKsTpv9K0qnEBHF2/62c+4x
-	 fPOQF6tbUhsfy3HugH0u50+XNTrVwzgDC4hbzk1s=
+	b=A0T2WKiP9zNy4q/osz0pfVuiheY++BYGCr7s1/zuUrVbwny8yl/NvpY6BdQC5KKBk
+	 ia7tSycwWxx4Q34Rme1N37E3Xk1CWj2SxnKNR8o5/PiUjtMvBlVRUcqM8HJb8fGvIq
+	 8CZ8IXW223UFSpceWE33g3Flrzip0wezrsUC/qik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
+	Emily Deng <Emily.Deng@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/253] interconnect: qcom: sc8180x: specify num_nodes
+Subject: [PATCH 6.16 187/627] drm/amdkfd: Move the process suspend and resume out of full access
 Date: Tue, 12 Aug 2025 19:28:02 +0200
-Message-ID: <20250812172952.732675365@linuxfoundation.org>
+Message-ID: <20250812173426.388029853@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,316 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Emily Deng <Emily.Deng@amd.com>
 
-[ Upstream commit 7e0b59496a02d25828612721e846ea4b717a97b9 ]
+[ Upstream commit 54f7a24e1437d66c9ff36d727a9dff1beeeab429 ]
 
-Specify .num_nodes for several BCMs which missed this declaration.
+For the suspend and resume process, exclusive access is not required.
+Therefore, it can be moved out of the full access section to reduce the
+duration of exclusive access.
 
-Fixes: 04548d4e2798 ("interconnect: qcom: sc8180x: Reformat node and bcm definitions")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250704-rework-icc-v2-2-875fac996ef5@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+v3:
+Move suspend processes before hardware fini.
+Remove twice call for bare metal.
+
+v4:
+Refine code
+
+Signed-off-by: Emily Deng <Emily.Deng@amd.com>
+Acked-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 14b2d71a9a24 ("drm/amdgpu/gfx10: fix KGQ reset sequence")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sc8180x.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c    | 24 +++++++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    | 25 ++++++---
+ .../drm/amd/amdgpu/amdgpu_amdkfd_arcturus.c   |  4 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    | 11 ++--
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c      |  4 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c       | 54 ++++++++++++-------
+ 6 files changed, 86 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/sc8180x.c b/drivers/interconnect/qcom/sc8180x.c
-index d9ee193fb18b..df2fdce42f93 100644
---- a/drivers/interconnect/qcom/sc8180x.c
-+++ b/drivers/interconnect/qcom/sc8180x.c
-@@ -1507,22 +1507,26 @@ static struct qcom_icc_bcm bcm_sh3 = {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+index d8ac4b1051a8..fe282b855734 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+@@ -248,18 +248,34 @@ void amdgpu_amdkfd_interrupt(struct amdgpu_device *adev,
+ 		kgd2kfd_interrupt(adev->kfd.dev, ih_ring_entry);
+ }
  
- static struct qcom_icc_bcm bcm_sn0 = {
- 	.name = "SN0",
-+	.num_nodes = 1,
- 	.nodes = { &slv_qns_gemnoc_sf }
- };
+-void amdgpu_amdkfd_suspend(struct amdgpu_device *adev, bool run_pm)
++void amdgpu_amdkfd_suspend(struct amdgpu_device *adev, bool suspend_proc)
+ {
+ 	if (adev->kfd.dev)
+-		kgd2kfd_suspend(adev->kfd.dev, run_pm);
++		kgd2kfd_suspend(adev->kfd.dev, suspend_proc);
+ }
  
- static struct qcom_icc_bcm bcm_sn1 = {
- 	.name = "SN1",
-+	.num_nodes = 1,
- 	.nodes = { &slv_qxs_imem }
- };
+-int amdgpu_amdkfd_resume(struct amdgpu_device *adev, bool run_pm)
++int amdgpu_amdkfd_resume(struct amdgpu_device *adev, bool resume_proc)
+ {
+ 	int r = 0;
  
- static struct qcom_icc_bcm bcm_sn2 = {
- 	.name = "SN2",
- 	.keepalive = true,
-+	.num_nodes = 1,
- 	.nodes = { &slv_qns_gemnoc_gc }
- };
+ 	if (adev->kfd.dev)
+-		r = kgd2kfd_resume(adev->kfd.dev, run_pm);
++		r = kgd2kfd_resume(adev->kfd.dev, resume_proc);
++
++	return r;
++}
++
++void amdgpu_amdkfd_suspend_process(struct amdgpu_device *adev)
++{
++	if (adev->kfd.dev)
++		kgd2kfd_suspend_process(adev->kfd.dev);
++}
++
++int amdgpu_amdkfd_resume_process(struct amdgpu_device *adev)
++{
++	int r = 0;
++
++	if (adev->kfd.dev)
++		r = kgd2kfd_resume_process(adev->kfd.dev);
  
- static struct qcom_icc_bcm bcm_co2 = {
- 	.name = "CO2",
-+	.num_nodes = 1,
- 	.nodes = { &mas_qnm_npu }
- };
+ 	return r;
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+index b6ca41859b53..b7c3ec483407 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+@@ -154,8 +154,10 @@ struct amdkfd_process_info {
+ int amdgpu_amdkfd_init(void);
+ void amdgpu_amdkfd_fini(void);
  
-@@ -1534,12 +1538,14 @@ static struct qcom_icc_bcm bcm_ip0 = {
- static struct qcom_icc_bcm bcm_sn3 = {
- 	.name = "SN3",
- 	.keepalive = true,
-+	.num_nodes = 2,
- 	.nodes = { &slv_srvc_aggre1_noc,
- 		  &slv_qns_cnoc }
- };
+-void amdgpu_amdkfd_suspend(struct amdgpu_device *adev, bool run_pm);
+-int amdgpu_amdkfd_resume(struct amdgpu_device *adev, bool run_pm);
++void amdgpu_amdkfd_suspend(struct amdgpu_device *adev, bool suspend_proc);
++int amdgpu_amdkfd_resume(struct amdgpu_device *adev, bool resume_proc);
++void amdgpu_amdkfd_suspend_process(struct amdgpu_device *adev);
++int amdgpu_amdkfd_resume_process(struct amdgpu_device *adev);
+ void amdgpu_amdkfd_interrupt(struct amdgpu_device *adev,
+ 			const void *ih_ring_entry);
+ void amdgpu_amdkfd_device_probe(struct amdgpu_device *adev);
+@@ -411,8 +413,10 @@ struct kfd_dev *kgd2kfd_probe(struct amdgpu_device *adev, bool vf);
+ bool kgd2kfd_device_init(struct kfd_dev *kfd,
+ 			 const struct kgd2kfd_shared_resources *gpu_resources);
+ void kgd2kfd_device_exit(struct kfd_dev *kfd);
+-void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm);
+-int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm);
++void kgd2kfd_suspend(struct kfd_dev *kfd, bool suspend_proc);
++int kgd2kfd_resume(struct kfd_dev *kfd, bool resume_proc);
++void kgd2kfd_suspend_process(struct kfd_dev *kfd);
++int kgd2kfd_resume_process(struct kfd_dev *kfd);
+ int kgd2kfd_pre_reset(struct kfd_dev *kfd,
+ 		      struct amdgpu_reset_context *reset_context);
+ int kgd2kfd_post_reset(struct kfd_dev *kfd);
+@@ -454,11 +458,20 @@ static inline void kgd2kfd_device_exit(struct kfd_dev *kfd)
+ {
+ }
  
- static struct qcom_icc_bcm bcm_sn4 = {
- 	.name = "SN4",
-+	.num_nodes = 1,
- 	.nodes = { &slv_qxs_pimem }
- };
+-static inline void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
++static inline void kgd2kfd_suspend(struct kfd_dev *kfd, bool suspend_proc)
+ {
+ }
  
+-static inline int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
++static inline int kgd2kfd_resume(struct kfd_dev *kfd, bool resume_proc)
++{
++	return 0;
++}
++
++static inline void kgd2kfd_suspend_process(struct kfd_dev *kfd)
++{
++}
++
++static inline int kgd2kfd_resume_process(struct kfd_dev *kfd)
+ {
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_arcturus.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_arcturus.c
+index ffbaa8bc5eea..1105a09e55dc 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_arcturus.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_arcturus.c
+@@ -320,7 +320,7 @@ static void set_barrier_auto_waitcnt(struct amdgpu_device *adev, bool enable_wai
+ 	if (!down_read_trylock(&adev->reset_domain->sem))
+ 		return;
+ 
+-	amdgpu_amdkfd_suspend(adev, false);
++	amdgpu_amdkfd_suspend(adev, true);
+ 
+ 	if (suspend_resume_compute_scheduler(adev, true))
+ 		goto out;
+@@ -333,7 +333,7 @@ static void set_barrier_auto_waitcnt(struct amdgpu_device *adev, bool enable_wai
+ out:
+ 	suspend_resume_compute_scheduler(adev, false);
+ 
+-	amdgpu_amdkfd_resume(adev, false);
++	amdgpu_amdkfd_resume(adev, true);
+ 
+ 	up_read(&adev->reset_domain->sem);
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index aa32df7e2fb2..54ea8e8d7812 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3518,7 +3518,7 @@ static int amdgpu_device_ip_fini_early(struct amdgpu_device *adev)
+ 	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
+ 	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
+ 
+-	amdgpu_amdkfd_suspend(adev, false);
++	amdgpu_amdkfd_suspend(adev, true);
+ 	amdgpu_userq_suspend(adev);
+ 
+ 	/* Workaround for ASICs need to disable SMC first */
+@@ -5055,6 +5055,8 @@ int amdgpu_device_suspend(struct drm_device *dev, bool notify_clients)
+ 	adev->in_suspend = true;
+ 
+ 	if (amdgpu_sriov_vf(adev)) {
++		if (!adev->in_s0ix && !adev->in_runpm)
++			amdgpu_amdkfd_suspend_process(adev);
+ 		amdgpu_virt_fini_data_exchange(adev);
+ 		r = amdgpu_virt_request_full_gpu(adev, false);
+ 		if (r)
+@@ -5074,7 +5076,7 @@ int amdgpu_device_suspend(struct drm_device *dev, bool notify_clients)
+ 	amdgpu_device_ip_suspend_phase1(adev);
+ 
+ 	if (!adev->in_s0ix) {
+-		amdgpu_amdkfd_suspend(adev, adev->in_runpm);
++		amdgpu_amdkfd_suspend(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
+ 		amdgpu_userq_suspend(adev);
+ 	}
+ 
+@@ -5140,7 +5142,7 @@ int amdgpu_device_resume(struct drm_device *dev, bool notify_clients)
+ 	}
+ 
+ 	if (!adev->in_s0ix) {
+-		r = amdgpu_amdkfd_resume(adev, adev->in_runpm);
++		r = amdgpu_amdkfd_resume(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
+ 		if (r)
+ 			goto exit;
+ 
+@@ -5159,6 +5161,9 @@ int amdgpu_device_resume(struct drm_device *dev, bool notify_clients)
+ 	if (amdgpu_sriov_vf(adev)) {
+ 		amdgpu_virt_init_data_exchange(adev);
+ 		amdgpu_virt_release_full_gpu(adev, true);
++
++		if (!adev->in_s0ix && !r && !adev->in_runpm)
++			r = amdgpu_amdkfd_resume_process(adev);
+ 	}
+ 
+ 	if (r)
+diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
+index bb82c652e4c0..5de2f047c534 100644
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
+@@ -1681,9 +1681,9 @@ static int sdma_v4_4_2_reset_queue(struct amdgpu_ring *ring, unsigned int vmid)
+ 	if (!(adev->sdma.supported_reset & AMDGPU_RESET_TYPE_PER_QUEUE))
+ 		return -EOPNOTSUPP;
+ 
+-	amdgpu_amdkfd_suspend(adev, false);
++	amdgpu_amdkfd_suspend(adev, true);
+ 	r = amdgpu_sdma_reset_engine(adev, id);
+-	amdgpu_amdkfd_resume(adev, false);
++	amdgpu_amdkfd_resume(adev, true);
+ 
+ 	return r;
+ }
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index bf0854bd5555..097bf6753782 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -971,7 +971,7 @@ int kgd2kfd_pre_reset(struct kfd_dev *kfd,
+ 		kfd_smi_event_update_gpu_reset(node, false, reset_context);
+ 	}
+ 
+-	kgd2kfd_suspend(kfd, false);
++	kgd2kfd_suspend(kfd, true);
+ 
+ 	for (i = 0; i < kfd->num_nodes; i++)
+ 		kfd_signal_reset_event(kfd->nodes[i]);
+@@ -1019,7 +1019,7 @@ bool kfd_is_locked(void)
+ 	return  (kfd_locked > 0);
+ }
+ 
+-void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
++void kgd2kfd_suspend(struct kfd_dev *kfd, bool suspend_proc)
+ {
+ 	struct kfd_node *node;
+ 	int i;
+@@ -1027,14 +1027,8 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
+ 	if (!kfd->init_complete)
+ 		return;
+ 
+-	/* for runtime suspend, skip locking kfd */
+-	if (!run_pm) {
+-		mutex_lock(&kfd_processes_mutex);
+-		/* For first KFD device suspend all the KFD processes */
+-		if (++kfd_locked == 1)
+-			kfd_suspend_all_processes();
+-		mutex_unlock(&kfd_processes_mutex);
+-	}
++	if (suspend_proc)
++		kgd2kfd_suspend_process(kfd);
+ 
+ 	for (i = 0; i < kfd->num_nodes; i++) {
+ 		node = kfd->nodes[i];
+@@ -1042,7 +1036,7 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
+ 	}
+ }
+ 
+-int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
++int kgd2kfd_resume(struct kfd_dev *kfd, bool resume_proc)
+ {
+ 	int ret, i;
+ 
+@@ -1055,14 +1049,36 @@ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
+ 			return ret;
+ 	}
+ 
+-	/* for runtime resume, skip unlocking kfd */
+-	if (!run_pm) {
+-		mutex_lock(&kfd_processes_mutex);
+-		if (--kfd_locked == 0)
+-			ret = kfd_resume_all_processes();
+-		WARN_ONCE(kfd_locked < 0, "KFD suspend / resume ref. error");
+-		mutex_unlock(&kfd_processes_mutex);
+-	}
++	if (resume_proc)
++		ret = kgd2kfd_resume_process(kfd);
++
++	return ret;
++}
++
++void kgd2kfd_suspend_process(struct kfd_dev *kfd)
++{
++	if (!kfd->init_complete)
++		return;
++
++	mutex_lock(&kfd_processes_mutex);
++	/* For first KFD device suspend all the KFD processes */
++	if (++kfd_locked == 1)
++		kfd_suspend_all_processes();
++	mutex_unlock(&kfd_processes_mutex);
++}
++
++int kgd2kfd_resume_process(struct kfd_dev *kfd)
++{
++	int ret = 0;
++
++	if (!kfd->init_complete)
++		return 0;
++
++	mutex_lock(&kfd_processes_mutex);
++	if (--kfd_locked == 0)
++		ret = kfd_resume_all_processes();
++	WARN_ONCE(kfd_locked < 0, "KFD suspend / resume ref. error");
++	mutex_unlock(&kfd_processes_mutex);
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
